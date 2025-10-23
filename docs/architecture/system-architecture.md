@@ -27,6 +27,7 @@
    - Numerology calculations
    - Palmistry integration
    - Nadi astrology (Indian palm leaf readings)
+   - **Implementation Strategy**: Utilize highly accurate open-source libraries (e.g., Swiss Ephemeris via language wrappers like `pyswisseph` for Python or `swisseph-js` for JavaScript) for core planetary and house calculations. For rule-based systems (Tarot, Numerology, Palmistry) and specific Vedic components (Dasha systems, Nakshatras), custom logic and content databases will be developed. Third-party APIs may be integrated for less common systems or initial rapid prototyping.
 
 5. **User Management System**
    - Profile creation with birth details
@@ -56,6 +57,7 @@
 - **Payment**: Payment gateways (Razorpay for India, Stripe for international) - fully managed services
 - **Storage**: Cloud storage (AWS S3, Google Cloud Storage) for user data and visualizations
 - **Real-time**: Real-time chat functionality using WebSocket libraries (Socket.io)
+- **API Style**: Primarily RESTful APIs for internal and external communication, with potential for GraphQL for complex data fetching in future web/mobile clients.
 
 ### Database
 - **User Data**: PostgreSQL or MongoDB for user profiles and preferences
@@ -64,10 +66,11 @@
 - **Engagement**: Time-series database for tracking user engagement patterns across platforms
 - **Relationships**: Relationship Graph Database for tracking compatibility and social connections between users
 - **Loyalty**: Loyalty Points Database for managing user points, rewards, and tier levels
+- **Data Models**: High-level data models for core entities (User, Birth Chart, Reading, Subscription, Payment, Loyalty Points) will be documented in `docs/architecture/data-models.md`.
 
 ### AI & Machine Learning
-- **AI Services**: OpenAI API or similar for AI Twin conversations
-- **Astrology Calculations**: Custom engine or third-party API integration
+- **AI Services**: OpenAI API or similar for AI Twin conversations and natural language interpretation of calculated astrological data.
+- **Astrology Calculations**: Custom engine utilizing open-source libraries (e.g., Swiss Ephemeris) and/or third-party API integration for precise astrological computations.
 - **Recommendation Engine**: For personalized service suggestions
 - **Predictive Analytics**: For transit accuracy validation
 
@@ -97,7 +100,8 @@
 - **AI Monitoring**: Intelligent error detection and performance monitoring
 
 ### Multi-Channel Delivery System
-- **WhatsApp-first**: WhatsApp-first architecture with abstraction layer for other platforms
+- **WhatsApp-first**: WhatsApp-first architecture with abstraction layer for other platforms.
+- **Future Phases**: The current design facilitates expansion to web app, mobile app, and other messaging platforms in future phases (Phase 2 and 3 as per `INITIAL-PROMPT.md`).
 - **Web App**: Web app framework (React/Vue.js) for web interface
 - **Mobile App**: Mobile app framework (React Native/Flutter) for mobile apps
 - **Content Management**: Content management system for cross-platform content delivery
@@ -110,6 +114,7 @@
 - **Infrastructure**: Serverless architecture using AWS Lambda/Cloud Functions
 - **CDN**: For serving static assets and kundli images
 - **Monitoring**: Real-time application monitoring and error tracking
+- **Observability Tools**: Integration with tools like Prometheus, Grafana, ELK Stack, and OpenTelemetry for comprehensive logging, metrics, and tracing.
 
 ## Security & Compliance
 - **WhatsApp API Compliance**: Following all guidelines and rate limits
@@ -117,6 +122,7 @@
 - **Payment Security**: PCI DSS compliance for payment processing
 - **Regional Compliance**: Following local regulations in India, UAE, Australia
 - **Authentication**: Secure user verification via WhatsApp Business API
+- **Resilience Patterns**: Integration of error handling and resilience patterns (e.g., circuit breakers, retries, graceful degradation) for robust operations, especially for external dependencies.
 
 ## Scalability Architecture
 - **Horizontal Scaling**: Microservices architecture for independent scaling

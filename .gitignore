@@ -40,3 +40,4 @@ coverage/
 .aider*
 logs/
 temp/
+.bmad-core/

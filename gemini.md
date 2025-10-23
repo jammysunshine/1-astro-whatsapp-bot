@@ -174,9 +174,9 @@ For project-specific instructions, ALWAYS refer to the `INITIAL-PROMPT.md` file 
     * `.pnp`, `.pnp.*`, `.yarn/*` - Package manager specific files
     * `.aider*` - Aider tool files
     * `logs/` - Log files directory
-    * `temp/` - Temporary files directory
-    * Any other build artifacts, temporary files, or binary files.
-
+        - `temp/` - Temporary files directory
+        - `.bmad-core/` - BMAD package files and related content
+        - Any other build artifacts, temporary files, or binary files.
 ---
 
 ## Commit Message Guidelines

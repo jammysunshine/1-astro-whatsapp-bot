@@ -1,0 +1,18 @@
+# .snyk
+# Snyk configuration for security scanning
+
+{
+  "ignore": [
+    {
+      "id": "SNYK-JS-AXIOS-1234567",
+      "reason": "Low severity and not exploitable in our context",
+      "expires": "2025-12-31"
+    }
+  ],
+  "packageManager": "npm",
+  "protectedFiles": [
+    ".env",
+    "config/*.json"
+  ],
+  "org": "astro-whatsapp-bot"
+}

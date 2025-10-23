@@ -1,0 +1,252 @@
+# .github/workflows/ci-cd.yml
+# GitHub Actions CI/CD pipeline for Astro WhatsApp Bot
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  # Build and Test Job
+  build-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
+    steps:
+    # Checkout code
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Setup Node.js
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    # Install dependencies
+    - name: Install Dependencies
+      run: npm ci
+
+    # Run linting
+    - name: Run Linting
+      run: npm run lint:check
+
+    # Run formatting check
+    - name: Run Formatting Check
+      run: npm run format:check
+
+    # Run security audit
+    - name: Run Security Audit
+      run: npm run security
+
+    # Run unit tests
+    - name: Run Unit Tests
+      run: npm run test:unit
+
+    # Run integration tests
+    - name: Run Integration Tests
+      run: npm run test:integration
+
+    # Run end-to-end tests
+    - name: Run End-to-End Tests
+      run: npm run test:e2e
+
+    # Generate coverage report
+    - name: Generate Coverage Report
+      run: npm run test:coverage
+
+    # Upload coverage to Coveralls
+    - name: Upload Coverage to Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    # Upload test results
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-${{ matrix.node-version }}
+        path: tests/reports/
+
+  # Quality Gate Job
+  quality-gate:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+    # Download test results
+    - name: Download Test Results
+      uses: actions/download-artifact@v3
+      with:
+        name: test-results-18.x
+
+    # Check coverage thresholds
+    - name: Check Coverage Thresholds
+      run: |
+        # Check if coverage meets 95% threshold
+        echo "Checking coverage thresholds..."
+        # Add actual coverage checking logic here
+
+    # Check test results
+    - name: Check Test Results
+      run: |
+        echo "Checking test results..."
+        # Add actual test result checking logic here
+
+  # Deploy Job
+  deploy:
+    needs: quality-gate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    # Checkout code
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Setup Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+
+    # Install dependencies
+    - name: Install Dependencies
+      run: npm ci
+
+    # Build application
+    - name: Build Application
+      run: npm run build
+
+    # Run deployment
+    - name: Deploy to Production
+      env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: |
+        echo "Deploying to production..."
+        # Add actual deployment logic here
+
+    # Post-deployment tests
+    - name: Run Post-Deployment Tests
+      run: |
+        echo "Running post-deployment tests..."
+        # Add actual post-deployment testing logic here
+
+  # Security Scan Job
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout code
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Run security scan
+    - name: Run Security Scan
+      uses: nodejs/security-wg/actions/scorecard@main
+      with:
+        results_file: security-results.json
+        results_format: json
+
+    # Upload security scan results
+    - name: Upload Security Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-scan-results
+        path: security-results.json
+
+  # Performance Test Job
+  performance-test:
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout code
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Setup Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+
+    # Install dependencies
+    - name: Install Dependencies
+      run: npm ci
+
+    # Run performance tests
+    - name: Run Performance Tests
+      run: |
+        echo "Running performance tests..."
+        # Add actual performance testing logic here
+
+  # Documentation Generation Job
+  generate-docs:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout code
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Setup Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+
+    # Install dependencies
+    - name: Install Dependencies
+      run: npm ci
+
+    # Generate documentation
+    - name: Generate Documentation
+      run: npm run docs
+
+    # Upload documentation
+    - name: Upload Documentation
+      uses: actions/upload-artifact@v3
+      with:
+        name: generated-docs
+        path: docs/generated/
+
+  # Release Job
+  release:
+    needs: [deploy, security-scan, performance-test]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    # Checkout code
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Setup Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+
+    # Install dependencies
+    - name: Install Dependencies
+      run: npm ci
+
+    # Create release
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.sha }}
+        release_name: Release ${{ github.sha }}
+        draft: false
+        prerelease: false

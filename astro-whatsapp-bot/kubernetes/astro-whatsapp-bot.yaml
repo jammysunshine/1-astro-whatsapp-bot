@@ -1,0 +1,160 @@
+# kubernetes/astro-whatsapp-bot.yaml
+# Kubernetes deployment configuration for Astro WhatsApp Bot
+
+---
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: astro-whatsapp-bot
+
+---
+# ConfigMap for application configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: astro-whatsapp-bot-config
+  namespace: astro-whatsapp-bot
+data:
+  NODE_ENV: production
+  PORT: "3000"
+  LOG_LEVEL: info
+  LOG_FORMAT: json
+
+---
+# Secret for sensitive configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: astro-whatsapp-bot-secrets
+  namespace: astro-whatsapp-bot
+type: Opaque
+data:
+  # Values should be base64 encoded
+  JWT_SECRET: eW91ci1zdXBlci1zZWNyZXQtand0LWtleS1oZXJlLWNoYW5nZS1pbi1wcm9kdWN0aW9u
+  WHATSAPP_ACCESS_TOKEN: eW91ci13aGF0c2FwcC1hY2Nlc3MtdG9rZW4=
+  MONGODB_URI: bW9uZ29kYjovL21vbmdvZGI6MjcwMTcvYXN0cm8td2hhdHNhcHAtYm90
+
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: astro-whatsapp-bot
+  namespace: astro-whatsapp-bot
+  labels:
+    app: astro-whatsapp-bot
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: astro-whatsapp-bot
+  template:
+    metadata:
+      labels:
+        app: astro-whatsapp-bot
+    spec:
+      containers:
+      - name: astro-whatsapp-bot
+        image: astro-whatsapp-bot:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: astro-whatsapp-bot-config
+              key: NODE_ENV
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: astro-whatsapp-bot-config
+              key: PORT
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: astro-whatsapp-bot-config
+              key: LOG_LEVEL
+        - name: LOG_FORMAT
+          valueFrom:
+            configMapKeyRef:
+              name: astro-whatsapp-bot-config
+              key: LOG_FORMAT
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: astro-whatsapp-bot-secrets
+              key: JWT_SECRET
+        - name: WHATSAPP_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: astro-whatsapp-bot-secrets
+              key: WHATSAPP_ACCESS_TOKEN
+        - name: MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: astro-whatsapp-bot-secrets
+              key: MONGODB_URI
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: astro-whatsapp-bot-service
+  namespace: astro-whatsapp-bot
+spec:
+  selector:
+    app: astro-whatsapp-bot
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+
+---
+# Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: astro-whatsapp-bot-hpa
+  namespace: astro-whatsapp-bot
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: astro-whatsapp-bot
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

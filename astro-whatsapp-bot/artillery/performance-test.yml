@@ -1,0 +1,84 @@
+# artillery/performance-test.yml
+# Artillery performance testing configuration for Astro WhatsApp Bot
+
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: Warm up
+    - duration: 120
+      arrivalRate: 5
+      rampTo: 50
+      name: Ramp up load
+    - duration: 600
+      arrivalRate: 50
+      name: Sustained max load
+    - duration: 60
+      arrivalRate: 50
+      rampTo: 0
+      name: Ramp down
+  defaults:
+    headers:
+      x-my-header: foo
+      Content-Type: application/json
+  variables:
+    userId:
+      - "user1"
+      - "user2"
+      - "user3"
+      - "user4"
+      - "user5"
+
+scenarios:
+  - name: "Health Check Endpoint"
+    flow:
+      - get:
+          url: "/health"
+          expect:
+            - statusCode: 200
+            - hasProperty: "status"
+            - equals:
+                - "{{ status }}"
+                - "healthy"
+
+  - name: "Root Endpoint"
+    flow:
+      - get:
+          url: "/"
+          expect:
+            - statusCode: 200
+            - hasProperty: "message"
+
+  - name: "Webhook Endpoint"
+    flow:
+      - post:
+          url: "/webhook"
+          json:
+            test: true
+          expect:
+            - statusCode: 200
+            - hasProperty: "message"
+            - hasProperty: "status"
+
+  - name: "404 Error Handling"
+    flow:
+      - get:
+          url: "/nonexistent"
+          expect:
+            - statusCode: 404
+            - hasProperty: "error"
+            - equals:
+                - "{{ error }}"
+                - "Not Found"
+
+  - name: "Concurrent Requests"
+    flow:
+      - get:
+          url: "/health"
+      - get:
+          url: "/"
+      - post:
+          url: "/webhook"
+          json:
+            concurrent: true

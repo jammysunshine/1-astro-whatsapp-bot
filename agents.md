@@ -7,6 +7,7 @@ This document defines the enterprise-grade AI agent framework for implementing t
 
 ### Qwen CLI - Lead Development & Architecture Agent
 - **Executive Role**: Primary AI development orchestrator responsible for complex system architecture, strategic code generation, and solution design across the entire technology stack
+- **BMAd Integration**: Operates as the primary AI agent for AI-First Development, leading the implementation of BMAd methodology across all development phases
 - **Core Capabilities**:
   - Advanced architectural design and system decomposition
   - Complex algorithm implementation and optimization
@@ -25,12 +26,14 @@ This document defines the enterprise-grade AI agent framework for implementing t
   - Performance-critical component implementation
   - Security implementation and vulnerability mitigation
   - Technical documentation and system architecture documentation
+- **BMAd Coordination**: Works in close coordination with Gemini CLI to implement Agile Iteration with AI, Rapid Prototyping, and Intelligent Task Management
 - **Usage Context**: Complex feature development, system architecture, performance-critical implementations, security-sensitive components
 - **Quality Standards**: Adherence to enterprise coding standards, security protocols, performance benchmarks
 - **Governance**: Requires validation for production deployments, follows change management protocols
 
 ### Gemini CLI - Secondary Development & Optimization Agent
 - **Executive Role**: Secondary AI development agent focused on optimization, refactoring, and enhancement of existing codebases with performance and efficiency specialization
+- **BMAd Integration**: Serves as the secondary AI agent that supports Agile Iteration with AI and Continuous Learning by refining and optimizing implementations
 - **Core Capabilities**:
   - Code optimization and performance enhancement
   - Refactoring and code quality improvement
@@ -49,6 +52,7 @@ This document defines the enterprise-grade AI agent framework for implementing t
   - Technical debt analysis and remediation
   - Performance monitoring and optimization
   - Code quality validation and standards compliance
+- **BMAd Coordination**: Works in close coordination with Qwen CLI to enable Coordinated AI Agents, Rapid Prototyping, and Continuous Learning from code changes and user feedback
 - **Usage Context**: Code optimization, refactoring tasks, testing automation, performance enhancement
 - **Quality Standards**: Code quality metrics, performance benchmarks, maintainability scores
 - **Governance**: Automatic validation through CI/CD pipelines, performance regression testing
@@ -274,6 +278,14 @@ This document defines the enterprise-grade AI agent framework for implementing t
 - **Quality Coordination**: Multi-agent validation and quality assurance through cross-validation processes
 - **Governance Framework**: Enterprise governance protocols with audit trails and compliance validation
 
+### Rapid Prototyping & Iteration Framework
+- **AI-Powered Prototyping**: Qwen CLI and Gemini CLI accelerate rapid creation of functional prototypes and proof-of-concepts
+- **Iterative Design Process**: Continuous refinement based on immediate feedback loops and user validation
+- **Quick Validation Cycles**: Fast iteration between design, implementation, and testing phases using coordinated AI agents
+- **Prototype-to-Production Pipeline**: Seamless transition from rapid prototype to production-ready code with proper architecture
+- **Risk-Tolerant Experimentation**: Safe environment for testing innovative ideas without impacting production systems
+- **Prototype Analytics**: Performance and usability data from prototypes inform final implementation decisions
+
 ### Enterprise Quality Assurance Framework
 - **Multi-Level Validation**: Hierarchical validation through multiple AI agents with human oversight
 - **Compliance Verification**: Automatic compliance checking against enterprise standards and regulations
@@ -289,6 +301,14 @@ This document defines the enterprise-grade AI agent framework for implementing t
 - **Scalability Planning**: Automated scaling and resource allocation optimization
 - **Performance Analytics**: Advanced analytics for continuous improvement
 
+### Continuous Learning & Adaptation Framework
+- **Feedback Integration**: AI agents continuously learn from user feedback, code reviews, and performance metrics to improve future implementations
+- **Adaptive Learning**: Machine learning models are updated based on development patterns, user behavior, and system performance
+- **Knowledge Accumulation**: Historical project data is analyzed to improve decision-making and implementation strategies
+- **Self-Improvement Protocols**: AI agents implement self-correction mechanisms based on outcome analysis and best practice evolution
+- **Experience-Based Optimization**: Each project iteration contributes to enhanced agent capabilities and more efficient development processes
+- **Learning from Failures**: AI agents analyze unsuccessful implementations to avoid similar issues in future projects
+
 ## Enterprise BMAd-Specific AI Capabilities
 
 ### Strategic Agile Management
@@ -296,12 +316,16 @@ This document defines the enterprise-grade AI agent framework for implementing t
 - **Dynamic Task Assignment**: Intelligent task distribution based on complexity and expertise
 - **Predictive Analysis**: Project timeline and resource prediction with accuracy metrics
 - **Continuous Improvement**: AI-driven retrospectives with actionable improvement recommendations
+- **Rapid Prototyping**: AI-facilitated quick iteration on ideas, designs, and implementations with immediate feedback loops
+- **Iterative Enhancement**: AI-driven continuous iteration based on user feedback and performance metrics
 
 ### Technical Excellence Management
 - **Advanced Technical Debt Analysis**: Comprehensive technical debt identification with ROI analysis
 - **Automated Refactoring**: Intelligent refactoring recommendations with risk assessment
 - **Quality Metrics Management**: Advanced quality metrics with trend analysis
 - **Performance Optimization**: Continuous performance monitoring and optimization
+- **Rapid Prototyping**: AI-powered rapid creation of proof-of-concepts and MVPs to validate ideas quickly
+- **Continuous Learning Integration**: AI agents learn from code changes, user feedback, and performance data to improve future implementations
 
 ### User Experience & Business Value Optimization
 - **Advanced Analytics**: User behavior analysis with predictive modeling

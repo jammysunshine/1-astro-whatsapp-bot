@@ -7,7 +7,7 @@
 - Western Astrology ✓ (Story 2.2) 
 - Chinese Astrology ✓ (Story 2.4)
 - Tarot Card Readings ✓ (Story 2.3)
-- Numerology ✓ (Story 2.5)
+- Numerology ✓ (Story 2.7)
 - Palmistry ✓ (Story 2.5)
 - Nadi Astrology ✓ (Story 2.6)
 - Other systems (Kabbalistic, Mayan, etc.) ✓ (Story 2.6)

@@ -44,6 +44,21 @@ Stores the history of WhatsApp messages exchanged with the bot.
 - **Attributes**: Message ID (PK), User ID (FK), Direction (Inbound, Outbound), Content, Timestamp, WhatsApp Message ID.
 - **Relationships**: Many-to-one with User.
 
+### 9. Tarot Card
+Stores information and meanings for each Tarot card.
+- **Attributes**: Card ID (PK), Name, UprightMeaning, ReversedMeaning, Keywords, ImageryDescription, Deck (e.g., Rider-Waite-Smith).
+- **Relationships**: None (reference data).
+
+### 10. Numerology Interpretation
+Stores interpretations for various numerological numbers.
+- **Attributes**: Number (PK), Type (e.g., Life Path, Destiny), Interpretation, Strengths, Challenges, Keywords.
+- **Relationships**: None (reference data).
+
+### 11. Palmistry Feature
+Stores interpretations for various palm lines, mounts, and hand shapes.
+- **Attributes**: Feature ID (PK), Name, Type (e.g., Line, Mount, Shape), Description, InterpretationLong, InterpretationShort, Keywords.
+- **Relationships**: None (reference data).
+
 ## Relationships Overview
 
 ```mermaid

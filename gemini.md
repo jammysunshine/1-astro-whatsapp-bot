@@ -49,15 +49,9 @@ For project-specific instructions, ALWAYS refer to the `INITIAL-PROMPT.md` file 
 
 ## Core Development Principles
 
+*   **Spec-Driven Development (SDD)**: Rigorously define and adhere to specifications (PRD, Architecture, API Contracts) as the primary source of truth for all development, ensuring alignment with business goals and user needs.
+*   **Test-Driven Development (TDD)**: Write comprehensive, failing tests *before* implementing any code, ensuring 100% test coverage and validating functionality against specifications from the outset.
 *   **Clean Code**: All code must be written with clarity, maintainability, and readability as primary concerns
-*   **Security First**: Always implement security measures as a primary concern when dealing with any external integrations, webhooks, or APIs
-*   **Performance Consciousness**: Consider performance implications of all design decisions from the outset
-*   **Test-Driven Mindset**: Write testable code and maintain comprehensive test coverage
-*   **Documentation First**: Document code, architecture, and important decisions as you develop
-*   **AI-Assisted Development**: Leverage AI tools (Qwen CLI and Gemini CLI) for rapid development, code generation, testing, and optimization
-*   **Automation-First**: Automate all repetitive tasks including testing, deployment, monitoring, and maintenance
-*   **BMAd Methodology**: Implement Breakthrough Method for Agile AI-Driven Development with iterative cycles and AI agent coordination
-*   **AI Agent Integration**: Utilize multiple AI agents (Qwen CLI, Gemini CLI, etc.) in coordinated fashion for maximum efficiency
 
 ## BMAd Methodology (Breakthrough Method for Agile AI-Driven Development)
 

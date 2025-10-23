@@ -102,9 +102,19 @@ This project follows the Breakthrough Method for Agile AI-Driven Development (BM
 - **User Retention**: 50%+ day-90 retention
 - **Viral Coefficient**: 0.6+ for sustainable growth
 
+## 📚 Documentation
+
+For comprehensive project details, refer to the following documents:
+
+- **Project Management Plan**: [docs/project-management-plan.md](docs/project-management-plan.md)
+- **Development Approach**: [docs/architecture/development-approach.md](docs/architecture/development-approach.md)
+- **System Architecture**: [docs/architecture/system-architecture.md](docs/architecture/system-architecture.md)
+- **Contributing Guidelines**: [astro-whatsapp-bot/CONTRIBUTING.md](astro-whatsapp-bot/CONTRIBUTING.md)
+- **Comprehensive Validation Summary**: [docs/validation/comprehensive-validation-summary.md](docs/validation/comprehensive-validation-summary.md)
+
 ## 🤝 Contributing
 
-This project uses the BMAD methodology with AI agents for rapid development. Contributions should follow the established patterns and maintain the revenue-focused approach.
+This project uses the BMAD methodology with AI agents for rapid development. Contributions should follow the established patterns and maintain the revenue-focused approach. Please see our [Contributing Guidelines](astro-whatsapp-bot/CONTRIBUTING.md) for more details.
 
 ## 📄 License
 
@@ -112,7 +122,7 @@ MIT License - see LICENSE file for details.
 
 ## 📞 Support
 
-For support, please contact the development team or refer to the documentation in the `docs/` directory.
+For support, please open an issue on our [GitHub Issues](https://github.com/your-username/astro-whatsapp-bot/issues) page or contact our team at support@astro-whatsapp-bot.com.
 
 ---
 

@@ -1,6 +1,11 @@
 # Development Approach
-- **BMAD Methodology**: Following Breakthrough Method for Agile AI-Driven Development
-- **Rapid Development**: 2-3 day launch strategy with Qwen CLI and Gemini CLI
-- **Modular Architecture**: Independent, testable modules for parallel development
-- **API-First Design**: Third-party service integration for complex functionality
-- **Automated Testing**: Comprehensive AI-generated test suites
+- **BMAD Methodology**: Following Breakthrough Method for Agile AI-Driven Development, leveraging AI agents (Qwen CLI, Gemini CLI) for rapid iteration, automated quality assurance, and continuous integration.
+- **Rapid Development**: 2-3 day launch strategy with maximum AI assistance for code generation, testing, and deployment.
+- **Modular Architecture**: Independent, testable modules for parallel development and easier integration.
+- **API-First Design**: Prioritizing third-party service integration for complex functionality (astrology calculations, payments, etc.) to accelerate development.
+- **Automated Testing**: Comprehensive AI-generated test suites (unit, integration, E2E, performance, security) to ensure 95%+ coverage and zero manual testing.
+- **Test-Driven Development (TDD)**: Adopting a TDD mindset where tests are written before code, ensuring comprehensive coverage from the start.
+- **Free Tier & Open Source Tools**: Exclusive use of free-tier and open-source tools to minimize costs and maximize functionality.
+- **Continuous Integration/Continuous Delivery (CI/CD)**: Implementing automated CI/CD pipelines with AI-driven quality gates for zero-defect deployments.
+- **Scalability Planning**: Designing the system with scalability implications in mind from the outset, ensuring it can handle future growth.
+- **Optimization Reviews**: Conducting regular performance optimization reviews as part of the development process.

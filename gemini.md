@@ -287,7 +287,7 @@ Commit messages should be simple, concise, and descriptive. Avoid using special 
 *   **Self-Review Before Testing**: Always perform a thorough self-review of all implemented changes, including code, configuration, and documentation, to ensure correctness, completeness, and adherence to project standards *before* asking the user to test.
 *   **Update gemini.md Regularly**: As a critical mandate, this `gemini.md` file must be updated automatically after every major feature implementation or optimization work to document the changes and keep the generic guidelines current. This includes documenting new testing practices, monitoring features, configuration options, and code quality improvements THAT APPLY GENERALLY TO ALL PROJECTS.
 *   **Branch Cleanup**: Regularly delete unused or merged feature branches to maintain a clean and manageable repository structure.
-*   **Documentation First**: Prioritize documentation updates when implementing new features to ensure knowledge retention.
+*   **Continuous Documentation Review**: For all current and future projects, use all BMAD agents to regularly check `INITIAL-PROMPT.md` and `gemini.md` to ensure the epics, all user stories, all `.md` files created, all checklists, and all plans are fully comprehensive. If they are not, regularly create, update, any missing or incomplete epic, user story, checklist, plan etc., and ensure they fully address all requirements.
 
 ## ⚠️ PROJECT-SPECIFIC CONTENT SEPARATION MANDATE
 

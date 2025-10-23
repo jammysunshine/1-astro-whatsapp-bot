@@ -1,7 +1,7 @@
 # Enterprise AI Agent Framework for BMAd Implementation
 
 ## Executive Summary
-This document defines the enterprise-grade AI agent framework for implementing the Breakthrough Method for Agile AI-Driven Development (BMAd) in high-stakes, production-ready software projects. Each agent is designed with specific roles, responsibilities, governance protocols, and performance metrics to ensure operational excellence and business continuity.
+This document defines a **mission-critical, enterprise-grade AI agent framework** meticulously engineered for the Breakthrough Method for Agile AI-Driven Development (BMAd). It ensures the rapid, secure, and compliant delivery of high-stakes, production-ready software projects. Each agent is designed with explicit roles, responsibilities, stringent governance protocols, and measurable performance metrics to guarantee **unwavering operational excellence, robust security, and seamless business continuity**, directly contributing to strategic business objectives and proactive risk mitigation.
 
 ## Primary AI Development Agents
 
@@ -19,6 +19,7 @@ This document defines the enterprise-grade AI agent framework for implementing t
   - API design and documentation with OpenAPI specifications
   - Database schema design and query optimization
   - Infrastructure-as-Code (IaC) generation
+  - **BMAd Compliance & Enterprise Artifact Generation**: Ensures all generated code and architectural designs strictly adhere to BMAd principles and produce enterprise-grade, production-ready artifacts.
 - **Operational Responsibilities**:
   - Lead architectural decision making and technical implementation
   - Primary code generation for complex business logic and core systems
@@ -26,6 +27,7 @@ This document defines the enterprise-grade AI agent framework for implementing t
   - Performance-critical component implementation
   - Security implementation and vulnerability mitigation
   - Technical documentation and system architecture documentation
+  - **BMAd Compliance Enforcement**: Actively ensures all development outputs are fully compliant with BMAd methodology and enterprise architectural standards.
 - **BMAd Coordination**: Works in close coordination with Gemini CLI to implement Agile Iteration with AI, Rapid Prototyping, and Intelligent Task Management
 - **Usage Context**: Complex feature development, system architecture, performance-critical implementations, security-sensitive components
 - **Quality Standards**: Adherence to enterprise coding standards, security protocols, performance benchmarks
@@ -45,6 +47,7 @@ This document defines the enterprise-grade AI agent framework for implementing t
   - API documentation and specification generation
   - Automated refactoring patterns implementation
   - Technical debt remediation
+  - **BMAd Compliance & Enterprise Optimization**: Ensures all optimizations and enhancements align with BMAd principles and elevate codebases to enterprise-grade performance and maintainability standards.
 - **Operational Responsibilities**:
   - Code optimization and performance enhancement
   - Automated refactoring and code improvement
@@ -52,6 +55,7 @@ This document defines the enterprise-grade AI agent framework for implementing t
   - Technical debt analysis and remediation
   - Performance monitoring and optimization
   - Code quality validation and standards compliance
+  - **BMAd Compliance & Enterprise Standards Adherence**: Ensures all refactoring and optimization efforts strictly adhere to BMAd principles and elevate the codebase to meet rigorous enterprise standards.
 - **BMAd Coordination**: Works in close coordination with Qwen CLI to enable Coordinated AI Agents, Rapid Prototyping, and Continuous Learning from code changes and user feedback
 - **Usage Context**: Code optimization, refactoring tasks, testing automation, performance enhancement
 - **Quality Standards**: Code quality metrics, performance benchmarks, maintainability scores
@@ -360,3 +364,11 @@ This document defines the enterprise-grade AI agent framework for implementing t
 - **Best Practice Evolution**: Continuous evolution of development best practices
 
 This enterprise-grade AI agent framework ensures operational excellence, security, compliance, and continuous improvement in your BMAd implementation while maintaining the agility and speed of AI-driven development.
+
+## Mandatory Compliance with Agents.md and BMAd Methodology
+All development activities, code, documentation, and processes within this project **must strictly adhere** to the guidelines, roles, responsibilities, and quality standards defined in this `agents.md` file and the overarching Breakthrough Method for Agile AI-Driven Development (BMAd) methodology. This mandate ensures:
+- **Consistent Enterprise Quality**: Every artifact produced meets the highest standards of security, performance, and maintainability.
+- **Seamless AI Agent Coordination**: Optimal collaboration and context transfer between Qwen CLI, Gemini CLI, and all other specialized agents.
+- **Full Auditability & Traceability**: All changes and decisions are logged and traceable, supporting regulatory compliance and internal governance.
+- **Accelerated, Secure Delivery**: Leveraging AI for rapid iteration without compromising on enterprise-grade security and reliability.
+- **Continuous Improvement**: Adherence to BMAd fosters a culture of adaptive learning and self-correction across all AI-driven development processes.

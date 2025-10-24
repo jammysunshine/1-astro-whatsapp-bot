@@ -4,6 +4,8 @@ const { getUserByPhone, createUser, addBirthDetails, updateUserProfile, getUserS
 const { generateAstrologyResponse } = require('../astrology/astrologyEngine');
 const { processFlowMessage } = require('../../conversation/conversationEngine');
 const { getMenu } = require('../../conversation/menuLoader');
+const paymentService = require('../payment/paymentService');
+const vedicCalculator = require('../astrology/vedicCalculator');
 
 /**
  * Process incoming WhatsApp message and generate appropriate response
@@ -77,9 +79,28 @@ const processTextMessage = async (message, user) => {
 
   logger.info(`💬 Text message from ${phoneNumber}: ${messageText}`);
 
+  // Check for compatibility requests with birth dates
+  const compatibilityMatch = messageText.match(/(\d{2}\/\d{2}\/\d{4})/);
+  if (compatibilityMatch && (messageText.toLowerCase().includes('compatibility') || messageText.toLowerCase().includes('match'))) {
+    await handleCompatibilityRequest(phoneNumber, user, compatibilityMatch[1]);
+    return;
+  }
+
+  // Check for subscription requests
+  if (messageText.toLowerCase().includes('subscribe') || messageText.toLowerCase().includes('upgrade')) {
+    if (messageText.toLowerCase().includes('essential')) {
+      await handleSubscriptionRequest(phoneNumber, user, 'essential');
+    } else if (messageText.toLowerCase().includes('premium')) {
+      await handleSubscriptionRequest(phoneNumber, user, 'premium');
+    } else {
+      await sendMessage(phoneNumber, `💳 *Subscription Plans*\n\nWhich plan would you like to subscribe to?\n\n⭐ *Essential* - ₹230/month\n💎 *Premium* - ₹299/month\n\nJust reply with "Essential" or "Premium"!`);
+    }
+    return;
+  }
+
   // Generate astrology response based on user input
   let response = await generateAstrologyResponse(messageText, user);
-  
+
   // If a specific response isn't generated, offer an interactive menu
   if (!response || response.startsWith('Thank you for your message')) {
     const mainMenu = getMenu('main_menu');
@@ -197,16 +218,40 @@ const executeMenuAction = async (phoneNumber, user, action) => {
   let response;
   switch (action) {
     case 'get_daily_horoscope':
-      response = `Here is your daily horoscope, ${user.name || 'cosmic explorer'}! (This is a placeholder for now).`;
-      // In a later phase, integrate with astrology engine to fetch actual daily horoscope
+      if (!user.birthDate) {
+        response = `I'd love to give you a personalized daily horoscope! Please complete your profile first by providing your birth date.`;
+      } else {
+        // Generate actual horoscope using astrology engine
+        const astrologyResponse = await generateAstrologyResponse('horoscope', user);
+        response = astrologyResponse;
+      }
       break;
     case 'initiate_compatibility_flow':
-      response = `To check compatibility, please provide the birth details (date, time, place) of the person you want to compare with.`;
-      // In a later phase, initiate a compatibility flow
+      response = `💕 *Compatibility Check*\n\nTo check compatibility, please provide the birth date (DD/MM/YYYY) of the person you want to compare with.\n\nExample: 25/12/1985\n\n*Note:* Premium members get unlimited compatibility checks!`;
       break;
     case 'show_user_profile':
-      response = `Here is your current profile information:\nName: ${user.name || 'N/A'}\nBirth Date: ${user.birthDate || 'N/A'}\nBirth Time: ${user.birthTime || 'N/A'}\nBirth Place: ${user.birthPlace || 'N/A'}\nSubscription: ${user.subscriptionTier}\n\nWould you like to update anything?`;
-      // In a later phase, offer interactive options to update profile fields
+      const subscriptionStatus = paymentService.getSubscriptionStatus(user);
+      response = `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate || 'Not set'}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\n\n💳 *Subscription*\nPlan: ${subscriptionStatus.planName}\nStatus: ${subscriptionStatus.isActive ? 'Active' : 'Inactive'}\n${subscriptionStatus.expiryDate ? `Expires: ${new Date(subscriptionStatus.expiryDate).toDateString()}` : ''}\n\n⭐ Loyalty Points: ${user.loyaltyPoints || 0}\n\nWhat would you like to update or explore?`;
+      break;
+    case 'show_subscription_plans':
+      const plans = paymentService.getAllPlans();
+      response = `💳 *Subscription Plans*\n\n🌟 *Free*\n• Daily micro-prediction\n• Birth chart visualization\n• 7-day transit summary\n\n⭐ *Essential - ₹230/month*\n• Daily personalized horoscope\n• Weekly video predictions\n• Basic compatibility (5 people)\n\n💎 *Premium - ₹299/month*\n• Unlimited AI questions\n• Priority astrologer access\n• Unlimited compatibility\n\nReply with the plan name to subscribe!`;
+      break;
+    case 'upgrade_to_essential':
+      try {
+        const result = await paymentService.processSubscription(phoneNumber, 'essential');
+        response = result.message;
+      } catch (error) {
+        response = `❌ Sorry, I couldn't process your subscription right now. Please try again later or contact support.`;
+      }
+      break;
+    case 'upgrade_to_premium':
+      try {
+        const result = await paymentService.processSubscription(phoneNumber, 'premium');
+        response = result.message;
+      } catch (error) {
+        response = `❌ Sorry, I couldn't process your subscription right now. Please try again later or contact support.`;
+      }
       break;
     default:
       logger.warn(`⚠️ Unknown menu action: ${action}`);
@@ -283,6 +328,70 @@ const sendErrorMessage = async (phoneNumber, errorMessage) => {
   logger.error(`❌ Error sent to ${phoneNumber}: ${errorMessage}`);
 };
 
+/**
+ * Handle compatibility request with birth date
+ * @param {string} phoneNumber - User's phone number
+ * @param {Object} user - User object
+ * @param {string} otherBirthDate - Other person's birth date
+ */
+const handleCompatibilityRequest = async (phoneNumber, user, otherBirthDate) => {
+  try {
+    if (!user.birthDate) {
+      await sendMessage(phoneNumber, `I need your birth date first to check compatibility. Please complete your profile by providing your birth details.`);
+      return;
+    }
+
+    const userSign = vedicCalculator.calculateSunSign(user.birthDate);
+    const otherSign = vedicCalculator.calculateSunSign(otherBirthDate);
+
+    const compatibility = vedicCalculator.checkCompatibility(userSign, otherSign);
+
+    let response = `💕 *Compatibility Analysis*\n\n*Your Sign:* ${userSign}\n*Their Sign:* ${otherSign}\n\n*Compatibility:* ${compatibility.compatibility}\n\n${compatibility.description}`;
+
+    // Check subscription limits
+    const benefits = paymentService.getSubscriptionBenefits(user);
+    if (benefits.maxCompatibilityChecks !== Infinity && user.compatibilityChecks >= benefits.maxCompatibilityChecks) {
+      response += `\n\n⚠️ *Compatibility Check Limit Reached*\n\nYou've used ${user.compatibilityChecks} of your ${benefits.maxCompatibilityChecks} free compatibility checks. Upgrade to Premium for unlimited compatibility analysis!`;
+    }
+
+    await sendMessage(phoneNumber, response);
+
+    // Increment compatibility check counter
+    await require('../../models/userModel').incrementCompatibilityChecks(phoneNumber);
+
+  } catch (error) {
+    logger.error('Error handling compatibility request:', error);
+    await sendMessage(phoneNumber, `I'm sorry, I couldn't process the compatibility request right now. Please try again later.`);
+  }
+};
+
+/**
+ * Handle subscription request
+ * @param {string} phoneNumber - User's phone number
+ * @param {Object} user - User object
+ * @param {string} planId - Subscription plan ID
+ */
+const handleSubscriptionRequest = async (phoneNumber, user, planId) => {
+  try {
+    const result = await paymentService.processSubscription(phoneNumber, planId);
+    await sendMessage(phoneNumber, result.message);
+
+    // Send welcome message based on plan
+    const plan = paymentService.getPlan(planId);
+    let welcomeMessage = `\n\n🎉 *Welcome to ${plan.name}!*\n\nYour new features:\n`;
+    plan.features.forEach(feature => {
+      welcomeMessage += `• ${feature}\n`;
+    });
+    welcomeMessage += `\nWhat would you like to explore first?`;
+
+    await sendMessage(phoneNumber, welcomeMessage);
+
+  } catch (error) {
+    logger.error('Error handling subscription request:', error);
+    await sendMessage(phoneNumber, `❌ Sorry, I couldn't process your subscription right now. Please try again later or contact support.`);
+  }
+};
+
 module.exports = {
   processIncomingMessage,
   processTextMessage,
@@ -295,5 +404,7 @@ module.exports = {
   sendUnsupportedMessageTypeResponse,
   sendUnsupportedInteractiveTypeResponse,
   sendMediaAcknowledgment,
-  sendErrorMessage
+  sendErrorMessage,
+  handleCompatibilityRequest,
+  handleSubscriptionRequest
 };

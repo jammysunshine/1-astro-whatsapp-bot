@@ -1,21 +1,26 @@
 {
   "main_menu": {
-    "body": "What would you like to explore today?",
+    "body": "🌟 What would you like to explore today?",
     "buttons": [
       {
         "id": "DAILY_HOROSCOPE",
-        "title": "Daily Horoscope",
+        "title": "📅 Daily Horoscope",
         "action": "get_daily_horoscope"
       },
       {
         "id": "CHECK_COMPATIBILITY",
-        "title": "Check Compatibility",
+        "title": "💕 Check Compatibility",
         "action": "initiate_compatibility_flow"
       },
       {
         "id": "MY_PROFILE",
-        "title": "My Profile",
+        "title": "👤 My Profile",
         "action": "show_user_profile"
+      },
+      {
+        "id": "SUBSCRIPTION_PLANS",
+        "title": "💳 Subscription Plans",
+        "action": "show_subscription_plans"
       }
     ]
   }

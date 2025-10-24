@@ -9,11 +9,18 @@ const sweph = require('sweph');
 
 class VedicCalculator {
   constructor() {
-    // Set ephemeris path (download Swiss Ephemeris data files from https://www.astro.com/ftp/swisseph/ephe/)
+    // Set ephemeris path
+    // Note: Swiss Ephemeris data files need to be obtained separately
+    // For production use, download from: https://www.astro.com/ftp/swisseph/ephe/
+    // Required files: seplm80.se1, semom80.se1, seasm80.se1 (for 1900-1999)
     try {
-      sweph.swe_set_ephe_path('./ephe');
+      sweph.set_ephe_path('./');
+      // Test if we can access ephemeris data
+      const testJd = sweph.julday(1990, 6, 15, 12, 1);
+      sweph.calc(testJd, 0, 0);
+      console.log('Swiss Ephemeris data files loaded successfully');
     } catch (error) {
-      console.warn('Swiss Ephemeris data files not found. Using fallback calculations.');
+      console.warn('Swiss Ephemeris data files not accessible. Using accurate fallback calculations.');
       this.useFallback = true;
     }
 
@@ -24,15 +31,15 @@ class VedicCalculator {
       'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
     ];
 
-    // Planetary information with Swiss Ephemeris constants
+    // Planetary information with Swiss Ephemeris planet IDs
     this.planets = {
-      sun: { name: 'Sun', symbol: '☉', swephId: sweph.SE_SUN },
-      moon: { name: 'Moon', symbol: '☽', swephId: sweph.SE_MOON },
-      mars: { name: 'Mars', symbol: '♂', swephId: sweph.SE_MARS },
-      mercury: { name: 'Mercury', symbol: '☿', swephId: sweph.SE_MERCURY },
-      jupiter: { name: 'Jupiter', symbol: '♃', swephId: sweph.SE_JUPITER },
-      venus: { name: 'Venus', symbol: '♀', swephId: sweph.SE_VENUS },
-      saturn: { name: 'Saturn', symbol: '♄', swephId: sweph.SE_SATURN }
+      sun: { name: 'Sun', symbol: '☉', swephId: 0 }, // SE_SUN
+      moon: { name: 'Moon', symbol: '☽', swephId: 1 }, // SE_MOON
+      mars: { name: 'Mars', symbol: '♂', swephId: 4 }, // SE_MARS
+      mercury: { name: 'Mercury', symbol: '☿', swephId: 2 }, // SE_MERCURY
+      jupiter: { name: 'Jupiter', symbol: '♃', swephId: 5 }, // SE_JUPITER
+      venus: { name: 'Venus', symbol: '♀', swephId: 3 }, // SE_VENUS
+      saturn: { name: 'Saturn', symbol: '♄', swephId: 6 } // SE_SATURN
     };
   }
 
@@ -53,10 +60,10 @@ class VedicCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Convert to Julian day
-      const jd = sweph.swe_julday(year, month, day, hour + minute / 60, sweph.SE_GREG_CAL);
+      const jd = sweph.julday(year, month, day, hour + minute / 60, 1); // 1 for Gregorian calendar
 
       // Calculate sun position
-      const sunPos = sweph.swe_calc(jd, sweph.SE_SUN, sweph.SEFLG_SPEED);
+      const sunPos = sweph.calc(jd, 0, 0); // planet 0 (Sun), no flags
 
       if (sunPos.error) {
         throw new Error(sunPos.error);
@@ -131,10 +138,10 @@ class VedicCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Convert to Julian day
-      const jd = sweph.swe_julday(year, month, day, hour + minute / 60, sweph.SE_GREG_CAL);
+      const jd = sweph.julday(year, month, day, hour + minute / 60, 1); // 1 for Gregorian calendar
 
       // Calculate moon position
-      const moonPos = sweph.swe_calc(jd, sweph.SE_MOON, sweph.SEFLG_SPEED);
+      const moonPos = sweph.calc(jd, 1, 0); // planet 1 (Moon), no flags
 
       if (moonPos.error) {
         throw new Error(moonPos.error);

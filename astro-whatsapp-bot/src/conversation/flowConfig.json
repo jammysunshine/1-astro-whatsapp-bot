@@ -3,11 +3,11 @@
     "start_step": "welcome",
     "steps": {
       "welcome": {
-        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\nTo get started and provide your first reading, what's your birth date? (DD/MM/YYYY)\n\n*Example:* 15/06/1990\n\n💡 *Why birth date?* Your birth chart reveals your unique cosmic blueprint!",
+        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\nTo get started and provide your first reading, what's your birth date?\n\n*Format:* DDMMYYYY (e.g., 15061990) or DD/MM/YYYY (e.g., 15/06/1990)\n\n💡 *Why birth date?* Your birth chart reveals your unique cosmic blueprint!",
         "validation": "date",
         "next_step": "ask_birth_time",
         "data_key": "birthDate",
-        "error_message": "Please provide a valid date in DD/MM/YYYY format (e.g., 15/06/1990)"
+        "error_message": "Please provide a valid date in DDMMYYYY format (e.g., 15061990) or DD/MM/YYYY format (e.g., 15/06/1990)"
       },
       "ask_birth_time": {
         "prompt": "Great! 📅 Your birth date reveals your *Sun Sign* and core personality.\n\nFor more accurate insights, what's your birth time? (HH:MM, 24-hour format)\n\n*Example:* 14:30\n\n💡 *Why birth time?* It determines your *Rising Sign* (how others see you) and *Moon Sign* (your emotional nature).\n\nOr reply 'skip' if you don't know.",
@@ -74,11 +74,11 @@
     "start_step": "ask_partner_date",
     "steps": {
       "ask_partner_date": {
-        "prompt": "💕 *Compatibility Analysis*\n\nI'll compare your birth chart with someone else's for relationship insights.\n\nPlease provide their birth date (DD/MM/YYYY):",
+        "prompt": "💕 *Compatibility Analysis*\n\nI'll compare your birth chart with someone else's for relationship insights.\n\nPlease provide their birth date (DDMMYYYY or DD/MM/YYYY):",
         "validation": "date",
         "next_step": "generate_compatibility",
         "data_key": "partnerBirthDate",
-        "error_message": "Please provide a valid date in DD/MM/YYYY format"
+        "error_message": "Please provide a valid date in DDMMYYYY format (e.g., 15061990) or DD/MM/YYYY format (e.g., 15/06/1990)"
       },
       "generate_compatibility": {
         "prompt": "🔄 Analyzing compatibility...\n\n{compatibilityResult}\n\nWould you like another compatibility check? Reply 'yes' or 'menu' for main options.",

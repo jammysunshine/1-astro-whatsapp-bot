@@ -22,14 +22,23 @@ const validateStepInput = async(input, step) => {
     return { isValid: true, cleanedValue: input.trim() };
 
   case 'date':
-    // DD/MM/YYYY format
-    const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-    const match = input.match(dateRegex);
-    if (!match) {
-      return { isValid: false, errorMessage: step.error_message || 'Please provide date in DD/MM/YYYY format.' };
-    }
+    // Flexible date formats: DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, or DDMMYYYY
+    let day, month, year;
 
-    const [, day, month, year] = match.map(Number);
+    // Check for 8-digit format first (DDMMYYYY)
+    const compactDateRegex = /^(\d{2})(\d{2})(\d{4})$/;
+    const compactMatch = input.match(compactDateRegex);
+    if (compactMatch) {
+      [, day, month, year] = compactMatch.map(Number);
+    } else {
+      // Check for separated format
+      const separatedDateRegex = /^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/;
+      const separatedMatch = input.match(separatedDateRegex);
+      if (!separatedMatch) {
+        return { isValid: false, errorMessage: step.error_message || 'Please provide date in DDMMYYYY format (e.g., 15061990) or DD/MM/YYYY format (e.g., 15/06/1990, 15-06-1990, or 15.06.1990).' };
+      }
+      [, day, month, year] = separatedMatch.map(Number);
+    }
     const date = new Date(year, month - 1, day);
 
     if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
@@ -50,13 +59,6 @@ const validateStepInput = async(input, step) => {
     const timeRegex = /^(\d{1,2}):(\d{2})$/;
     const timeMatch = input.match(timeRegex);
 
-  case 'language_choice':
-    const validLanguages = ['english', 'hindi', 'en', 'hi'];
-    if (validLanguages.includes(trimmedInput.toLowerCase())) {
-      return { isValid: true, cleanedValue: trimmedInput.toLowerCase() };
-    }
-    // Default to english if not specified
-    return { isValid: true, cleanedValue: 'english' };
     if (!timeMatch) {
       return { isValid: false, errorMessage: step.error_message || 'Please provide time in HH:MM format or "skip".' };
     }
@@ -67,6 +69,14 @@ const validateStepInput = async(input, step) => {
     }
 
     return { isValid: true, cleanedValue: input };
+
+  case 'language_choice':
+    const validLanguages = ['english', 'hindi', 'en', 'hi'];
+    if (validLanguages.includes(trimmedInput.toLowerCase())) {
+      return { isValid: true, cleanedValue: trimmedInput.toLowerCase() };
+    }
+    // Default to english if not specified
+    return { isValid: true, cleanedValue: 'english' };
 
   case 'yes_no':
     if (trimmedInput === 'yes' || trimmedInput === 'y') {
@@ -147,11 +157,14 @@ const processFlowMessage = async(message, user, flowId) => {
   }
 
   // Validate user input for the current step
+  logger.info(`🔍 Validating input for step '${currentStepId}': "${messageText}"`);
   const validationResult = await validateStepInput(messageText, currentStep);
   if (!validationResult.isValid) {
+    logger.warn(`❌ Validation failed for step '${currentStepId}': ${validationResult.errorMessage}`);
     await sendMessage(phoneNumber, validationResult.errorMessage || currentStep.error_message || 'Invalid input. Please try again.');
     return true; // Handled, but input was invalid, so stay on current step
   }
+  logger.info(`✅ Validation passed for step '${currentStepId}': cleanedValue = "${validationResult.cleanedValue}"`);
 
   // Save data from current step
   if (currentStep.data_key) {

@@ -2,7 +2,7 @@
 // WhatsApp service for handling message processing and astrology responses
 
 const logger = require('../../utils/logger');
-const { processUserMessage } = require('./messageProcessor');
+const { processIncomingMessage } = require('./messageProcessor');
 const { validateWebhookSignature } = require('./webhookValidator');
 const { sendTextMessage, sendInteractiveMessage } = require('./messageSender');
 
@@ -33,7 +33,7 @@ const handleWhatsAppWebhook = async(req, res) => {
       // Process messages
       if (value.messages) {
         for (const message of value.messages) {
-          await processMessage(message, value);
+          await processIncomingMessage(message, value);
         }
       }
 
@@ -73,39 +73,7 @@ const handleWhatsAppWebhook = async(req, res) => {
  * @param {Object} value - Webhook value containing context
  */
 const processMessage = async(message, value) => {
-  try {
-    const { from, id, type, timestamp } = message;
-    const phoneNumber = from; // WhatsApp ID is the phone number
-
-    logger.info(`Processing message from ${phoneNumber}: ${JSON.stringify(message)}`);
-
-    // Only process text messages for now
-    if (type === 'text') {
-      const { body: messageBody } = message.text;
-      await processUserMessage(phoneNumber, messageBody, id, timestamp);
-    }
-    // Process interactive messages (quick replies, buttons, etc.)
-    else if (type === 'interactive') {
-      const { type: interactiveType } = message.interactive;
-
-      if (interactiveType === 'button_reply') {
-        const { id: buttonId, title } = message.interactive.button_reply;
-        await processUserMessage(phoneNumber, title, id, timestamp);
-      } else if (interactiveType === 'list_reply') {
-        const { id: listId, title, description } = message.interactive.list_reply;
-        await processUserMessage(phoneNumber, title, id, timestamp);
-      }
-    }
-    // Process other message types as needed
-    else if (type === 'button') {
-      const { payload } = message.button;
-      await processUserMessage(phoneNumber, payload, id, timestamp);
-    }
-
-    logger.info(`Message from ${phoneNumber} processed successfully`);
-  } catch (error) {
-    logger.error('Error processing message:', error);
-  }
+  await processIncomingMessage(message, value);
 };
 
 module.exports = {

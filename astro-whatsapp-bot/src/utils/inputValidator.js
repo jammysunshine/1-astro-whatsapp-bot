@@ -117,12 +117,20 @@ const validateWhatsAppMessage = payload => {
 const sanitizeInput = input => {
   if (typeof input !== 'string') { return input; }
 
-  return input
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .replace(/javascript:/gi, '') // Remove javascript: protocol
-    .replace(/on\w+\s*=/gi, '') // Remove event handlers
+  let sanitized = input
+    .replace(/<script[^>]*>|<\/script>/gi, '') // Remove script tags
+    .replace(/[<>]/g, '') // Remove HTML tags
+    .replace(/['";()]/g, '') // Remove quotes and parentheses
+    .replace(/\\/g, '') // Remove backslashes
+    .replace(/\//g, '') // Remove slashes for command injection
     .trim();
+
+  // If input contained SQL keywords, return empty string
+  if (/\b(union|select|insert|update|delete|drop|create|alter|exec|execute)\b/gi.test(input)) {
+    return '';
+  }
+
+  return sanitized;
 };
 
 /**

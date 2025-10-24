@@ -15,12 +15,12 @@ const {
   sendTemplateMessage,
   sendMediaMessage,
   markMessageAsRead
-} = require('../../../src/services/whatsapp/messageSender');
-const logger = require('../../../src/utils/logger');
+} = require('services/whatsapp/messageSender');
+const logger = require('utils/logger');
 
 describe('WhatsApp Message Sender', () => {
   const phoneNumber = '1234567890';
-  const accessToken = 'test-access-token';
+  const accessToken = 'test-whatsapp-access-token';
   const phoneNumberId = 'test-phone-number-id';
 
   beforeEach(() => {
@@ -34,8 +34,8 @@ describe('WhatsApp Message Sender', () => {
 
   afterEach(() => {
     // Clear environment variables
-    delete process.env.WHATSAPP_ACCESS_TOKEN;
-    delete process.env.WHATSAPP_PHONE_NUMBER_ID;
+    delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
+    delete process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
   });
 
   describe('sendTextMessage', () => {
@@ -72,7 +72,7 @@ describe('WhatsApp Message Sender', () => {
       );
 
       expect(result).toEqual(response.data);
-      expect(logger.info).toHaveBeenCalledWith(`Message sent successfully to ${phoneNumber}: msg-123`);
+      expect(logger.info).toHaveBeenCalledWith(`📤 Message sent successfully to ${phoneNumber}: msg-123`);
     });
 
     it('should send text message with preview URL', async() => {
@@ -136,14 +136,17 @@ describe('WhatsApp Message Sender', () => {
     });
 
     it('should throw error when WhatsApp API credentials are not configured', async() => {
-      delete process.env.WHATSAPP_ACCESS_TOKEN;
-      delete process.env.WHATSAPP_PHONE_NUMBER_ID;
+      delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
+      delete process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
 
       await expect(sendTextMessage(phoneNumber, 'Test message'))
         .rejects
         .toThrow('WhatsApp API credentials not configured');
 
-      expect(logger.error).not.toHaveBeenCalled();
+      expect(logger.error).toHaveBeenCalledWith(
+        '❌ Error sending message to 1234567890:',
+        'WhatsApp API credentials not configured'
+      );
     });
 
     it('should handle API error gracefully', async() => {
@@ -161,7 +164,7 @@ describe('WhatsApp Message Sender', () => {
         .toEqual(errorResponse);
 
       expect(logger.error).toHaveBeenCalledWith(
-        `Error sending message to ${phoneNumber}:`,
+        `❌ Error sending message to ${phoneNumber}:`,
         errorResponse.response.data
       );
     });
@@ -177,7 +180,7 @@ describe('WhatsApp Message Sender', () => {
         .toEqual(errorResponse);
 
       expect(logger.error).toHaveBeenCalledWith(
-        `Error sending message to ${phoneNumber}:`,
+        `❌ Error sending message to ${phoneNumber}:`,
         errorMessage
       );
     });
@@ -222,7 +225,7 @@ describe('WhatsApp Message Sender', () => {
       );
 
       expect(result).toEqual(response.data);
-      expect(logger.info).toHaveBeenCalledWith(`Interactive message sent successfully to ${phoneNumber}: msg-btn-123`);
+      expect(logger.info).toHaveBeenCalledWith(`🖱️ Interactive message sent successfully to ${phoneNumber}: msg-btn-123`);
     });
 
     it('should send interactive buttons with header and footer', async() => {
@@ -318,7 +321,7 @@ describe('WhatsApp Message Sender', () => {
       );
 
       expect(result).toEqual(response.data);
-      expect(logger.info).toHaveBeenCalledWith(`List message sent successfully to ${phoneNumber}: msg-list-123`);
+      expect(logger.info).toHaveBeenCalledWith(`📋 List message sent successfully to ${phoneNumber}: msg-list-123`);
     });
 
     it('should send list message with footer', async() => {
@@ -384,7 +387,7 @@ describe('WhatsApp Message Sender', () => {
       );
 
       expect(result).toEqual(response.data);
-      expect(logger.info).toHaveBeenCalledWith(`Template message sent successfully to ${phoneNumber}: msg-template-123`);
+      expect(logger.info).toHaveBeenCalledWith(`📝 Template message sent successfully to ${phoneNumber}: msg-template-123`);
     });
 
     it('should send template message with components', async() => {
@@ -461,7 +464,7 @@ describe('WhatsApp Message Sender', () => {
       );
 
       expect(result).toEqual(response.data);
-      expect(logger.info).toHaveBeenCalledWith(`${mediaType} message sent successfully to ${phoneNumber}: msg-media-123`);
+      expect(logger.info).toHaveBeenCalledWith(`📷 ${mediaType} message sent successfully to ${phoneNumber}: msg-media-123`);
     });
 
     it('should send media message with filename', async() => {
@@ -526,7 +529,7 @@ describe('WhatsApp Message Sender', () => {
       );
 
       expect(result).toEqual(response.data);
-      expect(logger.info).toHaveBeenCalledWith(`Message marked as read: ${messageId}`);
+      expect(logger.info).toHaveBeenCalledWith(`👁️ Message marked as read: ${messageId}`);
     });
 
     it('should handle missing WhatsApp API credentials', async() => {

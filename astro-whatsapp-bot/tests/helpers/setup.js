@@ -13,10 +13,10 @@ jest.mock('../../src/utils/logger', () => ({
 process.env.NODE_ENV = 'test';
 
 // Mock environment variables
-process.env.WHATSAPP_ACCESS_TOKEN = 'test-whatsapp-access-token';
-process.env.WHATSAPP_PHONE_NUMBER_ID = 'test-phone-number-id';
-process.env.WHATSAPP_VERIFY_TOKEN = 'test-verify-token';
-process.env.WHATSAPP_APP_SECRET = 'test-app-secret';
+process.env.W1_WHATSAPP_ACCESS_TOKEN = 'test-whatsapp-access-token';
+process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test-phone-number-id';
+process.env.W1_WHATSAPP_VERIFY_TOKEN = 'test-verify-token';
+process.env.W1_WHATSAPP_APP_SECRET = 'test-app-secret';
 process.env.JWT_SECRET = 'test-jwt-secret';
 process.env.MONGODB_URI = 'mongodb://localhost:27017/astro-whatsapp-bot-test';
 process.env.STRIPE_SECRET_KEY = 'test-stripe-secret-key';

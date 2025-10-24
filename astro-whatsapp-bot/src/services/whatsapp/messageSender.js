@@ -3,8 +3,16 @@ const logger = require('../../utils/logger');
 
 // WhatsApp Business API configuration
 const WHATSAPP_API_URL = 'https://graph.facebook.com/v18.0';
-const { W1_WHATSAPP_ACCESS_TOKEN } = process.env;
-const { W1_WHATSAPP_PHONE_NUMBER_ID } = process.env;
+
+/**
+ * Get WhatsApp credentials from environment
+ * @returns {Object} credentials
+ */
+const getWhatsAppCredentials = () => {
+  const accessToken = process.env.W1_WHATSAPP_ACCESS_TOKEN;
+  const phoneNumberId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
+  return { accessToken, phoneNumberId };
+};
 
 /**
  * Send text message to WhatsApp user
@@ -15,6 +23,7 @@ const { W1_WHATSAPP_PHONE_NUMBER_ID } = process.env;
  */
 const sendTextMessage = async(phoneNumber, message, options = {}) => {
   try {
+    const { accessToken: WHATSAPP_ACCESS_TOKEN, phoneNumberId: WHATSAPP_PHONE_NUMBER_ID } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
@@ -68,6 +77,7 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
  */
 const sendInteractiveButtons = async(phoneNumber, body, buttons, options = {}) => {
   try {
+    const { accessToken: WHATSAPP_ACCESS_TOKEN, phoneNumberId: WHATSAPP_PHONE_NUMBER_ID } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
@@ -129,6 +139,7 @@ const sendInteractiveButtons = async(phoneNumber, body, buttons, options = {}) =
  */
 const sendListMessage = async(phoneNumber, body, buttonText, sections, options = {}) => {
   try {
+    const { accessToken: WHATSAPP_ACCESS_TOKEN, phoneNumberId: WHATSAPP_PHONE_NUMBER_ID } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
@@ -189,6 +200,7 @@ const sendListMessage = async(phoneNumber, body, buttonText, sections, options =
  */
 const sendTemplateMessage = async(phoneNumber, templateName, languageCode = 'en', components = []) => {
   try {
+    const { accessToken: WHATSAPP_ACCESS_TOKEN, phoneNumberId: WHATSAPP_PHONE_NUMBER_ID } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
@@ -236,6 +248,7 @@ const sendTemplateMessage = async(phoneNumber, templateName, languageCode = 'en'
  */
 const sendMediaMessage = async(phoneNumber, mediaType, mediaId, caption = '', options = {}) => {
   try {
+    const { accessToken: WHATSAPP_ACCESS_TOKEN, phoneNumberId: WHATSAPP_PHONE_NUMBER_ID } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
@@ -281,6 +294,7 @@ const sendMediaMessage = async(phoneNumber, mediaType, mediaId, caption = '', op
  */
 const markMessageAsRead = async messageId => {
   try {
+    const { accessToken: WHATSAPP_ACCESS_TOKEN, phoneNumberId: WHATSAPP_PHONE_NUMBER_ID } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }

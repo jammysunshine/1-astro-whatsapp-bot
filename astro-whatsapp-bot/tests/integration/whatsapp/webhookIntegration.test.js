@@ -12,41 +12,60 @@ jest.mock('../../../src/services/whatsapp/messageProcessor');
 jest.mock('../../../src/services/whatsapp/webhookValidator');
 jest.mock('../../../src/utils/logger');
 
+// Get mocked functions
+const { verifyWebhookChallenge } = require('../../../src/services/whatsapp/webhookValidator');
+
 describe('WhatsApp Webhook Integration', () => {
   describe('GET /webhook - Verification', () => {
-    it('should verify webhook with correct token', async() => {
-      const response = await request(app)
-        .get('/webhook')
-        .query({
-          'hub.mode': 'subscribe',
-          'hub.verify_token': process.env.WHATSAPP_VERIFY_TOKEN,
-          'hub.challenge': 'challenge-123'
-        })
-        .expect(200);
+     it('should verify webhook with correct token', async() => {
+       verifyWebhookChallenge.mockReturnValue({
+         success: true,
+         challenge: 'challenge-123'
+       });
 
-      expect(response.text).toBe('challenge-123');
-    });
+       const response = await request(app)
+         .get('/webhook')
+         .query({
+           'hub.mode': 'subscribe',
+           'hub.verify_token': process.env.W1_WHATSAPP_VERIFY_TOKEN,
+           'hub.challenge': 'challenge-123'
+         })
+         .expect(200);
+
+       expect(response.text).toBe('challenge-123');
+     });
 
     it('should reject webhook verification with wrong token', async() => {
-      const response = await request(app)
-        .get('/webhook')
-        .query({
-          'hub.mode': 'subscribe',
-          'hub.verify_token': 'wrong-token',
-          'hub.challenge': 'challenge-123'
-        })
-        .expect(403);
+       verifyWebhookChallenge.mockReturnValue({
+         success: false,
+         message: 'Forbidden'
+       });
 
-      expect(response.text).toBe('Forbidden');
-    });
+       const response = await request(app)
+         .get('/webhook')
+         .query({
+           'hub.mode': 'subscribe',
+           'hub.verify_token': 'wrong-token',
+           'hub.challenge': 'challenge-123'
+         })
+         .expect(403);
+
+       expect(response.text).toBe('Forbidden');
+     });
 
     it('should return ready status for verification request without parameters', async() => {
-      const response = await request(app)
-        .get('/webhook')
-        .expect(200);
+       verifyWebhookChallenge.mockReturnValue({
+         success: true,
+         message: 'Webhook endpoint ready',
+         challenge: null
+       });
 
-      expect(response.text).toBe('Webhook endpoint ready');
-    });
+       const response = await request(app)
+         .get('/webhook')
+         .expect(200);
+
+       expect(response.text).toBe('Webhook endpoint ready');
+     });
   });
 
   describe('POST /webhook - Message Processing', () => {
@@ -398,22 +417,22 @@ describe('WhatsApp Webhook Integration', () => {
         error: 'Unauthorized'
       });
 
-      expect(validateWebhookSignature).toHaveBeenCalledWith(
-        expect.any(String),
-        'sha256=invalid-signature',
-        process.env.WHATSAPP_APP_SECRET
-      );
+       expect(validateWebhookSignature).toHaveBeenCalledWith(
+         expect.any(String),
+         'sha256=invalid-signature',
+         process.env.W1_WHATSAPP_APP_SECRET
+       );
     });
   });
 
   describe('Error Handling', () => {
     it('should handle missing environment variables gracefully', async() => {
       // Temporarily unset environment variables
-      const originalAccessToken = process.env.WHATSAPP_ACCESS_TOKEN;
-      const originalPhoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+      const originalAccessToken = process.env.W1_WHATSAPP_ACCESS_TOKEN;
+      const originalPhoneNumberId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
 
-      delete process.env.WHATSAPP_ACCESS_TOKEN;
-      delete process.env.WHATSAPP_PHONE_NUMBER_ID;
+      delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
+      delete process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
 
       const webhookPayload = {
         entry: [{
@@ -437,8 +456,8 @@ describe('WhatsApp Webhook Integration', () => {
         .expect(500);
 
       // Restore environment variables
-      process.env.WHATSAPP_ACCESS_TOKEN = originalAccessToken;
-      process.env.WHATSAPP_PHONE_NUMBER_ID = originalPhoneNumberId;
+      process.env.W1_WHATSAPP_ACCESS_TOKEN = originalAccessToken;
+      process.env.W1_WHATSAPP_PHONE_NUMBER_ID = originalPhoneNumberId;
 
       expect(response.body).toEqual({
         error: 'Internal server error',

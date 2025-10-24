@@ -1,4 +1,4 @@
-const logger = require(__dirname + '/../utils/logger');
+const logger = require('../../utils/logger');
 const { updateSubscription, addLoyaltyPoints } = require('../../models/userModel');
 
 /**

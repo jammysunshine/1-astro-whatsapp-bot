@@ -61,11 +61,12 @@ describe('Comprehensive Performance Test Suite', () => {
         }]
       };
 
-      const response = await request(app)
-        .post('/webhook')
-        .send(webhookPayload)
-        .set('Content-Type', 'application/json')
-        .expect(200);
+       const response = await request(app)
+         .post('/webhook')
+         .send(webhookPayload)
+         .set('Content-Type', 'application/json')
+         .set('x-hub-signature-256', 'sha256=valid-signature')
+         .expect(200);
 
       const endTime = performance.now();
       const responseTime = endTime - startTime;
@@ -93,10 +94,13 @@ describe('Comprehensive Performance Test Suite', () => {
         if (endpoint.method === 'get') {
           response = await request(app)[endpoint.method](endpoint.path).expect(200);
         } else {
-          response = await request(app)[endpoint.method](endpoint.path)
+          const req = request(app)[endpoint.method](endpoint.path)
             .send(endpoint.payload || {})
-            .set('Content-Type', 'application/json')
-            .expect(200);
+            .set('Content-Type', 'application/json');
+          if (endpoint.path === '/webhook') {
+            req.set('x-hub-signature-256', 'sha256=valid-signature');
+          }
+          response = await req.expect(200);
         }
 
         const endTime = performance.now();

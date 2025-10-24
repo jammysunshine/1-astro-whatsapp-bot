@@ -13,9 +13,10 @@ const vedicCalculator = require('../astrology/vedicCalculator');
  * @param {Object} value - WhatsApp webhook value object
  */
 const processIncomingMessage = async(message, value) => {
+  const { from, id, timestamp, type } = message;
+  const phoneNumber = from;
+
   try {
-    const { from, id, timestamp, type } = message;
-    const phoneNumber = from;
 
     logger.info(`📞 Processing message from ${phoneNumber} (Type: ${type})`);
 

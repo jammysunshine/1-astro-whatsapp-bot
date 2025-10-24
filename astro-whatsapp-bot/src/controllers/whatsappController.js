@@ -9,7 +9,29 @@ const { validateWebhookSignature, verifyWebhookChallenge } = require('../service
  */
 const handleWhatsAppWebhook = async(req, res) => {
   try {
-    const { body } = req;
+    const { body, headers, rawBody } = req;
+
+    // Check required environment variables
+    if (!process.env.W1_WHATSAPP_ACCESS_TOKEN || !process.env.W1_WHATSAPP_PHONE_NUMBER_ID) {
+      logger.error('❌ Missing required WhatsApp environment variables');
+      return res.status(500).json({
+        error: 'Internal server error',
+        message: 'WhatsApp configuration missing'
+      });
+    }
+
+    // Validate webhook signature (required for security)
+    const signature = headers['x-hub-signature-256'];
+    if (!signature) {
+      logger.warn('⚠️ Missing webhook signature');
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const secret = process.env.W1_WHATSAPP_APP_SECRET;
+    const isValid = validateWebhookSignature(rawBody || JSON.stringify(body), signature, secret);
+    if (!isValid) {
+      logger.warn('⚠️ Invalid webhook signature');
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
 
     // Log incoming webhook for debugging
     logger.info('📥 Incoming WhatsApp webhook:', {
@@ -18,7 +40,19 @@ const handleWhatsAppWebhook = async(req, res) => {
     });
 
     // Validate webhook payload
-    if (!body || !body.entry) {
+    if (!body) {
+      logger.warn('⚠️ Invalid webhook payload received');
+      return res.status(400).json({ error: 'Invalid payload' });
+    }
+
+    if (Object.keys(body).length === 0) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'Webhook endpoint ready'
+      });
+    }
+
+    if (!body.entry) {
       logger.warn('⚠️ Invalid webhook payload received');
       return res.status(400).json({ error: 'Invalid payload' });
     }
@@ -75,17 +109,22 @@ const handleWhatsAppWebhook = async(req, res) => {
  * @param {Object} res - Express response object
  */
 const verifyWhatsAppWebhook = (req, res) => {
-  const VERIFY_TOKEN = process.env.W1_WHATSAPP_VERIFY_TOKEN;
-  const result = verifyWebhookChallenge(req.query, VERIFY_TOKEN);
+  try {
+    const VERIFY_TOKEN = process.env.W1_WHATSAPP_VERIFY_TOKEN;
+    const result = verifyWebhookChallenge(req.query, VERIFY_TOKEN);
 
-  if (result.success) {
-    if (result.challenge) {
-      return res.status(200).send(result.challenge);
+    if (result.success) {
+      if (result.challenge) {
+        return res.status(200).send(result.challenge);
+      } else {
+        return res.status(200).send(result.message);
+      }
     } else {
-      return res.status(200).json({ success: true, message: result.message });
+      return res.status(403).send(result.message);
     }
-  } else {
-    return res.status(403).json({ success: false, error: result.error, message: result.message });
+  } catch (error) {
+    // logger.error('❌ Error in verifyWhatsAppWebhook:', error);
+    res.status(500).send('Internal server error');
   }
 };
 

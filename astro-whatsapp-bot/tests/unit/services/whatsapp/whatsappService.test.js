@@ -2,20 +2,19 @@
 // Unit tests for WhatsApp service with 95%+ coverage
 
 // Mock dependencies
-jest.mock('../../../src/services/whatsapp/messageProcessor', () => ({
-  processIncomingMessage: jest.fn(),
-  processUserMessage: jest.fn()
+jest.mock('services/whatsapp/messageProcessor', () => ({
+  processIncomingMessage: jest.fn()
 }));
-jest.mock('../../../src/services/whatsapp/webhookValidator', () => ({
+jest.mock('services/whatsapp/webhookValidator', () => ({
   validateWebhookSignature: jest.fn(),
   verifyWebhookChallenge: jest.fn()
 }));
 
-const { handleWhatsAppWebhook } = require('../../../src/services/whatsapp/whatsappService');
-const { processUserMessage } = require('../../../src/services/whatsapp/messageProcessor');
-const { validateWebhookSignature } = require('../../../src/services/whatsapp/webhookValidator');
-const { sendTextMessage } = require('../../../src/services/whatsapp/messageSender');
-const logger = require('../../../src/utils/logger');
+const { handleWhatsAppWebhook } = require('services/whatsapp/whatsappService');
+const { processIncomingMessage } = require('services/whatsapp/messageProcessor');
+const { validateWebhookSignature } = require('services/whatsapp/webhookValidator');
+const { sendTextMessage } = require('services/whatsapp/messageSender');
+const logger = require('utils/logger');
 
 describe('WhatsApp Service', () => {
   let req; let res;
@@ -83,16 +82,14 @@ describe('WhatsApp Service', () => {
         }]
       };
 
-      processUserMessage.mockResolvedValue();
+      processIncomingMessage.mockResolvedValue();
 
       await handleWhatsAppWebhook(req, res);
 
-      expect(processUserMessage).toHaveBeenCalledWith(
-        '1234567890',
-        'Hello, astrologer!',
-        'message-id-123',
-        '1234567890'
-      );
+      const message = req.body.entry[0].changes[0].value.messages[0];
+      const value = req.body.entry[0].changes[0].value;
+
+      expect(processIncomingMessage).toHaveBeenCalledWith(message, value);
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
@@ -125,16 +122,14 @@ describe('WhatsApp Service', () => {
         }]
       };
 
-      processUserMessage.mockResolvedValue();
+      processIncomingMessage.mockResolvedValue();
 
       await handleWhatsAppWebhook(req, res);
 
-      expect(processUserMessage).toHaveBeenCalledWith(
-        '1234567890',
-        'Daily Horoscope',
-        'message-id-456',
-        '1234567891'
-      );
+      const message = req.body.entry[0].changes[0].value.messages[0];
+      const value = req.body.entry[0].changes[0].value;
+
+      expect(processIncomingMessage).toHaveBeenCalledWith(message, value);
 
       expect(res.status).toHaveBeenCalledWith(200);
     });
@@ -174,8 +169,8 @@ describe('WhatsApp Service', () => {
         }]
       };
 
-      // Mock processUserMessage to throw an error
-      processUserMessage.mockRejectedValue(new Error('Processing error'));
+      // Mock processIncomingMessage to throw an error
+      processIncomingMessage.mockRejectedValue(new Error('Processing error'));
 
       await handleWhatsAppWebhook(req, res);
 
@@ -187,14 +182,12 @@ describe('WhatsApp Service', () => {
     });
   });
 
-  describe('processUserMessage', () => {
-    it('should process text messages correctly', async() => {
-      const phoneNumber = '1234567890';
-      const messageText = 'Hello, astrologer!';
-      const messageId = 'msg-123';
-      const timestamp = '1234567890';
+  describe('processIncomingMessage', () => {
+    it('should process incoming messages correctly', async() => {
+      const message = { from: '1234567890', type: 'text', text: { body: 'Hello' } };
+      const value = { contacts: [] };
 
-      processUserMessage.mockResolvedValue();
+      processIncomingMessage.mockResolvedValue();
 
       // This would be tested in the messageProcessor.test.js file
       // Just testing that the function can be called correctly

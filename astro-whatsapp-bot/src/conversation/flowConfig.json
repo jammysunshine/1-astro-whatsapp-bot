@@ -1,100 +1,88 @@
 {
   "onboarding": {
-    "start_step": "ask_birth_date",
+    "start_step": "welcome",
     "steps": {
+      "welcome": {
+        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\nTo get started, what's your name?",
+        "validation": "text",
+        "next_step": "ask_birth_date",
+        "data_key": "userName"
+      },
       "ask_birth_date": {
-        "prompt": "Hello {userName}! ✨ Welcome to your Personal Cosmic Coach. To get started, please tell me your birth date in DD/MM/YYYY format (e.g., 01/01/2000).",
-        "expected_input": "DD/MM/YYYY",
-        "validation_regex": "^(\\d{2}\\/\\d{2}\\/\\d{4})$",
-        "error_message": "Oops! That doesn't look like a valid date. Please use DD/MM/YYYY format (e.g., 01/01/2000).",
-        "next_step_on_success": "ask_birth_time"
+        "prompt": "Hi {userName}! ✨\n\nTo provide accurate and personalized readings, I need your birth details.\n\nPlease provide your birth date in DD/MM/YYYY format:\n\n*Example:* 15/06/1990",
+        "validation": "date",
+        "next_step": "ask_birth_time",
+        "data_key": "birthDate",
+        "error_message": "Please provide a valid date in DD/MM/YYYY format (e.g., 15/06/1990)"
       },
       "ask_birth_time": {
-        "prompt": "Great! Now, please tell me your birth time in HH:MM format (e.g., 14:30). If you don't know, you can type 'unknown'.",
-        "expected_input": "HH:MM or unknown",
-        "validation_regex": "^(\\d{2}:\\d{2})$|^unknown$",
-        "error_message": "Invalid time format. Please use HH:MM (e.g., 14:30) or type 'unknown'.",
-        "next_step_on_success": "ask_birth_place"
+        "prompt": "Great! 📅\n\nBirth time helps me create more accurate predictions.\n\nPlease provide your birth time in HH:MM format (24-hour):\n\n*Example:* 14:30\n\nOr reply 'skip' if you don't know your exact birth time.",
+        "validation": "time_or_skip",
+        "next_step": "ask_birth_place",
+        "data_key": "birthTime",
+        "optional": true,
+        "error_message": "Please provide time in HH:MM format (e.g., 14:30) or 'skip'"
       },
       "ask_birth_place": {
-        "prompt": "Almost there! Finally, please tell me your birth place (City, Country), e.g., Mumbai, India.",
-        "expected_input": "City, Country",
-        "validation_regex": ".+",
-        "error_message": "Please provide your birth place (City, Country).",
-        "next_step_on_success": "complete_onboarding"
+        "prompt": "Almost there! 🌍\n\nBirth place is important for accurate astrological calculations.\n\nPlease provide your birth city and country:\n\n*Example:* Mumbai, India",
+        "validation": "text",
+        "next_step": "confirm_details",
+        "data_key": "birthPlace",
+        "error_message": "Please provide your birth place (City, Country)"
+      },
+      "confirm_details": {
+        "prompt": "Perfect! ✨ Here's what I have:\n\n👤 *Name:* {userName}\n📅 *Birth Date:* {birthDate}\n🕐 *Birth Time:* {birthTime}\n🌍 *Birth Place:* {birthPlace}\n\nIs this information correct? Reply 'yes' to continue or 'no' to update.",
+        "validation": "yes_no",
+        "next_step": "complete_onboarding",
+        "error_message": "Please reply 'yes' or 'no'"
       },
       "complete_onboarding": {
-        "prompt": "Thank you! Your profile is now complete. You can now ask me for your horoscope, birth chart analysis, or compatibility readings. What would you like to explore?",
+        "prompt": "🎉 *Welcome to your cosmic journey, {userName}!*\n\nYour profile is now complete! I'm calculating your birth chart...\n\n*Your Sun Sign:* {sunSign}\n\nWhat would you like to explore first?\n\n🔮 *Daily Horoscope*\n📊 *Birth Chart*\n💕 *Compatibility*\n\nJust send me a message!",
+        "validation": "none",
+        "next_step": null,
         "action": "complete_profile"
       }
     }
   },
-  "daily_horoscope": {
-    "start_step": "select_sign",
+  "subscription": {
+    "start_step": "show_plans",
     "steps": {
-      "select_sign": {
-        "prompt": "🌟 What is your zodiac sign? Choose from:\n\n♈ Aries (March 21 - April 19)\n♉ Taurus (April 20 - May 20)\n♊ Gemini (May 21 - June 20)\n♋ Cancer (June 21 - July 22)\n♌ Leo (July 23 - August 22)\n♍ Virgo (August 23 - September 22)\n♎ Libra (September 23 - October 22)\n♏ Scorpio (October 23 - November 21)\n♐ Sagittarius (November 22 - December 21)\n♑ Capricorn (December 22 - January 19)\n♒ Aquarius (January 20 - February 18)\n♓ Pisces (February 19 - March 20)\n\nReply with the sign name (e.g., 'Aries').",
-        "expected_input": "Zodiac sign name",
-        "validation_regex": "^(Aries|Taurus|Gemini|Cancer|Leo|Virgo|Libra|Scorpio|Sagittarius|Capricorn|Aquarius|Pisces)$",
-        "error_message": "Please enter a valid zodiac sign (e.g., Aries, Taurus, etc.).",
-        "next_step_on_success": "get_horoscope"
+      "show_plans": {
+        "prompt": "💳 *Choose Your Cosmic Plan*\n\n⭐ *Essential* - ₹230/month\n• Daily personalized horoscope\n• Weekly video predictions\n• Basic compatibility (5 people)\n\n💎 *Premium* - ₹299/month\n• Unlimited AI questions\n• Priority astrologer access\n• Unlimited compatibility\n\nWhich plan interests you? Reply 'essential' or 'premium'",
+        "validation": "plan_choice",
+        "next_step": "confirm_subscription",
+        "data_key": "selectedPlan",
+        "error_message": "Please reply 'essential' or 'premium'"
       },
-      "get_horoscope": {
-        "prompt": "Generating your daily horoscope...",
-        "action": "fetch_daily_horoscope"
+      "confirm_subscription": {
+        "prompt": "Great choice! 💫\n\nYou've selected: *{selectedPlan}*\n\nReady to subscribe? Reply 'yes' to proceed with payment.",
+        "validation": "yes_no",
+        "next_step": "process_payment",
+        "error_message": "Please reply 'yes' to continue or 'no' to cancel"
+      },
+      "process_payment": {
+        "prompt": "🔄 Processing your subscription...\n\nPlease complete the payment when prompted. You'll receive confirmation once activated.",
+        "validation": "none",
+        "next_step": null,
+        "action": "process_subscription"
       }
     }
   },
   "compatibility": {
-    "start_step": "ask_partner_birth_date",
+    "start_step": "ask_partner_date",
     "steps": {
-      "ask_partner_birth_date": {
-        "prompt": "💕 Let's check your compatibility! Please enter your partner's birth date in DD/MM/YYYY format (e.g., 01/01/2000).",
-        "expected_input": "DD/MM/YYYY",
-        "validation_regex": "^(\\d{2}\\/\\d{2}\\/\\d{4})$",
-        "error_message": "Oops! That doesn't look like a valid date. Please use DD/MM/YYYY format (e.g., 01/01/2000).",
-        "next_step_on_success": "ask_partner_birth_time"
+      "ask_partner_date": {
+        "prompt": "💕 *Compatibility Analysis*\n\nI'll compare your birth chart with someone else's for relationship insights.\n\nPlease provide their birth date (DD/MM/YYYY):",
+        "validation": "date",
+        "next_step": "generate_compatibility",
+        "data_key": "partnerBirthDate",
+        "error_message": "Please provide a valid date in DD/MM/YYYY format"
       },
-      "ask_partner_birth_time": {
-        "prompt": "Great! Now, please tell me your partner's birth time in HH:MM format (e.g., 14:30). If you don't know, you can type 'unknown'.",
-        "expected_input": "HH:MM or unknown",
-        "validation_regex": "^(\\d{2}:\\d{2})$|^unknown$",
-        "error_message": "Invalid time format. Please use HH:MM (e.g., 14:30) or type 'unknown'.",
-        "next_step_on_success": "ask_partner_birth_place"
-      },
-      "ask_partner_birth_place": {
-        "prompt": "Almost there! Finally, please tell me your partner's birth place (City, Country), e.g., Mumbai, India.",
-        "expected_input": "City, Country",
-        "validation_regex": ".+",
-        "error_message": "Please provide your partner's birth place (City, Country).",
-        "next_step_on_success": "calculate_compatibility"
-      },
-      "calculate_compatibility": {
-        "prompt": "🔮 Calculating your cosmic compatibility...",
-        "action": "calculate_compatibility_score"
-      }
-    }
-  },
-  "subscription_plans": {
-    "start_step": "show_plans",
-    "steps": {
-      "show_plans": {
-        "prompt": "💳 *Subscription Plans*\n\n🌟 *Essential Plan* - ₹230/month\n• Daily personalized horoscope\n• Weekly video predictions\n• Basic compatibility (5 people)\n\n⭐ *Premium Plan* - ₹299/month\n• Unlimited AI questions\n• Priority astrologer access\n• Unlimited compatibility\n\nReply with the plan name (Essential or Premium) to subscribe, or 'cancel' to go back.",
-        "expected_input": "Plan name or cancel",
-        "validation_regex": "^(Essential|Premium|cancel)$",
-        "error_message": "Please choose Essential, Premium, or type 'cancel'.",
-        "next_step_on_success": "confirm_subscription"
-      },
-      "confirm_subscription": {
-        "prompt": "Are you sure you want to subscribe to the {selected_plan} plan? Reply 'yes' to confirm or 'no' to cancel.",
-        "expected_input": "yes or no",
-        "validation_regex": "^(yes|no)$",
-        "error_message": "Please reply 'yes' to confirm or 'no' to cancel.",
-        "next_step_on_success": "process_subscription"
-      },
-      "process_subscription": {
-        "prompt": "Processing your subscription...",
-        "action": "process_subscription_payment"
+      "generate_compatibility": {
+        "prompt": "🔄 Analyzing compatibility...\n\n{compatibilityResult}\n\nWould you like another compatibility check? Reply 'yes' or 'menu' for main options.",
+        "validation": "yes_no_or_menu",
+        "next_step": "ask_partner_date",
+        "error_message": "Please reply 'yes', 'no', or 'menu'"
       }
     }
   }

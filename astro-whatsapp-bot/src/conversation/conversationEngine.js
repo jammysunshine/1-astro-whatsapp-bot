@@ -6,6 +6,96 @@ const vedicCalculator = require('../services/astrology/vedicCalculator');
 const paymentService = require('../services/payment/paymentService');
 
 /**
+ * Validates user input for a conversation step
+ * @param {string} input - User input
+ * @param {Object} step - Step configuration
+ * @returns {Object} Validation result with isValid, cleanedValue, errorMessage
+ */
+const validateStepInput = async(input, step) => {
+  const trimmedInput = input.trim().toLowerCase();
+
+  switch (step.validation) {
+  case 'text':
+    if (!input || input.trim().length === 0) {
+      return { isValid: false, errorMessage: 'Please provide some text.' };
+    }
+    return { isValid: true, cleanedValue: input.trim() };
+
+  case 'date':
+    // DD/MM/YYYY format
+    const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    const match = input.match(dateRegex);
+    if (!match) {
+      return { isValid: false, errorMessage: step.error_message || 'Please provide date in DD/MM/YYYY format.' };
+    }
+
+    const [, day, month, year] = match.map(Number);
+    const date = new Date(year, month - 1, day);
+
+    if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+      return { isValid: false, errorMessage: 'Please provide a valid date.' };
+    }
+
+    if (year < 1900 || year > new Date().getFullYear()) {
+      return { isValid: false, errorMessage: 'Please provide a valid birth year.' };
+    }
+
+    return { isValid: true, cleanedValue: input };
+
+  case 'time_or_skip':
+    if (trimmedInput === 'skip') {
+      return { isValid: true, cleanedValue: null };
+    }
+
+    const timeRegex = /^(\d{1,2}):(\d{2})$/;
+    const timeMatch = input.match(timeRegex);
+    if (!timeMatch) {
+      return { isValid: false, errorMessage: step.error_message || 'Please provide time in HH:MM format or "skip".' };
+    }
+
+    const [, hours, minutes] = timeMatch.map(Number);
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+      return { isValid: false, errorMessage: 'Please provide a valid time (00:00 to 23:59).' };
+    }
+
+    return { isValid: true, cleanedValue: input };
+
+  case 'yes_no':
+    if (trimmedInput === 'yes' || trimmedInput === 'y') {
+      return { isValid: true, cleanedValue: 'yes' };
+    }
+    if (trimmedInput === 'no' || trimmedInput === 'n') {
+      return { isValid: true, cleanedValue: 'no' };
+    }
+    return { isValid: false, errorMessage: step.error_message || 'Please reply "yes" or "no".' };
+
+  case 'plan_choice':
+    if (trimmedInput === 'essential' || trimmedInput === 'premium') {
+      return { isValid: true, cleanedValue: input.toLowerCase() };
+    }
+    return { isValid: false, errorMessage: step.error_message || 'Please choose "essential" or "premium".' };
+
+  case 'yes_no_or_menu':
+    if (trimmedInput === 'yes' || trimmedInput === 'y') {
+      return { isValid: true, cleanedValue: 'yes' };
+    }
+    if (trimmedInput === 'no' || trimmedInput === 'n') {
+      return { isValid: true, cleanedValue: 'no' };
+    }
+    if (trimmedInput === 'menu') {
+      return { isValid: true, cleanedValue: 'menu' };
+    }
+    return { isValid: false, errorMessage: step.error_message || 'Please reply "yes", "no", or "menu".' };
+
+  case 'none':
+    return { isValid: true, cleanedValue: input };
+
+  default:
+    return { isValid: true, cleanedValue: input };
+  }
+};
+
+/**
  * Processes a user message within a defined conversation flow.
  * @param {Object} message - The incoming WhatsApp message object.
  * @param {Object} user - The user object.
@@ -49,19 +139,21 @@ const processFlowMessage = async(message, user, flowId) => {
   }
 
   // Validate user input for the current step
-  if (currentStep.validation_regex) {
-    const regex = new RegExp(currentStep.validation_regex);
-    if (!regex.test(messageText)) {
-      await sendMessage(phoneNumber, currentStep.error_message);
-      return true; // Handled, but input was invalid, so stay on current step
-    }
+  const validationResult = await validateStepInput(messageText, currentStep);
+  if (!validationResult.isValid) {
+    await sendMessage(phoneNumber, validationResult.errorMessage || currentStep.error_message || 'Invalid input. Please try again.');
+    return true; // Handled, but input was invalid, so stay on current step
   }
 
   // Save data from current step
-  session.data[currentStepId] = messageText;
+  if (currentStep.data_key) {
+    session.data[currentStep.data_key] = validationResult.cleanedValue || messageText;
+  } else {
+    session.data[currentStepId] = messageText;
+  }
 
   // Determine next step
-  const nextStepId = currentStep.next_step_on_success;
+  const nextStepId = currentStep.next_step;
   if (nextStepId) {
     const nextStep = flow.steps[nextStepId];
     if (nextStep) {
@@ -73,9 +165,15 @@ const processFlowMessage = async(message, user, flowId) => {
         return true;
       } else {
         let prompt = nextStep.prompt.replace('{userName}', user.name || 'cosmic explorer');
+        // Replace placeholders from session data
         Object.keys(session.data).forEach(key => {
           prompt = prompt.replace(new RegExp(`{${key}}`, 'g'), session.data[key]);
         });
+        // Add calculated values like sun sign
+        if (session.data.birthDate) {
+          const sunSign = vedicCalculator.calculateSunSign(session.data.birthDate);
+          prompt = prompt.replace('{sunSign}', sunSign);
+        }
         await sendMessage(phoneNumber, prompt);
         return true;
       }
@@ -108,53 +206,59 @@ const processFlowMessage = async(message, user, flowId) => {
 const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => {
   switch (action) {
   case 'complete_profile': {
-    const birthDate = flowData.ask_birth_date;
-    const birthTime = flowData.ask_birth_time.toLowerCase() === 'unknown' ? null : flowData.ask_birth_time;
-    const birthPlace = flowData.ask_birth_place;
+    const birthDate = flowData.birthDate;
+    const birthTime = flowData.birthTime;
+    const birthPlace = flowData.birthPlace;
+    const userName = flowData.userName;
 
+    // Update user name if provided
+    if (userName) {
+      await updateUserProfile(phoneNumber, { name: userName });
+    }
+
+    // Add birth details
     await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
     await updateUserProfile(phoneNumber, { profileComplete: true });
-    await deleteUserSession(phoneNumber); // Clear onboarding session
-    await sendMessage(phoneNumber, getFlow(flowId).steps.complete_onboarding.prompt.replace('{userName}', user.name || 'cosmic explorer'));
+
+    // Clear onboarding session
+    await deleteUserSession(phoneNumber);
+
+    // Send completion message with sun sign
+    const sunSign = vedicCalculator.calculateSunSign(birthDate);
+    let completionMessage = getFlow(flowId).steps.complete_onboarding.prompt;
+    completionMessage = completionMessage.replace('{userName}', userName || 'cosmic explorer');
+    completionMessage = completionMessage.replace('{sunSign}', sunSign);
+
+    await sendMessage(phoneNumber, completionMessage);
     break;
   }
-  case 'fetch_daily_horoscope': {
-    const sign = flowData.select_sign;
-    const horoscope = vedicCalculator.generateDailyHoroscope(sign);
-    await sendMessage(phoneNumber, `🌟 *Daily Horoscope for ${sign}*\n\n${horoscope}\n\n✨ Have a wonderful day!`);
+  case 'process_subscription': {
+    const selectedPlan = flowData.selectedPlan;
+
+    // For now, just acknowledge the subscription request
+    // In production, this would integrate with payment processor
+    await sendMessage(phoneNumber, `💳 *Subscription Processing*\n\nThank you for choosing the ${selectedPlan} plan!\n\nYour subscription will be activated shortly. You'll receive a confirmation message once it's ready.`);
     await deleteUserSession(phoneNumber);
     break;
   }
-  case 'calculate_compatibility_score': {
-    const partnerBirthDate = flowData.ask_partner_birth_date;
-    const partnerBirthTime = flowData.ask_partner_birth_time.toLowerCase() === 'unknown' ? null : flowData.ask_partner_birth_time;
-    const partnerBirthPlace = flowData.ask_partner_birth_place;
-
-    // Get user's birth details from session data (stored during onboarding)
-    const userSign = vedicCalculator.calculateSunSign(session.data.ask_birth_date);
+  case 'generate_compatibility': {
+    const partnerBirthDate = flowData.partnerBirthDate;
+    const userSign = vedicCalculator.calculateSunSign(user.birthDate);
     const partnerSign = vedicCalculator.calculateSunSign(partnerBirthDate);
 
     const compatibilityResult = vedicCalculator.checkCompatibility(userSign, partnerSign);
 
-    await sendMessage(phoneNumber, `💕 *Compatibility Analysis*\n\n*Your Sign:* ${userSign}\n*Partner's Sign:* ${partnerSign}\n*Compatibility:* ${compatibilityResult.compatibility}\n\n${compatibilityResult.description}\n\n✨ Remember, compatibility is just one aspect of a relationship!`);
-    await deleteUserSession(phoneNumber);
-    break;
-  }
-  case 'process_subscription_payment': {
-    const selectedPlan = session.data.show_plans;
-    const confirmation = session.data.confirm_subscription;
+    const resultMessage = `💕 *Compatibility Analysis*\n\n*Your Sign:* ${userSign}\n*Partner's Sign:* ${partnerSign}\n*Compatibility:* ${compatibilityResult.compatibility}\n\n${compatibilityResult.description}\n\n✨ Remember, compatibility is just one aspect of a relationship!`;
 
-    if (confirmation === 'no') {
-      await sendMessage(phoneNumber, 'Subscription cancelled. You can subscribe anytime!');
-      await deleteUserSession(phoneNumber);
-      return;
+    // Update the flow step prompt with the result
+    const flow = getFlow(flowId);
+    if (flow && flow.steps.generate_compatibility) {
+      let prompt = flow.steps.generate_compatibility.prompt;
+      prompt = prompt.replace('{compatibilityResult}', resultMessage);
+      await sendMessage(phoneNumber, prompt);
+    } else {
+      await sendMessage(phoneNumber, resultMessage);
     }
-
-    const planId = selectedPlan.toLowerCase(); // essential or premium
-    const paymentLink = paymentService.generatePaymentLink(planId, phoneNumber);
-
-    await sendMessage(phoneNumber, `💳 *Subscription Processing*\n\nThank you for choosing the ${selectedPlan} plan!\n\nClick here to complete your payment: ${paymentLink}\n\nOnce payment is confirmed, your subscription will be activated.`);
-    await deleteUserSession(phoneNumber);
     break;
   }
   default:

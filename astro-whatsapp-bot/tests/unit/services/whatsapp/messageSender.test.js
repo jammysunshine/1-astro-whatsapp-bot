@@ -264,8 +264,8 @@ describe('WhatsApp Message Sender', () => {
     });
 
     it('should handle missing WhatsApp API credentials', async() => {
-      delete process.env.WHATSAPP_ACCESS_TOKEN;
-      delete process.env.WHATSAPP_PHONE_NUMBER_ID;
+      delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
+      delete process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
 
       await expect(sendInteractiveButtons(phoneNumber, 'Test', []))
         .rejects
@@ -533,8 +533,8 @@ describe('WhatsApp Message Sender', () => {
     });
 
     it('should handle missing WhatsApp API credentials', async() => {
-      delete process.env.WHATSAPP_ACCESS_TOKEN;
-      delete process.env.WHATSAPP_PHONE_NUMBER_ID;
+      delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
+      delete process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
 
       await expect(markMessageAsRead('msg-123'))
         .rejects

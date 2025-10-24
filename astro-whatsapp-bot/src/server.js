@@ -12,7 +12,7 @@ const PORT = process.env.W1_PORT || 3000;
 // Middleware
 app.use(helmet({
   frameguard: { action: 'deny' },
-  xssFilter: true
+  xssFilter: { mode: 'block' }
 }));
 app.use(cors());
 app.use(bodyParser.json({ verify: (req, res, buf, encoding) => {
@@ -45,6 +45,11 @@ app.get('/health', (req, res) => {
 // WhatsApp webhook endpoints
 app.post('/webhook', handleWhatsAppWebhook);
 app.get('/webhook', verifyWhatsAppWebhook);
+
+// Test endpoint for rate limiting
+app.get('/rate-limit-test', (req, res) => {
+  res.status(200).json({ message: 'Rate limit test endpoint' });
+});
 
 // 404 handler
 app.use((req, res) => {

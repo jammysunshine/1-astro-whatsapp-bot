@@ -249,6 +249,57 @@ class VedicCalculator {
   }
 
   /**
+   * Check compatibility between two signs
+   * @param {string} sign1 - First sign
+   * @param {string} sign2 - Second sign
+   * @returns {Object} Compatibility result
+   */
+  checkCompatibility(sign1, sign2) {
+    // Simple compatibility matrix (in a real implementation, this would be more sophisticated)
+    const compatibilityMatrix = {
+      'Aries-Leo': 'Excellent',
+      'Aries-Sagittarius': 'Excellent',
+      'Aries-Gemini': 'Good',
+      'Aries-Aquarius': 'Good',
+      'Leo-Sagittarius': 'Excellent',
+      'Leo-Aries': 'Excellent',
+      'Sagittarius-Aries': 'Excellent',
+      'Sagittarius-Leo': 'Excellent',
+      'Gemini-Aries': 'Good',
+      'Gemini-Libra': 'Excellent',
+      'Libra-Gemini': 'Excellent',
+      'Libra-Aquarius': 'Good',
+      'Aquarius-Libra': 'Good',
+      'Aquarius-Aries': 'Good',
+      'Taurus-Virgo': 'Excellent',
+      'Taurus-Capricorn': 'Excellent',
+      'Taurus-Cancer': 'Good',
+      'Taurus-Pisces': 'Good',
+      'Virgo-Taurus': 'Excellent',
+      'Virgo-Capricorn': 'Good',
+      'Virgo-Scorpio': 'Good',
+      'Capricorn-Taurus': 'Excellent',
+      'Capricorn-Virgo': 'Good',
+      'Cancer-Taurus': 'Good',
+      'Cancer-Scorpio': 'Excellent',
+      'Cancer-Pisces': 'Excellent',
+      'Scorpio-Cancer': 'Excellent',
+      'Scorpio-Pisces': 'Good',
+      'Pisces-Cancer': 'Excellent',
+      'Pisces-Scorpio': 'Good'
+    };
+
+    const key1 = `${sign1}-${sign2}`;
+    const key2 = `${sign2}-${sign1}`;
+    const rating = compatibilityMatrix[key1] || compatibilityMatrix[key2] || 'Neutral';
+
+    return {
+      compatibility: rating,
+      description: this.getCompatibilityDescription(sign1, sign2, rating)
+    };
+  }
+
+  /**
    * Get compatibility description
    * @param {string} sign1 - First sign
    * @param {string} sign2 - Second sign

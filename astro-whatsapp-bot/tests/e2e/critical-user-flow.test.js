@@ -36,7 +36,7 @@ describe('Critical User Flow End-to-End Tests', () => {
         return;
       }
       // For existing users, handle different message types
-      if (message.text?.body && message.text.body.includes('birth')) {
+      if (message.text?.body) {
         const response = await generateAstrologyResponse(message.text.body, user);
         await sendMessage(phoneNumber, response);
       } else if (message.interactive?.button_reply) {
@@ -287,6 +287,19 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Interactive Button Flow', () => {
+    beforeEach(() => {
+      // Mock existing user for interactive button test
+      getUserByPhone.mockResolvedValue({
+        id: 'user-interactive',
+        phoneNumber: '1122334455',
+        birthDate: '15/03/1990',
+        birthTime: '07:30',
+        birthPlace: 'Mumbai, India',
+        createdAt: new Date('2023-01-01'),
+        lastInteraction: new Date('2023-01-15')
+      });
+    });
+
     it('should process interactive button reply for compatibility checking', async() => {
       const interactivePayload = {
         entry: [{

@@ -1,26 +1,23 @@
 {
   "main_menu": {
-    "body": "🌟 What would you like to explore today?",
+    "type": "interactive",
+    "body": "🌟 *What would you like to explore today?*",
     "buttons": [
       {
-        "id": "DAILY_HOROSCOPE",
-        "title": "📅 Daily Horoscope",
-        "action": "get_daily_horoscope"
+        "id": "btn_daily_horoscope",
+        "title": "Daily Horoscope"
       },
       {
-        "id": "CHECK_COMPATIBILITY",
-        "title": "💕 Check Compatibility",
-        "action": "initiate_compatibility_flow"
+        "id": "btn_birth_chart",
+        "title": "Birth Chart"
       },
       {
-        "id": "MY_PROFILE",
-        "title": "👤 My Profile",
-        "action": "show_user_profile"
+        "id": "btn_compatibility",
+        "title": "Compatibility"
       },
       {
-        "id": "SUBSCRIPTION_PLANS",
-        "title": "💳 Subscription Plans",
-        "action": "show_subscription_plans"
+        "id": "btn_help",
+        "title": "Help"
       }
     ]
   }

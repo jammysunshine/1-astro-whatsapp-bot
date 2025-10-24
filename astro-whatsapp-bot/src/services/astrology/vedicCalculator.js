@@ -65,12 +65,12 @@ class VedicCalculator {
       // Calculate sun position
       const sunPos = sweph.calc(jd, 0, 0); // planet 0 (Sun), no flags
 
-      if (sunPos.error) {
+      if (sunPos.error && !sunPos.error.includes('using Moshier eph')) {
         throw new Error(sunPos.error);
       }
 
-      // Get longitude in degrees
-      const longitude = sunPos.longitude;
+      // Get longitude in degrees (first element of data array)
+      const longitude = sunPos.data[0];
 
       // Determine sign from longitude (0-29.99 Aries, 30-59.99 Taurus, etc.)
       const signIndex = Math.floor(longitude / 30);
@@ -143,12 +143,12 @@ class VedicCalculator {
       // Calculate moon position
       const moonPos = sweph.calc(jd, 1, 0); // planet 1 (Moon), no flags
 
-      if (moonPos.error) {
+      if (moonPos.error && !moonPos.error.includes('using Moshier eph')) {
         throw new Error(moonPos.error);
       }
 
-      // Get longitude in degrees
-      const longitude = moonPos.longitude;
+      // Get longitude in degrees (first element of data array)
+      const longitude = moonPos.data[0];
 
       // Determine sign from longitude
       const signIndex = Math.floor(longitude / 30);

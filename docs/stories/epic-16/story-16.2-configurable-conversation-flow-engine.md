@@ -13,11 +13,11 @@ As a developer, I want to implement a configurable conversation flow engine so t
 - Minimizes the risk of introducing bugs during conversation flow updates.
 
 ## Acceptance Criteria
-- [ ] The conversation engine can load flow definitions from external configuration files.
-- [ ] User prompts and responses are dynamically generated based on the loaded configuration.
-- [ ] Branching logic (e.g., based on user input or profile data) is defined within the configuration.
-- [ ] The engine supports state persistence across user interactions.
-- [ ] New conversation flows can be activated by updating configuration without code changes.
+- [x] The conversation engine can load flow definitions from external configuration files.
+- [x] User prompts and responses are dynamically generated based on the loaded configuration.
+- [x] Branching logic (e.g., based on user input or profile data) is defined within the configuration.
+- [x] The engine supports state persistence across user interactions.
+- [x] New conversation flows can be activated by updating configuration without code changes.
 
 ## Technical Requirements
 - Implement a parser for flow configuration files.

@@ -14,11 +14,11 @@ As a developer, I want to implement each distinct conversation flow or feature a
 - Supports independent deployment of features, enabling faster release cycles.
 
 ## Acceptance Criteria
-- [ ] Each conversation flow (e.g., onboarding, horoscope request, compatibility check) is encapsulated within its own module.
-- [ ] Modules communicate through well-defined interfaces or a central dispatcher.
-- [ ] Module-specific state management does not interfere with other modules.
-- [ ] Unit tests for each module can run independently without external dependencies.
-- [ ] New modules can be added to the system with minimal changes to existing core logic.
+- [x] Each conversation flow (e.g., onboarding, horoscope request, compatibility check) is encapsulated within its own module.
+- [x] Modules communicate through well-defined interfaces or a central dispatcher.
+- [x] Module-specific state management does not interfere with other modules.
+- [x] Unit tests for each module can run independently without external dependencies.
+- [x] New modules can be added to the system with minimal changes to existing core logic.
 
 ## Technical Requirements
 - Define a clear module structure and interface guidelines.

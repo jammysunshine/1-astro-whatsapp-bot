@@ -2,6 +2,8 @@ const logger = require('../../utils/logger');
 const { sendMessage } = require('./messageSender');
 const { getUserByPhone, createUser, addBirthDetails, updateUserProfile, getUserSession, setUserSession, deleteUserSession } = require('../../models/userModel');
 const { generateAstrologyResponse } = require('../astrology/astrologyEngine');
+const { processFlowMessage } = require('../../conversation/conversationEngine');
+const { getMenu } = require('../../conversation/menuLoader');
 
 /**
  * Process incoming WhatsApp message and generate appropriate response
@@ -20,14 +22,14 @@ const processIncomingMessage = async (message, value) => {
     if (!user) {
       logger.info(`🆕 New user detected: ${phoneNumber}`);
       user = await createUser(phoneNumber);
-      // Immediately start onboarding for new users
-      await handleOnboardingFlow(message, user);
+      // Immediately start onboarding for new users using the modular engine
+      await processFlowMessage(message, user, 'onboarding');
       return; // Exit after starting onboarding
     }
 
-    // If user profile is not complete, continue onboarding flow
+    // If user profile is not complete, continue onboarding flow using the modular engine
     if (!user.profileComplete) {
-      await handleOnboardingFlow(message, user);
+      await processFlowMessage(message, user, 'onboarding');
       return; // Exit after processing onboarding step
     }
 
@@ -57,11 +59,12 @@ const processIncomingMessage = async (message, value) => {
     user.lastInteraction = new Date();
     await updateUserProfile(phoneNumber, { lastInteraction: user.lastInteraction });
 
-    } catch (error) {
-      logger.error(`❌ Error processing message from ${phoneNumber}:`, error);
-      await sendErrorMessage(phoneNumber, error.message);
-    }
-  };
+  } catch (error) {
+    logger.error(`❌ Error processing message from ${phoneNumber}:`, error);
+    await sendErrorMessage(phoneNumber, error.message);
+  }
+};
+
 /**
  * Process text messages
  * @param {Object} message - Text message object
@@ -79,12 +82,17 @@ const processTextMessage = async (message, user) => {
   
   // If a specific response isn't generated, offer an interactive menu
   if (!response || response.startsWith('Thank you for your message')) {
-    const buttons = [
-      { type: 'reply', reply: { id: 'DAILY_HOROSCOPE', title: 'Daily Horoscope' } },
-      { type: 'reply', reply: { id: 'CHECK_COMPATIBILITY', title: 'Check Compatibility' } },
-      { type: 'reply', reply: { id: 'MY_PROFILE', title: 'My Profile' } },
-    ];
-    await sendMessage(phoneNumber, { type: 'button', body: 'What would you like to explore today?' , buttons: buttons}, 'interactive');
+    const mainMenu = getMenu('main_menu');
+    if (mainMenu) {
+      const buttons = mainMenu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(phoneNumber, { type: 'button', body: mainMenu.body , buttons: buttons}, 'interactive');
+    } else {
+      logger.warn('⚠️ Main menu configuration not found.');
+      await sendMessage(phoneNumber, 'I'm sorry, I'm having trouble loading the menu options. Please try again later.');
+    }
   } else {
     // Send response back to user
     await sendMessage(phoneNumber, response);
@@ -164,22 +172,45 @@ const processMediaMessage = async (message, user) => {
  * @param {Object} user - User object
  */
 const processButtonReply = async (phoneNumber, buttonId, title, user) => {
+  const mainMenu = getMenu('main_menu');
+  if (mainMenu) {
+    const button = mainMenu.buttons.find(btn => btn.id === buttonId);
+    if (button && button.action) {
+      await executeMenuAction(phoneNumber, user, button.action);
+    } else {
+      logger.warn(`⚠️ No action defined for button ID: ${buttonId}`);
+      await sendMessage(phoneNumber, `You selected: ${title}. I'm not sure how to process that yet.`);
+    }
+  } else {
+    logger.warn('⚠️ Main menu configuration not found when processing button reply.');
+    await sendMessage(phoneNumber, `You selected: ${title}. I'm having trouble processing your request.`);
+  }
+};
+
+/**
+ * Executes an action based on menu selection.
+ * @param {string} phoneNumber - User's phone number.
+ * @param {Object} user - User object.
+ * @param {string} action - The action to execute (e.g., 'get_daily_horoscope').
+ */
+const executeMenuAction = async (phoneNumber, user, action) => {
   let response;
-  switch (buttonId) {
-    case 'DAILY_HOROSCOPE':
+  switch (action) {
+    case 'get_daily_horoscope':
       response = `Here is your daily horoscope, ${user.name || 'cosmic explorer'}! (This is a placeholder for now).`;
       // In a later phase, integrate with astrology engine to fetch actual daily horoscope
       break;
-    case 'CHECK_COMPATIBILITY':
+    case 'initiate_compatibility_flow':
       response = `To check compatibility, please provide the birth details (date, time, place) of the person you want to compare with.`;
       // In a later phase, initiate a compatibility flow
       break;
-    case 'MY_PROFILE':
+    case 'show_user_profile':
       response = `Here is your current profile information:\nName: ${user.name || 'N/A'}\nBirth Date: ${user.birthDate || 'N/A'}\nBirth Time: ${user.birthTime || 'N/A'}\nBirth Place: ${user.birthPlace || 'N/A'}\nSubscription: ${user.subscriptionTier}\n\nWould you like to update anything?`;
       // In a later phase, offer interactive options to update profile fields
       break;
     default:
-      response = `You selected: ${title}\n\nI'll process your request shortly!`;
+      logger.warn(`⚠️ Unknown menu action: ${action}`);
+      response = `I'm sorry, I don't know how to perform the action: ${action} yet.`;
       break;
   }
   await sendMessage(phoneNumber, response);

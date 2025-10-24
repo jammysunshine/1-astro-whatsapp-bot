@@ -1,0 +1,22 @@
+{
+  "main_menu": {
+    "body": "What would you like to explore today?",
+    "buttons": [
+      {
+        "id": "DAILY_HOROSCOPE",
+        "title": "Daily Horoscope",
+        "action": "get_daily_horoscope"
+      },
+      {
+        "id": "CHECK_COMPATIBILITY",
+        "title": "Check Compatibility",
+        "action": "initiate_compatibility_flow"
+      },
+      {
+        "id": "MY_PROFILE",
+        "title": "My Profile",
+        "action": "show_user_profile"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "onboarding": {
+    "start_step": "ask_birth_date",
+    "steps": {
+      "ask_birth_date": {
+        "prompt": "Hello {userName}! ✨ Welcome to your Personal Cosmic Coach. To get started, please tell me your birth date in DD/MM/YYYY format (e.g., 01/01/2000).",
+        "expected_input": "DD/MM/YYYY",
+        "validation_regex": "^(\\d{2}\\/\\d{2}\\/\\d{4})$",
+        "error_message": "Oops! That doesn't look like a valid date. Please use DD/MM/YYYY format (e.g., 01/01/2000).",
+        "next_step_on_success": "ask_birth_time"
+      },
+      "ask_birth_time": {
+        "prompt": "Great! Now, please tell me your birth time in HH:MM format (e.g., 14:30). If you don't know, you can type 'unknown'.",
+        "expected_input": "HH:MM or unknown",
+        "validation_regex": "^(\\d{2}:\\d{2})$|^unknown$",
+        "error_message": "Invalid time format. Please use HH:MM (e.g., 14:30) or type 'unknown'.",
+        "next_step_on_success": "ask_birth_place"
+      },
+      "ask_birth_place": {
+        "prompt": "Almost there! Finally, please tell me your birth place (City, Country), e.g., Mumbai, India.",
+        "expected_input": "City, Country",
+        "validation_regex": ".+",
+        "error_message": "Please provide your birth place (City, Country).",
+        "next_step_on_success": "complete_onboarding"
+      },
+      "complete_onboarding": {
+        "prompt": "Thank you! Your profile is now complete. You can now ask me for your horoscope, birth chart analysis, or compatibility readings. What would you like to explore?",
+        "action": "complete_profile"
+      }
+    }
+  }
+}

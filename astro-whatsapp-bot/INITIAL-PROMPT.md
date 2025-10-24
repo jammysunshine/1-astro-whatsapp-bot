@@ -9,6 +9,72 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Phase 2**: Expand to additional channels including web app, mobile app, and other messaging platforms
 - **Phase 3**: Full cross-platform ecosystem with synchronized data and experiences
 
+## Epics and User Stories
+
+### Epic 1: Multi-Channel Service Delivery & Core Platform
+- **Goal**: Establish a robust, scalable, and compliant multi-channel platform, starting with WhatsApp, ensuring seamless user experience and foundational services.
+- **Key Features**: WhatsApp Business API integration, multi-language support, user authentication, profile management, comprehensive onboarding, cross-platform data synchronization, and customer support.
+
+### Epic 2: Multiple Astrology Services
+- **Goal**: Offer a wide array of accurate and diverse astrological systems to cater to varied user preferences and provide comprehensive insights.
+- **Key Features**: Hindu/Vedic, Western, Chinese, Tarot, Numerology, Palmistry, Nadi Astrology, and other systems.
+
+### Epic 3: Monetization, Subscriptions & Loyalty
+- **Goal**: Implement a flexible and growth-oriented monetization strategy through tiered subscriptions, micro-transactions, and a robust loyalty/referral program, ensuring regional compliance.
+- **Key Features**: Free, Essential, Premium, VIP tiers, one-time services, regional payment methods, AstroRewards loyalty program, AstroCircle referral program, and advanced monetization strategies.
+
+### Epic 4: AI-Powered Personalization & AI Twin
+- **Goal**: Deliver hyper-personalized astrological insights and a unique AI companion that learns and adapts to user preferences, enhancing engagement and emotional ROI.
+- **Key Features**: AI Twin system, behavioral adaptation, personalized readings, customized alerts, and advanced personalization tools.
+
+### Epic 5: Predictive Decision Timing
+- **Goal**: Provide users with precise astrological timing for important life decisions, empowering them with confidence and control.
+- **Key Features**: Transit Timing Engine, decision timing calculator, and predictive insights for optimal life event planning.
+
+### Epic 6: User Experience, Engagement & Marketing
+- **Goal**: Create an engaging and intuitive user experience from discovery to long-term retention, driven by effective marketing and user acquisition strategies.
+- **Key Features**: Enhanced onboarding, compelling user journeys, gamification elements, social sharing, and targeted marketing campaigns.
+
+### Epic 7: User Authentication & Profile Management
+- **Goal**: Securely manage user identities and comprehensive astrological profiles, ensuring data privacy and personalized service delivery.
+- **Key Features**: WhatsApp number verification, optional email/social login, two-factor authentication, and detailed user profile components (birth details, preferences, history).
+
+### Epic 8: Social Features & Community Building
+- **Goal**: Foster a vibrant community and enable social interaction through compatibility analysis, sharing features, and network effects, driving viral growth.
+- **Key Features**: Compatibility matching, shareable birth charts, Astro-Social Network, group readings, social proof features, and community challenges.
+
+### Epic 9: Gamification & User Engagement
+- **Goal**: Implement engaging gamification elements to drive user retention, encourage daily interaction, and reward loyalty.
+- **Key Features**: Karma Points system, streak mechanics, unlockable content, cosmic journey progress, achievement badges, and leaderboards.
+
+### Epic 10: Technology & Scaling
+- **Goal**: Build a robust, scalable, and cost-effective technology infrastructure capable of supporting rapid development, multi-channel delivery, and future growth.
+- **Key Features**: Rapid development strategy, backend services, solo developer AI infrastructure, database management, third-party integrations, multi-language tech stack, BMAd development tools, multi-channel delivery system, scaling and growth strategies, and development phases.
+
+### Epic 11: Market Validation & Risk Mitigation
+- **Goal**: Validate market demand and mitigate potential risks (market, technical, operational, financial) to ensure the project's long-term success and revenue protection.
+- **Key Features**: MVP testing, A/B testing, churn analysis, competitive response strategies, regulatory compliance, security measures, and financial risk mitigation.
+
+### Epic 12: AI-Agent Driven Development & BMAd Methodology
+- **Goal**: Leverage AI agents and the BMAd methodology for rapid, efficient, and high-quality development, ensuring continuous integration and automated quality assurance.
+- **Key Features**: AI-Agent Driven Development, Qwen CLI, Gemini CLI, automated testing generation, AI code review, automated deployment, and BMAd project management.
+
+### Epic 13: Human Astrologer Services
+- **Goal**: Provide users with direct access to certified human astrologers for in-depth consultations and personalized guidance.
+- **Key Features**: Direct text/voice chat with astrologers, scheduled consultations, and follow-up reports.
+
+### Epic 14: Advanced Technology & Infrastructure
+- **Goal**: Implement advanced technological solutions and infrastructure to support complex features, high performance, and future innovation.
+- **Key Features**: Social Graph Database, Loyalty System Engine, AI Twin System, Transit Timing Engine, and advanced analytics.
+
+### Epic 15: Success Metrics & KPIs
+- **Goal**: Define and track key performance indicators and revenue metrics to measure project success, identify growth opportunities, and ensure profitability.
+- **Key Features**: MRR, ARR, ARPU, CLV, conversion rates, engagement metrics, phase-based targets, and revenue optimization alerts.
+
+### Epic 16: Modular and Independent Architecture
+- **Goal**: Design and implement a modular and independent architecture to ensure easy updates, maintenance, and testing without impacting other parts of the codebase.
+- **Key Features**: Independent modules for features, conversation flows, and menus, ensuring plug-and-play architecture.
+
 ## Core Features (Developed with BMAd Methodology)
 
 ### Multiple Astrology Services (See Epic 2)
@@ -20,6 +86,9 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - Palmistry (hand reading analysis)
 - Nadi Astrology (palm leaf readings specific to India)
 - Other systems (Kabbalistic, Mayan, Celtic, I Ching, Astrocartography, Horary)
+- **User Story**: As a user, I want to select my preferred astrology system to receive tailored readings.
+- **User Story**: As a user, I want to receive readings from various astrological systems to get a comprehensive view.
+- **User Story**: As a user, I want to understand the basics of different astrology systems offered.
 
 ### BMAd Implementation Features
 - **AI-Agent Driven Development**: All features developed using Qwen CLI, Gemini CLI and coordinated AI agents
@@ -32,6 +101,9 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Primary Channel**: Fully comprehensive WhatsApp-based service with all features available
 - **Secondary Channels** (Phase 2): Web app, mobile app, and other messaging platforms (Telegram, Instagram DMs, Facebook Messenger)
 - **Cross-Platform Synchronization**: Seamless data and history synchronization across all channels
+- **User Story**: As a user, I want to access the service through WhatsApp as my primary channel.
+- **User Story**: As a user, I want my data and reading history to be synchronized across all channels (WhatsApp, web, mobile).
+- **User Story**: As a user, I want to be able to use the service on web and mobile apps in future phases.
 
 ### Enhanced Subscription Tiers (Optimized for Growth) (See Epic 3)
 - **Free Tier**: Daily micro-prediction (1 sentence), personal birth chart visualization (as shareable image), 7-day transit summary, community forum access, compatibility checking with one additional person
@@ -39,62 +111,70 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Premium Tier**: Unlimited questions to AI, priority access to human astrologers (24-hour response vs. 72-hour), personalized monthly reports with 3-month forecasts, access to exclusive remedial solutions, compatibility checking with unlimited people
 - **VIP Tier**: All Premium features, dedicated human astrologer (user choice of top 3), quarterly in-depth life planning sessions, personalized meditation and mindfulness practices based on chart, special access to rare planetary event readings, exclusive VIP-only community access
 - **One-time Services**: Micro-transaction options like Flash Insights (₹25/USD 1), Transit Alerts (₹15 per alert), Remedial Quick Fixes (₹50-100), Compatibility Snapshots (₹75)
+- **User Story**: As a user, I want to choose from different subscription tiers to access features that match my needs.
+- **User Story**: As a user, I want to make one-time purchases for specific insights or services.
+- **User Story**: As a user, I want to understand the benefits of each subscription tier before committing.
 
 ### Service Modes
-- AI-Powered Quick Readings: Instant responses for basic questions
-- Human Astrologer Chat: Direct text/voice chat with certified astrologers
-- Scheduled Consultations: Book time with specific astrologers
-- AI Twin Service (See Epic 4): Personalized AI astrologer that learns communication style and life patterns
-- Predictive Decision Timing (See Epic 5): Precision timing for important life decisions based on planetary transits
-- Loyalty System (See Epic 3): Comprehensive "AstroRewards" program with points and tier benefits
+- **AI-Powered Quick Readings (See Epic 4)**: Instant responses for basic questions
+- **Human Astrologer Chat (See Epic 13)**: Direct text/voice chat with certified astrologers
+- **Scheduled Consultations (See Epic 13)**: Book time with specific astrologers
+- **AI Twin Service (See Epic 4)**: Personalized AI astrologer that learns communication style and life patterns
+- **Predictive Decision Timing (See Epic 5)**: Precision timing for important life decisions based on planetary transits
+- **Loyalty System (See Epic 3)**: Comprehensive "AstroRewards" program with points and tier benefits
+- **User Story (Epic 4)**: As a user, I want instant AI-powered answers to my basic astrological questions.
+- **User Story (Epic 13)**: As a user, I want to chat directly with a human astrologer for personalized advice.
+- **User Story (Epic 13)**: As a user, I want to schedule a consultation with a specific astrologer at my convenience.
+- **User Story (Epic 4)**: As a user, I want an AI astrologer that understands my communication style and preferences.
+- **User Story (Epic 5)**: As a user, I want to know the optimal timing for important life decisions based on astrology.
 
 ### User Features (Enhanced for Engagement)
-- Complete profile with birth details (date, time, place)
-- Preference settings for different astrology types
-- Reading history and saved interpretations **(with full history accessible across all channels)**
-- Personalized daily/weekly/monthly forecasts
-- Relationship and compatibility analysis with others
-- Multi-language support for all user interactions
-- Life Pattern Recognition: AI identifies how astrological patterns manifest in actual life experiences
-- Prediction Tracking: Users can rate how accurate predictions were for validation and build investment in platform
-- Behavioral Adaptation: AI learns what types of insights users value most
-- **NEW: Shareable Birth Charts**: Generate beautiful, personalized kundli images to share via WhatsApp
-- **NEW: Compatibility Matching**: Easy way to check astrological compatibility with friends/partners
-- **NEW: Achievement System**: Badges and progression for engagement milestones
-- **NEW: Community Features**: Connect with others with similar charts or life patterns
-- **AI Twin Integration**: Personalized AI astrologer that remembers conversations and preferences
-- **Transit Timing Tools**: Decision timing calculator for optimal life event planning
-- **Loyalty Program Access**: Earn and redeem points through "AstroRewards" system
-- **Social Sharing Features**: Share forecasts, achievements, and compatibility results
+- **Complete profile with birth details (See Epic 7)**: User Story: As a user, I want to create and manage my profile with accurate birth details.
+- **Preference settings for different astrology types (See Epic 2)**: User Story: As a user, I want to set my preferences for the types of astrology readings I receive.
+- **Reading history and saved interpretations (with full history accessible across all channels) (See Epic 1)**: User Story: As a user, I want to access my complete reading history and saved interpretations across all devices.
+- **Personalized daily/weekly/monthly forecasts (See Epic 4)**: User Story: As a user, I want to receive personalized daily, weekly, and monthly astrological forecasts.
+- **Relationship and compatibility analysis with others (See Epic 8)**: User Story: As a user, I want to analyze my compatibility with friends and partners.
+- **Multi-language support for all user interactions (See Epic 1)**: User Story: As a user, I want to interact with the bot in my preferred language.
+- **Life Pattern Recognition (See Epic 4)**: AI identifies how astrological patterns manifest in actual life experiences. User Story: As a user, I want the AI to recognize and highlight recurring life patterns based on my astrological chart.
+- **Prediction Tracking (See Epic 4)**: Users can rate how accurate predictions were for validation and build investment in platform. User Story: As a user, I want to track the accuracy of predictions and provide feedback.
+- **Behavioral Adaptation (See Epic 4)**: AI learns what types of insights users value most. User Story: As a user, I want the AI to learn my preferences and provide insights that are most relevant to me.
+- **NEW: Shareable Birth Charts (See Epic 8)**: Generate beautiful, personalized kundli images to share via WhatsApp. User Story: As a user, I want to generate and share visually appealing birth charts with others.
+- **NEW: Compatibility Matching (See Epic 8)**: Easy way to check astrological compatibility with friends/partners. User Story: As a user, I want an easy way to check astrological compatibility with my friends and partners.
+- **NEW: Achievement System (See Epic 9)**: Badges and progression for engagement milestones. User Story: As a user, I want to earn badges and track my progress for engaging with the platform.
+- **NEW: Community Features (See Epic 8)**: Connect with others with similar charts or life patterns. User Story: As a user, I want to connect with a community of users who have similar astrological profiles.
+- **AI Twin Integration (See Epic 4)**: Personalized AI astrologer that remembers conversations and preferences. User Story: As a user, I want my AI Twin to remember our past conversations and my preferences.
+- **Transit Timing Tools (See Epic 5)**: Decision timing calculator for optimal life event planning. User Story: As a user, I want tools to help me plan important life events based on optimal astrological timing.
+- **Loyalty Program Access (See Epic 3)**: Earn and redeem points through "AstroRewards" system. User Story: As a user, I want to earn and redeem points through a loyalty program.
+- **Social Sharing Features (See Epic 8)**: Share forecasts, achievements, and compatibility results. User Story: As a user, I want to easily share my astrological insights and achievements on social media.
 
 ### Advanced Differentiating Features (Enhanced for Viral Growth)
-- **AI Twin System**: Personalized AI astrologer that learns communication style, preferences, and life patterns with conversational memory
-- **Transit Timing Engine**: Precision life planning with decision timing calculator for optimal timing of important decisions
-- **Astro-Social Network**: Chart-based matching and community wisdom platform with viral sharing potential
-- **Astro-Productivity Suite**: Integration with daily life apps, calendars, and decision-making tools
-- **Predictive Relationship Analyzer**: Advanced compatibility with real-time matching and relationship event timing
-- **Future Self Simulator**: Long-term life timeline visualization and alternative pathway analysis
-- **Event Astrology**: Real-time cosmic integration with global event correlation and location-based astrology
-- **Astro-Marketplace**: Personalized remedy recommendations and service booking with commission revenue
-- **Astro-Gamification**: Engagement mechanics with insight streaks, pattern mastery, and achievement badges with sharing capabilities
-- **Kundli/Kundli Sharing**: Interactive birth chart visualization with shareable formats across all channels
-- **Cross-Platform History**: Complete access to reading history, past predictions, and personal insights regardless of which channel was used
-- **Multi-Format Content**: Deliver content in various formats (text, voice notes, images, videos) optimized for each channel
-- **NEW: Viral Compatibility Sharing**: Users can share compatibility reports with others as incentive for platform growth
-- **NEW: Social Proof Features**: Highlight user success stories and prediction accuracy
-- **NEW: Group Reading Features**: Allow families/friends to get combined readings
-- **Loyalty and Referral System**: Comprehensive "AstroRewards" program with points, tier levels, and rewards to encourage engagement and referrals
+- **AI Twin System (See Epic 4)**: Personalized AI astrologer that learns communication style, preferences, and life patterns with conversational memory. User Story: As a user, I want a personalized AI astrologer that understands my unique needs and remembers our past interactions.
+- **Transit Timing Engine (See Epic 5)**: Precision life planning with decision timing calculator for optimal timing of important decisions. User Story: As a user, I want to use a decision timing calculator to plan important life events based on astrological transits.
+- **Astro-Social Network (See Epic 8)**: Chart-based matching and community wisdom platform with viral sharing potential. User Story: As a user, I want to connect with others who have compatible charts and share astrological insights.
+- **Astro-Productivity Suite (See Epic 4)**: Integration with daily life apps, calendars, and decision-making tools. User Story: As a user, I want to integrate astrological insights into my daily productivity tools.
+- **Predictive Relationship Analyzer (See Epic 8)**: Advanced compatibility with real-time matching and relationship event timing. User Story: As a user, I want advanced compatibility analysis with real-time matching for my relationships.
+- **Future Self Simulator (See Epic 4)**: Long-term life timeline visualization and alternative pathway analysis. User Story: As a user, I want to visualize my long-term life timeline and explore alternative astrological pathways.
+- **Event Astrology (See Epic 4)**: Real-time cosmic integration with global event correlation and location-based astrology. User Story: As a user, I want to understand the astrological significance of global and local events.
+- **Astro-Marketplace (See Epic 3)**: Personalized remedy recommendations and service booking with commission revenue. User Story: As a user, I want to receive personalized remedy recommendations and book related services.
+- **Astro-Gamification (See Epic 9)**: Engagement mechanics with insight streaks, pattern mastery, and achievement badges with sharing capabilities. User Story: As a user, I want to be rewarded for my engagement with the platform through gamification.
+- **Kundli/Kundli Sharing (See Epic 8)**: Interactive birth chart visualization with shareable formats across all channels. User Story: As a user, I want to view and share interactive birth chart visualizations.
+- **Cross-Platform History (See Epic 1)**: Complete access to reading history, past predictions, and personal insights regardless of which channel was used. User Story: As a user, I want complete access to my reading history across all platforms.
+- **Multi-Format Content (See Epic 1)**: Deliver content in various formats (text, voice notes, images, videos) optimized for each channel. User Story: As a user, I want to receive astrological content in various formats (text, audio, video).
+- **NEW: Viral Compatibility Sharing (See Epic 8)**: Users can share compatibility reports with others as incentive for platform growth. User Story: As a user, I want to easily share compatibility reports to encourage others to join.
+- **NEW: Social Proof Features (See Epic 8)**: Highlight user success stories and prediction accuracy. User Story: As a user, I want to see success stories and prediction accuracy to build trust in the platform.
+- **NEW: Group Reading Features (See Epic 8)**: Allow families/friends to get combined readings. User Story: As a user, I want to get combined astrological readings with my family and friends.
+- **Loyalty and Referral System (See Epic 3)**: Comprehensive "AstroRewards" program with points, tier levels, and rewards to encourage engagement and referrals. User Story: As a user, I want to earn rewards for my loyalty and for referring new users.
 
-### Deepening Viral Loops & Network Effects
-- **Social Currency Integration**: Design every shareable output (birth chart, compatibility, achievement) for aesthetic appeal and ease of sharing, making users feel smart, insightful, or connected when they share.
+### Deepening Viral Loops & Network Effects (See Epic 8, Epic 9)
+- **Social Currency Integration**: Design every shareable output (birth chart, compatibility, achievement) for aesthetic appeal and ease of sharing, making users feel smart, insightful, or connected when they share. User Story (Epic 8): As a user, I want to easily share aesthetically pleasing astrological insights that make me feel good.
 - **Intrinsic Sharing Incentives**: Make the product inherently more valuable when shared.
-    - **Compatibility-Driven Virality**: Position Compatibility Checking as a primary viral loop: "Invite a friend to unlock their full compatibility report with you!"
-    - **Astro-Social Network as Network Effect Engine**: Emphasize that the more users, the richer the community insights and diverse compatibility matches, making the platform intrinsically more valuable to every participant and encouraging organic invitations.
+    - **Compatibility-Driven Virality (See Epic 8)**: Position Compatibility Checking as a primary viral loop: "Invite a friend to unlock their full compatibility report with you!" User Story (Epic 8): As a user, I want to invite friends to unlock more detailed compatibility reports.
+    - **Astro-Social Network as Network Effect Engine (See Epic 8)**: Emphasize that the more users, the richer the community insights and diverse compatibility matches, making the platform intrinsically more valuable to every participant and encouraging organic invitations. User Story (Epic 8): As a user, I want the Astro-Social Network to become more valuable as more people join.
 - **Utility & Value-Driven Sharing**: Implement features where sharing provides tangible benefits to both referrer and referee.
-    - **Group Reading Requirement**: A "Group Reading" feature could require inviting friends.
-    - **Shared Journey Tracking**: Allow users to follow and support friends through key transits, making sharing a functional necessity.
+    - **Group Reading Requirement (See Epic 8)**: A "Group Reading" feature could require inviting friends. User Story (Epic 8): As a user, I want to invite friends to participate in group readings.
+    - **Shared Journey Tracking (See Epic 8)**: Allow users to follow and support friends through key transits, making sharing a functional necessity. User Story (Epic 8): As a user, I want to track and support my friends through their astrological transits.
 
-## Payment and Subscription Model
+## Payment and Subscription Model (See Epic 3)
 
 ### Enhanced Tiered Value Architecture with Pricing (by region) - Focused on Emotional ROI:
 
@@ -107,6 +187,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Goal**: Hook users with personal, valuable content that shows the potential of paid tiers
 - **Viral Element**: Shareable birth chart images that users want to share with friends
 - **Emotional Value**: Feel understood and get a glimpse of personalized cosmic guidance
+- **User Story**: As a free user, I want to receive a daily micro-prediction and a shareable birth chart.
 
 #### Essential Tier (Revised with Emotional ROI Focus):
 - Daily personalized horoscope with action items
@@ -117,10 +198,11 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Lucky Number of the Day**: Simple, actionable, and shareable insights
 - **Value**: Daily engagement with actionable insights to feel more confident about your day
 - **Emotional ROI**: "For less than your morning coffee, know exactly when luck is on your side"
-- Pricing: 
+- Pricing:
   - India: ₹230/month (35% discount from original ₹299)
   - UAE: AED 20/month (35% discount from original AED 25)
   - Australia: AUD 20/month (35% discount from original AUD 25)
+- **User Story**: As an Essential tier user, I want to receive daily personalized horoscopes and weekly video predictions.
 
 #### Premium Tier (Maintained with Emotional ROI & Viral Focus):
 - Unlimited questions to AI
@@ -132,10 +214,11 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Value**: Personalized, priority service that gives you clarity and confidence in uncertain times
 - **Viral Element**: Unlimited compatibility checks encourage sharing with friends/family
 - **Emotional ROI**: "Get clarity on major life decisions and know exactly when opportunities will arise"
-- Pricing: 
+- Pricing:
   - India: ₹299/month (UPI, PayTM, Google Pay, NetBanking, Cards)
   - UAE: AED 25/month (Credit cards, debit cards, digital wallets)
   - Australia: AUD 25/month (Credit cards, Apple Pay, Google Pay, PayPal)
+- **User Story**: As a Premium tier user, I want unlimited AI questions and priority access to human astrologers.
 
 #### VIP Tier (New - Premium Emotional Experience):
 - All Premium features
@@ -150,324 +233,223 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Exclusive Community**: VIP-only WhatsApp group with direct astrologer access
 - **Value**: Concierge-level personal astrology service that helps you navigate life with confidence
 - **Emotional ROI**: "Your personal cosmic coach—guidance for every important decision, so you never feel uncertain again"
-- Pricing: 
+- Pricing:
   - India: ₹799/month
   - UAE: AED 80/month
   - Australia: AUD 80/month
+- **User Story**: As a VIP tier user, I want a dedicated human astrologer and exclusive life planning sessions.
 
-### Micro-Transaction Opportunities:
-- **Flash Insights**: 5-minute micro-readings for immediate decisions (₹25/USD 1)
-- **Transit Alerts**: Notifications for specific personal transits (₹15 per alert)
-- **Remedial Quick Fixes**: Immediate spiritual remedies for challenging periods (₹50-100)
-- **Compatibility Snapshots**: Quick compatibility check with new contacts (₹75)
+### Micro-Transaction Opportunities (See Epic 3):
+- **Flash Insights**: 5-minute micro-readings for immediate decisions (₹25/USD 1). User Story: As a user, I want to purchase quick, on-demand insights for immediate decisions.
+- **Transit Alerts**: Notifications for specific personal transits (₹15 per alert). User Story: As a user, I want to receive alerts for important personal planetary transits.
+- **Remedial Quick Fixes**: Immediate spiritual remedies for challenging periods (₹50-100). User Story: As a user, I want to purchase quick spiritual remedies for challenging times.
+- **Compatibility Snapshots**: Quick compatibility check with new contacts (₹75). User Story: As a user, I want to quickly check compatibility with new contacts.
 
-### Event-Based Monetization:
-- **Eclipse Packages**: Special readings during eclipses (₹300-600, limited-time premium content)
-- **Retrograde Prep Sessions**: Preparations before Mercury/other retrogrades (₹200-400)
-- **New Moon Intention Setting**: Special guided sessions (₹150)
-- **Festival-Specific Readings**: Cultural astrology during religious festivals (₹100-200)
+### Event-Based Monetization (See Epic 3):
+- **Eclipse Packages**: Special readings during eclipses (₹300-600, limited-time premium content). User Story: As a user, I want to purchase special readings during significant astrological events like eclipses.
+- **Retrograde Prep Sessions**: Preparations before Mercury/other retrogrades (₹200-400). User Story: As a user, I want to prepare for retrograde periods with specialized sessions.
+- **New Moon Intention Setting**: Special guided sessions (₹150). User Story: As a user, I want to participate in guided new moon intention setting sessions.
+- **Festival-Specific Readings**: Cultural astrology during religious festivals (₹100-200). User Story: As a user, I want to receive culturally relevant readings during festivals.
 
-### Payment Methods by Region:
-- **India**: UPI, PayTM, Google Pay, PhonePe, NetBanking, Credit/Debit Cards, Wallets
-- **UAE**: Credit/Debit Cards, Apple Pay, Google Pay, PayPal, Digital Wallets
-- **Australia**: Credit/Debit Cards, Apple Pay, Google Pay, PayPal, Afterpay
+### Payment Methods by Region (See Epic 3):
+- **India**: UPI, PayTM, Google Pay, PhonePe, NetBanking, Credit/Debit Cards, Wallets. User Story: As a user in India, I want to pay using local payment methods like UPI and PayTM.
+- **UAE**: Credit/Debit Cards, Apple Pay, Google Pay, PayPal, Digital Wallets. User Story: As a user in UAE, I want to pay using credit cards and digital wallets.
+- **Australia**: Credit/Debit Cards, Apple Pay, Google Pay, PayPal, Afterpay. User Story: As a user in Australia, I want to pay using credit cards and Apple Pay.
 
-### Advanced Monetization Features:
-- **Affiliate Ecosystem**: Commission from recommended products (crystals, books, services) - 15-25% commission
-- **Marketplace Integration**: User-to-user services (experienced users providing guidance) - platform takes 20% cut
-- **Course Sales**: Astrology education modules (₹500-2000 each)
-- **Certification Programs**: For aspiring astrologers (₹5000-15000)
-- **Auto-renewal options with notification before renewal**
-- **Cancellation and refund policies**
+### Advanced Monetization Features (See Epic 3):
+- **Affiliate Ecosystem**: Commission from recommended products (crystals, books, services) - 15-25% commission. User Story: As a user, I want to discover and purchase recommended astrological products.
+- **Marketplace Integration**: User-to-user services (experienced users providing guidance) - platform takes 20% cut. User Story: As a user, I want to access user-to-user services within the platform.
+- **Course Sales**: Astrology education modules (₹500-2000 each). User Story: As a user, I want to purchase astrology education courses.
+- **Certification Programs**: For aspiring astrologers (₹5000-15000). User Story: As an aspiring astrologer, I want to enroll in certification programs.
+- **Auto-renewal options with notification before renewal**. User Story: As a user, I want to manage auto-renewal options for my subscriptions.
+- **Cancellation and refund policies**. User Story: As a user, I want to understand the cancellation and refund policies.
 
-## User Authentication and Profile System (See Epic 1, Epic 7)
+## User Authentication and Profile System (See Epic 7)
 
-### Authentication Methods:
-1. **WhatsApp Number Verification**: Primary authentication via WhatsApp Business API
-2. **Additional Verification**: Optional email or secondary mobile for account recovery
-3. **Two-Factor Authentication**: Optional additional security layer
-4. **Social Login**: Option to link Google/Facebook accounts for easier access
+### Authentication Methods (See Epic 7):
+1. **WhatsApp Number Verification**: Primary authentication via WhatsApp Business API. User Story: As a user, I want to easily authenticate using my WhatsApp number.
+2. **Additional Verification**: Optional email or secondary mobile for account recovery. User Story: As a user, I want to have additional verification options for account recovery.
+3. **Two-Factor Authentication**: Optional additional security layer. User Story: As a user, I want to enable two-factor authentication for enhanced security.
+4. **Social Login**: Option to link Google/Facebook accounts for easier access. User Story: As a user, I want to link my social media accounts for easier login.
 
-### User Profile Components:
-1. **Basic Information**:
-   - Name
-   - Gender
-   - Date of birth
-   - Time of birth (optional but recommended)
-   - Place of birth (city, country)
-   - Preferred language
-   - Time zone
+### User Profile Components (See Epic 7):
+1. **Basic Information**: Name, Gender, Date of birth, Time of birth (optional but recommended), Place of birth (city, country), Preferred language, Time zone. User Story: As a user, I want to store my basic personal and birth information in my profile.
+2. **Astrological Preferences**: Primary astrology system preference, Interested astrology systems, Favorite topics (career, relationships, health, spirituality), Reminders for planetary transits. User Story: As a user, I want to set my preferences for the types of astrology readings I receive and receive relevant reminders.
+3. **Social Features (See Epic 8)**: Friends/connections for compatibility checking, Shared reading preferences, Community participation settings. User Story: As a user, I want to manage my friends and social connections for compatibility checks.
+4. **Subscription Management (See Epic 3)**: Current subscription tier, Subscription expiration date, Payment history, Billing information. User Story: As a user, I want to view and manage my subscription details and payment history.
+5. **Communication Preferences (See Epic 1)**: Preferred communication method (text/voice), Notification preferences, Opt-in for promotional content. User Story: As a user, I want to customize my communication and notification preferences.
+6. **Security Settings (See Epic 7)**: Privacy settings for profile information, Two-factor authentication toggle, Device management. User Story: As a user, I want to manage my privacy and security settings.
 
-2. **Astrological Preferences**:
-   - Primary astrology system preference
-   - Interested astrology systems
-   - Favorite topics (career, relationships, health, spirituality)
-   - Reminders for planetary transits
-
-3. **Social Features**:
-   - Friends/connections for compatibility checking
-   - Shared reading preferences
-   - Community participation settings
-
-4. **Subscription Management**:
-   - Current subscription tier
-   - Subscription expiration date
-   - Payment history
-   - Billing information
-
-5. **Communication Preferences**:
-   - Preferred communication method (text/voice)
-   - Notification preferences
-   - Opt-in for promotional content
-
-6. **Security Settings**:
-   - Privacy settings for profile information
-   - Two-factor authentication toggle
-   - Device management
-
-### Profile Features:
-- **Birth Chart Creation**: Automatically generate birth chart based on provided details
-- **Compatibility Profile**: For matching with others
-- **Reading History**: Track all past consultations and readings
-- **Favorites**: Save favorite astrologers or reading types
-- **Achievement System**: Badges and progression tracking
-- **Shareable Charts**: Generate and share personalized birth chart images
+### Profile Features (See Epic 7):
+- **Birth Chart Creation**: Automatically generate birth chart based on provided details. User Story: As a user, I want my birth chart to be automatically generated from my profile details.
+- **Compatibility Profile (See Epic 8)**: For matching with others. User Story: As a user, I want to create a compatibility profile for matching with others.
+- **Reading History (See Epic 1)**: Track all past consultations and readings. User Story: As a user, I want to access a comprehensive history of my readings.
+- **Favorites**: Save favorite astrologers or reading types. User Story: As a user, I want to save my favorite astrologers and reading types.
+- **Achievement System (See Epic 9)**: Badges and progression tracking. User Story: As a user, I want to track my achievements and progress within the platform.
+- **Shareable Charts (See Epic 8)**: Generate and share personalized birth chart images. User Story: As a user, I want to generate and share personalized birth chart images.
 
 ## Multi-Language and Cultural Support (See Epic 1)
 
-### Supported Languages
-- **Primary Languages**: English, Hindi, Arabic, Malayalam, Telugu, Tamil, Kannada, Punjabi
-- **Additional Languages**: Filipino/Tagalog, Urdu, Gujarati, Marathi, Bengali, Malay, Indonesian
-- **Regional Dialects**: Support for various regional dialects within major language groups
+### Supported Languages (See Epic 1)
+- **Primary Languages**: English, Hindi, Arabic, Malayalam, Telugu, Tamil, Kannada, Punjabi. User Story: As a user, I want to use the bot in one of the primary supported languages.
+- **Additional Languages**: Filipino/Tagalog, Urdu, Gujarati, Marathi, Bengali, Malay, Indonesian. User Story: As a user, I want to use the bot in one of the additional supported languages.
+- **Regional Dialects**: Support for various regional dialects within major language groups. User Story: As a user, I want the bot to understand and respond in my regional dialect.
 
-### Implementation Features
-1. **Automatic Language Detection**: Detect user's preferred language from WhatsApp settings
-2. **Manual Language Selection**: Allow users to choose from supported languages
-3. **Astrological Term Translations**: Accurate translations of astrological terms and concepts
-4. **Cultural Adaptation**: Adapt interpretations to cultural contexts of different languages
-5. **Regional Calendars**: Support for regional calendar systems (e.g., Vikram Samvat, Hijri)
+### Implementation Features (See Epic 1)
+1. **Automatic Language Detection**: Detect user's preferred language from WhatsApp settings. User Story: As a user, I want the bot to automatically detect my preferred language.
+2. **Manual Language Selection**: Allow users to choose from supported languages. User Story: As a user, I want to manually select my preferred language.
+3. **Astrological Term Translations**: Accurate translations of astrological terms and concepts. User Story: As a user, I want accurate translations of astrological terms.
+4. **Cultural Adaptation**: Adapt interpretations to cultural contexts of different languages. User Story: As a user, I want astrological interpretations to be culturally relevant to me.
+5. **Regional Calendars**: Support for regional calendar systems (e.g., Vikram Samvat, Hijri). User Story: As a user, I want the bot to use regional calendar systems for astrological calculations.
 
-### Content Localization
-- Horoscope content in local languages with cultural relevance
-- Astrological symbols and interpretations adapted for local customs
-- Festival and auspicious day notifications in local languages
-- Remedial solution recommendations in culturally appropriate forms
-- Local astrological traditions and practices integration
+### Content Localization (See Epic 1)
+- Horoscope content in local languages with cultural relevance. User Story: As a user, I want to receive horoscope content in my local language and cultural context.
+- Astrological symbols and interpretations adapted for local customs. User Story: As a user, I want astrological symbols and interpretations to be adapted to local customs.
+- Festival and auspicious day notifications in local languages. User Story: As a user, I want to receive notifications for festivals and auspicious days in my local language.
+- Remedial solution recommendations in culturally appropriate forms. User Story: As a user, I want to receive culturally appropriate remedial solution recommendations.
+- Local astrological traditions and practices integration. User Story: As a user, I want the bot to integrate local astrological traditions and practices.
 
-### Technical Implementation
-- Real-time translation of user queries and system responses
-- Localized date/time formats for birth chart calculations
-- Language-specific customer support
-- Regional astrologers who speak local languages
-- Voice support in multiple languages for audio consultations
+### Technical Implementation (See Epic 1)
+- Real-time translation of user queries and system responses. User Story: As a user, I want real-time translation of my queries and the bot's responses.
+- Localized date/time formats for birth chart calculations. User Story: As a user, I want localized date and time formats for birth chart calculations.
+- Language-specific customer support. User Story: As a user, I want access to customer support in my preferred language.
+- Regional astrologers who speak local languages. User Story: As a user, I want to connect with regional astrologers who speak my local language.
+- Voice support in multiple languages for audio consultations. User Story: As a user, I want voice support in multiple languages for audio consultations.
 
-### Cultural Considerations
-- Adaptation of astrological interpretations to local cultural beliefs
-- Respect for regional customs and traditions in recommendations
-- Culturally appropriate imagery and symbols
-- Festival-specific features and content
-- Local astrology practitioners integration
+### Cultural Considerations (See Epic 1)
+- Adaptation of astrological interpretations to local cultural beliefs. User Story: As a user, I want astrological interpretations to respect my cultural beliefs.
+- Respect for regional customs and traditions in recommendations. User Story: As a user, I want recommendations to respect regional customs and traditions.
+- Culturally appropriate imagery and symbols. User Story: As a user, I want culturally appropriate imagery and symbols in the bot's responses.
+- Festival-specific features and content. User Story: As a user, I want access to festival-specific features and content.
+- Local astrology practitioners integration. User Story: As a user, I want the bot to integrate with local astrology practitioners.
 
-## Enhanced User Experience & Onboarding (Optimized for Engagement) (See Epic 1)
+## Enhanced User Experience & Onboarding (Optimized for Engagement) (See Epic 1, Epic 6)
 
-### Comprehensive Onboarding System
+### Comprehensive Onboarding System (See Epic 1, Epic 6)
 1. **Immediate Value Hook (First 5 Minutes Rule)**:
-   - Offer a high-value free reading on signup (e.g., "Your 2025 Destiny Snapshot" or "Love Compatibility Report") with shareable visual component
-   - Make it personalized, visually engaging (using WhatsApp media), and emotionally resonant—not generic
-   - End the free reading with a teaser cliffhanger: "Your career breakthrough is coming in November… Want the exact date and how to prepare? Unlock your Premium Forecast."
-   - **Storytelling Integration**: Weave users into their own cosmic story from the beginning - "The stars have been waiting to tell you about your journey" with personalized narrative elements
-   - **Limited-Time Premium Access**: Grant 1-3 days of full premium features (e.g., unlimited questions, in-depth reports, compatibility checking) for free, letting users experience the "luxury" and understand what they're missing
-   - Interactive tutorial for new users with compatibility sharing feature
-   - Step-by-step profile creation with helpful tips
-   - Educational content about different astrology types
-   - Video guides for complex features
-   - **Personal Mythology Creation**: Help users understand their unique cosmic story and how they fit into the larger universe narrative
+   - Offer a high-value free reading on signup (e.g., "Your 2025 Destiny Snapshot" or "Love Compatibility Report") with shareable visual component. User Story (Epic 6): As a new user, I want to receive a high-value free reading immediately upon signup.
+   - Make it personalized, visually engaging (using WhatsApp media), and emotionally resonant—not generic. User Story (Epic 6): As a new user, I want my initial free reading to be personalized and visually appealing.
+   - End the free reading with a teaser cliffhanger: "Your career breakthrough is coming in November… Want the exact date and how to prepare? Unlock your Premium Forecast." User Story (Epic 6): As a new user, I want the free reading to entice me to explore paid features.
+   - **Storytelling Integration**: Weave users into their own cosmic story from the beginning - "The stars have been waiting to tell you about your journey" with personalized narrative elements. User Story (Epic 6): As a new user, I want to feel like I'm part of a unique cosmic story from the start.
+   - **Limited-Time Premium Access**: Grant 1-3 days of full premium features (e.g., unlimited questions, in-depth reports, compatibility checking) for free, letting users experience the "luxury" and understand what they're missing. User Story (Epic 6): As a new user, I want limited-time free access to premium features to experience their value.
+   - Interactive tutorial for new users with compatibility sharing feature. User Story (Epic 6): As a new user, I want an interactive tutorial to guide me through the platform's features, including compatibility sharing.
+   - Step-by-step profile creation with helpful tips. User Story (Epic 7): As a new user, I want a guided process for creating my profile with helpful tips.
+   - Educational content about different astrology types. User Story (Epic 2): As a new user, I want access to educational content about different astrology types.
+   - Video guides for complex features. User Story (Epic 1): As a new user, I want video guides to understand complex features.
+   - **Personal Mythology Creation**: Help users understand their unique cosmic story and how they fit into the larger universe narrative. User Story (Epic 6): As a new user, I want to understand my personal cosmic mythology.
 
-2. **Personalized Welcome Experience**:
-   - Tailored onboarding based on user's birth details
-   - Customized service recommendations
-   - Introduction to the most relevant astrology system
-   - Tutorial on how to get the most from the service
-   - Prompt users to choose their preferred message frequency (daily/weekly) during onboarding to reduce opt-outs
-   - **Social Integration**: Suggest adding a friend for compatibility check as part of onboarding
+2. **Personalized Welcome Experience (See Epic 1, Epic 6)**:
+   - Tailored onboarding based on user's birth details. User Story (Epic 6): As a new user, I want a personalized welcome experience based on my birth details.
+   - Customized service recommendations. User Story (Epic 4): As a new user, I want customized service recommendations.
+   - Introduction to the most relevant astrology system. User Story (Epic 2): As a new user, I want to be introduced to the most relevant astrology system for me.
+   - Tutorial on how to get the most from the service. User Story (Epic 1): As a new user, I want a tutorial on how to maximize my use of the service.
+   - Prompt users to choose their preferred message frequency (daily/weekly) during onboarding to reduce opt-outs. User Story (Epic 1): As a new user, I want to choose my preferred message frequency during onboarding.
+   - **Social Integration**: Suggest adding a friend for compatibility check as part of onboarding. User Story (Epic 8): As a new user, I want to be prompted to add a friend for a compatibility check during onboarding.
 
-3. **Educational Resources**:
-   - Beginner's guide to astrology concepts
-   - Glossary of astrological terms
-   - Explanation of different service types
-   - Guided meditation and mindfulness content
+3. **Educational Resources (See Epic 1)**:
+   - Beginner's guide to astrology concepts. User Story: As a user, I want access to a beginner's guide to astrology.
+   - Glossary of astrological terms. User Story: As a user, I want a glossary of astrological terms.
+   - Explanation of different service types. User Story: As a user, I want explanations of the different service types offered.
+   - Guided meditation and mindfulness content. User Story: As a user, I want access to guided meditation and mindfulness content.
 
-### Accessibility & Inclusion Features
-- **Visual Accessibility**: Text size adjustment, high contrast mode, screen reader compatibility
-- **Hearing Accessibility**: Visual alternatives for audio content, text transcripts
-- **Cognitive Accessibility**: Simple language options, clear navigation, consistent interface
-- **Motor Accessibility**: Voice command support, gesture-based navigation options
-- **Cultural Accessibility**: Respectful handling of diverse beliefs and practices
+### Accessibility & Inclusion Features (See Epic 1)
+- **Visual Accessibility**: Text size adjustment, high contrast mode, screen reader compatibility. User Story: As a user, I want visual accessibility options like text size adjustment and high contrast mode.
+- **Hearing Accessibility**: Visual alternatives for audio content, text transcripts. User Story: As a user, I want visual alternatives for audio content and text transcripts.
+- **Cognitive Accessibility**: Simple language options, clear navigation, consistent interface. User Story: As a user, I want simple language options and clear navigation.
+- **Motor Accessibility**: Voice command support, gesture-based navigation options. User Story: As a user, I want voice command support for navigation.
+- **Cultural Accessibility**: Respectful handling of diverse beliefs and practices. User Story: As a user, I want the platform to respect diverse cultural beliefs and practices.
 
-### Notification Management
+### Notification Management (See Epic 1, Epic 4)
 1. **Daily/Weekly Ritual Features**:
-   - **Daily Cosmic Tips**: Send personalized daily messages like "Today's Moon in Leo: Speak your truth!" based on current transits and user's chart
-   - **Lucky Number of the Day**: Provide simple, actionable, and shareable daily insights
-   - **Best Time to Make a Decision**: Offer personalized timing advice based on user's chart and current planetary positions
-   - **Personalized transit notifications**: Reference their sign, birth chart, or past queries to deepen relevance
-   - **Daily/weekly forecast reminders**: Allow users to choose frequency during onboarding
-   - **Special celestial event alerts**: Notifications for significant planetary events
-   - **Subscription renewal notices**: With personalized recommendations
-   - **Emotional Support Notifications**: During challenging transits, send supportive messages like "Venus is retrograde in your sector of relationships - this is a time to turn inward and reflect on what you truly value in love"
-   - **Storytelling Elements**: Frame daily notifications within the context of the user's personal cosmic story
-   - **Emotional Validation**: Acknowledge difficult periods astrologically and provide emotional support during challenging transits
+   - **Daily Cosmic Tips (See Epic 4)**: Send personalized daily messages like "Today's Moon in Leo: Speak your truth!" based on current transits and user's chart. User Story: As a user, I want to receive personalized daily cosmic tips.
+   - **Lucky Number of the Day (See Epic 4)**: Provide simple, actionable, and shareable daily insights. User Story: As a user, I want to receive my lucky number of the day.
+   - **Best Time to Make a Decision (See Epic 5)**: Offer personalized timing advice based on user's chart and current planetary positions. User Story: As a user, I want to know the best time to make a decision based on astrology.
+   - **Personalized transit notifications (See Epic 4)**: Reference their sign, birth chart, or past queries to deepen relevance. User Story: As a user, I want personalized notifications about planetary transits relevant to my chart.
+   - **Daily/weekly forecast reminders (See Epic 1)**: Allow users to choose frequency during onboarding. User Story: As a user, I want to set my preferred frequency for forecast reminders.
+   - **Special celestial event alerts (See Epic 1)**: Notifications for significant planetary events. User Story: As a user, I want to receive alerts for special celestial events.
+   - **Subscription renewal notices (See Epic 3)**: With personalized recommendations. User Story: As a user, I want to receive subscription renewal notices with personalized recommendations.
+   - **Emotional Support Notifications (See Epic 4)**: During challenging transits, send supportive messages like "Venus is retrograde in your sector of relationships - this is a time to turn inward and reflect on what you truly value in love". User Story: As a user, I want to receive emotional support notifications during challenging transits.
+   - **Storytelling Elements (See Epic 6)**: Frame daily notifications within the context of the user's personal cosmic story. User Story: As a user, I want daily notifications to be framed within my personal cosmic story.
+   - **Emotional Validation (See Epic 6)**: Acknowledge difficult periods astrologically and provide emotional support during challenging transits. User Story: As a user, I want the bot to acknowledge difficult astrological periods and provide emotional validation.
 
-2. **Smart Notification Settings**:
-   - Do-not-disturb scheduling
-   - Priority-based notification hierarchy
-   - Opt-in/opt-out for different notification types
-   - Location-based time zone adjustments
+2. **Smart Notification Settings (See Epic 1)**:
+   - Do-not-disturb scheduling. User Story: As a user, I want to set do-not-disturb schedules for notifications.
+   - Priority-based notification hierarchy. User Story: As a user, I want to prioritize certain types of notifications.
+   - Opt-in/opt-out for different notification types. User Story: As a user, I want to opt-in or opt-out of different notification types.
+   - Location-based time zone adjustments. User Story: As a user, I want notifications to be adjusted for my time zone.
 
-### User Interface & Interaction Design
+### User Interface & Interaction Design (See Epic 1)
 1. **Intuitive Navigation**:
-   - Simple, clear menu structure
-   - Quick access to most used features
-   - Search functionality for services and content
-   - Breadcrumb navigation for complex workflows
+   - Simple, clear menu structure. User Story: As a user, I want a simple and clear menu structure for easy navigation.
+   - Quick access to most used features. User Story: As a user, I want quick access to my most used features.
+   - Search functionality for services and content. User Story: As a user, I want to search for specific services and content.
+   - Breadcrumb navigation for complex workflows. User Story: As a user, I want breadcrumb navigation for complex workflows.
 
 2. **Conversational Design**:
-   - Natural language processing for queries allowing users to ask questions in various formats
-   - Context-aware responses that reference previous interactions and user's birth chart
-   - Personalized greeting and interaction style
-   - Tone matching based on user preferences
-   - Distinct, warm, and wise bot personality that aligns with astrology
-   - Seamless handover to human astrologers when needed, with clear and smooth transition process
+   - Natural language processing for queries allowing users to ask questions in various formats. User Story: As a user, I want to ask questions using natural language.
+   - Context-aware responses that reference previous interactions and user's birth chart. User Story: As a user, I want the bot to provide context-aware responses based on my history and birth chart.
+   - Personalized greeting and interaction style. User Story: As a user, I want a personalized greeting and interaction style from the bot.
+   - Tone matching based on user preferences. User Story: As a user, I want the bot to match my preferred tone.
+   - Distinct, warm, and wise bot personality that aligns with astrology. User Story: As a user, I want the bot to have a distinct, warm, and wise personality.
+   - Seamless handover to human astrologers when needed, with clear and smooth transition process. User Story (Epic 13): As a user, I want a seamless handover to a human astrologer when needed.
 
 3. **Content Organization**:
-   - Categorized readings and reports
-   - History and bookmarking features
-   - Comparison tools for different readings
-   - Sharing options with privacy controls
+   - Categorized readings and reports. User Story: As a user, I want readings and reports to be well-organized and categorized.
+   - History and bookmarking features. User Story: As a user, I want to bookmark important readings and access my history.
+   - Comparison tools for different readings. User Story: As a user, I want tools to compare different readings.
+   - Sharing options with privacy controls. User Story (Epic 8): As a user, I want to share content with privacy controls.
 
 4. **Interactive Elements**:
-   - **Quick Polls**: "How did yesterday's energy feel? A) Energetic B) Reflective C) Challenging" to increase engagement
-   - **Interactive Predictions**: Let users make predictions about their day and then validate them later
-   - **Choice-Based Readings**: Allow users to choose which aspect of their life to focus on for the day
-   - **Visual Interactions**: Interactive birth chart visualizations that users can explore
-   - **Shareable Content**: Generate beautiful, personalized forecasts that users want to share with friends
+   - **Quick Polls (See Epic 6)**: "How did yesterday's energy feel? A) Energetic B) Reflective C) Challenging" to increase engagement. User Story: As a user, I want to participate in quick polls to reflect on my daily experiences.
+   - **Interactive Predictions (See Epic 6)**: Let users make predictions about their day and then validate them later. User Story: As a user, I want to make and validate predictions about my day.
+   - **Choice-Based Readings (See Epic 6)**: Allow users to choose which aspect of their life to focus on for the day. User Story: As a user, I want to choose the focus of my daily readings.
+   - **Visual Interactions (See Epic 1)**: Interactive birth chart visualizations that users can explore. User Story: As a user, I want to explore interactive birth chart visualizations.
+   - **Shareable Content (See Epic 8)**: Generate beautiful, personalized forecasts that users want to share with friends. User Story: As a user, I want to generate and share beautiful, personalized forecasts.
 
-5. **Bot Experience Examples**:
-   - **Initial Engagement**: "Welcome, cosmic explorer! ✨ Ready to unlock your celestial secrets? Tell me your birth date (DD/MM/YYYY) and time (HH:MM) to get started with your FREE mini-reading! Want to see how you match with a friend? You can check compatibility too!"
-   - **Premium Tease**: "Did you know your Moon Sign reveals your emotional core? Premium members just received an in-depth guide to harmonizing their Moon and Sun signs AND unlimited compatibility checks. Tap here to learn more about Premium!"
-   - **Proactive Value**: "Good morning, [User's Name]! Your personalized planetary forecast for today indicates [insight relevant to their chart]. It's a great day for [action]. Also, don't forget our exclusive webinar on 'Navigating Mercury Retrograde' this Thursday at 7 PM EST – a perk just for you! 🌟"
-   - **Interactive Prompt**: "The stars are aligning for a big decision! What's on your mind? A) Career B) Love C) Finances D) Health E) Relationships with others. I'll give you the cosmic insight you need and show you how compatible you are!"
+5. **Bot Experience Examples (See Epic 6)**:
+   - **Initial Engagement**: "Welcome, cosmic explorer! ✨ Ready to unlock your celestial secrets? Tell me your birth date (DD/MM/YYYY) and time (HH:MM) to get started with your FREE mini-reading! Want to see how you match with a friend? You can check compatibility too!" User Story: As a new user, I want an engaging initial interaction that guides me to my first reading.
+   - **Premium Tease**: "Did you know your Moon Sign reveals your emotional core? Premium members just received an in-depth guide to harmonizing their Moon and Sun signs AND unlimited compatibility checks. Tap here to learn more about Premium!" User Story: As a user, I want to be teased with premium features to encourage upgrade.
+   - **Proactive Value**: "Good morning, [User's Name]! Your personalized planetary forecast for today indicates [insight relevant to their chart]. It's a great day for [action]. Also, don't forget our exclusive webinar on 'Navigating Mercury Retrograde' this Thursday at 7 PM EST – a perk just for you! 🌟" User Story: As a user, I want to receive proactive, valuable insights and exclusive content.
+   - **Interactive Prompt**: "The stars are aligning for a big decision! What's on your mind? A) Career B) Love C) Finances D) Health E) Relationships with others. I'll give you the cosmic insight you need and show you how compatible you are!" User Story: As a user, I want interactive prompts that help me explore different life aspects and compatibility.
 
 ## Advanced Personalization & Customization (Enhanced for Viral Growth) (See Epic 4, Epic 6)
 
-### Deep Personalization Features
-1. **Behavioral Adaptation**:
-   - AI learning from user preferences and engagement
-   - Adaptive content delivery based on historical interactions
-   - Personalized service suggestions
-   - Dynamic interface adjustments based on usage patterns
+### Deep Personalization Features (See Epic 4)
+1. **Behavioral Adaptation**: AI learning from user preferences and engagement; Adaptive content delivery based on historical interactions; Personalized service suggestions; Dynamic interface adjustments based on usage patterns. User Story: As a user, I want the platform to learn my preferences and adapt its content and suggestions accordingly.
+2. **Thematic Customization**: Customizable dashboard layouts; Personalized themes and color schemes; Custom notification tones and styles; Personalized astrologer matching based on compatibility. User Story: As a user, I want to customize the look and feel of my dashboard and notifications.
+3. **Content Filtering**: Topic-based content preferences; Intensity level selection (light, moderate, in-depth); Format preferences (text, audio, visual); Cultural sensitivity settings. User Story: As a user, I want to filter content based on my preferred topics, intensity, and format.
 
-2. **Thematic Customization**:
-   - Customizable dashboard layouts
-   - Personalized themes and color schemes
-   - Custom notification tones and styles
-   - Personalized astrologer matching based on compatibility
+### Gamification Elements (Enhanced for Viral Growth) (See Epic 9)
+1. **Karma Points System**: Users earn points for opening messages, referring friends, or completing profile info (birth time, location); Redeem points for mini-readings or subscription discounts; Bonus points for engagement milestones; **Shareable Achievements**: Points and badges that users can share with friends. User Story: As a user, I want to earn and redeem Karma Points for engaging with the platform and referring friends.
+2. **Streak Mechanics**: Daily engagement streaks with rewards; "7-day cosmic streak! Keep going for a free love reading" achievements; Monthly streak bonuses; **Social Sharing**: Ability to share streaks with friends and challenge them. User Story: As a user, I want to maintain daily engagement streaks and share them with friends.
+3. **Unlockable Content**: Tiered insights (basic → love → career → spiritual) that require engagement or subscription to access; Exclusive content for consistent users; Achievement badges for various milestones. User Story: As a user, I want to unlock new content and insights as I progress.
+4. **Cosmic Journey Progress System**: Visual progress bar showing advancement toward unlocking deeper insights or exclusive content; Creates a sense of achievement and curiosity as users advance; Different levels with unique rewards and privileges; "Astrology-Themed Challenges" like "Find your lucky day this week" or "Understand your moon sign's impact"; **Progress Sharing**: Let users show off their progress to friends. User Story: As a user, I want to visualize my progress on a cosmic journey and share it with friends.
+5. **Competition & Leaderboards**: Cosmic achievement leaderboards showing top engagers; Challenge-based competitions during planetary events; Community-based achievement unlocking where group milestones unlock collective rewards; **Friend Competitions**: Challenges you can invite friends to participate in. User Story: As a user, I want to participate in competitions and see my ranking on leaderboards.
 
-3. **Content Filtering**:
-   - Topic-based content preferences
-   - Intensity level selection (light, moderate, in-depth)
-   - Format preferences (text, audio, visual)
-   - Cultural sensitivity settings
+### Advanced Gamification for Active Social Virality (See Epic 9)
+- **Shareable Achievement Badges & Milestones**: Every achievement, streak milestone, or "pattern mastery" unlock should include an immediate, frictionless CTA to share to WhatsApp or social media. These become organic, user-generated advertisements. User Story: As a user, I want to easily share my achievement badges and milestones on social media.
+- **"Cosmic Journey Progress System" as a Social Journey**: Make the progression not just personal but also social. Users can see their friends' progress, adding a layer of friendly competition and motivation to keep engaging and advancing—requiring more platform interaction. User Story: As a user, I want to see my friends' progress in their cosmic journey and engage in friendly competition.
 
-### Gamification Elements (Enhanced for Viral Growth)
-1. **Karma Points System**:
-   - Users earn points for opening messages, referring friends, or completing profile info (birth time, location)
-   - Redeem points for mini-readings or subscription discounts
-   - Bonus points for engagement milestones
-   - **Shareable Achievements**: Points and badges that users can share with friends
+### Customizable User Profiles (See Epic 7)
+1. **Extended Profile Options**: Spiritual path preferences (Vedic, Western, Mystical, etc.); Life focus areas (career, relationships, health, spirituality); Experience level settings (beginner, intermediate, advanced); Relationship status and family dynamics; Friends for compatibility checking. User Story: As a user, I want to customize my profile with extended personal and astrological preferences.
+2. **Preference Management**: Detailed communication preferences; Content consumption habits; Feedback integration for continuous improvement; Goal-setting and progress tracking. User Story: As a user, I want to manage my communication preferences and track my goals.
 
-2. **Streak Mechanics**:
-   - Daily engagement streaks with rewards
-   - "7-day cosmic streak! Keep going for a free love reading" achievements
-   - Monthly streak bonuses
-   - **Social Sharing**: Ability to share streaks with friends and challenge them
+### Tailored Service Delivery (See Epic 4)
+1. **Personalized Readings**: Customized interpretation depth; Personal relevance scoring; Thematic focus based on user interests; Life stage appropriate guidance. User Story: As a user, I want to receive personalized readings tailored to my life stage and interests.
+2. **Customizable Alerts**: Personal transit significance ranking; Custom event notifications; Relationship-specific alerts; Career and business timing notifications. User Story: As a user, I want to customize the alerts I receive for transits and events.
 
-3. **Unlockable Content**:
-   - Tiered insights (basic → love → career → spiritual) that require engagement or subscription to access
-   - Exclusive content for consistent users
-   - Achievement badges for various milestones
+### Advanced Customization Tools (See Epic 4)
+1. **Interface Customization**: Personal dashboard widgets; Custom quick-action shortcuts; Layout preferences; Font and display options. User Story: As a user, I want to customize the interface of my dashboard.
+2. **Content Aggregation**: Personalized content feeds; Custom report compilation; Saved reading templates; Personalized ritual and remedy suggestions. User Story: As a user, I want personalized content feeds and custom report compilation.
 
-4. **Cosmic Journey Progress System**:
-   - Visual progress bar showing advancement toward unlocking deeper insights or exclusive content
-   - Creates a sense of achievement and curiosity as users advance
-   - Different levels with unique rewards and privileges
-   - "Astrology-Themed Challenges" like "Find your lucky day this week" or "Understand your moon sign's impact"
-   - **Progress Sharing**: Let users show off their progress to friends
+### Social Features (New) (See Epic 8)
+1. **Compatibility Sharing**: Easy way to check and share compatibility with friends; Group compatibility reports; "Add Friend" functionality. User Story: As a user, I want to easily share compatibility reports and add friends.
+2. **Community Building**: Connect with people with similar astrological profiles; Join sign-based or interest-based groups; Share prediction success stories. User Story: As a user, I want to connect with a community of like-minded individuals and share my experiences.
 
-5. **Competition & Leaderboards**:
-   - Cosmic achievement leaderboards showing top engagers
-   - Challenge-based competitions during planetary events
-   - Community-based achievement unlocking where group milestones unlock collective rewards
-   - **Friend Competitions**: Challenges you can invite friends to participate in
-
-### Advanced Gamification for Active Social Virality
-- **Shareable Achievement Badges & Milestones**: Every achievement, streak milestone, or "pattern mastery" unlock should include an immediate, frictionless CTA to share to WhatsApp or social media. These become organic, user-generated advertisements.
-- **"Cosmic Journey Progress System" as a Social Journey**: Make the progression not just personal but also social. Users can see their friends' progress, adding a layer of friendly competition and motivation to keep engaging and advancing—requiring more platform interaction.
-
-### Customizable User Profiles
-1. **Extended Profile Options**:
-   - Spiritual path preferences (Vedic, Western, Mystical, etc.)
-   - Life focus areas (career, relationships, health, spirituality)
-   - Experience level settings (beginner, intermediate, advanced)
-   - Relationship status and family dynamics
-   - Friends for compatibility checking
-
-2. **Preference Management**:
-   - Detailed communication preferences
-   - Content consumption habits
-   - Feedback integration for continuous improvement
-   - Goal-setting and progress tracking
-
-### Tailored Service Delivery
-1. **Personalized Readings**:
-   - Customized interpretation depth
-   - Personal relevance scoring
-   - Thematic focus based on user interests
-   - Life stage appropriate guidance
-
-2. **Customizable Alerts**:
-   - Personal transit significance ranking
-   - Custom event notifications
-   - Relationship-specific alerts
-   - Career and business timing notifications
-
-### Advanced Customization Tools
-1. **Interface Customization**:
-   - Personal dashboard widgets
-   - Custom quick-action shortcuts
-   - Layout preferences
-   - Font and display options
-
-2. **Content Aggregation**:
-   - Personalized content feeds
-   - Custom report compilation
-   - Saved reading templates
-   - Personalized ritual and remedy suggestions
-
-### Social Features (New)
-1. **Compatibility Sharing**:
-   - Easy way to check and share compatibility with friends
-   - Group compatibility reports
-   - "Add Friend" functionality
-
-2. **Community Building**:
-   - Connect with people with similar astrological profiles
-   - Join sign-based or interest-based groups
-   - Share prediction success stories
-
-### Leveraging Community as a Primary Viral Engine
-- **Community-Driven Social Proof**: Highlight user success stories and testimonials *within* the Astro-Social Network, demonstrating the real-world impact of the insights and interpretations. This internal social proof acts as a powerful motivator for new users and encourages existing users to share.
-- **Exclusive Group Access & Content**: The VIP tier's "Exclusive Community" should not just be a perk but a highly coveted, aspirational space that drives upgrades through perceived exclusivity and unique value from interaction with top astrologers and like-minded individuals.
-- **Community Challenges**: Implement "Community Challenges" during planetary events (e.g., "New Moon Manifestation Challenge") where users collaboratively work towards goals, share experiences, and invite friends to participate, organically expanding the user base.
+### Leveraging Community as a Primary Viral Engine (See Epic 8)
+- **Community-Driven Social Proof**: Highlight user success stories and testimonials *within* the Astro-Social Network, demonstrating the real-world impact of the insights and interpretations. This internal social proof acts as a powerful motivator for new users and encourages existing users to share. User Story: As a user, I want to see and share success stories within the Astro-Social Network.
+- **Exclusive Group Access & Content**: The VIP tier's "Exclusive Community" should not just be a perk but a highly coveted, aspirational space that drives upgrades through perceived exclusivity and unique value from interaction with top astrologers and like-minded individuals. User Story: As a VIP user, I want exclusive access to a community with direct astrologer interaction.
+- **Community Challenges**: Implement "Community Challenges" during planetary events (e.g., "New Moon Manifestation Challenge") where users collaboratively work towards goals, share experiences, and invite friends to participate, organically expanding the user base. User Story: As a user, I want to participate in community challenges during planetary events.
 
 ## User Journey Mapping & Experience Flows (Enhanced for Retention and Virality) (See Epic 1, Epic 6)
 
@@ -1701,24 +1683,24 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 ## Quick Reference Guide (Updated)
 
 ### Enhanced Core Service Offerings Summary:
-- **Multiple Astrology Systems**: Vedic, Western, Chinese, Tarot, Numerology, Palmistry, Nadi, and more
-- **Enhanced Subscription Tiers**: Free, Essential, Premium, VIP plans with clear value progression and viral features
-- **One-time Services**: Individual questions, specialized readings, and micro-transactions
-- **Human Astrologer Chat**: Direct access to certified astrologers with priority options
-- **AI-Powered Quick Readings**: Instant responses for basic queries through advanced AI
-- **AI Twin System**: Personalized AI astrologer that learns communication style and life patterns
-- **Transit Timing Engine**: Precision life planning with decision timing calculator
-- **Astro-Social Network**: Chart-based matching and community wisdom platform
-- **Astro-Productivity Suite**: Integration with daily life apps and decision-making tools
-- **Predictive Relationship Analyzer**: Advanced compatibility with real-time matching
-- **Future Self Simulator**: Long-term life timeline visualization and pathway analysis
-- **Astro-Marketplace**: Personalized remedy recommendations with revenue generation
-- **Multi-Channel Strategy**: WhatsApp-first approach with expansion to web, mobile, and other messaging platforms
-- **Cross-Platform History**: Complete access to reading history and kundli across all channels
-- **Kundli Sharing**: Interactive birth chart visualization with shareable formats
-- **NEW: Viral Compatibility Features**: Easy compatibility checking that encourages users to bring friends
-- **NEW: Social Proof Elements**: Community, sharing features and user-generated content
-- **NEW: Gamification with Sharing**: Achievements, streaks, and social elements
+- **Multiple Astrology Systems**: Vedic, Western, Chinese, Tarot, Numerology, Palmistry, Nadi, and more (See Epic 2)
+- **Enhanced Subscription Tiers**: Free, Essential, Premium, VIP plans with clear value progression and viral features (See Epic 3)
+- **One-time Services**: Individual questions, specialized readings, and micro-transactions (See Epic 3)
+- **Human Astrologer Chat**: Direct access to certified astrologers with priority options (See Epic 13)
+- **AI-Powered Quick Readings**: Instant responses for basic queries through advanced AI (See Epic 4)
+- **AI Twin System**: Personalized AI astrologer that learns communication style and life patterns (See Epic 4)
+- **Transit Timing Engine**: Precision life planning with decision timing calculator (See Epic 5)
+- **Astro-Social Network**: Chart-based matching and community wisdom platform (See Epic 8)
+- **Astro-Productivity Suite**: Integration with daily life apps and decision-making tools (See Epic 4)
+- **Predictive Relationship Analyzer**: Advanced compatibility with real-time matching (See Epic 8)
+- **Future Self Simulator**: Long-term life timeline visualization and pathway analysis (See Epic 4)
+- **Astro-Marketplace**: Personalized remedy recommendations with revenue generation (See Epic 3)
+- **Multi-Channel Strategy**: WhatsApp-first approach with expansion to web, mobile, and other messaging platforms (See Epic 1)
+- **Cross-Platform History**: Complete access to reading history and kundli across all channels (See Epic 1)
+- **Kundli Sharing**: Interactive birth chart visualization with shareable formats (See Epic 8)
+- **NEW: Viral Compatibility Features**: Easy compatibility checking that encourages users to bring friends (See Epic 8)
+- **NEW: Social Proof Elements**: Community, sharing features and user-generated content (See Epic 8)
+- **NEW: Gamification with Sharing**: Achievements, streaks, and social elements (See Epic 9)
 
 ### Target Markets:
 - **Primary**: India, UAE, Australia with regional pricing and payment methods

@@ -34,6 +34,9 @@ yarn-error.log*
 !nuxt.config.js
 !quasar.config.js
 !railway.json
+# Include conversation flow configuration
+!src/conversation/flowConfig.json
+!src/conversation/menuConfig.json
 coverage/
 .pnp
 .pnp.*

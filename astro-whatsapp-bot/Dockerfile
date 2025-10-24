@@ -4,14 +4,14 @@ FROM node:18-alpine
 # Set working directory to /app
 WORKDIR /app
 
-# Copy package files from the astro-whatsapp-bot directory
-COPY astro-whatsapp-bot/package*.json ./
+# Copy package files 
+COPY package*.json ./
 
 # Install dependencies with npm ci for reproducible builds
 RUN npm ci --only=production && npm cache clean --force
 
-# Copy application source code from astro-whatsapp-bot directory
-COPY astro-whatsapp-bot/ .
+# Copy application source code
+COPY . .
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs

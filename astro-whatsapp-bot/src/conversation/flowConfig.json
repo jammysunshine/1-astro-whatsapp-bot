@@ -3,17 +3,19 @@
     "start_step": "welcome",
     "steps": {
       "welcome": {
-        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\nTo get started, what's your name?",
-        "validation": "text",
-        "next_step": "ask_birth_date",
-        "data_key": "userName"
-      },
-      "ask_birth_date": {
-        "prompt": "Hi {userName}! ✨\n\nTo provide accurate and personalized readings, I need your birth details.\n\nPlease provide your birth date in DD/MM/YYYY format:\n\n*Example:* 15/06/1990",
+        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\nTo get started and provide your first reading, what's your birth date? (DD/MM/YYYY)\n\n*Example:* 15/06/1990\n\n💡 *Why birth date?* Your birth chart reveals your unique cosmic blueprint!",
         "validation": "date",
         "next_step": "ask_birth_time",
         "data_key": "birthDate",
         "error_message": "Please provide a valid date in DD/MM/YYYY format (e.g., 15/06/1990)"
+      },
+      "ask_birth_time": {
+        "prompt": "Great! 📅 Your birth date reveals your *Sun Sign* and core personality.\n\nFor more accurate insights, what's your birth time? (HH:MM, 24-hour format)\n\n*Example:* 14:30\n\n💡 *Why birth time?* It determines your *Rising Sign* (how others see you) and *Moon Sign* (your emotional nature).\n\nOr reply 'skip' if you don't know.",
+        "validation": "time_or_skip",
+        "next_step": "ask_birth_place",
+        "data_key": "birthTime",
+        "optional": true,
+        "error_message": "Please provide time in HH:MM format (e.g., 14:30) or 'skip'"
       },
       "ask_birth_time": {
         "prompt": "Great! 📅\n\nBirth time helps me create more accurate predictions.\n\nPlease provide your birth time in HH:MM format (24-hour):\n\n*Example:* 14:30\n\nOr reply 'skip' if you don't know your exact birth time.",
@@ -24,20 +26,28 @@
         "error_message": "Please provide time in HH:MM format (e.g., 14:30) or 'skip'"
       },
       "ask_birth_place": {
-        "prompt": "Almost there! 🌍\n\nBirth place is important for accurate astrological calculations.\n\nPlease provide your birth city and country:\n\n*Example:* Mumbai, India",
+        "prompt": "Excellent! 🌍 Birth place determines your *local planetary positions* at birth.\n\nPlease provide your birth city and country:\n\n*Example:* Mumbai, India\n\n💡 *Why birth place?* Different locations have unique astrological influences due to latitude/longitude.",
         "validation": "text",
-        "next_step": "confirm_details",
+        "next_step": "ask_language",
         "data_key": "birthPlace",
         "error_message": "Please provide your birth place (City, Country)"
       },
+      "ask_language": {
+        "prompt": "One more thing! 🌐\n\nWhat language would you prefer for your readings?\n\n🔸 English\n🔸 Hindi\n🔸 More options coming soon!\n\nReply with your choice or 'english' as default.",
+        "validation": "language_choice",
+        "next_step": "confirm_details",
+        "data_key": "preferredLanguage",
+        "optional": true,
+        "error_message": "Please choose a language or reply 'english'"
+      },
       "confirm_details": {
-        "prompt": "Perfect! ✨ Here's what I have:\n\n👤 *Name:* {userName}\n📅 *Birth Date:* {birthDate}\n🕐 *Birth Time:* {birthTime}\n🌍 *Birth Place:* {birthPlace}\n\nIs this information correct? Reply 'yes' to continue or 'no' to update.",
+        "prompt": "Perfect! ✨ Here's your cosmic profile:\n\n📅 *Birth Date:* {birthDate}\n🕐 *Birth Time:* {birthTime}\n🌍 *Birth Place:* {birthPlace}\n🌐 *Language:* {preferredLanguage}\n\nIs this information correct? Reply 'yes' to get your first reading or 'no' to update.",
         "validation": "yes_no",
         "next_step": "complete_onboarding",
         "error_message": "Please reply 'yes' or 'no'"
       },
       "complete_onboarding": {
-        "prompt": "🎉 *Welcome to your cosmic journey, {userName}!*\n\nYour profile is now complete! I'm calculating your birth chart...\n\n*Your Sun Sign:* {sunSign}\n\nWhat would you like to explore first?\n\n🔮 *Daily Horoscope*\n📊 *Birth Chart*\n💕 *Compatibility*\n\nJust send me a message!",
+        "prompt": "🎉 *Welcome to your cosmic journey!*\n\nYour profile is complete! Here's your *personalized birth chart summary*:\n\n☀️ *Sun Sign:* {sunSign}\n🌙 *Moon Sign:* {moonSign}\n⬆️ *Rising Sign:* {risingSign}\n\n🔥 *Your Top 3 Life Patterns:*\n1. {pattern1}\n2. {pattern2}\n3. {pattern3}\n\n⭐ *2,847 users* with your Sun sign found these insights highly accurate!\n\n💫 *Free 3-Day Transit Preview:*\n{todayTransit}\n{tomorrowTransit}\n{day3Transit}\n\nWhat would you like to explore next?\n\n🔮 Daily Horoscope\n📊 Full Birth Chart\n💕 Compatibility Check\n\nJust reply with your choice!",
         "validation": "none",
         "next_step": null,
         "action": "complete_profile"

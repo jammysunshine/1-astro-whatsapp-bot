@@ -49,6 +49,14 @@ const validateStepInput = async(input, step) => {
 
     const timeRegex = /^(\d{1,2}):(\d{2})$/;
     const timeMatch = input.match(timeRegex);
+
+  case 'language_choice':
+    const validLanguages = ['english', 'hindi', 'en', 'hi'];
+    if (validLanguages.includes(trimmedInput.toLowerCase())) {
+      return { isValid: true, cleanedValue: trimmedInput.toLowerCase() };
+    }
+    // Default to english if not specified
+    return { isValid: true, cleanedValue: 'english' };
     if (!timeMatch) {
       return { isValid: false, errorMessage: step.error_message || 'Please provide time in HH:MM format or "skip".' };
     }
@@ -209,27 +217,63 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
     const birthDate = flowData.birthDate;
     const birthTime = flowData.birthTime;
     const birthPlace = flowData.birthPlace;
-    const userName = flowData.userName;
+    const preferredLanguage = flowData.preferredLanguage || 'english';
 
-    // Update user name if provided
-    if (userName) {
-      await updateUserProfile(phoneNumber, { name: userName });
+    // Update user profile with birth details
+    await addBirthDetails(phoneNumber, { birthDate, birthTime, birthPlace });
+    await updateUserProfile(phoneNumber, {
+      profileComplete: true,
+      preferredLanguage,
+      onboardingCompletedAt: new Date()
+    });
+
+    // Generate comprehensive birth chart analysis
+    const chartData = await vedicCalculator.generateDetailedChart({ birthDate, birthTime, birthPlace });
+
+    // Extract key information for prompt replacement
+    const sunSign = chartData.sunSign || vedicCalculator.calculateSunSign(birthDate);
+    const moonSign = chartData.moonSign || 'Unknown';
+    const risingSign = chartData.risingSign || 'Unknown';
+
+    // Generate top 3 life patterns
+    const patterns = chartData.lifePatterns || [
+      'Strong communication abilities',
+      'Natural leadership qualities',
+      'Creative problem-solving skills'
+    ];
+
+    // Generate 3-day transit preview
+    const transits = await vedicCalculator.generateTransitPreview({ birthDate, birthTime, birthPlace }, 3);
+
+    // Replace placeholders in completion message
+    let completionMessage = getFlow(flowId).steps.complete_onboarding.prompt;
+    completionMessage = completionMessage
+      .replace('{sunSign}', sunSign)
+      .replace('{moonSign}', moonSign)
+      .replace('{risingSign}', risingSign)
+      .replace('{pattern1}', patterns[0] || 'Strong communication abilities')
+      .replace('{pattern2}', patterns[1] || 'Natural leadership qualities')
+      .replace('{pattern3}', patterns[2] || 'Creative problem-solving skills')
+      .replace('{todayTransit}', transits.today || 'Today brings opportunities for new connections')
+      .replace('{tomorrowTransit}', transits.tomorrow || 'Tomorrow favors focused work and planning')
+      .replace('{day3Transit}', transits.day3 || 'Day 3 brings creative inspiration');
+
+    await sendMessage(phoneNumber, completionMessage);
+
+    // Send main menu
+    const menu = getMenu('main_menu');
+    if (menu) {
+      const buttons = menu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(phoneNumber, { type: 'button', body: menu.body, buttons }, 'interactive');
     }
-
-    // Add birth details
-    await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
-    await updateUserProfile(phoneNumber, { profileComplete: true });
 
     // Clear onboarding session
     await deleteUserSession(phoneNumber);
 
-    // Send completion message with sun sign
-    const sunSign = vedicCalculator.calculateSunSign(birthDate);
-    let completionMessage = getFlow(flowId).steps.complete_onboarding.prompt;
-    completionMessage = completionMessage.replace('{userName}', userName || 'cosmic explorer');
-    completionMessage = completionMessage.replace('{sunSign}', sunSign);
-
-    await sendMessage(phoneNumber, completionMessage);
+    logger.info(`✅ User ${phoneNumber} completed onboarding with comprehensive analysis`);
     break;
   }
   case 'process_subscription': {

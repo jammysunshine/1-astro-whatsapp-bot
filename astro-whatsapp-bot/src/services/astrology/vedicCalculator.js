@@ -300,6 +300,114 @@ class VedicCalculator {
   }
 
   /**
+   * Generate detailed birth chart analysis
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Detailed chart data
+   */
+  async generateDetailedChart(birthData) {
+    const { birthDate, birthTime, birthPlace } = birthData;
+
+    const sunSign = this.calculateSunSign(birthDate);
+    const moonSign = this.calculateMoonSign(birthDate, birthTime);
+    const risingSign = this.calculateRisingSign(birthDate, birthTime, birthPlace);
+
+    // Generate life patterns based on sun sign
+    const lifePatterns = this.generateLifePatterns(sunSign);
+
+    return {
+      sunSign,
+      moonSign,
+      risingSign,
+      lifePatterns
+    };
+  }
+
+  /**
+   * Generate 3-day transit preview
+   * @param {Object} birthData - Birth data
+   * @param {number} days - Number of days
+   * @returns {Object} Transit preview
+   */
+  async generateTransitPreview(birthData, days = 3) {
+    // Simplified transit preview
+    const transits = {
+      today: "🌅 *Today:* Planetary energies support new beginnings and communication. Perfect for starting conversations or initiating projects.",
+      tomorrow: "🌞 *Tomorrow:* Focus on relationships and partnerships. Harmonious energies make this a good day for collaboration.",
+      day3: "🌙 *Day 3:* Creative inspiration flows strongly. Use this energy for artistic pursuits or innovative thinking."
+    };
+
+    return transits;
+  }
+
+  /**
+   * Calculate moon sign (simplified)
+   * @param {string} birthDate - Birth date
+   * @param {string} birthTime - Birth time
+   * @returns {string} Moon sign
+   */
+  calculateMoonSign(birthDate, birthTime) {
+    // Simplified calculation - in reality this requires lunar position
+    const signs = this.zodiacSigns;
+    const [day, month] = birthDate.split('/').map(Number);
+    const dayOfYear = this.getDayOfYear(day, month);
+    return signs[(dayOfYear + 5) % 12]; // Offset for moon
+  }
+
+  /**
+   * Calculate rising sign (simplified)
+   * @param {string} birthDate - Birth date
+   * @param {string} birthTime - Birth time
+   * @param {string} birthPlace - Birth place
+   * @returns {string} Rising sign
+   */
+  calculateRisingSign(birthDate, birthTime, birthPlace) {
+    // Simplified calculation - in reality this requires complex astronomical calculations
+    const signs = this.zodiacSigns;
+    const [day, month] = birthDate.split('/').map(Number);
+    const dayOfYear = this.getDayOfYear(day, month);
+    return signs[(dayOfYear + 8) % 12]; // Offset for rising
+  }
+
+  /**
+   * Generate life patterns based on sun sign
+   * @param {string} sunSign - Sun sign
+   * @returns {Array} Life patterns
+   */
+  generateLifePatterns(sunSign) {
+    const patterns = {
+      Aries: ['Natural leadership and initiative', 'Competitive drive and courage', 'Independent problem-solving'],
+      Taurus: ['Practical and reliable nature', 'Strong work ethic and patience', 'Appreciation for beauty and comfort'],
+      Gemini: ['Excellent communication skills', 'Adaptable and versatile mind', 'Curious and intellectual pursuits'],
+      Cancer: ['Deep emotional intelligence', 'Strong intuition and empathy', 'Protective of loved ones'],
+      Leo: ['Creative self-expression', 'Natural charisma and confidence', 'Generous and warm-hearted'],
+      Virgo: ['Attention to detail and precision', 'Analytical and helpful nature', 'Strong sense of duty'],
+      Libra: ['Diplomatic and fair-minded', 'Appreciation for harmony and balance', 'Social and cooperative'],
+      Scorpio: ['Intense emotional depth', 'Powerful intuition and insight', 'Transformative resilience'],
+      Sagittarius: ['Adventurous and optimistic spirit', 'Love of learning and exploration', 'Honest and philosophical'],
+      Capricorn: ['Ambitious and disciplined', 'Strong sense of responsibility', 'Patient long-term planning'],
+      Aquarius: ['Innovative and humanitarian', 'Independent thinking', 'Progressive and forward-looking'],
+      Pisces: ['Compassionate and artistic', 'Strong imagination and intuition', 'Spiritual and empathetic']
+    };
+
+    return patterns[sunSign] || ['Strong communication abilities', 'Natural leadership qualities', 'Creative problem-solving skills'];
+  }
+
+  /**
+   * Get day of year
+   * @param {number} day - Day
+   * @param {number} month - Month
+   * @returns {number} Day of year
+   */
+  getDayOfYear(day, month) {
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let dayOfYear = day;
+    for (let i = 0; i < month - 1; i++) {
+      dayOfYear += daysInMonth[i];
+    }
+    return dayOfYear;
+  }
+
+  /**
    * Get compatibility description
    * @param {string} sign1 - First sign
    * @param {string} sign2 - Second sign

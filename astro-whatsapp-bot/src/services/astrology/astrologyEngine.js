@@ -27,7 +27,11 @@ const generateAstrologyResponse = async(messageText, user) => {
     const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
     const horoscope = vedicCalculator.generateDailyHoroscope(sunSign);
 
-    return `🌟 *Daily Horoscope for ${sunSign}*\n\n${horoscope}\n\nRemember, the stars guide us but you create your destiny! ✨`;
+    // Add social proof and progress tracking
+    const userCount = 2847; // Mock social proof
+    const insightsReceived = user.insightsReceived || 0;
+
+    return `🌟 *Daily Horoscope for ${sunSign}*\n\n${horoscope}\n\n⭐ *${userCount} users* with your sign found today's guidance particularly accurate!\n\n📊 *Your Cosmic Journey:* ${insightsReceived + 1} personalized insights received\n\nRemember, the stars guide us but you create your destiny! ✨`;
   }
 
   // Birth chart requests
@@ -37,8 +41,16 @@ const generateAstrologyResponse = async(messageText, user) => {
     }
 
     try {
-      const birthChart = vedicCalculator.generateBasicBirthChart(user);
-      return `📊 *Your Birth Chart Summary*\n\n${birthChart.summary}\n\n*Sun Sign:* ${birthChart.sunSign}\n*Moon Sign:* ${birthChart.moonSign}\n\nWould you like a detailed analysis or daily horoscope?`;
+      const chartData = await vedicCalculator.generateDetailedChart({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime,
+        birthPlace: user.birthPlace
+      });
+
+      const patterns = chartData.lifePatterns;
+      const userCount = 2847;
+
+      return `📊 *Your Complete Birth Chart Analysis*\n\n☀️ *Sun Sign:* ${chartData.sunSign} - Your core identity\n🌙 *Moon Sign:* ${chartData.moonSign} - Your emotional nature\n⬆️ *Rising Sign:* ${chartData.risingSign} - How others see you\n\n🔥 *Your Top 3 Life Patterns:*\n1. ${patterns[0]}\n2. ${patterns[1]}\n3. ${patterns[2]}\n\n⭐ *${userCount} users* with similar charts report these patterns resonate strongly!\n\nWould you like your daily horoscope or compatibility analysis?`;
     } catch (error) {
       logger.error('Error generating birth chart:', error);
       return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';

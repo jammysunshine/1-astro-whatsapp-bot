@@ -5,19 +5,23 @@
     "buttons": [
       {
         "id": "btn_daily_horoscope",
-        "title": "Daily Horoscope"
+        "title": "Daily Horoscope",
+        "action": "get_daily_horoscope"
       },
       {
         "id": "btn_birth_chart",
-        "title": "Birth Chart"
+        "title": "Birth Chart",
+        "action": "show_user_profile"
       },
       {
         "id": "btn_compatibility",
-        "title": "Compatibility"
+        "title": "Compatibility",
+        "action": "initiate_compatibility_flow"
       },
       {
-        "id": "btn_help",
-        "title": "Help"
+        "id": "btn_subscription",
+        "title": "Subscription",
+        "action": "show_subscription_plans"
       }
     ]
   }

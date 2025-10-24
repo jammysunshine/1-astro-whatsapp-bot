@@ -34,28 +34,71 @@ const generateAstrologyResponse = async(messageText, user) => {
     return `🌟 *Daily Horoscope for ${sunSign}*\n\n${horoscope}\n\n⭐ *${userCount} users* with your sign found today's guidance particularly accurate!\n\n📊 *Your Cosmic Journey:* ${insightsReceived + 1} personalized insights received\n\nRemember, the stars guide us but you create your destiny! ✨`;
   }
 
-  // Birth chart requests
-  if (message.includes('birth chart') || message.includes('kundli') || message.includes('chart')) {
-    if (!user.birthDate) {
-      return 'To generate your birth chart, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-    }
+   // Birth chart requests
+   if (message.includes('birth chart') || message.includes('kundli') || message.includes('chart')) {
+     if (!user.birthDate) {
+       return 'To generate your birth chart, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+     }
 
-    try {
-      const chartData = await vedicCalculator.generateDetailedChart({
-        birthDate: user.birthDate,
-        birthTime: user.birthTime,
-        birthPlace: user.birthPlace
-      });
+     try {
+       const chartData = vedicCalculator.generateBasicBirthChart({
+         name: user.name,
+         birthDate: user.birthDate,
+         birthTime: user.birthTime || '12:00',
+         birthPlace: user.birthPlace || 'Delhi'
+       });
 
-      const patterns = chartData.lifePatterns;
-      const userCount = 2847;
+       const userCount = 2847;
 
-      return `📊 *Your Complete Birth Chart Analysis*\n\n☀️ *Sun Sign:* ${chartData.sunSign} - Your core identity\n🌙 *Moon Sign:* ${chartData.moonSign} - Your emotional nature\n⬆️ *Rising Sign:* ${chartData.risingSign} - How others see you\n\n🔥 *Your Top 3 Life Patterns:*\n1. ${patterns[0]}\n2. ${patterns[1]}\n3. ${patterns[2]}\n\n⭐ *${userCount} users* with similar charts report these patterns resonate strongly!\n\nWould you like your daily horoscope or compatibility analysis?`;
-    } catch (error) {
-      logger.error('Error generating birth chart:', error);
-      return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
-    }
-  }
+       let response = `📊 *Your Complete Natal Chart Analysis*\n\n`;
+       response += `☀️ *Sun Sign:* ${chartData.sunSign} - Your core identity\n`;
+       response += `🌙 *Moon Sign:* ${chartData.moonSign} - Your emotional nature\n`;
+       response += `⬆️ *Rising Sign:* ${chartData.risingSign} - How others perceive you\n\n`;
+
+       // Add dominant elements and qualities
+       if (chartData.dominantElements && chartData.dominantElements.length > 0) {
+         response += `🔥 *Dominant Elements:* ${chartData.dominantElements.join(', ')}\n`;
+       }
+       if (chartData.dominantQualities && chartData.dominantQualities.length > 0) {
+         response += `⚡ *Dominant Qualities:* ${chartData.dominantQualities.join(', ')}\n\n`;
+       }
+
+       // Add personality traits
+       if (chartData.personalityTraits && chartData.personalityTraits.length > 0) {
+         response += `👤 *Key Personality Traits:*\n`;
+         chartData.personalityTraits.slice(0, 4).forEach((trait, index) => {
+           response += `${index + 1}. ${trait}\n`;
+         });
+         response += '\n';
+       }
+
+       // Add strengths
+       if (chartData.strengths && chartData.strengths.length > 0) {
+         response += `💪 *Your Cosmic Strengths:*\n`;
+         chartData.strengths.forEach((strength, index) => {
+           response += `• ${strength}\n`;
+         });
+         response += '\n';
+       }
+
+       // Add challenges
+       if (chartData.challenges && chartData.challenges.length > 0) {
+         response += `🎯 *Areas for Growth:*\n`;
+         chartData.challenges.forEach((challenge, index) => {
+           response += `• ${challenge}\n`;
+         });
+         response += '\n';
+       }
+
+       response += `⭐ *${userCount} users* with similar charts report these insights resonate strongly!\n\n`;
+       response += `Would you like your daily horoscope, compatibility analysis, or transit insights?`;
+
+       return response;
+     } catch (error) {
+       logger.error('Error generating birth chart:', error);
+       return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
+     }
+   }
 
   // Compatibility requests
   if (message.includes('compatibility') || message.includes('match') || message.includes('compatible')) {

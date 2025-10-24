@@ -1,26 +1,25 @@
-// src/services/whatsapp/messageSender.js
-// WhatsApp message sender service
-
 const axios = require('axios');
 const logger = require('../../utils/logger');
 
+// WhatsApp Business API configuration
+const WHATSAPP_API_URL = 'https://graph.facebook.com/v18.0';
+const W1_WHATSAPP_ACCESS_TOKEN = process.env.W1_WHATSAPP_ACCESS_TOKEN;
+const W1_WHATSAPP_PHONE_NUMBER_ID = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
+
 /**
  * Send text message to WhatsApp user
- * @param {string} phoneNumber - Recipient's phone number in WhatsApp format
+ * @param {string} phoneNumber - Recipient's phone number
  * @param {string} message - Message text to send
  * @param {Object} options - Additional options for message sending
  * @returns {Promise<Object>} WhatsApp API response
  */
 const sendTextMessage = async (phoneNumber, message, options = {}) => {
   try {
-    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
-    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-    
-    if (!accessToken || !phoneNumberId) {
+    if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
 
-    const url = `https://graph.facebook.com/v18.0/${phoneNumberId}/messages`;
+    const url = `${WHATSAPP_API_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
     // Prepare message payload
     const messagePayload = {
@@ -45,17 +44,17 @@ const sendTextMessage = async (phoneNumber, message, options = {}) => {
 
     const response = await axios.post(url, messagePayload, {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
         'Content-Type': 'application/json'
       },
       timeout: 30000 // 30 second timeout
     });
 
-    logger.info(`Message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
+    logger.info(`📤 Message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
     return response.data;
 
   } catch (error) {
-    logger.error(`Error sending message to ${phoneNumber}:`, error.response?.data || error.message);
+    logger.error(`❌ Error sending message to ${phoneNumber}:`, error.response?.data || error.message);
     throw error;
   }
 };
@@ -70,14 +69,11 @@ const sendTextMessage = async (phoneNumber, message, options = {}) => {
  */
 const sendInteractiveButtons = async (phoneNumber, body, buttons, options = {}) => {
   try {
-    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
-    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-    
-    if (!accessToken || !phoneNumberId) {
+    if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
 
-    const url = `https://graph.facebook.com/v18.0/${phoneNumberId}/messages`;
+    const url = `${WHATSAPP_API_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
     // Prepare interactive message payload
     const messagePayload = {
@@ -109,17 +105,17 @@ const sendInteractiveButtons = async (phoneNumber, body, buttons, options = {}) 
 
     const response = await axios.post(url, messagePayload, {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
         'Content-Type': 'application/json'
       },
       timeout: 30000 // 30 second timeout
     });
 
-    logger.info(`Interactive message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
+    logger.info(`🖱️ Interactive message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
     return response.data;
 
   } catch (error) {
-    logger.error(`Error sending interactive message to ${phoneNumber}:`, error.response?.data || error.message);
+    logger.error(`❌ Error sending interactive message to ${phoneNumber}:`, error.response?.data || error.message);
     throw error;
   }
 };
@@ -135,14 +131,11 @@ const sendInteractiveButtons = async (phoneNumber, body, buttons, options = {}) 
  */
 const sendListMessage = async (phoneNumber, body, buttonText, sections, options = {}) => {
   try {
-    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
-    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-    
-    if (!accessToken || !phoneNumberId) {
+    if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
 
-    const url = `https://graph.facebook.com/v18.0/${phoneNumberId}/messages`;
+    const url = `${WHATSAPP_API_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
     // Prepare list message payload
     const messagePayload = {
@@ -174,17 +167,17 @@ const sendListMessage = async (phoneNumber, body, buttonText, sections, options 
 
     const response = await axios.post(url, messagePayload, {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
         'Content-Type': 'application/json'
       },
       timeout: 30000 // 30 second timeout
     });
 
-    logger.info(`List message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
+    logger.info(`📋 List message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
     return response.data;
 
   } catch (error) {
-    logger.error(`Error sending list message to ${phoneNumber}:`, error.response?.data || error.message);
+    logger.error(`❌ Error sending list message to ${phoneNumber}:`, error.response?.data || error.message);
     throw error;
   }
 };
@@ -199,14 +192,11 @@ const sendListMessage = async (phoneNumber, body, buttonText, sections, options 
  */
 const sendTemplateMessage = async (phoneNumber, templateName, languageCode = 'en', components = []) => {
   try {
-    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
-    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-    
-    if (!accessToken || !phoneNumberId) {
+    if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
 
-    const url = `https://graph.facebook.com/v18.0/${phoneNumberId}/messages`;
+    const url = `${WHATSAPP_API_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
     // Prepare template message payload
     const messagePayload = {
@@ -224,17 +214,17 @@ const sendTemplateMessage = async (phoneNumber, templateName, languageCode = 'en
 
     const response = await axios.post(url, messagePayload, {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
         'Content-Type': 'application/json'
       },
       timeout: 30000 // 30 second timeout
     });
 
-    logger.info(`Template message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
+    logger.info(`📝 Template message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
     return response.data;
 
   } catch (error) {
-    logger.error(`Error sending template message to ${phoneNumber}:`, error.response?.data || error.message);
+    logger.error(`❌ Error sending template message to ${phoneNumber}:`, error.response?.data || error.message);
     throw error;
   }
 };
@@ -250,14 +240,11 @@ const sendTemplateMessage = async (phoneNumber, templateName, languageCode = 'en
  */
 const sendMediaMessage = async (phoneNumber, mediaType, mediaId, caption = '', options = {}) => {
   try {
-    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
-    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-    
-    if (!accessToken || !phoneNumberId) {
+    if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
 
-    const url = `https://graph.facebook.com/v18.0/${phoneNumberId}/messages`;
+    const url = `${WHATSAPP_API_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
     // Prepare media message payload
     const messagePayload = {
@@ -277,17 +264,17 @@ const sendMediaMessage = async (phoneNumber, mediaType, mediaId, caption = '', o
 
     const response = await axios.post(url, messagePayload, {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
         'Content-Type': 'application/json'
       },
       timeout: 30000 // 30 second timeout
     });
 
-    logger.info(`${mediaType} message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
+    logger.info(`📷 ${mediaType} message sent successfully to ${phoneNumber}: ${response.data.messages[0].id}`);
     return response.data;
 
   } catch (error) {
-    logger.error(`Error sending ${mediaType} message to ${phoneNumber}:`, error.response?.data || error.message);
+    logger.error(`❌ Error sending ${mediaType} message to ${phoneNumber}:`, error.response?.data || error.message);
     throw error;
   }
 };
@@ -299,14 +286,11 @@ const sendMediaMessage = async (phoneNumber, mediaType, mediaId, caption = '', o
  */
 const markMessageAsRead = async (messageId) => {
   try {
-    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
-    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-    
-    if (!accessToken || !phoneNumberId) {
+    if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
 
-    const url = `https://graph.facebook.com/v18.0/${phoneNumberId}/messages`;
+    const url = `${WHATSAPP_API_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
     const messagePayload = {
       messaging_product: 'whatsapp',
@@ -316,17 +300,58 @@ const markMessageAsRead = async (messageId) => {
 
     const response = await axios.post(url, messagePayload, {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
         'Content-Type': 'application/json'
       },
       timeout: 30000 // 30 second timeout
     });
 
-    logger.info(`Message marked as read: ${messageId}`);
+    logger.info(`👁️ Message marked as read: ${messageId}`);
     return response.data;
 
   } catch (error) {
-    logger.error(`Error marking message as read ${messageId}:`, error.response?.data || error.message);
+    logger.error(`❌ Error marking message as read ${messageId}:`, error.response?.data || error.message);
+    throw error;
+  }
+};
+
+/**
+ * Send message wrapper that handles different message types
+ * @param {string} phoneNumber - Recipient's phone number
+ * @param {string|Object} message - Message content (string for text, object for interactive/template)
+ * @param {string} messageType - Type of message (text, interactive, template, media)
+ * @param {Object} options - Additional options
+ * @returns {Promise<Object>} WhatsApp API response
+ */
+const sendMessage = async (phoneNumber, message, messageType = 'text', options = {}) => {
+  try {
+    let response;
+
+    switch (messageType) {
+      case 'text':
+        response = await sendTextMessage(phoneNumber, message, options);
+        break;
+      case 'interactive':
+        if (message.type === 'button') {
+          response = await sendInteractiveButtons(phoneNumber, message.body, message.buttons, options);
+        } else if (message.type === 'list') {
+          response = await sendListMessage(phoneNumber, message.body, message.buttonText, message.sections, options);
+        }
+        break;
+      case 'template':
+        response = await sendTemplateMessage(phoneNumber, message.templateName, message.languageCode, message.components);
+        break;
+      case 'media':
+        response = await sendMediaMessage(phoneNumber, message.mediaType, message.mediaId, message.caption, options);
+        break;
+      default:
+        response = await sendTextMessage(phoneNumber, message, options);
+    }
+
+    return response;
+
+  } catch (error) {
+    logger.error(`❌ Error in sendMessage wrapper to ${phoneNumber}:`, error.response?.data || error.message);
     throw error;
   }
 };
@@ -337,5 +362,6 @@ module.exports = {
   sendListMessage,
   sendTemplateMessage,
   sendMediaMessage,
-  markMessageAsRead
+  markMessageAsRead,
+  sendMessage
 };

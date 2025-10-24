@@ -26,6 +26,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Rapid Iteration Cycles**: Features developed in fast, iterative cycles with immediate testing
 - **Automated Quality Assurance**: Built-in comprehensive testing for each feature component
 - **Continuous Integration**: Features integrated continuously with full automated test coverage
+- **Modular and Independent Architecture**: All development (features, conversation flows, menus) must adhere to a modular and independent architecture as defined in Epic 16, ensuring easy updates, maintenance, and testing without impacting other parts of the codebase.
 
 ### Multi-Channel Service Delivery (WhatsApp First)
 - **Primary Channel**: Fully comprehensive WhatsApp-based service with all features available

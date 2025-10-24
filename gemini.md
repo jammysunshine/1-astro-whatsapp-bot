@@ -50,6 +50,7 @@ For project-specific instructions, ALWAYS refer to the `INITIAL-PROMPT.md` file 
 ## Core Development Principles
 
 *   **Spec-Driven Development (SDD)**: Rigorously define and adhere to specifications (PRD, Architecture, API Contracts) as the primary source of truth for all development, ensuring alignment with business goals and user needs.
+*   **Modular and Independent Architecture**: All development (features, conversation flows, menus) must adhere to a modular and independent architecture as defined in Epic 16, ensuring easy updates, maintenance, and testing without impacting other parts of the codebase.
 *   **Test-Driven Development (TDD)**: Write comprehensive, failing tests *before* implementing any code, ensuring 100% test coverage and validating functionality against specifications from the outset.
 *   **Security First**: Always implement security measures as a primary concern when dealing with any external integrations, webhooks, or APIs
 *   **Performance Consciousness**: Consider performance implications of all design decisions from the outset
@@ -284,11 +285,17 @@ Commit messages should be simple, concise, and descriptive. Avoid using special 
 ---
 
 ## Agent Workflow Mandates
+*   **Comprehensive Codebase and Project Objective Understanding**: All AI agents (including myself) must thoroughly understand the entire codebase and all project objectives as defined in `INITIAL-PROMPT.md`, `README.md`, and any other project-specific documentation. This understanding is paramount before initiating any development, refactoring, or problem-solving tasks.
 
 *   **Self-Review Before Testing**: Always perform a thorough self-review of all implemented changes, including code, configuration, and documentation, to ensure correctness, completeness, and adherence to project standards *before* asking the user to test.
 *   **Update gemini.md Regularly**: As a critical mandate, this `gemini.md` file must be updated automatically after every major feature implementation or optimization work to document the changes and keep the generic guidelines current. This includes documenting new testing practices, monitoring features, configuration options, and code quality improvements THAT APPLY GENERALLY TO ALL PROJECTS.
 *   **Branch Cleanup**: Regularly delete unused or merged feature branches to maintain a clean and manageable repository structure.
 *   **Continuous Documentation Review**: For all current and future projects, use all BMAD agents to regularly check `INITIAL-PROMPT.md` and `gemini.md` to ensure the epics, all user stories, all `.md` files created, all checklists, and all plans are fully comprehensive. If they are not, regularly create, update, any missing or incomplete epic, user story, checklist, plan etc., and ensure they fully address all requirements.
+*   **Comprehensive Requirements Analysis**: All BMAD agents must thoroughly read and analyze ALL project requirements files (including `INITIAL-PROMPT.md`, `gemini.md`, and any other project-specific documentation) to convert ALL requirements into properly structured epics and user stories. This must include ALL requirements from all files, not just selected ones, and must be done with complete attention to detail from the beginning of each project.
+*   **Enterprise-Quality Documentation**: All BMAD agents must create relevant product requirements, documentation, and supporting materials using enterprise-quality standards. This includes properly structured epics, detailed user stories with acceptance criteria, comprehensive technical documentation, and all supporting materials necessary for successful project implementation.
+*   **Multiple Passes and Validation**: BMAD agents must make multiple passes and retries to ensure comprehensive requirements analysis without any user request. This includes iterative validation to ensure that ALL requirements from ALL project files are completely captured in epics and user stories. Agents must continue this process until they can confirm with confidence that no requirements have been missed.
+*   **Mandatory Requirements Completion**: Development of code must only begin AFTER all requirements have been thoroughly analyzed, converted to comprehensive epics and user stories, validated for completeness, and documented with enterprise-quality standards. No coding work should commence until this requirements analysis is complete and verified.
+*   **BMAD Agent Coordination**: Use all available BMAD agents (SM, Dev, QA) to validate requirements completeness before beginning development. The SM agent should ensure all stories are properly defined, the Dev agent should validate technical feasibility of requirements, and the QA agent should validate testability and acceptance criteria.
 
 ## ⚠️ PROJECT-SPECIFIC CONTENT SEPARATION MANDATE
 

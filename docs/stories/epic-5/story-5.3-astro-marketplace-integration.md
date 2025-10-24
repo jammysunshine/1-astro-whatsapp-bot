@@ -33,3 +33,15 @@ Medium - Additional revenue stream
 
 ## Story Points
 13
+
+## BMAd Agent Coordination
+- **Qwen CLI**: Implement marketplace integration and commission calculation systems
+- **Gemini CLI**: Optimize product recommendations and affiliate tracking
+- **Architect Agent**: Design marketplace data architecture and vendor management systems
+- **QA Agent**: Validation testing for commission accuracy and marketplace functionality
+
+## Enterprise Artifacts
+- Marketplace Architecture Document: Affiliate and marketplace system design
+- Commission Tracking Framework: Revenue sharing calculation and payment systems
+- Vendor Management System: Astrologer onboarding and management procedures
+- Revenue Analytics Dashboard: Marketplace performance and commission tracking metrics

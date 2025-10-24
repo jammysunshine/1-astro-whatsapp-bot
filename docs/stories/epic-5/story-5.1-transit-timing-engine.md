@@ -33,3 +33,15 @@ High - Premium feature with high value
 
 ## Story Points
 13
+
+## BMAd Agent Coordination
+- **Qwen CLI**: Implement transit calculation algorithms and timing logic
+- **Gemini CLI**: Optimize timing recommendations and notification scheduling
+- **Architect Agent**: Design transit data architecture and timing calculation systems
+- **QA Agent**: Validation testing for transit accuracy and timing recommendations
+
+## Enterprise Artifacts
+- Transit Timing Architecture Document: Transit calculation engine design and data flow
+- Timing Algorithm Documentation: Planetary transit calculation methods and validation
+- User Timing Analytics: Transit timing effectiveness and user engagement metrics
+- Notification System Design: Transit alert scheduling and delivery mechanisms

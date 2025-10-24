@@ -16,7 +16,7 @@ const loadMenus = () => {
   } catch (error) {
     logger.error(`❌ Error loading menu configurations from ${MENU_CONFIG_PATH}:`, error);
     // Exit the process or throw an error if critical configuration cannot be loaded
-    process.exit(1); 
+    process.exit(1);
   }
 };
 
@@ -25,14 +25,12 @@ const loadMenus = () => {
  * @param {string} menuId - The ID of the menu (e.g., 'main_menu').
  * @returns {Object|undefined} The menu configuration object, or undefined if not found.
  */
-const getMenu = (menuId) => {
-  return menuConfigurations[menuId];
-};
+const getMenu = menuId => menuConfigurations[menuId];
 
 // Load menus immediately when the module is imported
 loadMenus();
 
 module.exports = {
   loadMenus,
-  getMenu,
+  getMenu
 };

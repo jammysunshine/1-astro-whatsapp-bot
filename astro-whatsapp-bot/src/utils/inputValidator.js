@@ -10,24 +10,24 @@ const { ValidationError } = require('./errorHandler');
  * @param {string} birthDate - Birth date string
  * @returns {boolean} True if valid
  */
-const isValidBirthDate = (birthDate) => {
+const isValidBirthDate = birthDate => {
   const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
   const match = birthDate.match(dateRegex);
 
-  if (!match) return false;
+  if (!match) { return false; }
 
   const day = parseInt(match[1], 10);
   const month = parseInt(match[2], 10);
   const year = parseInt(match[3], 10);
 
   // Basic date validation
-  if (month < 1 || month > 12) return false;
-  if (day < 1 || day > 31) return false;
-  if (year < 1900 || year > new Date().getFullYear()) return false;
+  if (month < 1 || month > 12) { return false; }
+  if (day < 1 || day > 31) { return false; }
+  if (year < 1900 || year > new Date().getFullYear()) { return false; }
 
   // Check days in month
   const daysInMonth = new Date(year, month, 0).getDate();
-  if (day > daysInMonth) return false;
+  if (day > daysInMonth) { return false; }
 
   return true;
 };
@@ -37,13 +37,13 @@ const isValidBirthDate = (birthDate) => {
  * @param {string} birthTime - Birth time string
  * @returns {boolean} True if valid
  */
-const isValidBirthTime = (birthTime) => {
-  if (birthTime.toLowerCase() === 'unknown') return true;
+const isValidBirthTime = birthTime => {
+  if (birthTime.toLowerCase() === 'unknown') { return true; }
 
   const timeRegex = /^(\d{2}):(\d{2})$/;
   const match = birthTime.match(timeRegex);
 
-  if (!match) return false;
+  if (!match) { return false; }
 
   const hours = parseInt(match[1], 10);
   const minutes = parseInt(match[2], 10);
@@ -56,7 +56,7 @@ const isValidBirthTime = (birthTime) => {
  * @param {string} phoneNumber - Phone number string
  * @returns {boolean} True if valid
  */
-const isValidPhoneNumber = (phoneNumber) => {
+const isValidPhoneNumber = phoneNumber => {
   // Basic phone number validation (10-15 digits, may start with +)
   const phoneRegex = /^\+?\d{10,15}$/;
   return phoneRegex.test(phoneNumber.replace(/\s+/g, ''));
@@ -67,7 +67,7 @@ const isValidPhoneNumber = (phoneNumber) => {
  * @param {Object} payload - Message payload
  * @returns {Object} Validation result
  */
-const validateWhatsAppMessage = (payload) => {
+const validateWhatsAppMessage = payload => {
   const schema = Joi.object({
     object: Joi.string().valid('whatsapp_business_account').required(),
     entry: Joi.array().items(
@@ -114,8 +114,8 @@ const validateWhatsAppMessage = (payload) => {
  * @param {string} input - User input string
  * @returns {string} Sanitized input
  */
-const sanitizeInput = (input) => {
-  if (typeof input !== 'string') return input;
+const sanitizeInput = input => {
+  if (typeof input !== 'string') { return input; }
 
   return input
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
@@ -130,7 +130,7 @@ const sanitizeInput = (input) => {
  * @param {string} planId - Plan identifier
  * @returns {boolean} True if valid
  */
-const isValidPlanId = (planId) => {
+const isValidPlanId = planId => {
   const validPlans = ['free', 'essential', 'premium', 'vip'];
   return validPlans.includes(planId);
 };
@@ -140,7 +140,7 @@ const isValidPlanId = (planId) => {
  * @param {Object} profileData - Profile data object
  * @returns {Object} Validation result
  */
-const validateUserProfile = (profileData) => {
+const validateUserProfile = profileData => {
   const schema = Joi.object({
     name: Joi.string().min(1).max(100).optional(),
     birthDate: Joi.string().pattern(/^(\d{2})\/(\d{2})\/(\d{4})$/).optional(),

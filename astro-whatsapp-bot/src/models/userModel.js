@@ -7,8 +7,8 @@ const logger = require('../utils/logger');
  */
 
 // In-memory user storage (would be replaced with database in production)
-let users = new Map();
-let userSessions = new Map();
+const users = new Map();
+const userSessions = new Map();
 
 /**
  * Create a new user
@@ -16,14 +16,14 @@ let userSessions = new Map();
  * @param {Object} profileData - Additional profile information
  * @returns {Promise<Object>} Created user object
  */
-const createUser = async (phoneNumber, profileData = {}) => {
+const createUser = async(phoneNumber, profileData = {}) => {
   try {
     const now = new Date();
     const userId = generateUserId();
 
     const user = {
       id: userId,
-      phoneNumber: phoneNumber,
+      phoneNumber,
       createdAt: now,
       lastInteraction: now,
       birthDate: null,
@@ -60,7 +60,6 @@ const createUser = async (phoneNumber, profileData = {}) => {
     users.set(phoneNumber, user);
     logger.info(`👤 Created new user: ${phoneNumber} (${userId})`);
     return user;
-
   } catch (error) {
     logger.error(`❌ Error creating user ${phoneNumber}:`, error);
     throw error;
@@ -72,7 +71,7 @@ const createUser = async (phoneNumber, profileData = {}) => {
  * @param {string} phoneNumber - User's WhatsApp phone number
  * @returns {Promise<Object|null>} User object or null if not found
  */
-const getUserByPhone = async (phoneNumber) => {
+const getUserByPhone = async phoneNumber => {
   try {
     const user = users.get(phoneNumber);
     if (user) {
@@ -93,7 +92,7 @@ const getUserByPhone = async (phoneNumber) => {
  * @param {Object} updateData - Data to update
  * @returns {Promise<Object>} Updated user object
  */
-const updateUserProfile = async (phoneNumber, updateData) => {
+const updateUserProfile = async(phoneNumber, updateData) => {
   try {
     const user = users.get(phoneNumber);
     if (!user) {
@@ -102,15 +101,14 @@ const updateUserProfile = async (phoneNumber, updateData) => {
 
     // Update user properties
     Object.assign(user, updateData);
-    
+
     // Update last modified time
     user.updatedAt = new Date();
-    
+
     users.set(phoneNumber, user);
     logger.info(`🔄 Updated user profile: ${phoneNumber}`);
-    
-    return user;
 
+    return user;
   } catch (error) {
     logger.error(`❌ Error updating user ${phoneNumber}:`, error);
     throw error;
@@ -125,7 +123,7 @@ const updateUserProfile = async (phoneNumber, updateData) => {
  * @param {string} birthPlace - Birth place (City, Country)
  * @returns {Promise<Object>} Updated user object
  */
-const addBirthDetails = async (phoneNumber, birthDate, birthTime = null, birthPlace = null) => {
+const addBirthDetails = async(phoneNumber, birthDate, birthTime = null, birthPlace = null) => {
   try {
     const user = users.get(phoneNumber);
     if (!user) {
@@ -135,18 +133,17 @@ const addBirthDetails = async (phoneNumber, birthDate, birthTime = null, birthPl
     user.birthDate = birthDate;
     user.birthTime = birthTime;
     user.birthPlace = birthPlace;
-    
+
     // Mark profile as complete if all required details are provided
     if (birthDate && birthPlace) {
       user.profileComplete = true;
     }
-    
+
     user.updatedAt = new Date();
     users.set(phoneNumber, user);
     logger.info(`🎂 Added birth details for user: ${phoneNumber}`);
-    
-    return user;
 
+    return user;
   } catch (error) {
     logger.error(`❌ Error adding birth details for ${phoneNumber}:`, error);
     throw error;
@@ -160,7 +157,7 @@ const addBirthDetails = async (phoneNumber, birthDate, birthTime = null, birthPl
  * @param {Date} expiryDate - Subscription expiry date
  * @returns {Promise<Object>} Updated user object
  */
-const updateSubscription = async (phoneNumber, tier, expiryDate = null) => {
+const updateSubscription = async(phoneNumber, tier, expiryDate = null) => {
   try {
     const user = users.get(phoneNumber);
     if (!user) {
@@ -173,9 +170,8 @@ const updateSubscription = async (phoneNumber, tier, expiryDate = null) => {
 
     users.set(phoneNumber, user);
     logger.info(`💳 Updated subscription for user ${phoneNumber}: ${tier}`);
-    
-    return user;
 
+    return user;
   } catch (error) {
     logger.error(`❌ Error updating subscription for ${phoneNumber}:`, error);
     throw error;
@@ -187,7 +183,7 @@ const updateSubscription = async (phoneNumber, tier, expiryDate = null) => {
  * @param {string} phoneNumber - User's WhatsApp phone number
  * @returns {Promise<Object>} Updated user object
  */
-const incrementCompatibilityChecks = async (phoneNumber) => {
+const incrementCompatibilityChecks = async phoneNumber => {
   try {
     const user = users.get(phoneNumber);
     if (!user) {
@@ -199,9 +195,8 @@ const incrementCompatibilityChecks = async (phoneNumber) => {
 
     users.set(phoneNumber, user);
     logger.info(`💞 Incremented compatibility checks for user ${phoneNumber}: ${user.compatibilityChecks}`);
-    
-    return user;
 
+    return user;
   } catch (error) {
     logger.error(`❌ Error incrementing compatibility checks for ${phoneNumber}:`, error);
     throw error;
@@ -214,7 +209,7 @@ const incrementCompatibilityChecks = async (phoneNumber) => {
  * @param {number} points - Points to add
  * @returns {Promise<Object>} Updated user object
  */
-const addLoyaltyPoints = async (phoneNumber, points) => {
+const addLoyaltyPoints = async(phoneNumber, points) => {
   try {
     const user = users.get(phoneNumber);
     if (!user) {
@@ -226,9 +221,8 @@ const addLoyaltyPoints = async (phoneNumber, points) => {
 
     users.set(phoneNumber, user);
     logger.info(`⭐ Added ${points} loyalty points to user ${phoneNumber}: ${user.loyaltyPoints} total`);
-    
-    return user;
 
+    return user;
   } catch (error) {
     logger.error(`❌ Error adding loyalty points for ${phoneNumber}:`, error);
     throw error;
@@ -241,7 +235,7 @@ const addLoyaltyPoints = async (phoneNumber, points) => {
  * @param {string} referredPhone - Referred user's phone number
  * @returns {Promise<Object>} Updated referrer user object
  */
-const addReferredUser = async (referrerPhone, referredPhone) => {
+const addReferredUser = async(referrerPhone, referredPhone) => {
   try {
     const referrer = users.get(referrerPhone);
     if (!referrer) {
@@ -252,16 +246,15 @@ const addReferredUser = async (referrerPhone, referredPhone) => {
     if (!referrer.referredUsers) {
       referrer.referredUsers = [];
     }
-    
+
     if (!referrer.referredUsers.includes(referredPhone)) {
       referrer.referredUsers.push(referredPhone);
       referrer.updatedAt = new Date();
       users.set(referrerPhone, referrer);
       logger.info(`👥 Added referred user ${referredPhone} to referrer ${referrerPhone}`);
     }
-    
-    return referrer;
 
+    return referrer;
   } catch (error) {
     logger.error(`❌ Error adding referred user ${referredPhone} to referrer ${referrerPhone}:`, error);
     throw error;
@@ -272,16 +265,14 @@ const addReferredUser = async (referrerPhone, referredPhone) => {
  * Get all users (for admin purposes)
  * @returns {Promise<Array>} Array of all users
  */
-const getAllUsers = async () => {
-  return Array.from(users.values());
-};
+const getAllUsers = async() => Array.from(users.values());
 
 /**
  * Delete user
  * @param {string} phoneNumber - User's phone number to delete
  * @returns {Promise<boolean>} True if deleted, false if not found
  */
-const deleteUser = async (phoneNumber) => {
+const deleteUser = async phoneNumber => {
   const exists = users.has(phoneNumber);
   if (exists) {
     users.delete(phoneNumber);
@@ -294,26 +285,20 @@ const deleteUser = async (phoneNumber) => {
  * Generate a unique user ID
  * @returns {string} Unique user ID
  */
-const generateUserId = () => {
-  return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-};
+const generateUserId = () => `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
 /**
  * Generate referral code
  * @returns {string} Unique referral code
  */
-const generateReferralCode = () => {
-  return 'REF' + Math.random().toString(36).substr(2, 8).toUpperCase();
-};
+const generateReferralCode = () => `REF${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
 
 /**
  * Get user session
  * @param {string} sessionId - Session ID
  * @returns {Promise<Object>} Session data
  */
-const getUserSession = async (sessionId) => {
-  return userSessions.get(sessionId) || null;
-};
+const getUserSession = async sessionId => userSessions.get(sessionId) || null;
 
 /**
  * Set user session
@@ -321,7 +306,7 @@ const getUserSession = async (sessionId) => {
  * @param {Object} sessionData - Session data
  * @returns {Promise<void>}
  */
-const setUserSession = async (sessionId, sessionData) => {
+const setUserSession = async(sessionId, sessionData) => {
   userSessions.set(sessionId, sessionData);
 };
 
@@ -330,27 +315,25 @@ const setUserSession = async (sessionId, sessionData) => {
  * @param {string} sessionId - Session ID
  * @returns {Promise<boolean>} True if deleted
  */
-const deleteUserSession = async (sessionId) => {
-  return userSessions.delete(sessionId);
-};
+const deleteUserSession = async sessionId => userSessions.delete(sessionId);
 
 /**
  * Check if user has active subscription
  * @param {Object} user - User object
  * @returns {boolean} True if user has active subscription
  */
-const hasActiveSubscription = (user) => {
+const hasActiveSubscription = user => {
   if (!user || !user.subscriptionTier || user.subscriptionTier === 'free') {
     return false;
   }
-  
+
   if (!user.subscriptionExpiry) {
     return true; // Lifetime subscription
   }
-  
+
   const expiryDate = new Date(user.subscriptionExpiry);
   const currentDate = new Date();
-  
+
   return expiryDate > currentDate;
 };
 
@@ -359,9 +342,9 @@ const hasActiveSubscription = (user) => {
  * @param {Object} user - User object
  * @returns {Object} Subscription benefits object
  */
-const getSubscriptionBenefits = (user) => {
+const getSubscriptionBenefits = user => {
   const tier = user?.subscriptionTier || 'free';
-  
+
   const benefits = {
     free: {
       dailyMicroPrediction: true,
@@ -400,7 +383,7 @@ const getSubscriptionBenefits = (user) => {
       maxCompatibilityChecks: Infinity
     }
   };
-  
+
   return benefits[tier] || benefits.free;
 };
 

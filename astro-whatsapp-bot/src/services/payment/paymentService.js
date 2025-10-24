@@ -87,7 +87,6 @@ class PaymentService {
       } else {
         throw new Error('Payment failed');
       }
-
     } catch (error) {
       logger.error(`❌ Subscription processing failed for ${phoneNumber}:`, error);
       throw error;
@@ -151,7 +150,6 @@ class PaymentService {
       } else {
         throw new Error('Payment failed');
       }
-
     } catch (error) {
       logger.error(`❌ Micro-transaction failed for ${phoneNumber}:`, error);
       throw error;

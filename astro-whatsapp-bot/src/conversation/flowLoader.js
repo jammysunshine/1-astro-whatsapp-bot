@@ -16,7 +16,7 @@ const loadFlows = () => {
   } catch (error) {
     logger.error(`❌ Error loading conversation flows from ${FLOW_CONFIG_PATH}:`, error);
     // Exit the process or throw an error if critical configuration cannot be loaded
-    process.exit(1); 
+    process.exit(1);
   }
 };
 
@@ -25,14 +25,12 @@ const loadFlows = () => {
  * @param {string} flowId - The ID of the conversation flow (e.g., 'onboarding').
  * @returns {Object|undefined} The conversation flow object, or undefined if not found.
  */
-const getFlow = (flowId) => {
-  return conversationFlows[flowId];
-};
+const getFlow = flowId => conversationFlows[flowId];
 
 // Load flows immediately when the module is imported
 loadFlows();
 
 module.exports = {
   loadFlows,
-  getFlow,
+  getFlow
 };

@@ -159,18 +159,18 @@ class VedicCalculator {
    */
   generateDailyHoroscope(sunSign) {
     const horoscopes = {
-      'Aries': 'Today brings new opportunities for leadership. Trust your instincts and take bold action.',
-      'Taurus': 'Focus on stability and practical matters. Your patience will be rewarded today.',
-      'Gemini': 'Communication is key today. Express your ideas and connect with others.',
-      'Cancer': 'Pay attention to your emotions and home life. Nurture your relationships.',
-      'Leo': 'Your creative energy is high today. Share your talents with the world.',
-      'Virgo': 'Attention to detail will serve you well. Organize and plan for success.',
-      'Libra': 'Seek balance and harmony in all your dealings. Diplomacy wins the day.',
-      'Scorpio': 'Trust your intuition. Deep insights will guide you to important truths.',
-      'Sagittarius': 'Adventure calls! Expand your horizons and explore new possibilities.',
-      'Capricorn': 'Focus on long-term goals. Your ambition will lead to achievement.',
-      'Aquarius': 'Innovation and originality will set you apart. Think outside the box.',
-      'Pisces': 'Trust your imagination. Creative and spiritual pursuits bring fulfillment.'
+      Aries: 'Today brings new opportunities for leadership. Trust your instincts and take bold action.',
+      Taurus: 'Focus on stability and practical matters. Your patience will be rewarded today.',
+      Gemini: 'Communication is key today. Express your ideas and connect with others.',
+      Cancer: 'Pay attention to your emotions and home life. Nurture your relationships.',
+      Leo: 'Your creative energy is high today. Share your talents with the world.',
+      Virgo: 'Attention to detail will serve you well. Organize and plan for success.',
+      Libra: 'Seek balance and harmony in all your dealings. Diplomacy wins the day.',
+      Scorpio: 'Trust your intuition. Deep insights will guide you to important truths.',
+      Sagittarius: 'Adventure calls! Expand your horizons and explore new possibilities.',
+      Capricorn: 'Focus on long-term goals. Your ambition will lead to achievement.',
+      Aquarius: 'Innovation and originality will set you apart. Think outside the box.',
+      Pisces: 'Trust your imagination. Creative and spiritual pursuits bring fulfillment.'
     };
 
     return horoscopes[sunSign] || 'Today brings opportunities for growth and self-discovery. Trust your inner wisdom.';
@@ -257,9 +257,9 @@ class VedicCalculator {
    */
   getCompatibilityDescription(sign1, sign2, rating) {
     const descriptions = {
-      'Excellent': `${sign1} and ${sign2} share great compatibility. You complement each other's strengths and understand each other's needs intuitively.`,
-      'Good': `${sign1} and ${sign2} have good compatibility with some complementary energies. With understanding, this can be a harmonious relationship.`,
-      'Neutral': `${sign1} and ${sign2} have neutral compatibility. While you may not be natural soulmates, mutual respect and communication can build a strong connection.`
+      Excellent: `${sign1} and ${sign2} share great compatibility. You complement each other's strengths and understand each other's needs intuitively.`,
+      Good: `${sign1} and ${sign2} have good compatibility with some complementary energies. With understanding, this can be a harmonious relationship.`,
+      Neutral: `${sign1} and ${sign2} have neutral compatibility. While you may not be natural soulmates, mutual respect and communication can build a strong connection.`
     };
 
     return descriptions[rating] || 'This combination has unique dynamics that require understanding and patience to navigate successfully.';

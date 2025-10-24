@@ -16,10 +16,10 @@ const validateWebhookSignature = (payload, signature, secret) => {
     }
 
     // Create expected signature
-    const expectedSignature = 'sha256=' + crypto
+    const expectedSignature = `sha256=${crypto
       .createHmac('sha256', secret)
       .update(payload, 'utf8')
-      .digest('hex');
+      .digest('hex')}`;
 
     // Compare signatures using timingSafeEqual to prevent timing attacks
     const expectedBuffer = Buffer.from(expectedSignature, 'utf8');
@@ -31,7 +31,6 @@ const validateWebhookSignature = (payload, signature, secret) => {
     }
 
     return crypto.timingSafeEqual(expectedBuffer, signatureBuffer);
-
   } catch (error) {
     logger.error('❌ Error validating webhook signature:', error);
     return false;
@@ -53,7 +52,7 @@ const verifyWebhookChallenge = (queryParams, verifyToken) => {
         logger.info('✅ Webhook verified successfully');
         return {
           success: true,
-          challenge: challenge,
+          challenge,
           message: 'Webhook verified successfully'
         };
       } else {
@@ -71,7 +70,6 @@ const verifyWebhookChallenge = (queryParams, verifyToken) => {
         challenge: null
       };
     }
-
   } catch (error) {
     logger.error('❌ Error verifying webhook challenge:', error);
     return {
@@ -87,7 +85,7 @@ const verifyWebhookChallenge = (queryParams, verifyToken) => {
  * @param {Object} message - WhatsApp message object
  * @returns {boolean} True if message format is valid
  */
-const validateMessageFormat = (message) => {
+const validateMessageFormat = message => {
   try {
     if (!message) {
       logger.warn('⚠️ Message is null or undefined');
@@ -108,45 +106,44 @@ const validateMessageFormat = (message) => {
 
     // Validate specific message types
     switch (message.type) {
-      case 'text':
-        if (!message.text || typeof message.text.body !== 'string') {
-          logger.warn('⚠️ Text message missing body or invalid format');
-          return false;
-        }
-        break;
-        
-      case 'interactive':
-        if (!message.interactive || !message.interactive.type) {
-          logger.warn('⚠️ Interactive message missing interactive field or type');
-          return false;
-        }
-        break;
-        
-      case 'button':
-        if (!message.button || typeof message.button.payload !== 'string') {
-          logger.warn('⚠️ Button message missing button field or invalid payload');
-          return false;
-        }
-        break;
-        
-      case 'image':
-      case 'video':
-      case 'audio':
-      case 'document':
-      case 'sticker':
-        if (!message[message.type] || !message[message.type].id) {
-          logger.warn(`⚠️ ${message.type} message missing ${message.type} field or id`);
-          return false;
-        }
-        break;
-        
-      default:
-        logger.warn(`⚠️ Unsupported message type: ${message.type}`);
+    case 'text':
+      if (!message.text || typeof message.text.body !== 'string') {
+        logger.warn('⚠️ Text message missing body or invalid format');
         return false;
+      }
+      break;
+
+    case 'interactive':
+      if (!message.interactive || !message.interactive.type) {
+        logger.warn('⚠️ Interactive message missing interactive field or type');
+        return false;
+      }
+      break;
+
+    case 'button':
+      if (!message.button || typeof message.button.payload !== 'string') {
+        logger.warn('⚠️ Button message missing button field or invalid payload');
+        return false;
+      }
+      break;
+
+    case 'image':
+    case 'video':
+    case 'audio':
+    case 'document':
+    case 'sticker':
+      if (!message[message.type] || !message[message.type].id) {
+        logger.warn(`⚠️ ${message.type} message missing ${message.type} field or id`);
+        return false;
+      }
+      break;
+
+    default:
+      logger.warn(`⚠️ Unsupported message type: ${message.type}`);
+      return false;
     }
 
     return true;
-
   } catch (error) {
     logger.error('❌ Error validating message format:', error);
     return false;
@@ -158,7 +155,7 @@ const validateMessageFormat = (message) => {
  * @param {Object} payload - Webhook payload
  * @returns {boolean} True if payload structure is valid
  */
-const validateWebhookPayload = (payload) => {
+const validateWebhookPayload = payload => {
   try {
     if (!payload || !payload.entry) {
       logger.warn('⚠️ Invalid webhook payload: missing entry array');
@@ -189,7 +186,7 @@ const validateWebhookPayload = (payload) => {
           return false;
         }
 
-        const value = change.value;
+        const { value } = change;
 
         // Validate value structure
         if (!value.messaging_product || value.messaging_product !== 'whatsapp') {
@@ -218,7 +215,6 @@ const validateWebhookPayload = (payload) => {
     }
 
     return true;
-
   } catch (error) {
     logger.error('❌ Error validating webhook payload:', error);
     return false;

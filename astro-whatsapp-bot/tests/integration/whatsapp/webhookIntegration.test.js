@@ -14,7 +14,7 @@ jest.mock('../../../src/utils/logger');
 
 describe('WhatsApp Webhook Integration', () => {
   describe('GET /webhook - Verification', () => {
-    it('should verify webhook with correct token', async () => {
+    it('should verify webhook with correct token', async() => {
       const response = await request(app)
         .get('/webhook')
         .query({
@@ -27,7 +27,7 @@ describe('WhatsApp Webhook Integration', () => {
       expect(response.text).toBe('challenge-123');
     });
 
-    it('should reject webhook verification with wrong token', async () => {
+    it('should reject webhook verification with wrong token', async() => {
       const response = await request(app)
         .get('/webhook')
         .query({
@@ -40,7 +40,7 @@ describe('WhatsApp Webhook Integration', () => {
       expect(response.text).toBe('Forbidden');
     });
 
-    it('should return ready status for verification request without parameters', async () => {
+    it('should return ready status for verification request without parameters', async() => {
       const response = await request(app)
         .get('/webhook')
         .expect(200);
@@ -57,7 +57,7 @@ describe('WhatsApp Webhook Integration', () => {
       validateWebhookSignature.mockReturnValue(true);
     });
 
-    it('should process valid webhook with text message', async () => {
+    it('should process valid webhook with text message', async() => {
       const webhookPayload = {
         entry: [{
           id: 'entry-123',
@@ -115,7 +115,7 @@ describe('WhatsApp Webhook Integration', () => {
       );
     });
 
-    it('should process valid webhook with interactive message', async () => {
+    it('should process valid webhook with interactive message', async() => {
       const webhookPayload = {
         entry: [{
           id: 'entry-456',
@@ -185,7 +185,7 @@ describe('WhatsApp Webhook Integration', () => {
       );
     });
 
-    it('should process valid webhook with button message', async () => {
+    it('should process valid webhook with button message', async() => {
       const webhookPayload = {
         entry: [{
           id: 'entry-789',
@@ -249,7 +249,7 @@ describe('WhatsApp Webhook Integration', () => {
       );
     });
 
-    it('should process valid webhook with media message', async () => {
+    it('should process valid webhook with media message', async() => {
       const webhookPayload = {
         entry: [{
           id: 'entry-101',
@@ -313,7 +313,7 @@ describe('WhatsApp Webhook Integration', () => {
       );
     });
 
-    it('should handle invalid webhook payload gracefully', async () => {
+    it('should handle invalid webhook payload gracefully', async() => {
       const response = await request(app)
         .post('/webhook')
         .send({ invalid: 'payload' })
@@ -325,10 +325,10 @@ describe('WhatsApp Webhook Integration', () => {
       });
     });
 
-    it('should handle webhook processing errors gracefully', async () => {
+    it('should handle webhook processing errors gracefully', async() => {
       // Mock processIncomingMessage to throw an error
       processIncomingMessage.mockRejectedValue(new Error('Processing failed'));
-      
+
       const webhookPayload = {
         entry: [{
           id: 'entry-102',
@@ -369,9 +369,9 @@ describe('WhatsApp Webhook Integration', () => {
       });
     });
 
-    it('should validate webhook signature when provided', async () => {
+    it('should validate webhook signature when provided', async() => {
       validateWebhookSignature.mockReturnValue(false);
-      
+
       const webhookPayload = {
         entry: [{
           changes: [{
@@ -397,7 +397,7 @@ describe('WhatsApp Webhook Integration', () => {
       expect(response.body).toEqual({
         error: 'Unauthorized'
       });
-      
+
       expect(validateWebhookSignature).toHaveBeenCalledWith(
         expect.any(String),
         'sha256=invalid-signature',
@@ -407,14 +407,14 @@ describe('WhatsApp Webhook Integration', () => {
   });
 
   describe('Error Handling', () => {
-    it('should handle missing environment variables gracefully', async () => {
+    it('should handle missing environment variables gracefully', async() => {
       // Temporarily unset environment variables
       const originalAccessToken = process.env.WHATSAPP_ACCESS_TOKEN;
       const originalPhoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-      
+
       delete process.env.WHATSAPP_ACCESS_TOKEN;
       delete process.env.WHATSAPP_PHONE_NUMBER_ID;
-      
+
       const webhookPayload = {
         entry: [{
           changes: [{

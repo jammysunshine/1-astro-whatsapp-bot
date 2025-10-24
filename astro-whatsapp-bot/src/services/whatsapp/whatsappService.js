@@ -11,7 +11,7 @@ const { sendTextMessage, sendInteractiveMessage } = require('./messageSender');
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  */
-const handleWhatsAppWebhook = async (req, res) => {
+const handleWhatsAppWebhook = async(req, res) => {
   try {
     const { body } = req;
 
@@ -53,17 +53,16 @@ const handleWhatsAppWebhook = async (req, res) => {
     }
 
     // Return success response
-    res.status(200).json({ 
-      success: true, 
+    res.status(200).json({
+      success: true,
       message: 'Webhook processed successfully',
       timestamp: new Date().toISOString()
     });
-
   } catch (error) {
     logger.error('Error in handleWhatsAppWebhook:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Internal server error',
-      message: error.message 
+      message: error.message
     });
   }
 };
@@ -73,27 +72,26 @@ const handleWhatsAppWebhook = async (req, res) => {
  * @param {Object} message - WhatsApp message object
  * @param {Object} value - Webhook value containing context
  */
-const processMessage = async (message, value) => {
+const processMessage = async(message, value) => {
   try {
     const { from, id, type, timestamp } = message;
     const phoneNumber = from; // WhatsApp ID is the phone number
-    
+
     logger.info(`Processing message from ${phoneNumber}: ${JSON.stringify(message)}`);
 
     // Only process text messages for now
     if (type === 'text') {
       const { body: messageBody } = message.text;
       await processUserMessage(phoneNumber, messageBody, id, timestamp);
-    } 
+    }
     // Process interactive messages (quick replies, buttons, etc.)
     else if (type === 'interactive') {
       const { type: interactiveType } = message.interactive;
-      
+
       if (interactiveType === 'button_reply') {
         const { id: buttonId, title } = message.interactive.button_reply;
         await processUserMessage(phoneNumber, title, id, timestamp);
-      } 
-      else if (interactiveType === 'list_reply') {
+      } else if (interactiveType === 'list_reply') {
         const { id: listId, title, description } = message.interactive.list_reply;
         await processUserMessage(phoneNumber, title, id, timestamp);
       }
@@ -106,7 +104,7 @@ const processMessage = async (message, value) => {
 
     logger.info(`Message from ${phoneNumber} processed successfully`);
   } catch (error) {
-    logger.error(`Error processing message:`, error);
+    logger.error('Error processing message:', error);
   }
 };
 

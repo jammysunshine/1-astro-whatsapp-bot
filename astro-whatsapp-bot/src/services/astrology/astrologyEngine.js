@@ -8,7 +8,7 @@ const vedicCalculator = require('./vedicCalculator');
  * @param {Object} user - The user object containing profile information.
  * @returns {Promise<string>} The generated astrology response.
  */
-const generateAstrologyResponse = async (messageText, user) => {
+const generateAstrologyResponse = async(messageText, user) => {
   logger.info(`Generating astrology response for user ${user.phoneNumber} with message: ${messageText}`);
 
   const message = messageText.toLowerCase().trim();
@@ -21,7 +21,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   // Daily horoscope
   if (message.includes('horoscope') || message.includes('daily')) {
     if (!user.birthDate) {
-      return `I'd love to give you a personalized daily horoscope! Please share your birth date (DD/MM/YYYY) first so I can calculate your sun sign.`;
+      return 'I\'d love to give you a personalized daily horoscope! Please share your birth date (DD/MM/YYYY) first so I can calculate your sun sign.';
     }
 
     const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
@@ -33,7 +33,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   // Birth chart requests
   if (message.includes('birth chart') || message.includes('kundli') || message.includes('chart')) {
     if (!user.birthDate) {
-      return `To generate your birth chart, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India`;
+      return 'To generate your birth chart, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
 
     try {
@@ -41,17 +41,17 @@ const generateAstrologyResponse = async (messageText, user) => {
       return `📊 *Your Birth Chart Summary*\n\n${birthChart.summary}\n\n*Sun Sign:* ${birthChart.sunSign}\n*Moon Sign:* ${birthChart.moonSign}\n\nWould you like a detailed analysis or daily horoscope?`;
     } catch (error) {
       logger.error('Error generating birth chart:', error);
-      return `I'm having trouble generating your birth chart right now. Please try again later or contact support.`;
+      return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
     }
   }
 
   // Compatibility requests
   if (message.includes('compatibility') || message.includes('match') || message.includes('compatible')) {
     if (!user.birthDate) {
-      return `For compatibility analysis, I need your birth details first. Please share your birth date (DD/MM/YYYY) so I can get started.`;
+      return 'For compatibility analysis, I need your birth details first. Please share your birth date (DD/MM/YYYY) so I can get started.';
     }
 
-    return `💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I'll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!`;
+    return '💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I\'ll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!';
   }
 
   // Profile/birth details
@@ -59,13 +59,13 @@ const generateAstrologyResponse = async (messageText, user) => {
     if (user.profileComplete) {
       return `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\nSun Sign: ${vedicCalculator.calculateSunSign(user.birthDate)}\n\nWould you like to update any information or get a reading?`;
     } else {
-      return `Let's complete your profile! I need your birth details to provide accurate readings.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India`;
+      return 'Let\'s complete your profile! I need your birth details to provide accurate readings.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
   }
 
   // Help and general responses
   if (message.includes('help') || message.includes('what can you do') || message.includes('commands')) {
-    return `🌟 *I'm your Personal Cosmic Coach!*\n\nI can help you with:\n\n📅 *Daily Horoscope* - Personalized daily guidance\n📊 *Birth Chart* - Your cosmic blueprint\n💕 *Compatibility* - Relationship insights\n🔮 *Predictions* - Future guidance\n\nJust send me a message like:\n• "What's my horoscope today?"\n• "Show me my birth chart"\n• "Check compatibility with [birth date]"\n\nWhat's on your mind? ✨`;
+    return '🌟 *I\'m your Personal Cosmic Coach!*\n\nI can help you with:\n\n📅 *Daily Horoscope* - Personalized daily guidance\n📊 *Birth Chart* - Your cosmic blueprint\n💕 *Compatibility* - Relationship insights\n🔮 *Predictions* - Future guidance\n\nJust send me a message like:\n• "What\'s my horoscope today?"\n• "Show me my birth chart"\n• "Check compatibility with [birth date]"\n\nWhat\'s on your mind? ✨';
   }
 
   // Default response
@@ -73,5 +73,5 @@ const generateAstrologyResponse = async (messageText, user) => {
 };
 
 module.exports = {
-  generateAstrologyResponse,
+  generateAstrologyResponse
 };

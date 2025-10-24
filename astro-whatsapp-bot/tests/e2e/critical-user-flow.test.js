@@ -20,7 +20,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   beforeEach(() => {
     // Reset all mocks
     jest.clearAllMocks();
-    
+
     // Setup default mock responses
     processIncomingMessage.mockResolvedValue();
     sendMessage.mockResolvedValue({ success: true });
@@ -35,7 +35,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('New User Registration Flow', () => {
-    it('should complete full new user registration and first reading flow', async () => {
+    it('should complete full new user registration and first reading flow', async() => {
       // Step 1: User sends "Hi" to bot
       const newUserPayload = {
         entry: [{
@@ -182,7 +182,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       });
     });
 
-    it('should process daily horoscope request for existing user', async () => {
+    it('should process daily horoscope request for existing user', async() => {
       const dailyHoroscopePayload = {
         entry: [{
           id: 'entry-daily',
@@ -256,7 +256,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Interactive Button Flow', () => {
-    it('should process interactive button reply for compatibility checking', async () => {
+    it('should process interactive button reply for compatibility checking', async() => {
       const interactivePayload = {
         entry: [{
           id: 'entry-interactive',
@@ -336,7 +336,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Error Handling Flow', () => {
-    it('should handle processing errors gracefully', async () => {
+    it('should handle processing errors gracefully', async() => {
       // Mock processIncomingMessage to throw an error
       processIncomingMessage.mockRejectedValue(new Error('Processing failed'));
 
@@ -387,7 +387,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Performance and Scalability Flow', () => {
-    it('should handle high volume of messages without crashing', async () => {
+    it('should handle high volume of messages without crashing', async() => {
       // Create multiple webhook payloads
       const payloads = [];
       for (let i = 0; i < 10; i++) {
@@ -421,7 +421,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       }
 
       // Process all payloads concurrently
-      const promises = payloads.map(payload => 
+      const promises = payloads.map(payload =>
         request(app)
           .post('/webhook')
           .send(payload)
@@ -447,9 +447,9 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Security and Compliance Flow', () => {
-    it('should validate webhook signatures when provided', async () => {
+    it('should validate webhook signatures when provided', async() => {
       const validSignature = 'sha256=valid-signature-here';
-      
+
       const securePayload = {
         entry: [{
           id: 'entry-secure',

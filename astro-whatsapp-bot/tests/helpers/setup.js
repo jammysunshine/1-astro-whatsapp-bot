@@ -26,14 +26,14 @@ if (!process.env.DEBUG) {
 }
 
 // Global test setup
-beforeAll(async () => {
+beforeAll(async() => {
   // Initialize test database
   // Start mock servers
   console.log('🧪 Starting comprehensive test environment setup...');
 });
 
 // Global test teardown
-afterAll(async () => {
+afterAll(async() => {
   // Clean up test database
   // Stop mock servers
   console.log('🧹 Cleaning up comprehensive test environment...');
@@ -60,89 +60,89 @@ expect.extend({
       return {
         message: () =>
           `expected ${received} not to be within range ${floor} - ${ceiling}`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () =>
           `expected ${received} to be within range ${floor} - ${ceiling}`,
-        pass: false,
+        pass: false
       };
     }
   },
-  
+
   toHavePropertyMatching(received, propertyPath, regex) {
     const properties = propertyPath.split('.');
     let current = received;
-    
+
     for (const prop of properties) {
       if (current === null || current === undefined || !(prop in current)) {
         return {
           message: () => `expected ${propertyPath} to exist`,
-          pass: false,
+          pass: false
         };
       }
       current = current[prop];
     }
-    
+
     const pass = regex.test(current);
     if (pass) {
       return {
         message: () => `expected ${propertyPath} not to match ${regex}`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${propertyPath} to match ${regex}, but got ${current}`,
-        pass: false,
+        pass: false
       };
     }
   },
-  
+
   toBeValidPhoneNumber(received) {
     const phoneRegex = /^\+?[1-9]\d{1,14}$/;
     const pass = phoneRegex.test(received);
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid phone number`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${received} to be a valid phone number`,
-        pass: false,
+        pass: false
       };
     }
   },
-  
+
   toBeValidDate(received) {
     const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
     const pass = dateRegex.test(received);
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid date`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${received} to be a valid date (DD/MM/YYYY)`,
-        pass: false,
+        pass: false
       };
     }
   },
-  
+
   toBeValidTime(received) {
     const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
     const pass = timeRegex.test(received);
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid time`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${received} to be a valid time (HH:MM)`,
-        pass: false,
+        pass: false
       };
     }
   }
@@ -154,52 +154,52 @@ expect.extend({
     const requiredFields = ['error', 'message'];
     const hasRequiredFields = requiredFields.every(field => field in received);
     const pass = hasRequiredFields && typeof received.error === 'string' && typeof received.message === 'string';
-    
+
     if (pass) {
       return {
         message: () => `expected ${JSON.stringify(received)} not to be a valid JSON API error`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${JSON.stringify(received)} to be a valid JSON API error with required fields: ${requiredFields.join(', ')}`,
-        pass: false,
+        pass: false
       };
     }
   },
-  
+
   toBeWhatsAppWebhook(received) {
     const requiredFields = ['entry'];
     const hasRequiredFields = requiredFields.every(field => field in received);
     const pass = hasRequiredFields && Array.isArray(received.entry);
-    
+
     if (pass) {
       return {
         message: () => `expected ${JSON.stringify(received)} not to be a valid WhatsApp webhook`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${JSON.stringify(received)} to be a valid WhatsApp webhook with required fields: ${requiredFields.join(', ')}`,
-        pass: false,
+        pass: false
       };
     }
   },
-  
+
   toBeAstrologyApiResponse(received) {
     const requiredFields = ['success', 'data'];
     const hasRequiredFields = requiredFields.every(field => field in received);
     const pass = hasRequiredFields && typeof received.success === 'boolean' && typeof received.data === 'object';
-    
+
     if (pass) {
       return {
         message: () => `expected ${JSON.stringify(received)} not to be a valid astrology API response`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${JSON.stringify(received)} to be a valid astrology API response with required fields: ${requiredFields.join(', ')}`,
-        pass: false,
+        pass: false
       };
     }
   }

@@ -21,8 +21,8 @@ app.use(bodyParser.urlencoded({ extended: true, verify: (req, res, buf, encoding
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'healthy', 
+  res.status(200).json({
+    status: 'healthy',
     timestamp: new Date().toISOString(),
     service: 'Astrology WhatsApp Bot API'
   });

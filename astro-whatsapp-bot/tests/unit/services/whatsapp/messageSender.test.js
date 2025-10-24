@@ -24,7 +24,7 @@ describe('WhatsApp Message Sender', () => {
   beforeEach(() => {
     // Reset mocks
     jest.clearAllMocks();
-    
+
     // Set environment variables
     process.env.WHATSAPP_ACCESS_TOKEN = accessToken;
     process.env.WHATSAPP_PHONE_NUMBER_ID = phoneNumberId;
@@ -37,7 +37,7 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendTextMessage', () => {
-    it('should send text message successfully', async () => {
+    it('should send text message successfully', async() => {
       const message = 'Hello, this is a test message!';
       const response = {
         data: {
@@ -62,7 +62,7 @@ describe('WhatsApp Message Sender', () => {
         },
         {
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
           },
           timeout: 30000
@@ -73,7 +73,7 @@ describe('WhatsApp Message Sender', () => {
       expect(logger.info).toHaveBeenCalledWith(`Message sent successfully to ${phoneNumber}: msg-123`);
     });
 
-    it('should send text message with preview URL', async () => {
+    it('should send text message with preview URL', async() => {
       const message = 'Check out this link: https://example.com';
       const response = {
         data: {
@@ -102,7 +102,7 @@ describe('WhatsApp Message Sender', () => {
       expect(result).toEqual(response.data);
     });
 
-    it('should send text message with context', async () => {
+    it('should send text message with context', async() => {
       const message = 'This is a reply to your previous message.';
       const context = { message_id: 'prev-msg-123' };
       const response = {
@@ -125,7 +125,7 @@ describe('WhatsApp Message Sender', () => {
             preview_url: false,
             body: message
           },
-          context: context
+          context
         },
         expect.any(Object)
       );
@@ -133,7 +133,7 @@ describe('WhatsApp Message Sender', () => {
       expect(result).toEqual(response.data);
     });
 
-    it('should throw error when WhatsApp API credentials are not configured', async () => {
+    it('should throw error when WhatsApp API credentials are not configured', async() => {
       delete process.env.WHATSAPP_ACCESS_TOKEN;
       delete process.env.WHATSAPP_PHONE_NUMBER_ID;
 
@@ -144,7 +144,7 @@ describe('WhatsApp Message Sender', () => {
       expect(logger.error).not.toHaveBeenCalled();
     });
 
-    it('should handle API error gracefully', async () => {
+    it('should handle API error gracefully', async() => {
       const errorMessage = 'API Error';
       const errorResponse = {
         response: {
@@ -164,7 +164,7 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should handle network error gracefully', async () => {
+    it('should handle network error gracefully', async() => {
       const errorMessage = 'Network Error';
       const errorResponse = new Error(errorMessage);
 
@@ -182,7 +182,7 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendInteractiveButtons', () => {
-    it('should send interactive buttons message successfully', async () => {
+    it('should send interactive buttons message successfully', async() => {
       const body = 'Choose an option:';
       const buttons = [
         { type: 'reply', reply: { id: 'btn1', title: 'Option 1' } },
@@ -212,7 +212,7 @@ describe('WhatsApp Message Sender', () => {
         },
         {
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
           },
           timeout: 30000
@@ -223,7 +223,7 @@ describe('WhatsApp Message Sender', () => {
       expect(logger.info).toHaveBeenCalledWith(`Interactive message sent successfully to ${phoneNumber}: msg-btn-123`);
     });
 
-    it('should send interactive buttons with header and footer', async () => {
+    it('should send interactive buttons with header and footer', async() => {
       const body = 'Choose an option:';
       const buttons = [{ type: 'reply', reply: { id: 'btn1', title: 'Option 1' } }];
       const options = {
@@ -258,7 +258,7 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should handle missing WhatsApp API credentials', async () => {
+    it('should handle missing WhatsApp API credentials', async() => {
       delete process.env.WHATSAPP_ACCESS_TOKEN;
       delete process.env.WHATSAPP_PHONE_NUMBER_ID;
 
@@ -269,7 +269,7 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendListMessage', () => {
-    it('should send list message successfully', async () => {
+    it('should send list message successfully', async() => {
       const body = 'Select an option from the list:';
       const buttonText = 'Choose';
       const sections = [
@@ -308,7 +308,7 @@ describe('WhatsApp Message Sender', () => {
         },
         {
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
           },
           timeout: 30000
@@ -319,7 +319,7 @@ describe('WhatsApp Message Sender', () => {
       expect(logger.info).toHaveBeenCalledWith(`List message sent successfully to ${phoneNumber}: msg-list-123`);
     });
 
-    it('should send list message with footer', async () => {
+    it('should send list message with footer', async() => {
       const body = 'Select an option:';
       const buttonText = 'Options';
       const sections = [{ title: 'Section 1', rows: [{ id: 'row1', title: 'Row 1' }] }];
@@ -347,7 +347,7 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendTemplateMessage', () => {
-    it('should send template message successfully', async () => {
+    it('should send template message successfully', async() => {
       const templateName = 'welcome_template';
       const languageCode = 'en';
       const response = {
@@ -374,7 +374,7 @@ describe('WhatsApp Message Sender', () => {
         },
         {
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
           },
           timeout: 30000
@@ -385,7 +385,7 @@ describe('WhatsApp Message Sender', () => {
       expect(logger.info).toHaveBeenCalledWith(`Template message sent successfully to ${phoneNumber}: msg-template-123`);
     });
 
-    it('should send template message with components', async () => {
+    it('should send template message with components', async() => {
       const templateName = 'confirmation_template';
       const languageCode = 'en';
       const components = [
@@ -415,7 +415,7 @@ describe('WhatsApp Message Sender', () => {
           template: {
             name: templateName,
             language: { code: languageCode },
-            components: components
+            components
           }
         },
         expect.any(Object)
@@ -424,7 +424,7 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendMediaMessage', () => {
-    it('should send media message successfully', async () => {
+    it('should send media message successfully', async() => {
       const mediaType = 'image';
       const mediaId = 'media-123';
       const caption = 'Beautiful image';
@@ -446,12 +446,12 @@ describe('WhatsApp Message Sender', () => {
           type: mediaType,
           [mediaType]: {
             id: mediaId,
-            caption: caption
+            caption
           }
         },
         {
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
           },
           timeout: 30000
@@ -462,7 +462,7 @@ describe('WhatsApp Message Sender', () => {
       expect(logger.info).toHaveBeenCalledWith(`${mediaType} message sent successfully to ${phoneNumber}: msg-media-123`);
     });
 
-    it('should send media message with filename', async () => {
+    it('should send media message with filename', async() => {
       const mediaType = 'document';
       const mediaId = 'doc-123';
       const caption = 'Important document';
@@ -485,7 +485,7 @@ describe('WhatsApp Message Sender', () => {
           type: mediaType,
           [mediaType]: {
             id: mediaId,
-            caption: caption,
+            caption,
             filename: options.filename
           }
         },
@@ -495,7 +495,7 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('markMessageAsRead', () => {
-    it('should mark message as read successfully', async () => {
+    it('should mark message as read successfully', async() => {
       const messageId = 'msg-123';
       const response = {
         data: {
@@ -516,7 +516,7 @@ describe('WhatsApp Message Sender', () => {
         },
         {
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
           },
           timeout: 30000
@@ -527,7 +527,7 @@ describe('WhatsApp Message Sender', () => {
       expect(logger.info).toHaveBeenCalledWith(`Message marked as read: ${messageId}`);
     });
 
-    it('should handle missing WhatsApp API credentials', async () => {
+    it('should handle missing WhatsApp API credentials', async() => {
       delete process.env.WHATSAPP_ACCESS_TOKEN;
       delete process.env.WHATSAPP_PHONE_NUMBER_ID;
 

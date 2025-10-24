@@ -12,7 +12,7 @@ const vedicCalculator = require('../astrology/vedicCalculator');
  * @param {Object} message - WhatsApp message object
  * @param {Object} value - WhatsApp webhook value object
  */
-const processIncomingMessage = async (message, value) => {
+const processIncomingMessage = async(message, value) => {
   try {
     const { from, id, timestamp, type } = message;
     const phoneNumber = from;
@@ -37,30 +37,29 @@ const processIncomingMessage = async (message, value) => {
 
     // Process different message types for existing and complete users
     switch (type) {
-      case 'text':
-        await processTextMessage(message, user);
-        break;
-      case 'interactive':
-        await processInteractiveMessage(message, user);
-        break;
-      case 'button':
-        await processButtonMessage(message, user);
-        break;
-      case 'image':
-      case 'video':
-      case 'audio':
-      case 'document':
-        await processMediaMessage(message, user);
-        break;
-      default:
-        logger.warn(`⚠️ Unsupported message type: ${type}`);
-        await sendUnsupportedMessageTypeResponse(phoneNumber);
+    case 'text':
+      await processTextMessage(message, user);
+      break;
+    case 'interactive':
+      await processInteractiveMessage(message, user);
+      break;
+    case 'button':
+      await processButtonMessage(message, user);
+      break;
+    case 'image':
+    case 'video':
+    case 'audio':
+    case 'document':
+      await processMediaMessage(message, user);
+      break;
+    default:
+      logger.warn(`⚠️ Unsupported message type: ${type}`);
+      await sendUnsupportedMessageTypeResponse(phoneNumber);
     }
 
     // Update user's last interaction timestamp
     user.lastInteraction = new Date();
     await updateUserProfile(phoneNumber, { lastInteraction: user.lastInteraction });
-
   } catch (error) {
     logger.error(`❌ Error processing message from ${phoneNumber}:`, error);
     await sendErrorMessage(phoneNumber, error.message);
@@ -72,7 +71,7 @@ const processIncomingMessage = async (message, value) => {
  * @param {Object} message - Text message object
  * @param {Object} user - User object
  */
-const processTextMessage = async (message, user) => {
+const processTextMessage = async(message, user) => {
   const { from, text } = message;
   const phoneNumber = from;
   const messageText = text.body;
@@ -93,13 +92,13 @@ const processTextMessage = async (message, user) => {
     } else if (messageText.toLowerCase().includes('premium')) {
       await handleSubscriptionRequest(phoneNumber, user, 'premium');
     } else {
-      await sendMessage(phoneNumber, `💳 *Subscription Plans*\n\nWhich plan would you like to subscribe to?\n\n⭐ *Essential* - ₹230/month\n💎 *Premium* - ₹299/month\n\nJust reply with "Essential" or "Premium"!`);
+      await sendMessage(phoneNumber, '💳 *Subscription Plans*\n\nWhich plan would you like to subscribe to?\n\n⭐ *Essential* - ₹230/month\n💎 *Premium* - ₹299/month\n\nJust reply with "Essential" or "Premium"!');
     }
     return;
   }
 
   // Generate astrology response based on user input
-  let response = await generateAstrologyResponse(messageText, user);
+  const response = await generateAstrologyResponse(messageText, user);
 
   // If a specific response isn't generated, offer an interactive menu
   if (!response || response.startsWith('Thank you for your message')) {
@@ -109,10 +108,10 @@ const processTextMessage = async (message, user) => {
         type: 'reply',
         reply: { id: button.id, title: button.title }
       }));
-      await sendMessage(phoneNumber, { type: 'button', body: mainMenu.body , buttons: buttons}, 'interactive');
+      await sendMessage(phoneNumber, { type: 'button', body: mainMenu.body, buttons }, 'interactive');
     } else {
       logger.warn('⚠️ Main menu configuration not found.');
-      await sendMessage(phoneNumber, 'I'm sorry, I'm having trouble loading the menu options. Please try again later.');
+      await sendMessage(phoneNumber, 'I\'m sorry, I\'m having trouble loading the menu options. Please try again later.');
     }
   } else {
     // Send response back to user
@@ -125,7 +124,7 @@ const processTextMessage = async (message, user) => {
  * @param {Object} message - Interactive message object
  * @param {Object} user - User object
  */
-const processInteractiveMessage = async (message, user) => {
+const processInteractiveMessage = async(message, user) => {
   const { from, interactive } = message;
   const phoneNumber = from;
   const { type } = interactive;
@@ -133,23 +132,23 @@ const processInteractiveMessage = async (message, user) => {
   logger.info(`🖱️ Interactive message from ${phoneNumber} (Type: ${type})`);
 
   switch (type) {
-    case 'button_reply':
-      const { button_reply } = interactive;
-      const { id: buttonId, title } = button_reply;
-      logger.info(`🟢 Button reply from ${phoneNumber}: ${title} (${buttonId})`);
-      // Process button reply
-      await processButtonReply(phoneNumber, buttonId, title, user);
-      break;
-    case 'list_reply':
-      const { list_reply } = interactive;
-      const { id: listId, title: listTitle, description } = list_reply;
-      logger.info(`📋 List reply from ${phoneNumber}: ${listTitle} (${listId})`);
-      // Process list reply
-      await processListReply(phoneNumber, listId, listTitle, description, user);
-      break;
-    default:
-      logger.warn(`⚠️ Unsupported interactive type: ${type}`);
-      await sendUnsupportedInteractiveTypeResponse(phoneNumber);
+  case 'button_reply':
+    const { button_reply } = interactive;
+    const { id: buttonId, title } = button_reply;
+    logger.info(`🟢 Button reply from ${phoneNumber}: ${title} (${buttonId})`);
+    // Process button reply
+    await processButtonReply(phoneNumber, buttonId, title, user);
+    break;
+  case 'list_reply':
+    const { list_reply } = interactive;
+    const { id: listId, title: listTitle, description } = list_reply;
+    logger.info(`📋 List reply from ${phoneNumber}: ${listTitle} (${listId})`);
+    // Process list reply
+    await processListReply(phoneNumber, listId, listTitle, description, user);
+    break;
+  default:
+    logger.warn(`⚠️ Unsupported interactive type: ${type}`);
+    await sendUnsupportedInteractiveTypeResponse(phoneNumber);
   }
 };
 
@@ -158,7 +157,7 @@ const processInteractiveMessage = async (message, user) => {
  * @param {Object} message - Button message object
  * @param {Object} user - User object
  */
-const processButtonMessage = async (message, user) => {
+const processButtonMessage = async(message, user) => {
   const { from, button } = message;
   const phoneNumber = from;
   const { payload, text } = button;
@@ -174,7 +173,7 @@ const processButtonMessage = async (message, user) => {
  * @param {Object} message - Media message object
  * @param {Object} user - User object
  */
-const processMediaMessage = async (message, user) => {
+const processMediaMessage = async(message, user) => {
   const { from, type, [type]: media } = message;
   const phoneNumber = from;
   const { id, caption } = media;
@@ -192,7 +191,7 @@ const processMediaMessage = async (message, user) => {
  * @param {string} title - Button title
  * @param {Object} user - User object
  */
-const processButtonReply = async (phoneNumber, buttonId, title, user) => {
+const processButtonReply = async(phoneNumber, buttonId, title, user) => {
   const mainMenu = getMenu('main_menu');
   if (mainMenu) {
     const button = mainMenu.buttons.find(btn => btn.id === buttonId);
@@ -214,51 +213,72 @@ const processButtonReply = async (phoneNumber, buttonId, title, user) => {
  * @param {Object} user - User object.
  * @param {string} action - The action to execute (e.g., 'get_daily_horoscope').
  */
-const executeMenuAction = async (phoneNumber, user, action) => {
-  let response;
+const executeMenuAction = async(phoneNumber, user, action) => {
+  let response = null;
   switch (action) {
-    case 'get_daily_horoscope':
-      if (!user.birthDate) {
-        response = `I'd love to give you a personalized daily horoscope! Please complete your profile first by providing your birth date.`;
+  case 'get_daily_horoscope':
+    if (!user.birthDate) {
+      response = 'I\'d love to give you a personalized daily horoscope! Please complete your profile first by providing your birth date.';
+    } else {
+      // Start daily horoscope conversation flow
+      const flowStarted = await processFlowMessage({ type: 'text', text: { body: 'start' } }, user, 'daily_horoscope');
+      if (flowStarted) {
+        return null; // Flow started, don't send additional response
       } else {
-        // Generate actual horoscope using astrology engine
-        const astrologyResponse = await generateAstrologyResponse('horoscope', user);
-        response = astrologyResponse;
+        response = 'Sorry, I couldn\'t start the horoscope flow right now.';
       }
-      break;
-    case 'initiate_compatibility_flow':
-      response = `💕 *Compatibility Check*\n\nTo check compatibility, please provide the birth date (DD/MM/YYYY) of the person you want to compare with.\n\nExample: 25/12/1985\n\n*Note:* Premium members get unlimited compatibility checks!`;
-      break;
-    case 'show_user_profile':
-      const subscriptionStatus = paymentService.getSubscriptionStatus(user);
-      response = `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate || 'Not set'}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\n\n💳 *Subscription*\nPlan: ${subscriptionStatus.planName}\nStatus: ${subscriptionStatus.isActive ? 'Active' : 'Inactive'}\n${subscriptionStatus.expiryDate ? `Expires: ${new Date(subscriptionStatus.expiryDate).toDateString()}` : ''}\n\n⭐ Loyalty Points: ${user.loyaltyPoints || 0}\n\nWhat would you like to update or explore?`;
-      break;
-    case 'show_subscription_plans':
-      const plans = paymentService.getAllPlans();
-      response = `💳 *Subscription Plans*\n\n🌟 *Free*\n• Daily micro-prediction\n• Birth chart visualization\n• 7-day transit summary\n\n⭐ *Essential - ₹230/month*\n• Daily personalized horoscope\n• Weekly video predictions\n• Basic compatibility (5 people)\n\n💎 *Premium - ₹299/month*\n• Unlimited AI questions\n• Priority astrologer access\n• Unlimited compatibility\n\nReply with the plan name to subscribe!`;
-      break;
-    case 'upgrade_to_essential':
-      try {
-        const result = await paymentService.processSubscription(phoneNumber, 'essential');
-        response = result.message;
-      } catch (error) {
-        response = `❌ Sorry, I couldn't process your subscription right now. Please try again later or contact support.`;
+    }
+    break;
+  case 'initiate_compatibility_flow':
+    if (!user.birthDate) {
+      response = 'I need your birth details first. Please complete the onboarding process.';
+    } else {
+      // Start compatibility conversation flow
+      const flowStarted = await processFlowMessage({ type: 'text', text: { body: 'start' } }, user, 'compatibility');
+      if (flowStarted) {
+        return null; // Flow started, don't send additional response
+      } else {
+        response = 'Sorry, I couldn\'t start the compatibility flow right now.';
       }
-      break;
-    case 'upgrade_to_premium':
-      try {
-        const result = await paymentService.processSubscription(phoneNumber, 'premium');
-        response = result.message;
-      } catch (error) {
-        response = `❌ Sorry, I couldn't process your subscription right now. Please try again later or contact support.`;
-      }
-      break;
-    default:
-      logger.warn(`⚠️ Unknown menu action: ${action}`);
-      response = `I'm sorry, I don't know how to perform the action: ${action} yet.`;
-      break;
+    }
+    break;
+  case 'show_user_profile':
+    const subscriptionStatus = paymentService.getSubscriptionStatus(user);
+    response = `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate || 'Not set'}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\n\n💳 *Subscription*\nPlan: ${subscriptionStatus.planName}\nStatus: ${subscriptionStatus.isActive ? 'Active' : 'Inactive'}\n${subscriptionStatus.expiryDate ? `Expires: ${new Date(subscriptionStatus.expiryDate).toDateString()}` : ''}\n\n⭐ Loyalty Points: ${user.loyaltyPoints || 0}\n\nWhat would you like to update or explore?`;
+    break;
+  case 'show_subscription_plans':
+    // Start subscription plans conversation flow
+    const flowStarted = await processFlowMessage({ type: 'text', text: { body: 'start' } }, user, 'subscription_plans');
+    if (flowStarted) {
+      return null; // Flow started, don't send additional response
+    } else {
+      response = 'Sorry, I couldn\'t start the subscription flow right now.';
+    }
+    break;
+  case 'upgrade_to_essential':
+    try {
+      const result = await paymentService.processSubscription(phoneNumber, 'essential');
+      response = result.message;
+    } catch (error) {
+      response = '❌ Sorry, I couldn\'t process your subscription right now. Please try again later or contact support.';
+    }
+    break;
+  case 'upgrade_to_premium':
+    try {
+      const result = await paymentService.processSubscription(phoneNumber, 'premium');
+      response = result.message;
+    } catch (error) {
+      response = '❌ Sorry, I couldn\'t process your subscription right now. Please try again later or contact support.';
+    }
+    break;
+  default:
+    logger.warn(`⚠️ Unknown menu action: ${action}`);
+    response = `I'm sorry, I don't know how to perform the action: ${action} yet.`;
+    break;
   }
-  await sendMessage(phoneNumber, response);
+  if (response) {
+    await sendMessage(phoneNumber, response);
+  }
 };
 
 /**
@@ -269,7 +289,7 @@ const executeMenuAction = async (phoneNumber, user, action) => {
  * @param {string} description - List description
  * @param {Object} user - User object
  */
-const processListReply = async (phoneNumber, listId, title, description, user) => {
+const processListReply = async(phoneNumber, listId, title, description, user) => {
   // Generate response based on list selection
   const response = `You selected: ${title}\nDescription: ${description}\n\nI'll process your request shortly!`;
   await sendMessage(phoneNumber, response);
@@ -282,7 +302,7 @@ const processListReply = async (phoneNumber, listId, title, description, user) =
  * @param {string} text - Button text
  * @param {Object} user - User object
  */
-const processButtonPayload = async (phoneNumber, payload, text, user) => {
+const processButtonPayload = async(phoneNumber, payload, text, user) => {
   // Generate response based on button payload
   const response = `Button pressed: ${text}\nPayload: ${payload}\n\nI'll process your request shortly!`;
   await sendMessage(phoneNumber, response);
@@ -292,8 +312,8 @@ const processButtonPayload = async (phoneNumber, payload, text, user) => {
  * Send unsupported message type response
  * @param {string} phoneNumber - User's phone number
  */
-const sendUnsupportedMessageTypeResponse = async (phoneNumber) => {
-  const response = `I'm sorry, I don't support that type of message yet. Please send a text message with your question!`;
+const sendUnsupportedMessageTypeResponse = async phoneNumber => {
+  const response = 'I\'m sorry, I don\'t support that type of message yet. Please send a text message with your question!';
   await sendMessage(phoneNumber, response);
 };
 
@@ -301,8 +321,8 @@ const sendUnsupportedMessageTypeResponse = async (phoneNumber) => {
  * Send unsupported interactive type response
  * @param {string} phoneNumber - User's phone number
  */
-const sendUnsupportedInteractiveTypeResponse = async (phoneNumber) => {
-  const response = `I'm sorry, I don't support that type of interactive message yet. Please try sending a text message!`;
+const sendUnsupportedInteractiveTypeResponse = async phoneNumber => {
+  const response = 'I\'m sorry, I don\'t support that type of interactive message yet. Please try sending a text message!';
   await sendMessage(phoneNumber, response);
 };
 
@@ -312,7 +332,7 @@ const sendUnsupportedInteractiveTypeResponse = async (phoneNumber) => {
  * @param {string} type - Media type
  * @param {string} caption - Media caption
  */
-const sendMediaAcknowledgment = async (phoneNumber, type, caption) => {
+const sendMediaAcknowledgment = async(phoneNumber, type, caption) => {
   const response = `Thank you for sending that ${type}${caption ? ` with caption: "${caption}"` : ''}! I'll process it shortly.`;
   await sendMessage(phoneNumber, response);
 };
@@ -322,8 +342,8 @@ const sendMediaAcknowledgment = async (phoneNumber, type, caption) => {
  * @param {string} phoneNumber - User's phone number
  * @param {string} errorMessage - Error message
  */
-const sendErrorMessage = async (phoneNumber, errorMessage) => {
-  const response = `I'm sorry, I encountered an error processing your message. Please try again later!`;
+const sendErrorMessage = async(phoneNumber, errorMessage) => {
+  const response = 'I\'m sorry, I encountered an error processing your message. Please try again later!';
   await sendMessage(phoneNumber, response);
   logger.error(`❌ Error sent to ${phoneNumber}: ${errorMessage}`);
 };
@@ -334,10 +354,10 @@ const sendErrorMessage = async (phoneNumber, errorMessage) => {
  * @param {Object} user - User object
  * @param {string} otherBirthDate - Other person's birth date
  */
-const handleCompatibilityRequest = async (phoneNumber, user, otherBirthDate) => {
+const handleCompatibilityRequest = async(phoneNumber, user, otherBirthDate) => {
   try {
     if (!user.birthDate) {
-      await sendMessage(phoneNumber, `I need your birth date first to check compatibility. Please complete your profile by providing your birth details.`);
+      await sendMessage(phoneNumber, 'I need your birth date first to check compatibility. Please complete your profile by providing your birth details.');
       return;
     }
 
@@ -358,10 +378,9 @@ const handleCompatibilityRequest = async (phoneNumber, user, otherBirthDate) => 
 
     // Increment compatibility check counter
     await require('../../models/userModel').incrementCompatibilityChecks(phoneNumber);
-
   } catch (error) {
     logger.error('Error handling compatibility request:', error);
-    await sendMessage(phoneNumber, `I'm sorry, I couldn't process the compatibility request right now. Please try again later.`);
+    await sendMessage(phoneNumber, 'I\'m sorry, I couldn\'t process the compatibility request right now. Please try again later.');
   }
 };
 
@@ -371,7 +390,7 @@ const handleCompatibilityRequest = async (phoneNumber, user, otherBirthDate) => 
  * @param {Object} user - User object
  * @param {string} planId - Subscription plan ID
  */
-const handleSubscriptionRequest = async (phoneNumber, user, planId) => {
+const handleSubscriptionRequest = async(phoneNumber, user, planId) => {
   try {
     const result = await paymentService.processSubscription(phoneNumber, planId);
     await sendMessage(phoneNumber, result.message);
@@ -382,13 +401,12 @@ const handleSubscriptionRequest = async (phoneNumber, user, planId) => {
     plan.features.forEach(feature => {
       welcomeMessage += `• ${feature}\n`;
     });
-    welcomeMessage += `\nWhat would you like to explore first?`;
+    welcomeMessage += '\nWhat would you like to explore first?';
 
     await sendMessage(phoneNumber, welcomeMessage);
-
   } catch (error) {
     logger.error('Error handling subscription request:', error);
-    await sendMessage(phoneNumber, `❌ Sorry, I couldn't process your subscription right now. Please try again later or contact support.`);
+    await sendMessage(phoneNumber, '❌ Sorry, I couldn\'t process your subscription right now. Please try again later or contact support.');
   }
 };
 

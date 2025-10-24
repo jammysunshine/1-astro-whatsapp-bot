@@ -7,7 +7,7 @@ const { validateWebhookSignature, verifyWebhookChallenge } = require('../service
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  */
-const handleWhatsAppWebhook = async (req, res) => {
+const handleWhatsAppWebhook = async(req, res) => {
   try {
     const { body } = req;
 
@@ -55,17 +55,16 @@ const handleWhatsAppWebhook = async (req, res) => {
     }
 
     // Return success response
-    res.status(200).json({ 
-      success: true, 
+    res.status(200).json({
+      success: true,
       message: 'Webhook processed successfully',
       timestamp: new Date().toISOString()
     });
-
   } catch (error) {
     logger.error('❌ Error in handleWhatsAppWebhook:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Internal server error',
-      message: error.message 
+      message: error.message
     });
   }
 };

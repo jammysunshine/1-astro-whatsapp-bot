@@ -10,18 +10,18 @@ jest.mock('../../../src/services/whatsapp/messageProcessor');
 jest.mock('../../../src/utils/logger');
 
 describe('WhatsApp Controller', () => {
-  let req, res;
+  let req; let res;
 
   beforeEach(() => {
     // Reset mocks
     jest.clearAllMocks();
-    
+
     // Setup request and response objects
     req = {
       body: {},
       headers: {}
     };
-    
+
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn().mockReturnThis(),
@@ -30,29 +30,29 @@ describe('WhatsApp Controller', () => {
   });
 
   describe('handleWhatsAppWebhook', () => {
-    it('should return 400 for invalid webhook payload', async () => {
+    it('should return 400 for invalid webhook payload', async() => {
       req.body = null;
-      
+
       await handleWhatsAppWebhook(req, res);
-      
+
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({ error: 'Invalid payload' });
     });
 
-    it('should return 200 for valid webhook payload with no entries', async () => {
+    it('should return 200 for valid webhook payload with no entries', async() => {
       req.body = { entry: [] };
-      
+
       await handleWhatsAppWebhook(req, res);
-      
+
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({ 
-        success: true, 
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
         message: 'Webhook processed successfully',
         timestamp: expect.any(String)
       });
     });
 
-    it('should process valid webhook with messages', async () => {
+    it('should process valid webhook with messages', async() => {
       req.body = {
         entry: [{
           changes: [{
@@ -74,11 +74,11 @@ describe('WhatsApp Controller', () => {
           }]
         }]
       };
-      
+
       processIncomingMessage.mockResolvedValue();
-      
+
       await handleWhatsAppWebhook(req, res);
-      
+
       expect(processIncomingMessage).toHaveBeenCalledWith(
         expect.objectContaining({
           from: '1234567890',
@@ -96,7 +96,7 @@ describe('WhatsApp Controller', () => {
           }]
         })
       );
-      
+
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
         success: true,
@@ -105,7 +105,7 @@ describe('WhatsApp Controller', () => {
       });
     });
 
-    it('should handle errors gracefully', async () => {
+    it('should handle errors gracefully', async() => {
       req.body = {
         entry: [{
           changes: [{
@@ -115,12 +115,12 @@ describe('WhatsApp Controller', () => {
           }]
         }]
       };
-      
+
       // Mock processIncomingMessage to throw an error
       processIncomingMessage.mockRejectedValue(new Error('Processing error'));
-      
+
       await handleWhatsAppWebhook(req, res);
-      
+
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
         error: 'Internal server error',

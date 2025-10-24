@@ -17,14 +17,6 @@
         "optional": true,
         "error_message": "Please provide time in HH:MM format (e.g., 14:30) or 'skip'"
       },
-      "ask_birth_time": {
-        "prompt": "Great! 📅\n\nBirth time helps me create more accurate predictions.\n\nPlease provide your birth time in HH:MM format (24-hour):\n\n*Example:* 14:30\n\nOr reply 'skip' if you don't know your exact birth time.",
-        "validation": "time_or_skip",
-        "next_step": "ask_birth_place",
-        "data_key": "birthTime",
-        "optional": true,
-        "error_message": "Please provide time in HH:MM format (e.g., 14:30) or 'skip'"
-      },
       "ask_birth_place": {
         "prompt": "Excellent! 🌍 Birth place determines your *local planetary positions* at birth.\n\nPlease provide your birth city and country:\n\n*Example:* Mumbai, India\n\n💡 *Why birth place?* Different locations have unique astrological influences due to latitude/longitude.",
         "validation": "text",

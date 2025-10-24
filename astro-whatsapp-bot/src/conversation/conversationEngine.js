@@ -1,9 +1,9 @@
 const { getFlow } = require('./flowLoader');
-const { getUserSession, setUserSession, deleteUserSession, addBirthDetails, updateUserProfile } = require('../../models/userModel');
-const { sendMessage } = require('../whatsapp/messageSender');
-const logger = require('../../utils/logger');
-const vedicCalculator = require('../astrology/vedicCalculator');
-const paymentService = require('../payment/paymentService');
+const { getUserSession, setUserSession, deleteUserSession, addBirthDetails, updateUserProfile } = require('../models/userModel');
+const { sendMessage } = require('../services/whatsapp/messageSender');
+const logger = require('../utils/logger');
+const vedicCalculator = require('../services/astrology/vedicCalculator');
+const paymentService = require('../services/payment/paymentService');
 
 /**
  * Processes a user message within a defined conversation flow.
@@ -12,8 +12,8 @@ const paymentService = require('../payment/paymentService');
  * @param {string} flowId - The ID of the conversation flow (e.g., 'onboarding').
  * @returns {Promise<boolean>} True if the message was handled by the conversation engine, false otherwise.
  */
-const processFlowMessage = async (message, user, flowId) => {
-  const phoneNumber = user.phoneNumber;
+const processFlowMessage = async(message, user, flowId) => {
+  const { phoneNumber } = user;
   const messageText = message.type === 'text' ? message.text.body : '';
   let session = await getUserSession(phoneNumber);
 
@@ -81,7 +81,7 @@ const processFlowMessage = async (message, user, flowId) => {
       }
     } else {
       logger.error(`❌ Next step '${nextStepId}' not found in flow '${flowId}'.`);
-    await sendMessage(phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
+      await sendMessage(phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
       await deleteUserSession(phoneNumber);
       return false;
     }
@@ -105,62 +105,66 @@ const processFlowMessage = async (message, user, flowId) => {
  * @param {string} action - The action to execute (e.g., 'complete_profile').
  * @param {Object} flowData - Data collected during the flow.
  */
-const executeFlowAction = async (phoneNumber, user, flowId, action, flowData) => {
+const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => {
   switch (action) {
-    case 'complete_profile':
-      const birthDate = flowData.ask_birth_date;
-      const birthTime = flowData.ask_birth_time.toLowerCase() === 'unknown' ? null : flowData.ask_birth_time;
-      const birthPlace = flowData.ask_birth_place;
+  case 'complete_profile': {
+    const birthDate = flowData.ask_birth_date;
+    const birthTime = flowData.ask_birth_time.toLowerCase() === 'unknown' ? null : flowData.ask_birth_time;
+    const birthPlace = flowData.ask_birth_place;
 
-      await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
-      await updateUserProfile(phoneNumber, { profileComplete: true });
-      await deleteUserSession(phoneNumber); // Clear onboarding session
-      await sendMessage(phoneNumber, getFlow(flowId).steps.complete_onboarding.prompt.replace('{userName}', user.name || 'cosmic explorer'));
-      break;
-    case 'fetch_daily_horoscope':
-      const sign = flowData.select_sign;
-      const horoscope = vedicCalculator.generateDailyHoroscope(sign);
-      await sendMessage(phoneNumber, `🌟 *Daily Horoscope for ${sign}*\n\n${horoscope}\n\n✨ Have a wonderful day!`);
+    await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
+    await updateUserProfile(phoneNumber, { profileComplete: true });
+    await deleteUserSession(phoneNumber); // Clear onboarding session
+    await sendMessage(phoneNumber, getFlow(flowId).steps.complete_onboarding.prompt.replace('{userName}', user.name || 'cosmic explorer'));
+    break;
+  }
+  case 'fetch_daily_horoscope': {
+    const sign = flowData.select_sign;
+    const horoscope = vedicCalculator.generateDailyHoroscope(sign);
+    await sendMessage(phoneNumber, `🌟 *Daily Horoscope for ${sign}*\n\n${horoscope}\n\n✨ Have a wonderful day!`);
+    await deleteUserSession(phoneNumber);
+    break;
+  }
+  case 'calculate_compatibility_score': {
+    const partnerBirthDate = flowData.ask_partner_birth_date;
+    const partnerBirthTime = flowData.ask_partner_birth_time.toLowerCase() === 'unknown' ? null : flowData.ask_partner_birth_time;
+    const partnerBirthPlace = flowData.ask_partner_birth_place;
+
+    // Get user's birth details from session data (stored during onboarding)
+    const userSign = vedicCalculator.calculateSunSign(session.data.ask_birth_date);
+    const partnerSign = vedicCalculator.calculateSunSign(partnerBirthDate);
+
+    const compatibilityResult = vedicCalculator.checkCompatibility(userSign, partnerSign);
+
+    await sendMessage(phoneNumber, `💕 *Compatibility Analysis*\n\n*Your Sign:* ${userSign}\n*Partner's Sign:* ${partnerSign}\n*Compatibility:* ${compatibilityResult.compatibility}\n\n${compatibilityResult.description}\n\n✨ Remember, compatibility is just one aspect of a relationship!`);
+    await deleteUserSession(phoneNumber);
+    break;
+  }
+  case 'process_subscription_payment': {
+    const selectedPlan = session.data.show_plans;
+    const confirmation = session.data.confirm_subscription;
+
+    if (confirmation === 'no') {
+      await sendMessage(phoneNumber, 'Subscription cancelled. You can subscribe anytime!');
       await deleteUserSession(phoneNumber);
-      break;
-    case 'calculate_compatibility_score':
-      const partnerBirthDate = flowData.ask_partner_birth_date;
-      const partnerBirthTime = flowData.ask_partner_birth_time.toLowerCase() === 'unknown' ? null : flowData.ask_partner_birth_time;
-      const partnerBirthPlace = flowData.ask_partner_birth_place;
+      return;
+    }
 
-      // Get user's birth details from session data (stored during onboarding)
-      const userSign = vedicCalculator.calculateSunSign(session.data.ask_birth_date);
-      const partnerSign = vedicCalculator.calculateSunSign(partnerBirthDate);
+    const planId = selectedPlan.toLowerCase(); // essential or premium
+    const paymentLink = paymentService.generatePaymentLink(planId, phoneNumber);
 
-      const compatibilityResult = vedicCalculator.checkCompatibility(userSign, partnerSign);
-
-      await sendMessage(phoneNumber, `💕 *Compatibility Analysis*\n\n*Your Sign:* ${userSign}\n*Partner's Sign:* ${partnerSign}\n*Compatibility:* ${compatibilityResult.compatibility}\n\n${compatibilityResult.description}\n\n✨ Remember, compatibility is just one aspect of a relationship!`);
-      await deleteUserSession(phoneNumber);
-      break;
-    case 'process_subscription_payment':
-      const selectedPlan = session.data.show_plans;
-      const confirmation = session.data.confirm_subscription;
-
-      if (confirmation === 'no') {
-        await sendMessage(phoneNumber, 'Subscription cancelled. You can subscribe anytime!');
-        await deleteUserSession(phoneNumber);
-        return;
-      }
-
-      const planId = selectedPlan.toLowerCase(); // essential or premium
-      const paymentLink = paymentService.generatePaymentLink(planId, phoneNumber);
-
-      await sendMessage(phoneNumber, `💳 *Subscription Processing*\n\nThank you for choosing the ${selectedPlan} plan!\n\nClick here to complete your payment: ${paymentLink}\n\nOnce payment is confirmed, your subscription will be activated.`);
-      await deleteUserSession(phoneNumber);
-      break;
-    default:
-      logger.warn(`⚠️ Unknown flow action: ${action}`);
-      await sendMessage(phoneNumber, 'I\'m sorry, I encountered an unknown action. Please try again later.');
-      await deleteUserSession(phoneNumber);
-      break;
+    await sendMessage(phoneNumber, `💳 *Subscription Processing*\n\nThank you for choosing the ${selectedPlan} plan!\n\nClick here to complete your payment: ${paymentLink}\n\nOnce payment is confirmed, your subscription will be activated.`);
+    await deleteUserSession(phoneNumber);
+    break;
+  }
+  default:
+    logger.warn(`⚠️ Unknown flow action: ${action}`);
+    await sendMessage(phoneNumber, 'I\'m sorry, I encountered an unknown action. Please try again later.');
+    await deleteUserSession(phoneNumber);
+    break;
   }
 };
 
 module.exports = {
-  processFlowMessage,
+  processFlowMessage
 };

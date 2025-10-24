@@ -1,6 +1,12 @@
 // tests/unit/services/whatsapp/messageSender.test.js
 // Unit tests for WhatsApp message sender with 95%+ coverage
 
+// Mock dependencies
+jest.mock('axios', () => ({
+  post: jest.fn(),
+  get: jest.fn()
+}));
+
 const axios = require('axios');
 const {
   sendTextMessage,
@@ -11,10 +17,6 @@ const {
   markMessageAsRead
 } = require('../../../src/services/whatsapp/messageSender');
 const logger = require('../../../src/utils/logger');
-
-// Mock dependencies
-jest.mock('axios');
-jest.mock('../../../src/utils/logger');
 
 describe('WhatsApp Message Sender', () => {
   const phoneNumber = '1234567890';

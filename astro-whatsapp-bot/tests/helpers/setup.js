@@ -1,6 +1,14 @@
 // tests/helpers/setup.js
 // Comprehensive Test Setup and Configuration File
 
+// Mock logger before any modules load it
+jest.mock('../../src/utils/logger', () => ({
+  info: jest.fn(),
+  error: jest.fn(),
+  warn: jest.fn(),
+  debug: jest.fn()
+}));
+
 // Set test environment
 process.env.NODE_ENV = 'test';
 

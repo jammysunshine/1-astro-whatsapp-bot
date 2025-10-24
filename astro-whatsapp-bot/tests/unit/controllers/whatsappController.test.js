@@ -1,13 +1,14 @@
 // tests/unit/controllers/whatsappController.test.js
 // Unit tests for WhatsApp webhook controller
 
+// Mock dependencies
+jest.mock('../../../src/services/whatsapp/messageProcessor', () => ({
+  processIncomingMessage: jest.fn()
+}));
+
 const { handleWhatsAppWebhook } = require('../../../src/controllers/whatsappController');
 const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
 const logger = require('../../../src/utils/logger');
-
-// Mock dependencies
-jest.mock('../../../src/services/whatsapp/messageProcessor');
-jest.mock('../../../src/utils/logger');
 
 describe('WhatsApp Controller', () => {
   let req; let res;

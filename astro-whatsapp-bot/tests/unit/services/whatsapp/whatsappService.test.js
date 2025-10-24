@@ -1,17 +1,21 @@
 // tests/unit/services/whatsapp/whatsappService.test.js
 // Unit tests for WhatsApp service with 95%+ coverage
 
+// Mock dependencies
+jest.mock('../../../src/services/whatsapp/messageProcessor', () => ({
+  processIncomingMessage: jest.fn(),
+  processUserMessage: jest.fn()
+}));
+jest.mock('../../../src/services/whatsapp/webhookValidator', () => ({
+  validateWebhookSignature: jest.fn(),
+  verifyWebhookChallenge: jest.fn()
+}));
+
 const { handleWhatsAppWebhook } = require('../../../src/services/whatsapp/whatsappService');
 const { processUserMessage } = require('../../../src/services/whatsapp/messageProcessor');
 const { validateWebhookSignature } = require('../../../src/services/whatsapp/webhookValidator');
 const { sendTextMessage } = require('../../../src/services/whatsapp/messageSender');
 const logger = require('../../../src/utils/logger');
-
-// Mock dependencies
-jest.mock('../../../src/services/whatsapp/messageProcessor');
-jest.mock('../../../src/services/whatsapp/webhookValidator');
-jest.mock('../../../src/services/whatsapp/messageSender');
-jest.mock('../../../src/utils/logger');
 
 describe('WhatsApp Service', () => {
   let req; let res;

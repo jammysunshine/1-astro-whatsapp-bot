@@ -1,17 +1,29 @@
 // tests/unit/services/whatsapp/messageProcessor.test.js
 // Unit tests for WhatsApp message processor service
 
+// Mock dependencies
+jest.mock('../../../src/services/whatsapp/messageSender', () => ({
+  sendMessage: jest.fn(),
+  sendTextMessage: jest.fn()
+}));
+jest.mock('../../../src/models/userModel', () => ({
+  getUserByPhone: jest.fn(),
+  createUser: jest.fn(),
+  addBirthDetails: jest.fn(),
+  updateUserProfile: jest.fn(),
+  getUserSession: jest.fn(),
+  setUserSession: jest.fn(),
+  deleteUserSession: jest.fn()
+}));
+jest.mock('../../../src/services/astrology/astrologyEngine', () => ({
+  generateAstrologyResponse: jest.fn()
+}));
+
 const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
 const { sendMessage } = require('../../../src/services/whatsapp/messageSender');
 const { getUserByPhone, createUser } = require('../../../src/models/userModel');
 const { generateAstrologyResponse } = require('../../../src/services/astrology/astrologyEngine');
 const logger = require('../../../src/utils/logger');
-
-// Mock dependencies
-jest.mock('../../../src/services/whatsapp/messageSender');
-jest.mock('../../../src/models/userModel');
-jest.mock('../../../src/services/astrology/astrologyEngine');
-jest.mock('../../../src/utils/logger');
 
 describe('WhatsApp Message Processor', () => {
   let message; let value;

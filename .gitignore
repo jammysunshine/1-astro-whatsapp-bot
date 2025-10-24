@@ -33,6 +33,7 @@ yarn-error.log*
 !next.config.js
 !nuxt.config.js
 !quasar.config.js
+!railway.json
 coverage/
 .pnp
 .pnp.*

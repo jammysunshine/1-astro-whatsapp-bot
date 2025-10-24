@@ -433,6 +433,19 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Performance and Scalability Flow', () => {
+    beforeEach(() => {
+      // Mock existing users for performance test
+      getUserByPhone.mockResolvedValue({
+        id: 'user-perf',
+        phoneNumber: '1234567890',
+        birthDate: '15/03/1990',
+        birthTime: '07:30',
+        birthPlace: 'Mumbai, India',
+        createdAt: new Date('2023-01-01'),
+        lastInteraction: new Date('2023-01-15')
+      });
+    });
+
     it('should handle high volume of messages without crashing', async() => {
       // Create multiple webhook payloads
       const payloads = [];

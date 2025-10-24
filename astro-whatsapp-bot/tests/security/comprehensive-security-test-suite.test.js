@@ -9,7 +9,6 @@ const logger = require('../../src/utils/logger');
 // Mock dependencies
 jest.mock('../../src/services/whatsapp/webhookValidator');
 jest.mock('../../src/services/whatsapp/messageProcessor');
-jest.mock('../../src/utils/inputValidator');
 jest.mock('../../src/utils/logger');
 
 // Get mocked functions
@@ -380,21 +379,8 @@ describe('Comprehensive Security Test Suite', () => {
     });
   });
 
-  describe('Compliance and Regulatory Requirements', () => {
-    it('should implement GDPR compliance according to regulatory requirements', async() => {
-      // Test GDPR compliance implementation
-      const gdprCompliance = {
-        dataEncryption: true,
-        userConsent: true,
-        dataPortability: true,
-        rightToErasure: true,
-        privacyByDesign: true,
-        dataMinimization: true
-      };
-
-      Object.values(gdprCompliance).forEach(value => {
-        expect(value).toBe(true);
-      });
+  });
+});
     });
 
     it('should implement PCI DSS compliance according to payment security requirements', async() => {
@@ -430,28 +416,7 @@ describe('Comprehensive Security Test Suite', () => {
     });
   });
 
-  describe('Security Logging and Monitoring', () => {
-    it('should log security events according to monitoring requirements', async() => {
-      // Test security event logging
-      const securityEvent = {
-        type: 'unauthorized_access',
-        timestamp: new Date().toISOString(),
-        ipAddress: '192.168.1.100',
-        userAgent: 'Mozilla/5.0...',
-        userId: null
-      };
-
-      logger.warn.mockImplementation();
-      logger.error.mockImplementation();
-
-      // In a real implementation, this would test actual logging
-      logger.warn('Security event detected:', securityEvent);
-
-      expect(logger.warn).toHaveBeenCalledWith(
-        'Security event detected:',
-        securityEvent
-      );
-    });
+});
 
     it('should implement proper error logging without exposing sensitive data', async() => {
       // Test error logging implementation

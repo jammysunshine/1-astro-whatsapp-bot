@@ -11,7 +11,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 
 ## Core Features (Developed with BMAd Methodology)
 
-### Multiple Astrology Services
+### Multiple Astrology Services (See Epic 2)
 - Hindu/Vedic Astrology (birth chart, planetary periods, compatibility)
 - Western Astrology (sun/moon/ascendant readings, transits)
 - Chinese Astrology (animal signs, elemental analysis)
@@ -28,12 +28,12 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Continuous Integration**: Features integrated continuously with full automated test coverage
 - **Modular and Independent Architecture**: All development (features, conversation flows, menus) must adhere to a modular and independent architecture as defined in Epic 16, ensuring easy updates, maintenance, and testing without impacting other parts of the codebase.
 
-### Multi-Channel Service Delivery (WhatsApp First)
+### Multi-Channel Service Delivery (WhatsApp First) (See Epic 1)
 - **Primary Channel**: Fully comprehensive WhatsApp-based service with all features available
 - **Secondary Channels** (Phase 2): Web app, mobile app, and other messaging platforms (Telegram, Instagram DMs, Facebook Messenger)
 - **Cross-Platform Synchronization**: Seamless data and history synchronization across all channels
 
-### Enhanced Subscription Tiers (Optimized for Growth)
+### Enhanced Subscription Tiers (Optimized for Growth) (See Epic 3)
 - **Free Tier**: Daily micro-prediction (1 sentence), personal birth chart visualization (as shareable image), 7-day transit summary, community forum access, compatibility checking with one additional person
 - **Essential Tier**: Daily personalized horoscope with action items, weekly video predictions from AI avatar of top astrologer, monthly group Q&A sessions with astrologers, basic compatibility matching (up to 5 people)
 - **Premium Tier**: Unlimited questions to AI, priority access to human astrologers (24-hour response vs. 72-hour), personalized monthly reports with 3-month forecasts, access to exclusive remedial solutions, compatibility checking with unlimited people
@@ -44,9 +44,9 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - AI-Powered Quick Readings: Instant responses for basic questions
 - Human Astrologer Chat: Direct text/voice chat with certified astrologers
 - Scheduled Consultations: Book time with specific astrologers
-- AI Twin Service: Personalized AI astrologer that learns communication style and life patterns
-- Predictive Decision Timing: Precision timing for important life decisions based on planetary transits
-- Loyalty System: Comprehensive "AstroRewards" program with points and tier benefits
+- AI Twin Service (See Epic 4): Personalized AI astrologer that learns communication style and life patterns
+- Predictive Decision Timing (See Epic 5): Precision timing for important life decisions based on planetary transits
+- Loyalty System (See Epic 3): Comprehensive "AstroRewards" program with points and tier benefits
 
 ### User Features (Enhanced for Engagement)
 - Complete profile with birth details (date, time, place)
@@ -180,7 +180,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Auto-renewal options with notification before renewal**
 - **Cancellation and refund policies**
 
-## User Authentication and Profile System
+## User Authentication and Profile System (See Epic 1, Epic 7)
 
 ### Authentication Methods:
 1. **WhatsApp Number Verification**: Primary authentication via WhatsApp Business API
@@ -233,7 +233,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Achievement System**: Badges and progression tracking
 - **Shareable Charts**: Generate and share personalized birth chart images
 
-## Multi-Language and Cultural Support
+## Multi-Language and Cultural Support (See Epic 1)
 
 ### Supported Languages
 - **Primary Languages**: English, Hindi, Arabic, Malayalam, Telugu, Tamil, Kannada, Punjabi
@@ -268,7 +268,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - Festival-specific features and content
 - Local astrology practitioners integration
 
-## Enhanced User Experience & Onboarding (Optimized for Engagement)
+## Enhanced User Experience & Onboarding (Optimized for Engagement) (See Epic 1)
 
 ### Comprehensive Onboarding System
 1. **Immediate Value Hook (First 5 Minutes Rule)**:
@@ -357,7 +357,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
    - **Proactive Value**: "Good morning, [User's Name]! Your personalized planetary forecast for today indicates [insight relevant to their chart]. It's a great day for [action]. Also, don't forget our exclusive webinar on 'Navigating Mercury Retrograde' this Thursday at 7 PM EST – a perk just for you! 🌟"
    - **Interactive Prompt**: "The stars are aligning for a big decision! What's on your mind? A) Career B) Love C) Finances D) Health E) Relationships with others. I'll give you the cosmic insight you need and show you how compatible you are!"
 
-## Advanced Personalization & Customization (Enhanced for Viral Growth)
+## Advanced Personalization & Customization (Enhanced for Viral Growth) (See Epic 4, Epic 6)
 
 ### Deep Personalization Features
 1. **Behavioral Adaptation**:
@@ -469,7 +469,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Exclusive Group Access & Content**: The VIP tier's "Exclusive Community" should not just be a perk but a highly coveted, aspirational space that drives upgrades through perceived exclusivity and unique value from interaction with top astrologers and like-minded individuals.
 - **Community Challenges**: Implement "Community Challenges" during planetary events (e.g., "New Moon Manifestation Challenge") where users collaboratively work towards goals, share experiences, and invite friends to participate, organically expanding the user base.
 
-## User Journey Mapping & Experience Flows (Enhanced for Retention and Virality)
+## User Journey Mapping & Experience Flows (Enhanced for Retention and Virality) (See Epic 1, Epic 6)
 
 ### Compelling User Journey with Retention Hooks
 
@@ -629,7 +629,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 10. **Habit Stacking**: Connect astrological insights to existing habits for deeper engagement
 11. **Social Engagement**: Encourage users to invite friends to check compatibility or join community
 
-## Regional Payment and Compliance Requirements
+## Regional Payment and Compliance Requirements (See Epic 3)
 
 ### India:
 1. **Payment Compliance**:
@@ -688,7 +688,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - Anti-money laundering (AML) compliance
 - Know Your Customer (KYC) requirements
 
-## WhatsApp Business API Compliance Guidelines
+## WhatsApp Business API Compliance Guidelines (See Epic 1)
 
 ### Message Types and Usage:
 1. **Template Messages**:
@@ -750,7 +750,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - No misleading business identity
 - No pyramid schemes or fraudulent content
 
-## Loyalty and Referral System (Enhanced for Viral Growth)
+## Loyalty and Referral System (Enhanced for Viral Growth) (See Epic 3)
 
 ### Loyalty Program ( "AstroRewards") (Enhanced):
 1. **Points System**:
@@ -802,7 +802,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
    - Astrological event-based promotions (full moon, new moon, eclipses)
    - **Viral Challenges**: Limited-time referral challenges with extra rewards
 
-## Detailed Use Cases for User Interactions (Enhanced)
+## Detailed Use Cases for User Interactions (Enhanced) (See Epic 1)
 
 ### Use Case 1: New User Registration and Profile Creation (Enhanced)
 **Actor**: New user
@@ -911,7 +911,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 6. System suggests next steps for relationship growth
 7. **Viral Element**: Encourages friend to sign up for full compatibility report
 
-## Technology Stack Recommendations (Solo Developer - Rapid 2-3 Day Development with BMAd AI-Driven Approach)
+## Technology Stack Recommendations (Solo Developer - Rapid 2-3 Day Development with BMAd AI-Driven Approach) (See Epic 10, Epic 11, Epic 12, Epic 14)
 
 ### Rapid Development Strategy (2-3 Days Focus)
 - **Leverage AI Agents**: Maximum use of Qwen CLI and Gemini CLI for code generation, testing, and deployment
@@ -983,7 +983,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - Real-time synchronization across all user touchpoints
 - **Social Features Engine**: For compatibility checking, community building, and sharing
 
-## Advanced Monetization Strategies (Enhanced) - MAXIMIZE REVENUE POTENTIAL
+## Advanced Monetization Strategies (Enhanced) - MAXIMIZE REVENUE POTENTIAL (See Epic 3)
 
 ### Premium Add-On Services (Revenue Multipliers)
 - **Express Services**: Priority processing for urgent questions (2x-3x standard pricing with urgency-based value proposition)
@@ -1059,7 +1059,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Anchoring and Decoy Effect**: Consistently apply psychological pricing cues when presenting subscription tiers. The VIP Tier with its high price serves as an anchor, making the Premium tier seem more reasonable and higher value by comparison.
 - **Retention-Focused Upsell**: Implement "Loyalty Unlockables" where long-term subscribers to lower tiers get access to a single high-tier feature for a limited time, driving natural aspiration for consistent upgrades (e.g., after 6 months Essential, unlock one VIP session).
 
-## Marketing and User Acquisition Strategies (Enhanced)
+## Marketing and User Acquisition Strategies (Enhanced) (See Epic 6)
 
 ### Digital Marketing
 - **SEO Strategy**: Optimize for keywords like "free horoscope", "online astrology", "daily predictions"
@@ -1095,7 +1095,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Marriage Portals**: Partner for compatibility services
 - **Educational Institutions**: Offer courses through astrology schools
 
-## Customer Retention and Engagement Strategies (Enhanced)
+## Customer Retention and Engagement Strategies (Enhanced) (See Epic 4, Epic 6)
 
 ### Personalization Features
 - **AI-Driven Recommendations**: Personalized service recommendations based on user behavior
@@ -1137,7 +1137,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Abandoned Journey Recovery**: Send targeted messages to users who started but didn't complete certain features
 - **Predictive Support**: Reach out during difficult transits before users ask for support
 
-## Scaling and Growth Strategies
+## Scaling and Growth Strategies (See Epic 10)
 
 ### Geographic Expansion
 - **Additional Markets**: Expand to other countries with high astrology interest (UK, USA, Canada, Singapore)
@@ -1185,7 +1185,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Cultural Specialists**: Hire astrologers specializing in regional practices
 - **Legal Compliance**: Ensure adherence to local laws and regulations in new markets
 
-## Success Metrics and KPIs (Revenue-Focused with Actionable Insights)
+## Success Metrics and KPIs (Revenue-Focused with Actionable Insights) (See Epic 15)
 
 ### Primary Revenue Metrics (Revenue Growth Focus)
 - **Monthly Recurring Revenue (MRR)**: Target growth of 25% month-over-month in first 6 months, 20% months 7-12, 15% year 2+ with emphasis on quality growth over quantity
@@ -1196,7 +1196,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Revenue from Different Streams**: Track subscriptions (70%+ target), marketplace commissions (15%+ target), micro-transactions (10%+ target), and one-time purchases (5%+ target)
 - **Average Revenue Per Paying User (ARPPU)**: Goal to increase from $10 to $20+ through premium feature adoption
 - **Percentage of Revenue from Premium Tiers**: Target 65%+ from Premium/VIP (vs. 60% baseline) to maximize revenue efficiency
-- **Marketplace Commission Revenue**: Target 15-20% of total revenue from affiliate relationships (high margin revenue)
+- **Marketplace Commission Revenue**: Target 15-25% of total revenue from affiliate relationships (high margin revenue)
 
 ### Conversion and Growth Metrics (Revenue Pipeline)
 - **Free-to-Paid Conversion Rate**: Target 20%+ of active free users converting to paid (vs. 15-25% baseline) with focus on quality over quantity
@@ -1295,7 +1295,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Pricing Impact Analysis**: How pricing changes affect revenue per user and overall revenue
 - **Competitive Revenue Response**: How competitor actions impact our revenue metrics
 
-## Customer Success & Support Strategies
+## Customer Success & Support Strategies (See Epic 1)
 
 ### Multi-Channel Support System
 1. **WhatsApp-Integrated Support**:
@@ -1385,7 +1385,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Community Growth & Wisdom**: As the Astro-Social Network grows, the collective wisdom and diverse perspectives within the community provide ever-increasing value to all members.
 - **Prediction Accuracy Improvement**: Continuously refine prediction algorithms based on user feedback and real-world outcomes, enhancing trust and perceived value.
 
-## Market Validation and Risk Mitigation Strategies (Maximize Success Probability)
+## Market Validation and Risk Mitigation Strategies (Maximize Success Probability) (See Epic 11)
 
 ### Market Validation Strategies (Prove Revenue Potential Before Full Investment)
 - **MVP Testing**: Launch basic WhatsApp service with 100-500 beta users to validate willingness to pay and retention
@@ -1427,7 +1427,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Cash Flow Management**: Ensure positive cash flow even during growth investment periods
 - **Payment Method Failure**: Multiple payment options to reduce payment abandonment rates
 
-## Development Phases (Solo Developer - 2-3 Day Rapid Launch with BMAd AI-Driven Approach)
+## Development Phases (Solo Developer - 2-3 Day Rapid Launch with BMAd AI-Driven Approach) (See Epic 10)
 
 ### Phase 1: WhatsApp MVP Launch (Day 1 - 12-16 hours)
 - **Core WhatsApp Functionality**: Basic question-answering system with AI responses
@@ -1604,7 +1604,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 6. **Day 2**: Focus on AI Twin, Transit Timing, and viral features
 7. **Day 3**: Polish, test, and optimize based on initial user feedback
 
-## Revenue Projections and Milestone Tracking (Reality-Based Growth)
+## Revenue Projections and Milestone Tracking (Reality-Based Growth) (See Epic 15)
 
 ### Phase-Based Revenue Targets (Maximize Growth and Profitability)
 

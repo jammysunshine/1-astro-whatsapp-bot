@@ -19,6 +19,12 @@ const processIncomingMessage = async(message, value) => {
   try {
     logger.info(`📞 Processing message from ${phoneNumber} (Type: ${type})`);
 
+    // Validate message structure
+    if (!message || !from) {
+      logger.warn('⚠️ Invalid message structure received');
+      return;
+    }
+
     // Get or create user
     let user = await getUserByPhone(phoneNumber);
     if (!user) {

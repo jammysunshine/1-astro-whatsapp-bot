@@ -16,9 +16,7 @@ app.use(helmet({
 }));
 app.use(cors());
 app.use(bodyParser.json({ verify: (req, res, buf, encoding) => {
-  if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-    req.rawBody = buf.toString(encoding);
-  }
+  req.rawBody = buf.toString(encoding);
 } }));
 app.use(bodyParser.urlencoded({ extended: true, verify: (req, res, buf, encoding) => {
   req.rawBody = buf.toString(encoding);

@@ -11,6 +11,14 @@ const handleWhatsAppWebhook = async(req, res) => {
   try {
     const { body, headers, rawBody } = req;
 
+    // Handle request aborted errors gracefully
+    req.on('aborted', () => {
+      logger.warn('⚠️ Request aborted by client');
+      if (!res.headersSent) {
+        res.status(200).json({ status: 'ok', message: 'Request aborted' });
+      }
+    });
+
     // Check required environment variables
     if (!process.env.W1_WHATSAPP_ACCESS_TOKEN || !process.env.W1_WHATSAPP_PHONE_NUMBER_ID) {
       logger.error('❌ Missing required WhatsApp environment variables');
@@ -20,17 +28,27 @@ const handleWhatsAppWebhook = async(req, res) => {
       });
     }
 
-    // Validate webhook signature (required for security)
+    // Validate webhook signature (required for security in production)
     const signature = headers['x-hub-signature-256'];
-    if (!signature) {
-      logger.warn('⚠️ Missing webhook signature');
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
     const secret = process.env.W1_WHATSAPP_APP_SECRET;
-    const isValid = validateWebhookSignature(rawBody || JSON.stringify(body), signature, secret);
-    if (!isValid) {
-      logger.warn('⚠️ Invalid webhook signature');
-      return res.status(401).json({ error: 'Unauthorized' });
+
+    // Skip signature validation in development if explicitly disabled
+    const skipSignatureValidation = process.env.W1_SKIP_WEBHOOK_SIGNATURE === 'true' ||
+                                   process.env.NODE_ENV === 'development';
+
+    if (!skipSignatureValidation) {
+      if (!signature) {
+        logger.warn('⚠️ Missing webhook signature');
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      const isValid = validateWebhookSignature(rawBody || JSON.stringify(body), signature, secret);
+      if (!isValid) {
+        logger.warn('⚠️ Invalid webhook signature');
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+    } else {
+      logger.info('🔓 Webhook signature validation skipped (development mode)');
     }
 
     // Log incoming webhook for debugging

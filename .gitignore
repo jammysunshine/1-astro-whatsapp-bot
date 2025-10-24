@@ -41,3 +41,8 @@ coverage/
 logs/
 temp/
 .bmad-core/
+
+# Ignore temporary validation files
+docs/validation/*.md
+!docs/validation/comprehensive-validation-summary.md
+!docs/validation/comprehensive-validation-checklist.md

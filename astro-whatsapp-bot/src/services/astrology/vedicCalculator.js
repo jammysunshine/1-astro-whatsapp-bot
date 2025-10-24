@@ -1,37 +1,85 @@
 const logger = require('../../utils/logger');
 
 /**
- * Basic Vedic Astrology Calculator for MVP
- * Provides fundamental calculations for birth charts and basic predictions
+ * Enhanced Vedic Astrology Calculator with Swiss Ephemeris
+ * Provides accurate astronomical calculations for birth charts and predictions
  */
+
+const sweph = require('sweph');
 
 class VedicCalculator {
   constructor() {
-    // Basic zodiac signs
+    // Set ephemeris path (download Swiss Ephemeris data files from https://www.astro.com/ftp/swisseph/ephe/)
+    try {
+      sweph.swe_set_ephe_path('./ephe');
+    } catch (error) {
+      console.warn('Swiss Ephemeris data files not found. Using fallback calculations.');
+      this.useFallback = true;
+    }
+
+    // Zodiac signs
     this.zodiacSigns = [
       'Aries', 'Taurus', 'Gemini', 'Cancer',
       'Leo', 'Virgo', 'Libra', 'Scorpio',
       'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
     ];
 
-    // Basic planetary information
+    // Planetary information with Swiss Ephemeris constants
     this.planets = {
-      sun: { name: 'Sun', symbol: '☉' },
-      moon: { name: 'Moon', symbol: '☽' },
-      mars: { name: 'Mars', symbol: '♂' },
-      mercury: { name: 'Mercury', symbol: '☿' },
-      jupiter: { name: 'Jupiter', symbol: '♃' },
-      venus: { name: 'Venus', symbol: '♀' },
-      saturn: { name: 'Saturn', symbol: '♄' }
+      sun: { name: 'Sun', symbol: '☉', swephId: sweph.SE_SUN },
+      moon: { name: 'Moon', symbol: '☽', swephId: sweph.SE_MOON },
+      mars: { name: 'Mars', symbol: '♂', swephId: sweph.SE_MARS },
+      mercury: { name: 'Mercury', symbol: '☿', swephId: sweph.SE_MERCURY },
+      jupiter: { name: 'Jupiter', symbol: '♃', swephId: sweph.SE_JUPITER },
+      venus: { name: 'Venus', symbol: '♀', swephId: sweph.SE_VENUS },
+      saturn: { name: 'Saturn', symbol: '♄', swephId: sweph.SE_SATURN }
     };
   }
 
   /**
-   * Calculate sun sign from birth date
-   * @param {string} birthDate - Birth date in DD/MM/YYYY format
-   * @returns {string} Sun sign
+    * Calculate sun sign from birth date using Swiss Ephemeris
+    * @param {string} birthDate - Birth date in DD/MM/YYYY format
+    * @param {string} birthTime - Birth time in HH:MM format (optional, defaults to noon)
+    * @returns {string} Sun sign
+    */
+  calculateSunSign(birthDate, birthTime = '12:00') {
+    try {
+      if (this.useFallback) {
+        // Fallback to simplified calculation
+        return this._calculateSunSignFallback(birthDate);
+      }
+
+      const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
+
+      // Convert to Julian day
+      const jd = sweph.swe_julday(year, month, day, hour + minute / 60, sweph.SE_GREG_CAL);
+
+      // Calculate sun position
+      const sunPos = sweph.swe_calc(jd, sweph.SE_SUN, sweph.SEFLG_SPEED);
+
+      if (sunPos.error) {
+        throw new Error(sunPos.error);
+      }
+
+      // Get longitude in degrees
+      const longitude = sunPos.longitude;
+
+      // Determine sign from longitude (0-29.99 Aries, 30-59.99 Taurus, etc.)
+      const signIndex = Math.floor(longitude / 30);
+      return this.zodiacSigns[signIndex];
+    } catch (error) {
+      console.error('Error calculating sun sign:', error);
+      // Fallback to simplified calculation
+      return this._calculateSunSignFallback(birthDate);
+    }
+  }
+
+  /**
+   * Fallback sun sign calculation using simplified dates
+   * @private
    */
-  calculateSunSign(birthDate) {
+  _calculateSunSignFallback(birthDate) {
     try {
       const [day, month] = birthDate.split('/').map(Number);
 
@@ -51,23 +99,17 @@ class VedicCalculator {
         { sign: 'Sagittarius', start: [22, 11], end: [21, 12] }
       ];
 
-      for (const signData of signDates) {
-        const [startDay, startMonth] = signData.start;
-        const [endDay, endMonth] = signData.end;
-
-        if ((month === startMonth && day >= startDay) ||
-            (month === endMonth && day <= endDay) ||
-            (startMonth > endMonth && // Handle Capricorn (Dec-Jan)
-             ((month === startMonth && day >= startDay) ||
-              (month === endMonth && day <= endDay) ||
-              month > startMonth || month < endMonth))) {
-          return signData.sign;
+      for (const { sign, start, end } of signDates) {
+        if ((month === start[1] && day >= start[0]) ||
+            (month === end[1] && day <= end[0]) ||
+            (month > start[1] && month < end[1])) {
+          return sign;
         }
       }
 
       return 'Unknown';
     } catch (error) {
-      logger.error('Error calculating sun sign:', error);
+      console.error('Error in fallback sun sign calculation:', error);
       return 'Unknown';
     }
   }
@@ -80,8 +122,44 @@ class VedicCalculator {
    */
   calculateMoonSign(birthDate, birthTime) {
     try {
+      if (this.useFallback) {
+        // Fallback to simplified calculation
+        return this._calculateMoonSignFallback(birthDate, birthTime);
+      }
+
+      const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
+
+      // Convert to Julian day
+      const jd = sweph.swe_julday(year, month, day, hour + minute / 60, sweph.SE_GREG_CAL);
+
+      // Calculate moon position
+      const moonPos = sweph.swe_calc(jd, sweph.SE_MOON, sweph.SEFLG_SPEED);
+
+      if (moonPos.error) {
+        throw new Error(moonPos.error);
+      }
+
+      // Get longitude in degrees
+      const longitude = moonPos.longitude;
+
+      // Determine sign from longitude
+      const signIndex = Math.floor(longitude / 30);
+      return this.zodiacSigns[signIndex];
+    } catch (error) {
+      console.error('Error calculating moon sign:', error);
+      // Fallback to simplified calculation
+      return this._calculateMoonSignFallback(birthDate, birthTime);
+    }
+  }
+
+  /**
+   * Fallback moon sign calculation
+   * @private
+   */
+  _calculateMoonSignFallback(birthDate, birthTime) {
+    try {
       // Simplified moon sign calculation
-      // In reality, this requires precise astronomical calculations
       const sunSign = this.calculateSunSign(birthDate);
 
       // Simple approximation: moon sign is usually 2-3 signs away from sun sign
@@ -90,7 +168,7 @@ class VedicCalculator {
 
       return this.zodiacSigns[moonSignIndex];
     } catch (error) {
-      logger.error('Error calculating moon sign:', error);
+      console.error('Error in fallback moon sign calculation:', error);
       return 'Unknown';
     }
   }
@@ -248,56 +326,7 @@ class VedicCalculator {
     };
   }
 
-  /**
-   * Check compatibility between two signs
-   * @param {string} sign1 - First sign
-   * @param {string} sign2 - Second sign
-   * @returns {Object} Compatibility result
-   */
-  checkCompatibility(sign1, sign2) {
-    // Simple compatibility matrix (in a real implementation, this would be more sophisticated)
-    const compatibilityMatrix = {
-      'Aries-Leo': 'Excellent',
-      'Aries-Sagittarius': 'Excellent',
-      'Aries-Gemini': 'Good',
-      'Aries-Aquarius': 'Good',
-      'Leo-Sagittarius': 'Excellent',
-      'Leo-Aries': 'Excellent',
-      'Sagittarius-Aries': 'Excellent',
-      'Sagittarius-Leo': 'Excellent',
-      'Gemini-Aries': 'Good',
-      'Gemini-Libra': 'Excellent',
-      'Libra-Gemini': 'Excellent',
-      'Libra-Aquarius': 'Good',
-      'Aquarius-Libra': 'Good',
-      'Aquarius-Aries': 'Good',
-      'Taurus-Virgo': 'Excellent',
-      'Taurus-Capricorn': 'Excellent',
-      'Taurus-Cancer': 'Good',
-      'Taurus-Pisces': 'Good',
-      'Virgo-Taurus': 'Excellent',
-      'Virgo-Capricorn': 'Good',
-      'Virgo-Scorpio': 'Good',
-      'Capricorn-Taurus': 'Excellent',
-      'Capricorn-Virgo': 'Good',
-      'Cancer-Taurus': 'Good',
-      'Cancer-Scorpio': 'Excellent',
-      'Cancer-Pisces': 'Excellent',
-      'Scorpio-Cancer': 'Excellent',
-      'Scorpio-Pisces': 'Good',
-      'Pisces-Cancer': 'Excellent',
-      'Pisces-Scorpio': 'Good'
-    };
 
-    const key1 = `${sign1}-${sign2}`;
-    const key2 = `${sign2}-${sign1}`;
-    const rating = compatibilityMatrix[key1] || compatibilityMatrix[key2] || 'Neutral';
-
-    return {
-      compatibility: rating,
-      description: this.getCompatibilityDescription(sign1, sign2, rating)
-    };
-  }
 
   /**
    * Generate detailed birth chart analysis
@@ -345,13 +374,7 @@ class VedicCalculator {
    * @param {string} birthTime - Birth time
    * @returns {string} Moon sign
    */
-  calculateMoonSign(birthDate, birthTime) {
-    // Simplified calculation - in reality this requires lunar position
-    const signs = this.zodiacSigns;
-    const [day, month] = birthDate.split('/').map(Number);
-    const dayOfYear = this.getDayOfYear(day, month);
-    return signs[(dayOfYear + 5) % 12]; // Offset for moon
-  }
+
 
   /**
    * Calculate rising sign (simplified)

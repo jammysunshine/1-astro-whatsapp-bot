@@ -1,122 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="27" failures="2" errors="0" time="5.588">
-  <testsuite name="Comprehensive Performance Test Suite" errors="0" failures="2" skipped="24" timestamp="2025-10-24T11:18:58" time="5.056" tests="27">
-    <testcase classname="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for health check endpoint as mandated by gemini.md" name="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for health check endpoint as mandated by gemini.md" time="0.526">
+<testsuites name="jest tests" tests="24" failures="0" errors="0" time="14.053">
+  <testsuite name="WhatsApp Message Processor" errors="0" failures="0" skipped="0" timestamp="2025-10-24T11:36:12" time="1.473" tests="9">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" name="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" time="0.016">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for webhook endpoint as mandated by gemini.md" name="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for webhook endpoint as mandated by gemini.md" time="0.202">
-      <failure>Error: expected 200 &quot;OK&quot;, got 401 &quot;Unauthorized&quot;
-    at Object.expect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/performance/comprehensive-performance-test-suite.test.js:69:11)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)
-----
-    at Test._assertStatus (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:252:14)
-    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:308:13
-    at Test._assertFunction (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:285:13)
-    at Test.assert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:164:23)
-    at Server.localAssert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:120:14)
-    at Object.onceWrapper (node:events:622:28)
-    at Server.emit (node:events:508:28)
-    at emitCloseNT (node:net:2419:8)
-    at processTicksAndRejections (node:internal/process/task_queues:89:21)</failure>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should process existing user message" name="WhatsApp Message Processor processIncomingMessage should process existing user message" time="0.025">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for all critical endpoints as mandated by gemini.md" name="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for all critical endpoints as mandated by gemini.md" time="0.071">
-      <failure>Error: expected 200 &quot;OK&quot;, got 401 &quot;Unauthorized&quot;
-    at Object.expect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/performance/comprehensive-performance-test-suite.test.js:103:32)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-----
-    at Test._assertStatus (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:252:14)
-    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:308:13
-    at Test._assertFunction (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:285:13)
-    at Test.assert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:164:23)
-    at Server.localAssert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:120:14)
-    at Object.onceWrapper (node:events:622:28)
-    at Server.emit (node:events:508:28)
-    at emitCloseNT (node:net:2419:8)
-    at processTicksAndRejections (node:internal/process/task_queues:89:21)</failure>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" name="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" time="0.007">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Throughput Performance Testing should handle minimum 100 requests per second throughput as mandated by gemini.md" name="Comprehensive Performance Test Suite Throughput Performance Testing should handle minimum 100 requests per second throughput as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" time="0.006">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Throughput Performance Testing should maintain consistent throughput under sustained load as mandated by gemini.md" name="Comprehensive Performance Test Suite Throughput Performance Testing should maintain consistent throughput under sustained load as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" time="0.005">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain memory usage under 512MB as mandated by gemini.md" name="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain memory usage under 512MB as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle button messages" name="WhatsApp Message Processor processIncomingMessage should handle button messages" time="0.027">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain CPU usage under 80% as mandated by gemini.md" name="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain CPU usage under 80% as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle media messages" name="WhatsApp Message Processor processIncomingMessage should handle media messages" time="0.005">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Caching Performance Testing should implement caching with hit rate tracking as mandated by gemini.md" name="Comprehensive Performance Test Suite Caching Performance Testing should implement caching with hit rate tracking as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" name="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" time="0.005">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Caching Performance Testing should implement Redis caching with proper configuration as mandated by gemini.md" name="Comprehensive Performance Test Suite Caching Performance Testing should implement Redis caching with proper configuration as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" name="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" time="0.006">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Database Performance Testing should implement database optimization with query tuning as mandated by gemini.md" name="Comprehensive Performance Test Suite Database Performance Testing should implement database optimization with query tuning as mandated by gemini.md" time="0">
-      <skipped/>
+  </testsuite>
+  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-24T11:36:14" time="1.138" tests="7">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.009">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Database Performance Testing should implement connection pooling with resource utilization optimization as mandated by gemini.md" name="Comprehensive Performance Test Suite Database Performance Testing should implement connection pooling with resource utilization optimization as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.011">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement asynchronous processing with queuing as mandated by gemini.md" name="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement asynchronous processing with queuing as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.008">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement background jobs with improved throughput as mandated by gemini.md" name="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement background jobs with improved throughput as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.009">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement code profiling with bottleneck identification as mandated by gemini.md" name="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement code profiling with bottleneck identification as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" name="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" time="0.006">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement memory management with leak prevention as mandated by gemini.md" name="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement memory management with leak prevention as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.008">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement API efficiency with round trip reduction as mandated by gemini.md" name="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement API efficiency with round trip reduction as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.004">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement compression with bandwidth reduction as mandated by gemini.md" name="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement compression with bandwidth reduction as mandated by gemini.md" time="0">
-      <skipped/>
+  </testsuite>
+  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-24T11:36:15" time="0.464" tests="4">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.014">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement lazy loading with faster load times as mandated by gemini.md" name="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement lazy loading with faster load times as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.008">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement resource optimization with faster load times as mandated by gemini.md" name="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement resource optimization with faster load times as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.007">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement connection pooling for external APIs with reduced connection overhead as mandated by gemini.md" name="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement connection pooling for external APIs with reduced connection overhead as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="0.006">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement CDN usage for static assets with improved delivery performance as mandated by gemini.md" name="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement CDN usage for static assets with improved delivery performance as mandated by gemini.md" time="0">
-      <skipped/>
+  </testsuite>
+  <testsuite name="Server Setup" errors="0" failures="0" skipped="0" timestamp="2025-10-24T11:36:16" time="3.227" tests="4">
+    <testcase classname="Server Setup GET /health should return health status with correct structure" name="Server Setup GET /health should return health status with correct structure" time="0.167">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Concurrency Performance Testing should implement concurrency management with optimal resource utilization as mandated by gemini.md" name="Comprehensive Performance Test Suite Concurrency Performance Testing should implement concurrency management with optimal resource utilization as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="Server Setup GET / should return welcome message with version" name="Server Setup GET / should return welcome message with version" time="0.034">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Concurrency Performance Testing should implement threading with optimal resource utilization as mandated by gemini.md" name="Comprehensive Performance Test Suite Concurrency Performance Testing should implement threading with optimal resource utilization as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="Server Setup POST /webhook should return webhook ready message" name="Server Setup POST /webhook should return webhook ready message" time="0.029">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Budget Testing should implement performance budget with automated compliance checking as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Budget Testing should implement performance budget with automated compliance checking as mandated by gemini.md" time="0">
-      <skipped/>
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Budget Testing should implement performance monitoring with real-time dashboards as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Budget Testing should implement performance monitoring with real-time dashboards as mandated by gemini.md" time="0">
-      <skipped/>
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Optimization Testing should implement performance optimization with monitoring and benchmarking as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Optimization Testing should implement performance optimization with monitoring and benchmarking as mandated by gemini.md" time="0">
-      <skipped/>
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Optimization Testing should implement monitoring and benchmarking infrastructure as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Optimization Testing should implement monitoring and benchmarking infrastructure as mandated by gemini.md" time="0">
-      <skipped/>
+    <testcase classname="Server Setup 404 Handler should return 404 for non-existent routes" name="Server Setup 404 Handler should return 404 for non-existent routes" time="0.032">
     </testcase>
   </testsuite>
 </testsuites>

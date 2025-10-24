@@ -109,6 +109,7 @@ describe('WhatsApp Webhook Integration', () => {
         .post('/webhook')
         .send(webhookPayload)
         .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=test-signature')
         .expect(200);
 
       expect(response.body).toEqual({
@@ -173,6 +174,7 @@ describe('WhatsApp Webhook Integration', () => {
         .post('/webhook')
         .send(webhookPayload)
         .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=test-signature')
         .expect(200);
 
       expect(response.body).toEqual({
@@ -240,6 +242,7 @@ describe('WhatsApp Webhook Integration', () => {
         .post('/webhook')
         .send(webhookPayload)
         .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=test-signature')
         .expect(200);
 
       expect(response.body).toEqual({
@@ -304,6 +307,7 @@ describe('WhatsApp Webhook Integration', () => {
         .post('/webhook')
         .send(webhookPayload)
         .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=test-signature')
         .expect(200);
 
       expect(response.body).toEqual({
@@ -337,6 +341,7 @@ describe('WhatsApp Webhook Integration', () => {
         .post('/webhook')
         .send({ invalid: 'payload' })
         .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=test-signature')
         .expect(400);
 
       expect(response.body).toEqual({
@@ -380,6 +385,7 @@ describe('WhatsApp Webhook Integration', () => {
         .post('/webhook')
         .send(webhookPayload)
         .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=test-signature')
         .expect(500);
 
       expect(response.body).toEqual({
@@ -453,6 +459,7 @@ describe('WhatsApp Webhook Integration', () => {
         .post('/webhook')
         .send(webhookPayload)
         .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=test-signature')
         .expect(500);
 
       // Restore environment variables

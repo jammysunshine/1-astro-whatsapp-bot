@@ -15,8 +15,8 @@ const {
   sendTemplateMessage,
   sendMediaMessage,
   markMessageAsRead
-} = require('services/whatsapp/messageSender');
-const logger = require('utils/logger');
+} = require('../../../../src/services/whatsapp/messageSender');
+const logger = require('../../../../src/utils/logger');
 
 describe('WhatsApp Message Sender', () => {
   const phoneNumber = '1234567890';
@@ -28,8 +28,8 @@ describe('WhatsApp Message Sender', () => {
     jest.clearAllMocks();
 
     // Set environment variables
-    process.env.WHATSAPP_ACCESS_TOKEN = accessToken;
-    process.env.WHATSAPP_PHONE_NUMBER_ID = phoneNumberId;
+    process.env.W1_WHATSAPP_ACCESS_TOKEN = accessToken;
+    process.env.W1_WHATSAPP_PHONE_NUMBER_ID = phoneNumberId;
   });
 
   afterEach(() => {

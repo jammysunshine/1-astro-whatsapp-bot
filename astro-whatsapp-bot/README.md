@@ -257,8 +257,7 @@ This project follows a modular and organized structure to facilitate development
     *   **`tests/reports/`**: Generated test reports (coverage, HTML, JUnit).
 
 *   **`docs/`**: Comprehensive project documentation.
-    *   **`docs/epics/`**: High-level epics outlining major features and architectural components.
-    *   **`docs/stories/`**: Detailed user stories with acceptance criteria, organized by epic.
+    *   **`docs/epics-and-stories/`**: High-level epics and detailed user stories outlining major features and architectural components.
     *   **`docs/architecture/`**: Architectural decision records (ADRs), diagrams, and design documents.
     *   **`docs/plans/`**: Development plans, roadmaps, and project management documents.
     *   **`docs/testing/`**: Testing strategies, plans, and guidelines.

@@ -10,7 +10,10 @@ const app = express();
 const PORT = process.env.W1_PORT || 3000;
 
 // Middleware
-app.use(helmet({ frameguard: { action: 'deny' } }));
+app.use(helmet({
+  frameguard: { action: 'deny' },
+  xssFilter: true
+}));
 app.use(cors());
 app.use(bodyParser.json({ verify: (req, res, buf, encoding) => {
   if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {

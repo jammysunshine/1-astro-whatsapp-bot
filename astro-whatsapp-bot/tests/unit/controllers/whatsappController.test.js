@@ -5,9 +5,13 @@
 jest.mock('../../../src/services/whatsapp/messageProcessor', () => ({
   processIncomingMessage: jest.fn()
 }));
+jest.mock('../../../src/services/whatsapp/webhookValidator', () => ({
+  validateWebhookSignature: jest.fn()
+}));
 
 const { handleWhatsAppWebhook } = require('../../../src/controllers/whatsappController');
 const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
+const { validateWebhookSignature } = require('../../../src/services/whatsapp/webhookValidator');
 const logger = require('../../../src/utils/logger');
 
 describe('WhatsApp Controller', () => {
@@ -16,6 +20,7 @@ describe('WhatsApp Controller', () => {
   beforeEach(() => {
     // Reset mocks
     jest.clearAllMocks();
+    validateWebhookSignature.mockReturnValue(true);
 
     // Setup request and response objects
     req = {
@@ -33,6 +38,7 @@ describe('WhatsApp Controller', () => {
   describe('handleWhatsAppWebhook', () => {
     it('should return 400 for invalid webhook payload', async() => {
       req.body = null;
+      req.headers['x-hub-signature-256'] = 'signature';
 
       await handleWhatsAppWebhook(req, res);
 
@@ -42,6 +48,7 @@ describe('WhatsApp Controller', () => {
 
     it('should return 200 for valid webhook payload with no entries', async() => {
       req.body = { entry: [] };
+      req.headers['x-hub-signature-256'] = 'signature';
 
       await handleWhatsAppWebhook(req, res);
 
@@ -75,6 +82,7 @@ describe('WhatsApp Controller', () => {
           }]
         }]
       };
+      req.headers['x-hub-signature-256'] = 'signature';
 
       processIncomingMessage.mockResolvedValue();
 
@@ -116,6 +124,7 @@ describe('WhatsApp Controller', () => {
           }]
         }]
       };
+      req.headers['x-hub-signature-256'] = 'signature';
 
       // Mock processIncomingMessage to throw an error
       processIncomingMessage.mockRejectedValue(new Error('Processing error'));

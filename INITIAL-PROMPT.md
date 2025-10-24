@@ -1435,6 +1435,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Payment Integration**: Basic subscription setup with Razorpay/Stripe
 - **WhatsApp Business API**: Core messaging functionality with compliance
 - **Basic Profile Management**: User birth data collection and storage
+- **Modular User Interaction Flow**: Independent, modular conversation architecture for easy updates
 - **Qwen CLI Lead**: Primary development of core functionality
 - **Gemini CLI Support**: Code optimization and testing
 - **AI-Generated Tests**: Automated testing suite for core features
@@ -1450,6 +1451,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Loyalty System**: "AstroRewards" program implementation
 - **Referral System**: Automated referral tracking and rewards
 - **Micro-transactions**: Flash insights, alerts, and quick fixes
+- **Enhanced Modular Architecture**: Fully independent modules for all major features
 - **Qwen CLI & Gemini CLI Coordination**: Rapid feature development and testing
 - **Goal**: Full monetization system live by end of Day 2
 
@@ -1459,19 +1461,21 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Marketplace Integration**: Affiliate links and astrologer marketplace onboarding
 - **Advanced Analytics**: User behavior tracking and insights
 - **Performance Optimization**: Database and API optimization based on usage
+- **Fully Modular System**: Complete plug-and-play architecture for all features
 - **Goal**: Complete feature set ready for viral growth by Day 3
 
 ### Solo Developer Rapid Development Strategy:
 - **Maximum AI Assistance**: Use Qwen CLI and Gemini CLI for 80%+ of code generation
 - **API-First Architecture**: Leverage existing services for complex functions (astrology calculations, payments)
-- **Modular, Independent Features**: Build features that can be developed separately and integrated
+- **Modular, Independent Features**: Build features that can be developed separately and integrated with plug-and-play architecture (see [Modular Development Approach](docs/architecture/modular-development-approach.md))
 - **Free-Tier Services**: Use free tiers and open-source tools exclusively (Render, Vercel, AWS Free Tier)
 - **Automated Everything**: Automated testing, deployment, and monitoring
 - **Rapid Iteration**: Quick build-measure-learn cycles using AI feedback
 - **Pre-built Components**: Leverage existing libraries, frameworks, and services
 - **Minimal Viable Implementation**: Focus on core functionality first, polish later
+- **Modular Development Approach**: Implement state-machine based conversation flows with independent modules
 
-**Success Metric**: Have a revenue-generating WhatsApp bot live within 48 hours using AI agents and pre-built services.
+**Success Metric**: Have a revenue-generating WhatsApp bot live within 48 hours using AI agents and pre-built services with fully modular architecture for easy feature updates.
 
 ## Investment Requirements (Solo Developer - Rapid 2-3 Day Launch with Zero Upfront Investment)
 

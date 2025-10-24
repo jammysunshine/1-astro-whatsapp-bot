@@ -46,8 +46,6 @@ const validateStepInput = async(input, step) => {
         [, day, month, year] = separatedMatch.map(Number);
       }
     }
-      [, day, month, year] = separatedMatch.map(Number);
-    }
     const date = new Date(year, month - 1, day);
 
     if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
@@ -69,15 +67,15 @@ const validateStepInput = async(input, step) => {
 
     // Check for HHMM format (4 digits)
     const compactTimeRegex = /^(\d{2})(\d{2})$/;
-    const compactMatch = input.match(compactTimeRegex);
-    if (compactMatch) {
-      [, hours, minutes] = compactMatch.map(Number);
+    const compactTimeMatch = input.match(compactTimeRegex);
+    if (compactTimeMatch) {
+      [, hours, minutes] = compactTimeMatch.map(Number);
     } else {
       // Check for HH:MM format
       const timeRegex = /^(\d{1,2}):(\d{2})$/;
       const timeMatch = input.match(timeRegex);
       if (!timeMatch) {
-        return { isValid: false, errorMessage: step.error_message || 'Please provide time in HHMM (1430) or HH:MM (14:30) format, or type 'skip'.' };
+        return { isValid: false, errorMessage: step.error_message || 'Please provide time in HHMM (1430) or HH:MM (14:30) format, or type \'skip\'.' };
       }
       [, hours, minutes] = timeMatch.map(Number);
     }

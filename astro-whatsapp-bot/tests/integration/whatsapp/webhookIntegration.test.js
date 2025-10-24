@@ -17,55 +17,55 @@ const { verifyWebhookChallenge } = require('../../../src/services/whatsapp/webho
 
 describe('WhatsApp Webhook Integration', () => {
   describe('GET /webhook - Verification', () => {
-     it('should verify webhook with correct token', async() => {
-       verifyWebhookChallenge.mockReturnValue({
-         success: true,
-         challenge: 'challenge-123'
-       });
+    it('should verify webhook with correct token', async() => {
+      verifyWebhookChallenge.mockReturnValue({
+        success: true,
+        challenge: 'challenge-123'
+      });
 
-       const response = await request(app)
-         .get('/webhook')
-         .query({
-           'hub.mode': 'subscribe',
-           'hub.verify_token': process.env.W1_WHATSAPP_VERIFY_TOKEN,
-           'hub.challenge': 'challenge-123'
-         })
-         .expect(200);
+      const response = await request(app)
+        .get('/webhook')
+        .query({
+          'hub.mode': 'subscribe',
+          'hub.verify_token': process.env.W1_WHATSAPP_VERIFY_TOKEN,
+          'hub.challenge': 'challenge-123'
+        })
+        .expect(200);
 
-       expect(response.text).toBe('challenge-123');
-     });
+      expect(response.text).toBe('challenge-123');
+    });
 
     it('should reject webhook verification with wrong token', async() => {
-       verifyWebhookChallenge.mockReturnValue({
-         success: false,
-         message: 'Forbidden'
-       });
+      verifyWebhookChallenge.mockReturnValue({
+        success: false,
+        message: 'Forbidden'
+      });
 
-       const response = await request(app)
-         .get('/webhook')
-         .query({
-           'hub.mode': 'subscribe',
-           'hub.verify_token': 'wrong-token',
-           'hub.challenge': 'challenge-123'
-         })
-         .expect(403);
+      const response = await request(app)
+        .get('/webhook')
+        .query({
+          'hub.mode': 'subscribe',
+          'hub.verify_token': 'wrong-token',
+          'hub.challenge': 'challenge-123'
+        })
+        .expect(403);
 
-       expect(response.text).toBe('Forbidden');
-     });
+      expect(response.text).toBe('Forbidden');
+    });
 
     it('should return ready status for verification request without parameters', async() => {
-       verifyWebhookChallenge.mockReturnValue({
-         success: true,
-         message: 'Webhook endpoint ready',
-         challenge: null
-       });
+      verifyWebhookChallenge.mockReturnValue({
+        success: true,
+        message: 'Webhook endpoint ready',
+        challenge: null
+      });
 
-       const response = await request(app)
-         .get('/webhook')
-         .expect(200);
+      const response = await request(app)
+        .get('/webhook')
+        .expect(200);
 
-       expect(response.text).toBe('Webhook endpoint ready');
-     });
+      expect(response.text).toBe('Webhook endpoint ready');
+    });
   });
 
   describe('POST /webhook - Message Processing', () => {
@@ -423,11 +423,11 @@ describe('WhatsApp Webhook Integration', () => {
         error: 'Unauthorized'
       });
 
-       expect(validateWebhookSignature).toHaveBeenCalledWith(
-         expect.any(String),
-         'sha256=invalid-signature',
-         process.env.W1_WHATSAPP_APP_SECRET
-       );
+      expect(validateWebhookSignature).toHaveBeenCalledWith(
+        expect.any(String),
+        'sha256=invalid-signature',
+        process.env.W1_WHATSAPP_APP_SECRET
+      );
     });
   });
 

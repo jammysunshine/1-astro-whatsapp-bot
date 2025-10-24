@@ -69,12 +69,12 @@ describe('Comprehensive Performance Test Suite', () => {
         }]
       };
 
-       const response = await request(app)
-         .post('/webhook')
-         .send(webhookPayload)
-         .set('Content-Type', 'application/json')
-         .set('x-hub-signature-256', 'sha256=valid-signature')
-         .expect(200);
+      const response = await request(app)
+        .post('/webhook')
+        .send(webhookPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
 
       const endTime = performance.now();
       const responseTime = endTime - startTime;

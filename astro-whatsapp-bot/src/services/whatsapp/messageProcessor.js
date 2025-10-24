@@ -1,6 +1,6 @@
 const logger = require('../../utils/logger');
 const { sendMessage } = require('./messageSender');
-const { getUserByPhone, createUser, addBirthDetails, updateUserProfile, getUserSession, setUserSession, deleteUserSession } = require('../../models/userModel');
+const { getUserByPhone, createUser, addBirthDetails, updateUserProfile } = require('../../models/userModel');
 const { generateAstrologyResponse } = require('../astrology/astrologyEngine');
 const { processFlowMessage } = require('../../conversation/conversationEngine');
 const { getMenu } = require('../../conversation/menuLoader');
@@ -17,7 +17,6 @@ const processIncomingMessage = async(message, value) => {
   const phoneNumber = from;
 
   try {
-
     logger.info(`📞 Processing message from ${phoneNumber} (Type: ${type})`);
 
     // Get or create user
@@ -193,19 +192,68 @@ const processMediaMessage = async(message, user) => {
  * @param {Object} user - User object
  */
 const processButtonReply = async(phoneNumber, buttonId, title, user) => {
-  const mainMenu = getMenu('main_menu');
-  if (mainMenu) {
-    const button = mainMenu.buttons.find(btn => btn.id === buttonId);
-    if (button && button.action) {
-      await executeMenuAction(phoneNumber, user, button.action);
-    } else {
-      logger.warn(`⚠️ No action defined for button ID: ${buttonId}`);
-      await sendMessage(phoneNumber, `You selected: ${title}. I'm not sure how to process that yet.`);
-    }
+  // Check if user has active conversation session
+  const { getUserSession } = require('../../models/userModel');
+  const session = await getUserSession(phoneNumber);
+
+  if (session && session.currentFlow) {
+    // Process as flow button reply
+    await processFlowButtonReply(phoneNumber, buttonId, user, session);
   } else {
-    logger.warn('⚠️ Main menu configuration not found when processing button reply.');
-    await sendMessage(phoneNumber, `You selected: ${title}. I'm having trouble processing your request.`);
+    // Process as main menu button reply
+    const mainMenu = getMenu('main_menu');
+    if (mainMenu) {
+      const button = mainMenu.buttons.find(btn => btn.id === buttonId);
+      if (button && button.action) {
+        await executeMenuAction(phoneNumber, user, button.action);
+      } else {
+        logger.warn(`⚠️ No action defined for button ID: ${buttonId}`);
+        await sendMessage(phoneNumber, `You selected: ${title}. I'm not sure how to process that yet.`);
+      }
+    } else {
+      logger.warn('⚠️ Main menu configuration not found when processing button reply.');
+      await sendMessage(phoneNumber, `You selected: ${title}. I'm having trouble processing your request.`);
+    }
   }
+};
+
+/**
+ * Process button reply for conversation flows
+ * @param {string} phoneNumber - User's phone number
+ * @param {string} buttonId - Button ID
+ * @param {Object} user - User object
+ * @param {Object} session - User session
+ */
+const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
+  const { getFlow } = require('../../conversation/flowLoader');
+  const { processFlowMessage } = require('../../conversation/conversationEngine');
+  const { getUserSession } = require('../../models/userModel');
+
+  const flow = getFlow(session.currentFlow);
+  if (!flow) {
+    logger.error(`❌ Flow '${session.currentFlow}' not found for button reply`);
+    await sendMessage(phoneNumber, 'I\'m sorry, I encountered an error. Please try again.');
+    return;
+  }
+
+  const currentStep = flow.steps[session.currentStep];
+  if (!currentStep || !currentStep.interactive) {
+    logger.error(`❌ Current step '${session.currentStep}' not interactive for button reply`);
+    await sendMessage(phoneNumber, 'I\'m sorry, I encountered an error. Please try again.');
+    return;
+  }
+
+  // Map button ID to value using button_mappings
+  const mappedValue = currentStep.interactive.button_mappings?.[buttonId];
+  if (!mappedValue) {
+    logger.warn(`⚠️ No mapping found for button ID: ${buttonId}`);
+    await sendMessage(phoneNumber, 'I\'m sorry, I didn\'t understand that selection. Please try again.');
+    return;
+  }
+
+  // Process the mapped value as text input
+  const mockMessage = { type: 'text', text: { body: mappedValue } };
+  await processFlowMessage(mockMessage, user, session.currentFlow);
 };
 
 /**

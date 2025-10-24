@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="6" failures="0" errors="0" time="16.29">
-  <testsuite name="Critical User Flow End-to-End Tests" errors="0" failures="0" skipped="0" timestamp="2025-10-24T12:29:21" time="14.676" tests="6">
-    <testcase classname="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" name="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" time="0.987">
+<testsuites name="jest tests" tests="6" failures="0" errors="0" time="2.827">
+  <testsuite name="Critical User Flow End-to-End Tests" errors="0" failures="0" skipped="0" timestamp="2025-10-24T15:55:42" time="2.514" tests="6">
+    <testcase classname="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" name="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" time="0.327">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should process daily horoscope request for existing user" name="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should process daily horoscope request for existing user" time="0.706">
+    <testcase classname="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should process daily horoscope request for existing user" name="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should process daily horoscope request for existing user" time="0.031">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" name="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" time="0.204">
+    <testcase classname="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" name="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" time="0.026">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" name="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" time="0.115">
+    <testcase classname="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" name="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" time="0.024">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" name="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" time="1.92">
+    <testcase classname="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" name="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" time="0.319">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" name="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" time="0.249">
+    <testcase classname="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" name="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" time="0.041">
     </testcase>
   </testsuite>
 </testsuites>

@@ -331,9 +331,9 @@ class VedicCalculator {
   async generateTransitPreview(birthData, days = 3) {
     // Simplified transit preview
     const transits = {
-      today: "🌅 *Today:* Planetary energies support new beginnings and communication. Perfect for starting conversations or initiating projects.",
-      tomorrow: "🌞 *Tomorrow:* Focus on relationships and partnerships. Harmonious energies make this a good day for collaboration.",
-      day3: "🌙 *Day 3:* Creative inspiration flows strongly. Use this energy for artistic pursuits or innovative thinking."
+      today: '🌅 *Today:* Planetary energies support new beginnings and communication. Perfect for starting conversations or initiating projects.',
+      tomorrow: '🌞 *Tomorrow:* Focus on relationships and partnerships. Harmonious energies make this a good day for collaboration.',
+      day3: '🌙 *Day 3:* Creative inspiration flows strongly. Use this energy for artistic pursuits or innovative thinking.'
     };
 
     return transits;

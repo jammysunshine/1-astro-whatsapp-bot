@@ -27,7 +27,7 @@ describe('Critical User Flow End-to-End Tests', () => {
 
     // Setup default mock responses
     validateWebhookSignature.mockReturnValue(true);
-    processIncomingMessage.mockImplementation(async (message, value) => {
+    processIncomingMessage.mockImplementation(async(message, value) => {
       const phoneNumber = message.from;
       let user = await getUserByPhone(phoneNumber);
       if (!user) {

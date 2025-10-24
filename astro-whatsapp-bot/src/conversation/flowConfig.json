@@ -3,7 +3,7 @@
     "start_step": "welcome",
     "steps": {
       "welcome": {
-        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\nTo get started and provide your first reading, what's your birth date?\n\n*Format:* DDMMYYYY (e.g., 15061990) or DD/MM/YYYY (e.g., 15/06/1990)\n\n💡 *Why birth date?* Your birth chart reveals your unique cosmic blueprint!",
+        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\n📅 *What's your birth date?*\n\n💡 *Accepted formats:*\n• DDMMYYYY (e.g., 15061990 for June 15, 1990)\n• DD/MM/YYYY (e.g., 15/06/1990)\n• DD-MM-YYYY or DD.MM.YYYY also work!\n\n*Why birth date?* Your birth chart reveals your unique cosmic blueprint!",
         "validation": "date",
         "next_step": "ask_birth_time",
         "data_key": "birthDate",
@@ -25,7 +25,25 @@
         "error_message": "Please provide your birth place (City, Country)"
       },
       "ask_language": {
-        "prompt": "One more thing! 🌐\n\nWhat language would you prefer for your readings?\n\n🔸 English\n🔸 Hindi\n🔸 More options coming soon!\n\nReply with your choice or 'english' as default.",
+        "interactive": {
+          "type": "button_reply",
+          "body": "🌐 *Choose Your Preferred Language*\n\nWhat language would you prefer for your personalized readings?",
+          "buttons": [
+            {
+              "id": "lang_english",
+              "title": "English 🇺🇸"
+            },
+            {
+              "id": "lang_hindi",
+              "title": "हिंदी 🇮🇳"
+            }
+          ],
+          "button_mappings": {
+            "lang_english": "english",
+            "lang_hindi": "hindi"
+          }
+        },
+        "fallback_prompt": "What language would you prefer? Reply with 'english' or 'hindi' as default.",
         "validation": "language_choice",
         "next_step": "confirm_details",
         "data_key": "preferredLanguage",
@@ -33,7 +51,25 @@
         "error_message": "Please choose a language or reply 'english'"
       },
       "confirm_details": {
-        "prompt": "Perfect! ✨ Here's your cosmic profile:\n\n📅 *Birth Date:* {birthDate}\n🕐 *Birth Time:* {birthTime}\n🌍 *Birth Place:* {birthPlace}\n🌐 *Language:* {preferredLanguage}\n\nIs this information correct? Reply 'yes' to get your first reading or 'no' to update.",
+        "interactive": {
+          "type": "button_reply",
+          "body": "Perfect! ✨ Here's your cosmic profile:\n\n📅 *Birth Date:* {birthDate}\n🕐 *Birth Time:* {birthTime}\n🌍 *Birth Place:* {birthPlace}\n🌐 *Language:* {preferredLanguage}\n\nIs this information correct?",
+          "buttons": [
+            {
+              "id": "confirm_yes",
+              "title": "✅ Yes, Continue"
+            },
+            {
+              "id": "confirm_no",
+              "title": "🔄 No, Update Info"
+            }
+          ],
+          "button_mappings": {
+            "confirm_yes": "yes",
+            "confirm_no": "no"
+          }
+        },
+        "fallback_prompt": "Is this information correct? Reply 'yes' to get your first reading or 'no' to update.",
         "validation": "yes_no",
         "next_step": "complete_onboarding",
         "error_message": "Please reply 'yes' or 'no'"
@@ -50,14 +86,50 @@
     "start_step": "show_plans",
     "steps": {
       "show_plans": {
-        "prompt": "💳 *Choose Your Cosmic Plan*\n\n⭐ *Essential* - ₹230/month\n• Daily personalized horoscope\n• Weekly video predictions\n• Basic compatibility (5 people)\n\n💎 *Premium* - ₹299/month\n• Unlimited AI questions\n• Priority astrologer access\n• Unlimited compatibility\n\nWhich plan interests you? Reply 'essential' or 'premium'",
+        "interactive": {
+          "type": "button_reply",
+          "body": "💳 *Choose Your Cosmic Plan*\n\n⭐ *Essential* - ₹230/month\n• Daily personalized horoscope\n• Weekly video predictions\n• Basic compatibility (5 people)\n\n💎 *Premium* - ₹299/month\n• Unlimited AI questions\n• Priority astrologer access\n• Unlimited compatibility",
+          "buttons": [
+            {
+              "id": "plan_essential",
+              "title": "⭐ Essential ₹230"
+            },
+            {
+              "id": "plan_premium",
+              "title": "💎 Premium ₹299"
+            }
+          ],
+          "button_mappings": {
+            "plan_essential": "essential",
+            "plan_premium": "premium"
+          }
+        },
+        "fallback_prompt": "Which plan interests you? Reply 'essential' or 'premium'",
         "validation": "plan_choice",
         "next_step": "confirm_subscription",
         "data_key": "selectedPlan",
         "error_message": "Please reply 'essential' or 'premium'"
       },
       "confirm_subscription": {
-        "prompt": "Great choice! 💫\n\nYou've selected: *{selectedPlan}*\n\nReady to subscribe? Reply 'yes' to proceed with payment.",
+        "interactive": {
+          "type": "button_reply",
+          "body": "Great choice! 💫\n\nYou've selected: *{selectedPlan}*\n\nReady to subscribe and proceed with payment?",
+          "buttons": [
+            {
+              "id": "subscribe_yes",
+              "title": "💳 Subscribe Now"
+            },
+            {
+              "id": "subscribe_no",
+              "title": "❌ Cancel"
+            }
+          ],
+          "button_mappings": {
+            "subscribe_yes": "yes",
+            "subscribe_no": "no"
+          }
+        },
+        "fallback_prompt": "Ready to subscribe? Reply 'yes' to proceed with payment.",
         "validation": "yes_no",
         "next_step": "process_payment",
         "error_message": "Please reply 'yes' to continue or 'no' to cancel"
@@ -74,14 +146,32 @@
     "start_step": "ask_partner_date",
     "steps": {
       "ask_partner_date": {
-        "prompt": "💕 *Compatibility Analysis*\n\nI'll compare your birth chart with someone else's for relationship insights.\n\nPlease provide their birth date (DDMMYYYY or DD/MM/YYYY):",
+        "prompt": "💕 *Compatibility Analysis*\n\nI'll compare your birth chart with someone else's for relationship insights.\n\n📅 *What's their birth date?*\n\n💡 *Accepted formats:*\n• DDMMYYYY (e.g., 15061990 for June 15, 1990)\n• DD/MM/YYYY (e.g., 15/06/1990)\n• DD-MM-YYYY or DD.MM.YYYY also work!",
         "validation": "date",
         "next_step": "generate_compatibility",
         "data_key": "partnerBirthDate",
         "error_message": "Please provide a valid date in DDMMYYYY format (e.g., 15061990) or DD/MM/YYYY format (e.g., 15/06/1990)"
       },
       "generate_compatibility": {
-        "prompt": "🔄 Analyzing compatibility...\n\n{compatibilityResult}\n\nWould you like another compatibility check? Reply 'yes' or 'menu' for main options.",
+        "interactive": {
+          "type": "button_reply",
+          "body": "🔄 Analyzing compatibility...\n\n{compatibilityResult}",
+          "buttons": [
+            {
+              "id": "compat_again",
+              "title": "🔄 Check Another"
+            },
+            {
+              "id": "compat_menu",
+              "title": "🏠 Main Menu"
+            }
+          ],
+          "button_mappings": {
+            "compat_again": "yes",
+            "compat_menu": "menu"
+          }
+        },
+        "fallback_prompt": "Would you like another compatibility check? Reply 'yes' or 'menu' for main options.",
         "validation": "yes_no_or_menu",
         "next_step": "ask_partner_date",
         "error_message": "Please reply 'yes', 'no', or 'menu'"

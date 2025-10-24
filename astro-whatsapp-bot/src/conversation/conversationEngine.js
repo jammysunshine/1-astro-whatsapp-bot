@@ -3,7 +3,6 @@ const { getUserSession, setUserSession, deleteUserSession, addBirthDetails, upda
 const { sendMessage } = require('../services/whatsapp/messageSender');
 const logger = require('../utils/logger');
 const vedicCalculator = require('../services/astrology/vedicCalculator');
-const paymentService = require('../services/payment/paymentService');
 
 /**
  * Validates user input for a conversation step
@@ -22,7 +21,7 @@ const validateStepInput = async(input, step) => {
     return { isValid: true, cleanedValue: input.trim() };
 
   case 'date':
-    // Flexible date formats: DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, or DDMMYYYY
+    // Flexible date formats: DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, DDMMYYYY, or DDMMYY
     let day, month, year;
 
     // Check for 8-digit format first (DDMMYYYY)
@@ -31,12 +30,22 @@ const validateStepInput = async(input, step) => {
     if (compactMatch) {
       [, day, month, year] = compactMatch.map(Number);
     } else {
-      // Check for separated format
-      const separatedDateRegex = /^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/;
-      const separatedMatch = input.match(separatedDateRegex);
-      if (!separatedMatch) {
-        return { isValid: false, errorMessage: step.error_message || 'Please provide date in DDMMYYYY format (e.g., 15061990) or DD/MM/YYYY format (e.g., 15/06/1990, 15-06-1990, or 15.06.1990).' };
+      // Check for 6-digit format (DDMMYY - assume 1900-1999)
+      const shortDateRegex = /^(\d{2})(\d{2})(\d{2})$/;
+      const shortMatch = input.match(shortDateRegex);
+      if (shortMatch) {
+        [, day, month] = shortMatch.map(Number);
+        year = 1900 + parseInt(shortMatch[3]); // Convert YY to YYYY (1900-1999)
+      } else {
+        // Check for separated format
+        const separatedDateRegex = /^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/;
+        const separatedMatch = input.match(separatedDateRegex);
+        if (!separatedMatch) {
+          return { isValid: false, errorMessage: step.error_message || 'Please provide date in DDMMYYYY (15061990), DDMMYY (150690), or DD/MM/YYYY (15/06/1990) format.' };
+        }
+        [, day, month, year] = separatedMatch.map(Number);
       }
+    }
       [, day, month, year] = separatedMatch.map(Number);
     }
     const date = new Date(year, month - 1, day);
@@ -56,19 +65,30 @@ const validateStepInput = async(input, step) => {
       return { isValid: true, cleanedValue: null };
     }
 
-    const timeRegex = /^(\d{1,2}):(\d{2})$/;
-    const timeMatch = input.match(timeRegex);
+    let hours, minutes;
 
-    if (!timeMatch) {
-      return { isValid: false, errorMessage: step.error_message || 'Please provide time in HH:MM format or "skip".' };
+    // Check for HHMM format (4 digits)
+    const compactTimeRegex = /^(\d{2})(\d{2})$/;
+    const compactMatch = input.match(compactTimeRegex);
+    if (compactMatch) {
+      [, hours, minutes] = compactMatch.map(Number);
+    } else {
+      // Check for HH:MM format
+      const timeRegex = /^(\d{1,2}):(\d{2})$/;
+      const timeMatch = input.match(timeRegex);
+      if (!timeMatch) {
+        return { isValid: false, errorMessage: step.error_message || 'Please provide time in HHMM (1430) or HH:MM (14:30) format, or type 'skip'.' };
+      }
+      [, hours, minutes] = timeMatch.map(Number);
     }
 
-    const [, hours, minutes] = timeMatch.map(Number);
     if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
       return { isValid: false, errorMessage: 'Please provide a valid time (00:00 to 23:59).' };
     }
 
-    return { isValid: true, cleanedValue: input };
+    // Return in HH:MM format for consistency
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    return { isValid: true, cleanedValue: formattedTime };
 
   case 'language_choice':
     const validLanguages = ['english', 'hindi', 'en', 'hi'];
@@ -137,12 +157,25 @@ const processFlowMessage = async(message, user, flowId) => {
     session = { currentFlow: flowId, currentStep: flow.start_step, data: {} };
     await setUserSession(phoneNumber, session);
     const startStep = flow.steps[flow.start_step];
-    let prompt = startStep.prompt.replace('{userName}', user.name || 'cosmic explorer');
-    // Replace other placeholders from session data
-    Object.keys(session.data).forEach(key => {
-      prompt = prompt.replace(new RegExp(`{${key}}`, 'g'), session.data[key]);
-    });
-    await sendMessage(phoneNumber, prompt);
+    if (startStep.interactive) {
+      let body = startStep.interactive.body.replace('{userName}', user.name || 'cosmic explorer');
+      // Replace other placeholders from session data
+      Object.keys(session.data).forEach(key => {
+        body = body.replace(new RegExp(`{${key}}`, 'g'), session.data[key]);
+      });
+      const buttons = startStep.interactive.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
+    } else {
+      let prompt = startStep.prompt.replace('{userName}', user.name || 'cosmic explorer');
+      // Replace other placeholders from session data
+      Object.keys(session.data).forEach(key => {
+        prompt = prompt.replace(new RegExp(`{${key}}`, 'g'), session.data[key]);
+      });
+      await sendMessage(phoneNumber, prompt);
+    }
     return true;
   }
 
@@ -185,17 +218,35 @@ const processFlowMessage = async(message, user, flowId) => {
         await executeFlowAction(phoneNumber, user, flowId, nextStep.action, session.data);
         return true;
       } else {
-        let prompt = nextStep.prompt.replace('{userName}', user.name || 'cosmic explorer');
-        // Replace placeholders from session data
-        Object.keys(session.data).forEach(key => {
-          prompt = prompt.replace(new RegExp(`{${key}}`, 'g'), session.data[key]);
-        });
-        // Add calculated values like sun sign
-        if (session.data.birthDate) {
-          const sunSign = vedicCalculator.calculateSunSign(session.data.birthDate);
-          prompt = prompt.replace('{sunSign}', sunSign);
+        if (nextStep.interactive) {
+          let body = nextStep.interactive.body.replace('{userName}', user.name || 'cosmic explorer');
+          // Replace placeholders from session data
+          Object.keys(session.data).forEach(key => {
+            body = body.replace(new RegExp(`{${key}}`, 'g'), session.data[key]);
+          });
+          // Add calculated values like sun sign
+          if (session.data.birthDate) {
+            const sunSign = vedicCalculator.calculateSunSign(session.data.birthDate);
+            body = body.replace('{sunSign}', sunSign);
+          }
+          const buttons = nextStep.interactive.buttons.map(button => ({
+            type: 'reply',
+            reply: { id: button.id, title: button.title }
+          }));
+          await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
+        } else {
+          let prompt = nextStep.prompt.replace('{userName}', user.name || 'cosmic explorer');
+          // Replace placeholders from session data
+          Object.keys(session.data).forEach(key => {
+            prompt = prompt.replace(new RegExp(`{${key}}`, 'g'), session.data[key]);
+          });
+          // Add calculated values like sun sign
+          if (session.data.birthDate) {
+            const sunSign = vedicCalculator.calculateSunSign(session.data.birthDate);
+            prompt = prompt.replace('{sunSign}', sunSign);
+          }
+          await sendMessage(phoneNumber, prompt);
         }
-        await sendMessage(phoneNumber, prompt);
         return true;
       }
     } else {
@@ -227,9 +278,9 @@ const processFlowMessage = async(message, user, flowId) => {
 const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => {
   switch (action) {
   case 'complete_profile': {
-    const birthDate = flowData.birthDate;
-    const birthTime = flowData.birthTime;
-    const birthPlace = flowData.birthPlace;
+    const { birthDate } = flowData;
+    const { birthTime } = flowData;
+    const { birthPlace } = flowData;
     const preferredLanguage = flowData.preferredLanguage || 'english';
 
     // Update user profile with birth details
@@ -290,7 +341,7 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
     break;
   }
   case 'process_subscription': {
-    const selectedPlan = flowData.selectedPlan;
+    const { selectedPlan } = flowData;
 
     // For now, just acknowledge the subscription request
     // In production, this would integrate with payment processor
@@ -299,7 +350,7 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
     break;
   }
   case 'generate_compatibility': {
-    const partnerBirthDate = flowData.partnerBirthDate;
+    const { partnerBirthDate } = flowData;
     const userSign = vedicCalculator.calculateSunSign(user.birthDate);
     const partnerSign = vedicCalculator.calculateSunSign(partnerBirthDate);
 
@@ -310,7 +361,7 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
     // Update the flow step prompt with the result
     const flow = getFlow(flowId);
     if (flow && flow.steps.generate_compatibility) {
-      let prompt = flow.steps.generate_compatibility.prompt;
+      let { prompt } = flow.steps.generate_compatibility;
       prompt = prompt.replace('{compatibilityResult}', resultMessage);
       await sendMessage(phoneNumber, prompt);
     } else {

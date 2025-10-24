@@ -117,7 +117,7 @@ const validateWhatsAppMessage = payload => {
 const sanitizeInput = input => {
   if (typeof input !== 'string') { return input; }
 
-  let sanitized = input
+  const sanitized = input
     .replace(/<script[^>]*>|<\/script>/gi, '') // Remove script tags
     .replace(/[<>]/g, '') // Remove HTML tags
     .replace(/['";()]/g, '') // Remove quotes and parentheses

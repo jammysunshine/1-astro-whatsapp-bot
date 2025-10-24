@@ -87,7 +87,7 @@ describe('WhatsApp Service', () => {
       await handleWhatsAppWebhook(req, res);
 
       const message = req.body.entry[0].changes[0].value.messages[0];
-      const value = req.body.entry[0].changes[0].value;
+      const { value } = req.body.entry[0].changes[0];
 
       expect(processIncomingMessage).toHaveBeenCalledWith(message, value);
 
@@ -127,7 +127,7 @@ describe('WhatsApp Service', () => {
       await handleWhatsAppWebhook(req, res);
 
       const message = req.body.entry[0].changes[0].value.messages[0];
-      const value = req.body.entry[0].changes[0].value;
+      const { value } = req.body.entry[0].changes[0];
 
       expect(processIncomingMessage).toHaveBeenCalledWith(message, value);
 

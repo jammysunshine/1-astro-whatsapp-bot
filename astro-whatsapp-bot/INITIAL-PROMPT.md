@@ -14,66 +14,274 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 ### Epic 1: Multi-Channel Service Delivery & Core Platform
 - **Goal**: Establish a robust, scalable, and compliant multi-channel platform, starting with WhatsApp, ensuring seamless user experience and foundational services.
 - **Key Features**: WhatsApp Business API integration, multi-language support, user authentication, profile management, comprehensive onboarding, cross-platform data synchronization, and customer support.
+- **MVP User Stories**:
+    - As a user, I want to easily authenticate using my WhatsApp number.
+    - As a user, I want to access the service through WhatsApp as my primary channel.
+    - As a user, I want my data and reading history to be synchronized across all channels (WhatsApp, web, mobile).
+    - As a user, I want to be able to use the service on web and mobile apps in future phases.
+    - As a user, I want to interact with the bot in my preferred language.
+    - As a new user, I want video guides to understand complex features.
+    - As a new user, I want a tutorial on how to maximize my use of the service.
+    - As a new user, I want to choose my preferred message frequency during onboarding.
+    - As a user, I want visual accessibility options like text size adjustment and high contrast mode.
+    - As a user, I want visual alternatives for audio content and text transcripts.
+    - As a user, I want simple language options and clear navigation.
+    - As a user, I want voice command support for navigation.
+    - As a user, I want the platform to respect diverse cultural beliefs and practices.
+    - As a user, I want to set do-not-disturb schedules for notifications.
+    - As a user, I want to prioritize certain types of notifications.
+    - As a user, I want to opt-in or opt-out of different notification types.
+    - As a user, I want notifications to be adjusted for my time zone.
+    - As a user, I want a simple and clear menu structure for easy navigation.
+    - As a user, I want quick access to my most used features.
+    - As a user, I want to search for specific services and content.
+    - As a user, I want breadcrumb navigation for complex workflows.
+    - As a user, I want to ask questions using natural language.
+    - As a user, I want the bot to provide context-aware responses based on my history and birth chart.
+    - As a user, I want a personalized greeting and interaction style from the bot.
+    - As a user, I want the bot to match my preferred tone.
+    - As a user, I want the bot to have a distinct, warm, and wise personality.
+    - As a user, I want readings and reports to be well-organized and categorized.
+    - As a user, I want to bookmark important readings and access my history.
+    - As a user, I want tools to compare different readings.
+    - As a user, I want to explore interactive birth chart visualizations.
+    - As a user, I want to access my complete reading history across all platforms.
+- **Current Implementation**: WhatsApp API endpoints, session management, language validation (`language_choice`), birth data input, and general messaging features are present.
+- **Gaps for MVP**: Detailed OTP verification flow, full range of multi-language content localization are not explicitly shown but implied. Full cross-platform synchronization and development of web/mobile apps are future phases.
 
 ### Epic 2: Multiple Astrology Services
 - **Goal**: Offer a wide array of accurate and diverse astrological systems to cater to varied user preferences and provide comprehensive insights.
 - **Key Features**: Hindu/Vedic, Western, Chinese, Tarot, Numerology, Palmistry, Nadi Astrology, and other systems.
+- **MVP User Stories**:
+    - As a user, I want to select my preferred astrology system to receive tailored readings.
+    - As a user, I want to receive readings from various astrological systems to get a comprehensive view.
+    - As a user, I want to understand the basics of different astrology systems offered.
+    - As a new user, I want access to educational content about different astrology types.
+    - As a new user, I want to be introduced to the most relevant astrology system for me.
+    - As a user, I want to set my preferences for the types of astrology readings I receive.
+- **Current Implementation**: `vedicCalculator.js` supports basic Sun, Moon (simplified), Rising (simplified) sign calculations, generating basic birth chart summaries, daily horoscopes, and simplified compatibility.
+- **Gaps for MVP**: The code currently *only* supports basic Vedic/Western astrology principles. Full implementation of Chinese, Tarot, Numerology, Palmistry, Nadi, etc., is **missing**. There is no explicit conversation flow step for selecting a preferred astrology system.
 
 ### Epic 3: Monetization, Subscriptions & Loyalty
 - **Goal**: Implement a flexible and growth-oriented monetization strategy through tiered subscriptions, micro-transactions, and a robust loyalty/referral program, ensuring regional compliance.
 - **Key Features**: Free, Essential, Premium, VIP tiers, one-time services, regional payment methods, AstroRewards loyalty program, AstroCircle referral program, and advanced monetization strategies.
+- **MVP User Stories**:
+    - As a user, I want to choose from different subscription tiers to access features that match my needs.
+    - As a user, I want to make one-time purchases for specific insights or services.
+    - As a user, I want to understand the benefits of each subscription tier before committing.
+    - As a free user, I want to receive a daily micro-prediction and a shareable birth chart.
+    - As an Essential tier user, I want to receive daily personalized horoscopes and weekly video predictions.
+    - As a Premium tier user, I want unlimited AI questions and priority access to human astrologers.
+    - As a VIP tier user, I want a dedicated human astrologer and exclusive life planning sessions.
+    - As a user, I want to purchase quick, on-demand insights for immediate decisions (Flash Insights).
+    - As a user, I want to receive alerts for important personal planetary transits (Transit Alerts).
+    - As a user, I want to purchase quick spiritual remedies for challenging times (Remedial Quick Fixes).
+    - As a user, I want to quickly check compatibility with new contacts (Compatibility Snapshots).
+    - As a user, I want to purchase special readings during significant astrological events like eclipses.
+    - As a user, I want to prepare for retrograde periods with specialized sessions.
+    - As a user, I want to participate in guided new moon intention setting sessions.
+    - As a user, I want to receive culturally relevant readings during festivals.
+    - As a user in India, I want to pay using local payment methods like UPI and PayTM.
+    - As a user in UAE, I want to pay using credit cards and digital wallets.
+    - As a user in Australia, I want to pay using credit cards and Apple Pay.
+    - As a user, I want to discover and purchase recommended astrological products.
+    - As a user, I want to access user-to-user services within the platform.
+    - As a user, I want to purchase astrology education courses.
+    - As an aspiring astrologer, I want to enroll in certification programs.
+    - As a user, I want to manage auto-renewal options for my subscriptions.
+    - As a user, I want to understand the cancellation and refund policies.
+    - As a user, I want to earn and redeem points for engaging with the platform and referring friends.
+    - As a user, I want to be offered an upgrade to the Essential tier with clear benefits.
+    - As a user, I want to be teased with premium features to encourage upgrade.
+    - As a long-term user, I want to be rewarded with loyalty benefits and VIP tier introductions.
+- **Current Implementation**: `conversationEngine.js` has `process_subscription` to acknowledge plan choice (essential/premium) but no actual payment integration logic shown. Micro-transaction handling is not explicitly developed beyond mentions in `INITIAL-PROMPT.md`. Loyalty and referral program logic is not shown. Pricing is specified in `INITIAL-PROMPT.md` but not reflected in code.
+- **Gaps for MVP**: Actual payment gateway integration, detailed mechanics for micro-transaction services, and robust loyalty/referral system logic are **missing**.
 
 ### Epic 4: AI-Powered Personalization & AI Twin
 - **Goal**: Deliver hyper-personalized astrological insights and a unique AI companion that learns and adapts to user preferences, enhancing engagement and emotional ROI.
 - **Key Features**: AI Twin system, behavioral adaptation, personalized readings, customized alerts, and advanced personalization tools.
+- **MVP User Stories**:
+    - As a user, I want instant AI-powered answers to my basic astrological questions.
+    - As a user, I want an AI astrologer that understands my communication style and preferences.
+    - As a user, I want the AI to recognize and highlight recurring life patterns based on my astrological chart.
+    - As a user, I want to track the accuracy of predictions and provide feedback.
+    - As a user, I want the AI to learn my preferences and provide insights that are most relevant to me.
+    - As a user, I want my AI Twin to remember our past conversations and my preferences.
+    - As a new user, I want customized service recommendations.
+    - As a user, I want to receive personalized daily cosmic tips.
+    - As a user, I want to receive my lucky number of the day.
+    - As a user, I want personalized notifications about planetary transits relevant to my chart.
+    - As a user, I want the platform to learn my preferences and adapt its content and suggestions accordingly.
+    - As a user, I want to customize the look and feel of my dashboard and notifications.
+    - As a user, I want to filter content based on my preferred topics, intensity, and format.
+    - As a user, I want to receive personalized readings tailored to my life stage and interests.
+    - As a user, I want to customize the alerts I receive for transits and events.
+    - As a user, I want to customize the interface of my dashboard.
+    - As a user, I want personalized content feeds and custom report compilation.
+    - As a user, I want the AI to learn my preferences and adapt its content and suggestions accordingly.
+    - As a user, I want to experience "micro-aha" moments and validation of predictions.
+- **Current Implementation**: `conversationEngine.js` uses `vedicCalculator` for basic insights (`summary`, `daily horoscope`) and handles language preferences. The onboarding flow collects birth data used for personalization. The `executeFlowAction` for `complete_profile` generates sun/moon/rising signs and life patterns.
+- **Gaps for MVP**: The core concept of an "AI Twin" that "learns communication style" is **not explicitly implemented** beyond using birth data for personalization. The current implementation is more rule-based and data-driven rather than dynamically learning conversational style.
 
 ### Epic 5: Predictive Decision Timing
 - **Goal**: Provide users with precise astrological timing for important life decisions, empowering them with confidence and control.
 - **Key Features**: Transit Timing Engine, decision timing calculator, and predictive insights for optimal life event planning.
+- **MVP User Stories**:
+    - As a user, I want to know the optimal timing for important life decisions based on astrology.
+    - As a user, I want tools to help me plan important life events based on optimal astrological timing.
+    - As a user, I want to know the best time to make a decision based on astrology.
+    - As a user, I want the service to help me achieve life goals with predictive timing.
+- **Current Implementation**: `vedicCalculator.js` has a placeholder `generateTransitPreview` that returns hardcoded messages. `conversationEngine.js` uses this to display 3-day transit previews during onboarding.
+- **Gaps for MVP**: The "Precision life planning with decision timing calculator" and "Transit Timing Engine" are **currently placeholders** with hardcoded outputs. A real implementation requiring complex astronomical calculations and personalized interpretations based on a user's full birth chart is **missing**.
 
 ### Epic 6: User Experience, Engagement & Marketing
 - **Goal**: Create an engaging and intuitive user experience from discovery to long-term retention, driven by effective marketing and user acquisition strategies.
 - **Key Features**: Enhanced onboarding, compelling user journeys, gamification elements, social sharing, and targeted marketing campaigns.
+- **MVP User Stories**:
+    - As a new user, I want to receive a high-value free reading immediately upon signup.
+    - As a new user, I want my initial free reading to be personalized and visually appealing.
+    - As a new user, I want the free reading to entice me to explore paid features.
+    - As a new user, I want to feel like I'm part of a unique cosmic story from the start.
+    - As a new user, I want limited-time free access to premium features to experience their value.
+    - As a new user, I want an interactive tutorial to guide me through the platform's features, including compatibility sharing.
+    - As a new user, I want an engaging initial interaction that guides me to my first reading.
+    - As a user, I want to be teased with premium features to encourage upgrade.
+    - As a user, I want to receive proactive, valuable insights and exclusive content.
+    - As a user, I want interactive prompts that help me explore different life aspects and compatibility.
+    - As a user, I want to reflect on my daily experiences with the bot.
+    - As a user, I want to receive Monday motivation based on weekly planetary influences.
+    - As a user, I want to check in with the bot about my feelings during transits.
+    - As a user, I want suggestions for weekend spiritual practices.
+    - As a user, I want to see my progress in discovering personal patterns.
+    - As a user, I want future insights that are personalized and relevant.
+    - As a user, I want to see social proof of prediction accuracy.
+    - As a user, I want time-sensitive value propositions.
+    - As a user, I want a summary of my personal insights after one month.
+    - As a user, I want to compare my actual experiences with past predictions.
+    - As a user, I want to provide feedback on the accuracy of insights.
+    - As a user, I want to experience 'aha' moments that enhance my understanding.
+    - As a user, I want the service to help me form astrological habits through regular touchpoints.
+    - As a user, I want advanced features to be introduced gradually.
+    - As a user, I want my journey milestones and achievements to be celebrated.
+    - As a user, I want to be re-engaged with relevant astrological insights if I become inactive.
+    - As a new user, I want an immediate, personalized first interaction.
+    - As a new user, I want a free initial reading that demonstrates personal relevance.
+    - As a potential user, I want to easily discover the service and initiate contact.
+- **Current Implementation**: The `conversationEngine.js` onboarding flow provides initial personalized responses and introduces elements like Sun Sign. The examples for bot experience in `INITIAL-PROMPT.md` show the desired interaction style.
+- **Gaps for MVP**: Many elements under UX and Engagement are descriptions of desired behavior and content (e.g., "Storytelling Integration", "Emotional Validation") rather than tangible features demonstrated in the code. These would need to be implemented through careful crafting of conversational flows and message content.
 
 ### Epic 7: User Authentication & Profile Management
 - **Goal**: Securely manage user identities and comprehensive astrological profiles, ensuring data privacy and personalized service delivery.
 - **Key Features**: WhatsApp number verification, optional email/social login, two-factor authentication, and detailed user profile components (birth details, preferences, history).
+- **MVP User Stories**:
+    - As a user, I want to create and manage my profile with accurate birth details.
+    - As a user, I want to store my basic personal and birth information in my profile.
+    - As a user, I want to set my preferences for the types of astrology readings I receive and receive relevant reminders.
+    - As a user, I want to manage my privacy and security settings.
+    - As a user, I want my birth chart to be automatically generated from my profile details.
+    - As a new user, I want a guided process to input my birth data.
+    - As a user, I want to have additional verification options for account recovery.
+    - As a user, I want to enable two-factor authentication for enhanced security.
+    - As a user, I want to link my social media accounts for easier login.
+- **Current Implementation**: `conversationEngine.js` directly calls `addBirthDetails` and `updateUserProfile` from `userModel` (though `userModel` itself isn't provided, its functions are called). This confirms the capability to collect and store birth data.
+- **Gaps for MVP**: The actual implementation details of additional verification methods (email/social login, 2FA) are **not shown**. Data privacy settings are mentioned but not explicitly implemented in the provided code.
 
 ### Epic 8: Social Features & Community Building
 - **Goal**: Foster a vibrant community and enable social interaction through compatibility analysis, sharing features, and network effects, driving viral growth.
 - **Key Features**: Compatibility matching, shareable birth charts, Astro-Social Network, group readings, social proof features, and community challenges.
+- **MVP User Stories**:
+    - As a user, I want to analyze my compatibility with friends and partners.
+    - As a user, I want to generate and share visually appealing birth charts with others.
+    - As a user, I want to connect with a community of users who have similar astrological profiles.
+    - As a user, I want an easy way to check astrological compatibility with my friends and partners.
+    - As a user, I want to easily share my astrological insights and achievements on social media.
+    - As a user, I want to easily share aesthetically pleasing astrological insights that make me feel good.
+    - As a user, I want to invite friends to unlock more detailed compatibility reports.
+    - As a user, I want the Astro-Social Network to become more valuable as more people join.
+    - As a user, I want to invite friends to participate in group readings.
+    - As a user, I want to track and support my friends through their astrological transits.
+    - As a user, I want to easily share compatibility reports to encourage others to join.
+    - As a user, I want to see success stories and prediction accuracy to build trust in the platform.
+    - As a user, I want to get combined astrological readings with my family and friends.
+    - As a user, I want to manage my friends and social connections for compatibility checks.
+    - As a user, I want to create a compatibility profile for matching with others.
+    - As a user, I want to share content with privacy controls.
+    - As a user, I want to generate and share beautiful, personalized forecasts.
+    - As a new user, I want to be prompted to add a friend for a compatibility check during onboarding.
+    - As a user, I want to see my friends' progress in their cosmic journey and engage in friendly competition.
+    - As a user, I want to easily share compatibility reports and add friends.
+    - As a user, I want to see and share success stories within the Astro-Social Network.
+    - As a VIP user, I want exclusive access to a community with direct astrologer interaction.
+    - As a user, I want to participate in community challenges during planetary events.
+- **Current Implementation**: `vedicCalculator.js` has a `checkCompatibility` method. `conversationEngine.js` has a `generate_compatibility` action that uses this. `INITIAL-PROMPT.md` outlines many social features.
+- **Gaps for MVP**: A full "Astro-Social Network" with chat, profiles, and feeds, or advanced group reading features, are **not implemented** in the provided code and would require significant development. The social sharing mentioned primarily implies a user sharing externally, not within a platform social network.
 
 ### Epic 9: Gamification & User Engagement
 - **Goal**: Implement engaging gamification elements to drive user retention, encourage daily interaction, and reward loyalty.
 - **Key Features**: Karma Points system, streak mechanics, unlockable content, cosmic journey progress, achievement badges, and leaderboards.
+- **MVP User Stories**:
+    - As a user, I want to earn badges and track my progress for engaging with the platform.
+    - As a user, I want to earn and redeem Karma Points for engaging with the platform and referring friends.
+    - As a user, I want to maintain daily engagement streaks and share them with friends.
+    - As a user, I want to unlock new content and insights as I progress.
+    - As a user, I want to visualize my progress on a cosmic journey and share it with friends.
+    - As a user, I want to participate in competitions and see my ranking on leaderboards.
+    - As a user, I want to easily share my achievement badges and milestones on social media.
+    - As a user, I want to track my achievements and progress within the platform.
+- **Current Implementation**: Only mentions of "Achievement System" in `INITIAL-PROMPT.md` and basic concepts under "Gamification Elements". No direct code implementation for points, streaks, leaderboards, or unlockable content is shown.
+- **Gaps for MVP**: Full gamification mechanics with points, levels, and unlockable features are **not implemented**.
 
 ### Epic 10: Technology & Scaling
 - **Goal**: Build a robust, scalable, and cost-effective technology infrastructure capable of supporting rapid development, multi-channel delivery, and future growth.
 - **Key Features**: Rapid development strategy, backend services, solo developer AI infrastructure, database management, third-party integrations, multi-language tech stack, BMAd development tools, multi-channel delivery system, scaling and growth strategies, and development phases.
+- **MVP User Stories**: None directly user-facing, this is an infrastructure epic.
+- **Current Implementation**: `server.js` sets up an Express app. Tech stack recommendations are listed in `INITIAL-PROMPT.md`.
+- **Gaps for MVP**: This is an internal epic. The presence of core files like `server.js`, `conversationEngine.js`, `vedicCalculator.js`, and general structure indicates a basic setup, but the scalability aspects ("Social Graph Database", "Time-series database") and advanced AI infrastructure are likely for later phases.
 
 ### Epic 11: Market Validation & Risk Mitigation
 - **Goal**: Validate market demand and mitigate potential risks (market, technical, operational, financial) to ensure the project's long-term success and revenue protection.
 - **Key Features**: MVP testing, A/B testing, churn analysis, competitive response strategies, regulatory compliance, security measures, and financial risk mitigation.
+- **MVP User Stories**: None directly user-facing.
+- **Current Implementation**: These are strategic points documented in `INITIAL-PROMPT.md`. Code would reflect security headers (helmet used in `server.js`) and middleware.
+- **Gaps for MVP**: These are primarily documentation and strategic considerations, not directly code-implementable user stories.
 
 ### Epic 12: AI-Agent Driven Development & BMAd Methodology
 - **Goal**: Leverage AI agents and the BMAd methodology for rapid, efficient, and high-quality development, ensuring continuous integration and automated quality assurance.
 - **Key Features**: AI-Agent Driven Development, Qwen CLI, Gemini CLI, automated testing generation, AI code review, automated deployment, and BMAd project management.
+- **MVP User Stories**: None directly user-facing. This is a development methodology.
+- **Current Implementation**: This isn't reflected in the provided code snippets but is a process for how the project is being built.
+- **Gaps for MVP**: Not applicable as this is a meta-development epic.
 
 ### Epic 13: Human Astrologer Services
 - **Goal**: Provide users with direct access to certified human astrologers for in-depth consultations and personalized guidance.
 - **Key Features**: Direct text/voice chat with astrologers, scheduled consultations, and follow-up reports.
+- **MVP User Stories**:
+    - As a user, I want to chat directly with a human astrologer for personalized advice.
+    - As a user, I want to schedule a consultation with a specific astrologer at my convenience.
+    - As a user, I want a seamless handover to a human astrologer when needed.
+- **Current Implementation**: `conversationEngine.js` has a reference to `seamless handover to human astrologers when needed` in a User Interface & Interaction Design section, but no direct implementation is shown for connecting users to human astrologers.
+- **Gaps for MVP**: The actual functionality of connecting to human astrologers, scheduling, and managing these interactions is **not implemented**.
 
 ### Epic 14: Advanced Technology & Infrastructure
 - **Goal**: Implement advanced technological solutions and infrastructure to support complex features, high performance, and future innovation.
 - **Key Features**: Social Graph Database, Loyalty System Engine, AI Twin System, Transit Timing Engine, and advanced analytics.
+- **MVP User Stories**: This is an internal epic.
+- **Current Implementation**: `INITIAL-PROMPT.md` lists these as features. The provided code has basic components (e.g., `vedicCalculator` for transit previews), but the advanced aspects are concepts.
+- **Gaps for MVP**: Many of these are **not yet implemented** beyond basic data structures or placeholder functions.
 
 ### Epic 15: Success Metrics & KPIs
 - **Goal**: Define and track key performance indicators and revenue metrics to measure project success, identify growth opportunities, and ensure profitability.
 - **Key Features**: MRR, ARR, ARPU, CLV, conversion rates, engagement metrics, phase-based targets, and revenue optimization alerts.
+- **MVP User Stories**: None directly user-facing. This is an internal epic.
+- **Current Implementation**: These are strategic metrics outlined in `INITIAL-PROMPT.md`. Actual tracking and reporting mechanisms are not in the provided code snippets.
+- **Gaps for MVP**: Not applicable as this is a meta-epic for tracking.
 
 ### Epic 16: Modular and Independent Architecture
 - **Goal**: Design and implement a modular and independent architecture to ensure easy updates, maintenance, and testing without impacting other parts of the codebase.
 - **Key Features**: Independent modules for features, conversation flows, and menus, ensuring plug-and-play architecture.
+- **MVP User Stories**: None directly user-facing. This is an architectural guideline.
+- **Current Implementation**: The directory structure (`src/config`, `src/controllers`, `src/conversation`, `src/services`, `src/utils`) suggests a modular approach. `conversationEngine.js` uses `getFlow` and `flowLoader` hinting at modular conversation flows.
+- **Gaps for MVP**: Not applicable as this is an internal architectural epic.
 
 ## Core Features (Developed with BMAd Methodology)
 
@@ -90,7 +298,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **User Story**: As a user, I want to receive readings from various astrological systems to get a comprehensive view.
 - **User Story**: As a user, I want to understand the basics of different astrology systems offered.
 
-### BMAd Implementation Features
+### BMAd Implementation Features (See Epic 12)
 - **AI-Agent Driven Development**: All features developed using Qwen CLI, Gemini CLI and coordinated AI agents
 - **Rapid Iteration Cycles**: Features developed in fast, iterative cycles with immediate testing
 - **Automated Quality Assurance**: Built-in comprehensive testing for each feature component
@@ -412,7 +620,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
    - **Proactive Value**: "Good morning, [User's Name]! Your personalized planetary forecast for today indicates [insight relevant to their chart]. It's a great day for [action]. Also, don't forget our exclusive webinar on 'Navigating Mercury Retrograde' this Thursday at 7 PM EST – a perk just for you! 🌟" User Story: As a user, I want to receive proactive, valuable insights and exclusive content.
    - **Interactive Prompt**: "The stars are aligning for a big decision! What's on your mind? A) Career B) Love C) Finances D) Health E) Relationships with others. I'll give you the cosmic insight you need and show you how compatible you are!" User Story: As a user, I want interactive prompts that help me explore different life aspects and compatibility.
 
-## Advanced Personalization & Customization (Enhanced for Viral Growth) (See Epic 4, Epic 6)
+## Advanced Personalization & Customization (See Epic 4, Epic 6)
 
 ### Deep Personalization Features (See Epic 4)
 1. **Behavioral Adaptation**: AI learning from user preferences and engagement; Adaptive content delivery based on historical interactions; Personalized service suggestions; Dynamic interface adjustments based on usage patterns. User Story: As a user, I want the platform to learn my preferences and adapt its content and suggestions accordingly.
@@ -453,163 +661,163 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 
 ## User Journey Mapping & Experience Flows (Enhanced for Retention and Virality) (See Epic 1, Epic 6)
 
-### Compelling User Journey with Retention Hooks
+### Compelling User Journey with Retention Hooks (See Epic 6)
 
-#### Phase 1: Discovery → First Value (Days 1-3)
+#### Phase 1: Discovery → First Value (Days 1-3) (See Epic 6)
 **Day 0 (Discovery)**
-- Ad or referral leads user to send "Hi" to bot
-- Immediate personalized response: "I can read your birth chart and provide insights. What's your birth date? 🌟" 
-- **Hook**: Intrigue through personalization AND social element: "Want to see how compatible you are with a friend? You can check that too!"
-- **Viral Element**: Early compatibility feature offering
+- Ad or referral leads user to send "Hi" to bot. User Story: As a potential user, I want to easily discover the service and initiate contact.
+- Immediate personalized response: "I can read your birth chart and provide insights. What's your birth date? 🌟" User Story: As a new user, I want an immediate, personalized response upon first contact.
+- **Hook**: Intrigue through personalization AND social element: "Want to see how compatible you are with a friend? You can check that too!" User Story (Epic 8): As a new user, I want to be intrigued by the possibility of checking compatibility with friends.
+- **Viral Element**: Early compatibility feature offering. User Story (Epic 8): As a new user, I want to be offered an early compatibility feature to share.
 
 **Day 1 (Personalization)**
-- Guided birth data collection (date, time, place) with educational content
-- Instant personalized birth chart analysis with one key insight as shareable image
-- **Hook**: Immediate personal value that feels "accurate"
-- Prompt for language preference with "We'll give you insights in your preferred language"
-- **Viral Element**: "Want to share your birth chart with a friend to see compatibility? It's easy with our compatibility feature!"
-- **Retention Trigger**: Daily reminder to complete profile with "Get your complete chart analysis"
+- Guided birth data collection (date, time, place) with educational content. User Story (Epic 7): As a new user, I want a guided process to input my birth data.
+- Instant personalized birth chart analysis with one key insight as shareable image. User Story (Epic 4, Epic 8): As a new user, I want an instant, shareable personalized birth chart analysis.
+- **Hook**: Immediate personal value that feels "accurate". User Story (Epic 6): As a new user, I want to feel immediate personal value and accuracy from the service.
+- Prompt for language preference with "We'll give you insights in your preferred language". User Story (Epic 1): As a new user, I want to set my language preference early on.
+- **Viral Element**: "Want to share your birth chart with a friend to see compatibility? It's easy with our compatibility feature!" User Story (Epic 8): As a new user, I want to easily share my birth chart for compatibility checks.
+- **Retention Trigger**: Daily reminder to complete profile with "Get your complete chart analysis". User Story (Epic 7): As a new user, I want reminders to complete my profile for a full analysis.
 
 **Day 2 (Engagement)**
-- Deliver complete birth chart summary with "Your Top 3 Life Patterns"
-- Offer free 3-day prediction based on current transits
-- **Hook**: Personalized future insights that feel relevant
-- Social proof: "2,847 users with your chart type have found this insight accurate"
-- **Viral Element**: "Share your chart with a friend! Check their compatibility with you."
+- Deliver complete birth chart summary with "Your Top 3 Life Patterns". User Story (Epic 4): As a user, I want to receive a summary of my top life patterns.
+- Offer free 3-day prediction based on current transits. User Story (Epic 4): As a user, I want to receive a free short-term prediction based on transits.
+- **Hook**: Personalized future insights that feel relevant. User Story (Epic 6): As a user, I want future insights that are personalized and relevant.
+- Social proof: "2,847 users with your chart type have found this insight accurate". User Story (Epic 8): As a user, I want to see social proof of prediction accuracy.
+- **Viral Element**: "Share your chart with a friend! Check their compatibility with you." User Story (Epic 8): As a user, I want to share my chart with a friend to check compatibility.
 
 **Day 3 (Investment)**
-- Show how transits from Day 2 are manifesting (validation)
-- Offer first premium decision: "Want to know exactly when your next major opportunity arrives? Also want to check unlimited compatibility with friends?" 
-- **Hook**: Specific, time-sensitive value proposition
-- **Viral Element**: Unlimited compatibility checks as premium feature
+- Show how transits from Day 2 are manifesting (validation). User Story (Epic 4): As a user, I want to see how past predictions are validated by my experiences.
+- Offer first premium decision: "Want to know exactly when your next major opportunity arrives? Also want to check unlimited compatibility with friends?" User Story (Epic 3): As a user, I want to be offered premium features that provide specific value.
+- **Hook**: Specific, time-sensitive value proposition. User Story (Epic 6): As a user, I want to receive time-sensitive value propositions.
+- **Viral Element**: Unlimited compatibility checks as premium feature. User Story (Epic 8): As a user, I want unlimited compatibility checks as a premium feature.
 
-#### Phase 2: Habit Formation (Days 4-30)
+#### Phase 2: Habit Formation (Days 4-30) (See Epic 6)
 **Daily Hooks**:
-- **Morning Transit Alert**: "Mercury is activating your career house today - perfect for important calls" (with action item)
-- **Evening Reflection**: "How did today's energy feel? Tell me about it." (engagement loop)
-- **7-Day Cycle**: Weekly forecast every Sunday with "This Week's Power Hour" - specific best time for important decisions
-- **Social Element**: "Your friend [sign] might be feeling similar energies today - how are they doing?"
+- **Morning Transit Alert (See Epic 5)**: "Mercury is activating your career house today - perfect for important calls" (with action item). User Story: As a user, I want to receive morning transit alerts with actionable advice.
+- **Evening Reflection (See Epic 6)**: "How did today's energy feel? Tell me about it." (engagement loop). User Story: As a user, I want to reflect on my daily experiences with the bot.
+- **7-Day Cycle (See Epic 5)**: Weekly forecast every Sunday with "This Week's Power Hour" - specific best time for important decisions. User Story: As a user, I want a weekly forecast including optimal timing for decisions.
+- **Social Element (See Epic 8)**: "Your friend [sign] might be feeling similar energies today - how are they doing?" User Story: As a user, I want to see how my friends might be affected by current transits.
 
-**Weekly Engagement**:
-- **Monday Motivation**: Based on weekly planetary influences
-- **Midweek Check-in**: "How are you feeling during this transit?"
-- **Weekend Ritual**: Suggested spiritual practice based on lunar phase
-- **Progress Tracking**: "You've now received 10 personal insights"
-- **Social Interaction**: "Share your weekend ritual with a friend who has the same moon sign!"
+**Weekly Engagement (See Epic 6)**:
+- **Monday Motivation**: Based on weekly planetary influences. User Story: As a user, I want to receive Monday motivation based on weekly planetary influences.
+- **Midweek Check-in**: "How are you feeling during this transit?" User Story: As a user, I want to check in with the bot about my feelings during transits.
+- **Weekend Ritual**: Suggested spiritual practice based on lunar phase. User Story: As a user, I want suggestions for weekend spiritual practices.
+- **Progress Tracking (See Epic 9)**: "You've now received 10 personal insights". User Story: As a user, I want to track my progress in receiving personal insights.
+- **Social Interaction (See Epic 8)**: "Share your weekend ritual with a friend who has the same moon sign!" User Story: As a user, I want to share my weekend rituals with friends.
 
-**15-Day Critical Point**:
-- Show user progress: "You've discovered 5 key patterns about yourself"
-- Offer Essential tier with "Want more detailed insights AND compatibility checks with up to 5 people?" 
-- Include social proof: "85% of users who try the weekly video predictions love them"
+**15-Day Critical Point (See Epic 6)**:
+- Show user progress: "You've discovered 5 key patterns about yourself". User Story: As a user, I want to see my progress in discovering personal patterns.
+- Offer Essential tier with "Want more detailed insights AND compatibility checks with up to 5 people?" User Story (Epic 3): As a user, I want to be offered an upgrade to the Essential tier with clear benefits.
+- Include social proof: "85% of users who try the weekly video predictions love them". User Story (Epic 8): As a user, I want to see social proof for premium features.
 
-#### Phase 3: Investment & Value Recognition (Days 31-90)
+#### Phase 3: Investment & Value Recognition (Days 31-90) (See Epic 6)
 **Monthly Milestones**:
-- **Day 30**: "One month of personal insights - here's what we've learned about your patterns"
-- **Day 45**: Compare user's actual experiences with predictions 
-- **Day 60**: "How accurate have our insights been for you?" (feedback loop)
-- **Day 90**: Lifetime value summary: "You've received 90 personalized insights worth ₹4,500, but you've paid much less"
+- **Day 30**: "One month of personal insights - here's what we've learned about your patterns". User Story: As a user, I want a summary of my personal insights after one month.
+- **Day 45**: Compare user's actual experiences with predictions. User Story (Epic 4): As a user, I want to compare my actual experiences with past predictions.
+- **Day 60**: "How accurate have our insights been for you?" (feedback loop). User Story (Epic 4): As a user, I want to provide feedback on the accuracy of insights.
+- **Day 90**: Lifetime value summary: "You've received 90 personalized insights worth ₹4,500, but you've paid much less". User Story (Epic 3): As a user, I want to see a summary of the value I've received from the service.
 
-**Advanced Engagement**:
-- **Compatibility Feature Unlock**: "Now that we know your chart well, discover who's most compatible with you - unlimited checks!"
-- **Predictive Validation**: Show how previous predictions came true
-- **Community Introduction**: "Join 500 others with similar charts for group insights"
+**Advanced Engagement (See Epic 6)**:
+- **Compatibility Feature Unlock (See Epic 8)**: "Now that we know your chart well, discover who's most compatible with you - unlimited checks!" User Story: As a user, I want to unlock advanced compatibility features.
+- **Predictive Validation (See Epic 4)**: Show how previous predictions came true. User Story: As a user, I want to see how previous predictions were validated.
+- **Community Introduction (See Epic 8)**: "Join 500 others with similar charts for group insights". User Story: As a user, I want to be introduced to a community of users with similar charts.
 
-#### Phase 4: Premium Conversion (Days 30-180)
+#### Phase 4: Premium Conversion (Days 30-180) (See Epic 3, Epic 6)
 **Graduated Premium Introduction**:
-- **Week 5-8**: Subtle premium feature glimpses: "To know the exact timing of this opportunity, upgrade to Essential"
-- **Week 9-12**: Value demonstration: "This is what Premium users are seeing right now - they can check unlimited compatibility too!"
-- **Week 13-16**: Urgency creation: "This specific planetary alignment happens only once this year - Essential tier users will get detailed guidance"
-- **Week 17-20**: Social proof: "67% of users with your chart type found the human astrologer sessions life-changing"
+- **Week 5-8**: Subtle premium feature glimpses: "To know the exact timing of this opportunity, upgrade to Essential". User Story (Epic 3): As a user, I want to see subtle glimpses of premium features.
+- **Week 9-12**: Value demonstration: "This is what Premium users are seeing right now - they can check unlimited compatibility too!" User Story (Epic 3): As a user, I want to see demonstrations of premium feature value.
+- **Week 13-16**: Urgency creation: "This specific planetary alignment happens only once this year - Essential tier users will get detailed guidance". User Story (Epic 3): As a user, I want to be informed of time-sensitive premium opportunities.
+- **Week 17-20**: Social proof: "67% of users with your chart type found the human astrologer sessions life-changing". User Story (Epic 8): As a user, I want to see social proof for premium features like human astrologer sessions.
 
-#### Phase 5: Long-term Retention & Upselling (Days 90+)
-**Habit Loops**:
-- **Daily**: Morning transit + evening reflection
-- **Weekly**: Sunday forecasts + Saturday insights
-- **Monthly**: Birthday chart updates, anniversary insights
-- **Quarterly**: Deep dive reports, life planning sessions
+#### Phase 5: Long-term Retention & Upselling (Days 90+) (See Epic 3, Epic 6)
+**Habit Loops (See Epic 6)**:
+- **Daily**: Morning transit + evening reflection. User Story: As a long-term user, I want daily habit loops for engagement.
+- **Weekly**: Sunday forecasts + Saturday insights. User Story: As a long-term user, I want weekly forecasts and insights.
+- **Monthly**: Birthday chart updates, anniversary insights. User Story: As a long-term user, I want monthly chart updates and anniversary insights.
+- **Quarterly**: Deep dive reports, life planning sessions. User Story: As a long-term user, I want quarterly deep dive reports and life planning sessions.
 
-**Progressive Value**:
-- **Month 4**: "Now we can predict 6 months in advance based on your pattern"
-- **Month 6**: Long-term pattern recognition and life planning
-- **Month 9**: "You're becoming an expert in your own cycles"
-- **Month 12**: Loyalty rewards and VIP tier introduction
+**Progressive Value (See Epic 6)**:
+- **Month 4**: "Now we can predict 6 months in advance based on your pattern". User Story: As a long-term user, I want longer-term predictions based on my patterns.
+- **Month 6**: Long-term pattern recognition and life planning. User Story: As a long-term user, I want the bot to help with long-term life planning.
+- **Month 9**: "You're becoming an expert in your own cycles". User Story: As a long-term user, I want to feel like an expert in my own astrological cycles.
+- **Month 12**: Loyalty rewards and VIP tier introduction. User Story (Epic 3): As a long-term user, I want to be rewarded with loyalty benefits and VIP tier introductions.
 
-**Viral Growth Loop**:
-- **Referral Mechanism**: "Your friend hasn't checked their compatibility with you yet - invite them to see how well you match!"
-- **Social Sharing**: Beautiful forecasts that users want to share
-- **Community Building**: VIP-only groups that are exclusive
+**Viral Growth Loop (See Epic 8)**:
+- **Referral Mechanism**: "Your friend hasn't checked their compatibility with you yet - invite them to see how well you match!" User Story: As a user, I want to easily refer friends for compatibility checks.
+- **Social Sharing**: Beautiful forecasts that users want to share. User Story: As a user, I want to share beautiful forecasts with my network.
+- **Community Building**: VIP-only groups that are exclusive. User Story: As a VIP user, I want access to exclusive community groups.
 
-### Primary User Journeys (Enhanced)
+### Primary User Journeys (Enhanced) (See Epic 6)
 
-#### Journey 1: New User Discovery to First Value Experience
-- **Awareness**: User discovers service through referral, ad, or organic search
-- **First Interaction**: User sends initial message to WhatsApp bot and receives immediate, personalized response based on their birth details
-- **Onboarding**: Guided profile setup with birth details, enhanced with educational value and social features
-- **Value Demonstration**: Free initial reading or horoscope that feels personally relevant and accurate
-- **Viral Element**: Early compatibility checking feature introduction
-- **Conversion**: User selects first paid service or subscribes after experiencing personalized value
-- **Success**: Receives satisfactory reading and becomes repeat user through daily engagement hooks
+#### Journey 1: New User Discovery to First Value Experience (See Epic 6)
+- **Awareness**: User discovers service through referral, ad, or organic search. User Story: As a potential user, I want to easily discover the service.
+- **First Interaction**: User sends initial message to WhatsApp bot and receives immediate, personalized response based on their birth details. User Story: As a new user, I want an immediate, personalized first interaction.
+- **Onboarding**: Guided profile setup with birth details, enhanced with educational value and social features. User Story (Epic 7): As a new user, I want a guided and educational onboarding experience.
+- **Value Demonstration**: Free initial reading or horoscope that feels personally relevant and accurate. User Story: As a new user, I want a free initial reading that demonstrates personal relevance.
+- **Viral Element**: Early compatibility checking feature introduction. User Story (Epic 8): As a new user, I want to be introduced to compatibility checking early on.
+- **Conversion**: User selects first paid service or subscribes after experiencing personalized value. User Story (Epic 3): As a new user, I want to convert to a paid service after experiencing value.
+- **Success**: Receives satisfactory reading and becomes repeat user through daily engagement hooks. User Story: As a new user, I want to become a repeat user after a satisfactory reading.
 
-#### Journey 2: Curious Explorer to Committed Subscriber
-- **Curiosity**: User has specific question or life situation and tries multiple service types
-- **Exploration**: User engages with daily transit alerts, evening reflections, and weekly forecasts
-- **Engagement**: User begins to see patterns and accuracy in readings, building trust
-- **Social Element**: User introduces friends for compatibility checking
-- **Investment**: User purchases more comprehensive services after validation
-- **Subscription**: User commits to regular service through subscription after experiencing consistent value
-- **Advocacy**: User begins recommending service to others after seeing results
+#### Journey 2: Curious Explorer to Committed Subscriber (See Epic 6)
+- **Curiosity**: User has specific question or life situation and tries multiple service types. User Story: As a curious user, I want to explore various service types for specific questions.
+- **Exploration**: User engages with daily transit alerts, evening reflections, and weekly forecasts. User Story: As an explorer, I want to engage with daily and weekly astrological content.
+- **Engagement**: User begins to see patterns and accuracy in readings, building trust. User Story: As an engaged user, I want to build trust through accurate readings.
+- **Social Element**: User introduces friends for compatibility checking. User Story (Epic 8): As an engaged user, I want to introduce friends for compatibility checking.
+- **Investment**: User purchases more comprehensive services after validation. User Story (Epic 3): As an engaged user, I want to invest in more comprehensive services after validation.
+- **Subscription**: User commits to regular service through subscription after experiencing consistent value. User Story (Epic 3): As an engaged user, I want to subscribe after consistent value.
+- **Advocacy**: User begins recommending service to others after seeing results. User Story (Epic 8): As an advocate, I want to recommend the service to others.
 
-#### Journey 3: Skeptic to Believer Conversion
-- **Skepticism**: User approaches with doubt but curiosity and asks specific verifiable questions
-- **Challenge**: User tests with specific verifiable questions and tracks accuracy
-- **Validation**: User experiences accurate insights or predictions and builds trust through validation
-- **Openness**: User begins to trust and engage more deeply through pattern recognition
-- **Integration**: Astrology becomes part of user's decision-making process with timing features
-- **Loyalty**: User develops long-term relationship with service through retention hooks
-- **Community**: User participates in social features and community elements
+#### Journey 3: Skeptic to Believer Conversion (See Epic 6)
+- **Skepticism**: User approaches with doubt but curiosity and asks specific verifiable questions. User Story: As a skeptic, I want to test the service with verifiable questions.
+- **Challenge**: User tests with specific verifiable questions and tracks accuracy. User Story: As a skeptic, I want to track the accuracy of predictions.
+- **Validation**: User experiences accurate insights or predictions and builds trust through validation. User Story: As a skeptic, I want to build trust through accurate insights.
+- **Openness**: User begins to trust and engage more deeply through pattern recognition. User Story: As a user, I want to engage more deeply as trust builds.
+- **Integration**: Astrology becomes part of user's decision-making process with timing features. User Story (Epic 5): As a user, I want astrology to integrate into my decision-making process.
+- **Loyalty**: User develops long-term relationship with service through retention hooks. User Story (Epic 3): As a user, I want to develop a long-term relationship with the service.
+- **Community**: User participates in social features and community elements. User Story (Epic 8): As a user, I want to participate in social and community features.
 
-### Micro-Interactions & Touchpoints (Enhanced)
-1. **Welcome Sequence**: First 5 interactions designed to build trust and demonstrate value with personalization and social elements
-2. **Personalization Pivots**: Key moments where experience becomes customized with AI Twin features
-3. **Value Inflection Points**: Specific interactions that determine user retention through accuracy validation
-4. **Engagement Hooks**: Features designed to encourage daily/monthly return with transit alerts and reflections
-5. **Social Proof Moments**: Opportunities to showcase service quality through testimonials and pattern matching
-6. **Prediction Tracking**: Let users rate how accurate insights were with validation loops and sharing
-7. **Behavioral Adaptation**: AI learns what types of insights users value most for personalization
-8. **Gamification**: Achievement badges for engagement and pattern recognition with sharing capabilities
-9. **Community Challenges**: Group activities during planetary events for retention and viral growth
-10. **Personal Milestones**: Special readings for birthdays, anniversaries, and chart patterns
-11. **Compatibility Sharing**: Features that encourage users to bring friends to the platform
-12. **Achievement Sharing**: Mechanisms to share accomplishments with friends
+### Micro-Interactions & Touchpoints (Enhanced) (See Epic 6)
+1. **Welcome Sequence**: First 5 interactions designed to build trust and demonstrate value with personalization and social elements. User Story: As a new user, I want a welcome sequence that builds trust and demonstrates value.
+2. **Personalization Pivots (See Epic 4)**: Key moments where experience becomes customized with AI Twin features. User Story: As a user, I want my experience to be customized at key moments with AI Twin features.
+3. **Value Inflection Points**: Specific interactions that determine user retention through accuracy validation. User Story: As a user, I want interactions that validate the accuracy of the service.
+4. **Engagement Hooks**: Features designed to encourage daily/monthly return with transit alerts and reflections. User Story: As a user, I want features that encourage my daily and monthly engagement.
+5. **Social Proof Moments (See Epic 8)**: Opportunities to showcase service quality through testimonials and pattern matching. User Story: As a user, I want to see social proof of the service's quality.
+6. **Prediction Tracking (See Epic 4)**: Let users rate how accurate insights were with validation loops and sharing. User Story: As a user, I want to track and rate the accuracy of predictions.
+7. **Behavioral Adaptation (See Epic 4)**: AI learns what types of insights users value most for personalization. User Story: As a user, I want the AI to adapt to my preferences for personalization.
+8. **Gamification (See Epic 9)**: Achievement badges for engagement and pattern recognition with sharing capabilities. User Story: As a user, I want to earn and share achievement badges.
+9. **Community Challenges (See Epic 8)**: Group activities during planetary events for retention and viral growth. User Story: As a user, I want to participate in community challenges.
+10. **Personal Milestones (See Epic 4)**: Special readings for birthdays, anniversaries, and chart patterns. User Story: As a user, I want special readings for my personal astrological milestones.
+11. **Compatibility Sharing (See Epic 8)**: Features that encourage users to bring friends to the platform. User Story: As a user, I want to easily share compatibility reports to invite friends.
+12. **Achievement Sharing (See Epic 9)**: Mechanisms to share accomplishments with friends. User Story: As a user, I want to share my accomplishments with friends.
 
-### Emotional Journey Mapping (Enhanced)
-- **Initial Hesitation**: Addressing skepticism and building trust through immediate personal value and social integration
-- **Curiosity Peak**: Providing engaging but respectful first experiences with accuracy demonstrations
-- **Value Recognition**: Demonstrating tangible benefits and insights through daily engagement
-- **Trust Building**: Consistent accuracy and reliability of readings with user validation
-- **Emotional Investment**: Becoming personally invested in service outcomes through pattern recognition
-- **Community Connection**: Feeling part of a larger community of users with Astro-Social Network and compatibility features
-- **Habit Formation**: Creating regular touchpoints that form user habits with daily alerts
-- **Goal Achievement**: Helping users achieve life goals with predictive timing and guidance
-- **Sharing Motivation**: Natural desire to share valuable insights with friends and family
+### Emotional Journey Mapping (Enhanced) (See Epic 6)
+- **Initial Hesitation**: Addressing skepticism and building trust through immediate personal value and social integration. User Story: As a user, I want the service to address my initial skepticism and build trust.
+- **Curiosity Peak**: Providing engaging but respectful first experiences with accuracy demonstrations. User Story: As a user, I want engaging first experiences that demonstrate accuracy.
+- **Value Recognition**: Demonstrating tangible benefits and insights through daily engagement. User Story: As a user, I want to recognize the tangible benefits of daily engagement.
+- **Trust Building**: Consistent accuracy and reliability of readings with user validation. User Story: As a user, I want to build trust through consistent accuracy.
+- **Emotional Investment**: Becoming personally invested in service outcomes through pattern recognition. User Story: As a user, I want to feel emotionally invested in the service outcomes.
+- **Community Connection (See Epic 8)**: Feeling part of a larger community of users with Astro-Social Network and compatibility features. User Story: As a user, I want to feel connected to a community of users.
+- **Habit Formation**: Creating regular touchpoints that form user habits with daily alerts. User Story: As a user, I want the service to help me form daily astrological habits.
+- **Goal Achievement**: Helping users achieve life goals with predictive timing and guidance. User Story (Epic 5): As a user, I want the service to help me achieve life goals with predictive timing.
+- **Sharing Motivation (See Epic 8)**: Natural desire to share valuable insights with friends and family. User Story: As a user, I want to be motivated to share valuable insights with friends and family.
 
-### Reinforcing Emotional ROI & Habit Formation
-- **"Micro-Aha" Moments & Validation Cycles**: Continuously validate predictions post-event (e.g., "You noted yesterday that you felt overwhelmed, just as Gemini's influence impacted your communication house. Your chart shows a strong correlation.") to build immense trust and strengthen the emotional bond, fueling retention.
-- **Habit Stacking & Integration into Daily Life**: Emphasize how the bot becomes an indispensable part of the user's daily routine, not just an add-on. Frame "Daily Cosmic Tips," "Lucky Number," and "Best Time to Make a Decision" as quick, actionable, and personally relevant rituals.
-- **Validation Cycles**: Strengthen the loop of prediction -> user experience -> bot validation to build trust and stickiness.
+### Reinforcing Emotional ROI & Habit Formation (See Epic 6)
+- **"Micro-Aha" Moments & Validation Cycles (See Epic 4)**: Continuously validate predictions post-event (e.g., "You noted yesterday that you felt overwhelmed, just as Gemini's influence impacted your communication house. Your chart shows a strong correlation.") to build immense trust and strengthen the emotional bond, fueling retention. User Story: As a user, I want to experience "micro-aha" moments and validation of predictions.
+- **Habit Stacking & Integration into Daily Life**: Emphasize how the bot becomes an indispensable part of the user's daily routine, not just an add-on. Frame "Daily Cosmic Tips," "Lucky Number," and "Best Time to Make a Decision" as quick, actionable, and personally relevant rituals. User Story: As a user, I want astrological insights to integrate seamlessly into my daily routine.
+- **Validation Cycles (See Epic 4)**: Strengthen the loop of prediction -> user experience -> bot validation to build trust and stickiness. User Story: As a user, I want to see continuous validation of predictions to build trust.
 
-### Retention Journey Optimization (Enhanced)
-1. **Aha Moments**: Designing experiences that create 'aha' moments for users with pattern recognition and social connection
-2. **Habit Formation**: Creating regular touchpoints that form user habits with morning/evening routines
-3. **Progressive Disclosure**: Gradually introducing advanced features including compatibility checking
-4. **Milestone Celebrations**: Acknowledging user journey milestones and achievements with personalized insights
-5. **Re-engagement Campaigns**: Automated campaigns to re-engage dormant users with chart-relevant timing
-6. **Churn Prevention**: When activity drops, send "Your chart is showing an important upcoming period - also, your friend hasn't checked compatibility with you yet - invite them!"
-7. **Win-Back Campaigns**: Former users get special return offers based on their chart patterns
-8. **Relationship Features**: Help users understand their partner's chart for relationship retention and viral growth
-9. **Learning Path**: Educational content that makes users feel more knowledgeable about their charts
-10. **Habit Stacking**: Connect astrological insights to existing habits for deeper engagement
-11. **Social Engagement**: Encourage users to invite friends to check compatibility or join community
+### Retention Journey Optimization (Enhanced) (See Epic 6)
+1. **Aha Moments**: Designing experiences that create 'aha' moments for users with pattern recognition and social connection. User Story: As a user, I want to experience 'aha' moments that enhance my understanding.
+2. **Habit Formation**: Creating regular touchpoints that form user habits with morning/evening routines. User Story: As a user, I want the service to help me form astrological habits through regular touchpoints.
+3. **Progressive Disclosure**: Gradually introducing advanced features including compatibility checking. User Story: As a user, I want advanced features to be introduced gradually.
+4. **Milestone Celebrations**: Acknowledging user journey milestones and achievements with personalized insights. User Story: As a user, I want my journey milestones and achievements to be celebrated.
+5. **Re-engagement Campaigns**: Automated campaigns to re-engage dormant users with chart-relevant timing. User Story: As a user, I want to be re-engaged with relevant astrological insights if I become inactive.
+6. **Churn Prevention**: When activity drops, send "Your chart is showing an important upcoming period - also, your friend hasn't checked compatibility with you yet - invite them!" User Story (Epic 8): As a user, I want to receive prompts to re-engage and invite friends if my activity drops.
+7. **Win-Back Campaigns**: Former users get special return offers based on their chart patterns. User Story: As a former user, I want to receive personalized win-back offers.
+8. **Relationship Features (See Epic 8)**: Help users understand their partner's chart for relationship retention and viral growth. User Story: As a user, I want features to understand my partner's chart for better relationship insights.
+9. **Learning Path**: Educational content that makes users feel more knowledgeable about their charts. User Story: As a user, I want a learning path to deepen my astrological knowledge.
+10. **Habit Stacking**: Connect astrological insights to existing habits for deeper engagement. User Story: As a user, I want astrological insights to be integrated with my existing habits.
+11. **Social Engagement (See Epic 8)**: Encourage users to invite friends to check compatibility or join community. User Story: As a user, I want to be encouraged to invite friends for social engagement.
 
 ## Regional Payment and Compliance Requirements (See Epic 3)
 
@@ -618,119 +826,106 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
    - RBI guidelines for digital payments
    - PCI DSS compliance for card processing
    - UPI compliance and NPCI guidelines
-   - GST compliance (18% tax on digital services)
-
+   - GST compliance (18% tax on digital services). User Story: As the business, I need to ensure payment processing in India complies with RBI guidelines and GST.
 2. **Data Protection**:
    - Personal Data Protection Bill compliance
    - Data localization requirements for sensitive personal data
-   - RBI guidelines on storing payment data
-
+   - RBI guidelines on storing payment data. User Story: As the business, I need to ensure data handling in India complies with the Personal Data Protection Bill and RBI guidelines.
 3. **Business Requirements**:
    - Valid business registration in India
    - Payment aggregator license if required
-   - FDI compliance if foreign investment involved
+   - FDI compliance if foreign investment involved. User Story: As the business, I need to ensure valid business registration and necessary licenses for operations in India.
 
 ### UAE:
 1. **Payment Compliance**:
    - Central Bank of UAE regulations
    - PCI DSS compliance
    - ePayment regulations compliance
-   - VAT compliance (5% VAT on digital services)
-
+   - VAT compliance (5% VAT on digital services). User Story: As the business, I need to ensure payment processing in UAE complies with Central Bank regulations and VAT.
 2. **Data Protection**:
    - UAE Data Protection Law
    - Cybersecurity regulations
-   - Free zone regulations if applicable
-
+   - Free zone regulations if applicable. User Story: As the business, I need to ensure data handling in UAE complies with local data protection laws.
 3. **Business Requirements**:
    - Valid trade license
    - UAE business registration
-   - Compliance with Dubai International Financial Centre (DIFC) if applicable
+   - Compliance with Dubai International Financial Centre (DIFC) if applicable. User Story: As the business, I need to ensure valid trade license and business registration for operations in UAE.
 
 ### Australia:
 1. **Payment Compliance**:
    - Australian Transaction Reports and Analysis Centre (AUSTRAC) compliance
    - Australian Securities and Investments Commission (ASIC) regulations
    - PCI DSS compliance
-   - Consumer Data Right (CDR) framework
-
+   - Consumer Data Right (CDR) framework. User Story: As the business, I need to ensure payment processing in Australia complies with AUSTRAC and ASIC regulations.
 2. **Data Protection**:
    - Privacy Act 1988 and Australian Privacy Principles (APPs)
    - Notifiable Data Breaches (NDB) scheme
-   - GDPR compliance if serving EU citizens
-
+   - GDPR compliance if serving EU citizens. User Story: As the business, I need to ensure data handling in Australia complies with the Privacy Act and APPs.
 3. **Business Requirements**:
    - Australian Business Number (ABN)
    - Australian Company Number (ACN) if incorporated
-   - Australian Consumer Law compliance
+   - Australian Consumer Law compliance. User Story: As the business, I need to ensure valid ABN/ACN and compliance with Australian Consumer Law for operations in Australia.
 
-### General Compliance:
-- Age verification for users (18+ for some services)
-- Content guidelines for astrological services
-- Anti-money laundering (AML) compliance
-- Know Your Customer (KYC) requirements
+### General Compliance (See Epic 3):
+- Age verification for users (18+ for some services). User Story: As the business, I need to implement age verification for users engaging in certain services.
+- Content guidelines for astrological services. User Story: As the business, I need to adhere to content guidelines for astrological services.
+- Anti-money laundering (AML) compliance. User Story: As the business, I need to implement AML compliance measures.
+- Know Your Customer (KYC) requirements. User Story: As the business, I need to implement KYC requirements where necessary.
 
 ## WhatsApp Business API Compliance Guidelines (See Epic 1)
 
-### Message Types and Usage:
+### Message Types and Usage (See Epic 1):
 1. **Template Messages**:
    - Pre-approved message templates for subscription confirmations
    - Payment receipts and invoices
    - Appointment reminders
-   - Promotional offers (with consent)
-
+   - Promotional offers (with consent). User Story: As the business, I need to use pre-approved templates for transactional and promotional messages.
 2. **Session-based Messages**:
    - Responses to user-initiated conversations (within 24-hour window)
    - Customer support interactions
-   - Service-related communications
-
+   - Service-related communications. User Story: As the business, I need to respond to user-initiated conversations within the 24-hour window.
 3. **Notification Messages**:
    - Account alerts and updates
    - Subscription expiry notifications
-   - Personalized content based on user preferences
+   - Personalized content based on user preferences. User Story: As the business, I need to send personalized notifications and alerts to users.
 
-### Compliance Requirements:
+### Compliance Requirements (See Epic 1):
 1. **Message Frequency**:
    - No spam or unsolicited promotional messages
    - Respect user communication preferences
-   - Opt-out mechanisms for promotional content
-
+   - Opt-out mechanisms for promotional content. User Story: As the business, I need to respect user preferences and provide opt-out options for promotional content.
 2. **Content Guidelines**:
    - No false or misleading information
    - No adult content or explicit material
-   - Respect cultural and religious sensitivities specific to regions
-
+   - Respect cultural and religious sensitivities specific to regions. User Story: As the business, I need to ensure all content complies with WhatsApp guidelines and is culturally sensitive.
 3. **User Consent**:
    - Clear opt-in for promotional messages
    - Easy opt-out mechanisms
-   - Clear communication about data usage
-
+   - Clear communication about data usage. User Story: As the business, I need to obtain clear user consent for promotional messages and data usage.
 4. **Business Verification**:
    - Complete business verification process
    - Display verified business status
-   - Maintain accurate business profile information
+   - Maintain accurate business profile information. User Story: As the business, I need to complete WhatsApp business verification and maintain an accurate profile.
 
-### Technical Requirements:
+### Technical Requirements (See Epic 1):
 1. **Webhook Implementation**:
    - Secure webhook endpoints
    - Proper message acknowledgment
-   - Error handling and retry mechanisms
-
+   - Error handling and retry mechanisms. User Story: As the business, I need to implement secure webhooks with proper error handling for WhatsApp integrations.
 2. **Rate Limits**:
    - Adhere to message sending rate limits
    - Implement appropriate queuing for high-volume periods
-   - Monitor API usage and performance metrics
-
+   - Monitor API usage and performance metrics. User Story: As the business, I need to adhere to WhatsApp API rate limits and monitor usage.
 3. **Security**:
    - Secure transmission of sensitive information
    - Proper authentication for API endpoints
-   - Secure handling of user data
+   - Secure handling of user data. User Story: As the business, I need to ensure secure transmission and handling of user data with the WhatsApp API.
 
-### Prohibited Content and Practices:
+### Prohibited Content and Practices (See Epic 1):
 - No sharing of personal information without consent
 - No harassment or unwelcome messages
 - No misleading business identity
-- No pyramid schemes or fraudulent content
+- No pyramid schemes or fraudulent content. User Story: As the business, I need to comply with WhatsApp's prohibited content and practices policies.
 
 ## Loyalty and Referral System (Enhanced for Viral Growth) (See Epic 3)
 
@@ -741,52 +936,46 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
    - Engagement points for daily check-ins (1 point per day, up to 7 per week)
    - Referral points for bringing friends (50 points per successful referral)
    - Review points for feedback (5 points per review)
-   - Social sharing points (10 points per shared forecast)
-
+   - Social sharing points (10 points per shared forecast). User Story: As a user, I want to earn "AstroRewards" points for various activities and expenditures.
 2. **Tier Levels**:
    - **Starter** (0-499 points): Standard service access
    - **Stargazer** (500-1,499 points): 5% discount on all services, priority customer support
    - **Constellation** (1,500-2,999 points): 10% discount, free monthly mini-reading, faster response times
-   - **Cosmic** (3,000+ points): 15% discount, free weekly mini-reading, exclusive content, dedicated astrologer access
-
+   - **Cosmic** (3,000+ points): 15% discount, free weekly mini-reading, exclusive content, dedicated astrologer access. User Story: As a user, I want to progress through tiered loyalty levels with increasing benefits.
 3. **Rewards and Benefits**:
    - Redeem points for free readings (100 points = 1 basic question)
    - Exclusive discounts during planetary transits or eclipses
    - Free extended reading time with human astrologers
    - Early access to new features and services
    - Birthday bonuses and special occasion gifts
-   - **Social Rewards**: Bonus points for successful referrals and social sharing
+   - **Social Rewards**: Bonus points for successful referrals and social sharing. User Story: As a user, I want to redeem my points for various rewards and receive special benefits.
 
 ### Referral Program ("AstroCircle") (Enhanced):
 1. **Referral Rewards**:
    - Referrer: Get ₹100/5 AED/5 AUD credit for each successful referral
    - Referee: Get ₹50/2 AED/2 AUD credit for first purchase
    - Additional bonus when referred friend subscribes to monthly/yearly plans (20% bonus for referrer)
-   - **Compatibility Bonus**: Extra credit when referrals are compatible with referrer (adds social element)
-
+   - **Compatibility Bonus**: Extra credit when referrals are compatible with referrer (adds social element). User Story: As a referrer, I want to earn rewards for bringing new users to the platform. As a referee, I want to receive a bonus for my first purchase through a referral.
 2. **Multi-Level Referrals**:
    - Level 1: Direct referrals (standard rewards)
    - Level 2: Referrals of referrals (10% of Level 1 rewards)
    - Special bonuses for 10+ successful referrals in 30 days (premium service access)
-   - **Group Referral Bonus**: Extra rewards when multiple friends join in the same week
-
+   - **Group Referral Bonus**: Extra rewards when multiple friends join in the same week. User Story: As a user, I want to benefit from multi-level referral bonuses.
 3. **Sharing Mechanisms**:
    - Unique referral codes for each user
    - Easy sharing via WhatsApp, social media
    - Track referral status and rewards in user dashboard
-   - Referral leaderboards and challenges
-   - **Compatibility-Based Referrals**: "Your friend would be highly compatible with you according to the stars - invite them to see!"
-
+   - Referral leaderboards and challenges. User Story: As a user, I want easy mechanisms to share my referral code and track its status.
 4. **Seasonal Promotions**:
    - Double points during auspicious dates
    - Group referral bonuses for friends signing up together
    - Festival-specific loyalty campaigns
    - Astrological event-based promotions (full moon, new moon, eclipses)
-   - **Viral Challenges**: Limited-time referral challenges with extra rewards
+   - **Viral Challenges**: Limited-time referral challenges with extra rewards. User Story: As a user, I want to participate in seasonal and event-based referral promotions.
 
 ## Detailed Use Cases for User Interactions (Enhanced) (See Epic 1)
 
-### Use Case 1: New User Registration and Profile Creation (Enhanced)
+### Use Case 1: New User Registration and Profile Creation (Enhanced) (See Epic 1, Epic 7)
 **Actor**: New user
 **Precondition**: User has WhatsApp installed
 **Flow**:
@@ -798,8 +987,13 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 6. User sets up payment method
 7. System creates user profile and recommends initial reading with compatibility feature
 8. System suggests adding a friend for compatibility check
+- **User Story**: As a new user, I want to easily register and create my profile with birth details. (Covers steps 1-3, 7)
+- **User Story**: As a new user, I want my phone number to be verified via OTP. (Covers step 4)
+- **User Story**: As a new user, I want to select my preferences during registration. (Covers step 5)
+- **User Story**: As a new user, I want to set up my payment method during registration. (Covers step 6)
+- **User Story**: As a new user, I want the system to suggest adding a friend for compatibility. (Covers step 8)
 
-### Use Case 2: Daily Horoscope Subscription (Enhanced)
+### Use Case 2: Daily Horoscope Subscription (Enhanced) (See Epic 3, Epic 4)
 **Actor**: Registered user
 **Precondition**: User has completed basic profile setup
 **Flow**:
@@ -811,8 +1005,12 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 6. For subscribed users, system sends daily horoscope automatically at preferred time
 7. User can request daily horoscope manually at any time
 8. **Social Element**: User can share daily horoscope with friends/compatibility matches
+- **User Story**: As a user, I want to subscribe to a daily horoscope. (Covers steps 1-4)
+- **User Story**: As a subscribed user, I want to receive my daily horoscope automatically. (Covers step 6)
+- **User Story**: As a user, I want to manually request my daily horoscope. (Covers step 7)
+- **User Story**: As a user, I want to share my daily horoscope with friends. (Covers step 8)
 
-### Use Case 3: One-Time Question Service
+### Use Case 3: One-Time Question Service (See Epic 3, Epic 4, Epic 13)
 **Actor**: Any user
 **Precondition**: User has basic account set up
 **Flow**:
@@ -823,8 +1021,12 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 5. AI system provides initial analysis
 6. If needed, question is routed to human astrologer
 7. User receives comprehensive answer
+- **User Story**: As a user, I want to ask a one-time question and receive an answer. (Covers steps 1, 7)
+- **User Story**: As a user, I want to pay for a one-time question based on its complexity. (Covers steps 2-4)
+- **User Story**: As a user, I want the AI to provide an initial analysis of my question. (Covers step 5)
+- **User Story**: As a user, I want complex questions to be routed to a human astrologer. (Covers step 6)
 
-### Use Case 4: Human Astrologer Chat
+### Use Case 4: Human Astrologer Chat (See Epic 13)
 **Actor**: Subscribed user
 **Precondition**: User has active subscription
 **Flow**:
@@ -835,8 +1037,12 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 5. User-chat session begins with astrologer
 6. Session duration and type defined by subscription tier
 7. System sends follow-up report after chat completion
+- **User Story**: As a subscribed user, I want to chat with a human astrologer. (Covers steps 1-3, 5)
+- **User Story**: As an unsubscribed user, I want to pay for a one-time chat session with an astrologer. (Covers step 4)
+- **User Story**: As a user, I want the chat session duration to be based on my subscription tier. (Covers step 6)
+- **User Story**: As a user, I want to receive a follow-up report after my chat session. (Covers step 7)
 
-### Use Case 5: Subscription Management
+### Use Case 5: Subscription Management (See Epic 3)
 **Actor**: Registered user
 **Precondition**: User has an account
 **Flow**:
@@ -846,8 +1052,13 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 4. User can update payment method
 5. User can manage auto-renewal settings
 6. User can cancel subscription (with proper notice)
+- **User Story**: As a user, I want to view my current subscription status. (Covers steps 1-2)
+- **User Story**: As a user, I want to upgrade or downgrade my subscription plan. (Covers step 3)
+- **User Story**: As a user, I want to update my payment method. (Covers step 4)
+- **User Story**: As a user, I want to manage auto-renewal settings. (Covers step 5)
+- **User Story**: As a user, I want to cancel my subscription with proper notice. (Covers step 6)
 
-### Use Case 6: Multi-System Reading Request
+### Use Case 6: Multi-System Reading Request (See Epic 2, Epic 4)
 **Actor**: Subscribed user
 **Precondition**: User has active subscription
 **Flow**:
@@ -856,8 +1067,12 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 3. System processes request using multiple astrology systems
 4. User receives integrated report with different perspective
 5. Option to ask follow-up questions about the reading
+- **User Story**: As a subscribed user, I want to request a combined reading from multiple astrology systems. (Covers steps 1, 3)
+- **User Story**: As a user, I want the system to verify my subscription for requested services. (Covers step 2)
+- **User Story**: As a user, I want to receive an integrated report with different astrological perspectives. (Covers step 4)
+- **User Story**: As a user, I want the option to ask follow-up questions about my reading. (Covers step 5)
 
-### Use Case 7: Referral and Loyalty Rewards (Enhanced)
+### Use Case 7: Referral and Loyalty Rewards (Enhanced) (See Epic 3, Epic 8, Epic 9)
 **Actor**: Existing user
 **Precondition**: User has account and referral code
 **Flow**:
@@ -868,8 +1083,13 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 5. System updates loyalty points based on activities
 6. User can check reward status and redeem points
 7. **Social Element**: System shows compatibility between referrer and referred if both use service
+- **User Story**: As a user, I want to easily refer new users using a unique link/code. (Covers steps 1-3)
+- **User Story**: As a user, I want to receive rewards when my referred friends sign up and make purchases. (Covers step 4)
+- **User Story**: As a user, I want my loyalty points to be updated based on my activities. (Covers step 5)
+- **User Story**: As a user, I want to check my reward status and redeem points. (Covers step 6)
+- **User Story**: As a user, I want to see compatibility with my referred friends. (Covers step 7)
 
-### Use Case 8: Payment and Billing
+### Use Case 8: Payment and Billing (See Epic 3)
 **Actor**: Any user
 **Precondition**: User requires paid service
 **Flow**:
@@ -880,8 +1100,14 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 5. User receives payment confirmation
 6. Service is delivered as promised
 7. Receipt is sent via WhatsApp
+- **User Story**: As a user, I want to select a paid service. (Covers step 1)
+- **User Story**: As a user, I want to see pricing in my regional currency. (Covers step 2)
+- **User Story**: As a user, I want to select my preferred payment method. (Covers step 3)
+- **User Story**: As a user, I want secure processing of my payment. (Covers step 4)
+- **User Story**: As a user, I want to receive payment confirmation and a receipt. (Covers steps 5, 7)
+- **User Story**: As a user, I want the service to be delivered as promised after payment. (Covers step 6)
 
-### Use Case 9: Compatibility and Social Features (New)
+### Use Case 9: Compatibility and Social Features (New) (See Epic 8)
 **Actor**: Active user
 **Precondition**: User has basic profile set up
 **Flow**:
@@ -892,10 +1118,16 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 5. Option to share results
 6. System suggests next steps for relationship growth
 7. **Viral Element**: Encourages friend to sign up for full compatibility report
+- **User Story**: As a user, I want to initiate a compatibility check with a friend. (Covers step 1)
+- **User Story**: As a user, I want to provide a friend's birth details for compatibility analysis. (Covers step 2)
+- **User Story**: As a user, I want to receive a compatibility report. (Covers step 3)
+- **User Story**: As a user, I want my friend to receive a summary of the compatibility report. (Covers step 4)
+- **User Story**: As a user, I want the option to share compatibility results. (Covers step 5)
+- **User Story**: As a user, I want suggestions for relationship growth based on compatibility. (Covers step 6)
 
 ## Technology Stack Recommendations (Solo Developer - Rapid 2-3 Day Development with BMAd AI-Driven Approach) (See Epic 10, Epic 11, Epic 12, Epic 14)
 
-### Rapid Development Strategy (2-3 Days Focus)
+### Rapid Development Strategy (2-3 Days Focus) (See Epic 10)
 - **Leverage AI Agents**: Maximum use of Qwen CLI and Gemini CLI for code generation, testing, and deployment
 - **Pre-built Components**: Use existing libraries and services wherever possible to accelerate development
 - **Modular Architecture**: Build in independent, testable modules that can be developed in parallel
@@ -903,7 +1135,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Infrastructure as Code**: Use serverless and managed services to avoid infrastructure setup time
 - **Automated Testing**: Comprehensive test generation by AI to ensure quality without manual testing
 
-### Backend Services (Rapid Implementation)
+### Backend Services (Rapid Implementation) (See Epic 10)
 - Node.js/Express.js or Python/FastAPI for server-side logic (quick setup with AI-generated code)
 - WhatsApp Business API for messaging (pre-built integration libraries)
 - Payment gateways (Razorpay for India, Stripe for international) - fully managed services
@@ -915,7 +1147,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **AI Twin System**: Use OpenAI API or similar for initial AI interactions, optimize later
 - **Transit Timing Engine**: Integrate with existing astrology API services initially
 
-### Solo Developer AI Infrastructure (Maximize Efficiency)
+### Solo Developer AI Infrastructure (Maximize Efficiency) (See Epic 12)
 - **Qwen CLI as Primary**: Primary development agent for architecture, code generation, and implementation
 - **Gemini CLI as Secondary**: Secondary development agent for optimization, refactoring, and code review
 - **AI Pair Programming**: Use both AI agents in coordination for faster problem solving
@@ -924,7 +1156,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Automated Deployment**: CI/CD pipelines with AI-generated deployment scripts
 - **AI Monitoring**: Intelligent error detection and performance monitoring
 
-### Database
+### Database (See Epic 10, Epic 14)
 - PostgreSQL or MongoDB for user profiles and preferences
 - Redis for caching and session management
 - Elasticsearch for search functionality
@@ -932,7 +1164,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Relationship Graph Database**: For tracking compatibility and social connections between users
 - **Loyalty Points Database**: For managing user points, rewards, and tier levels
 
-### Third-Party Integrations
+### Third-Party Integrations (See Epic 10)
 - Multiple payment providers based on region
 - Astrology calculation libraries/APIs
 - SMS service for OTP verification
@@ -940,7 +1172,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - Multi-channel notification service (SMS, push, email)
 - **Social Media APIs**: For enhanced sharing capabilities
 
-### Multi-Language Technology Stack
+### Multi-Language Technology Stack (See Epic 10)
 - Translation APIs (Google Cloud Translation, AWS Translate)
 - Natural Language Processing for local language queries
 - Internationalization (i18n) framework
@@ -948,14 +1180,14 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - Multi-language text-to-speech for voice interactions
 - Unicode support for various scripts (Devanagari, Arabic, etc.)
 
-### BMAd Development Tools
+### BMAd Development Tools (See Epic 12)
 - **AI Agent Orchestration**: Coordinated development using multiple AI agents (Qwen CLI and Gemini CLI)
 - **Automated Testing Pipeline**: Continuous testing with AI-generated test cases
 - **CI/CD with AI Validation**: Automated deployment with AI quality checks
 - **BMAd Project Management**: AI-assisted task prioritization and progress tracking
 - **Qwen CLI and Gemini CLI Coordination**: Seamless switching between tools for optimal results
 
-### Multi-Channel Delivery System
+### Multi-Channel Delivery System (See Epic 10)
 - WhatsApp-first architecture with abstraction layer for other platforms
 - Web app framework (React/Vue.js) for web interface
 - Mobile app framework (React Native/Flutter) for mobile apps
@@ -967,7 +1199,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 
 ## Advanced Monetization Strategies (Enhanced) - MAXIMIZE REVENUE POTENTIAL (See Epic 3)
 
-### Premium Add-On Services (Revenue Multipliers)
+### Premium Add-On Services (Revenue Multipliers) (See Epic 3)
 - **Express Services**: Priority processing for urgent questions (2x-3x standard pricing with urgency-based value proposition)
 - **Extended Sessions**: Longer consultation times with human astrologers (premium pricing for in-depth analysis)
 - **Detailed Reports**: Comprehensive PDF reports with charts and analysis (high-value deliverables that justify premium pricing)
@@ -979,14 +1211,14 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Specialized Workshops**: Access to exclusive webinars on specific topics (e.g., "Astrology for Career Success", "Lunar Cycle Manifestation") (premium workshop pricing)
 - **Group Readings**: Family or friend group analysis (viral element with group pricing models)
 
-### Content Monetization (Passive Revenue Streams)
+### Content Monetization (Passive Revenue Streams) (See Epic 3)
 - **Astrology Courses**: Educational content and workshops for enthusiasts (recurring course sales)
 - **Exclusive Content Library**: Premium articles, videos, and insights from master astrologers (content subscription model)
 - **Event-Based Services**: Special readings for weddings, business launches, etc. (high-value, one-time premium pricing)
 - **Gifting Services**: Astrology readings as gifts for friends and family (expand market beyond active users)
 - **Corporate Packages**: Business astrology services for companies (B2B opportunities with higher value transactions)
 
-### Enhanced Advanced Subscription Tiers (Revenue Optimization)
+### Enhanced Advanced Subscription Tiers (Revenue Optimization) (See Epic 3)
 - **AI Twin Service**: Personalized AI astrologer with conversational memory and learning (sticky feature for Premium+ tiers)
 - **Transit Timing Engine**: Precision life planning with decision timing calculator (unique differentiator for Premium+ tiers)
 - **Astro-Social Network**: Chart-based matching and community wisdom platform (network effects for Premium+ tiers)
@@ -996,7 +1228,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Predictive Validation Loop**: Track and validate accuracy of predictions for each user (builds trust for all tiers)
 - **Astro-Marketplace**: Personalized remedy recommendations with commission revenue (revenue from all tiers)
 
-### Revenue Optimization Features (Maximize Individual Customer Value)
+### Revenue Optimization Features (Maximize Individual Customer Value) (See Epic 3)
 - **Dynamic Pricing**: Price adjustments based on user engagement level, astrologer expertise, and demand patterns
 - **Behavioral Pricing**: Higher value pricing for high-engagement users who demonstrate willingness to pay
 - **Subscription Laddering**: Clear upgrade paths with increasing value for each tier (Essential, Premium, VIP)
@@ -1007,7 +1239,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Anchoring Strategy**: VIP tier presented first to make Premium seem reasonable (price perception optimization)
 - **Scarcity Elements**: Limited slots for VIP tier (max 100 users) creates urgency and premium positioning
 
-### High-Margin Revenue Streams (Maximize Profitability)
+### High-Margin Revenue Streams (Maximize Profitability) (See Epic 3)
 - **Affiliate Programs**: Earn revenue from related products (gemstones, crystals, incense) - 15-25% commission with minimal operational cost
 - **Marketplace Commissions**: 20% cut from independent astrologers using platform with minimal overhead
 - **Referral Revenue**: Incentivize users to bring friends with both sides benefiting (viral growth with revenue impact)
@@ -1015,27 +1247,27 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Course Sales**: Astrology education modules (₹500-2000 each) with high profit margins
 - **Certification Programs**: For aspiring astrologers (₹5000-15000) with very high margins
 
-### Micro-Transaction Opportunities (Easy Revenue)
+### Micro-Transaction Opportunities (Easy Revenue) (See Epic 3)
 - **Flash Insights**: 5-minute micro-readings for immediate decisions (₹25/USD 1) - low-friction entry point with high conversion
 - **Transit Alerts**: Notifications for specific personal transits (₹15 per alert) - recurring revenue model
 - **Remedial Quick Fixes**: Immediate spiritual remedies for challenging periods (₹50-100) - impulse purchase opportunities
 - **Compatibility Snapshots**: Quick compatibility check with new contacts (₹75) - social sharing revenue driver
 
-### Event-Based Revenue Maximization (Leverage Astrological Cycles)
+### Event-Based Revenue Maximization (Leverage Astrological Cycles) (See Epic 3)
 - **Eclipse Packages**: Special readings during eclipses (₹300-600, limited-time premium content) - scarcity-driven premium pricing
 - **Retrograde Prep Sessions**: Preparations before Mercury/other retrogrades (₹200-400) - predictable demand cycles
 - **New Moon Intention Setting**: Special guided sessions (₹150) - monthly predictable revenue
 - **Festival-Specific Readings**: Cultural astrology during religious festivals (₹100-200) - cultural relevance increases willingness to pay
 - **Annual Forecast Reports**: Yearly comprehensive predictions (₹800+) - high-value, recurring annual revenue
 
-### Revenue Enhancement Metrics (Track What Drives Profit)
+### Revenue Enhancement Metrics (Track What Drives Profit) (See Epic 15)
 - **Customer Lifetime Value (CLV) Optimization**: Focus on multi-tier engagement strategies to maximize revenue per user
 - **Average Revenue Per User (ARPU) Growth**: Track user journey from free to premium and optimize conversion paths
 - **Revenue Churn vs. User Churn**: Distinguish between users who leave and users who downgrade subscriptions
 - **Cross-selling Success Rate**: Measure success of moving users from one revenue stream to another
 - **Monthly Recurring Revenue (MRR) Growth**: Primary focus metric for sustainable business growth
 
-### Optimizing Subscription Funnels & Monetization
+### Optimizing Subscription Funnels & Monetization (See Epic 3)
 - **Value Ladder Optimization**: Every free feature should logically lead to a paid solution for deeper value. Strengthen the "cliffhanger" strategy at the end of every free interaction, creating an unignorable gap that only a paid tier can fill.
 - **Dynamic and Behavioral Pricing**: Investigate dynamically adjusting micro-transaction offers or special upgrade incentives based on individual user engagement patterns, frequency of use, and demonstrated interest in specific astro-modalities.
 - **Anchoring and Decoy Effect**: Consistently apply psychological pricing cues when presenting subscription tiers. The VIP Tier with its high price serves as an anchor, making the Premium tier seem more reasonable and higher value by comparison.
@@ -1043,14 +1275,14 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 
 ## Marketing and User Acquisition Strategies (Enhanced) (See Epic 6)
 
-### Digital Marketing
+### Digital Marketing (See Epic 6)
 - **SEO Strategy**: Optimize for keywords like "free horoscope", "online astrology", "daily predictions"
 - **Content Marketing**: Regular blog posts about astrology trends, predictions, and tips
 - **Social Media Marketing**: Active presence on Instagram, Facebook, YouTube with engaging content
 - **Influencer Partnerships**: Collaborate with spiritual and wellness influencers
 - **Paid Advertising**: Targeted ads during astrologically significant times (new moon, full moon)
 
-### Referral and Viral Marketing (Enhanced)
+### Referral and Viral Marketing (Enhanced) (See Epic 6, Epic 8)
 - **Viral Content Creation**: Shareable daily predictions and compatibility quizzes
 - **Social Proof Integration**: After a reading, prompt users: "Was this accurate? Share your insight with a friend—and both get 3 days free Premium!"
 - **User Success Stories**: Feature anonymized user success stories: "Riya used her Mercury Retrograde alert to delay a contract—and saved $10K!"
@@ -1066,20 +1298,20 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Cosmic Match Celebrations**: Share success stories when users meet through the compatibility matching feature
 - **Compatibility Challenges**: "Check your compatibility with 3 friends this week and get a bonus insight!"
 
-### Strategic Marketing & Acquisition for Hyper-Growth
+### Strategic Marketing & Acquisition for Hyper-Growth (See Epic 6, Epic 8)
 - **"Dark Social" Optimization**: Optimize content and sharing features specifically for direct, private sharing within WhatsApp groups and one-to-one chats. This includes easily forwardable insights, highly personalized media, and simple "Invite a Friend" buttons.
 - **Content Formats Tailored for Virality**: Develop visually striking, short-form video content (AI avatar driven) that explains daily forecasts or complex transits, designed to be easily shareable on WhatsApp statuses and Instagram stories. These act as organic acquisition magnets.
 
-### Strategic Partnerships
+### Strategic Partnerships (See Epic 6)
 - **Wellness Platforms**: Integrate with yoga, meditation, and wellness apps
 - **Spiritual Content Creators**: Partner with spiritual teachers and gurus
 - **Event Organizers**: Provide services at spiritual and wellness events
 - **Marriage Portals**: Partner for compatibility services
 - **Educational Institutions**: Offer courses through astrology schools
 
-## Customer Retention and Engagement Strategies (Enhanced) (See Epic 4, Epic 6)
+## Customer Retention and Engagement Strategies (See Epic 4, Epic 6)
 
-### Personalization Features
+### Personalization Features (See Epic 4)
 - **AI-Driven Recommendations**: Personalized service recommendations based on user behavior
 - **Customized Notifications**: Tailored alerts for planetary transits affecting individual charts
 - **Personal Milestones**: Track and notify about significant astrological events for users
@@ -1089,7 +1321,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Guided Meditations**: Customized meditation experiences aligned with user's chart and current planetary influences
 - **Lunar Cycle Rituals**: Personalized ritual recommendations based on lunar phases and user's chart
 
-### Engagement Mechanics
+### Engagement Mechanics (See Epic 6, Epic 9)
 - **Gamification Elements**: Achievements, badges, and levels based on usage
 - **Daily Challenges**: Interactive astrology-based daily tasks
 - **Community Features**: User forums and discussion groups
@@ -1097,7 +1329,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Predictive Alerts**: Notifications about upcoming significant transits
 - **Social Challenges**: Group activities and competitions during planetary events
 
-### Retention Programs
+### Retention Programs (See Epic 6)
 - **Win-Back Campaigns**: 
   - "We missed you! Here's your updated Moon forecast—free for 48 hours."
   - Target inactive users with special offers based on their chart patterns
@@ -1121,13 +1353,13 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 
 ## Scaling and Growth Strategies (See Epic 10)
 
-### Geographic Expansion
+### Geographic Expansion (See Epic 10)
 - **Additional Markets**: Expand to other countries with high astrology interest (UK, USA, Canada, Singapore)
 - **Local Language Support**: Add regional languages beyond English
 - **Cultural Customization**: Adapt services to local cultural contexts
 - **Regional Astrologers**: Partner with local astrologers familiar with regional practices
 
-### Multi-Channel Strategy
+### Multi-Channel Strategy (See Epic 10)
 - **WhatsApp-First Approach**: Fully comprehensive WhatsApp service as the foundation
 - **Channel Expansion Strategy**: 
   - Phase 1: WhatsApp only (ensure profitability and user satisfaction)
@@ -1137,14 +1369,14 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Cross-Platform Consistency**: Maintain consistent experience and data across all channels
 - **Channel-Specific Optimization**: Optimize content format for each platform (voice notes for WhatsApp, rich media for web/app, etc.)
 
-### Service Diversification
+### Service Diversification (See Epic 10)
 - **New Modalities**: Add services like crystal healing, Reiki, or other spiritual practices
 - **Event-Based Services**: Specialized readings for life events (birthdays, anniversaries, career changes)
 - **Corporate Services**: Business and team compatibility analysis
 - **Educational Services**: Certification courses and training programs
 - **Technology Integration**: AI-enhanced services and predictive analytics
 
-### Technology Scaling
+### Technology Scaling (See Epic 10, Epic 14)
 - **AI Enhancement**: Improve automated readings with machine learning
 - **Multi-Platform Support**: Expand beyond WhatsApp to other messaging platforms
 - **Mobile App**: Develop dedicated mobile applications
@@ -1153,7 +1385,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Cross-Platform History**: Complete reading history and kundli access across all channels
 - **Kundli Sharing Features**: Multi-format birth chart sharing optimized for each channel
 
-### Advanced Growth Strategies
+### Advanced Growth Strategies (See Epic 10)
 - **White-Label Solutions**: Offer the platform to other astrology businesses
 - **API Services**: Provide astrology APIs to other applications
 - **Franchise Model**: License the model to regional operators
@@ -1161,7 +1393,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Subscription Bundling**: Partner with complementary services (yoga, meditation, wellness)
 - **Social Network Features**: Build in more community and sharing capabilities
 
-### International Expansion
+### International Expansion (See Epic 10)
 - **Localized Content**: Adapt readings to cultural contexts of different countries
 - **Regional Payment Methods**: Support local payment preferences in new markets
 - **Cultural Specialists**: Hire astrologers specializing in regional practices
@@ -1169,7 +1401,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 
 ## Success Metrics and KPIs (Revenue-Focused with Actionable Insights) (See Epic 15)
 
-### Primary Revenue Metrics (Revenue Growth Focus)
+### Primary Revenue Metrics (Revenue Growth Focus) (See Epic 15)
 - **Monthly Recurring Revenue (MRR)**: Target growth of 25% month-over-month in first 6 months, 20% months 7-12, 15% year 2+ with emphasis on quality growth over quantity
 - **Annual Recurring Revenue (ARR)**: Track for predictability and business stability with focus on maintaining growth trajectory
 - **Average Revenue Per User (ARPU)**: Monitor across all tiers to identify optimization opportunities - target $15+ by month 12
@@ -1180,7 +1412,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Percentage of Revenue from Premium Tiers**: Target 65%+ from Premium/VIP (vs. 60% baseline) to maximize revenue efficiency
 - **Marketplace Commission Revenue**: Target 15-25% of total revenue from affiliate relationships (high margin revenue)
 
-### Conversion and Growth Metrics (Revenue Pipeline)
+### Conversion and Growth Metrics (Revenue Pipeline) (See Epic 15)
 - **Free-to-Paid Conversion Rate**: Target 20%+ of active free users converting to paid (vs. 15-25% baseline) with focus on quality over quantity
 - **Trial-to-Paid Conversion Rate**: For users experiencing premium features during onboarding
 - **Upgrade Rate**: Movement from lower to higher subscription tiers with focus on Premium/VIP conversion
@@ -1190,7 +1422,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Micro-Transaction Engagement**: Percentage of users making impulse purchases (target: 30%+ of paying users)
 - **Event-Based Purchase Rate**: Conversion during planetary events and promotions (target: 15%+ of user base)
 
-### Engagement and Retention Metrics (Revenue Sustainability)
+### Engagement and Retention Metrics (Revenue Sustainability) (See Epic 15)
 - **Daily Active Revenue Users (DARU)**: Paying users engaging daily with revenue-generating features
 - **Weekly Active Revenue Users (WARU)**: Weekly engagement for paying users showing sustained value
 - **Feature Depth**: Number of revenue-generating interactions per paying user per week
@@ -1202,7 +1434,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Goal Achievement Revenue Tracking**: How many users achieve revenue-driving goals via platform guidance
 - **Revenue Viral Coefficient**: How many revenue-generating users each paying user brings (vs. just any user)
 
-### Advanced Revenue & Growth Metrics
+### Advanced Revenue & Growth Metrics (See Epic 15)
 - **AI Twin Revenue Engagement**: How well paying users interact with revenue-generating AI Twin content
 - **Transit Timing Revenue Impact**: How many revenue decisions are guided by transit timing engine
 - **Personalized Revenue Upsell Rate**: How often personalization drives users to higher revenue tiers/services
@@ -1213,9 +1445,9 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Referral Revenue Quality Score**: How much more revenue referred users generate vs. direct users
 - **Cross-Platform Revenue Synergy**: How multi-platform usage increases per-user revenue
 
-### Phase-Based Revenue Success Targets
+### Phase-Based Revenue Success Targets (See Epic 15)
 
-**Phase 1 (Months 1-6): Foundation & Revenue Validation**
+#### Phase 1 (Months 1-6): Foundation & Revenue Validation (See Epic 15)
 - MRR growth: 25% month-over-month with focus on quality over quantity
 - Free-to-paid conversion: 10% by month 2, 15% by month 6 (validated revenue model)
 - Day 30 paying-user retention: 45% by month 3, 50% by month 6 (revenue user focus)
@@ -1225,7 +1457,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Premium Feature Revenue**: 40% of paying users using at least one premium revenue feature
 - **Revenue Target**: $10,000 MRR by month 6
 
-**Phase 2 (Months 7-12): Growth & Revenue Optimization**
+#### Phase 2 (Months 7-12): Growth & Revenue Optimization (See Epic 15)
 - MRR growth: 22% month-over-month (sustained growth with quality focus)
 - Free-to-paid conversion: 22% by month 9, 25% by month 12
 - Day 90 paying-user retention: 50% by month 9, 55% by month 12
@@ -1236,7 +1468,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Premium Feature Revenue**: 65% of paying users using premium revenue features
 - **Revenue Target**: $150,000 MRR by month 12
 
-**Phase 3 (Months 13+): Scale & Revenue Domination**
+#### Phase 3 (Months 13+): Scale & Revenue Domination (See Epic 15)
 - MRR growth: 18% month-over-month (sustainable, profitable growth)
 - Free-to-paid conversion: 30%+ (market leadership position)
 - Day 90 paying-user retention: 60%+ (strong revenue value proposition)
@@ -1247,394 +1479,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Network Revenue Effects**: 75% of premium users engaged with revenue-generating social features
 - **Revenue Target**: $1,000,000+ MRR by month 24
 
-### Revenue Executive Dashboard (Daily Management Focus)
-1. **Daily Revenue Growth**: Track daily MRR changes and growth drivers
-2. **Revenue CAC vs. Revenue LTV**: Daily efficiency of revenue-generating customer acquisition
-3. **Net Revenue Retention**: Existing customer revenue growth (focus on revenue expansion)
-4. **Gross Revenue Retention**: % of revenue retained from existing customers
-5. **Daily Revenue Net Additions**: Revenue-generating customers added minus revenue lost
-6. **Revenue Churn Risk**: Early warning indicators of revenue-losing customer behavior
-7. **Revenue per Customer Growth**: How much more revenue customers generate over time
-8. **AI Twin Revenue Impact**: Revenue generated through AI Twin feature usage
-9. **Astro-Social Revenue Network**: Revenue generated through community features
-10. **Transit Timing Revenue Engine**: Revenue generated through decision timing features
-11. **Referral Revenue Generation**: Revenue from users brought by existing paying users
-12. **Compatibility Revenue Matching**: Revenue generated through relationship features
-
-### Revenue Optimization Alerts (Actionable Thresholds)
-- **Red Alert**: Revenue churn >10% or MRR growth <15% for 2 consecutive months
-- **Yellow Alert**: Free-to-paid conversion <15% or premium adoption <30%
-- **Green Target**: All metrics trending toward Phase targets with buffer margins
-- **Opportunity Signal**: Any metric exceeding target by 20% - allocate more resources to that area
-- **Churn Warning**: When paying user engagement drops 30% below average for 1 week
-- **Revenue Leak**: When ARPU drops below target for 10+ days consecutively
-
-### Revenue Impact Analysis (Monthly Deep Dives)
-- **Feature Revenue Attribution**: Which features contribute most to revenue per user
-- **User Segment Revenue Analysis**: Which user segments generate the highest revenue
-- **Geographic Revenue Performance**: Revenue performance by market with optimization opportunities
-- **Seasonal Revenue Patterns**: How astrological events drive revenue and optimization strategies
-- **Pricing Impact Analysis**: How pricing changes affect revenue per user and overall revenue
-- **Competitive Revenue Response**: How competitor actions impact our revenue metrics
-
-## Customer Success & Support Strategies (See Epic 1)
-
-### Multi-Channel Support System
-1. **WhatsApp-Integrated Support**:
-   - In-app support via WhatsApp messages
-   - Automated FAQ responses for common queries
-   - Escalation pathways to human agents
-   - Proactive support notifications
-
-2. **Comprehensive Help Center**:
-   - Interactive self-service portal
-   - Video tutorials and how-to guides
-   - Troubleshooting resources
-   - Community forum for peer support
-
-3. **Human Support Tiers**:
-   - First-level support for basic queries
-   - Specialized support for technical issues
-   - Premium support for high-value subscribers
-   - 24/7 availability during peak times
-
-### User Success Programs
-1. **Onboarding Success**:
-   - Dedicated onboarding specialists
-   - Success check-ins during first 30 days
-   - Goal-setting sessions with new users
-   - Progress tracking and milestone celebrations
-
-2. **Engagement Success**:
-   - Personalized engagement strategies
-   - Usage optimization recommendations
-   - Feature adoption guidance
-   - Value realization tracking
-
-3. **Renewal Success**:
-   - Proactive retention outreach
-   - Value demonstration sessions
-   - Usage analysis and optimization
-   - Loyalty program integration
-
-### Proactive Support Features
-1. **Predictive Issue Resolution**:
-   - AI-powered issue prediction
-   - Automated proactive notifications
-   - Preemptive solution delivery
-   - Usage pattern analysis
-
-2. **WhatsApp UX Best Practices**:
-   - Fast, conversational replies with no long menus
-   - Quick-reply buttons for seamless navigation
-   - Human-in-the-loop option for complex questions: "Talk to Real Astrologer" add-on
-   - Visual media integration for personalized, engaging content
-   - Contextual responses that reference user's birth chart and previous interactions
-
-3. **Re-engagement Strategies**:
-   - If a user goes silent for 3 days, send: "Your Mars is shifting—big energy coming! Tap to see what's changing."
-   - Trigger re-engagement messages based on planetary transits relevant to user's chart
-   - Personalized win-back messages referencing their specific astrological patterns
-
-4. **Privacy & Trust Building**:
-   - Emphasize the confidentiality of their birth details and readings
-   - Clear privacy policies and data handling practices
-   - User control over data sharing and personal information
-
-5. **Educational Support**:
-   - Regular educational content delivery
-   - Astrology literacy programs
-   - Best practice recommendations
-   - Seasonal and event-based guidance
-
-### Quality Assurance & Feedback Loops
-1. **Continuous Improvement Process**:
-   - Regular user feedback collection
-   - Service quality monitoring
-   - Astrologer performance evaluation
-   - System optimization based on user data
-
-2. **Quality Metrics**:
-   - Customer Satisfaction Scores (CSAT)
-   - Net Promoter Score (NPS)
-   - First Response Time (FRT)
-   - Resolution Time Metrics
-   - User Effort Score (UES)
-
-### Emphasize Continuous Value Delivery
-- **AI Twin Learning & Evolution**: The AI Twin continuously learns from user interactions, providing increasingly accurate and personalized insights over time, ensuring the service gets better the more it's used.
-- **New Content & Features**: Regularly introduce new astrological modalities, report types, or interactive tools to keep the experience fresh and provide ongoing reasons to engage and subscribe.
-- **Community Growth & Wisdom**: As the Astro-Social Network grows, the collective wisdom and diverse perspectives within the community provide ever-increasing value to all members.
-- **Prediction Accuracy Improvement**: Continuously refine prediction algorithms based on user feedback and real-world outcomes, enhancing trust and perceived value.
-
-## Market Validation and Risk Mitigation Strategies (Maximize Success Probability) (See Epic 11)
-
-### Market Validation Strategies (Prove Revenue Potential Before Full Investment)
-- **MVP Testing**: Launch basic WhatsApp service with 100-500 beta users to validate willingness to pay and retention
-- **A/B Testing of Pricing**: Test different price points for subscription tiers to optimize revenue per user
-- **Feature Validation**: Test core features (compatibility, AI Twin, Transit Timing) with small user groups before full development
-- **Payment Method Validation**: Test regional payment methods to ensure frictionless transactions
-- **Pain Point Validation**: Validate that users actually care about astrological guidance for decision-making
-- **Churn Analysis**: Early identification of what causes users to stop paying
-- **Referral Validation**: Test viral mechanisms with early adopters to validate growth model
-
-### Market Risks (Revenue Protection)
-- **Competition Response**: Continuous innovation to stay ahead of competitors with unique AI Twin and Transit Timing features
-- **Regulatory Changes**: Stay updated with changing laws and regulations - especially payment and data privacy laws
-- **Economic Downturns**: Offer flexible pricing options and focus on emotional ROI to maintain value proposition during tough times
-- **Platform Changes**: Monitor WhatsApp API changes and maintain multi-channel strategy as backup
-- **Market Saturation**: Diversify into adjacent markets (wellness, meditation, life coaching) if astrology market saturates
-- **Seasonal Demand Fluctuations**: Plan for lower engagement during certain periods and develop counter-strategies
-
-### Technical Risks (Ensure Revenue Continuity)
-- **Platform Changes**: Monitor WhatsApp API changes and maintain multi-channel strategy as backup
-- **Security Breaches**: Implement robust security measures and regular audits to maintain user trust and retention
-- **Service Downtime**: Have redundant systems and rapid recovery procedures to minimize revenue loss
-- **Scalability Issues**: Plan infrastructure to handle viral growth without service degradation
-- **API Dependency Risks**: Multiple astrology calculation providers and payment gateways to avoid single points of failure
-- **AI Quality Degradation**: Continuous monitoring of AI Twin and transit timing accuracy to maintain user satisfaction
-
-### Operational Risks (Maintain Revenue Quality)
-- **Astrologer Quality**: Regular training and certification programs with performance metrics tied to revenue impact
-- **Scalability Issues**: Plan infrastructure to handle growth while maintaining service quality
-- **Customer Complaints**: Efficient customer service processes with escalation paths to minimize churn
-- **Quality Control**: Ensuring accuracy of readings at scale with user feedback loops tied to revenue metrics
-- **Data Privacy Compliance**: Maintain strict data protection to avoid regulatory fines and user churn
-- **Payment Processing Failures**: Backup payment providers to ensure no revenue loss from payment failures
-
-### Financial Risk Mitigation (Protect Revenue Streams)
-- **Diversified Revenue Streams**: Multiple revenue sources (subscriptions, micro-transactions, marketplace) to reduce dependency
-- **Subscription Revenue Focus**: Emphasis on recurring revenue over one-time purchases for predictability
-- **Revenue Forecasting**: Monthly revenue projections with scenario planning for different growth rates
-- **Cash Flow Management**: Ensure positive cash flow even during growth investment periods
-- **Payment Method Failure**: Multiple payment options to reduce payment abandonment rates
-
-## Development Phases (Solo Developer - 2-3 Day Rapid Launch with BMAd AI-Driven Approach) (See Epic 10)
-
-### Phase 1: WhatsApp MVP Launch (Day 1 - 12-16 hours)
-- **Core WhatsApp Functionality**: Basic question-answering system with AI responses
-- **User Registration**: Simple phone number verification via WhatsApp
-- **Basic Astrology Services**: Core birth chart generation and simple predictions
-- **Payment Integration**: Basic subscription setup with Razorpay/Stripe
-- **WhatsApp Business API**: Core messaging functionality with compliance
-- **Basic Profile Management**: User birth data collection and storage
-- **Modular User Interaction Flow**: Independent, modular conversation architecture for easy updates
-- **Qwen CLI Lead**: Primary development of core functionality
-- **Gemini CLI Support**: Code optimization and testing
-- **AI-Generated Tests**: Automated testing suite for core features
-- **Basic CI/CD**: Automated deployment pipeline
-- **Goal**: Live, functional WhatsApp bot with basic paid features within 16 hours
-
-### Phase 2: Enhanced Features & Monetization (Day 2 - 8-12 hours)
-- **AI Twin Implementation**: Personalized AI astrologer using OpenAI API
-- **Transit Timing Engine**: Basic decision timing using astrology APIs
-- **Subscription Tiers**: Full Free/Basic/Premium/VIP with all pricing
-- **Payment Processing**: All regional payment methods configured
-- **Compatibility Feature**: Basic compatibility checking between users
-- **Loyalty System**: "AstroRewards" program implementation
-- **Referral System**: Automated referral tracking and rewards
-- **Micro-transactions**: Flash insights, alerts, and quick fixes
-- **Enhanced Modular Architecture**: Fully independent modules for all major features
-- **Qwen CLI & Gemini CLI Coordination**: Rapid feature development and testing
-- **Goal**: Full monetization system live by end of Day 2
-
-### Phase 3: Scaling Features (Day 3 - 4-8 hours OR Post-Launch)
-- **Advanced Personalization**: Behavioral learning and adaptation
-- **Astro-Social Network**: Chart-based matching and basic community features
-- **Marketplace Integration**: Affiliate links and astrologer marketplace onboarding
-- **Advanced Analytics**: User behavior tracking and insights
-- **Performance Optimization**: Database and API optimization based on usage
-- **Fully Modular System**: Complete plug-and-play architecture for all features
-- **Goal**: Complete feature set ready for viral growth by Day 3
-
-### Solo Developer Rapid Development Strategy:
-- **Maximum AI Assistance**: Use Qwen CLI and Gemini CLI for 80%+ of code generation
-- **API-First Architecture**: Leverage existing services for complex functions (astrology calculations, payments)
-- **Modular, Independent Features**: Build features that can be developed separately and integrated with plug-and-play architecture (see [Modular Development Approach](docs/architecture/modular-development-approach.md))
-- **Free-Tier Services**: Use free tiers and open-source tools exclusively (Render, Vercel, AWS Free Tier)
-- **Automated Everything**: Automated testing, deployment, and monitoring
-- **Rapid Iteration**: Quick build-measure-learn cycles using AI feedback
-- **Pre-built Components**: Leverage existing libraries, frameworks, and services
-- **Minimal Viable Implementation**: Focus on core functionality first, polish later
-- **Modular Development Approach**: Implement state-machine based conversation flows with independent modules
-
-**Success Metric**: Have a revenue-generating WhatsApp bot live within 48 hours using AI agents and pre-built services with fully modular architecture for easy feature updates.
-
-## Investment Requirements (Solo Developer - Rapid 2-3 Day Launch with Zero Upfront Investment)
-
-### Technology Infrastructure (Free/Low-Cost Approach)
-- Free tier cloud hosting (Railway, Render, or Vercel) - $0-5/month initially
-- Payment gateway integrations (Stripe, Razorpay - minimal transaction fees)
-- WhatsApp Business API (free tier for development, pay-as-you-grow based on revenue)
-- Third-party API subscriptions (free tiers and pay-per-use models for astrology services)
-- Security and monitoring tools (open source solutions)
-- Database services (PostgreSQL/Redis via free tiers) - $0 initially
-
-### Solo Developer Resource Requirements
-- **Primary Developer**: You using AI agents (Qwen CLI, Gemini CLI) for maximum efficiency
-- **AI Development Tools**: Leverage AI for 80%+ of coding, testing, and deployment
-- **No Team Required**: Complete project by solo developer using AI assistance
-- **Automated Systems**: Self-managing operations via AI monitoring and alerts
-- **Freelance Astrologers**: Pay-per-consultation model initially (paid from revenue)
-- **Self-Service Support**: AI-powered FAQ and automated customer service
-
-### Marketing Investment (Viral-First Approach)
-- **Zero Paid Advertising**: Focus on viral growth through compatibility features and referrals
-- Organic social media marketing (time investment, no money)
-- Referral program incentives (paid from revenue, not upfront)
-- Content creation (self-produced using AI tools)
-- Community building (organic, time-based, no cost)
-
-### Total Upfront Investment: $0-20/month
-- Cloud hosting: $0-5/month (free tiers)
-- API services: $0-10/month (free usage limits)
-- WhatsApp API: $0 initially (free tier)
-- Domain/SSL: $0-5/month (if needed, many free options)
-
-### Revenue-Based Scaling
-- Scale infrastructure costs as revenue grows
-- Invest in additional features using generated revenue
-- Expand astrologer network based on demand
-- Add premium features based on user feedback and revenue patterns
-
-## Strategic Success Factors (Revenue-Driven Differentiation)
-
-### Revenue-Focused Differentiation Strategies
-- **AI Twin System**: Personalized AI astrologer that learns communication style and life patterns - HIGH RETENTION AND PREMIUM UPGRADE CATALYST
-- **Transit Timing Engine**: Precision life planning with decision timing calculator - UNIQUE VALUE THAT JUSTIFIES PREMIUM PRICING
-- **Astro-Social Network**: Chart-based matching and community wisdom platform - VIRAL GROWTH WITH NETWORK EFFECTS
-- **Predictive Validation Loop**: Track and validate prediction accuracy for each user - BUILDS TRUST AND INCREASES PAYMENT WILLINGNESS
-- **Multi-System Comparisons**: Unique service offering that no competitor provides - PREMIUM VALUE DIFFERENTIATOR
-- **Personalized Remedies with Marketplace**: Direct revenue from affiliate products - ADDITIONAL REVENUE STREAM
-- **Real-time Compatibility Matching**: Dynamic relationship insights that become more valuable as user base grows
-- **Future Self Simulator**: Long-term visualization that creates emotional investment and subscription retention
-
-### Competitive Advantages (Revenue Protection)
-- **First-Mover Advantage**: Establish market leadership in WhatsApp astrology services with advanced AI features
-- **Network Effects**: Increase value as more users join through compatibility matching and community wisdom - VIRAL REVENUE MULTIPLIER
-- **Data Network Effects**: The more users, the better AI Twin predictions become - COMPETITIVE MOAT THAT INCREASES RETENTION
-- **Social Proof Accumulation**: Growing user testimonials and success stories that improve conversion rates
-- **Brand Trust**: Establish credibility through accurate predictions and satisfied users - REDUCES CAC AND INCREASES LTV
-- **Technology Lead**: Advanced AI systems that are difficult for competitors to replicate - SUSTAINABLE COMPETITIVE ADVANTAGE
-- **User Data Advantage**: Deep understanding of user behavior and preferences for personalized offerings - INCREASES ARPU
-- **Market Positioning**: Personal Cosmic Coach positioning that differentiates from basic horoscope apps - PREMIUM PRICING POWER
-
-### Barriers to Entry (Protect Revenue Streams)
-- **AI Training Data Moat**: More user interactions improve AI Twin and Transit Timing accuracy - INCREASES RETENTION OVER TIME
-- **Brand Recognition**: Establish strong brand before competitors launch - REDUCES MARKETING COSTS
-- **User Network Effects**: Compatibility and social features create switching costs for users
-- **Technology Infrastructure**: Complex AI and transit calculation systems require significant investment
-- **Partner Relationships**: Exclusive relationships with top astrologers and service providers
-- **User Data and Preferences**: Personalized experiences that would take competitors time to replicate
-
-### Revenue-Optimized Positioning Strategy
-- **Problem-Solution Fit**: Focus on "clarity, confidence, and control in uncertain times" rather than just astrology
-- **Emotional ROI Positioning**: Position as life guidance service rather than entertainment - JUSTIFIES PREMIUM PRICING
-- **Decision-Timing Value**: Emphasize precision timing for life decisions as core differentiator - UNIQUE VALUE PROPOSITION
-- **Personal Relationship Focus**: Position as personal cosmic coach rather than generic service - INCREASES USER INVESTMENT AND RETENTION
-
-## Implementation Roadmap for Success (Solo Developer - 2-3 Day Rapid Launch with AI Agents)
-
-### Solo Developer Rapid Development Goals (2-3 days maximum)
-- Launch revenue-generating MVP with core services (AI Twin, Transit Timing) using AI agent assistance
-- Deploy automated CI/CD pipeline with comprehensive testing suite using AI-generated tests
-- Implement payment processing and basic subscription tiers in first 24 hours
-- Complete WhatsApp Business API integration with compliance using AI agents
-- **Viral Features**: Launch compatibility checking and referral system within 48 hours
-- **Goal**: Have paying customers within 72 hours using rapid AI-assisted development
-
-### Solo Developer Rapid Implementation Strategy
-- **Maximum AI Leverage**: Use Qwen CLI and Gemini CLI for 80%+ of code generation, testing, and deployment
-- **API-First Development**: Integrate existing services for complex functionality (astrology calculations, payments)
-- **Modular Development**: Build independent, testable modules that can be developed rapidly
-- **Free/Low-Cost Infrastructure**: Use free tiers and pay-per-use services to minimize upfront investment
-- **Rapid Iteration Cycles**: Build-Measure-Learn loops within hours, not days/weeks
-- **Automated Everything**: Automated testing, deployment, and monitoring to reduce manual intervention
-- **Leverage Existing Solutions**: Use pre-built components, libraries, and services wherever possible
-- **Focus on Revenue-Generating Features First**: Build payment and monetization before nice-to-have features
-
-### Solo Developer Success Validation (Immediate - First Week)
-
-#### Rapid Business Model Validation (First 7 days)
-- Customer Acquisition Cost vs Lifetime Value ratio (target: LTV:CAC > 5:1 by week 2)
-- Daily/Weekly Recurring Revenue growth (target: 30% week-over-week initially)
-- Customer churn rate (target: <15% weekly in first month)
-- Service profitability validation (break-even by week 3-4)
-- Average revenue per user growth trend (target: $5+ by week 2)
-
-#### Rapid Market Validation (First 2 weeks)
-- **User Engagement**: Daily WhatsApp usage rate (target: 40%+ of active users)
-- **Payment Conversion**: Free-to-paid conversion rate (target: 10%+ within first week)
-- **Feature Adoption**: Which revenue-generating features are most popular
-- **User Retention**: 7-day retention rate (target: 40%+)
-- **Viral Growth**: Referral rate and viral coefficient (target: 0.3+ by week 2)
-
-#### Solo Developer Progress Milestones
-- **Day 1 End**: Functional WhatsApp bot with basic astrology responses
-- **Day 2 End**: Payment integration live with first paying customers
-- **Day 3 End**: All core features live (AI Twin, compatibility, referrals)
-- **Week 1 End**: 100+ paying subscribers with 30%+ weekly retention
-- **Week 2 End**: 500+ paying subscribers with validated business model
-- **Week 4 End**: 1,000+ paying subscribers with 50%+ MRR growth week-over-week
-
-#### Immediate Action Items for Solo Developer
-1. **Hour 1-2**: Set up project with AI agents and basic infrastructure
-2. **Hour 3-6**: Implement WhatsApp Business API integration
-3. **Hour 7-12**: Build user registration and basic profile system
-4. **Hour 13-18**: Implement core astrology services and AI responses
-5. **Hour 19-24**: Add payment processing and subscription system
-6. **Day 2**: Focus on AI Twin, Transit Timing, and viral features
-7. **Day 3**: Polish, test, and optimize based on initial user feedback
-
-## Revenue Projections and Milestone Tracking (Reality-Based Growth) (See Epic 15)
-
-### Phase-Based Revenue Targets (Maximize Growth and Profitability)
-
-#### Phase 1: Foundation and Validation (Months 1-6)
-- **Target**: 1,000-3,000 active users
-- **Revenue Model**: 20% free, 40% Essential, 30% Premium, 10% VIP
-- **Monthly Revenue**: $2,000-$12,000 by month 6
-- **Key Milestones**: 
-  - 100 paying users by month 2
-  - Product-market fit validation by month 3 (40%+ free-to-paid conversion)
-  - First $10,000 MRR by month 6
-  - Viral coefficient of 0.3+ by month 6
-- **Success Metrics**: 
-  - Day 30 retention: 40%+
-  - Customer acquisition cost: <$5
-  - LTV/CAC ratio: 5:1+
-
-#### Phase 2: Growth and Optimization (Months 7-12)
-- **Target**: 8,000-15,000 active users
-- **Revenue Model**: 15% free, 35% Essential, 35% Premium, 15% VIP
-- **Monthly Revenue**: $60,000-$150,000 by month 12
-- **Key Milestones**:
-  - $50,000 MRR by month 9
-  - 1,000+ premium/VIP subscribers by month 12
-  - Viral coefficient of 0.6+ by month 12
-  - Marketplace revenue contributing 10%+ of total revenue
-- **Success Metrics**:
-  - Day 90 retention: 50%+
-  - Average revenue per user: $15+
-  - LTV/CAC ratio: 7:1+
-  - Revenue churn: <8%
-
-#### Phase 3: Scale and Monetization (Months 13-24)
-- **Target**: 25,000-75,000 active users
-- **Revenue Model**: 10% free, 30% Essential, 40% Premium, 20% VIP
-- **Monthly Revenue**: $300,000-$1,000,000 by month 24
-- **Key Milestones**:
-  - $250,000 MRR by month 18
-  - 5,000+ premium/VIP subscribers by month 24
-  - Marketplace revenue contributing 20%+ of total revenue
-  - International expansion beginning
-- **Success Metrics**:
-  - Day 90 retention: 55%+
-  - Average revenue per user: $25+
-  - LTV/CAC ratio: 10:1+
-  - Viral coefficient: 0.7+
-
-### Conservative Estimate (Year 1 - Baseline):
+### Conservative Estimate (Year 1 - Baseline): (See Epic 15)
 - 8,000 active users by end of year
 - 55% monthly retention rate
 - Average revenue per user: $10/month
@@ -1643,7 +1488,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Viral Factor**: 25% of growth from referrals
 - **Market**: 70% India, 20% UAE, 10% Australia
 
-### Optimistic Estimate (Year 1 - Target):
+### Optimistic Estimate (Year 1 - Target): (See Epic 15)
 - 20,000 active users by end of year
 - 65% monthly retention rate (improved by AI Twin and Transit Timing)
 - Average revenue per user: $15/month (improved by premium features and marketplace)
@@ -1652,7 +1497,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Viral Factor**: 40% of growth from referrals
 - **Market**: 65% India, 20% UAE, 15% Australia (with expansion)
 
-### Aggressive Estimate (Year 1 - Stretch Goal):
+### Aggressive Estimate (Year 1 - Stretch Goal): (See Epic 15)
 - 50,000 active users by end of year
 - 70% monthly retention rate (driven by network effects and personalization)
 - Average revenue per user: $18/month (high adoption of premium features)
@@ -1661,7 +1506,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Viral Factor**: 50%+ of growth from referrals
 - **Market**: 60% India, 20% UAE, 15% Australia, 5% other markets
 
-### Key Financial Drivers (Focus on Revenue Multipliers)
+### Key Financial Drivers (Focus on Revenue Multipliers) (See Epic 15)
 1. **Premium Tier Adoption**: 30-40% of paying users in Premium/VIP (vs. 20% in basic models)
 2. **Viral Growth**: 40%+ of new users from referrals (reduces CAC to almost zero)
 3. **Retention Rate**: 65%+ monthly retention (extends customer lifetime and increases LTV)
@@ -1669,13 +1514,13 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 5. **AI Twin Engagement**: 70%+ of Premium users actively engaging with AI Twin (increases retention)
 6. **Transit Timing Usage**: 60%+ of users using decision timing (justifies premium pricing)
 
-### Break-even Analysis
+### Break-even Analysis (See Epic 15)
 - **Fixed Costs**: $10,000/month (development, operations, marketing overhead)
 - **Variable Costs**: $1-2 per user (payment processing, API costs, customer support)
 - **Break-even Point**: 1,000 paying users at $10 ARPU with 60% gross margin
 - **Profitability Target**: Achieve profitability by month 8 with 5,000 paying users
 
-### Funding Requirements and Milestone-Based Growth
+### Funding Requirements and Milestone-Based Growth (See Epic 15)
 - **Seed Stage**: $50,000 needed to reach 1,000 paying users (validation and initial growth)
 - **Series A**: $500,000 needed at 5,000 paying users for scaling and expansion
 - **Growth Stage**: $2M+ needed at 25,000 users for international expansion

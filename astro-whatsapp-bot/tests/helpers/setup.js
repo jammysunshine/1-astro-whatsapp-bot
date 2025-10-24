@@ -1,22 +1,23 @@
 // tests/helpers/setup.js
-// Test setup and configuration file
+// Comprehensive Test Setup and Configuration File
 
 // Set test environment
 process.env.NODE_ENV = 'test';
 
 // Mock environment variables
-process.env.JWT_SECRET = 'test-jwt-secret';
-process.env.WHATSAPP_ACCESS_TOKEN = 'test-whatsapp-token';
+process.env.WHATSAPP_ACCESS_TOKEN = 'test-whatsapp-access-token';
 process.env.WHATSAPP_PHONE_NUMBER_ID = 'test-phone-number-id';
 process.env.WHATSAPP_VERIFY_TOKEN = 'test-verify-token';
+process.env.WHATSAPP_APP_SECRET = 'test-app-secret';
+process.env.JWT_SECRET = 'test-jwt-secret';
 process.env.MONGODB_URI = 'mongodb://localhost:27017/astro-whatsapp-bot-test';
-process.env.REDIS_URL = 'redis://localhost:6379';
-process.env.OPENAI_API_KEY = 'test-openai-key';
-process.env.STRIPE_SECRET_KEY = 'test-stripe-key';
-process.env.RAZORPAY_KEY_ID = 'test-razorpay-id';
-process.env.RAZORPAY_KEY_SECRET = 'test-razorpay-secret';
+process.env.STRIPE_SECRET_KEY = 'test-stripe-secret-key';
+process.env.RAZORPAY_KEY_ID = 'test-razorpay-key-id';
+process.env.RAZORPAY_KEY_SECRET = 'test-razorpay-key-secret';
+process.env.OPENAI_API_KEY = 'test-openai-api-key';
+process.env.ASTROLOGY_API_KEY = 'test-astrology-api-key';
 
-// Suppress console logs during testing
+// Suppress console logs during testing (unless in debug mode)
 if (!process.env.DEBUG) {
   console.log = jest.fn();
   console.info = jest.fn();
@@ -24,61 +25,31 @@ if (!process.env.DEBUG) {
   console.error = jest.fn();
 }
 
-// Import required modules
-const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
-
 // Global test setup
-let mongoServer;
-
 beforeAll(async () => {
-  // Initialize in-memory MongoDB server for testing
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  process.env.MONGODB_URI = mongoUri;
-  
-  // Connect to in-memory database
-  await mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  });
-  
-  console.log('🧪 Starting test environment setup with in-memory MongoDB...');
+  // Initialize test database
+  // Start mock servers
+  console.log('🧪 Starting comprehensive test environment setup...');
 });
 
 // Global test teardown
 afterAll(async () => {
-  // Disconnect from database
-  await mongoose.disconnect();
-  
-  // Stop in-memory MongoDB server
-  if (mongoServer) {
-    await mongoServer.stop();
-  }
-  
-  console.log('🧹 Cleaning up test environment...');
+  // Clean up test database
+  // Stop mock servers
+  console.log('🧹 Cleaning up comprehensive test environment...');
 });
 
 // Test case setup
 beforeEach(() => {
   // Reset mocks
   jest.clearAllMocks();
-  
-  // Reset database collections
-  const collections = mongoose.connection.collections;
-  for (const key in collections) {
-    const collection = collections[key];
-    collection.deleteMany({});
-  }
-  
+  // Reset database
   // Reset cache
-  // Reset any other global state
 });
 
 // Test case teardown
 afterEach(() => {
   // Clean up after each test
-  // Any additional cleanup logic
 });
 
 // Extend Jest expectations
@@ -99,10 +70,7 @@ expect.extend({
       };
     }
   },
-});
-
-// Custom matchers
-expect.extend({
+  
   toHavePropertyMatching(received, propertyPath, regex) {
     const properties = propertyPath.split('.');
     let current = received;
@@ -130,4 +98,109 @@ expect.extend({
       };
     }
   },
+  
+  toBeValidPhoneNumber(received) {
+    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+    const pass = phoneRegex.test(received);
+    if (pass) {
+      return {
+        message: () => `expected ${received} not to be a valid phone number`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => `expected ${received} to be a valid phone number`,
+        pass: false,
+      };
+    }
+  },
+  
+  toBeValidDate(received) {
+    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    const pass = dateRegex.test(received);
+    if (pass) {
+      return {
+        message: () => `expected ${received} not to be a valid date`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => `expected ${received} to be a valid date (DD/MM/YYYY)`,
+        pass: false,
+      };
+    }
+  },
+  
+  toBeValidTime(received) {
+    const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+    const pass = timeRegex.test(received);
+    if (pass) {
+      return {
+        message: () => `expected ${received} not to be a valid time`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => `expected ${received} to be a valid time (HH:MM)`,
+        pass: false,
+      };
+    }
+  }
+});
+
+// Custom matchers for common testing scenarios
+expect.extend({
+  toBeJsonApiError(received) {
+    const requiredFields = ['error', 'message'];
+    const hasRequiredFields = requiredFields.every(field => field in received);
+    const pass = hasRequiredFields && typeof received.error === 'string' && typeof received.message === 'string';
+    
+    if (pass) {
+      return {
+        message: () => `expected ${JSON.stringify(received)} not to be a valid JSON API error`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => `expected ${JSON.stringify(received)} to be a valid JSON API error with required fields: ${requiredFields.join(', ')}`,
+        pass: false,
+      };
+    }
+  },
+  
+  toBeWhatsAppWebhook(received) {
+    const requiredFields = ['entry'];
+    const hasRequiredFields = requiredFields.every(field => field in received);
+    const pass = hasRequiredFields && Array.isArray(received.entry);
+    
+    if (pass) {
+      return {
+        message: () => `expected ${JSON.stringify(received)} not to be a valid WhatsApp webhook`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => `expected ${JSON.stringify(received)} to be a valid WhatsApp webhook with required fields: ${requiredFields.join(', ')}`,
+        pass: false,
+      };
+    }
+  },
+  
+  toBeAstrologyApiResponse(received) {
+    const requiredFields = ['success', 'data'];
+    const hasRequiredFields = requiredFields.every(field => field in received);
+    const pass = hasRequiredFields && typeof received.success === 'boolean' && typeof received.data === 'object';
+    
+    if (pass) {
+      return {
+        message: () => `expected ${JSON.stringify(received)} not to be a valid astrology API response`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => `expected ${JSON.stringify(received)} to be a valid astrology API response with required fields: ${requiredFields.join(', ')}`,
+        pass: false,
+      };
+    }
+  }
 });

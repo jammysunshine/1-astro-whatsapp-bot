@@ -13,7 +13,7 @@ describe('Server Setup', () => {
 
       expect(response.body).toHaveProperty('status', 'healthy');
       expect(response.body).toHaveProperty('timestamp');
-      expect(response.body).toHaveProperty('service', 'Astro WhatsApp Bot API');
+      expect(response.body).toHaveProperty('service', 'Astrology WhatsApp Bot API');
       expect(new Date(response.body.timestamp)).toBeInstanceOf(Date);
     });
   });
@@ -26,7 +26,7 @@ describe('Server Setup', () => {
 
       expect(response.body).toHaveProperty('message');
       expect(response.body).toHaveProperty('version');
-      expect(response.body.message).toContain('Astro WhatsApp Bot API is running');
+      expect(response.body.message).toContain('Astrology WhatsApp Bot API is running');
     });
   });
 

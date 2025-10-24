@@ -1,11 +1,10 @@
-// jest.config.js
-// Jest configuration for comprehensive testing with 95%+ coverage requirement
+# Jest Configuration for Comprehensive Automated Testing
 
 module.exports = {
   // Test environment
   testEnvironment: 'node',
   
-  // Root directory for tests
+  // Roots directory for tests
   roots: ['<rootDir>/tests'],
   
   // Test file patterns
@@ -83,29 +82,5 @@ module.exports = {
   
   // Notification settings
   notify: true,
-  notifyMode: 'always',
-  
-  // Module name mapper for aliases
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^@tests/(.*)$': '<rootDir>/tests/$1'
-  },
-  
-  // Transform settings for future TypeScript support
-  transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest'
-  },
-  
-  // Ignore patterns
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-    '/build/'
-  ],
-  
-  // Watch plugins
-  watchPlugins: [
-    'jest-watch-typeahead/filename',
-    'jest-watch-typeahead/testname'
-  ]
+  notifyMode: 'always'
 };

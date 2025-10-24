@@ -44,5 +44,5 @@ temp/
 
 # Ignore temporary validation files
 docs/validation/*.md
-!docs/validation/comprehensive-validation-summary.md
-!docs/validation/comprehensive-validation-checklist.md
+!docs/validation/CONSOLIDATED-FINAL-VALIDATION-SUMMARY.md
+!docs/validation/SUMMARY.md

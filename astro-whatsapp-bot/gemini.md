@@ -2,11 +2,26 @@
 
 This file contains generic development workflow guidelines that apply across ALL projects in this organization. These principles, practices, and mandates are designed to ensure consistent development quality, security, and collaboration standards ACROSS ALL PROJECTS.
 
+## ⚠️ CRITICAL MANDATE: PROJECT MANDATES COMPLIANCE
+
+**🚨 URGENT: READ PROJECT_MANDATES.md FIRST** 🚨
+
+**BEFORE ANY DEVELOPMENT WORK, ALL AI AGENTS AND DEVELOPERS MUST:**
+
+1. **IMMEDIATELY READ** `PROJECT_MANDATES.md` - This contains CRITICAL, NON-NEGOTIABLE requirements
+2. **ACKNOWLEDGE COMPLIANCE** - Confirm understanding of all mandates before proceeding
+3. **FOLLOW WITHOUT EXCEPTION** - All mandates in PROJECT_MANDATES.md are ABSOLUTE requirements
+
+**VIOLATION OF PROJECT_MANDATES.md WILL RESULT IN IMMEDIATE PROJECT FAILURE**
+
+---
+
 ## ⚠️ IMPORTANT MANDATE: GENERIC NATURE OF THIS FILE
 
 **THIS IS A GENERIC GUIDELINE FILE**: This `gemini.md` file contains ONLY generic development workflows, practices, and standards that apply to ALL projects universally. It should NOT contain project-specific implementation details, features, or requirements.
 
 **PROJECT-SPECIFIC MANDATES**: All project-specific requirements, features, implementation details, and project-specific guidelines MUST be documented in project-specific files such as:
+- `PROJECT_MANDATES.md` (**CRITICAL** - Contains all non-negotiable project mandates that MUST be followed)
 - `INITIAL-PROMPT.md` (main project requirements)
 - `README.md` (project-specific setup and usage)
 - Project-specific documentation files
@@ -285,7 +300,8 @@ Commit messages should be simple, concise, and descriptive. Avoid using special 
 ---
 
 ## Agent Workflow Mandates
-*   **Comprehensive Codebase and Project Objective Understanding**: All AI agents (including myself) must thoroughly understand the entire codebase and all project objectives as defined in `INITIAL-PROMPT.md`, `README.md`, and any other project-specific documentation. This understanding is paramount before initiating any development, refactoring, or problem-solving tasks.
+*   **MANDATORY PROJECT MANDATES COMPLIANCE**: All AI agents MUST immediately read and fully comply with `PROJECT_MANDATES.md` before ANY work. These mandates supersede all other instructions and cannot be violated under any circumstances.
+*   **Comprehensive Codebase and Project Objective Understanding**: All AI agents (including myself) must thoroughly understand the entire codebase and all project objectives as defined in `PROJECT_MANDATES.md`, `INITIAL-PROMPT.md`, `README.md`, and any other project-specific documentation. This understanding is paramount before initiating any development, refactoring, or problem-solving tasks.
 
 *   **Self-Review Before Testing**: Always perform a thorough self-review of all implemented changes, including code, configuration, and documentation, to ensure correctness, completeness, and adherence to project standards *before* asking the user to test.
 *   **Update gemini.md Regularly**: As a critical mandate, this `gemini.md` file must be updated automatically after every major feature implementation or optimization work to document the changes and keep the generic guidelines current. This includes documenting new testing practices, monitoring features, configuration options, and code quality improvements THAT APPLY GENERALLY TO ALL PROJECTS.

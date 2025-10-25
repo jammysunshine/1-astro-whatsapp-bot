@@ -30,6 +30,7 @@ const processMessageWithRetry = async(message, value, maxRetries = 3) => {
   // All retries failed
   logger.error('❌ Message processing failed after all retries:', lastError);
   // Could send error notification to admin here
+  throw lastError; // Re-throw the error to be handled by the controller
 };
 
 /**

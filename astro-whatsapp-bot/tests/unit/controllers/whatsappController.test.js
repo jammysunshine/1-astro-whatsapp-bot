@@ -25,7 +25,8 @@ describe('WhatsApp Controller', () => {
     // Setup request and response objects
     req = {
       body: {},
-      headers: {}
+      headers: {},
+      on: jest.fn() // Mock EventEmitter methods
     };
 
     res = {

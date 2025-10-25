@@ -13,6 +13,7 @@ jest.mock('../../src/utils/logger', () => ({
 process.env.NODE_ENV = 'test';
 
 // Mock environment variables
+process.env.W1_PORT = '3001'; // Use different port for tests
 process.env.W1_WHATSAPP_ACCESS_TOKEN = 'test-whatsapp-access-token';
 process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test-phone-number-id';
 process.env.W1_WHATSAPP_VERIFY_TOKEN = 'test-verify-token';
@@ -24,6 +25,13 @@ process.env.RAZORPAY_KEY_ID = 'test-razorpay-key-id';
 process.env.RAZORPAY_KEY_SECRET = 'test-razorpay-key-secret';
 process.env.OPENAI_API_KEY = 'test-openai-api-key';
 process.env.ASTROLOGY_API_KEY = 'test-astrology-api-key';
+process.env.TWILIO_ACCOUNT_SID = 'test-twilio-sid';
+process.env.TWILIO_AUTH_TOKEN = 'test-twilio-token';
+process.env.TWILIO_PHONE_NUMBER = '+1234567890';
+process.env.EMAIL_HOST = 'smtp.test.com';
+process.env.EMAIL_USER = 'test@test.com';
+process.env.EMAIL_PASS = 'testpass';
+process.env.REDIS_URL = 'redis://localhost:6379';
 
 // Suppress console logs during testing (unless in debug mode)
 if (!process.env.DEBUG) {

@@ -554,4 +554,366 @@ describe('Critical User Flow End-to-End Tests', () => {
       });
     });
   });
+
+  describe('Subscription and Payment Flow', () => {
+    beforeEach(() => {
+      // Mock existing user for subscription test
+      getUserByPhone.mockResolvedValue({
+        id: 'user-subscription',
+        phoneNumber: '7778889999',
+        birthDate: '15/03/1990',
+        birthTime: '07:30',
+        birthPlace: 'Mumbai, India',
+        createdAt: new Date('2023-01-01'),
+        lastInteraction: new Date('2023-01-15'),
+        profileComplete: true,
+        subscriptionStatus: 'free'
+      });
+    });
+
+    it('should handle subscription plan inquiry', async() => {
+      const subscriptionInquiryPayload = {
+        entry: [{
+          id: 'entry-subscription-inquiry',
+          time: '1234567896',
+          changes: [{
+            field: 'messages',
+            value: {
+              messaging_product: 'whatsapp',
+              metadata: {
+                display_phone_number: '+7778889999',
+                phone_number_id: 'phone-id-subscription'
+              },
+              contacts: [{
+                profile: { name: 'Subscription User' },
+                wa_id: '7778889999'
+              }],
+              messages: [{
+                from: '7778889999',
+                id: 'message-id-subscription-inquiry',
+                timestamp: '1234567896',
+                text: { body: 'What are the subscription plans?' },
+                type: 'text'
+              }]
+            }
+          }]
+        }]
+      };
+
+      const response = await request(app)
+        .post('/webhook')
+        .send(subscriptionInquiryPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
+
+      expect(response.body).toEqual({
+        success: true,
+        message: 'Webhook processed successfully',
+        timestamp: expect.any(String)
+      });
+
+      expect(processIncomingMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          from: '7778889999',
+          type: 'text',
+          text: { body: 'What are the subscription plans?' }
+        }),
+        expect.any(Object)
+      );
+    });
+
+    it('should handle premium subscription request', async() => {
+      const premiumSubscriptionPayload = {
+        entry: [{
+          id: 'entry-premium-subscription',
+          time: '1234567897',
+          changes: [{
+            field: 'messages',
+            value: {
+              messaging_product: 'whatsapp',
+              metadata: {
+                display_phone_number: '+7778889999',
+                phone_number_id: 'phone-id-premium'
+              },
+              contacts: [{
+                profile: { name: 'Premium User' },
+                wa_id: '7778889999'
+              }],
+              messages: [{
+                from: '7778889999',
+                id: 'message-id-premium',
+                timestamp: '1234567897',
+                text: { body: 'Subscribe to Premium' },
+                type: 'text'
+              }]
+            }
+          }]
+        }]
+      };
+
+      const response = await request(app)
+        .post('/webhook')
+        .send(premiumSubscriptionPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
+
+      expect(response.body).toEqual({
+        success: true,
+        message: 'Webhook processed successfully',
+        timestamp: expect.any(String)
+      });
+
+      expect(processIncomingMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          from: '7778889999',
+          type: 'text',
+          text: { body: 'Subscribe to Premium' }
+        }),
+        expect.any(Object)
+      );
+    });
+  });
+
+  describe('Astrology Readings Flow', () => {
+    beforeEach(() => {
+      // Mock existing user for astrology readings
+      getUserByPhone.mockResolvedValue({
+        id: 'user-astrology',
+        phoneNumber: '6665554444',
+        birthDate: '15/03/1990',
+        birthTime: '07:30',
+        birthPlace: 'Mumbai, India',
+        createdAt: new Date('2023-01-01'),
+        lastInteraction: new Date('2023-01-15'),
+        profileComplete: true
+      });
+    });
+
+    it('should handle tarot reading request', async() => {
+      const tarotReadingPayload = {
+        entry: [{
+          id: 'entry-tarot',
+          time: '1234567898',
+          changes: [{
+            field: 'messages',
+            value: {
+              messaging_product: 'whatsapp',
+              metadata: {
+                display_phone_number: '+6665554444',
+                phone_number_id: 'phone-id-tarot'
+              },
+              contacts: [{
+                profile: { name: 'Tarot User' },
+                wa_id: '6665554444'
+              }],
+              messages: [{
+                from: '6665554444',
+                id: 'message-id-tarot',
+                timestamp: '1234567898',
+                text: { body: 'Give me a tarot reading' },
+                type: 'text'
+              }]
+            }
+          }]
+        }]
+      };
+
+      const response = await request(app)
+        .post('/webhook')
+        .send(tarotReadingPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
+
+      expect(response.body).toEqual({
+        success: true,
+        message: 'Webhook processed successfully',
+        timestamp: expect.any(String)
+      });
+
+      expect(processIncomingMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          from: '6665554444',
+          type: 'text',
+          text: { body: 'Give me a tarot reading' }
+        }),
+        expect.any(Object)
+      );
+    });
+
+    it('should handle palmistry reading request', async() => {
+      const palmistryReadingPayload = {
+        entry: [{
+          id: 'entry-palmistry',
+          time: '1234567899',
+          changes: [{
+            field: 'messages',
+            value: {
+              messaging_product: 'whatsapp',
+              metadata: {
+                display_phone_number: '+6665554444',
+                phone_number_id: 'phone-id-palmistry'
+              },
+              contacts: [{
+                profile: { name: 'Palmistry User' },
+                wa_id: '6665554444'
+              }],
+              messages: [{
+                from: '6665554444',
+                id: 'message-id-palmistry',
+                timestamp: '1234567899',
+                text: { body: 'Read my palm' },
+                type: 'text'
+              }]
+            }
+          }]
+        }]
+      };
+
+      const response = await request(app)
+        .post('/webhook')
+        .send(palmistryReadingPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
+
+      expect(response.body).toEqual({
+        success: true,
+        message: 'Webhook processed successfully',
+        timestamp: expect.any(String)
+      });
+
+      expect(processIncomingMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          from: '6665554444',
+          type: 'text',
+          text: { body: 'Read my palm' }
+        }),
+        expect.any(Object)
+      );
+    });
+
+    it('should handle numerology report request', async() => {
+      const numerologyPayload = {
+        entry: [{
+          id: 'entry-numerology',
+          time: '1234567900',
+          changes: [{
+            field: 'messages',
+            value: {
+              messaging_product: 'whatsapp',
+              metadata: {
+                display_phone_number: '+6665554444',
+                phone_number_id: 'phone-id-numerology'
+              },
+              contacts: [{
+                profile: { name: 'Numerology User' },
+                wa_id: '6665554444'
+              }],
+              messages: [{
+                from: '6665554444',
+                id: 'message-id-numerology',
+                timestamp: '1234567900',
+                text: { body: 'numerology report' },
+                type: 'text'
+              }]
+            }
+          }]
+        }]
+      };
+
+      const response = await request(app)
+        .post('/webhook')
+        .send(numerologyPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
+
+      expect(response.body).toEqual({
+        success: true,
+        message: 'Webhook processed successfully',
+        timestamp: expect.any(String)
+      });
+
+      expect(processIncomingMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          from: '6665554444',
+          type: 'text',
+          text: { body: 'numerology report' }
+        }),
+        expect.any(Object)
+      );
+    });
+  });
+
+  describe('Profile Management Flow', () => {
+    beforeEach(() => {
+      // Mock existing user for profile management
+      getUserByPhone.mockResolvedValue({
+        id: 'user-profile',
+        phoneNumber: '5554443333',
+        birthDate: '15/03/1990',
+        birthTime: '07:30',
+        birthPlace: 'Mumbai, India',
+        createdAt: new Date('2023-01-01'),
+        lastInteraction: new Date('2023-01-15'),
+        profileComplete: true,
+        name: 'John Doe'
+      });
+    });
+
+    it('should handle profile viewing request', async() => {
+      const profileViewPayload = {
+        entry: [{
+          id: 'entry-profile-view',
+          time: '1234567901',
+          changes: [{
+            field: 'messages',
+            value: {
+              messaging_product: 'whatsapp',
+              metadata: {
+                display_phone_number: '+5554443333',
+                phone_number_id: 'phone-id-profile'
+              },
+              contacts: [{
+                profile: { name: 'Profile User' },
+                wa_id: '5554443333'
+              }],
+              messages: [{
+                from: '5554443333',
+                id: 'message-id-profile',
+                timestamp: '1234567901',
+                text: { body: 'Show my profile' },
+                type: 'text'
+              }]
+            }
+          }]
+        }]
+      };
+
+      const response = await request(app)
+        .post('/webhook')
+        .send(profileViewPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
+
+      expect(response.body).toEqual({
+        success: true,
+        message: 'Webhook processed successfully',
+        timestamp: expect.any(String)
+      });
+
+      expect(processIncomingMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          from: '5554443333',
+          type: 'text',
+          text: { body: 'Show my profile' }
+        }),
+        expect.any(Object)
+      );
+    });
+  });
 });

@@ -101,13 +101,14 @@ describe('WhatsApp Message Processor', () => {
       getUserByPhone.mockResolvedValue(existingUser);
       generateAstrologyResponse.mockResolvedValue('Text message response');
       sendMessage.mockResolvedValue({ success: true });
+      getMenu.mockReturnValue(null); // Mock menu as not found to force astrology response
 
       message.type = 'text';
-      message.text = { body: 'What is my daily horoscope?' };
+      message.text = { body: 'Tell me about my future' };
 
       await processIncomingMessage(message, value);
 
-      expect(generateAstrologyResponse).toHaveBeenCalledWith('What is my daily horoscope?', existingUser);
+      expect(generateAstrologyResponse).toHaveBeenCalledWith('Tell me about my future', existingUser);
     });
 
     it('should handle interactive button replies', async() => {

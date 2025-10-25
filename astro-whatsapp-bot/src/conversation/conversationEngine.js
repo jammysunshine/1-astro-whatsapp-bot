@@ -242,6 +242,7 @@ const processFlowMessage = async(message, user, flowId) => {
     // Ensure session has required properties
     if (session && !session.flowData) {
       session.flowData = {};
+      await setUserSession(phoneNumber, session);
     }
 
     const flow = getFlow(flowId);

@@ -239,6 +239,11 @@ const processFlowMessage = async(message, user, flowId) => {
 
     let session = await getUserSession(phoneNumber);
 
+    // Ensure session has required properties
+    if (session && !session.flowData) {
+      session.flowData = {};
+    }
+
     const flow = getFlow(flowId);
     if (!flow) {
       logger.error(`❌ Conversation flow '${flowId}' not found.`);

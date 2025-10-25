@@ -14,6 +14,17 @@
         "action": "show_user_profile"
       },
       {
+        "id": "btn_more_options",
+        "title": "More Options",
+        "action": "show_more_options"
+      }
+    ]
+  },
+  "more_options_menu": {
+    "type": "interactive",
+    "body": "✨ *More Options*",
+    "buttons": [
+      {
         "id": "btn_compatibility",
         "title": "Compatibility",
         "action": "initiate_compatibility_flow"
@@ -22,6 +33,11 @@
         "id": "btn_subscription",
         "title": "Subscription",
         "action": "show_subscription_plans"
+      },
+      {
+        "id": "btn_main_menu",
+        "title": "Back to Main",
+        "action": "show_main_menu"
       }
     ]
   }

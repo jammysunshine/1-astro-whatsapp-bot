@@ -21,6 +21,10 @@
     "security:fix": "npm audit fix",
     "docs": "jsdoc -c jsdoc.json",
     "monitor": "node scripts/monitor-deployment.js",
+    "token-manager": "node scripts/whatsapp-token-manager.js",
+    "update-token": "node scripts/whatsapp-token-manager.js update",
+    "check-token": "node scripts/whatsapp-token-manager.js check",
+    "monitor-token": "node scripts/whatsapp-token-manager.js monitor",
     "clean": "rm -rf node_modules package-lock.json && npm install"
   },
   "keywords": [

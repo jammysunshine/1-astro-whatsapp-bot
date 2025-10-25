@@ -1,0 +1,11 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "cron": [
+    {
+      "name": "whatsapp-token-monitor",
+      "schedule": "*/30 * * * *",
+      "command": "npm run check-token",
+      "timeout": 300
+    }
+  ]
+}

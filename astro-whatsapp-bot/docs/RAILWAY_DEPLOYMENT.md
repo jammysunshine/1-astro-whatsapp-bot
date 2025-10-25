@@ -176,6 +176,52 @@ railway up -s service-name
 | `LOG_LEVEL` | Logging level (info/debug/error) | No |
 | `W1_SKIP_WEBHOOK_SIGNATURE` | Skip webhook signature validation (false in prod) | No |
 
+## WhatsApp Token Management
+
+### Automated Token Monitoring
+
+The application includes automated WhatsApp token monitoring to handle free tier token expiry:
+
+```bash
+# Check token validity
+npm run check-token
+
+# Start token monitoring service
+npm run monitor-token
+
+# Update token manually
+npm run update-token YOUR_NEW_TOKEN_HERE
+```
+
+### Token Expiry Handling
+
+When a token expires (free tier expires hourly):
+
+1. **Automatic Detection**: System checks token validity every 30 minutes
+2. **Log Monitoring**: Scans Railway logs for authentication errors
+3. **Notifications**: Logs critical alerts for token expiry
+4. **Manual Update**: Provides clear instructions for token regeneration
+
+### Quick Token Update
+
+Use the provided script for fast token updates:
+
+```bash
+# Make script executable (first time only)
+chmod +x scripts/update-whatsapp-token.sh
+
+# Update token
+./scripts/update-whatsapp-token.sh YOUR_NEW_TOKEN_HERE
+```
+
+### Token Expiry Workflow
+
+1. **Detection**: Token monitor detects expiry
+2. **Alert**: System logs critical error with instructions
+3. **Regeneration**: Go to Facebook Developer Console → WhatsApp → API Setup
+4. **Update**: Run the update script with new token
+5. **Verification**: System automatically validates and confirms
+
 ## Troubleshooting
 
 ### Common Issues
@@ -184,6 +230,7 @@ railway up -s service-name
 2. **Webhook not receiving messages**: Verify webhook URL and token in WhatsApp dashboard
 3. **Database connection fails**: Ensure MongoDB URI is correct and accessible
 4. **Environment variables not set**: Use `railway variables` to verify
+5. **WhatsApp token expired**: Use `npm run update-token NEW_TOKEN` to update
 
 ### Health Checks
 

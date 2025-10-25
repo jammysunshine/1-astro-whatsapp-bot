@@ -362,10 +362,8 @@ const processFlowMessage = async(message, user, flowId) => {
        session.flowData[currentStepId] = messageText;
      }
 
-     // Determine next step
-     const nextStepId = currentStep.next_step;
-     // Determine next step
-     const nextStepId = currentStep.next_step;
+      // Determine next step
+      const nextStepId = currentStep.next_step;
      if (nextStepId) {
        const nextStep = flow.steps[nextStepId];
        if (nextStep) {

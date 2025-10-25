@@ -340,7 +340,7 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
 
   const currentStep = flow.steps[session.currentStep];
   if (!currentStep || !currentStep.interactive) {
-    logger.warn(`⚠️ Current step '${session.currentStep}' not interactive for button reply, clearing session to allow menu interactions`);
+    logger.warn(`⚠️ Current step '${session.currentStep}' not interactive for button reply, clearing session to allow menu interactions (v2)`);
     // Clear the session so button clicks can be handled as main menu actions
     const { deleteUserSession } = require('../../models/userModel');
     await deleteUserSession(phoneNumber);

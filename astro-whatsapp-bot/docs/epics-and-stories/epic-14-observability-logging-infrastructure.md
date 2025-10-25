@@ -1,7 +1,7 @@
-# Epic 14: Observability and Logging Infrastructure
+# Epic 14: Logging, Alerting & Observability
 
 ## Description
-Implement comprehensive observability and logging infrastructure following BMAD methodology and gemini.md mandates. This epic is CRITICAL for solo developer success as it eliminates manual monitoring burden and ensures system transparency with zero manual observability effort through automated logging and monitoring.
+Implement comprehensive logging, alerting, and observability infrastructure following BMAD methodology and gemini.md mandates. This epic focuses on structured logging, metrics collection, alerting systems, and distributed tracing for system transparency and incident response. (Note: Performance optimization is covered in Epic 12, infrastructure monitoring in Epic 20.)
 
 ## Features Included
 - Structured logging implementation with consistent formatting

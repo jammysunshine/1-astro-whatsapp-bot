@@ -1,7 +1,7 @@
 # Epic 1: Payment Integration Enhancement - Brownfield Enhancement
 
 ## Epic Goal
-Enable secure, region-specific payment processing for Indian and international users while maintaining existing bot functionality and ensuring backward compatibility with current payment simulation.
+Enable secure, region-specific payment processing and gateway integration for Indian and international users while maintaining existing bot functionality and ensuring backward compatibility with current payment simulation. (Note: Content monetization strategies are covered in Epic 8.)
 
 ## Epic Description
 

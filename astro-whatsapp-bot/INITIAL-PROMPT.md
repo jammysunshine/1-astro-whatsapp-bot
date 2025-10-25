@@ -16,36 +16,36 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Key Features**: WhatsApp Business API integration, multi-language support, user authentication, profile management, comprehensive onboarding, cross-platform data synchronization, and customer support.
 - **MANDATE**: All WhatsApp user interactions MUST include interactive buttons for next actions to ensure intuitive navigation and engagement.
 - **MVP User Stories**:
-    - As a user, I want to easily authenticate using my WhatsApp number with interactive button options for verification.
-    - As a user, I want to access the service through WhatsApp as my primary channel with interactive button navigation.
-    - As a user, I want my data and reading history to be synchronized across all channels (WhatsApp, web, mobile) with button-based sync options.
-    - As a user, I want to be able to use the service on web and mobile apps in future phases with cross-platform button consistency.
-    - As a user, I want to interact with the bot in my preferred language with button options for language selection.
-    - As a new user, I want video guides to understand complex features with interactive button access.
-    - As a new user, I want a tutorial on how to maximize my use of the service with guided button flows.
-    - As a new user, I want to choose my preferred message frequency during onboarding with button-based preferences.
-    - As a user, I want visual accessibility options like text size adjustment and high contrast mode with button toggles.
-    - As a user, I want visual alternatives for audio content and text transcripts with button options.
-    - As a user, I want simple language options and clear navigation with intuitive button layouts.
-    - As a user, I want voice command support for navigation with button fallbacks.
-    - As a user, I want the platform to respect diverse cultural beliefs and practices with culturally appropriate button labels.
-    - As a user, I want to set do-not-disturb schedules for notifications with button-based controls.
-    - As a user, I want to prioritize certain types of notifications with button sorting options.
-    - As a user, I want to opt-in or opt-out of different notification types with clear button choices.
-    - As a user, I want notifications to be adjusted for my time zone with button-based settings.
-    - As a user, I want a simple and clear menu structure for easy navigation with interactive buttons.
-    - As a user, I want quick access to my most used features with pinned button shortcuts.
-    - As a user, I want to search for specific services and content with button-based search interfaces.
-    - As a user, I want breadcrumb navigation for complex workflows with back/forward buttons.
-    - As a user, I want to ask questions using natural language with button suggestions for common queries.
-    - As a user, I want the bot to provide context-aware responses based on my history and birth chart with button options for follow-up.
-    - As a user, I want a personalized greeting and interaction style from the bot with button-based personalization.
-    - As a user, I want the bot to match my preferred tone with button options for tone adjustment.
-    - As a user, I want the bot to have a distinct, warm, and wise personality with button interactions.
-    - As a user, I want readings and reports to be well-organized and categorized with button-based organization.
-    - As a user, I want to bookmark important readings and access my history with button bookmarks.
-    - As a user, I want tools to compare different readings with button comparison options.
-    - As a user, I want to explore interactive birth chart visualizations with button controls.
+    - **As a user, I want to easily authenticate using my WhatsApp number so that I can securely access personalized astrological services.** *Acceptance Criteria: User receives OTP via WhatsApp, enters code via interactive buttons, authentication completes within 30 seconds.*
+    - **As a user, I want to access the service through WhatsApp as my primary channel so that I can get astrological guidance conveniently on my preferred messaging platform.** *Acceptance Criteria: All core features accessible via WhatsApp with consistent button navigation.*
+    - **As a user, I want my data and reading history to be synchronized across all channels so that I can access my information seamlessly regardless of device or platform.** *Acceptance Criteria: Reading history and preferences sync automatically between WhatsApp, web, and mobile within 5 minutes.*
+    - **As a user, I want to be able to use the service on web and mobile apps in future phases so that I can access advanced features on different devices.** *Acceptance Criteria: Web and mobile apps maintain feature parity with WhatsApp version.*
+    - **As a user, I want to interact with the bot in my preferred language so that I can understand astrological content clearly and comfortably.** *Acceptance Criteria: Support for 8+ languages with automatic detection and manual selection via buttons.*
+    - **As a new user, I want video guides to understand complex features so that I can learn how to use the platform effectively.** *Acceptance Criteria: Interactive video tutorials accessible via buttons, under 2 minutes each.*
+    - **As a new user, I want a tutorial on how to maximize my use of the service so that I can get the most value from my subscription.** *Acceptance Criteria: Step-by-step guided tutorial with button navigation completing in under 5 minutes.*
+    - **As a new user, I want to choose my preferred message frequency during onboarding so that I receive communications at a comfortable pace.** *Acceptance Criteria: Options for daily, weekly, or custom frequency with immediate effect.*
+    - **As a user, I want visual accessibility options like text size adjustment and high contrast mode so that I can use the service comfortably regardless of visual needs.** *Acceptance Criteria: Text size scaling (small/medium/large), high contrast toggle, screen reader compatibility.*
+    - **As a user, I want visual alternatives for audio content and text transcripts so that I can access all content regardless of hearing ability.** *Acceptance Criteria: All audio content has text transcripts and visual alternatives available via buttons.*
+    - **As a user, I want simple language options and clear navigation so that I can use the service easily without confusion.** *Acceptance Criteria: Flesch reading score under 60, consistent button layouts, clear menu hierarchy.*
+    - **As a user, I want voice command support for navigation so that I can interact hands-free when convenient.** *Acceptance Criteria: Voice commands work for 80%+ of navigation actions with button fallbacks.*
+    - **As a user, I want the platform to respect diverse cultural beliefs and practices so that I feel included and understood.** *Acceptance Criteria: Culturally appropriate content and button labels for major cultural groups.*
+    - **As a user, I want to set do-not-disturb schedules for notifications so that I can maintain work-life balance.** *Acceptance Criteria: Customizable quiet hours with automatic notification suppression.*
+    - **As a user, I want to prioritize certain types of notifications so that I see the most important information first.** *Acceptance Criteria: Notification priority levels (urgent, important, informational) with sorting options.*
+    - **As a user, I want to opt-in or opt-out of different notification types so that I control my communication preferences.** *Acceptance Criteria: Granular opt-in/opt-out for each notification category with clear button choices.*
+    - **As a user, I want notifications to be adjusted for my time zone so that I receive them at appropriate local times.** *Acceptance Criteria: Automatic time zone detection with manual override options.*
+    - **As a user, I want a simple and clear menu structure so that I can find features quickly and easily.** *Acceptance Criteria: Menu depth no more than 3 levels, consistent button placement, search functionality.*
+    - **As a user, I want quick access to my most used features so that I can perform common actions efficiently.** *Acceptance Criteria: Pinned shortcuts for top 5 most-used features, customizable quick access bar.*
+    - **As a user, I want to search for specific services and content so that I can find what I need quickly.** *Acceptance Criteria: Full-text search with filters, results displayed within 2 seconds.*
+    - **As a user, I want breadcrumb navigation for complex workflows so that I can understand my location and navigate back easily.** *Acceptance Criteria: Clear breadcrumb trail showing current location and navigation history.*
+    - **As a user, I want to ask questions using natural language so that I can interact conversationally with the bot.** *Acceptance Criteria: Natural language processing handles 90%+ of common queries with button suggestions for complex topics.*
+    - **As a user, I want the bot to provide context-aware responses based on my history so that I receive personalized and relevant guidance.** *Acceptance Criteria: Responses reference user's birth chart data and previous interactions.*
+    - **As a user, I want a personalized greeting and interaction style so that I feel the service understands me individually.** *Acceptance Criteria: Greeting uses user's name and preferred interaction style within first message.*
+    - **As a user, I want the bot to match my preferred tone so that our interaction feels natural and comfortable.** *Acceptance Criteria: Tone options (formal, casual, spiritual) with consistent application across all responses.*
+    - **As a user, I want the bot to have a distinct, warm, and wise personality so that I feel guided by a trusted advisor.** *Acceptance Criteria: Bot responses consistently reflect warm, wise personality traits in 95%+ of interactions.*
+    - **As a user, I want readings and reports to be well-organized and categorized so that I can easily find and reference past insights.** *Acceptance Criteria: Hierarchical organization by date, type, and astrology system with search and filter options.*
+    - **As a user, I want to bookmark important readings so that I can quickly access valuable insights later.** *Acceptance Criteria: One-click bookmarking with dedicated bookmarks section and tagging system.*
+    - **As a user, I want tools to compare different readings so that I can see patterns and changes over time.** *Acceptance Criteria: Side-by-side comparison view for up to 3 readings with highlighting of differences.*
+    - **As a user, I want to explore interactive birth chart visualizations so that I can understand my astrological blueprint visually.** *Acceptance Criteria: Interactive chart with clickable elements, zoom, and detailed explanations.*
     - As a user, I want to access my complete reading history across all platforms with button navigation.
 - **Current Implementation**: WhatsApp API endpoints, session management, language validation (`language_choice`), birth data input, and general messaging features are present.
 - **Gaps for MVP**: Detailed OTP verification flow, full range of multi-language content localization are not explicitly shown but implied. Full cross-platform synchronization and development of web/mobile apps are future phases.
@@ -54,12 +54,12 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Goal**: Offer a wide array of accurate and diverse astrological systems to cater to varied user preferences and provide comprehensive insights.
 - **Key Features**: Hindu/Vedic, Western, Chinese, Tarot, Numerology, Palmistry, Nadi Astrology, Kabbalistic, Mayan, Celtic, I Ching, Astrocartography, Horary, and other systems.
 - **MVP User Stories**:
-    - As a user, I want to select my preferred astrology system to receive tailored readings with interactive button options.
-    - As a user, I want to receive readings from various astrological systems to get a comprehensive view with button navigation between systems.
-    - As a user, I want to understand the basics of different astrology systems offered with button-accessed educational content.
-    - As a new user, I want access to educational content about different astrology types with interactive button guides.
-    - As a new user, I want to be introduced to the most relevant astrology system for me with button-based recommendations.
-    - As a user, I want to set my preferences for the types of astrology readings I receive with button toggles.
+    - **As a user, I want to select my preferred astrology system so that I receive readings tailored to my beliefs and interests.** *Acceptance Criteria: 10+ astrology systems available (Vedic, Western, Chinese, Tarot, etc.) with one-click selection.*
+    - **As a user, I want to receive readings from various astrological systems so that I can get a comprehensive view of my cosmic influences.** *Acceptance Criteria: Multi-system readings combine insights from 2+ systems with clear attribution.*
+    - **As a user, I want to understand the basics of different astrology systems so that I can make informed choices about which systems to explore.** *Acceptance Criteria: Educational content for each system under 3 minutes, accessible via dedicated buttons.*
+    - **As a new user, I want access to educational content about different astrology types so that I can learn and engage with the service effectively.** *Acceptance Criteria: Progressive educational content unlocked as user engages, with interactive quizzes.*
+    - **As a new user, I want to be introduced to the most relevant astrology system for me so that I start with content that resonates with my background.** *Acceptance Criteria: AI-driven recommendations based on user profile, location, and stated preferences.*
+    - **As a user, I want to set my preferences for the types of astrology readings I receive so that I only get content that interests me.** *Acceptance Criteria: Granular preference settings for each astrology system and reading type.*
 - **Current Implementation**: Complete astrology system implementation with `vedicCalculator.js` (enhanced with Vimshottari Dasha, advanced transits, and precise astronomical calculations), `chineseCalculator.js`, `tarotReader.js`, `palmistryReader.js`, `nadiReader.js`, `kabbalisticReader.js`, `mayanReader.js`, `celticReader.js`, `ichingReader.js`, `astrocartographyReader.js`, and `horaryReader.js`. All systems are integrated into `astrologyEngine.js` and accessible through WhatsApp menu system.
 - **Gaps for MVP**: All major astrology systems are now implemented. Future enhancements may include additional systems or deeper integrations.
 
@@ -67,34 +67,34 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Goal**: Implement a flexible and growth-oriented monetization strategy through tiered subscriptions, micro-transactions, and a robust loyalty/referral program, ensuring regional compliance.
 - **Key Features**: Free, Essential, Premium, VIP tiers, one-time services, regional payment methods, AstroRewards loyalty program, AstroCircle referral program, and advanced monetization strategies.
 - **MVP User Stories**:
-    - As a user, I want to choose from different subscription tiers to access features that match my needs with interactive button selection.
-    - As a user, I want to make one-time purchases for specific insights or services with button-based purchase flows.
-    - As a user, I want to understand the benefits of each subscription tier before committing with button-accessed comparison tools.
-    - As a free user, I want to receive a daily micro-prediction and a shareable birth chart with button sharing options.
-    - As an Essential tier user, I want to receive daily personalized horoscopes and weekly video predictions with button access.
-    - As a Premium tier user, I want unlimited AI questions and priority access to human astrologers with button priority options.
-    - As a VIP tier user, I want a dedicated human astrologer and exclusive life planning sessions with button scheduling.
-    - As a user, I want to purchase quick, on-demand insights for immediate decisions (Flash Insights) with button purchases.
-    - As a user, I want to receive alerts for important personal planetary transits (Transit Alerts) with button alert settings.
-    - As a user, I want to purchase quick spiritual remedies for challenging times (Remedial Quick Fixes) with button remedies.
-    - As a user, I want to quickly check compatibility with new contacts (Compatibility Snapshots) with button checks.
-    - As a user, I want to purchase special readings during significant astrological events like eclipses with button event access.
-    - As a user, I want to prepare for retrograde periods with specialized sessions with button preparation guides.
-    - As a user, I want to participate in guided new moon intention setting sessions with button participation.
-    - As a user, I want to receive culturally relevant readings during festivals with button festival options.
-    - As a user in India, I want to pay using local payment methods like UPI and PayTM with button payment options.
-    - As a user in UAE, I want to pay using credit cards and digital wallets with button payment choices.
-    - As a user in Australia, I want to pay using credit cards and Apple Pay with button payment selection.
-    - As a user, I want to discover and purchase recommended astrological products with button marketplace access.
-    - As a user, I want to access user-to-user services within the platform with button service listings.
-    - As a user, I want to purchase astrology education courses with button course enrollment.
-    - As an aspiring astrologer, I want to enroll in certification programs with button program access.
-    - As a user, I want to manage auto-renewal options for my subscriptions with button toggle controls.
-    - As a user, I want to understand the cancellation and refund policies with button policy access.
-    - As a user, I want to earn and redeem points for engaging with the platform and referring friends with button rewards.
-    - As a user, I want to be offered an upgrade to the Essential tier with clear benefits with button upgrade prompts.
-    - As a user, I want to be teased with premium features to encourage upgrade with button feature previews.
-    - As a long-term user, I want to be rewarded with loyalty benefits and VIP tier introductions with button rewards access.
+    - **As a user, I want to choose from different subscription tiers to access features that match my needs with interactive button selection.** *Acceptance Criteria: User can view all tiers (Free, Essential, Premium, VIP) with clear pricing, features list, and one-click selection via buttons; selection completes within 3 clicks.*
+    - **As a user, I want to make one-time purchases for specific insights or services with button-based purchase flows.** *Acceptance Criteria: User can browse micro-transactions (Flash Insights ₹25, Transit Alerts ₹15, etc.), select via buttons, complete payment within 2 minutes, receive immediate delivery.*
+    - **As a user, I want to understand the benefits of each subscription tier before committing with button-accessed comparison tools.** *Acceptance Criteria: Interactive comparison table shows features, pricing, and benefits for all tiers; accessible via dedicated button; comparison loads within 5 seconds.*
+    - **As a free user, I want to receive a daily micro-prediction and a shareable birth chart with button sharing options.** *Acceptance Criteria: Daily prediction delivered automatically at preferred time; shareable birth chart image generated within 10 seconds; WhatsApp sharing button included.*
+    - **As an Essential tier user, I want to receive daily personalized horoscopes and weekly video predictions with button access.** *Acceptance Criteria: Daily horoscopes delivered at set time; weekly videos accessible via button; content personalized to user's birth chart and preferences.*
+    - **As a Premium tier user, I want unlimited AI questions and priority access to human astrologers with button priority options.** *Acceptance Criteria: Unlimited AI queries processed within 30 seconds; priority queue for human astrologers (24-hour vs 72-hour response); clear priority indicators in interface.*
+    - **As a VIP tier user, I want a dedicated human astrologer and exclusive life planning sessions with button scheduling.** *Acceptance Criteria: Dedicated astrologer assigned within 24 hours; quarterly sessions schedulable via button calendar; exclusive VIP content accessible only to this tier.*
+    - **As a user, I want to purchase quick, on-demand insights for immediate decisions (Flash Insights) with button purchases.** *Acceptance Criteria: Flash Insights available for ₹25/USD 1; purchase completes via button; 5-minute reading delivered within 60 seconds of payment.*
+    - **As a user, I want to receive alerts for important personal planetary transits (Transit Alerts) with button alert settings.** *Acceptance Criteria: Transit alerts customizable per user chart; ₹15 per alert; notification settings accessible via button; alerts delivered 24 hours before transit.*
+    - **As a user, I want to purchase quick spiritual remedies for challenging times (Remedial Quick Fixes) with button remedies.** *Acceptance Criteria: Remedial fixes available for ₹50-100; purchase via button; remedies include mantras, gemstone suggestions, and rituals; delivered within 5 minutes.*
+    - **As a user, I want to quickly check compatibility with new contacts (Compatibility Snapshots) with button checks.** *Acceptance Criteria: Compatibility snapshots for ₹75; input friend's birth details via button form; report generated within 30 seconds; shareable via WhatsApp.*
+    - **As a user, I want to purchase special readings during significant astrological events like eclipses with button event access.** *Acceptance Criteria: Eclipse packages available for ₹300-600; event-specific readings accessible via button; content timed for specific astrological events.*
+    - **As a user, I want to prepare for retrograde periods with specialized sessions with button preparation guides.** *Acceptance Criteria: Retrograde prep sessions for ₹200-400; guides include timing advice, protective measures, and opportunity identification; accessible via button.*
+    - **As a user, I want to participate in guided new moon intention setting sessions with button participation.** *Acceptance Criteria: New moon sessions for ₹150; guided meditation and intention setting; session accessible via button; monthly availability.*
+    - **As a user, I want to receive culturally relevant readings during festivals with button festival options.** *Acceptance Criteria: Festival readings for ₹100-200; culturally appropriate content for major festivals; accessible via festival-specific buttons.*
+    - **As a user in India, I want to pay using local payment methods like UPI and PayTM with button payment options.** *Acceptance Criteria: UPI, PayTM, Google Pay, PhonePe supported; payment buttons show local options; transactions complete within 2 minutes.*
+    - **As a user in UAE, I want to pay using credit cards and digital wallets with button payment choices.** *Acceptance Criteria: Credit cards, Apple Pay, Google Pay supported; payment buttons prioritize local preferences; AED currency display.*
+    - **As a user in Australia, I want to pay using credit cards and Apple Pay with button payment selection.** *Acceptance Criteria: Credit cards, Apple Pay, Google Pay, PayPal supported; AUD currency; payment completes within 3 minutes.*
+    - **As a user, I want to discover and purchase recommended astrological products with button marketplace access.** *Acceptance Criteria: Marketplace accessible via button; products include crystals, books, courses; 15-25% commission on sales; purchases complete via integrated payment.*
+    - **As a user, I want to access user-to-user services within the platform with button service listings.** *Acceptance Criteria: User-to-user services listed via button; platform takes 20% commission; services include peer readings and consultations.*
+    - **As a user, I want to purchase astrology education courses with button course enrollment.** *Acceptance Criteria: Courses available for ₹500-2000; enrollment via button; progressive content delivery; certification upon completion.*
+    - **As an aspiring astrologer, I want to enroll in certification programs with button program access.** *Acceptance Criteria: Certification programs for ₹5000-15000; enrollment via button; includes training modules and assessment; recognized certification upon completion.*
+    - **As a user, I want to manage auto-renewal options for my subscriptions with button toggle controls.** *Acceptance Criteria: Auto-renewal toggle accessible via button; clear on/off states; confirmation required for changes; renewal notifications sent 7 days prior.*
+    - **As a user, I want to understand the cancellation and refund policies with button policy access.** *Acceptance Criteria: Cancellation and refund policies accessible via button; clear terms displayed; 30-day money-back guarantee for subscriptions.*
+    - **As a user, I want to earn and redeem points for engaging with the platform and referring friends with button rewards.** *Acceptance Criteria: Points earned for purchases (1 point per ₹10), referrals (50 points), engagement (daily check-ins); redemption via button for discounts or free services.*
+    - **As a user, I want to be offered an upgrade to the Essential tier with clear benefits with button upgrade prompts.** *Acceptance Criteria: Upgrade prompts show clear benefits comparison; button leads to seamless upgrade flow; upgrade completes within 2 minutes.*
+    - **As a user, I want to be teased with premium features to encourage upgrade with button feature previews.** *Acceptance Criteria: Premium feature previews accessible via button; limited-time access (1-3 days); clear upgrade path presented after preview.*
+    - **As a long-term user, I want to be rewarded with loyalty benefits and VIP tier introductions with button rewards access.** *Acceptance Criteria: Loyalty benefits unlocked after 6+ months; VIP introductions for top users; rewards accessible via dedicated button; benefits include exclusive content and priority access.*
 - **Current Implementation**: `conversationEngine.js` has `process_subscription` to acknowledge plan choice (essential/premium) but no actual payment integration logic shown. Micro-transaction handling is not explicitly developed beyond mentions in `INITIAL-PROMPT.md`. Loyalty and referral program logic is not shown. Pricing is specified in `INITIAL-PROMPT.md` but not reflected in code.
 - **Gaps for MVP**: Actual payment gateway integration, detailed mechanics for micro-transaction services, and robust loyalty/referral system logic are **missing**.
 
@@ -102,52 +102,26 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Goal**: Deliver hyper-personalized astrological insights and a unique AI companion that learns and adapts to user preferences, enhancing engagement and emotional ROI.
 - **Key Features**: AI Twin system, behavioral adaptation, personalized readings, customized alerts, and advanced personalization tools.
 - **MVP User Stories**:
-    - As a user, I want instant AI-powered answers to my basic astrological questions with button-based query options.
-    - As a user, I want an AI astrologer that understands my communication style and preferences with button personalization.
-    - As a user, I want the AI to recognize and highlight recurring life patterns based on my astrological chart with button pattern exploration.
-    - As a user, I want to track the accuracy of predictions and provide feedback with button rating systems.
-    - As a user, I want the AI to learn my preferences and provide insights that are most relevant to me with button preference settings.
-    - As a user, I want my AI Twin to remember our past conversations and my preferences with button conversation history.
-    - As a new user, I want customized service recommendations with button-guided onboarding.
-    - As a user, I want to receive personalized daily cosmic tips with button tip access.
-    - As a user, I want to receive my lucky number of the day with button daily features.
-    - As a user, I want personalized notifications about planetary transits relevant to my chart with button alert customization.
-    - As a user, I want the platform to learn my preferences and adapt its content and suggestions accordingly with button adaptive controls.
-    - As a user, I want to customize the look and feel of my dashboard and notifications with button theme options.
-    - As a user, I want to filter content based on my preferred topics, intensity, and format with button filter controls.
-    - As a user, I want to receive personalized readings tailored to my life stage and interests with button reading customization.
-    - As a user, I want to customize the alerts I receive for transits and events with button alert settings.
-    - As a user, I want to customize the interface of my dashboard with button interface options.
-    - As a user, I want personalized content feeds and custom report compilation with button feed management.
-    - As a user, I want the AI to learn my preferences and adapt its content and suggestions accordingly with button learning toggles.
-    - As a user, I want to experience "micro-aha" moments and validation of predictions with button validation features.
-- **Current Implementation**: `conversationEngine.js` uses `vedicCalculator` for basic insights (`summary`, `daily horoscope`) and handles language preferences. The onboarding flow collects birth data used for personalization. The `executeFlowAction` for `complete_profile` generates sun/moon/rising signs and life patterns.
-- **Gaps for MVP**: The core concept of an "AI Twin" that "learns communication style" is **not explicitly implemented** beyond using birth data for personalization. The current implementation is more rule-based and data-driven rather than dynamically learning conversational style.
-
-### Epic 5: Predictive Decision Timing
-- **Goal**: Provide users with precise astrological timing for important life decisions, empowering them with confidence and control.
-- **Key Features**: Transit Timing Engine, decision timing calculator, and predictive insights for optimal life event planning.
-- **MVP User Stories**:
-    - As a user, I want to know the optimal timing for important life decisions based on astrology with button timing calculators.
-    - As a user, I want tools to help me plan important life events based on optimal astrological timing with button planning tools.
-    - As a user, I want to know the best time to make a decision based on astrology with button decision timing.
-    - As a user, I want the service to help me achieve life goals with predictive timing with button goal planning.
-- **Current Implementation**: `vedicCalculator.js` has a placeholder `generateTransitPreview` that returns hardcoded messages. `conversationEngine.js` uses this to display 3-day transit previews during onboarding.
-- **Gaps for MVP**: The "Precision life planning with decision timing calculator" and "Transit Timing Engine" are **currently placeholders** with hardcoded outputs. A real implementation requiring complex astronomical calculations and personalized interpretations based on a user's full birth chart is **missing**.
-
-### Epic 6: User Experience, Engagement & Marketing
-- **Goal**: Create an engaging and intuitive user experience from discovery to long-term retention, driven by effective marketing and user acquisition strategies.
-- **Key Features**: Enhanced onboarding, compelling user journeys, gamification elements, social sharing, and targeted marketing campaigns.
-- **MVP User Stories**:
-    - As a new user, I want to receive a high-value free reading immediately upon signup with button access.
-    - As a new user, I want my initial free reading to be personalized and visually appealing with button sharing.
-    - As a new user, I want the free reading to entice me to explore paid features with button upgrade prompts.
-    - As a new user, I want to feel like I'm part of a unique cosmic story from the start with button storytelling.
-    - As a new user, I want limited-time free access to premium features to experience their value with button trials.
-    - As a new user, I want an interactive tutorial to guide me through the platform's features, including compatibility sharing with button guides.
-    - As a new user, I want an engaging initial interaction that guides me to my first reading with button flows.
-    - As a user, I want to be teased with premium features to encourage upgrade with button previews.
-    - As a user, I want to receive proactive, valuable insights and exclusive content with button access.
+    - **As a user, I want instant AI-powered answers to my basic astrological questions with button-based query options.** *Acceptance Criteria: AI responses delivered within 30 seconds, 90%+ accuracy for basic questions, button suggestions for complex topics.*
+    - **As a user, I want an AI astrologer that understands my communication style and preferences with button personalization.** *Acceptance Criteria: AI adapts tone (formal/casual/spiritual) based on user history, remembers communication preferences, personalization settings accessible via button.*
+    - **As a user, I want the AI to recognize and highlight recurring life patterns based on my astrological chart with button pattern exploration.** *Acceptance Criteria: AI identifies patterns from birth chart and user history, patterns highlighted in readings, exploration accessible via dedicated button.*
+    - **As a user, I want to track the accuracy of predictions and provide feedback with button rating systems.** *Acceptance Criteria: 5-star rating system for predictions, feedback tracked over time, accuracy statistics displayed, rating buttons integrated into all readings.*
+    - **As a user, I want the AI to learn my preferences and provide insights that are most relevant to me with button preference settings.** *Acceptance Criteria: AI learns from user interactions and ratings, preferences adjustable via button, relevance score improves over time (target 95% relevant insights).*
+    - **As a user, I want my AI Twin to remember our past conversations and my preferences with button conversation history.** *Acceptance Criteria: Conversation history accessible via button, AI references past interactions in responses, preferences persist across sessions.*
+    - **As a new user, I want customized service recommendations with button-guided onboarding.** *Acceptance Criteria: AI-driven recommendations based on profile data, onboarding flow adapts to user responses, recommendations presented via interactive buttons.*
+    - **As a user, I want to receive personalized daily cosmic tips with button tip access.** *Acceptance Criteria: Daily tips personalized to user's chart and current transits, accessible via button, tips delivered at preferred time.*
+    - **As a user, I want to receive my lucky number of the day with button daily features.** *Acceptance Criteria: Lucky number calculated from birth chart and daily transits, displayed prominently, accessible via daily features button.*
+    - **As a user, I want personalized notifications about planetary transits relevant to my chart with button alert customization.** *Acceptance Criteria: Transit alerts customized to user's birth chart, notification preferences adjustable via button, alerts sent 24 hours before significant transits.*
+    - **As a user, I want the platform to learn my preferences and adapt its content and suggestions accordingly with button adaptive controls.** *Acceptance Criteria: Platform learns from user behavior and feedback, adaptive controls accessible via button, content relevance improves by 20% within 30 days.*
+    - **As a user, I want to customize the look and feel of my dashboard and notifications with button theme options.** *Acceptance Criteria: Multiple themes available (astrological, modern, traditional), theme selection via button, changes apply immediately across all interfaces.*
+    - **As a user, I want to filter content based on my preferred topics, intensity, and format with button filter controls.** *Acceptance Criteria: Filters for topics (career, relationships, health), intensity levels (light/deep), formats (text/audio/video), filters accessible via button.*
+    - **As a user, I want to receive personalized readings tailored to my life stage and interests with button reading customization.** *Acceptance Criteria: Readings customized based on age, life stage, stated interests, customization options accessible via button in reading requests.*
+    - **As a user, I want to customize the alerts I receive for transits and events with button alert settings.** *Acceptance Criteria: Granular alert settings for different transit types and events, settings accessible via button, alerts respect user time zones.*
+    - **As a user, I want to customize the interface of my dashboard with button interface options.** *Acceptance Criteria: Dashboard widgets customizable (charts, predictions, history), layout options available, changes saved automatically.*
+    - **As a user, I want personalized content feeds and custom report compilation with button feed management.** *Acceptance Criteria: AI-curated content feeds based on preferences, custom reports compilable from multiple readings, management accessible via button.*
+    - **As a user, I want the AI to learn my preferences and adapt its content and suggestions accordingly with button learning toggles.** *Acceptance Criteria: Learning toggles for different preference types, AI adaptation rate adjustable, learning progress visible to user.*
+    - **As a user, I want to experience "micro-aha" moments and validation of predictions with button validation features.** *Acceptance Criteria: Validation features highlight accurate predictions, "aha" moments celebrated in UI, validation accessible via button after prediction events.*
+    - **As a user, I want to receive proactive, valuable insights and exclusive content with button access.** *Acceptance Criteria: Proactive insights sent based on current transits, exclusive content unlocked for premium users, access via dedicated button.*
     - As a user, I want interactive prompts that help me explore different life aspects and compatibility with button options.
     - As a user, I want to reflect on my daily experiences with the bot with button reflection tools.
     - As a user, I want to receive Monday motivation based on weekly planetary influences with button motivation.
@@ -171,14 +145,61 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Current Implementation**: The `conversationEngine.js` onboarding flow provides initial personalized responses and introduces elements like Sun Sign. The examples for bot experience in `INITIAL-PROMPT.md` show the desired interaction style.
 - **Gaps for MVP**: Many elements under UX and Engagement are descriptions of desired behavior and content (e.g., "Storytelling Integration", "Emotional Validation") rather than tangible features demonstrated in the code. These would need to be implemented through careful crafting of conversational flows and message content.
 
+### Epic 5: Predictive Decision Timing
+- **Goal**: Provide users with precise astrological timing for important life decisions, empowering them with confidence and control.
+- **Key Features**: Transit Timing Engine, decision timing calculator, and predictive insights for optimal life event planning.
+- **MVP User Stories**:
+    - **As a user, I want to know the optimal timing for important life decisions based on astrology with button timing calculators.** *Acceptance Criteria: Decision timing calculator accessible via button, inputs decision type and timeframe, outputs optimal timing windows based on user's birth chart and current transits.*
+    - **As a user, I want tools to help me plan important life events based on optimal astrological timing with button planning tools.** *Acceptance Criteria: Event planning tools include wedding, career change, relocation calculators, tools accessible via button, planning considers user's full birth chart and planetary cycles.*
+    - **As a user, I want to know the best time to make a decision based on astrology with button decision timing.** *Acceptance Criteria: Decision timing feature provides yes/no/maybe recommendations based on transits, accessible via button, considers both Vedic and Western astrology systems.*
+    - **As a user, I want the service to help me achieve life goals with predictive timing with button goal planning.** *Acceptance Criteria: Goal planning integrates with user's stated objectives, provides timeline recommendations based on astrological cycles, accessible via button, tracks progress toward goals.*
+- **Current Implementation**: `vedicCalculator.js` has a placeholder `generateTransitPreview` that returns hardcoded messages. `conversationEngine.js` uses this to display 3-day transit previews during onboarding.
+- **Gaps for MVP**: The "Precision life planning with decision timing calculator" and "Transit Timing Engine" are **currently placeholders** with hardcoded outputs. A real implementation requiring complex astronomical calculations and personalized interpretations based on a user's full birth chart is **missing**.
+
+### Epic 6: User Experience, Engagement & Marketing
+- **Goal**: Create an engaging and intuitive user experience from discovery to long-term retention, driven by effective marketing and user acquisition strategies.
+- **Key Features**: Enhanced onboarding, compelling user journeys, gamification elements, social sharing, and targeted marketing campaigns.
+- **MVP User Stories**:
+    - **As a new user, I want to receive a high-value free reading immediately upon signup with button access.** *Acceptance Criteria: Free reading delivered within 5 minutes of signup, personalized to birth details, includes shareable elements, leads to upgrade prompts.*
+    - **As a new user, I want my initial free reading to be personalized and visually appealing with button sharing.** *Acceptance Criteria: Reading uses user's birth chart data, includes visual elements (charts/images), WhatsApp sharing button functional, reading feels uniquely tailored.*
+    - **As a new user, I want the free reading to entice me to explore paid features with button upgrade prompts.** *Acceptance Criteria: Free reading ends with clear upgrade teasers, button links to premium features, upgrade flow seamless and compelling.*
+    - **As a new user, I want to feel like I'm part of a unique cosmic story from the start with button storytelling.** *Acceptance Criteria: Onboarding includes narrative elements, personalized cosmic story framework, storytelling buttons guide user through journey.*
+    - **As a new user, I want limited-time free access to premium features to experience their value with button trials.** *Acceptance Criteria: 1-3 day premium trial activated post-signup, all premium features accessible, clear expiration warnings, upgrade prompts at trial end.*
+    - **As a new user, I want an interactive tutorial to guide me through the platform's features, including compatibility sharing with button guides.** *Acceptance Criteria: Step-by-step tutorial with interactive elements, covers key features including compatibility, tutorial completable in under 10 minutes, button navigation throughout.*
+    - **As a new user, I want an engaging initial interaction that guides me to my first reading with button flows.** *Acceptance Criteria: First interaction personalized, guides to birth data input, leads to immediate reading, button-based flow prevents confusion.*
+    - **As a user, I want to be teased with premium features to encourage upgrade with button previews.** *Acceptance Criteria: Premium feature previews accessible via buttons, limited functionality demonstrations, clear upgrade paths presented.*
+    - **As a user, I want to receive proactive, valuable insights and exclusive content with button access.** *Acceptance Criteria: Proactive insights sent based on transits, exclusive content for subscribers, accessible via dedicated buttons, insights relevant to user's chart.*
+    - **As a user, I want interactive prompts that help me explore different life aspects and compatibility with button options.** *Acceptance Criteria: Interactive prompts for career, relationships, health, compatibility options included, button-based responses, prompts adaptive to user history.*
+    - **As a user, I want to reflect on my daily experiences with the bot with button reflection tools.** *Acceptance Criteria: Daily reflection prompts sent, button-based response options, reflections stored in user history, insights derived from reflections.*
+    - **As a user, I want to receive Monday motivation based on weekly planetary influences with button motivation.** *Acceptance Criteria: Weekly Monday messages with astrological motivation, personalized to user's chart, accessible via button, includes actionable advice.*
+    - **As a user, I want to check in with the bot about my feelings during transits with button check-ins.** *Acceptance Criteria: Transit-based check-in prompts, button options for emotional states, responses stored and analyzed, follow-up insights provided.*
+    - **As a user, I want suggestions for weekend spiritual practices with button practice guides.** *Acceptance Criteria: Weekend practice suggestions based on lunar phases, button access to guides, practices aligned with user's chart, includes meditation/audio options.*
+    - **As a user, I want to see my progress in discovering personal patterns with button progress tracking.** *Acceptance Criteria: Progress visualization for pattern discovery, button access to tracking, milestones celebrated, progress tied to engagement metrics.*
+    - **As a user, I want future insights that are personalized and relevant with button insight access.** *Acceptance Criteria: Future predictions based on current transits, personalized to user's chart, accessible via button, includes timing and preparation advice.*
+    - **As a user, I want to see social proof of prediction accuracy with button testimonials.** *Acceptance Criteria: User testimonials and success stories displayed, button access to testimonials, stories anonymized but verifiable, builds trust through community proof.*
+    - **As a user, I want time-sensitive value propositions with button offers.** *Acceptance Criteria: Limited-time offers based on astrological events, button access to offers, clear expiration times, compelling value propositions.*
+    - **As a user, I want a summary of my personal insights after one month with button summaries.** *Acceptance Criteria: Monthly summary generated automatically, includes key insights and patterns, accessible via button, shareable format.*
+    - **As a user, I want to compare my actual experiences with past predictions with button comparison tools.** *Acceptance Criteria: Prediction vs reality comparison tool, button access, visual comparison interface, accuracy ratings tracked.*
+    - **As a user, I want to provide feedback on the accuracy of insights with button feedback forms.** *Acceptance Criteria: Feedback forms accessible via button, rating system for predictions, feedback stored and analyzed, improvements implemented based on feedback.*
+    - **As a user, I want to experience 'aha' moments that enhance my understanding with button moments.** *Acceptance Criteria: 'Aha' moments highlighted in readings, button access to related content, moments tied to pattern recognition, emotional impact maximized.*
+    - **As a user, I want the service to help me form astrological habits through regular touchpoints with button habits.** *Acceptance Criteria: Habit-forming touchpoints (daily/weekly), button access to habit tracking, streaks and rewards for consistency, habits integrated into daily routine.*
+    - **As a user, I want advanced features to be introduced gradually with button progression.** *Acceptance Criteria: Feature unlocks based on engagement level, button access to new features, gradual introduction prevents overwhelm, progression feels rewarding.*
+    - **As a user, I want my journey milestones and achievements to be celebrated with button celebrations.** *Acceptance Criteria: Milestone celebrations triggered automatically, button access to celebration content, achievements shared socially, emotional validation provided.*
+    - **As a user, I want to be re-engaged with relevant astrological insights if I become inactive with button re-engagement.** *Acceptance Criteria: Re-engagement campaigns triggered by inactivity, insights relevant to user's chart, button access to re-engagement content, campaigns personalized.*
+    - **As a new user, I want an immediate, personalized first interaction with button responses.** *Acceptance Criteria: First message response within 10 seconds, personalized greeting using available data, button options for next steps, engaging and welcoming tone.*
+    - **As a new user, I want a free initial reading that demonstrates personal relevance with button readings.** *Acceptance Criteria: Initial reading free and immediate, demonstrates accuracy with personal details, button access to reading, leads to further engagement.*
+    - **As a potential user, I want to easily discover the service and initiate contact with button discovery.** *Acceptance Criteria: Clear discovery mechanisms (ads, referrals), easy WhatsApp initiation, button-based first interaction, low friction entry.*
+- **Current Implementation**: The `conversationEngine.js` onboarding flow provides initial personalized responses and introduces elements like Sun Sign. The examples for bot experience in `INITIAL-PROMPT.md` show the desired interaction style.
+- **Gaps for MVP**: Many elements under UX and Engagement are descriptions of desired behavior and content (e.g., "Storytelling Integration", "Emotional Validation") rather than tangible features demonstrated in the code. These would need to be implemented through careful crafting of conversational flows and message content.
+
 ### Epic 7: User Authentication & Profile Management
 - **Goal**: Securely manage user identities and comprehensive astrological profiles, ensuring data privacy and personalized service delivery.
 - **Key Features**: WhatsApp number verification, optional email/social login, two-factor authentication, and detailed user profile components (birth details, preferences, history).
 - **MVP User Stories**:
-    - As a user, I want to create and manage my profile with accurate birth details with button profile management.
-    - As a user, I want to store my basic personal and birth information in my profile with button data entry.
-    - As a user, I want to set my preferences for the types of astrology readings I receive and receive relevant reminders with button preference settings.
-    - As a user, I want to manage my privacy and security settings with button controls.
+    - **As a user, I want to create and manage my profile with accurate birth details with button profile management.** *Acceptance Criteria: Profile creation guided by buttons, birth details input validated, profile editable via button, changes saved automatically.*
+    - **As a user, I want to store my basic personal and birth information in my profile with button data entry.** *Acceptance Criteria: All required fields (name, DOB, time, place) collected via button forms, data validated for accuracy, stored securely, accessible for readings.*
+    - **As a user, I want to set my preferences for the types of astrology readings I receive and receive relevant reminders with button preference settings.** *Acceptance Criteria: Preference settings for astrology systems, reading types, reminder frequency, settings accessible via button, preferences applied to all future interactions.*
+    - **As a user, I want to manage my privacy and security settings with button controls.** *Acceptance Criteria: Privacy controls for data sharing, security settings for authentication, button access to settings, changes take effect immediately.*
     - As a user, I want my birth chart to be automatically generated from my profile details with button generation.
     - As a new user, I want a guided process to input my birth data with button-guided onboarding.
     - As a user, I want to have additional verification options for account recovery with button recovery options.
@@ -191,29 +212,29 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Goal**: Foster a vibrant community and enable social interaction through compatibility analysis, sharing features, and network effects, driving viral growth.
 - **Key Features**: Compatibility matching, shareable birth charts, Astro-Social Network, group readings, social proof features, and community challenges.
 - **MVP User Stories**:
-    - As a user, I want to analyze my compatibility with friends and partners with button compatibility analysis.
-    - As a user, I want to generate and share visually appealing birth charts with others with button sharing.
-    - As a user, I want to connect with a community of users who have similar astrological profiles with button community access.
-    - As a user, I want an easy way to check astrological compatibility with my friends and partners with button checks.
-    - As a user, I want to easily share my astrological insights and achievements on social media with button sharing.
-    - As a user, I want to easily share aesthetically pleasing astrological insights that make me feel good with button aesthetics.
-    - As a user, I want to invite friends to unlock more detailed compatibility reports with button invitations.
-    - As a user, I want the Astro-Social Network to become more valuable as more people join with button network growth.
-    - As a user, I want to invite friends to participate in group readings with button group invites.
-    - As a user, I want to track and support my friends through their astrological transits with button tracking.
-    - As a user, I want to easily share compatibility reports to encourage others to join with button report sharing.
-    - As a user, I want to see success stories and prediction accuracy to build trust in the platform with button testimonials.
-    - As a user, I want to get combined astrological readings with my family and friends with button group readings.
-    - As a user, I want to manage my friends and social connections for compatibility checks with button friend management.
-    - As a user, I want to create a compatibility profile for matching with others with button profile creation.
-    - As a user, I want to share content with privacy controls with button privacy settings.
-    - As a user, I want to generate and share beautiful, personalized forecasts with button forecast sharing.
-    - As a new user, I want to be prompted to add a friend for a compatibility check during onboarding with button prompts.
-    - As a user, I want to see my friends' progress in their cosmic journey and engage in friendly competition with button progress views.
-    - As a user, I want to easily share compatibility reports and add friends with button social actions.
-    - As a user, I want to see and share success stories within the Astro-Social Network with button story sharing.
-    - As a VIP user, I want exclusive access to a community with direct astrologer interaction with button VIP access.
-    - As a user, I want to participate in community challenges during planetary events with button challenge participation.
+    - **As a user, I want to analyze my compatibility with friends and partners with button compatibility analysis.** *Acceptance Criteria: Compatibility analysis accessible via button, inputs friend's birth details, generates detailed report, considers multiple astrology systems.*
+    - **As a user, I want to generate and share visually appealing birth charts with others with button sharing.** *Acceptance Criteria: Birth chart generation takes <30 seconds, visually appealing design, WhatsApp sharing button functional, chart includes key astrological elements.*
+    - **As a user, I want to connect with a community of users who have similar astrological profiles with button community access.** *Acceptance Criteria: Community matching based on birth charts, button access to similar users, connection requests sent via button, privacy controls maintained.*
+    - **As a user, I want an easy way to check astrological compatibility with my friends and partners with button checks.** *Acceptance Criteria: Quick compatibility check via button, minimal input required, results displayed immediately, option to upgrade to detailed report.*
+    - **As a user, I want to easily share my astrological insights and achievements on social media with button sharing.** *Acceptance Criteria: Share buttons for insights and achievements, integrates with WhatsApp/social media, shareable content optimized for engagement, tracking of shares.*
+    - **As a user, I want to easily share aesthetically pleasing astrological insights that make me feel good with button aesthetics.** *Acceptance Criteria: Insights designed with aesthetic appeal, button access to sharing, content makes users feel special, shareable formats (images, text).*
+    - **As a user, I want to invite friends to unlock more detailed compatibility reports with button invitations.** *Acceptance Criteria: Invitation system via button, friends receive unlock incentives, detailed reports unlocked upon friend signup, referral tracking.*
+    - **As a user, I want the Astro-Social Network to become more valuable as more people join with button network growth.** *Acceptance Criteria: Network value increases with user base, button access to network features, growth metrics visible, benefits scale with network size.*
+    - **As a user, I want to invite friends to participate in group readings with button group invites.** *Acceptance Criteria: Group reading invitations via button, friends can join via link/button, group readings combine multiple charts, minimum group size enforced.*
+    - **As a user, I want to track and support my friends through their astrological transits with button tracking.** *Acceptance Criteria: Friend transit tracking accessible via button, notifications for important transits, support messages sendable, privacy permissions required.*
+    - **As a user, I want to easily share compatibility reports to encourage others to join with button report sharing.** *Acceptance Criteria: Compatibility reports shareable via button, includes signup incentives, tracks conversions from shares, viral sharing mechanics.*
+    - **As a user, I want to see success stories and prediction accuracy to build trust in the platform with button testimonials.** *Acceptance Criteria: Success stories accessible via button, includes prediction accuracy metrics, testimonials from verified users, builds community trust.*
+    - **As a user, I want to get combined astrological readings with my family and friends with button group readings.** *Acceptance Criteria: Group readings for 2+ people via button, combines individual charts, provides collective insights, minimum participants required.*
+    - **As a user, I want to manage my friends and social connections for compatibility checks with button friend management.** *Acceptance Criteria: Friend list management via button, add/remove friends, connection permissions, integration with compatibility features.*
+    - **As a user, I want to create a compatibility profile for matching with others with button profile creation.** *Acceptance Criteria: Compatibility profile creation via button, includes birth details and preferences, used for matching algorithms, privacy controls included.*
+    - **As a user, I want to share content with privacy controls with button privacy settings.** *Acceptance Criteria: Privacy settings for content sharing via button, granular controls (public/friends/private), settings applied to all shares, user consent required.*
+    - **As a user, I want to generate and share beautiful, personalized forecasts with button forecast sharing.** *Acceptance Criteria: Forecast generation personalized, beautiful design, button sharing options, forecasts based on current transits and user chart.*
+    - **As a new user, I want to be prompted to add a friend for a compatibility check during onboarding with button prompts.** *Acceptance Criteria: Onboarding includes friend addition prompt, button-based flow, compatibility check initiated immediately, optional step.*
+    - **As a user, I want to see my friends' progress in their cosmic journey and engage in friendly competition with button progress views.** *Acceptance Criteria: Friend progress visible via button, cosmic journey visualization, friendly competition elements, privacy permissions required.*
+    - **As a user, I want to easily share compatibility reports and add friends with button social actions.** *Acceptance Criteria: Social actions (share/add friend) via buttons, streamlined process, integration with WhatsApp, action tracking.*
+    - **As a user, I want to see and share success stories within the Astro-Social Network with button story sharing.** *Acceptance Criteria: Success stories from network accessible via button, sharing functionality included, stories build community engagement.*
+    - **As a VIP user, I want exclusive access to a community with direct astrologer interaction with button VIP access.** *Acceptance Criteria: VIP community access via button, direct astrologer interaction, exclusive content/features, access restricted to VIP tier.*
+    - **As a user, I want to participate in community challenges during planetary events with button challenge participation.** *Acceptance Criteria: Challenges accessible via button, tied to planetary events, participation tracked, rewards for completion, community-wide engagement.*
 - **Current Implementation**: `vedicCalculator.js` has a `checkCompatibility` method. `conversationEngine.js` has a `generate_compatibility` action that uses this. `INITIAL-PROMPT.md` outlines many social features.
 - **Gaps for MVP**: A full "Astro-Social Network" with chat, profiles, and feeds, or advanced group reading features, are **not implemented** in the provided code and would require significant development. The social sharing mentioned primarily implies a user sharing externally, not within a platform social network.
 
@@ -221,14 +242,14 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Goal**: Implement engaging gamification elements to drive user retention, encourage daily interaction, and reward loyalty.
 - **Key Features**: Karma Points system, streak mechanics, unlockable content, cosmic journey progress, achievement badges, and leaderboards.
 - **MVP User Stories**:
-    - As a user, I want to earn badges and track my progress for engaging with the platform with button badge tracking.
-    - As a user, I want to earn and redeem Karma Points for engaging with the platform and referring friends with button points system.
-    - As a user, I want to maintain daily engagement streaks and share them with friends with button streak sharing.
-    - As a user, I want to unlock new content and insights as I progress with button unlocks.
-    - As a user, I want to visualize my progress on a cosmic journey and share it with friends with button journey views.
-    - As a user, I want to participate in competitions and see my ranking on leaderboards with button leaderboards.
-    - As a user, I want to easily share my achievement badges and milestones on social media with button achievement sharing.
-    - As a user, I want to track my achievements and progress within the platform.
+    - **As a user, I want to earn badges and track my progress for engaging with the platform with button badge tracking.** *Acceptance Criteria: Badges earned for specific actions (daily login, referrals, readings), progress tracking via button, badge collection visible, achievements celebrated.*
+    - **As a user, I want to earn and redeem Karma Points for engaging with the platform and referring friends with button points system.** *Acceptance Criteria: Points earned for engagement activities, redemption catalog accessible via button, points balance visible, referral bonuses included.*
+    - **As a user, I want to maintain daily engagement streaks and share them with friends with button streak sharing.** *Acceptance Criteria: Daily streak tracking automatic, streak visualization, sharing buttons for social media/WhatsApp, streak preservation across sessions.*
+    - **As a user, I want to unlock new content and insights as I progress with button unlocks.** *Acceptance Criteria: Content unlocks based on engagement milestones, unlock notifications, button access to new content, progression feels rewarding.*
+    - **As a user, I want to visualize my progress on a cosmic journey and share it with friends with button journey views.** *Acceptance Criteria: Cosmic journey visualization shows progress, button access to views, sharing options included, journey tied to astrological themes.*
+    - **As a user, I want to participate in competitions and see my ranking on leaderboards with button leaderboards.** *Acceptance Criteria: Competitions based on engagement metrics, leaderboards updated in real-time, button access to rankings, participation rewards.*
+    - **As a user, I want to easily share my achievement badges and milestones on social media with button achievement sharing.** *Acceptance Criteria: Achievement sharing via button, integrates with social media/WhatsApp, shareable badge images, milestone highlights.*
+    - **As a user, I want to track my achievements and progress within the platform.** *Acceptance Criteria: Achievement tracking accessible via button, progress metrics visible, historical achievements stored, gamification elements clear.*
 - **Current Implementation**: Only mentions of "Achievement System" in `INITIAL-PROMPT.md` and basic concepts under "Gamification Elements". No direct code implementation for points, streaks, leaderboards, or unlockable content is shown.
 - **Gaps for MVP**: Full gamification mechanics with points, levels, and unlockable features are **not implemented**.
 
@@ -257,9 +278,9 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Goal**: Provide users with direct access to certified human astrologers for in-depth consultations and personalized guidance.
 - **Key Features**: Direct text/voice chat with astrologers, scheduled consultations, and follow-up reports.
 - **MVP User Stories**:
-    - As a user, I want to chat directly with a human astrologer for personalized advice with button chat initiation.
-    - As a user, I want to schedule a consultation with a specific astrologer at my convenience with button scheduling.
-    - As a user, I want a seamless handover to a human astrologer when needed with button handover.
+    - **As a user, I want to chat directly with a human astrologer for personalized advice with button chat initiation.** *Acceptance Criteria: Chat initiation via button, connects to available certified astrologer, chat interface seamless, session duration tracked.*
+    - **As a user, I want to schedule a consultation with a specific astrologer at my convenience with button scheduling.** *Acceptance Criteria: Astrologer selection via button, calendar scheduling interface, confirmation sent, reminders before session, payment processed.*
+    - **As a user, I want a seamless handover to a human astrologer when needed with button handover.** *Acceptance Criteria: Handover triggered by user request or AI detection, smooth transition without data loss, astrologer briefed on conversation history, user notified of handover.*
 - **Current Implementation**: `conversationEngine.js` has a reference to `seamless handover to human astrologers when needed` in a User Interface & Interaction Design section, but no direct implementation is shown for connecting users to human astrologers.
 - **Gaps for MVP**: The actual functionality of connecting to human astrologers, scheduling, and managing these interactions is **not implemented**.
 

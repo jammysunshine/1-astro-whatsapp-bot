@@ -1,7 +1,7 @@
-# Epic 12: Performance Optimization and Monitoring
+# Epic 12: Performance Optimization
 
 ## Description
-Implement comprehensive performance optimization and monitoring infrastructure following BMAD methodology and gemini.md mandates. This epic is CRITICAL for solo developer success as it ensures optimal user experience and eliminates manual performance tuning burden through automated monitoring and optimization.
+Implement comprehensive performance optimization techniques following BMAD methodology and gemini.md mandates. This epic focuses on code-level optimizations, caching strategies, database tuning, and resource management to ensure optimal user experience. (Note: Monitoring aspects are covered in Epic 14 and Epic 20.)
 
 ## Features Included
 - Performance optimization implementation with measurable improvements

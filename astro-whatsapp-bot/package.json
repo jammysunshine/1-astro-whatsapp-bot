@@ -29,80 +29,6 @@
     "clean": "rm -rf node_modules package-lock.json && npm install"
   },
   "jest": {
-    "setupFilesAfterEnv": ["<rootDir>/tests/helpers/setup.js"],
-    "testEnvironment": "node",
-    "collectCoverageFrom": [
-      "src/**/*.js",
-      "!src/server.js"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 95,
-        "branches": 95,
-        "functions": 95,
-        "lines": 95
-      }
-    }
-  },
-  "keywords": [
-    "astrology",
-    "whatsapp",
-    "bot",
-    "ai",
-    "personalized",
-    "horoscope",
-    "kundli"
-  ],
-  "author": "Astrology Bot Team",
-  "license": "MIT",
-  "dependencies": {
-    "astrologer": "^1.0.2",
-    "axios": "^1.6.0",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "helmet": "^8.1.0",
-    "joi": "^17.11.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.6.3",
-    "nodemailer": "^6.9.7",
-    "stripe": "^14.5.0",
-    "sweph": "^2.10.3-b-1",
-    "twilio": "^4.19.0",
-    "winston": "^3.11.0"
-  },
-  "devDependencies": {
-    "@types/jest": "^29.5.8",
-    "coveralls": "^3.1.1",
-    "eslint": "^8.53.0",
-    "husky": "^8.0.3",
-    "jest": "^29.7.0",
-    "jest-html-reporter": "^3.10.2",
-    "jest-junit": "^16.0.0",
-    "jest-sonar-reporter": "^2.0.0",
-    "jsdoc": "^4.0.2",
-    "lint-staged": "^15.0.2",
-    "mongodb-memory-server": "^10.2.3",
-    "node-notifier": "^10.0.1",
-    "nodemon": "^3.0.1",
-    "nyc": "^15.1.0",
-    "prettier": "^3.0.3",
-    "supertest": "^6.3.3"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jammysunshine/1-astro-whatsapp-bot.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jammysunshine/1-astro-whatsapp-bot/issues"
-  },
-  "homepage": "https://github.com/jammysunshine/1-astro-whatsapp-bot#readme",
-  "jest": {
     "testEnvironment": "node",
     "roots": [
       "<rootDir>/tests",
@@ -179,5 +105,64 @@
     "maxWorkers": "50%",
     "detectOpenHandles": true,
     "forceExit": true
-  }
+  },
+  "keywords": [
+    "astrology",
+    "whatsapp",
+    "bot",
+    "ai",
+    "personalized",
+    "horoscope",
+    "kundli"
+  ],
+  "author": "Astrology Bot Team",
+  "license": "MIT",
+  "dependencies": {
+    "astrologer": "^1.0.2",
+    "axios": "^1.6.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^8.1.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.3",
+    "nodemailer": "^6.9.7",
+    "razorpay": "^2.9.6",
+    "stripe": "^14.5.0",
+    "sweph": "^2.10.3-b-1",
+    "twilio": "^4.19.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.8",
+    "coveralls": "^3.1.1",
+    "eslint": "^8.53.0",
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "jest-html-reporter": "^3.10.2",
+    "jest-junit": "^16.0.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "jsdoc": "^4.0.2",
+    "lint-staged": "^15.0.2",
+    "mongodb-memory-server": "^10.2.3",
+    "node-notifier": "^10.0.1",
+    "nodemon": "^3.0.1",
+    "nyc": "^15.1.0",
+    "prettier": "^3.0.3",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jammysunshine/1-astro-whatsapp-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jammysunshine/1-astro-whatsapp-bot/issues"
+  },
+  "homepage": "https://github.com/jammysunshine/1-astro-whatsapp-bot#readme"
 }

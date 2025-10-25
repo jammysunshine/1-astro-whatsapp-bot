@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { connectDB } = require('./config/database');
 const { handleWhatsAppWebhook, verifyWhatsAppWebhook } = require('./controllers/whatsappController');
+const paymentService = require('./services/payment/paymentService');
 const { errorHandler } = require('./utils/errorHandler');
 const logger = require('./utils/logger');
 
@@ -103,6 +104,27 @@ app.get('/ready', (req, res) => {
 // WhatsApp webhook endpoints
 app.post('/webhook', handleWhatsAppWebhook);
 app.get('/webhook', verifyWhatsAppWebhook);
+
+// Payment webhook endpoints
+app.post('/webhooks/razorpay', async(req, res) => {
+  try {
+    const result = await paymentService.handleRazorpayWebhook(req.body);
+    res.status(200).json(result);
+  } catch (error) {
+    logger.error('Razorpay webhook error:', error);
+    res.status(500).json({ error: 'Webhook processing failed' });
+  }
+});
+
+app.post('/webhooks/stripe', async(req, res) => {
+  try {
+    const result = await paymentService.handleStripeWebhook(req.body);
+    res.status(200).json(result);
+  } catch (error) {
+    logger.error('Stripe webhook error:', error);
+    res.status(500).json({ error: 'Webhook processing failed' });
+  }
+});
 
 // Test endpoint for rate limiting
 app.get('/rate-limit-test', (req, res) => {

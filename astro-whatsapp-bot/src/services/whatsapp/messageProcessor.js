@@ -472,7 +472,8 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     break;
   case 'upgrade_to_essential':
     try {
-      const result = await paymentService.processSubscription(phoneNumber, 'essential');
+      const region = paymentService.detectRegion(phoneNumber);
+      const result = await paymentService.processSubscription(phoneNumber, 'essential', region, 'card');
       response = result.message;
     } catch (error) {
       response = '❌ Sorry, I couldn\'t process your subscription right now. Please try again later or contact support.';
@@ -480,7 +481,8 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     break;
   case 'upgrade_to_premium':
     try {
-      const result = await paymentService.processSubscription(phoneNumber, 'premium');
+      const region = paymentService.detectRegion(phoneNumber);
+      const result = await paymentService.processSubscription(phoneNumber, 'premium', region, 'card');
       response = result.message;
     } catch (error) {
       response = '❌ Sorry, I couldn\'t process your subscription right now. Please try again later or contact support.';
@@ -805,7 +807,8 @@ const handleCompatibilityRequest = async(phoneNumber, user, otherBirthDate) => {
  */
 const handleSubscriptionRequest = async(phoneNumber, user, planId) => {
   try {
-    const result = await paymentService.processSubscription(phoneNumber, planId);
+    const region = paymentService.detectRegion(phoneNumber);
+    const result = await paymentService.processSubscription(phoneNumber, planId, region, 'card');
     await sendMessage(phoneNumber, result.message);
 
     // Send welcome message based on plan

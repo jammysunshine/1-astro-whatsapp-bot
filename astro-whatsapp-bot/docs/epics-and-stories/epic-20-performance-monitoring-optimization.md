@@ -1,20 +1,20 @@
-# Epic 20: Performance Monitoring & Optimization
+# Epic 20: Infrastructure Monitoring & Availability
 
 ## Epic Goal
-Implement comprehensive monitoring, alerting, and performance optimization to ensure high availability and fast response times for the astrology WhatsApp bot.
+Implement comprehensive infrastructure monitoring and availability management to ensure system reliability and uptime for the astrology WhatsApp bot.
 
 ## Epic Description
 
 **Existing System Context:**
-- Bot performance not systematically monitored
-- No automated performance testing
-- Basic infrastructure monitoring
+- Infrastructure not systematically monitored
+- No automated availability management
+- Basic system health checks
 
 **Enhancement Details:**
-- Application performance monitoring tools
 - Infrastructure monitoring and alerting
-- Automated performance testing suite
-- Response time optimization and caching
+- High availability and failover systems
+- Automated scaling and resource management
+- System availability and uptime tracking
 
 ## Stories
 

@@ -1,7 +1,7 @@
-# Epic 8: Educational Content and Services
+# Epic 8: Educational Content, Services & Management
 
 ## Description
-Implement comprehensive educational content and services following BMAD methodology. This epic focuses on expanding revenue streams and user engagement through astrology education, certification programs, and user-to-user service marketplace.
+Implement comprehensive educational content, services, and content management following BMAD methodology. This epic focuses on content creation, educational programs, marketplace services, and content monetization strategies. (Note: Payment processing is covered in Epic 16.)
 
 ## Features Included
 - Astrology course platform with educational content
@@ -9,7 +9,10 @@ Implement comprehensive educational content and services following BMAD methodol
 - User-to-user service marketplace with commission revenue
 - Course enrollment and progress tracking system
 - Certification exam and validation system
-- Educational content management system
+- Educational content management system (CMS)
+- Content authoring tools and scheduling system
+- Personalized content recommendations
+- Content performance analytics
 - Expert instructor platform and marketplace
 - Marketplace commission and revenue sharing system
 - Course sales and certification program revenue

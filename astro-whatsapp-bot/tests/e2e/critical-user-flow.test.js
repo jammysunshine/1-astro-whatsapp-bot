@@ -11,7 +11,7 @@ jest.mock('../../src/services/whatsapp/webhookValidator');
 const { validateWebhookSignature } = require('../../src/services/whatsapp/webhookValidator');
 
 describe('Critical User Flow End-to-End Tests', () => {
-  beforeAll(async () => {
+  beforeAll(async() => {
     // Set test environment variables
     process.env.NODE_ENV = 'test';
     process.env.W1_SKIP_WEBHOOK_SIGNATURE = 'true';
@@ -19,7 +19,7 @@ describe('Critical User Flow End-to-End Tests', () => {
     process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test_phone_id';
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     // Clear database collections before each test
     try {
       await User.deleteMany({});
@@ -41,7 +41,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('New User Registration Flow', () => {
     const testPhone = '+1234567890';
 
-    it('should complete full new user registration and first reading flow', async () => {
+    it('should complete full new user registration and first reading flow', async() => {
       // Step 1: New user sends birth date directly (welcome step expects date)
       const birthDateResponse = await request(app)
         .post('/webhook')
@@ -129,12 +129,12 @@ describe('Critical User Flow End-to-End Tests', () => {
             }]
           }]
         })
-         .set('x-hub-signature-256', 'test-signature')
-         .expect(200);
+        .set('x-hub-signature-256', 'test-signature')
+        .expect(200);
 
-       expect(birthPlaceResponse.body.success).toBe(true);
+      expect(birthPlaceResponse.body.success).toBe(true);
 
-       // Step 4: User selects language (English)
+      // Step 4: User selects language (English)
       const languageResponse = await request(app)
         .post('/webhook')
         .send({
@@ -163,12 +163,12 @@ describe('Critical User Flow End-to-End Tests', () => {
             }]
           }]
         })
-         .set('x-hub-signature-256', 'test-signature')
-         .expect(200);
+        .set('x-hub-signature-256', 'test-signature')
+        .expect(200);
 
-       expect(languageResponse.body.success).toBe(true);
+      expect(languageResponse.body.success).toBe(true);
 
-       // Step 5: User confirms details
+      // Step 5: User confirms details
       const confirmResponse = await request(app)
         .post('/webhook')
         .send({
@@ -245,7 +245,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('Existing User Daily Horoscope Flow', () => {
     const testPhone = '+0987654321';
 
-    beforeEach(async () => {
+    beforeEach(async() => {
       // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
@@ -260,7 +260,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       sendMessage.mockClear();
     });
 
-    it('should generate real daily horoscope for existing user', async () => {
+    it('should generate real daily horoscope for existing user', async() => {
       const dailyHoroscopePayload = {
         entry: [{
           id: 'entry-daily',
@@ -314,7 +314,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('Interactive Button Flow', () => {
     const testPhone = '+1122334455';
 
-    beforeEach(async () => {
+    beforeEach(async() => {
       // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
@@ -329,7 +329,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       sendMessage.mockClear();
     });
 
-    it('should process interactive button reply for compatibility checking', async () => {
+    it('should process interactive button reply for compatibility checking', async() => {
       const interactivePayload = {
         entry: [{
           id: 'entry-interactive',
@@ -387,7 +387,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Error Handling Flow', () => {
-    it('should handle processing errors gracefully', async () => {
+    it('should handle processing errors gracefully', async() => {
       // Mock processIncomingMessage to throw an error
       // This test still needs to mock processIncomingMessage to simulate an internal error
       // without breaking the entire test suite due to unhandled rejections from real code.
@@ -450,7 +450,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('Performance and Scalability Flow', () => {
     const testPhoneBase = '+12345678';
 
-    beforeEach(async () => {
+    beforeEach(async() => {
       // Clear database collections before each test
       await User.deleteMany({});
       await Session.deleteMany({});
@@ -471,7 +471,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       sendMessage.mockClear();
     });
 
-    it('should handle high volume of messages without crashing', async () => {
+    it('should handle high volume of messages without crashing', async() => {
       // Create multiple webhook payloads
       const payloads = [];
       for (let i = 0; i < 10; i++) {
@@ -538,7 +538,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Security and Compliance Flow', () => {
-    it('should validate webhook signatures when provided', async () => {
+    it('should validate webhook signatures when provided', async() => {
       // This test specifically checks the webhookValidator, which is mocked at the top.
       // To test the real webhookValidator, we need to unmock it for this specific test.
       // However, the current setup mocks it globally. For now, we'll keep the mock
@@ -607,7 +607,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('Subscription and Payment Flow', () => {
     const testPhone = '+7778889999';
 
-    beforeEach(async () => {
+    beforeEach(async() => {
       // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
@@ -622,7 +622,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       sendMessage.mockClear();
     });
 
-    it('should handle subscription plan inquiry', async () => {
+    it('should handle subscription plan inquiry', async() => {
       const subscriptionInquiryPayload = {
         entry: [{
           id: 'entry-subscription-inquiry',
@@ -673,7 +673,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       logger.info('✅ Subscription plan inquiry processed successfully!');
     });
 
-    it('should handle premium subscription request', async () => {
+    it('should handle premium subscription request', async() => {
       const premiumSubscriptionPayload = {
         entry: [{
           id: 'entry-premium-subscription',
@@ -739,79 +739,78 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Astrology Readings Flow', () => {
+    describe('Profile Management Flow', () => {
+      const testPhone = '+5554443333';
 
-  describe('Profile Management Flow', () => {
-    const testPhone = '+5554443333';
-
-    beforeEach(async () => {
+      beforeEach(async() => {
       // Create a complete user profile using MongoDB storage
-      await createUser(testPhone);
-      await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
-      await updateUserProfile(testPhone, {
-        profileComplete: true,
-        preferredLanguage: 'english',
-        sunSign: 'Pisces',
-        moonSign: 'Pisces',
-        risingSign: 'Aquarius',
-        name: 'John Doe'
+        await createUser(testPhone);
+        await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
+        await updateUserProfile(testPhone, {
+          profileComplete: true,
+          preferredLanguage: 'english',
+          sunSign: 'Pisces',
+          moonSign: 'Pisces',
+          risingSign: 'Aquarius',
+          name: 'John Doe'
+        });
+        sendMessage.mockClear();
       });
-      sendMessage.mockClear();
-    });
 
-    it('should handle profile viewing request', async () => {
-      const profileViewPayload = {
-        entry: [{
-          id: 'entry-profile-view',
-          time: Date.now().toString(),
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: testPhone,
-                phone_number_id: 'phone-id-profile'
-              },
-              contacts: [{
-                profile: { name: 'Profile User' },
-                wa_id: testPhone
-              }],
-              messages: [{
-                from: testPhone,
-                id: 'message-id-profile',
-                timestamp: Date.now().toString(),
-                text: { body: 'Show my profile' },
-                type: 'text'
-              }]
-            }
+      it('should handle profile viewing request', async() => {
+        const profileViewPayload = {
+          entry: [{
+            id: 'entry-profile-view',
+            time: Date.now().toString(),
+            changes: [{
+              field: 'messages',
+              value: {
+                messaging_product: 'whatsapp',
+                metadata: {
+                  display_phone_number: testPhone,
+                  phone_number_id: 'phone-id-profile'
+                },
+                contacts: [{
+                  profile: { name: 'Profile User' },
+                  wa_id: testPhone
+                }],
+                messages: [{
+                  from: testPhone,
+                  id: 'message-id-profile',
+                  timestamp: Date.now().toString(),
+                  text: { body: 'Show my profile' },
+                  type: 'text'
+                }]
+              }
+            }]
           }]
-        }]
-      };
+        };
 
-      const response = await request(app)
-        .post('/webhook')
-        .send(profileViewPayload)
-        .set('Content-Type', 'application/json')
-        .set('x-hub-signature-256', 'sha256=valid-signature')
-        .expect(200);
+        const response = await request(app)
+          .post('/webhook')
+          .send(profileViewPayload)
+          .set('Content-Type', 'application/json')
+          .set('x-hub-signature-256', 'sha256=valid-signature')
+          .expect(200);
 
-      expect(response.body.success).toBe(true);
+        expect(response.body.success).toBe(true);
 
-      // Wait for async operations to complete
-      await new Promise(resolve => setTimeout(resolve, 1000));
+        // Wait for async operations to complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Verify that sendMessage was called with profile details
-      expect(sendMessage).toHaveBeenCalled();
-      const sentMessage = sendMessage.mock.calls[0][1];
-      expect(sentMessage).toContain('📋 *Your Profile*');
-      expect(sentMessage).toContain('Name: John Doe');
-      expect(sentMessage).toContain('Birth Date: 15/03/1990');
+        // Verify that sendMessage was called with profile details
+        expect(sendMessage).toHaveBeenCalled();
+        const sentMessage = sendMessage.mock.calls[0][1];
+        expect(sentMessage).toContain('📋 *Your Profile*');
+        expect(sentMessage).toContain('Name: John Doe');
+        expect(sentMessage).toContain('Birth Date: 15/03/1990');
 
-      logger.info('✅ Profile viewing request processed successfully!');
+        logger.info('✅ Profile viewing request processed successfully!');
+      });
     });
-  });
     const testPhone = '+6665554444';
 
-    beforeEach(async () => {
+    beforeEach(async() => {
       // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
@@ -825,7 +824,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       sendMessage.mockClear();
     });
 
-    it('should handle tarot reading request', async () => {
+    it('should handle tarot reading request', async() => {
       const tarotReadingPayload = {
         entry: [{
           id: 'entry-tarot',
@@ -875,7 +874,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       logger.info('✅ Tarot reading request processed successfully!');
     });
 
-    it('should handle palmistry reading request', async () => {
+    it('should handle palmistry reading request', async() => {
       const palmistryReadingPayload = {
         entry: [{
           id: 'entry-palmistry',
@@ -925,7 +924,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       logger.info('✅ Palmistry reading request processed successfully!');
     });
 
-    it('should handle numerology report request', async () => {
+    it('should handle numerology report request', async() => {
       const numerologyPayload = {
         entry: [{
           id: 'entry-numerology',
@@ -976,7 +975,7 @@ describe('Critical User Flow End-to-End Tests', () => {
     });
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     // Close the server to clear any open handles
     if (app && app.close) {
       await app.close();

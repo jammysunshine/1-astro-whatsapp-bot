@@ -11,6 +11,8 @@ const ichingReader = require('./ichingReader');
 const astrocartographyReader = require('./astrocartographyReader');
 const horaryReader = require('./horaryReader');
 
+logger.info('Module: astrologyEngine loaded. All sub-modules imported successfully.');
+
 /**
  * Generates an astrology response based on user input and user data.
  * Uses basic Vedic astrology calculations for MVP functionality.

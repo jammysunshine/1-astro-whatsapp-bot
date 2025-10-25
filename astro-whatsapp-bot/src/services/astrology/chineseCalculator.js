@@ -8,6 +8,7 @@ const logger = require('../../utils/logger');
 
 class ChineseCalculator {
   constructor() {
+    logger.info('Module: ChineseCalculator loaded.');
     // Heavenly Stems (天干)
     this.heavenlyStems = [
       '甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'

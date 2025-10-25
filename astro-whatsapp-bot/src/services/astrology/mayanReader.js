@@ -7,6 +7,7 @@ const logger = require('../../utils/logger');
 
 class MayanReader {
   constructor() {
+    logger.info('Module: MayanReader loaded.');
     // Tzolk'in day signs (20 signs)
     this.daySigns = {
       1: { name: 'Imix', meaning: 'Crocodile/Primal Waters', element: 'Water', direction: 'East', qualities: ['Creation', 'Instinct', 'Potential', 'Nurturing'] },

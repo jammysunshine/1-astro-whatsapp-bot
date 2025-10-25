@@ -7,6 +7,7 @@ const logger = require('../../utils/logger');
 
 class PalmistryReader {
   constructor() {
+    logger.info('Module: PalmistryReader loaded.');
     // Hand types and their characteristics
     this.handTypes = {
       earth: {

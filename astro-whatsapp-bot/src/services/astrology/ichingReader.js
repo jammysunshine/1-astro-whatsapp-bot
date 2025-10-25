@@ -7,6 +7,7 @@ const logger = require('../../utils/logger');
 
 class IChingReader {
   constructor() {
+    logger.info('Module: IChingReader loaded.');
     // I Ching Trigrams (8 fundamental symbols)
     this.trigrams = {
       0: { name: 'Heaven', symbol: '☰', nature: 'Creative', element: 'Metal', direction: 'Northwest', qualities: ['Strength', 'Creativity', 'Leadership'] },

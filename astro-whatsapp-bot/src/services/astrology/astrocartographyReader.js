@@ -7,6 +7,7 @@ const logger = require('../../utils/logger');
 
 class AstrocartographyReader {
   constructor() {
+    logger.info('Module: AstrocartographyReader loaded.');
     // Planetary lines and their meanings
     this.planetaryLines = {
       sun: {

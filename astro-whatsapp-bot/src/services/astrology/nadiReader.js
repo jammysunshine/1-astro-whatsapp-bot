@@ -8,6 +8,7 @@ const logger = require('../../utils/logger');
 
 class NadiReader {
   constructor() {
+    logger.info('Module: NadiReader loaded.');
     // Nakshatras (27 lunar mansions)
     this.nakshatras = [
       { name: 'Ashwini', rulingPlanet: 'Ketu', deity: 'Ashwini Kumaras', nature: 'Light' },

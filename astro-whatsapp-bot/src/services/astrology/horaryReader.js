@@ -7,6 +7,7 @@ const logger = require('../../utils/logger');
 
 class HoraryReader {
   constructor() {
+    logger.info('Module: HoraryReader loaded.');
     // Planetary rulers and their meanings in horary
     this.planetaryRulers = {
       sun: {

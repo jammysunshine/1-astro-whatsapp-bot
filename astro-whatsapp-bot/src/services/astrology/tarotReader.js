@@ -7,6 +7,7 @@ const logger = require('../../utils/logger');
 
 class TarotReader {
   constructor() {
+    logger.info('Module: TarotReader loaded.');
     // Major Arcana cards
     this.majorArcana = [
       { name: 'The Fool', number: 0, upright: 'New beginnings, innocence, spontaneity', reversed: 'Recklessness, taken advantage of, inconsideration' },

@@ -7,6 +7,7 @@ const logger = require('../../utils/logger');
 
 class CelticReader {
   constructor() {
+    logger.info('Module: CelticReader loaded.');
     // Celtic Tree Signs (13 trees based on lunar calendar)
     this.treeSigns = {
       Birch: {

@@ -10,6 +10,7 @@ const sweph = require('sweph');
 
 class VedicCalculator {
   constructor() {
+    logger.info('Module: VedicCalculator loaded.');
     // Lazy initialize the astrologer library to save memory
     this._astrologer = null;
 

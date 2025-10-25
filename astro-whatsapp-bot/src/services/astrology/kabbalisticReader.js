@@ -7,6 +7,7 @@ const logger = require('../../utils/logger');
 
 class KabbalisticReader {
   constructor() {
+    logger.info('Module: KabbalisticReader loaded.');
     // Tree of Life Sephiroth with their meanings and correspondences
     this.sephiroth = {
       1: {

@@ -1,6 +1,8 @@
 const logger = require('../../utils/logger');
 const numerologyData = require('./numerology_data.json'); // Will create this file
 
+logger.info('Module: numerologyService loaded.');
+
 // Helper function to reduce a number to a single digit or master number
 function reduceToSingleDigit(num) {
   let sum = num;

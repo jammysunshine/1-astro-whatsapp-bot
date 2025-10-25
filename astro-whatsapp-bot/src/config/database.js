@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { ServerApiVersion } = require('mongodb');
 const logger = require('../utils/logger');
 
 /**
@@ -17,7 +16,7 @@ const getConnectionOptions = mongoURI => {
   // Add serverApi for Atlas connections (mongodb+srv)
   if (mongoURI.startsWith('mongodb+srv://')) {
     baseOptions.serverApi = {
-      version: ServerApiVersion.v1,
+      version: mongoose.mongo.ServerApiVersion.v1,
       strict: true,
       deprecationErrors: true
     };

@@ -1,7 +1,7 @@
 # Epic 9: Automated Testing and Quality Assurance Suite
 
 ## Description
-Implement comprehensive automated testing suite with 95%+ test coverage following BMAD methodology and gemini.md mandates. This epic is CRITICAL for solo developer success as it eliminates all manual testing requirements and ensures zero-defect deployments through comprehensive automated validation.
+Implement comprehensive automated testing suite with 95%+ test coverage following BMAD methodology and gemini.md mandates. This epic is CRITICAL for solo developer success as it eliminates all manual testing requirements and ensures zero-defect deployments through comprehensive automated validation. **A core principle is the use of real End-to-End (E2E) and Integration tests with actual libraries and API calls for critical user flows, minimizing mocks to ensure authentic system validation.**
 
 ## Features Included
 - Unit testing framework with 95%+ coverage requirement
@@ -27,8 +27,8 @@ ESSENTIAL for solo developer success - eliminates manual testing burden while en
 - Minimum 95% test coverage across entire codebase
 - Automated testing on every commit and pull request
 - Zero manual testing required for any feature development
-- Comprehensive mocking for all external dependencies
-- Real integration end-to-end tests for critical user flows
+- Comprehensive mocking for all external dependencies **in unit tests, while prioritizing real libraries and API calls for integration and E2E tests.**
+- Real integration end-to-end tests for critical user flows, **utilizing actual libraries and API calls, not just mocks.**
 - Security scanning integrated into CI/CD pipeline
 - Performance benchmarking for all critical operations
 - Automated regression testing suite
@@ -56,7 +56,7 @@ CRITICAL - Mandatory for solo developer success and zero-defect deployments
 - 95%+ TEST COVERAGE: Minimum test coverage requirement across entire codebase
 - UNIT TESTING: Comprehensive unit testing framework with proper assertions
 - INTEGRATION TESTING: All external service testing with realistic scenarios
-- END-TO-END TESTING: Critical user flow testing with real service integrations
+- END-TO-END TESTING: Critical user flow testing with real service integrations, **utilizing actual libraries and API calls for critical user flows, minimizing mocks to ensure authentic system validation.**
 - RUNTIME TESTING: Real-world scenario testing with production-like conditions
 - MOCKING FRAMEWORKS: External dependency mocking for isolated testing
 - CI/CD PIPELINE TESTING: Automated testing in deployment pipeline with quality gates

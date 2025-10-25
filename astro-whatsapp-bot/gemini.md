@@ -127,7 +127,7 @@ For project-specific instructions, ALWAYS refer to the `INITIAL-PROMPT.md` file 
 
 *   **MANDATE: Zero Manual Testing**: As a solo developer, you have no time for manual testing - ALL testing must be fully automated with no exceptions
 *   **Minimum Coverage**: Maintain at least 95% test coverage across all projects using automated tools (this is non-negotiable for solo development)
-*   **Comprehensive Test Types**: Implement unit tests, integration tests, end-to-end tests, regression tests, smoke tests, and mocking frameworks for ALL features - do not proceed without comprehensive test coverage from the start
+*   **Comprehensive Test Types**: Implement unit tests, integration tests, end-to-end tests, regression tests, smoke tests, and mocking frameworks for ALL features - do not proceed without comprehensive test coverage from the start. **For E2E and Integration Tests, prioritize utilizing real libraries and API calls for critical user flows, minimizing mocks to ensure authentic system validation.**
 *   **Continuous Testing**: Run automated tests on every commit and pull request via CI/CD pipeline - this is essential for solo development workflow
 *   **Performance Testing**: Include performance benchmarks for any performance-critical features
 *   **Complete Zero Manual Testing**: Design all features with comprehensive automated test suites to ensure zero manual testing intervention is needed - this is critical for solo developer success

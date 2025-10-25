@@ -4,10 +4,10 @@
 Epic 9: Automated Testing and Quality Assurance Suite
 
 ## User Story
-As a QA engineer, I want automated end-to-end tests for all critical user flows so that I can ensure the entire system functions correctly from the user's perspective and prevent regressions in key business processes.
+As a QA engineer, I want automated end-to-end tests for all critical user flows, **utilizing real libraries and API calls (not mocks)**, so that I can ensure the entire system functions correctly from the user's perspective and prevent regressions in key business processes.
 
 ## Acceptance Criteria
-- [ ] End-to-end tests are implemented for all critical user journeys (e.g., user registration, subscription purchase, astrology reading request).
+- [ ] End-to-end tests are implemented for all critical user journeys (e.g., user registration, subscription purchase, astrology reading request), **utilizing real libraries and API calls for all external integrations (e.g., WhatsApp API, database, astrology libraries), minimizing mocks.**
 - [ ] Tests simulate real user interactions across all integrated components.
 - [ ] Tests validate data consistency and system state changes throughout the flow.
 - [ ] End-to-end tests run automatically in a dedicated test environment.

@@ -4,14 +4,14 @@
 Epic 9: Automated Testing and Quality Assurance Suite
 
 ## User Story
-As a developer, I want automated integration tests for all external service integrations so that I can ensure reliable communication and data exchange with third-party APIs and services.
+As a developer, I want automated integration tests for all external service integrations, **prioritizing real API calls and libraries over mocks for critical paths**, so that I can ensure reliable communication and data exchange with third-party APIs and services.
 
 ## Acceptance Criteria
 - [ ] Integration tests are implemented for all external service calls (e.g., WhatsApp API, Payment Gateways, Astrology APIs).
 - [ ] Tests verify correct request/response formats and data mapping.
 - [ ] Tests handle various scenarios including success, failure, and edge cases.
 - [ ] Integration tests run automatically in the CI/CD pipeline.
-- [ ] Mocking is used for external services to ensure test isolation and speed where appropriate.
+- [ ] Mocking is used for external services to ensure test isolation and speed where appropriate, **but real API calls are prioritized for critical integration points to validate actual external service behavior.**
 - [ ] Test reports clearly indicate the status of external service integrations.
 
 ## Technical Requirements

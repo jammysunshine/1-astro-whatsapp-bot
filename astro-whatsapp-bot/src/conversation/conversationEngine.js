@@ -191,6 +191,15 @@ const validateStepInput = async(input, step) => {
     }
     return { isValid: false, errorMessage: step.error_message || 'Please reply "yes", "no", or "menu".' };
 
+  case 'again_or_menu':
+    if (trimmedInput === 'again' || trimmedInput === 'a') {
+      return { isValid: true, cleanedValue: 'again' };
+    }
+    if (trimmedInput === 'menu' || trimmedInput === 'm') {
+      return { isValid: true, cleanedValue: 'menu' };
+    }
+    return { isValid: false, errorMessage: step.error_message || 'Please reply "again" for another reading or "menu" for main options.' };
+
   case 'none':
     return { isValid: true, cleanedValue: input };
 
@@ -570,18 +579,32 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
       const horoscopeData = await vedicCalculator.generateDailyHoroscope(user.birthDate);
       const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
 
-      let horoscopeMessage = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n`;
-      horoscopeMessage += `💫 *Lucky Color:* ${horoscopeData.luckyColor}\n`;
-      horoscopeMessage += `🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n`;
-      horoscopeMessage += `💝 *Love:* ${horoscopeData.love}\n`;
-      horoscopeMessage += `💼 *Career:* ${horoscopeData.career}\n`;
-      horoscopeMessage += `💰 *Finance:* ${horoscopeData.finance}\n`;
-      horoscopeMessage += `🏥 *Health:* ${horoscopeData.health}\n\n`;
-      horoscopeMessage += 'What would you like to explore next?';
+      // Store horoscope data in session for interactive display
+      session.data.horoscopeText = horoscopeData.general;
+      session.data.luckyColor = horoscopeData.luckyColor;
+      session.data.luckyNumber = horoscopeData.luckyNumber;
+      session.data.loveText = horoscopeData.love;
+      session.data.careerText = horoscopeData.career;
+      session.data.financeText = horoscopeData.finance;
+      session.data.healthText = horoscopeData.health;
+      session.data.sunSign = sunSign;
 
-      await sendMessage(phoneNumber, horoscopeMessage);
-
-      // Send main menu
+      await setUserSession(phoneNumber, session);
+    } catch (error) {
+      logger.error('Error generating daily horoscope:', error);
+      await sendMessage(phoneNumber, 'I\'m sorry, I couldn\'t generate your horoscope right now. Please try again later.');
+    }
+    break;
+  }
+  case 'handle_horoscope_navigation': {
+    const { choice } = flowData;
+    if (choice === 'again') {
+      // Restart the horoscope flow
+      const newSession = { currentFlow: 'daily_horoscope', currentStep: 'show_horoscope', data: {} };
+      await setUserSession(phoneNumber, newSession);
+      await executeFlowAction(phoneNumber, user, 'daily_horoscope', 'show_daily_horoscope', {});
+    } else if (choice === 'menu') {
+      // Show main menu and clear session
       const menu = getMenu('main_menu');
       if (menu) {
         const buttons = menu.buttons.map(button => ({
@@ -590,9 +613,7 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
         }));
         await sendMessage(phoneNumber, { type: 'button', body: menu.body, buttons }, 'interactive');
       }
-    } catch (error) {
-      logger.error('Error generating daily horoscope:', error);
-      await sendMessage(phoneNumber, 'I\'m sorry, I couldn\'t generate your horoscope right now. Please try again later.');
+      await deleteUserSession(phoneNumber);
     }
     break;
   }

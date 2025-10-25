@@ -199,10 +199,35 @@
     "start_step": "show_horoscope",
     "steps": {
       "show_horoscope": {
-        "prompt": "🔮 *Your Daily Horoscope*\n\n{sunSign} - {horoscopeText}\n\n💫 *Lucky Color:* {luckyColor}\n🎯 *Lucky Number:* {luckyNumber}\n💝 *Love:* {loveText}\n💼 *Career:* {careerText}\n💰 *Finance:* {financeText}\n🏥 *Health:* {healthText}\n\nWhat would you like to explore next?",
+        "interactive": {
+          "type": "button_reply",
+          "body": "🔮 *Your Daily Horoscope*\n\n{sunSign} - {horoscopeText}\n\n💫 *Lucky Color:* {luckyColor}\n🎯 *Lucky Number:* {luckyNumber}\n💝 *Love:* {loveText}\n💼 *Career:* {careerText}\n💰 *Finance:* {financeText}\n🏥 *Health:* {healthText}\n\nWhat would you like to explore next?",
+          "buttons": [
+            {
+              "id": "horoscope_again",
+              "title": "🔄 Get Another Reading"
+            },
+            {
+              "id": "horoscope_menu",
+              "title": "🏠 Main Menu"
+            }
+          ],
+          "button_mappings": {
+            "horoscope_again": "again",
+            "horoscope_menu": "menu"
+          }
+        },
+        "fallback_prompt": "What would you like to explore next? Reply 'again' for another reading or 'menu' for main options.",
+        "validation": "again_or_menu",
+        "next_step": "handle_horoscope_choice",
+        "action": "show_daily_horoscope"
+      },
+      "handle_horoscope_choice": {
+        "prompt": "Redirecting...",
         "validation": "none",
         "next_step": null,
-        "action": "show_daily_horoscope"
+        "data_key": "choice",
+        "action": "handle_horoscope_navigation"
       }
     }
   },

@@ -167,10 +167,11 @@ setInterval(() => {
 // Initialize database connection
 connectDB().catch(error => {
   logger.error('❌ Failed to connect to database:', error);
-  // Don't exit in production, let Railway handle
-  if (process.env.NODE_ENV !== 'production') {
+  // Exit in development to show error, but not in production/test
+  if (process.env.NODE_ENV === 'development') {
     process.exit(1);
   }
+  throw error;
 });
 
 // Start server only if not in test environment

@@ -28,6 +28,22 @@
     "token-health": "node scripts/whatsapp-token-manager.js health",
     "clean": "rm -rf node_modules package-lock.json && npm install"
   },
+  "jest": {
+    "setupFilesAfterEnv": ["<rootDir>/tests/helpers/setup.js"],
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/server.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 95,
+        "branches": 95,
+        "functions": 95,
+        "lines": 95
+      }
+    }
+  },
   "keywords": [
     "astrology",
     "whatsapp",

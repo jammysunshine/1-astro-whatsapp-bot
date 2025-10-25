@@ -7,15 +7,23 @@ const logger = require('../utils/logger');
  */
 
 // Database connection options
-const connectionOptions = {
-  maxPoolSize: 10, // Maintain up to 10 socket connections
-  serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-  socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
+const getConnectionOptions = (mongoURI) => {
+  const baseOptions = {
+    maxPoolSize: 10, // Maintain up to 10 socket connections
+    serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+  };
+
+  // Add serverApi for Atlas connections (mongodb+srv)
+  if (mongoURI.startsWith('mongodb+srv://')) {
+    baseOptions.serverApi = {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    };
   }
+
+  return baseOptions;
 };
 
 /**
@@ -24,21 +32,52 @@ const connectionOptions = {
  */
 const connectDB = async () => {
   try {
-    const dbUser = process.env.DB_USER;
-    const dbPassword = process.env.DB_PASSWORD;
-    const dbHost = process.env.DB_HOST;
-    const dbName = process.env.DB_NAME;
-
-    if (!dbUser || !dbPassword || !dbHost || !dbName) {
-      throw new Error('Database environment variables (DB_USER, DB_PASSWORD, DB_HOST, DB_NAME) are not set');
+    // In test environment, always disconnect first to avoid connection conflicts
+    if (process.env.NODE_ENV === 'test') {
+      if (mongoose.connection.readyState > 0) {
+        await mongoose.disconnect();
+        logger.info('🔄 Disconnected from previous DB connection for test');
+      }
+    } else {
+      // Check if already connected
+      if (mongoose.connection.readyState > 0) {
+        logger.info('🗄️ DB already connected');
+        return;
+      }
     }
 
-    const mongoURI = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}?retryWrites=true&w=majority`;
+    let mongoURI;
 
-    logger.info(`🔗 Attempting DB connection: mongodb+srv://${dbUser}:****@${dbHost}/${dbName}?retryWrites=true&w=majority`);
+    // For testing, set up memory server if not set
+    if (process.env.NODE_ENV === 'test' && !process.env.MONGODB_URI) {
+      const { MongoMemoryServer } = require('mongodb-memory-server');
+      const mongoServer = await MongoMemoryServer.create();
+      mongoURI = mongoServer.getUri();
+      process.env.MONGODB_URI = mongoURI; // Set for consistency
+      logger.info(`🔗 Using test DB: ${mongoURI}`);
+    }
+
+    // Check if MONGODB_URI is set (for testing with memory server)
+    if (process.env.MONGODB_URI) {
+      mongoURI = process.env.MONGODB_URI;
+      logger.info(`🔗 Attempting DB connection: ${mongoURI.replace(/:([^:@]{4})[^:@]*@/, ':****@')}`);
+    } else {
+      // Use separate environment variables for production
+      const dbUser = process.env.DB_USER;
+      const dbPassword = process.env.DB_PASSWORD;
+      const dbHost = process.env.DB_HOST;
+      const dbName = process.env.DB_NAME;
+
+      if (!dbUser || !dbPassword || !dbHost || !dbName) {
+        throw new Error('Database environment variables (DB_USER, DB_PASSWORD, DB_HOST, DB_NAME) are not set');
+      }
+
+      mongoURI = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}?retryWrites=true&w=majority`;
+      logger.info(`🔗 Attempting DB connection: mongodb+srv://${dbUser}:****@${dbHost}/${dbName}?retryWrites=true&w=majority`);
+    }
 
     // Connect to MongoDB
-    const conn = await mongoose.connect(mongoURI, connectionOptions);
+    const conn = await mongoose.connect(mongoURI, getConnectionOptions(mongoURI));
 
     logger.info(`🗄️ MongoDB Connected: ${conn.connection.host}`);
 

@@ -1,15 +1,21 @@
 // tests/e2e/real-whatsapp-flow.test.js
 // REAL end-to-end tests for WhatsApp bot flows (no mocks)
-// Tests actual server, file-based storage, and astrology calculations
+// Tests actual server, MongoDB storage, and astrology calculations
 
 const request = require('supertest');
-const fs = require('fs').promises;
-const path = require('path');
+const mongoose = require('mongoose');
 const app = require('../../src/server');
-const { getAllUsers, deleteUser } = require('../../src/models/userModel');
+const User = require('../../src/models/User');
+const Session = require('../../src/models/Session');
+const { getAllUsers, getUserByPhone, createUser, updateUserProfile, addBirthDetails } = require('../../src/models/userModel');
 
-const USERS_FILE = path.join(__dirname, '../../data/users.json');
-const SESSIONS_FILE = path.join(__dirname, '../../data/sessions.json');
+// Mock message sending to avoid actual WhatsApp API calls in tests
+jest.mock('../../src/services/whatsapp/messageSender', () => ({
+  sendMessage: jest.fn().mockResolvedValue({}),
+  sendTextMessage: jest.fn().mockResolvedValue({}),
+  sendInteractiveButtons: jest.fn().mockResolvedValue({}),
+  sendListMessage: jest.fn().mockResolvedValue({})
+}));
 
 describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
   beforeAll(async () => {
@@ -21,63 +27,57 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
   });
 
   beforeEach(async () => {
-    // Clear data files before each test
+    // Clear database collections before each test
     try {
-      await fs.unlink(USERS_FILE);
+      await User.deleteMany({});
+      await Session.deleteMany({});
     } catch (error) {
-      // File doesn't exist, that's fine
-    }
-    try {
-      await fs.unlink(SESSIONS_FILE);
-    } catch (error) {
-      // File doesn't exist, that's fine
+      // Collections might not exist, that's fine
     }
   });
 
   describe('Complete User Onboarding Flow', () => {
     const testPhone = '+1234567890';
 
-    it('should complete full onboarding and generate real astrology reading', async () => {
-      // Step 1: New user sends "Hi"
-      const hiResponse = await request(app)
-        .post('/webhook')
-        .send({
-          entry: [{
-            id: 'test-entry-1',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-hi',
-                  timestamp: Date.now().toString(),
-                  text: { body: 'Hi' },
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
-        })
-        .set('x-hub-signature-256', 'test-signature')
-        .expect(200);
+     it('should complete full onboarding and generate real astrology reading', async () => {
+       // Step 1: New user sends birth date directly (welcome step expects date)
+       const birthDateResponse = await request(app)
+         .post('/webhook')
+         .send({
+           entry: [{
+             id: 'test-entry-1',
+             changes: [{
+               field: 'messages',
+               value: {
+                 messaging_product: 'whatsapp',
+                 metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
+                 contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
+                 messages: [{
+                   from: testPhone,
+                   id: 'msg-birth-date',
+                   timestamp: Date.now().toString(),
+                   text: { body: '15031990' }, // 15/03/1990
+                   type: 'text'
+                 }]
+               }
+             }]
+           }]
+         })
+         .set('x-hub-signature-256', 'test-signature')
+         .expect(200);
 
-      expect(hiResponse.body.success).toBe(true);
+       expect(birthDateResponse.body.success).toBe(true);
 
-      // Wait for file operations to complete
-      await new Promise(resolve => setTimeout(resolve, 100));
+       // Wait for file operations to complete
+       await new Promise(resolve => setTimeout(resolve, 100));
 
-      // Verify user was created
-      const allUsers = await getAllUsers();
-      console.log('All users after Hi:', Object.keys(allUsers));
-      let user = allUsers.find(u => u.phoneNumber === testPhone);
-      console.log('User object:', user);
-      expect(user).toBeTruthy();
-      expect(user.profileComplete).toBe(false);
+       // Verify user was created
+       let user = await getUserByPhone(testPhone);
+       console.log('User object after birth date:', user);
+       expect(user).toBeTruthy();
+       expect(user.profileComplete).toBe(false);
 
-      // Step 2: User provides birth date
+       // Step 2: User provides birth time
       const birthDateResponse = await request(app)
         .post('/webhook')
         .send({
@@ -128,12 +128,12 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
             }]
           }]
         })
-        .set('x-hub-signature-256', 'test-signature')
-        .expect(200);
+         .set('x-hub-signature-256', 'test-signature')
+         .expect(200);
 
-      expect(birthTimeResponse.body.success).toBe(true);
+       expect(birthTimeResponse.body.success).toBe(true);
 
-      // Step 4: User provides birth place
+       // Step 3: User provides birth place
       const birthPlaceResponse = await request(app)
         .post('/webhook')
         .send({
@@ -156,12 +156,12 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
             }]
           }]
         })
-        .set('x-hub-signature-256', 'test-signature')
-        .expect(200);
+         .set('x-hub-signature-256', 'test-signature')
+         .expect(200);
 
-      expect(birthPlaceResponse.body.success).toBe(true);
+       expect(birthPlaceResponse.body.success).toBe(true);
 
-      // Step 5: User selects language (English)
+       // Step 4: User selects language (English)
       const languageResponse = await request(app)
         .post('/webhook')
         .send({
@@ -190,12 +190,12 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
             }]
           }]
         })
-        .set('x-hub-signature-256', 'test-signature')
-        .expect(200);
+         .set('x-hub-signature-256', 'test-signature')
+         .expect(200);
 
-      expect(languageResponse.body.success).toBe(true);
+       expect(languageResponse.body.success).toBe(true);
 
-      // Step 6: User confirms details
+       // Step 5: User confirms details
       const confirmResponse = await request(app)
         .post('/webhook')
         .send({
@@ -229,14 +229,11 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
 
       expect(confirmResponse.body.success).toBe(true);
 
-      // Wait for async file operations to complete
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Wait for async database operations to complete
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Verify user profile is complete with astrology data
-      const allUsersAfter = await getAllUsers();
-      console.log('All users after onboarding:', allUsersAfter.map(u => ({ phone: u.phoneNumber, complete: u.profileComplete, sunSign: u.sunSign })));
-      user = allUsersAfter.find(u => u.phoneNumber === testPhone);
-      console.log('Found user:', user);
+      user = await getUserByPhone(testPhone);
       expect(user).toBeTruthy();
       expect(user.profileComplete).toBe(true);
       expect(user.birthDate).toBe('15/03/1990');
@@ -260,9 +257,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
     const testPhone = '+0987654321';
 
     beforeEach(async () => {
-      // Create a complete user profile using the file-based storage
-      const { createUser, updateUserProfile, addBirthDetails } = require('../../src/models/userModel');
-
+      // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
       await updateUserProfile(testPhone, {

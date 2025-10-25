@@ -325,7 +325,10 @@ const setUserSession = async (sessionId, sessionData) => {
   try {
     await Session.findOneAndUpdate(
       { sessionId },
-      sessionData,
+      {
+        ...sessionData,
+        phoneNumber: sessionId // Ensure phoneNumber is set
+      },
       {
         upsert: true, // Create if doesn't exist
         new: true,

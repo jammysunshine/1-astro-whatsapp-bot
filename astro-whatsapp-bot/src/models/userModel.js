@@ -13,7 +13,7 @@ const Session = require('./Session');
  * @param {Object} profileData - Additional profile information
  * @returns {Promise<Object>} Created user object
  */
-const createUser = async (phoneNumber, profileData = {}) => {
+const createUser = async(phoneNumber, profileData = {}) => {
   try {
     // Check if user already exists
     const existingUser = await User.findOne({ phoneNumber });
@@ -48,7 +48,7 @@ const createUser = async (phoneNumber, profileData = {}) => {
  * @param {string} phoneNumber - User's WhatsApp phone number
  * @returns {Promise<Object|null>} User object or null if not found
  */
-const getUserByPhone = async (phoneNumber) => {
+const getUserByPhone = async phoneNumber => {
   try {
     const user = await User.findOne({ phoneNumber });
     if (user) {
@@ -70,7 +70,7 @@ const getUserByPhone = async (phoneNumber) => {
  * @param {Object} updateData - Data to update
  * @returns {Promise<Object>} Updated user object
  */
-const updateUserProfile = async (phoneNumber, updateData) => {
+const updateUserProfile = async(phoneNumber, updateData) => {
   try {
     const user = await User.findOneAndUpdate(
       { phoneNumber },
@@ -104,7 +104,7 @@ const updateUserProfile = async (phoneNumber, updateData) => {
  * @param {string} birthPlace - Birth place (City, Country)
  * @returns {Promise<Object>} Updated user object
  */
-const addBirthDetails = async (phoneNumber, birthDate, birthTime = null, birthPlace = null) => {
+const addBirthDetails = async(phoneNumber, birthDate, birthTime = null, birthPlace = null) => {
   try {
     const updateData = {
       birthDate,
@@ -141,7 +141,7 @@ const addBirthDetails = async (phoneNumber, birthDate, birthTime = null, birthPl
  * @param {Date} expiryDate - Subscription expiry date
  * @returns {Promise<Object>} Updated user object
  */
-const updateSubscription = async (phoneNumber, tier, expiryDate = null) => {
+const updateSubscription = async(phoneNumber, tier, expiryDate = null) => {
   try {
     const user = await User.findOneAndUpdate(
       { phoneNumber },
@@ -172,7 +172,7 @@ const updateSubscription = async (phoneNumber, tier, expiryDate = null) => {
  * @param {string} phoneNumber - User's WhatsApp phone number
  * @returns {Promise<Object>} Updated user object
  */
-const incrementCompatibilityChecks = async (phoneNumber) => {
+const incrementCompatibilityChecks = async phoneNumber => {
   try {
     const user = await User.findOneAndUpdate(
       { phoneNumber },
@@ -201,7 +201,7 @@ const incrementCompatibilityChecks = async (phoneNumber) => {
  * @param {number} points - Points to add
  * @returns {Promise<Object>} Updated user object
  */
-const addLoyaltyPoints = async (phoneNumber, points) => {
+const addLoyaltyPoints = async(phoneNumber, points) => {
   try {
     const user = await User.findOneAndUpdate(
       { phoneNumber },
@@ -230,7 +230,7 @@ const addLoyaltyPoints = async (phoneNumber, points) => {
  * @param {string} referredPhone - Referred user's phone number
  * @returns {Promise<Object>} Updated referrer user object
  */
-const addReferredUser = async (referrerPhone, referredPhone) => {
+const addReferredUser = async(referrerPhone, referredPhone) => {
   try {
     const referrer = await User.findOneAndUpdate(
       { phoneNumber: referrerPhone },
@@ -257,7 +257,7 @@ const addReferredUser = async (referrerPhone, referredPhone) => {
  * Get all users (for admin purposes)
  * @returns {Promise<Array>} Array of all users
  */
-const getAllUsers = async () => {
+const getAllUsers = async() => {
   try {
     const users = await User.find({}).sort({ createdAt: -1 });
     return users.map(user => user.toObject());
@@ -272,7 +272,7 @@ const getAllUsers = async () => {
  * @param {string} phoneNumber - User's phone number to delete
  * @returns {Promise<boolean>} True if deleted, false if not found
  */
-const deleteUser = async (phoneNumber) => {
+const deleteUser = async phoneNumber => {
   try {
     const result = await User.deleteOne({ phoneNumber });
     const deleted = result.deletedCount > 0;
@@ -305,7 +305,7 @@ const generateReferralCode = () => `REF${Math.random().toString(36).substr(2, 8)
  * @param {string} sessionId - Session ID
  * @returns {Promise<Object>} Session data
  */
-const getUserSession = async (sessionId) => {
+const getUserSession = async sessionId => {
   try {
     const session = await Session.findOne({ sessionId });
     return session ? session.toObject() : null;
@@ -321,7 +321,7 @@ const getUserSession = async (sessionId) => {
  * @param {Object} sessionData - Session data
  * @returns {Promise<void>}
  */
-const setUserSession = async (sessionId, sessionData) => {
+const setUserSession = async(sessionId, sessionData) => {
   try {
     await Session.findOneAndUpdate(
       { sessionId },
@@ -346,7 +346,7 @@ const setUserSession = async (sessionId, sessionData) => {
  * @param {string} sessionId - Session ID
  * @returns {Promise<boolean>} True if deleted
  */
-const deleteUserSession = async (sessionId) => {
+const deleteUserSession = async sessionId => {
   try {
     const result = await Session.deleteOne({ sessionId });
     return result.deletedCount > 0;
@@ -361,7 +361,7 @@ const deleteUserSession = async (sessionId) => {
  * @param {Object} user - User object
  * @returns {boolean} True if user has active subscription
  */
-const hasActiveSubscription = (user) => {
+const hasActiveSubscription = user => {
   if (!user || !user.subscriptionTier || user.subscriptionTier === 'free') {
     return false;
   }
@@ -381,7 +381,7 @@ const hasActiveSubscription = (user) => {
  * @param {Object} user - User object
  * @returns {Object} Subscription benefits object
  */
-const getSubscriptionBenefits = (user) => {
+const getSubscriptionBenefits = user => {
   const tier = user?.subscriptionTier || 'free';
 
   const benefits = {

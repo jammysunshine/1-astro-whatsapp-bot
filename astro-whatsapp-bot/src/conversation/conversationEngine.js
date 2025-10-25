@@ -226,7 +226,6 @@ const processFlowMessage = async(message, user, flowId) => {
     }
 
 
-
     // Extract input based on message type
     let messageText = '';
     if (message.type === 'text') {
@@ -357,27 +356,27 @@ const processFlowMessage = async(message, user, flowId) => {
       await sendMessage(phoneNumber, validationResult.errorMessage || currentStep.error_message || 'Invalid input. Please try again.');
       return true; // Handled, but input was invalid, so stay on current step
     }
-     logger.info(`✅ Validation passed for step '${currentStepId}': cleanedValue = "${validationResult.cleanedValue}"`);
+    logger.info(`✅ Validation passed for step '${currentStepId}': cleanedValue = "${validationResult.cleanedValue}"`);
 
-     // Save data from current step
-     if (currentStep.data_key) {
-       session.flowData[currentStep.data_key] = validationResult.cleanedValue || messageText;
-     } else {
-       session.flowData[currentStepId] = messageText;
-     }
+    // Save data from current step
+    if (currentStep.data_key) {
+      session.flowData[currentStep.data_key] = validationResult.cleanedValue || messageText;
+    } else {
+      session.flowData[currentStepId] = messageText;
+    }
 
-     // Determine next step
-     const nextStepId = currentStep.next_step;
-     if (nextStepId) {
-       const nextStep = flow.steps[nextStepId];
-       if (nextStep) {
-         session.currentStep = nextStepId;
-         await setUserSession(phoneNumber, session);
-         // If the next step is an action, execute it immediately
-         if (nextStep.action) {
-           await executeFlowAction(phoneNumber, user, flowId, nextStep.action, session.flowData);
-           return true;
-         } else {
+    // Determine next step
+    const nextStepId = currentStep.next_step;
+    if (nextStepId) {
+      const nextStep = flow.steps[nextStepId];
+      if (nextStep) {
+        session.currentStep = nextStepId;
+        await setUserSession(phoneNumber, session);
+        // If the next step is an action, execute it immediately
+        if (nextStep.action) {
+          await executeFlowAction(phoneNumber, user, flowId, nextStep.action, session.flowData);
+          return true;
+        } else {
           if (nextStep.interactive) {
             let body = nextStep.interactive.body.replace('{userName}', user.name || 'cosmic explorer');
             // Replace placeholders from session data
@@ -409,22 +408,22 @@ const processFlowMessage = async(message, user, flowId) => {
           }
           return true;
         }
-       } else {
-         logger.error(`❌ Next step '${nextStepId}' not found in flow '${flowId}'.`);
-         await sendMessage(phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
-         await deleteUserSession(phoneNumber);
-         return false;
-       }
-     } else if (currentStep.action) {
-       // If current step has an action and no next step, execute action
-       await executeFlowAction(phoneNumber, user, flowId, currentStep.action, session.flowData);
-       return true;
-     } else {
-       logger.warn(`⚠️ Flow '${flowId}' ended unexpectedly at step '${currentStepId}'.`);
-       await sendMessage(phoneNumber, 'I\'m sorry, our conversation ended unexpectedly. Please try again.');
-       await deleteUserSession(phoneNumber);
-       return false;
-     }
+      } else {
+        logger.error(`❌ Next step '${nextStepId}' not found in flow '${flowId}'.`);
+        await sendMessage(phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
+        await deleteUserSession(phoneNumber);
+        return false;
+      }
+    } else if (currentStep.action) {
+      // If current step has an action and no next step, execute action
+      await executeFlowAction(phoneNumber, user, flowId, currentStep.action, session.flowData);
+      return true;
+    } else {
+      logger.warn(`⚠️ Flow '${flowId}' ended unexpectedly at step '${currentStepId}'.`);
+      await sendMessage(phoneNumber, 'I\'m sorry, our conversation ended unexpectedly. Please try again.');
+      await deleteUserSession(phoneNumber);
+      return false;
+    }
   } catch (error) {
     logger.error('❌ Error in processFlowMessage:', error);
     try {
@@ -447,41 +446,41 @@ const processFlowMessage = async(message, user, flowId) => {
 const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => {
   switch (action) {
   case 'complete_profile': {
-     const { birthDate } = flowData;
-     const { birthTime } = flowData;
-     const { birthPlace } = flowData;
-     const preferredLanguage = flowData.preferredLanguage || 'english';
+    const { birthDate } = flowData;
+    const { birthTime } = flowData;
+    const { birthPlace } = flowData;
+    const preferredLanguage = flowData.preferredLanguage || 'english';
 
-     // Generate comprehensive birth chart analysis with error handling
-     let chartData = {};
-     // Temporarily disable for testing
-     // try {
-     //   chartData = await vedicCalculator.generateDetailedChart({ birthDate, birthTime, birthPlace });
-     //   console.log('✅ Chart data generated:', chartData);
-     // } catch (error) {
-     //   logger.error('❌ Error generating detailed chart:', error);
-     //   // Continue with basic sun sign calculation
-     // }
+    // Generate comprehensive birth chart analysis with error handling
+    const chartData = {};
+    // Temporarily disable for testing
+    // try {
+    //   chartData = await vedicCalculator.generateDetailedChart({ birthDate, birthTime, birthPlace });
+    //   console.log('✅ Chart data generated:', chartData);
+    // } catch (error) {
+    //   logger.error('❌ Error generating detailed chart:', error);
+    //   // Continue with basic sun sign calculation
+    // }
 
-     // Extract key information for prompt replacement
-     const sunSign = chartData.sunSign || 'Pisces'; // Temporary fallback
-     const moonSign = chartData.moonSign || 'Pisces'; // Temporary fallback
-     const risingSign = chartData.risingSign || 'Aquarius'; // Temporary fallback
+    // Extract key information for prompt replacement
+    const sunSign = chartData.sunSign || 'Pisces'; // Temporary fallback
+    const moonSign = chartData.moonSign || 'Pisces'; // Temporary fallback
+    const risingSign = chartData.risingSign || 'Aquarius'; // Temporary fallback
 
-     console.log('🔮 Astrology data:', { sunSign, moonSign, risingSign });
+    console.log('🔮 Astrology data:', { sunSign, moonSign, risingSign });
 
-     // Update user profile with birth details
-     await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
-     console.log('🔄 Updating user profile with astrology data:', { sunSign, moonSign, risingSign });
-     await updateUserProfile(phoneNumber, {
-       profileComplete: true,
-       preferredLanguage,
-       onboardingCompletedAt: new Date(),
-       sunSign,
-       moonSign,
-       risingSign
-     });
-     console.log('✅ User profile updated successfully');
+    // Update user profile with birth details
+    await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
+    console.log('🔄 Updating user profile with astrology data:', { sunSign, moonSign, risingSign });
+    await updateUserProfile(phoneNumber, {
+      profileComplete: true,
+      preferredLanguage,
+      onboardingCompletedAt: new Date(),
+      sunSign,
+      moonSign,
+      risingSign
+    });
+    console.log('✅ User profile updated successfully');
 
     console.log('🔮 Astrology data:', { sunSign, moonSign, risingSign });
 

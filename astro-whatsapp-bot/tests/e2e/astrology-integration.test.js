@@ -164,7 +164,7 @@ describe('Astrology Library Integration Tests', () => {
       expect(report.personality).toBeDefined();
 
       // Numbers should be between 1-9 or 11, 22, 33 (master numbers)
-      const validNumbers = [1,2,3,4,5,6,7,8,9,11,22,33];
+      const validNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33];
       expect(validNumbers).toContain(report.lifePath.number);
       expect(validNumbers).toContain(report.expression.number);
     });

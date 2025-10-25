@@ -7,11 +7,11 @@ const logger = require('../utils/logger');
  */
 
 // Database connection options
-const getConnectionOptions = (mongoURI) => {
+const getConnectionOptions = mongoURI => {
   const baseOptions = {
     maxPoolSize: 10, // Maintain up to 10 socket connections
     serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+    socketTimeoutMS: 45000 // Close sockets after 45 seconds of inactivity
   };
 
   // Add serverApi for Atlas connections (mongodb+srv)
@@ -19,7 +19,7 @@ const getConnectionOptions = (mongoURI) => {
     baseOptions.serverApi = {
       version: ServerApiVersion.v1,
       strict: true,
-      deprecationErrors: true,
+      deprecationErrors: true
     };
   }
 
@@ -30,7 +30,7 @@ const getConnectionOptions = (mongoURI) => {
  * Connect to MongoDB Atlas
  * @returns {Promise<void>}
  */
-const connectDB = async () => {
+const connectDB = async() => {
   try {
     // In test environment, always disconnect first to avoid connection conflicts
     if (process.env.NODE_ENV === 'test') {
@@ -86,7 +86,7 @@ const connectDB = async () => {
       logger.info('🗄️ Mongoose connected to MongoDB');
     });
 
-    mongoose.connection.on('error', (err) => {
+    mongoose.connection.on('error', err => {
       logger.error('❌ Mongoose connection error:', err);
     });
 
@@ -95,12 +95,11 @@ const connectDB = async () => {
     });
 
     // Graceful shutdown
-    process.on('SIGINT', async () => {
+    process.on('SIGINT', async() => {
       await mongoose.connection.close();
       logger.info('📴 MongoDB connection closed due to app termination');
       process.exit(0);
     });
-
   } catch (error) {
     logger.error('❌ MongoDB connection failed:', error.message);
     // Don't exit process in production or test, let Railway handle restarts
@@ -115,7 +114,7 @@ const connectDB = async () => {
  * Close database connection
  * @returns {Promise<void>}
  */
-const closeDB = async () => {
+const closeDB = async() => {
   try {
     await mongoose.connection.close();
     logger.info('📴 MongoDB connection closed');

@@ -38,7 +38,7 @@ describe('Session Model', () => {
   describe('Session Queries', () => {
     it('should find session by phone number', async () => {
       const sessionData = {
-        sessionId: 'session-456',
+        sessionId: 'session-123',
         phoneNumber: '+1234567890',
         currentFlow: 'onboarding',
         flowData: { step: 1 },
@@ -55,6 +55,7 @@ describe('Session Model', () => {
 
     it('should update session flow data', async () => {
       const sessionData = {
+        sessionId: 'session-456',
         phoneNumber: '+1234567890',
         currentFlow: 'onboarding',
         flowData: { step: 1 },

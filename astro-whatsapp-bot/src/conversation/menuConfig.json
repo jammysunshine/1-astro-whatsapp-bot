@@ -1,35 +1,25 @@
 {
-   "main_menu": {
-     "type": "interactive",
-     "body": "🌟 *What would you like to explore today?*",
-     "buttons": [
-       {
-         "id": "btn_daily_horoscope",
-         "title": "Daily Horoscope",
-         "action": "get_daily_horoscope"
-       },
-       {
-         "id": "btn_birth_chart",
-         "title": "Birth Chart",
-         "action": "show_birth_chart"
-       },
-       {
-         "id": "btn_all_services",
-         "title": "All Services",
-         "action": "show_comprehensive_menu"
-       },
-       {
-         "id": "btn_compatibility",
-         "title": "Compatibility",
-         "action": "initiate_compatibility_flow"
-       },
-       {
-         "id": "btn_subscription",
-         "title": "Subscription",
-         "action": "show_subscription_plans"
-       }
-     ]
-   },
+    "main_menu": {
+      "type": "interactive",
+      "body": "🌟 *What would you like to explore today?*\n\nChoose from our core astrology services:",
+      "buttons": [
+        {
+          "id": "btn_daily_horoscope",
+          "title": "Daily Horoscope",
+          "action": "get_daily_horoscope"
+        },
+        {
+          "id": "btn_birth_chart",
+          "title": "Birth Chart",
+          "action": "show_birth_chart"
+        },
+        {
+          "id": "btn_all_services",
+          "title": "All Services",
+          "action": "show_comprehensive_menu"
+        }
+      ]
+    },
   "divination_menu": {
     "type": "interactive",
     "body": "🔮 *Divination Systems*",
@@ -123,60 +113,100 @@
       }
     ]
    },
-   "comprehensive_menu": {
-     "type": "interactive",
-     "body": "🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:",
-     "buttons": [
-       {
-         "id": "btn_daily_horoscope",
-         "title": "Daily Horoscope",
-         "action": "get_daily_horoscope"
-       },
-       {
-         "id": "btn_birth_chart",
-         "title": "Full Birth Chart",
-         "action": "show_birth_chart"
-       },
-       {
-         "id": "btn_tarot",
-         "title": "Tarot Reading",
-         "action": "get_tarot_reading"
-       },
-       {
-         "id": "btn_palmistry",
-         "title": "Palmistry",
-         "action": "get_palmistry_analysis"
-       },
-       {
-         "id": "btn_nadi",
-         "title": "Nadi Astrology",
-         "action": "show_nadi_flow"
-       },
-       {
-         "id": "btn_iching",
-         "title": "I Ching Oracle",
-         "action": "get_iching_reading"
-       },
-       {
-         "id": "btn_horary",
-         "title": "Horary Question",
-         "action": "get_horary_reading"
-       },
-       {
-         "id": "btn_kabbalistic",
-         "title": "Kabbalistic",
-         "action": "get_kabbalistic_analysis"
-       },
-       {
-         "id": "btn_mayan",
-         "title": "Mayan Calendar",
-         "action": "get_mayan_analysis"
-       },
-       {
-         "id": "btn_celtic",
-         "title": "Celtic Wisdom",
-         "action": "get_celtic_analysis"
-       }
-     ]
-   }
+    "comprehensive_menu": {
+      "type": "list",
+      "body": "🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:",
+      "sections": [
+        {
+          "title": "Core Services",
+          "rows": [
+            {
+              "id": "btn_daily_horoscope",
+              "title": "Daily Horoscope",
+              "description": "Personalized daily guidance"
+            },
+            {
+              "id": "btn_birth_chart",
+              "title": "Full Birth Chart",
+              "description": "Complete Vedic astrology analysis"
+            },
+            {
+              "id": "btn_compatibility",
+              "title": "Compatibility",
+              "description": "Relationship astrology"
+            }
+          ]
+        },
+        {
+          "title": "Divination Systems",
+          "rows": [
+            {
+              "id": "btn_tarot",
+              "title": "Tarot Reading",
+              "description": "Ancient card wisdom"
+            },
+            {
+              "id": "btn_iching",
+              "title": "I Ching Oracle",
+              "description": "Chinese divination system"
+            },
+            {
+              "id": "btn_palmistry",
+              "title": "Palmistry",
+              "description": "Hand reading analysis"
+            }
+          ]
+        },
+        {
+          "title": "Ancient Traditions",
+          "rows": [
+            {
+              "id": "btn_nadi",
+              "title": "Nadi Astrology",
+              "description": "Ancient Indian leaf astrology"
+            },
+            {
+              "id": "btn_kabbalistic",
+              "title": "Kabbalistic",
+              "description": "Jewish mystical tradition"
+            },
+            {
+              "id": "btn_mayan",
+              "title": "Mayan Calendar",
+              "description": "Ancient Mesoamerican wisdom"
+            },
+            {
+              "id": "btn_celtic",
+              "title": "Celtic Wisdom",
+              "description": "Druidic tree astrology"
+            }
+          ]
+        },
+        {
+          "title": "Advanced Services",
+          "rows": [
+            {
+              "id": "btn_horary",
+              "title": "Horary Question",
+              "description": "Answer specific questions"
+            },
+            {
+              "id": "btn_chinese",
+              "title": "Chinese BaZi",
+              "description": "Four Pillars of Destiny"
+            },
+            {
+              "id": "btn_numerology",
+              "title": "Numerology",
+              "description": "Numbers and life path analysis"
+            },
+            {
+              "id": "btn_astrocartography",
+              "title": "Astrocartography",
+              "description": "Locational astrology"
+            }
+          ]
+        }
+      ]
+    }
 }

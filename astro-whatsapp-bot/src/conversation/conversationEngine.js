@@ -666,19 +666,7 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
   case 'show_comprehensive_menu': {
     const menu = getMenu('comprehensive_menu');
     if (menu) {
-      // Convert buttons to list sections
-      const sections = [
-        {
-          title: 'Astrology Services',
-          rows: menu.buttons.map(button => ({
-            id: button.id,
-            title: button.title,
-            description: `Get your ${button.title.toLowerCase()}`
-          }))
-        }
-      ];
-
-      await sendListMessage(phoneNumber, menu.body, 'Select Service', sections);
+      await sendListMessage(phoneNumber, menu.body, 'Select Service', menu.sections);
     }
     break;
   }

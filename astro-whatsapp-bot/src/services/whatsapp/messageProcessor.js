@@ -575,6 +575,23 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       }
     }
     break;
+  case 'get_numerology_analysis':
+    if (!user.birthDate || !user.name) {
+      response = 'For numerology analysis, I need your full name and birth date.';
+    } else {
+      try {
+        const numerologyService = require('../astrology/numerologyService');
+        const report = numerologyService.getNumerologyReport(user.birthDate, user.name);
+        response = `🔢 *Numerology Analysis*\n\n`;
+        response += `*Life Path:* ${report.lifePath.number} - ${report.lifePath.interpretation}\n\n`;
+        response += `*Expression:* ${report.expression.number} - ${report.expression.interpretation}\n\n`;
+        response += `*Soul Urge:* ${report.soulUrge.number} - ${report.soulUrge.interpretation}`;
+      } catch (error) {
+        logger.error('Error getting numerology analysis:', error);
+        response = 'I\'m having trouble calculating your numerology right now.';
+      }
+    }
+    break;
   case 'show_main_menu':
     const mainMenu = getMenu('main_menu');
     if (mainMenu) {

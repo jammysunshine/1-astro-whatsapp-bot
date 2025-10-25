@@ -302,13 +302,86 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Automation**: [e.g., Testing, deployment]
 - **Iteration**: [e.g., Rapid cycles]
 
-## 14. Quick Reference Guide
+## 14. BMAd Methodology and AI-Driven Development
+
+**Incorporate BMAd (Breakthrough Method for Agile AI-Driven Development) principles.**
+
+- **AI-First Development**: [e.g., Leverage AI agents from conception to deployment]
+- **Agile Iteration with AI**: [e.g., Accelerate sprint cycles using AI]
+- **Coordinated AI Agents**: [e.g., Qwen CLI, Gemini CLI for code generation, testing]
+- **Rapid Prototyping**: [e.g., AI for quick iterations]
+- **Intelligent Task Management**: [e.g., AI prioritization]
+- **Continuous Learning**: [e.g., AI learns from feedback]
+
+## 15. Testing and Quality Assurance Mandates
+
+**Define comprehensive testing strategy.**
+
+- **Zero Manual Testing**: [e.g., All testing automated]
+- **Test Coverage**: [e.g., 95%+ unit, integration, E2E]
+- **Test Types**: [e.g., Unit, Integration, E2E, Regression, Smoke, Security, Performance]
+- **Real Integration Testing**: [e.g., Use real APIs for critical flows]
+- **CI/CD Integration**: [e.g., Automated pipelines with quality gates]
+- **Mocking and Real Testing**: [e.g., Extensive mocking + real E2E]
+
+## 16. Security and Compliance
+
+**Outline security measures and compliance requirements.**
+
+- **Authentication**: [e.g., JWT, 2FA, Social Login]
+- **Data Protection**: [e.g., Encryption, GDPR, Privacy Controls]
+- **Security Practices**: [e.g., Input Validation, Rate Limiting, CORS, Webhook Validation]
+- **Compliance**: [e.g., WhatsApp API, Regional Laws (RBI, GDPR)]
+- **Vulnerability Management**: [e.g., Dependency Scanning, Audits]
+
+## 17. Monetization and Revenue Strategies
+
+**Detail monetization including tiers, micro-transactions, events.**
+
+- **Subscription Tiers**: [e.g., Free, Essential, Premium, VIP with pricing]
+- **Micro-Transactions**: [e.g., Flash Insights, Transit Alerts]
+- **Event-Based**: [e.g., Eclipse Packages, Retrograde Sessions]
+- **Affiliate and Marketplace**: [e.g., Commissions, User-to-User Services]
+- **Loyalty and Referral**: [e.g., Points, Rewards, Viral Incentives]
+- **Revenue Optimization**: [e.g., Dynamic Pricing, Behavioral Pricing]
+
+## 18. User Experience and Engagement
+
+**Describe UX, onboarding, accessibility, viral growth.**
+
+- **Onboarding**: [e.g., Immediate value hook, tutorials, free readings]
+- **Accessibility**: [e.g., Multi-language, Visual/Hearing/Cognitive options]
+- **Engagement**: [e.g., Daily tips, notifications, gamification]
+- **Viral Growth**: [e.g., Compatibility sharing, social proof, referrals]
+- **Community Features**: [e.g., Astro-Social Network, challenges]
+
+## 19. Deployment and Infrastructure
+
+**Describe deployment, scaling, monitoring.**
+
+- **CI/CD Pipeline**: [e.g., Automated testing, deployment, rollbacks]
+- **Infrastructure**: [e.g., Docker, Kubernetes, Cloud Services]
+- **Monitoring**: [e.g., APM, Logging, Alerting, Health Checks]
+- **Performance**: [e.g., Caching, Optimization, Scalability]
+
+## 20. Risk Mitigation and Validation
+
+**Address risks, market validation, compliance.**
+
+- **Market Validation**: [e.g., MVP testing, A/B testing, Churn Analysis]
+- **Risks**: [e.g., Technical, Operational, Financial]
+- **Mitigation**: [e.g., Compliance, Security Audits, Backup/Recovery]
+- **Validation**: [e.g., Requirements Traceability, Quality Gates]
+
+## 21. Quick Reference Guide
 
 **Provide a summary of key elements.**
 
 - **Target Markets**: [e.g., India, UAE, Australia]
 - **Languages**: [e.g., English, Hindi, Arabic]
 - **Payment Methods**: [e.g., UPI, Stripe]
-- **Differentiators**: [e.g., AI Twin, Transit Timing]
+- **Differentiators**: [e.g., AI Twin, Transit Timing, Viral Compatibility]
+- **Success Metrics**: [e.g., MRR, Conversion, Retention]
+- **Viral Mechanisms**: [e.g., Sharing, Referrals, Network Effects]
 
-This template ensures comprehensive coverage, preventing missed features and promoting structured, detailed prompts for future projects.
+This enhanced template incorporates inputs from INITIAL-PROMPT.md (detailed epics, user stories, monetization, UX) and gemini.md (BMAd methodology, testing mandates, security, generic guidelines), ensuring comprehensive coverage for future projects.

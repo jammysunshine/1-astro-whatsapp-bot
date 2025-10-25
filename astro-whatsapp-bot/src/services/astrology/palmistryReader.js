@@ -562,4 +562,77 @@ class PalmistryReader {
   }
 }
 
+/**
+ * Generate a palmistry reading based on user data
+ * @param {Object} user - User data with hand characteristics
+ * @returns {Object} Formatted palmistry reading
+ */
+function generatePalmistryReading(user) {
+  try {
+    if (!user) {
+      // Generate sample analysis for demo
+      return module.exports.generatePalmistryAnalysis();
+    }
+
+    // Create hand data from user info
+    const handData = {
+      handType: user.handType || 'earth',
+      fingerShape: user.fingerShape || 'square',
+      heartLine: user.heartLine || { strength: 'strong', length: 'long', characteristics: { curved: true } },
+      headLine: user.headLine || { strength: 'medium', length: 'medium', characteristics: { straight: true } },
+      lifeLine: user.lifeLine || { strength: 'strong', length: 'long', characteristics: { deep: true } },
+      fateLine: user.fateLine || { strength: 'medium', length: 'medium', characteristics: { clear: true } },
+      mounts: user.mounts || {
+        venus: { prominence: 'prominent' },
+        mars: { prominence: 'medium' },
+        jupiter: { prominence: 'high' },
+        saturn: { prominence: 'medium' },
+        mercury: { prominence: 'medium' },
+        moon: { prominence: 'high' }
+      }
+    };
+
+    const analysis = module.exports.analyzePalm(handData);
+
+    if (analysis.error) {
+      return {
+        error: analysis.error,
+        handType: 'Unknown',
+        lifeLine: {},
+        heartLine: {},
+        headLine: {},
+        fateLine: {},
+        mounts: {},
+        interpretation: 'Unable to analyze palm at this time',
+        advice: 'Please try again later'
+      };
+    }
+
+    return {
+      handType: analysis.handType.type,
+      lifeLine: analysis.lineAnalysis?.lifeLine || {},
+      heartLine: analysis.lineAnalysis?.heartLine || {},
+      headLine: analysis.lineAnalysis?.headLine || {},
+      fateLine: analysis.lineAnalysis?.fateLine || {},
+      mounts: analysis.mountAnalysis || {},
+      interpretation: analysis.overallPersonality,
+      advice: analysis.recommendations?.join('. ') || 'Trust your natural abilities'
+    };
+  } catch (error) {
+    logger.error('Error generating palmistry reading:', error);
+    return {
+      error: 'Unable to generate palmistry reading',
+      handType: 'Unknown',
+      lifeLine: {},
+      heartLine: {},
+      headLine: {},
+      fateLine: {},
+      mounts: {},
+      interpretation: 'Please try again later',
+      advice: 'Consult a qualified palmist for detailed analysis'
+    };
+  }
+}
+
 module.exports = new PalmistryReader();
+module.exports.generatePalmistryReading = generatePalmistryReading;

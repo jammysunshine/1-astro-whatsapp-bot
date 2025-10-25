@@ -392,4 +392,54 @@ class TarotReader {
   }
 }
 
+/**
+ * Generate a tarot reading based on user data and spread type
+ * @param {Object} user - User data with birth information
+ * @param {string} spreadType - Type of spread (single, three-card, celtic-cross)
+ * @returns {Object} Formatted tarot reading
+ */
+function generateTarotReading(user, spreadType = 'single') {
+  try {
+    let reading;
+
+    switch (spreadType) {
+    case 'single':
+      reading = module.exports.singleCardReading();
+      break;
+    case 'three-card':
+      reading = module.exports.threeCardReading();
+      break;
+    case 'celtic-cross':
+      reading = module.exports.celticCrossReading();
+      break;
+    default:
+      reading = module.exports.singleCardReading();
+    }
+
+    // Add user personalization
+    if (user && user.birthDate) {
+      reading.personalized = true;
+      reading.userSign = user.sunSign || 'Unknown';
+    }
+
+    return {
+      type: spreadType,
+      cards: reading.cards,
+      interpretation: reading.summary,
+      advice: `Based on your ${reading.spread} spread: ${reading.summary}`,
+      personalized: reading.personalized || false
+    };
+  } catch (error) {
+    logger.error('Error generating tarot reading:', error);
+    return {
+      error: 'Unable to generate tarot reading',
+      type: spreadType,
+      cards: [],
+      interpretation: 'Please try again later',
+      advice: 'Tarot readings require focus and clarity'
+    };
+  }
+}
+
 module.exports = new TarotReader();
+module.exports.generateTarotReading = generateTarotReading;

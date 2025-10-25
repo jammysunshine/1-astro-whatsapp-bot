@@ -585,4 +585,66 @@ class NadiReader {
   }
 }
 
+/**
+ * Generate a Nadi astrology reading based on user data
+ * @param {Object} user - User data with birth information
+ * @returns {Object} Formatted Nadi reading
+ */
+function generateNadiReading(user) {
+  try {
+    if (!user || !user.birthDate) {
+      return {
+        error: 'Birth date is required for Nadi reading',
+        nadiType: 'Unknown',
+        dasaPeriods: [],
+        remedies: [],
+        predictions: {},
+        interpretation: 'Please provide your birth date for accurate Nadi analysis'
+      };
+    }
+
+    // Parse birth date and create sample time/place if not provided
+    const birthDate = user.birthDate;
+    const birthTime = user.birthTime || '12:00';
+    const birthPlace = user.birthPlace || 'Unknown';
+
+    const reading = module.exports.calculateNadiReading(birthDate, birthTime, birthPlace);
+
+    if (reading.error) {
+      return {
+        error: reading.error,
+        nadiType: 'Unknown',
+        dasaPeriods: [],
+        remedies: [],
+        predictions: {},
+        interpretation: 'Unable to generate Nadi reading at this time'
+      };
+    }
+
+    return {
+      nadiType: reading.nadiSystem.name,
+      dasaPeriods: [{
+        planet: reading.currentDasha.planet,
+        startDate: 'Current',
+        endDate: `${reading.currentDasha.remaining} years`,
+        effects: reading.currentDasha.influence
+      }],
+      remedies: reading.remedies,
+      predictions: reading.predictions,
+      interpretation: `Your ${reading.nadiSystem.name} indicates ${reading.nadiSystem.characteristics}. Current ${reading.currentDasha.planet} dasha brings ${reading.currentDasha.characteristics}.`
+    };
+  } catch (error) {
+    logger.error('Error generating Nadi reading:', error);
+    return {
+      error: 'Unable to generate Nadi reading',
+      nadiType: 'Unknown',
+      dasaPeriods: [],
+      remedies: ['Consult a qualified Nadi astrologer'],
+      predictions: {},
+      interpretation: 'Please try again later'
+    };
+  }
+}
+
 module.exports = new NadiReader();
+module.exports.generateNadiReading = generateNadiReading;

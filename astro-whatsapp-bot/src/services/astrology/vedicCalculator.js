@@ -15,10 +15,22 @@ class VedicCalculator {
 
     // Set ephemeris path for sweph (used internally by astrologer)
     try {
+      logger.info('Attempting to set Swiss Ephemeris path...');
       sweph.set_ephe_path('./ephe');
-      console.log('Swiss Ephemeris initialized for astrologer library');
+      logger.info('Swiss Ephemeris path set successfully.');
     } catch (error) {
-      console.warn('Swiss Ephemeris data files not found. Using built-in calculations:', error.message);
+      logger.error('❌ Error setting Swiss Ephemeris path:', error.message);
+      logger.warn('Swiss Ephemeris data files not found or inaccessible. Falling back to built-in calculations.');
+    }
+
+    // Initialize astrologer library
+    try {
+      logger.info('Attempting to initialize astrologer library...');
+      this._astrologer = new Astrologer();
+      logger.info('Astrologer library initialized successfully.');
+    } catch (error) {
+      logger.error('❌ Error initializing astrologer library:', error.message);
+      throw new Error('Failed to initialize core astrology library. Please check dependencies and environment.');
     }
 
     // Zodiac signs (for backward compatibility)

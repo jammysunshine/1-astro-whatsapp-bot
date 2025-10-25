@@ -53,6 +53,7 @@ const getUserByPhone = async phoneNumber => {
     const user = await User.findOne({ phoneNumber });
     if (user) {
       logger.debug(`🔍 Found user: ${phoneNumber}`);
+      console.log(`DEBUG: getUserByPhone returning user with profileComplete: ${user.profileComplete}`);
       return user.toObject();
     } else {
       logger.debug(`🔍 User not found: ${phoneNumber}`);
@@ -72,24 +73,26 @@ const getUserByPhone = async phoneNumber => {
  */
 const updateUserProfile = async(phoneNumber, updateData) => {
   try {
-    const user = await User.findOneAndUpdate(
-      { phoneNumber },
-      {
-        ...updateData,
-        lastInteraction: new Date()
-      },
-      {
-        new: true, // Return updated document
-        runValidators: true
-      }
-    );
+    logger.info(`Attempting to update user profile for ${phoneNumber} with data:`, updateData);
+    const user = await User.findOne({ phoneNumber });
 
     if (!user) {
       throw new Error(`User not found: ${phoneNumber}`);
     }
 
-    logger.info(`🔄 Updated user profile: ${phoneNumber}`);
-    return user.toObject();
+    // Apply updates
+    Object.assign(user, updateData);
+    user.lastInteraction = new Date();
+
+    await user.save();
+
+    logger.info(`🔄 Updated user profile: ${phoneNumber}. New profileComplete status: ${user.profileComplete}`);
+
+    // Explicitly fetch the user again to confirm the persisted state
+    const updatedUser = await User.findOne({ phoneNumber });
+    logger.info(`🔄 Confirmed user profile after update: ${phoneNumber}. Confirmed profileComplete status: ${updatedUser.profileComplete}`);
+
+    return updatedUser.toObject();
   } catch (error) {
     logger.error(`❌ Error updating user ${phoneNumber}:`, error);
     throw error;

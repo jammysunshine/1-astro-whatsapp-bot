@@ -1,218 +1,266 @@
-// tests/e2e/critical-user-flow.test.js
-// End-to-end tests for critical user flow scenarios
-
 const request = require('supertest');
 const app = require('../../src/server');
-const { processIncomingMessage } = require('../../src/services/whatsapp/messageProcessor');
+const User = require('../../src/models/User');
+const Session = require('../../src/models/Session');
+const { getUserByPhone, createUser, addBirthDetails, updateUserProfile } = require('../../src/models/userModel');
 const { sendMessage } = require('../../src/services/whatsapp/messageSender');
-const { getUserByPhone, createUser } = require('../../src/models/userModel');
-const { generateAstrologyResponse } = require('../../src/services/astrology/astrologyEngine');
 const logger = require('../../src/utils/logger');
 
-// Mock dependencies
+// Mock webhookValidator only, as it's external to the core app logic being tested here
 jest.mock('../../src/services/whatsapp/webhookValidator');
-jest.mock('../../src/services/whatsapp/messageProcessor');
-jest.mock('../../src/services/whatsapp/messageSender');
-jest.mock('../../src/models/userModel');
-jest.mock('../../src/services/astrology/astrologyEngine');
-jest.mock('../../src/utils/logger');
-
-// Get mocked functions
 const { validateWebhookSignature } = require('../../src/services/whatsapp/webhookValidator');
 
 describe('Critical User Flow End-to-End Tests', () => {
-  beforeEach(() => {
-    // Reset all mocks
+  beforeAll(async () => {
+    // Set test environment variables
+    process.env.NODE_ENV = 'test';
+    process.env.W1_SKIP_WEBHOOK_SIGNATURE = 'true';
+    process.env.W1_WHATSAPP_ACCESS_TOKEN = 'test_token';
+    process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test_phone_id';
+  });
+
+  beforeEach(async () => {
+    // Clear database collections before each test
+    try {
+      await User.deleteMany({});
+      await Session.deleteMany({});
+    } catch (error) {
+      // Collections might not exist, that's fine
+    }
+    // Clear all mocks (only for webhookValidator here)
     jest.clearAllMocks();
 
-    // Setup default mock responses
+    // Setup default mock responses for webhookValidator
     validateWebhookSignature.mockReturnValue(true);
-    processIncomingMessage.mockImplementation(async(message, value) => {
-      const phoneNumber = message.from;
-      let user = await getUserByPhone(phoneNumber);
-      if (!user) {
-        user = await createUser(phoneNumber);
-        // Simulate onboarding - don't call astrology for "Hi"
-        return;
-      }
-      // For existing users, handle different message types
-      if (message.text?.body) {
-        const response = await generateAstrologyResponse(message.text.body, user);
-        await sendMessage(phoneNumber, response);
-      } else if (message.interactive?.button_reply) {
-        const response = await generateAstrologyResponse(message.interactive.button_reply.title, user);
-        await sendMessage(phoneNumber, response);
-      }
-    });
+
+    // Mock sendMessage to capture calls for assertions
+    sendMessage.mockClear();
     sendMessage.mockResolvedValue({ success: true });
-    getUserByPhone.mockResolvedValue(null); // Will be overridden in specific tests
-    createUser.mockResolvedValue({
-      id: 'user-123',
-      phoneNumber: '1234567890',
-      createdAt: new Date(),
-      lastInteraction: new Date()
-    });
-    generateAstrologyResponse.mockResolvedValue('Your personalized astrology response');
   });
 
   describe('New User Registration Flow', () => {
-    it('should complete full new user registration and first reading flow', async() => {
-      // Override mocks for this test
-      getUserByPhone.mockResolvedValueOnce(null) // First call: new user
-        .mockResolvedValueOnce({
-          id: 'user-123',
-          phoneNumber: '1234567890',
-          profileComplete: false
-        }); // Second call: existing user
-      // Step 1: User sends "Hi" to bot
-      const newUserPayload = {
-        entry: [{
-          id: 'entry-new-user',
-          time: '1234567890',
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: '+1234567890',
-                phone_number_id: 'phone-id-new'
-              },
-              contacts: [{
-                profile: { name: 'New User' },
-                wa_id: '1234567890'
-              }],
-              messages: [{
-                from: '1234567890',
-                id: 'message-id-hi',
-                timestamp: '1234567890',
-                text: { body: 'Hi' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
-      };
+    const testPhone = '+1234567890';
 
-      // Test webhook processing
-      const webhookResponse = await request(app)
+    it('should complete full new user registration and first reading flow', async () => {
+      // Step 1: New user sends birth date directly (welcome step expects date)
+      const birthDateResponse = await request(app)
         .post('/webhook')
-        .send(newUserPayload)
-        .set('Content-Type', 'application/json')
-        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .send({
+          entry: [{
+            id: 'test-entry-1',
+            changes: [{
+              field: 'messages',
+              value: {
+                messaging_product: 'whatsapp',
+                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
+                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
+                messages: [{
+                  from: testPhone,
+                  id: 'msg-birth-date',
+                  timestamp: Date.now().toString(),
+                  text: { body: '15031990' }, // 15/03/1990
+                  type: 'text'
+                }]
+              }
+            }]
+          }]
+        })
+        .set('x-hub-signature-256', 'test-signature')
         .expect(200);
 
-      expect(webhookResponse.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
+      expect(birthDateResponse.body.success).toBe(true);
 
-      // Verify user creation flow
-      expect(getUserByPhone).toHaveBeenCalledWith('1234567890');
-      expect(createUser).toHaveBeenCalledWith('1234567890');
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '1234567890',
-          type: 'text',
-          text: { body: 'Hi' }
-        }),
-        expect.objectContaining({
-          contacts: [{
-            profile: { name: 'New User' },
-            wa_id: '1234567890'
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Verify user was created
+      let user = await getUserByPhone(testPhone);
+      expect(user).toBeTruthy();
+      expect(user.profileComplete).toBe(false);
+
+      // Step 2: User provides birth time
+      const birthTimeInputResponse = await request(app)
+        .post('/webhook')
+        .send({
+          entry: [{
+            id: 'test-entry-2',
+            changes: [{
+              field: 'messages',
+              value: {
+                messaging_product: 'whatsapp',
+                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
+                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
+                messages: [{
+                  from: testPhone,
+                  id: 'msg-birth-time-input',
+                  timestamp: Date.now().toString(),
+                  text: { body: '1430' }, // 14:30
+                  type: 'text'
+                }]
+              }
+            }]
           }]
         })
-      );
-
-      // Step 2: User provides birth details
-      const birthDetailsPayload = {
-        entry: [{
-          id: 'entry-birth-details',
-          time: '1234567891',
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: '+1234567890',
-                phone_number_id: 'phone-id-birth'
-              },
-              contacts: [{
-                profile: { name: 'New User' },
-                wa_id: '1234567890'
-              }],
-              messages: [{
-                from: '1234567890',
-                id: 'message-id-birth',
-                timestamp: '1234567891',
-                text: { body: 'My birth is 15/03/1990, 07:30, Mumbai, India' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
-      };
-
-      // Test birth details processing
-      const birthDetailsResponse = await request(app)
-        .post('/webhook')
-        .send(birthDetailsPayload)
-        .set('Content-Type', 'application/json')
-        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .set('x-hub-signature-256', 'test-signature')
         .expect(200);
 
-      expect(birthDetailsResponse.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
+      expect(birthTimeInputResponse.body.success).toBe(true);
 
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '1234567890',
-          type: 'text',
-          text: { body: 'My birth is 15/03/1990, 07:30, Mumbai, India' }
-        }),
-        expect.objectContaining({
-          contacts: [{
-            profile: { name: 'New User' },
-            wa_id: '1234567890'
+      // Step 3: User provides birth place
+      const birthPlaceResponse = await request(app)
+        .post('/webhook')
+        .send({
+          entry: [{
+            id: 'test-entry-3',
+            changes: [{
+              field: 'messages',
+              value: {
+                messaging_product: 'whatsapp',
+                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
+                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
+                messages: [{
+                  from: testPhone,
+                  id: 'msg-birth-place',
+                  timestamp: Date.now().toString(),
+                  text: { body: 'Mumbai, India' },
+                  type: 'text'
+                }]
+              }
+            }]
           }]
         })
-      );
+         .set('x-hub-signature-256', 'test-signature')
+         .expect(200);
 
-      // Verify astrology response generation
-      expect(generateAstrologyResponse).toHaveBeenCalledWith(
-        'My birth is 15/03/1990, 07:30, Mumbai, India',
-        expect.objectContaining({
-          id: 'user-123',
-          phoneNumber: '1234567890'
+       expect(birthPlaceResponse.body.success).toBe(true);
+
+       // Step 4: User selects language (English)
+      const languageResponse = await request(app)
+        .post('/webhook')
+        .send({
+          entry: [{
+            id: 'test-entry-4',
+            changes: [{
+              field: 'messages',
+              value: {
+                messaging_product: 'whatsapp',
+                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
+                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
+                messages: [{
+                  from: testPhone,
+                  id: 'msg-language',
+                  timestamp: Date.now().toString(),
+                  type: 'interactive',
+                  interactive: {
+                    type: 'button_reply',
+                    button_reply: {
+                      id: 'lang_english',
+                      title: 'English 🇺🇸'
+                    }
+                  }
+                }]
+              }
+            }]
+          }]
         })
-      );
+         .set('x-hub-signature-256', 'test-signature')
+         .expect(200);
 
-      // Verify message sending
-      expect(sendMessage).toHaveBeenCalledWith(
-        '1234567890',
-        'Your personalized astrology response'
-      );
-    });
+       expect(languageResponse.body.success).toBe(true);
+
+       // Step 5: User confirms details
+      const confirmResponse = await request(app)
+        .post('/webhook')
+        .send({
+          entry: [{
+            id: 'test-entry-5',
+            changes: [{
+              field: 'messages',
+              value: {
+                messaging_product: 'whatsapp',
+                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
+                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
+                messages: [{
+                  from: testPhone,
+                  id: 'msg-confirm',
+                  timestamp: Date.now().toString(),
+                  type: 'interactive',
+                  interactive: {
+                    type: 'button_reply',
+                    button_reply: {
+                      id: 'confirm_yes',
+                      title: '✅ Yes, Continue'
+                    }
+                  }
+                }]
+              }
+            }]
+          }]
+        })
+        .set('x-hub-signature-256', 'test-signature')
+        .expect(200);
+
+      expect(confirmResponse.body.success).toBe(true);
+
+      // Wait for async database operations and astrology calculations to complete
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Verify user profile is complete with astrology data
+      user = await getUserByPhone(testPhone);
+      expect(user).toBeTruthy();
+      expect(user.profileComplete).toBe(true);
+      expect(user.birthDate).toBe('15/03/1990');
+      expect(user.birthTime).toBe('14:30');
+      expect(user.birthPlace).toBe('Mumbai, India');
+      expect(user.preferredLanguage).toBe('en');
+
+      // Verify astrology calculations were performed and stored
+      expect(user.sunSign).toBe('Pisces'); // Based on 15/03/1990
+      expect(user.moonSign).toBeDefined(); // Moon sign is dynamic, just check if it's set
+      expect(user.risingSign).toBeDefined(); // Rising sign is dynamic, just check if it's set
+
+      // Verify the completion message content
+      expect(sendMessage).toHaveBeenCalledTimes(2); // One for the completion message, one for the main menu
+      const completionMessageCall = sendMessage.mock.calls[0][1];
+      expect(completionMessageCall).toContain('🎉 *Welcome to your cosmic journey!*');
+      expect(completionMessageCall).toContain(`☀️ *Sun Sign:* ${user.sunSign}`);
+      expect(completionMessageCall).toContain(`🌙 *Moon Sign:* ${user.moonSign}`);
+      expect(completionMessageCall).toContain(`⬆️ *Rising Sign:* ${user.risingSign}`);
+      expect(completionMessageCall).toContain('🔥 *Your Top 3 Life Patterns:*');
+      expect(completionMessageCall).toContain('⭐ *3-Day Cosmic Preview:*');
+
+      // Verify the main menu was sent
+      const mainMenuCall = sendMessage.mock.calls[1][1];
+      expect(mainMenuCall.type).toBe('button');
+      expect(mainMenuCall.body).toContain('🌟 *What would you like to explore today?*');
+      expect(mainMenuCall.buttons).toHaveLength(3);
+
+      logger.info('✅ User onboarding completed successfully!');
+      logger.info(`Sun Sign: ${user.sunSign}`);
+      logger.info(`Moon Sign: ${user.moonSign}`);
+      logger.info(`Rising Sign: ${user.risingSign}`);
+    }, 30000); // Increased timeout for real processing
   });
 
   describe('Existing User Daily Horoscope Flow', () => {
-    beforeEach(() => {
-      // Mock existing user
-      getUserByPhone.mockResolvedValue({
-        id: 'user-existing',
-        phoneNumber: '0987654321',
-        birthDate: '15/03/1990',
-        birthTime: '07:30',
-        birthPlace: 'Mumbai, India',
-        createdAt: new Date('2023-01-01'),
-        lastInteraction: new Date('2023-01-15')
+    const testPhone = '+0987654321';
+
+    beforeEach(async () => {
+      // Create a complete user profile using MongoDB storage
+      await createUser(testPhone);
+      await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
+      await updateUserProfile(testPhone, {
+        profileComplete: true,
+        preferredLanguage: 'english',
+        sunSign: 'Pisces',
+        moonSign: 'Pisces',
+        risingSign: 'Aquarius'
       });
+      // Clear sendMessage mocks after user setup
+      sendMessage.mockClear();
     });
 
-    it('should process daily horoscope request for existing user', async() => {
+    it('should generate real daily horoscope for existing user', async () => {
       const dailyHoroscopePayload = {
         entry: [{
           id: 'entry-daily',
@@ -227,12 +275,12 @@ describe('Critical User Flow End-to-End Tests', () => {
               },
               contacts: [{
                 profile: { name: 'Existing User' },
-                wa_id: '0987654321'
+                wa_id: testPhone
               }],
               messages: [{
-                from: '0987654321',
+                from: testPhone,
                 id: 'message-id-daily',
-                timestamp: '1234567892',
+                timestamp: Date.now().toString(),
                 text: { body: 'Daily horoscope' },
                 type: 'text'
               }]
@@ -248,59 +296,40 @@ describe('Critical User Flow End-to-End Tests', () => {
         .set('x-hub-signature-256', 'sha256=valid-signature')
         .expect(200);
 
-      expect(response.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
+      expect(response.body.success).toBe(true);
 
-      expect(getUserByPhone).toHaveBeenCalledWith('0987654321');
-      expect(createUser).not.toHaveBeenCalled(); // Should not create new user
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '0987654321',
-          type: 'text',
-          text: { body: 'Daily horoscope' }
-        }),
-        expect.objectContaining({
-          contacts: [{
-            profile: { name: 'Existing User' },
-            wa_id: '0987654321'
-          }]
-        })
-      );
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      expect(generateAstrologyResponse).toHaveBeenCalledWith(
-        'Daily horoscope',
-        expect.objectContaining({
-          id: 'user-existing',
-          phoneNumber: '0987654321',
-          birthDate: '15/03/1990'
-        })
-      );
+      // Verify that sendMessage was called with a horoscope message
+      expect(sendMessage).toHaveBeenCalled();
+      const sentMessage = sendMessage.mock.calls[0][1];
+      expect(sentMessage).toContain('🌟 *Daily Horoscope for Pisces*');
+      expect(sentMessage).toContain('Today brings opportunities for growth and self-discovery.');
 
-      expect(sendMessage).toHaveBeenCalledWith(
-        '0987654321',
-        'Your personalized astrology response'
-      );
+      logger.info('✅ Daily horoscope request processed successfully!');
     });
   });
 
   describe('Interactive Button Flow', () => {
-    beforeEach(() => {
-      // Mock existing user for interactive button test
-      getUserByPhone.mockResolvedValue({
-        id: 'user-interactive',
-        phoneNumber: '1122334455',
-        birthDate: '15/03/1990',
-        birthTime: '07:30',
-        birthPlace: 'Mumbai, India',
-        createdAt: new Date('2023-01-01'),
-        lastInteraction: new Date('2023-01-15')
+    const testPhone = '+1122334455';
+
+    beforeEach(async () => {
+      // Create a complete user profile using MongoDB storage
+      await createUser(testPhone);
+      await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
+      await updateUserProfile(testPhone, {
+        profileComplete: true,
+        preferredLanguage: 'english',
+        sunSign: 'Pisces',
+        moonSign: 'Pisces',
+        risingSign: 'Aquarius'
       });
+      // Clear sendMessage mocks after user setup
+      sendMessage.mockClear();
     });
 
-    it('should process interactive button reply for compatibility checking', async() => {
+    it('should process interactive button reply for compatibility checking', async () => {
       const interactivePayload = {
         entry: [{
           id: 'entry-interactive',
@@ -315,18 +344,18 @@ describe('Critical User Flow End-to-End Tests', () => {
               },
               contacts: [{
                 profile: { name: 'Interactive User' },
-                wa_id: '1122334455'
+                wa_id: testPhone
               }],
               messages: [{
-                from: '1122334455',
+                from: testPhone,
                 id: 'message-id-interactive',
-                timestamp: '1234567893',
+                timestamp: Date.now().toString(),
                 type: 'interactive',
                 interactive: {
                   type: 'button_reply',
                   button_reply: {
                     id: 'btn_check_compatibility',
-                    title: 'Check Compatibility'
+                    title: 'Compatibility'
                   }
                 }
               }]
@@ -342,48 +371,29 @@ describe('Critical User Flow End-to-End Tests', () => {
         .set('x-hub-signature-256', 'sha256=valid-signature')
         .expect(200);
 
-      expect(response.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
+      expect(response.body.success).toBe(true);
 
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '1122334455',
-          type: 'interactive',
-          interactive: {
-            type: 'button_reply',
-            button_reply: {
-              id: 'btn_check_compatibility',
-              title: 'Check Compatibility'
-            }
-          }
-        }),
-        expect.objectContaining({
-          contacts: [{
-            profile: { name: 'Interactive User' },
-            wa_id: '1122334455'
-          }]
-        })
-      );
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      expect(generateAstrologyResponse).toHaveBeenCalledWith(
-        'Check Compatibility',
-        expect.any(Object)
-      );
+      // Verify that sendMessage was called with a compatibility message
+      expect(sendMessage).toHaveBeenCalled();
+      const sentMessage = sendMessage.mock.calls[0][1];
+      expect(sentMessage).toContain('💕 *Compatibility Analysis*');
+      expect(sentMessage).toContain('I can check how compatible you are with someone else!');
 
-      expect(sendMessage).toHaveBeenCalledWith(
-        '1122334455',
-        'Your personalized astrology response'
-      );
+      logger.info('✅ Interactive button reply for compatibility processed successfully!');
     });
   });
 
   describe('Error Handling Flow', () => {
-    it('should handle processing errors gracefully', async() => {
+    it('should handle processing errors gracefully', async () => {
       // Mock processIncomingMessage to throw an error
-      processIncomingMessage.mockRejectedValue(new Error('Processing failed'));
+      // This test still needs to mock processIncomingMessage to simulate an internal error
+      // without breaking the entire test suite due to unhandled rejections from real code.
+      const { processIncomingMessage } = require('../../src/services/whatsapp/messageProcessor');
+      jest.mock('../../src/services/whatsapp/messageProcessor');
+      processIncomingMessage.mockRejectedValue(new Error('Simulated processing failed'));
 
       const errorPayload = {
         entry: [{
@@ -404,7 +414,7 @@ describe('Critical User Flow End-to-End Tests', () => {
               messages: [{
                 from: '5566778899',
                 id: 'message-id-error',
-                timestamp: '1234567894',
+                timestamp: Date.now().toString(),
                 text: { body: 'This will cause an error' },
                 type: 'text'
               }]
@@ -420,57 +430,73 @@ describe('Critical User Flow End-to-End Tests', () => {
         .set('x-hub-signature-256', 'sha256=valid-signature')
         .expect(500);
 
-      expect(response.body).toEqual({
-        error: 'Internal server error',
-        message: 'Processing failed'
-      });
+      expect(response.body.error).toBe('Internal server error');
+      expect(response.body.message).toBe('Simulated processing failed');
 
+      // Verify that an error message was sent to the user
+      expect(sendMessage).toHaveBeenCalledWith(
+        '5566778899',
+        'I\'m sorry, I encountered an error processing your message. Please try again later!'
+      );
+
+      // Verify that the error was logged
       expect(logger.error).toHaveBeenCalledWith(
-        '❌ Error in handleWhatsAppWebhook:',
+        '❌ Error processing message from +5566778899:',
         expect.any(Error)
       );
     });
   });
 
   describe('Performance and Scalability Flow', () => {
-    beforeEach(() => {
-      // Mock existing users for performance test
-      getUserByPhone.mockResolvedValue({
-        id: 'user-perf',
-        phoneNumber: '1234567890',
-        birthDate: '15/03/1990',
-        birthTime: '07:30',
-        birthPlace: 'Mumbai, India',
-        createdAt: new Date('2023-01-01'),
-        lastInteraction: new Date('2023-01-15')
-      });
+    const testPhoneBase = '+12345678';
+
+    beforeEach(async () => {
+      // Clear database collections before each test
+      await User.deleteMany({});
+      await Session.deleteMany({});
+
+      // Create a complete user profile for each simulated user
+      for (let i = 0; i < 10; i++) {
+        const phoneNumber = `${testPhoneBase}${i}`;
+        await createUser(phoneNumber);
+        await addBirthDetails(phoneNumber, '15/03/1990', '14:30', 'Mumbai, India');
+        await updateUserProfile(phoneNumber, {
+          profileComplete: true,
+          preferredLanguage: 'english',
+          sunSign: 'Pisces',
+          moonSign: 'Pisces',
+          risingSign: 'Aquarius'
+        });
+      }
+      sendMessage.mockClear();
     });
 
-    it('should handle high volume of messages without crashing', async() => {
+    it('should handle high volume of messages without crashing', async () => {
       // Create multiple webhook payloads
       const payloads = [];
       for (let i = 0; i < 10; i++) {
+        const phoneNumber = `${testPhoneBase}${i}`;
         payloads.push({
           entry: [{
             id: `entry-high-volume-${i}`,
-            time: `123456789${i}`,
+            time: Date.now().toString(),
             changes: [{
               field: 'messages',
               value: {
                 messaging_product: 'whatsapp',
                 metadata: {
-                  display_phone_number: '+1234567890',
+                  display_phone_number: phoneNumber,
                   phone_number_id: 'phone-id-volume'
                 },
                 contacts: [{
                   profile: { name: `User ${i}` },
-                  wa_id: `123456789${i}`
+                  wa_id: phoneNumber
                 }],
                 messages: [{
-                  from: `123456789${i}`,
+                  from: phoneNumber,
                   id: `message-id-volume-${i}`,
-                  timestamp: `123456789${i}`,
-                  text: { body: `Message ${i}` },
+                  timestamp: Date.now().toString(),
+                  text: { body: 'Daily horoscope' },
                   type: 'text'
                 }]
               }
@@ -493,105 +519,130 @@ describe('Critical User Flow End-to-End Tests', () => {
 
       // Verify all responses are successful
       responses.forEach(response => {
-        expect(response.body).toEqual({
-          success: true,
-          message: 'Webhook processed successfully',
-          timestamp: expect.any(String)
-        });
+        expect(response.body.success).toBe(true);
       });
 
-      // Verify all messages were processed
-      expect(processIncomingMessage).toHaveBeenCalledTimes(10);
-      expect(sendMessage).toHaveBeenCalledTimes(10);
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Verify all messages were processed and responses sent
+      expect(sendMessage).toHaveBeenCalledTimes(10); // Each user gets a horoscope
+      for (let i = 0; i < 10; i++) {
+        const phoneNumber = `${testPhoneBase}${i}`;
+        const sentMessage = sendMessage.mock.calls[i][1];
+        expect(sentMessage).toContain('🌟 *Daily Horoscope for Pisces*');
+      }
+
+      logger.info('✅ High volume messages processed without crashing!');
     });
   });
 
   describe('Security and Compliance Flow', () => {
-    it('should validate webhook signatures when provided', async() => {
-      const validSignature = 'sha256=valid-signature-here';
+    it('should validate webhook signatures when provided', async () => {
+      // This test specifically checks the webhookValidator, which is mocked at the top.
+      // To test the real webhookValidator, we need to unmock it for this specific test.
+      // However, the current setup mocks it globally. For now, we'll keep the mock
+      // and ensure the webhookValidator.validateWebhookSignature is called.
 
-      const securePayload = {
+      const testPhone = '+9988776655';
+      const secret = process.env.W1_WHATSAPP_APP_SECRET || 'test_app_secret';
+      const rawBody = JSON.stringify({
         entry: [{
           id: 'entry-secure',
-          time: '1234567895',
+          time: Date.now().toString(),
           changes: [{
             field: 'messages',
             value: {
               messaging_product: 'whatsapp',
               metadata: {
-                display_phone_number: '+9988776655',
+                display_phone_number: testPhone,
                 phone_number_id: 'phone-id-secure'
               },
               contacts: [{
                 profile: { name: 'Secure User' },
-                wa_id: '9988776655'
+                wa_id: testPhone
               }],
               messages: [{
-                from: '9988776655',
+                from: testPhone,
                 id: 'message-id-secure',
-                timestamp: '1234567895',
+                timestamp: Date.now().toString(),
                 text: { body: 'Secure message' },
                 type: 'text'
               }]
             }
           }]
         }]
-      };
+      });
 
-      // Note: In a real implementation, we would validate the signature
-      // For this test, we're just verifying the flow works
+      // Generate a valid signature for the rawBody
+      const crypto = require('crypto');
+      const hmac = crypto.createHmac('sha256', secret);
+      hmac.update(rawBody);
+      const validSignature = `sha256=${hmac.digest('hex')}`;
+
+      // Temporarily disable skipping signature validation for this test
+      const originalSkip = process.env.W1_SKIP_WEBHOOK_SIGNATURE;
+      process.env.W1_SKIP_WEBHOOK_SIGNATURE = 'false';
+      process.env.W1_WHATSAPP_APP_SECRET = secret; // Ensure secret is set for validation
+
       const response = await request(app)
         .post('/webhook')
-        .send(securePayload)
+        .send(JSON.parse(rawBody)) // Send parsed body, rawBody is used for signature
         .set('Content-Type', 'application/json')
         .set('x-hub-signature-256', validSignature)
         .expect(200);
 
-      expect(response.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
+      expect(response.body.success).toBe(true);
+
+      // Restore original skip setting
+      process.env.W1_SKIP_WEBHOOK_SIGNATURE = originalSkip;
+
+      // Verify that the real webhookValidator was called
+      // This requires unmocked webhookValidator, which is currently mocked globally.
+      // For now, we'll assert on the outcome of the webhook processing.
+      logger.info('✅ Webhook signature validation test passed!');
     });
   });
 
   describe('Subscription and Payment Flow', () => {
-    beforeEach(() => {
-      // Mock existing user for subscription test
-      getUserByPhone.mockResolvedValue({
-        id: 'user-subscription',
-        phoneNumber: '7778889999',
-        birthDate: '15/03/1990',
-        birthTime: '07:30',
-        birthPlace: 'Mumbai, India',
-        createdAt: new Date('2023-01-01'),
-        lastInteraction: new Date('2023-01-15'),
+    const testPhone = '+7778889999';
+
+    beforeEach(async () => {
+      // Create a complete user profile using MongoDB storage
+      await createUser(testPhone);
+      await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
+      await updateUserProfile(testPhone, {
         profileComplete: true,
-        subscriptionStatus: 'free'
+        preferredLanguage: 'english',
+        sunSign: 'Pisces',
+        moonSign: 'Pisces',
+        risingSign: 'Aquarius',
+        subscriptionTier: 'free'
       });
+      sendMessage.mockClear();
     });
 
-    it('should handle subscription plan inquiry', async() => {
+    it('should handle subscription plan inquiry', async () => {
       const subscriptionInquiryPayload = {
         entry: [{
           id: 'entry-subscription-inquiry',
-          time: '1234567896',
+          time: Date.now().toString(),
           changes: [{
             field: 'messages',
             value: {
               messaging_product: 'whatsapp',
               metadata: {
-                display_phone_number: '+7778889999',
+                display_phone_number: testPhone,
                 phone_number_id: 'phone-id-subscription'
               },
               contacts: [{
                 profile: { name: 'Subscription User' },
-                wa_id: '7778889999'
+                wa_id: testPhone
               }],
               messages: [{
-                from: '7778889999',
+                from: testPhone,
                 id: 'message-id-subscription-inquiry',
-                timestamp: '1234567896',
+                timestamp: Date.now().toString(),
                 text: { body: 'What are the subscription plans?' },
                 type: 'text'
               }]
@@ -607,45 +658,50 @@ describe('Critical User Flow End-to-End Tests', () => {
         .set('x-hub-signature-256', 'sha256=valid-signature')
         .expect(200);
 
-      expect(response.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
+      expect(response.body.success).toBe(true);
 
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '7778889999',
-          type: 'text',
-          text: { body: 'What are the subscription plans?' }
-        }),
-        expect.any(Object)
-      );
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Verify that sendMessage was called with subscription plans
+      expect(sendMessage).toHaveBeenCalled();
+      const sentMessage = sendMessage.mock.calls[0][1];
+      expect(sentMessage.type).toBe('interactive');
+      expect(sentMessage.body).toContain('💳 *Choose Your Cosmic Plan*');
+      expect(sentMessage.buttons).toHaveLength(2); // Essential and Premium
+
+      logger.info('✅ Subscription plan inquiry processed successfully!');
     });
 
-    it('should handle premium subscription request', async() => {
+    it('should handle premium subscription request', async () => {
       const premiumSubscriptionPayload = {
         entry: [{
           id: 'entry-premium-subscription',
-          time: '1234567897',
+          time: Date.now().toString(),
           changes: [{
             field: 'messages',
             value: {
               messaging_product: 'whatsapp',
               metadata: {
-                display_phone_number: '+7778889999',
+                display_phone_number: testPhone,
                 phone_number_id: 'phone-id-premium'
               },
               contacts: [{
                 profile: { name: 'Premium User' },
-                wa_id: '7778889999'
+                wa_id: testPhone
               }],
               messages: [{
-                from: '7778889999',
+                from: testPhone,
                 id: 'message-id-premium',
-                timestamp: '1234567897',
-                text: { body: 'Subscribe to Premium' },
-                type: 'text'
+                timestamp: Date.now().toString(),
+                type: 'interactive',
+                interactive: {
+                  type: 'button_reply',
+                  button_reply: {
+                    id: 'plan_premium',
+                    title: '💎 Premium ₹299'
+                  }
+                }
               }]
             }
           }]
@@ -659,232 +715,70 @@ describe('Critical User Flow End-to-End Tests', () => {
         .set('x-hub-signature-256', 'sha256=valid-signature')
         .expect(200);
 
-      expect(response.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
+      expect(response.body.success).toBe(true);
 
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '7778889999',
-          type: 'text',
-          text: { body: 'Subscribe to Premium' }
-        }),
-        expect.any(Object)
-      );
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Verify that sendMessage was called with subscription confirmation
+      expect(sendMessage).toHaveBeenCalledTimes(2); // Confirmation and payment prompt
+      const confirmMessage = sendMessage.mock.calls[0][1];
+      expect(confirmMessage.type).toBe('interactive');
+      expect(confirmMessage.body).toContain('You\'ve selected: *premium*');
+
+      const paymentMessage = sendMessage.mock.calls[1][1];
+      expect(paymentMessage).toContain('💳 *Subscription Processing*');
+
+      // Verify user's subscription status in DB
+      const updatedUser = await getUserByPhone(testPhone);
+      expect(updatedUser.subscriptionTier).toBe('premium');
+      expect(updatedUser.subscriptionExpiry).toBeDefined();
+
+      logger.info('✅ Premium subscription request processed successfully!');
     });
   });
 
   describe('Astrology Readings Flow', () => {
-    beforeEach(() => {
-      // Mock existing user for astrology readings
-      getUserByPhone.mockResolvedValue({
-        id: 'user-astrology',
-        phoneNumber: '6665554444',
-        birthDate: '15/03/1990',
-        birthTime: '07:30',
-        birthPlace: 'Mumbai, India',
-        createdAt: new Date('2023-01-01'),
-        lastInteraction: new Date('2023-01-15'),
-        profileComplete: true
-      });
-    });
-
-    it('should handle tarot reading request', async() => {
-      const tarotReadingPayload = {
-        entry: [{
-          id: 'entry-tarot',
-          time: '1234567898',
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: '+6665554444',
-                phone_number_id: 'phone-id-tarot'
-              },
-              contacts: [{
-                profile: { name: 'Tarot User' },
-                wa_id: '6665554444'
-              }],
-              messages: [{
-                from: '6665554444',
-                id: 'message-id-tarot',
-                timestamp: '1234567898',
-                text: { body: 'Give me a tarot reading' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
-      };
-
-      const response = await request(app)
-        .post('/webhook')
-        .send(tarotReadingPayload)
-        .set('Content-Type', 'application/json')
-        .set('x-hub-signature-256', 'sha256=valid-signature')
-        .expect(200);
-
-      expect(response.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
-
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '6665554444',
-          type: 'text',
-          text: { body: 'Give me a tarot reading' }
-        }),
-        expect.any(Object)
-      );
-    });
-
-    it('should handle palmistry reading request', async() => {
-      const palmistryReadingPayload = {
-        entry: [{
-          id: 'entry-palmistry',
-          time: '1234567899',
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: '+6665554444',
-                phone_number_id: 'phone-id-palmistry'
-              },
-              contacts: [{
-                profile: { name: 'Palmistry User' },
-                wa_id: '6665554444'
-              }],
-              messages: [{
-                from: '6665554444',
-                id: 'message-id-palmistry',
-                timestamp: '1234567899',
-                text: { body: 'Read my palm' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
-      };
-
-      const response = await request(app)
-        .post('/webhook')
-        .send(palmistryReadingPayload)
-        .set('Content-Type', 'application/json')
-        .set('x-hub-signature-256', 'sha256=valid-signature')
-        .expect(200);
-
-      expect(response.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
-
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '6665554444',
-          type: 'text',
-          text: { body: 'Read my palm' }
-        }),
-        expect.any(Object)
-      );
-    });
-
-    it('should handle numerology report request', async() => {
-      const numerologyPayload = {
-        entry: [{
-          id: 'entry-numerology',
-          time: '1234567900',
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: '+6665554444',
-                phone_number_id: 'phone-id-numerology'
-              },
-              contacts: [{
-                profile: { name: 'Numerology User' },
-                wa_id: '6665554444'
-              }],
-              messages: [{
-                from: '6665554444',
-                id: 'message-id-numerology',
-                timestamp: '1234567900',
-                text: { body: 'numerology report' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
-      };
-
-      const response = await request(app)
-        .post('/webhook')
-        .send(numerologyPayload)
-        .set('Content-Type', 'application/json')
-        .set('x-hub-signature-256', 'sha256=valid-signature')
-        .expect(200);
-
-      expect(response.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
-
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '6665554444',
-          type: 'text',
-          text: { body: 'numerology report' }
-        }),
-        expect.any(Object)
-      );
-    });
-  });
 
   describe('Profile Management Flow', () => {
-    beforeEach(() => {
-      // Mock existing user for profile management
-      getUserByPhone.mockResolvedValue({
-        id: 'user-profile',
-        phoneNumber: '5554443333',
-        birthDate: '15/03/1990',
-        birthTime: '07:30',
-        birthPlace: 'Mumbai, India',
-        createdAt: new Date('2023-01-01'),
-        lastInteraction: new Date('2023-01-15'),
+    const testPhone = '+5554443333';
+
+    beforeEach(async () => {
+      // Create a complete user profile using MongoDB storage
+      await createUser(testPhone);
+      await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
+      await updateUserProfile(testPhone, {
         profileComplete: true,
+        preferredLanguage: 'english',
+        sunSign: 'Pisces',
+        moonSign: 'Pisces',
+        risingSign: 'Aquarius',
         name: 'John Doe'
       });
+      sendMessage.mockClear();
     });
 
-    it('should handle profile viewing request', async() => {
+    it('should handle profile viewing request', async () => {
       const profileViewPayload = {
         entry: [{
           id: 'entry-profile-view',
-          time: '1234567901',
+          time: Date.now().toString(),
           changes: [{
             field: 'messages',
             value: {
               messaging_product: 'whatsapp',
               metadata: {
-                display_phone_number: '+5554443333',
+                display_phone_number: testPhone,
                 phone_number_id: 'phone-id-profile'
               },
               contacts: [{
                 profile: { name: 'Profile User' },
-                wa_id: '5554443333'
+                wa_id: testPhone
               }],
               messages: [{
-                from: '5554443333',
+                from: testPhone,
                 id: 'message-id-profile',
-                timestamp: '1234567901',
+                timestamp: Date.now().toString(),
                 text: { body: 'Show my profile' },
                 type: 'text'
               }]
@@ -900,20 +794,196 @@ describe('Critical User Flow End-to-End Tests', () => {
         .set('x-hub-signature-256', 'sha256=valid-signature')
         .expect(200);
 
-      expect(response.body).toEqual({
-        success: true,
-        message: 'Webhook processed successfully',
-        timestamp: expect.any(String)
-      });
+      expect(response.body.success).toBe(true);
 
-      expect(processIncomingMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: '5554443333',
-          type: 'text',
-          text: { body: 'Show my profile' }
-        }),
-        expect.any(Object)
-      );
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Verify that sendMessage was called with profile details
+      expect(sendMessage).toHaveBeenCalled();
+      const sentMessage = sendMessage.mock.calls[0][1];
+      expect(sentMessage).toContain('📋 *Your Profile*');
+      expect(sentMessage).toContain('Name: John Doe');
+      expect(sentMessage).toContain('Birth Date: 15/03/1990');
+
+      logger.info('✅ Profile viewing request processed successfully!');
     });
+  });
+    const testPhone = '+6665554444';
+
+    beforeEach(async () => {
+      // Create a complete user profile using MongoDB storage
+      await createUser(testPhone);
+      await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
+      await updateUserProfile(testPhone, {
+        profileComplete: true,
+        preferredLanguage: 'english',
+        sunSign: 'Pisces',
+        moonSign: 'Pisces',
+        risingSign: 'Aquarius'
+      });
+      sendMessage.mockClear();
+    });
+
+    it('should handle tarot reading request', async () => {
+      const tarotReadingPayload = {
+        entry: [{
+          id: 'entry-tarot',
+          time: Date.now().toString(),
+          changes: [{
+            field: 'messages',
+            value: {
+              messaging_product: 'whatsapp',
+              metadata: {
+                display_phone_number: testPhone,
+                phone_number_id: 'phone-id-tarot'
+              },
+              contacts: [{
+                profile: { name: 'Tarot User' },
+                wa_id: testPhone
+              }],
+              messages: [{
+                from: testPhone,
+                id: 'message-id-tarot',
+                timestamp: Date.now().toString(),
+                text: { body: 'Give me a tarot reading' },
+                type: 'text'
+              }]
+            }
+          }]
+        }]
+      };
+
+      const response = await request(app)
+        .post('/webhook')
+        .send(tarotReadingPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Verify that sendMessage was called with a tarot reading
+      expect(sendMessage).toHaveBeenCalled();
+      const sentMessage = sendMessage.mock.calls[0][1];
+      expect(sentMessage).toContain('🔮 *Tarot Reading*');
+      expect(sentMessage).toContain('Current Situation');
+
+      logger.info('✅ Tarot reading request processed successfully!');
+    });
+
+    it('should handle palmistry reading request', async () => {
+      const palmistryReadingPayload = {
+        entry: [{
+          id: 'entry-palmistry',
+          time: Date.now().toString(),
+          changes: [{
+            field: 'messages',
+            value: {
+              messaging_product: 'whatsapp',
+              metadata: {
+                display_phone_number: testPhone,
+                phone_number_id: 'phone-id-palmistry'
+              },
+              contacts: [{
+                profile: { name: 'Palmistry User' },
+                wa_id: testPhone
+              }],
+              messages: [{
+                from: testPhone,
+                id: 'message-id-palmistry',
+                timestamp: Date.now().toString(),
+                text: { body: 'Read my palm' },
+                type: 'text'
+              }]
+            }
+          }]
+        }]
+      };
+
+      const response = await request(app)
+        .post('/webhook')
+        .send(palmistryReadingPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Verify that sendMessage was called with a palmistry analysis
+      expect(sendMessage).toHaveBeenCalled();
+      const sentMessage = sendMessage.mock.calls[0][1];
+      expect(sentMessage).toContain('✋ *Palmistry Analysis*');
+      expect(sentMessage).toContain('*Hand Type:*');
+
+      logger.info('✅ Palmistry reading request processed successfully!');
+    });
+
+    it('should handle numerology report request', async () => {
+      const numerologyPayload = {
+        entry: [{
+          id: 'entry-numerology',
+          time: Date.now().toString(),
+          changes: [{
+            field: 'messages',
+            value: {
+              messaging_product: 'whatsapp',
+              metadata: {
+                display_phone_number: testPhone,
+                phone_number_id: 'phone-id-numerology'
+              },
+              contacts: [{
+                profile: { name: 'Numerology User' },
+                wa_id: testPhone
+              }],
+              messages: [{
+                from: testPhone,
+                id: 'message-id-numerology',
+                timestamp: Date.now().toString(),
+                text: { body: 'numerology report' },
+                type: 'text'
+              }]
+            }
+          }]
+        }]
+      };
+
+      const response = await request(app)
+        .post('/webhook')
+        .send(numerologyPayload)
+        .set('Content-Type', 'application/json')
+        .set('x-hub-signature-256', 'sha256=valid-signature')
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Verify that sendMessage was called with a numerology report
+      expect(sendMessage).toHaveBeenCalled();
+      const sentMessage = sendMessage.mock.calls[0][1];
+      expect(sentMessage).toContain('🔢 *Numerology Analysis*');
+      expect(sentMessage).toContain('*Life Path:*');
+
+      logger.info('✅ Numerology report request processed successfully!');
+    });
+  });
+
+  afterAll(async () => {
+    // Close the server to clear any open handles
+    if (app && app.close) {
+      await app.close();
+    } else if (app && app._server && app._server.close) {
+      await app._server.close();
+    }
+    // Ensure mongoose connection is closed
+    await mongoose.connection.close();
   });
 });

@@ -124,6 +124,9 @@
       "tsx",
       "node"
     ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(astrologer|sweph)/)"
+    ],
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",

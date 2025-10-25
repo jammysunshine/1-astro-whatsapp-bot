@@ -470,8 +470,9 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
     console.log('🔮 Astrology data:', { sunSign, moonSign, risingSign });
 
     // Update user profile with birth details
+    logger.info('Calling addBirthDetails...');
     await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
-    console.log('🔄 Updating user profile with astrology data:', { sunSign, moonSign, risingSign });
+    logger.info('addBirthDetails completed. Updating user profile with profileComplete: true and astrology data...');
     await updateUserProfile(phoneNumber, {
       profileComplete: true,
       preferredLanguage,
@@ -480,6 +481,7 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
       moonSign,
       risingSign
     });
+    logger.info('updateUserProfile called with profileComplete: true. Exiting complete_profile action.');
     console.log('✅ User profile updated successfully');
 
     console.log('🔮 Astrology data:', { sunSign, moonSign, risingSign });
@@ -574,7 +576,7 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
     }
 
     // Clear onboarding session
-    await deleteUserSession(phoneNumber);
+    // await deleteUserSession(phoneNumber);
 
     logger.info(`✅ User ${phoneNumber} completed onboarding with comprehensive analysis`);
     break;

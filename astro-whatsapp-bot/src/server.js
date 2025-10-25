@@ -142,40 +142,9 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-// Memory monitoring
-setInterval(() => {
-  const memUsage = process.memoryUsage();
-  const memUsageMB = {
-    rss: Math.round(memUsage.rss / 1024 / 1024),
-    heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024),
-    heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024),
-    external: Math.round(memUsage.external / 1024 / 1024)
-  };
-
-  // More aggressive memory monitoring for Railway
-  if (memUsageMB.heapUsed > 200) { // Log if heap usage > 200MB
-    logger.warn('⚠️ High memory usage detected:', memUsageMB);
-  }
-
-  // Force garbage collection if available and memory is high
-  if (global.gc && memUsageMB.heapUsed > 250) {
-    logger.info('🗑️ Running garbage collection due to high memory usage');
-    global.gc();
-  }
-}, 15000); // Check every 15 seconds
-
-// Initialize database connection
-connectDB().catch(error => {
-  logger.error('❌ Failed to connect to database:', error);
-  // Exit in development to show error, but not in production/test
-  if (process.env.NODE_ENV === 'development') {
-    process.exit(1);
-  }
-  throw error;
-});
-
-// Start server only if not in test environment
 let server;
+let memoryMonitorInterval;
+
 if (process.env.NODE_ENV !== 'test') {
   server = app.listen(PORT, () => {
     logger.info(`🚀 Astrology WhatsApp Bot API is running on port ${PORT}`);
@@ -187,10 +156,47 @@ if (process.env.NODE_ENV !== 'test') {
     process.exit(1);
   });
 
+  // Start memory monitoring
+  memoryMonitorInterval = setInterval(() => {
+    const memUsage = process.memoryUsage();
+    const memUsageMB = {
+      rss: Math.round(memUsage.rss / 1024 / 1024),
+      heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024),
+      heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024),
+      external: Math.round(memUsage.external / 1024 / 1024)
+    };
+
+    if (memUsageMB.heapUsed > 200) {
+      logger.warn('⚠️ High memory usage detected:', memUsageMB);
+    }
+
+    if (global.gc && memUsageMB.heapUsed > 250) {
+      logger.info('🗑️ Running garbage collection due to high memory usage');
+      global.gc();
+    }
+  }, 15000);
+
   // Handle server errors
   server.on('error', error => {
     logger.error('❌ Server error:', error);
     process.exit(1);
+  });
+
+  // Clear interval on server close
+  server.on('close', () => {
+    if (memoryMonitorInterval) {
+      clearInterval(memoryMonitorInterval);
+      logger.info('Memory monitor interval cleared.');
+    }
+  });
+} else {
+  // In test environment, ensure interval is cleared if server is started implicitly
+  // This might be redundant if tests explicitly manage server lifecycle
+  app.on('close', () => {
+    if (memoryMonitorInterval) {
+      clearInterval(memoryMonitorInterval);
+      logger.info('Memory monitor interval cleared in test environment.');
+    }
   });
 }
 

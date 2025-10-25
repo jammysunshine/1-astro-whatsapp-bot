@@ -10,6 +10,16 @@ const Session = require('../../src/models/Session');
 const { getAllUsers, getUserByPhone, createUser, updateUserProfile, addBirthDetails } = require('../../src/models/userModel');
 
 // Mock message sending to avoid actual WhatsApp API calls in tests
+// Mock message sending to avoid actual WhatsApp API calls in tests
+// jest.mock('../../src/services/whatsapp/messageSender', () => ({
+//   sendMessage: jest.fn().mockResolvedValue({}),
+//   sendTextMessage: jest.fn().mockResolvedValue({}),
+//   sendInteractiveButtons: jest.fn().mockResolvedValue({}),
+//   sendListMessage: jest.fn().mockResolvedValue({})
+// }));
+
+const { sendMessage, sendTextMessage, sendInteractiveButtons, sendListMessage } = require('../../src/services/whatsapp/messageSender');
+
 jest.mock('../../src/services/whatsapp/messageSender', () => ({
   sendMessage: jest.fn().mockResolvedValue({}),
   sendTextMessage: jest.fn().mockResolvedValue({}),
@@ -34,6 +44,8 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
     } catch (error) {
       // Collections might not exist, that's fine
     }
+    // Clear all mocks before each test
+    jest.clearAllMocks();
   });
 
   describe('Complete User Onboarding Flow', () => {
@@ -68,17 +80,16 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
 
        expect(birthDateResponse.body.success).toBe(true);
 
-       // Wait for file operations to complete
-       await new Promise(resolve => setTimeout(resolve, 100));
+       // Wait for async operations to complete
+       await new Promise(resolve => setTimeout(resolve, 3000));
 
        // Verify user was created
        let user = await getUserByPhone(testPhone);
-       console.log('User object after birth date:', user);
        expect(user).toBeTruthy();
        expect(user.profileComplete).toBe(false);
 
        // Step 2: User provides birth time
-      const birthDateResponse = await request(app)
+      const birthTimeInputResponse = await request(app)
         .post('/webhook')
         .send({
           entry: [{
@@ -91,9 +102,9 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
                 contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
                 messages: [{
                   from: testPhone,
-                  id: 'msg-birth-date',
+                  id: 'msg-birth-time-input',
                   timestamp: Date.now().toString(),
-                  text: { body: '15031990' }, // 15/03/1990
+                  text: { body: '1430' }, // 14:30
                   type: 'text'
                 }]
               }
@@ -103,42 +114,14 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
 
-      expect(birthDateResponse.body.success).toBe(true);
+      expect(birthTimeInputResponse.body.success).toBe(true);
 
-      // Step 3: User provides birth time
-      const birthTimeResponse = await request(app)
-        .post('/webhook')
-        .send({
-          entry: [{
-            id: 'test-entry-3',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-birth-time',
-                  timestamp: Date.now().toString(),
-                  text: { body: '1430' }, // 14:30
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
-        })
-         .set('x-hub-signature-256', 'test-signature')
-         .expect(200);
-
-       expect(birthTimeResponse.body.success).toBe(true);
-
-       // Step 3: User provides birth place
+      // Step 3: User provides birth place
       const birthPlaceResponse = await request(app)
         .post('/webhook')
         .send({
           entry: [{
-            id: 'test-entry-4',
+            id: 'test-entry-3',
             changes: [{
               field: 'messages',
               value: {
@@ -166,7 +149,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
         .post('/webhook')
         .send({
           entry: [{
-            id: 'test-entry-5',
+            id: 'test-entry-4',
             changes: [{
               field: 'messages',
               value: {
@@ -200,7 +183,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
         .post('/webhook')
         .send({
           entry: [{
-            id: 'test-entry-6',
+            id: 'test-entry-5',
             changes: [{
               field: 'messages',
               value: {
@@ -229,8 +212,11 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
 
       expect(confirmResponse.body.success).toBe(true);
 
-      // Wait for async database operations to complete
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Wait for async database operations and astrology calculations to complete
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Add a short delay to ensure database consistency
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       // Verify user profile is complete with astrology data
       user = await getUserByPhone(testPhone);
@@ -241,10 +227,26 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       expect(user.birthPlace).toBe('Mumbai, India');
       expect(user.preferredLanguage).toBe('en');
 
-      // TODO: Verify astrology calculations were performed
-      // expect(user.sunSign).toBeDefined();
-      // expect(user.moonSign).toBeDefined();
-      // expect(user.risingSign).toBeDefined();
+      // Verify astrology calculations were performed and stored
+      expect(user.sunSign).toBe('Pisces'); // Based on 15/03/1990
+      expect(user.moonSign).toBeDefined(); // Moon sign is dynamic, just check if it's set
+      expect(user.risingSign).toBeDefined(); // Rising sign is dynamic, just check if it's set
+
+      // Verify the completion message content
+      expect(sendMessage).toHaveBeenCalledTimes(2); // One for the completion message, one for the main menu
+      const completionMessageCall = sendMessage.mock.calls[0][1];
+      expect(completionMessageCall).toContain('🎉 *Welcome to your cosmic journey!*');
+      expect(completionMessageCall).toContain(`☀️ *Sun Sign:* ${user.sunSign}`);
+      expect(completionMessageCall).toContain(`🌙 *Moon Sign:* ${user.moonSign}`);
+      expect(completionMessageCall).toContain(`⬆️ *Rising Sign:* ${user.risingSign}`);
+      expect(completionMessageCall).toContain('🔥 *Your Top 3 Life Patterns:*');
+      expect(completionMessageCall).toContain('⭐ *3-Day Cosmic Preview:*');
+
+      // Verify the main menu was sent
+      const mainMenuCall = sendMessage.mock.calls[1][1];
+      expect(mainMenuCall.type).toBe('button');
+      expect(mainMenuCall.body).toContain('🌟 *What would you like to explore today?*');
+      expect(mainMenuCall.buttons).toHaveLength(3);
 
       console.log('✅ User onboarding completed successfully!');
       console.log(`Sun Sign: ${user.sunSign}`);
@@ -297,6 +299,12 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
 
       expect(horoscopeResponse.body.success).toBe(true);
 
+      // Verify that sendMessage was called with a horoscope message
+      expect(sendMessage).toHaveBeenCalled();
+      const sentMessage = sendMessage.mock.calls[sendMessage.mock.calls.length - 1][1];
+      expect(sentMessage).toContain('🌟 *Daily Horoscope for Pisces*');
+      expect(sentMessage).toContain('Today brings opportunities for growth and self-discovery.');
+
       console.log('✅ Daily horoscope request processed successfully!');
     });
 
@@ -316,7 +324,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
                   from: testPhone,
                   id: 'msg-compatibility',
                   timestamp: Date.now().toString(),
-                  text: { body: 'Check compatibility' },
+                  text: { body: 'Check compatibility with 25/12/1985' },
                   type: 'text'
                 }]
               }
@@ -327,6 +335,14 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
         .expect(200);
 
       expect(compatibilityResponse.body.success).toBe(true);
+
+      // Verify that sendMessage was called with a compatibility message
+      expect(sendMessage).toHaveBeenCalled();
+      const sentMessage = sendMessage.mock.calls[sendMessage.mock.calls.length - 1][1];
+      expect(sentMessage).toContain('💕 *Compatibility Analysis*');
+      expect(sentMessage).toContain('*Your Sign:* Pisces');
+      expect(sentMessage).toContain('*Their Sign:* Capricorn'); // 25/12/1985 is Capricorn
+      expect(sentMessage).toContain('*Compatibility:* Neutral'); // Pisces-Capricorn is Neutral
 
       console.log('✅ Compatibility request processed successfully!');
     });
@@ -364,5 +380,17 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
 
       expect(malformedResponse.body.success).toBe(true);
     });
+  });
+});
+
+  afterAll(async () => {
+    // Close the server to clear any open handles
+    if (app && app.close) {
+      await app.close();
+    } else if (app && app._server && app._server.close) {
+      await app._server.close();
+    }
+    // Ensure mongoose connection is closed
+    await mongoose.connection.close();
   });
 });

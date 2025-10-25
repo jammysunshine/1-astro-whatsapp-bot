@@ -476,8 +476,8 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
       detailedAnalysis = `\n\n📊 *Detailed Chart Analysis:*\n\n`;
       detailedAnalysis += `🌟 *Planetary Positions:*\n`;
       if (fullChart.planets) {
-        Object.entries(fullChart.planets).forEach(([planet, position]) => {
-          detailedAnalysis += `• ${planet}: ${position.sign} ${position.degree}°\n`;
+        Object.entries(fullChart.planets).forEach(([planet, data]) => {
+          detailedAnalysis += `• ${data.name}: ${data.sign} ${data.degrees}°${data.minutes}'${data.seconds}"\n`;
         });
       }
 

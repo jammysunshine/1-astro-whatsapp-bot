@@ -216,6 +216,9 @@ class VedicCalculator {
         name: data.name,
         sign: data.signName,
         retrograde: data.retrograde,
+        degrees: data.position.degrees,
+        minutes: data.position.minutes,
+        seconds: data.position.seconds,
         position: `${data.position.degrees}°${data.position.minutes}'${data.position.seconds}"`
       };
     });
@@ -1586,6 +1589,15 @@ class VedicCalculator {
     description += `• Sun Sign: ${basicChart.sunSign}\n`;
     description += `• Moon Sign: ${basicChart.moonSign}\n`;
     description += `• Rising Sign: ${basicChart.risingSign}\n\n`;
+
+    // Planetary positions
+    description += `🌟 *Planetary Positions:*\n`;
+    if (basicChart.planets) {
+      Object.entries(basicChart.planets).forEach(([planet, data]) => {
+        description += `• ${data.name}: ${data.sign} ${data.degrees}°${data.minutes}'${data.seconds}" ${data.retrograde ? '(R)' : ''}\n`;
+      });
+    }
+    description += '\n';
 
     // Dasha analysis
     if (dashaAnalysis.currentDasha) {

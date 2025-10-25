@@ -6,9 +6,108 @@ const logger = require('../utils/logger');
  * For development, using in-memory storage with file persistence
  */
 
-// In-memory user storage (would be replaced with database in production)
+// In-memory user storage with file persistence
 const users = new Map();
 const userSessions = new Map();
+const fs = require('fs').promises;
+const path = require('path');
+
+const USERS_FILE = path.join(__dirname, '../../data/users.json');
+const SESSIONS_FILE = path.join(__dirname, '../../data/sessions.json');
+
+// Ensure data directory exists
+const ensureDataDir = async () => {
+  const dataDir = path.dirname(USERS_FILE);
+  try {
+    await fs.mkdir(dataDir, { recursive: true });
+  } catch (error) {
+    if (error.code !== 'EEXIST') {
+      console.error('Error creating data directory:', error);
+    }
+  }
+};
+
+// Load users from file
+const loadUsers = async () => {
+  try {
+    await ensureDataDir();
+    const data = await fs.readFile(USERS_FILE, 'utf8');
+    const usersData = JSON.parse(data);
+    for (const [phoneNumber, user] of Object.entries(usersData)) {
+      // Convert date strings back to Date objects
+      if (user.createdAt) user.createdAt = new Date(user.createdAt);
+      if (user.lastInteraction) user.lastInteraction = new Date(user.lastInteraction);
+      if (user.updatedAt) user.updatedAt = new Date(user.updatedAt);
+      if (user.subscriptionExpiry) user.subscriptionExpiry = new Date(user.subscriptionExpiry);
+      users.set(phoneNumber, user);
+    }
+    console.log(`📁 Loaded ${users.size} users from file`);
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      console.error('Error loading users from file:', error);
+    }
+  }
+};
+
+// Save users to file
+const saveUsers = async () => {
+  try {
+    await ensureDataDir();
+    const usersData = {};
+    for (const [phoneNumber, user] of users) {
+      usersData[phoneNumber] = { ...user };
+      // Convert Date objects to strings for JSON serialization
+      if (user.createdAt instanceof Date) usersData[phoneNumber].createdAt = user.createdAt.toISOString();
+      if (user.lastInteraction instanceof Date) usersData[phoneNumber].lastInteraction = user.lastInteraction.toISOString();
+      if (user.updatedAt instanceof Date) usersData[phoneNumber].updatedAt = user.updatedAt.toISOString();
+      if (user.subscriptionExpiry instanceof Date) usersData[phoneNumber].subscriptionExpiry = user.subscriptionExpiry.toISOString();
+    }
+    await fs.writeFile(USERS_FILE, JSON.stringify(usersData, null, 2));
+  } catch (error) {
+    console.error('Error saving users to file:', error);
+  }
+};
+
+// Load sessions from file
+const loadSessions = async () => {
+  try {
+    await ensureDataDir();
+    const data = await fs.readFile(SESSIONS_FILE, 'utf8');
+    const sessionsData = JSON.parse(data);
+    for (const [phoneNumber, session] of Object.entries(sessionsData)) {
+      userSessions.set(phoneNumber, session);
+    }
+    console.log(`📁 Loaded ${userSessions.size} sessions from file`);
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      console.error('Error loading sessions from file:', error);
+    }
+  }
+};
+
+// Save sessions to file
+const saveSessions = async () => {
+  try {
+    await ensureDataDir();
+    const sessionsData = {};
+    for (const [phoneNumber, session] of userSessions) {
+      sessionsData[phoneNumber] = session;
+    }
+    await fs.writeFile(SESSIONS_FILE, JSON.stringify(sessionsData, null, 2));
+  } catch (error) {
+    console.error('Error saving sessions to file:', error);
+  }
+};
+
+// Load data on startup
+loadUsers();
+loadSessions();
+
+// Auto-save every 5 minutes
+setInterval(() => {
+  saveUsers();
+  saveSessions();
+}, 5 * 60 * 1000);
 
 // Memory cleanup: Remove inactive users after 24 hours
 setInterval(() => {
@@ -72,7 +171,10 @@ const createUser = async(phoneNumber, profileData = {}) => {
     };
 
     users.set(phoneNumber, user);
-    logger.info(`👤 Created new user: ${phoneNumber} (${userId})`);
+    // Save to file asynchronously
+    saveUsers().catch(error => console.error('Error saving users after creation:', error));
+    logger.info(`🆕 Created new user: ${phoneNumber}`);
+
     return user;
   } catch (error) {
     logger.error(`❌ Error creating user ${phoneNumber}:`, error);
@@ -155,6 +257,8 @@ const addBirthDetails = async(phoneNumber, birthDate, birthTime = null, birthPla
 
     user.updatedAt = new Date();
     users.set(phoneNumber, user);
+    // Save to file asynchronously
+    saveUsers().catch(error => console.error('Error saving users after birth details:', error));
     logger.info(`🎂 Added birth details for user: ${phoneNumber}`);
 
     return user;
@@ -322,6 +426,8 @@ const getUserSession = async sessionId => userSessions.get(sessionId) || null;
  */
 const setUserSession = async(sessionId, sessionData) => {
   userSessions.set(sessionId, sessionData);
+  // Save to file asynchronously
+  saveSessions().catch(error => console.error('Error saving sessions after set:', error));
 };
 
 /**
@@ -329,7 +435,12 @@ const setUserSession = async(sessionId, sessionData) => {
  * @param {string} sessionId - Session ID
  * @returns {Promise<boolean>} True if deleted
  */
-const deleteUserSession = async sessionId => userSessions.delete(sessionId);
+const deleteUserSession = async sessionId => {
+  const deleted = userSessions.delete(sessionId);
+  // Save to file asynchronously
+  saveSessions().catch(error => console.error('Error saving sessions after delete:', error));
+  return deleted;
+};
 
 /**
  * Check if user has active subscription

@@ -96,7 +96,9 @@ const validateStepInput = async(input, step) => {
       return { isValid: false, errorMessage: 'Please provide a valid birth year.' };
     }
 
-    return { isValid: true, cleanedValue: input };
+    // Return normalized date in DD/MM/YYYY format for consistency
+    const normalizedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+    return { isValid: true, cleanedValue: normalizedDate };
 
   case 'time_or_skip':
     if (trimmedInput === 'skip') {
@@ -280,12 +282,12 @@ const processFlowMessage = async(message, user, flowId) => {
        }
      };
 
-     // Set up button mappings to resolve the ambiguity
-     validationResult.clarificationButtons.forEach(button => {
-       if (validationResult.clarificationType === 'year_ambiguity') {
-         const year = button.id.split('_')[1];
-         const resolvedDate = `${validationResult.data.day.toString().padStart(2, '0')}${validationResult.data.month.toString().padStart(2, '0')}${year}`;
-         clarificationStep.interactive.button_mappings[button.id] = resolvedDate;
+      // Set up button mappings to resolve the ambiguity
+      validationResult.clarificationButtons.forEach(button => {
+        if (validationResult.clarificationType === 'year_ambiguity') {
+          const year = button.id.split('_')[1];
+          const resolvedDate = `${validationResult.data.day.toString().padStart(2, '0')}/${validationResult.data.month.toString().padStart(2, '0')}/${year}`;
+          clarificationStep.interactive.button_mappings[button.id] = resolvedDate;
        } else if (validationResult.clarificationType === 'time_ambiguity') {
          const parts = button.id.split('_');
          const period = parts[1]; // 'am' or 'pm'

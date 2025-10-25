@@ -30,17 +30,17 @@ describe('UserModel Functions', () => {
   describe('getUserByPhone', () => {
     it('should get user by phone number', async () => {
       const mockUser = {
-        id: 'user-101',
+        id: 'user-456',
         phoneNumber: '+1234567890',
         name: 'Test User',
-        save: jest.fn().mockResolvedValue(),
       };
 
       User.findOne.mockResolvedValue(mockUser);
 
-      await updateUserProfile('+1234567890', { name: 'Updated User' });
+      const user = await getUserByPhone('+1234567890');
 
-      expect(mockUser.save).toHaveBeenCalled();
+      expect(user).toEqual(mockUser);
+      expect(User.findOne).toHaveBeenCalledWith({ phoneNumber: '+1234567890' });
     });
   });
 

@@ -65,7 +65,7 @@ For project-specific instructions, ALWAYS refer to the `INITIAL-PROMPT.md` file 
 ## Core Development Principles
 
 *   **Spec-Driven Development (SDD)**: Rigorously define and adhere to specifications (PRD, Architecture, API Contracts) as the primary source of truth for all development, ensuring alignment with business goals and user needs.
-*   **Modular and Independent Architecture**: All development (features, conversation flows, menus) must adhere to a modular and independent architecture as defined in Epic 16, ensuring easy updates, maintenance, and testing without impacting other parts of the codebase.
+*   **Modular and Independent Architecture**: All development (features, conversation flows, menus) must adhere to a modular and independent architecture, ensuring easy updates, maintenance, and testing without impacting other parts of the codebase.
 *   **Test-Driven Development (TDD)**: Write comprehensive, failing tests *before* implementing any code, ensuring 100% test coverage and validating functionality against specifications from the outset.
 *   **Security First**: Always implement security measures as a primary concern when dealing with any external integrations, webhooks, or APIs
 *   **Performance Consciousness**: Consider performance implications of all design decisions from the outset
@@ -319,8 +319,6 @@ Commit messages should be simple, concise, and descriptive. Avoid using special 
 
 **REMOVAL OF PROJECT-SPECIFIC CONTENT**: The following content was previously incorrectly added to this generic file and violates the separation of concerns mandate. Such content should be moved to project-specific documentation files.
 
----
-
 ## Testing Best Practices
 
 *   **Module Import Validation**: Test that all modified modules can be imported without syntax errors before testing functionality.
@@ -332,7 +330,7 @@ Commit messages should be simple, concise, and descriptive. Avoid using special 
 *   **Automated Testing Integration**: All new features and optimizations must include corresponding unit tests in the test suite to ensure functionality is preserved and regressions are caught early.
 *   **Real-time Production Testing**: After deploying services, verify endpoints are operational using shell commands like curl before configuring external webhooks. For example: `curl -X GET "https://your-domain.example.com/health"` to check health endpoints and `curl -X GET "https://your-domain.example.com/webhook"` to verify webhook accessibility. This ensures the service is properly running before external systems attempt to connect.
 *   **External Service Integration Testing**: Test with real external service messages to verify end-to-end functionality including media download, processing, transformation, and response delivery.
-*   **Audio Format Testing**: Verify proper handling of various audio formats, particularly service-specific audio formats with explicit sample rate configuration.
+
 *   **Performance Testing**: Monitor response times and throughput to ensure sub-2-second processing for the complete media processing pipeline.
 *   **Post-Deployment Testing**: After deploying services, verify endpoints are operational using shell commands like curl before configuring external webhooks. For example: `curl -X GET "https://your-domain.example.com/health"` to check health endpoints and `curl -X GET "https://your-domain.example.com/webhook"` to verify webhook accessibility. This ensures the service is properly running before external systems attempt to connect.
 
@@ -345,7 +343,7 @@ Commit messages should be simple, concise, and descriptive. Avoid using special 
 *   **Proper Error Handling**: Preserve and maintain error handling mechanisms when refactoring or adding new functionality.
 *   **Configuration-Driven Development**: Use configuration files to manage settings, API parameters, and feature flags to maintain flexibility and maintainability.
 *   **API Documentation Adherence**: Follow official API documentation to implement features correctly, such as using proper parameters for automatic language detection rather than omitting required fields.
-*   **Audio Format Compatibility**: When working with audio processing, ensure proper handling of various formats and explicit configuration of sample rates when required by external services.
+
 *   **External Service Integration**: When integrating with external services, implement explicit configuration for format-specific requirements rather than relying on automatic detection which may fail.
 *   **Real-time Processing Optimization**: Optimize processing pipelines for real-time performance with proper queuing, streaming, and asynchronous operations to maintain sub-second response times.
 
@@ -362,6 +360,6 @@ Commit messages should be simple, concise, and descriptive. Avoid using special 
 *   **Performance Monitoring**: Implement and maintain performance monitoring capabilities to track application health and identify optimization opportunities.
 *   **Dependency Management**: Regularly audit dependencies for security vulnerabilities and keep packages up-to-date while maintaining compatibility.
 *   **Environment-Specific Behavior**: Implement configuration options that allow the application to adapt its behavior based on the deployment environment (development, staging, production).
-*   **Audio Processing Optimization**: Optimize audio processing pipelines with proper format handling, sample rate configuration, and streaming operations to ensure real-time performance.
+
 *   **Error Recovery**: Implement graceful degradation and proper error handling for external service failures with informative user feedback.
 *   **Monitoring and Alerting**: Implement comprehensive monitoring with appropriate alerting for critical system failures and performance issues.

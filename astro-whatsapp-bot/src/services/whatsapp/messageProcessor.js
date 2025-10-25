@@ -231,6 +231,30 @@ const processMediaMessage = async(message, user) => {
  * @param {Object} user - User object
  */
 const processButtonReply = async(phoneNumber, buttonId, title, user) => {
+  // Handle clarification buttons specially (they start with 'year_' or 'time_')
+  if (buttonId.startsWith('year_') || buttonId.startsWith('time_')) {
+    // Extract the resolved value from button ID
+    let resolvedValue;
+    if (buttonId.startsWith('year_')) {
+      resolvedValue = buttonId.split('_')[1]; // e.g., '1990' from 'year_1990'
+    } else if (buttonId.startsWith('time_')) {
+      const parts = buttonId.split('_');
+      const period = parts[1]; // 'am' or 'pm'
+      const timeStr = parts[2]; // e.g., '0230'
+      const hours24 = period === 'pm' && parseInt(timeStr.substring(0, 2)) !== 12 ?
+        parseInt(timeStr.substring(0, 2)) + 12 :
+        period === 'am' && parseInt(timeStr.substring(0, 2)) === 12 ?
+          0 :
+          parseInt(timeStr.substring(0, 2));
+      resolvedValue = `${hours24.toString().padStart(2, '0')}:${timeStr.substring(2)}`;
+    }
+
+    // Process the resolved value as if it was text input
+    const { processFlowMessage } = require('../../conversation/conversationEngine');
+    await processFlowMessage({ type: 'text', text: { body: resolvedValue } }, user);
+    return;
+  }
+
   // Check if user has active conversation session
   const { getUserSession } = require('../../models/userModel');
   const session = await getUserSession(phoneNumber);

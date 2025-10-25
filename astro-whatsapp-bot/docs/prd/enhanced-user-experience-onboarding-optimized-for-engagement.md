@@ -1,6 +1,7 @@
 # Enhanced User Experience & Onboarding (Optimized for Engagement)
 
 ## Comprehensive Onboarding System
+
 1. **Immediate Value Hook (First 5 Minutes Rule)**:
    - Offer a high-value free reading on signup (e.g., "Your 2025 Destiny Snapshot" or "Love Compatibility Report") with shareable visual component
    - Make it personalized, visually engaging (using WhatsApp media), and emotionally resonant—not generic
@@ -28,6 +29,7 @@
    - Guided meditation and mindfulness content
 
 ## Accessibility & Inclusion Features
+
 - **Visual Accessibility**: Text size adjustment, high contrast mode, screen reader compatibility
 - **Hearing Accessibility**: Visual alternatives for audio content, text transcripts
 - **Cognitive Accessibility**: Simple language options, clear navigation, consistent interface
@@ -35,6 +37,7 @@
 - **Cultural Accessibility**: Respectful handling of diverse beliefs and practices
 
 ## Notification Management
+
 1. **Daily/Weekly Ritual Features**:
    - **Daily Cosmic Tips**: Send personalized daily messages like "Today's Moon in Leo: Speak your truth!" based on current transits and user's chart
    - **Lucky Number of the Day**: Provide simple, actionable, and shareable daily insights
@@ -54,6 +57,7 @@
    - Location-based time zone adjustments
 
 ## User Interface & Interaction Design
+
 1. **Intuitive Navigation**:
    - Simple, clear menu structure
    - Quick access to most used features

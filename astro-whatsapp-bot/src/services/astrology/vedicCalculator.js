@@ -21,7 +21,9 @@ class VedicCalculator {
       logger.info('Swiss Ephemeris path set successfully.');
     } catch (error) {
       logger.error('❌ Error setting Swiss Ephemeris path:', error.message);
-      logger.warn('Swiss Ephemeris data files not found or inaccessible. Falling back to built-in calculations.');
+      logger.warn(
+        'Swiss Ephemeris data files not found or inaccessible. Falling back to built-in calculations.'
+      );
     }
 
     // Initialize astrologer library
@@ -31,14 +33,25 @@ class VedicCalculator {
       logger.info('Astrologer library initialized successfully.');
     } catch (error) {
       logger.error('❌ Error initializing astrologer library:', error.message);
-      throw new Error('Failed to initialize core astrology library. Please check dependencies and environment.');
+      throw new Error(
+        'Failed to initialize core astrology library. Please check dependencies and environment.'
+      );
     }
 
     // Zodiac signs (for backward compatibility)
     this.zodiacSigns = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer',
-      'Leo', 'Virgo', 'Libra', 'Scorpio',
-      'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces',
     ];
 
     // Planetary information
@@ -49,7 +62,7 @@ class VedicCalculator {
       mercury: { name: 'Mercury', symbol: '☿' },
       jupiter: { name: 'Jupiter', symbol: '♃' },
       venus: { name: 'Venus', symbol: '♀' },
-      saturn: { name: 'Saturn', symbol: '♄' }
+      saturn: { name: 'Saturn', symbol: '♄' },
     };
   }
 
@@ -62,19 +75,30 @@ class VedicCalculator {
   }
 
   /**
-    * Calculate sun sign from birth date using professional astrology library
-    * @param {string} birthDate - Birth date in DD/MM/YYYY format
-    * @param {string} birthTime - Birth time in HH:MM format (optional, defaults to noon)
-    * @param {number} latitude - Birth latitude (optional, defaults to Delhi)
-    * @param {number} longitude - Birth longitude (optional, defaults to Delhi)
-    * @param {number} timezone - UTC offset in hours (optional, defaults to IST)
-    * @param {string} chartType - 'tropical' or 'sidereal' (optional, defaults to 'sidereal' for Vedic)
-    * @returns {string} Sun sign
-    */
-  calculateSunSign(birthDate, birthTime = '12:00', latitude = 28.6139, longitude = 77.2090, timezone = 5.5, chartType = 'sidereal') {
+   * Calculate sun sign from birth date using professional astrology library
+   * @param {string} birthDate - Birth date in DD/MM/YYYY format
+   * @param {string} birthTime - Birth time in HH:MM format (optional, defaults to noon)
+   * @param {number} latitude - Birth latitude (optional, defaults to Delhi)
+   * @param {number} longitude - Birth longitude (optional, defaults to Delhi)
+   * @param {number} timezone - UTC offset in hours (optional, defaults to IST)
+   * @param {string} chartType - 'tropical' or 'sidereal' (optional, defaults to 'sidereal' for Vedic)
+   * @returns {string} Sun sign
+   */
+  calculateSunSign(
+    birthDate,
+    birthTime = '12:00',
+    latitude = 28.6139,
+    longitude = 77.209,
+    timezone = 5.5,
+    chartType = 'sidereal'
+  ) {
     try {
       if (!birthDate || typeof birthDate !== 'string') {
-        console.error('Invalid birthDate provided to calculateSunSign:', birthDate, typeof birthDate);
+        console.error(
+          'Invalid birthDate provided to calculateSunSign:',
+          birthDate,
+          typeof birthDate
+        );
         return this._calculateSunSignFallback('01/01/1990'); // Default fallback
       }
       const [day, month, year] = birthDate.split('/').map(Number);
@@ -82,8 +106,16 @@ class VedicCalculator {
 
       // Prepare data for astrologer library
       const astroData = {
-        year, month, date: day, hours: hour, minutes: minute, seconds: 0,
-        latitude, longitude, timezone, chartType
+        year,
+        month,
+        date: day,
+        hours: hour,
+        minutes: minute,
+        seconds: 0,
+        latitude,
+        longitude,
+        timezone,
+        chartType,
       };
 
       // Generate natal chart
@@ -119,13 +151,15 @@ class VedicCalculator {
         { sign: 'Virgo', start: [23, 8], end: [22, 9] },
         { sign: 'Libra', start: [23, 9], end: [22, 10] },
         { sign: 'Scorpio', start: [23, 10], end: [21, 11] },
-        { sign: 'Sagittarius', start: [22, 11], end: [21, 12] }
+        { sign: 'Sagittarius', start: [22, 11], end: [21, 12] },
       ];
 
       for (const { sign, start, end } of signDates) {
-        if ((month === start[1] && day >= start[0]) ||
-            (month === end[1] && day <= end[0]) ||
-            (month > start[1] && month < end[1])) {
+        if (
+          (month === start[1] && day >= start[0]) ||
+          (month === end[1] && day <= end[0]) ||
+          (month > start[1] && month < end[1])
+        ) {
           return sign;
         }
       }
@@ -143,15 +177,30 @@ class VedicCalculator {
    * @param {string} birthTime - Birth time in HH:MM format
    * @returns {string} Moon sign
    */
-  calculateMoonSign(birthDate, birthTime, latitude = 28.6139, longitude = 77.2090, timezone = 5.5, chartType = 'sidereal') {
+  calculateMoonSign(
+    birthDate,
+    birthTime,
+    latitude = 28.6139,
+    longitude = 77.209,
+    timezone = 5.5,
+    chartType = 'sidereal'
+  ) {
     try {
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Prepare data for astrologer library
       const astroData = {
-        year, month, date: day, hours: hour, minutes: minute, seconds: 0,
-        latitude, longitude, timezone, chartType
+        year,
+        month,
+        date: day,
+        hours: hour,
+        minutes: minute,
+        seconds: 0,
+        latitude,
+        longitude,
+        timezone,
+        chartType,
       };
 
       // Generate natal chart
@@ -193,20 +242,20 @@ class VedicCalculator {
   _getCoordinatesForPlace(place) {
     // Simplified geocoding - in production, use a proper geocoding service
     const placeCoords = {
-      delhi: [28.6139, 77.2090],
-      mumbai: [19.0760, 72.8777],
+      delhi: [28.6139, 77.209],
+      mumbai: [19.076, 72.8777],
       bangalore: [12.9716, 77.5946],
       chennai: [13.0827, 80.2707],
       kolkata: [22.5726, 88.3639],
-      hyderabad: [17.3850, 78.4867],
+      hyderabad: [17.385, 78.4867],
       pune: [18.5204, 73.8567],
       ahmedabad: [23.0225, 72.5714],
       jaipur: [26.9124, 75.7873],
-      lucknow: [26.8467, 80.9462]
+      lucknow: [26.8467, 80.9462],
     };
 
     const normalizedPlace = place.toLowerCase();
-    return placeCoords[normalizedPlace] || [28.6139, 77.2090]; // Default to Delhi
+    return placeCoords[normalizedPlace] || [28.6139, 77.209]; // Default to Delhi
   }
 
   /**
@@ -232,17 +281,17 @@ class VedicCalculator {
         degrees: data.position.degrees,
         minutes: data.position.minutes,
         seconds: data.position.seconds,
-        position: `${data.position.degrees}°${data.position.minutes}'${data.position.seconds}"`
+        position: `${data.position.degrees}°${data.position.minutes}'${data.position.seconds}"`,
       };
     });
     return formatted;
   }
 
   /**
-    * Generate comprehensive natal chart using professional astrology library
-    * @param {Object} user - User object with birth details
-    * @returns {Object} Complete natal chart data
-    */
+   * Generate comprehensive natal chart using professional astrology library
+   * @param {Object} user - User object with birth details
+   * @returns {Object} Complete natal chart data
+   */
   generateBasicBirthChart(user) {
     try {
       const { birthDate, birthTime, birthPlace, name } = user;
@@ -256,8 +305,16 @@ class VedicCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       const astroData = {
-        year, month, date: day, hours: hour, minutes: minute, seconds: 0,
-        latitude, longitude, timezone, chartType: 'sidereal' // Vedic astrology
+        year,
+        month,
+        date: day,
+        hours: hour,
+        minutes: minute,
+        seconds: 0,
+        latitude,
+        longitude,
+        timezone,
+        chartType: 'sidereal', // Vedic astrology
       };
 
       const chart = this.astrologer.generateNatalChartData(astroData);
@@ -286,7 +343,7 @@ class VedicCalculator {
         personalityTraits: this._extractPersonalityTraits(chart),
         strengths: this._extractStrengths(chart),
         challenges: this._extractChallenges(chart),
-        fullChart: chart // Include complete chart data for advanced features
+        fullChart: chart, // Include complete chart data for advanced features
       };
     } catch (error) {
       console.error('Error generating natal chart:', error);
@@ -298,7 +355,7 @@ class VedicCalculator {
         sunSign: 'Unknown',
         moonSign: 'Unknown',
         risingSign: 'Unknown',
-        description: 'Unable to generate birth chart at this time.'
+        description: 'Unable to generate birth chart at this time.',
       };
     }
   }
@@ -311,22 +368,36 @@ class VedicCalculator {
    */
   getSignDescription(sunSign, moonSign) {
     const descriptions = {
-      'Aries-Leo': 'a dynamic and confident personality with strong leadership qualities',
-      'Taurus-Virgo': 'a practical and reliable nature with attention to detail',
-      'Gemini-Libra': 'a communicative and social personality with diplomatic skills',
+      'Aries-Leo':
+        'a dynamic and confident personality with strong leadership qualities',
+      'Taurus-Virgo':
+        'a practical and reliable nature with attention to detail',
+      'Gemini-Libra':
+        'a communicative and social personality with diplomatic skills',
       'Cancer-Scorpio': 'an intuitive and emotional nature with deep feelings',
-      'Leo-Sagittarius': 'an enthusiastic and optimistic outlook with creative energy',
-      'Virgo-Capricorn': 'a disciplined and responsible character with strong work ethic',
-      'Libra-Aquarius': 'a harmonious and idealistic nature with social consciousness',
-      'Scorpio-Pisces': 'an intense and compassionate personality with spiritual depth',
-      'Sagittarius-Aries': 'an adventurous and independent spirit with pioneering energy',
-      'Capricorn-Taurus': 'a determined and practical approach with material success focus',
-      'Aquarius-Gemini': 'an innovative and intellectual mind with humanitarian ideals',
-      'Pisces-Cancer': 'a sensitive and imaginative nature with artistic tendencies'
+      'Leo-Sagittarius':
+        'an enthusiastic and optimistic outlook with creative energy',
+      'Virgo-Capricorn':
+        'a disciplined and responsible character with strong work ethic',
+      'Libra-Aquarius':
+        'a harmonious and idealistic nature with social consciousness',
+      'Scorpio-Pisces':
+        'an intense and compassionate personality with spiritual depth',
+      'Sagittarius-Aries':
+        'an adventurous and independent spirit with pioneering energy',
+      'Capricorn-Taurus':
+        'a determined and practical approach with material success focus',
+      'Aquarius-Gemini':
+        'an innovative and intellectual mind with humanitarian ideals',
+      'Pisces-Cancer':
+        'a sensitive and imaginative nature with artistic tendencies',
     };
 
     const key = `${sunSign}-${moonSign}`;
-    return descriptions[key] || 'a unique combination of energies that make you special';
+    return (
+      descriptions[key] ||
+      'a unique combination of energies that make you special'
+    );
   }
 
   /**
@@ -353,17 +424,36 @@ class VedicCalculator {
       if (this.astrologer) {
         try {
           const natalData = {
-            year, month, date: day, hours: 12, minutes: 0, seconds: 0,
-            latitude: 28.6139, longitude: 77.2090, timezone: 5.5, chartType: 'sidereal'
+            year,
+            month,
+            date: day,
+            hours: 12,
+            minutes: 0,
+            seconds: 0,
+            latitude: 28.6139,
+            longitude: 77.209,
+            timezone: 5.5,
+            chartType: 'sidereal',
           };
 
           const transitData = {
-            year: currentYear, month: currentMonth, date: currentDay, hours: 12, minutes: 0, seconds: 0,
-            latitude: 28.6139, longitude: 77.2090, timezone: 5.5, chartType: 'sidereal'
+            year: currentYear,
+            month: currentMonth,
+            date: currentDay,
+            hours: 12,
+            minutes: 0,
+            seconds: 0,
+            latitude: 28.6139,
+            longitude: 77.209,
+            timezone: 5.5,
+            chartType: 'sidereal',
           };
 
           const natalChart = this.astrologer.generateNatalChartData(natalData);
-          const transitChart = this.astrologer.generateTransitChartData(natalData, transitData);
+          const transitChart = this.astrologer.generateTransitChartData(
+            natalData,
+            transitData
+          );
 
           // Extract detailed insights
           const { sunSign } = natalChart.interpretations;
@@ -384,7 +474,7 @@ class VedicCalculator {
 
           // Analyze major transits
           if (aspects.some(a => a.planet1 === 'Sun' || a.planet2 === 'Sun')) {
-            general += 'The Sun\'s energy brings confidence and vitality. ';
+            general += "The Sun's energy brings confidence and vitality. ";
             career = 'Great day for leadership and creative projects.';
             luckyColor = 'Gold';
           }
@@ -396,7 +486,9 @@ class VedicCalculator {
             luckyColor = 'Silver';
           }
 
-          if (aspects.some(a => a.planet1 === 'Venus' || a.planet2 === 'Venus')) {
+          if (
+            aspects.some(a => a.planet1 === 'Venus' || a.planet2 === 'Venus')
+          ) {
             general += 'Harmony and beauty surround you. ';
             love = 'Romantic opportunities abound today.';
             finance = 'Good day for financial planning.';
@@ -410,7 +502,8 @@ class VedicCalculator {
             luckyColor = 'Red';
           }
 
-          general += 'Trust your intuition and embrace the day\'s opportunities.';
+          general +=
+            "Trust your intuition and embrace the day's opportunities.";
 
           return {
             general,
@@ -419,31 +512,47 @@ class VedicCalculator {
             love,
             career,
             finance,
-            health
+            health,
           };
         } catch (astrologerError) {
-          console.warn('Astrologer library failed, falling back to basic horoscope:', astrologerError.message);
+          console.warn(
+            'Astrologer library failed, falling back to basic horoscope:',
+            astrologerError.message
+          );
         }
       }
 
       // Fallback to basic horoscope by sun sign
       const sunSign = this.calculateSunSign(birthDate);
       const basicHoroscopes = {
-        Aries: 'Today brings new opportunities for leadership. Trust your instincts and take bold action. Energy is high - channel it into productive activities.',
-        Taurus: 'Focus on stability and practical matters. Your patience will be rewarded today. Ground yourself in what truly matters.',
-        Gemini: 'Communication is key today. Express your ideas and connect with others. Your words have power - use them wisely.',
-        Cancer: 'Pay attention to your emotions and home life. Nurture your relationships. Intuition is your greatest guide today.',
+        Aries:
+          'Today brings new opportunities for leadership. Trust your instincts and take bold action. Energy is high - channel it into productive activities.',
+        Taurus:
+          'Focus on stability and practical matters. Your patience will be rewarded today. Ground yourself in what truly matters.',
+        Gemini:
+          'Communication is key today. Express your ideas and connect with others. Your words have power - use them wisely.',
+        Cancer:
+          'Pay attention to your emotions and home life. Nurture your relationships. Intuition is your greatest guide today.',
         Leo: 'Your creative energy is high today. Share your talents with the world. Confidence and charisma are your allies.',
-        Virgo: 'Attention to detail will serve you well. Organize and plan for success. Your analytical mind is sharp today.',
-        Libra: 'Seek balance and harmony in all your dealings. Diplomacy wins the day. Beauty and grace surround your path.',
-        Scorpio: 'Trust your intuition. Deep insights will guide you to important truths. Transformation is possible today.',
-        Sagittarius: 'Adventure calls! Expand your horizons and explore new possibilities. Freedom and exploration bring joy.',
-        Capricorn: 'Focus on long-term goals. Your ambition will lead to achievement. Discipline leads to success today.',
-        Aquarius: 'Innovation and originality will set you apart. Think outside the box. Progressive ideas flow freely.',
-        Pisces: 'Trust your imagination. Creative and spiritual pursuits bring fulfillment. Compassion guides your actions.'
+        Virgo:
+          'Attention to detail will serve you well. Organize and plan for success. Your analytical mind is sharp today.',
+        Libra:
+          'Seek balance and harmony in all your dealings. Diplomacy wins the day. Beauty and grace surround your path.',
+        Scorpio:
+          'Trust your intuition. Deep insights will guide you to important truths. Transformation is possible today.',
+        Sagittarius:
+          'Adventure calls! Expand your horizons and explore new possibilities. Freedom and exploration bring joy.',
+        Capricorn:
+          'Focus on long-term goals. Your ambition will lead to achievement. Discipline leads to success today.',
+        Aquarius:
+          'Innovation and originality will set you apart. Think outside the box. Progressive ideas flow freely.',
+        Pisces:
+          'Trust your imagination. Creative and spiritual pursuits bring fulfillment. Compassion guides your actions.',
       };
 
-      const horoscope = basicHoroscopes[sunSign] || 'Today brings opportunities for growth and self-discovery. Trust your inner wisdom and embrace new possibilities.';
+      const horoscope =
+        basicHoroscopes[sunSign] ||
+        'Today brings opportunities for growth and self-discovery. Trust your inner wisdom and embrace new possibilities.';
 
       return {
         general: horoscope,
@@ -452,18 +561,19 @@ class VedicCalculator {
         love: 'Open your heart to meaningful connections.',
         career: 'Focus on steady progress toward your goals.',
         finance: 'Be mindful of your resources.',
-        health: 'Listen to your body\'s needs.'
+        health: "Listen to your body's needs.",
       };
     } catch (error) {
       console.error('Error generating daily horoscope:', error);
       return {
-        general: 'Today brings opportunities for growth and self-discovery. Trust your inner wisdom.',
+        general:
+          'Today brings opportunities for growth and self-discovery. Trust your inner wisdom.',
         luckyColor: 'Blue',
         luckyNumber: 7,
         love: 'Focus on meaningful connections.',
         career: 'Stay focused on your goals.',
         finance: 'Be mindful with resources.',
-        health: 'Take care of your well-being.'
+        health: 'Take care of your well-being.',
       };
     }
   }
@@ -524,7 +634,7 @@ class VedicCalculator {
       'Pisces-Cancer': 'Excellent',
       'Pisces-Scorpio': 'Excellent',
       'Pisces-Taurus': 'Good',
-      'Pisces-Capricorn': 'Good'
+      'Pisces-Capricorn': 'Good',
     };
 
     const key = `${sign1}-${sign2}`;
@@ -536,10 +646,9 @@ class VedicCalculator {
       sign1,
       sign2,
       compatibility: rating,
-      description: this.getCompatibilityDescription(sign1, sign2, rating)
+      description: this.getCompatibilityDescription(sign1, sign2, rating),
     };
   }
-
 
   /**
    * Generate detailed birth chart analysis
@@ -551,7 +660,11 @@ class VedicCalculator {
 
     const sunSign = this.calculateSunSign(birthDate);
     const moonSign = this.calculateMoonSign(birthDate, birthTime);
-    const risingSign = this.calculateRisingSign(birthDate, birthTime, birthPlace);
+    const risingSign = this.calculateRisingSign(
+      birthDate,
+      birthTime,
+      birthPlace
+    );
 
     // Generate life patterns based on sun sign
     const lifePatterns = this.generateLifePatterns(sunSign);
@@ -560,7 +673,7 @@ class VedicCalculator {
       sunSign,
       moonSign,
       risingSign,
-      lifePatterns
+      lifePatterns,
     };
   }
 
@@ -573,9 +686,11 @@ class VedicCalculator {
   async generateTransitPreview(birthData, days = 3) {
     // Simplified transit preview
     const transits = {
-      today: '🌅 *Today:* Planetary energies support new beginnings and communication. Perfect for starting conversations or initiating projects.',
-      tomorrow: '🌞 *Tomorrow:* Focus on relationships and partnerships. Harmonious energies make this a good day for collaboration.',
-      day3: '🌙 *Day 3:* Creative inspiration flows strongly. Use this energy for artistic pursuits or innovative thinking.'
+      today:
+        '🌅 *Today:* Planetary energies support new beginnings and communication. Perfect for starting conversations or initiating projects.',
+      tomorrow:
+        '🌞 *Tomorrow:* Focus on relationships and partnerships. Harmonious energies make this a good day for collaboration.',
+      day3: '🌙 *Day 3:* Creative inspiration flows strongly. Use this energy for artistic pursuits or innovative thinking.',
     };
 
     return transits;
@@ -587,7 +702,6 @@ class VedicCalculator {
    * @param {string} birthTime - Birth time
    * @returns {string} Moon sign
    */
-
 
   /**
    * Calculate rising sign (simplified)
@@ -611,21 +725,75 @@ class VedicCalculator {
    */
   generateLifePatterns(sunSign) {
     const patterns = {
-      Aries: ['Natural leadership and initiative', 'Competitive drive and courage', 'Independent problem-solving'],
-      Taurus: ['Practical and reliable nature', 'Strong work ethic and patience', 'Appreciation for beauty and comfort'],
-      Gemini: ['Excellent communication skills', 'Adaptable and versatile mind', 'Curious and intellectual pursuits'],
-      Cancer: ['Deep emotional intelligence', 'Strong intuition and empathy', 'Protective of loved ones'],
-      Leo: ['Creative self-expression', 'Natural charisma and confidence', 'Generous and warm-hearted'],
-      Virgo: ['Attention to detail and precision', 'Analytical and helpful nature', 'Strong sense of duty'],
-      Libra: ['Diplomatic and fair-minded', 'Appreciation for harmony and balance', 'Social and cooperative'],
-      Scorpio: ['Intense emotional depth', 'Powerful intuition and insight', 'Transformative resilience'],
-      Sagittarius: ['Adventurous and optimistic spirit', 'Love of learning and exploration', 'Honest and philosophical'],
-      Capricorn: ['Ambitious and disciplined', 'Strong sense of responsibility', 'Patient long-term planning'],
-      Aquarius: ['Innovative and humanitarian', 'Independent thinking', 'Progressive and forward-looking'],
-      Pisces: ['Compassionate and artistic', 'Strong imagination and intuition', 'Spiritual and empathetic']
+      Aries: [
+        'Natural leadership and initiative',
+        'Competitive drive and courage',
+        'Independent problem-solving',
+      ],
+      Taurus: [
+        'Practical and reliable nature',
+        'Strong work ethic and patience',
+        'Appreciation for beauty and comfort',
+      ],
+      Gemini: [
+        'Excellent communication skills',
+        'Adaptable and versatile mind',
+        'Curious and intellectual pursuits',
+      ],
+      Cancer: [
+        'Deep emotional intelligence',
+        'Strong intuition and empathy',
+        'Protective of loved ones',
+      ],
+      Leo: [
+        'Creative self-expression',
+        'Natural charisma and confidence',
+        'Generous and warm-hearted',
+      ],
+      Virgo: [
+        'Attention to detail and precision',
+        'Analytical and helpful nature',
+        'Strong sense of duty',
+      ],
+      Libra: [
+        'Diplomatic and fair-minded',
+        'Appreciation for harmony and balance',
+        'Social and cooperative',
+      ],
+      Scorpio: [
+        'Intense emotional depth',
+        'Powerful intuition and insight',
+        'Transformative resilience',
+      ],
+      Sagittarius: [
+        'Adventurous and optimistic spirit',
+        'Love of learning and exploration',
+        'Honest and philosophical',
+      ],
+      Capricorn: [
+        'Ambitious and disciplined',
+        'Strong sense of responsibility',
+        'Patient long-term planning',
+      ],
+      Aquarius: [
+        'Innovative and humanitarian',
+        'Independent thinking',
+        'Progressive and forward-looking',
+      ],
+      Pisces: [
+        'Compassionate and artistic',
+        'Strong imagination and intuition',
+        'Spiritual and empathetic',
+      ],
     };
 
-    return patterns[sunSign] || ['Strong communication abilities', 'Natural leadership qualities', 'Creative problem-solving skills'];
+    return (
+      patterns[sunSign] || [
+        'Strong communication abilities',
+        'Natural leadership qualities',
+        'Creative problem-solving skills',
+      ]
+    );
   }
 
   /**
@@ -650,7 +818,14 @@ class VedicCalculator {
    * @returns {string} Enhanced description
    */
   _generateEnhancedDescription(chart) {
-    const { sunSign, moonSign, risingSign, dominantElements, dominantQualities, chartPatterns } = chart.interpretations;
+    const {
+      sunSign,
+      moonSign,
+      risingSign,
+      dominantElements,
+      dominantQualities,
+      chartPatterns,
+    } = chart.interpretations;
 
     let description = `Your natal chart reveals a ${sunSign} Sun, ${moonSign} Moon, and ${risingSign} Rising. `;
 
@@ -661,14 +836,23 @@ class VedicCalculator {
     }
 
     // Add chart patterns insight
-    if (chartPatterns && chartPatterns.stelliums && chartPatterns.stelliums.length > 0) {
+    if (
+      chartPatterns &&
+      chartPatterns.stelliums &&
+      chartPatterns.stelliums.length > 0
+    ) {
       description += `A stellium in ${chartPatterns.stelliums[0]} indicates concentrated energy in this area of life. `;
     }
 
     // Add element emphasis insight
     if (chartPatterns && chartPatterns.elementEmphasis) {
-      const maxElement = Object.entries(chartPatterns.elementEmphasis)
-        .reduce((a, b) => (chartPatterns.elementEmphasis[a[0]] > chartPatterns.elementEmphasis[b[0]] ? a : b))[0];
+      const maxElement = Object.entries(chartPatterns.elementEmphasis).reduce(
+        (a, b) =>
+          chartPatterns.elementEmphasis[a[0]] >
+          chartPatterns.elementEmphasis[b[0]]
+            ? a
+            : b
+      )[0];
       description += `Your chart shows strong ${maxElement} energy, suggesting ${this._getElementDescription(maxElement)}.`;
     }
 
@@ -698,7 +882,7 @@ class VedicCalculator {
       Sagittarius: ['Adventurous', 'Optimistic', 'Honest'],
       Capricorn: ['Ambitious', 'Disciplined', 'Responsible'],
       Aquarius: ['Innovative', 'Independent', 'Humanitarian'],
-      Pisces: ['Compassionate', 'Imaginative', 'Spiritual']
+      Pisces: ['Compassionate', 'Imaginative', 'Spiritual'],
     };
 
     // Moon sign traits (emotional nature)
@@ -714,7 +898,7 @@ class VedicCalculator {
       Sagittarius: ['Freedom-loving', 'Philosophical', 'Restless'],
       Capricorn: ['Reserved', 'Ambitious', 'Structured'],
       Aquarius: ['Unconventional', 'Intellectual', 'Detached'],
-      Pisces: ['Dreamy', 'Empathetic', 'Intuitive']
+      Pisces: ['Dreamy', 'Empathetic', 'Intuitive'],
     };
 
     // Rising sign traits (outward personality)
@@ -730,7 +914,7 @@ class VedicCalculator {
       Sagittarius: ['Adventurous', 'Optimistic', 'Honest'],
       Capricorn: ['Ambitious', 'Responsible', 'Structured'],
       Aquarius: ['Innovative', 'Independent', 'Humanitarian'],
-      Pisces: ['Dreamy', 'Compassionate', 'Artistic']
+      Pisces: ['Dreamy', 'Compassionate', 'Artistic'],
     };
 
     traits.push(...(sunTraits[sunSign] || []));
@@ -766,7 +950,11 @@ class VedicCalculator {
     }
 
     // Chart pattern strengths
-    if (chartPatterns && chartPatterns.stelliums && chartPatterns.stelliums.length > 0) {
+    if (
+      chartPatterns &&
+      chartPatterns.stelliums &&
+      chartPatterns.stelliums.length > 0
+    ) {
       strengths.push('Concentrated expertise in specific areas');
     }
 
@@ -803,7 +991,12 @@ class VedicCalculator {
     // Element imbalance challenges
     if (chartPatterns && chartPatterns.elementEmphasis) {
       const elements = Object.entries(chartPatterns.elementEmphasis);
-      const minElement = elements.reduce((a, b) => (chartPatterns.elementEmphasis[a[0]] < chartPatterns.elementEmphasis[b[0]] ? a : b))[0];
+      const minElement = elements.reduce((a, b) =>
+        chartPatterns.elementEmphasis[a[0]] <
+        chartPatterns.elementEmphasis[b[0]]
+          ? a
+          : b
+      )[0];
 
       if (minElement === 'fire') {
         challenges.push('Developing motivation and drive');
@@ -820,7 +1013,9 @@ class VedicCalculator {
     const { planets } = chart;
     let retrogradeCount = 0;
     Object.values(planets).forEach(planet => {
-      if (planet.retrograde) { retrogradeCount++; }
+      if (planet.retrograde) {
+        retrogradeCount++;
+      }
     });
 
     if (retrogradeCount > 2) {
@@ -841,7 +1036,7 @@ class VedicCalculator {
       fire: 'passion, creativity, and leadership abilities',
       earth: 'practicality, stability, and material success',
       air: 'intellectual pursuits, communication, and social connections',
-      water: 'emotional depth, intuition, and healing abilities'
+      water: 'emotional depth, intuition, and healing abilities',
     };
     return descriptions[element] || 'unique qualities and perspectives';
   }
@@ -862,7 +1057,7 @@ class VedicCalculator {
       sextile: 60,
       square: 90,
       trine: 120,
-      opposition: 180
+      opposition: 180,
     };
 
     const planetKeys = Object.keys(planets);
@@ -883,7 +1078,7 @@ class VedicCalculator {
               aspects.push({
                 planets: `${planet1.name}-${planet2.name}`,
                 aspect: aspectName,
-                angle: Math.round(minAngle * 10) / 10
+                angle: Math.round(minAngle * 10) / 10,
               });
             }
           });
@@ -901,7 +1096,9 @@ class VedicCalculator {
    * @returns {string} Interpretation
    */
   _getStelliumInterpretation(stelliums) {
-    if (!stelliums || stelliums.length === 0) { return ''; }
+    if (!stelliums || stelliums.length === 0) {
+      return '';
+    }
 
     const sign = stelliums[0];
     const interpretations = {
@@ -916,10 +1113,12 @@ class VedicCalculator {
       Sagittarius: 'philosophical exploration and adventure',
       Capricorn: 'career ambitions and long-term planning',
       Aquarius: 'innovation and humanitarian concerns',
-      Pisces: 'spiritual growth and artistic expression'
+      Pisces: 'spiritual growth and artistic expression',
     };
 
-    return interpretations[sign] || 'concentrated energy in specific life areas';
+    return (
+      interpretations[sign] || 'concentrated energy in specific life areas'
+    );
   }
 
   /**
@@ -939,10 +1138,14 @@ class VedicCalculator {
       const analysis = {
         ...basicChart,
         majorAspects,
-        stelliumInterpretation: this._getStelliumInterpretation(fullChart.chartPatterns?.stelliums),
-        elementBalance: this._analyzeElementBalance(fullChart.chartPatterns?.elementEmphasis),
+        stelliumInterpretation: this._getStelliumInterpretation(
+          fullChart.chartPatterns?.stelliums
+        ),
+        elementBalance: this._analyzeElementBalance(
+          fullChart.chartPatterns?.elementEmphasis
+        ),
         lifePurpose: this._deriveLifePurpose(basicChart),
-        currentTransits: this._getCurrentTransits(basicChart.sunSign)
+        currentTransits: this._getCurrentTransits(basicChart.sunSign),
       };
 
       return analysis;
@@ -959,7 +1162,9 @@ class VedicCalculator {
    * @returns {string} Element balance analysis
    */
   _analyzeElementBalance(elementEmphasis) {
-    if (!elementEmphasis) { return 'Balanced elemental energies'; }
+    if (!elementEmphasis) {
+      return 'Balanced elemental energies';
+    }
 
     const elements = Object.entries(elementEmphasis);
     const sorted = elements.sort((a, b) => b[1] - a[1]);
@@ -996,10 +1201,11 @@ class VedicCalculator {
       Sagittarius: 'To explore and expand horizons',
       Capricorn: 'To achieve and build lasting structures',
       Aquarius: 'To innovate and benefit humanity',
-      Pisces: 'To heal and connect spiritually'
+      Pisces: 'To heal and connect spiritually',
     };
 
-    let purpose = purposes[sunSign] || 'To discover and fulfill your unique potential';
+    let purpose =
+      purposes[sunSign] || 'To discover and fulfill your unique potential';
 
     if (dominantElements && dominantElements.includes('fire')) {
       purpose += ', channeling your creative fire into meaningful action';
@@ -1034,10 +1240,13 @@ class VedicCalculator {
       Sagittarius: 'Jupiter is expanding your horizons',
       Capricorn: 'Saturn is teaching valuable life lessons',
       Aquarius: 'Uranus is inspiring innovation and change',
-      Pisces: 'Neptune is enhancing your intuition and spirituality'
+      Pisces: 'Neptune is enhancing your intuition and spirituality',
     };
 
-    return transits[sunSign] || 'Current cosmic energies are supporting your growth and evolution';
+    return (
+      transits[sunSign] ||
+      'Current cosmic energies are supporting your growth and evolution'
+    );
   }
 
   /**
@@ -1052,12 +1261,25 @@ class VedicCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Calculate moon sign for dasha start
-      const moonLongitude = this.calculateMoonLongitude(year, month, day, hour, minute);
+      const moonLongitude = this.calculateMoonLongitude(
+        year,
+        month,
+        day,
+        hour,
+        minute
+      );
 
       // Vimshottari Dasha periods (years)
       const dashaPeriods = {
-        sun: 6, moon: 10, mars: 7, rahu: 18, jupiter: 16,
-        saturn: 19, mercury: 17, ketu: 7, venus: 20
+        sun: 6,
+        moon: 10,
+        mars: 7,
+        rahu: 18,
+        jupiter: 16,
+        saturn: 19,
+        mercury: 17,
+        ketu: 7,
+        venus: 20,
       };
 
       // Calculate starting dasha based on moon's position
@@ -1066,23 +1288,35 @@ class VedicCalculator {
       const birthDateObj = new Date(year, month - 1, day, hour, minute);
 
       // Calculate current dasha
-      const currentDasha = this.calculateCurrentDasha(birthDateObj, currentDate, startingDasha, dashaPeriods);
+      const currentDasha = this.calculateCurrentDasha(
+        birthDateObj,
+        currentDate,
+        startingDasha,
+        dashaPeriods
+      );
 
       // Calculate upcoming dashas
-      const upcomingDashas = this.calculateUpcomingDashas(currentDasha, dashaPeriods);
+      const upcomingDashas = this.calculateUpcomingDashas(
+        currentDasha,
+        dashaPeriods
+      );
 
       return {
         system: 'Vimshottari',
         startingDasha,
         currentDasha,
         upcomingDashas,
-        antardasha: this.calculateAntardasha(currentDasha.dasha, birthDateObj, currentDate)
+        antardasha: this.calculateAntardasha(
+          currentDasha.dasha,
+          birthDateObj,
+          currentDate
+        ),
       };
     } catch (error) {
       logger.error('Error calculating Vimshottari Dasha:', error);
       return {
         system: 'Vimshottari',
-        error: 'Unable to calculate dasha periods at this time'
+        error: 'Unable to calculate dasha periods at this time',
       };
     }
   }
@@ -1101,8 +1335,16 @@ class VedicCalculator {
       // Use astrologer library for precise calculation
       if (this.astrologer) {
         const astroData = {
-          year, month, date: day, hours: hour, minutes: minute, seconds: 0,
-          latitude: 28.6139, longitude: 77.2090, timezone: 5.5, chartType: 'sidereal'
+          year,
+          month,
+          date: day,
+          hours: hour,
+          minutes: minute,
+          seconds: 0,
+          latitude: 28.6139,
+          longitude: 77.209,
+          timezone: 5.5,
+          chartType: 'sidereal',
         };
 
         const chart = this.astrologer.generateNatalChartData(astroData);
@@ -1110,7 +1352,9 @@ class VedicCalculator {
       }
 
       // Fallback calculation
-      const daysSinceEpoch = Math.floor(new Date(year, month - 1, day).getTime() / (1000 * 60 * 60 * 24));
+      const daysSinceEpoch = Math.floor(
+        new Date(year, month - 1, day).getTime() / (1000 * 60 * 60 * 24)
+      );
       return (daysSinceEpoch * 13.176396) % 360; // Moon moves ~13.18 degrees per day
     } catch (error) {
       logger.error('Error calculating moon longitude:', error);
@@ -1130,10 +1374,33 @@ class VedicCalculator {
 
     // Nakshatra lords in order
     const nakshatraLords = [
-      'ketu', 'venus', 'sun', 'moon', 'mars', 'rahu', 'jupiter',
-      'saturn', 'mercury', 'ketu', 'venus', 'sun', 'moon', 'mars',
-      'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus',
-      'sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury'
+      'ketu',
+      'venus',
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury',
+      'ketu',
+      'venus',
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury',
+      'ketu',
+      'venus',
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury',
     ];
 
     return nakshatraLords[nakshatraNumber];
@@ -1148,10 +1415,21 @@ class VedicCalculator {
    * @returns {Object} Current dasha information
    */
   calculateCurrentDasha(birthDate, currentDate, startingDasha, dashaPeriods) {
-    const ageInYears = (currentDate - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
+    const ageInYears =
+      (currentDate - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
 
     // Dasha order
-    const dashaOrder = ['sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus'];
+    const dashaOrder = [
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury',
+      'ketu',
+      'venus',
+    ];
     const startIndex = dashaOrder.indexOf(startingDasha);
 
     let totalYears = 0;
@@ -1179,8 +1457,10 @@ class VedicCalculator {
       dasha: currentDasha,
       startYear: Math.max(0, ageInYears - yearsIntoCurrentDasha),
       remainingYears: Math.round(remainingYears * 10) / 10,
-      endDate: new Date(currentDate.getTime() + (remainingYears * 365.25 * 24 * 60 * 60 * 1000)),
-      influence: this.getDashaInfluence(currentDasha)
+      endDate: new Date(
+        currentDate.getTime() + remainingYears * 365.25 * 24 * 60 * 60 * 1000
+      ),
+      influence: this.getDashaInfluence(currentDasha),
     };
   }
 
@@ -1191,7 +1471,17 @@ class VedicCalculator {
    * @returns {Array} Upcoming dashas
    */
   calculateUpcomingDashas(currentDasha, dashaPeriods) {
-    const dashaOrder = ['sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus'];
+    const dashaOrder = [
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury',
+      'ketu',
+      'venus',
+    ];
     const currentIndex = dashaOrder.indexOf(currentDasha.dasha);
 
     const upcoming = [];
@@ -1202,7 +1492,7 @@ class VedicCalculator {
       upcoming.push({
         dasha: nextDasha,
         years: dashaPeriods[nextDasha],
-        influence: this.getDashaInfluence(nextDasha)
+        influence: this.getDashaInfluence(nextDasha),
       });
     }
 
@@ -1217,17 +1507,35 @@ class VedicCalculator {
    * @returns {Object} Antardasha information
    */
   calculateAntardasha(mahadasha, birthDate, currentDate) {
-    const antardashaOrder = ['sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus'];
+    const antardashaOrder = [
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury',
+      'ketu',
+      'venus',
+    ];
     const mahadashaPeriods = {
-      sun: 6, moon: 10, mars: 7, rahu: 18, jupiter: 16,
-      saturn: 19, mercury: 17, ketu: 7, venus: 20
+      sun: 6,
+      moon: 10,
+      mars: 7,
+      rahu: 18,
+      jupiter: 16,
+      saturn: 19,
+      mercury: 17,
+      ketu: 7,
+      venus: 20,
     };
 
     const mahadashaLength = mahadashaPeriods[mahadasha];
     const antardashaLength = mahadashaLength / 9; // Each antardasha is 1/9 of mahadasha
 
     // Find current antardasha
-    const ageInYears = (currentDate - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
+    const ageInYears =
+      (currentDate - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
     const yearsIntoMahadasha = ageInYears % mahadashaLength;
     const antardashaIndex = Math.floor(yearsIntoMahadasha / antardashaLength);
 
@@ -1239,13 +1547,15 @@ class VedicCalculator {
       current: {
         planet: currentAntardasha,
         remainingYears: Math.round(remainingInAntardasha * 10) / 10,
-        influence: this.getDashaInfluence(currentAntardasha)
+        influence: this.getDashaInfluence(currentAntardasha),
       },
-      upcoming: antardashaOrder.slice(antardashaIndex + 1, antardashaIndex + 4).map(planet => ({
-        planet,
-        years: antardashaLength,
-        influence: this.getDashaInfluence(planet)
-      }))
+      upcoming: antardashaOrder
+        .slice(antardashaIndex + 1, antardashaIndex + 4)
+        .map(planet => ({
+          planet,
+          years: antardashaLength,
+          influence: this.getDashaInfluence(planet),
+        })),
     };
   }
 
@@ -1260,11 +1570,13 @@ class VedicCalculator {
       moon: 'Emotions, mother, home, intuition, fluctuations, nurturing',
       mars: 'Action, courage, siblings, conflicts, energy, independence',
       mercury: 'Communication, intellect, education, business, adaptability',
-      jupiter: 'Wisdom, expansion, spirituality, prosperity, teaching, optimism',
+      jupiter:
+        'Wisdom, expansion, spirituality, prosperity, teaching, optimism',
       venus: 'Love, beauty, arts, relationships, harmony, material comforts',
-      saturn: 'Discipline, responsibility, career, limitations, wisdom, patience',
+      saturn:
+        'Discipline, responsibility, career, limitations, wisdom, patience',
       rahu: 'Ambition, foreign lands, unconventional paths, materialism, innovation',
-      ketu: 'Spirituality, detachment, past life karma, mysticism, liberation'
+      ketu: 'Spirituality, detachment, past life karma, mysticism, liberation',
     };
 
     return influences[planet] || 'General planetary influence';
@@ -1284,36 +1596,62 @@ class VedicCalculator {
 
       // Calculate current planetary positions
       const currentPositions = {};
-      const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
+      const planets = [
+        'sun',
+        'moon',
+        'mercury',
+        'venus',
+        'mars',
+        'jupiter',
+        'saturn',
+      ];
 
       planets.forEach(planet => {
         // Simplified transit calculation
         const natalPosition = natalChart.planets[planet];
         if (natalPosition) {
-          const natalLongitude = natalPosition.degrees + natalPosition.minutes / 60 + natalPosition.seconds / 3600;
-          const transitPosition = (natalLongitude + (currentDate - natalChart.birthDate) * 0.0001) % 360;
+          const natalLongitude =
+            natalPosition.degrees +
+            natalPosition.minutes / 60 +
+            natalPosition.seconds / 3600;
+          const transitPosition =
+            (natalLongitude + (currentDate - natalChart.birthDate) * 0.0001) %
+            360;
           currentPositions[planet] = {
             longitude: transitPosition,
-            aspect: this.calculateTransitAspect(natalLongitude, transitPosition),
-            influence: this.getTransitInfluence(planet, natalLongitude, transitPosition)
+            aspect: this.calculateTransitAspect(
+              natalLongitude,
+              transitPosition
+            ),
+            influence: this.getTransitInfluence(
+              planet,
+              natalLongitude,
+              transitPosition
+            ),
           };
         }
       });
 
       // Identify major transits
-      const majorTransits = this.identifyMajorTransits(natalChart, currentPositions);
+      const majorTransits = this.identifyMajorTransits(
+        natalChart,
+        currentPositions
+      );
 
       return {
         currentDate: `${currentDay}/${currentMonth}/${currentYear}`,
         planetaryPositions: currentPositions,
         majorTransits,
-        nextSignificantTransits: this.calculateNextSignificantTransits(natalChart, currentDate)
+        nextSignificantTransits: this.calculateNextSignificantTransits(
+          natalChart,
+          currentDate
+        ),
       };
     } catch (error) {
       logger.error('Error calculating advanced transits:', error);
       return {
         error: 'Unable to calculate transits at this time',
-        currentDate: new Date().toLocaleDateString()
+        currentDate: new Date().toLocaleDateString(),
       };
     }
   }
@@ -1328,11 +1666,21 @@ class VedicCalculator {
     const angle = Math.abs(natalPosition - transitPosition) % 360;
     const minAngle = Math.min(angle, 360 - angle);
 
-    if (minAngle <= 5) { return 'conjunction'; }
-    if (Math.abs(minAngle - 60) <= 5) { return 'sextile'; }
-    if (Math.abs(minAngle - 90) <= 5) { return 'square'; }
-    if (Math.abs(minAngle - 120) <= 5) { return 'trine'; }
-    if (Math.abs(minAngle - 180) <= 5) { return 'opposition'; }
+    if (minAngle <= 5) {
+      return 'conjunction';
+    }
+    if (Math.abs(minAngle - 60) <= 5) {
+      return 'sextile';
+    }
+    if (Math.abs(minAngle - 90) <= 5) {
+      return 'square';
+    }
+    if (Math.abs(minAngle - 120) <= 5) {
+      return 'trine';
+    }
+    if (Math.abs(minAngle - 180) <= 5) {
+      return 'opposition';
+    }
 
     return 'no major aspect';
   }
@@ -1353,50 +1701,50 @@ class VedicCalculator {
         sextile: 'Opportunities for leadership and confidence',
         square: 'Challenges to ego and self-expression',
         trine: 'Harmony in personal power and vitality',
-        opposition: 'Public recognition and relationship dynamics'
+        opposition: 'Public recognition and relationship dynamics',
       },
       moon: {
         conjunction: 'Emotional sensitivity heightened',
         sextile: 'Emotional opportunities and intuition',
         square: 'Emotional challenges and mood fluctuations',
         trine: 'Emotional harmony and nurturing',
-        opposition: 'Public emotional life and relationships'
+        opposition: 'Public emotional life and relationships',
       },
       mars: {
         conjunction: 'Energy and action strongly activated',
         sextile: 'Opportunities for action and courage',
         square: 'Conflicts and aggressive challenges',
         trine: 'Harmonious energy and successful action',
-        opposition: 'Public action and competitive dynamics'
+        opposition: 'Public action and competitive dynamics',
       },
       jupiter: {
         conjunction: 'Expansion and growth opportunities',
         sextile: 'Lucky opportunities and optimism',
         square: 'Excess and over-expansion challenges',
         trine: 'Natural abundance and wisdom',
-        opposition: 'Public success and philosophical influence'
+        opposition: 'Public success and philosophical influence',
       },
       saturn: {
         conjunction: 'Responsibilities and limitations emphasized',
         sextile: 'Career opportunities and discipline',
         square: 'Restrictions and karmic lessons',
         trine: 'Achievement through patience and structure',
-        opposition: 'Public responsibility and authority'
+        opposition: 'Public responsibility and authority',
       },
       venus: {
         conjunction: 'Love and beauty themes prominent',
         sextile: 'Harmonious relationships and creativity',
         square: 'Relationship challenges and values conflicts',
         trine: 'Love, beauty, and artistic success',
-        opposition: 'Public relationships and social charm'
+        opposition: 'Public relationships and social charm',
       },
       mercury: {
         conjunction: 'Communication and mental activity increased',
         sextile: 'Learning opportunities and clear thinking',
         square: 'Communication challenges and mental stress',
         trine: 'Mental harmony and successful communication',
-        opposition: 'Public speaking and social communication'
-      }
+        opposition: 'Public speaking and social communication',
+      },
     };
 
     return influences[planet]?.[aspect] || `${planet} transit influence`;
@@ -1412,12 +1760,16 @@ class VedicCalculator {
     const majorTransits = [];
 
     Object.entries(currentPositions).forEach(([planet, position]) => {
-      if (['conjunction', 'square', 'trine', 'opposition'].includes(position.aspect)) {
+      if (
+        ['conjunction', 'square', 'trine', 'opposition'].includes(
+          position.aspect
+        )
+      ) {
         majorTransits.push({
           planet,
           aspect: position.aspect,
           influence: position.influence,
-          intensity: this.getAspectIntensity(position.aspect)
+          intensity: this.getAspectIntensity(position.aspect),
         });
       }
     });
@@ -1436,7 +1788,7 @@ class VedicCalculator {
       opposition: 'High',
       square: 'Medium-High',
       trine: 'Medium',
-      sextile: 'Low-Medium'
+      sextile: 'Low-Medium',
     };
 
     return intensities[aspect] || 'Neutral';
@@ -1454,17 +1806,29 @@ class VedicCalculator {
 
     planets.forEach(planet => {
       const natalPlanet = natalChart.planets[planet];
-      const natalPos = natalPlanet ? (natalPlanet.degrees + natalPlanet.minutes / 60 + natalPlanet.seconds / 3600) : null;
+      const natalPos = natalPlanet
+        ? natalPlanet.degrees +
+          natalPlanet.minutes / 60 +
+          natalPlanet.seconds / 3600
+        : null;
       if (natalPos) {
         // Calculate when next major aspect occurs
-        const nextConjunction = new Date(currentDate.getTime() + (360 - ((currentDate - natalChart.birthDate) * 0.0001 % 360)) * 100000);
-        const nextSquare = new Date(currentDate.getTime() + (90 - ((currentDate - natalChart.birthDate) * 0.0001 % 90)) * 100000);
+        const nextConjunction = new Date(
+          currentDate.getTime() +
+            (360 - (((currentDate - natalChart.birthDate) * 0.0001) % 360)) *
+              100000
+        );
+        const nextSquare = new Date(
+          currentDate.getTime() +
+            (90 - (((currentDate - natalChart.birthDate) * 0.0001) % 90)) *
+              100000
+        );
 
         nextTransits.push({
           planet,
           nextConjunction: nextConjunction.toLocaleDateString(),
           nextSquare: nextSquare.toLocaleDateString(),
-          significance: this.getTransitSignificance(planet)
+          significance: this.getTransitSignificance(planet),
         });
       }
     });
@@ -1483,7 +1847,7 @@ class VedicCalculator {
       saturn: 'Responsibilities, career changes, and life lessons',
       uranus: 'Sudden changes, innovation, and freedom',
       neptune: 'Spirituality, dreams, and dissolution of boundaries',
-      pluto: 'Transformation, power, and rebirth'
+      pluto: 'Transformation, power, and rebirth',
     };
 
     return significances[planet] || 'Significant planetary influence';
@@ -1498,15 +1862,25 @@ class VedicCalculator {
     try {
       const basicChart = this.generateBasicBirthChart(user);
       const dashaAnalysis = this.calculateVimshottariDasha(user);
-      const transitAnalysis = this.calculateAdvancedTransits(basicChart, new Date());
+      const transitAnalysis = this.calculateAdvancedTransits(
+        basicChart,
+        new Date()
+      );
 
       return {
         ...basicChart,
         dashaAnalysis,
         transitAnalysis,
-        predictions: this.generateVedicPredictions(dashaAnalysis, transitAnalysis),
+        predictions: this.generateVedicPredictions(
+          dashaAnalysis,
+          transitAnalysis
+        ),
         remedies: this.generateVedicRemedies(basicChart, dashaAnalysis),
-        comprehensiveDescription: this.generateComprehensiveVedicDescription(basicChart, dashaAnalysis, transitAnalysis)
+        comprehensiveDescription: this.generateComprehensiveVedicDescription(
+          basicChart,
+          dashaAnalysis,
+          transitAnalysis
+        ),
       };
     } catch (error) {
       logger.error('Error generating complete Vedic analysis:', error);
@@ -1524,7 +1898,7 @@ class VedicCalculator {
     const predictions = {
       shortTerm: 'Based on current planetary influences',
       mediumTerm: 'Upcoming dasha periods suggest',
-      longTerm: 'Future transits indicate'
+      longTerm: 'Future transits indicate',
     };
 
     // Short-term based on current dasha
@@ -1583,7 +1957,7 @@ class VedicCalculator {
       venus: 'Practice Lakshmi worship and artistic expression',
       saturn: 'Serve others and practice patience and discipline',
       rahu: 'Practice spiritual disciplines and avoid material excess',
-      ketu: 'Focus on spiritual liberation and meditation'
+      ketu: 'Focus on spiritual liberation and meditation',
     };
 
     return remedies[planet] || 'Practice general spiritual disciplines';
@@ -1596,7 +1970,11 @@ class VedicCalculator {
    * @param {Object} transitAnalysis - Transit analysis
    * @returns {string} Comprehensive description
    */
-  generateComprehensiveVedicDescription(basicChart, dashaAnalysis, transitAnalysis) {
+  generateComprehensiveVedicDescription(
+    basicChart,
+    dashaAnalysis,
+    transitAnalysis
+  ) {
     let description = '🕉️ *Complete Vedic Astrology Analysis*\n\n';
 
     // Basic chart info
@@ -1627,7 +2005,10 @@ class VedicCalculator {
     }
 
     // Transit analysis
-    if (transitAnalysis.majorTransits && transitAnalysis.majorTransits.length > 0) {
+    if (
+      transitAnalysis.majorTransits &&
+      transitAnalysis.majorTransits.length > 0
+    ) {
       description += '🌟 *Current Major Transits:*\n';
       transitAnalysis.majorTransits.slice(0, 3).forEach(transit => {
         description += `• ${transit.planet} ${transit.aspect}: ${transit.influence}\n`;
@@ -1636,7 +2017,10 @@ class VedicCalculator {
     }
 
     // Predictions
-    const predictions = this.generateVedicPredictions(dashaAnalysis, transitAnalysis);
+    const predictions = this.generateVedicPredictions(
+      dashaAnalysis,
+      transitAnalysis
+    );
     description += '🔮 *Predictions:*\n';
     description += `• Short-term: ${predictions.shortTerm}\n`;
     description += `• Medium-term: ${predictions.mediumTerm}\n`;
@@ -1653,10 +2037,11 @@ class VedicCalculator {
     }
 
     description += '📚 *Vedic Wisdom:*\n';
-    description += '• Dasha periods show the timing of life\'s chapters\n';
+    description += "• Dasha periods show the timing of life's chapters\n";
     description += '• Transits reveal current cosmic influences\n';
     description += '• Remedies help harmonize planetary energies\n';
-    description += '• Self-awareness and spiritual practice enhance all influences';
+    description +=
+      '• Self-awareness and spiritual practice enhance all influences';
 
     return description;
   }
@@ -1672,10 +2057,13 @@ class VedicCalculator {
     const descriptions = {
       Excellent: `${sign1} and ${sign2} share great compatibility. You complement each other's strengths and understand each other's needs intuitively.`,
       Good: `${sign1} and ${sign2} have good compatibility with some complementary energies. With understanding, this can be a harmonious relationship.`,
-      Neutral: `${sign1} and ${sign2} have neutral compatibility. While you may not be natural soulmates, mutual respect and communication can build a strong connection.`
+      Neutral: `${sign1} and ${sign2} have neutral compatibility. While you may not be natural soulmates, mutual respect and communication can build a strong connection.`,
     };
 
-    return descriptions[rating] || 'This combination has unique dynamics that require understanding and patience to navigate successfully.';
+    return (
+      descriptions[rating] ||
+      'This combination has unique dynamics that require understanding and patience to navigate successfully.'
+    );
   }
 }
 

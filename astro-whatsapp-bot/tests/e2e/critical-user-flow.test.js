@@ -2,16 +2,23 @@ const request = require('supertest');
 const app = require('../../src/server');
 const User = require('../../src/models/User');
 const Session = require('../../src/models/Session');
-const { getUserByPhone, createUser, addBirthDetails, updateUserProfile } = require('../../src/models/userModel');
+const {
+  getUserByPhone,
+  createUser,
+  addBirthDetails,
+  updateUserProfile,
+} = require('../../src/models/userModel');
 const { sendMessage } = require('../../src/services/whatsapp/messageSender');
 const logger = require('../../src/utils/logger');
 
 // Mock webhookValidator only, as it's external to the core app logic being tested here
 jest.mock('../../src/services/whatsapp/webhookValidator');
-const { validateWebhookSignature } = require('../../src/services/whatsapp/webhookValidator');
+const {
+  validateWebhookSignature,
+} = require('../../src/services/whatsapp/webhookValidator');
 
 describe('Critical User Flow End-to-End Tests', () => {
-  beforeAll(async() => {
+  beforeAll(async () => {
     // Set test environment variables
     process.env.NODE_ENV = 'test';
     process.env.W1_SKIP_WEBHOOK_SIGNATURE = 'true';
@@ -19,7 +26,7 @@ describe('Critical User Flow End-to-End Tests', () => {
     process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test_phone_id';
   });
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     // Clear database collections before each test
     try {
       await User.deleteMany({});
@@ -41,29 +48,40 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('New User Registration Flow', () => {
     const testPhone = '+1234567890';
 
-    it('should complete full new user registration and first reading flow', async() => {
+    it('should complete full new user registration and first reading flow', async () => {
       // Step 1: New user sends birth date directly (welcome step expects date)
       const birthDateResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-1',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-birth-date',
-                  timestamp: Date.now().toString(),
-                  text: { body: '15031990' }, // 15/03/1990
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-1',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test',
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone },
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-birth-date',
+                        timestamp: Date.now().toString(),
+                        text: { body: '15031990' }, // 15/03/1990
+                        type: 'text',
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -82,24 +100,35 @@ describe('Critical User Flow End-to-End Tests', () => {
       const birthTimeInputResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-2',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-birth-time-input',
-                  timestamp: Date.now().toString(),
-                  text: { body: '1430' }, // 14:30
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-2',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test',
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone },
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-birth-time-input',
+                        timestamp: Date.now().toString(),
+                        text: { body: '1430' }, // 14:30
+                        type: 'text',
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -110,24 +139,35 @@ describe('Critical User Flow End-to-End Tests', () => {
       const birthPlaceResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-3',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-birth-place',
-                  timestamp: Date.now().toString(),
-                  text: { body: 'Mumbai, India' },
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-3',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test',
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone },
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-birth-place',
+                        timestamp: Date.now().toString(),
+                        text: { body: 'Mumbai, India' },
+                        type: 'text',
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -138,30 +178,41 @@ describe('Critical User Flow End-to-End Tests', () => {
       const languageResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-4',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-language',
-                  timestamp: Date.now().toString(),
-                  type: 'interactive',
-                  interactive: {
-                    type: 'button_reply',
-                    button_reply: {
-                      id: 'lang_english',
-                      title: 'English 🇺🇸'
-                    }
-                  }
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-4',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test',
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone },
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-language',
+                        timestamp: Date.now().toString(),
+                        type: 'interactive',
+                        interactive: {
+                          type: 'button_reply',
+                          button_reply: {
+                            id: 'lang_english',
+                            title: 'English 🇺🇸',
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -172,30 +223,41 @@ describe('Critical User Flow End-to-End Tests', () => {
       const confirmResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-5',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-confirm',
-                  timestamp: Date.now().toString(),
-                  type: 'interactive',
-                  interactive: {
-                    type: 'button_reply',
-                    button_reply: {
-                      id: 'confirm_yes',
-                      title: '✅ Yes, Continue'
-                    }
-                  }
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-5',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test',
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone },
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-confirm',
+                        timestamp: Date.now().toString(),
+                        type: 'interactive',
+                        interactive: {
+                          type: 'button_reply',
+                          button_reply: {
+                            id: 'confirm_yes',
+                            title: '✅ Yes, Continue',
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -222,17 +284,25 @@ describe('Critical User Flow End-to-End Tests', () => {
       // Verify the completion message content
       expect(sendMessage).toHaveBeenCalledTimes(2); // One for the completion message, one for the main menu
       const completionMessageCall = sendMessage.mock.calls[0][1];
-      expect(completionMessageCall).toContain('🎉 *Welcome to your cosmic journey!*');
+      expect(completionMessageCall).toContain(
+        '🎉 *Welcome to your cosmic journey!*'
+      );
       expect(completionMessageCall).toContain(`☀️ *Sun Sign:* ${user.sunSign}`);
-      expect(completionMessageCall).toContain(`🌙 *Moon Sign:* ${user.moonSign}`);
-      expect(completionMessageCall).toContain(`⬆️ *Rising Sign:* ${user.risingSign}`);
+      expect(completionMessageCall).toContain(
+        `🌙 *Moon Sign:* ${user.moonSign}`
+      );
+      expect(completionMessageCall).toContain(
+        `⬆️ *Rising Sign:* ${user.risingSign}`
+      );
       expect(completionMessageCall).toContain('🔥 *Your Top 3 Life Patterns:*');
       expect(completionMessageCall).toContain('⭐ *3-Day Cosmic Preview:*');
 
       // Verify the main menu was sent
       const mainMenuCall = sendMessage.mock.calls[1][1];
       expect(mainMenuCall.type).toBe('button');
-      expect(mainMenuCall.body).toContain('🌟 *What would you like to explore today?*');
+      expect(mainMenuCall.body).toContain(
+        '🌟 *What would you like to explore today?*'
+      );
       expect(mainMenuCall.buttons).toHaveLength(3);
 
       logger.info('✅ User onboarding completed successfully!');
@@ -245,7 +315,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('Existing User Daily Horoscope Flow', () => {
     const testPhone = '+0987654321';
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
@@ -254,39 +324,47 @@ describe('Critical User Flow End-to-End Tests', () => {
         preferredLanguage: 'english',
         sunSign: 'Pisces',
         moonSign: 'Pisces',
-        risingSign: 'Aquarius'
+        risingSign: 'Aquarius',
       });
       // Clear sendMessage mocks after user setup
       sendMessage.mockClear();
     });
 
-    it('should generate real daily horoscope for existing user', async() => {
+    it('should generate real daily horoscope for existing user', async () => {
       const dailyHoroscopePayload = {
-        entry: [{
-          id: 'entry-daily',
-          time: '1234567892',
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: '+0987654321',
-                phone_number_id: 'phone-id-daily'
+        entry: [
+          {
+            id: 'entry-daily',
+            time: '1234567892',
+            changes: [
+              {
+                field: 'messages',
+                value: {
+                  messaging_product: 'whatsapp',
+                  metadata: {
+                    display_phone_number: '+0987654321',
+                    phone_number_id: 'phone-id-daily',
+                  },
+                  contacts: [
+                    {
+                      profile: { name: 'Existing User' },
+                      wa_id: testPhone,
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: testPhone,
+                      id: 'message-id-daily',
+                      timestamp: Date.now().toString(),
+                      text: { body: 'Daily horoscope' },
+                      type: 'text',
+                    },
+                  ],
+                },
               },
-              contacts: [{
-                profile: { name: 'Existing User' },
-                wa_id: testPhone
-              }],
-              messages: [{
-                from: testPhone,
-                id: 'message-id-daily',
-                timestamp: Date.now().toString(),
-                text: { body: 'Daily horoscope' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -305,7 +383,9 @@ describe('Critical User Flow End-to-End Tests', () => {
       expect(sendMessage).toHaveBeenCalled();
       const sentMessage = sendMessage.mock.calls[0][1];
       expect(sentMessage).toContain('🌟 *Daily Horoscope for Pisces*');
-      expect(sentMessage).toContain('Today brings opportunities for growth and self-discovery.');
+      expect(sentMessage).toContain(
+        'Today brings opportunities for growth and self-discovery.'
+      );
 
       logger.info('✅ Daily horoscope request processed successfully!');
     });
@@ -314,7 +394,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('Interactive Button Flow', () => {
     const testPhone = '+1122334455';
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
@@ -323,45 +403,53 @@ describe('Critical User Flow End-to-End Tests', () => {
         preferredLanguage: 'english',
         sunSign: 'Pisces',
         moonSign: 'Pisces',
-        risingSign: 'Aquarius'
+        risingSign: 'Aquarius',
       });
       // Clear sendMessage mocks after user setup
       sendMessage.mockClear();
     });
 
-    it('should process interactive button reply for compatibility checking', async() => {
+    it('should process interactive button reply for compatibility checking', async () => {
       const interactivePayload = {
-        entry: [{
-          id: 'entry-interactive',
-          time: '1234567893',
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: '+1122334455',
-                phone_number_id: 'phone-id-interactive'
+        entry: [
+          {
+            id: 'entry-interactive',
+            time: '1234567893',
+            changes: [
+              {
+                field: 'messages',
+                value: {
+                  messaging_product: 'whatsapp',
+                  metadata: {
+                    display_phone_number: '+1122334455',
+                    phone_number_id: 'phone-id-interactive',
+                  },
+                  contacts: [
+                    {
+                      profile: { name: 'Interactive User' },
+                      wa_id: testPhone,
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: testPhone,
+                      id: 'message-id-interactive',
+                      timestamp: Date.now().toString(),
+                      type: 'interactive',
+                      interactive: {
+                        type: 'button_reply',
+                        button_reply: {
+                          id: 'btn_check_compatibility',
+                          title: 'Compatibility',
+                        },
+                      },
+                    },
+                  ],
+                },
               },
-              contacts: [{
-                profile: { name: 'Interactive User' },
-                wa_id: testPhone
-              }],
-              messages: [{
-                from: testPhone,
-                id: 'message-id-interactive',
-                timestamp: Date.now().toString(),
-                type: 'interactive',
-                interactive: {
-                  type: 'button_reply',
-                  button_reply: {
-                    id: 'btn_check_compatibility',
-                    title: 'Compatibility'
-                  }
-                }
-              }]
-            }
-          }]
-        }]
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -380,47 +468,63 @@ describe('Critical User Flow End-to-End Tests', () => {
       expect(sendMessage).toHaveBeenCalled();
       const sentMessage = sendMessage.mock.calls[0][1];
       expect(sentMessage).toContain('💕 *Compatibility Analysis*');
-      expect(sentMessage).toContain('I can check how compatible you are with someone else!');
+      expect(sentMessage).toContain(
+        'I can check how compatible you are with someone else!'
+      );
 
-      logger.info('✅ Interactive button reply for compatibility processed successfully!');
+      logger.info(
+        '✅ Interactive button reply for compatibility processed successfully!'
+      );
     });
   });
 
   describe('Error Handling Flow', () => {
-    it('should handle processing errors gracefully', async() => {
+    it('should handle processing errors gracefully', async () => {
       // Mock processIncomingMessage to throw an error
       // This test still needs to mock processIncomingMessage to simulate an internal error
       // without breaking the entire test suite due to unhandled rejections from real code.
-      const { processIncomingMessage } = require('../../src/services/whatsapp/messageProcessor');
+      const {
+        processIncomingMessage,
+      } = require('../../src/services/whatsapp/messageProcessor');
       jest.mock('../../src/services/whatsapp/messageProcessor');
-      processIncomingMessage.mockRejectedValue(new Error('Simulated processing failed'));
+      processIncomingMessage.mockRejectedValue(
+        new Error('Simulated processing failed')
+      );
 
       const errorPayload = {
-        entry: [{
-          id: 'entry-error',
-          time: '1234567894',
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: '+5566778899',
-                phone_number_id: 'phone-id-error'
+        entry: [
+          {
+            id: 'entry-error',
+            time: '1234567894',
+            changes: [
+              {
+                field: 'messages',
+                value: {
+                  messaging_product: 'whatsapp',
+                  metadata: {
+                    display_phone_number: '+5566778899',
+                    phone_number_id: 'phone-id-error',
+                  },
+                  contacts: [
+                    {
+                      profile: { name: 'Error User' },
+                      wa_id: '5566778899',
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: '5566778899',
+                      id: 'message-id-error',
+                      timestamp: Date.now().toString(),
+                      text: { body: 'This will cause an error' },
+                      type: 'text',
+                    },
+                  ],
+                },
               },
-              contacts: [{
-                profile: { name: 'Error User' },
-                wa_id: '5566778899'
-              }],
-              messages: [{
-                from: '5566778899',
-                id: 'message-id-error',
-                timestamp: Date.now().toString(),
-                text: { body: 'This will cause an error' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -436,7 +540,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       // Verify that an error message was sent to the user
       expect(sendMessage).toHaveBeenCalledWith(
         '5566778899',
-        'I\'m sorry, I encountered an error processing your message. Please try again later!'
+        "I'm sorry, I encountered an error processing your message. Please try again later!"
       );
 
       // Verify that the error was logged
@@ -450,7 +554,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('Performance and Scalability Flow', () => {
     const testPhoneBase = '+12345678';
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       // Clear database collections before each test
       await User.deleteMany({});
       await Session.deleteMany({});
@@ -459,49 +563,62 @@ describe('Critical User Flow End-to-End Tests', () => {
       for (let i = 0; i < 10; i++) {
         const phoneNumber = `${testPhoneBase}${i}`;
         await createUser(phoneNumber);
-        await addBirthDetails(phoneNumber, '15/03/1990', '14:30', 'Mumbai, India');
+        await addBirthDetails(
+          phoneNumber,
+          '15/03/1990',
+          '14:30',
+          'Mumbai, India'
+        );
         await updateUserProfile(phoneNumber, {
           profileComplete: true,
           preferredLanguage: 'english',
           sunSign: 'Pisces',
           moonSign: 'Pisces',
-          risingSign: 'Aquarius'
+          risingSign: 'Aquarius',
         });
       }
       sendMessage.mockClear();
     });
 
-    it('should handle high volume of messages without crashing', async() => {
+    it('should handle high volume of messages without crashing', async () => {
       // Create multiple webhook payloads
       const payloads = [];
       for (let i = 0; i < 10; i++) {
         const phoneNumber = `${testPhoneBase}${i}`;
         payloads.push({
-          entry: [{
-            id: `entry-high-volume-${i}`,
-            time: Date.now().toString(),
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: {
-                  display_phone_number: phoneNumber,
-                  phone_number_id: 'phone-id-volume'
+          entry: [
+            {
+              id: `entry-high-volume-${i}`,
+              time: Date.now().toString(),
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: phoneNumber,
+                      phone_number_id: 'phone-id-volume',
+                    },
+                    contacts: [
+                      {
+                        profile: { name: `User ${i}` },
+                        wa_id: phoneNumber,
+                      },
+                    ],
+                    messages: [
+                      {
+                        from: phoneNumber,
+                        id: `message-id-volume-${i}`,
+                        timestamp: Date.now().toString(),
+                        text: { body: 'Daily horoscope' },
+                        type: 'text',
+                      },
+                    ],
+                  },
                 },
-                contacts: [{
-                  profile: { name: `User ${i}` },
-                  wa_id: phoneNumber
-                }],
-                messages: [{
-                  from: phoneNumber,
-                  id: `message-id-volume-${i}`,
-                  timestamp: Date.now().toString(),
-                  text: { body: 'Daily horoscope' },
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+              ],
+            },
+          ],
         });
       }
 
@@ -538,7 +655,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   describe('Security and Compliance Flow', () => {
-    it('should validate webhook signatures when provided', async() => {
+    it('should validate webhook signatures when provided', async () => {
       // This test specifically checks the webhookValidator, which is mocked at the top.
       // To test the real webhookValidator, we need to unmock it for this specific test.
       // However, the current setup mocks it globally. For now, we'll keep the mock
@@ -547,31 +664,39 @@ describe('Critical User Flow End-to-End Tests', () => {
       const testPhone = '+9988776655';
       const secret = process.env.W1_WHATSAPP_APP_SECRET || 'test_app_secret';
       const rawBody = JSON.stringify({
-        entry: [{
-          id: 'entry-secure',
-          time: Date.now().toString(),
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: testPhone,
-                phone_number_id: 'phone-id-secure'
+        entry: [
+          {
+            id: 'entry-secure',
+            time: Date.now().toString(),
+            changes: [
+              {
+                field: 'messages',
+                value: {
+                  messaging_product: 'whatsapp',
+                  metadata: {
+                    display_phone_number: testPhone,
+                    phone_number_id: 'phone-id-secure',
+                  },
+                  contacts: [
+                    {
+                      profile: { name: 'Secure User' },
+                      wa_id: testPhone,
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: testPhone,
+                      id: 'message-id-secure',
+                      timestamp: Date.now().toString(),
+                      text: { body: 'Secure message' },
+                      type: 'text',
+                    },
+                  ],
+                },
               },
-              contacts: [{
-                profile: { name: 'Secure User' },
-                wa_id: testPhone
-              }],
-              messages: [{
-                from: testPhone,
-                id: 'message-id-secure',
-                timestamp: Date.now().toString(),
-                text: { body: 'Secure message' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
+            ],
+          },
+        ],
       });
 
       // Generate a valid signature for the rawBody
@@ -607,7 +732,7 @@ describe('Critical User Flow End-to-End Tests', () => {
   describe('Subscription and Payment Flow', () => {
     const testPhone = '+7778889999';
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
@@ -617,38 +742,46 @@ describe('Critical User Flow End-to-End Tests', () => {
         sunSign: 'Pisces',
         moonSign: 'Pisces',
         risingSign: 'Aquarius',
-        subscriptionTier: 'free'
+        subscriptionTier: 'free',
       });
       sendMessage.mockClear();
     });
 
-    it('should handle subscription plan inquiry', async() => {
+    it('should handle subscription plan inquiry', async () => {
       const subscriptionInquiryPayload = {
-        entry: [{
-          id: 'entry-subscription-inquiry',
-          time: Date.now().toString(),
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: testPhone,
-                phone_number_id: 'phone-id-subscription'
+        entry: [
+          {
+            id: 'entry-subscription-inquiry',
+            time: Date.now().toString(),
+            changes: [
+              {
+                field: 'messages',
+                value: {
+                  messaging_product: 'whatsapp',
+                  metadata: {
+                    display_phone_number: testPhone,
+                    phone_number_id: 'phone-id-subscription',
+                  },
+                  contacts: [
+                    {
+                      profile: { name: 'Subscription User' },
+                      wa_id: testPhone,
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: testPhone,
+                      id: 'message-id-subscription-inquiry',
+                      timestamp: Date.now().toString(),
+                      text: { body: 'What are the subscription plans?' },
+                      type: 'text',
+                    },
+                  ],
+                },
               },
-              contacts: [{
-                profile: { name: 'Subscription User' },
-                wa_id: testPhone
-              }],
-              messages: [{
-                from: testPhone,
-                id: 'message-id-subscription-inquiry',
-                timestamp: Date.now().toString(),
-                text: { body: 'What are the subscription plans?' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -673,39 +806,47 @@ describe('Critical User Flow End-to-End Tests', () => {
       logger.info('✅ Subscription plan inquiry processed successfully!');
     });
 
-    it('should handle premium subscription request', async() => {
+    it('should handle premium subscription request', async () => {
       const premiumSubscriptionPayload = {
-        entry: [{
-          id: 'entry-premium-subscription',
-          time: Date.now().toString(),
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: testPhone,
-                phone_number_id: 'phone-id-premium'
+        entry: [
+          {
+            id: 'entry-premium-subscription',
+            time: Date.now().toString(),
+            changes: [
+              {
+                field: 'messages',
+                value: {
+                  messaging_product: 'whatsapp',
+                  metadata: {
+                    display_phone_number: testPhone,
+                    phone_number_id: 'phone-id-premium',
+                  },
+                  contacts: [
+                    {
+                      profile: { name: 'Premium User' },
+                      wa_id: testPhone,
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: testPhone,
+                      id: 'message-id-premium',
+                      timestamp: Date.now().toString(),
+                      type: 'interactive',
+                      interactive: {
+                        type: 'button_reply',
+                        button_reply: {
+                          id: 'plan_premium',
+                          title: '💎 Premium ₹299',
+                        },
+                      },
+                    },
+                  ],
+                },
               },
-              contacts: [{
-                profile: { name: 'Premium User' },
-                wa_id: testPhone
-              }],
-              messages: [{
-                from: testPhone,
-                id: 'message-id-premium',
-                timestamp: Date.now().toString(),
-                type: 'interactive',
-                interactive: {
-                  type: 'button_reply',
-                  button_reply: {
-                    id: 'plan_premium',
-                    title: '💎 Premium ₹299'
-                  }
-                }
-              }]
-            }
-          }]
-        }]
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -724,7 +865,7 @@ describe('Critical User Flow End-to-End Tests', () => {
       expect(sendMessage).toHaveBeenCalledTimes(2); // Confirmation and payment prompt
       const confirmMessage = sendMessage.mock.calls[0][1];
       expect(confirmMessage.type).toBe('interactive');
-      expect(confirmMessage.body).toContain('You\'ve selected: *premium*');
+      expect(confirmMessage.body).toContain("You've selected: *premium*");
 
       const paymentMessage = sendMessage.mock.calls[1][1];
       expect(paymentMessage).toContain('💳 *Subscription Processing*');
@@ -742,48 +883,61 @@ describe('Critical User Flow End-to-End Tests', () => {
     describe('Profile Management Flow', () => {
       const testPhone = '+5554443333';
 
-      beforeEach(async() => {
-      // Create a complete user profile using MongoDB storage
+      beforeEach(async () => {
+        // Create a complete user profile using MongoDB storage
         await createUser(testPhone);
-        await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
+        await addBirthDetails(
+          testPhone,
+          '15/03/1990',
+          '14:30',
+          'Mumbai, India'
+        );
         await updateUserProfile(testPhone, {
           profileComplete: true,
           preferredLanguage: 'english',
           sunSign: 'Pisces',
           moonSign: 'Pisces',
           risingSign: 'Aquarius',
-          name: 'John Doe'
+          name: 'John Doe',
         });
         sendMessage.mockClear();
       });
 
-      it('should handle profile viewing request', async() => {
+      it('should handle profile viewing request', async () => {
         const profileViewPayload = {
-          entry: [{
-            id: 'entry-profile-view',
-            time: Date.now().toString(),
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: {
-                  display_phone_number: testPhone,
-                  phone_number_id: 'phone-id-profile'
+          entry: [
+            {
+              id: 'entry-profile-view',
+              time: Date.now().toString(),
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: testPhone,
+                      phone_number_id: 'phone-id-profile',
+                    },
+                    contacts: [
+                      {
+                        profile: { name: 'Profile User' },
+                        wa_id: testPhone,
+                      },
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'message-id-profile',
+                        timestamp: Date.now().toString(),
+                        text: { body: 'Show my profile' },
+                        type: 'text',
+                      },
+                    ],
+                  },
                 },
-                contacts: [{
-                  profile: { name: 'Profile User' },
-                  wa_id: testPhone
-                }],
-                messages: [{
-                  from: testPhone,
-                  id: 'message-id-profile',
-                  timestamp: Date.now().toString(),
-                  text: { body: 'Show my profile' },
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+              ],
+            },
+          ],
         };
 
         const response = await request(app)
@@ -810,7 +964,7 @@ describe('Critical User Flow End-to-End Tests', () => {
     });
     const testPhone = '+6665554444';
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
@@ -819,38 +973,46 @@ describe('Critical User Flow End-to-End Tests', () => {
         preferredLanguage: 'english',
         sunSign: 'Pisces',
         moonSign: 'Pisces',
-        risingSign: 'Aquarius'
+        risingSign: 'Aquarius',
       });
       sendMessage.mockClear();
     });
 
-    it('should handle tarot reading request', async() => {
+    it('should handle tarot reading request', async () => {
       const tarotReadingPayload = {
-        entry: [{
-          id: 'entry-tarot',
-          time: Date.now().toString(),
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: testPhone,
-                phone_number_id: 'phone-id-tarot'
+        entry: [
+          {
+            id: 'entry-tarot',
+            time: Date.now().toString(),
+            changes: [
+              {
+                field: 'messages',
+                value: {
+                  messaging_product: 'whatsapp',
+                  metadata: {
+                    display_phone_number: testPhone,
+                    phone_number_id: 'phone-id-tarot',
+                  },
+                  contacts: [
+                    {
+                      profile: { name: 'Tarot User' },
+                      wa_id: testPhone,
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: testPhone,
+                      id: 'message-id-tarot',
+                      timestamp: Date.now().toString(),
+                      text: { body: 'Give me a tarot reading' },
+                      type: 'text',
+                    },
+                  ],
+                },
               },
-              contacts: [{
-                profile: { name: 'Tarot User' },
-                wa_id: testPhone
-              }],
-              messages: [{
-                from: testPhone,
-                id: 'message-id-tarot',
-                timestamp: Date.now().toString(),
-                text: { body: 'Give me a tarot reading' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -874,33 +1036,41 @@ describe('Critical User Flow End-to-End Tests', () => {
       logger.info('✅ Tarot reading request processed successfully!');
     });
 
-    it('should handle palmistry reading request', async() => {
+    it('should handle palmistry reading request', async () => {
       const palmistryReadingPayload = {
-        entry: [{
-          id: 'entry-palmistry',
-          time: Date.now().toString(),
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: testPhone,
-                phone_number_id: 'phone-id-palmistry'
+        entry: [
+          {
+            id: 'entry-palmistry',
+            time: Date.now().toString(),
+            changes: [
+              {
+                field: 'messages',
+                value: {
+                  messaging_product: 'whatsapp',
+                  metadata: {
+                    display_phone_number: testPhone,
+                    phone_number_id: 'phone-id-palmistry',
+                  },
+                  contacts: [
+                    {
+                      profile: { name: 'Palmistry User' },
+                      wa_id: testPhone,
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: testPhone,
+                      id: 'message-id-palmistry',
+                      timestamp: Date.now().toString(),
+                      text: { body: 'Read my palm' },
+                      type: 'text',
+                    },
+                  ],
+                },
               },
-              contacts: [{
-                profile: { name: 'Palmistry User' },
-                wa_id: testPhone
-              }],
-              messages: [{
-                from: testPhone,
-                id: 'message-id-palmistry',
-                timestamp: Date.now().toString(),
-                text: { body: 'Read my palm' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -924,33 +1094,41 @@ describe('Critical User Flow End-to-End Tests', () => {
       logger.info('✅ Palmistry reading request processed successfully!');
     });
 
-    it('should handle numerology report request', async() => {
+    it('should handle numerology report request', async () => {
       const numerologyPayload = {
-        entry: [{
-          id: 'entry-numerology',
-          time: Date.now().toString(),
-          changes: [{
-            field: 'messages',
-            value: {
-              messaging_product: 'whatsapp',
-              metadata: {
-                display_phone_number: testPhone,
-                phone_number_id: 'phone-id-numerology'
+        entry: [
+          {
+            id: 'entry-numerology',
+            time: Date.now().toString(),
+            changes: [
+              {
+                field: 'messages',
+                value: {
+                  messaging_product: 'whatsapp',
+                  metadata: {
+                    display_phone_number: testPhone,
+                    phone_number_id: 'phone-id-numerology',
+                  },
+                  contacts: [
+                    {
+                      profile: { name: 'Numerology User' },
+                      wa_id: testPhone,
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: testPhone,
+                      id: 'message-id-numerology',
+                      timestamp: Date.now().toString(),
+                      text: { body: 'numerology report' },
+                      type: 'text',
+                    },
+                  ],
+                },
               },
-              contacts: [{
-                profile: { name: 'Numerology User' },
-                wa_id: testPhone
-              }],
-              messages: [{
-                from: testPhone,
-                id: 'message-id-numerology',
-                timestamp: Date.now().toString(),
-                text: { body: 'numerology report' },
-                type: 'text'
-              }]
-            }
-          }]
-        }]
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -975,7 +1153,7 @@ describe('Critical User Flow End-to-End Tests', () => {
     });
   });
 
-  afterAll(async() => {
+  afterAll(async () => {
     // Close the server to clear any open handles
     if (app && app.close) {
       await app.close();

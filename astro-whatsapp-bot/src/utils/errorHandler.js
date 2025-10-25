@@ -15,7 +15,7 @@ const errorHandler = (err, req, res, next) => {
     url: req.url,
     method: req.method,
     ip: req.ip,
-    userAgent: req.get('User-Agent')
+    userAgent: req.get('User-Agent'),
   });
 
   // Don't leak error details in production
@@ -26,7 +26,7 @@ const errorHandler = (err, req, res, next) => {
     message: isDevelopment ? err.message : 'An unexpected error occurred',
     ...(isDevelopment && { stack: err.stack }),
     timestamp: new Date().toISOString(),
-    path: req.url
+    path: req.url,
   };
 
   // Determine status code
@@ -102,5 +102,5 @@ module.exports = {
   ValidationError,
   AuthenticationError,
   AuthorizationError,
-  NotFoundError
+  NotFoundError,
 };

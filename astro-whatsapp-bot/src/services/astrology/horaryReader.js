@@ -15,50 +15,52 @@ class HoraryReader {
         symbol: '☉',
         dignity: 'Leadership, authority, father, husband, government',
         meaning: 'Success, honor, vitality, but also pride and arrogance',
-        questions: 'Career, leadership, father, authority figures'
+        questions: 'Career, leadership, father, authority figures',
       },
       moon: {
         name: 'Moon',
         symbol: '☽',
         dignity: 'Mother, emotions, home, public, women',
         meaning: 'Change, fluctuation, intuition, but also moodiness',
-        questions: 'Home, family, emotions, mother, public matters'
+        questions: 'Home, family, emotions, mother, public matters',
       },
       mercury: {
         name: 'Mercury',
         symbol: '☿',
         dignity: 'Communication, siblings, short journeys, intellect',
         meaning: 'Adaptability, communication, but also deceit and nervousness',
-        questions: 'Communication, education, siblings, short trips, business'
+        questions: 'Communication, education, siblings, short trips, business',
       },
       venus: {
         name: 'Venus',
         symbol: '♀',
         dignity: 'Love, beauty, pleasure, harmony, women',
         meaning: 'Harmony, love, beauty, but also laziness and indulgence',
-        questions: 'Love, marriage, beauty, arts, pleasure, female friends'
+        questions: 'Love, marriage, beauty, arts, pleasure, female friends',
       },
       mars: {
         name: 'Mars',
         symbol: '♂',
         dignity: 'Action, conflict, courage, men, energy',
         meaning: 'Action, courage, passion, but also anger and violence',
-        questions: 'Conflicts, action, courage, enemies, male friends, surgery'
+        questions: 'Conflicts, action, courage, enemies, male friends, surgery',
       },
       jupiter: {
         name: 'Jupiter',
         symbol: '♃',
         dignity: 'Expansion, wisdom, religion, prosperity, teachers',
         meaning: 'Growth, optimism, wisdom, but also excess and exaggeration',
-        questions: 'Wealth, religion, philosophy, long journeys, teachers, law'
+        questions: 'Wealth, religion, philosophy, long journeys, teachers, law',
       },
       saturn: {
         name: 'Saturn',
         symbol: '♄',
         dignity: 'Structure, discipline, elders, karma, limitations',
-        meaning: 'Discipline, structure, wisdom, but also depression and restriction',
-        questions: 'Career, elders, property, agriculture, chronic illness, karma'
-      }
+        meaning:
+          'Discipline, structure, wisdom, but also depression and restriction',
+        questions:
+          'Career, elders, property, agriculture, chronic illness, karma',
+      },
     };
 
     // House meanings in horary astrology
@@ -70,18 +72,36 @@ class HoraryReader {
       5: 'Children, creativity, romance, speculation, entertainment, pleasure',
       6: 'Health, service, employees, daily routine, small animals, enemies',
       7: 'Partnership, marriage, business partners, open enemies, spouse',
-      8: 'Death, transformation, secrets, other people\'s money, occult',
+      8: "Death, transformation, secrets, other people's money, occult",
       9: 'Long journeys, higher education, religion, philosophy, law, dreams',
       10: 'Career, reputation, authority, father, public image, ambition',
       11: 'Friends, hopes, wishes, groups, step-children, gains',
-      12: 'Spirituality, hidden enemies, isolation, hospitals, foreign lands, sacrifice'
+      12: 'Spirituality, hidden enemies, isolation, hospitals, foreign lands, sacrifice',
     };
 
     // Planetary hours (24 hours in a day, each ruled by a planet)
     this.planetaryHours = [
-      'Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 'Moon', // Day hours
-      'Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 'Moon', // Night hours
-      'Mars', 'Sun', 'Venus', 'Mercury', 'Moon', 'Saturn', 'Jupiter'  // Remaining hours
+      'Saturn',
+      'Jupiter',
+      'Mars',
+      'Sun',
+      'Venus',
+      'Mercury',
+      'Moon', // Day hours
+      'Saturn',
+      'Jupiter',
+      'Mars',
+      'Sun',
+      'Venus',
+      'Mercury',
+      'Moon', // Night hours
+      'Mars',
+      'Sun',
+      'Venus',
+      'Mercury',
+      'Moon',
+      'Saturn',
+      'Jupiter', // Remaining hours
     ];
 
     // Question categories and their appropriate houses
@@ -93,7 +113,7 @@ class HoraryReader {
       travel: { houses: [3, 9], rulers: ['mercury', 'jupiter'] },
       family: { houses: [3, 4, 5], rulers: ['moon', 'venus'] },
       legal: { houses: [7, 9], rulers: ['jupiter', 'venus'] },
-      spiritual: { houses: [9, 12], rulers: ['jupiter', 'neptune'] }
+      spiritual: { houses: [9, 12], rulers: ['jupiter', 'neptune'] },
     };
   }
 
@@ -113,7 +133,8 @@ class HoraryReader {
           question,
           valid: false,
           reason: validation.reason,
-          advice: 'Please ask a clear, specific question about a matter of genuine concern.'
+          advice:
+            'Please ask a clear, specific question about a matter of genuine concern.',
         };
       }
 
@@ -137,7 +158,7 @@ class HoraryReader {
         questionAnalysis,
         answer,
         timing: this.determineTiming(chart),
-        horaryDescription: this.generateHoraryDescription(chart, judge, answer)
+        horaryDescription: this.generateHoraryDescription(chart, judge, answer),
       };
     } catch (error) {
       logger.error('Error generating horary reading:', error);
@@ -145,7 +166,8 @@ class HoraryReader {
         question,
         valid: false,
         error: 'Unable to generate horary reading at this time',
-        fallback: 'Horary astrology reveals the answer hidden in the stars at the moment of your question'
+        fallback:
+          'Horary astrology reveals the answer hidden in the stars at the moment of your question',
       };
     }
   }
@@ -160,33 +182,43 @@ class HoraryReader {
 
     // Check for inappropriate questions
     const inappropriate = [
-      'death', 'suicide', 'murder', 'crime', 'illegal',
-      'gambling', 'lottery', 'speculation', 'betting'
+      'death',
+      'suicide',
+      'murder',
+      'crime',
+      'illegal',
+      'gambling',
+      'lottery',
+      'speculation',
+      'betting',
     ];
 
     for (const word of inappropriate) {
       if (lowerQuestion.includes(word)) {
         return {
           isValid: false,
-          reason: 'This type of question is not appropriate for horary astrology as it deals with harmful or speculative matters.'
+          reason:
+            'This type of question is not appropriate for horary astrology as it deals with harmful or speculative matters.',
         };
       }
     }
 
     // Check if it's a yes/no question or specific inquiry
-    const isQuestion = lowerQuestion.includes('?') ||
-                      lowerQuestion.startsWith('will') ||
-                      lowerQuestion.startsWith('should') ||
-                      lowerQuestion.startsWith('can') ||
-                      lowerQuestion.startsWith('is') ||
-                      lowerQuestion.startsWith('are') ||
-                      lowerQuestion.startsWith('do') ||
-                      lowerQuestion.startsWith('does');
+    const isQuestion =
+      lowerQuestion.includes('?') ||
+      lowerQuestion.startsWith('will') ||
+      lowerQuestion.startsWith('should') ||
+      lowerQuestion.startsWith('can') ||
+      lowerQuestion.startsWith('is') ||
+      lowerQuestion.startsWith('are') ||
+      lowerQuestion.startsWith('do') ||
+      lowerQuestion.startsWith('does');
 
     if (!isQuestion) {
       return {
         isValid: false,
-        reason: 'Please ask a clear question. Horary astrology works best with specific inquiries.'
+        reason:
+          'Please ask a clear question. Horary astrology works best with specific inquiries.',
       };
     }
 
@@ -194,7 +226,8 @@ class HoraryReader {
     if (question.length < 10) {
       return {
         isValid: false,
-        reason: 'Please provide more detail in your question for a meaningful horary reading.'
+        reason:
+          'Please provide more detail in your question for a meaningful horary reading.',
       };
     }
 
@@ -216,14 +249,28 @@ class HoraryReader {
 
       // Default location if not provided
       const latitude = location.latitude || 28.6139; // Delhi
-      const longitude = location.longitude || 77.2090;
+      const longitude = location.longitude || 77.209;
       const timezone = location.timezone || 5.5; // IST
 
       // Calculate planetary positions (simplified)
-      const planetaryPositions = this.calculateHoraryPositions(year, month, day, hour, minute);
+      const planetaryPositions = this.calculateHoraryPositions(
+        year,
+        month,
+        day,
+        hour,
+        minute
+      );
 
       // Determine ascendant and houses
-      const ascendant = this.calculateAscendant(hour, minute, day, month, year, latitude, longitude);
+      const ascendant = this.calculateAscendant(
+        hour,
+        minute,
+        day,
+        month,
+        year,
+        latitude,
+        longitude
+      );
       const houses = this.calculateHouses(ascendant);
 
       return {
@@ -232,7 +279,7 @@ class HoraryReader {
         ascendant,
         houses,
         planetaryPositions,
-        planetaryHour: this.calculatePlanetaryHour(day, month, year, hour)
+        planetaryHour: this.calculatePlanetaryHour(day, month, year, hour),
       };
     } catch (error) {
       logger.error('Error casting horary chart:', error);
@@ -240,7 +287,7 @@ class HoraryReader {
         error: 'Chart calculation failed',
         ascendant: 'Unknown',
         houses: {},
-        planetaryPositions: {}
+        planetaryPositions: {},
       };
     }
   }
@@ -259,14 +306,22 @@ class HoraryReader {
     const seed = year * 10000 + month * 100 + day + hour * 100 + minute;
 
     const positions = {};
-    const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
+    const planets = [
+      'sun',
+      'moon',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn',
+    ];
 
     planets.forEach((planet, index) => {
       const longitude = (seed * (index + 1) * 13) % 360;
       positions[planet] = {
         longitude: Math.round(longitude * 10) / 10,
         sign: this.getZodiacSign(longitude),
-        house: this.getHouse(longitude, 0) // Simplified, ascendant at 0
+        house: this.getHouse(longitude, 0), // Simplified, ascendant at 0
       };
     });
 
@@ -290,12 +345,13 @@ class HoraryReader {
     const dayOfYear = this.getDayOfYear(day, month);
     const seasonalOffset = Math.sin((dayOfYear / 365) * 2 * Math.PI) * 30;
 
-    const ascendantDegree = (totalMinutes * 0.25 + seasonalOffset + latitude) % 360;
+    const ascendantDegree =
+      (totalMinutes * 0.25 + seasonalOffset + latitude) % 360;
 
     return {
       degree: Math.round(ascendantDegree * 10) / 10,
       sign: this.getZodiacSign(ascendantDegree),
-      symbol: this.getAscendantSymbol(ascendantDegree)
+      symbol: this.getAscendantSymbol(ascendantDegree),
     };
   }
 
@@ -314,7 +370,7 @@ class HoraryReader {
       houses[i] = {
         degree: Math.round(houseDegree * 10) / 10,
         sign: this.getZodiacSign(houseDegree),
-        meaning: this.houseMeanings[i]
+        meaning: this.houseMeanings[i],
       };
     }
 
@@ -335,7 +391,15 @@ class HoraryReader {
     const dayOfWeek = date.getDay();
 
     // Planetary day rulers
-    const dayRulers = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+    const dayRulers = [
+      'sun',
+      'moon',
+      'mars',
+      'mercury',
+      'jupiter',
+      'venus',
+      'saturn',
+    ];
 
     // Get planetary hour for the given hour
     const hourIndex = Math.floor(hour / 1); // Each hour is ruled by a planet
@@ -373,7 +437,7 @@ class HoraryReader {
       planet: judge,
       reason: `Ruler of the ascendant (${chart.ascendant.sign})`,
       strength: this.assessJudgeStrength(chart, judge),
-      ...this.planetaryRulers[judge]
+      ...this.planetaryRulers[judge],
     };
   }
 
@@ -395,7 +459,7 @@ class HoraryReader {
       Sagittarius: 'jupiter',
       Capricorn: 'saturn',
       Aquarius: 'saturn',
-      Pisces: 'jupiter'
+      Pisces: 'jupiter',
     };
 
     return rulers[sign] || 'sun';
@@ -410,7 +474,9 @@ class HoraryReader {
   assessJudgeStrength(chart, judge) {
     const judgePosition = chart.planetaryPositions[judge];
 
-    if (!judgePosition) { return 'Unknown'; }
+    if (!judgePosition) {
+      return 'Unknown';
+    }
 
     // Check if judge is in angular house (1, 4, 7, 10)
     const angularHouses = [1, 4, 7, 10];
@@ -441,28 +507,60 @@ class HoraryReader {
   categorizeQuestion(question) {
     const lowerQuestion = question.toLowerCase();
 
-    if (lowerQuestion.includes('love') || lowerQuestion.includes('relationship') || lowerQuestion.includes('marriage')) {
+    if (
+      lowerQuestion.includes('love') ||
+      lowerQuestion.includes('relationship') ||
+      lowerQuestion.includes('marriage')
+    ) {
       return 'love';
     }
-    if (lowerQuestion.includes('career') || lowerQuestion.includes('job') || lowerQuestion.includes('work')) {
+    if (
+      lowerQuestion.includes('career') ||
+      lowerQuestion.includes('job') ||
+      lowerQuestion.includes('work')
+    ) {
       return 'career';
     }
-    if (lowerQuestion.includes('health') || lowerQuestion.includes('illness') || lowerQuestion.includes('doctor')) {
+    if (
+      lowerQuestion.includes('health') ||
+      lowerQuestion.includes('illness') ||
+      lowerQuestion.includes('doctor')
+    ) {
       return 'health';
     }
-    if (lowerQuestion.includes('money') || lowerQuestion.includes('finance') || lowerQuestion.includes('wealth')) {
+    if (
+      lowerQuestion.includes('money') ||
+      lowerQuestion.includes('finance') ||
+      lowerQuestion.includes('wealth')
+    ) {
       return 'money';
     }
-    if (lowerQuestion.includes('travel') || lowerQuestion.includes('journey') || lowerQuestion.includes('trip')) {
+    if (
+      lowerQuestion.includes('travel') ||
+      lowerQuestion.includes('journey') ||
+      lowerQuestion.includes('trip')
+    ) {
       return 'travel';
     }
-    if (lowerQuestion.includes('family') || lowerQuestion.includes('parent') || lowerQuestion.includes('child')) {
+    if (
+      lowerQuestion.includes('family') ||
+      lowerQuestion.includes('parent') ||
+      lowerQuestion.includes('child')
+    ) {
       return 'family';
     }
-    if (lowerQuestion.includes('legal') || lowerQuestion.includes('court') || lowerQuestion.includes('law')) {
+    if (
+      lowerQuestion.includes('legal') ||
+      lowerQuestion.includes('court') ||
+      lowerQuestion.includes('law')
+    ) {
       return 'legal';
     }
-    if (lowerQuestion.includes('spiritual') || lowerQuestion.includes('soul') || lowerQuestion.includes('divine')) {
+    if (
+      lowerQuestion.includes('spiritual') ||
+      lowerQuestion.includes('soul') ||
+      lowerQuestion.includes('divine')
+    ) {
       return 'spiritual';
     }
 
@@ -482,13 +580,13 @@ class HoraryReader {
     const houseAnalysis = relevantHouses.map(house => ({
       house,
       meaning: this.houseMeanings[house],
-      planets: this.getPlanetsInHouse(chart, house)
+      planets: this.getPlanetsInHouse(chart, house),
     }));
 
     return {
       category,
       relevantHouses: houseAnalysis,
-      keyIndicators: this.identifyKeyIndicators(chart, category)
+      keyIndicators: this.identifyKeyIndicators(chart, category),
     };
   }
 
@@ -520,14 +618,18 @@ class HoraryReader {
     // Check moon aspects (moon is co-significator)
     const moonPosition = chart.planetaryPositions.moon;
     if (moonPosition) {
-      indicators.push(`Moon in ${moonPosition.sign} (house ${moonPosition.house})`);
+      indicators.push(
+        `Moon in ${moonPosition.sign} (house ${moonPosition.house})`
+      );
     }
 
     // Check judge position
     const judge = this.determineJudge(chart, '');
     const judgePosition = chart.planetaryPositions[judge.planet];
     if (judgePosition) {
-      indicators.push(`${judge.name} in ${judgePosition.sign} (house ${judgePosition.house})`);
+      indicators.push(
+        `${judge.name} in ${judgePosition.sign} (house ${judgePosition.house})`
+      );
     }
 
     return indicators;
@@ -547,7 +649,7 @@ class HoraryReader {
       confidence: this.assessConfidence(chart, judge),
       timing: this.determineTiming(chart),
       advice: this.generateAdvice(chart, judge, questionAnalysis),
-      warnings: this.identifyWarnings(chart)
+      warnings: this.identifyWarnings(chart),
     };
 
     return answer;
@@ -586,9 +688,15 @@ class HoraryReader {
   assessConfidence(chart, judge) {
     const { strength } = judge;
 
-    if (strength.includes('Very Strong')) { return 'High confidence'; }
-    if (strength.includes('Strong')) { return 'Moderate confidence'; }
-    if (strength.includes('Moderate')) { return 'Low confidence'; }
+    if (strength.includes('Very Strong')) {
+      return 'High confidence';
+    }
+    if (strength.includes('Strong')) {
+      return 'Moderate confidence';
+    }
+    if (strength.includes('Moderate')) {
+      return 'Low confidence';
+    }
     return 'Uncertain - question may need clarification';
   }
 
@@ -601,9 +709,15 @@ class HoraryReader {
     // Simplified timing based on moon's position
     const moonHouse = chart.planetaryPositions.moon?.house || 1;
 
-    if (moonHouse <= 3) { return 'Soon (within days/weeks)'; }
-    if (moonHouse <= 6) { return 'Moderate time (weeks/months)'; }
-    if (moonHouse <= 9) { return 'Extended time (months/year)'; }
+    if (moonHouse <= 3) {
+      return 'Soon (within days/weeks)';
+    }
+    if (moonHouse <= 6) {
+      return 'Moderate time (weeks/months)';
+    }
+    if (moonHouse <= 9) {
+      return 'Extended time (months/year)';
+    }
     return 'Long-term (year or more)';
   }
 
@@ -627,7 +741,9 @@ class HoraryReader {
     }
 
     // Planetary hour advice
-    advice.push(`The planetary hour of ${chart.planetaryHour} suggests ${this.getHourAdvice(chart.planetaryHour)}.`);
+    advice.push(
+      `The planetary hour of ${chart.planetaryHour} suggests ${this.getHourAdvice(chart.planetaryHour)}.`
+    );
 
     return advice.join(' ');
   }
@@ -645,7 +761,7 @@ class HoraryReader {
       Venus: 'harmony and relationship building',
       Mars: 'action and courage',
       Jupiter: 'expansion and optimism',
-      Saturn: 'discipline and patience'
+      Saturn: 'discipline and patience',
     };
 
     return advice[hour] || 'careful consideration';
@@ -662,7 +778,9 @@ class HoraryReader {
     // Check for challenging planetary positions
     Object.entries(chart.planetaryPositions).forEach(([planet, position]) => {
       if ([6, 8, 12].includes(position.house)) {
-        warnings.push(`${planet} in house ${position.house} suggests challenges or delays.`);
+        warnings.push(
+          `${planet} in house ${position.house} suggests challenges or delays.`
+        );
       }
     });
 
@@ -706,14 +824,19 @@ class HoraryReader {
     }
 
     description += '🔍 *Key Indicators:*\n';
-    if (chart.planetaryPositions.sun) { description += `• Sun in ${chart.planetaryPositions.sun.sign} (house ${chart.planetaryPositions.sun.house})\n`; }
-    if (chart.planetaryPositions.moon) { description += `• Moon in ${chart.planetaryPositions.moon.sign} (house ${chart.planetaryPositions.moon.house})\n`; }
+    if (chart.planetaryPositions.sun) {
+      description += `• Sun in ${chart.planetaryPositions.sun.sign} (house ${chart.planetaryPositions.sun.house})\n`;
+    }
+    if (chart.planetaryPositions.moon) {
+      description += `• Moon in ${chart.planetaryPositions.moon.sign} (house ${chart.planetaryPositions.moon.house})\n`;
+    }
     description += `• ${judge.name} in ${chart.planetaryPositions[judge.planet]?.sign || 'unknown'} (house ${chart.planetaryPositions[judge.planet]?.house || 'unknown'})\n\n`;
 
     description += '📚 *Traditional Horary Wisdom:*\n';
     description += '• The ascendant represents you, the questioner\n';
     description += '• The judge shows the outcome and timing\n';
-    description += '• Angular houses (1,4,7,10) indicate strength and success\n';
+    description +=
+      '• Angular houses (1,4,7,10) indicate strength and success\n';
     description += '• The moon reveals the emotional truth of the matter';
 
     return description;
@@ -725,7 +848,20 @@ class HoraryReader {
    * @returns {string} Zodiac sign
    */
   getZodiacSign(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces',
+    ];
     const signIndex = Math.floor(longitude / 30) % 12;
     return signs[signIndex];
   }
@@ -749,9 +885,18 @@ class HoraryReader {
   getAscendantSymbol(degree) {
     const sign = this.getZodiacSign(degree);
     const symbols = {
-      Aries: '♈', Taurus: '♉', Gemini: '♊', Cancer: '♋',
-      Leo: '♌', Virgo: '♍', Libra: '♎', Scorpio: '♏',
-      Sagittarius: '♐', Capricorn: '♑', Aquarius: '♒', Pisces: '♓'
+      Aries: '♈',
+      Taurus: '♉',
+      Gemini: '♊',
+      Cancer: '♋',
+      Leo: '♌',
+      Virgo: '♍',
+      Libra: '♎',
+      Scorpio: '♏',
+      Sagittarius: '♐',
+      Capricorn: '♑',
+      Aquarius: '♒',
+      Pisces: '♓',
     };
     return symbols[sign] || '♈';
   }

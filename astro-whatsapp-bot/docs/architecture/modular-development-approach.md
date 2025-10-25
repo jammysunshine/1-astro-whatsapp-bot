@@ -11,24 +11,28 @@ To ensure maximum flexibility and rapid development as a solo developer, the Wha
 ### Key Principles for Modular Development:
 
 #### Independent Conversation Modules
+
 - Each user interaction flow should be implemented as a self-contained module
 - Modules should have clear interfaces for integration with the core system
 - State management should be contained within each module
 - Error handling should be isolated to prevent cascading failures
 
 #### Configuration-Driven Design
+
 - Core conversation flows should be definable through configuration files
 - Simple changes (menu text, options, basic flows) should require no code changes
 - Complex logic should still be modular but extensible through plugins
 - Administrative interfaces should allow non-technical users to modify basic elements
 
 #### Test Independence
+
 - Each module should have its own test suite that can run independently
 - Integration tests should focus on specific module interactions
 - Test data should be modular and not shared between unrelated modules
 - Testing frameworks should support selective test execution
 
 #### Clear Boundaries and Interfaces
+
 - Well-defined APIs between modules to minimize coupling
 - Centralized routing/dispatching system for directing user messages
 - Shared services for common functionality (logging, error handling, etc.)

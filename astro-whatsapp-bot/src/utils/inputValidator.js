@@ -14,20 +14,30 @@ const isValidBirthDate = birthDate => {
   const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
   const match = birthDate.match(dateRegex);
 
-  if (!match) { return false; }
+  if (!match) {
+    return false;
+  }
 
   const day = parseInt(match[1], 10);
   const month = parseInt(match[2], 10);
   const year = parseInt(match[3], 10);
 
   // Basic date validation
-  if (month < 1 || month > 12) { return false; }
-  if (day < 1 || day > 31) { return false; }
-  if (year < 1900 || year > new Date().getFullYear()) { return false; }
+  if (month < 1 || month > 12) {
+    return false;
+  }
+  if (day < 1 || day > 31) {
+    return false;
+  }
+  if (year < 1900 || year > new Date().getFullYear()) {
+    return false;
+  }
 
   // Check days in month
   const daysInMonth = new Date(year, month, 0).getDate();
-  if (day > daysInMonth) { return false; }
+  if (day > daysInMonth) {
+    return false;
+  }
 
   return true;
 };
@@ -38,12 +48,16 @@ const isValidBirthDate = birthDate => {
  * @returns {boolean} True if valid
  */
 const isValidBirthTime = birthTime => {
-  if (birthTime.toLowerCase() === 'unknown') { return true; }
+  if (birthTime.toLowerCase() === 'unknown') {
+    return true;
+  }
 
   const timeRegex = /^(\d{2}):(\d{2})$/;
   const match = birthTime.match(timeRegex);
 
-  if (!match) { return false; }
+  if (!match) {
+    return false;
+  }
 
   const hours = parseInt(match[1], 10);
   const minutes = parseInt(match[2], 10);
@@ -70,39 +84,53 @@ const isValidPhoneNumber = phoneNumber => {
 const validateWhatsAppMessage = payload => {
   const schema = Joi.object({
     object: Joi.string().valid('whatsapp_business_account').required(),
-    entry: Joi.array().items(
-      Joi.object({
-        id: Joi.string().required(),
-        changes: Joi.array().items(
-          Joi.object({
-            value: Joi.object({
-              messaging_product: Joi.string().valid('whatsapp').required(),
-              metadata: Joi.object({
-                display_phone_number: Joi.string().required(),
-                phone_number_id: Joi.string().required()
-              }).required(),
-              contacts: Joi.array().items(
-                Joi.object({
-                  profile: Joi.object({
-                    name: Joi.string().required()
+    entry: Joi.array()
+      .items(
+        Joi.object({
+          id: Joi.string().required(),
+          changes: Joi.array()
+            .items(
+              Joi.object({
+                value: Joi.object({
+                  messaging_product: Joi.string().valid('whatsapp').required(),
+                  metadata: Joi.object({
+                    display_phone_number: Joi.string().required(),
+                    phone_number_id: Joi.string().required(),
                   }).required(),
-                  wa_id: Joi.string().required()
-                })
-              ),
-              messages: Joi.array().items(
-                Joi.object({
-                  id: Joi.string().required(),
-                  from: Joi.string().required(),
-                  timestamp: Joi.string().required(),
-                  type: Joi.string().valid('text', 'image', 'video', 'audio', 'document', 'button', 'interactive').required()
-                })
-              )
-            }).required(),
-            field: Joi.string().valid('messages').required()
-          })
-        ).required()
-      })
-    ).required()
+                  contacts: Joi.array().items(
+                    Joi.object({
+                      profile: Joi.object({
+                        name: Joi.string().required(),
+                      }).required(),
+                      wa_id: Joi.string().required(),
+                    })
+                  ),
+                  messages: Joi.array().items(
+                    Joi.object({
+                      id: Joi.string().required(),
+                      from: Joi.string().required(),
+                      timestamp: Joi.string().required(),
+                      type: Joi.string()
+                        .valid(
+                          'text',
+                          'image',
+                          'video',
+                          'audio',
+                          'document',
+                          'button',
+                          'interactive'
+                        )
+                        .required(),
+                    })
+                  ),
+                }).required(),
+                field: Joi.string().valid('messages').required(),
+              })
+            )
+            .required(),
+        })
+      )
+      .required(),
   });
 
   const { error, value } = schema.validate(payload, { allowUnknown: true });
@@ -115,7 +143,9 @@ const validateWhatsAppMessage = payload => {
  * @returns {string} Sanitized input
  */
 const sanitizeInput = input => {
-  if (typeof input !== 'string') { return input; }
+  if (typeof input !== 'string') {
+    return input;
+  }
 
   const sanitized = input
     .replace(/<script[^>]*>|<\/script>/gi, '') // Remove script tags
@@ -126,7 +156,11 @@ const sanitizeInput = input => {
     .trim();
 
   // If input contained SQL keywords, return empty string
-  if (/\b(union|select|insert|update|delete|drop|create|alter|exec|execute)\b/gi.test(input)) {
+  if (
+    /\b(union|select|insert|update|delete|drop|create|alter|exec|execute)\b/gi.test(
+      input
+    )
+  ) {
     return '';
   }
 
@@ -151,12 +185,17 @@ const isValidPlanId = planId => {
 const validateUserProfile = profileData => {
   const schema = Joi.object({
     name: Joi.string().min(1).max(100).optional(),
-    birthDate: Joi.string().pattern(/^(\d{2})\/(\d{2})\/(\d{4})$/).optional(),
-    birthTime: Joi.string().pattern(/^(\d{2}):(\d{2})$/).allow('unknown').optional(),
+    birthDate: Joi.string()
+      .pattern(/^(\d{2})\/(\d{2})\/(\d{4})$/)
+      .optional(),
+    birthTime: Joi.string()
+      .pattern(/^(\d{2}):(\d{2})$/)
+      .allow('unknown')
+      .optional(),
     birthPlace: Joi.string().min(1).max(100).optional(),
     gender: Joi.string().valid('male', 'female', 'other').optional(),
     preferredLanguage: Joi.string().min(2).max(10).optional(),
-    timezone: Joi.string().optional()
+    timezone: Joi.string().optional(),
   });
 
   const { error, value } = schema.validate(profileData);
@@ -188,5 +227,5 @@ module.exports = {
   sanitizeInput,
   isValidPlanId,
   validateUserProfile,
-  checkRateLimit
+  checkRateLimit,
 };

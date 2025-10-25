@@ -1,6 +1,7 @@
 # System Architecture
 
 ## Core Components
+
 1. **WhatsApp Business API Integration**
    - Message processing and response generation
    - User authentication via WhatsApp number
@@ -52,6 +53,7 @@
 ## Technical Stack
 
 ### Backend Services (Rapid Implementation)
+
 - **Runtime**: Node.js/Express.js or Python/FastAPI for server-side logic (quick setup with AI-generated code)
 - **Messaging**: WhatsApp Business API for messaging (pre-built integration libraries)
 - **Payment**: Payment gateways (Razorpay for India, Stripe for international) - fully managed services
@@ -60,6 +62,7 @@
 - **API Style**: Primarily RESTful APIs for internal and external communication, with potential for GraphQL for complex data fetching in future web/mobile clients.
 
 ### Database
+
 - **User Data**: PostgreSQL or MongoDB for user profiles and preferences
 - **Caching/Session**: Redis for caching and session management
 - **Search**: Elasticsearch for search functionality
@@ -69,12 +72,14 @@
 - **Data Models**: High-level data models for core entities (User, Birth Chart, Reading, Subscription, Payment, Loyalty Points) will be documented in `docs/architecture/data-models.md`.
 
 ### AI & Machine Learning
+
 - **AI Services**: OpenAI API or similar for AI Twin conversations and natural language interpretation of calculated astrological data.
 - **Astrology Calculations**: Custom engine utilizing open-source libraries (e.g., Swiss Ephemeris) and/or third-party API integration for precise astrological computations.
 - **Recommendation Engine**: For personalized service suggestions
 - **Predictive Analytics**: For transit accuracy validation
 
 ### Third-Party Integrations
+
 - **Payment Providers**: Multiple payment providers based on region
 - **Astrology APIs**: Astrology calculation libraries/APIs
 - **SMS**: SMS service for OTP verification
@@ -84,6 +89,7 @@
 - **Translation**: Translation APIs (Google Cloud Translation, AWS Translate)
 
 ### Multi-Language Technology Stack
+
 - **NLP**: Natural Language Processing for local language queries
 - **i18n**: Internationalization (i18n) framework
 - **Localization**: Localization tools for content adaptation
@@ -91,6 +97,7 @@
 - **Unicode**: Unicode support for various scripts (Devanagari, Arabic, etc.)
 
 ### Solo Developer AI Infrastructure (Maximize Efficiency)
+
 - **Primary Dev Agent**: Qwen CLI as Primary development agent for architecture, code generation, and implementation
 - **Secondary Dev Agent**: Gemini CLI as Secondary development agent for optimization, refactoring, and code review
 - **AI Pair Programming**: Use both AI agents in coordination for faster problem solving
@@ -100,6 +107,7 @@
 - **AI Monitoring**: Intelligent error detection and performance monitoring
 
 ### Multi-Channel Delivery System
+
 - **WhatsApp-first**: WhatsApp-first architecture with abstraction layer for other platforms.
 - **Future Phases**: The current design facilitates expansion to web app, mobile app, and other messaging platforms in future phases (Phase 2 and 3 as per `INITIAL-PROMPT.md`).
 - **Web App**: Web app framework (React/Vue.js) for web interface
@@ -111,12 +119,14 @@
 - **Social Features**: Social Features Engine for compatibility checking, community building, and sharing
 
 ### Deployment
+
 - **Infrastructure**: Serverless architecture using AWS Lambda/Cloud Functions
 - **CDN**: For serving static assets and kundli images
 - **Monitoring**: Real-time application monitoring and error tracking
 - **Observability Tools**: Integration with tools like Prometheus, Grafana, ELK Stack, and OpenTelemetry for comprehensive logging, metrics, and tracing.
 
 ## Security & Compliance
+
 - **WhatsApp API Compliance**: Following all guidelines and rate limits
 - **Data Privacy**: Secure handling of birth information and personal data
 - **Payment Security**: PCI DSS compliance for payment processing
@@ -125,6 +135,7 @@
 - **Resilience Patterns**: Integration of error handling and resilience patterns (e.g., circuit breakers, retries, graceful degradation) for robust operations, especially for external dependencies.
 
 ## Scalability Architecture
+
 - **Horizontal Scaling**: Microservices architecture for independent scaling
 - **Caching Strategy**: Multi-layer caching for performance optimization
 - **Database Optimization**: Proper indexing and query optimization

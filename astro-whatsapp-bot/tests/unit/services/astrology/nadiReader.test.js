@@ -6,7 +6,11 @@ const { generateNadiReading } = require('services/astrology/nadiReader');
 describe('Nadi Reader Service', () => {
   describe('generateNadiReading', () => {
     it('should generate a Nadi astrology reading', () => {
-      const user = { id: 'user-123', birthDate: '15/03/1990', birthPlace: 'Chennai' };
+      const user = {
+        id: 'user-123',
+        birthDate: '15/03/1990',
+        birthPlace: 'Chennai',
+      };
       const reading = generateNadiReading(user);
 
       expect(reading).toBeDefined();
@@ -26,7 +30,11 @@ describe('Nadi Reader Service', () => {
     });
 
     it('should provide Dasa period calculations', () => {
-      const user = { id: 'user-789', birthDate: '10/12/1992', birthPlace: 'Delhi' };
+      const user = {
+        id: 'user-789',
+        birthDate: '10/12/1992',
+        birthPlace: 'Delhi',
+      };
       const reading = generateNadiReading(user);
 
       expect(reading.dasaPeriods).toBeDefined();
@@ -35,7 +43,11 @@ describe('Nadi Reader Service', () => {
     });
 
     it('should include traditional Nadi remedies', () => {
-      const user = { id: 'user-111', birthDate: '25/05/1988', birthPlace: 'Bangalore' };
+      const user = {
+        id: 'user-111',
+        birthDate: '25/05/1988',
+        birthPlace: 'Bangalore',
+      };
       const reading = generateNadiReading(user);
 
       expect(reading.remedies).toBeDefined();

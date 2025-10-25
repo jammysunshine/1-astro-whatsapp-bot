@@ -11,7 +11,7 @@ const { sendTextMessage, sendInteractiveMessage } = require('./messageSender');
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  */
-const handleWhatsAppWebhook = async(req, res) => {
+const handleWhatsAppWebhook = async (req, res) => {
   try {
     const { body } = req;
 
@@ -40,14 +40,18 @@ const handleWhatsAppWebhook = async(req, res) => {
       // Process contacts
       if (value.contacts) {
         for (const contact of value.contacts) {
-          logger.info(`Contact update: ${contact.profile.name} (${contact.wa_id})`);
+          logger.info(
+            `Contact update: ${contact.profile.name} (${contact.wa_id})`
+          );
         }
       }
 
       // Process statuses
       if (value.statuses) {
         for (const status of value.statuses) {
-          logger.info(`Message status: ${status.status} for message ${status.id}`);
+          logger.info(
+            `Message status: ${status.status} for message ${status.id}`
+          );
         }
       }
     }
@@ -56,13 +60,13 @@ const handleWhatsAppWebhook = async(req, res) => {
     res.status(200).json({
       success: true,
       message: 'Webhook processed successfully',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
     logger.error('Error in handleWhatsAppWebhook:', error);
     res.status(500).json({
       error: 'Internal server error',
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -72,10 +76,10 @@ const handleWhatsAppWebhook = async(req, res) => {
  * @param {Object} message - WhatsApp message object
  * @param {Object} value - Webhook value containing context
  */
-const processMessage = async(message, value) => {
+const processMessage = async (message, value) => {
   await processIncomingMessage(message, value);
 };
 
 module.exports = {
-  handleWhatsAppWebhook
+  handleWhatsAppWebhook,
 };

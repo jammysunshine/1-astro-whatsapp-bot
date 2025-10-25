@@ -10,8 +10,8 @@ Comprehensive documentation of the entire Astro WhatsApp Bot system, which is a 
 
 ### Change Log
 
-| Date   | Version | Description                 | Author    |
-| ------ | ------- | --------------------------- | --------- |
+| Date       | Version | Description                 | Author   |
+| ---------- | ------- | --------------------------- | -------- |
 | 2025-10-25 | 1.0     | Initial brownfield analysis | AI Agent |
 
 ## Quick Reference - Key Files and Entry Points
@@ -38,21 +38,21 @@ The Astro WhatsApp Bot is a Node.js-based astrology service platform that provid
 
 ### Actual Tech Stack (from package.json)
 
-| Category  | Technology | Version | Notes                      |
-| --------- | ---------- | ------- | -------------------------- |
-| Runtime   | Node.js    | >=14.0.0 | Railway deployment optimized |
-| Framework | Express    | 4.18.2  | REST API with middleware   |
-| Database  | MongoDB    | 7.6.3   | Mongoose ODM, Atlas hosting |
-| Testing   | Jest       | 29.7.0  | 95% coverage requirement  |
-| Logging   | Winston    | 3.11.0  | Structured logging        |
-| Validation| Joi        | 17.11.0 | Request validation        |
-| Astrology | astrologer | 1.0.2   | Vedic calculations        |
-| Astrology | sweph      | 2.10.3-b-1 | Swiss Ephemeris         |
-| Messaging | Twilio     | 4.19.0  | WhatsApp Business API     |
-| Payment   | Stripe     | 14.5.0  | Payment processing        |
-| Payment   | Razorpay   | -       | Indian payment gateway    |
-| Security  | Helmet     | 8.1.0   | Security headers          |
-| Auth      | JWT        | 9.0.2   | JSON Web Tokens           |
+| Category   | Technology | Version    | Notes                        |
+| ---------- | ---------- | ---------- | ---------------------------- |
+| Runtime    | Node.js    | >=14.0.0   | Railway deployment optimized |
+| Framework  | Express    | 4.18.2     | REST API with middleware     |
+| Database   | MongoDB    | 7.6.3      | Mongoose ODM, Atlas hosting  |
+| Testing    | Jest       | 29.7.0     | 95% coverage requirement     |
+| Logging    | Winston    | 3.11.0     | Structured logging           |
+| Validation | Joi        | 17.11.0    | Request validation           |
+| Astrology  | astrologer | 1.0.2      | Vedic calculations           |
+| Astrology  | sweph      | 2.10.3-b-1 | Swiss Ephemeris              |
+| Messaging  | Twilio     | 4.19.0     | WhatsApp Business API        |
+| Payment    | Stripe     | 14.5.0     | Payment processing           |
+| Payment    | Razorpay   | -          | Indian payment gateway       |
+| Security   | Helmet     | 8.1.0      | Security headers             |
+| Auth       | JWT        | 9.0.2      | JSON Web Tokens              |
 
 ### Repository Structure Reality Check
 
@@ -160,14 +160,14 @@ astro-whatsapp-bot/
 
 ### External Services
 
-| Service  | Purpose  | Integration Type | Key Files                      |
-| -------- | -------- | ---------------- | ------------------------------ |
-| WhatsApp Business API | Messaging | REST API via Twilio | `src/services/whatsapp/`     |
-| MongoDB Atlas | Database | Mongoose ODM | `src/config/database.js` |
-| Stripe | Payments | SDK (simulated) | `src/services/payment/paymentService.js` |
-| Razorpay | Indian Payments | SDK (simulated) | `src/services/payment/paymentService.js` |
-| OpenAI | AI Features | API (planned) | Not yet implemented |
-| Astrology APIs | Calculations | Libraries | `src/services/astrology/` |
+| Service               | Purpose         | Integration Type    | Key Files                                |
+| --------------------- | --------------- | ------------------- | ---------------------------------------- |
+| WhatsApp Business API | Messaging       | REST API via Twilio | `src/services/whatsapp/`                 |
+| MongoDB Atlas         | Database        | Mongoose ODM        | `src/config/database.js`                 |
+| Stripe                | Payments        | SDK (simulated)     | `src/services/payment/paymentService.js` |
+| Razorpay              | Indian Payments | SDK (simulated)     | `src/services/payment/paymentService.js` |
+| OpenAI                | AI Features     | API (planned)       | Not yet implemented                      |
+| Astrology APIs        | Calculations    | Libraries           | `src/services/astrology/`                |
 
 ### Internal Integration Points
 

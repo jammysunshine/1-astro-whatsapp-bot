@@ -6,7 +6,7 @@ jest.mock('../../src/utils/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
   warn: jest.fn(),
-  debug: jest.fn()
+  debug: jest.fn(),
 }));
 
 // Set test environment
@@ -47,7 +47,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 let mongoServer;
 
 // Global test setup
-beforeAll(async() => {
+beforeAll(async () => {
   // Start MongoDB Memory Server
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
@@ -61,7 +61,7 @@ beforeAll(async() => {
 });
 
 // Global test teardown
-afterAll(async() => {
+afterAll(async () => {
   // Close database connection
   const mongoose = require('mongoose');
   await mongoose.connection.close();
@@ -95,13 +95,13 @@ expect.extend({
       return {
         message: () =>
           `expected ${received} not to be within range ${floor} - ${ceiling}`,
-        pass: true
+        pass: true,
       };
     } else {
       return {
         message: () =>
           `expected ${received} to be within range ${floor} - ${ceiling}`,
-        pass: false
+        pass: false,
       };
     }
   },
@@ -114,7 +114,7 @@ expect.extend({
       if (current === null || current === undefined || !(prop in current)) {
         return {
           message: () => `expected ${propertyPath} to exist`,
-          pass: false
+          pass: false,
         };
       }
       current = current[prop];
@@ -124,12 +124,13 @@ expect.extend({
     if (pass) {
       return {
         message: () => `expected ${propertyPath} not to match ${regex}`,
-        pass: true
+        pass: true,
       };
     } else {
       return {
-        message: () => `expected ${propertyPath} to match ${regex}, but got ${current}`,
-        pass: false
+        message: () =>
+          `expected ${propertyPath} to match ${regex}, but got ${current}`,
+        pass: false,
       };
     }
   },
@@ -140,12 +141,12 @@ expect.extend({
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid phone number`,
-        pass: true
+        pass: true,
       };
     } else {
       return {
         message: () => `expected ${received} to be a valid phone number`,
-        pass: false
+        pass: false,
       };
     }
   },
@@ -156,12 +157,12 @@ expect.extend({
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid date`,
-        pass: true
+        pass: true,
       };
     } else {
       return {
         message: () => `expected ${received} to be a valid date (DD/MM/YYYY)`,
-        pass: false
+        pass: false,
       };
     }
   },
@@ -172,15 +173,15 @@ expect.extend({
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid time`,
-        pass: true
+        pass: true,
       };
     } else {
       return {
         message: () => `expected ${received} to be a valid time (HH:MM)`,
-        pass: false
+        pass: false,
       };
     }
-  }
+  },
 });
 
 // Custom matchers for common testing scenarios
@@ -188,17 +189,22 @@ expect.extend({
   toBeJsonApiError(received) {
     const requiredFields = ['error', 'message'];
     const hasRequiredFields = requiredFields.every(field => field in received);
-    const pass = hasRequiredFields && typeof received.error === 'string' && typeof received.message === 'string';
+    const pass =
+      hasRequiredFields &&
+      typeof received.error === 'string' &&
+      typeof received.message === 'string';
 
     if (pass) {
       return {
-        message: () => `expected ${JSON.stringify(received)} not to be a valid JSON API error`,
-        pass: true
+        message: () =>
+          `expected ${JSON.stringify(received)} not to be a valid JSON API error`,
+        pass: true,
       };
     } else {
       return {
-        message: () => `expected ${JSON.stringify(received)} to be a valid JSON API error with required fields: ${requiredFields.join(', ')}`,
-        pass: false
+        message: () =>
+          `expected ${JSON.stringify(received)} to be a valid JSON API error with required fields: ${requiredFields.join(', ')}`,
+        pass: false,
       };
     }
   },
@@ -210,13 +216,15 @@ expect.extend({
 
     if (pass) {
       return {
-        message: () => `expected ${JSON.stringify(received)} not to be a valid WhatsApp webhook`,
-        pass: true
+        message: () =>
+          `expected ${JSON.stringify(received)} not to be a valid WhatsApp webhook`,
+        pass: true,
       };
     } else {
       return {
-        message: () => `expected ${JSON.stringify(received)} to be a valid WhatsApp webhook with required fields: ${requiredFields.join(', ')}`,
-        pass: false
+        message: () =>
+          `expected ${JSON.stringify(received)} to be a valid WhatsApp webhook with required fields: ${requiredFields.join(', ')}`,
+        pass: false,
       };
     }
   },
@@ -224,18 +232,23 @@ expect.extend({
   toBeAstrologyApiResponse(received) {
     const requiredFields = ['success', 'data'];
     const hasRequiredFields = requiredFields.every(field => field in received);
-    const pass = hasRequiredFields && typeof received.success === 'boolean' && typeof received.data === 'object';
+    const pass =
+      hasRequiredFields &&
+      typeof received.success === 'boolean' &&
+      typeof received.data === 'object';
 
     if (pass) {
       return {
-        message: () => `expected ${JSON.stringify(received)} not to be a valid astrology API response`,
-        pass: true
+        message: () =>
+          `expected ${JSON.stringify(received)} not to be a valid astrology API response`,
+        pass: true,
       };
     } else {
       return {
-        message: () => `expected ${JSON.stringify(received)} to be a valid astrology API response with required fields: ${requiredFields.join(', ')}`,
-        pass: false
+        message: () =>
+          `expected ${JSON.stringify(received)} to be a valid astrology API response with required fields: ${requiredFields.join(', ')}`,
+        pass: false,
       };
     }
-  }
+  },
 });

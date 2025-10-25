@@ -1,9 +1,11 @@
 # Epic 8: Educational Content, Services & Management
 
 ## Description
+
 Implement comprehensive educational content, services, and content management following BMAD methodology. This epic focuses on content creation, educational programs, marketplace services, and content monetization strategies. (Note: Payment processing is covered in Epic 16.)
 
 ## Features Included
+
 - Astrology course platform with educational content
 - Certification programs for aspiring astrologers
 - User-to-user service marketplace with commission revenue
@@ -38,9 +40,11 @@ Implement comprehensive educational content, services, and content management fo
 - Cancellation and refund policies with clear procedures
 
 ## Business Value
+
 Essential for revenue diversification and user engagement through educational services and marketplace opportunities.
 
 ## Acceptance Criteria
+
 - Astrology course platform with educational content (₹500-2000 each)
 - Certification programs for aspiring astrologers (₹5000-15000)
 - User-to-user service marketplace with 20% platform commission
@@ -70,6 +74,7 @@ Essential for revenue diversification and user engagement through educational se
 - Cancellation and refund policies with clear procedures
 
 ## Dependencies
+
 - User authentication and profile system
 - Payment processing system
 - Content management system
@@ -107,9 +112,11 @@ Essential for revenue diversification and user engagement through educational se
 - Certification and accreditation system
 
 ## Priority
+
 Medium - Revenue diversification and educational services expansion
 
 ## Mandates from INITIAL-PROMPT.md
+
 - Educational Content and Services:
   - Astrology Courses: Educational content and workshops for enthusiasts (₹500-2000 each)
   - Certification Programs: For aspiring astrologers (₹5000-15000)

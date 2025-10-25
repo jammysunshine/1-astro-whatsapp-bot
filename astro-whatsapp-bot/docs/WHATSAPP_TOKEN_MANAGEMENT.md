@@ -99,14 +99,17 @@ chmod +x scripts/update-whatsapp-token.sh
 ## Token Expiry Workflow
 
 ### Automatic Detection
+
 - System checks token validity every 30 minutes
 - Scans Railway logs for authentication errors
 - Logs warnings when token is near expiry
 
 ### Manual Intervention Required
+
 When token expires, the system will:
 
 1. **Log Critical Alert**:
+
    ```
    🚨 WHATSAPP TOKEN EXPIRED - MANUAL UPDATE REQUIRED 🚨
    ```
@@ -119,6 +122,7 @@ When token expires, the system will:
 ### Token Regeneration Steps
 
 1. **Visit Facebook Developer Console**:
+
    ```
    https://developers.facebook.com/apps/
    ```
@@ -133,6 +137,7 @@ When token expires, the system will:
    - Copy the new token
 
 4. **Update in Railway**:
+
    ```bash
    npm run update-token YOUR_NEW_TOKEN_HERE
    ```
@@ -146,7 +151,9 @@ When token expires, the system will:
 ## Monitoring & Alerts
 
 ### Log Monitoring
+
 The system monitors for these error patterns:
+
 - `token.*expir`
 - `invalid.*token`
 - `unauthorized`
@@ -155,6 +162,7 @@ The system monitors for these error patterns:
 - `401.*unauthorized`
 
 ### Alert Levels
+
 - **INFO**: Routine token checks
 - **WARNING**: Token validation issues
 - **ERROR**: Token validation failures
@@ -163,19 +171,24 @@ The system monitors for these error patterns:
 ## Advanced Features
 
 ### Log Analysis
+
 ```bash
 # Check logs for token errors
 npm run token-manager logs
 ```
 
 ### Custom Monitoring Intervals
+
 Modify the check interval in `whatsapp-token-manager.js`:
+
 ```javascript
 this.checkInterval = 15 * 60 * 1000; // 15 minutes
 ```
 
 ### Notification Integration
+
 Extend the `sendNotification` method to integrate with:
+
 - Email services (SendGrid, Mailgun)
 - SMS services (Twilio)
 - Slack/Discord webhooks
@@ -184,11 +197,13 @@ Extend the `sendNotification` method to integrate with:
 ## Security Considerations
 
 ### Token Storage
+
 - Tokens are stored as Railway environment variables
 - Never commit tokens to version control
 - Use Railway's secret management features
 
 ### Access Control
+
 - Limit Railway project access to trusted team members
 - Use Railway's project-scoped tokens for automation
 - Regularly rotate tokens when possible
@@ -196,11 +211,13 @@ Extend the `sendNotification` method to integrate with:
 ## Limitations & Future Improvements
 
 ### Current Limitations
+
 - **Free Tier**: Automatic refresh not possible, manual intervention required
 - **Detection**: Relies on API calls and log parsing
 - **Paid Tier**: Could implement automatic refresh for system user tokens
 
 ### Future Enhancements
+
 1. **Automatic Refresh**: For paid WhatsApp Business API accounts
 2. **Webhook Integration**: Real-time token expiry notifications
 3. **Multi-Token Support**: Backup tokens for seamless switching
@@ -211,6 +228,7 @@ Extend the `sendNotification` method to integrate with:
 ### Common Issues
 
 **Token update fails**:
+
 ```bash
 # Check Railway CLI authentication
 railway status
@@ -220,6 +238,7 @@ npm run check-token YOUR_TOKEN_HERE
 ```
 
 **Monitoring not working**:
+
 ```bash
 # Check environment variables
 railway variables
@@ -229,6 +248,7 @@ npm run check-token
 ```
 
 **Logs not showing errors**:
+
 ```bash
 # Check Railway logs directly
 railway logs --follow
@@ -252,6 +272,7 @@ When modifying the token management system:
 ### WhatsAppTokenManager Class
 
 #### Methods
+
 - `validateToken(token)`: Test token validity
 - `checkRailwayLogs()`: Scan logs for errors
 - `updateRailwayToken(token)`: Update Railway env var
@@ -259,6 +280,7 @@ When modifying the token management system:
 - `startMonitoring()`: Begin continuous monitoring
 
 #### CLI Commands
+
 - `check`: Validate current token
 - `monitor`: Start monitoring service
 - `logs`: Check for log errors

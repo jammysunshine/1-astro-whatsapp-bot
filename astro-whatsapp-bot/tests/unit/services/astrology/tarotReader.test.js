@@ -48,7 +48,11 @@ describe('Tarot Reader Service', () => {
     });
 
     it('should handle user personalization', () => {
-      const user = { id: 'user-111', birthDate: '25/05/1988', sunSign: 'Gemini' };
+      const user = {
+        id: 'user-111',
+        birthDate: '25/05/1988',
+        sunSign: 'Gemini',
+      };
       const reading = generateTarotReading(user, 'single');
 
       expect(reading).toBeDefined();

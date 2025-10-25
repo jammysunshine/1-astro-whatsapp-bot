@@ -10,7 +10,7 @@ const getConnectionOptions = mongoURI => {
   const baseOptions = {
     maxPoolSize: 10, // Maintain up to 10 socket connections
     serverSelectionTimeoutMS: 30000, // Keep trying to send operations for 30 seconds
-    socketTimeoutMS: 45000 // Close sockets after 45 seconds of inactivity
+    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
   };
 
   // Add serverApi for Atlas connections (mongodb+srv)
@@ -18,7 +18,7 @@ const getConnectionOptions = mongoURI => {
     baseOptions.serverApi = {
       version: mongoose.mongo.ServerApiVersion.v1,
       strict: true,
-      deprecationErrors: true
+      deprecationErrors: true,
     };
   }
 
@@ -29,7 +29,7 @@ const getConnectionOptions = mongoURI => {
  * Connect to MongoDB Atlas
  * @returns {Promise<void>}
  */
-const connectDB = async() => {
+const connectDB = async () => {
   try {
     // In test environment, always disconnect first to avoid connection conflicts
     if (process.env.NODE_ENV === 'test') {
@@ -59,7 +59,9 @@ const connectDB = async() => {
     // Check if MONGODB_URI is set (for testing with memory server)
     if (process.env.MONGODB_URI) {
       mongoURI = process.env.MONGODB_URI;
-      logger.info(`🔗 Attempting DB connection: ${mongoURI.replace(/:([^:@]{4})[^:@]*@/, ':****@')}`);
+      logger.info(
+        `🔗 Attempting DB connection: ${mongoURI.replace(/:([^:@]{4})[^:@]*@/, ':****@')}`
+      );
     } else {
       // Use separate environment variables for production
       const dbUser = process.env.DB_USER;
@@ -68,15 +70,22 @@ const connectDB = async() => {
       const dbName = process.env.DB_NAME;
 
       if (!dbUser || !dbPassword || !dbHost || !dbName) {
-        throw new Error('Database environment variables (DB_USER, DB_PASSWORD, DB_HOST, DB_NAME) are not set');
+        throw new Error(
+          'Database environment variables (DB_USER, DB_PASSWORD, DB_HOST, DB_NAME) are not set'
+        );
       }
 
       mongoURI = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}?retryWrites=true&w=majority`;
-      logger.info(`🔗 Attempting DB connection: mongodb+srv://${dbUser}:****@${dbHost}/${dbName}?retryWrites=true&w=majority`);
+      logger.info(
+        `🔗 Attempting DB connection: mongodb+srv://${dbUser}:****@${dbHost}/${dbName}?retryWrites=true&w=majority`
+      );
     }
 
     // Connect to MongoDB
-    const conn = await mongoose.connect(mongoURI, getConnectionOptions(mongoURI));
+    const conn = await mongoose.connect(
+      mongoURI,
+      getConnectionOptions(mongoURI)
+    );
 
     logger.info(`🗄️ MongoDB Connected: ${conn.connection.host}`);
 
@@ -94,7 +103,7 @@ const connectDB = async() => {
     });
 
     // Graceful shutdown
-    process.on('SIGINT', async() => {
+    process.on('SIGINT', async () => {
       await mongoose.connection.close();
       logger.info('📴 MongoDB connection closed due to app termination');
       process.exit(0);
@@ -102,7 +111,10 @@ const connectDB = async() => {
   } catch (error) {
     logger.error('❌ MongoDB connection failed:', error.message);
     // Don't exit process in production or test, let Railway handle restarts
-    if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      process.env.NODE_ENV !== 'test'
+    ) {
       process.exit(1);
     }
     throw error;
@@ -113,7 +125,7 @@ const connectDB = async() => {
  * Close database connection
  * @returns {Promise<void>}
  */
-const closeDB = async() => {
+const closeDB = async () => {
   try {
     await mongoose.connection.close();
     logger.info('📴 MongoDB connection closed');
@@ -133,19 +145,19 @@ const getConnectionStatus = () => {
     0: 'disconnected',
     1: 'connected',
     2: 'connecting',
-    3: 'disconnecting'
+    3: 'disconnecting',
   };
 
   return {
     status: states[state] || 'unknown',
     host: mongoose.connection.host || null,
     name: mongoose.connection.name || null,
-    readyState: state
+    readyState: state,
   };
 };
 
 module.exports = {
   connectDB,
   closeDB,
-  getConnectionStatus
+  getConnectionStatus,
 };

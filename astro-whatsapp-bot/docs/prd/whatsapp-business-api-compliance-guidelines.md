@@ -1,6 +1,7 @@
 # WhatsApp Business API Compliance Guidelines
 
 ## Message Types and Usage:
+
 1. **Template Messages**:
    - Pre-approved message templates for subscription confirmations
    - Payment receipts and invoices
@@ -18,6 +19,7 @@
    - Personalized content based on user preferences
 
 ## Compliance Requirements:
+
 1. **Message Frequency**:
    - No spam or unsolicited promotional messages
    - Respect user communication preferences
@@ -39,6 +41,7 @@
    - Maintain accurate business profile information
 
 ## Technical Requirements:
+
 1. **Webhook Implementation**:
    - Secure webhook endpoints
    - Proper message acknowledgment
@@ -55,6 +58,7 @@
    - Secure handling of user data
 
 ## Prohibited Content and Practices:
+
 - No sharing of personal information without consent
 - No harassment or unwelcome messages
 - No misleading business identity

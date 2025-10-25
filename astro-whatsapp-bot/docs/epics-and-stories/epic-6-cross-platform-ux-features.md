@@ -1,9 +1,11 @@
 # Epic 6: Cross-Platform and User Experience Features
 
 ## Description
+
 Implement comprehensive cross-platform and user experience features following BMAD methodology. This epic focuses on extending beyond WhatsApp to additional platforms while maintaining consistent user experience and engagement across all channels.
 
 ## Features Included
+
 - Reading history and cross-platform synchronization
 - Multi-format content delivery (text, voice notes, images, videos)
 - Community and social features
@@ -36,9 +38,11 @@ Implement comprehensive cross-platform and user experience features following BM
 - Predictive validation loop and community wisdom integration
 
 ## Business Value
+
 Essential for viral growth and user retention through cross-platform engagement and social features that create network effects.
 
 ## Acceptance Criteria
+
 - Reading history accessible across all platforms
 - Multi-format content delivery optimized for each channel
 - Community and social features with network effects
@@ -71,6 +75,7 @@ Essential for viral growth and user retention through cross-platform engagement 
 - Predictive validation loop with community wisdom integration
 
 ## Dependencies
+
 - Core WhatsApp integration (Epic 1)
 - Multi-system astrology engine (Epic 2)
 - Subscription and payment system (Epic 3)
@@ -87,9 +92,11 @@ Essential for viral growth and user retention through cross-platform engagement 
 - Viral growth and network effects platform
 
 ## Priority
+
 High - Critical for viral growth and cross-platform expansion
 
 ## Mandates from INITIAL-PROMPT.md
+
 - Reading history and saved interpretations **(with full history accessible across all channels)**
 - Multi-language support for all user interactions
 - Life Pattern Recognition: AI identifies how astrological patterns manifest in actual life experiences
@@ -105,10 +112,10 @@ High - Critical for viral growth and cross-platform expansion
 - **Social Sharing Features**: Share forecasts, achievements, and compatibility results
 - **Social Currency Integration**: Design every shareable output (birth chart, compatibility, achievement) for aesthetic appeal and ease of sharing, making users feel smart, insightful, or connected when they share.
 - **Intrinsic Sharing Incentives**: Make the product inherently more valuable when shared.
-    - **Compatibility-Driven Virality**: Position Compatibility Checking as a primary viral loop: "Invite a friend to unlock their full compatibility report with you!"
-    - **Astro-Social Network as Network Effect Engine**: Emphasize that the more users, the richer the community insights and diverse compatibility matches, making the platform intrinsically more valuable to every participant and encouraging organic invitations.
+  - **Compatibility-Driven Virality**: Position Compatibility Checking as a primary viral loop: "Invite a friend to unlock their full compatibility report with you!"
+  - **Astro-Social Network as Network Effect Engine**: Emphasize that the more users, the richer the community insights and diverse compatibility matches, making the platform intrinsically more valuable to every participant and encouraging organic invitations.
 - **Utility & Value-Driven Sharing**: Implement features where sharing provides tangible benefits to both referrer and referee.
-    - **Group Reading Requirement**: A "Group Reading" feature could require inviting friends.
-    - **Shared Journey Tracking**: Allow users to follow and support friends through key transits, making sharing a functional necessity.
+  - **Group Reading Requirement**: A "Group Reading" feature could require inviting friends.
+  - **Shared Journey Tracking**: Allow users to follow and support friends through key transits, making sharing a functional necessity.
 - **"Dark Social" Optimization**: Optimize content and sharing features specifically for direct, private sharing within WhatsApp groups and one-to-one chats. This includes easily forwardable insights, highly personalized media, and simple "Invite a Friend" buttons.
 - **Content Formats Tailored for Virality**: Develop visually striking, short-form video content (AI avatar driven) that explains daily forecasts or complex transits, designed to be easily shareable on WhatsApp statuses and Instagram stories. These act as organic acquisition magnets.

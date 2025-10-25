@@ -14,7 +14,10 @@ const loadMenus = () => {
     menuConfigurations = JSON.parse(data);
     logger.info('✅ Menu configurations loaded successfully.');
   } catch (error) {
-    logger.error(`❌ Error loading menu configurations from ${MENU_CONFIG_PATH}:`, error);
+    logger.error(
+      `❌ Error loading menu configurations from ${MENU_CONFIG_PATH}:`,
+      error
+    );
     // Exit the process if critical configuration cannot be loaded
     process.exit(1);
   }
@@ -32,5 +35,5 @@ loadMenus();
 
 module.exports = {
   loadMenus,
-  getMenu
+  getMenu,
 };

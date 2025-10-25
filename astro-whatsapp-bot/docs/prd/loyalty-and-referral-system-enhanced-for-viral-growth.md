@@ -1,6 +1,7 @@
 # Loyalty and Referral System (Enhanced for Viral Growth)
 
 ## Loyalty Program ( "AstroRewards") (Enhanced):
+
 1. **Points System**:
    - Earn 1 point for every ₹10/1 AED/1 AUD spent
    - Bonus points for subscription renewals (25% bonus)
@@ -24,6 +25,7 @@
    - **Social Rewards**: Bonus points for successful referrals and social sharing
 
 ## Referral Program ("AstroCircle") (Enhanced):
+
 1. **Referral Rewards**:
    - Referrer: Get ₹100/5 AED/5 AUD credit for each successful referral
    - Referee: Get ₹50/2 AED/2 AUD credit for first purchase

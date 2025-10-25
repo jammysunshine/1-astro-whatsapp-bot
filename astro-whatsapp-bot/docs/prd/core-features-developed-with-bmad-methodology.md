@@ -1,6 +1,7 @@
 # Core Features (Developed with BMAd Methodology)
 
 ## Multiple Astrology Services
+
 - Hindu/Vedic Astrology (birth chart, planetary periods, compatibility)
 - Western Astrology (sun/moon/ascendant readings, transits)
 - Chinese Astrology (animal signs, elemental analysis)
@@ -11,17 +12,20 @@
 - Other systems (Kabbalistic, Mayan, Celtic, I Ching, Astrocartography, Horary)
 
 ## BMAd Implementation Features
+
 - **AI-Agent Driven Development**: All features developed using Qwen CLI, Gemini CLI and coordinated AI agents
 - **Rapid Iteration Cycles**: Features developed in fast, iterative cycles with immediate testing
 - **Automated Quality Assurance**: Built-in comprehensive testing for each feature component
 - **Continuous Integration**: Features integrated continuously with full automated test coverage
 
 ## Multi-Channel Service Delivery (WhatsApp First)
+
 - **Primary Channel**: Fully comprehensive WhatsApp-based service with all features available
 - **Secondary Channels** (Phase 2): Web app, mobile app, and other messaging platforms (Telegram, Instagram DMs, Facebook Messenger)
 - **Cross-Platform Synchronization**: Seamless data and history synchronization across all channels
 
 ## Enhanced Subscription Tiers (Optimized for Growth)
+
 - **Free Tier**: Daily micro-prediction (1 sentence), personal birth chart visualization (as shareable image), 7-day transit summary, community forum access, compatibility checking with one additional person
 - **Essential Tier**: Daily personalized horoscope with action items, weekly video predictions from AI avatar of top astrologer, monthly group Q&A sessions with astrologers, basic compatibility matching (up to 5 people)
 - **Premium Tier**: Unlimited questions to AI, priority access to human astrologers (24-hour response vs. 72-hour), personalized monthly reports with 3-month forecasts, access to exclusive remedial solutions, compatibility checking with unlimited people
@@ -29,6 +33,7 @@
 - **One-time Services**: Micro-transaction options like Flash Insights (₹25/USD 1), Transit Alerts (₹15 per alert), Remedial Quick Fixes (₹50-100), Compatibility Snapshots (₹75)
 
 ## Service Modes
+
 - AI-Powered Quick Readings: Instant responses for basic questions
 - Human Astrologer Chat: Direct text/voice chat with certified astrologers
 - Scheduled Consultations: Book time with specific astrologers
@@ -37,6 +42,7 @@
 - Loyalty System: Comprehensive "AstroRewards" program with points and tier benefits
 
 ## User Features (Enhanced for Engagement)
+
 - Complete profile with birth details (date, time, place)
 - Preference settings for different astrology types
 - Reading history and saved interpretations **(with full history accessible across all channels)**
@@ -56,6 +62,7 @@
 - **Social Sharing Features**: Share forecasts, achievements, and compatibility results
 
 ## Advanced Differentiating Features (Enhanced for Viral Growth)
+
 - **AI Twin System**: Personalized AI astrologer that learns communication style, preferences, and life patterns with conversational memory
 - **Transit Timing Engine**: Precision life planning with decision timing calculator for optimal timing of important decisions
 - **Astro-Social Network**: Chart-based matching and community wisdom platform with viral sharing potential
@@ -74,10 +81,11 @@
 - **Loyalty and Referral System**: Comprehensive "AstroRewards" program with points, tier levels, and rewards to encourage engagement and referrals
 
 ## Deepening Viral Loops & Network Effects
+
 - **Social Currency Integration**: Design every shareable output (birth chart, compatibility, achievement) for aesthetic appeal and ease of sharing, making users feel smart, insightful, or connected when they share.
 - **Intrinsic Sharing Incentives**: Make the product inherently more valuable when shared.
-    - **Compatibility-Driven Virality**: Position Compatibility Checking as a primary viral loop: "Invite a friend to unlock their full compatibility report with you!"
-    - **Astro-Social Network as Network Effect Engine**: Emphasize that the more users, the richer the community insights and diverse compatibility matches, making the platform intrinsically more valuable to every participant and encouraging organic invitations.
+  - **Compatibility-Driven Virality**: Position Compatibility Checking as a primary viral loop: "Invite a friend to unlock their full compatibility report with you!"
+  - **Astro-Social Network as Network Effect Engine**: Emphasize that the more users, the richer the community insights and diverse compatibility matches, making the platform intrinsically more valuable to every participant and encouraging organic invitations.
 - **Utility & Value-Driven Sharing**: Implement features where sharing provides tangible benefits to both referrer and referee.
-    - **Group Reading Requirement**: A "Group Reading" feature could require inviting friends.
-    - **Shared Journey Tracking**: Allow users to follow and support friends through key transits, making sharing a functional necessity.
+  - **Group Reading Requirement**: A "Group Reading" feature could require inviting friends.
+  - **Shared Journey Tracking**: Allow users to follow and support friends through key transits, making sharing a functional necessity.

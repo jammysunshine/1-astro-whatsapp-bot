@@ -1,6 +1,11 @@
 const logger = require('../utils/logger');
-const { processIncomingMessage } = require('../services/whatsapp/messageProcessor');
-const { validateWebhookSignature, verifyWebhookChallenge } = require('../services/whatsapp/webhookValidator');
+const {
+  processIncomingMessage,
+} = require('../services/whatsapp/messageProcessor');
+const {
+  validateWebhookSignature,
+  verifyWebhookChallenge,
+} = require('../services/whatsapp/webhookValidator');
 
 /**
  * Process a message with retry logic
@@ -8,7 +13,7 @@ const { validateWebhookSignature, verifyWebhookChallenge } = require('../service
  * @param {Object} value - WhatsApp webhook value object
  * @param {number} maxRetries - Maximum number of retries
  */
-const processMessageWithRetry = async(message, value, maxRetries = 3) => {
+const processMessageWithRetry = async (message, value, maxRetries = 3) => {
   let lastError;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -17,7 +22,10 @@ const processMessageWithRetry = async(message, value, maxRetries = 3) => {
       return; // Success, exit retry loop
     } catch (error) {
       lastError = error;
-      logger.warn(`⚠️ Message processing failed (attempt ${attempt}/${maxRetries}):`, error.message);
+      logger.warn(
+        `⚠️ Message processing failed (attempt ${attempt}/${maxRetries}):`,
+        error.message
+      );
 
       if (attempt < maxRetries) {
         // Wait before retry (exponential backoff)
@@ -38,7 +46,7 @@ const processMessageWithRetry = async(message, value, maxRetries = 3) => {
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  */
-const handleWhatsAppWebhook = async(req, res) => {
+const handleWhatsAppWebhook = async (req, res) => {
   try {
     // Handle request aborted errors gracefully
     req.on('aborted', () => {
@@ -57,11 +65,14 @@ const handleWhatsAppWebhook = async(req, res) => {
     const { body, headers, rawBody } = req;
 
     // Check required environment variables
-    if (!process.env.W1_WHATSAPP_ACCESS_TOKEN || !process.env.W1_WHATSAPP_PHONE_NUMBER_ID) {
+    if (
+      !process.env.W1_WHATSAPP_ACCESS_TOKEN ||
+      !process.env.W1_WHATSAPP_PHONE_NUMBER_ID
+    ) {
       logger.error('❌ Missing required WhatsApp environment variables');
       return res.status(500).json({
         error: 'Internal server error',
-        message: 'WhatsApp configuration missing'
+        message: 'WhatsApp configuration missing',
       });
     }
 
@@ -70,8 +81,9 @@ const handleWhatsAppWebhook = async(req, res) => {
     const secret = process.env.W1_WHATSAPP_APP_SECRET;
 
     // Skip signature validation in development if explicitly disabled
-    const skipSignatureValidation = process.env.W1_SKIP_WEBHOOK_SIGNATURE === 'true' ||
-                                   process.env.NODE_ENV === 'development';
+    const skipSignatureValidation =
+      process.env.W1_SKIP_WEBHOOK_SIGNATURE === 'true' ||
+      process.env.NODE_ENV === 'development';
 
     if (!skipSignatureValidation) {
       if (!signature) {
@@ -79,7 +91,11 @@ const handleWhatsAppWebhook = async(req, res) => {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      const isValid = validateWebhookSignature(rawBody || JSON.stringify(body), signature, secret);
+      const isValid = validateWebhookSignature(
+        rawBody || JSON.stringify(body),
+        signature,
+        secret
+      );
       if (!isValid) {
         logger.warn('⚠️ Invalid webhook signature');
         return res.status(401).json({ error: 'Unauthorized' });
@@ -91,7 +107,7 @@ const handleWhatsAppWebhook = async(req, res) => {
     // Log incoming webhook for debugging
     logger.info('📥 Incoming WhatsApp webhook:', {
       timestamp: new Date().toISOString(),
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
 
     // Validate webhook payload
@@ -103,7 +119,7 @@ const handleWhatsAppWebhook = async(req, res) => {
     if (Object.keys(body).length === 0) {
       return res.status(200).json({
         status: 'success',
-        message: 'Webhook endpoint ready'
+        message: 'Webhook endpoint ready',
       });
     }
 
@@ -131,14 +147,18 @@ const handleWhatsAppWebhook = async(req, res) => {
       // Process contacts
       if (value.contacts) {
         for (const contact of value.contacts) {
-          logger.info(`👤 Contact update: ${contact.profile.name} (${contact.wa_id})`);
+          logger.info(
+            `👤 Contact update: ${contact.profile.name} (${contact.wa_id})`
+          );
         }
       }
 
       // Process statuses
       if (value.statuses) {
         for (const status of value.statuses) {
-          logger.info(`📊 Message status: ${status.status} for message ${status.id}`);
+          logger.info(
+            `📊 Message status: ${status.status} for message ${status.id}`
+          );
         }
       }
     }
@@ -147,13 +167,13 @@ const handleWhatsAppWebhook = async(req, res) => {
     res.status(200).json({
       success: true,
       message: 'Webhook processed successfully',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
     logger.error('❌ Error in handleWhatsAppWebhook:', error);
     res.status(500).json({
       error: 'Internal server error',
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -185,5 +205,5 @@ const verifyWhatsAppWebhook = (req, res) => {
 
 module.exports = {
   handleWhatsAppWebhook,
-  verifyWhatsAppWebhook
+  verifyWhatsAppWebhook,
 };

@@ -11,7 +11,9 @@ const logger = require('../../utils/logger');
 const validateWebhookSignature = (payload, signature, secret) => {
   try {
     if (!payload || !signature || !secret) {
-      logger.warn('⚠️ Missing required parameters for webhook signature validation');
+      logger.warn(
+        '⚠️ Missing required parameters for webhook signature validation'
+      );
       return false;
     }
 
@@ -45,7 +47,11 @@ const validateWebhookSignature = (payload, signature, secret) => {
  */
 const verifyWebhookChallenge = (queryParams, verifyToken) => {
   try {
-    const { 'hub.mode': mode, 'hub.verify_token': token, 'hub.challenge': challenge } = queryParams;
+    const {
+      'hub.mode': mode,
+      'hub.verify_token': token,
+      'hub.challenge': challenge,
+    } = queryParams;
 
     if (mode && token) {
       if (mode === 'subscribe' && token === verifyToken) {
@@ -53,21 +59,21 @@ const verifyWebhookChallenge = (queryParams, verifyToken) => {
         return {
           success: true,
           challenge,
-          message: 'Webhook verified successfully'
+          message: 'Webhook verified successfully',
         };
       } else {
         logger.warn('⚠️ Webhook verification failed');
         return {
           success: false,
           error: 'Verification failed',
-          message: 'Forbidden'
+          message: 'Forbidden',
         };
       }
     } else {
       return {
         success: true,
         message: 'Webhook endpoint ready',
-        challenge: null
+        challenge: null,
       };
     }
   } catch (error) {
@@ -75,7 +81,7 @@ const verifyWebhookChallenge = (queryParams, verifyToken) => {
     return {
       success: false,
       error: 'Internal server error',
-      message: error.message
+      message: error.message,
     };
   }
 };
@@ -106,41 +112,47 @@ const validateMessageFormat = message => {
 
     // Validate specific message types
     switch (message.type) {
-    case 'text':
-      if (!message.text || typeof message.text.body !== 'string') {
-        logger.warn('⚠️ Text message missing body or invalid format');
-        return false;
-      }
-      break;
+      case 'text':
+        if (!message.text || typeof message.text.body !== 'string') {
+          logger.warn('⚠️ Text message missing body or invalid format');
+          return false;
+        }
+        break;
 
-    case 'interactive':
-      if (!message.interactive || !message.interactive.type) {
-        logger.warn('⚠️ Interactive message missing interactive field or type');
-        return false;
-      }
-      break;
+      case 'interactive':
+        if (!message.interactive || !message.interactive.type) {
+          logger.warn(
+            '⚠️ Interactive message missing interactive field or type'
+          );
+          return false;
+        }
+        break;
 
-    case 'button':
-      if (!message.button || typeof message.button.payload !== 'string') {
-        logger.warn('⚠️ Button message missing button field or invalid payload');
-        return false;
-      }
-      break;
+      case 'button':
+        if (!message.button || typeof message.button.payload !== 'string') {
+          logger.warn(
+            '⚠️ Button message missing button field or invalid payload'
+          );
+          return false;
+        }
+        break;
 
-    case 'image':
-    case 'video':
-    case 'audio':
-    case 'document':
-    case 'sticker':
-      if (!message[message.type] || !message[message.type].id) {
-        logger.warn(`⚠️ ${message.type} message missing ${message.type} field or id`);
-        return false;
-      }
-      break;
+      case 'image':
+      case 'video':
+      case 'audio':
+      case 'document':
+      case 'sticker':
+        if (!message[message.type] || !message[message.type].id) {
+          logger.warn(
+            `⚠️ ${message.type} message missing ${message.type} field or id`
+          );
+          return false;
+        }
+        break;
 
-    default:
-      logger.warn(`⚠️ Unsupported message type: ${message.type}`);
-      return false;
+      default:
+        logger.warn(`⚠️ Unsupported message type: ${message.type}`);
+        return false;
     }
 
     return true;
@@ -189,8 +201,13 @@ const validateWebhookPayload = payload => {
         const { value } = change;
 
         // Validate value structure
-        if (!value.messaging_product || value.messaging_product !== 'whatsapp') {
-          logger.warn('⚠️ Invalid value: missing or incorrect messaging_product');
+        if (
+          !value.messaging_product ||
+          value.messaging_product !== 'whatsapp'
+        ) {
+          logger.warn(
+            '⚠️ Invalid value: missing or incorrect messaging_product'
+          );
           return false;
         }
 
@@ -225,5 +242,5 @@ module.exports = {
   validateWebhookSignature,
   verifyWebhookChallenge,
   validateMessageFormat,
-  validateWebhookPayload
+  validateWebhookPayload,
 };

@@ -1,5 +1,8 @@
 const logger = require('../../utils/logger');
-const { updateSubscription, addLoyaltyPoints } = require('../../models/userModel');
+const {
+  updateSubscription,
+  addLoyaltyPoints,
+} = require('../../models/userModel');
 const Razorpay = require('razorpay');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -13,7 +16,7 @@ class PaymentService {
     // Initialize payment gateways
     this.razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
 
     // Subscription plans with regional pricing
@@ -22,34 +25,62 @@ class PaymentService {
         name: 'Free',
         price: { INR: 0, AED: 0, AUD: 0 },
         currency: { india: 'INR', uae: 'AED', australia: 'AUD' },
-        features: ['Daily micro-prediction', 'Birth chart visualization', '7-day transit summary']
+        features: [
+          'Daily micro-prediction',
+          'Birth chart visualization',
+          '7-day transit summary',
+        ],
       },
       essential: {
         name: 'Essential',
         price: { INR: 230, AED: 20, AUD: 20 },
         currency: { india: 'INR', uae: 'AED', australia: 'AUD' },
-        features: ['Daily personalized horoscope', 'Weekly video predictions', 'Basic compatibility (5 people)']
+        features: [
+          'Daily personalized horoscope',
+          'Weekly video predictions',
+          'Basic compatibility (5 people)',
+        ],
       },
       premium: {
         name: 'Premium',
         price: { INR: 299, AED: 25, AUD: 25 },
         currency: { india: 'INR', uae: 'AED', australia: 'AUD' },
-        features: ['Unlimited AI questions', 'Priority astrologer access', 'Unlimited compatibility']
+        features: [
+          'Unlimited AI questions',
+          'Priority astrologer access',
+          'Unlimited compatibility',
+        ],
       },
       vip: {
         name: 'VIP',
         price: { INR: 799, AED: 80, AUD: 80 },
         currency: { india: 'INR', uae: 'AED', australia: 'AUD' },
-        features: ['All Premium features', 'Dedicated astrologer', 'Quarterly life planning sessions']
-      }
+        features: [
+          'All Premium features',
+          'Dedicated astrologer',
+          'Quarterly life planning sessions',
+        ],
+      },
     };
 
     // Micro-transaction services
     this.microServices = {
-      flash_insight: { name: 'Flash Insight', price: { INR: 25, AED: 1, AUD: 1 } },
-      transit_alert: { name: 'Transit Alert', price: { INR: 15, AED: 0.5, AUD: 0.5 } },
-      remedial_fix: { name: 'Remedial Quick Fix', price: { INR: 50, AED: 2, AUD: 2 } },
-      compatibility_snapshot: { name: 'Compatibility Snapshot', price: { INR: 75, AED: 3, AUD: 3 } }
+      flash_insight: {
+        name: 'Flash Insight',
+        price: { INR: 25, AED: 1, AUD: 1 },
+      },
+      transit_alert: {
+        name: 'Transit Alert',
+        price: { INR: 15, AED: 0.5, AUD: 0.5 },
+      },
+      remedial_fix: {
+        name: 'Remedial Quick Fix',
+        price: { INR: 50, AED: 2, AUD: 2 },
+      },
+      compatibility_snapshot: {
+        name: 'Compatibility Snapshot',
+        price: { INR: 75, AED: 3, AUD: 3 },
+      },
     };
   }
 
@@ -63,8 +94,15 @@ class PaymentService {
     const plan = this.plans[planId] || this.plans.free;
     return {
       ...plan,
-      price: plan.price[plan.currency[region] === 'INR' ? 'INR' : plan.currency[region] === 'AED' ? 'AED' : 'AUD'],
-      currency: plan.currency[region]
+      price:
+        plan.price[
+          plan.currency[region] === 'INR'
+            ? 'INR'
+            : plan.currency[region] === 'AED'
+              ? 'AED'
+              : 'AUD'
+        ],
+      currency: plan.currency[region],
     };
   }
 
@@ -84,7 +122,12 @@ class PaymentService {
    * @param {string} paymentMethod - Payment method preference
    * @returns {Promise<Object>} Subscription result
    */
-  async processSubscription(phoneNumber, planId, region = 'india', paymentMethod = 'card') {
+  async processSubscription(
+    phoneNumber,
+    planId,
+    region = 'india',
+    paymentMethod = 'card'
+  ) {
     try {
       const plan = this.getPlan(planId, region);
       if (!plan) {
@@ -92,11 +135,17 @@ class PaymentService {
       }
 
       // Process payment based on region
-      const paymentResult = await this.processPayment(plan.price, plan.currency, region, paymentMethod, {
-        type: 'subscription',
-        planId,
-        phoneNumber
-      });
+      const paymentResult = await this.processPayment(
+        plan.price,
+        plan.currency,
+        region,
+        paymentMethod,
+        {
+          type: 'subscription',
+          planId,
+          phoneNumber,
+        }
+      );
 
       if (paymentResult.success) {
         // Calculate expiry (30 days from now for monthly plans)
@@ -109,20 +158,25 @@ class PaymentService {
         // Add loyalty points for subscription
         await addLoyaltyPoints(phoneNumber, 50);
 
-        logger.info(`✅ Subscription updated for ${phoneNumber}: ${planId} (${region})`);
+        logger.info(
+          `✅ Subscription updated for ${phoneNumber}: ${planId} (${region})`
+        );
 
         return {
           success: true,
           plan: planId,
           expiryDate,
           transactionId: paymentResult.transactionId,
-          message: `🎉 Welcome to ${plan.name} plan! Your subscription is active until ${expiryDate.toDateString()}.`
+          message: `🎉 Welcome to ${plan.name} plan! Your subscription is active until ${expiryDate.toDateString()}.`,
         };
       } else {
         throw new Error('Payment failed');
       }
     } catch (error) {
-      logger.error(`❌ Subscription processing failed for ${phoneNumber}:`, error);
+      logger.error(
+        `❌ Subscription processing failed for ${phoneNumber}:`,
+        error
+      );
       throw error;
     }
   }
@@ -139,9 +193,19 @@ class PaymentService {
   async processPayment(amount, currency, region, paymentMethod, metadata = {}) {
     try {
       if (region === 'india') {
-        return await this.processRazorpayPayment(amount, currency, paymentMethod, metadata);
+        return await this.processRazorpayPayment(
+          amount,
+          currency,
+          paymentMethod,
+          metadata
+        );
       } else {
-        return await this.processStripePayment(amount, currency, paymentMethod, metadata);
+        return await this.processStripePayment(
+          amount,
+          currency,
+          paymentMethod,
+          metadata
+        );
       }
     } catch (error) {
       logger.error(`Payment processing failed for region ${region}:`, error);
@@ -167,8 +231,8 @@ class PaymentService {
         notes: {
           type: metadata.type || 'subscription',
           planId: metadata.planId,
-          phoneNumber: metadata.phoneNumber
-        }
+          phoneNumber: metadata.phoneNumber,
+        },
       };
 
       const order = await this.razorpay.orders.create(options);
@@ -180,7 +244,11 @@ class PaymentService {
         amount,
         currency,
         gateway: 'razorpay',
-        paymentUrl: this.generateRazorpayPaymentLink(order.id, amount, currency)
+        paymentUrl: this.generateRazorpayPaymentLink(
+          order.id,
+          amount,
+          currency
+        ),
       };
     } catch (error) {
       logger.error('Razorpay payment creation failed:', error);
@@ -205,9 +273,9 @@ class PaymentService {
         metadata: {
           type: metadata.type || 'subscription',
           planId: metadata.planId,
-          phoneNumber: metadata.phoneNumber
+          phoneNumber: metadata.phoneNumber,
         },
-        description: `Astrology Bot ${metadata.type} - ${metadata.planId}`
+        description: `Astrology Bot ${metadata.type} - ${metadata.planId}`,
       });
 
       return {
@@ -217,7 +285,7 @@ class PaymentService {
         amount,
         currency,
         gateway: 'stripe',
-        paymentIntentId: paymentIntent.id
+        paymentIntentId: paymentIntent.id,
       };
     } catch (error) {
       logger.error('Stripe payment creation failed:', error);
@@ -262,7 +330,12 @@ class PaymentService {
    * @param {string} paymentMethod - Payment method
    * @returns {Promise<Object>} Transaction result
    */
-  async processMicroTransaction(phoneNumber, serviceType, region = 'india', paymentMethod = 'card') {
+  async processMicroTransaction(
+    phoneNumber,
+    serviceType,
+    region = 'india',
+    paymentMethod = 'card'
+  ) {
     try {
       const service = this.microServices[serviceType];
       if (!service) {
@@ -270,21 +343,30 @@ class PaymentService {
       }
 
       // Get regional pricing
-      const currency = region === 'india' ? 'INR' : region === 'uae' ? 'AED' : 'AUD';
+      const currency =
+        region === 'india' ? 'INR' : region === 'uae' ? 'AED' : 'AUD';
       const amount = service.price[currency];
 
       // Process payment
-      const paymentResult = await this.processPayment(amount, currency, region, paymentMethod, {
-        type: 'micro_transaction',
-        serviceType,
-        phoneNumber
-      });
+      const paymentResult = await this.processPayment(
+        amount,
+        currency,
+        region,
+        paymentMethod,
+        {
+          type: 'micro_transaction',
+          serviceType,
+          phoneNumber,
+        }
+      );
 
       if (paymentResult.success) {
         // Add loyalty points for micro-transaction
         await addLoyaltyPoints(phoneNumber, 5);
 
-        logger.info(`✅ Micro-transaction completed for ${phoneNumber}: ${serviceType} (${region})`);
+        logger.info(
+          `✅ Micro-transaction completed for ${phoneNumber}: ${serviceType} (${region})`
+        );
 
         return {
           success: true,
@@ -292,7 +374,7 @@ class PaymentService {
           amount,
           currency,
           transactionId: paymentResult.transactionId,
-          message: `✅ ${service.name} purchased successfully!`
+          message: `✅ ${service.name} purchased successfully!`,
         };
       } else {
         throw new Error('Payment failed');
@@ -309,7 +391,9 @@ class PaymentService {
    * @returns {string} Detected region
    */
   detectRegion(phoneNumber) {
-    if (!phoneNumber) { return 'india'; }
+    if (!phoneNumber) {
+      return 'india';
+    }
 
     // Remove any non-numeric characters except +
     const cleanNumber = phoneNumber.replace(/[^\d+]/g, '');
@@ -331,9 +415,9 @@ class PaymentService {
    */
   getSubscriptionStatus(user, region = 'india') {
     const plan = this.getPlan(user.subscriptionTier || 'free', region);
-    const isActive = user.subscriptionExpiry ?
-      new Date(user.subscriptionExpiry) > new Date() :
-      user.subscriptionTier === 'free';
+    const isActive = user.subscriptionExpiry
+      ? new Date(user.subscriptionExpiry) > new Date()
+      : user.subscriptionTier === 'free';
 
     return {
       plan: user.subscriptionTier || 'free',
@@ -342,7 +426,7 @@ class PaymentService {
       expiryDate: user.subscriptionExpiry,
       features: plan.features,
       price: plan.price,
-      currency: plan.currency
+      currency: plan.currency,
     };
   }
 
@@ -372,11 +456,15 @@ class PaymentService {
           await updateSubscription(notes.phoneNumber, notes.planId, expiryDate);
           await addLoyaltyPoints(notes.phoneNumber, 50);
 
-          logger.info(`✅ Razorpay subscription payment processed: ${notes.phoneNumber} - ${notes.planId}`);
+          logger.info(
+            `✅ Razorpay subscription payment processed: ${notes.phoneNumber} - ${notes.planId}`
+          );
         } else if (notes.type === 'micro_transaction') {
           // Process micro-transaction
           await addLoyaltyPoints(notes.phoneNumber, 5);
-          logger.info(`✅ Razorpay micro-transaction processed: ${notes.phoneNumber} - ${notes.serviceType}`);
+          logger.info(
+            `✅ Razorpay micro-transaction processed: ${notes.phoneNumber} - ${notes.serviceType}`
+          );
         }
 
         return { success: true, processed: true };
@@ -407,14 +495,22 @@ class PaymentService {
           const expiryDate = new Date();
           expiryDate.setDate(expiryDate.getDate() + 30);
 
-          await updateSubscription(metadata.phoneNumber, metadata.planId, expiryDate);
+          await updateSubscription(
+            metadata.phoneNumber,
+            metadata.planId,
+            expiryDate
+          );
           await addLoyaltyPoints(metadata.phoneNumber, 50);
 
-          logger.info(`✅ Stripe subscription payment processed: ${metadata.phoneNumber} - ${metadata.planId}`);
+          logger.info(
+            `✅ Stripe subscription payment processed: ${metadata.phoneNumber} - ${metadata.planId}`
+          );
         } else if (metadata.type === 'micro_transaction') {
           // Process micro-transaction
           await addLoyaltyPoints(metadata.phoneNumber, 5);
-          logger.info(`✅ Stripe micro-transaction processed: ${metadata.phoneNumber} - ${metadata.serviceType}`);
+          logger.info(
+            `✅ Stripe micro-transaction processed: ${metadata.phoneNumber} - ${metadata.serviceType}`
+          );
         }
 
         return { success: true, processed: true };
@@ -435,7 +531,12 @@ class PaymentService {
    * @param {string} paymentMethod - Payment method
    * @returns {Promise<Object>} Payment link and details
    */
-  async generatePaymentLink(planId, phoneNumber, region = 'india', paymentMethod = 'card') {
+  async generatePaymentLink(
+    planId,
+    phoneNumber,
+    region = 'india',
+    paymentMethod = 'card'
+  ) {
     try {
       const plan = this.getPlan(planId, region);
 
@@ -449,8 +550,8 @@ class PaymentService {
           notes: {
             planId,
             phoneNumber,
-            region
-          }
+            region,
+          },
         };
 
         const order = await this.razorpay.orders.create(options);
@@ -461,33 +562,35 @@ class PaymentService {
           amount: plan.price,
           currency: plan.currency,
           paymentUrl: `https://api.razorpay.com/v1/checkout/embedded?key_id=${process.env.RAZORPAY_KEY_ID}&order_id=${order.id}`,
-          keyId: process.env.RAZORPAY_KEY_ID
+          keyId: process.env.RAZORPAY_KEY_ID,
         };
       } else {
         // Create Stripe payment link
         const paymentLink = await stripe.paymentLinks.create({
-          line_items: [{
-            price_data: {
-              currency: plan.currency.toLowerCase(),
-              product_data: {
-                name: `${plan.name} Subscription`,
-                description: `Monthly astrology subscription - ${plan.features.join(', ')}`
+          line_items: [
+            {
+              price_data: {
+                currency: plan.currency.toLowerCase(),
+                product_data: {
+                  name: `${plan.name} Subscription`,
+                  description: `Monthly astrology subscription - ${plan.features.join(', ')}`,
+                },
+                unit_amount: Math.round(plan.price * 100),
               },
-              unit_amount: Math.round(plan.price * 100)
+              quantity: 1,
             },
-            quantity: 1
-          }],
+          ],
           metadata: {
             planId,
             phoneNumber,
-            region
+            region,
           },
           after_completion: {
             type: 'redirect',
             redirect: {
-              url: `${process.env.BASE_URL || 'https://astrologybot.com'}/payment/success?session_id={CHECKOUT_SESSION_ID}`
-            }
-          }
+              url: `${process.env.BASE_URL || 'https://astrologybot.com'}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+            },
+          },
         });
 
         return {
@@ -495,7 +598,7 @@ class PaymentService {
           paymentUrl: paymentLink.url,
           amount: plan.price,
           currency: plan.currency,
-          paymentLinkId: paymentLink.id
+          paymentLinkId: paymentLink.id,
         };
       }
     } catch (error) {

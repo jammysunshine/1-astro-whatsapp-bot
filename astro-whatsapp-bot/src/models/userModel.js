@@ -13,7 +13,7 @@ const Session = require('./Session');
  * @param {Object} profileData - Additional profile information
  * @returns {Promise<Object>} Created user object
  */
-const createUser = async(phoneNumber, profileData = {}) => {
+const createUser = async (phoneNumber, profileData = {}) => {
   try {
     // Check if user already exists
     const existingUser = await User.findOne({ phoneNumber });
@@ -29,7 +29,7 @@ const createUser = async(phoneNumber, profileData = {}) => {
       id: userId,
       phoneNumber,
       referralCode,
-      ...profileData
+      ...profileData,
     };
 
     const user = new User(userData);
@@ -53,7 +53,9 @@ const getUserByPhone = async phoneNumber => {
     const user = await User.findOne({ phoneNumber });
     if (user) {
       logger.debug(`🔍 Found user: ${phoneNumber}`);
-      console.log(`DEBUG: getUserByPhone returning user with profileComplete: ${user.profileComplete}`);
+      console.log(
+        `DEBUG: getUserByPhone returning user with profileComplete: ${user.profileComplete}`
+      );
       return user.toObject();
     } else {
       logger.debug(`🔍 User not found: ${phoneNumber}`);
@@ -71,9 +73,12 @@ const getUserByPhone = async phoneNumber => {
  * @param {Object} updateData - Data to update
  * @returns {Promise<Object>} Updated user object
  */
-const updateUserProfile = async(phoneNumber, updateData) => {
+const updateUserProfile = async (phoneNumber, updateData) => {
   try {
-    logger.info(`Attempting to update user profile for ${phoneNumber} with data:`, updateData);
+    logger.info(
+      `Attempting to update user profile for ${phoneNumber} with data:`,
+      updateData
+    );
     const user = await User.findOne({ phoneNumber });
 
     if (!user) {
@@ -86,11 +91,15 @@ const updateUserProfile = async(phoneNumber, updateData) => {
 
     await user.save();
 
-    logger.info(`🔄 Updated user profile: ${phoneNumber}. New profileComplete status: ${user.profileComplete}`);
+    logger.info(
+      `🔄 Updated user profile: ${phoneNumber}. New profileComplete status: ${user.profileComplete}`
+    );
 
     // Explicitly fetch the user again to confirm the persisted state
     const updatedUser = await User.findOne({ phoneNumber });
-    logger.info(`🔄 Confirmed user profile after update: ${phoneNumber}. Confirmed profileComplete status: ${updatedUser.profileComplete}`);
+    logger.info(
+      `🔄 Confirmed user profile after update: ${phoneNumber}. Confirmed profileComplete status: ${updatedUser.profileComplete}`
+    );
 
     return updatedUser.toObject();
   } catch (error) {
@@ -107,23 +116,24 @@ const updateUserProfile = async(phoneNumber, updateData) => {
  * @param {string} birthPlace - Birth place (City, Country)
  * @returns {Promise<Object>} Updated user object
  */
-const addBirthDetails = async(phoneNumber, birthDate, birthTime = null, birthPlace = null) => {
+const addBirthDetails = async (
+  phoneNumber,
+  birthDate,
+  birthTime = null,
+  birthPlace = null
+) => {
   try {
     const updateData = {
       birthDate,
       birthTime,
       birthPlace,
-      profileComplete: !!(birthDate && birthPlace)
+      profileComplete: !!(birthDate && birthPlace),
     };
 
-    const user = await User.findOneAndUpdate(
-      { phoneNumber },
-      updateData,
-      {
-        new: true,
-        runValidators: true
-      }
-    );
+    const user = await User.findOneAndUpdate({ phoneNumber }, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!user) {
       throw new Error(`User not found: ${phoneNumber}`);
@@ -144,17 +154,17 @@ const addBirthDetails = async(phoneNumber, birthDate, birthTime = null, birthPla
  * @param {Date} expiryDate - Subscription expiry date
  * @returns {Promise<Object>} Updated user object
  */
-const updateSubscription = async(phoneNumber, tier, expiryDate = null) => {
+const updateSubscription = async (phoneNumber, tier, expiryDate = null) => {
   try {
     const user = await User.findOneAndUpdate(
       { phoneNumber },
       {
         subscriptionTier: tier,
-        subscriptionExpiry: expiryDate
+        subscriptionExpiry: expiryDate,
       },
       {
         new: true,
-        runValidators: true
+        runValidators: true,
       }
     );
 
@@ -182,7 +192,7 @@ const incrementCompatibilityChecks = async phoneNumber => {
       { $inc: { compatibilityChecks: 1 } },
       {
         new: true,
-        runValidators: true
+        runValidators: true,
       }
     );
 
@@ -190,10 +200,15 @@ const incrementCompatibilityChecks = async phoneNumber => {
       throw new Error(`User not found: ${phoneNumber}`);
     }
 
-    logger.info(`💞 Incremented compatibility checks for user ${phoneNumber}: ${user.compatibilityChecks}`);
+    logger.info(
+      `💞 Incremented compatibility checks for user ${phoneNumber}: ${user.compatibilityChecks}`
+    );
     return user.toObject();
   } catch (error) {
-    logger.error(`❌ Error incrementing compatibility checks for ${phoneNumber}:`, error);
+    logger.error(
+      `❌ Error incrementing compatibility checks for ${phoneNumber}:`,
+      error
+    );
     throw error;
   }
 };
@@ -204,14 +219,14 @@ const incrementCompatibilityChecks = async phoneNumber => {
  * @param {number} points - Points to add
  * @returns {Promise<Object>} Updated user object
  */
-const addLoyaltyPoints = async(phoneNumber, points) => {
+const addLoyaltyPoints = async (phoneNumber, points) => {
   try {
     const user = await User.findOneAndUpdate(
       { phoneNumber },
       { $inc: { loyaltyPoints: points } },
       {
         new: true,
-        runValidators: true
+        runValidators: true,
       }
     );
 
@@ -219,7 +234,9 @@ const addLoyaltyPoints = async(phoneNumber, points) => {
       throw new Error(`User not found: ${phoneNumber}`);
     }
 
-    logger.info(`⭐ Added ${points} loyalty points to user ${phoneNumber}: ${user.loyaltyPoints} total`);
+    logger.info(
+      `⭐ Added ${points} loyalty points to user ${phoneNumber}: ${user.loyaltyPoints} total`
+    );
     return user.toObject();
   } catch (error) {
     logger.error(`❌ Error adding loyalty points for ${phoneNumber}:`, error);
@@ -233,14 +250,14 @@ const addLoyaltyPoints = async(phoneNumber, points) => {
  * @param {string} referredPhone - Referred user's phone number
  * @returns {Promise<Object>} Updated referrer user object
  */
-const addReferredUser = async(referrerPhone, referredPhone) => {
+const addReferredUser = async (referrerPhone, referredPhone) => {
   try {
     const referrer = await User.findOneAndUpdate(
       { phoneNumber: referrerPhone },
       { $addToSet: { referredUsers: referredPhone } },
       {
         new: true,
-        runValidators: true
+        runValidators: true,
       }
     );
 
@@ -248,10 +265,15 @@ const addReferredUser = async(referrerPhone, referredPhone) => {
       throw new Error(`Referrer not found: ${referrerPhone}`);
     }
 
-    logger.info(`👥 Added referred user ${referredPhone} to referrer ${referrerPhone}`);
+    logger.info(
+      `👥 Added referred user ${referredPhone} to referrer ${referrerPhone}`
+    );
     return referrer.toObject();
   } catch (error) {
-    logger.error(`❌ Error adding referred user ${referredPhone} to referrer ${referrerPhone}:`, error);
+    logger.error(
+      `❌ Error adding referred user ${referredPhone} to referrer ${referrerPhone}:`,
+      error
+    );
     throw error;
   }
 };
@@ -260,7 +282,7 @@ const addReferredUser = async(referrerPhone, referredPhone) => {
  * Get all users (for admin purposes)
  * @returns {Promise<Array>} Array of all users
  */
-const getAllUsers = async() => {
+const getAllUsers = async () => {
   try {
     const users = await User.find({}).sort({ createdAt: -1 });
     return users.map(user => user.toObject());
@@ -295,13 +317,15 @@ const deleteUser = async phoneNumber => {
  * Generate a unique user ID
  * @returns {string} Unique user ID
  */
-const generateUserId = () => `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+const generateUserId = () =>
+  `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
 /**
  * Generate referral code
  * @returns {string} Unique referral code
  */
-const generateReferralCode = () => `REF${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+const generateReferralCode = () =>
+  `REF${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
 
 /**
  * Get user session
@@ -324,18 +348,18 @@ const getUserSession = async sessionId => {
  * @param {Object} sessionData - Session data
  * @returns {Promise<void>}
  */
-const setUserSession = async(sessionId, sessionData) => {
+const setUserSession = async (sessionId, sessionData) => {
   try {
     await Session.findOneAndUpdate(
       { sessionId },
       {
         ...sessionData,
-        phoneNumber: sessionId // Ensure phoneNumber is set
+        phoneNumber: sessionId, // Ensure phoneNumber is set
       },
       {
         upsert: true, // Create if doesn't exist
         new: true,
-        runValidators: true
+        runValidators: true,
       }
     );
   } catch (error) {
@@ -394,7 +418,7 @@ const getSubscriptionBenefits = user => {
       weeklyTransitSummary: true,
       communityForum: true,
       compatibilityChecks: 1,
-      maxCompatibilityChecks: 1
+      maxCompatibilityChecks: 1,
     },
     essential: {
       dailyPersonalizedHoroscope: true,
@@ -404,7 +428,7 @@ const getSubscriptionBenefits = user => {
       compatibilityChecks: 5,
       maxCompatibilityChecks: 5,
       dailyCosmicTips: true,
-      luckyNumberOfDay: true
+      luckyNumberOfDay: true,
     },
     premium: {
       unlimitedQuestions: true,
@@ -414,7 +438,7 @@ const getSubscriptionBenefits = user => {
       exclusiveRemedialSolutions: true,
       unlimitedCompatibility: true,
       maxCompatibilityChecks: Infinity,
-      priorityReplies: true
+      priorityReplies: true,
     },
     vip: {
       dedicatedHumanAstrologer: true,
@@ -422,8 +446,8 @@ const getSubscriptionBenefits = user => {
       personalizedMeditation: true,
       rarePlanetaryEventReadings: true,
       exclusiveCommunity: true,
-      maxCompatibilityChecks: Infinity
-    }
+      maxCompatibilityChecks: Infinity,
+    },
   };
 
   return benefits[tier] || benefits.free;
@@ -446,5 +470,5 @@ module.exports = {
   setUserSession,
   deleteUserSession,
   hasActiveSubscription,
-  getSubscriptionBenefits
+  getSubscriptionBenefits,
 };

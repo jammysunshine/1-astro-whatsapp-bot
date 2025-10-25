@@ -392,6 +392,28 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Current Implementation**: No dedicated support system exists.
 - **Gaps for MVP**: Full support system and feedback collection need implementation.
 
+### Epic 25: User Profile & Subscription Management
+- **Goal**: Implement comprehensive user profile management and subscription lifecycle handling for the astrology WhatsApp bot.
+- **Key Features**: User profile creation and management, subscription plans and tier management, billing integration and lifecycle handling, account upgrades and downgrades.
+- **MVP User Stories**:
+    - **As a user, I want to create and manage my profile so that I can personalize my astrology experience.** *Acceptance Criteria: Profile creation with personal details, editing capabilities, privacy settings, data validation.*
+    - **As a business owner, I want subscription plans so that I can offer different service levels.** *Acceptance Criteria: Free and premium tiers defined, feature access control, plan comparison, benefits communication.*
+    - **As a user, I want automated billing management so that my subscription renews seamlessly.** *Acceptance Criteria: Automated billing cycles, payment method storage, renewal notifications, failed payment handling.*
+    - **As a user, I want to change my subscription so that I can adjust my service level.** *Acceptance Criteria: Seamless upgrade/downgrade process, prorated billing, immediate feature access changes.*
+- **Current Implementation**: Basic user profiles exist but need enhancement for subscription management.
+- **Gaps for MVP**: Full subscription lifecycle and billing integration need implementation.
+
+### Epic 26: Customer Support & Feedback System
+- **Goal**: Implement comprehensive customer support and feedback collection system for the astrology WhatsApp bot.
+- **Key Features**: Support chat integration with WhatsApp, feedback collection and rating systems, support ticket management and escalation, analytics for support performance.
+- **MVP User Stories**:
+    - **As a user, I want to contact support through WhatsApp so that I can get help conveniently.** *Acceptance Criteria: Support chat accessible via commands, agent routing, chat history preservation, session management.*
+    - **As a business owner, I want to collect user feedback so that I can improve the service.** *Acceptance Criteria: Feedback collection after interactions, rating system, open-ended feedback, feedback storage.*
+    - **As a support agent, I want ticket management so that I can track and resolve issues.** *Acceptance Criteria: Automatic ticket creation, prioritization, resolution tracking, escalation procedures.*
+    - **As a manager, I want support analytics so that I can monitor support quality.** *Acceptance Criteria: Response time tracking, resolution rates, performance dashboards, feedback analysis.*
+- **Current Implementation**: No dedicated support system exists.
+- **Gaps for MVP**: Full support system and feedback collection need implementation.
+
 ## Core Features (Developed with BMAd Methodology)
 
 ### Multiple Astrology Services (See Epic 2)

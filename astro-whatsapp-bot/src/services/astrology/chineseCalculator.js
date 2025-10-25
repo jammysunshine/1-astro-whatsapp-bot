@@ -11,36 +11,96 @@ class ChineseCalculator {
     logger.info('Module: ChineseCalculator loaded.');
     // Heavenly Stems (天干)
     this.heavenlyStems = [
-      '甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'
+      '甲',
+      '乙',
+      '丙',
+      '丁',
+      '戊',
+      '己',
+      '庚',
+      '辛',
+      '壬',
+      '癸',
     ];
 
     // Earthly Branches (地支)
     this.earthlyBranches = [
-      '子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'
+      '子',
+      '丑',
+      '寅',
+      '卯',
+      '辰',
+      '巳',
+      '午',
+      '未',
+      '申',
+      '酉',
+      '戌',
+      '亥',
     ];
 
     // Chinese Zodiac Animals
     this.zodiacAnimals = [
-      'Rat', 'Ox', 'Tiger', 'Rabbit', 'Dragon', 'Snake',
-      'Horse', 'Goat', 'Monkey', 'Rooster', 'Dog', 'Pig'
+      'Rat',
+      'Ox',
+      'Tiger',
+      'Rabbit',
+      'Dragon',
+      'Snake',
+      'Horse',
+      'Goat',
+      'Monkey',
+      'Rooster',
+      'Dog',
+      'Pig',
     ];
 
     // Five Elements
     this.fiveElements = {
-      甲: 'Wood', 乙: 'Wood',
-      丙: 'Fire', 丁: 'Fire',
-      戊: 'Earth', 己: 'Earth',
-      庚: 'Metal', 辛: 'Metal',
-      壬: 'Water', 癸: 'Water'
+      甲: 'Wood',
+      乙: 'Wood',
+      丙: 'Fire',
+      丁: 'Fire',
+      戊: 'Earth',
+      己: 'Earth',
+      庚: 'Metal',
+      辛: 'Metal',
+      壬: 'Water',
+      癸: 'Water',
     };
 
     // Element relationships
     this.elementRelationships = {
-      Wood: { generates: 'Fire', controls: 'Earth', weakenedBy: 'Metal', strengthenedBy: 'Water' },
-      Fire: { generates: 'Earth', controls: 'Metal', weakenedBy: 'Water', strengthenedBy: 'Wood' },
-      Earth: { generates: 'Metal', controls: 'Water', weakenedBy: 'Wood', strengthenedBy: 'Fire' },
-      Metal: { generates: 'Water', controls: 'Wood', weakenedBy: 'Fire', strengthenedBy: 'Earth' },
-      Water: { generates: 'Wood', controls: 'Fire', weakenedBy: 'Earth', strengthenedBy: 'Metal' }
+      Wood: {
+        generates: 'Fire',
+        controls: 'Earth',
+        weakenedBy: 'Metal',
+        strengthenedBy: 'Water',
+      },
+      Fire: {
+        generates: 'Earth',
+        controls: 'Metal',
+        weakenedBy: 'Water',
+        strengthenedBy: 'Wood',
+      },
+      Earth: {
+        generates: 'Metal',
+        controls: 'Water',
+        weakenedBy: 'Wood',
+        strengthenedBy: 'Fire',
+      },
+      Metal: {
+        generates: 'Water',
+        controls: 'Wood',
+        weakenedBy: 'Fire',
+        strengthenedBy: 'Earth',
+      },
+      Water: {
+        generates: 'Wood',
+        controls: 'Fire',
+        weakenedBy: 'Earth',
+        strengthenedBy: 'Metal',
+      },
     };
   }
 
@@ -62,29 +122,48 @@ class ChineseCalculator {
       const hourPillar = this.calculateHourPillar(dayPillar.stem, hour);
 
       // Analyze elements
-      const elementAnalysis = this.analyzeElements([yearPillar, monthPillar, dayPillar, hourPillar]);
+      const elementAnalysis = this.analyzeElements([
+        yearPillar,
+        monthPillar,
+        dayPillar,
+        hourPillar,
+      ]);
 
       return {
         pillars: {
           year: yearPillar,
           month: monthPillar,
           day: dayPillar,
-          hour: hourPillar
+          hour: hourPillar,
         },
         dayMaster: {
           stem: dayPillar.stem,
           element: this.fiveElements[dayPillar.stem],
-          strength: this.calculateDayMasterStrength(dayPillar.stem, elementAnalysis)
+          strength: this.calculateDayMasterStrength(
+            dayPillar.stem,
+            elementAnalysis
+          ),
         },
         elementAnalysis,
-        chineseNotation: this.formatChinesePillars(yearPillar, monthPillar, dayPillar, hourPillar),
-        interpretation: this.generateBasicInterpretation(yearPillar, monthPillar, dayPillar, hourPillar, elementAnalysis)
+        chineseNotation: this.formatChinesePillars(
+          yearPillar,
+          monthPillar,
+          dayPillar,
+          hourPillar
+        ),
+        interpretation: this.generateBasicInterpretation(
+          yearPillar,
+          monthPillar,
+          dayPillar,
+          hourPillar,
+          elementAnalysis
+        ),
       };
     } catch (error) {
       logger.error('Error calculating Four Pillars:', error);
       return {
         error: 'Unable to calculate Four Pillars at this time',
-        pillars: null
+        pillars: null,
       };
     }
   }
@@ -102,7 +181,7 @@ class ChineseCalculator {
       stem: this.heavenlyStems[stemIndex],
       branch: this.earthlyBranches[branchIndex],
       animal: this.zodiacAnimals[branchIndex],
-      element: this.fiveElements[this.heavenlyStems[stemIndex]]
+      element: this.fiveElements[this.heavenlyStems[stemIndex]],
     };
   }
 
@@ -121,7 +200,7 @@ class ChineseCalculator {
     return {
       stem: this.heavenlyStems[stemIndex],
       branch: this.earthlyBranches[branchIndex],
-      element: this.fiveElements[this.heavenlyStems[stemIndex]]
+      element: this.fiveElements[this.heavenlyStems[stemIndex]],
     };
   }
 
@@ -140,7 +219,7 @@ class ChineseCalculator {
     return {
       stem: this.heavenlyStems[stemIndex],
       branch: this.earthlyBranches[branchIndex],
-      element: this.fiveElements[this.heavenlyStems[stemIndex]]
+      element: this.fiveElements[this.heavenlyStems[stemIndex]],
     };
   }
 
@@ -157,7 +236,7 @@ class ChineseCalculator {
     return {
       stem: this.heavenlyStems[hourStemIndex],
       branch: this.earthlyBranches[hourBranchIndex],
-      element: this.fiveElements[this.heavenlyStems[hourStemIndex]]
+      element: this.fiveElements[this.heavenlyStems[hourStemIndex]],
     };
   }
 
@@ -175,14 +254,15 @@ class ChineseCalculator {
     });
 
     // Calculate strongest and weakest elements
-    const sortedElements = Object.entries(elementCount)
-      .sort((a, b) => b[1] - a[1]);
+    const sortedElements = Object.entries(elementCount).sort(
+      (a, b) => b[1] - a[1]
+    );
 
     return {
       distribution: elementCount,
       strongest: sortedElements[0][0],
       weakest: sortedElements[sortedElements.length - 1][0],
-      balance: this.assessElementBalance(elementCount)
+      balance: this.assessElementBalance(elementCount),
     };
   }
 
@@ -195,8 +275,12 @@ class ChineseCalculator {
     const max = Math.max(...values);
     const min = Math.min(...values);
 
-    if (max - min <= 1) { return 'Balanced'; }
-    if (max >= 3 && min === 0) { return `Imbalanced - Strong ${Object.keys(distribution).find(k => distribution[k] === max)}`; }
+    if (max - min <= 1) {
+      return 'Balanced';
+    }
+    if (max >= 3 && min === 0) {
+      return `Imbalanced - Strong ${Object.keys(distribution).find(k => distribution[k] === max)}`;
+    }
     return 'Moderately Balanced';
   }
 
@@ -208,8 +292,12 @@ class ChineseCalculator {
     const dayElement = this.fiveElements[dayStem];
     const dayElementCount = elementAnalysis.distribution[dayElement];
 
-    if (dayElementCount >= 3) { return 'Strong'; }
-    if (dayElementCount === 2) { return 'Moderate'; }
+    if (dayElementCount >= 3) {
+      return 'Strong';
+    }
+    if (dayElementCount === 2) {
+      return 'Moderate';
+    }
     return 'Weak';
   }
 
@@ -225,7 +313,13 @@ class ChineseCalculator {
    * Generate basic interpretation
    * @private
    */
-  generateBasicInterpretation(yearPillar, monthPillar, dayPillar, hourPillar, elementAnalysis) {
+  generateBasicInterpretation(
+    yearPillar,
+    monthPillar,
+    dayPillar,
+    hourPillar,
+    elementAnalysis
+  ) {
     const dayMaster = this.fiveElements[dayPillar.stem];
     const strongestElement = elementAnalysis.strongest;
 
@@ -252,7 +346,7 @@ class ChineseCalculator {
       Fire: 'passion, enthusiasm, and inspiration',
       Earth: 'stability, nurturing, and practicality',
       Metal: 'precision, determination, and structure',
-      Water: 'intuition, adaptability, and wisdom'
+      Water: 'intuition, adaptability, and wisdom',
     };
     return traits[element] || 'various life aspects';
   }
@@ -273,7 +367,7 @@ class ChineseCalculator {
         stem: yearPillar.stem,
         branch: yearPillar.branch,
         traits: this.getZodiacTraits(yearPillar.animal),
-        elementTraits: this.getElementTraits(yearPillar.element)
+        elementTraits: this.getElementTraits(yearPillar.element),
       };
     } catch (error) {
       logger.error('Error calculating Chinese zodiac:', error);
@@ -298,7 +392,7 @@ class ChineseCalculator {
       Monkey: 'Sharp, smart, curious, innovative, mischievous',
       Rooster: 'Honest, energetic, intelligent, flamboyant, flexible',
       Dog: 'Loyal, honest, amiable, kind, cautious',
-      Pig: 'Brave, noble, independent, optimistic, sincere'
+      Pig: 'Brave, noble, independent, optimistic, sincere',
     };
     return traits[animal] || 'Unique personality traits';
   }

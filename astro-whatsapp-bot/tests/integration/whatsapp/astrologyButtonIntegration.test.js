@@ -3,8 +3,12 @@
 
 const request = require('supertest');
 const app = require('../../../src/server');
-const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
-const { validateWebhookSignature } = require('../../../src/services/whatsapp/webhookValidator');
+const {
+  processIncomingMessage,
+} = require('../../../src/services/whatsapp/messageProcessor');
+const {
+  validateWebhookSignature,
+} = require('../../../src/services/whatsapp/webhookValidator');
 
 // Mock dependencies
 jest.mock('../../../src/services/whatsapp/messageProcessor');
@@ -18,32 +22,40 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Tarot Reading Buttons', () => {
-    it('should process single card tarot reading button', async() => {
+    it('should process single card tarot reading button', async () => {
       const webhookPayload = {
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              contacts: [{
-                profile: { name: 'Test User' },
-                wa_id: '1234567890'
-              }],
-              messages: [{
-                from: '1234567890',
-                id: 'message-id-tarot',
-                timestamp: '1234567890',
-                type: 'interactive',
-                interactive: {
-                  type: 'button_reply',
-                  button_reply: {
-                    id: 'btn_tarot_single',
-                    title: 'Single Card'
-                  }
-                }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  contacts: [
+                    {
+                      profile: { name: 'Test User' },
+                      wa_id: '1234567890',
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: '1234567890',
+                      id: 'message-id-tarot',
+                      timestamp: '1234567890',
+                      type: 'interactive',
+                      interactive: {
+                        type: 'button_reply',
+                        button_reply: {
+                          id: 'btn_tarot_single',
+                          title: 'Single Card',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -59,40 +71,48 @@ describe('Astrology Button Integration', () => {
           type: 'interactive',
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_tarot_single'
-            })
-          })
+              id: 'btn_tarot_single',
+            }),
+          }),
         }),
         expect.any(Object)
       );
     });
 
-    it('should process three-card spread tarot reading button', async() => {
+    it('should process three-card spread tarot reading button', async () => {
       const webhookPayload = {
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              contacts: [{
-                profile: { name: 'Test User' },
-                wa_id: '1234567890'
-              }],
-              messages: [{
-                from: '1234567890',
-                id: 'message-id-tarot-3',
-                timestamp: '1234567890',
-                type: 'interactive',
-                interactive: {
-                  type: 'button_reply',
-                  button_reply: {
-                    id: 'btn_tarot_three_card',
-                    title: 'Three Card Spread'
-                  }
-                }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  contacts: [
+                    {
+                      profile: { name: 'Test User' },
+                      wa_id: '1234567890',
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: '1234567890',
+                      id: 'message-id-tarot-3',
+                      timestamp: '1234567890',
+                      type: 'interactive',
+                      interactive: {
+                        type: 'button_reply',
+                        button_reply: {
+                          id: 'btn_tarot_three_card',
+                          title: 'Three Card Spread',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -107,9 +127,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_tarot_three_card'
-            })
-          })
+              id: 'btn_tarot_three_card',
+            }),
+          }),
         }),
         expect.any(Object)
       );
@@ -117,32 +137,40 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Palmistry Reading Buttons', () => {
-    it('should process palmistry reading button', async() => {
+    it('should process palmistry reading button', async () => {
       const webhookPayload = {
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              contacts: [{
-                profile: { name: 'Test User' },
-                wa_id: '1234567890'
-              }],
-              messages: [{
-                from: '1234567890',
-                id: 'message-id-palmistry',
-                timestamp: '1234567890',
-                type: 'interactive',
-                interactive: {
-                  type: 'button_reply',
-                  button_reply: {
-                    id: 'btn_palmistry_reading',
-                    title: 'Palmistry Reading'
-                  }
-                }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  contacts: [
+                    {
+                      profile: { name: 'Test User' },
+                      wa_id: '1234567890',
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: '1234567890',
+                      id: 'message-id-palmistry',
+                      timestamp: '1234567890',
+                      type: 'interactive',
+                      interactive: {
+                        type: 'button_reply',
+                        button_reply: {
+                          id: 'btn_palmistry_reading',
+                          title: 'Palmistry Reading',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -157,9 +185,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_palmistry_reading'
-            })
-          })
+              id: 'btn_palmistry_reading',
+            }),
+          }),
         }),
         expect.any(Object)
       );
@@ -167,32 +195,40 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Nadi Astrology Buttons', () => {
-    it('should process Nadi reading button', async() => {
+    it('should process Nadi reading button', async () => {
       const webhookPayload = {
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              contacts: [{
-                profile: { name: 'Test User' },
-                wa_id: '1234567890'
-              }],
-              messages: [{
-                from: '1234567890',
-                id: 'message-id-nadi',
-                timestamp: '1234567890',
-                type: 'interactive',
-                interactive: {
-                  type: 'button_reply',
-                  button_reply: {
-                    id: 'btn_nadi_reading',
-                    title: 'Nadi Reading'
-                  }
-                }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  contacts: [
+                    {
+                      profile: { name: 'Test User' },
+                      wa_id: '1234567890',
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: '1234567890',
+                      id: 'message-id-nadi',
+                      timestamp: '1234567890',
+                      type: 'interactive',
+                      interactive: {
+                        type: 'button_reply',
+                        button_reply: {
+                          id: 'btn_nadi_reading',
+                          title: 'Nadi Reading',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -207,9 +243,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_nadi_reading'
-            })
-          })
+              id: 'btn_nadi_reading',
+            }),
+          }),
         }),
         expect.any(Object)
       );
@@ -217,32 +253,40 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Compatibility Check Buttons', () => {
-    it('should process compatibility check button', async() => {
+    it('should process compatibility check button', async () => {
       const webhookPayload = {
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              contacts: [{
-                profile: { name: 'Test User' },
-                wa_id: '1234567890'
-              }],
-              messages: [{
-                from: '1234567890',
-                id: 'message-id-compatibility',
-                timestamp: '1234567890',
-                type: 'interactive',
-                interactive: {
-                  type: 'button_reply',
-                  button_reply: {
-                    id: 'btn_compatibility_check',
-                    title: 'Check Compatibility'
-                  }
-                }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  contacts: [
+                    {
+                      profile: { name: 'Test User' },
+                      wa_id: '1234567890',
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: '1234567890',
+                      id: 'message-id-compatibility',
+                      timestamp: '1234567890',
+                      type: 'interactive',
+                      interactive: {
+                        type: 'button_reply',
+                        button_reply: {
+                          id: 'btn_compatibility_check',
+                          title: 'Check Compatibility',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -257,9 +301,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_compatibility_check'
-            })
-          })
+              id: 'btn_compatibility_check',
+            }),
+          }),
         }),
         expect.any(Object)
       );
@@ -267,32 +311,40 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Subscription and Payment Buttons', () => {
-    it('should process subscription upgrade button', async() => {
+    it('should process subscription upgrade button', async () => {
       const webhookPayload = {
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              contacts: [{
-                profile: { name: 'Test User' },
-                wa_id: '1234567890'
-              }],
-              messages: [{
-                from: '1234567890',
-                id: 'message-id-subscription',
-                timestamp: '1234567890',
-                type: 'interactive',
-                interactive: {
-                  type: 'button_reply',
-                  button_reply: {
-                    id: 'btn_upgrade_premium',
-                    title: 'Upgrade to Premium'
-                  }
-                }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  contacts: [
+                    {
+                      profile: { name: 'Test User' },
+                      wa_id: '1234567890',
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: '1234567890',
+                      id: 'message-id-subscription',
+                      timestamp: '1234567890',
+                      type: 'interactive',
+                      interactive: {
+                        type: 'button_reply',
+                        button_reply: {
+                          id: 'btn_upgrade_premium',
+                          title: 'Upgrade to Premium',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -307,40 +359,48 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_upgrade_premium'
-            })
-          })
+              id: 'btn_upgrade_premium',
+            }),
+          }),
         }),
         expect.any(Object)
       );
     });
 
-    it('should process payment method selection button', async() => {
+    it('should process payment method selection button', async () => {
       const webhookPayload = {
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              contacts: [{
-                profile: { name: 'Test User' },
-                wa_id: '1234567890'
-              }],
-              messages: [{
-                from: '1234567890',
-                id: 'message-id-payment',
-                timestamp: '1234567890',
-                type: 'interactive',
-                interactive: {
-                  type: 'button_reply',
-                  button_reply: {
-                    id: 'btn_pay_upi',
-                    title: 'Pay with UPI'
-                  }
-                }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  contacts: [
+                    {
+                      profile: { name: 'Test User' },
+                      wa_id: '1234567890',
+                    },
+                  ],
+                  messages: [
+                    {
+                      from: '1234567890',
+                      id: 'message-id-payment',
+                      timestamp: '1234567890',
+                      type: 'interactive',
+                      interactive: {
+                        type: 'button_reply',
+                        button_reply: {
+                          id: 'btn_pay_upi',
+                          title: 'Pay with UPI',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
       };
 
       const response = await request(app)
@@ -355,9 +415,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_pay_upi'
-            })
-          })
+              id: 'btn_pay_upi',
+            }),
+          }),
         }),
         expect.any(Object)
       );

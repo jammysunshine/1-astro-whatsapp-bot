@@ -1,6 +1,7 @@
 # Quick Reference Guide (Updated)
 
 ## Enhanced Core Service Offerings Summary:
+
 - **Multiple Astrology Systems**: Vedic, Western, Chinese, Tarot, Numerology, Palmistry, Nadi, and more
 - **Enhanced Subscription Tiers**: Free, Essential, Premium, VIP plans with clear value progression and viral features
 - **One-time Services**: Individual questions, specialized readings, and micro-transactions
@@ -21,12 +22,14 @@
 - **NEW: Gamification with Sharing**: Achievements, streaks, and social elements
 
 ## Target Markets:
+
 - **Primary**: India, UAE, Australia with regional pricing and payment methods
 - **Supported Languages**: English, Hindi, Arabic, Malayalam, Telugu, Tamil, Kannada, Punjabi, Filipino/Tagalog, Urdu, Gujarati, Marathi, Bengali, Malay, Indonesian
 - **Payment Methods**: Regional options including UPI, PayTM, Google Pay, PhonePe, NetBanking, cards, digital wallets, Apple Pay, PayPal, Afterpay
 - **Channel Strategy**: WhatsApp-optimized experience with future expansion to web, mobile, and other messaging platforms
 
 ## Advanced Differentiators:
+
 - **Personalized AI Astrologer (AI Twin)**: AI that learns communication style and remembers conversations
 - **Predictive Decision Timing**: Precision timing for important life decisions
 - **Astro-Social Network**: Connect with users who have compatible charts and shared experiences
@@ -50,6 +53,7 @@
 - **VIRAL DIFFERENTIATORS**: Compatibility checking, social sharing, referral bonuses, community building features
 
 ## Success Metrics Focus:
+
 - **Revenue Growth**: MRR targets of 25% month-over-month initially, with 5:1+ CLV:CAC ratio
 - **User Engagement**: Free-to-paid conversion of 25%+, 55%+ day-90 retention, 50%+ premium tier adoption
 - **Quality Indicators**: Prediction accuracy scores, feature adoption rates, community participation
@@ -58,6 +62,7 @@
 - **Phase-Based Targets**: Clear milestones for foundation (Months 1-6), growth (Months 7-12), and scale (Months 13+)
 
 ## Personal Cosmic Coach Positioning:
+
 - **Core Value Proposition**: Not just delivering astrological data, but becoming users' trusted guide for clarity, confidence, and control in uncertain times
 - **Emotional ROI Focus**: Positioning services around outcomes and feelings rather than features
 - **Decision Support**: Helping users make important life decisions with confidence based on cosmic timing
@@ -65,6 +70,7 @@
 - **Viral Positioning**: Create network effects where value increases as more people join (compatibility, community)
 
 ## Technical & UX Excellence:
+
 - **Natural Language Processing**: Advanced NLP to understand varied user questions and provide relevant, human-like responses
 - **Bot Personality**: Distinct, warm, and wise personality that aligns with astrology, creating emotional connection
 - **Intuitive Design**: Clear, concise menu options without overwhelming users
@@ -73,6 +79,7 @@
 - **Social Integration**: Easy sharing, compatibility checking, and community building features
 
 ## VIRAL GROWTH MECHANISMS:
+
 - **Compatibility Features**: Core functionality that requires multiple users to be valuable
 - **Shareable Content**: Beautiful, personalized forecasts that users want to share
 - **Referral Bonuses**: Double-sided rewards for bringing friends

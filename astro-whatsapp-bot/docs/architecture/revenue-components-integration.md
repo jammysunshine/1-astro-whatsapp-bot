@@ -1,4 +1,5 @@
 # Revenue Components Integration
+
 - **Multi-tier Subscriptions**: Free, Essential, Premium, VIP
 - **Marketplace Integration**: 20% commission from astrologer marketplace
 - **Micro-transactions**: Flash insights, transit alerts, compatibility checks

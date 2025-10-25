@@ -1,12 +1,20 @@
 // tests/e2e/astrology-integration.test.js
 // End-to-end tests for astrology library integrations
 
-const { generateTarotReading } = require('../../src/services/astrology/tarotReader');
-const { generatePalmistryReading } = require('../../src/services/astrology/palmistryReader');
-const { generateNadiReading } = require('../../src/services/astrology/nadiReader');
+const {
+  generateTarotReading,
+} = require('../../src/services/astrology/tarotReader');
+const {
+  generatePalmistryReading,
+} = require('../../src/services/astrology/palmistryReader');
+const {
+  generateNadiReading,
+} = require('../../src/services/astrology/nadiReader');
 const chineseCalculator = require('../../src/services/astrology/chineseCalculator');
 const vedicCalculator = require('../../src/services/astrology/vedicCalculator');
-const { getNumerologyReport } = require('../../src/services/astrology/numerologyService');
+const {
+  getNumerologyReport,
+} = require('../../src/services/astrology/numerologyService');
 
 describe('Astrology Library Integration Tests', () => {
   const testUser = {
@@ -14,7 +22,7 @@ describe('Astrology Library Integration Tests', () => {
     birthDate: '15/03/1990',
     birthTime: '07:30',
     birthPlace: 'Mumbai, India',
-    name: 'Test User'
+    name: 'Test User',
   };
 
   describe('Tarot Reader Integration', () => {
@@ -82,7 +90,9 @@ describe('Astrology Library Integration Tests', () => {
 
       expect(reading).toBeDefined();
       expect(reading.handType).toBeDefined();
-      expect(reading.overallPersonality || reading.interpretation).toBeDefined();
+      expect(
+        reading.overallPersonality || reading.interpretation
+      ).toBeDefined();
     });
   });
 
@@ -209,14 +219,18 @@ describe('Astrology Library Integration Tests', () => {
         birthDate: '29/02/2000', // Leap year edge case
         birthTime: '23:59', // End of day
         birthPlace: 'North Pole', // Extreme location
-        name: 'A' // Minimal name
+        name: 'A', // Minimal name
       };
 
       expect(() => generateTarotReading(edgeUser, 'single')).not.toThrow();
       expect(() => generatePalmistryReading(edgeUser)).not.toThrow();
       expect(() => generateNadiReading(edgeUser)).not.toThrow();
-      expect(() => chineseCalculator.getChineseZodiac(edgeUser.birthDate)).not.toThrow();
-      expect(() => vedicCalculator.generateBasicBirthChart(edgeUser)).not.toThrow();
+      expect(() =>
+        chineseCalculator.getChineseZodiac(edgeUser.birthDate)
+      ).not.toThrow();
+      expect(() =>
+        vedicCalculator.generateBasicBirthChart(edgeUser)
+      ).not.toThrow();
       expect(() => getNumerologyReport(edgeUser)).not.toThrow();
     });
   });

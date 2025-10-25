@@ -1,4 +1,5 @@
 # Development Approach
+
 - **BMAD Methodology**: Following Breakthrough Method for Agile AI-Driven Development, leveraging AI agents (Qwen CLI, Gemini CLI) for rapid iteration, automated quality assurance, and continuous integration.
 - **Rapid Development**: 2-3 day launch strategy with maximum AI assistance for code generation, testing, and deployment.
 - **Modular Architecture**: Independent, testable modules for parallel development and easier integration.

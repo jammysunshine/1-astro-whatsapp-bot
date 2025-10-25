@@ -1,6 +1,7 @@
 # Regional Payment and Compliance Requirements
 
 ## India:
+
 1. **Payment Compliance**:
    - RBI guidelines for digital payments
    - PCI DSS compliance for card processing
@@ -18,6 +19,7 @@
    - FDI compliance if foreign investment involved
 
 ## UAE:
+
 1. **Payment Compliance**:
    - Central Bank of UAE regulations
    - PCI DSS compliance
@@ -35,6 +37,7 @@
    - Compliance with Dubai International Financial Centre (DIFC) if applicable
 
 ## Australia:
+
 1. **Payment Compliance**:
    - Australian Transaction Reports and Analysis Centre (AUSTRAC) compliance
    - Australian Securities and Investments Commission (ASIC) regulations
@@ -52,6 +55,7 @@
    - Australian Consumer Law compliance
 
 ## General Compliance:
+
 - Age verification for users (18+ for some services)
 - Content guidelines for astrological services
 - Anti-money laundering (AML) compliance

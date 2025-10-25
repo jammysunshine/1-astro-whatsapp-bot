@@ -1,12 +1,15 @@
 # Story 2.7: Numerology System
 
 ## Epic
+
 Epic 2: Multi-System Astrology Engine
 
 ## User Story
+
 As a user, I want to receive numerology calculations (Life Path, Destiny, Expression numbers) and personalized interpretations so that I can get diverse spiritual insights beyond traditional astrology.
 
 ## Acceptance Criteria
+
 - [ ] Accurate Life Path number calculation from birth date.
 - [ ] Accurate Destiny/Expression number calculation from name.
 - [ ] Accurate Personality and attitude numbers calculation.
@@ -15,6 +18,7 @@ As a user, I want to receive numerology calculations (Life Path, Destiny, Expres
 - [ ] Compatibility analysis using numerology.
 
 ## Technical Requirements
+
 - Implement numerology calculation algorithms based on the Pythagorean system (or other specified system).
 - Create and integrate a database of comprehensive numerological interpretations for each number.
 - Integrate with AI Twin System (LLM) to generate personalized interpretations.
@@ -22,12 +26,15 @@ As a user, I want to receive numerology calculations (Life Path, Destiny, Expres
 - Ensure accurate handling of name variations and cultural naming conventions.
 
 ## Dependencies
+
 - User profile system with birth details (Epic 1).
 - AI Twin System (Epic 4).
 - Database for numerological interpretations.
 
 ## Priority
+
 Medium - Adds diversity to astrological services.
 
 ## Story Points
+
 13

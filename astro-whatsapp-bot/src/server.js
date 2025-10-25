@@ -4,7 +4,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const { connectDB } = require('./config/database');
-const { handleWhatsAppWebhook, verifyWhatsAppWebhook } = require('./controllers/whatsappController');
+const {
+  handleWhatsAppWebhook,
+  verifyWhatsAppWebhook,
+} = require('./controllers/whatsappController');
 const paymentService = require('./services/payment/paymentService');
 const { errorHandler } = require('./utils/errorHandler');
 const logger = require('./utils/logger');
@@ -13,30 +16,36 @@ const app = express();
 const PORT = process.env.W1_PORT || 3000;
 
 // Middleware
-app.use(helmet({
-  frameguard: { action: 'deny' },
-  xssFilter: { mode: 'block' }
-}));
+app.use(
+  helmet({
+    frameguard: { action: 'deny' },
+    xssFilter: { mode: 'block' },
+  })
+);
 app.use(cors());
-app.use(bodyParser.json({
-  verify: (req, res, buf, encoding) => {
-    req.rawBody = buf.toString(encoding);
-  },
-  limit: '10mb'
-}));
-app.use(bodyParser.urlencoded({
-  extended: true,
-  verify: (req, res, buf, encoding) => {
-    req.rawBody = buf.toString(encoding);
-  },
-  limit: '10mb'
-}));
+app.use(
+  bodyParser.json({
+    verify: (req, res, buf, encoding) => {
+      req.rawBody = buf.toString(encoding);
+    },
+    limit: '10mb',
+  })
+);
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    verify: (req, res, buf, encoding) => {
+      req.rawBody = buf.toString(encoding);
+    },
+    limit: '10mb',
+  })
+);
 
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
     message: 'Astrology WhatsApp Bot API is running',
-    version: '1.0.0'
+    version: '1.0.0',
   });
 });
 
@@ -47,7 +56,7 @@ app.get('/health', (req, res) => {
     rss: Math.round(memUsage.rss / 1024 / 1024),
     heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024),
     heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024),
-    external: Math.round(memUsage.external / 1024 / 1024)
+    external: Math.round(memUsage.external / 1024 / 1024),
   };
 
   // Check if memory usage is too high (Railway containers typically have 512MB-1GB limits)
@@ -65,9 +74,9 @@ app.get('/health', (req, res) => {
     environment: {
       nodeVersion: process.version,
       platform: process.platform,
-      arch: process.arch
+      arch: process.arch,
     },
-    ...(isMemoryCritical && { warning: 'High memory usage detected' })
+    ...(isMemoryCritical && { warning: 'High memory usage detected' }),
   });
 });
 
@@ -76,7 +85,7 @@ app.get('/ready', (req, res) => {
   // Check if essential services are available
   const essentialEnvVars = [
     'W1_WHATSAPP_ACCESS_TOKEN',
-    'W1_WHATSAPP_PHONE_NUMBER_ID'
+    'W1_WHATSAPP_PHONE_NUMBER_ID',
   ];
 
   const missingVars = essentialEnvVars.filter(varName => !process.env[varName]);
@@ -90,14 +99,14 @@ app.get('/ready', (req, res) => {
       status: 'ready (with warnings)',
       timestamp: new Date().toISOString(),
       service: 'Astrology WhatsApp Bot API',
-      warnings: `Missing env vars: ${missingVars.join(', ')}`
+      warnings: `Missing env vars: ${missingVars.join(', ')}`,
     });
   }
 
   res.status(200).json({
     status: 'ready',
     timestamp: new Date().toISOString(),
-    service: 'Astrology WhatsApp Bot API'
+    service: 'Astrology WhatsApp Bot API',
   });
 });
 
@@ -106,7 +115,7 @@ app.post('/webhook', handleWhatsAppWebhook);
 app.get('/webhook', verifyWhatsAppWebhook);
 
 // Payment webhook endpoints
-app.post('/webhooks/razorpay', async(req, res) => {
+app.post('/webhooks/razorpay', async (req, res) => {
   try {
     const result = await paymentService.handleRazorpayWebhook(req.body);
     res.status(200).json(result);
@@ -116,7 +125,7 @@ app.post('/webhooks/razorpay', async(req, res) => {
   }
 });
 
-app.post('/webhooks/stripe', async(req, res) => {
+app.post('/webhooks/stripe', async (req, res) => {
   try {
     const result = await paymentService.handleStripeWebhook(req.body);
     res.status(200).json(result);
@@ -135,7 +144,7 @@ app.get('/rate-limit-test', (req, res) => {
 app.use((req, res) => {
   res.status(404).json({
     error: 'Not Found',
-    message: 'Route not found'
+    message: 'Route not found',
   });
 });
 
@@ -168,15 +177,17 @@ let server;
 let memoryMonitorInterval;
 
 if (process.env.NODE_ENV !== 'test') {
-  server = app.listen(PORT, () => {
-    logger.info(`🚀 Astrology WhatsApp Bot API is running on port ${PORT}`);
-    logger.info(`📝 Health check: http://localhost:${PORT}/health`);
-    logger.info(`📱 WhatsApp webhook: http://localhost:${PORT}/webhook`);
-    logger.info('💾 Memory usage:', process.memoryUsage());
-  }).on('error', error => {
-    logger.error('❌ Server failed to start:', error);
-    process.exit(1);
-  });
+  server = app
+    .listen(PORT, () => {
+      logger.info(`🚀 Astrology WhatsApp Bot API is running on port ${PORT}`);
+      logger.info(`📝 Health check: http://localhost:${PORT}/health`);
+      logger.info(`📱 WhatsApp webhook: http://localhost:${PORT}/webhook`);
+      logger.info('💾 Memory usage:', process.memoryUsage());
+    })
+    .on('error', error => {
+      logger.error('❌ Server failed to start:', error);
+      process.exit(1);
+    });
 
   // Start memory monitoring
   memoryMonitorInterval = setInterval(() => {
@@ -185,7 +196,7 @@ if (process.env.NODE_ENV !== 'test') {
       rss: Math.round(memUsage.rss / 1024 / 1024),
       heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024),
       heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024),
-      external: Math.round(memUsage.external / 1024 / 1024)
+      external: Math.round(memUsage.external / 1024 / 1024),
     };
 
     if (memUsageMB.heapUsed > 200) {

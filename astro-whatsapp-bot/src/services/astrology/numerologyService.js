@@ -7,7 +7,9 @@ logger.info('Module: numerologyService loaded.');
 function reduceToSingleDigit(num) {
   let sum = num;
   while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
-    sum = String(sum).split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+    sum = String(sum)
+      .split('')
+      .reduce((acc, digit) => acc + parseInt(digit), 0);
   }
   return sum;
 }
@@ -15,8 +17,9 @@ function reduceToSingleDigit(num) {
 // Helper to convert letter to numerology value
 function getLetterValue(char) {
   const charCode = char.toUpperCase().charCodeAt(0);
-  if (charCode >= 65 && charCode <= 90) { // A-Z
-    return (charCode - 65) % 9 + 1; // A=1, B=2, ..., I=9, J=1, K=2, etc.
+  if (charCode >= 65 && charCode <= 90) {
+    // A-Z
+    return ((charCode - 65) % 9) + 1; // A=1, B=2, ..., I=9, J=1, K=2, etc.
   }
   return 0;
 }
@@ -69,20 +72,24 @@ function getNumerologyReport(birthDate, fullName) {
   const report = {
     lifePath: {
       number: lifePath,
-      interpretation: numerologyData.lifePath[lifePath] || 'Interpretation not found.'
+      interpretation:
+        numerologyData.lifePath[lifePath] || 'Interpretation not found.',
     },
     expression: {
       number: expression,
-      interpretation: numerologyData.expression[expression] || 'Interpretation not found.'
+      interpretation:
+        numerologyData.expression[expression] || 'Interpretation not found.',
     },
     soulUrge: {
       number: soulUrge,
-      interpretation: numerologyData.soulUrge[soulUrge] || 'Interpretation not found.'
+      interpretation:
+        numerologyData.soulUrge[soulUrge] || 'Interpretation not found.',
     },
     personality: {
       number: personality,
-      interpretation: numerologyData.personality[personality] || 'Interpretation not found.'
-    }
+      interpretation:
+        numerologyData.personality[personality] || 'Interpretation not found.',
+    },
   };
 
   return report;
@@ -91,5 +98,5 @@ function getNumerologyReport(birthDate, fullName) {
 module.exports = {
   getNumerologyReport,
   reduceToSingleDigit, // Export for testing
-  getLetterValue // Export for testing
+  getLetterValue, // Export for testing
 };

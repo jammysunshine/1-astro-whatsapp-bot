@@ -14,7 +14,10 @@ const loadFlows = () => {
     conversationFlows = JSON.parse(data);
     logger.info('✅ Conversation flows loaded successfully.');
   } catch (error) {
-    logger.error(`❌ Error loading conversation flows from ${FLOW_CONFIG_PATH}:`, error);
+    logger.error(
+      `❌ Error loading conversation flows from ${FLOW_CONFIG_PATH}:`,
+      error
+    );
     // Don't exit process - let the app start with empty flows and handle gracefully
     conversationFlows = {};
   }
@@ -32,5 +35,5 @@ loadFlows();
 
 module.exports = {
   loadFlows,
-  getFlow
+  getFlow,
 };

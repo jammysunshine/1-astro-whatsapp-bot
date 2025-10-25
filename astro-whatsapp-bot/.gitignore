@@ -37,6 +37,7 @@ yarn-error.log*
 # Include conversation flow configuration
 !src/conversation/flowConfig.json
 !src/conversation/menuConfig.json
+!src/services/astrology/numerology_data.json
 coverage/
 .pnp
 .pnp.*

@@ -3,19 +3,19 @@
     "start_step": "welcome",
     "steps": {
       "welcome": {
-        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\n📅 *What's your birth date?*\n\n💡 *Accepted formats:*\n• DDMMYYYY (e.g., 15061990 for June 15, 1990)\n• DD/MM/YYYY (e.g., 15/06/1990)\n• DD-MM-YYYY or DD.MM.YYYY also work!\n\n*Why birth date?* Your birth chart reveals your unique cosmic blueprint!",
+        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\n📅 *What's your birth date?*\n\n💡 *Accepted formats:*\n• DDMMYY (e.g., 150690 for June 15, 1990)\n• DDMMYYYY (e.g., 15061990)\n• DD/MM/YYYY (e.g., 15/06/1990)\n• DD-MM-YYYY or DD.MM.YYYY also work!\n\n*Why birth date?* Your birth chart reveals your unique cosmic blueprint!",
         "validation": "date",
         "next_step": "ask_birth_time",
         "data_key": "birthDate",
-        "error_message": "Please provide a valid date in DDMMYYYY format (e.g., 15061990) or DD/MM/YYYY format (e.g., 15/06/1990)"
+        "error_message": "Please provide a valid date in DDMMYY (150690), DDMMYYYY (15061990), or DD/MM/YYYY (15/06/1990) format"
       },
       "ask_birth_time": {
-        "prompt": "Great! 📅 Your birth date reveals your *Sun Sign* and core personality.\n\nFor more accurate insights, what's your birth time? (HH:MM, 24-hour format)\n\n*Example:* 14:30\n\n💡 *Why birth time?* It determines your *Rising Sign* (how others see you) and *Moon Sign* (your emotional nature).\n\nOr reply 'skip' if you don't know.",
+        "prompt": "Great! 📅 Your birth date reveals your *Sun Sign* and core personality.\n\nFor more accurate insights, what's your birth time? (HHMM or HH:MM, 24-hour format)\n\n*Examples:* 1430 or 14:30\n\n💡 *Why birth time?* It determines your *Rising Sign* (how others see you) and *Moon Sign* (your emotional nature).\n\nOr reply 'skip' if you don't know.",
         "validation": "time_or_skip",
         "next_step": "ask_birth_place",
         "data_key": "birthTime",
         "optional": true,
-        "error_message": "Please provide time in HH:MM format (e.g., 14:30) or 'skip'"
+        "error_message": "Please provide time in HHMM (1430) or HH:MM (14:30) format, or 'skip'"
       },
       "ask_birth_place": {
         "prompt": "Excellent! 🌍 Birth place determines your *local planetary positions* at birth.\n\nPlease provide your birth city and country:\n\n*Example:* Mumbai, India\n\n💡 *Why birth place?* Different locations have unique astrological influences due to latitude/longitude.",
@@ -175,6 +175,23 @@
         "validation": "yes_no_or_menu",
         "next_step": "ask_partner_date",
         "error_message": "Please reply 'yes', 'no', or 'menu'"
+      }
+    }
+  },
+  "numerology_flow": {
+    "start_step": "ask_full_name",
+    "steps": {
+      "ask_full_name": {
+        "prompt": "To generate your numerology report, please tell me your full name (first and last name).",
+        "validation": "text",
+        "data_key": "fullName",
+        "next_step": "ask_birth_date_numerology"
+      },
+      "ask_birth_date_numerology": {
+        "prompt": "And what is your birth date? (DD/MM/YYYY)",
+        "validation": "date",
+        "data_key": "birthDate",
+        "action": "generate_numerology_report"
       }
     }
   }

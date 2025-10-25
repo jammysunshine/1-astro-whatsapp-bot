@@ -3,6 +3,7 @@ const { getUserSession, setUserSession, deleteUserSession, addBirthDetails, upda
 const { sendMessage } = require('../services/whatsapp/messageSender');
 const logger = require('../utils/logger');
 const vedicCalculator = require('../services/astrology/vedicCalculator');
+const numerologyService = require('../services/astrology/numerologyService');
 
 /**
  * Validates user input for a conversation step
@@ -21,27 +22,51 @@ const validateStepInput = async(input, step) => {
     return { isValid: true, cleanedValue: input.trim() };
 
   case 'date':
-    // Flexible date formats: DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, DDMMYYYY, or DDMMYY
+    // Flexible date formats: DDMMYY, DDMMYYYY, DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY
     let day, month, year;
 
-    // Check for 8-digit format first (DDMMYYYY)
-    const compactDateRegex = /^(\d{2})(\d{2})(\d{4})$/;
-    const compactMatch = input.match(compactDateRegex);
-    if (compactMatch) {
-      [, day, month, year] = compactMatch.map(Number);
+    // Check for 6-digit format first (DDMMYY - could be ambiguous)
+    const shortDateRegex = /^(\d{2})(\d{2})(\d{2})$/;
+    const shortMatch = input.match(shortDateRegex);
+    if (shortMatch) {
+      [, day, month] = shortMatch.map(Number);
+      const yy = parseInt(shortMatch[3]);
+
+      // Check if year is ambiguous (00-99, could be 1900s or 2000s)
+      if (yy >= 0 && yy <= 99) {
+        // Return special result indicating ambiguity needs user choice
+        return {
+          isValid: true,
+          needsClarification: true,
+          clarificationType: 'year_ambiguity',
+          data: { day, month, yy },
+          clarificationMessage: `📅 *Birth Year Ambiguity*\n\nYour input suggests ${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}, but the year ${yy.toString().padStart(2, '0')} could be interpreted as:`,
+          clarificationButtons: [
+            {
+              id: `year_19${yy.toString().padStart(2, '0')}`,
+              title: `19${yy.toString().padStart(2, '0')} (Before 2000)`
+            },
+            {
+              id: `year_20${yy.toString().padStart(2, '0')}`,
+              title: `20${yy.toString().padStart(2, '0')} (After 2000)`
+            }
+          ]
+        };
+      } else {
+        year = 1900 + yy; // Convert YY to YYYY (1900-1999)
+      }
     } else {
-      // Check for 6-digit format (DDMMYY - assume 1900-1999)
-      const shortDateRegex = /^(\d{2})(\d{2})(\d{2})$/;
-      const shortMatch = input.match(shortDateRegex);
-      if (shortMatch) {
-        [, day, month] = shortMatch.map(Number);
-        year = 1900 + parseInt(shortMatch[3]); // Convert YY to YYYY (1900-1999)
+      // Check for 8-digit format (DDMMYYYY)
+      const compactDateRegex = /^(\d{2})(\d{2})(\d{4})$/;
+      const compactMatch = input.match(compactDateRegex);
+      if (compactMatch) {
+        [, day, month, year] = compactMatch.map(Number);
       } else {
         // Check for separated format
         const separatedDateRegex = /^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/;
         const separatedMatch = input.match(separatedDateRegex);
         if (!separatedMatch) {
-          return { isValid: false, errorMessage: step.error_message || 'Please provide date in DDMMYYYY (15061990), DDMMYY (150690), or DD/MM/YYYY (15/06/1990) format.' };
+          return { isValid: false, errorMessage: step.error_message || 'Please provide date in DDMMYY (150690), DDMMYYYY (15061990), or DD/MM/YYYY (15/06/1990) format.' };
         }
         [, day, month, year] = separatedMatch.map(Number);
       }
@@ -63,13 +88,17 @@ const validateStepInput = async(input, step) => {
       return { isValid: true, cleanedValue: null };
     }
 
-    let hours, minutes;
+    let hours, minutes, isAmbiguous = false;
 
     // Check for HHMM format (4 digits)
     const compactTimeRegex = /^(\d{2})(\d{2})$/;
     const compactTimeMatch = input.match(compactTimeRegex);
     if (compactTimeMatch) {
       [, hours, minutes] = compactTimeMatch.map(Number);
+      // If hours 00-11, it could be AM or PM (ambiguous)
+      if (hours >= 0 && hours <= 11) {
+        isAmbiguous = true;
+      }
     } else {
       // Check for HH:MM format
       const timeRegex = /^(\d{1,2}):(\d{2})$/;
@@ -82,6 +111,27 @@ const validateStepInput = async(input, step) => {
 
     if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
       return { isValid: false, errorMessage: 'Please provide a valid time (00:00 to 23:59).' };
+    }
+
+    // Handle ambiguous time (HHMM format with hours 00-11)
+    if (isAmbiguous) {
+      return {
+        isValid: true,
+        needsClarification: true,
+        clarificationType: 'time_ambiguity',
+        data: { hours, minutes },
+        clarificationMessage: `🕐 *Time Ambiguity*\n\nYour input ${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')} could mean:`,
+        clarificationButtons: [
+          {
+            id: `time_am_${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')}`,
+            title: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} AM`
+          },
+          {
+            id: `time_pm_${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')}`,
+            title: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} PM`
+          }
+        ]
+      };
     }
 
     // Return in HH:MM format for consistency
@@ -139,9 +189,16 @@ const validateStepInput = async(input, step) => {
  * @returns {Promise<boolean>} True if the message was handled by the conversation engine, false otherwise.
  */
 const processFlowMessage = async(message, user, flowId) => {
-  const { phoneNumber } = user;
-  const messageText = message.type === 'text' ? message.text.body : '';
-  let session = await getUserSession(phoneNumber);
+  let phoneNumber;
+  try {
+    phoneNumber = user?.phoneNumber;
+    if (!phoneNumber) {
+      logger.error('❌ No phone number provided to processFlowMessage');
+      return false;
+    }
+
+    const messageText = message.type === 'text' ? message.text.body : '';
+    let session = await getUserSession(phoneNumber);
 
   const flow = getFlow(flowId);
   if (!flow) {
@@ -177,6 +234,9 @@ const processFlowMessage = async(message, user, flowId) => {
     return true;
   }
 
+  // Check if this is a clarification response (handled by messageProcessor)
+  // The clarification buttons will be mapped to resolved values and processed as text
+
   const currentStepId = session.currentStep;
   const currentStep = flow.steps[currentStepId];
 
@@ -187,15 +247,72 @@ const processFlowMessage = async(message, user, flowId) => {
     return false;
   }
 
-  // Validate user input for the current step
-  logger.info(`🔍 Validating input for step '${currentStepId}': "${messageText}"`);
-  const validationResult = await validateStepInput(messageText, currentStep);
-  if (!validationResult.isValid) {
-    logger.warn(`❌ Validation failed for step '${currentStepId}': ${validationResult.errorMessage}`);
-    await sendMessage(phoneNumber, validationResult.errorMessage || currentStep.error_message || 'Invalid input. Please try again.');
-    return true; // Handled, but input was invalid, so stay on current step
-  }
-  logger.info(`✅ Validation passed for step '${currentStepId}': cleanedValue = "${validationResult.cleanedValue}"`);
+   // Validate user input for the current step
+   logger.info(`🔍 Validating input for step '${currentStepId}': "${messageText}"`);
+   const validationResult = await validateStepInput(messageText, currentStep);
+
+   // Handle clarification needed (ambiguous input)
+   if (validationResult.needsClarification) {
+     logger.info(`🤔 Clarification needed for step '${currentStepId}': ${validationResult.clarificationType}`);
+
+     // Create a temporary interactive step for clarification
+     const clarificationStep = {
+       interactive: {
+         type: 'button_reply',
+         body: validationResult.clarificationMessage,
+         buttons: validationResult.clarificationButtons,
+         button_mappings: {}
+       }
+     };
+
+     // Set up button mappings to resolve the ambiguity
+     validationResult.clarificationButtons.forEach(button => {
+       if (validationResult.clarificationType === 'year_ambiguity') {
+         const year = button.id.split('_')[1];
+         const resolvedDate = `${validationResult.data.day.toString().padStart(2, '0')}${validationResult.data.month.toString().padStart(2, '0')}${year}`;
+         clarificationStep.interactive.button_mappings[button.id] = resolvedDate;
+       } else if (validationResult.clarificationType === 'time_ambiguity') {
+         const parts = button.id.split('_');
+         const period = parts[1]; // 'am' or 'pm'
+         const timeStr = parts[2]; // e.g., '0230'
+         const hours24 = period === 'pm' && parseInt(timeStr.substring(0, 2)) !== 12
+           ? parseInt(timeStr.substring(0, 2)) + 12
+           : period === 'am' && parseInt(timeStr.substring(0, 2)) === 12
+           ? 0
+           : parseInt(timeStr.substring(0, 2));
+         const resolvedTime = `${hours24.toString().padStart(2, '0')}:${timeStr.substring(2)}`;
+         clarificationStep.interactive.button_mappings[button.id] = resolvedTime;
+       }
+     });
+
+     // Temporarily replace current step with clarification step
+     const originalStep = currentStep;
+     flow.steps[currentStepId] = clarificationStep;
+
+     // Send clarification message
+     const buttons = clarificationStep.interactive.buttons.map(button => ({
+       type: 'reply',
+       reply: { id: button.id, title: button.title }
+     }));
+
+     await sendMessage(phoneNumber, {
+       type: 'button',
+       body: clarificationStep.interactive.body,
+       buttons
+     }, 'interactive');
+
+     // Restore original step after sending
+     flow.steps[currentStepId] = originalStep;
+
+     return true; // Handled, waiting for clarification
+   }
+
+   if (!validationResult.isValid) {
+     logger.warn(`❌ Validation failed for step '${currentStepId}': ${validationResult.errorMessage}`);
+     await sendMessage(phoneNumber, validationResult.errorMessage || currentStep.error_message || 'Invalid input. Please try again.');
+     return true; // Handled, but input was invalid, so stay on current step
+   }
+   logger.info(`✅ Validation passed for step '${currentStepId}': cleanedValue = "${validationResult.cleanedValue}"`);
 
   // Save data from current step
   if (currentStep.data_key) {
@@ -263,6 +380,15 @@ const processFlowMessage = async(message, user, flowId) => {
     await deleteUserSession(phoneNumber);
     return false;
   }
+  } catch (error) {
+    logger.error('❌ Error in processFlowMessage:', error);
+    try {
+      await sendMessage(phoneNumber, 'I\'m sorry, I encountered an error. Please try again.');
+    } catch (sendError) {
+      logger.error('❌ Error sending error message:', sendError);
+    }
+    return false;
+  }
 };
 
 /**
@@ -289,8 +415,14 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
       onboardingCompletedAt: new Date()
     });
 
-    // Generate comprehensive birth chart analysis
-    const chartData = await vedicCalculator.generateDetailedChart({ birthDate, birthTime, birthPlace });
+    // Generate comprehensive birth chart analysis with error handling
+    let chartData = {};
+    try {
+      chartData = await vedicCalculator.generateDetailedChart({ birthDate, birthTime, birthPlace });
+    } catch (error) {
+      logger.error('❌ Error generating detailed chart:', error);
+      // Continue with basic sun sign calculation
+    }
 
     // Extract key information for prompt replacement
     const sunSign = chartData.sunSign || vedicCalculator.calculateSunSign(birthDate);
@@ -304,8 +436,19 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
       'Creative problem-solving skills'
     ];
 
-    // Generate 3-day transit preview
-    const transits = await vedicCalculator.generateTransitPreview({ birthDate, birthTime, birthPlace }, 3);
+    // Generate 3-day transit preview with error handling
+    let transits = {};
+    try {
+      transits = await vedicCalculator.generateTransitPreview({ birthDate, birthTime, birthPlace }, 3);
+    } catch (error) {
+      logger.error('❌ Error generating transit preview:', error);
+      // Continue with default transits
+      transits = {
+        today: 'Today brings opportunities for new connections',
+        tomorrow: 'Tomorrow favors focused work and planning',
+        day3: 'Day 3 brings creative inspiration'
+      };
+    }
 
     // Replace placeholders in completion message
     let completionMessage = getFlow(flowId).steps.complete_onboarding.prompt;
@@ -345,6 +488,34 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
     // In production, this would integrate with payment processor
     await sendMessage(phoneNumber, `💳 *Subscription Processing*\n\nThank you for choosing the ${selectedPlan} plan!\n\nYour subscription will be activated shortly. You'll receive a confirmation message once it's ready.`);
     await deleteUserSession(phoneNumber);
+    break;
+  }
+  case 'generate_numerology_report': {
+    const birthDate = flowData.birthDate;
+    const fullName = flowData.fullName;
+
+    if (!birthDate || !fullName) {
+      await sendMessage(phoneNumber, 'I need both your full name and birth date to generate the numerology report. Please try again.');
+      await deleteUserSession(phoneNumber);
+      break;
+    }
+
+    const report = numerologyService.getNumerologyReport(birthDate, fullName);
+
+    let numerologyMessage = `✨ *Your Numerology Report* ✨\n\n`;
+    numerologyMessage += `*Life Path Number:* ${report.lifePath.number}\n`;
+    numerologyMessage += `_Interpretation:_ ${report.lifePath.interpretation}\n\n`;
+    numerologyMessage += `*Expression Number:* ${report.expression.number}\n`;
+    numerologyMessage += `_Interpretation:_ ${report.expression.interpretation}\n\n`;
+    numerologyMessage += `*Soul Urge Number:* ${report.soulUrge.number}\n`;
+    numerologyMessage += `_Interpretation:_ ${report.soulUrge.interpretation}\n\n`;
+    numerologyMessage += `*Personality Number:* ${report.personality.number}\n`;
+    numerologyMessage += `_Interpretation:_ ${report.personality.interpretation}\n\n`;
+    numerologyMessage += `I hope this sheds some light on your cosmic blueprint!`;
+
+    await sendMessage(phoneNumber, numerologyMessage);
+    await deleteUserSession(phoneNumber); // Clear session after report
+    logger.info(`✅ User ${phoneNumber} received numerology report.`);
     break;
   }
   case 'generate_compatibility': {

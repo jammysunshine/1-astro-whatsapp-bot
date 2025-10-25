@@ -25,6 +25,12 @@ const processIncomingMessage = async(message, value) => {
       return;
     }
 
+    // Validate required environment variables
+    if (!process.env.W1_WHATSAPP_ACCESS_TOKEN || !process.env.W1_WHATSAPP_PHONE_NUMBER_ID) {
+      logger.error('❌ Missing required WhatsApp environment variables');
+      return;
+    }
+
     // Get or create user
     let user = await getUserByPhone(phoneNumber);
     if (!user) {
@@ -100,6 +106,12 @@ const processTextMessage = async(message, user) => {
     } else {
       await sendMessage(phoneNumber, '💳 *Subscription Plans*\n\nWhich plan would you like to subscribe to?\n\n⭐ *Essential* - ₹230/month\n💎 *Premium* - ₹299/month\n\nJust reply with "Essential" or "Premium"!');
     }
+    return;
+  }
+
+  // Check for numerology report request
+  if (messageText.toLowerCase() === 'numerology report') {
+    await processFlowMessage(message, user, 'numerology_flow');
     return;
   }
 
@@ -239,6 +251,30 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
   if (!flow) {
     logger.error(`❌ Flow '${session.currentFlow}' not found for button reply`);
     await sendMessage(phoneNumber, 'I\'m sorry, I encountered an error. Please try again.');
+    return;
+  }
+
+  // Handle clarification buttons specially (they start with 'year_' or 'time_')
+  if (buttonId.startsWith('year_') || buttonId.startsWith('time_')) {
+    // Extract the resolved value from button ID
+    let resolvedValue;
+    if (buttonId.startsWith('year_')) {
+      resolvedValue = buttonId.split('_')[1]; // e.g., '1990' from 'year_1990'
+    } else if (buttonId.startsWith('time_')) {
+      const parts = buttonId.split('_');
+      const period = parts[1]; // 'am' or 'pm'
+      const timeStr = parts[2]; // e.g., '0230'
+      const hours24 = period === 'pm' && parseInt(timeStr.substring(0, 2)) !== 12
+        ? parseInt(timeStr.substring(0, 2)) + 12
+        : period === 'am' && parseInt(timeStr.substring(0, 2)) === 12
+        ? 0
+        : parseInt(timeStr.substring(0, 2));
+      resolvedValue = `${hours24.toString().padStart(2, '0')}:${timeStr.substring(2)}`;
+    }
+
+    // Process the resolved value as text input
+    const mockMessage = { type: 'text', text: { body: resolvedValue } };
+    await processFlowMessage(mockMessage, user, session.currentFlow);
     return;
   }
 

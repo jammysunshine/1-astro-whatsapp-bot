@@ -11,9 +11,9 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 
 ## Epics and User Stories
 
-### Epic 1: Multi-Channel Service Delivery & Core Platform
-- **Goal**: Establish a robust, scalable, and compliant multi-channel platform, starting with WhatsApp, ensuring seamless user experience and foundational services.
-- **Key Features**: WhatsApp Business API integration, multi-language support, user authentication, profile management, comprehensive onboarding, cross-platform data synchronization, and customer support.
+### Epic 1: Core WhatsApp Integration
+- **Goal**: Implement the core WhatsApp Business API integration to enable user interactions, message processing, and response generation for the astrology bot.
+- **Key Features**: WhatsApp Business API setup and configuration, message webhook handling, user authentication via WhatsApp number, basic message routing and processing, media handling for kundli sharing, compliance with WhatsApp Business API guidelines.
 - **MANDATE**: All WhatsApp user interactions MUST include interactive buttons for next actions to ensure intuitive navigation and engagement.
 - **MVP User Stories**:
     - **As a user, I want to easily authenticate using my WhatsApp number so that I can securely access personalized astrological services.** *Acceptance Criteria: User receives OTP via WhatsApp, enters code via interactive buttons, authentication completes within 30 seconds.*
@@ -192,9 +192,9 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Current Implementation**: The `conversationEngine.js` onboarding flow provides initial personalized responses and introduces elements like Sun Sign. The examples for bot experience in `INITIAL-PROMPT.md` show the desired interaction style.
 - **Gaps for MVP**: Many elements under UX and Engagement are descriptions of desired behavior and content (e.g., "Storytelling Integration", "Emotional Validation") rather than tangible features demonstrated in the code. These would need to be implemented through careful crafting of conversational flows and message content.
 
-### Epic 7: User Authentication & Profile Management
-- **Goal**: Securely manage user identities and comprehensive astrological profiles, ensuring data privacy and personalized service delivery.
-- **Key Features**: WhatsApp number verification, optional email/social login, two-factor authentication, and detailed user profile components (birth details, preferences, history).
+### Epic 7: Security, Authentication & Implementation Features
+- **Goal**: Implement comprehensive security and authentication features following BMAD methodology. This epic focuses on protecting user data and ensuring secure access to astrological services with robust authentication mechanisms.
+- **Key Features**: Advanced authentication and security features, two-factor authentication, social login options, account recovery, device management, privacy controls, session management, data encryption, input validation, webhook validation, rate limiting, CORS configuration, GDPR compliance, regional compliance, API key management, file upload validation, dependency scanning, security scanning, automated testing mandates, documentation standards, and various implementation guidelines.
 - **MVP User Stories**:
     - **As a user, I want to create and manage my profile with accurate birth details with button profile management.** *Acceptance Criteria: Profile creation guided by buttons, birth details input validated, profile editable via button, changes saved automatically.*
     - **As a user, I want to store my basic personal and birth information in my profile with button data entry.** *Acceptance Criteria: All required fields (name, DOB, time, place) collected via button forms, data validated for accuracy, stored securely, accessible for readings.*
@@ -208,9 +208,9 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Current Implementation**: `conversationEngine.js` directly calls `addBirthDetails` and `updateUserProfile` from `userModel` (though `userModel` itself isn't provided, its functions are called). This confirms the capability to collect and store birth data.
 - **Gaps for MVP**: The actual implementation details of additional verification methods (email/social login, 2FA) are **not shown**. Data privacy settings are mentioned but not explicitly implemented in the provided code.
 
-### Epic 8: Social Features & Community Building
-- **Goal**: Foster a vibrant community and enable social interaction through compatibility analysis, sharing features, and network effects, driving viral growth.
-- **Key Features**: Compatibility matching, shareable birth charts, Astro-Social Network, group readings, social proof features, and community challenges.
+### Epic 8: Educational Content, Services & Management
+- **Goal**: Implement comprehensive educational content, services, and content management following BMAD methodology. This epic focuses on content creation, educational programs, marketplace services, and content monetization strategies.
+- **Key Features**: Astrology course platform, certification programs, user-to-user service marketplace, course enrollment system, certification exams, educational CMS, content authoring tools, personalized recommendations, content analytics, expert instructor platform, marketplace commissions, course sales, certification programs, event-based monetization, affiliate ecosystem, and various educational and monetization features.
 - **MVP User Stories**:
     - **As a user, I want to analyze my compatibility with friends and partners with button compatibility analysis.** *Acceptance Criteria: Compatibility analysis accessible via button, inputs friend's birth details, generates detailed report, considers multiple astrology systems.*
     - **As a user, I want to generate and share visually appealing birth charts with others with button sharing.** *Acceptance Criteria: Birth chart generation takes <30 seconds, visually appealing design, WhatsApp sharing button functional, chart includes key astrological elements.*
@@ -298,12 +298,34 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Current Implementation**: These are strategic metrics outlined in `INITIAL-PROMPT.md`. Actual tracking and reporting mechanisms are not in the provided code snippets.
 - **Gaps for MVP**: Not applicable as this is a meta-epic for tracking.
 
-### Epic 16: Modular and Independent Architecture
-- **Goal**: Design and implement a modular and independent architecture to ensure easy updates, maintenance, and testing without impacting other parts of the codebase.
-- **Key Features**: Independent modules for features, conversation flows, and menus, ensuring plug-and-play architecture.
-- **MVP User Stories**: None directly user-facing. This is an architectural guideline.
-- **Current Implementation**: The directory structure (`src/config`, `src/controllers`, `src/conversation`, `src/services`, `src/utils`) suggests a modular approach. `conversationEngine.js` uses `getFlow` and `flowLoader` hinting at modular conversation flows.
-- **Gaps for MVP**: Not applicable as this is an internal architectural epic.
+### Epic 16: Payment Integration Enhancement
+- **Goal**: Implement enhanced payment integration and processing capabilities for the astrology WhatsApp bot.
+- **Key Features**: Advanced payment processing, regional payment methods, subscription management, billing integration, and payment security.
+- **MVP User Stories**: None directly user-facing. This is a payment infrastructure epic.
+- **Current Implementation**: Basic payment integration exists but needs enhancement for regional support and advanced features.
+- **Gaps for MVP**: Full regional payment method support and advanced billing features need implementation.
+
+### Epic 25: User Profile & Subscription Management
+- **Goal**: Implement comprehensive user profile management and subscription lifecycle handling for the astrology WhatsApp bot.
+- **Key Features**: User profile creation and management, subscription plans and tier management, billing integration and lifecycle handling, account upgrades and downgrades.
+- **MVP User Stories**:
+    - **As a user, I want to create and manage my profile so that I can personalize my astrology experience.** *Acceptance Criteria: Profile creation with personal details, editing capabilities, privacy settings, data validation.*
+    - **As a business owner, I want subscription plans so that I can offer different service levels.** *Acceptance Criteria: Free and premium tiers defined, feature access control, plan comparison, benefits communication.*
+    - **As a user, I want automated billing management so that my subscription renews seamlessly.** *Acceptance Criteria: Automated billing cycles, payment method storage, renewal notifications, failed payment handling.*
+    - **As a user, I want to change my subscription so that I can adjust my service level.** *Acceptance Criteria: Seamless upgrade/downgrade process, prorated billing, immediate feature access changes.*
+- **Current Implementation**: Basic user profiles exist but need enhancement for subscription management.
+- **Gaps for MVP**: Full subscription lifecycle and billing integration need implementation.
+
+### Epic 26: Customer Support & Feedback System
+- **Goal**: Implement comprehensive customer support and feedback collection system for the astrology WhatsApp bot.
+- **Key Features**: Support chat integration with WhatsApp, feedback collection and rating systems, support ticket management and escalation, analytics for support performance.
+- **MVP User Stories**:
+    - **As a user, I want to contact support through WhatsApp so that I can get help conveniently.** *Acceptance Criteria: Support chat accessible via commands, agent routing, chat history preservation, session management.*
+    - **As a business owner, I want to collect user feedback so that I can improve the service.** *Acceptance Criteria: Feedback collection after interactions, rating system, open-ended feedback, feedback storage.*
+    - **As a support agent, I want ticket management so that I can track and resolve issues.** *Acceptance Criteria: Automatic ticket creation, prioritization, resolution tracking, escalation procedures.*
+    - **As a manager, I want support analytics so that I can monitor support quality.** *Acceptance Criteria: Response time tracking, resolution rates, performance dashboards, feedback analysis.*
+- **Current Implementation**: No dedicated support system exists.
+- **Gaps for MVP**: Full support system and feedback collection need implementation.
 
 ## Core Features (Developed with BMAd Methodology)
 

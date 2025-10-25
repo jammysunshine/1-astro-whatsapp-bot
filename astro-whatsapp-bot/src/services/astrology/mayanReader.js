@@ -73,10 +73,10 @@ class MayanReader {
 
     // Year bearers and their significance
     this.yearBearers = {
-      'Ik': { meaning: 'Wind Year', qualities: ['Change', 'Communication', 'Adaptability'] },
-      'Manik': { meaning: 'Deer Year', qualities: ['Healing', 'Cooperation', 'Skill'] },
-      'Eb': { meaning: 'Human Year', qualities: ['Service', 'Wisdom', 'Community'] },
-      'Caban': { meaning: 'Earth Year', qualities: ['Stability', 'Foundation', 'Movement'] }
+      Ik: { meaning: 'Wind Year', qualities: ['Change', 'Communication', 'Adaptability'] },
+      Manik: { meaning: 'Deer Year', qualities: ['Healing', 'Cooperation', 'Skill'] },
+      Eb: { meaning: 'Human Year', qualities: ['Service', 'Wisdom', 'Community'] },
+      Caban: { meaning: 'Earth Year', qualities: ['Stability', 'Foundation', 'Movement'] }
     };
   }
 
@@ -246,7 +246,7 @@ class MayanReader {
         sign: yearBearerName,
         meaning: this.yearBearers[yearBearerName].meaning,
         qualities: this.yearBearers[yearBearerName].qualities,
-        year: year
+        year
       };
     } catch (error) {
       logger.error('Error calculating year bearer:', error);
@@ -272,10 +272,10 @@ class MayanReader {
     // Determine dominant element
     const elements = { Fire: 0, Water: 0, Air: 0, Earth: 0 };
     uniqueTraits.forEach(trait => {
-      if (tzolkin.daySign.element) elements[tzolkin.daySign.element]++;
+      if (tzolkin.daySign.element) { elements[tzolkin.daySign.element]++; }
     });
 
-    const dominantElement = Object.entries(elements).reduce((a, b) => elements[a[0]] > elements[b[0]] ? a : b)[0];
+    const dominantElement = Object.entries(elements).reduce((a, b) => (elements[a[0]] > elements[b[0]] ? a : b))[0];
 
     return {
       traits: uniqueTraits.slice(0, 6),
@@ -332,26 +332,26 @@ class MayanReader {
    */
   getDayActivities(tzolkin) {
     const activities = {
-      'Imix': ['Creative projects', 'Nurturing activities', 'Water-related work'],
-      'Ik': ['Communication', 'Writing', 'Wind or air activities'],
-      'Akbal': ['Dream work', 'Meditation', 'Night activities'],
-      'Kan': ['Financial planning', 'Healing work', 'Prosperity rituals'],
-      'Chicchan': ['Physical activities', 'Sensual experiences', 'Survival skills'],
-      'Cimi': ['Release rituals', 'Transformation work', 'Closure activities'],
-      'Manik': ['Healing practices', 'Cooperative work', 'Skill development'],
-      'Lamat': ['Creative expression', 'Fertility rituals', 'Artistic pursuits'],
-      'Muluc': ['Emotional work', 'Purification rituals', 'Offerings'],
-      'Oc': ['Loyalty building', 'Guidance work', 'Protective activities'],
-      'Chuen': ['Playful activities', 'Creative projects', 'Magical work'],
-      'Eb': ['Service work', 'Community activities', 'Wisdom sharing'],
-      'Ben': ['Leadership activities', 'Growth work', 'Authority roles'],
-      'Ix': ['Shamanic work', 'Mystical practices', 'Inner strength building'],
-      'Men': ['Vision quests', 'Perspective work', 'Freedom activities'],
-      'Cib': ['Ancestral work', 'Wisdom seeking', 'Transition rituals'],
-      'Caban': ['Movement practices', 'Earth work', 'Synchronicity observation'],
-      'Eznab': ['Truth seeking', 'Justice work', 'Reflection practices'],
-      'Cauac': ['Cleansing rituals', 'Energy work', 'Renewal activities'],
-      'Ahau': ['Leadership', 'Enlightenment work', 'Solar practices']
+      Imix: ['Creative projects', 'Nurturing activities', 'Water-related work'],
+      Ik: ['Communication', 'Writing', 'Wind or air activities'],
+      Akbal: ['Dream work', 'Meditation', 'Night activities'],
+      Kan: ['Financial planning', 'Healing work', 'Prosperity rituals'],
+      Chicchan: ['Physical activities', 'Sensual experiences', 'Survival skills'],
+      Cimi: ['Release rituals', 'Transformation work', 'Closure activities'],
+      Manik: ['Healing practices', 'Cooperative work', 'Skill development'],
+      Lamat: ['Creative expression', 'Fertility rituals', 'Artistic pursuits'],
+      Muluc: ['Emotional work', 'Purification rituals', 'Offerings'],
+      Oc: ['Loyalty building', 'Guidance work', 'Protective activities'],
+      Chuen: ['Playful activities', 'Creative projects', 'Magical work'],
+      Eb: ['Service work', 'Community activities', 'Wisdom sharing'],
+      Ben: ['Leadership activities', 'Growth work', 'Authority roles'],
+      Ix: ['Shamanic work', 'Mystical practices', 'Inner strength building'],
+      Men: ['Vision quests', 'Perspective work', 'Freedom activities'],
+      Cib: ['Ancestral work', 'Wisdom seeking', 'Transition rituals'],
+      Caban: ['Movement practices', 'Earth work', 'Synchronicity observation'],
+      Eznab: ['Truth seeking', 'Justice work', 'Reflection practices'],
+      Cauac: ['Cleansing rituals', 'Energy work', 'Renewal activities'],
+      Ahau: ['Leadership', 'Enlightenment work', 'Solar practices']
     };
 
     return activities[tzolkin.daySign.name] || ['Spiritual practices', 'Self-reflection', 'Community work'];
@@ -364,26 +364,26 @@ class MayanReader {
    */
   generateAffirmation(tzolkin) {
     const affirmations = {
-      'Imix': 'I embrace my creative potential and nurture new beginnings',
-      'Ik': 'I communicate with clarity and adapt to change',
-      'Akbal': 'I trust my intuition and honor my dreams',
-      'Kan': 'I attract abundance and heal with divine energy',
-      'Chicchan': 'I honor my instincts and embrace life\'s vitality',
-      'Cimi': 'I embrace change and trust the cycle of transformation',
-      'Manik': 'I heal myself and others with skillful cooperation',
-      'Lamat': 'I create abundance and express my artistic soul',
-      'Muluc': 'I flow with emotional wisdom and make sacred offerings',
-      'Oc': 'I am loyal, guided, and protective of what matters',
-      'Chuen': 'I create magic through playfulness and ingenuity',
-      'Eb': 'I serve humanity with wisdom and walk my path',
-      'Ben': 'I lead with authority and grow toward divine connection',
-      'Ix': 'I embrace my inner magic and shamanic power',
-      'Men': 'I see with eagle vision and embrace spiritual freedom',
-      'Cib': 'I honor ancestral wisdom and guide transitions',
-      'Caban': 'I move with earth wisdom and observe synchronicity',
-      'Eznab': 'I reflect truth and wield justice with clarity',
-      'Cauac': 'I cleanse and renew with storm energy',
-      'Ahau': 'I shine with divine light and enlightened authority'
+      Imix: 'I embrace my creative potential and nurture new beginnings',
+      Ik: 'I communicate with clarity and adapt to change',
+      Akbal: 'I trust my intuition and honor my dreams',
+      Kan: 'I attract abundance and heal with divine energy',
+      Chicchan: 'I honor my instincts and embrace life\'s vitality',
+      Cimi: 'I embrace change and trust the cycle of transformation',
+      Manik: 'I heal myself and others with skillful cooperation',
+      Lamat: 'I create abundance and express my artistic soul',
+      Muluc: 'I flow with emotional wisdom and make sacred offerings',
+      Oc: 'I am loyal, guided, and protective of what matters',
+      Chuen: 'I create magic through playfulness and ingenuity',
+      Eb: 'I serve humanity with wisdom and walk my path',
+      Ben: 'I lead with authority and grow toward divine connection',
+      Ix: 'I embrace my inner magic and shamanic power',
+      Men: 'I see with eagle vision and embrace spiritual freedom',
+      Cib: 'I honor ancestral wisdom and guide transitions',
+      Caban: 'I move with earth wisdom and observe synchronicity',
+      Eznab: 'I reflect truth and wield justice with clarity',
+      Cauac: 'I cleanse and renew with storm energy',
+      Ahau: 'I shine with divine light and enlightened authority'
     };
 
     return affirmations[tzolkin.daySign.name] || 'I walk the sacred path of the Mayan calendar';
@@ -399,15 +399,15 @@ class MayanReader {
     const strengths = [];
 
     // Tone-based strengths
-    if (tzolkin.tone.name === 'Magnetic') strengths.push('Natural leadership and attraction');
-    if (tzolkin.tone.name === 'Lunar') strengths.push('Balance and cooperation');
-    if (tzolkin.tone.name === 'Electric') strengths.push('Communication and service');
-    if (tzolkin.tone.name === 'Self-Existing') strengths.push('Stability and definition');
+    if (tzolkin.tone.name === 'Magnetic') { strengths.push('Natural leadership and attraction'); }
+    if (tzolkin.tone.name === 'Lunar') { strengths.push('Balance and cooperation'); }
+    if (tzolkin.tone.name === 'Electric') { strengths.push('Communication and service'); }
+    if (tzolkin.tone.name === 'Self-Existing') { strengths.push('Stability and definition'); }
 
     // Day sign-based strengths
-    if (tzolkin.daySign.name === 'Ahau') strengths.push('Divine authority and enlightenment');
-    if (tzolkin.daySign.name === 'Imix') strengths.push('Creative potential and nurturing');
-    if (tzolkin.daySign.name === 'Ix') strengths.push('Inner magic and shamanic wisdom');
+    if (tzolkin.daySign.name === 'Ahau') { strengths.push('Divine authority and enlightenment'); }
+    if (tzolkin.daySign.name === 'Imix') { strengths.push('Creative potential and nurturing'); }
+    if (tzolkin.daySign.name === 'Ix') { strengths.push('Inner magic and shamanic wisdom'); }
 
     return strengths.slice(0, 4);
   }
@@ -422,15 +422,15 @@ class MayanReader {
     const challenges = [];
 
     // Tone-based challenges
-    if (tzolkin.tone.name === 'Spectral') challenges.push('Learning to release and let go');
-    if (tzolkin.tone.name === 'Crystal') challenges.push('Balancing cooperation with personal needs');
+    if (tzolkin.tone.name === 'Spectral') { challenges.push('Learning to release and let go'); }
+    if (tzolkin.tone.name === 'Crystal') { challenges.push('Balancing cooperation with personal needs'); }
 
     // Day sign-based challenges
-    if (tzolkin.daySign.name === 'Cimi') challenges.push('Embracing necessary endings');
-    if (tzolkin.daySign.name === 'Cauac') challenges.push('Managing intense transformative energy');
+    if (tzolkin.daySign.name === 'Cimi') { challenges.push('Embracing necessary endings'); }
+    if (tzolkin.daySign.name === 'Cauac') { challenges.push('Managing intense transformative energy'); }
 
     // Haab-based challenges
-    if (haab.isWayeb) challenges.push('Navigating the five unlucky days with wisdom');
+    if (haab.isWayeb) { challenges.push('Navigating the five unlucky days with wisdom'); }
 
     return challenges.slice(0, 3);
   }
@@ -443,12 +443,12 @@ class MayanReader {
    */
   calculateLifePurpose(tzolkin, haab) {
     const purposes = {
-      'Ahau': 'To shine divine light and lead with enlightened authority',
-      'Imix': 'To nurture creation and bring forth new potential',
-      'Ix': 'To embrace inner magic and guide others shamanically',
-      'Men': 'To see with spiritual vision and embrace freedom',
-      'Cib': 'To honor ancestral wisdom and guide transitions',
-      'Ben': 'To grow in divine connection and lead with authority'
+      Ahau: 'To shine divine light and lead with enlightened authority',
+      Imix: 'To nurture creation and bring forth new potential',
+      Ix: 'To embrace inner magic and guide others shamanically',
+      Men: 'To see with spiritual vision and embrace freedom',
+      Cib: 'To honor ancestral wisdom and guide transitions',
+      Ben: 'To grow in divine connection and lead with authority'
     };
 
     return purposes[tzolkin.daySign.name] || `To embody the wisdom of ${tzolkin.daySign.name} and contribute to cosmic harmony`;
@@ -462,30 +462,30 @@ class MayanReader {
    * @returns {string} Mayan description
    */
   generateMayanDescription(tzolkin, haab, yearBearer) {
-    let description = `🗓️ *Mayan Calendar Analysis*\n\n`;
+    let description = '🗓️ *Mayan Calendar Analysis*\n\n';
 
-    description += `🔮 *Tzolk'in (Sacred Calendar):*\n`;
+    description += '🔮 *Tzolk\'in (Sacred Calendar):*\n';
     description += `• Kin: ${tzolkin.kin} - ${tzolkin.fullName}\n`;
     description += `• Tone: ${tzolkin.tone.name} (${tzolkin.tone.meaning})\n`;
     description += `• Day Sign: ${tzolkin.daySign.name} (${tzolkin.daySign.meaning})\n`;
     description += `• Element: ${tzolkin.daySign.element}\n`;
     description += `• Direction: ${tzolkin.daySign.direction}\n\n`;
 
-    description += `☀️ *Haab (Solar Calendar):*\n`;
+    description += '☀️ *Haab (Solar Calendar):*\n';
     description += `• Date: ${haab.fullName}\n`;
     description += `• Month: ${haab.monthName} (${haab.meaning})\n`;
     description += `• Qualities: ${haab.qualities.join(', ')}\n\n`;
 
-    description += `🌟 *Year Bearer:*\n`;
+    description += '🌟 *Year Bearer:*\n';
     description += `• Sign: ${yearBearer.sign}\n`;
     description += `• Meaning: ${yearBearer.meaning}\n`;
     description += `• Year: ${yearBearer.year}\n\n`;
 
-    description += `💫 *Personality Insights:*\n`;
+    description += '💫 *Personality Insights:*\n';
     description += `• Key Traits: ${tzolkin.qualities.slice(0, 4).join(', ')}\n`;
     description += `• Life Path: ${this.calculateLifePath(tzolkin)}\n\n`;
 
-    description += `📅 *Daily Guidance:*\n`;
+    description += '📅 *Daily Guidance:*\n';
     description += `• Focus: ${tzolkin.daySign.qualities[0]}\n`;
     description += `• Activities: ${this.getDayActivities(tzolkin).slice(0, 2).join(', ')}\n`;
     description += `• Affirmation: ${this.generateAffirmation(tzolkin)}`;

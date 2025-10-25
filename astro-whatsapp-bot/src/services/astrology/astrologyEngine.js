@@ -97,8 +97,8 @@ const generateAstrologyResponse = async(messageText, user) => {
   if (message.includes('tarot') || message.includes('card') || message.includes('reading')) {
     try {
       const spread = message.includes('celtic') ? 'celtic' :
-                    message.includes('three') ? 'three' :
-                    message.includes('single') ? 'single' : 'single';
+        message.includes('three') ? 'three' :
+          message.includes('single') ? 'single' : 'single';
 
       let reading;
       switch (spread) {
@@ -118,7 +118,7 @@ const generateAstrologyResponse = async(messageText, user) => {
       reading.cards.forEach((card, index) => {
         response += `*${card.position}:* ${card.name}\n`;
         response += `• ${card.meaning}\n`;
-        if (card.advice) response += `• *Advice:* ${card.advice}\n`;
+        if (card.advice) { response += `• *Advice:* ${card.advice}\n`; }
         response += '\n';
       });
 

@@ -188,7 +188,7 @@ class TarotReader {
         question: question || 'General guidance',
         cards: [{
           position: 'Current Situation',
-          card: card,
+          card,
           interpretation: card.interpretation
         }],
         summary: this.generateReadingSummary([card], 'single', question)
@@ -214,7 +214,7 @@ class TarotReader {
         question: question || 'General guidance',
         cards: cards.map((card, index) => ({
           position: spread.positions[index],
-          card: card,
+          card,
           interpretation: card.interpretation
         })),
         summary: this.generateReadingSummary(cards, 'three', question)
@@ -242,7 +242,7 @@ class TarotReader {
         question: question || 'Life situation analysis',
         cards: cards.map((card, index) => ({
           position: spread.positions[index],
-          card: card,
+          card,
           interpretation: card.interpretation
         })),
         summary: this.generateReadingSummary(cards, 'celtic_cross', question)
@@ -270,7 +270,7 @@ class TarotReader {
         question: question || 'Relationship guidance',
         cards: cards.map((card, index) => ({
           position: spread.positions[index],
-          card: card,
+          card,
           interpretation: card.interpretation
         })),
         summary: this.generateReadingSummary(cards, 'relationship', question)
@@ -298,7 +298,7 @@ class TarotReader {
         question: question || 'Career guidance',
         cards: cards.map((card, index) => ({
           position: spread.positions[index],
-          card: card,
+          card,
           interpretation: card.interpretation
         })),
         summary: this.generateReadingSummary(cards, 'career', question)
@@ -375,14 +375,14 @@ class TarotReader {
       message += `*Question:* ${reading.question}\n\n`;
 
       reading.cards.forEach((cardInfo, index) => {
-        const card = cardInfo.card;
+        const { card } = cardInfo;
         message += `*${index + 1}. ${cardInfo.position}:*\n`;
         message += `🎴 ${card.name} ${card.reversed ? '(Reversed)' : '(Upright)'}\n`;
         message += `💫 ${cardInfo.interpretation}\n\n`;
       });
 
       message += `*Summary:*\n${reading.summary}\n\n`;
-      message += `⭐ *Remember:* Tarot provides guidance, not certainty. Trust your intuition! ✨`;
+      message += '⭐ *Remember:* Tarot provides guidance, not certainty. Trust your intuition! ✨';
 
       return message;
     } catch (error) {

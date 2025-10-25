@@ -207,6 +207,37 @@ npm run test:coverage
 npm run test:watch
 ```
 
+### WhatsApp Integration Testing
+
+The bot includes a comprehensive WhatsApp testing suite for validating API integration:
+
+```bash
+# Validate WhatsApp access token
+./whatsapp-test-suite.sh validate-token
+
+# Send a test message
+./whatsapp-test-suite.sh test-message
+
+# Trigger bot menu response
+./whatsapp-test-suite.sh trigger-menu
+
+# Send interactive menu with buttons
+./whatsapp-test-suite.sh interactive-menu
+
+# Run all WhatsApp tests
+./whatsapp-test-suite.sh all
+
+# Show help
+./whatsapp-test-suite.sh help
+```
+
+**Features:**
+- Reads configuration from `.env` file (no hardcoded values)
+- Validates WhatsApp access token
+- Tests message sending capabilities
+- Tests interactive menu functionality
+- Comprehensive error handling and reporting
+
 ## 🛡️ Security
 
 ### Security Measures

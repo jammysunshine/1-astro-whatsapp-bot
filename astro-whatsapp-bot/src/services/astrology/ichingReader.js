@@ -305,8 +305,8 @@ class IChingReader {
     // Relating hexagram inverts all lines
     const relatingLines = hexagram.lines.map(line => {
       // Yin (6,8) becomes Yang (7,9) and vice versa
-      if (line === 6 || line === 8) return 7;
-      if (line === 7 || line === 9) return 8;
+      if (line === 6 || line === 8) { return 7; }
+      if (line === 7 || line === 9) { return 8; }
       return line;
     });
 
@@ -327,7 +327,7 @@ class IChingReader {
    * @returns {Object} Interpretation
    */
   generateInterpretation(primaryHexagram, changingLines, transformedHexagram) {
-    let interpretation = {
+    const interpretation = {
       primary: `Hexagram ${primaryHexagram.number}: ${primaryHexagram.name}`,
       guidance: primaryHexagram.judgment,
       situation: this.extractSituation(primaryHexagram),
@@ -387,7 +387,7 @@ class IChingReader {
    * @returns {string} I Ching description
    */
   generateIChingDescription(primaryHexagram, changingLines, transformedHexagram) {
-    let description = `🔮 *I Ching Reading*\n\n`;
+    let description = '🔮 *I Ching Reading*\n\n';
 
     description += `📖 *Primary Hexagram: ${primaryHexagram.number} - ${primaryHexagram.name}*\n`;
     description += `• Upper Trigram: ${primaryHexagram.upperTrigram.name} (${primaryHexagram.upperTrigram.symbol})\n`;
@@ -398,7 +398,7 @@ class IChingReader {
     description += `🖼️ *Image:*\n${primaryHexagram.image}\n\n`;
 
     if (changingLines.length > 0) {
-      description += `🔄 *Changing Lines:*\n`;
+      description += '🔄 *Changing Lines:*\n';
       changingLines.forEach(line => {
         description += `• Line ${line} is transforming\n`;
       });
@@ -406,7 +406,7 @@ class IChingReader {
       description += `• Judgment: ${transformedHexagram.judgment}\n\n`;
     }
 
-    description += `🧘 *Meditation Focus:*\n`;
+    description += '🧘 *Meditation Focus:*\n';
     description += `• Reflect on the balance of ${primaryHexagram.upperTrigram.qualities[0]} and ${primaryHexagram.lowerTrigram.qualities[0]}\n`;
     description += `• Consider: ${this.extractSituation(primaryHexagram)}\n\n`;
 

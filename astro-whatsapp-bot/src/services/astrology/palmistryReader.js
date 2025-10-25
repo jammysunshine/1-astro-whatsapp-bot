@@ -385,9 +385,9 @@ class PalmistryReader {
 
   analyzeLineFeatures(characteristics) {
     const features = [];
-    if (characteristics.broken) features.push('Indicates major changes or challenges');
-    if (characteristics.chained) features.push('Shows complexity and multiple influences');
-    if (characteristics.forked) features.push('Suggests choices and alternative paths');
+    if (characteristics.broken) { features.push('Indicates major changes or challenges'); }
+    if (characteristics.chained) { features.push('Shows complexity and multiple influences'); }
+    if (characteristics.forked) { features.push('Suggests choices and alternative paths'); }
     return features;
   }
 
@@ -491,7 +491,7 @@ class PalmistryReader {
         return `✋ *Palmistry Analysis Error*\n\n${analysis.error}`;
       }
 
-      let message = `✋ *Palmistry Analysis*\n\n`;
+      let message = '✋ *Palmistry Analysis*\n\n';
 
       // Hand Type
       if (analysis.handType && !analysis.handType.error) {
@@ -514,7 +514,7 @@ class PalmistryReader {
 
       // Life Predictions
       if (analysis.lifePredictions && !analysis.lifePredictions.error) {
-        message += `*Life Insights:*\n`;
+        message += '*Life Insights:*\n';
         Object.entries(analysis.lifePredictions).forEach(([area, prediction]) => {
           message += `• *${area.charAt(0).toUpperCase() + area.slice(1)}:* ${prediction}\n`;
         });
@@ -523,14 +523,14 @@ class PalmistryReader {
 
       // Recommendations
       if (analysis.recommendations && analysis.recommendations.length > 0) {
-        message += `*Recommendations:*\n`;
+        message += '*Recommendations:*\n';
         analysis.recommendations.forEach(rec => {
           message += `• ${rec}\n`;
         });
         message += '\n';
       }
 
-      message += `⭐ *Remember:* Palmistry provides insights into potential life patterns. Your choices shape your destiny! ✨`;
+      message += '⭐ *Remember:* Palmistry provides insights into potential life patterns. Your choices shape your destiny! ✨';
 
       return message;
     } catch (error) {

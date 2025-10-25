@@ -253,33 +253,33 @@ class NadiReader {
     try {
       // Nakshatra-based remedies
       const nakshatraRemedies = {
-        'Ashwini': ['Horse donation', 'White color offerings', 'Morning prayers'],
-        'Bharani': ['Yam mantra chanting', 'Red color offerings', 'Courage-building activities'],
-        'Krittika': ['Fire rituals', 'Gold offerings', 'Leadership development'],
-        'Rohini': ['Brahma mantra', 'White flowers', 'Creative pursuits'],
-        'Mrigashira': ['Moon offerings', 'Green color', 'Emotional healing'],
-        'Ardra': ['Rudra prayers', 'Water offerings', 'Conflict resolution'],
-        'Punarvasu': ['Aditi worship', 'White clothes', 'Family harmony'],
-        'Pushya': ['Brihaspati prayers', 'Yellow offerings', 'Wisdom seeking'],
-        'Ashlesha': ['Snake offerings', 'Copper items', 'Communication improvement'],
-        'Magha': ['Ancestor worship', 'Black color', 'Legacy building'],
+        Ashwini: ['Horse donation', 'White color offerings', 'Morning prayers'],
+        Bharani: ['Yam mantra chanting', 'Red color offerings', 'Courage-building activities'],
+        Krittika: ['Fire rituals', 'Gold offerings', 'Leadership development'],
+        Rohini: ['Brahma mantra', 'White flowers', 'Creative pursuits'],
+        Mrigashira: ['Moon offerings', 'Green color', 'Emotional healing'],
+        Ardra: ['Rudra prayers', 'Water offerings', 'Conflict resolution'],
+        Punarvasu: ['Aditi worship', 'White clothes', 'Family harmony'],
+        Pushya: ['Brihaspati prayers', 'Yellow offerings', 'Wisdom seeking'],
+        Ashlesha: ['Snake offerings', 'Copper items', 'Communication improvement'],
+        Magha: ['Ancestor worship', 'Black color', 'Legacy building'],
         'Purva Phalguni': ['Bhaga prayers', 'Red flowers', 'Relationship healing'],
         'Uttara Phalguni': ['Aryaman worship', 'White offerings', 'Justice pursuits'],
-        'Hasta': ['Savitar prayers', 'Green color', 'Skill development'],
-        'Chitra': ['Vishwakarma worship', 'Multi-color offerings', 'Creative expression'],
-        'Swati': ['Vayu prayers', 'Mixed colors', 'Balance seeking'],
-        'Vishakha': ['Indra worship', 'Purple offerings', 'Leadership roles'],
-        'Anuradha': ['Mitra prayers', 'Red color', 'Friendship building'],
-        'Jyeshtha': ['Indra worship', 'Blue color', 'Authority development'],
-        'Mula': ['Nirriti prayers', 'Black offerings', 'Transformation work'],
+        Hasta: ['Savitar prayers', 'Green color', 'Skill development'],
+        Chitra: ['Vishwakarma worship', 'Multi-color offerings', 'Creative expression'],
+        Swati: ['Vayu prayers', 'Mixed colors', 'Balance seeking'],
+        Vishakha: ['Indra worship', 'Purple offerings', 'Leadership roles'],
+        Anuradha: ['Mitra prayers', 'Red color', 'Friendship building'],
+        Jyeshtha: ['Indra worship', 'Blue color', 'Authority development'],
+        Mula: ['Nirriti prayers', 'Black offerings', 'Transformation work'],
         'Purva Ashadha': ['Apas worship', 'Blue color', 'Emotional healing'],
         'Uttara Ashadha': ['Vishwadevas prayers', 'Mixed colors', 'Community service'],
-        'Shravana': ['Vishwakarma worship', 'White color', 'Learning pursuits'],
-        'Dhanishta': ['Vasus prayers', 'Gold color', 'Prosperity rituals'],
-        'Shatabhisha': ['Varuna worship', 'Blue color', 'Healing practices'],
+        Shravana: ['Vishwakarma worship', 'White color', 'Learning pursuits'],
+        Dhanishta: ['Vasus prayers', 'Gold color', 'Prosperity rituals'],
+        Shatabhisha: ['Varuna worship', 'Blue color', 'Healing practices'],
         'Purva Bhadrapada': ['Aja Ekapada prayers', 'Purple color', 'Spiritual growth'],
         'Uttara Bhadrapada': ['Ahir Budhnya worship', 'Mixed colors', 'Wisdom seeking'],
-        'Revati': ['Pushan prayers', 'Yellow color', 'Nurturing activities']
+        Revati: ['Pushan prayers', 'Yellow color', 'Nurturing activities']
       };
 
       const nakshatraRemedy = nakshatraRemedies[birthNakshatra.name];
@@ -315,7 +315,7 @@ class NadiReader {
 
       return {
         compatibleSigns: compatibleNakshatras,
-        bestMatches: bestMatches,
+        bestMatches,
         relationshipAdvice: this.getRelationshipAdvice(birthNakshatra.name)
       };
     } catch (error) {
@@ -342,33 +342,33 @@ class NadiReader {
 
   getNakshatraCharacteristics(nakshatraName) {
     const characteristics = {
-      'Ashwini': 'Independent, energetic, healing abilities, pioneering spirit',
-      'Bharani': 'Ambitious, courageous, transformative, leadership qualities',
-      'Krittika': 'Sharp intellect, leadership, purification, warrior spirit',
-      'Rohini': 'Creative, nurturing, material success, artistic talents',
-      'Mrigashira': 'Research-oriented, restless, communicative, searching nature',
-      'Ardra': 'Dynamic, stormy, destructive-constructive, research abilities',
-      'Punarvasu': 'Spiritual, learned, wealthy, devoted to elders',
-      'Pushya': 'Nurturing, spiritual, prosperous, caring nature',
-      'Ashlesha': 'Psychic, intuitive, healing, mystical abilities',
-      'Magha': 'Royal, authoritative, spiritual, ancestral connection',
+      Ashwini: 'Independent, energetic, healing abilities, pioneering spirit',
+      Bharani: 'Ambitious, courageous, transformative, leadership qualities',
+      Krittika: 'Sharp intellect, leadership, purification, warrior spirit',
+      Rohini: 'Creative, nurturing, material success, artistic talents',
+      Mrigashira: 'Research-oriented, restless, communicative, searching nature',
+      Ardra: 'Dynamic, stormy, destructive-constructive, research abilities',
+      Punarvasu: 'Spiritual, learned, wealthy, devoted to elders',
+      Pushya: 'Nurturing, spiritual, prosperous, caring nature',
+      Ashlesha: 'Psychic, intuitive, healing, mystical abilities',
+      Magha: 'Royal, authoritative, spiritual, ancestral connection',
       'Purva Phalguni': 'Creative, romantic, pleasure-seeking, diplomatic',
       'Uttara Phalguni': 'Charitable, prosperous, spiritual, service-oriented',
-      'Hasta': 'Healing, skilled, artistic, communicative',
-      'Chitra': 'Creative, artistic, skillful, dynamic',
-      'Swati': 'Independent, harmonious, diplomatic, self-sufficient',
-      'Vishakha': 'Social, ambitious, goal-oriented, leadership',
-      'Anuradha': 'Devotional, successful, friendly, spiritual',
-      'Jyeshtha': 'Eldest, authoritative, knowledgeable, occult abilities',
-      'Mula': 'Research, spiritual, destructive-constructive, philosophical',
+      Hasta: 'Healing, skilled, artistic, communicative',
+      Chitra: 'Creative, artistic, skillful, dynamic',
+      Swati: 'Independent, harmonious, diplomatic, self-sufficient',
+      Vishakha: 'Social, ambitious, goal-oriented, leadership',
+      Anuradha: 'Devotional, successful, friendly, spiritual',
+      Jyeshtha: 'Eldest, authoritative, knowledgeable, occult abilities',
+      Mula: 'Research, spiritual, destructive-constructive, philosophical',
       'Purva Ashadha': 'Victorious, ambitious, spiritual, leadership',
       'Uttara Ashadha': 'Spiritual, victorious, ambitious, leadership',
-      'Shravana': 'Learning, fame, spiritual, devoted',
-      'Dhanishta': 'Musical, prosperous, spiritual, wealthy',
-      'Shatabhisha': 'Healing, mystical, research, independent',
+      Shravana: 'Learning, fame, spiritual, devoted',
+      Dhanishta: 'Musical, prosperous, spiritual, wealthy',
+      Shatabhisha: 'Healing, mystical, research, independent',
       'Purva Bhadrapada': 'Spiritual, creative, mystical, transformative',
       'Uttara Bhadrapada': 'Spiritual, charitable, prosperous, wise',
-      'Revati': 'Prosperous, spiritual, guiding, compassionate'
+      Revati: 'Prosperous, spiritual, guiding, compassionate'
     };
     return characteristics[nakshatraName] || 'Unique characteristics and abilities';
   }
@@ -420,33 +420,33 @@ class NadiReader {
 
   getNakshatraHealthFocus(nakshatraName) {
     const healthFocus = {
-      'Ashwini': 'head and nervous system',
-      'Bharani': 'reproductive system',
-      'Krittika': 'digestive system',
-      'Rohini': 'throat and neck',
-      'Mrigashira': 'respiratory system',
-      'Ardra': 'skin and nervous system',
-      'Punarvasu': 'lungs and digestive system',
-      'Pushya': 'stomach and digestive health',
-      'Ashlesha': 'digestive and nervous system',
-      'Magha': 'bones and skeletal system',
+      Ashwini: 'head and nervous system',
+      Bharani: 'reproductive system',
+      Krittika: 'digestive system',
+      Rohini: 'throat and neck',
+      Mrigashira: 'respiratory system',
+      Ardra: 'skin and nervous system',
+      Punarvasu: 'lungs and digestive system',
+      Pushya: 'stomach and digestive health',
+      Ashlesha: 'digestive and nervous system',
+      Magha: 'bones and skeletal system',
       'Purva Phalguni': 'reproductive and urinary system',
       'Uttara Phalguni': 'kidneys and urinary system',
-      'Hasta': 'hands and arms',
-      'Chitra': 'skin and blood circulation',
-      'Swati': 'veins and nervous system',
-      'Vishakha': 'intestines and excretory system',
-      'Anuradha': 'heart and circulatory system',
-      'Jyeshtha': 'ears and hearing',
-      'Mula': 'digestive and nervous system',
+      Hasta: 'hands and arms',
+      Chitra: 'skin and blood circulation',
+      Swati: 'veins and nervous system',
+      Vishakha: 'intestines and excretory system',
+      Anuradha: 'heart and circulatory system',
+      Jyeshtha: 'ears and hearing',
+      Mula: 'digestive and nervous system',
       'Purva Ashadha': 'joints and muscular system',
       'Uttara Ashadha': 'joints and muscular system',
-      'Shravana': 'ears and nervous system',
-      'Dhanishta': 'throat and speech',
-      'Shatabhisha': 'lower abdomen and excretory system',
+      Shravana: 'ears and nervous system',
+      Dhanishta: 'throat and speech',
+      Shatabhisha: 'lower abdomen and excretory system',
       'Purva Bhadrapada': 'feet and lower limbs',
       'Uttara Bhadrapada': 'feet and lower limbs',
-      'Revati': 'feet and ankles'
+      Revati: 'feet and ankles'
     };
     return healthFocus[nakshatraName] || 'overall well-being and balance';
   }
@@ -454,66 +454,66 @@ class NadiReader {
   getCompatibleNakshatras(nakshatraName) {
     // Simplified compatibility - in reality this is complex
     const compatible = {
-      'Ashwini': ['Bharani', 'Pushya', 'Shravana'],
-      'Bharani': ['Ashwini', 'Rohini', 'Dhanishta'],
-      'Krittika': ['Uttara Phalguni', 'Uttara Ashadha'],
-      'Rohini': ['Bharani', 'Hasta', 'Shravana'],
-      'Mrigashira': ['Punarvasu', 'Anuradha', 'Revati'],
-      'Ardra': ['Swati', 'Shatabhisha'],
-      'Punarvasu': ['Mrigashira', 'Pushya', 'Uttara Bhadrapada'],
-      'Pushya': ['Ashwini', 'Punarvasu', 'Revati'],
-      'Ashlesha': ['Jyeshtha', 'Mula'],
-      'Magha': ['Purva Phalguni', 'Uttara Phalguni'],
+      Ashwini: ['Bharani', 'Pushya', 'Shravana'],
+      Bharani: ['Ashwini', 'Rohini', 'Dhanishta'],
+      Krittika: ['Uttara Phalguni', 'Uttara Ashadha'],
+      Rohini: ['Bharani', 'Hasta', 'Shravana'],
+      Mrigashira: ['Punarvasu', 'Anuradha', 'Revati'],
+      Ardra: ['Swati', 'Shatabhisha'],
+      Punarvasu: ['Mrigashira', 'Pushya', 'Uttara Bhadrapada'],
+      Pushya: ['Ashwini', 'Punarvasu', 'Revati'],
+      Ashlesha: ['Jyeshtha', 'Mula'],
+      Magha: ['Purva Phalguni', 'Uttara Phalguni'],
       'Purva Phalguni': ['Magha', 'Uttara Phalguni', 'Dhanishta'],
       'Uttara Phalguni': ['Krittika', 'Purva Phalguni', 'Uttara Ashadha'],
-      'Hasta': ['Rohini', 'Chitra', 'Shravana'],
-      'Chitra': ['Hasta', 'Swati', 'Vishakha'],
-      'Swati': ['Ardra', 'Chitra', 'Anuradha'],
-      'Vishakha': ['Chitra', 'Jyeshtha', 'Purva Ashadha'],
-      'Anuradha': ['Mrigashira', 'Swati', 'Uttara Ashadha'],
-      'Jyeshtha': ['Ashlesha', 'Vishakha', 'Mula'],
-      'Mula': ['Ashlesha', 'Jyeshtha', 'Purva Ashadha'],
+      Hasta: ['Rohini', 'Chitra', 'Shravana'],
+      Chitra: ['Hasta', 'Swati', 'Vishakha'],
+      Swati: ['Ardra', 'Chitra', 'Anuradha'],
+      Vishakha: ['Chitra', 'Jyeshtha', 'Purva Ashadha'],
+      Anuradha: ['Mrigashira', 'Swati', 'Uttara Ashadha'],
+      Jyeshtha: ['Ashlesha', 'Vishakha', 'Mula'],
+      Mula: ['Ashlesha', 'Jyeshtha', 'Purva Ashadha'],
       'Purva Ashadha': ['Vishakha', 'Mula', 'Uttara Ashadha'],
       'Uttara Ashadha': ['Krittika', 'Anuradha', 'Purva Ashadha'],
-      'Shravana': ['Ashwini', 'Hasta', 'Dhanishta'],
-      'Dhanishta': ['Bharani', 'Purva Phalguni', 'Shravana'],
-      'Shatabhisha': ['Ardra', 'Purva Bhadrapada'],
+      Shravana: ['Ashwini', 'Hasta', 'Dhanishta'],
+      Dhanishta: ['Bharani', 'Purva Phalguni', 'Shravana'],
+      Shatabhisha: ['Ardra', 'Purva Bhadrapada'],
       'Purva Bhadrapada': ['Shatabhisha', 'Uttara Bhadrapada', 'Revati'],
       'Uttara Bhadrapada': ['Punarvasu', 'Purva Bhadrapada'],
-      'Revati': ['Mrigashira', 'Pushya', 'Purva Bhadrapada']
+      Revati: ['Mrigashira', 'Pushya', 'Purva Bhadrapada']
     };
     return compatible[nakshatraName] || ['Various nakshatras based on individual charts'];
   }
 
   getBestMatches(nakshatraName) {
     const bestMatches = {
-      'Ashwini': ['Pushya', 'Shravana'],
-      'Bharani': ['Rohini', 'Dhanishta'],
-      'Krittika': ['Uttara Phalguni'],
-      'Rohini': ['Hasta', 'Shravana'],
-      'Mrigashira': ['Anuradha', 'Revati'],
-      'Ardra': ['Swati'],
-      'Punarvasu': ['Pushya', 'Uttara Bhadrapada'],
-      'Pushya': ['Ashwini', 'Revati'],
-      'Ashlesha': ['Jyeshtha'],
-      'Magha': ['Purva Phalguni'],
+      Ashwini: ['Pushya', 'Shravana'],
+      Bharani: ['Rohini', 'Dhanishta'],
+      Krittika: ['Uttara Phalguni'],
+      Rohini: ['Hasta', 'Shravana'],
+      Mrigashira: ['Anuradha', 'Revati'],
+      Ardra: ['Swati'],
+      Punarvasu: ['Pushya', 'Uttara Bhadrapada'],
+      Pushya: ['Ashwini', 'Revati'],
+      Ashlesha: ['Jyeshtha'],
+      Magha: ['Purva Phalguni'],
       'Purva Phalguni': ['Magha', 'Dhanishta'],
       'Uttara Phalguni': ['Krittika'],
-      'Hasta': ['Rohini', 'Chitra'],
-      'Chitra': ['Hasta', 'Vishakha'],
-      'Swati': ['Anuradha'],
-      'Vishakha': ['Chitra', 'Purva Ashadha'],
-      'Anuradha': ['Mrigashira', 'Uttara Ashadha'],
-      'Jyeshtha': ['Ashlesha', 'Mula'],
-      'Mula': ['Jyeshtha', 'Purva Ashadha'],
+      Hasta: ['Rohini', 'Chitra'],
+      Chitra: ['Hasta', 'Vishakha'],
+      Swati: ['Anuradha'],
+      Vishakha: ['Chitra', 'Purva Ashadha'],
+      Anuradha: ['Mrigashira', 'Uttara Ashadha'],
+      Jyeshtha: ['Ashlesha', 'Mula'],
+      Mula: ['Jyeshtha', 'Purva Ashadha'],
       'Purva Ashadha': ['Vishakha', 'Uttara Ashadha'],
       'Uttara Ashadha': ['Anuradha', 'Purva Ashadha'],
-      'Shravana': ['Ashwini', 'Hasta'],
-      'Dhanishta': ['Bharani', 'Purva Phalguni'],
-      'Shatabhisha': ['Purva Bhadrapada'],
+      Shravana: ['Ashwini', 'Hasta'],
+      Dhanishta: ['Bharani', 'Purva Phalguni'],
+      Shatabhisha: ['Purva Bhadrapada'],
       'Purva Bhadrapada': ['Uttara Bhadrapada'],
       'Uttara Bhadrapada': ['Punarvasu'],
-      'Revati': ['Mrigashira', 'Pushya']
+      Revati: ['Mrigashira', 'Pushya']
     };
     return bestMatches[nakshatraName] || ['Compatible partners based on full chart analysis'];
   }
@@ -533,7 +533,7 @@ class NadiReader {
         return `📜 *Nadi Astrology Error*\n\n${reading.error}`;
       }
 
-      let message = `📜 *Nadi Astrology Reading*\n\n`;
+      let message = '📜 *Nadi Astrology Reading*\n\n';
 
       // Birth Nakshatra
       if (reading.birthNakshatra && !reading.birthNakshatra.error) {
@@ -559,7 +559,7 @@ class NadiReader {
 
       // Predictions
       if (reading.predictions && !reading.predictions.error) {
-        message += `*Key Predictions:*\n`;
+        message += '*Key Predictions:*\n';
         Object.entries(reading.predictions).forEach(([area, prediction]) => {
           message += `• *${area.charAt(0).toUpperCase() + area.slice(1)}:* ${prediction}\n`;
         });
@@ -568,14 +568,14 @@ class NadiReader {
 
       // Remedies
       if (reading.remedies && reading.remedies.length > 0) {
-        message += `*Recommended Remedies:*\n`;
+        message += '*Recommended Remedies:*\n';
         reading.remedies.forEach(remedy => {
           message += `• ${remedy}\n`;
         });
         message += '\n';
       }
 
-      message += `⭐ *Remember:* Nadi astrology provides ancient wisdom from palm leaf manuscripts. Consult a qualified Nadi astrologer for detailed analysis! ✨`;
+      message += '⭐ *Remember:* Nadi astrology provides ancient wisdom from palm leaf manuscripts. Consult a qualified Nadi astrologer for detailed analysis! ✨';
 
       return message;
     } catch (error) {
@@ -604,7 +604,7 @@ function generateNadiReading(user) {
     }
 
     // Parse birth date and create sample time/place if not provided
-    const birthDate = user.birthDate;
+    const { birthDate } = user;
     const birthTime = user.birthTime || '12:00';
     const birthPlace = user.birthPlace || 'Unknown';
 

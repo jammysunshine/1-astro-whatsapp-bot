@@ -383,18 +383,18 @@ class HoraryReader {
    */
   getRulerOfSign(sign) {
     const rulers = {
-      'Aries': 'mars',
-      'Taurus': 'venus',
-      'Gemini': 'mercury',
-      'Cancer': 'moon',
-      'Leo': 'sun',
-      'Virgo': 'mercury',
-      'Libra': 'venus',
-      'Scorpio': 'mars',
-      'Sagittarius': 'jupiter',
-      'Capricorn': 'saturn',
-      'Aquarius': 'saturn',
-      'Pisces': 'jupiter'
+      Aries: 'mars',
+      Taurus: 'venus',
+      Gemini: 'mercury',
+      Cancer: 'moon',
+      Leo: 'sun',
+      Virgo: 'mercury',
+      Libra: 'venus',
+      Scorpio: 'mars',
+      Sagittarius: 'jupiter',
+      Capricorn: 'saturn',
+      Aquarius: 'saturn',
+      Pisces: 'jupiter'
     };
 
     return rulers[sign] || 'sun';
@@ -409,7 +409,7 @@ class HoraryReader {
   assessJudgeStrength(chart, judge) {
     const judgePosition = chart.planetaryPositions[judge];
 
-    if (!judgePosition) return 'Unknown';
+    if (!judgePosition) { return 'Unknown'; }
 
     // Check if judge is in angular house (1, 4, 7, 10)
     const angularHouses = [1, 4, 7, 10];
@@ -583,11 +583,11 @@ class HoraryReader {
    * @returns {string} Confidence level
    */
   assessConfidence(chart, judge) {
-    const strength = judge.strength;
+    const { strength } = judge;
 
-    if (strength.includes('Very Strong')) return 'High confidence';
-    if (strength.includes('Strong')) return 'Moderate confidence';
-    if (strength.includes('Moderate')) return 'Low confidence';
+    if (strength.includes('Very Strong')) { return 'High confidence'; }
+    if (strength.includes('Strong')) { return 'Moderate confidence'; }
+    if (strength.includes('Moderate')) { return 'Low confidence'; }
     return 'Uncertain - question may need clarification';
   }
 
@@ -600,9 +600,9 @@ class HoraryReader {
     // Simplified timing based on moon's position
     const moonHouse = chart.planetaryPositions.moon?.house || 1;
 
-    if (moonHouse <= 3) return 'Soon (within days/weeks)';
-    if (moonHouse <= 6) return 'Moderate time (weeks/months)';
-    if (moonHouse <= 9) return 'Extended time (months/year)';
+    if (moonHouse <= 3) { return 'Soon (within days/weeks)'; }
+    if (moonHouse <= 6) { return 'Moderate time (weeks/months)'; }
+    if (moonHouse <= 9) { return 'Extended time (months/year)'; }
     return 'Long-term (year or more)';
   }
 
@@ -638,13 +638,13 @@ class HoraryReader {
    */
   getHourAdvice(hour) {
     const advice = {
-      'Sun': 'leadership and confidence',
-      'Moon': 'intuition and emotional wisdom',
-      'Mercury': 'communication and planning',
-      'Venus': 'harmony and relationship building',
-      'Mars': 'action and courage',
-      'Jupiter': 'expansion and optimism',
-      'Saturn': 'discipline and patience'
+      Sun: 'leadership and confidence',
+      Moon: 'intuition and emotional wisdom',
+      Mercury: 'communication and planning',
+      Venus: 'harmony and relationship building',
+      Mars: 'action and courage',
+      Jupiter: 'expansion and optimism',
+      Saturn: 'discipline and patience'
     };
 
     return advice[hour] || 'careful consideration';
@@ -676,7 +676,7 @@ class HoraryReader {
    * @returns {string} Horary description
    */
   generateHoraryDescription(chart, judge, answer) {
-    let description = `🔮 *Horary Astrology Reading*\n\n`;
+    let description = '🔮 *Horary Astrology Reading*\n\n';
 
     description += `⏰ *Chart Cast:* ${chart.questionTime.day}/${chart.questionTime.month}/${chart.questionTime.year} ${chart.questionTime.hour}:${chart.questionTime.minute.toString().padStart(2, '0')}\n`;
     description += `🌍 *Location:* ${chart.location.latitude}°N, ${chart.location.longitude}°E\n\n`;
@@ -689,7 +689,7 @@ class HoraryReader {
     description += `🏠 *Ascendant:* ${chart.ascendant.sign} (${chart.ascendant.degree}°)\n`;
     description += `🌙 *Planetary Hour:* ${chart.planetaryHour}\n\n`;
 
-    description += `❓ *Answer:*\n`;
+    description += '❓ *Answer:*\n';
     description += `• Yes/No: ${answer.yesNo}\n`;
     description += `• Confidence: ${answer.confidence}\n`;
     description += `• Timing: ${answer.timing}\n\n`;
@@ -697,23 +697,23 @@ class HoraryReader {
     description += `💡 *Advice:*\n${answer.advice}\n\n`;
 
     if (answer.warnings.length > 0) {
-      description += `⚠️ *Warnings:*\n`;
+      description += '⚠️ *Warnings:*\n';
       answer.warnings.forEach(warning => {
         description += `• ${warning}\n`;
       });
       description += '\n';
     }
 
-    description += `🔍 *Key Indicators:*\n`;
-    if (chart.planetaryPositions.sun) description += `• Sun in ${chart.planetaryPositions.sun.sign} (house ${chart.planetaryPositions.sun.house})\n`;
-    if (chart.planetaryPositions.moon) description += `• Moon in ${chart.planetaryPositions.moon.sign} (house ${chart.planetaryPositions.moon.house})\n`;
+    description += '🔍 *Key Indicators:*\n';
+    if (chart.planetaryPositions.sun) { description += `• Sun in ${chart.planetaryPositions.sun.sign} (house ${chart.planetaryPositions.sun.house})\n`; }
+    if (chart.planetaryPositions.moon) { description += `• Moon in ${chart.planetaryPositions.moon.sign} (house ${chart.planetaryPositions.moon.house})\n`; }
     description += `• ${judge.name} in ${chart.planetaryPositions[judge.planet]?.sign || 'unknown'} (house ${chart.planetaryPositions[judge.planet]?.house || 'unknown'})\n\n`;
 
-    description += `📚 *Traditional Horary Wisdom:*\n`;
-    description += `• The ascendant represents you, the questioner\n`;
-    description += `• The judge shows the outcome and timing\n`;
-    description += `• Angular houses (1,4,7,10) indicate strength and success\n`;
-    description += `• The moon reveals the emotional truth of the matter`;
+    description += '📚 *Traditional Horary Wisdom:*\n';
+    description += '• The ascendant represents you, the questioner\n';
+    description += '• The judge shows the outcome and timing\n';
+    description += '• Angular houses (1,4,7,10) indicate strength and success\n';
+    description += '• The moon reveals the emotional truth of the matter';
 
     return description;
   }
@@ -748,9 +748,9 @@ class HoraryReader {
   getAscendantSymbol(degree) {
     const sign = this.getZodiacSign(degree);
     const symbols = {
-      'Aries': '♈', 'Taurus': '♉', 'Gemini': '♊', 'Cancer': '♋',
-      'Leo': '♌', 'Virgo': '♍', 'Libra': '♎', 'Scorpio': '♏',
-      'Sagittarius': '♐', 'Capricorn': '♑', 'Aquarius': '♒', 'Pisces': '♓'
+      Aries: '♈', Taurus: '♉', Gemini: '♊', Cancer: '♋',
+      Leo: '♌', Virgo: '♍', Libra: '♎', Scorpio: '♏',
+      Sagittarius: '♐', Capricorn: '♑', Aquarius: '♒', Pisces: '♓'
     };
     return symbols[sign] || '♈';
   }

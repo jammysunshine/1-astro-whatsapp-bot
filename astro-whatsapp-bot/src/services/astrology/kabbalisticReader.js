@@ -113,18 +113,18 @@ class KabbalisticReader {
 
     // Zodiac to Sephiroth mapping
     this.zodiacToSephiroth = {
-      'Aries': 5,      // Geburah - Mars ruled, strength and courage
-      'Taurus': 10,    // Malkuth - Earth ruled, physical manifestation
-      'Gemini': 8,     // Hod - Mercury ruled, communication and intellect
-      'Cancer': 9,     // Yesod - Moon ruled, emotional foundation
-      'Leo': 6,        // Tiphareth - Sun ruled, heart and harmony
-      'Virgo': 8,      // Hod - Mercury ruled, analysis and service
-      'Libra': 4,      // Chesed - Venus exalted, love and balance
-      'Scorpio': 5,    // Geburah - Mars co-ruled, transformation and strength
-      'Sagittarius': 4, // Chesed - Jupiter ruled, expansion and wisdom
-      'Capricorn': 3,  // Binah - Saturn ruled, structure and understanding
-      'Aquarius': 2,   // Chokmah - Uranus co-ruled, innovation and wisdom
-      'Pisces': 9      // Yesod - Jupiter exalted, imagination and spirituality
+      Aries: 5,      // Geburah - Mars ruled, strength and courage
+      Taurus: 10,    // Malkuth - Earth ruled, physical manifestation
+      Gemini: 8,     // Hod - Mercury ruled, communication and intellect
+      Cancer: 9,     // Yesod - Moon ruled, emotional foundation
+      Leo: 6,        // Tiphareth - Sun ruled, heart and harmony
+      Virgo: 8,      // Hod - Mercury ruled, analysis and service
+      Libra: 4,      // Chesed - Venus exalted, love and balance
+      Scorpio: 5,    // Geburah - Mars co-ruled, transformation and strength
+      Sagittarius: 4, // Chesed - Jupiter ruled, expansion and wisdom
+      Capricorn: 3,  // Binah - Saturn ruled, structure and understanding
+      Aquarius: 2,   // Chokmah - Uranus co-ruled, innovation and wisdom
+      Pisces: 9      // Yesod - Jupiter exalted, imagination and spirituality
     };
 
     // Planetary correspondences for Kabbalistic interpretation
@@ -324,7 +324,7 @@ class KabbalisticReader {
     if (primary === secondary) {
       guidance.push(`The double emphasis on ${this.sephiroth[primary].name} indicates a strong concentration of this energy in your life.`);
     } else {
-      guidance.push(`The interplay between these Sephiroth creates a unique spiritual pathway for your journey.`);
+      guidance.push('The interplay between these Sephiroth creates a unique spiritual pathway for your journey.');
     }
 
     return guidance.join(' ');
@@ -337,7 +337,7 @@ class KabbalisticReader {
    * @returns {string} Description
    */
   generateKabbalisticDescription(primary, secondary) {
-    let description = `🌳 *Kabbalistic Analysis*\n\n`;
+    let description = '🌳 *Kabbalistic Analysis*\n\n';
 
     description += `Your soul's journey flows through the Tree of Life, connecting the Sephirah of ${this.sephiroth[primary].name} with ${this.sephiroth[secondary].name}.\n\n`;
 
@@ -351,11 +351,11 @@ class KabbalisticReader {
     description += `• Color: ${this.sephiroth[secondary].color}\n`;
     description += `• Qualities: ${this.sephiroth[secondary].qualities.join(', ')}\n\n`;
 
-    description += `🕉️ *Spiritual Path:*\n`;
+    description += '🕉️ *Spiritual Path:*\n';
     description += `• Life Lesson: ${this.calculateLifeLesson(primary, secondary)}\n`;
     description += `• Mystical Qualities: ${this.generateMysticalQualities(primary, secondary).join(', ')}\n\n`;
 
-    description += `📿 *Meditation Focus:*\n`;
+    description += '📿 *Meditation Focus:*\n';
     const pathworking = this.calculatePathworking(primary, secondary);
     description += `• Path: ${pathworking.pathName}\n`;
     description += `• Hebrew Letter: ${pathworking.hebrewLetter}\n`;
@@ -450,16 +450,16 @@ class KabbalisticReader {
    */
   generateAffirmation(sephirah) {
     const affirmations = {
-      'Kether': 'I am one with divine will and pure consciousness',
-      'Chokmah': 'I channel divine wisdom and creative force',
-      'Binah': 'I embody divine understanding and sacred structure',
-      'Chesed': 'I radiate divine love and compassion',
-      'Geburah': 'I wield divine strength and righteous justice',
-      'Tiphareth': 'I manifest divine beauty and perfect harmony',
-      'Netzach': 'I achieve victory through creative expression',
-      'Hod': 'I communicate divine glory and intellectual splendor',
-      'Yesod': 'I connect with the foundation of divine imagination',
-      'Malkuth': 'I manifest divine will in the physical kingdom'
+      Kether: 'I am one with divine will and pure consciousness',
+      Chokmah: 'I channel divine wisdom and creative force',
+      Binah: 'I embody divine understanding and sacred structure',
+      Chesed: 'I radiate divine love and compassion',
+      Geburah: 'I wield divine strength and righteous justice',
+      Tiphareth: 'I manifest divine beauty and perfect harmony',
+      Netzach: 'I achieve victory through creative expression',
+      Hod: 'I communicate divine glory and intellectual splendor',
+      Yesod: 'I connect with the foundation of divine imagination',
+      Malkuth: 'I manifest divine will in the physical kingdom'
     };
 
     return affirmations[sephirah.name] || 'I am aligned with divine purpose and cosmic wisdom';

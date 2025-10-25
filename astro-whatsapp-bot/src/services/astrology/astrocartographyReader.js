@@ -141,10 +141,10 @@ class AstrocartographyReader {
     this.geographicRegions = {
       'North America': { energy: 'Innovation and new beginnings', planets: ['uranus', 'sun'] },
       'South America': { energy: 'Passion and transformation', planets: ['mars', 'pluto'] },
-      'Europe': { energy: 'Tradition and culture', planets: ['moon', 'saturn'] },
-      'Asia': { energy: 'Spirituality and wisdom', planets: ['jupiter', 'neptune'] },
-      'Africa': { energy: 'Strength and survival', planets: ['sun', 'mars'] },
-      'Australia': { energy: 'Adventure and freedom', planets: ['uranus', 'jupiter'] },
+      Europe: { energy: 'Tradition and culture', planets: ['moon', 'saturn'] },
+      Asia: { energy: 'Spirituality and wisdom', planets: ['jupiter', 'neptune'] },
+      Africa: { energy: 'Strength and survival', planets: ['sun', 'mars'] },
+      Australia: { energy: 'Adventure and freedom', planets: ['uranus', 'jupiter'] },
       'Pacific Islands': { energy: 'Peace and harmony', planets: ['venus', 'neptune'] },
       'Middle East': { energy: 'Ancient wisdom and transformation', planets: ['saturn', 'pluto'] }
     };
@@ -332,16 +332,16 @@ class AstrocartographyReader {
    */
   getLocationCoordinates(location) {
     const locations = {
-      'delhi': { latitude: 28.6139, longitude: 77.2090 },
-      'mumbai': { latitude: 19.0760, longitude: 72.8777 },
-      'bangalore': { latitude: 12.9716, longitude: 77.5946 },
-      'chennai': { latitude: 13.0827, longitude: 80.2707 },
-      'kolkata': { latitude: 22.5726, longitude: 88.3639 },
-      'hyderabad': { latitude: 17.3850, longitude: 78.4867 },
-      'pune': { latitude: 18.5204, longitude: 73.8567 },
-      'ahmedabad': { latitude: 23.0225, longitude: 72.5714 },
-      'jaipur': { latitude: 26.9124, longitude: 75.7873 },
-      'lucknow': { latitude: 26.8467, longitude: 80.9462 }
+      delhi: { latitude: 28.6139, longitude: 77.2090 },
+      mumbai: { latitude: 19.0760, longitude: 72.8777 },
+      bangalore: { latitude: 12.9716, longitude: 77.5946 },
+      chennai: { latitude: 13.0827, longitude: 80.2707 },
+      kolkata: { latitude: 22.5726, longitude: 88.3639 },
+      hyderabad: { latitude: 17.3850, longitude: 78.4867 },
+      pune: { latitude: 18.5204, longitude: 73.8567 },
+      ahmedabad: { latitude: 23.0225, longitude: 72.5714 },
+      jaipur: { latitude: 26.9124, longitude: 75.7873 },
+      lucknow: { latitude: 26.8467, longitude: 80.9462 }
     };
 
     const normalizedLocation = location.toLowerCase();
@@ -417,18 +417,18 @@ class AstrocartographyReader {
    */
   longitudeToLocation(longitude) {
     const locations = {
-      '77': 'Northern India',
-      '72': 'Western India',
-      '88': 'Eastern India',
-      '80': 'Southern India',
-      '78': 'Central India',
+      77: 'Northern India',
+      72: 'Western India',
+      88: 'Eastern India',
+      80: 'Southern India',
+      78: 'Central India',
       '-74': 'Northeastern USA',
       '-118': 'Western USA',
       '-0': 'United Kingdom',
-      '2': 'Western Europe',
-      '139': 'Japan',
-      '116': 'China',
-      '151': 'Australia'
+      2: 'Western Europe',
+      139: 'Japan',
+      116: 'China',
+      151: 'Australia'
     };
 
     // Find closest known longitude
@@ -488,14 +488,14 @@ class AstrocartographyReader {
    * @returns {string} Astrocartography description
    */
   generateAstrocartographyDescription(planetaryLines, currentLocation, powerSpots) {
-    let description = `🗺️ *Astrocartography Analysis*\n\n`;
+    let description = '🗺️ *Astrocartography Analysis*\n\n';
 
     description += `📍 *Current Location: ${currentLocation.location}*\n`;
     description += `• Region: ${currentLocation.region}\n`;
     description += `• Dominant Energy: ${currentLocation.dominantEnergy}\n\n`;
 
     if (currentLocation.influences.length > 0) {
-      description += `🌟 *Current Location Influences:*\n`;
+      description += '🌟 *Current Location Influences:*\n';
       currentLocation.influences.forEach(influence => {
         description += `• ${this.planetaryLines[influence.planet].name} (${influence.aspect}): ${influence.influence}\n`;
       });
@@ -503,7 +503,7 @@ class AstrocartographyReader {
     }
 
     if (powerSpots.length > 0) {
-      description += `⚡ *Power Spots:*\n`;
+      description += '⚡ *Power Spots:*\n';
       powerSpots.forEach(spot => {
         description += `• ${spot.location}: ${spot.planets.join(', ')} energy (${spot.intensity})\n`;
         description += `  - ${spot.primaryInfluence}\n`;
@@ -511,7 +511,7 @@ class AstrocartographyReader {
       description += '\n';
     }
 
-    description += `🧭 *Key Planetary Lines:*\n`;
+    description += '🧭 *Key Planetary Lines:*\n';
     ['sun', 'moon', 'venus', 'mars', 'jupiter'].forEach(planet => {
       if (planetaryLines[planet]) {
         const line = planetaryLines[planet];
@@ -522,14 +522,14 @@ class AstrocartographyReader {
     });
     description += '\n';
 
-    description += `💫 *Relocation Wisdom:*\n`;
-    description += `• Your Sun line shows where you shine brightest\n`;
-    description += `• Moon lines enhance emotional security\n`;
-    description += `• Venus lines attract love and beauty\n`;
-    description += `• Mars lines provide energy and action\n`;
-    description += `• Jupiter lines bring expansion and luck\n\n`;
+    description += '💫 *Relocation Wisdom:*\n';
+    description += '• Your Sun line shows where you shine brightest\n';
+    description += '• Moon lines enhance emotional security\n';
+    description += '• Venus lines attract love and beauty\n';
+    description += '• Mars lines provide energy and action\n';
+    description += '• Jupiter lines bring expansion and luck\n\n';
 
-    description += `🔮 *Travel Tip:*\nConsider visiting locations along your Venus or Jupiter lines for harmony and growth opportunities.`;
+    description += '🔮 *Travel Tip:*\nConsider visiting locations along your Venus or Jupiter lines for harmony and growth opportunities.';
 
     return description;
   }

@@ -1314,11 +1314,11 @@ class VedicCalculator {
     const angle = Math.abs(natalPosition - transitPosition) % 360;
     const minAngle = Math.min(angle, 360 - angle);
 
-    if (minAngle <= 5) return 'conjunction';
-    if (Math.abs(minAngle - 60) <= 5) return 'sextile';
-    if (Math.abs(minAngle - 90) <= 5) return 'square';
-    if (Math.abs(minAngle - 120) <= 5) return 'trine';
-    if (Math.abs(minAngle - 180) <= 5) return 'opposition';
+    if (minAngle <= 5) { return 'conjunction'; }
+    if (Math.abs(minAngle - 60) <= 5) { return 'sextile'; }
+    if (Math.abs(minAngle - 90) <= 5) { return 'square'; }
+    if (Math.abs(minAngle - 120) <= 5) { return 'trine'; }
+    if (Math.abs(minAngle - 180) <= 5) { return 'opposition'; }
 
     return 'no major aspect';
   }
@@ -1582,16 +1582,16 @@ class VedicCalculator {
    * @returns {string} Comprehensive description
    */
   generateComprehensiveVedicDescription(basicChart, dashaAnalysis, transitAnalysis) {
-    let description = `🕉️ *Complete Vedic Astrology Analysis*\n\n`;
+    let description = '🕉️ *Complete Vedic Astrology Analysis*\n\n';
 
     // Basic chart info
-    description += `📊 *Birth Chart:*\n`;
+    description += '📊 *Birth Chart:*\n';
     description += `• Sun Sign: ${basicChart.sunSign}\n`;
     description += `• Moon Sign: ${basicChart.moonSign}\n`;
     description += `• Rising Sign: ${basicChart.risingSign}\n\n`;
 
     // Planetary positions
-    description += `🌟 *Planetary Positions:*\n`;
+    description += '🌟 *Planetary Positions:*\n';
     if (basicChart.planets) {
       Object.entries(basicChart.planets).forEach(([planet, data]) => {
         description += `• ${data.name}: ${data.sign} ${data.degrees}°${data.minutes}'${data.seconds}" ${data.retrograde ? '(R)' : ''}\n`;
@@ -1601,7 +1601,7 @@ class VedicCalculator {
 
     // Dasha analysis
     if (dashaAnalysis.currentDasha) {
-      description += `⏳ *Current Dasha Period:*\n`;
+      description += '⏳ *Current Dasha Period:*\n';
       description += `• Mahadasha: ${dashaAnalysis.currentDasha.dasha} (${dashaAnalysis.currentDasha.remainingYears} years remaining)\n`;
       description += `• Influence: ${dashaAnalysis.currentDasha.influence}\n`;
 
@@ -1613,7 +1613,7 @@ class VedicCalculator {
 
     // Transit analysis
     if (transitAnalysis.majorTransits && transitAnalysis.majorTransits.length > 0) {
-      description += `🌟 *Current Major Transits:*\n`;
+      description += '🌟 *Current Major Transits:*\n';
       transitAnalysis.majorTransits.slice(0, 3).forEach(transit => {
         description += `• ${transit.planet} ${transit.aspect}: ${transit.influence}\n`;
       });
@@ -1622,7 +1622,7 @@ class VedicCalculator {
 
     // Predictions
     const predictions = this.generateVedicPredictions(dashaAnalysis, transitAnalysis);
-    description += `🔮 *Predictions:*\n`;
+    description += '🔮 *Predictions:*\n';
     description += `• Short-term: ${predictions.shortTerm}\n`;
     description += `• Medium-term: ${predictions.mediumTerm}\n`;
     description += `• Long-term: ${predictions.longTerm}\n\n`;
@@ -1630,18 +1630,18 @@ class VedicCalculator {
     // Remedies
     const remedies = this.generateVedicRemedies(basicChart, dashaAnalysis);
     if (remedies.length > 0) {
-      description += `🙏 *Recommended Remedies:*\n`;
+      description += '🙏 *Recommended Remedies:*\n';
       remedies.forEach(remedy => {
         description += `• ${remedy}\n`;
       });
       description += '\n';
     }
 
-    description += `📚 *Vedic Wisdom:*\n`;
-    description += `• Dasha periods show the timing of life's chapters\n`;
-    description += `• Transits reveal current cosmic influences\n`;
-    description += `• Remedies help harmonize planetary energies\n`;
-    description += `• Self-awareness and spiritual practice enhance all influences`;
+    description += '📚 *Vedic Wisdom:*\n';
+    description += '• Dasha periods show the timing of life\'s chapters\n';
+    description += '• Transits reveal current cosmic influences\n';
+    description += '• Remedies help harmonize planetary energies\n';
+    description += '• Self-awareness and spiritual practice enhance all influences';
 
     return description;
   }

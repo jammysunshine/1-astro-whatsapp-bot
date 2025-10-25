@@ -1,125 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="37" failures="5" errors="0" time="5.402">
-  <testsuite name="WhatsApp Message Processor" errors="0" failures="1" skipped="0" timestamp="2025-10-25T08:05:51" time="1.59" tests="9">
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" name="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" time="0.014">
+<testsuites name="jest tests" tests="6" failures="1" errors="0" time="7.543">
+  <testsuite name="Critical User Flow End-to-End Tests" errors="0" failures="1" skipped="0" timestamp="2025-10-25T10:34:12" time="7.19" tests="6">
+    <testcase classname="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" name="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" time="0.194">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should process existing user message" name="WhatsApp Message Processor processIncomingMessage should process existing user message" time="0.008">
+    <testcase classname="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should process daily horoscope request for existing user" name="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should process daily horoscope request for existing user" time="0.086">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" name="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" time="0.013">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: &quot;What is my daily horoscope?&quot;, {&quot;id&quot;: &quot;user-789&quot;, &quot;lastInteraction&quot;: 2025-10-25T08:05:53.435Z, &quot;phoneNumber&quot;: &quot;1234567890&quot;, &quot;profileComplete&quot;: true}
-
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/whatsapp/messageProcessor.test.js:110:41)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    <testcase classname="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" name="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" time="0.025">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" time="0.007">
+    <testcase classname="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" name="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" time="3.027">
+      <failure>Error: expected 500 &quot;Internal Server Error&quot;, got 200 &quot;OK&quot;
+    at Object.expect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:421:10)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)
+----
+    at Test._assertStatus (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:252:14)
+    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:308:13
+    at Test._assertFunction (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:285:13)
+    at Test.assert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:164:23)
+    at Server.localAssert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:120:14)
+    at Object.onceWrapper (node:events:622:28)
+    at Server.emit (node:events:508:28)
+    at emitCloseNT (node:net:2419:8)
+    at processTicksAndRejections (node:internal/process/task_queues:89:21)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" time="0.01">
+    <testcase classname="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" name="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" time="0.183">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle button messages" name="WhatsApp Message Processor processIncomingMessage should handle button messages" time="0.006">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle media messages" name="WhatsApp Message Processor processIncomingMessage should handle media messages" time="0.004">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" name="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" time="0.004">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" name="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" time="0.005">
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Controller" errors="0" failures="4" skipped="0" timestamp="2025-10-25T08:05:53" time="0.414" tests="4">
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.056">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: 400
-Received: 500
-
-Number of calls: 1
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/controllers/whatsappController.test.js:45:26)</failure>
-    </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.007">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: 200
-Received: 500
-
-Number of calls: 1
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/controllers/whatsappController.test.js:55:26)</failure>
-    </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.042">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: ObjectContaining {&quot;from&quot;: &quot;1234567890&quot;, &quot;id&quot;: &quot;message-id-123&quot;, &quot;text&quot;: {&quot;body&quot;: &quot;Hello, astrologer!&quot;}, &quot;timestamp&quot;: &quot;1234567890&quot;, &quot;type&quot;: &quot;text&quot;}, ObjectContaining {&quot;contacts&quot;: [{&quot;profile&quot;: {&quot;name&quot;: &quot;John Doe&quot;}, &quot;wa_id&quot;: &quot;1234567890&quot;}]}
-
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/controllers/whatsappController.test.js:91:38)</failure>
-    </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="0.023">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-- Expected
-+ Received
-
-  Object {
-    &quot;error&quot;: &quot;Internal server error&quot;,
--   &quot;message&quot;: &quot;Processing error&quot;,
-+   &quot;message&quot;: &quot;req.on is not a function&quot;,
-  },
-
-Number of calls: 1
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/controllers/whatsappController.test.js:135:24)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Message Sender" errors="0" failures="0" skipped="0" timestamp="2025-10-25T08:05:54" time="0.465" tests="17">
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.006">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.004">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.065">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should handle API error gracefully" name="WhatsApp Message Sender sendTextMessage should handle API error gracefully" time="0.005">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.018">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" time="0.005">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.006">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.007">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.005">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.024">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.005">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message successfully" name="WhatsApp Message Sender sendMediaMessage should send media message successfully" time="0.005">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message with filename" name="WhatsApp Message Sender sendMediaMessage should send media message with filename" time="0.005">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.005">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.004">
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T08:05:54" time="0.38" tests="7">
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.004">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.031">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" name="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" time="0.006">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.004">
-    </testcase>
-    <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.005">
+    <testcase classname="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" name="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" time="0.021">
     </testcase>
   </testsuite>
 </testsuites>

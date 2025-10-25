@@ -16,7 +16,7 @@ const USERS_FILE = path.join(__dirname, '../../data/users.json');
 const SESSIONS_FILE = path.join(__dirname, '../../data/sessions.json');
 
 // Ensure data directory exists
-const ensureDataDir = async () => {
+const ensureDataDir = async() => {
   const dataDir = path.dirname(USERS_FILE);
   try {
     await fs.mkdir(dataDir, { recursive: true });
@@ -28,17 +28,17 @@ const ensureDataDir = async () => {
 };
 
 // Load users from file
-const loadUsers = async () => {
+const loadUsers = async() => {
   try {
     await ensureDataDir();
     const data = await fs.readFile(USERS_FILE, 'utf8');
     const usersData = JSON.parse(data);
     for (const [phoneNumber, user] of Object.entries(usersData)) {
       // Convert date strings back to Date objects
-      if (user.createdAt) user.createdAt = new Date(user.createdAt);
-      if (user.lastInteraction) user.lastInteraction = new Date(user.lastInteraction);
-      if (user.updatedAt) user.updatedAt = new Date(user.updatedAt);
-      if (user.subscriptionExpiry) user.subscriptionExpiry = new Date(user.subscriptionExpiry);
+      if (user.createdAt) { user.createdAt = new Date(user.createdAt); }
+      if (user.lastInteraction) { user.lastInteraction = new Date(user.lastInteraction); }
+      if (user.updatedAt) { user.updatedAt = new Date(user.updatedAt); }
+      if (user.subscriptionExpiry) { user.subscriptionExpiry = new Date(user.subscriptionExpiry); }
       users.set(phoneNumber, user);
     }
     console.log(`📁 Loaded ${users.size} users from file`);
@@ -50,17 +50,17 @@ const loadUsers = async () => {
 };
 
 // Save users to file
-const saveUsers = async () => {
+const saveUsers = async() => {
   try {
     await ensureDataDir();
     const usersData = {};
     for (const [phoneNumber, user] of users) {
       usersData[phoneNumber] = { ...user };
       // Convert Date objects to strings for JSON serialization
-      if (user.createdAt instanceof Date) usersData[phoneNumber].createdAt = user.createdAt.toISOString();
-      if (user.lastInteraction instanceof Date) usersData[phoneNumber].lastInteraction = user.lastInteraction.toISOString();
-      if (user.updatedAt instanceof Date) usersData[phoneNumber].updatedAt = user.updatedAt.toISOString();
-      if (user.subscriptionExpiry instanceof Date) usersData[phoneNumber].subscriptionExpiry = user.subscriptionExpiry.toISOString();
+      if (user.createdAt instanceof Date) { usersData[phoneNumber].createdAt = user.createdAt.toISOString(); }
+      if (user.lastInteraction instanceof Date) { usersData[phoneNumber].lastInteraction = user.lastInteraction.toISOString(); }
+      if (user.updatedAt instanceof Date) { usersData[phoneNumber].updatedAt = user.updatedAt.toISOString(); }
+      if (user.subscriptionExpiry instanceof Date) { usersData[phoneNumber].subscriptionExpiry = user.subscriptionExpiry.toISOString(); }
     }
     await fs.writeFile(USERS_FILE, JSON.stringify(usersData, null, 2));
   } catch (error) {
@@ -69,7 +69,7 @@ const saveUsers = async () => {
 };
 
 // Load sessions from file
-const loadSessions = async () => {
+const loadSessions = async() => {
   try {
     await ensureDataDir();
     const data = await fs.readFile(SESSIONS_FILE, 'utf8');
@@ -86,7 +86,7 @@ const loadSessions = async () => {
 };
 
 // Save sessions to file
-const saveSessions = async () => {
+const saveSessions = async() => {
   try {
     await ensureDataDir();
     const sessionsData = {};

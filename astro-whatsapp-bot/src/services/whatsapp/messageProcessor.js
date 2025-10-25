@@ -274,7 +274,7 @@ const processButtonReply = async(phoneNumber, buttonId, title, user) => {
           logger.info(`✅ Main menu action ${button.action} completed successfully`);
         } catch (error) {
           logger.error(`❌ Error executing main menu action ${button.action}:`, error);
-          await sendMessage(phoneNumber, `Sorry, I encountered an error processing your request. Please try again.`);
+          await sendMessage(phoneNumber, 'Sorry, I encountered an error processing your request. Please try again.');
         }
       } else {
         logger.warn(`⚠️ No action defined for button ID: ${buttonId} in main menu`);
@@ -488,7 +488,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         birthTime: user.birthTime || '12:00',
         name: user.name
       });
-      response = analysis.kabbalisticDescription.substring(0, 1000) + '...'; // Truncate for WhatsApp
+      response = `${analysis.kabbalisticDescription.substring(0, 1000)}...`; // Truncate for WhatsApp
     } catch (error) {
       logger.error('Error getting Kabbalistic analysis:', error);
       response = 'I\'m having trouble connecting with the Tree of Life energies.';
@@ -506,7 +506,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         birthTime: user.birthTime || '12:00',
         name: user.name
       });
-      response = analysis.mayanDescription.substring(0, 1000) + '...'; // Truncate for WhatsApp
+      response = `${analysis.mayanDescription.substring(0, 1000)}...`; // Truncate for WhatsApp
     } catch (error) {
       logger.error('Error getting Mayan analysis:', error);
       response = 'I\'m having trouble connecting with the Mayan calendar energies.';
@@ -524,7 +524,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         birthTime: user.birthTime || '12:00',
         name: user.name
       });
-      response = analysis.celticDescription.substring(0, 1000) + '...'; // Truncate for WhatsApp
+      response = `${analysis.celticDescription.substring(0, 1000)}...`; // Truncate for WhatsApp
     } catch (error) {
       logger.error('Error getting Celtic analysis:', error);
       response = 'I\'m having trouble connecting with the Celtic forest energies.';
@@ -553,7 +553,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         birthPlace: user.birthPlace || 'London, UK',
         name: user.name
       });
-      response = analysis.astrocartographyDescription.substring(0, 1000) + '...'; // Truncate for WhatsApp
+      response = `${analysis.astrocartographyDescription.substring(0, 1000)}...`; // Truncate for WhatsApp
     } catch (error) {
       logger.error('Error getting astrocartography analysis:', error);
       response = 'I\'m having trouble mapping the planetary lines.';
@@ -613,7 +613,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       try {
         const numerologyService = require('../astrology/numerologyService');
         const report = numerologyService.getNumerologyReport(user.birthDate, user.name);
-        response = `🔢 *Numerology Analysis*\n\n`;
+        response = '🔢 *Numerology Analysis*\n\n';
         response += `*Life Path:* ${report.lifePath.number} - ${report.lifePath.interpretation}\n\n`;
         response += `*Expression:* ${report.expression.number} - ${report.expression.interpretation}\n\n`;
         response += `*Soul Urge:* ${report.soulUrge.number} - ${report.soulUrge.interpretation}`;

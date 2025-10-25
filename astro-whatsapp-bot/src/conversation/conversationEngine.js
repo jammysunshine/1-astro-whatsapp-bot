@@ -446,16 +446,22 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
 
     // Update user profile with birth details
     await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
+    console.log('🔄 Updating user profile with astrology data:', { sunSign, moonSign, risingSign });
     await updateUserProfile(phoneNumber, {
       profileComplete: true,
       preferredLanguage,
-      onboardingCompletedAt: new Date()
+      onboardingCompletedAt: new Date(),
+      sunSign,
+      moonSign,
+      risingSign
     });
+    console.log('✅ User profile updated successfully');
 
     // Generate comprehensive birth chart analysis with error handling
     let chartData = {};
     try {
       chartData = await vedicCalculator.generateDetailedChart({ birthDate, birthTime, birthPlace });
+      console.log('✅ Chart data generated:', chartData);
     } catch (error) {
       logger.error('❌ Error generating detailed chart:', error);
       // Continue with basic sun sign calculation
@@ -463,8 +469,10 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
 
     // Extract key information for prompt replacement
     const sunSign = chartData.sunSign || vedicCalculator.calculateSunSign(birthDate);
-    const moonSign = chartData.moonSign || 'Unknown';
-    const risingSign = chartData.risingSign || 'Unknown';
+    const moonSign = chartData.moonSign || vedicCalculator.calculateMoonSign(birthDate, birthTime) || 'Unknown';
+    const risingSign = chartData.risingSign || vedicCalculator.calculateRisingSign(birthDate, birthTime, birthPlace) || 'Unknown';
+
+    console.log('🔮 Astrology data:', { sunSign, moonSign, risingSign });
 
     // Generate comprehensive birth chart analysis
     let detailedAnalysis = '';

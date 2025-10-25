@@ -19,7 +19,7 @@ process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test-phone-number-id';
 process.env.W1_WHATSAPP_VERIFY_TOKEN = 'test-verify-token';
 process.env.W1_WHATSAPP_APP_SECRET = 'test-app-secret';
 process.env.JWT_SECRET = 'test-jwt-secret';
-process.env.MONGODB_URI = 'mongodb://localhost:27017/astro-whatsapp-bot-test';
+// MONGODB_URI will be set dynamically by MongoMemoryServer
 process.env.STRIPE_SECRET_KEY = 'test-stripe-secret-key';
 process.env.RAZORPAY_KEY_ID = 'test-razorpay-key-id';
 process.env.RAZORPAY_KEY_SECRET = 'test-razorpay-key-secret';
@@ -41,17 +41,36 @@ if (!process.env.DEBUG) {
   console.error = jest.fn();
 }
 
+// MongoDB Memory Server for testing
+const { MongoMemoryServer } = require('mongodb-memory-server');
+
+let mongoServer;
+
 // Global test setup
 beforeAll(async() => {
-  // Initialize test database
-  // Start mock servers
+  // Start MongoDB Memory Server
+  mongoServer = await MongoMemoryServer.create();
+  const mongoUri = mongoServer.getUri();
+  process.env.MONGODB_URI = mongoUri;
+
+  // Initialize database connection
+  const { connectDB } = require('../../src/config/database');
+  await connectDB();
+
   console.log('🧪 Starting comprehensive test environment setup...');
 });
 
 // Global test teardown
 afterAll(async() => {
-  // Clean up test database
-  // Stop mock servers
+  // Close database connection
+  const mongoose = require('mongoose');
+  await mongoose.connection.close();
+
+  // Stop MongoDB Memory Server
+  if (mongoServer) {
+    await mongoServer.stop();
+  }
+
   console.log('🧹 Cleaning up comprehensive test environment...');
 });
 

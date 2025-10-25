@@ -1,0 +1,114 @@
+const mongoose = require('mongoose');
+const { ServerApiVersion } = require('mongodb');
+const logger = require('../utils/logger');
+
+/**
+ * Database configuration and connection management
+ */
+
+// Database connection options
+const connectionOptions = {
+  maxPoolSize: 10, // Maintain up to 10 socket connections
+  serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+  socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+};
+
+/**
+ * Connect to MongoDB Atlas
+ * @returns {Promise<void>}
+ */
+const connectDB = async () => {
+  try {
+    const dbUser = process.env.DB_USER;
+    const dbPassword = process.env.DB_PASSWORD;
+    const dbHost = process.env.DB_HOST;
+    const dbName = process.env.DB_NAME;
+
+    if (!dbUser || !dbPassword || !dbHost || !dbName) {
+      throw new Error('Database environment variables (DB_USER, DB_PASSWORD, DB_HOST, DB_NAME) are not set');
+    }
+
+    const mongoURI = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}?retryWrites=true&w=majority`;
+
+    logger.info(`🔗 Attempting DB connection: mongodb+srv://${dbUser}:****@${dbHost}/${dbName}?retryWrites=true&w=majority`);
+
+    // Connect to MongoDB
+    const conn = await mongoose.connect(mongoURI, connectionOptions);
+
+    logger.info(`🗄️ MongoDB Connected: ${conn.connection.host}`);
+
+    // Handle connection events
+    mongoose.connection.on('connected', () => {
+      logger.info('🗄️ Mongoose connected to MongoDB');
+    });
+
+    mongoose.connection.on('error', (err) => {
+      logger.error('❌ Mongoose connection error:', err);
+    });
+
+    mongoose.connection.on('disconnected', () => {
+      logger.warn('⚠️ Mongoose disconnected from MongoDB');
+    });
+
+    // Graceful shutdown
+    process.on('SIGINT', async () => {
+      await mongoose.connection.close();
+      logger.info('📴 MongoDB connection closed due to app termination');
+      process.exit(0);
+    });
+
+  } catch (error) {
+    logger.error('❌ MongoDB connection failed:', error.message);
+    // Don't exit process in production or test, let Railway handle restarts
+    if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+      process.exit(1);
+    }
+    throw error;
+  }
+};
+
+/**
+ * Close database connection
+ * @returns {Promise<void>}
+ */
+const closeDB = async () => {
+  try {
+    await mongoose.connection.close();
+    logger.info('📴 MongoDB connection closed');
+  } catch (error) {
+    logger.error('❌ Error closing MongoDB connection:', error);
+    throw error;
+  }
+};
+
+/**
+ * Check database connection health
+ * @returns {Object} Connection status
+ */
+const getConnectionStatus = () => {
+  const state = mongoose.connection.readyState;
+  const states = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting'
+  };
+
+  return {
+    status: states[state] || 'unknown',
+    host: mongoose.connection.host || null,
+    name: mongoose.connection.name || null,
+    readyState: state
+  };
+};
+
+module.exports = {
+  connectDB,
+  closeDB,
+  getConnectionStatus
+};

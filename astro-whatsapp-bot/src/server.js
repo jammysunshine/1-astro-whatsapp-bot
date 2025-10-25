@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
+const { connectDB } = require('./config/database');
 const { handleWhatsAppWebhook, verifyWhatsAppWebhook } = require('./controllers/whatsappController');
 const { errorHandler } = require('./utils/errorHandler');
 const logger = require('./utils/logger');
@@ -162,6 +163,15 @@ setInterval(() => {
     global.gc();
   }
 }, 15000); // Check every 15 seconds
+
+// Initialize database connection
+connectDB().catch(error => {
+  logger.error('❌ Failed to connect to database:', error);
+  // Don't exit in production, let Railway handle
+  if (process.env.NODE_ENV !== 'production') {
+    process.exit(1);
+  }
+});
 
 // Start server only if not in test environment
 let server;

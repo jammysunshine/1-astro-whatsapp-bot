@@ -340,8 +340,29 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
 
   const currentStep = flow.steps[session.currentStep];
   if (!currentStep || !currentStep.interactive) {
-    logger.error(`❌ Current step '${session.currentStep}' not interactive for button reply`);
-    await sendMessage(phoneNumber, 'I\'m sorry, I encountered an error. Please try again.');
+    logger.warn(`⚠️ Current step '${session.currentStep}' not interactive for button reply, clearing session to allow menu interactions`);
+    // Clear the session so button clicks can be handled as main menu actions
+    const { deleteUserSession } = require('../../models/userModel');
+    await deleteUserSession(phoneNumber);
+    // Fall back to main menu processing
+    const mainMenu = getMenu('main_menu');
+    if (mainMenu) {
+      const button = mainMenu.buttons.find(btn => btn.id === buttonId);
+      if (button && button.action) {
+        logger.info(`🎯 Executing main menu action: ${button.action} for button ${buttonId} (fallback from invalid flow state)`);
+        try {
+          await executeMenuAction(phoneNumber, user, button.action);
+          logger.info(`✅ Main menu action ${button.action} completed successfully`);
+        } catch (error) {
+          logger.error(`❌ Error executing main menu action ${button.action}:`, error);
+          await sendMessage(phoneNumber, 'Sorry, I encountered an error processing your request. Please try again.');
+        }
+      } else {
+        await sendMessage(phoneNumber, 'I\'m sorry, I didn\'t recognize that option. Please try again.');
+      }
+    } else {
+      await sendMessage(phoneNumber, 'I\'m sorry, I encountered an error. Please try again.');
+    }
     return;
   }
 
@@ -352,7 +373,6 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
     await sendMessage(phoneNumber, 'I\'m sorry, I didn\'t understand that selection. Please try again.');
     return;
   }
-
 
 
   // Process the mapped value as text input

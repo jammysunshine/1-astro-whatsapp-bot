@@ -301,17 +301,15 @@ The bot includes a comprehensive WhatsApp testing suite for validating API integ
 This project follows a modular and organized structure to facilitate development, testing, and maintenance. Below is an overview of the main directories:
 
 *   **`src/`**: Contains the core application source code.
-    *   **`src/controllers/`**: Handles incoming requests and orchestrates responses.
-    *   **`src/services/`**: Contains business logic and integrations with external services (e.g., WhatsApp API, Astrology Engine, Payment Service).
-    *   **`src/models/`**: Defines data models and interacts with the database (e.g., `userModel.js`).
-    *   **`src/utils/`**: Provides utility functions (e.g., `logger.js`, `errorHandler.js`, `inputValidator.js`).
-    *   **`src/conversation/`**: Houses the modular conversation engine, flow configurations, and menu definitions.
-    *   **`src/astrology/`**: Contains astrology-related logic and calculations (e.g., `astrologyEngine.js`, `vedicCalculator.js`).
-    *   **`src/payment/`**: Manages payment processing and subscription logic.
-    *   **`src/exceptions/`**: Custom exception classes.
-    *   **`src/logging/`**: Logging configurations.
-    *   **`src/middleware/`**: Express middleware functions.
-    *   **`src/validators/`**: Request validation schemas.
+    *   **`src/config/`**: Environment-specific configurations (e.g., database.js).
+    *   **`src/controllers/`**: Handles incoming requests and orchestrates responses (e.g., whatsappController.js).
+    *   **`src/conversation/`**: Houses the modular conversation engine, flow configurations, and menu definitions (e.g., conversationEngine.js, flowConfig.json).
+    *   **`src/models/`**: Defines data models and interacts with the database (e.g., User.js, Session.js).
+    *   **`src/services/`**: Contains business logic and integrations with external services (e.g., astrology engine, payment service, WhatsApp service).
+        *   **`src/services/astrology/`**: Astrology-related logic and calculations (e.g., vedicCalculator.js, astrologyEngine.js).
+        *   **`src/services/payment/`**: Manages payment processing and subscription logic (e.g., paymentService.js).
+        *   **`src/services/whatsapp/`**: WhatsApp API integrations (e.g., whatsappService.js, messageProcessor.js).
+    *   **`src/utils/`**: Provides utility functions (e.g., logger.js, errorHandler.js, inputValidator.js).
     *   **`server.js`**: The main entry point for the Express.js application.
 
 *   **`tests/`**: Contains all automated tests for the application.
@@ -331,7 +329,6 @@ This project follows a modular and organized structure to facilitate development
     *   **`docs/validation/`**: Validation summaries and reports.
     *   **`docs/prd/`**: Product Requirements Documents.
 
-*   **`config/`**: Environment-specific configurations.
 *   **`.github/workflows/`**: GitHub Actions CI/CD pipeline definitions.
 *   **`artillery/`**: Performance testing scripts and configurations.
 *   **`kubernetes/`**: Kubernetes deployment configurations.

@@ -356,14 +356,12 @@ const processFlowMessage = async(message, user, flowId) => {
      // Save data from current step
      if (currentStep.data_key) {
        session.flowData[currentStep.data_key] = validationResult.cleanedValue || messageText;
-     if (currentStep.data_key) {
-       session.flowData[currentStep.data_key] = validationResult.cleanedValue || messageText;
      } else {
        session.flowData[currentStepId] = messageText;
      }
 
-      // Determine next step
-      const nextStepId = currentStep.next_step;
+     // Determine next step
+     const nextStepId = currentStep.next_step;
      if (nextStepId) {
        const nextStep = flow.steps[nextStepId];
        if (nextStep) {
@@ -405,23 +403,22 @@ const processFlowMessage = async(message, user, flowId) => {
           }
           return true;
         }
-      } else {
-        logger.error(`❌ Next step '${nextStepId}' not found in flow '${flowId}'.`);
-        await sendMessage(phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
-        await deleteUserSession(phoneNumber);
-        return false;
-      }
+       } else {
+         logger.error(`❌ Next step '${nextStepId}' not found in flow '${flowId}'.`);
+         await sendMessage(phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
+         await deleteUserSession(phoneNumber);
+         return false;
+       }
      } else if (currentStep.action) {
-     // If current step has an action and no next step, execute action
-
+       // If current step has an action and no next step, execute action
        await executeFlowAction(phoneNumber, user, flowId, currentStep.action, session.flowData);
        return true;
-    } else {
-      logger.warn(`⚠️ Flow '${flowId}' ended unexpectedly at step '${currentStepId}'.`);
-      await sendMessage(phoneNumber, 'I\'m sorry, our conversation ended unexpectedly. Please try again.');
-      await deleteUserSession(phoneNumber);
-      return false;
-    }
+     } else {
+       logger.warn(`⚠️ Flow '${flowId}' ended unexpectedly at step '${currentStepId}'.`);
+       await sendMessage(phoneNumber, 'I\'m sorry, our conversation ended unexpectedly. Please try again.');
+       await deleteUserSession(phoneNumber);
+       return false;
+     }
   } catch (error) {
     logger.error('❌ Error in processFlowMessage:', error);
     try {
@@ -443,7 +440,6 @@ const processFlowMessage = async(message, user, flowId) => {
  */
 const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => {
   switch (action) {
-  case 'complete_profile': {
   case 'complete_profile': {
      const { birthDate } = flowData;
      const { birthTime } = flowData;

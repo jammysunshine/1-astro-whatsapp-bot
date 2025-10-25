@@ -1025,6 +1025,616 @@ class VedicCalculator {
   }
 
   /**
+   * Calculate Vimshottari Dasha periods (Mahadasha and Antardasha)
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Dasha calculations
+   */
+  calculateVimshottariDasha(birthData) {
+    try {
+      const { birthDate, birthTime } = birthData;
+      const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
+
+      // Calculate moon sign for dasha start
+      const moonLongitude = this.calculateMoonLongitude(year, month, day, hour, minute);
+
+      // Vimshottari Dasha periods (years)
+      const dashaPeriods = {
+        sun: 6, moon: 10, mars: 7, rahu: 18, jupiter: 16,
+        saturn: 19, mercury: 17, ketu: 7, venus: 20
+      };
+
+      // Calculate starting dasha based on moon's position
+      const startingDasha = this.getStartingDasha(moonLongitude);
+      const currentDate = new Date();
+      const birthDateObj = new Date(year, month - 1, day, hour, minute);
+
+      // Calculate current dasha
+      const currentDasha = this.calculateCurrentDasha(birthDateObj, currentDate, startingDasha, dashaPeriods);
+
+      // Calculate upcoming dashas
+      const upcomingDashas = this.calculateUpcomingDashas(currentDasha, dashaPeriods);
+
+      return {
+        system: 'Vimshottari',
+        startingDasha,
+        currentDasha,
+        upcomingDashas,
+        antardasha: this.calculateAntardasha(currentDasha.dasha, birthDateObj, currentDate)
+      };
+    } catch (error) {
+      logger.error('Error calculating Vimshottari Dasha:', error);
+      return {
+        system: 'Vimshottari',
+        error: 'Unable to calculate dasha periods at this time'
+      };
+    }
+  }
+
+  /**
+   * Calculate moon longitude for dasha calculations
+   * @param {number} year - Year
+   * @param {number} month - Month
+   * @param {number} day - Day
+   * @param {number} hour - Hour
+   * @param {number} minute - Minute
+   * @returns {number} Moon longitude in degrees
+   */
+  calculateMoonLongitude(year, month, day, hour, minute) {
+    try {
+      // Use astrologer library for precise calculation
+      if (this.astrologer) {
+        const astroData = {
+          year, month, date: day, hours: hour, minutes: minute, seconds: 0,
+          latitude: 28.6139, longitude: 77.2090, timezone: 5.5, chartType: 'sidereal'
+        };
+
+        const chart = this.astrologer.generateNatalChartData(astroData);
+        return chart.planets.moon.longitude || 0;
+      }
+
+      // Fallback calculation
+      const daysSinceEpoch = Math.floor(new Date(year, month - 1, day).getTime() / (1000 * 60 * 60 * 24));
+      return (daysSinceEpoch * 13.176396) % 360; // Moon moves ~13.18 degrees per day
+    } catch (error) {
+      logger.error('Error calculating moon longitude:', error);
+      return 0;
+    }
+  }
+
+  /**
+   * Get starting dasha based on moon's position
+   * @param {number} moonLongitude - Moon longitude
+   * @returns {string} Starting dasha planet
+   */
+  getStartingDasha(moonLongitude) {
+    // Vimshottari dasha starts from the planet ruling the nakshatra where moon is placed
+    const nakshatraSize = 360 / 27; // 27 nakshatras
+    const nakshatraNumber = Math.floor(moonLongitude / nakshatraSize);
+
+    // Nakshatra lords in order
+    const nakshatraLords = [
+      'ketu', 'venus', 'sun', 'moon', 'mars', 'rahu', 'jupiter',
+      'saturn', 'mercury', 'ketu', 'venus', 'sun', 'moon', 'mars',
+      'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus',
+      'sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury'
+    ];
+
+    return nakshatraLords[nakshatraNumber];
+  }
+
+  /**
+   * Calculate current dasha period
+   * @param {Date} birthDate - Birth date
+   * @param {Date} currentDate - Current date
+   * @param {string} startingDasha - Starting dasha
+   * @param {Object} dashaPeriods - Dasha periods
+   * @returns {Object} Current dasha information
+   */
+  calculateCurrentDasha(birthDate, currentDate, startingDasha, dashaPeriods) {
+    const ageInYears = (currentDate - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
+
+    // Dasha order
+    const dashaOrder = ['sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus'];
+    const startIndex = dashaOrder.indexOf(startingDasha);
+
+    let totalYears = 0;
+    let currentDashaIndex = startIndex;
+    let yearsIntoCurrentDasha = 0;
+
+    // Find which dasha period we're currently in
+    for (let i = 0; i < dashaOrder.length; i++) {
+      const dashaPlanet = dashaOrder[(startIndex + i) % dashaOrder.length];
+      const dashaLength = dashaPeriods[dashaPlanet];
+
+      if (totalYears + dashaLength > ageInYears) {
+        currentDashaIndex = (startIndex + i) % dashaOrder.length;
+        yearsIntoCurrentDasha = ageInYears - totalYears;
+        break;
+      }
+
+      totalYears += dashaLength;
+    }
+
+    const currentDasha = dashaOrder[currentDashaIndex];
+    const remainingYears = dashaPeriods[currentDasha] - yearsIntoCurrentDasha;
+
+    return {
+      dasha: currentDasha,
+      startYear: Math.max(0, ageInYears - yearsIntoCurrentDasha),
+      remainingYears: Math.round(remainingYears * 10) / 10,
+      endDate: new Date(currentDate.getTime() + (remainingYears * 365.25 * 24 * 60 * 60 * 1000)),
+      influence: this.getDashaInfluence(currentDasha)
+    };
+  }
+
+  /**
+   * Calculate upcoming dashas
+   * @param {Object} currentDasha - Current dasha info
+   * @param {Object} dashaPeriods - Dasha periods
+   * @returns {Array} Upcoming dashas
+   */
+  calculateUpcomingDashas(currentDasha, dashaPeriods) {
+    const dashaOrder = ['sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus'];
+    const currentIndex = dashaOrder.indexOf(currentDasha.dasha);
+
+    const upcoming = [];
+    for (let i = 1; i <= 3; i++) {
+      const nextIndex = (currentIndex + i) % dashaOrder.length;
+      const nextDasha = dashaOrder[nextIndex];
+
+      upcoming.push({
+        dasha: nextDasha,
+        years: dashaPeriods[nextDasha],
+        influence: this.getDashaInfluence(nextDasha)
+      });
+    }
+
+    return upcoming;
+  }
+
+  /**
+   * Calculate Antardasha (sub-periods)
+   * @param {string} mahadasha - Current Mahadasha
+   * @param {Date} birthDate - Birth date
+   * @param {Date} currentDate - Current date
+   * @returns {Object} Antardasha information
+   */
+  calculateAntardasha(mahadasha, birthDate, currentDate) {
+    const antardashaOrder = ['sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus'];
+    const mahadashaPeriods = {
+      sun: 6, moon: 10, mars: 7, rahu: 18, jupiter: 16,
+      saturn: 19, mercury: 17, ketu: 7, venus: 20
+    };
+
+    const mahadashaLength = mahadashaPeriods[mahadasha];
+    const antardashaLength = mahadashaLength / 9; // Each antardasha is 1/9 of mahadasha
+
+    // Find current antardasha
+    const ageInYears = (currentDate - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
+    const yearsIntoMahadasha = ageInYears % mahadashaLength;
+    const antardashaIndex = Math.floor(yearsIntoMahadasha / antardashaLength);
+
+    const currentAntardasha = antardashaOrder[antardashaIndex];
+    const yearsIntoAntardasha = yearsIntoMahadasha % antardashaLength;
+    const remainingInAntardasha = antardashaLength - yearsIntoAntardasha;
+
+    return {
+      current: {
+        planet: currentAntardasha,
+        remainingYears: Math.round(remainingInAntardasha * 10) / 10,
+        influence: this.getDashaInfluence(currentAntardasha)
+      },
+      upcoming: antardashaOrder.slice(antardashaIndex + 1, antardashaIndex + 4).map(planet => ({
+        planet,
+        years: antardashaLength,
+        influence: this.getDashaInfluence(planet)
+      }))
+    };
+  }
+
+  /**
+   * Get dasha influence description
+   * @param {string} planet - Planet name
+   * @returns {string} Influence description
+   */
+  getDashaInfluence(planet) {
+    const influences = {
+      sun: 'Leadership, authority, father, government, vitality, confidence',
+      moon: 'Emotions, mother, home, intuition, fluctuations, nurturing',
+      mars: 'Action, courage, siblings, conflicts, energy, independence',
+      mercury: 'Communication, intellect, education, business, adaptability',
+      jupiter: 'Wisdom, expansion, spirituality, prosperity, teaching, optimism',
+      venus: 'Love, beauty, arts, relationships, harmony, material comforts',
+      saturn: 'Discipline, responsibility, career, limitations, wisdom, patience',
+      rahu: 'Ambition, foreign lands, unconventional paths, materialism, innovation',
+      ketu: 'Spirituality, detachment, past life karma, mysticism, liberation'
+    };
+
+    return influences[planet] || 'General planetary influence';
+  }
+
+  /**
+   * Calculate advanced transits
+   * @param {Object} natalChart - Natal chart data
+   * @param {Date} currentDate - Current date
+   * @returns {Object} Transit analysis
+   */
+  calculateAdvancedTransits(natalChart, currentDate = new Date()) {
+    try {
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth() + 1;
+      const currentDay = currentDate.getDate();
+
+      // Calculate current planetary positions
+      const currentPositions = {};
+      const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
+
+      planets.forEach(planet => {
+        // Simplified transit calculation
+        const natalPosition = natalChart.planetaryPositions[planet];
+        if (natalPosition) {
+          const transitPosition = (natalPosition.longitude + (currentDate - natalChart.birthDate) * 0.0001) % 360;
+          currentPositions[planet] = {
+            longitude: transitPosition,
+            aspect: this.calculateTransitAspect(natalPosition.longitude, transitPosition),
+            influence: this.getTransitInfluence(planet, natalPosition.longitude, transitPosition)
+          };
+        }
+      });
+
+      // Identify major transits
+      const majorTransits = this.identifyMajorTransits(natalChart, currentPositions);
+
+      return {
+        currentDate: `${currentDay}/${currentMonth}/${currentYear}`,
+        planetaryPositions: currentPositions,
+        majorTransits,
+        nextSignificantTransits: this.calculateNextSignificantTransits(natalChart, currentDate)
+      };
+    } catch (error) {
+      logger.error('Error calculating advanced transits:', error);
+      return {
+        error: 'Unable to calculate transits at this time',
+        currentDate: new Date().toLocaleDateString()
+      };
+    }
+  }
+
+  /**
+   * Calculate transit aspect
+   * @param {number} natalPosition - Natal planet position
+   * @param {number} transitPosition - Transit planet position
+   * @returns {string} Aspect type
+   */
+  calculateTransitAspect(natalPosition, transitPosition) {
+    const angle = Math.abs(natalPosition - transitPosition) % 360;
+    const minAngle = Math.min(angle, 360 - angle);
+
+    if (minAngle <= 5) return 'conjunction';
+    if (Math.abs(minAngle - 60) <= 5) return 'sextile';
+    if (Math.abs(minAngle - 90) <= 5) return 'square';
+    if (Math.abs(minAngle - 120) <= 5) return 'trine';
+    if (Math.abs(minAngle - 180) <= 5) return 'opposition';
+
+    return 'no major aspect';
+  }
+
+  /**
+   * Get transit influence description
+   * @param {string} planet - Planet name
+   * @param {number} natalPos - Natal position
+   * @param {number} transitPos - Transit position
+   * @returns {string} Influence description
+   */
+  getTransitInfluence(planet, natalPos, transitPos) {
+    const aspect = this.calculateTransitAspect(natalPos, transitPos);
+
+    const influences = {
+      sun: {
+        conjunction: 'Identity and self-expression activated',
+        sextile: 'Opportunities for leadership and confidence',
+        square: 'Challenges to ego and self-expression',
+        trine: 'Harmony in personal power and vitality',
+        opposition: 'Public recognition and relationship dynamics'
+      },
+      moon: {
+        conjunction: 'Emotional sensitivity heightened',
+        sextile: 'Emotional opportunities and intuition',
+        square: 'Emotional challenges and mood fluctuations',
+        trine: 'Emotional harmony and nurturing',
+        opposition: 'Public emotional life and relationships'
+      },
+      mars: {
+        conjunction: 'Energy and action strongly activated',
+        sextile: 'Opportunities for action and courage',
+        square: 'Conflicts and aggressive challenges',
+        trine: 'Harmonious energy and successful action',
+        opposition: 'Public action and competitive dynamics'
+      },
+      jupiter: {
+        conjunction: 'Expansion and growth opportunities',
+        sextile: 'Lucky opportunities and optimism',
+        square: 'Excess and over-expansion challenges',
+        trine: 'Natural abundance and wisdom',
+        opposition: 'Public success and philosophical influence'
+      },
+      saturn: {
+        conjunction: 'Responsibilities and limitations emphasized',
+        sextile: 'Career opportunities and discipline',
+        square: 'Restrictions and karmic lessons',
+        trine: 'Achievement through patience and structure',
+        opposition: 'Public responsibility and authority'
+      },
+      venus: {
+        conjunction: 'Love and beauty themes prominent',
+        sextile: 'Harmonious relationships and creativity',
+        square: 'Relationship challenges and values conflicts',
+        trine: 'Love, beauty, and artistic success',
+        opposition: 'Public relationships and social charm'
+      },
+      mercury: {
+        conjunction: 'Communication and mental activity increased',
+        sextile: 'Learning opportunities and clear thinking',
+        square: 'Communication challenges and mental stress',
+        trine: 'Mental harmony and successful communication',
+        opposition: 'Public speaking and social communication'
+      }
+    };
+
+    return influences[planet]?.[aspect] || `${planet} transit influence`;
+  }
+
+  /**
+   * Identify major transits
+   * @param {Object} natalChart - Natal chart
+   * @param {Object} currentPositions - Current transit positions
+   * @returns {Array} Major transits
+   */
+  identifyMajorTransits(natalChart, currentPositions) {
+    const majorTransits = [];
+
+    Object.entries(currentPositions).forEach(([planet, position]) => {
+      if (['conjunction', 'square', 'trine', 'opposition'].includes(position.aspect)) {
+        majorTransits.push({
+          planet,
+          aspect: position.aspect,
+          influence: position.influence,
+          intensity: this.getAspectIntensity(position.aspect)
+        });
+      }
+    });
+
+    return majorTransits.slice(0, 5); // Return top 5 major transits
+  }
+
+  /**
+   * Get aspect intensity
+   * @param {string} aspect - Aspect type
+   * @returns {string} Intensity level
+   */
+  getAspectIntensity(aspect) {
+    const intensities = {
+      conjunction: 'High',
+      opposition: 'High',
+      square: 'Medium-High',
+      trine: 'Medium',
+      sextile: 'Low-Medium'
+    };
+
+    return intensities[aspect] || 'Neutral';
+  }
+
+  /**
+   * Calculate next significant transits
+   * @param {Object} natalChart - Natal chart
+   * @param {Date} currentDate - Current date
+   * @returns {Array} Next significant transits
+   */
+  calculateNextSignificantTransits(natalChart, currentDate) {
+    const nextTransits = [];
+    const planets = ['jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
+
+    planets.forEach(planet => {
+      const natalPos = natalChart.planetaryPositions[planet]?.longitude;
+      if (natalPos) {
+        // Calculate when next major aspect occurs
+        const nextConjunction = new Date(currentDate.getTime() + (360 - ((currentDate - natalChart.birthDate) * 0.0001 % 360)) * 100000);
+        const nextSquare = new Date(currentDate.getTime() + (90 - ((currentDate - natalChart.birthDate) * 0.0001 % 90)) * 100000);
+
+        nextTransits.push({
+          planet,
+          nextConjunction: nextConjunction.toLocaleDateString(),
+          nextSquare: nextSquare.toLocaleDateString(),
+          significance: this.getTransitSignificance(planet)
+        });
+      }
+    });
+
+    return nextTransits.slice(0, 3);
+  }
+
+  /**
+   * Get transit significance
+   * @param {string} planet - Planet name
+   * @returns {string} Significance description
+   */
+  getTransitSignificance(planet) {
+    const significances = {
+      jupiter: 'Expansion, growth, and new opportunities',
+      saturn: 'Responsibilities, career changes, and life lessons',
+      uranus: 'Sudden changes, innovation, and freedom',
+      neptune: 'Spirituality, dreams, and dissolution of boundaries',
+      pluto: 'Transformation, power, and rebirth'
+    };
+
+    return significances[planet] || 'Significant planetary influence';
+  }
+
+  /**
+   * Generate comprehensive Vedic analysis with all advanced features
+   * @param {Object} user - User object with birth details
+   * @returns {Object} Complete Vedic analysis
+   */
+  generateCompleteVedicAnalysis(user) {
+    try {
+      const basicChart = this.generateBasicBirthChart(user);
+      const dashaAnalysis = this.calculateVimshottariDasha(user);
+      const transitAnalysis = this.calculateAdvancedTransits(basicChart, new Date());
+
+      return {
+        ...basicChart,
+        dashaAnalysis,
+        transitAnalysis,
+        predictions: this.generateVedicPredictions(dashaAnalysis, transitAnalysis),
+        remedies: this.generateVedicRemedies(basicChart, dashaAnalysis),
+        comprehensiveDescription: this.generateComprehensiveVedicDescription(basicChart, dashaAnalysis, transitAnalysis)
+      };
+    } catch (error) {
+      logger.error('Error generating complete Vedic analysis:', error);
+      return this.generateBasicBirthChart(user); // Fallback to basic chart
+    }
+  }
+
+  /**
+   * Generate Vedic predictions based on dasha and transits
+   * @param {Object} dashaAnalysis - Dasha analysis
+   * @param {Object} transitAnalysis - Transit analysis
+   * @returns {Object} Predictions
+   */
+  generateVedicPredictions(dashaAnalysis, transitAnalysis) {
+    const predictions = {
+      shortTerm: 'Based on current planetary influences',
+      mediumTerm: 'Upcoming dasha periods suggest',
+      longTerm: 'Future transits indicate'
+    };
+
+    // Short-term based on current dasha
+    if (dashaAnalysis.currentDasha) {
+      predictions.shortTerm += ` ${dashaAnalysis.currentDasha.influence.toLowerCase()}.`;
+    }
+
+    // Medium-term based on upcoming dashas
+    if (dashaAnalysis.upcomingDashas && dashaAnalysis.upcomingDashas[0]) {
+      predictions.mediumTerm += ` ${dashaAnalysis.upcomingDashas[0].influence.toLowerCase()}.`;
+    }
+
+    // Long-term based on major transits
+    if (transitAnalysis.majorTransits && transitAnalysis.majorTransits[0]) {
+      predictions.longTerm += ` ${transitAnalysis.majorTransits[0].influence.toLowerCase()}.`;
+    }
+
+    return predictions;
+  }
+
+  /**
+   * Generate Vedic remedies
+   * @param {Object} basicChart - Basic chart data
+   * @param {Object} dashaAnalysis - Dasha analysis
+   * @returns {Array} Remedies
+   */
+  generateVedicRemedies(basicChart, dashaAnalysis) {
+    const remedies = [];
+
+    // General remedies based on current dasha
+    if (dashaAnalysis.currentDasha) {
+      const planet = dashaAnalysis.currentDasha.dasha;
+      remedies.push(this.getPlanetRemedy(planet));
+    }
+
+    // Chart-specific remedies
+    if (basicChart.challenges && basicChart.challenges.length > 0) {
+      remedies.push('Practice meditation and spiritual disciplines');
+    }
+
+    return remedies;
+  }
+
+  /**
+   * Get planet-specific remedy
+   * @param {string} planet - Planet name
+   * @returns {string} Remedy
+   */
+  getPlanetRemedy(planet) {
+    const remedies = {
+      sun: 'Chant Aditya Hridayam or practice Surya Namaskar',
+      moon: 'Practice Chandra Namaskar and work with water elements',
+      mars: 'Recite Hanuman Chalisa and practice physical disciplines',
+      mercury: 'Study sacred texts and practice clear communication',
+      jupiter: 'Chant Guru Beej Mantra and practice generosity',
+      venus: 'Practice Lakshmi worship and artistic expression',
+      saturn: 'Serve others and practice patience and discipline',
+      rahu: 'Practice spiritual disciplines and avoid material excess',
+      ketu: 'Focus on spiritual liberation and meditation'
+    };
+
+    return remedies[planet] || 'Practice general spiritual disciplines';
+  }
+
+  /**
+   * Generate comprehensive Vedic description
+   * @param {Object} basicChart - Basic chart
+   * @param {Object} dashaAnalysis - Dasha analysis
+   * @param {Object} transitAnalysis - Transit analysis
+   * @returns {string} Comprehensive description
+   */
+  generateComprehensiveVedicDescription(basicChart, dashaAnalysis, transitAnalysis) {
+    let description = `🕉️ *Complete Vedic Astrology Analysis*\n\n`;
+
+    // Basic chart info
+    description += `📊 *Birth Chart:*\n`;
+    description += `• Sun Sign: ${basicChart.sunSign}\n`;
+    description += `• Moon Sign: ${basicChart.moonSign}\n`;
+    description += `• Rising Sign: ${basicChart.risingSign}\n\n`;
+
+    // Dasha analysis
+    if (dashaAnalysis.currentDasha) {
+      description += `⏳ *Current Dasha Period:*\n`;
+      description += `• Mahadasha: ${dashaAnalysis.currentDasha.dasha} (${dashaAnalysis.currentDasha.remainingYears} years remaining)\n`;
+      description += `• Influence: ${dashaAnalysis.currentDasha.influence}\n`;
+
+      if (dashaAnalysis.antardasha && dashaAnalysis.antardasha.current) {
+        description += `• Antardasha: ${dashaAnalysis.antardasha.current.planet} (${dashaAnalysis.antardasha.current.remainingYears} years)\n`;
+      }
+      description += '\n';
+    }
+
+    // Transit analysis
+    if (transitAnalysis.majorTransits && transitAnalysis.majorTransits.length > 0) {
+      description += `🌟 *Current Major Transits:*\n`;
+      transitAnalysis.majorTransits.slice(0, 3).forEach(transit => {
+        description += `• ${transit.planet} ${transit.aspect}: ${transit.influence}\n`;
+      });
+      description += '\n';
+    }
+
+    // Predictions
+    const predictions = this.generateVedicPredictions(dashaAnalysis, transitAnalysis);
+    description += `🔮 *Predictions:*\n`;
+    description += `• Short-term: ${predictions.shortTerm}\n`;
+    description += `• Medium-term: ${predictions.mediumTerm}\n`;
+    description += `• Long-term: ${predictions.longTerm}\n\n`;
+
+    // Remedies
+    const remedies = this.generateVedicRemedies(basicChart, dashaAnalysis);
+    if (remedies.length > 0) {
+      description += `🙏 *Recommended Remedies:*\n`;
+      remedies.forEach(remedy => {
+        description += `• ${remedy}\n`;
+      });
+      description += '\n';
+    }
+
+    description += `📚 *Vedic Wisdom:*\n`;
+    description += `• Dasha periods show the timing of life's chapters\n`;
+    description += `• Transits reveal current cosmic influences\n`;
+    description += `• Remedies help harmonize planetary energies\n`;
+    description += `• Self-awareness and spiritual practice enhance all influences`;
+
+    return description;
+  }
+
+  /**
    * Get compatibility description
    * @param {string} sign1 - First sign
    * @param {string} sign2 - Second sign

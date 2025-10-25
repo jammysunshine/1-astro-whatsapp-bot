@@ -374,17 +374,16 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   case 'show_birth_chart':
     try {
       const vedicCalculator = require('../services/astrology/vedicCalculator');
-      const chartData = await vedicCalculator.generateDetailedChart({
+      const chartData = vedicCalculator.generateCompleteVedicAnalysis({
         birthDate: user.birthDate,
         birthTime: user.birthTime,
-        birthPlace: user.birthPlace
+        birthPlace: user.birthPlace,
+        name: user.name
       });
 
-      response = `📊 *Your Vedic Birth Chart*\n\n☀️ *Sun Sign:* ${chartData.sunSign || 'Unknown'}\n🌙 *Moon Sign:* ${chartData.moonSign || 'Unknown'}\n⬆️ *Rising Sign:* ${chartData.risingSign || 'Unknown'}\n\n🔥 *Life Patterns:*\n${chartData.lifePatterns ? chartData.lifePatterns.map(p => `• ${p}`).join('\n') : 'Personal insights being calculated...'}\n\n💫 *Key Planetary Positions:*\n${chartData.planetaryPositions ? chartData.planetaryPositions.map(p => `• ${p}`).join('\n') : 'Detailed positions available with premium'}\n\nWhat would you like to explore next?`;
+      await sendMessage(phoneNumber, chartData.comprehensiveDescription);
 
-      await sendMessage(phoneNumber, response);
-
-      // Send main menu with buttons
+      // Send main menu
       const menu = getMenu('main_menu');
       if (menu) {
         const buttons = menu.buttons.map(button => ({
@@ -393,6 +392,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         }));
         await sendMessage(phoneNumber, { type: 'button', body: menu.body, buttons }, 'interactive');
       }
+      return null; // Handled, don't send additional response
     } catch (error) {
       logger.error('Error showing birth chart:', error);
       response = 'I\'m having trouble generating your birth chart right now. Please try again later.';
@@ -425,6 +425,166 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       response = '❌ Sorry, I couldn\'t process your subscription right now. Please try again later or contact support.';
     }
     break;
+  case 'get_tarot_reading':
+    try {
+      const { generateTarotReading } = require('../astrology/tarotReader');
+      const reading = generateTarotReading('single');
+      response = `🔮 *Tarot Reading*\n\n${reading.cards[0].name}\n${reading.cards[0].meaning}\n\n*Advice:* ${reading.cards[0].advice || 'Trust your intuition'}`;
+    } catch (error) {
+      logger.error('Error getting tarot reading:', error);
+      response = 'I\'m having trouble connecting with the tarot cards right now.';
+    }
+    break;
+  case 'get_palmistry_analysis':
+    try {
+      const { generatePalmistryAnalysis } = require('../astrology/palmistryReader');
+      const analysis = generatePalmistryAnalysis();
+      response = `🤲 *Palmistry Analysis*\n\n*Hand Type:* ${analysis.handType}\n*Personality:* ${analysis.personality}\n\n*Life Path:* ${analysis.lifePath}`;
+    } catch (error) {
+      logger.error('Error getting palmistry analysis:', error);
+      response = 'I\'m having trouble reading the palm lines right now.';
+    }
+    break;
+  case 'get_kabbalistic_analysis':
+    if (!user.birthDate) {
+      response = 'I need your birth date for Kabbalistic analysis.';
+      break;
+    }
+    try {
+      const { generateKabbalisticChart } = require('../astrology/kabbalisticReader');
+      const analysis = generateKabbalisticChart({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        name: user.name
+      });
+      response = analysis.kabbalisticDescription.substring(0, 1000) + '...'; // Truncate for WhatsApp
+    } catch (error) {
+      logger.error('Error getting Kabbalistic analysis:', error);
+      response = 'I\'m having trouble connecting with the Tree of Life energies.';
+    }
+    break;
+  case 'get_mayan_analysis':
+    if (!user.birthDate) {
+      response = 'I need your birth date for Mayan calendar analysis.';
+      break;
+    }
+    try {
+      const { generateMayanChart } = require('../astrology/mayanReader');
+      const analysis = generateMayanChart({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        name: user.name
+      });
+      response = analysis.mayanDescription.substring(0, 1000) + '...'; // Truncate for WhatsApp
+    } catch (error) {
+      logger.error('Error getting Mayan analysis:', error);
+      response = 'I\'m having trouble connecting with the Mayan calendar energies.';
+    }
+    break;
+  case 'get_celtic_analysis':
+    if (!user.birthDate) {
+      response = 'I need your birth date for Celtic tree sign analysis.';
+      break;
+    }
+    try {
+      const { generateCelticChart } = require('../astrology/celticReader');
+      const analysis = generateCelticChart({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        name: user.name
+      });
+      response = analysis.celticDescription.substring(0, 1000) + '...'; // Truncate for WhatsApp
+    } catch (error) {
+      logger.error('Error getting Celtic analysis:', error);
+      response = 'I\'m having trouble connecting with the Celtic forest energies.';
+    }
+    break;
+  case 'get_iching_reading':
+    try {
+      const { generateIChingReading } = require('../astrology/ichingReader');
+      const reading = generateIChingReading();
+      response = `🔮 *I Ching Reading*\n\n*Hexagram:* ${reading.primaryHexagram.number} - ${reading.primaryHexagram.name}\n\n*Judgment:* ${reading.primaryHexagram.judgment.substring(0, 200)}...`;
+    } catch (error) {
+      logger.error('Error getting I Ching reading:', error);
+      response = 'I\'m having trouble consulting the I Ching oracle.';
+    }
+    break;
+  case 'get_astrocartography_analysis':
+    if (!user.birthDate) {
+      response = 'I need your complete birth details for astrocartography.';
+      break;
+    }
+    try {
+      const { generateAstrocartography } = require('../astrology/astrocartographyReader');
+      const analysis = generateAstrocartography({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'London, UK',
+        name: user.name
+      });
+      response = analysis.astrocartographyDescription.substring(0, 1000) + '...'; // Truncate for WhatsApp
+    } catch (error) {
+      logger.error('Error getting astrocartography analysis:', error);
+      response = 'I\'m having trouble mapping the planetary lines.';
+    }
+    break;
+  case 'get_horary_reading':
+    response = 'For horary astrology, please ask a specific question like "Horary: When will I find a job?" or "Horary: Will my relationship work out?"';
+    break;
+  case 'show_divination_menu':
+    const divinationMenu = getMenu('divination_menu');
+    if (divinationMenu) {
+      const buttons = divinationMenu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(phoneNumber, { type: 'button', body: divinationMenu.body, buttons }, 'interactive');
+    }
+    return null;
+  case 'show_traditions_menu':
+    const traditionsMenu = getMenu('traditions_menu');
+    if (traditionsMenu) {
+      const buttons = traditionsMenu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(phoneNumber, { type: 'button', body: traditionsMenu.body, buttons }, 'interactive');
+    }
+    return null;
+  case 'show_nadi_flow':
+    if (!user.birthDate) {
+      response = 'For Nadi astrology, I need your complete birth details first.';
+    } else {
+      const flowStarted = await processFlowMessage({ type: 'text', text: { body: 'start' } }, user, 'nadi_flow');
+      if (flowStarted) {
+        return null;
+      } else {
+        response = 'Sorry, I couldn\'t start the Nadi analysis right now.';
+      }
+    }
+    break;
+  case 'show_chinese_flow':
+    if (!user.birthDate) {
+      response = 'For Chinese BaZi analysis, I need your birth details first.';
+    } else {
+      const flowStarted = await processFlowMessage({ type: 'text', text: { body: 'start' } }, user, 'chinese_flow');
+      if (flowStarted) {
+        return null;
+      } else {
+        response = 'Sorry, I couldn\'t start the Chinese analysis right now.';
+      }
+    }
+    break;
+  case 'show_main_menu':
+    const mainMenu = getMenu('main_menu');
+    if (mainMenu) {
+      const buttons = mainMenu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(phoneNumber, { type: 'button', body: mainMenu.body, buttons }, 'interactive');
+    }
+    return null;
   default:
     logger.warn(`⚠️ Unknown menu action: ${action}`);
     response = `I'm sorry, I don't know how to perform the action: ${action} yet.`;

@@ -14,9 +14,81 @@
         "action": "show_birth_chart"
       },
       {
+        "id": "btn_divination",
+        "title": "Divination",
+        "action": "show_divination_menu"
+      },
+      {
+        "id": "btn_traditions",
+        "title": "Traditions",
+        "action": "show_traditions_menu"
+      },
+      {
         "id": "btn_more_options",
         "title": "More Options",
         "action": "show_more_options"
+      }
+    ]
+  },
+  "divination_menu": {
+    "type": "interactive",
+    "body": "🔮 *Divination Systems*",
+    "buttons": [
+      {
+        "id": "btn_tarot",
+        "title": "Tarot Reading",
+        "action": "get_tarot_reading"
+      },
+      {
+        "id": "btn_palmistry",
+        "title": "Palmistry",
+        "action": "get_palmistry_analysis"
+      },
+      {
+        "id": "btn_iching",
+        "title": "I Ching Oracle",
+        "action": "get_iching_reading"
+      },
+      {
+        "id": "btn_horary",
+        "title": "Horary Question",
+        "action": "get_horary_reading"
+      },
+      {
+        "id": "btn_back_main",
+        "title": "Back to Main",
+        "action": "show_main_menu"
+      }
+    ]
+  },
+  "traditions_menu": {
+    "type": "interactive",
+    "body": "🌳 *Ancient Traditions*",
+    "buttons": [
+      {
+        "id": "btn_kabbalistic",
+        "title": "Kabbalistic",
+        "action": "get_kabbalistic_analysis"
+      },
+      {
+        "id": "btn_mayan",
+        "title": "Mayan Calendar",
+        "action": "get_mayan_analysis"
+      },
+      {
+        "id": "btn_celtic",
+        "title": "Celtic Wisdom",
+        "action": "get_celtic_analysis"
+      },
+      {
+        "id": "btn_nadi",
+        "title": "Nadi Astrology",
+        "action": "show_nadi_flow"
+      },
+      {
+        "id": "btn_back_main",
+        "title": "Back to Main",
+        "action": "show_main_menu"
       }
     ]
   },
@@ -30,12 +102,22 @@
         "action": "initiate_compatibility_flow"
       },
       {
+        "id": "btn_astrocartography",
+        "title": "Astrocartography",
+        "action": "get_astrocartography_analysis"
+      },
+      {
+        "id": "btn_chinese",
+        "title": "Chinese BaZi",
+        "action": "show_chinese_flow"
+      },
+      {
         "id": "btn_subscription",
         "title": "Subscription",
         "action": "show_subscription_plans"
       },
       {
-        "id": "btn_main_menu",
+        "id": "btn_back_main",
         "title": "Back to Main",
         "action": "show_main_menu"
       }

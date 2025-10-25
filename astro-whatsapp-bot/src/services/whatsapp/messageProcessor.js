@@ -268,9 +268,16 @@ const processButtonReply = async(phoneNumber, buttonId, title, user) => {
     if (mainMenu) {
       const button = mainMenu.buttons.find(btn => btn.id === buttonId);
       if (button && button.action) {
-        await executeMenuAction(phoneNumber, user, button.action);
+        logger.info(`🎯 Executing main menu action: ${button.action} for button ${buttonId}`);
+        try {
+          await executeMenuAction(phoneNumber, user, button.action);
+          logger.info(`✅ Main menu action ${button.action} completed successfully`);
+        } catch (error) {
+          logger.error(`❌ Error executing main menu action ${button.action}:`, error);
+          await sendMessage(phoneNumber, `Sorry, I encountered an error processing your request. Please try again.`);
+        }
       } else {
-        logger.warn(`⚠️ No action defined for button ID: ${buttonId}`);
+        logger.warn(`⚠️ No action defined for button ID: ${buttonId} in main menu`);
         await sendMessage(phoneNumber, `You selected: ${title}. I'm not sure how to process that yet.`);
       }
     } else {

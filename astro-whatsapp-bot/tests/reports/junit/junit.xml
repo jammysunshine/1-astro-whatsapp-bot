@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="81" failures="21" errors="0" time="54.107">
-  <testsuite name="User Model" errors="0" failures="1" skipped="0" timestamp="2025-10-25T20:53:33" time="7.758" tests="4">
-    <testcase classname="User Model User Creation should create a new user with valid data" name="User Model User Creation should create a new user with valid data" time="0.203">
+<testsuites name="jest tests" tests="81" failures="21" errors="0" time="52.442">
+  <testsuite name="User Model" errors="0" failures="1" skipped="0" timestamp="2025-10-25T20:57:25" time="5.998" tests="4">
+    <testcase classname="User Model User Creation should create a new user with valid data" name="User Model User Creation should create a new user with valid data" time="0.145">
     </testcase>
-    <testcase classname="User Model User Creation should handle missing required fields" name="User Model User Creation should handle missing required fields" time="0.16">
+    <testcase classname="User Model User Creation should handle missing required fields" name="User Model User Creation should handle missing required fields" time="0.129">
     </testcase>
-    <testcase classname="User Model User Queries should find user by phone number" name="User Model User Queries should find user by phone number" time="0.066">
+    <testcase classname="User Model User Queries should find user by phone number" name="User Model User Queries should find user by phone number" time="0.055">
     </testcase>
-    <testcase classname="User Model User Queries should update user profile" name="User Model User Queries should update user profile" time="0.134">
+    <testcase classname="User Model User Queries should update user profile" name="User Model User Queries should update user profile" time="0.15">
       <failure>ValidationError: User validation failed: id: Path `id` is required.
     at model.Object.&lt;anonymous&gt;.Document.invalidate (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3219:32)
     at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3012:17
@@ -15,50 +15,7 @@
     at processTicksAndRejections (node:internal/process/task_queues:85:11)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="Session Model" errors="0" failures="1" skipped="0" timestamp="2025-10-25T20:53:41" time="3.13" tests="3">
-    <testcase classname="Session Model Session Creation should create a new session with valid data" name="Session Model Session Creation should create a new session with valid data" time="0.257">
-    </testcase>
-    <testcase classname="Session Model Session Queries should find session by phone number" name="Session Model Session Queries should find session by phone number" time="0.023">
-    </testcase>
-    <testcase classname="Session Model Session Queries should update session flow data" name="Session Model Session Queries should update session flow data" time="0.01">
-      <failure>ValidationError: Session validation failed: sessionId: Path `sessionId` is required.
-    at model.Object.&lt;anonymous&gt;.Document.invalidate (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3219:32)
-    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3012:17
-    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/schematype.js:1368:9
-    at processTicksAndRejections (node:internal/process/task_queues:85:11)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="UserModel Functions" errors="0" failures="4" skipped="0" timestamp="2025-10-25T20:53:44" time="3.168" tests="5">
-    <testcase classname="UserModel Functions getUserByPhone should get user by phone number" name="UserModel Functions getUserByPhone should get user by phone number" time="0.002">
-      <failure>TypeError: user.toObject is not a function
-    at toObject (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/models/userModel.js:59:19)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:39:20)</failure>
-    </testcase>
-    <testcase classname="UserModel Functions getUserByPhone should return null if user not found" name="UserModel Functions getUserByPhone should return null if user not found" time="0.004">
-    </testcase>
-    <testcase classname="UserModel Functions createUser should create a new user" name="UserModel Functions createUser should create a new user" time="0.009">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-Expected: {&quot;name&quot;: &quot;Test User&quot;, &quot;phoneNumber&quot;: &quot;+1234567890&quot;}
-Received: undefined
-    at Object.toEqual (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:65:20)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
-    </testcase>
-    <testcase classname="UserModel Functions addBirthDetails should add birth details to user" name="UserModel Functions addBirthDetails should add birth details to user" time="0.005">
-      <failure>Error: User not found: +1234567890
-    at addBirthDetails (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/models/userModel.js:139:13)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:79:7)</failure>
-    </testcase>
-    <testcase classname="UserModel Functions updateUserProfile should update user profile" name="UserModel Functions updateUserProfile should update user profile" time="0.005">
-      <failure>TypeError: updatedUser.toObject is not a function
-    at toObject (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/models/userModel.js:104:24)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:94:7)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="ConversationEngine" errors="0" failures="3" skipped="0" timestamp="2025-10-25T20:53:48" time="3.257" tests="3">
+  <testsuite name="ConversationEngine" errors="0" failures="3" skipped="0" timestamp="2025-10-25T20:57:31" time="3.228" tests="3">
     <testcase classname="ConversationEngine processMessage should process onboarding message" name="ConversationEngine processMessage should process onboarding message" time="0.003">
       <failure>TypeError: Cannot read properties of undefined (reading &apos;mockReturnValue&apos;)
     at Object.mockReturnValue (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/conversation/conversationEngine.test.js:25:45)
@@ -77,7 +34,7 @@ Received: undefined
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="ConversationEngine processMessage should handle existing user" name="ConversationEngine processMessage should handle existing user" time="0.003">
+    <testcase classname="ConversationEngine processMessage should handle existing user" name="ConversationEngine processMessage should handle existing user" time="0.002">
       <failure>TypeError: Cannot read properties of undefined (reading &apos;mockReturnValue&apos;)
     at Object.mockReturnValue (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/conversation/conversationEngine.test.js:25:45)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
@@ -95,7 +52,7 @@ Received: undefined
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="ConversationEngine handleOnboarding should handle birth date input" name="ConversationEngine handleOnboarding should handle birth date input" time="0.004">
+    <testcase classname="ConversationEngine handleOnboarding should handle birth date input" name="ConversationEngine handleOnboarding should handle birth date input" time="0.002">
       <failure>TypeError: Cannot read properties of undefined (reading &apos;mockReturnValue&apos;)
     at Object.mockReturnValue (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/conversation/conversationEngine.test.js:25:45)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
@@ -114,7 +71,140 @@ Received: undefined
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="InputValidator" errors="0" failures="4" skipped="0" timestamp="2025-10-25T20:53:51" time="2.889" tests="5">
+  <testsuite name="UserModel Functions" errors="0" failures="4" skipped="0" timestamp="2025-10-25T20:57:34" time="2.938" tests="5">
+    <testcase classname="UserModel Functions getUserByPhone should get user by phone number" name="UserModel Functions getUserByPhone should get user by phone number" time="0.009">
+      <failure>TypeError: user.toObject is not a function
+    at toObject (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/models/userModel.js:59:19)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:39:20)</failure>
+    </testcase>
+    <testcase classname="UserModel Functions getUserByPhone should return null if user not found" name="UserModel Functions getUserByPhone should return null if user not found" time="0.004">
+    </testcase>
+    <testcase classname="UserModel Functions createUser should create a new user" name="UserModel Functions createUser should create a new user" time="0.009">
+      <failure>Error: expect(received).toEqual(expected) // deep equality
+
+Expected: {&quot;name&quot;: &quot;Test User&quot;, &quot;phoneNumber&quot;: &quot;+1234567890&quot;}
+Received: undefined
+    at Object.toEqual (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:65:20)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="UserModel Functions addBirthDetails should add birth details to user" name="UserModel Functions addBirthDetails should add birth details to user" time="0.002">
+      <failure>Error: User not found: +1234567890
+    at addBirthDetails (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/models/userModel.js:139:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:79:7)</failure>
+    </testcase>
+    <testcase classname="UserModel Functions updateUserProfile should update user profile" name="UserModel Functions updateUserProfile should update user profile" time="0.003">
+      <failure>TypeError: updatedUser.toObject is not a function
+    at toObject (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/models/userModel.js:104:24)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:94:7)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Session Model" errors="0" failures="1" skipped="0" timestamp="2025-10-25T20:57:37" time="3.288" tests="3">
+    <testcase classname="Session Model Session Creation should create a new session with valid data" name="Session Model Session Creation should create a new session with valid data" time="0.375">
+    </testcase>
+    <testcase classname="Session Model Session Queries should find session by phone number" name="Session Model Session Queries should find session by phone number" time="0.106">
+    </testcase>
+    <testcase classname="Session Model Session Queries should update session flow data" name="Session Model Session Queries should update session flow data" time="0.079">
+      <failure>ValidationError: Session validation failed: sessionId: Path `sessionId` is required.
+    at model.Object.&lt;anonymous&gt;.Document.invalidate (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3219:32)
+    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3012:17
+    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/schematype.js:1368:9
+    at processTicksAndRejections (node:internal/process/task_queues:85:11)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Logger" errors="0" failures="4" skipped="0" timestamp="2025-10-25T20:57:40" time="2.646" tests="4">
+    <testcase classname="Logger Logging Methods should log info message" name="Logger Logging Methods should log info message" time="0.026">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+Expected: StringContaining &quot;Test info message&quot;
+
+Number of calls: 0
+    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:18:26)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Logger Logging Methods should log error message" name="Logger Logging Methods should log error message" time="0.004">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+Expected: StringContaining &quot;Test error message&quot;
+
+Number of calls: 0
+    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:28:26)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Logger Logging Methods should log warn message" name="Logger Logging Methods should log warn message" time="0.007">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+Expected: StringContaining &quot;Test warn message&quot;
+
+Number of calls: 0
+    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:38:26)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Logger Logging Methods should log debug message" name="Logger Logging Methods should log debug message" time="0.003">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+Expected: StringContaining &quot;Test debug message&quot;
+
+Number of calls: 0
+    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:48:26)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="InputValidator" errors="0" failures="4" skipped="0" timestamp="2025-10-25T20:57:43" time="3.67" tests="5">
     <testcase classname="InputValidator validateEmail should validate valid email" name="InputValidator validateEmail should validate valid email" time="0.002">
       <failure>TypeError: inputValidator.validateEmail is not a function
     at Object.validateEmail (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/inputValidator.test.js:11:37)
@@ -133,7 +223,7 @@ Received: undefined
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="InputValidator validateEmail should reject invalid email" name="InputValidator validateEmail should reject invalid email" time="0.001">
+    <testcase classname="InputValidator validateEmail should reject invalid email" name="InputValidator validateEmail should reject invalid email" time="0.002">
       <failure>TypeError: inputValidator.validateEmail is not a function
     at Object.validateEmail (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/inputValidator.test.js:19:37)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
@@ -169,7 +259,7 @@ Received: undefined
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="InputValidator validatePhoneNumber should reject invalid phone number" name="InputValidator validatePhoneNumber should reject invalid phone number" time="0.001">
+    <testcase classname="InputValidator validatePhoneNumber should reject invalid phone number" name="InputValidator validatePhoneNumber should reject invalid phone number" time="0.002">
       <failure>TypeError: inputValidator.validatePhoneNumber is not a function
     at Object.validatePhoneNumber (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/inputValidator.test.js:37:37)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
@@ -190,8 +280,8 @@ Received: undefined
     <testcase classname="InputValidator sanitizeInput should sanitize input" name="InputValidator sanitizeInput should sanitize input" time="0.003">
     </testcase>
   </testsuite>
-  <testsuite name="ErrorHandler" errors="0" failures="4" skipped="0" timestamp="2025-10-25T20:53:54" time="2.658" tests="4">
-    <testcase classname="ErrorHandler handleError should handle error and log it" name="ErrorHandler handleError should handle error and log it" time="0.005">
+  <testsuite name="ErrorHandler" errors="0" failures="4" skipped="0" timestamp="2025-10-25T20:57:47" time="2.823" tests="4">
+    <testcase classname="ErrorHandler handleError should handle error and log it" name="ErrorHandler handleError should handle error and log it" time="0.002">
       <failure>TypeError: errorHandler.handleError is not a function
     at Object.handleError (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/errorHandler.test.js:20:35)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
@@ -209,7 +299,7 @@ Received: undefined
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="ErrorHandler handleError should handle error without context" name="ErrorHandler handleError should handle error without context" time="0.003">
+    <testcase classname="ErrorHandler handleError should handle error without context" name="ErrorHandler handleError should handle error without context" time="0.002">
       <failure>TypeError: errorHandler.handleError is not a function
     at Object.handleError (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/errorHandler.test.js:29:35)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
@@ -227,7 +317,7 @@ Received: undefined
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="ErrorHandler handleValidationError should handle validation error" name="ErrorHandler handleValidationError should handle validation error" time="0.003">
+    <testcase classname="ErrorHandler handleValidationError should handle validation error" name="ErrorHandler handleValidationError should handle validation error" time="0.002">
       <failure>TypeError: errorHandler.handleValidationError is not a function
     at Object.handleValidationError (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/errorHandler.test.js:41:35)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
@@ -245,7 +335,7 @@ Received: undefined
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="ErrorHandler handleDatabaseError should handle database error" name="ErrorHandler handleDatabaseError should handle database error" time="0.002">
+    <testcase classname="ErrorHandler handleDatabaseError should handle database error" name="ErrorHandler handleDatabaseError should handle database error" time="0.003">
       <failure>TypeError: errorHandler.handleDatabaseError is not a function
     at Object.handleDatabaseError (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/errorHandler.test.js:52:35)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
@@ -264,208 +354,96 @@ Received: undefined
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="Logger" errors="0" failures="4" skipped="0" timestamp="2025-10-25T20:53:57" time="2.958" tests="4">
-    <testcase classname="Logger Logging Methods should log info message" name="Logger Logging Methods should log info message" time="0.004">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: StringContaining &quot;Test info message&quot;
-
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:18:26)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="Logger Logging Methods should log error message" name="Logger Logging Methods should log error message" time="0.003">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: StringContaining &quot;Test error message&quot;
-
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:28:26)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="Logger Logging Methods should log warn message" name="Logger Logging Methods should log warn message" time="0.003">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: StringContaining &quot;Test warn message&quot;
-
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:38:26)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="Logger Logging Methods should log debug message" name="Logger Logging Methods should log debug message" time="0.004">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: StringContaining &quot;Test debug message&quot;
-
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:48:26)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:54:00" time="5.715" tests="4">
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.005">
+  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:57:50" time="5.697" tests="4">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.008">
     </testcase>
     <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.004">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="3.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="Server Setup" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:54:06" time="3.701" tests="4">
-    <testcase classname="Server Setup GET /health should return health status with correct structure" name="Server Setup GET /health should return health status with correct structure" time="0.096">
-    </testcase>
-    <testcase classname="Server Setup GET / should return welcome message with version" name="Server Setup GET / should return welcome message with version" time="0.017">
-    </testcase>
-    <testcase classname="Server Setup POST /webhook should return webhook ready message" name="Server Setup POST /webhook should return webhook ready message" time="0.016">
-    </testcase>
-    <testcase classname="Server Setup 404 Handler should return 404 for non-existent routes" name="Server Setup 404 Handler should return 404 for non-existent routes" time="0.016">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="3.01">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Message Sender" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:54:10" time="2.953" tests="17">
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.005">
+  <testsuite name="Server Setup" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:57:56" time="3.862" tests="4">
+    <testcase classname="Server Setup GET /health should return health status with correct structure" name="Server Setup GET /health should return health status with correct structure" time="0.095">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.003">
+    <testcase classname="Server Setup GET / should return welcome message with version" name="Server Setup GET / should return welcome message with version" time="0.019">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.005">
+    <testcase classname="Server Setup POST /webhook should return webhook ready message" name="Server Setup POST /webhook should return webhook ready message" time="0.019">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.049">
+    <testcase classname="Server Setup 404 Handler should return 404 for non-existent routes" name="Server Setup 404 Handler should return 404 for non-existent routes" time="0.019">
+    </testcase>
+  </testsuite>
+  <testsuite name="WhatsApp Message Sender" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:58:00" time="2.827" tests="17">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.007">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.005">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.006">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.041">
     </testcase>
     <testcase classname="WhatsApp Message Sender sendTextMessage should handle API error gracefully" name="WhatsApp Message Sender sendTextMessage should handle API error gracefully" time="0.004">
     </testcase>
     <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.005">
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" time="0.004">
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.003">
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.002">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.005">
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.005">
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.005">
+    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.002">
+    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message successfully" name="WhatsApp Message Sender sendMediaMessage should send media message successfully" time="0.003">
+    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message successfully" name="WhatsApp Message Sender sendMediaMessage should send media message successfully" time="0.005">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message with filename" name="WhatsApp Message Sender sendMediaMessage should send media message with filename" time="0.003">
+    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message with filename" name="WhatsApp Message Sender sendMediaMessage should send media message with filename" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.004">
+    <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.005">
     </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="Nadi Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:54:13" time="2.774" tests="4">
-    <testcase classname="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" name="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" time="0.006">
-    </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should handle missing birth date" name="Nadi Reader Service generateNadiReading should handle missing birth date" time="0.002">
-    </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should provide Dasa period calculations" name="Nadi Reader Service generateNadiReading should provide Dasa period calculations" time="0.002">
-    </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" name="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" time="0.002">
+    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.004">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Message Processor" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:54:16" time="2.878" tests="9">
+  <testsuite name="WhatsApp Message Processor" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:58:03" time="2.606" tests="9">
     <testcase classname="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" name="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" time="0.007">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should process existing user message" name="WhatsApp Message Processor processIncomingMessage should process existing user message" time="0.004">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should process existing user message" name="WhatsApp Message Processor processIncomingMessage should process existing user message" time="0.005">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" name="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" time="0.002">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" name="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" time="0.007">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" time="0.008">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" time="0.003">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" time="0.005">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle button messages" name="WhatsApp Message Processor processIncomingMessage should handle button messages" time="0.002">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle button messages" name="WhatsApp Message Processor processIncomingMessage should handle button messages" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle media messages" name="WhatsApp Message Processor processIncomingMessage should handle media messages" time="0.003">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle media messages" name="WhatsApp Message Processor processIncomingMessage should handle media messages" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" name="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" time="0.002">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" name="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" name="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="Palmistry Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:54:19" time="2.794" tests="3">
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" name="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" time="0.007">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" name="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" time="0.011">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should handle user with hand data" name="Palmistry Reader Service generatePalmistryReading should handle user with hand data" time="0.003">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" name="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" time="0.004">
     </testcase>
   </testsuite>
-  <testsuite name="Tarot Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:54:21" time="2.759" tests="5">
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a single card reading" name="Tarot Reader Service generateTarotReading should generate a single card reading" time="0.006">
+  <testsuite name="Palmistry Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:58:05" time="2.719" tests="3">
+    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" name="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" time="0.006">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a three-card spread reading" name="Tarot Reader Service generateTarotReading should generate a three-card spread reading" time="0.003">
+    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" name="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" time="0.002">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" name="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" time="0.002">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle invalid spread type" name="Tarot Reader Service generateTarotReading should handle invalid spread type" time="0.002">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle user personalization" name="Tarot Reader Service generateTarotReading should handle user personalization" time="0.002">
+    <testcase classname="Palmistry Reader Service generatePalmistryReading should handle user with hand data" name="Palmistry Reader Service generatePalmistryReading should handle user with hand data" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:54:24" time="2.778" tests="7">
+  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:58:08" time="2.819" tests="7">
     <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.005">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.003">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.004">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.002">
     </testcase>
     <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.002">
     </testcase>
@@ -474,6 +452,28 @@ Number of calls: 0
     <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.002">
     </testcase>
     <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Nadi Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:58:11" time="2.72" tests="4">
+    <testcase classname="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" name="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" time="0.007">
+    </testcase>
+    <testcase classname="Nadi Reader Service generateNadiReading should handle missing birth date" name="Nadi Reader Service generateNadiReading should handle missing birth date" time="0.002">
+    </testcase>
+    <testcase classname="Nadi Reader Service generateNadiReading should provide Dasa period calculations" name="Nadi Reader Service generateNadiReading should provide Dasa period calculations" time="0.004">
+    </testcase>
+    <testcase classname="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" name="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="Tarot Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T20:58:14" time="2.621" tests="5">
+    <testcase classname="Tarot Reader Service generateTarotReading should generate a single card reading" name="Tarot Reader Service generateTarotReading should generate a single card reading" time="0.007">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should generate a three-card spread reading" name="Tarot Reader Service generateTarotReading should generate a three-card spread reading" time="0.003">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" name="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" time="0.002">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should handle invalid spread type" name="Tarot Reader Service generateTarotReading should handle invalid spread type" time="0.001">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should handle user personalization" name="Tarot Reader Service generateTarotReading should handle user personalization" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

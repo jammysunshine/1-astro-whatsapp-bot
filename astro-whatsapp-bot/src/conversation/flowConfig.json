@@ -205,7 +205,7 @@
           "buttons": [
             {
               "id": "horoscope_again",
-              "title": "🔄 Get Another Reading"
+              "title": "🔄 Another Reading"
             },
             {
               "id": "horoscope_menu",

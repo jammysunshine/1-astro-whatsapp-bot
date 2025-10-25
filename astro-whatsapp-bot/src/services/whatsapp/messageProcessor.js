@@ -264,7 +264,7 @@ const processButtonReply = async(phoneNumber, buttonId, title, user) => {
   const { getUserSession } = require('../../models/userModel');
   const session = await getUserSession(phoneNumber);
 
-  if (session && session.currentFlow) {
+  if (session && session.currentFlow && session.currentFlow !== 'undefined' && session.currentFlow !== undefined) {
     // Process as flow button reply
     await processFlowButtonReply(phoneNumber, buttonId, user, session);
   } else {
@@ -307,7 +307,10 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
   const flow = getFlow(session.currentFlow);
   if (!flow) {
     logger.error(`❌ Flow '${session.currentFlow}' not found for button reply`);
-    await sendMessage(phoneNumber, 'I\'m sorry, I encountered an error. Please try again.');
+    // Clear the invalid session and fall back to main menu processing
+    const { deleteUserSession } = require('../../models/userModel');
+    await deleteUserSession(phoneNumber);
+    await sendMessage(phoneNumber, 'I\'m sorry, I encountered an error. Let\'s start over.');
     return;
   }
 

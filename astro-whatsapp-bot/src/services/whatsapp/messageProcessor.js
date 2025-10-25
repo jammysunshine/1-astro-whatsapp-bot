@@ -233,6 +233,10 @@ const processMediaMessage = async(message, user) => {
 const processButtonReply = async(phoneNumber, buttonId, title, user) => {
   // Handle clarification buttons specially (they start with 'year_' or 'time_')
   if (buttonId.startsWith('year_') || buttonId.startsWith('time_')) {
+    // Get user session to determine current flow
+    const { getUserSession } = require('../../models/userModel');
+    const session = await getUserSession(phoneNumber);
+
     // Extract the resolved value from button ID
     let resolvedValue;
     if (buttonId.startsWith('year_')) {
@@ -251,7 +255,8 @@ const processButtonReply = async(phoneNumber, buttonId, title, user) => {
 
     // Process the resolved value as if it was text input
     const { processFlowMessage } = require('../../conversation/conversationEngine');
-    await processFlowMessage({ type: 'text', text: { body: resolvedValue } }, user);
+    const currentFlow = (session?.currentFlow && session.currentFlow !== 'undefined') ? session.currentFlow : 'onboarding';
+    await processFlowMessage({ type: 'text', text: { body: resolvedValue } }, user, currentFlow);
     return;
   }
 

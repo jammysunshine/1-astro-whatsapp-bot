@@ -426,8 +426,12 @@ const getUserSession = async sessionId => userSessions.get(sessionId) || null;
  */
 const setUserSession = async(sessionId, sessionData) => {
   userSessions.set(sessionId, sessionData);
-  // Save to file asynchronously
-  saveSessions().catch(error => console.error('Error saving sessions after set:', error));
+  // Save to file synchronously for debugging
+  try {
+    await saveSessions();
+  } catch (error) {
+    console.error('Error saving sessions after set:', error);
+  }
 };
 
 /**

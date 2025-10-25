@@ -188,10 +188,86 @@
         "next_step": "ask_birth_date_numerology"
       },
       "ask_birth_date_numerology": {
-        "prompt": "And what is your birth date? (DD/MM/YYYY)",
+        "prompt": "And what is your birth date? (DDMMYY or DDMMYYYY format)\n\n💡 *Examples:*\n• 150690 (June 15, 1990)\n• 15061990 (June 15, 1990)",
         "validation": "date",
         "data_key": "birthDate",
         "action": "generate_numerology_report"
+      }
+    }
+  },
+  "daily_horoscope": {
+    "start_step": "show_horoscope",
+    "steps": {
+      "show_horoscope": {
+        "prompt": "🔮 *Your Daily Horoscope*\n\n{sunSign} - {horoscopeText}\n\n💫 *Lucky Color:* {luckyColor}\n🎯 *Lucky Number:* {luckyNumber}\n💝 *Love:* {loveText}\n💼 *Career:* {careerText}\n💰 *Finance:* {financeText}\n🏥 *Health:* {healthText}\n\nWhat would you like to explore next?",
+        "validation": "none",
+        "next_step": null,
+        "action": "show_daily_horoscope"
+      }
+    }
+  },
+  "subscription_plans": {
+    "start_step": "show_plans",
+    "steps": {
+      "show_plans": {
+        "interactive": {
+          "type": "button_reply",
+          "body": "💳 *Choose Your Cosmic Plan*\n\n⭐ *Essential* - ₹230/month\n• Daily personalized horoscope\n• Weekly video predictions\n• Basic compatibility (5 people)\n\n💎 *Premium* - ₹299/month\n• Unlimited AI questions\n• Priority astrologer access\n• Unlimited compatibility\n\n🔮 *VIP* - ₹499/month\n• All Premium features\n• Personal astrologer calls\n• Custom rituals & recommendations",
+          "buttons": [
+            {
+              "id": "plan_essential",
+              "title": "⭐ Essential ₹230"
+            },
+            {
+              "id": "plan_premium",
+              "title": "💎 Premium ₹299"
+            },
+            {
+              "id": "plan_vip",
+              "title": "🔮 VIP ₹499"
+            }
+          ],
+          "button_mappings": {
+            "plan_essential": "essential",
+            "plan_premium": "premium",
+            "plan_vip": "vip"
+          }
+        },
+        "fallback_prompt": "Which plan interests you? Reply 'essential', 'premium', or 'vip'",
+        "validation": "plan_choice",
+        "next_step": "confirm_subscription",
+        "data_key": "selectedPlan",
+        "error_message": "Please reply 'essential', 'premium', or 'vip'"
+      },
+      "confirm_subscription": {
+        "interactive": {
+          "type": "button_reply",
+          "body": "Great choice! 💫\n\nYou've selected: *{selectedPlan}*\n\nReady to subscribe and proceed with payment?",
+          "buttons": [
+            {
+              "id": "subscribe_yes",
+              "title": "💳 Subscribe Now"
+            },
+            {
+              "id": "subscribe_no",
+              "title": "❌ Cancel"
+            }
+          ],
+          "button_mappings": {
+            "subscribe_yes": "yes",
+            "subscribe_no": "no"
+          }
+        },
+        "fallback_prompt": "Ready to subscribe? Reply 'yes' to proceed with payment.",
+        "validation": "yes_no",
+        "next_step": "process_payment",
+        "error_message": "Please reply 'yes' to continue or 'no' to cancel"
+      },
+      "process_payment": {
+        "prompt": "🔄 Processing your subscription...\n\nPlease complete the payment when prompted. You'll receive confirmation once activated.",
+        "validation": "none",
+        "next_step": null,
+        "action": "process_subscription"
       }
     }
   }

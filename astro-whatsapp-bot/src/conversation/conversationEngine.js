@@ -171,10 +171,10 @@ const validateStepInput = async(input, step) => {
     return { isValid: false, errorMessage: step.error_message || 'Please reply "yes" or "no".' };
 
   case 'plan_choice':
-    if (trimmedInput === 'essential' || trimmedInput === 'premium') {
+    if (trimmedInput === 'essential' || trimmedInput === 'premium' || trimmedInput === 'vip') {
       return { isValid: true, cleanedValue: input.toLowerCase() };
     }
-    return { isValid: false, errorMessage: step.error_message || 'Please choose "essential" or "premium".' };
+    return { isValid: false, errorMessage: step.error_message || 'Please choose "essential", "premium", or "vip".' };
 
   case 'yes_no_or_menu':
     if (trimmedInput === 'yes' || trimmedInput === 'y') {
@@ -550,6 +550,83 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
       await sendMessage(phoneNumber, prompt);
     } else {
       await sendMessage(phoneNumber, resultMessage);
+    }
+    break;
+  }
+  case 'show_daily_horoscope': {
+    try {
+      const horoscopeData = await vedicCalculator.generateDailyHoroscope(user.birthDate);
+      const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
+
+      let horoscopeMessage = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n`;
+      horoscopeMessage += `💫 *Lucky Color:* ${horoscopeData.luckyColor}\n`;
+      horoscopeMessage += `🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n`;
+      horoscopeMessage += `💝 *Love:* ${horoscopeData.love}\n`;
+      horoscopeMessage += `💼 *Career:* ${horoscopeData.career}\n`;
+      horoscopeMessage += `💰 *Finance:* ${horoscopeData.finance}\n`;
+      horoscopeMessage += `🏥 *Health:* ${horoscopeData.health}\n\n`;
+      horoscopeMessage += `What would you like to explore next?`;
+
+      await sendMessage(phoneNumber, horoscopeMessage);
+
+      // Send main menu
+      const menu = getMenu('main_menu');
+      if (menu) {
+        const buttons = menu.buttons.map(button => ({
+          type: 'reply',
+          reply: { id: button.id, title: button.title }
+        }));
+        await sendMessage(phoneNumber, { type: 'button', body: menu.body, buttons }, 'interactive');
+      }
+    } catch (error) {
+      logger.error('Error generating daily horoscope:', error);
+      await sendMessage(phoneNumber, 'I\'m sorry, I couldn\'t generate your horoscope right now. Please try again later.');
+    }
+    break;
+  }
+  case 'generate_numerology_report': {
+    try {
+      const { fullName, birthDate } = flowData;
+      const numerologyService = require('../services/astrology/numerologyService');
+
+      const report = await numerologyService.generateFullReport(fullName, birthDate);
+
+      let reportMessage = `🔢 *Your Numerology Report*\n\n`;
+      reportMessage += `*Name:* ${fullName}\n`;
+      reportMessage += `*Birth Date:* ${birthDate}\n\n`;
+
+      reportMessage += `*Life Path Number:* ${report.lifePath}\n`;
+      reportMessage += `${report.lifePathDescription}\n\n`;
+
+      reportMessage += `*Expression Number:* ${report.expression}\n`;
+      reportMessage += `${report.expressionDescription}\n\n`;
+
+      reportMessage += `*Soul Urge Number:* ${report.soulUrge}\n`;
+      reportMessage += `${report.soulUrgeDescription}\n\n`;
+
+      reportMessage += `*Personality Number:* ${report.personality}\n`;
+      reportMessage += `${report.personalityDescription}\n\n`;
+
+      reportMessage += `*Key Strengths:* ${report.strengths.join(', ')}\n`;
+      reportMessage += `*Challenges:* ${report.challenges.join(', ')}\n\n`;
+
+      reportMessage += `*Career Paths:* ${report.careerPaths.join(', ')}\n`;
+      reportMessage += `*Compatible Numbers:* ${report.compatibleNumbers.join(', ')}`;
+
+      await sendMessage(phoneNumber, reportMessage);
+
+      // Send main menu
+      const menu = getMenu('main_menu');
+      if (menu) {
+        const buttons = menu.buttons.map(button => ({
+          type: 'reply',
+          reply: { id: button.id, title: button.title }
+        }));
+        await sendMessage(phoneNumber, { type: 'button', body: menu.body, buttons }, 'interactive');
+      }
+    } catch (error) {
+      logger.error('Error generating numerology report:', error);
+      await sendMessage(phoneNumber, 'I\'m sorry, I couldn\'t generate your numerology report right now. Please try again later.');
     }
     break;
   }

@@ -4,6 +4,7 @@ const { sendMessage } = require('../services/whatsapp/messageSender');
 const logger = require('../utils/logger');
 const vedicCalculator = require('../services/astrology/vedicCalculator');
 const numerologyService = require('../services/astrology/numerologyService');
+const { getMenu } = require('./menuLoader');
 
 /**
  * Validates user input for a conversation step
@@ -214,7 +215,16 @@ const processFlowMessage = async(message, user, flowId) => {
       return false;
     }
 
-    const messageText = message.type === 'text' ? message.text.body : '';
+    // Extract input based on message type
+    let messageText = '';
+    if (message.type === 'text') {
+      messageText = message.text.body;
+    } else if (message.type === 'interactive') {
+      // For interactive messages, we don't validate the input here
+      // The button processing happens separately
+      messageText = '';
+    }
+
     let session = await getUserSession(phoneNumber);
 
   const flow = getFlow(flowId);
@@ -425,7 +435,7 @@ const executeFlowAction = async(phoneNumber, user, flowId, action, flowData) => 
     const preferredLanguage = flowData.preferredLanguage || 'english';
 
     // Update user profile with birth details
-    await addBirthDetails(phoneNumber, { birthDate, birthTime, birthPlace });
+    await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
     await updateUserProfile(phoneNumber, {
       profileComplete: true,
       preferredLanguage,

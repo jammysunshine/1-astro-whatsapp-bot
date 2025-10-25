@@ -43,6 +43,11 @@ const processIncomingMessage = async(message, value) => {
 
     // If user profile is not complete, continue onboarding flow using the modular engine
     if (!user.profileComplete) {
+      // For interactive messages during onboarding, handle them specially
+      if (type === 'interactive') {
+        await processInteractiveMessage(message, user);
+        return;
+      }
       await processFlowMessage(message, user, 'onboarding');
       return; // Exit after processing onboarding step
     }
@@ -112,6 +117,22 @@ const processTextMessage = async(message, user) => {
   // Check for numerology report request
   if (messageText.toLowerCase() === 'numerology report') {
     await processFlowMessage(message, user, 'numerology_flow');
+    return;
+  }
+
+  // Check for menu keywords and redirect to menu actions
+  const lowerMessage = messageText.toLowerCase();
+  if (lowerMessage.includes('horoscope') || lowerMessage.includes('daily')) {
+    await executeMenuAction(phoneNumber, user, 'get_daily_horoscope');
+    return;
+  } else if (lowerMessage.includes('chart') || lowerMessage.includes('birth')) {
+    await executeMenuAction(phoneNumber, user, 'show_user_profile');
+    return;
+  } else if (lowerMessage.includes('compatibility') || lowerMessage.includes('match')) {
+    await executeMenuAction(phoneNumber, user, 'initiate_compatibility_flow');
+    return;
+  } else if (lowerMessage.includes('subscription') || lowerMessage.includes('plan')) {
+    await executeMenuAction(phoneNumber, user, 'show_subscription_plans');
     return;
   }
 
@@ -335,7 +356,20 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     break;
   case 'show_user_profile':
     const subscriptionStatus = paymentService.getSubscriptionStatus(user);
-    response = `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate || 'Not set'}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\n\n💳 *Subscription*\nPlan: ${subscriptionStatus.planName}\nStatus: ${subscriptionStatus.isActive ? 'Active' : 'Inactive'}\n${subscriptionStatus.expiryDate ? `Expires: ${new Date(subscriptionStatus.expiryDate).toDateString()}` : ''}\n\n⭐ Loyalty Points: ${user.loyaltyPoints || 0}\n\nWhat would you like to update or explore?`;
+    response = `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate || 'Not set'}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\n\n💳 *Subscription*\nPlan: ${subscriptionStatus.planName}\nStatus: ${subscriptionStatus.isActive ? 'Active' : 'Inactive'}\n${subscriptionStatus.expiryDate ? `Expires: ${new Date(subscriptionStatus.expiryDate).toDateString()}` : ''}\n\n⭐ Loyalty Points: ${user.loyaltyPoints || 0}\n\nWhat would you like to explore next?`;
+
+    await sendMessage(phoneNumber, response);
+
+    // Send main menu
+    const menu = getMenu('main_menu');
+    if (menu) {
+      const buttons = menu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(phoneNumber, { type: 'button', body: menu.body, buttons }, 'interactive');
+    }
+    return null; // Handled, don't send additional response
     break;
   case 'show_subscription_plans':
     // Start subscription plans conversation flow

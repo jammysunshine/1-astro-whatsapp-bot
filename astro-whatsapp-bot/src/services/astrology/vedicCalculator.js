@@ -78,7 +78,6 @@ class VedicCalculator {
 
       // Return sun sign from interpretations
       return chart.interpretations.sunSign;
-
     } catch (error) {
       console.error('Error calculating sun sign with astrologer:', error);
       // Fallback to simplified calculation
@@ -147,7 +146,6 @@ class VedicCalculator {
 
       // Return moon sign from interpretations
       return chart.interpretations.moonSign;
-
     } catch (error) {
       console.error('Error calculating moon sign with astrologer:', error);
       // Fallback to simplified calculation
@@ -182,16 +180,16 @@ class VedicCalculator {
   _getCoordinatesForPlace(place) {
     // Simplified geocoding - in production, use a proper geocoding service
     const placeCoords = {
-      'delhi': [28.6139, 77.2090],
-      'mumbai': [19.0760, 72.8777],
-      'bangalore': [12.9716, 77.5946],
-      'chennai': [13.0827, 80.2707],
-      'kolkata': [22.5726, 88.3639],
-      'hyderabad': [17.3850, 78.4867],
-      'pune': [18.5204, 73.8567],
-      'ahmedabad': [23.0225, 72.5714],
-      'jaipur': [26.9124, 75.7873],
-      'lucknow': [26.8467, 80.9462]
+      delhi: [28.6139, 77.2090],
+      mumbai: [19.0760, 72.8777],
+      bangalore: [12.9716, 77.5946],
+      chennai: [13.0827, 80.2707],
+      kolkata: [22.5726, 88.3639],
+      hyderabad: [17.3850, 78.4867],
+      pune: [18.5204, 73.8567],
+      ahmedabad: [23.0225, 72.5714],
+      jaipur: [26.9124, 75.7873],
+      lucknow: [26.8467, 80.9462]
     };
 
     const normalizedPlace = place.toLowerCase();
@@ -249,31 +247,31 @@ class VedicCalculator {
       const chart = this.astrologer.generateNatalChartData(astroData);
 
       // Extract key information for backward compatibility
-      const sunSign = chart.interpretations.sunSign;
-      const moonSign = chart.interpretations.moonSign;
-      const risingSign = chart.interpretations.risingSign;
+      const { sunSign } = chart.interpretations;
+      const { moonSign } = chart.interpretations;
+      const { risingSign } = chart.interpretations;
 
-       // Generate enhanced description based on chart data
-       const enhancedDescription = this._generateEnhancedDescription(chart);
+      // Generate enhanced description based on chart data
+      const enhancedDescription = this._generateEnhancedDescription(chart);
 
-       return {
-         name,
-         birthDate,
-         birthTime,
-         birthPlace,
-         sunSign,
-         moonSign,
-         risingSign,
-         dominantElements: chart.interpretations.dominantElements,
-         dominantQualities: chart.interpretations.dominantQualities,
-         planets: this._formatPlanets(chart.planets),
-         chartPatterns: chart.chartPatterns,
-         description: enhancedDescription,
-         personalityTraits: this._extractPersonalityTraits(chart),
-         strengths: this._extractStrengths(chart),
-         challenges: this._extractChallenges(chart),
-         fullChart: chart // Include complete chart data for advanced features
-       };
+      return {
+        name,
+        birthDate,
+        birthTime,
+        birthPlace,
+        sunSign,
+        moonSign,
+        risingSign,
+        dominantElements: chart.interpretations.dominantElements,
+        dominantQualities: chart.interpretations.dominantQualities,
+        planets: this._formatPlanets(chart.planets),
+        chartPatterns: chart.chartPatterns,
+        description: enhancedDescription,
+        personalityTraits: this._extractPersonalityTraits(chart),
+        strengths: this._extractStrengths(chart),
+        challenges: this._extractChallenges(chart),
+        fullChart: chart // Include complete chart data for advanced features
+      };
     } catch (error) {
       console.error('Error generating natal chart:', error);
       return {
@@ -336,7 +334,7 @@ class VedicCalculator {
       const currentYear = now.getFullYear();
 
       // Use astrologer library for detailed analysis
-      if (this._astrologer) {
+      if (this.astrologer) {
         try {
           const natalData = {
             year, month, date: day, hours: 12, minutes: 0, seconds: 0,
@@ -352,9 +350,9 @@ class VedicCalculator {
           const transitChart = this._astrologer.generateTransitChartData(natalData, transitData);
 
           // Extract detailed insights
-          const sunSign = natalChart.interpretations.sunSign;
-          const moonSign = natalChart.interpretations.moonSign;
-          const risingSign = natalChart.interpretations.risingSign;
+          const { sunSign } = natalChart.interpretations;
+          const { moonSign } = natalChart.interpretations;
+          const { risingSign } = natalChart.interpretations;
 
           // Generate personalized horoscope based on transits
           const aspects = transitChart.aspects || [];
@@ -362,7 +360,7 @@ class VedicCalculator {
 
           let general = `🌟 *${sunSign} Daily Guidance*\n\n`;
           let luckyColor = 'Blue';
-          let luckyNumber = Math.floor(Math.random() * 9) + 1;
+          const luckyNumber = Math.floor(Math.random() * 9) + 1;
           let love = 'Focus on open communication in relationships.';
           let career = 'Stay focused on your goals today.';
           let finance = 'Be cautious with spending.';
@@ -407,7 +405,6 @@ class VedicCalculator {
             finance,
             health
           };
-
         } catch (astrologerError) {
           console.warn('Astrologer library failed, falling back to basic horoscope:', astrologerError.message);
         }
@@ -441,7 +438,6 @@ class VedicCalculator {
         finance: 'Be mindful of your resources.',
         health: 'Listen to your body\'s needs.'
       };
-
     } catch (error) {
       console.error('Error generating daily horoscope:', error);
       return {
@@ -527,7 +523,6 @@ class VedicCalculator {
       description: this.getCompatibilityDescription(sign1, sign2, rating)
     };
   }
-
 
 
   /**
@@ -657,7 +652,7 @@ class VedicCalculator {
     // Add element emphasis insight
     if (chartPatterns && chartPatterns.elementEmphasis) {
       const maxElement = Object.entries(chartPatterns.elementEmphasis)
-        .reduce((a, b) => chartPatterns.elementEmphasis[a[0]] > chartPatterns.elementEmphasis[b[0]] ? a : b)[0];
+        .reduce((a, b) => (chartPatterns.elementEmphasis[a[0]] > chartPatterns.elementEmphasis[b[0]] ? a : b))[0];
       description += `Your chart shows strong ${maxElement} energy, suggesting ${this._getElementDescription(maxElement)}.`;
     }
 
@@ -760,7 +755,7 @@ class VedicCalculator {
     }
 
     // Planetary strengths
-    const planets = chart.planets;
+    const { planets } = chart;
     if (planets.jupiter && planets.jupiter.sign) {
       strengths.push('Optimism and growth orientation');
     }
@@ -792,7 +787,7 @@ class VedicCalculator {
     // Element imbalance challenges
     if (chartPatterns && chartPatterns.elementEmphasis) {
       const elements = Object.entries(chartPatterns.elementEmphasis);
-      const minElement = elements.reduce((a, b) => chartPatterns.elementEmphasis[a[0]] < chartPatterns.elementEmphasis[b[0]] ? a : b)[0];
+      const minElement = elements.reduce((a, b) => (chartPatterns.elementEmphasis[a[0]] < chartPatterns.elementEmphasis[b[0]] ? a : b))[0];
 
       if (minElement === 'fire') {
         challenges.push('Developing motivation and drive');
@@ -806,10 +801,10 @@ class VedicCalculator {
     }
 
     // Retrograde planets as challenges
-    const planets = chart.planets;
+    const { planets } = chart;
     let retrogradeCount = 0;
     Object.values(planets).forEach(planet => {
-      if (planet.retrograde) retrogradeCount++;
+      if (planet.retrograde) { retrogradeCount++; }
     });
 
     if (retrogradeCount > 2) {
@@ -843,7 +838,7 @@ class VedicCalculator {
    */
   _getMajorAspects(chart) {
     const aspects = [];
-    const planets = chart.planets;
+    const { planets } = chart;
 
     // Define aspect angles (in degrees)
     const aspects_def = {
@@ -890,7 +885,7 @@ class VedicCalculator {
    * @returns {string} Interpretation
    */
   _getStelliumInterpretation(stelliums) {
-    if (!stelliums || stelliums.length === 0) return '';
+    if (!stelliums || stelliums.length === 0) { return ''; }
 
     const sign = stelliums[0];
     const interpretations = {
@@ -919,7 +914,7 @@ class VedicCalculator {
   generateDetailedChartAnalysis(user) {
     try {
       const basicChart = this.generateBasicBirthChart(user);
-      const fullChart = basicChart.fullChart;
+      const { fullChart } = basicChart;
 
       // Get major aspects
       const majorAspects = this._getMajorAspects(fullChart);
@@ -948,7 +943,7 @@ class VedicCalculator {
    * @returns {string} Element balance analysis
    */
   _analyzeElementBalance(elementEmphasis) {
-    if (!elementEmphasis) return 'Balanced elemental energies';
+    if (!elementEmphasis) { return 'Balanced elemental energies'; }
 
     const elements = Object.entries(elementEmphasis);
     const sorted = elements.sort((a, b) => b[1] - a[1]);

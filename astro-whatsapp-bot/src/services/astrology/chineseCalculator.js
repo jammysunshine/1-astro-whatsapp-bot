@@ -26,11 +26,11 @@ class ChineseCalculator {
 
     // Five Elements
     this.fiveElements = {
-      '甲': 'Wood', '乙': 'Wood',
-      '丙': 'Fire', '丁': 'Fire',
-      '戊': 'Earth', '己': 'Earth',
-      '庚': 'Metal', '辛': 'Metal',
-      '壬': 'Water', '癸': 'Water'
+      甲: 'Wood', 乙: 'Wood',
+      丙: 'Fire', 丁: 'Fire',
+      戊: 'Earth', 己: 'Earth',
+      庚: 'Metal', 辛: 'Metal',
+      壬: 'Water', 癸: 'Water'
     };
 
     // Element relationships
@@ -79,7 +79,6 @@ class ChineseCalculator {
         chineseNotation: this.formatChinesePillars(yearPillar, monthPillar, dayPillar, hourPillar),
         interpretation: this.generateBasicInterpretation(yearPillar, monthPillar, dayPillar, hourPillar, elementAnalysis)
       };
-
     } catch (error) {
       logger.error('Error calculating Four Pillars:', error);
       return {
@@ -195,8 +194,8 @@ class ChineseCalculator {
     const max = Math.max(...values);
     const min = Math.min(...values);
 
-    if (max - min <= 1) return 'Balanced';
-    if (max >= 3 && min === 0) return 'Imbalanced - Strong ' + Object.keys(distribution).find(k => distribution[k] === max);
+    if (max - min <= 1) { return 'Balanced'; }
+    if (max >= 3 && min === 0) { return `Imbalanced - Strong ${Object.keys(distribution).find(k => distribution[k] === max)}`; }
     return 'Moderately Balanced';
   }
 
@@ -208,8 +207,8 @@ class ChineseCalculator {
     const dayElement = this.fiveElements[dayStem];
     const dayElementCount = elementAnalysis.distribution[dayElement];
 
-    if (dayElementCount >= 3) return 'Strong';
-    if (dayElementCount === 2) return 'Moderate';
+    if (dayElementCount >= 3) { return 'Strong'; }
+    if (dayElementCount === 2) { return 'Moderate'; }
     return 'Weak';
   }
 

@@ -139,22 +139,22 @@ const processTextMessage = async(message, user) => {
   // Generate astrology response based on user input
   const response = await generateAstrologyResponse(messageText, user);
 
-  // If a specific response isn't generated, offer an interactive menu
-  if (!response || response.startsWith('Thank you for your message')) {
-    const mainMenu = getMenu('main_menu');
-    if (mainMenu) {
-      const buttons = mainMenu.buttons.map(button => ({
-        type: 'reply',
-        reply: { id: button.id, title: button.title }
-      }));
-      await sendMessage(phoneNumber, { type: 'button', body: mainMenu.body, buttons }, 'interactive');
-    } else {
-      logger.warn('⚠️ Main menu configuration not found.');
-      await sendMessage(phoneNumber, 'I\'m sorry, I\'m having trouble loading the menu options. Please try again later.');
-    }
+  // Always send responses with interactive buttons for better user experience
+  const mainMenu = getMenu('main_menu');
+  if (mainMenu) {
+    const buttons = mainMenu.buttons.map(button => ({
+      type: 'reply',
+      reply: { id: button.id, title: button.title }
+    }));
+
+    // Combine the response with the menu body
+    const combinedBody = response ? `${response}\n\n${mainMenu.body}` : mainMenu.body;
+
+    await sendMessage(phoneNumber, { type: 'button', body: combinedBody, buttons }, 'interactive');
   } else {
-    // Send response back to user
-    await sendMessage(phoneNumber, response);
+    logger.warn('⚠️ Main menu configuration not found.');
+    // Fallback to sending response without buttons if menu fails
+    await sendMessage(phoneNumber, response || 'I\'m sorry, I\'m having trouble loading the menu options. Please try again later.');
   }
 };
 
@@ -285,11 +285,11 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
       const parts = buttonId.split('_');
       const period = parts[1]; // 'am' or 'pm'
       const timeStr = parts[2]; // e.g., '0230'
-      const hours24 = period === 'pm' && parseInt(timeStr.substring(0, 2)) !== 12
-        ? parseInt(timeStr.substring(0, 2)) + 12
-        : period === 'am' && parseInt(timeStr.substring(0, 2)) === 12
-        ? 0
-        : parseInt(timeStr.substring(0, 2));
+      const hours24 = period === 'pm' && parseInt(timeStr.substring(0, 2)) !== 12 ?
+        parseInt(timeStr.substring(0, 2)) + 12 :
+        period === 'am' && parseInt(timeStr.substring(0, 2)) === 12 ?
+          0 :
+          parseInt(timeStr.substring(0, 2));
       resolvedValue = `${hours24.toString().padStart(2, '0')}:${timeStr.substring(2)}`;
     }
 
@@ -368,6 +368,35 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         reply: { id: button.id, title: button.title }
       }));
       await sendMessage(phoneNumber, { type: 'button', body: menu.body, buttons }, 'interactive');
+    }
+    return null; // Handled, don't send additional response
+    break;
+  case 'show_birth_chart':
+    try {
+      const vedicCalculator = require('../services/astrology/vedicCalculator');
+      const chartData = await vedicCalculator.generateDetailedChart({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime,
+        birthPlace: user.birthPlace
+      });
+
+      response = `📊 *Your Vedic Birth Chart*\n\n☀️ *Sun Sign:* ${chartData.sunSign || 'Unknown'}\n🌙 *Moon Sign:* ${chartData.moonSign || 'Unknown'}\n⬆️ *Rising Sign:* ${chartData.risingSign || 'Unknown'}\n\n🔥 *Life Patterns:*\n${chartData.lifePatterns ? chartData.lifePatterns.map(p => `• ${p}`).join('\n') : 'Personal insights being calculated...'}\n\n💫 *Key Planetary Positions:*\n${chartData.planetaryPositions ? chartData.planetaryPositions.map(p => `• ${p}`).join('\n') : 'Detailed positions available with premium'}\n\nWhat would you like to explore next?`;
+
+      await sendMessage(phoneNumber, response);
+
+      // Send main menu with buttons
+      const menu = getMenu('main_menu');
+      if (menu) {
+        const buttons = menu.buttons.map(button => ({
+          type: 'reply',
+          reply: { id: button.id, title: button.title }
+        }));
+        await sendMessage(phoneNumber, { type: 'button', body: menu.body, buttons }, 'interactive');
+      }
+    } catch (error) {
+      logger.error('Error showing birth chart:', error);
+      response = 'I\'m having trouble generating your birth chart right now. Please try again later.';
+      await sendMessage(phoneNumber, response);
     }
     return null; // Handled, don't send additional response
     break;

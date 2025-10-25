@@ -11,7 +11,7 @@
       {
         "id": "btn_birth_chart",
         "title": "Birth Chart",
-        "action": "show_user_profile"
+        "action": "show_birth_chart"
       },
       {
         "id": "btn_more_options",

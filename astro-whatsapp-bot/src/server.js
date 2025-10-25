@@ -119,7 +119,7 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 // Global error handlers
-process.on('uncaughtException', (error) => {
+process.on('uncaughtException', error => {
   logger.error('❌ Uncaught Exception:', error);
   process.exit(1);
 });
@@ -167,14 +167,14 @@ const server = app.listen(PORT, () => {
   logger.info(`🚀 Astrology WhatsApp Bot API is running on port ${PORT}`);
   logger.info(`📝 Health check: http://localhost:${PORT}/health`);
   logger.info(`📱 WhatsApp webhook: http://localhost:${PORT}/webhook`);
-  logger.info(`💾 Memory usage:`, process.memoryUsage());
-}).on('error', (error) => {
+  logger.info('💾 Memory usage:', process.memoryUsage());
+}).on('error', error => {
   logger.error('❌ Server failed to start:', error);
   process.exit(1);
 });
 
 // Handle server errors
-server.on('error', (error) => {
+server.on('error', error => {
   logger.error('❌ Server error:', error);
   process.exit(1);
 });

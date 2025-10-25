@@ -14,6 +14,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 ### Epic 1: Multi-Channel Service Delivery & Core Platform
 - **Goal**: Establish a robust, scalable, and compliant multi-channel platform, starting with WhatsApp, ensuring seamless user experience and foundational services.
 - **Key Features**: WhatsApp Business API integration, multi-language support, user authentication, profile management, comprehensive onboarding, cross-platform data synchronization, and customer support.
+- **MANDATE**: All WhatsApp user interactions MUST include interactive buttons for next actions to ensure intuitive navigation and engagement.
 - **MVP User Stories**:
     - As a user, I want to easily authenticate using my WhatsApp number.
     - As a user, I want to access the service through WhatsApp as my primary channel.

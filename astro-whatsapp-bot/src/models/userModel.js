@@ -43,7 +43,7 @@ const createUser = async(phoneNumber, profileData = {}) => {
       birthDate: null,
       birthTime: null,
       birthPlace: null,
-       name: 'Cosmic Explorer',
+      name: 'Cosmic Explorer',
       gender: null,
       preferredLanguage: 'en',
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,

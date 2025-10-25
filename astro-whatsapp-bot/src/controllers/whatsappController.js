@@ -45,7 +45,6 @@ const handleWhatsAppWebhook = async(req, res) => {
       if (!res.headersSent) {
         res.status(200).json({ status: 'ok', message: 'Request aborted' });
       }
-      return;
     });
 
     // Check if request was already aborted

@@ -15,12 +15,19 @@ app.use(helmet({
   xssFilter: { mode: 'block' }
 }));
 app.use(cors());
-app.use(bodyParser.json({ verify: (req, res, buf, encoding) => {
-  req.rawBody = buf.toString(encoding);
-} }));
-app.use(bodyParser.urlencoded({ extended: true, verify: (req, res, buf, encoding) => {
-  req.rawBody = buf.toString(encoding);
-} }));
+app.use(bodyParser.json({
+  verify: (req, res, buf, encoding) => {
+    req.rawBody = buf.toString(encoding);
+  },
+  limit: '10mb'
+}));
+app.use(bodyParser.urlencoded({
+  extended: true,
+  verify: (req, res, buf, encoding) => {
+    req.rawBody = buf.toString(encoding);
+  },
+  limit: '10mb'
+}));
 
 // Root endpoint
 app.get('/', (req, res) => {

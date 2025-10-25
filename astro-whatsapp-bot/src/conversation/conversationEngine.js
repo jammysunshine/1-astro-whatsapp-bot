@@ -22,7 +22,7 @@ const validateStepInput = async(input, step) => {
     return { isValid: true, cleanedValue: input.trim() };
 
   case 'date':
-    // Flexible date formats: DDMMYY, DDMMYYYY, DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY
+    // Only accept DDMMYY or DDMMYYYY formats
     let day, month, year;
 
     // Check for 6-digit format first (DDMMYY - could be ambiguous)
@@ -83,13 +83,7 @@ const validateStepInput = async(input, step) => {
       if (compactMatch) {
         [, day, month, year] = compactMatch.map(Number);
       } else {
-        // Check for separated format
-        const separatedDateRegex = /^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/;
-        const separatedMatch = input.match(separatedDateRegex);
-        if (!separatedMatch) {
-          return { isValid: false, errorMessage: step.error_message || 'Please provide date in DDMMYY (150690), DDMMYYYY (15061990), or DD/MM/YYYY (15/06/1990) format.' };
-        }
-        [, day, month, year] = separatedMatch.map(Number);
+        return { isValid: false, errorMessage: step.error_message || 'Please provide date in DDMMYY (150690) or DDMMYYYY (15061990) format only.' };
       }
     }
     const date = new Date(year, month - 1, day);

@@ -39,15 +39,22 @@ const processMessageWithRetry = async(message, value, maxRetries = 3) => {
  */
 const handleWhatsAppWebhook = async(req, res) => {
   try {
-    const { body, headers, rawBody } = req;
-
     // Handle request aborted errors gracefully
     req.on('aborted', () => {
       logger.warn('⚠️ Request aborted by client');
       if (!res.headersSent) {
         res.status(200).json({ status: 'ok', message: 'Request aborted' });
       }
+      return;
     });
+
+    // Check if request was already aborted
+    if (req.aborted) {
+      logger.warn('⚠️ Request was already aborted');
+      return res.status(200).json({ status: 'ok', message: 'Request aborted' });
+    }
+
+    const { body, headers, rawBody } = req;
 
     // Check required environment variables
     if (!process.env.W1_WHATSAPP_ACCESS_TOKEN || !process.env.W1_WHATSAPP_PHONE_NUMBER_ID) {

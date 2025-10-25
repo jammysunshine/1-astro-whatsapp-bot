@@ -3,11 +3,11 @@
     "start_step": "welcome",
     "steps": {
       "welcome": {
-        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\n📅 *What's your birth date?*\n\n💡 *Accepted formats:*\n• DDMMYY (e.g., 150690 for June 15, 1990)\n• DDMMYYYY (e.g., 15061990)\n• DD/MM/YYYY (e.g., 15/06/1990)\n• DD-MM-YYYY or DD.MM.YYYY also work!\n\n*Why birth date?* Your birth chart reveals your unique cosmic blueprint!",
+        "prompt": "🌟 *Welcome to your Personal Cosmic Coach!*\n\nI'm here to guide you through your cosmic journey with personalized astrology insights.\n\n📅 *What's your birth date?*\n\n💡 *Accepted formats:*\n• DDMMYY (e.g., 150690 for June 15, 1990)\n• DDMMYYYY (e.g., 15061990)\n\n*Why birth date?* Your birth chart reveals your unique cosmic blueprint!",
         "validation": "date",
         "next_step": "ask_birth_time",
         "data_key": "birthDate",
-        "error_message": "Please provide a valid date in DDMMYY (150690), DDMMYYYY (15061990), or DD/MM/YYYY (15/06/1990) format"
+        "error_message": "Please provide date in DDMMYY (150690) or DDMMYYYY (15061990) format only"
       },
       "ask_birth_time": {
         "prompt": "Great! 📅 Your birth date reveals your *Sun Sign* and core personality.\n\nFor more accurate insights, what's your birth time? (HHMM or HH:MM, 24-hour format)\n\n*Examples:* 1430 or 14:30\n\n💡 *Why birth time?* It determines your *Rising Sign* (how others see you) and *Moon Sign* (your emotional nature).\n\nOr reply 'skip' if you don't know.",

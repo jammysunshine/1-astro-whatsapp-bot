@@ -18,7 +18,7 @@ class VedicCalculator {
       sweph.set_ephe_path('./ephe');
       console.log('Swiss Ephemeris initialized for astrologer library');
     } catch (error) {
-      console.warn('Swiss Ephemeris data files not found. Using built-in calculations.');
+      console.warn('Swiss Ephemeris data files not found. Using built-in calculations:', error.message);
     }
 
     // Zodiac signs (for backward compatibility)

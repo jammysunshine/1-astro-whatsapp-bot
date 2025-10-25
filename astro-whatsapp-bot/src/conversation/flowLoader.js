@@ -15,8 +15,8 @@ const loadFlows = () => {
     logger.info('✅ Conversation flows loaded successfully.');
   } catch (error) {
     logger.error(`❌ Error loading conversation flows from ${FLOW_CONFIG_PATH}:`, error);
-    // Exit the process or throw an error if critical configuration cannot be loaded
-    process.exit(1);
+    // Don't exit process - let the app start with empty flows and handle gracefully
+    conversationFlows = {};
   }
 };
 

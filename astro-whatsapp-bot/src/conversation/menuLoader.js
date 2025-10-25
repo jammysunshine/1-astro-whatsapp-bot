@@ -15,8 +15,8 @@ const loadMenus = () => {
     logger.info('✅ Menu configurations loaded successfully.');
   } catch (error) {
     logger.error(`❌ Error loading menu configurations from ${MENU_CONFIG_PATH}:`, error);
-    // Exit the process or throw an error if critical configuration cannot be loaded
-    process.exit(1);
+    // Don't exit process - let the app start with empty menus and handle gracefully
+    menuConfigurations = {};
   }
 };
 

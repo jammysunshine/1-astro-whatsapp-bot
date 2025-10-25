@@ -34,24 +34,45 @@ const validateStepInput = async(input, step) => {
 
       // Check if year is ambiguous (00-99, could be 1900s or 2000s)
       if (yy >= 0 && yy <= 99) {
-        // Return special result indicating ambiguity needs user choice
-        return {
-          isValid: true,
-          needsClarification: true,
-          clarificationType: 'year_ambiguity',
-          data: { day, month, yy },
-          clarificationMessage: `📅 *Birth Year Ambiguity*\n\nYour input suggests ${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}, but the year ${yy.toString().padStart(2, '0')} could be interpreted as:`,
-          clarificationButtons: [
-            {
-              id: `year_19${yy.toString().padStart(2, '0')}`,
-              title: `19${yy.toString().padStart(2, '0')} (Before 2000)`
-            },
-            {
-              id: `year_20${yy.toString().padStart(2, '0')}`,
-              title: `20${yy.toString().padStart(2, '0')} (After 2000)`
-            }
-          ]
-        };
+        const currentYear = new Date().getFullYear();
+        const year1900 = 1900 + yy;
+        const year2000 = 2000 + yy;
+
+        // Check if each possible year would result in a future date
+        const date1900 = new Date(year1900, month - 1, day);
+        const date2000 = new Date(year2000, month - 1, day);
+
+        const is1900Valid = date1900 <= new Date() && date1900.getFullYear() === year1900 && date1900.getMonth() === month - 1 && date1900.getDate() === day;
+        const is2000Valid = date2000 <= new Date() && date2000.getFullYear() === year2000 && date2000.getMonth() === month - 1 && date2000.getDate() === day;
+
+        // If only one option is valid, use it directly
+        if (is1900Valid && !is2000Valid) {
+          year = year1900;
+        } else if (!is1900Valid && is2000Valid) {
+          year = year2000;
+        } else if (is1900Valid && is2000Valid) {
+          // Both are valid (neither is future), show ambiguity
+          return {
+            isValid: true,
+            needsClarification: true,
+            clarificationType: 'year_ambiguity',
+            data: { day, month, yy },
+            clarificationMessage: `📅 *Birth Year Ambiguity*\n\nYour input suggests ${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}, but the year ${yy.toString().padStart(2, '0')} could be interpreted as:`,
+            clarificationButtons: [
+              {
+                id: `year_19${yy.toString().padStart(2, '0')}`,
+                title: `19${yy.toString().padStart(2, '0')}`
+              },
+              {
+                id: `year_20${yy.toString().padStart(2, '0')}`,
+                title: `20${yy.toString().padStart(2, '0')}`
+              }
+            ]
+          };
+        } else {
+          // Neither is valid (both would be future dates)
+          return { isValid: false, errorMessage: 'Please provide a valid birth year.' };
+        }
       } else {
         year = 1900 + yy; // Convert YY to YYYY (1900-1999)
       }

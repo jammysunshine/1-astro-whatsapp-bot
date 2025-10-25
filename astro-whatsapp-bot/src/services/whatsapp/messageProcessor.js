@@ -604,9 +604,30 @@ const executeMenuAction = async(phoneNumber, user, action) => {
  * @param {Object} user - User object
  */
 const processListReply = async(phoneNumber, listId, title, description, user) => {
-  // Generate response based on list selection
-  const response = `You selected: ${title}\nDescription: ${description}\n\nI'll process your request shortly!`;
-  await sendMessage(phoneNumber, response);
+  logger.info(`📋 Processing list reply: ${listId} - ${title}`);
+
+  // Find the action from menu configurations
+  const menus = ['main_menu', 'comprehensive_menu', 'divination_menu', 'traditions_menu', 'more_options_menu'];
+  let action = null;
+
+  for (const menuName of menus) {
+    const menu = getMenu(menuName);
+    if (menu && menu.buttons) {
+      const button = menu.buttons.find(btn => btn.id === listId);
+      if (button && button.action) {
+        action = button.action;
+        break;
+      }
+    }
+  }
+
+  if (action) {
+    await executeMenuAction(phoneNumber, user, action);
+  } else {
+    // Fallback response
+    const response = `You selected: ${title}\nDescription: ${description}\n\nI'll process your request shortly!`;
+    await sendMessage(phoneNumber, response);
+  }
 };
 
 /**

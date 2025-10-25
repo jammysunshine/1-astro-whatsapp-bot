@@ -1,35 +1,35 @@
 {
-  "main_menu": {
-    "type": "interactive",
-    "body": "🌟 *What would you like to explore today?*",
-    "buttons": [
-      {
-        "id": "btn_daily_horoscope",
-        "title": "Daily Horoscope",
-        "action": "get_daily_horoscope"
-      },
-      {
-        "id": "btn_birth_chart",
-        "title": "Birth Chart",
-        "action": "show_birth_chart"
-      },
-      {
-        "id": "btn_divination",
-        "title": "Divination",
-        "action": "show_divination_menu"
-      },
-      {
-        "id": "btn_traditions",
-        "title": "Traditions",
-        "action": "show_traditions_menu"
-      },
-      {
-        "id": "btn_more_options",
-        "title": "More Options",
-        "action": "show_more_options"
-      }
-    ]
-  },
+   "main_menu": {
+     "type": "interactive",
+     "body": "🌟 *What would you like to explore today?*",
+     "buttons": [
+       {
+         "id": "btn_daily_horoscope",
+         "title": "Daily Horoscope",
+         "action": "get_daily_horoscope"
+       },
+       {
+         "id": "btn_birth_chart",
+         "title": "Birth Chart",
+         "action": "show_birth_chart"
+       },
+       {
+         "id": "btn_all_services",
+         "title": "All Services",
+         "action": "show_comprehensive_menu"
+       },
+       {
+         "id": "btn_compatibility",
+         "title": "Compatibility",
+         "action": "initiate_compatibility_flow"
+       },
+       {
+         "id": "btn_subscription",
+         "title": "Subscription",
+         "action": "show_subscription_plans"
+       }
+     ]
+   },
   "divination_menu": {
     "type": "interactive",
     "body": "🔮 *Divination Systems*",
@@ -122,5 +122,61 @@
         "action": "show_main_menu"
       }
     ]
-  }
+   },
+   "comprehensive_menu": {
+     "type": "interactive",
+     "body": "🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:",
+     "buttons": [
+       {
+         "id": "btn_daily_horoscope",
+         "title": "Daily Horoscope",
+         "action": "get_daily_horoscope"
+       },
+       {
+         "id": "btn_birth_chart",
+         "title": "Full Birth Chart",
+         "action": "show_birth_chart"
+       },
+       {
+         "id": "btn_tarot",
+         "title": "Tarot Reading",
+         "action": "get_tarot_reading"
+       },
+       {
+         "id": "btn_palmistry",
+         "title": "Palmistry",
+         "action": "get_palmistry_analysis"
+       },
+       {
+         "id": "btn_nadi",
+         "title": "Nadi Astrology",
+         "action": "show_nadi_flow"
+       },
+       {
+         "id": "btn_iching",
+         "title": "I Ching Oracle",
+         "action": "get_iching_reading"
+       },
+       {
+         "id": "btn_horary",
+         "title": "Horary Question",
+         "action": "get_horary_reading"
+       },
+       {
+         "id": "btn_kabbalistic",
+         "title": "Kabbalistic",
+         "action": "get_kabbalistic_analysis"
+       },
+       {
+         "id": "btn_mayan",
+         "title": "Mayan Calendar",
+         "action": "get_mayan_analysis"
+       },
+       {
+         "id": "btn_celtic",
+         "title": "Celtic Wisdom",
+         "action": "get_celtic_analysis"
+       }
+     ]
+   }
 }

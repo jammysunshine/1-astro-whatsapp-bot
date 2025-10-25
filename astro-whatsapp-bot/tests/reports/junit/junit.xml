@@ -1,311 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="126" failures="2" errors="0" time="33.699">
-  <testsuite name="Comprehensive Performance Test Suite" errors="0" failures="2" skipped="0" timestamp="2025-10-25T11:42:20" time="20.443" tests="27">
-    <testcase classname="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for health check endpoint as mandated by gemini.md" name="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for health check endpoint as mandated by gemini.md" time="0.25">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  -  0
-+ Received  + 11
-
-  Object {
-+   &quot;environment&quot;: Object {
-+     &quot;arch&quot;: &quot;x64&quot;,
-+     &quot;nodeVersion&quot;: &quot;v24.10.0&quot;,
-+     &quot;platform&quot;: &quot;darwin&quot;,
-+   },
-+   &quot;memory&quot;: Object {
-+     &quot;external&quot;: 6,
-+     &quot;heapTotal&quot;: 193,
-+     &quot;heapUsed&quot;: 64,
-+     &quot;rss&quot;: 160,
-+   },
-    &quot;service&quot;: &quot;Astrology WhatsApp Bot API&quot;,
-    &quot;status&quot;: &quot;healthy&quot;,
-    &quot;timestamp&quot;: Any&lt;String&gt;,
-    &quot;uptime&quot;: Any&lt;Number&gt;,
-  }
-    at Object.toEqual (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/performance/comprehensive-performance-test-suite.test.js:38:29)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+<testsuites name="jest tests" tests="53" failures="0" errors="0" time="7.749">
+  <testsuite name="WhatsApp Message Sender" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:49:41" time="0.658" tests="17">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.011">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for webhook endpoint as mandated by gemini.md" name="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for webhook endpoint as mandated by gemini.md" time="0.043">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.007">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for all critical endpoints as mandated by gemini.md" name="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for all critical endpoints as mandated by gemini.md" time="0.033">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.009">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Throughput Performance Testing should handle minimum 100 requests per second throughput as mandated by gemini.md" name="Comprehensive Performance Test Suite Throughput Performance Testing should handle minimum 100 requests per second throughput as mandated by gemini.md" time="1.607">
-      <failure>Error: expect(received).toBeGreaterThan(expected)
-
-Expected: &gt; 100
-Received:   62.386177977933706
-    at Object.toBeGreaterThan (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/performance/comprehensive-performance-test-suite.test.js:145:26)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.056">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Throughput Performance Testing should maintain consistent throughput under sustained load as mandated by gemini.md" name="Comprehensive Performance Test Suite Throughput Performance Testing should maintain consistent throughput under sustained load as mandated by gemini.md" time="16.191">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should handle API error gracefully" name="WhatsApp Message Sender sendTextMessage should handle API error gracefully" time="0.007">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain memory usage under 512MB as mandated by gemini.md" name="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain memory usage under 512MB as mandated by gemini.md" time="0.777">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.008">
     </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain CPU usage under 80% as mandated by gemini.md" name="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain CPU usage under 80% as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Caching Performance Testing should implement caching with hit rate tracking as mandated by gemini.md" name="Comprehensive Performance Test Suite Caching Performance Testing should implement caching with hit rate tracking as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Caching Performance Testing should implement Redis caching with proper configuration as mandated by gemini.md" name="Comprehensive Performance Test Suite Caching Performance Testing should implement Redis caching with proper configuration as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Database Performance Testing should implement database optimization with query tuning as mandated by gemini.md" name="Comprehensive Performance Test Suite Database Performance Testing should implement database optimization with query tuning as mandated by gemini.md" time="0.004">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Database Performance Testing should implement connection pooling with resource utilization optimization as mandated by gemini.md" name="Comprehensive Performance Test Suite Database Performance Testing should implement connection pooling with resource utilization optimization as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement asynchronous processing with queuing as mandated by gemini.md" name="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement asynchronous processing with queuing as mandated by gemini.md" time="0.003">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement background jobs with improved throughput as mandated by gemini.md" name="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement background jobs with improved throughput as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement code profiling with bottleneck identification as mandated by gemini.md" name="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement code profiling with bottleneck identification as mandated by gemini.md" time="0.004">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement memory management with leak prevention as mandated by gemini.md" name="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement memory management with leak prevention as mandated by gemini.md" time="0.003">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement API efficiency with round trip reduction as mandated by gemini.md" name="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement API efficiency with round trip reduction as mandated by gemini.md" time="0.003">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement compression with bandwidth reduction as mandated by gemini.md" name="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement compression with bandwidth reduction as mandated by gemini.md" time="0.004">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement lazy loading with faster load times as mandated by gemini.md" name="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement lazy loading with faster load times as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement resource optimization with faster load times as mandated by gemini.md" name="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement resource optimization with faster load times as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement connection pooling for external APIs with reduced connection overhead as mandated by gemini.md" name="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement connection pooling for external APIs with reduced connection overhead as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement CDN usage for static assets with improved delivery performance as mandated by gemini.md" name="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement CDN usage for static assets with improved delivery performance as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Concurrency Performance Testing should implement concurrency management with optimal resource utilization as mandated by gemini.md" name="Comprehensive Performance Test Suite Concurrency Performance Testing should implement concurrency management with optimal resource utilization as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Concurrency Performance Testing should implement threading with optimal resource utilization as mandated by gemini.md" name="Comprehensive Performance Test Suite Concurrency Performance Testing should implement threading with optimal resource utilization as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Budget Testing should implement performance budget with automated compliance checking as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Budget Testing should implement performance budget with automated compliance checking as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Budget Testing should implement performance monitoring with real-time dashboards as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Budget Testing should implement performance monitoring with real-time dashboards as mandated by gemini.md" time="0.003">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Optimization Testing should implement performance optimization with monitoring and benchmarking as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Optimization Testing should implement performance optimization with monitoring and benchmarking as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Optimization Testing should implement monitoring and benchmarking infrastructure as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Optimization Testing should implement monitoring and benchmarking infrastructure as mandated by gemini.md" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="Critical User Flow End-to-End Tests" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:41" time="3.893" tests="12">
-    <testcase classname="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" name="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" time="0.082">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should process daily horoscope request for existing user" name="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should process daily horoscope request for existing user" time="0.019">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" name="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" time="0.022">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" name="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" time="3.02">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" name="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" time="0.133">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" name="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" time="0.04">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" time="0.015">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" time="0.016">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" time="0.021">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" time="0.018">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" time="0.019">
-    </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Profile Management Flow should handle profile viewing request" name="Critical User Flow End-to-End Tests Profile Management Flow should handle profile viewing request" time="0.032">
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Webhook Integration" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:45" time="3.445" tests="11">
-    <testcase classname="WhatsApp Webhook Integration GET /webhook - Verification should verify webhook with correct token" name="WhatsApp Webhook Integration GET /webhook - Verification should verify webhook with correct token" time="0.047">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration GET /webhook - Verification should reject webhook verification with wrong token" name="WhatsApp Webhook Integration GET /webhook - Verification should reject webhook verification with wrong token" time="0.023">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration GET /webhook - Verification should return ready status for verification request without parameters" name="WhatsApp Webhook Integration GET /webhook - Verification should return ready status for verification request without parameters" time="0.032">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with text message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with text message" time="0.023">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with interactive message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with interactive message" time="0.02">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with button message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with button message" time="0.023">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with media message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with media message" time="0.014">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should handle invalid webhook payload gracefully" name="WhatsApp Webhook Integration POST /webhook - Message Processing should handle invalid webhook payload gracefully" time="0.014">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should handle webhook processing errors gracefully" name="WhatsApp Webhook Integration POST /webhook - Message Processing should handle webhook processing errors gracefully" time="3.019">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should validate webhook signature when provided" name="WhatsApp Webhook Integration POST /webhook - Message Processing should validate webhook signature when provided" time="0.026">
-    </testcase>
-    <testcase classname="WhatsApp Webhook Integration Error Handling should handle missing environment variables gracefully" name="WhatsApp Webhook Integration Error Handling should handle missing environment variables gracefully" time="0.014">
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:48" time="3.069" tests="4">
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.006">
-    </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="3.008">
-    </testcase>
-  </testsuite>
-  <testsuite name="Server Setup" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:51" time="0.262" tests="4">
-    <testcase classname="Server Setup GET /health should return health status with correct structure" name="Server Setup GET /health should return health status with correct structure" time="0.038">
-    </testcase>
-    <testcase classname="Server Setup GET / should return welcome message with version" name="Server Setup GET / should return welcome message with version" time="0.022">
-    </testcase>
-    <testcase classname="Server Setup POST /webhook should return webhook ready message" name="Server Setup POST /webhook should return webhook ready message" time="0.019">
-    </testcase>
-    <testcase classname="Server Setup 404 Handler should return 404 for non-existent routes" name="Server Setup 404 Handler should return 404 for non-existent routes" time="0.014">
-    </testcase>
-  </testsuite>
-  <testsuite name="Astrology Button Integration" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:52" time="0.445" tests="7">
-    <testcase classname="Astrology Button Integration Tarot Reading Buttons should process single card tarot reading button" name="Astrology Button Integration Tarot Reading Buttons should process single card tarot reading button" time="0.1">
-    </testcase>
-    <testcase classname="Astrology Button Integration Tarot Reading Buttons should process three-card spread tarot reading button" name="Astrology Button Integration Tarot Reading Buttons should process three-card spread tarot reading button" time="0.057">
-    </testcase>
-    <testcase classname="Astrology Button Integration Palmistry Reading Buttons should process palmistry reading button" name="Astrology Button Integration Palmistry Reading Buttons should process palmistry reading button" time="0.017">
-    </testcase>
-    <testcase classname="Astrology Button Integration Nadi Astrology Buttons should process Nadi reading button" name="Astrology Button Integration Nadi Astrology Buttons should process Nadi reading button" time="0.017">
-    </testcase>
-    <testcase classname="Astrology Button Integration Compatibility Check Buttons should process compatibility check button" name="Astrology Button Integration Compatibility Check Buttons should process compatibility check button" time="0.015">
-    </testcase>
-    <testcase classname="Astrology Button Integration Subscription and Payment Buttons should process subscription upgrade button" name="Astrology Button Integration Subscription and Payment Buttons should process subscription upgrade button" time="0.014">
-    </testcase>
-    <testcase classname="Astrology Button Integration Subscription and Payment Buttons should process payment method selection button" name="Astrology Button Integration Subscription and Payment Buttons should process payment method selection button" time="0.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Message Sender" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:52" time="0.165" tests="17">
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.004">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.04">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should handle API error gracefully" name="WhatsApp Message Sender sendTextMessage should handle API error gracefully" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.003">
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.016">
     </testcase>
     <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.005">
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.006">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.006">
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.007">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.006">
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.007">
+    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.005">
+    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.002">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message successfully" name="WhatsApp Message Sender sendMediaMessage should send media message successfully" time="0.006">
+    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message successfully" name="WhatsApp Message Sender sendMediaMessage should send media message successfully" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message with filename" name="WhatsApp Message Sender sendMediaMessage should send media message with filename" time="0.004">
+    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message with filename" name="WhatsApp Message Sender sendMediaMessage should send media message with filename" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.004">
+    <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.005">
-    </testcase>
-  </testsuite>
-  <testsuite name="Astrology Library Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:52" time="0.143" tests="16">
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" time="0.005">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" time="0.002">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" time="0.002">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" name="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" time="0.001">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" name="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" time="0.004">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" name="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" time="0.002">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" name="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" time="0.006">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" name="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" time="0.002">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" name="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" time="0.003">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" name="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" time="0.003">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" name="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" time="0.015">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" name="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" time="0.003">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" name="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" time="0.011">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should handle user without name" name="Astrology Library Integration Tests Numerology Service Integration should handle user without name" time="0.002">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" name="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" time="0.01">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" name="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" time="0.008">
+    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.012">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:53" time="0.098" tests="7">
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.004">
+  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:49:41" time="0.251" tests="7">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.006">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.002">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.011">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.003">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.002">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.006">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" name="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" time="0.003">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" name="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" time="0.007">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.003">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.006">
     </testcase>
-    <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.002">
+    <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.005">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Message Processor" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:53" time="0.109" tests="9">
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" name="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" time="0.006">
+  <testsuite name="WhatsApp Message Processor" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:49:42" time="0.145" tests="9">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" name="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" time="0.007">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should process existing user message" name="WhatsApp Message Processor processIncomingMessage should process existing user message" time="0.004">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should process existing user message" name="WhatsApp Message Processor processIncomingMessage should process existing user message" time="0.005">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" name="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" time="0.002">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" name="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" time="0.003">
     </testcase>
     <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" time="0.003">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" time="0.002">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle button messages" name="WhatsApp Message Processor processIncomingMessage should handle button messages" time="0.002">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle button messages" name="WhatsApp Message Processor processIncomingMessage should handle button messages" time="0.003">
     </testcase>
     <testcase classname="WhatsApp Message Processor processIncomingMessage should handle media messages" name="WhatsApp Message Processor processIncomingMessage should handle media messages" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" name="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" time="0.002">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" name="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" time="0.004">
     </testcase>
     <testcase classname="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" name="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" time="0.003">
     </testcase>
   </testsuite>
-  <testsuite name="Tarot Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:53" time="0.053" tests="5">
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a single card reading" name="Tarot Reader Service generateTarotReading should generate a single card reading" time="0.003">
+  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:49:42" time="3.148" tests="4">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.003">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a three-card spread reading" name="Tarot Reader Service generateTarotReading should generate a three-card spread reading" time="0.003">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.003">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" name="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" time="0.002">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.004">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle invalid spread type" name="Tarot Reader Service generateTarotReading should handle invalid spread type" time="0.002">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle user personalization" name="Tarot Reader Service generateTarotReading should handle user personalization" time="0.001">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="3.029">
     </testcase>
   </testsuite>
-  <testsuite name="Palmistry Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:53" time="0.055" tests="3">
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" name="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" time="0.005">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" name="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" time="0.003">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should handle user with hand data" name="Palmistry Reader Service generatePalmistryReading should handle user with hand data" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="Nadi Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:42:53" time="0.064" tests="4">
-    <testcase classname="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" name="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" time="0.009">
+  <testsuite name="Nadi Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:49:45" time="0.098" tests="4">
+    <testcase classname="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" name="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" time="0.006">
     </testcase>
     <testcase classname="Nadi Reader Service generateNadiReading should handle missing birth date" name="Nadi Reader Service generateNadiReading should handle missing birth date" time="0.002">
     </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should provide Dasa period calculations" name="Nadi Reader Service generateNadiReading should provide Dasa period calculations" time="0.002">
+    <testcase classname="Nadi Reader Service generateNadiReading should provide Dasa period calculations" name="Nadi Reader Service generateNadiReading should provide Dasa period calculations" time="0.003">
     </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" name="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" time="0.002">
+    <testcase classname="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" name="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="Palmistry Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:49:45" time="0.098" tests="3">
+    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" name="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" time="0.008">
+    </testcase>
+    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" name="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" time="0.003">
+    </testcase>
+    <testcase classname="Palmistry Reader Service generatePalmistryReading should handle user with hand data" name="Palmistry Reader Service generatePalmistryReading should handle user with hand data" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="Tarot Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:49:45" time="0.122" tests="5">
+    <testcase classname="Tarot Reader Service generateTarotReading should generate a single card reading" name="Tarot Reader Service generateTarotReading should generate a single card reading" time="0.006">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should generate a three-card spread reading" name="Tarot Reader Service generateTarotReading should generate a three-card spread reading" time="0.003">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" name="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" time="0.004">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should handle invalid spread type" name="Tarot Reader Service generateTarotReading should handle invalid spread type" time="0.003">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should handle user personalization" name="Tarot Reader Service generateTarotReading should handle user personalization" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="Server Setup" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:49:45" time="2.532" tests="4">
+    <testcase classname="Server Setup GET /health should return health status with correct structure" name="Server Setup GET /health should return health status with correct structure" time="0.105">
+    </testcase>
+    <testcase classname="Server Setup GET / should return welcome message with version" name="Server Setup GET / should return welcome message with version" time="0.022">
+    </testcase>
+    <testcase classname="Server Setup POST /webhook should return webhook ready message" name="Server Setup POST /webhook should return webhook ready message" time="0.032">
+    </testcase>
+    <testcase classname="Server Setup 404 Handler should return 404 for non-existent routes" name="Server Setup 404 Handler should return 404 for non-existent routes" time="0.026">
     </testcase>
   </testsuite>
 </testsuites>

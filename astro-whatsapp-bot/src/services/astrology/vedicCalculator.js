@@ -349,8 +349,8 @@ class VedicCalculator {
             latitude: 28.6139, longitude: 77.2090, timezone: 5.5, chartType: 'sidereal'
           };
 
-          const natalChart = this._astrologer.generateNatalChartData(natalData);
-          const transitChart = this._astrologer.generateTransitChartData(natalData, transitData);
+          const natalChart = this.astrologer.generateNatalChartData(natalData);
+          const transitChart = this.astrologer.generateTransitChartData(natalData, transitData);
 
           // Extract detailed insights
           const { sunSign } = natalChart.interpretations;
@@ -1275,13 +1275,14 @@ class VedicCalculator {
 
       planets.forEach(planet => {
         // Simplified transit calculation
-        const natalPosition = natalChart.planetaryPositions[planet];
+        const natalPosition = natalChart.planets[planet];
         if (natalPosition) {
-          const transitPosition = (natalPosition.longitude + (currentDate - natalChart.birthDate) * 0.0001) % 360;
+          const natalLongitude = natalPosition.degrees + natalPosition.minutes / 60 + natalPosition.seconds / 3600;
+          const transitPosition = (natalLongitude + (currentDate - natalChart.birthDate) * 0.0001) % 360;
           currentPositions[planet] = {
             longitude: transitPosition,
-            aspect: this.calculateTransitAspect(natalPosition.longitude, transitPosition),
-            influence: this.getTransitInfluence(planet, natalPosition.longitude, transitPosition)
+            aspect: this.calculateTransitAspect(natalLongitude, transitPosition),
+            influence: this.getTransitInfluence(planet, natalLongitude, transitPosition)
           };
         }
       });
@@ -1439,7 +1440,8 @@ class VedicCalculator {
     const planets = ['jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
 
     planets.forEach(planet => {
-      const natalPos = natalChart.planetaryPositions[planet]?.longitude;
+      const natalPlanet = natalChart.planets[planet];
+      const natalPos = natalPlanet ? (natalPlanet.degrees + natalPlanet.minutes / 60 + natalPlanet.seconds / 3600) : null;
       if (natalPos) {
         // Calculate when next major aspect occurs
         const nextConjunction = new Date(currentDate.getTime() + (360 - ((currentDate - natalChart.birthDate) * 0.0001 % 360)) * 100000);

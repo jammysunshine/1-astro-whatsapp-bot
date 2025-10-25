@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # start.sh - Startup script for Astro WhatsApp Bot
 # This script is used by Railway when deploying from GitHub
 

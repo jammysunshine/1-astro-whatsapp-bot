@@ -7,10 +7,6 @@ const paymentService = require('../../../src/services/payment/paymentService');
 jest.mock('../../../src/utils/logger');
 
 describe('PaymentService', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe('processPayment', () => {
     it('should process payment successfully', async () => {
       const paymentData = {

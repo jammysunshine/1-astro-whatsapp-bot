@@ -3,6 +3,36 @@ const { processIncomingMessage } = require('../services/whatsapp/messageProcesso
 const { validateWebhookSignature, verifyWebhookChallenge } = require('../services/whatsapp/webhookValidator');
 
 /**
+ * Process a message with retry logic
+ * @param {Object} message - WhatsApp message object
+ * @param {Object} value - WhatsApp webhook value object
+ * @param {number} maxRetries - Maximum number of retries
+ */
+const processMessageWithRetry = async(message, value, maxRetries = 3) => {
+  let lastError;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      await processIncomingMessage(message, value);
+      return; // Success, exit retry loop
+    } catch (error) {
+      lastError = error;
+      logger.warn(`⚠️ Message processing failed (attempt ${attempt}/${maxRetries}):`, error.message);
+
+      if (attempt < maxRetries) {
+        // Wait before retry (exponential backoff)
+        const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+
+  // All retries failed
+  logger.error('❌ Message processing failed after all retries:', lastError);
+  // Could send error notification to admin here
+};
+
+/**
  * Handle incoming WhatsApp webhook events
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -84,10 +114,10 @@ const handleWhatsAppWebhook = async(req, res) => {
       const change = entry.changes[0];
       const { value } = change;
 
-      // Process messages
+      // Process messages with retry logic
       if (value.messages) {
         for (const message of value.messages) {
-          await processIncomingMessage(message, value);
+          await processMessageWithRetry(message, value);
         }
       }
 

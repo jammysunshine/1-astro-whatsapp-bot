@@ -10,12 +10,12 @@ const sweph = require('sweph');
 
 class VedicCalculator {
   constructor() {
-    // Initialize the astrologer library
-    this.astrologer = new Astrologer();
+    // Lazy initialize the astrologer library to save memory
+    this._astrologer = null;
 
     // Set ephemeris path for sweph (used internally by astrologer)
     try {
-      sweph.set_ephe_path('./');
+      sweph.set_ephe_path('./ephe');
       console.log('Swiss Ephemeris initialized for astrologer library');
     } catch (error) {
       console.warn('Swiss Ephemeris data files not found. Using built-in calculations.');
@@ -38,6 +38,14 @@ class VedicCalculator {
       venus: { name: 'Venus', symbol: '♀' },
       saturn: { name: 'Saturn', symbol: '♄' }
     };
+  }
+
+  // Lazy getter for astrologer instance
+  get astrologer() {
+    if (!this._astrologer) {
+      this._astrologer = new Astrologer();
+    }
+    return this._astrologer;
   }
 
   /**

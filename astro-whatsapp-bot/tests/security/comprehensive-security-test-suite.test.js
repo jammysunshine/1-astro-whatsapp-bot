@@ -376,13 +376,11 @@ describe('Comprehensive Security Test Suite', () => {
       // In a real implementation, this would test actual dependency updates
       expect(fixedPackages).toContain('lodash@4.17.21');
       expect(fixedPackages).toContain('express@4.18.2');
-    });
+     });
+   });
   });
 
-  });
-});
-    });
-
+  describe('Payment Security Compliance', () => {
     it('should implement PCI DSS compliance according to payment security requirements', async() => {
       // Test PCI DSS compliance implementation
       const pciCompliance = {
@@ -416,8 +414,7 @@ describe('Comprehensive Security Test Suite', () => {
     });
   });
 
-});
-
+  describe('Error Handling and Logging Security', () => {
     it('should implement proper error logging without exposing sensitive data', async() => {
       // Test error logging implementation
       const sensitiveError = new Error('Database connection failed for user 1234567890');

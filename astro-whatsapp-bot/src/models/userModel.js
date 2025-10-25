@@ -10,6 +10,20 @@ const logger = require('../utils/logger');
 const users = new Map();
 const userSessions = new Map();
 
+// Memory cleanup: Remove inactive users after 24 hours
+setInterval(() => {
+  const now = Date.now();
+  const inactiveThreshold = 24 * 60 * 60 * 1000; // 24 hours
+
+  for (const [phoneNumber, user] of users) {
+    if (now - user.lastInteraction > inactiveThreshold) {
+      users.delete(phoneNumber);
+      userSessions.delete(phoneNumber);
+      console.log(`🧹 Cleaned up inactive user: ${phoneNumber}`);
+    }
+  }
+}, 60 * 60 * 1000); // Run every hour
+
 /**
  * Create a new user
  * @param {string} phoneNumber - User's WhatsApp phone number

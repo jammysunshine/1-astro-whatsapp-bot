@@ -8,13 +8,20 @@
     "numReplicas": 1,
     "sleepApplication": false,
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 3
+    "restartPolicyMaxRetries": 10,
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 300,
+    "startCommand": "node src/server.js"
   },
   "environments": {
     "production": {
       "environmentVariables": {
         "NODE_ENV": "production",
-        "PORT": "3000"
+        "PORT": "3000",
+        "W1_SKIP_WEBHOOK_SIGNATURE": "true",
+        "W1_WHATSAPP_ACCESS_TOKEN": "${WHATSAPP_ACCESS_TOKEN}",
+        "W1_WHATSAPP_PHONE_NUMBER_ID": "${WHATSAPP_PHONE_NUMBER_ID}",
+        "W1_WHATSAPP_APP_SECRET": "${WHATSAPP_APP_SECRET}"
       }
     },
     "staging": {
@@ -25,11 +32,11 @@
     }
   },
   "healthcheck": {
-    "path": "/health",
+    "path": "/ready",
     "port": 3000,
     "initialDelaySeconds": 30,
-    "periodSeconds": 10,
-    "timeoutSeconds": 5,
+    "periodSeconds": 30,
+    "timeoutSeconds": 10,
     "failureThreshold": 3,
     "successThreshold": 1
   }

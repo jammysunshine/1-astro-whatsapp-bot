@@ -48,6 +48,42 @@ An advanced, comprehensive multi-channel astrology service platform that starts 
 - WhatsApp Business Account
 - API keys for required services
 
+### Railway Deployment
+
+The bot is optimized for Railway deployment with the following fixes implemented:
+
+#### Recent Fixes (v1.0.1)
+- ✅ **Container Stability**: Fixed memory leaks and restart issues
+- ✅ **Health Monitoring**: Added `/health` and `/ready` endpoints
+- ✅ **Memory Optimization**: Lazy-loaded astrology libraries, automatic cleanup
+- ✅ **Error Recovery**: Retry logic for failed message processing
+- ✅ **Environment Validation**: Proper environment variable checking
+
+#### Environment Variables for Railway
+```bash
+WHATSAPP_ACCESS_TOKEN=your_whatsapp_access_token
+WHATSAPP_PHONE_NUMBER_ID=your_phone_number_id
+WHATSAPP_APP_SECRET=your_app_secret
+W1_SKIP_WEBHOOK_SIGNATURE=true  # For development
+NODE_ENV=production
+```
+
+#### Monitoring Deployment
+```bash
+# Start monitoring (runs continuously)
+npm run monitor
+
+# Or run directly
+node scripts/monitor-deployment.js
+```
+
+The monitor will:
+- Check health every 30 seconds
+- Alert after 3 consecutive failures
+- Track container restarts
+- Monitor memory usage
+- Generate hourly reports
+
 ### Installation
 ```bash
 # Clone the repository

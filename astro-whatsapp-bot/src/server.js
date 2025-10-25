@@ -32,11 +32,57 @@ app.get('/', (req, res) => {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'healthy',
+  const memUsage = process.memoryUsage();
+  const memUsageMB = {
+    rss: Math.round(memUsage.rss / 1024 / 1024),
+    heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024),
+    heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024),
+    external: Math.round(memUsage.external / 1024 / 1024)
+  };
+
+  // Check if memory usage is too high (Railway containers typically have 512MB-1GB limits)
+  const isMemoryCritical = memUsageMB.heapUsed > 300; // 300MB threshold
+
+  const healthStatus = isMemoryCritical ? 'degraded' : 'healthy';
+  const statusCode = isMemoryCritical ? 503 : 200;
+
+  res.status(statusCode).json({
+    status: healthStatus,
     timestamp: new Date().toISOString(),
     service: 'Astrology WhatsApp Bot API',
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    memory: memUsageMB,
+    environment: {
+      nodeVersion: process.version,
+      platform: process.platform,
+      arch: process.arch
+    },
+    ...(isMemoryCritical && { warning: 'High memory usage detected' })
+  });
+});
+
+// Readiness check endpoint
+app.get('/ready', (req, res) => {
+  // Check if essential services are available
+  const essentialEnvVars = [
+    'W1_WHATSAPP_ACCESS_TOKEN',
+    'W1_WHATSAPP_PHONE_NUMBER_ID'
+  ];
+
+  const missingVars = essentialEnvVars.filter(varName => !process.env[varName]);
+
+  if (missingVars.length > 0) {
+    return res.status(503).json({
+      status: 'not ready',
+      message: 'Missing required environment variables',
+      missing: missingVars
+    });
+  }
+
+  res.status(200).json({
+    status: 'ready',
+    timestamp: new Date().toISOString(),
+    service: 'Astrology WhatsApp Bot API'
   });
 });
 
@@ -60,13 +106,62 @@ app.use((req, res) => {
 // Error handling middleware
 app.use(errorHandler);
 
+// Global error handlers
+process.on('uncaughtException', (error) => {
+  logger.error('❌ Uncaught Exception:', error);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  logger.info('📴 SIGTERM received, shutting down gracefully');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  logger.info('📴 SIGINT received, shutting down gracefully');
+  process.exit(0);
+});
+
+// Memory monitoring
+setInterval(() => {
+  const memUsage = process.memoryUsage();
+  const memUsageMB = {
+    rss: Math.round(memUsage.rss / 1024 / 1024),
+    heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024),
+    heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024),
+    external: Math.round(memUsage.external / 1024 / 1024)
+  };
+
+  // More aggressive memory monitoring for Railway
+  if (memUsageMB.heapUsed > 200) { // Log if heap usage > 200MB
+    logger.warn('⚠️ High memory usage detected:', memUsageMB);
+  }
+
+  // Force garbage collection if available and memory is high
+  if (global.gc && memUsageMB.heapUsed > 250) {
+    logger.info('🗑️ Running garbage collection due to high memory usage');
+    global.gc();
+  }
+}, 15000); // Check every 15 seconds
+
 // Start server
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    logger.info(`🚀 Astrology WhatsApp Bot API is running on port ${PORT}`);
-    logger.info(`📝 Health check: http://localhost:${PORT}/health`);
-    logger.info(`📱 WhatsApp webhook: http://localhost:${PORT}/webhook`);
-  });
-}
+const server = app.listen(PORT, () => {
+  logger.info(`🚀 Astrology WhatsApp Bot API is running on port ${PORT}`);
+  logger.info(`📝 Health check: http://localhost:${PORT}/health`);
+  logger.info(`📱 WhatsApp webhook: http://localhost:${PORT}/webhook`);
+  logger.info(`💾 Memory usage:`, process.memoryUsage());
+});
+
+// Handle server errors
+server.on('error', (error) => {
+  logger.error('❌ Server error:', error);
+  process.exit(1);
+});
 
 module.exports = app;

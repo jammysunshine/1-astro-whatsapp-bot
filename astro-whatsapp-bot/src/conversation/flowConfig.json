@@ -146,11 +146,11 @@
     "start_step": "ask_partner_date",
     "steps": {
       "ask_partner_date": {
-        "prompt": "💕 *Compatibility Analysis*\n\nI'll compare your birth chart with someone else's for relationship insights.\n\n📅 *What's their birth date?*\n\n💡 *Accepted formats:*\n• DDMMYYYY (e.g., 15061990 for June 15, 1990)\n• DD/MM/YYYY (e.g., 15/06/1990)\n• DD-MM-YYYY or DD.MM.YYYY also work!",
+        "prompt": "💕 *Compatibility Analysis*\n\nI'll compare your birth chart with someone else's for relationship insights.\n\n📅 *What's their birth date?*\n\n💡 *Accepted formats:*\n• DDMMYY (e.g., 150690 for June 15, 1990)\n• DDMMYYYY (e.g., 15061990)",
         "validation": "date",
         "next_step": "generate_compatibility",
         "data_key": "partnerBirthDate",
-        "error_message": "Please provide a valid date in DDMMYYYY format (e.g., 15061990) or DD/MM/YYYY format (e.g., 15/06/1990)"
+        "error_message": "Please provide date in DDMMYY (150690) or DDMMYYYY (15061990) format only"
       },
       "generate_compatibility": {
         "interactive": {

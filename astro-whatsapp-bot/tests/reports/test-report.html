@@ -1,695 +1,260 @@
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Astro WhatsApp Bot Test Report</title>
-    <style type="text/css">
-      html,
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 1rem;
-        margin: 0;
-        padding: 0;
-        color: #333;
-      }
-      body {
-        padding: 2rem 1rem;
-        font-size: 0.85rem;
-      }
-      .jesthtml-content {
-        margin: 0 auto;
-        max-width: 70rem;
-      }
-      header {
-        display: flex;
-        align-items: center;
-      }
-      #title {
-        margin: 0;
-        flex-grow: 1;
-      }
-      #logo {
-        height: 4rem;
-      }
-      #timestamp {
-        color: #777;
-        margin-top: 0.5rem;
-      }
+<html><head><meta charset="utf-8"/><title>Astro WhatsApp Bot Test Report</title><style type="text/css">html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+body {
+  padding: 2rem 1rem;
+  font-size: 0.85rem;
+}
+.jesthtml-content {
+  margin: 0 auto;
+  max-width: 70rem;
+}
+header {
+  display: flex;
+  align-items: center;
+}
+#title {
+  margin: 0;
+  flex-grow: 1;
+}
+#logo {
+  height: 4rem;
+}
+#timestamp {
+  color: #777;
+  margin-top: 0.5rem;
+}
 
-      /** SUMMARY */
-      #summary {
-        color: #333;
-        margin: 2rem 0;
-        display: flex;
-        font-family: monospace;
-        font-size: 1rem;
-      }
-      #summary > div {
-        margin-right: 2rem;
-        background: #eee;
-        padding: 1rem;
-        min-width: 15rem;
-      }
-      #summary > div:last-child {
-        margin-right: 0;
-      }
-      @media only screen and (max-width: 720px) {
-        #summary {
-          flex-direction: column;
-        }
-        #summary > div {
-          margin-right: 0;
-          margin-top: 2rem;
-        }
-        #summary > div:first-child {
-          margin-top: 0;
-        }
-      }
+/** SUMMARY */
+#summary {
+  color: #333;
+  margin: 2rem 0;
+  display: flex;
+  font-family: monospace;
+  font-size: 1rem;
+}
+#summary > div {
+  margin-right: 2rem;
+  background: #eee;
+  padding: 1rem;
+  min-width: 15rem;
+}
+#summary > div:last-child {
+  margin-right: 0;
+}
+@media only screen and (max-width: 720px) {
+  #summary {
+    flex-direction: column;
+  }
+  #summary > div {
+    margin-right: 0;
+    margin-top: 2rem;
+  }
+  #summary > div:first-child {
+    margin-top: 0;
+  }
+}
 
-      .summary-total {
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-      }
-      .summary-passed {
-        color: #4f8a10;
-        border-left: 0.4rem solid #4f8a10;
-        padding-left: 0.5rem;
-      }
-      .summary-failed,
-      .summary-obsolete-snapshots {
-        color: #d8000c;
-        border-left: 0.4rem solid #d8000c;
-        padding-left: 0.5rem;
-      }
-      .summary-pending {
-        color: #9f6000;
-        border-left: 0.4rem solid #9f6000;
-        padding-left: 0.5rem;
-      }
-      .summary-empty {
-        color: #999;
-        border-left: 0.4rem solid #999;
-      }
+.summary-total {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.summary-passed {
+  color: #4f8a10;
+  border-left: 0.4rem solid #4f8a10;
+  padding-left: 0.5rem;
+}
+.summary-failed,
+.summary-obsolete-snapshots {
+  color: #d8000c;
+  border-left: 0.4rem solid #d8000c;
+  padding-left: 0.5rem;
+}
+.summary-pending {
+  color: #9f6000;
+  border-left: 0.4rem solid #9f6000;
+  padding-left: 0.5rem;
+}
+.summary-empty {
+  color: #999;
+  border-left: 0.4rem solid #999;
+}
 
-      .test-result {
-        padding: 1rem;
-        margin-bottom: 0.25rem;
-      }
-      .test-result:last-child {
-        border: 0;
-      }
-      .test-result.passed {
-        background-color: #dff2bf;
-        color: #4f8a10;
-      }
-      .test-result.failed {
-        background-color: #ffbaba;
-        color: #d8000c;
-      }
-      .test-result.pending {
-        background-color: #ffdf61;
-        color: #9f6000;
-      }
+.test-result {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+.test-result:last-child {
+  border: 0;
+}
+.test-result.passed {
+  background-color: #dff2bf;
+  color: #4f8a10;
+}
+.test-result.failed {
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.test-result.pending {
+  background-color: #ffdf61;
+  color: #9f6000;
+}
 
-      .test-info {
-        display: flex;
-        justify-content: space-between;
-      }
-      .test-suitename {
-        width: 20%;
-        text-align: left;
-        font-weight: bold;
-        word-break: break-word;
-      }
-      .test-title {
-        width: 40%;
-        text-align: left;
-        font-style: italic;
-      }
-      .test-status {
-        width: 20%;
-        text-align: right;
-      }
-      .test-duration {
-        width: 10%;
-        text-align: right;
-        font-size: 0.75rem;
-      }
+.test-info {
+  display: flex;
+  justify-content: space-between;
+}
+.test-suitename {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
+  word-break: break-word;
+}
+.test-title {
+  width: 40%;
+  text-align: left;
+  font-style: italic;
+}
+.test-status {
+  width: 20%;
+  text-align: right;
+}
+.test-duration {
+  width: 10%;
+  text-align: right;
+  font-size: 0.75rem;
+}
 
-      .failureMessages {
-        padding: 0 1rem;
-        margin-top: 1rem;
-        border-top: 1px dashed #d8000c;
-      }
-      .failureMessages.suiteFailure {
-        border-top: none;
-      }
-      .failureMsg {
-        white-space: pre-wrap;
-        white-space: -moz-pre-wrap;
-        white-space: -pre-wrap;
-        white-space: -o-pre-wrap;
-        word-wrap: break-word;
-      }
+.failureMessages {
+  padding: 0 1rem;
+  margin-top: 1rem;
+  border-top: 1px dashed #d8000c;
+}
+.failureMessages.suiteFailure {
+  border-top: none;
+}
+.failureMsg {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
 
-      .suite-container {
-        margin-bottom: 2rem;
-      }
-      .suite-container > input[type='checkbox'] {
-        position: absolute;
-        left: -100vw;
-      }
-      .suite-container label {
-        display: block;
-      }
-      .suite-container .suite-tests {
-        overflow-y: hidden;
-        height: 0;
-      }
-      .suite-container > input[type='checkbox']:checked ~ .suite-tests {
-        height: auto;
-        overflow: visible;
-      }
-      .suite-info {
-        padding: 1rem;
-        background-color: #eee;
-        color: #777;
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.25rem;
-      }
-      .suite-info:hover {
-        background-color: #ddd;
-        cursor: pointer;
-      }
-      .suite-info .suite-path {
-        word-break: break-all;
-        flex-grow: 1;
-        font-family: monospace;
-        font-size: 1rem;
-      }
-      .suite-info .suite-time {
-        margin-left: 0.5rem;
-        padding: 0.2rem 0.3rem;
-        font-size: 0.75rem;
-      }
-      .suite-info .suite-time.warn {
-        background-color: #d8000c;
-        color: #fff;
-      }
-      .suite-info:before {
-        content: '\2303';
-        display: inline-block;
-        margin-right: 0.5rem;
-        transform: rotate(0deg);
-      }
-      .suite-container
-        > input[type='checkbox']:checked
-        ~ label
-        .suite-info:before {
-        transform: rotate(180deg);
-      }
+.suite-container {
+  margin-bottom: 2rem;
+}
+.suite-container > input[type="checkbox"] {
+  position: absolute;
+  left: -100vw;
+}
+.suite-container label {
+  display: block;
+}
+.suite-container .suite-tests {
+  overflow-y: hidden;
+  height: 0;
+}
+.suite-container > input[type="checkbox"]:checked ~ .suite-tests {
+  height: auto;
+  overflow: visible;
+}
+.suite-info {
+  padding: 1rem;
+  background-color: #eee;
+  color: #777;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.suite-info:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+.suite-info .suite-path {
+  word-break: break-all;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1rem;
+}
+.suite-info .suite-time {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.75rem;
+}
+.suite-info .suite-time.warn {
+  background-color: #d8000c;
+  color: #fff;
+}
+.suite-info:before {
+  content: "\2303";
+  display: inline-block;
+  margin-right: 0.5rem;
+  transform: rotate(0deg);
+}
+.suite-container > input[type="checkbox"]:checked ~ label .suite-info:before {
+  transform: rotate(180deg);
+}
 
-      /* CONSOLE LOGS */
-      .suite-consolelog {
-        margin-bottom: 0.25rem;
-        padding: 1rem;
-        background-color: #efefef;
-      }
-      .suite-consolelog-header {
-        font-weight: bold;
-      }
-      .suite-consolelog-item {
-        padding: 0.5rem;
-      }
-      .suite-consolelog-item pre {
-        margin: 0.5rem 0;
-        white-space: pre-wrap;
-        white-space: -moz-pre-wrap;
-        white-space: -pre-wrap;
-        white-space: -o-pre-wrap;
-        word-wrap: break-word;
-      }
-      .suite-consolelog-item-origin {
-        color: #777;
-        font-weight: bold;
-      }
-      .suite-consolelog-item-message {
-        color: #000;
-        font-size: 1rem;
-        padding: 0 0.5rem;
-      }
+/* CONSOLE LOGS */
+.suite-consolelog {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #efefef;
+}
+.suite-consolelog-header {
+  font-weight: bold;
+}
+.suite-consolelog-item {
+  padding: 0.5rem;
+}
+.suite-consolelog-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-consolelog-item-origin {
+  color: #777;
+  font-weight: bold;
+}
+.suite-consolelog-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
 
-      /* OBSOLETE SNAPSHOTS */
-      .suite-obsolete-snapshots {
-        margin-bottom: 0.25rem;
-        padding: 1rem;
-        background-color: #ffbaba;
-        color: #d8000c;
-      }
-      .suite-obsolete-snapshots-header {
-        font-weight: bold;
-      }
-      .suite-obsolete-snapshots-item {
-        padding: 0.5rem;
-      }
-      .suite-obsolete-snapshots-item pre {
-        margin: 0.5rem 0;
-        white-space: pre-wrap;
-        white-space: -moz-pre-wrap;
-        white-space: -pre-wrap;
-        white-space: -o-pre-wrap;
-        word-wrap: break-word;
-      }
-      .suite-obsolete-snapshots-item-message {
-        color: #000;
-        font-size: 1rem;
-        padding: 0 0.5rem;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="jesthtml-content">
-      <header><h1 id="title">Astro WhatsApp Bot Test Report</h1></header>
-      <div id="metadata-container">
-        <div id="timestamp">Started: 2025-10-25 21:09:58</div>
-        <div id="summary">
-          <div id="suite-summary">
-            <div class="summary-total">Suites (3)</div>
-            <div class="summary-passed">1 passed</div>
-            <div class="summary-failed">2 failed</div>
-            <div class="summary-pending summary-empty">0 pending</div>
-          </div>
-          <div id="test-summary">
-            <div class="summary-total">Tests (28)</div>
-            <div class="summary-passed">16 passed</div>
-            <div class="summary-failed">12 failed</div>
-            <div class="summary-pending summary-empty">0 pending</div>
-          </div>
-        </div>
-      </div>
-      <div id="suite-1" class="suite-container">
-        <input
-          id="collapsible-0"
-          type="checkbox"
-          class="toggle"
-          checked="checked"
-        /><label for="collapsible-0"
-          ><div class="suite-info">
-            <div class="suite-path">
-              /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js
-            </div>
-            <div class="suite-time">4.015s</div>
-          </div></label
-        >
-        <div class="suite-tests">
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; New User Registration
-                Flow
-              </div>
-              <div class="test-title">
-                should complete full new user registration and first reading
-                flow
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.053s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Existing User Daily
-                Horoscope Flow
-              </div>
-              <div class="test-title">
-                should generate real daily horoscope for existing user
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.009s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Interactive Button Flow
-              </div>
-              <div class="test-title">
-                should process interactive button reply for compatibility
-                checking
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.008s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Error Handling Flow
-              </div>
-              <div class="test-title">
-                should handle processing errors gracefully
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.009s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Performance and
-                Scalability Flow
-              </div>
-              <div class="test-title">
-                should handle high volume of messages without crashing
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.008s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Security and Compliance
-                Flow
-              </div>
-              <div class="test-title">
-                should validate webhook signatures when provided
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.008s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Subscription and
-                Payment Flow
-              </div>
-              <div class="test-title">
-                should handle subscription plan inquiry
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.008s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Subscription and
-                Payment Flow
-              </div>
-              <div class="test-title">
-                should handle premium subscription request
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.007s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Astrology Readings Flow
-                &gt; Profile Management Flow
-              </div>
-              <div class="test-title">
-                should handle profile viewing request
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.009s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Astrology Readings Flow
-              </div>
-              <div class="test-title">should handle tarot reading request</div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.008s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Astrology Readings Flow
-              </div>
-              <div class="test-title">
-                should handle palmistry reading request
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.033s</div>
-            </div>
-          </div>
-          <div class="test-result failed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Critical User Flow End-to-End Tests &gt; Astrology Readings Flow
-              </div>
-              <div class="test-title">
-                should handle numerology report request
-              </div>
-              <div class="test-status">failed</div>
-              <div class="test-duration">0.135s</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="suite-2" class="suite-container">
-        <input
-          id="collapsible-1"
-          type="checkbox"
-          class="toggle"
-          checked="checked"
-        /><label for="collapsible-1"
-          ><div class="suite-info">
-            <div class="suite-path">
-              /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/astrology-integration.test.js
-            </div>
-            <div class="suite-time">2.153s</div>
-          </div></label
-        >
-        <div class="suite-tests">
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Tarot Reader
-                Integration
-              </div>
-              <div class="test-title">
-                should generate valid single card tarot reading
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.006s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Tarot Reader
-                Integration
-              </div>
-              <div class="test-title">
-                should generate valid three-card spread reading
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.002s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Tarot Reader
-                Integration
-              </div>
-              <div class="test-title">
-                should generate valid Celtic cross reading
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.002s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Tarot Reader
-                Integration
-              </div>
-              <div class="test-title">
-                should handle invalid spread type gracefully
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.001s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Palmistry Reader
-                Integration
-              </div>
-              <div class="test-title">
-                should generate valid palmistry reading
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.003s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Palmistry Reader
-                Integration
-              </div>
-              <div class="test-title">
-                should generate sample reading when no user provided
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.002s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Nadi Reader Integration
-              </div>
-              <div class="test-title">
-                should generate valid Nadi astrology reading
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.002s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Nadi Reader Integration
-              </div>
-              <div class="test-title">should handle missing birth date</div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.001s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Chinese Calculator
-                Integration
-              </div>
-              <div class="test-title">
-                should calculate valid Chinese zodiac sign
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.002s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Chinese Calculator
-                Integration
-              </div>
-              <div class="test-title">
-                should handle different birth dates correctly
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.002s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Vedic Calculator
-                Integration
-              </div>
-              <div class="test-title">
-                should calculate valid Vedic birth chart
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.009s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Vedic Calculator
-                Integration
-              </div>
-              <div class="test-title">
-                should handle invalid birth data gracefully
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.001s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Numerology Service
-                Integration
-              </div>
-              <div class="test-title">
-                should generate valid numerology report
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.003s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Numerology Service
-                Integration
-              </div>
-              <div class="test-title">should handle user without name</div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.001s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Cross-System
-                Compatibility
-              </div>
-              <div class="test-title">
-                should generate compatible readings across different systems
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.015s</div>
-            </div>
-          </div>
-          <div class="test-result passed">
-            <div class="test-info">
-              <div class="test-suitename">
-                Astrology Library Integration Tests &gt; Cross-System
-                Compatibility
-              </div>
-              <div class="test-title">
-                should handle edge cases consistently across systems
-              </div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.008s</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="suite-3" class="suite-container">
-        <input
-          id="collapsible-2"
-          type="checkbox"
-          class="toggle"
-          checked="checked"
-        /><label for="collapsible-2"
-          ><div class="suite-info">
-            <div class="suite-path">
-              /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js
-            </div>
-            <div class="suite-time">0s</div>
-          </div></label
-        >
-        <div class="suite-tests" />
-      </div>
-    </div>
-  </body>
-</html>
+/* OBSOLETE SNAPSHOTS */
+.suite-obsolete-snapshots {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.suite-obsolete-snapshots-header {
+  font-weight: bold;
+}
+.suite-obsolete-snapshots-item {
+  padding: 0.5rem;
+}
+.suite-obsolete-snapshots-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-obsolete-snapshots-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+</style></head><body><div class="jesthtml-content"><header><h1 id="title">Astro WhatsApp Bot Test Report</h1></header><div id="metadata-container"><div id="timestamp">Started: 2025-10-26 00:31:43</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (12)</div><div class="summary-passed ">8 passed</div><div class="summary-failed ">4 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (60)</div><div class="summary-passed ">58 passed</div><div class="summary-failed ">2 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></div><div id="suite-1" class="suite-container"><input id="collapsible-0" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-0"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/User.test.js</div><div class="suite-time warn">5.251s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">User Model &gt; User Creation</div><div class="test-title">should create a new user with valid data</div><div class="test-status">passed</div><div class="test-duration">0.325s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">User Model &gt; User Creation</div><div class="test-title">should handle missing required fields</div><div class="test-status">passed</div><div class="test-duration">0.057s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">User Model &gt; User Queries</div><div class="test-title">should find user by phone number</div><div class="test-status">passed</div><div class="test-duration">0.216s</div></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">User Model &gt; User Queries</div><div class="test-title">should update user profile</div><div class="test-status">failed</div><div class="test-duration">0.022s</div></div></div></div></div><div id="suite-2" class="suite-container"><input id="collapsible-1" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-1"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/Session.test.js</div><div class="suite-time">3.468s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Session Model &gt; Session Creation</div><div class="test-title">should create a new session with valid data</div><div class="test-status">passed</div><div class="test-duration">0.419s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Session Model &gt; Session Queries</div><div class="test-title">should find session by phone number</div><div class="test-status">passed</div><div class="test-duration">0.111s</div></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">Session Model &gt; Session Queries</div><div class="test-title">should update session flow data</div><div class="test-status">failed</div><div class="test-duration">0.011s</div></div></div></div></div><div id="suite-3" class="suite-container"><input id="collapsible-2" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-2"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/controllers/whatsappController.test.js</div><div class="suite-time warn">5.856s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Controller &gt; handleWhatsAppWebhook</div><div class="test-title">should return 400 for invalid webhook payload</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Controller &gt; handleWhatsAppWebhook</div><div class="test-title">should return 200 for valid webhook payload with no entries</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Controller &gt; handleWhatsAppWebhook</div><div class="test-title">should process valid webhook with messages</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Controller &gt; handleWhatsAppWebhook</div><div class="test-title">should handle errors gracefully</div><div class="test-status">passed</div><div class="test-duration">3.011s</div></div></div></div></div><div id="suite-4" class="suite-container"><input id="collapsible-3" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-3"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/server.test.js</div><div class="suite-time">4.26s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Server Setup &gt; GET /health</div><div class="test-title">should return health status with correct structure</div><div class="test-status">passed</div><div class="test-duration">0.099s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Server Setup &gt; GET /</div><div class="test-title">should return welcome message with version</div><div class="test-status">passed</div><div class="test-duration">0.022s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Server Setup &gt; POST /webhook</div><div class="test-title">should return webhook ready message</div><div class="test-status">passed</div><div class="test-duration">0.03s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Server Setup &gt; 404 Handler</div><div class="test-title">should return 404 for non-existent routes</div><div class="test-status">passed</div><div class="test-duration">0.064s</div></div></div></div></div><div id="suite-5" class="suite-container"><input id="collapsible-4" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-4"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/astrology/palmistryReader.test.js</div><div class="suite-time">2.82s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Palmistry Reader Service &gt; generatePalmistryReading</div><div class="test-title">should generate a palmistry reading</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Palmistry Reader Service &gt; generatePalmistryReading</div><div class="test-title">should generate sample reading when no user provided</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Palmistry Reader Service &gt; generatePalmistryReading</div><div class="test-title">should handle user with hand data</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div></div></div><div id="suite-6" class="suite-container"><input id="collapsible-5" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-5"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/whatsapp/whatsappService.test.js</div><div class="suite-time">2.787s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Service &gt; handleWhatsAppWebhook</div><div class="test-title">should return 400 for invalid webhook payload</div><div class="test-status">passed</div><div class="test-duration">0.012s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Service &gt; handleWhatsAppWebhook</div><div class="test-title">should return 200 for valid webhook payload with no entries</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Service &gt; handleWhatsAppWebhook</div><div class="test-title">should process valid webhook with messages</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Service &gt; handleWhatsAppWebhook</div><div class="test-title">should handle interactive button reply messages</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Service &gt; handleWhatsAppWebhook</div><div class="test-title">should handle webhook with status updates</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Service &gt; handleWhatsAppWebhook</div><div class="test-title">should handle error during webhook processing</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Service &gt; processIncomingMessage</div><div class="test-title">should process incoming messages correctly</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div></div></div><div id="suite-7" class="suite-container"><input id="collapsible-6" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-6"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/whatsapp/messageSender.test.js</div><div class="suite-time">2.947s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendTextMessage</div><div class="test-title">should send text message successfully</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendTextMessage</div><div class="test-title">should send text message with preview URL</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendTextMessage</div><div class="test-title">should send text message with context</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendTextMessage</div><div class="test-title">should throw error when WhatsApp API credentials are not configured</div><div class="test-status">passed</div><div class="test-duration">0.042s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendTextMessage</div><div class="test-title">should handle API error gracefully</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendTextMessage</div><div class="test-title">should handle network error gracefully</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendInteractiveButtons</div><div class="test-title">should send interactive buttons message successfully</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendInteractiveButtons</div><div class="test-title">should send interactive buttons with header and footer</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendInteractiveButtons</div><div class="test-title">should handle missing WhatsApp API credentials</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendListMessage</div><div class="test-title">should send list message successfully</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendListMessage</div><div class="test-title">should send list message with footer</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendTemplateMessage</div><div class="test-title">should send template message successfully</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendTemplateMessage</div><div class="test-title">should send template message with components</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendMediaMessage</div><div class="test-title">should send media message successfully</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; sendMediaMessage</div><div class="test-title">should send media message with filename</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; markMessageAsRead</div><div class="test-title">should mark message as read successfully</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Sender &gt; markMessageAsRead</div><div class="test-title">should handle missing WhatsApp API credentials</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div></div></div><div id="suite-8" class="suite-container"><input id="collapsible-7" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-7"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/whatsapp/messageProcessor.test.js</div><div class="suite-time">2.685s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Processor &gt; processIncomingMessage</div><div class="test-title">should create new user for unknown phone number</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Processor &gt; processIncomingMessage</div><div class="test-title">should process existing user message</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Processor &gt; processIncomingMessage</div><div class="test-title">should handle text messages correctly</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Processor &gt; processIncomingMessage</div><div class="test-title">should handle interactive button replies</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Processor &gt; processIncomingMessage</div><div class="test-title">should handle interactive list replies</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Processor &gt; processIncomingMessage</div><div class="test-title">should handle button messages</div><div class="test-status">passed</div><div class="test-duration">0.007s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Processor &gt; processIncomingMessage</div><div class="test-title">should handle media messages</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Processor &gt; processIncomingMessage</div><div class="test-title">should handle unsupported message types gracefully</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">WhatsApp Message Processor &gt; processIncomingMessage</div><div class="test-title">should handle errors gracefully</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div></div></div><div id="suite-9" class="suite-container"><input id="collapsible-8" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-8"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/astrology/nadiReader.test.js</div><div class="suite-time">2.731s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Nadi Reader Service &gt; generateNadiReading</div><div class="test-title">should generate a Nadi astrology reading</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Nadi Reader Service &gt; generateNadiReading</div><div class="test-title">should handle missing birth date</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Nadi Reader Service &gt; generateNadiReading</div><div class="test-title">should provide Dasa period calculations</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Nadi Reader Service &gt; generateNadiReading</div><div class="test-title">should include traditional Nadi remedies</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div></div></div><div id="suite-10" class="suite-container"><input id="collapsible-9" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-9"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/astrology/tarotReader.test.js</div><div class="suite-time">2.669s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Tarot Reader Service &gt; generateTarotReading</div><div class="test-title">should generate a single card reading</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Tarot Reader Service &gt; generateTarotReading</div><div class="test-title">should generate a three-card spread reading</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Tarot Reader Service &gt; generateTarotReading</div><div class="test-title">should generate a Celtic cross spread reading</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Tarot Reader Service &gt; generateTarotReading</div><div class="test-title">should handle invalid spread type</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Tarot Reader Service &gt; generateTarotReading</div><div class="test-title">should handle user personalization</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div></div></div><div id="suite-11" class="suite-container"><input id="collapsible-10" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-10"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/astrology/vedicCalculator.test.js</div><div class="suite-time">0s</div></div></label><div class="suite-tests"/></div><div id="suite-12" class="suite-container"><input id="collapsible-11" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-11"><div class="suite-info"><div class="suite-path">/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/astrology/astrologyEngine.test.js</div><div class="suite-time">0s</div></div></label><div class="suite-tests"/></div></div></body></html>

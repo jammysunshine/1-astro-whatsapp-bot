@@ -376,8 +376,7 @@ describe('Comprehensive Security Test Suite', () => {
       // In a real implementation, this would test actual dependency updates
       expect(fixedPackages).toContain('lodash@4.17.21');
       expect(fixedPackages).toContain('express@4.18.2');
-     });
-   });
+    });
   });
 
   describe('Payment Security Compliance', () => {

@@ -42,6 +42,8 @@ describe('Comprehensive Performance Test Suite', () => {
         timestamp: expect.any(String),
         service: 'Astrology WhatsApp Bot API',
         uptime: expect.any(Number),
+        environment: expect.any(Object),
+        memory: expect.any(Object),
       });
 
       logger.info(

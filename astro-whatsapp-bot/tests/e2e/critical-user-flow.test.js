@@ -10,12 +10,16 @@ const {
 } = require('../../src/models/userModel');
 const { sendMessage } = require('../../src/services/whatsapp/messageSender');
 const logger = require('../../src/utils/logger');
+const mongoose = require('mongoose');
 
 // Mock webhookValidator only, as it's external to the core app logic being tested here
 jest.mock('../../src/services/whatsapp/webhookValidator');
 const {
   validateWebhookSignature,
 } = require('../../src/services/whatsapp/webhookValidator');
+
+// Mock sendMessage
+jest.mock('../../src/services/whatsapp/messageSender');
 
 describe('Critical User Flow End-to-End Tests', () => {
   beforeAll(async () => {
@@ -39,10 +43,6 @@ describe('Critical User Flow End-to-End Tests', () => {
 
     // Setup default mock responses for webhookValidator
     validateWebhookSignature.mockReturnValue(true);
-
-    // Mock sendMessage to capture calls for assertions
-    sendMessage.mockClear();
-    sendMessage.mockResolvedValue({ success: true });
   });
 
   describe('New User Registration Flow', () => {

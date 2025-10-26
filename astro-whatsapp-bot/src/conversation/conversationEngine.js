@@ -299,8 +299,18 @@ const processFlowMessage = async (message, user, flowId) => {
 
     let session = await getUserSession(phoneNumber);
 
+    // Initialize session for new flow if it doesn't exist
+    if (!session) {
+      session = {
+        currentFlow: flowId,
+        currentStep: flow.start_step,
+        flowData: {},
+      };
+      await setUserSession(phoneNumber, session);
+    }
+
     // Ensure session has required properties
-    if (session && !session.flowData) {
+    if (!session.flowData) {
       session.flowData = {};
       await setUserSession(phoneNumber, session);
     }
@@ -330,7 +340,80 @@ const processFlowMessage = async (message, user, flowId) => {
       return false;
     }
 
-    if (currentStep.action) {
+    // Handle interactive messages differently - they don't need validation
+    if (message.type === 'interactive') {
+      // For interactive messages, the processing happens elsewhere
+      // Just return true to indicate message was handled
+      return true;
+    }
+
+    // Validate input if step has validation
+    if (currentStep.validation && currentStep.validation !== 'none') {
+      const validationResult = await validateStepInput(messageText, currentStep);
+      if (!validationResult.isValid) {
+        await sendMessage(phoneNumber, validationResult.errorMessage);
+        return true; // Message handled, but flow not progressed
+      }
+
+      // Store validated data if data_key is specified
+      if (currentStep.data_key) {
+        session.flowData[currentStep.data_key] = validationResult.cleanedValue;
+        await setUserSession(phoneNumber, session);
+        logger.info(`Stored ${currentStep.data_key}: ${validationResult.cleanedValue} in flowData`);
+      }
+    }
+
+    // Move to next step
+    if (currentStep.next_step) {
+      logger.info(`Moving from step ${currentStepId} to ${currentStep.next_step}`);
+      session.currentStep = currentStep.next_step;
+      await setUserSession(phoneNumber, session);
+
+      // Get the next step
+      const nextStep = flow.steps[currentStep.next_step];
+      if (nextStep) {
+        // Send next step prompt
+        let prompt = nextStep.prompt || nextStep.fallback_prompt;
+        if (prompt) {
+          // Replace placeholders in prompt
+          prompt = prompt.replace(/\{(\w+)\}/g, (match, key) => {
+            return session.flowData[key] || match;
+          });
+
+          if (nextStep.interactive) {
+            // Send interactive message
+            const { type, body, buttons } = nextStep.interactive;
+            if (type === 'button_reply' && buttons) {
+              await sendMessage(phoneNumber, { type: 'button', body: prompt, buttons }, 'interactive');
+            }
+          } else {
+            // Send text message
+            await sendMessage(phoneNumber, prompt);
+          }
+        }
+
+        // If next step has an action, execute it
+        if (nextStep.action) {
+          logger.info(`Executing action ${nextStep.action} for step ${currentStep.next_step}`);
+          await executeFlowAction(
+            phoneNumber,
+            user,
+            flowId,
+            nextStep.action,
+            session.flowData
+          );
+          return true;
+        }
+      } else {
+        logger.error(`❌ Next step '${currentStep.next_step}' not found in flow '${flowId}'.`);
+        await sendMessage(
+          phoneNumber,
+          "I'm sorry, I encountered an internal error. Please try again later."
+        );
+        await deleteUserSession(phoneNumber);
+        return false;
+      }
+    } else if (currentStep.action) {
       // If current step has an action and no next step, execute action
       await executeFlowAction(
         phoneNumber,
@@ -380,37 +463,26 @@ const executeFlowAction = async (
   action,
   flowData
 ) => {
+  logger.info(`🔄 Executing flow action: ${action} for flow: ${flowId}`);
   switch (action) {
     case 'complete_profile': {
+      logger.info('🎯 Executing complete_profile action');
       const { birthDate } = flowData;
       const { birthTime } = flowData;
       const { birthPlace } = flowData;
-      const preferredLanguage = flowData.preferredLanguage || 'english';
-
-      // Generate comprehensive birth chart analysis with error handling
-      const chartData = {};
-
-      // Extract key information for prompt replacement
-       const sunSign = chartData.sunSign || 'Pisces'; // Temporary fallback
-       const moonSign = chartData.moonSign || 'Pisces'; // Temporary fallback
-       const risingSign = chartData.risingSign || 'Aquarius'; // Temporary fallback
-
-       logger.debug('🔮 Astrology data:', { sunSign, moonSign, risingSign });
+      const preferredLanguage = flowData.preferredLanguage || 'en';
+      logger.info('FlowData received:', { birthDate, birthTime, birthPlace, preferredLanguage });
 
       // Update user profile with birth details
       logger.info('Calling addBirthDetails...');
       await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
-      logger.info(
-        'addBirthDetails completed. Updating user profile with profileComplete: true and astrology data...'
-      );
+      logger.info('addBirthDetails completed. Setting profileComplete: true...');
       await updateUserProfile(phoneNumber, {
         profileComplete: true,
         preferredLanguage,
         onboardingCompletedAt: new Date(),
-        sunSign,
-        moonSign,
-        risingSign,
       });
+      logger.info('updateUserProfile completed successfully');
       logger.info(
         'updateUserProfile called with profileComplete: true. Exiting complete_profile action.'
       );
@@ -543,38 +615,7 @@ const executeFlowAction = async (
       await deleteUserSession(phoneNumber);
       break;
     }
-    case 'generate_numerology_report': {
-      const { birthDate } = flowData;
-      const { fullName } = flowData;
 
-      if (!birthDate || !fullName) {
-        await sendMessage(
-          phoneNumber,
-          'I need both your full name and birth date to generate the numerology report. Please try again.'
-        );
-        await deleteUserSession(phoneNumber);
-        break;
-      }
-
-      const report = numerologyService.getNumerologyReport(birthDate, fullName);
-
-      let numerologyMessage = '✨ *Your Numerology Report* ✨\n\n';
-      numerologyMessage += `*Life Path Number:* ${report.lifePath.number}\n`;
-      numerologyMessage += `_Interpretation:_ ${report.lifePath.interpretation}\n\n`;
-      numerologyMessage += `*Expression Number:* ${report.expression.number}\n`;
-      numerologyMessage += `_Interpretation:_ ${report.expression.interpretation}\n\n`;
-      numerologyMessage += `*Soul Urge Number:* ${report.soulUrge.number}\n`;
-      numerologyMessage += `_Interpretation:_ ${report.soulUrge.interpretation}\n\n`;
-      numerologyMessage += `*Personality Number:* ${report.personality.number}\n`;
-      numerologyMessage += `_Interpretation:_ ${report.personality.interpretation}\n\n`;
-      numerologyMessage +=
-        'I hope this sheds some light on your cosmic blueprint!';
-
-      await sendMessage(phoneNumber, numerologyMessage);
-      await deleteUserSession(phoneNumber); // Clear session after report
-      logger.info(`✅ User ${phoneNumber} received numerology report.`);
-      break;
-    }
     case 'generate_compatibility': {
       const { partnerBirthDate } = flowData;
       const userSign = vedicCalculator.calculateSunSign(user.birthDate);

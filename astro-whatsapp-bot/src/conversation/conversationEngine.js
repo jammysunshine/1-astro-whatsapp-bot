@@ -4,7 +4,7 @@ const {
   setUserSession,
   deleteUserSession,
   addBirthDetails,
-  updateUserProfile,
+  updateUserProfile
 } = require('../models/userModel');
 const { sendMessage } = require('../services/whatsapp/messageSender');
 const logger = require('../utils/logger');
@@ -19,255 +19,255 @@ const { sendListMessage } = require('../services/whatsapp/messageSender');
  * @param {Object} step - Step configuration
  * @returns {Object} Validation result with isValid, cleanedValue, errorMessage
  */
-const validateStepInput = async (input, step) => {
+const validateStepInput = async(input, step) => {
   const trimmedInput = input.trim().toLowerCase();
 
   switch (step.validation) {
-    case 'text':
-      if (!input || input.trim().length === 0) {
-        return { isValid: false, errorMessage: 'Please provide some text.' };
-      }
-      return { isValid: true, cleanedValue: input.trim() };
+  case 'text':
+    if (!input || input.trim().length === 0) {
+      return { isValid: false, errorMessage: 'Please provide some text.' };
+    }
+    return { isValid: true, cleanedValue: input.trim() };
 
-    case 'date':
-      // Only accept DDMMYY or DDMMYYYY formats
-      let day;
-      let month;
-      let year;
+  case 'date':
+    // Only accept DDMMYY or DDMMYYYY formats
+    let day;
+    let month;
+    let year;
 
-      // Check for 6-digit format first (DDMMYY - could be ambiguous)
-      const shortDateRegex = /^(\d{2})(\d{2})(\d{2})$/;
-      const shortMatch = input.match(shortDateRegex);
-      if (shortMatch) {
-        [, day, month] = shortMatch.map(Number);
-        const yy = parseInt(shortMatch[3]);
+    // Check for 6-digit format first (DDMMYY - could be ambiguous)
+    const shortDateRegex = /^(\d{2})(\d{2})(\d{2})$/;
+    const shortMatch = input.match(shortDateRegex);
+    if (shortMatch) {
+      [, day, month] = shortMatch.map(Number);
+      const yy = parseInt(shortMatch[3]);
 
-        // Check if year is ambiguous (00-99, could be 1900s or 2000s)
-        if (yy >= 0 && yy <= 99) {
-          const currentYear = new Date().getFullYear();
-          const year1900 = 1900 + yy;
-          const year2000 = 2000 + yy;
+      // Check if year is ambiguous (00-99, could be 1900s or 2000s)
+      if (yy >= 0 && yy <= 99) {
+        const currentYear = new Date().getFullYear();
+        const year1900 = 1900 + yy;
+        const year2000 = 2000 + yy;
 
-          // Check if each possible year would result in a future date
-          const date1900 = new Date(year1900, month - 1, day);
-          const date2000 = new Date(year2000, month - 1, day);
+        // Check if each possible year would result in a future date
+        const date1900 = new Date(year1900, month - 1, day);
+        const date2000 = new Date(year2000, month - 1, day);
 
-          const is1900Valid =
+        const is1900Valid =
             date1900 <= new Date() &&
             date1900.getFullYear() === year1900 &&
             date1900.getMonth() === month - 1 &&
             date1900.getDate() === day;
-          const is2000Valid =
+        const is2000Valid =
             date2000 <= new Date() &&
             date2000.getFullYear() === year2000 &&
             date2000.getMonth() === month - 1 &&
             date2000.getDate() === day;
 
-          // If only one option is valid, use it directly
-          if (is1900Valid && !is2000Valid) {
-            year = year1900;
-          } else if (!is1900Valid && is2000Valid) {
-            year = year2000;
-          } else if (is1900Valid && is2000Valid) {
-            // Both are valid (neither is future), show ambiguity
-            return {
-              isValid: true,
-              needsClarification: true,
-              clarificationType: 'year_ambiguity',
-              data: { day, month, yy },
-              clarificationMessage: `📅 *Birth Year Ambiguity*\n\nYour input suggests ${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}, but the year ${yy.toString().padStart(2, '0')} could be interpreted as:`,
-              clarificationButtons: [
-                {
-                  id: `year_19${yy.toString().padStart(2, '0')}`,
-                  title: `19${yy.toString().padStart(2, '0')}`,
-                },
-                {
-                  id: `year_20${yy.toString().padStart(2, '0')}`,
-                  title: `20${yy.toString().padStart(2, '0')}`,
-                },
-              ],
-            };
-          } else {
-            // Neither is valid (both would be future dates)
-            return {
-              isValid: false,
-              errorMessage: 'Please provide a valid birth year.',
-            };
-          }
+        // If only one option is valid, use it directly
+        if (is1900Valid && !is2000Valid) {
+          year = year1900;
+        } else if (!is1900Valid && is2000Valid) {
+          year = year2000;
+        } else if (is1900Valid && is2000Valid) {
+          // Both are valid (neither is future), show ambiguity
+          return {
+            isValid: true,
+            needsClarification: true,
+            clarificationType: 'year_ambiguity',
+            data: { day, month, yy },
+            clarificationMessage: `📅 *Birth Year Ambiguity*\n\nYour input suggests ${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}, but the year ${yy.toString().padStart(2, '0')} could be interpreted as:`,
+            clarificationButtons: [
+              {
+                id: `year_19${yy.toString().padStart(2, '0')}`,
+                title: `19${yy.toString().padStart(2, '0')}`
+              },
+              {
+                id: `year_20${yy.toString().padStart(2, '0')}`,
+                title: `20${yy.toString().padStart(2, '0')}`
+              }
+            ]
+          };
         } else {
-          year = 1900 + yy; // Convert YY to YYYY (1900-1999)
-        }
-      } else {
-        // Check for 8-digit format (DDMMYYYY)
-        const compactDateRegex = /^(\d{2})(\d{2})(\d{4})$/;
-        const compactMatch = input.match(compactDateRegex);
-        if (compactMatch) {
-          [, day, month, year] = compactMatch.map(Number);
-        } else {
+          // Neither is valid (both would be future dates)
           return {
             isValid: false,
-            errorMessage:
-              step.error_message ||
-              'Please provide date in DDMMYY (150690) or DDMMYYYY (15061990) format only.',
+            errorMessage: 'Please provide a valid birth year.'
           };
         }
+      } else {
+        year = 1900 + yy; // Convert YY to YYYY (1900-1999)
       }
-      const date = new Date(year, month - 1, day);
+    } else {
+      // Check for 8-digit format (DDMMYYYY)
+      const compactDateRegex = /^(\d{2})(\d{2})(\d{4})$/;
+      const compactMatch = input.match(compactDateRegex);
+      if (compactMatch) {
+        [, day, month, year] = compactMatch.map(Number);
+      } else {
+        return {
+          isValid: false,
+          errorMessage:
+              step.error_message ||
+              'Please provide date in DDMMYY (150690) or DDMMYYYY (15061990) format only.'
+        };
+      }
+    }
+    const date = new Date(year, month - 1, day);
 
-      if (
-        date.getFullYear() !== year ||
+    if (
+      date.getFullYear() !== year ||
         date.getMonth() !== month - 1 ||
         date.getDate() !== day
-      ) {
-        return { isValid: false, errorMessage: 'Please provide a valid date.' };
-      }
+    ) {
+      return { isValid: false, errorMessage: 'Please provide a valid date.' };
+    }
 
-      if (year < 1900 || year > new Date().getFullYear()) {
-        return {
-          isValid: false,
-          errorMessage: 'Please provide a valid birth year.',
-        };
-      }
-
-      // Return normalized date in DD/MM/YYYY format for consistency
-      const normalizedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
-      return { isValid: true, cleanedValue: normalizedDate };
-
-    case 'time_or_skip':
-      if (trimmedInput === 'skip') {
-        return { isValid: true, cleanedValue: null };
-      }
-
-      let hours;
-      let minutes;
-      let isAmbiguous = false;
-
-      // Check for HHMM format (4 digits)
-      const compactTimeRegex = /^(\d{2})(\d{2})$/;
-      const compactTimeMatch = input.match(compactTimeRegex);
-      if (compactTimeMatch) {
-        [, hours, minutes] = compactTimeMatch.map(Number);
-        // If hours 00-11, it could be AM or PM (ambiguous)
-        if (hours >= 0 && hours <= 11) {
-          isAmbiguous = true;
-        }
-      } else {
-        // Check for HH:MM format
-        const timeRegex = /^(\d{1,2}):(\d{2})$/;
-        const timeMatch = input.match(timeRegex);
-        if (!timeMatch) {
-          return {
-            isValid: false,
-            errorMessage:
-              step.error_message ||
-              "Please provide time in HHMM (1430) or HH:MM (14:30) format, or type 'skip'.",
-          };
-        }
-        [, hours, minutes] = timeMatch.map(Number);
-      }
-
-      if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
-        return {
-          isValid: false,
-          errorMessage: 'Please provide a valid time (00:00 to 23:59).',
-        };
-      }
-
-      // Handle ambiguous time (HHMM format with hours 00-11)
-      if (isAmbiguous) {
-        return {
-          isValid: true,
-          needsClarification: true,
-          clarificationType: 'time_ambiguity',
-          data: { hours, minutes },
-          clarificationMessage: `🕐 *Time Ambiguity*\n\nYour input ${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')} could mean:`,
-          clarificationButtons: [
-            {
-              id: `time_am_${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')}`,
-              title: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} AM`,
-            },
-            {
-              id: `time_pm_${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')}`,
-              title: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} PM`,
-            },
-          ],
-        };
-      }
-
-      // Return in HH:MM format for consistency
-      const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-      return { isValid: true, cleanedValue: formattedTime };
-
-    case 'language_choice':
-      const validLanguages = ['english', 'hindi', 'en', 'hi'];
-      if (validLanguages.includes(trimmedInput.toLowerCase())) {
-        return { isValid: true, cleanedValue: trimmedInput.toLowerCase() };
-      }
-      // Default to english if not specified
-      return { isValid: true, cleanedValue: 'english' };
-
-    case 'yes_no':
-      if (trimmedInput === 'yes' || trimmedInput === 'y') {
-        return { isValid: true, cleanedValue: 'yes' };
-      }
-      if (trimmedInput === 'no' || trimmedInput === 'n') {
-        return { isValid: true, cleanedValue: 'no' };
-      }
+    if (year < 1900 || year > new Date().getFullYear()) {
       return {
         isValid: false,
-        errorMessage: step.error_message || 'Please reply "yes" or "no".',
+        errorMessage: 'Please provide a valid birth year.'
       };
+    }
 
-    case 'plan_choice':
-      if (
-        trimmedInput === 'essential' ||
+    // Return normalized date in DD/MM/YYYY format for consistency
+    const normalizedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+    return { isValid: true, cleanedValue: normalizedDate };
+
+  case 'time_or_skip':
+    if (trimmedInput === 'skip') {
+      return { isValid: true, cleanedValue: null };
+    }
+
+    let hours;
+    let minutes;
+    let isAmbiguous = false;
+
+    // Check for HHMM format (4 digits)
+    const compactTimeRegex = /^(\d{2})(\d{2})$/;
+    const compactTimeMatch = input.match(compactTimeRegex);
+    if (compactTimeMatch) {
+      [, hours, minutes] = compactTimeMatch.map(Number);
+      // If hours 00-11, it could be AM or PM (ambiguous)
+      if (hours >= 0 && hours <= 11) {
+        isAmbiguous = true;
+      }
+    } else {
+      // Check for HH:MM format
+      const timeRegex = /^(\d{1,2}):(\d{2})$/;
+      const timeMatch = input.match(timeRegex);
+      if (!timeMatch) {
+        return {
+          isValid: false,
+          errorMessage:
+              step.error_message ||
+              'Please provide time in HHMM (1430) or HH:MM (14:30) format, or type \'skip\'.'
+        };
+      }
+      [, hours, minutes] = timeMatch.map(Number);
+    }
+
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+      return {
+        isValid: false,
+        errorMessage: 'Please provide a valid time (00:00 to 23:59).'
+      };
+    }
+
+    // Handle ambiguous time (HHMM format with hours 00-11)
+    if (isAmbiguous) {
+      return {
+        isValid: true,
+        needsClarification: true,
+        clarificationType: 'time_ambiguity',
+        data: { hours, minutes },
+        clarificationMessage: `🕐 *Time Ambiguity*\n\nYour input ${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')} could mean:`,
+        clarificationButtons: [
+          {
+            id: `time_am_${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')}`,
+            title: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} AM`
+          },
+          {
+            id: `time_pm_${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')}`,
+            title: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} PM`
+          }
+        ]
+      };
+    }
+
+    // Return in HH:MM format for consistency
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    return { isValid: true, cleanedValue: formattedTime };
+
+  case 'language_choice':
+    const validLanguages = ['english', 'hindi', 'en', 'hi'];
+    if (validLanguages.includes(trimmedInput.toLowerCase())) {
+      return { isValid: true, cleanedValue: trimmedInput.toLowerCase() };
+    }
+    // Default to english if not specified
+    return { isValid: true, cleanedValue: 'english' };
+
+  case 'yes_no':
+    if (trimmedInput === 'yes' || trimmedInput === 'y') {
+      return { isValid: true, cleanedValue: 'yes' };
+    }
+    if (trimmedInput === 'no' || trimmedInput === 'n') {
+      return { isValid: true, cleanedValue: 'no' };
+    }
+    return {
+      isValid: false,
+      errorMessage: step.error_message || 'Please reply "yes" or "no".'
+    };
+
+  case 'plan_choice':
+    if (
+      trimmedInput === 'essential' ||
         trimmedInput === 'premium' ||
         trimmedInput === 'vip'
-      ) {
-        return { isValid: true, cleanedValue: input.toLowerCase() };
-      }
-      return {
-        isValid: false,
-        errorMessage:
+    ) {
+      return { isValid: true, cleanedValue: input.toLowerCase() };
+    }
+    return {
+      isValid: false,
+      errorMessage:
           step.error_message ||
-          'Please choose "essential", "premium", or "vip".',
-      };
+          'Please choose "essential", "premium", or "vip".'
+    };
 
-    case 'yes_no_or_menu':
-      if (trimmedInput === 'yes' || trimmedInput === 'y') {
-        return { isValid: true, cleanedValue: 'yes' };
-      }
-      if (trimmedInput === 'no' || trimmedInput === 'n') {
-        return { isValid: true, cleanedValue: 'no' };
-      }
-      if (trimmedInput === 'menu') {
-        return { isValid: true, cleanedValue: 'menu' };
-      }
-      return {
-        isValid: false,
-        errorMessage:
-          step.error_message || 'Please reply "yes", "no", or "menu".',
-      };
+  case 'yes_no_or_menu':
+    if (trimmedInput === 'yes' || trimmedInput === 'y') {
+      return { isValid: true, cleanedValue: 'yes' };
+    }
+    if (trimmedInput === 'no' || trimmedInput === 'n') {
+      return { isValid: true, cleanedValue: 'no' };
+    }
+    if (trimmedInput === 'menu') {
+      return { isValid: true, cleanedValue: 'menu' };
+    }
+    return {
+      isValid: false,
+      errorMessage:
+          step.error_message || 'Please reply "yes", "no", or "menu".'
+    };
 
-    case 'again_or_menu':
-      if (trimmedInput === 'again' || trimmedInput === 'a') {
-        return { isValid: true, cleanedValue: 'again' };
-      }
-      if (trimmedInput === 'menu' || trimmedInput === 'm') {
-        return { isValid: true, cleanedValue: 'menu' };
-      }
-      return {
-        isValid: false,
-        errorMessage:
+  case 'again_or_menu':
+    if (trimmedInput === 'again' || trimmedInput === 'a') {
+      return { isValid: true, cleanedValue: 'again' };
+    }
+    if (trimmedInput === 'menu' || trimmedInput === 'm') {
+      return { isValid: true, cleanedValue: 'menu' };
+    }
+    return {
+      isValid: false,
+      errorMessage:
           step.error_message ||
-          'Please reply "again" for another reading or "menu" for main options.',
-      };
+          'Please reply "again" for another reading or "menu" for main options.'
+    };
 
-    case 'none':
-      return { isValid: true, cleanedValue: input };
+  case 'none':
+    return { isValid: true, cleanedValue: input };
 
-    default:
-      return { isValid: true, cleanedValue: input };
+  default:
+    return { isValid: true, cleanedValue: input };
   }
 };
 
@@ -278,7 +278,7 @@ const validateStepInput = async (input, step) => {
  * @param {string} flowId - The ID of the conversation flow (e.g., 'onboarding').
  * @returns {Promise<boolean>} True if the message was handled by the conversation engine, false otherwise.
  */
-const processFlowMessage = async (message, user, flowId) => {
+const processFlowMessage = async(message, user, flowId) => {
   let phoneNumber;
   try {
     phoneNumber = user?.phoneNumber;
@@ -299,12 +299,23 @@ const processFlowMessage = async (message, user, flowId) => {
 
     let session = await getUserSession(phoneNumber);
 
+    const flow = getFlow(flowId);
+    if (!flow) {
+      logger.error(`❌ Conversation flow '${flowId}' not found.`);
+      await sendMessage(
+        phoneNumber,
+        'I\'m sorry, I encountered an internal error. Please try again later.'
+      );
+      await deleteUserSession(phoneNumber);
+      return false;
+    }
+
     // Initialize session for new flow if it doesn't exist
     if (!session) {
       session = {
         currentFlow: flowId,
         currentStep: flow.start_step,
-        flowData: {},
+        flowData: {}
       };
       await setUserSession(phoneNumber, session);
     }
@@ -314,13 +325,11 @@ const processFlowMessage = async (message, user, flowId) => {
       session.flowData = {};
       await setUserSession(phoneNumber, session);
     }
-
-    const flow = getFlow(flowId);
     if (!flow) {
       logger.error(`❌ Conversation flow '${flowId}' not found.`);
       await sendMessage(
         phoneNumber,
-        "I'm sorry, I encountered an internal error. Please try again later."
+        'I\'m sorry, I encountered an internal error. Please try again later.'
       );
       await deleteUserSession(phoneNumber);
       return false;
@@ -334,7 +343,7 @@ const processFlowMessage = async (message, user, flowId) => {
       logger.error(`❌ Current step '${currentStepId}' not found in flow '${flowId}'.`);
       await sendMessage(
         phoneNumber,
-        "I'm sorry, I encountered an internal error. Please try again later."
+        'I\'m sorry, I encountered an internal error. Please try again later.'
       );
       await deleteUserSession(phoneNumber);
       return false;
@@ -376,9 +385,7 @@ const processFlowMessage = async (message, user, flowId) => {
         let prompt = nextStep.prompt || nextStep.fallback_prompt;
         if (prompt) {
           // Replace placeholders in prompt
-          prompt = prompt.replace(/\{(\w+)\}/g, (match, key) => {
-            return session.flowData[key] || match;
-          });
+          prompt = prompt.replace(/\{(\w+)\}/g, (match, key) => session.flowData[key] || match);
 
           if (nextStep.interactive) {
             // Send interactive message
@@ -408,7 +415,7 @@ const processFlowMessage = async (message, user, flowId) => {
         logger.error(`❌ Next step '${currentStep.next_step}' not found in flow '${flowId}'.`);
         await sendMessage(
           phoneNumber,
-          "I'm sorry, I encountered an internal error. Please try again later."
+          'I\'m sorry, I encountered an internal error. Please try again later.'
         );
         await deleteUserSession(phoneNumber);
         return false;
@@ -429,7 +436,7 @@ const processFlowMessage = async (message, user, flowId) => {
       );
       await sendMessage(
         phoneNumber,
-        "I'm sorry, our conversation ended unexpectedly. Please try again."
+        'I\'m sorry, our conversation ended unexpectedly. Please try again.'
       );
       await deleteUserSession(phoneNumber);
       return false;
@@ -439,7 +446,7 @@ const processFlowMessage = async (message, user, flowId) => {
     try {
       await sendMessage(
         phoneNumber,
-        "I'm sorry, I encountered an error. Please try again."
+        'I\'m sorry, I encountered an error. Please try again.'
       );
     } catch (sendError) {
       logger.error('❌ Error sending error message:', sendError);
@@ -456,7 +463,7 @@ const processFlowMessage = async (message, user, flowId) => {
  * @param {string} action - The action to execute (e.g., 'complete_profile').
  * @param {Object} flowData - Data collected during the flow.
  */
-const executeFlowAction = async (
+const executeFlowAction = async(
   phoneNumber,
   user,
   flowId,
@@ -465,128 +472,233 @@ const executeFlowAction = async (
 ) => {
   logger.info(`🔄 Executing flow action: ${action} for flow: ${flowId}`);
   switch (action) {
-    case 'complete_profile': {
-      logger.info('🎯 Executing complete_profile action');
-      const { birthDate } = flowData;
-      const { birthTime } = flowData;
-      const { birthPlace } = flowData;
-      const preferredLanguage = flowData.preferredLanguage || 'en';
-      logger.info('FlowData received:', { birthDate, birthTime, birthPlace, preferredLanguage });
+  case 'complete_profile': {
+    logger.info('🎯 Executing complete_profile action');
+    const { birthDate } = flowData;
+    const { birthTime } = flowData;
+    const { birthPlace } = flowData;
+    const preferredLanguage = flowData.preferredLanguage || 'en';
+    logger.info('FlowData received:', { birthDate, birthTime, birthPlace, preferredLanguage });
 
-      // Update user profile with birth details
-      logger.info('Calling addBirthDetails...');
-      await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
-      logger.info('addBirthDetails completed. Setting profileComplete: true...');
-      await updateUserProfile(phoneNumber, {
-        profileComplete: true,
-        preferredLanguage,
-        onboardingCompletedAt: new Date(),
+    // Update user profile with birth details
+    logger.info('Calling addBirthDetails...');
+    await addBirthDetails(phoneNumber, birthDate, birthTime, birthPlace);
+    logger.info('addBirthDetails completed. Setting profileComplete: true...');
+    await updateUserProfile(phoneNumber, {
+      profileComplete: true,
+      preferredLanguage,
+      onboardingCompletedAt: new Date()
+    });
+    logger.info('updateUserProfile completed successfully');
+    logger.info(
+      'updateUserProfile called with profileComplete: true. Exiting complete_profile action.'
+    );
+    logger.info('✅ User profile updated successfully');
+
+    // Generate comprehensive birth chart analysis
+    let detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\nUnable to generate detailed analysis at this time.';
+    try {
+      const fullChart = await vedicCalculator.generateCompleteVedicAnalysis({
+        birthDate,
+        birthTime,
+        birthPlace
       });
-      logger.info('updateUserProfile completed successfully');
-      logger.info(
-        'updateUserProfile called with profileComplete: true. Exiting complete_profile action.'
-      );
-       logger.info('✅ User profile updated successfully');
 
-      // Generate comprehensive birth chart analysis
-      let detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\nUnable to generate detailed analysis at this time.';
-      try {
-        const fullChart = await vedicCalculator.generateCompleteVedicAnalysis({
-          birthDate,
-          birthTime,
-          birthPlace,
+      detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\n\n';
+      detailedAnalysis += '🌟 *Planetary Positions:*\n';
+      if (fullChart.planets) {
+        Object.entries(fullChart.planets).forEach(([planet, data]) => {
+          detailedAnalysis += `• ${data.name}: ${data.sign} ${data.degrees}°${data.minutes}'${data.seconds}"\n`;
         });
-
-        detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\n\n';
-        detailedAnalysis += '🌟 *Planetary Positions:*\n';
-        if (fullChart.planets) {
-          Object.entries(fullChart.planets).forEach(([planet, data]) => {
-            detailedAnalysis += `• ${data.name}: ${data.sign} ${data.degrees}°${data.minutes}'${data.seconds}"\n`;
-          });
-        }
-
-        detailedAnalysis += '\n🏠 *House Placements:*\n';
-        if (fullChart.houses) {
-          fullChart.houses.forEach((house, index) => {
-            detailedAnalysis += `• House ${index + 1}: ${house.sign}\n`;
-          });
-        }
-
-        detailedAnalysis += '\n🔮 *Key Aspects:*\n';
-        if (fullChart.aspects && fullChart.aspects.length > 0) {
-          fullChart.aspects.slice(0, 5).forEach(aspect => {
-            detailedAnalysis += `• ${aspect.planet1} ${aspect.aspect} ${aspect.planet2}\n`;
-          });
-        }
-      } catch (error) {
-        logger.warn('Could not generate detailed analysis:', error.message);
-        detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\nUnable to generate detailed analysis at this time. Please try again later.';
       }
 
-      // Generate top 3 life patterns
-      let patterns = [
-        'Strong communication abilities',
-        'Natural leadership qualities',
-        'Creative problem-solving skills',
-      ];
-      try {
-        const chart = await vedicCalculator.generateBasicBirthChart({ birthDate, birthTime, birthPlace });
-        patterns = chart.chartPatterns?.lifePatterns || patterns;
-      } catch (error) {
-        logger.warn('Could not generate life patterns:', error.message);
+      detailedAnalysis += '\n🏠 *House Placements:*\n';
+      if (fullChart.houses) {
+        fullChart.houses.forEach((house, index) => {
+          detailedAnalysis += `• House ${index + 1}: ${house.sign}\n`;
+        });
       }
 
-      // Generate 3-day transit preview with error handling
-      let transits = {
-        today: 'Today brings opportunities for new connections',
-        tomorrow: 'Tomorrow favors focused work and planning',
-        day3: 'Day 3 brings creative inspiration',
-      };
-      try {
-        transits = await vedicCalculator.generateTransitPreview(
-          { birthDate, birthTime, birthPlace },
-          3
-        );
-      } catch (error) {
-        logger.error('❌ Error generating transit preview:', error);
-        // Continue with default transits
+      detailedAnalysis += '\n🔮 *Key Aspects:*\n';
+      if (fullChart.aspects && fullChart.aspects.length > 0) {
+        fullChart.aspects.slice(0, 5).forEach(aspect => {
+          detailedAnalysis += `• ${aspect.planet1} ${aspect.aspect} ${aspect.planet2}\n`;
+        });
       }
+    } catch (error) {
+      logger.warn('Could not generate detailed analysis:', error.message);
+      detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\nUnable to generate detailed analysis at this time. Please try again later.';
+    }
 
-      // Create comprehensive completion message
-      let completionMessage =
-        "🎉 *Welcome to your cosmic journey!*\n\nYour profile is complete! Here's your *comprehensive birth chart summary*:\n\n";
+    // Generate top 3 life patterns
+    let patterns = [
+      'Strong communication abilities',
+      'Natural leadership qualities',
+      'Creative problem-solving skills'
+    ];
+    try {
+      const chart = await vedicCalculator.generateBasicBirthChart({ birthDate, birthTime, birthPlace });
+      patterns = chart.chartPatterns?.lifePatterns || patterns;
+    } catch (error) {
+      logger.warn('Could not generate life patterns:', error.message);
+    }
 
-      completionMessage += `☀️ *Sun Sign:* ${sunSign} - Your core identity and life purpose\n`;
-      completionMessage += `🌙 *Moon Sign:* ${moonSign} - Your emotional nature and inner self\n`;
-      completionMessage += `⬆️ *Rising Sign:* ${risingSign} - How others perceive you\n\n`;
+    // Generate 3-day transit preview with error handling
+    let transits = {
+      today: 'Today brings opportunities for new connections',
+      tomorrow: 'Tomorrow favors focused work and planning',
+      day3: 'Day 3 brings creative inspiration'
+    };
+    try {
+      transits = await vedicCalculator.generateTransitPreview(
+        { birthDate, birthTime, birthPlace },
+        3
+      );
+    } catch (error) {
+      logger.error('❌ Error generating transit preview:', error);
+      // Continue with default transits
+    }
 
-      completionMessage += '🔥 *Your Top 3 Life Patterns:*\n';
-      completionMessage += `1. ${patterns[0] || 'Strong communication abilities'}\n`;
-      completionMessage += `2. ${patterns[1] || 'Natural leadership qualities'}\n`;
-      completionMessage += `3. ${patterns[2] || 'Creative problem-solving skills'}\n\n`;
+    // Create comprehensive completion message
+    let completionMessage =
+        '🎉 *Welcome to your cosmic journey!*\n\nYour profile is complete! Here\'s your *comprehensive birth chart summary*:\n\n';
 
-      completionMessage += '⭐ *3-Day Cosmic Preview:*\n';
-      completionMessage += `${transits.today || 'Today brings opportunities for new connections'}\n\n`;
-      completionMessage += `${transits.tomorrow || 'Tomorrow favors focused work and planning'}\n\n`;
-      completionMessage += `${transits.day3 || 'Day 3 brings creative inspiration'}\n\n`;
+    completionMessage += `☀️ *Sun Sign:* ${sunSign} - Your core identity and life purpose\n`;
+    completionMessage += `🌙 *Moon Sign:* ${moonSign} - Your emotional nature and inner self\n`;
+    completionMessage += `⬆️ *Rising Sign:* ${risingSign} - How others perceive you\n\n`;
 
-      completionMessage +=
+    completionMessage += '🔥 *Your Top 3 Life Patterns:*\n';
+    completionMessage += `1. ${patterns[0] || 'Strong communication abilities'}\n`;
+    completionMessage += `2. ${patterns[1] || 'Natural leadership qualities'}\n`;
+    completionMessage += `3. ${patterns[2] || 'Creative problem-solving skills'}\n\n`;
+
+    completionMessage += '⭐ *3-Day Cosmic Preview:*\n';
+    completionMessage += `${transits.today || 'Today brings opportunities for new connections'}\n\n`;
+    completionMessage += `${transits.tomorrow || 'Tomorrow favors focused work and planning'}\n\n`;
+    completionMessage += `${transits.day3 || 'Day 3 brings creative inspiration'}\n\n`;
+
+    completionMessage +=
         '📈 *2,847 users* with your Sun sign found these insights highly accurate!\n\n';
 
-      // Add detailed analysis if available
-      completionMessage += detailedAnalysis;
+    // Add detailed analysis if available
+    completionMessage += detailedAnalysis;
 
-      completionMessage +=
+    completionMessage +=
         'What would you like to explore next?\n\n🔮 Daily Horoscope\n📊 Full Birth Chart\n💕 Compatibility Check\n\nJust reply with your choice!';
 
-      await sendMessage(phoneNumber, completionMessage);
+    await sendMessage(phoneNumber, completionMessage);
 
-      // Send main menu
+    // Send main menu
+    const menu = getMenu('main_menu');
+    if (menu) {
+      const buttons = menu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(
+        phoneNumber,
+        { type: 'button', body: menu.body, buttons },
+        'interactive'
+      );
+    }
+
+    // Clear onboarding session
+    // await deleteUserSession(phoneNumber);
+
+    logger.info(
+      `✅ User ${phoneNumber} completed onboarding with comprehensive analysis`
+    );
+    break;
+  }
+  case 'process_subscription': {
+    const { selectedPlan } = flowData;
+
+    // For now, just acknowledge the subscription request
+    // In production, this would integrate with payment processor
+    await sendMessage(
+      phoneNumber,
+      `💳 *Subscription Processing*\n\nThank you for choosing the ${selectedPlan} plan!\n\nYour subscription will be activated shortly. You'll receive a confirmation message once it's ready.`
+    );
+    await deleteUserSession(phoneNumber);
+    break;
+  }
+
+  case 'generate_compatibility': {
+    const { partnerBirthDate } = flowData;
+    const userSign = vedicCalculator.calculateSunSign(user.birthDate);
+    const partnerSign = vedicCalculator.calculateSunSign(partnerBirthDate);
+
+    const compatibilityResult = vedicCalculator.checkCompatibility(
+      userSign,
+      partnerSign
+    );
+
+    const resultMessage = `💕 *Compatibility Analysis*\n\n*Your Sign:* ${userSign}\n*Partner's Sign:* ${partnerSign}\n*Compatibility:* ${compatibilityResult.compatibility}\n\n${compatibilityResult.description}\n\n✨ Remember, compatibility is just one aspect of a relationship!`;
+
+    // Update the flow step prompt with the result
+    const flow = getFlow(flowId);
+    if (flow && flow.steps.generate_compatibility) {
+      let { prompt } = flow.steps.generate_compatibility;
+      prompt = prompt.replace('{compatibilityResult}', resultMessage);
+      await sendMessage(phoneNumber, prompt);
+    } else {
+      await sendMessage(phoneNumber, resultMessage);
+    }
+    break;
+  }
+  case 'show_daily_horoscope': {
+    try {
+      const horoscopeData = await vedicCalculator.generateDailyHoroscope(
+        user.birthDate
+      );
+      const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
+
+      const body = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n💫 *Lucky Color:* ${horoscopeData.luckyColor}\n🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n💝 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\nWhat would you like to explore next?`;
+
+      const buttons = [
+        { type: 'reply', reply: { id: 'horoscope_again', title: '🔄 Another Reading' } },
+        { type: 'reply', reply: { id: 'horoscope_menu', title: '🏠 Main Menu' } }
+      ];
+
+      await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
+
+      // Skip the flow's message sending
+      const session = await getUserSession(phoneNumber);
+      session.flowData.skipMessage = true;
+      await setUserSession(phoneNumber, session);
+    } catch (error) {
+      logger.error('Error generating daily horoscope:', error);
+      await sendMessage(
+        phoneNumber,
+        'I\'m sorry, I couldn\'t generate your horoscope right now. Please try again later.'
+      );
+    }
+    break;
+  }
+  case 'handle_horoscope_navigation': {
+    const { choice } = flowData;
+    if (choice === 'again') {
+      // Restart the horoscope flow
+      const newSession = {
+        currentFlow: 'daily_horoscope',
+        currentStep: 'show_horoscope',
+        data: {}
+      };
+      await setUserSession(phoneNumber, newSession);
+      await executeFlowAction(
+        phoneNumber,
+        user,
+        'daily_horoscope',
+        'show_daily_horoscope',
+        {}
+      );
+    } else if (choice === 'menu') {
+      // Show main menu and clear session
       const menu = getMenu('main_menu');
       if (menu) {
         const buttons = menu.buttons.map(button => ({
           type: 'reply',
-          reply: { id: button.id, title: button.title },
+          reply: { id: button.id, title: button.title }
         }));
         await sendMessage(
           phoneNumber,
@@ -594,194 +706,89 @@ const executeFlowAction = async (
           'interactive'
         );
       }
-
-      // Clear onboarding session
-      // await deleteUserSession(phoneNumber);
-
-      logger.info(
-        `✅ User ${phoneNumber} completed onboarding with comprehensive analysis`
-      );
-      break;
-    }
-    case 'process_subscription': {
-      const { selectedPlan } = flowData;
-
-      // For now, just acknowledge the subscription request
-      // In production, this would integrate with payment processor
-      await sendMessage(
-        phoneNumber,
-        `💳 *Subscription Processing*\n\nThank you for choosing the ${selectedPlan} plan!\n\nYour subscription will be activated shortly. You'll receive a confirmation message once it's ready.`
-      );
       await deleteUserSession(phoneNumber);
-      break;
     }
+    break;
+  }
+  case 'show_comprehensive_menu': {
+    const menu = getMenu('comprehensive_menu');
+    if (menu) {
+      await sendListMessage(
+        phoneNumber,
+        menu.body,
+        'Select Service',
+        menu.sections
+      );
+    }
+    break;
+  }
+  case 'generate_numerology_report': {
+    try {
+      const { fullName, birthDate } = flowData;
+      const numerologyService = require('../services/astrology/numerologyService');
 
-    case 'generate_compatibility': {
-      const { partnerBirthDate } = flowData;
-      const userSign = vedicCalculator.calculateSunSign(user.birthDate);
-      const partnerSign = vedicCalculator.calculateSunSign(partnerBirthDate);
-
-      const compatibilityResult = vedicCalculator.checkCompatibility(
-        userSign,
-        partnerSign
+      const report = await numerologyService.generateFullReport(
+        fullName,
+        birthDate
       );
 
-      const resultMessage = `💕 *Compatibility Analysis*\n\n*Your Sign:* ${userSign}\n*Partner's Sign:* ${partnerSign}\n*Compatibility:* ${compatibilityResult.compatibility}\n\n${compatibilityResult.description}\n\n✨ Remember, compatibility is just one aspect of a relationship!`;
+      let reportMessage = '🔢 *Your Numerology Report*\n\n';
+      reportMessage += `*Name:* ${fullName}\n`;
+      reportMessage += `*Birth Date:* ${birthDate}\n\n`;
 
-      // Update the flow step prompt with the result
-      const flow = getFlow(flowId);
-      if (flow && flow.steps.generate_compatibility) {
-        let { prompt } = flow.steps.generate_compatibility;
-        prompt = prompt.replace('{compatibilityResult}', resultMessage);
-        await sendMessage(phoneNumber, prompt);
-      } else {
-        await sendMessage(phoneNumber, resultMessage);
-      }
-      break;
-    }
-    case 'show_daily_horoscope': {
-      try {
-        const horoscopeData = await vedicCalculator.generateDailyHoroscope(
-          user.birthDate
-        );
-        const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
+      reportMessage += `*Life Path Number:* ${report.lifePath}\n`;
+      reportMessage += `${report.lifePathDescription}\n\n`;
 
-        const body = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n💫 *Lucky Color:* ${horoscopeData.luckyColor}\n🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n💝 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\nWhat would you like to explore next?`;
+      reportMessage += `*Expression Number:* ${report.expression}\n`;
+      reportMessage += `${report.expressionDescription}\n\n`;
 
-        const buttons = [
-          { type: 'reply', reply: { id: 'horoscope_again', title: '🔄 Another Reading' } },
-          { type: 'reply', reply: { id: 'horoscope_menu', title: '🏠 Main Menu' } },
-        ];
+      reportMessage += `*Soul Urge Number:* ${report.soulUrge}\n`;
+      reportMessage += `${report.soulUrgeDescription}\n\n`;
 
-        await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
+      reportMessage += `*Personality Number:* ${report.personality}\n`;
+      reportMessage += `${report.personalityDescription}\n\n`;
 
-        // Skip the flow's message sending
-        const session = await getUserSession(phoneNumber);
-        session.flowData.skipMessage = true;
-        await setUserSession(phoneNumber, session);
-      } catch (error) {
-        logger.error('Error generating daily horoscope:', error);
-        await sendMessage(
-          phoneNumber,
-          "I'm sorry, I couldn't generate your horoscope right now. Please try again later."
-        );
-      }
-      break;
-    }
-    case 'handle_horoscope_navigation': {
-      const { choice } = flowData;
-      if (choice === 'again') {
-        // Restart the horoscope flow
-        const newSession = {
-          currentFlow: 'daily_horoscope',
-          currentStep: 'show_horoscope',
-          data: {},
-        };
-        await setUserSession(phoneNumber, newSession);
-        await executeFlowAction(
-          phoneNumber,
-          user,
-          'daily_horoscope',
-          'show_daily_horoscope',
-          {}
-        );
-      } else if (choice === 'menu') {
-        // Show main menu and clear session
-        const menu = getMenu('main_menu');
-        if (menu) {
-          const buttons = menu.buttons.map(button => ({
-            type: 'reply',
-            reply: { id: button.id, title: button.title },
-          }));
-          await sendMessage(
-            phoneNumber,
-            { type: 'button', body: menu.body, buttons },
-            'interactive'
-          );
-        }
-        await deleteUserSession(phoneNumber);
-      }
-      break;
-    }
-    case 'show_comprehensive_menu': {
-      const menu = getMenu('comprehensive_menu');
+      reportMessage += `*Key Strengths:* ${report.strengths.join(', ')}\n`;
+      reportMessage += `*Challenges:* ${report.challenges.join(', ')}\n\n`;
+
+      reportMessage += `*Career Paths:* ${report.careerPaths.join(', ')}\n`;
+      reportMessage += `*Compatible Numbers:* ${report.compatibleNumbers.join(', ')}`;
+
+      await sendMessage(phoneNumber, reportMessage);
+
+      // Send main menu
+      const menu = getMenu('main_menu');
       if (menu) {
-        await sendListMessage(
-          phoneNumber,
-          menu.body,
-          'Select Service',
-          menu.sections
-        );
-      }
-      break;
-    }
-    case 'generate_numerology_report': {
-      try {
-        const { fullName, birthDate } = flowData;
-        const numerologyService = require('../services/astrology/numerologyService');
-
-        const report = await numerologyService.generateFullReport(
-          fullName,
-          birthDate
-        );
-
-        let reportMessage = '🔢 *Your Numerology Report*\n\n';
-        reportMessage += `*Name:* ${fullName}\n`;
-        reportMessage += `*Birth Date:* ${birthDate}\n\n`;
-
-        reportMessage += `*Life Path Number:* ${report.lifePath}\n`;
-        reportMessage += `${report.lifePathDescription}\n\n`;
-
-        reportMessage += `*Expression Number:* ${report.expression}\n`;
-        reportMessage += `${report.expressionDescription}\n\n`;
-
-        reportMessage += `*Soul Urge Number:* ${report.soulUrge}\n`;
-        reportMessage += `${report.soulUrgeDescription}\n\n`;
-
-        reportMessage += `*Personality Number:* ${report.personality}\n`;
-        reportMessage += `${report.personalityDescription}\n\n`;
-
-        reportMessage += `*Key Strengths:* ${report.strengths.join(', ')}\n`;
-        reportMessage += `*Challenges:* ${report.challenges.join(', ')}\n\n`;
-
-        reportMessage += `*Career Paths:* ${report.careerPaths.join(', ')}\n`;
-        reportMessage += `*Compatible Numbers:* ${report.compatibleNumbers.join(', ')}`;
-
-        await sendMessage(phoneNumber, reportMessage);
-
-        // Send main menu
-        const menu = getMenu('main_menu');
-        if (menu) {
-          const buttons = menu.buttons.map(button => ({
-            type: 'reply',
-            reply: { id: button.id, title: button.title },
-          }));
-          await sendMessage(
-            phoneNumber,
-            { type: 'button', body: menu.body, buttons },
-            'interactive'
-          );
-        }
-      } catch (error) {
-        logger.error('Error generating numerology report:', error);
+        const buttons = menu.buttons.map(button => ({
+          type: 'reply',
+          reply: { id: button.id, title: button.title }
+        }));
         await sendMessage(
           phoneNumber,
-          "I'm sorry, I couldn't generate your numerology report right now. Please try again later."
+          { type: 'button', body: menu.body, buttons },
+          'interactive'
         );
       }
-      break;
-    }
-    default:
-      logger.warn(`⚠️ Unknown flow action: ${action}`);
+    } catch (error) {
+      logger.error('Error generating numerology report:', error);
       await sendMessage(
         phoneNumber,
-        "I'm sorry, I encountered an unknown action. Please try again later."
+        'I\'m sorry, I couldn\'t generate your numerology report right now. Please try again later.'
       );
-      await deleteUserSession(phoneNumber);
-      break;
+    }
+    break;
+  }
+  default:
+    logger.warn(`⚠️ Unknown flow action: ${action}`);
+    await sendMessage(
+      phoneNumber,
+      'I\'m sorry, I encountered an unknown action. Please try again later.'
+    );
+    await deleteUserSession(phoneNumber);
+    break;
   }
 };
 
 module.exports = {
-  processFlowMessage,
+  processFlowMessage
 };

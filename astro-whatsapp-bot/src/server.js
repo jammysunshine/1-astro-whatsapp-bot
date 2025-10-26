@@ -99,6 +99,8 @@ app.get('/debug-whatsapp', async (req, res) => {
       tokenLength: token ? token.length : 0,
       tokenStart: token ? token.substring(0, 10) : null,
       tokenEnd: token ? token.substring(token.length - 10) : null,
+      tokenMasked: token ? `${token.substring(0, 20)}...${token.substring(token.length - 20)}` : null,
+      envVarExists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN,
       phoneId: phoneId,
       timestamp: new Date().toISOString()
     };

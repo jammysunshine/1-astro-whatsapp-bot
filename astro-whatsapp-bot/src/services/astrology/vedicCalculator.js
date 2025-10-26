@@ -115,12 +115,10 @@ class VedicCalculator {
    * @param {string} chartType - 'tropical' or 'sidereal' (optional, defaults to 'sidereal' for Vedic)
    * @returns {string} Sun sign
    */
-  calculateSunSign(
+  async calculateSunSign(
     birthDate,
     birthTime = '12:00',
-    latitude = 28.6139,
-    longitude = 77.209,
-    timezone = 5.5,
+    birthPlace = 'Delhi, India',
     chartType = 'sidereal'
   ) {
     try {
@@ -133,6 +131,12 @@ class VedicCalculator {
       }
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
+
+      // Get coordinates and timezone
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+      const timestamp = birthDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
 
       // Prepare data for astrologer library
       const astroData = {
@@ -207,17 +211,21 @@ class VedicCalculator {
    * @param {string} birthTime - Birth time in HH:MM format
    * @returns {string} Moon sign
    */
-  calculateMoonSign(
+  async calculateMoonSign(
     birthDate,
     birthTime,
-    latitude = 28.6139,
-    longitude = 77.209,
-    timezone = 5.5,
+    birthPlace = 'Delhi, India',
     chartType = 'sidereal'
   ) {
     try {
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
+
+      // Get coordinates and timezone
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+      const timestamp = birthDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
 
       // Prepare data for astrologer library
       const astroData = {
@@ -347,18 +355,22 @@ class VedicCalculator {
    * @param {Object} user - User object with birth details
    * @returns {Object} Complete natal chart data
    */
-  generateBasicBirthChart(user) {
+  async generateBasicBirthChart(user) {
     try {
       const { birthDate, birthTime, birthPlace, name } = user;
 
-      // Parse birth place for coordinates (simplified - in production you'd use geocoding)
-      const [latitude, longitude] = this._getCoordinatesForPlace(birthPlace);
-      const timezone = this._getTimezoneForPlace(birthPlace);
+      // Parse birth place for coordinates
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
 
-      // Generate full natal chart
+      // Parse birth date and time to create a timestamp for timezone lookup
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+      const timestamp = birthDateTime.getTime();
 
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+
+      // Generate full natal chart
       const astroData = {
         year,
         month,
@@ -765,12 +777,44 @@ class VedicCalculator {
    * @param {string} birthPlace - Birth place
    * @returns {string} Rising sign
    */
-  calculateRisingSign(birthDate, birthTime, birthPlace) {
-    // Simplified calculation - in reality this requires complex astronomical calculations
-    const signs = this.zodiacSigns;
-    const [day, month] = birthDate.split('/').map(Number);
-    const dayOfYear = this.getDayOfYear(day, month);
-    return signs[(dayOfYear + 8) % 12]; // Offset for rising
+  async calculateRisingSign(birthDate, birthTime, birthPlace) {
+    try {
+      const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
+
+      // Get coordinates and timezone
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+      const timestamp = birthDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+
+      // Prepare data for astrologer library
+      const astroData = {
+        year,
+        month,
+        date: day,
+        hours: hour,
+        minutes: minute,
+        seconds: 0,
+        latitude,
+        longitude,
+        timezone,
+        chartType: 'sidereal'
+      };
+
+      // Generate natal chart
+      const chart = this.astrologer.generateNatalChartData(astroData);
+
+      // Return rising sign from interpretations
+      return chart.interpretations.risingSign;
+    } catch (error) {
+      logger.error('Error calculating rising sign with astrologer:', error);
+      // Fallback to simplified calculation
+      const signs = this.zodiacSigns;
+      const [day, month] = birthDate.split('/').map(Number);
+      const dayOfYear = this.getDayOfYear(day, month);
+      return signs[(dayOfYear + 8) % 12]; // Offset for rising
+    }
   }
 
   /**

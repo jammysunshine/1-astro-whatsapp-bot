@@ -123,20 +123,17 @@
           {
             "id": "btn_daily_horoscope",
             "title": "Daily Horoscope",
-            "description": "Personalized daily guidance",
-            "action": "get_daily_horoscope"
+            "description": "Personalized daily guidance"
           },
           {
             "id": "btn_birth_chart",
             "title": "Full Birth Chart",
-            "description": "Complete Vedic astrology analysis",
-            "action": "show_birth_chart"
+            "description": "Complete Vedic astrology analysis"
           },
           {
             "id": "btn_compatibility",
             "title": "Compatibility",
-            "description": "Relationship astrology",
-            "action": "initiate_compatibility_flow"
+            "description": "Relationship astrology"
           }
         ]
       },
@@ -146,20 +143,17 @@
           {
             "id": "btn_tarot",
             "title": "Tarot Reading",
-            "description": "Ancient card wisdom",
-            "action": "get_tarot_reading"
+            "description": "Ancient card wisdom"
           },
           {
             "id": "btn_iching",
             "title": "I Ching Oracle",
-            "description": "Chinese divination system",
-            "action": "get_iching_reading"
+            "description": "Chinese divination system"
           },
           {
             "id": "btn_palmistry",
             "title": "Palmistry",
-            "description": "Hand reading analysis",
-            "action": "get_palmistry_analysis"
+            "description": "Hand reading analysis"
           }
         ]
       },
@@ -169,26 +163,22 @@
           {
             "id": "btn_nadi",
             "title": "Nadi Astrology",
-            "description": "Ancient Indian leaf astrology",
-            "action": "show_nadi_flow"
+            "description": "Ancient Indian leaf astrology"
           },
           {
             "id": "btn_kabbalistic",
             "title": "Kabbalistic",
-            "description": "Jewish mystical tradition",
-            "action": "get_kabbalistic_analysis"
+            "description": "Jewish mystical tradition"
           },
           {
             "id": "btn_mayan",
             "title": "Mayan Calendar",
-            "description": "Ancient Mesoamerican wisdom",
-            "action": "get_mayan_analysis"
+            "description": "Ancient Mesoamerican wisdom"
           },
           {
             "id": "btn_celtic",
             "title": "Celtic Wisdom",
-            "description": "Druidic tree astrology",
-            "action": "get_celtic_analysis"
+            "description": "Druidic tree astrology"
           }
         ]
       },
@@ -198,26 +188,22 @@
           {
             "id": "btn_horary",
             "title": "Horary Question",
-            "description": "Answer specific questions",
-            "action": "get_horary_reading"
+            "description": "Answer specific questions"
           },
           {
             "id": "btn_chinese",
             "title": "Chinese BaZi",
-            "description": "Four Pillars of Destiny",
-            "action": "show_chinese_flow"
+            "description": "Four Pillars of Destiny"
           },
           {
             "id": "btn_numerology",
             "title": "Numerology",
-            "description": "Numbers and life path analysis",
-            "action": "get_numerology_report"
+            "description": "Numbers and life path analysis"
           },
           {
             "id": "btn_astrocartography",
             "title": "Astrocartography",
-            "description": "Locational astrology",
-            "action": "get_astrocartography_analysis"
+            "description": "Locational astrology"
           }
         ]
       }

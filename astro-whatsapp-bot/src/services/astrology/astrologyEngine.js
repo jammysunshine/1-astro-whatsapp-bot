@@ -340,1283 +340,1276 @@ const generateAstrologyResponse = async(messageText, user) => {
   }
 
   // Fixed stars analysis requests
-   if (matchesIntent(message, ['fixed stars', 'fixed star analysis', 'stellar influences', 'ancient stars', /^fixed.?star/])) {
-     if (!user.birthDate) {
-       return 'For fixed stars analysis, I need your complete birth details to analyze ancient stellar influences on your chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
+  if (matchesIntent(message, ['fixed stars', 'fixed star analysis', 'stellar influences', 'ancient stars', /^fixed.?star/])) {
+    if (!user.birthDate) {
+      return 'For fixed stars analysis, I need your complete birth details to analyze ancient stellar influences on your chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
 
-     try {
-       const fixedStarsAnalysis = vedicCalculator.calculateFixedStars({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi'
-       });
+    try {
+      const fixedStarsAnalysis = vedicCalculator.calculateFixedStars({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
 
-       if (fixedStarsAnalysis.error) {
-         return `I encountered an issue: ${fixedStarsAnalysis.error}`;
-       }
+      if (fixedStarsAnalysis.error) {
+        return `I encountered an issue: ${fixedStarsAnalysis.error}`;
+      }
 
-       let response = '⭐ *Fixed Stars Analysis*\n\n';
-       response += '*Ancient Stellar Influences:*\n\n';
+      let response = '⭐ *Fixed Stars Analysis*\n\n';
+      response += '*Ancient Stellar Influences:*\n\n';
 
-       if (fixedStarsAnalysis.aspects.length > 0) {
-         fixedStarsAnalysis.aspects.forEach(aspect => {
-           response += `🌟 *${aspect.planet} conjunct ${aspect.fixedStar}*\n`;
-           response += `• ${aspect.significance}\n\n`;
-         });
-       } else {
-         response += '• General cosmic wisdom and stellar guidance\n\n';
-       }
+      if (fixedStarsAnalysis.aspects.length > 0) {
+        fixedStarsAnalysis.aspects.forEach(aspect => {
+          response += `🌟 *${aspect.planet} conjunct ${aspect.fixedStar}*\n`;
+          response += `• ${aspect.significance}\n\n`;
+        });
+      } else {
+        response += '• General cosmic wisdom and stellar guidance\n\n';
+      }
 
-       if (fixedStarsAnalysis.interpretations.lifePurpose) {
-         response += `*Life Purpose:* ${fixedStarsAnalysis.interpretations.lifePurpose}\n\n`;
-       }
+      if (fixedStarsAnalysis.interpretations.lifePurpose) {
+        response += `*Life Purpose:* ${fixedStarsAnalysis.interpretations.lifePurpose}\n\n`;
+      }
 
-       if (fixedStarsAnalysis.interpretations.gifts.length > 0) {
-         response += '*Stellar Gifts:*\n';
-         fixedStarsAnalysis.interpretations.gifts.slice(0, 3).forEach(gift => {
-           response += `• ${gift}\n`;
-         });
-         response += '\n';
-       }
+      if (fixedStarsAnalysis.interpretations.gifts.length > 0) {
+        response += '*Stellar Gifts:*\n';
+        fixedStarsAnalysis.interpretations.gifts.slice(0, 3).forEach(gift => {
+          response += `• ${gift}\n`;
+        });
+        response += '\n';
+      }
 
-       response += '*Major Fixed Stars:*\n';
-       response += '• Regulus: Royal leadership and success\n';
-       response += '• Spica: Abundance and scholarly wisdom\n';
-       response += '• Arcturus: Justice and prosperity\n';
-       response += '• Antares: Courage and regeneration\n';
-       response += '• Vega: Harmony and artistic expression\n';
-       response += '• Sirius: Brilliance and spiritual guidance\n\n';
+      response += '*Major Fixed Stars:*\n';
+      response += '• Regulus: Royal leadership and success\n';
+      response += '• Spica: Abundance and scholarly wisdom\n';
+      response += '• Arcturus: Justice and prosperity\n';
+      response += '• Antares: Courage and regeneration\n';
+      response += '• Vega: Harmony and artistic expression\n';
+      response += '• Sirius: Brilliance and spiritual guidance\n\n';
 
-       response += 'Fixed stars connect you to timeless cosmic archetypes! ✨';
+      response += 'Fixed stars connect you to timeless cosmic archetypes! ✨';
 
-       return response;
-     } catch (error) {
-       logger.error('Error generating fixed stars analysis:', error);
-       return 'I\'m having trouble analyzing your fixed star influences right now. Please try again later.';
-     }
-   }
+      return response;
+    } catch (error) {
+      logger.error('Error generating fixed stars analysis:', error);
+      return 'I\'m having trouble analyzing your fixed star influences right now. Please try again later.';
+    }
+  }
 
   // Medical astrology requests
-   if (matchesIntent(message, ['medical astrology', 'health astrology', 'medical chart', 'health analysis', /^medical/, /^health/])) {
-     if (!user.birthDate) {
-       return 'For medical astrology analysis, I need your complete birth details to analyze planetary rulerships and health tendencies.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
+  if (matchesIntent(message, ['medical astrology', 'health astrology', 'medical chart', 'health analysis', /^medical/, /^health/])) {
+    if (!user.birthDate) {
+      return 'For medical astrology analysis, I need your complete birth details to analyze planetary rulerships and health tendencies.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
 
-     try {
-       const medicalAnalysis = vedicCalculator.calculateMedicalAstrology({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi'
-       });
+    try {
+      const medicalAnalysis = vedicCalculator.calculateMedicalAstrology({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
 
-       if (medicalAnalysis.error) {
-         return `I encountered an issue: ${medicalAnalysis.error}`;
-       }
+      if (medicalAnalysis.error) {
+        return `I encountered an issue: ${medicalAnalysis.error}`;
+      }
 
-       let response = '🏥 *Medical Astrology Analysis*\n\n';
-       response += '*Traditional Health Insights:*\n\n';
+      let response = '🏥 *Medical Astrology Analysis*\n\n';
+      response += '*Traditional Health Insights:*\n\n';
 
-       response += `*6th House (Health):* ${medicalAnalysis.sixthHouse.sign} - ${medicalAnalysis.sixthHouse.healthFocus}\n`;
-       response += `*Ruling Planet:* ${medicalAnalysis.sixthHouse.ruler}\n\n`;
+      response += `*6th House (Health):* ${medicalAnalysis.sixthHouse.sign} - ${medicalAnalysis.sixthHouse.healthFocus}\n`;
+      response += `*Ruling Planet:* ${medicalAnalysis.sixthHouse.ruler}\n\n`;
 
-       if (medicalAnalysis.healthTendencies.length > 0) {
-         response += '*Health Tendencies:*\n';
-         medicalAnalysis.healthTendencies.forEach(tendency => {
-           response += `• ${tendency}\n`;
-         });
-         response += '\n';
-       }
+      if (medicalAnalysis.healthTendencies.length > 0) {
+        response += '*Health Tendencies:*\n';
+        medicalAnalysis.healthTendencies.forEach(tendency => {
+          response += `• ${tendency}\n`;
+        });
+        response += '\n';
+      }
 
-       if (medicalAnalysis.wellnessRecommendations.length > 0) {
-         response += '*Wellness Recommendations:*\n';
-         medicalAnalysis.wellnessRecommendations.forEach(rec => {
-           response += `• ${rec}\n`;
-         });
-         response += '\n';
-       }
+      if (medicalAnalysis.wellnessRecommendations.length > 0) {
+        response += '*Wellness Recommendations:*\n';
+        medicalAnalysis.wellnessRecommendations.forEach(rec => {
+          response += `• ${rec}\n`;
+        });
+        response += '\n';
+      }
 
-       response += '*Planetary Body Rulerships:*\n';
-       Object.entries(medicalAnalysis.planetaryRulers).forEach(([planet, data]) => {
-         response += `• *${planet}:* ${data.bodyParts}\n`;
-       });
-       response += '\n';
+      response += '*Planetary Body Rulerships:*\n';
+      Object.entries(medicalAnalysis.planetaryRulers).forEach(([planet, data]) => {
+        response += `• *${planet}:* ${data.bodyParts}\n`;
+      });
+      response += '\n';
 
-       response += '*Medical Astrology Summary:*\n';
-       response += `${medicalAnalysis.summary}\n\n`;
+      response += '*Medical Astrology Summary:*\n';
+      response += `${medicalAnalysis.summary}\n\n`;
 
-       response += 'Medical astrology provides traditional insights for holistic wellness! 🌿';
+      response += 'Medical astrology provides traditional insights for holistic wellness! 🌿';
 
-       return response;
-     } catch (error) {
-       logger.error('Error generating medical astrology analysis:', error);
-       return 'I\'m having trouble analyzing your medical astrology chart right now. Please try again later.';
-     }
-   }
+      return response;
+    } catch (error) {
+      logger.error('Error generating medical astrology analysis:', error);
+      return 'I\'m having trouble analyzing your medical astrology chart right now. Please try again later.';
+    }
+  }
 
   // Financial astrology requests
-   if (matchesIntent(message, ['financial astrology', 'wealth astrology', 'money astrology', 'financial chart', 'wealth analysis', /^financial/, /^wealth/, /^money/])) {
-     if (!user.birthDate) {
-       return 'For financial astrology analysis, I need your complete birth details to analyze wealth patterns and prosperity indicators.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
+  if (matchesIntent(message, ['financial astrology', 'wealth astrology', 'money astrology', 'financial chart', 'wealth analysis', /^financial/, /^wealth/, /^money/])) {
+    if (!user.birthDate) {
+      return 'For financial astrology analysis, I need your complete birth details to analyze wealth patterns and prosperity indicators.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
 
-     try {
-       const financialAnalysis = vedicCalculator.calculateFinancialAstrology({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi'
-       });
+    try {
+      const financialAnalysis = vedicCalculator.calculateFinancialAstrology({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
 
-       if (financialAnalysis.error) {
-         return `I encountered an issue: ${financialAnalysis.error}`;
-       }
+      if (financialAnalysis.error) {
+        return `I encountered an issue: ${financialAnalysis.error}`;
+      }
 
-       let response = '💰 *Financial Astrology Analysis*\n\n';
-       response += '*Wealth & Prosperity Insights:*\n\n';
+      let response = '💰 *Financial Astrology Analysis*\n\n';
+      response += '*Wealth & Prosperity Insights:*\n\n';
 
-       response += `*2nd House (Wealth):* ${financialAnalysis.secondHouse.sign} - ${financialAnalysis.secondHouse.wealthFocus}\n`;
-       response += `*Ruling Planet:* ${financialAnalysis.secondHouse.ruler}\n\n`;
+      response += `*2nd House (Wealth):* ${financialAnalysis.secondHouse.sign} - ${financialAnalysis.secondHouse.wealthFocus}\n`;
+      response += `*Ruling Planet:* ${financialAnalysis.secondHouse.ruler}\n\n`;
 
-       if (financialAnalysis.financialTendencies.length > 0) {
-         response += '*Financial Tendencies:*\n';
-         financialAnalysis.financialTendencies.forEach(tendency => {
-           response += `• ${tendency}\n`;
-         });
-         response += '\n';
-       }
+      if (financialAnalysis.financialTendencies.length > 0) {
+        response += '*Financial Tendencies:*\n';
+        financialAnalysis.financialTendencies.forEach(tendency => {
+          response += `• ${tendency}\n`;
+        });
+        response += '\n';
+      }
 
-       if (financialAnalysis.prosperityIndicators.length > 0) {
-         response += '*Prosperity Indicators:*\n';
-         financialAnalysis.prosperityIndicators.forEach(indicator => {
-           response += `• ${indicator}\n`;
-         });
-         response += '\n';
-       }
+      if (financialAnalysis.prosperityIndicators.length > 0) {
+        response += '*Prosperity Indicators:*\n';
+        financialAnalysis.prosperityIndicators.forEach(indicator => {
+          response += `• ${indicator}\n`;
+        });
+        response += '\n';
+      }
 
-       response += '*Key Wealth Planets:*\n';
-       Object.entries(financialAnalysis.wealthPlanets).forEach(([planet, data]) => {
-         if (data.planet) {
-           response += `• *${data.planet}:* ${data.sign} - ${data.influence}\n`;
-         } else {
-           response += `• *${planet}:* ${data.sign} - ${data.influence}\n`;
-         }
-       });
-       response += '\n';
+      response += '*Key Wealth Planets:*\n';
+      Object.entries(financialAnalysis.wealthPlanets).forEach(([planet, data]) => {
+        if (data.planet) {
+          response += `• *${data.planet}:* ${data.sign} - ${data.influence}\n`;
+        } else {
+          response += `• *${planet}:* ${data.sign} - ${data.influence}\n`;
+        }
+      });
+      response += '\n';
 
-       response += '*Financial Astrology Summary:*\n';
-       response += `${financialAnalysis.summary}\n\n`;
+      response += '*Financial Astrology Summary:*\n';
+      response += `${financialAnalysis.summary}\n\n`;
 
-       response += 'Financial astrology reveals your natural wealth patterns and optimal paths to prosperity! 💎';
+      response += 'Financial astrology reveals your natural wealth patterns and optimal paths to prosperity! 💎';
 
-       return response;
-     } catch (error) {
-       logger.error('Error generating financial astrology analysis:', error);
-       return 'I\'m having trouble analyzing your financial astrology chart right now. Please try again later.';
-     }
-   }
+      return response;
+    } catch (error) {
+      logger.error('Error generating financial astrology analysis:', error);
+      return 'I\'m having trouble analyzing your financial astrology chart right now. Please try again later.';
+    }
+  }
 
   // Harmonic astrology requests
-   if (matchesIntent(message, ['harmonic astrology', 'harmonic chart', 'harmonic analysis', 'deeper patterns', /^harmonic/])) {
-     if (!user.birthDate) {
-       return 'For harmonic astrology analysis, I need your complete birth details to analyze deeper chart patterns and hidden harmonics.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
+  if (matchesIntent(message, ['harmonic astrology', 'harmonic chart', 'harmonic analysis', 'deeper patterns', /^harmonic/])) {
+    if (!user.birthDate) {
+      return 'For harmonic astrology analysis, I need your complete birth details to analyze deeper chart patterns and hidden harmonics.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
 
-     try {
-       const harmonicAnalysis = vedicCalculator.calculateHarmonicAstrology({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi'
-       });
+    try {
+      const harmonicAnalysis = vedicCalculator.calculateHarmonicAstrology({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
 
-       if (harmonicAnalysis.error) {
-         return `I encountered an issue: ${harmonicAnalysis.error}`;
-       }
+      if (harmonicAnalysis.error) {
+        return `I encountered an issue: ${harmonicAnalysis.error}`;
+      }
 
-       let response = '🔮 *Harmonic Astrology Analysis*\n\n';
-       response += '*Deeper Chart Patterns & Hidden Harmonics:*\n\n';
+      let response = '🔮 *Harmonic Astrology Analysis*\n\n';
+      response += '*Deeper Chart Patterns & Hidden Harmonics:*\n\n';
 
-       if (harmonicAnalysis.dominantHarmonics.length > 0) {
-         response += '*Dominant Harmonics:*\n';
-         harmonicAnalysis.dominantHarmonics.forEach(harmonic => {
-           response += `• ${harmonic}\n`;
-         });
-         response += '\n';
-       }
+      if (harmonicAnalysis.dominantHarmonics.length > 0) {
+        response += '*Dominant Harmonics:*\n';
+        harmonicAnalysis.dominantHarmonics.forEach(harmonic => {
+          response += `• ${harmonic}\n`;
+        });
+        response += '\n';
+      }
 
-       if (harmonicAnalysis.keyPatterns.length > 0) {
-         response += '*Key Patterns:*\n';
-         harmonicAnalysis.keyPatterns.forEach(pattern => {
-           response += `• ${pattern}\n`;
-         });
-         response += '\n';
-       }
+      if (harmonicAnalysis.keyPatterns.length > 0) {
+        response += '*Key Patterns:*\n';
+        harmonicAnalysis.keyPatterns.forEach(pattern => {
+          response += `• ${pattern}\n`;
+        });
+        response += '\n';
+      }
 
-       if (harmonicAnalysis.lifeThemes.length > 0) {
-         response += '*Life Themes:*\n';
-         harmonicAnalysis.lifeThemes.forEach(theme => {
-           response += `• ${theme}\n`;
-         });
-         response += '\n';
-       }
+      if (harmonicAnalysis.lifeThemes.length > 0) {
+        response += '*Life Themes:*\n';
+        harmonicAnalysis.lifeThemes.forEach(theme => {
+          response += `• ${theme}\n`;
+        });
+        response += '\n';
+      }
 
-       if (harmonicAnalysis.harmonicAspects.length > 0) {
-         response += '*Harmonic Aspects:*\n';
-         harmonicAnalysis.harmonicAspects.slice(0, 3).forEach(aspect => {
-           response += `• ${aspect.planets}: ${aspect.aspect}\n`;
-         });
-         response += '\n';
-       }
+      if (harmonicAnalysis.harmonicAspects.length > 0) {
+        response += '*Harmonic Aspects:*\n';
+        harmonicAnalysis.harmonicAspects.slice(0, 3).forEach(aspect => {
+          response += `• ${aspect.planets}: ${aspect.aspect}\n`;
+        });
+        response += '\n';
+      }
 
-       response += '*Harmonic Astrology Summary:*\n';
-       response += `${harmonicAnalysis.summary}\n\n`;
+      response += '*Harmonic Astrology Summary:*\n';
+      response += `${harmonicAnalysis.summary}\n\n`;
 
-       response += 'Harmonic astrology reveals the deeper rhythms and patterns of your soul\'s journey! ✨';
+      response += 'Harmonic astrology reveals the deeper rhythms and patterns of your soul\'s journey! ✨';
 
-       return response;
-     } catch (error) {
-       logger.error('Error generating harmonic astrology analysis:', error);
-       return 'I\'m having trouble analyzing your harmonic astrology chart right now. Please try again later.';
-     }
-   }
+      return response;
+    } catch (error) {
+      logger.error('Error generating harmonic astrology analysis:', error);
+      return 'I\'m having trouble analyzing your harmonic astrology chart right now. Please try again later.';
+    }
+  }
 
   // Numerology requests
-   if (matchesIntent(message, ['numerology', 'numbers', 'life path number', 'expression number', 'soul urge', /^numerology/, /^numbers/])) {
-     if (!user.birthDate) {
-       return 'For numerology analysis, I need your birth details and full name to calculate your core numbers.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15/06/1990, John Michael Smith';
-     }
+  if (matchesIntent(message, ['numerology', 'numbers', 'life path number', 'expression number', 'soul urge', /^numerology/, /^numbers/])) {
+    if (!user.birthDate) {
+      return 'For numerology analysis, I need your birth details and full name to calculate your core numbers.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15/06/1990, John Michael Smith';
+    }
 
-     try {
-       const numerologyAnalysis = vedicCalculator.calculateNumerology({
-         birthDate: user.birthDate,
-         name: user.name || 'Unknown'
-       });
+    try {
+      const numerologyAnalysis = vedicCalculator.calculateNumerology({
+        birthDate: user.birthDate,
+        name: user.name || 'Unknown'
+      });
 
-       if (numerologyAnalysis.error) {
-         return `I encountered an issue: ${numerologyAnalysis.error}`;
-       }
+      if (numerologyAnalysis.error) {
+        return `I encountered an issue: ${numerologyAnalysis.error}`;
+      }
 
-       let response = '🔢 *Numerology Analysis*\n\n';
-       response += '*Your Core Numbers:*\n\n';
+      let response = '🔢 *Numerology Analysis*\n\n';
+      response += '*Your Core Numbers:*\n\n';
 
-       response += `*Life Path:* ${numerologyAnalysis.coreNumbers.lifePath} - ${numerologyAnalysis.interpretations.lifePath.split(':')[0] || 'Your life journey'}\n`;
-       response += `*Expression:* ${numerologyAnalysis.coreNumbers.expression} - ${numerologyAnalysis.interpretations.expression.split(':')[0] || 'Your natural talents'}\n`;
-       response += `*Soul Urge:* ${numerologyAnalysis.coreNumbers.soulUrge} - ${numerologyAnalysis.interpretations.soulUrge.split(':')[0] || 'Your inner desires'}\n`;
-       response += `*Personality:* ${numerologyAnalysis.coreNumbers.personality} - ${numerologyAnalysis.interpretations.personality.split(':')[0] || 'Your outward self'}\n`;
-       response += `*Birthday:* ${numerologyAnalysis.coreNumbers.birthday} - ${numerologyAnalysis.interpretations.birthday.split(':')[0] || 'Your birthday energy'}\n\n`;
+      response += `*Life Path:* ${numerologyAnalysis.coreNumbers.lifePath} - ${numerologyAnalysis.interpretations.lifePath.split(':')[0] || 'Your life journey'}\n`;
+      response += `*Expression:* ${numerologyAnalysis.coreNumbers.expression} - ${numerologyAnalysis.interpretations.expression.split(':')[0] || 'Your natural talents'}\n`;
+      response += `*Soul Urge:* ${numerologyAnalysis.coreNumbers.soulUrge} - ${numerologyAnalysis.interpretations.soulUrge.split(':')[0] || 'Your inner desires'}\n`;
+      response += `*Personality:* ${numerologyAnalysis.coreNumbers.personality} - ${numerologyAnalysis.interpretations.personality.split(':')[0] || 'Your outward self'}\n`;
+      response += `*Birthday:* ${numerologyAnalysis.coreNumbers.birthday} - ${numerologyAnalysis.interpretations.birthday.split(':')[0] || 'Your birthday energy'}\n\n`;
 
-       if (numerologyAnalysis.strengths.length > 0) {
-         response += '*Key Strengths:*\n';
-         numerologyAnalysis.strengths.forEach(strength => {
-           response += `• ${strength}\n`;
-         });
-         response += '\n';
-       }
+      if (numerologyAnalysis.strengths.length > 0) {
+        response += '*Key Strengths:*\n';
+        numerologyAnalysis.strengths.forEach(strength => {
+          response += `• ${strength}\n`;
+        });
+        response += '\n';
+      }
 
-       if (numerologyAnalysis.lifePurpose) {
-         response += `*Life Purpose:* ${numerologyAnalysis.lifePurpose}\n\n`;
-       }
+      if (numerologyAnalysis.lifePurpose) {
+        response += `*Life Purpose:* ${numerologyAnalysis.lifePurpose}\n\n`;
+      }
 
-       response += '*Numerology Summary:*\n';
-       response += `${numerologyAnalysis.summary}\n\n`;
+      response += '*Numerology Summary:*\n';
+      response += `${numerologyAnalysis.summary}\n\n`;
 
-       response += 'Your numbers hold the key to understanding your soul\'s blueprint! 🔑';
+      response += 'Your numbers hold the key to understanding your soul\'s blueprint! 🔑';
 
-       return response;
-     } catch (error) {
-       logger.error('Error generating numerology analysis:', error);
-       return 'I\'m having trouble calculating your numerology right now. Please try again later.';
-     }
-   }
+      return response;
+    } catch (error) {
+      logger.error('Error generating numerology analysis:', error);
+      return 'I\'m having trouble calculating your numerology right now. Please try again later.';
+    }
+  }
 
   // Career astrology requests
-   if (matchesIntent(message, ['career astrology', 'vocation', 'career path', 'professional', 'job astrology', /^career/, /^vocation/])) {
-     if (!user.birthDate) {
-       return 'For career astrology analysis, I need your complete birth details to analyze your professional path and vocational strengths.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
-
-     try {
-       const careerAnalysis = vedicCalculator.calculateCareerAstrology({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi'
-       });
-
-       if (careerAnalysis.error) {
-         return `I encountered an issue: ${careerAnalysis.error}`;
-       }
-
-       let response = '💼 *Career Astrology Analysis*\n\n';
-       response += '*Professional Path & Vocation:*\n\n';
-
-       response += `*10th House (Career):* ${careerAnalysis.tenthHouse.sign} - ${careerAnalysis.tenthHouse.careerFocus}\n`;
-       response += `*Midheaven:* ${careerAnalysis.midheaven.sign} - ${careerAnalysis.midheaven.careerDirection}\n`;
-       response += `*Ruling Planet:* ${careerAnalysis.tenthHouse.ruler}\n\n`;
-
-       if (careerAnalysis.careerTendencies.length > 0) {
-         response += '*Career Tendencies:*\n';
-         careerAnalysis.careerTendencies.forEach(tendency => {
-           response += `• ${tendency}\n`;
-         });
-         response += '\n';
-       }
-
-       if (careerAnalysis.vocationalStrengths.length > 0) {
-         response += '*Vocational Strengths:*\n';
-         careerAnalysis.vocationalStrengths.forEach(strength => {
-           response += `• ${strength}\n`;
-         });
-         response += '\n';
-       }
-
-       response += '*Key Career Planets:*\n';
-       Object.entries(careerAnalysis.careerPlanets).forEach(([planet, data]) => {
-         if (data.planet) {
-           response += `• *${data.planet}:* ${data.sign} - ${data.influence}\n`;
-         } else {
-           response += `• *${planet}:* ${data.sign} - ${data.influence}\n`;
-         }
-       });
-       response += '\n';
-
-       response += '*Career Astrology Summary:*\n';
-       response += `${careerAnalysis.summary}\n\n`;
-
-       response += 'Your career astrology reveals your professional destiny and optimal vocational path! 🎯';
-
-       return response;
-     } catch (error) {
-       logger.error('Error generating career astrology analysis:', error);
-       return 'I\'m having trouble analyzing your career astrology chart right now. Please try again later.';
-     }
-   }
-
-   // Event astrology requests
-   if (matchesIntent(message, ['event astrology', 'cosmic events', 'eclipses', 'planetary events', 'seasonal astrology', 'cosmic calendar', /^event.?astrology/, /^cosmic.?events/])) {
-     if (!user.birthDate) {
-       return 'For event astrology analysis, I need your complete birth details to correlate cosmic events with your personal chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
-
-     try {
-       const eventAnalysis = vedicCalculator.calculateCosmicEvents({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi'
-       });
-
-       if (eventAnalysis.error) {
-         return `I encountered an issue: ${eventAnalysis.error}`;
-       }
-
-       let response = `🌟 *Event Astrology: ${eventAnalysis.period}*\n\n`;
-       response += 'Discover how cosmic events influence your personal journey!\n\n';
-
-       // Add eclipses
-       if (eventAnalysis.events.eclipses.length > 0) {
-         response += '*🌑 Upcoming Eclipses:*\n\n';
-         eventAnalysis.events.eclipses.forEach(eclipse => {
-           response += `*${eclipse.date} - ${eclipse.type} ${eclipse.subtype} Eclipse*\n`;
-           response += `• Significance: ${eclipse.significance}\n`;
-           response += `• Visibility: ${eclipse.localVisibility}\n\n`;
-         });
-       }
-
-       // Add planetary events
-       if (eventAnalysis.events.planetaryEvents.length > 0) {
-         response += '*🪐 Planetary Events:*\n\n';
-         eventAnalysis.events.planetaryEvents.slice(0, 4).forEach(event => {
-           response += `*${event.date} - ${event.planet} ${event.event}*\n`;
-           response += `• ${event.significance}\n`;
-           response += `• Intensity: ${event.intensity}\n\n`;
-         });
-       }
-
-       // Add seasonal events
-       if (eventAnalysis.events.seasonalEvents.length > 0) {
-         response += '*🌸 Seasonal Transitions:*\n\n';
-         eventAnalysis.events.seasonalEvents.forEach(event => {
-           response += `*${event.date} - ${event.event}*\n`;
-           response += `• ${event.astrological}\n`;
-           response += `• Element: ${event.element}\n\n`;
-         });
-       }
-
-       // Add personal impact
-       if (eventAnalysis.events.personalImpact.length > 0) {
-         response += '*🔮 Personal Impact on Your Chart:*\n\n';
-         eventAnalysis.events.personalImpact.slice(0, 3).forEach(impact => {
-           response += `*${impact.event}*\n`;
-           response += `• ${impact.personalImpact}\n`;
-           response += `• Affected areas: ${impact.affectedHouses.join(', ')}\n\n`;
-         });
-       }
-
-       response += '*How to Work with These Energies:*\n';
-       response += '• Pay attention to dreams and intuition during eclipses\n';
-       response += '• Use retrograde periods for review and reflection\n';
-       response += '• Align actions with seasonal energies\n';
-       response += '• Trust the cosmic timing of your life\n\n';
-
-       response += 'The universe is always communicating with you! 🌌';
-
-       return response;
-     } catch (error) {
-       logger.error('Error generating event astrology analysis:', error);
-       return 'I\'m having trouble analyzing cosmic events right now. Please try again later.';
-     }
-   }
-
-   // Future self simulator requests
-   if (matchesIntent(message, ['future self', 'future self simulator', 'life timeline', 'long-term forecast', 'alternative pathways', 'what will my life be like', /^future.?self/, /^life.?timeline/])) {
-     if (!user.birthDate) {
-       return 'For future self simulation, I need your complete birth details to create your long-term life timeline.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
-
-     try {
-       const futureSelfAnalysis = vedicCalculator.generateFutureSelfSimulator({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi',
-         name: user.name
-       });
-
-       if (futureSelfAnalysis.error) {
-         return `I encountered an issue: ${futureSelfAnalysis.error}`;
-       }
-
-       let response = `🔮 *Future Self Simulator - ${futureSelfAnalysis.projectionYears} Year Projection*\n\n`;
-       response += `Hello ${user.name || 'cosmic explorer'}! Let's explore the potential pathways of your future self.\n\n`;
-
-       // Current life stage
-       if (futureSelfAnalysis.lifeStages.length > 0) {
-         const currentStage = futureSelfAnalysis.lifeStages[0];
-         response += `*Current Life Stage:* ${currentStage.stage} (${currentStage.ageRange})\n`;
-         response += `*Themes:* ${currentStage.themes.join(', ')}\n\n`;
-       }
-
-       // Major life transitions
-       if (futureSelfAnalysis.lifeTimeline.length > 0) {
-         response += '*🌟 Major Life Transitions Ahead:*\n\n';
-         futureSelfAnalysis.lifeTimeline.forEach(event => {
-           response += `*Age ${Math.round(event.age)} - ${event.event}*\n`;
-           response += `• Significance: ${event.significance}\n`;
-           response += `• Key Themes: ${event.themes.join(', ')}\n\n`;
-         });
-       }
-
-       // Potential scenarios
-       if (futureSelfAnalysis.scenarioModels.length > 0) {
-         response += '*🔀 Potential Life Scenarios:*\n\n';
-         futureSelfAnalysis.scenarioModels.forEach(scenario => {
-           response += `*${scenario.scenario}* (${scenario.category})\n`;
-           response += `• Probability: ${scenario.probability}\n`;
-           response += `• Timeline: ${scenario.timeline}\n`;
-           response += `• Key Indicators: ${scenario.keyIndicators.join(', ')}\n`;
-           response += `• Success Factors: ${scenario.successFactors.join(', ')}\n\n`;
-         });
-       }
-
-       // Goal projections
-       if (futureSelfAnalysis.goalProjections.length > 0) {
-         response += '*🎯 Goal Achievement Projections:*\n\n';
-         const topGoals = futureSelfAnalysis.goalProjections.slice(0, 4);
-         topGoals.forEach(projection => {
-           response += `*${projection.goal}* (${projection.category})\n`;
-           response += `• Likelihood: ${projection.overallLikelihood}\n`;
-           if (projection.favorablePeriods.length > 0) {
-             response += `• Best Periods: ${projection.favorablePeriods.join(', ')}\n`;
-           }
-           response += `• Key Factors: ${projection.keyFactors.join(', ')}\n\n`;
-         });
-       }
-
-       // Future life stages
-       if (futureSelfAnalysis.lifeStages.length > 1) {
-         response += '*📅 Future Life Stages:*\n\n';
-         futureSelfAnalysis.lifeStages.slice(1, 3).forEach(stage => {
-           response += `*${stage.stage}* (${stage.ageRange})\n`;
-           response += `• Duration: ${stage.duration} years\n`;
-           response += `• Themes: ${stage.themes.join(', ')}\n`;
-           response += `• Opportunities: ${stage.opportunities.join(', ')}\n\n`;
-         });
-       }
-
-       response += '*💫 How to Shape Your Future:*\n';
-       response += '• Align with your astrological timing\n';
-       response += '• Focus on your highest probability scenarios\n';
-       response += '• Use goal projections as guideposts\n';
-       response += '• Trust your intuition and inner wisdom\n';
-       response += '• Take conscious action toward your vision\n\n';
-
-       response += '*Remember:* This is a simulation based on astrological patterns. Your free will and consciousness ultimately shape your destiny. The future is not fixed - it\'s a canvas for your creation! 🎨✨';
-
-       return response;
-     } catch (error) {
-       logger.error('Error generating future self simulation:', error);
-       return 'I\'m having trouble simulating your future self right now. Please try again later.';
-     }
-   }
-
-   // Group astrology requests
-   if (matchesIntent(message, ['group astrology', 'family astrology', 'group reading', 'family reading', 'combined chart', 'group compatibility', /^group.?astrology/, /^family.?astrology/])) {
-     if (!user.birthDate) {
-       return 'For group astrology analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India\n\nThen I can analyze group dynamics with other members!';
-     }
-
-     return '👨‍👩‍👧‍👦 *Group & Family Astrology*\n\nDiscover the cosmic dynamics of your family or social group! I can create:\n\n🌟 *Composite Charts* - Combined energy of the group\n🤝 *Compatibility Analysis* - How members interact astrologically\n📊 *Group Dynamics* - Communication styles and decision making\n🎯 *Shared Purpose* - Collective goals and challenges\n⏰ *Timing Insights* - Best periods for group activities\n\n*To get a group reading:*\n\n1. Send your birth details (if not already set)\n2. Provide details for 2-6 other group members\n3. Specify group type: "family", "couple", "friends", or "colleagues"\n\n*Format for each member:*\n```\nName: [Full Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n```\n\nExample:\n```\nJohn: 15/06/1990, 14:30, Mumbai, India\nJane: 22/03/1992, 09:15, Delhi, India\nType: family\n```\n\nWhat type of group would you like to analyze?';
-   }
-
-   // Hindu Vedic astrology requests
-   if (matchesIntent(message, ['kundli', 'vedic kundli', 'hindu kundli', 'birth chart', 'janam kundli', /^kundli/, /^janam/])) {
-     if (!user.birthDate) {
-       return 'For your Vedic Kundli, I need your complete birth details to create your traditional Hindu birth chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
-
-     try {
-       const kundli = vedicCalculator.generateVedicKundli({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi',
-         name: user.name
-       });
-
-       if (kundli.error) {
-         return `I encountered an issue: ${kundli.error}`;
-       }
-
-       let response = `🕉️ *Vedic Kundli for ${kundli.name}*\n\n`;
-       response += `*Birth Details:*\n`;
-       response += `📅 Date: ${kundli.birthDetails.date}\n`;
-       response += `🕐 Time: ${kundli.birthDetails.time}\n`;
-       response += `📍 Place: ${kundli.birthDetails.place}\n\n`;
-
-       response += `*Lagna (Ascendant):* ${kundli.lagna}\n\n`;
-
-       // Show key houses
-       response += `*Key Houses (Bhavas):*\n`;
-       const keyHouses = [1, 4, 5, 7, 9, 10];
-       keyHouses.forEach(houseNum => {
-         const house = kundli.houses[houseNum - 1];
-         if (house) {
-           response += `• *${house.name}*: ${house.sign}`;
-           if (house.planets.length > 0) {
-             response += ` (${house.planets.join(', ')})`;
-           }
-           response += '\n';
-         }
-       });
-       response += '\n';
-
-       // Show planetary positions
-       response += `*Planetary Positions:*\n`;
-       Object.values(kundli.planetaryPositions).slice(0, 5).forEach(planet => {
-         response += `• *${planet.name}*: ${planet.sign} (${planet.house}th house)`;
-         if (planet.dignity !== 'Neutral') {
-           response += ` - ${planet.dignity}`;
-         }
-         response += '\n';
-       });
-       response += '\n';
-
-       // Show Yogas
-       if (kundli.interpretations.yogaFormations.length > 0) {
-         response += `*Special Yogas:*\n`;
-         kundli.interpretations.yogaFormations.forEach(yoga => {
-           response += `• ${yoga.name}: ${yoga.effect}\n`;
-         });
-         response += '\n';
-       }
-
-       response += `*Summary:*\n${kundli.kundliSummary}\n\n`;
-
-       response += 'This is your traditional Vedic Kundli following ancient Hindu astrological principles! 🕉️';
-
-       return response;
-     } catch (error) {
-       logger.error('Error generating Vedic Kundli:', error);
-       return 'I\'m having trouble generating your Vedic Kundli right now. Please try again later.';
-     }
-   }
-
-   // Marriage compatibility requests
-   if (matchesIntent(message, ['marriage compatibility', 'guna matching', 'kundli matching', 'marriage matching', 'wedding compatibility', /^guna/, /^marriage.?match/])) {
-     if (!user.birthDate) {
-       return 'For marriage compatibility analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India\n\nThen I can match it with your partner\'s chart!';
-     }
-
-     return '💕 *Hindu Marriage Compatibility (Kundli Matching)*\n\nI can perform traditional Vedic marriage compatibility analysis using the sacred 36-point Guna matching system!\n\n*What I analyze:*\n• *36-Point Guna System* - Varna, Tara, Yoni, Grahamaitri, Gana, Bhakut, Nadi\n• *Manglik Dosha* - Mars placement analysis and remedies\n• *Overall Compatibility* - Traditional Hindu marriage assessment\n\n*To get marriage compatibility:*\n\n1. Send your birth details (if not already set)\n2. Provide your partner\'s birth details\n\n*Partner\'s details format:*\n```\nName: [Partner Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n```\n\nExample:\n```\nName: Priya Sharma\nBirth: 25/12/1992, 10:30\nPlace: Jaipur, India\n```\n\nThis follows traditional Vedic astrology principles used for Hindu marriages! 🕉️';
-   }
-
-   // Lagna analysis requests
-   if (matchesIntent(message, ['lagna', 'ascendant', 'lagna analysis', 'rising sign analysis', /^lagna/])) {
-     if (!user.birthDate) {
-       return 'For Lagna (Ascendant) analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
-
-     try {
-       const kundli = vedicCalculator.generateVedicKundli({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi',
-         name: user.name
-       });
-
-       if (kundli.error) {
-         return `I encountered an issue: ${kundli.error}`;
-       }
-
-       const lagnaAnalysis = kundli.interpretations.lagnaAnalysis;
-
-       let response = `🏠 *Lagna (Ascendant) Analysis for ${kundli.name}*\n\n`;
-       response += `*Your Lagna:* ${kundli.lagna}\n`;
-       response += `*Strength:* ${lagnaAnalysis.strength}\n\n`;
-
-       response += `*Lagna Lord:* ${lagnaAnalysis.lord}\n`;
-       response += `*Lord's Position:* ${lagnaAnalysis.lordPosition}\n\n`;
-
-       response += `*Personality & Life Path:*\n${lagnaAnalysis.interpretation}\n\n`;
-
-       if (lagnaAnalysis.planetsInLagna.length > 0) {
-         response += `*Planets in Lagna:* ${lagnaAnalysis.planetsInLagna.join(', ')}\n\n`;
-       }
-
-       response += `*What this means for you:*\n`;
-       response += '• Your Lagna represents your outward personality and first impressions\n';
-       response += '• It shows how others perceive you and your approach to life\n';
-       response += '• The Lagna lord indicates your life direction and natural talents\n';
-       response += '• Planets in Lagna modify your basic personality\n\n';
-
-       response += 'Your Lagna reveals your soul\'s chosen vehicle in this lifetime! ✨';
-
-       return response;
-     } catch (error) {
-       logger.error('Error generating Lagna analysis:', error);
-       return 'I\'m having trouble analyzing your Lagna right now. Please try again later.';
-     }
-   }
-
-   // Manglik dosha requests
-    if (matchesIntent(message, ['prashna', 'horary', 'question astrology', 'prashna kundli', /^prashna/, /^horary/])) {
-      return '🕉️ *Prashna (Horary) Astrology*\n\nPrashna astrology provides answers to specific questions using the exact time you ask them!\n\n*How it works:*\n• Predictions based on planetary positions at the moment of your question\n• No birth details required - just your question and current time\n• Answers specific queries about timing and outcomes\n\n*Perfect for questions like:*\n• "When will I get married?"\n• "Will I get the job?"\n• "When will my health improve?"\n• "Will my business succeed?"\n\n*To ask a Prashna question:*\nSend your question now, and I\'ll analyze the current planetary positions to give you guidance!\n\nExample: "Will I get married this year?"\n\nWhat question is on your mind? 🔮';
+  if (matchesIntent(message, ['career astrology', 'vocation', 'career path', 'professional', 'job astrology', /^career/, /^vocation/])) {
+    if (!user.birthDate) {
+      return 'For career astrology analysis, I need your complete birth details to analyze your professional path and vocational strengths.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
 
-    if (matchesIntent(message, ['ashtakavarga', '8-fold strength', 'bindu analysis', /^ashtakavarga/])) {
-      return '🕉️ *Ashtakavarga (8-Fold Strength Analysis)*\n\nAshtakavarga is an ancient Vedic technique that analyzes planetary strength across 12 houses!\n\n*What it reveals:*\n• 8-fold strength of each planet (Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn)\n• Bindu (dot) system showing favorable periods\n• Trikona Shodhana - triangle reduction for deeper insights\n• Ekadhipatya - sole lordship of houses\n\n*Benefits:*\n• Identifies strongest and weakest planetary periods\n• Shows favorable houses and life areas\n• Helps timing of important decisions\n• Reveals planetary power distribution\n\n*To get your Ashtakavarga analysis:*\nI need your complete birth details (date, time, place).\n\nThis advanced analysis provides deep insights into planetary strengths! 🔮';
-    }
+    try {
+      const careerAnalysis = vedicCalculator.calculateCareerAstrology({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
 
-    if (matchesIntent(message, ['varga charts', 'divisional charts', 'navamsa', 'dashamsa', 'd-9', 'd-10', /^varga/, /^divisional/])) {
-      return '🕉️ *Varga (Divisional) Charts*\n\nVarga charts are specialized Vedic astrology divisions that provide detailed analysis for specific life areas!\n\n*Available Varga Charts:*\n\n🕉️ *D-9 Navamsa* - Marriage, spouse, spiritual life, dharma\n💼 *D-10 Dashamsa* - Career, profession, authority, public image\n👨‍👩‍👧‍👦 *D-12 Dwadasamsa* - Parents, ancestry, spiritual practices\n🏠 *D-16 Shodasamsa* - Vehicles, pleasures, happiness, comforts\n📚 *D-24 Chaturvimsamsa* - Education, learning, knowledge, intelligence\n⚕️ *D-30 Trimsamsa* - Misfortunes, health issues, enemies, obstacles\n\n*Benefits:*\n• Specialized analysis for different life areas\n• Deeper insights beyond the main birth chart\n• Understanding of specific life challenges and opportunities\n• Guidance for targeted spiritual practices\n\n*To get your Varga Charts analysis:*\nI need your complete birth details (date, time, place).\n\nThis comprehensive system reveals hidden aspects of your life journey! 🔮';
-    }
-
-    if (matchesIntent(message, ['shadbala', '6-fold strength', 'shad bala', 'planetary strength', /^shadbala/])) {
-      return '🕉️ *Shadbala (6-Fold Planetary Strength)*\n\nShadbala is the most comprehensive Vedic system for measuring planetary strength through 6 different methods!\n\n*Six Types of Bala (Strength):*\n\n🏛️ *Sthana Bala* - Positional strength (exaltation, own sign, house position)\n🧭 *Dig Bala* - Directional strength (planetary directions)\n⏰ *Kala Bala* - Temporal strength (time-based influences)\n⚡ *Chesta Bala* - Motivational strength (speed, retrograde)\n🌿 *Naisargika Bala* - Natural strength (innate planetary power)\n👁️ *Drik Bala* - Aspect strength (influences from other planets)\n\n*Benefits:*\n• Precise measurement of planetary power\n• Understanding of when planets are strongest\n• Guidance for timing important decisions\n• Identification of planetary periods for success\n• Comprehensive strength analysis beyond basic dignity\n\n*What You\'ll Discover:*\n• Strength percentage for each planet (0-100%)\n• Detailed breakdown of all 6 strength types\n• Planetary strength rankings\n• Recommendations based on strongest/weakest planets\n\n*To get your Shadbala analysis:*\nI need your complete birth details (date, time, place).\n\nThis advanced analysis provides the deepest insight into planetary power! 🔮';
-    }
-
-    if (matchesIntent(message, ['muhurta', 'electional', 'auspicious time', 'auspicious timing', 'electional astrology', /^muhurta/])) {
-      return '🕉️ *Muhurta (Electional Astrology) - Auspicious Timing*\n\nMuhurta is the ancient Vedic science of choosing the most auspicious time for important life events!\n\n*Perfect for:*\n💒 *Weddings & Marriages* - Find the most harmonious timing\n💼 *Business Launches* - Start ventures at peak success times\n🏠 *House Warming* - Bless new homes at auspicious moments\n📚 *Education Beginnings* - Start studies at favorable times\n🛐 *Religious Ceremonies* - Perform pujas at sacred times\n🎯 *Any Important Life Event*\n\n*What Muhurta Considers:*\n\n🌓 *Panchaka Dosha Avoidance* - 5 defects to avoid:\n   • Rahu Kalam (Rahu\'s period)\n   • Gulika Kalam (most inauspicious)\n   • Yamaganda Tithi\n   • Visha Ghati Nakshatra\n   • Surya Sankranti\n\n⭐ *Abhijit Muhurta* - The most auspicious time of day (noon ± 24 min)\n\n🪐 *Planetary Positions* - Benefic planets in favorable houses\n📅 *Weekday Auspiciousness* - Best days for different activities\n🌙 *Lunar Phase* - Tithi and lunar considerations\n\n*How to Get Muhurta:*\n\n1. Tell me your event type (wedding, business, house warming, etc.)\n2. Provide preferred date (DD/MM/YYYY)\n3. Give location (City, Country)\n\nExample: "Muhurta for wedding on 15/06/2024 in Mumbai, India"\n\nI\'ll provide:\n• Top 5 auspicious timings on your preferred date\n• Alternative dates if needed\n• Detailed reasoning for each timing\n• Planetary and astronomical factors\n\n*Benefits:*\n• Maximize success potential of important events\n• Minimize obstacles and challenges\n• Align with cosmic energies\n• Follow ancient Vedic wisdom\n\nWhat event are you planning? I\'ll find the perfect auspicious time! 🕉️';
-    }
-
-    if (matchesIntent(message, ['panchang', 'hindu calendar', 'almanac', 'daily panchang', 'tithi', /^panchang/])) {
-      return '🕉️ *Panchang (Hindu Almanac) - Daily Guidance*\n\nPanchang is the traditional Hindu calendar that provides comprehensive daily guidance based on lunar and planetary positions!\n\n*What Panchang Includes:*\n\n🌓 *Tithi* - Lunar day (Shukla/Krishna Paksha)\n⭐ *Nakshatra* - Lunar constellation (27 Nakshatras)\n🪐 *Yoga* - Planetary combination (27 Yogas)\n⚡ *Karana* - Half lunar day (11 Karanas)\n\n🌅 *Sunrise & Sunset* - Local timings\n🌙 *Moon Phase* - Current lunar phase\n📅 *Weekday* - Day of the week\n\n*Inauspicious Periods to Avoid:*\n😈 *Rahukalam* - Rahu\'s period (varies by weekday)\n👹 *Gulikakalam* - Most inauspicious time\n⚠️ *Yamagandam* - Inauspicious period\n\n⭐ *Abhijit Muhurta* - Most auspicious time of day\n\n*Daily Guidance:*\n✅ *Auspicious Activities* - Recommended for the day\n❌ *Inauspicious Activities* - To avoid on this day\n📊 *Overall Day Rating* - Auspicious/Neutral/Inauspicious\n\n*How to Get Panchang:*\n\nSend your request in this format:\n```\nPanchang for [DD/MM/YYYY] in [City, Country]\n```\n\n*Examples:*\n• "Panchang for 15/06/2024 in Mumbai, India"\n• "Daily Panchang for Delhi"\n• "Hindu Almanac for today in Bangalore"\n\n*Benefits:*\n• Daily spiritual guidance and planning\n• Know auspicious times for activities\n• Avoid inauspicious periods\n• Follow traditional Hindu calendar\n• Plan religious ceremonies and festivals\n• Cultural and religious awareness\n\n*Perfect for:*\n• Planning weddings and ceremonies\n• Business and important decisions\n• Religious observances\n• Daily spiritual practice\n• Cultural celebrations\n\nWhat date and location would you like the Panchang for? 🕉️';
-    }
-
-     if (matchesIntent(message, ['manglik', 'manglik dosha', 'mars dosha', 'mangal dosha', /^manglik/, /^mangal/])) {
-      if (!user.birthDate) {
-        return 'For Manglik dosha analysis, I need your complete birth details to check Mars placement.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      if (careerAnalysis.error) {
+        return `I encountered an issue: ${careerAnalysis.error}`;
       }
 
-      try {
-        const kundli = vedicCalculator.generateVedicKundli({
-          birthDate: user.birthDate,
-          birthTime: user.birthTime || '12:00',
-          birthPlace: user.birthPlace || 'Delhi',
-          name: user.name
+      let response = '💼 *Career Astrology Analysis*\n\n';
+      response += '*Professional Path & Vocation:*\n\n';
+
+      response += `*10th House (Career):* ${careerAnalysis.tenthHouse.sign} - ${careerAnalysis.tenthHouse.careerFocus}\n`;
+      response += `*Midheaven:* ${careerAnalysis.midheaven.sign} - ${careerAnalysis.midheaven.careerDirection}\n`;
+      response += `*Ruling Planet:* ${careerAnalysis.tenthHouse.ruler}\n\n`;
+
+      if (careerAnalysis.careerTendencies.length > 0) {
+        response += '*Career Tendencies:*\n';
+        careerAnalysis.careerTendencies.forEach(tendency => {
+          response += `• ${tendency}\n`;
         });
-
-        if (kundli.error) {
-          return `I encountered an issue: ${kundli.error}`;
-        }
-
-        const marsPosition = kundli.planetaryPositions.mars;
-         const manglikHouses = [1, 2, 4, 7, 8, 12];
-         const isManglik = manglikHouses.includes(marsPosition?.house);
-
-         return `🔮 *Manglik Dosha Analysis*\n\n*Your Mars Position:* ${marsPosition?.signName || 'Unknown'} (${marsPosition?.house || 'Unknown'}th house)\n\n${isManglik ? '*Manglik Dosha Present*' : '*No Manglik Dosha*'}\n\n${isManglik ?
-           'Mars in houses 1, 2, 4, 7, 8, or 12 from Lagna indicates Manglik dosha.\n\n*Effects:* Can cause delays in marriage, relationship challenges.\n\n*Remedies:*\n• Fast on Tuesdays\n• Donate red items\n• Chant "Om Angarakaya Namaha"\n• Consider marriage to another Manglik\n• Consult priest for specific remedies' :
-           'Mars is not in dosha-causing positions. Generally favorable for marriage timing.'}\n\n*Note:* This is a basic analysis. Consult a qualified astrologer for detailed remedies. 🕉️`;
-       } catch (error) {
-         logger.error('Error in Manglik analysis:', error);
-         return '❌ Sorry, I couldn\'t analyze Manglik dosha right now. Please try again later.';
-       }
-     }
-
-     // Kaal Sarp Dosha analysis
-     if (matchesIntent(message, ['kaal sarp', 'kalsarp', 'kaalsarp', 'kal sarp', 'kalsarp dosha', 'kaal sarp dosha', /^kaal/, /^kal/])) {
-       if (!user.birthDate) {
-         return 'For Kaal Sarp Dosha analysis, I need your complete birth details to check Rahu-Ketu positions.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-       }
-
-       try {
-         const kaalSarpAnalysis = vedicCalculator.generateKaalSarpDosha({
-           birthDate: user.birthDate,
-           birthTime: user.birthTime || '12:00',
-           birthPlace: user.birthPlace || 'Delhi',
-           name: user.name
-         });
-
-         if (kaalSarpAnalysis.error) {
-           return `I encountered an issue: ${kaalSarpAnalysis.error}`;
-         }
-
-         return kaalSarpAnalysis.summary;
-       } catch (error) {
-         logger.error('Error in Kaal Sarp Dosha analysis:', error);
-         return '❌ Sorry, I couldn\'t analyze Kaal Sarp Dosha right now. Please try again later.';
-       }
+        response += '\n';
       }
 
-      // Sade Sati analysis
-      if (matchesIntent(message, ['sade sati', 'sadesati', 'saturn period', 'saturn transit', 'shani sade sati', /^sade/, /^saturn.*sati/])) {
-        if (!user.birthDate) {
-          return 'For Sade Sati analysis, I need your complete birth details to check Saturn\'s transit through your Moon sign.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-        }
-
-        try {
-          const sadeSatiAnalysis = vedicCalculator.generateSadeSatiAnalysis({
-            birthDate: user.birthDate,
-            birthTime: user.birthTime || '12:00',
-            birthPlace: user.birthPlace || 'Delhi',
-            name: user.name
-          });
-
-          if (sadeSatiAnalysis.error) {
-            return `I encountered an issue: ${sadeSatiAnalysis.error}`;
-          }
-
-          return sadeSatiAnalysis.summary;
-        } catch (error) {
-          logger.error('Error in Sade Sati analysis:', error);
-          return '❌ Sorry, I couldn\'t analyze Sade Sati right now. Please try again later.';
-        }
+      if (careerAnalysis.vocationalStrengths.length > 0) {
+        response += '*Vocational Strengths:*\n';
+        careerAnalysis.vocationalStrengths.forEach(strength => {
+          response += `• ${strength}\n`;
+        });
+        response += '\n';
       }
 
-      // Vedic Remedies requests
-      if (matchesIntent(message, ['remedies', 'gemstones', 'mantras', 'charities', 'pujas', 'yantras', 'vedic remedies', 'astrological remedies', /^remedies/, /^gemstone/, /^mantra/])) {
-        // Check for specific planet or dosha
-        const planetMatch = message.match(/(?:remedies?|gemstones?|mantras?|charities?)\s+(?:for\s+)?(?:planet\s+)?(\w+)/i);
-        const doshaMatch = message.match(/(?:remedies?|gemstones?|mantras?|charities?)\s+(?:for\s+)?(?:dosha\s+)?(\w+(?:\s+\w+)*)/i);
-
-        if (planetMatch) {
-          const planet = planetMatch[1].toLowerCase();
-          try {
-            const remedies = vedicRemedies.generatePlanetRemedies(planet);
-            if (remedies.error) {
-              return `I don't have remedies information for "${planet}". Available planets: Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu.`;
-            }
-            return remedies.summary;
-          } catch (error) {
-            logger.error('Error generating planet remedies:', error);
-            return '❌ Sorry, I couldn\'t generate remedies right now. Please try again later.';
-          }
-        } else if (doshaMatch) {
-          const dosha = doshaMatch[1].toLowerCase().replace(/\s+/g, '_');
-          try {
-            const remedies = vedicRemedies.generateDoshaRemedies(dosha);
-            if (remedies.error) {
-              return `I don't have remedies for "${dosha}". Available doshas: Kaal Sarp, Manglik, Pitru, Sade Sati.`;
-            }
-
-            let response = `🕉️ *Vedic Remedies for ${dosha.replace(/_/g, ' ').toUpperCase()}*\n\n`;
-
-            if (remedies.gemstones) {
-              response += `*Recommended Gemstones:*\n`;
-              remedies.gemstones.forEach(gem => {
-                response += `• ${gem.name} (${gem.sanskrit}) - ${gem.finger}, ${gem.day}\n`;
-              });
-              response += '\n';
-            }
-
-            if (remedies.mantras) {
-              response += `*Powerful Mantras:*\n`;
-              remedies.mantras.forEach(mantra => {
-                response += `• "${mantra.beej}"\n`;
-              });
-              response += '\n';
-            }
-
-            if (remedies.puja) {
-              response += `*Recommended Puja:*\n`;
-              response += `• ${remedies.puja.name} (${remedies.puja.duration})\n`;
-              response += `• Benefits: ${remedies.puja.benefits}\n\n`;
-            }
-
-            if (remedies.special) {
-              response += `*Special Practices:*\n`;
-              if (remedies.special.fasting) response += `• Fasting: ${remedies.special.fasting}\n`;
-              if (remedies.special.offerings) response += `• Offerings: ${remedies.special.offerings}\n`;
-              if (remedies.special.rituals) response += `• Rituals: ${remedies.special.rituals}\n`;
-            }
-
-            response += '\n🕉️ *Note:* Consult a qualified priest or astrologer before performing pujas. Remedies should be personalized to your birth chart.';
-
-            return response;
-          } catch (error) {
-            logger.error('Error generating dosha remedies:', error);
-            return '❌ Sorry, I couldn\'t generate remedies right now. Please try again later.';
-          }
+      response += '*Key Career Planets:*\n';
+      Object.entries(careerAnalysis.careerPlanets).forEach(([planet, data]) => {
+        if (data.planet) {
+          response += `• *${data.planet}:* ${data.sign} - ${data.influence}\n`;
         } else {
-          // General remedies catalog
-          const catalog = vedicRemedies.getRemediesCatalog();
-          return `🕉️ *Vedic Remedies System*\n\nI can provide comprehensive remedies for:\n\n*Planetary Remedies:*\n• Gemstones, Mantras, Charities for each planet\n• Available for: ${catalog.gemstones.join(', ')}\n\n*Dosha Remedies:*\n• Specialized remedies for: ${catalog.doshas.join(', ')}\n\n*Examples:*\n• "remedies for sun" - Sun-related remedies\n• "gemstones for saturn" - Blue Sapphire details\n• "remedies for kaal sarp dosha" - Kaal Sarp remedies\n• "mantras for venus" - Venus mantras\n\nWhat specific remedies would you like to know about?`;
+          response += `• *${planet}:* ${data.sign} - ${data.influence}\n`;
         }
+      });
+      response += '\n';
+
+      response += '*Career Astrology Summary:*\n';
+      response += `${careerAnalysis.summary}\n\n`;
+
+      response += 'Your career astrology reveals your professional destiny and optimal vocational path! 🎯';
+
+      return response;
+    } catch (error) {
+      logger.error('Error generating career astrology analysis:', error);
+      return 'I\'m having trouble analyzing your career astrology chart right now. Please try again later.';
+    }
+  }
+
+  // Event astrology requests
+  if (matchesIntent(message, ['event astrology', 'cosmic events', 'eclipses', 'planetary events', 'seasonal astrology', 'cosmic calendar', /^event.?astrology/, /^cosmic.?events/])) {
+    if (!user.birthDate) {
+      return 'For event astrology analysis, I need your complete birth details to correlate cosmic events with your personal chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const eventAnalysis = vedicCalculator.calculateCosmicEvents({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
+
+      if (eventAnalysis.error) {
+        return `I encountered an issue: ${eventAnalysis.error}`;
       }
 
-      // Islamic Astrology requests
-      if (matchesIntent(message, ['islamic astrology', 'ilm e nujum', 'ilm-e-nujum', 'islamic numerology', 'abjad', 'taqdeer', 'destiny islamic', 'muslim astrology', /^islamic/, /^ilm/, /^taqdeer/, /^abjad/])) {
-        // Check for specific Islamic analysis type
-        const numerologyMatch = message.match(/(?:numerology|abjad|ilm.*nujum)\s+(?:for\s+)?(?:name\s+)?(.+)/i);
-        const taqdeerMatch = message.match(/(?:taqdeer|destiny|islamic.*destiny)/i);
+      let response = `🌟 *Event Astrology: ${eventAnalysis.period}*\n\n`;
+      response += 'Discover how cosmic events influence your personal journey!\n\n';
 
-        if (numerologyMatch) {
-          const name = numerologyMatch[1].trim();
-          try {
-            const numerologyAnalysis = islamicAstrology.calculateIlmNujum(name);
-            if (numerologyAnalysis.error) {
-              return `I encountered an issue: ${numerologyAnalysis.error}`;
-            }
-            return numerologyAnalysis.summary;
-          } catch (error) {
-            logger.error('Error in Islamic numerology analysis:', error);
-            return '❌ Sorry, I couldn\'t analyze the Islamic numerology right now. Please try again later.';
-          }
-        } else if (taqdeerMatch) {
-          if (!user.birthDate) {
-            return 'For Taqdeer (Islamic Destiny) analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mecca, Saudi Arabia';
-          }
-
-          try {
-            const taqdeerAnalysis = islamicAstrology.calculateTaqdeer({
-              birthDate: user.birthDate,
-              birthTime: user.birthTime || '12:00',
-              birthPlace: user.birthPlace || 'Mecca',
-              name: user.name
-            });
-
-            if (taqdeerAnalysis.error) {
-              return `I encountered an issue: ${taqdeerAnalysis.error}`;
-            }
-
-            return taqdeerAnalysis.summary;
-          } catch (error) {
-            logger.error('Error in Taqdeer analysis:', error);
-            return '❌ Sorry, I couldn\'t analyze the Islamic destiny right now. Please try again later.';
-          }
-        } else {
-          // General Islamic astrology catalog
-          const catalog = islamicAstrology.getIslamicAstrologyCatalog();
-          return `🕌 *Islamic Astrology - Ilm-e-Nujum & Taqdeer*\n\nDiscover your divine path through Islamic astrological wisdom!\n\n*Ilm-e-Nujum (Islamic Numerology):*\n• Abjad system analysis for names\n• Divine qualities and life purpose\n• Spiritual guidance based on name numbers\n\n*Taqdeer (Destiny Analysis):*\n• Lunar mansion influences at birth\n• Planetary guidance in Islamic context\n• Life path and divine purpose\n• Spiritual, worldly, and relationship destiny\n\n*Available Services:*\n• Islamic Numerology (Abjad)\n• Taqdeer Destiny Analysis\n• Lunar Mansions Guidance\n• Islamic Planetary Influences\n• Prayer Times & Auspicious Periods\n\n*Examples:*\n• "ilm e nujum for Muhammad" - Islamic numerology for a name\n• "taqdeer analysis" - Complete destiny analysis\n• "islamic astrology" - General Islamic astrology guidance\n\nWhat aspect of Islamic astrology interests you?`;
-        }
+      // Add eclipses
+      if (eventAnalysis.events.eclipses.length > 0) {
+        response += '*🌑 Upcoming Eclipses:*\n\n';
+        eventAnalysis.events.eclipses.forEach(eclipse => {
+          response += `*${eclipse.date} - ${eclipse.type} ${eclipse.subtype} Eclipse*\n`;
+          response += `• Significance: ${eclipse.significance}\n`;
+          response += `• Visibility: ${eclipse.localVisibility}\n\n`;
+        });
       }
 
-      // Vimshottari Dasha analysis requests
-      if (matchesIntent(message, ['vimshottari dasha', 'dasha analysis', 'planetary periods', 'dasha prediction', 'vimshottari', /^dasha/, /^vimshottari/])) {
-        if (!user.birthDate) {
-          return 'For Vimshottari Dasha analysis, I need your complete birth details to calculate your planetary periods.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      // Add planetary events
+      if (eventAnalysis.events.planetaryEvents.length > 0) {
+        response += '*🪐 Planetary Events:*\n\n';
+        eventAnalysis.events.planetaryEvents.slice(0, 4).forEach(event => {
+          response += `*${event.date} - ${event.planet} ${event.event}*\n`;
+          response += `• ${event.significance}\n`;
+          response += `• Intensity: ${event.intensity}\n\n`;
+        });
+      }
+
+      // Add seasonal events
+      if (eventAnalysis.events.seasonalEvents.length > 0) {
+        response += '*🌸 Seasonal Transitions:*\n\n';
+        eventAnalysis.events.seasonalEvents.forEach(event => {
+          response += `*${event.date} - ${event.event}*\n`;
+          response += `• ${event.astrological}\n`;
+          response += `• Element: ${event.element}\n\n`;
+        });
+      }
+
+      // Add personal impact
+      if (eventAnalysis.events.personalImpact.length > 0) {
+        response += '*🔮 Personal Impact on Your Chart:*\n\n';
+        eventAnalysis.events.personalImpact.slice(0, 3).forEach(impact => {
+          response += `*${impact.event}*\n`;
+          response += `• ${impact.personalImpact}\n`;
+          response += `• Affected areas: ${impact.affectedHouses.join(', ')}\n\n`;
+        });
+      }
+
+      response += '*How to Work with These Energies:*\n';
+      response += '• Pay attention to dreams and intuition during eclipses\n';
+      response += '• Use retrograde periods for review and reflection\n';
+      response += '• Align actions with seasonal energies\n';
+      response += '• Trust the cosmic timing of your life\n\n';
+
+      response += 'The universe is always communicating with you! 🌌';
+
+      return response;
+    } catch (error) {
+      logger.error('Error generating event astrology analysis:', error);
+      return 'I\'m having trouble analyzing cosmic events right now. Please try again later.';
+    }
+  }
+
+  // Future self simulator requests
+  if (matchesIntent(message, ['future self', 'future self simulator', 'life timeline', 'long-term forecast', 'alternative pathways', 'what will my life be like', /^future.?self/, /^life.?timeline/])) {
+    if (!user.birthDate) {
+      return 'For future self simulation, I need your complete birth details to create your long-term life timeline.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const futureSelfAnalysis = vedicCalculator.generateFutureSelfSimulator({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (futureSelfAnalysis.error) {
+        return `I encountered an issue: ${futureSelfAnalysis.error}`;
+      }
+
+      let response = `🔮 *Future Self Simulator - ${futureSelfAnalysis.projectionYears} Year Projection*\n\n`;
+      response += `Hello ${user.name || 'cosmic explorer'}! Let's explore the potential pathways of your future self.\n\n`;
+
+      // Current life stage
+      if (futureSelfAnalysis.lifeStages.length > 0) {
+        const currentStage = futureSelfAnalysis.lifeStages[0];
+        response += `*Current Life Stage:* ${currentStage.stage} (${currentStage.ageRange})\n`;
+        response += `*Themes:* ${currentStage.themes.join(', ')}\n\n`;
+      }
+
+      // Major life transitions
+      if (futureSelfAnalysis.lifeTimeline.length > 0) {
+        response += '*🌟 Major Life Transitions Ahead:*\n\n';
+        futureSelfAnalysis.lifeTimeline.forEach(event => {
+          response += `*Age ${Math.round(event.age)} - ${event.event}*\n`;
+          response += `• Significance: ${event.significance}\n`;
+          response += `• Key Themes: ${event.themes.join(', ')}\n\n`;
+        });
+      }
+
+      // Potential scenarios
+      if (futureSelfAnalysis.scenarioModels.length > 0) {
+        response += '*🔀 Potential Life Scenarios:*\n\n';
+        futureSelfAnalysis.scenarioModels.forEach(scenario => {
+          response += `*${scenario.scenario}* (${scenario.category})\n`;
+          response += `• Probability: ${scenario.probability}\n`;
+          response += `• Timeline: ${scenario.timeline}\n`;
+          response += `• Key Indicators: ${scenario.keyIndicators.join(', ')}\n`;
+          response += `• Success Factors: ${scenario.successFactors.join(', ')}\n\n`;
+        });
+      }
+
+      // Goal projections
+      if (futureSelfAnalysis.goalProjections.length > 0) {
+        response += '*🎯 Goal Achievement Projections:*\n\n';
+        const topGoals = futureSelfAnalysis.goalProjections.slice(0, 4);
+        topGoals.forEach(projection => {
+          response += `*${projection.goal}* (${projection.category})\n`;
+          response += `• Likelihood: ${projection.overallLikelihood}\n`;
+          if (projection.favorablePeriods.length > 0) {
+            response += `• Best Periods: ${projection.favorablePeriods.join(', ')}\n`;
+          }
+          response += `• Key Factors: ${projection.keyFactors.join(', ')}\n\n`;
+        });
+      }
+
+      // Future life stages
+      if (futureSelfAnalysis.lifeStages.length > 1) {
+        response += '*📅 Future Life Stages:*\n\n';
+        futureSelfAnalysis.lifeStages.slice(1, 3).forEach(stage => {
+          response += `*${stage.stage}* (${stage.ageRange})\n`;
+          response += `• Duration: ${stage.duration} years\n`;
+          response += `• Themes: ${stage.themes.join(', ')}\n`;
+          response += `• Opportunities: ${stage.opportunities.join(', ')}\n\n`;
+        });
+      }
+
+      response += '*💫 How to Shape Your Future:*\n';
+      response += '• Align with your astrological timing\n';
+      response += '• Focus on your highest probability scenarios\n';
+      response += '• Use goal projections as guideposts\n';
+      response += '• Trust your intuition and inner wisdom\n';
+      response += '• Take conscious action toward your vision\n\n';
+
+      response += '*Remember:* This is a simulation based on astrological patterns. Your free will and consciousness ultimately shape your destiny. The future is not fixed - it\'s a canvas for your creation! 🎨✨';
+
+      return response;
+    } catch (error) {
+      logger.error('Error generating future self simulation:', error);
+      return 'I\'m having trouble simulating your future self right now. Please try again later.';
+    }
+  }
+
+  // Group astrology requests
+  if (matchesIntent(message, ['group astrology', 'family astrology', 'group reading', 'family reading', 'combined chart', 'group compatibility', /^group.?astrology/, /^family.?astrology/])) {
+    if (!user.birthDate) {
+      return 'For group astrology analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India\n\nThen I can analyze group dynamics with other members!';
+    }
+
+    return '👨‍👩‍👧‍👦 *Group & Family Astrology*\n\nDiscover the cosmic dynamics of your family or social group! I can create:\n\n🌟 *Composite Charts* - Combined energy of the group\n🤝 *Compatibility Analysis* - How members interact astrologically\n📊 *Group Dynamics* - Communication styles and decision making\n🎯 *Shared Purpose* - Collective goals and challenges\n⏰ *Timing Insights* - Best periods for group activities\n\n*To get a group reading:*\n\n1. Send your birth details (if not already set)\n2. Provide details for 2-6 other group members\n3. Specify group type: "family", "couple", "friends", or "colleagues"\n\n*Format for each member:*\n```\nName: [Full Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n```\n\nExample:\n```\nJohn: 15/06/1990, 14:30, Mumbai, India\nJane: 22/03/1992, 09:15, Delhi, India\nType: family\n```\n\nWhat type of group would you like to analyze?';
+  }
+
+  // Hindu Vedic astrology requests
+  if (matchesIntent(message, ['kundli', 'vedic kundli', 'hindu kundli', 'birth chart', 'janam kundli', /^kundli/, /^janam/])) {
+    if (!user.birthDate) {
+      return 'For your Vedic Kundli, I need your complete birth details to create your traditional Hindu birth chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const kundli = vedicCalculator.generateVedicKundli({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (kundli.error) {
+        return `I encountered an issue: ${kundli.error}`;
+      }
+
+      let response = `🕉️ *Vedic Kundli for ${kundli.name}*\n\n`;
+      response += '*Birth Details:*\n';
+      response += `📅 Date: ${kundli.birthDetails.date}\n`;
+      response += `🕐 Time: ${kundli.birthDetails.time}\n`;
+      response += `📍 Place: ${kundli.birthDetails.place}\n\n`;
+
+      response += `*Lagna (Ascendant):* ${kundli.lagna}\n\n`;
+
+      // Show key houses
+      response += '*Key Houses (Bhavas):*\n';
+      const keyHouses = [1, 4, 5, 7, 9, 10];
+      keyHouses.forEach(houseNum => {
+        const house = kundli.houses[houseNum - 1];
+        if (house) {
+          response += `• *${house.name}*: ${house.sign}`;
+          if (house.planets.length > 0) {
+            response += ` (${house.planets.join(', ')})`;
+          }
+          response += '\n';
+        }
+      });
+      response += '\n';
+
+      // Show planetary positions
+      response += '*Planetary Positions:*\n';
+      Object.values(kundli.planetaryPositions).slice(0, 5).forEach(planet => {
+        response += `• *${planet.name}*: ${planet.sign} (${planet.house}th house)`;
+        if (planet.dignity !== 'Neutral') {
+          response += ` - ${planet.dignity}`;
+        }
+        response += '\n';
+      });
+      response += '\n';
+
+      // Show Yogas
+      if (kundli.interpretations.yogaFormations.length > 0) {
+        response += '*Special Yogas:*\n';
+        kundli.interpretations.yogaFormations.forEach(yoga => {
+          response += `• ${yoga.name}: ${yoga.effect}\n`;
+        });
+        response += '\n';
+      }
+
+      response += `*Summary:*\n${kundli.kundliSummary}\n\n`;
+
+      response += 'This is your traditional Vedic Kundli following ancient Hindu astrological principles! 🕉️';
+
+      return response;
+    } catch (error) {
+      logger.error('Error generating Vedic Kundli:', error);
+      return 'I\'m having trouble generating your Vedic Kundli right now. Please try again later.';
+    }
+  }
+
+  // Marriage compatibility requests
+  if (matchesIntent(message, ['marriage compatibility', 'guna matching', 'kundli matching', 'marriage matching', 'wedding compatibility', /^guna/, /^marriage.?match/])) {
+    if (!user.birthDate) {
+      return 'For marriage compatibility analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India\n\nThen I can match it with your partner\'s chart!';
+    }
+
+    return '💕 *Hindu Marriage Compatibility (Kundli Matching)*\n\nI can perform traditional Vedic marriage compatibility analysis using the sacred 36-point Guna matching system!\n\n*What I analyze:*\n• *36-Point Guna System* - Varna, Tara, Yoni, Grahamaitri, Gana, Bhakut, Nadi\n• *Manglik Dosha* - Mars placement analysis and remedies\n• *Overall Compatibility* - Traditional Hindu marriage assessment\n\n*To get marriage compatibility:*\n\n1. Send your birth details (if not already set)\n2. Provide your partner\'s birth details\n\n*Partner\'s details format:*\n```\nName: [Partner Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n```\n\nExample:\n```\nName: Priya Sharma\nBirth: 25/12/1992, 10:30\nPlace: Jaipur, India\n```\n\nThis follows traditional Vedic astrology principles used for Hindu marriages! 🕉️';
+  }
+
+  // Lagna analysis requests
+  if (matchesIntent(message, ['lagna', 'ascendant', 'lagna analysis', 'rising sign analysis', /^lagna/])) {
+    if (!user.birthDate) {
+      return 'For Lagna (Ascendant) analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const kundli = vedicCalculator.generateVedicKundli({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (kundli.error) {
+        return `I encountered an issue: ${kundli.error}`;
+      }
+
+      const { lagnaAnalysis } = kundli.interpretations;
+
+      let response = `🏠 *Lagna (Ascendant) Analysis for ${kundli.name}*\n\n`;
+      response += `*Your Lagna:* ${kundli.lagna}\n`;
+      response += `*Strength:* ${lagnaAnalysis.strength}\n\n`;
+
+      response += `*Lagna Lord:* ${lagnaAnalysis.lord}\n`;
+      response += `*Lord's Position:* ${lagnaAnalysis.lordPosition}\n\n`;
+
+      response += `*Personality & Life Path:*\n${lagnaAnalysis.interpretation}\n\n`;
+
+      if (lagnaAnalysis.planetsInLagna.length > 0) {
+        response += `*Planets in Lagna:* ${lagnaAnalysis.planetsInLagna.join(', ')}\n\n`;
+      }
+
+      response += '*What this means for you:*\n';
+      response += '• Your Lagna represents your outward personality and first impressions\n';
+      response += '• It shows how others perceive you and your approach to life\n';
+      response += '• The Lagna lord indicates your life direction and natural talents\n';
+      response += '• Planets in Lagna modify your basic personality\n\n';
+
+      response += 'Your Lagna reveals your soul\'s chosen vehicle in this lifetime! ✨';
+
+      return response;
+    } catch (error) {
+      logger.error('Error generating Lagna analysis:', error);
+      return 'I\'m having trouble analyzing your Lagna right now. Please try again later.';
+    }
+  }
+
+  // Manglik dosha requests
+  if (matchesIntent(message, ['prashna', 'horary', 'question astrology', 'prashna kundli', /^prashna/, /^horary/])) {
+    return '🕉️ *Prashna (Horary) Astrology*\n\nPrashna astrology provides answers to specific questions using the exact time you ask them!\n\n*How it works:*\n• Predictions based on planetary positions at the moment of your question\n• No birth details required - just your question and current time\n• Answers specific queries about timing and outcomes\n\n*Perfect for questions like:*\n• "When will I get married?"\n• "Will I get the job?"\n• "When will my health improve?"\n• "Will my business succeed?"\n\n*To ask a Prashna question:*\nSend your question now, and I\'ll analyze the current planetary positions to give you guidance!\n\nExample: "Will I get married this year?"\n\nWhat question is on your mind? 🔮';
+  }
+
+  if (matchesIntent(message, ['ashtakavarga', '8-fold strength', 'bindu analysis', /^ashtakavarga/])) {
+    return '🕉️ *Ashtakavarga (8-Fold Strength Analysis)*\n\nAshtakavarga is an ancient Vedic technique that analyzes planetary strength across 12 houses!\n\n*What it reveals:*\n• 8-fold strength of each planet (Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn)\n• Bindu (dot) system showing favorable periods\n• Trikona Shodhana - triangle reduction for deeper insights\n• Ekadhipatya - sole lordship of houses\n\n*Benefits:*\n• Identifies strongest and weakest planetary periods\n• Shows favorable houses and life areas\n• Helps timing of important decisions\n• Reveals planetary power distribution\n\n*To get your Ashtakavarga analysis:*\nI need your complete birth details (date, time, place).\n\nThis advanced analysis provides deep insights into planetary strengths! 🔮';
+  }
+
+  if (matchesIntent(message, ['varga charts', 'divisional charts', 'navamsa', 'dashamsa', 'd-9', 'd-10', /^varga/, /^divisional/])) {
+    return '🕉️ *Varga (Divisional) Charts*\n\nVarga charts are specialized Vedic astrology divisions that provide detailed analysis for specific life areas!\n\n*Available Varga Charts:*\n\n🕉️ *D-9 Navamsa* - Marriage, spouse, spiritual life, dharma\n💼 *D-10 Dashamsa* - Career, profession, authority, public image\n👨‍👩‍👧‍👦 *D-12 Dwadasamsa* - Parents, ancestry, spiritual practices\n🏠 *D-16 Shodasamsa* - Vehicles, pleasures, happiness, comforts\n📚 *D-24 Chaturvimsamsa* - Education, learning, knowledge, intelligence\n⚕️ *D-30 Trimsamsa* - Misfortunes, health issues, enemies, obstacles\n\n*Benefits:*\n• Specialized analysis for different life areas\n• Deeper insights beyond the main birth chart\n• Understanding of specific life challenges and opportunities\n• Guidance for targeted spiritual practices\n\n*To get your Varga Charts analysis:*\nI need your complete birth details (date, time, place).\n\nThis comprehensive system reveals hidden aspects of your life journey! 🔮';
+  }
+
+  if (matchesIntent(message, ['shadbala', '6-fold strength', 'shad bala', 'planetary strength', /^shadbala/])) {
+    return '🕉️ *Shadbala (6-Fold Planetary Strength)*\n\nShadbala is the most comprehensive Vedic system for measuring planetary strength through 6 different methods!\n\n*Six Types of Bala (Strength):*\n\n🏛️ *Sthana Bala* - Positional strength (exaltation, own sign, house position)\n🧭 *Dig Bala* - Directional strength (planetary directions)\n⏰ *Kala Bala* - Temporal strength (time-based influences)\n⚡ *Chesta Bala* - Motivational strength (speed, retrograde)\n🌿 *Naisargika Bala* - Natural strength (innate planetary power)\n👁️ *Drik Bala* - Aspect strength (influences from other planets)\n\n*Benefits:*\n• Precise measurement of planetary power\n• Understanding of when planets are strongest\n• Guidance for timing important decisions\n• Identification of planetary periods for success\n• Comprehensive strength analysis beyond basic dignity\n\n*What You\'ll Discover:*\n• Strength percentage for each planet (0-100%)\n• Detailed breakdown of all 6 strength types\n• Planetary strength rankings\n• Recommendations based on strongest/weakest planets\n\n*To get your Shadbala analysis:*\nI need your complete birth details (date, time, place).\n\nThis advanced analysis provides the deepest insight into planetary power! 🔮';
+  }
+
+  if (matchesIntent(message, ['muhurta', 'electional', 'auspicious time', 'auspicious timing', 'electional astrology', /^muhurta/])) {
+    return '🕉️ *Muhurta (Electional Astrology) - Auspicious Timing*\n\nMuhurta is the ancient Vedic science of choosing the most auspicious time for important life events!\n\n*Perfect for:*\n💒 *Weddings & Marriages* - Find the most harmonious timing\n💼 *Business Launches* - Start ventures at peak success times\n🏠 *House Warming* - Bless new homes at auspicious moments\n📚 *Education Beginnings* - Start studies at favorable times\n🛐 *Religious Ceremonies* - Perform pujas at sacred times\n🎯 *Any Important Life Event*\n\n*What Muhurta Considers:*\n\n🌓 *Panchaka Dosha Avoidance* - 5 defects to avoid:\n   • Rahu Kalam (Rahu\'s period)\n   • Gulika Kalam (most inauspicious)\n   • Yamaganda Tithi\n   • Visha Ghati Nakshatra\n   • Surya Sankranti\n\n⭐ *Abhijit Muhurta* - The most auspicious time of day (noon ± 24 min)\n\n🪐 *Planetary Positions* - Benefic planets in favorable houses\n📅 *Weekday Auspiciousness* - Best days for different activities\n🌙 *Lunar Phase* - Tithi and lunar considerations\n\n*How to Get Muhurta:*\n\n1. Tell me your event type (wedding, business, house warming, etc.)\n2. Provide preferred date (DD/MM/YYYY)\n3. Give location (City, Country)\n\nExample: "Muhurta for wedding on 15/06/2024 in Mumbai, India"\n\nI\'ll provide:\n• Top 5 auspicious timings on your preferred date\n• Alternative dates if needed\n• Detailed reasoning for each timing\n• Planetary and astronomical factors\n\n*Benefits:*\n• Maximize success potential of important events\n• Minimize obstacles and challenges\n• Align with cosmic energies\n• Follow ancient Vedic wisdom\n\nWhat event are you planning? I\'ll find the perfect auspicious time! 🕉️';
+  }
+
+  if (matchesIntent(message, ['panchang', 'hindu calendar', 'almanac', 'daily panchang', 'tithi', /^panchang/])) {
+    return '🕉️ *Panchang (Hindu Almanac) - Daily Guidance*\n\nPanchang is the traditional Hindu calendar that provides comprehensive daily guidance based on lunar and planetary positions!\n\n*What Panchang Includes:*\n\n🌓 *Tithi* - Lunar day (Shukla/Krishna Paksha)\n⭐ *Nakshatra* - Lunar constellation (27 Nakshatras)\n🪐 *Yoga* - Planetary combination (27 Yogas)\n⚡ *Karana* - Half lunar day (11 Karanas)\n\n🌅 *Sunrise & Sunset* - Local timings\n🌙 *Moon Phase* - Current lunar phase\n📅 *Weekday* - Day of the week\n\n*Inauspicious Periods to Avoid:*\n😈 *Rahukalam* - Rahu\'s period (varies by weekday)\n👹 *Gulikakalam* - Most inauspicious time\n⚠️ *Yamagandam* - Inauspicious period\n\n⭐ *Abhijit Muhurta* - Most auspicious time of day\n\n*Daily Guidance:*\n✅ *Auspicious Activities* - Recommended for the day\n❌ *Inauspicious Activities* - To avoid on this day\n📊 *Overall Day Rating* - Auspicious/Neutral/Inauspicious\n\n*How to Get Panchang:*\n\nSend your request in this format:\n```\nPanchang for [DD/MM/YYYY] in [City, Country]\n```\n\n*Examples:*\n• "Panchang for 15/06/2024 in Mumbai, India"\n• "Daily Panchang for Delhi"\n• "Hindu Almanac for today in Bangalore"\n\n*Benefits:*\n• Daily spiritual guidance and planning\n• Know auspicious times for activities\n• Avoid inauspicious periods\n• Follow traditional Hindu calendar\n• Plan religious ceremonies and festivals\n• Cultural and religious awareness\n\n*Perfect for:*\n• Planning weddings and ceremonies\n• Business and important decisions\n• Religious observances\n• Daily spiritual practice\n• Cultural celebrations\n\nWhat date and location would you like the Panchang for? 🕉️';
+  }
+
+  if (matchesIntent(message, ['manglik', 'manglik dosha', 'mars dosha', 'mangal dosha', /^manglik/, /^mangal/])) {
+    if (!user.birthDate) {
+      return 'For Manglik dosha analysis, I need your complete birth details to check Mars placement.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const kundli = vedicCalculator.generateVedicKundli({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (kundli.error) {
+        return `I encountered an issue: ${kundli.error}`;
+      }
+
+      const marsPosition = kundli.planetaryPositions.mars;
+      const manglikHouses = [1, 2, 4, 7, 8, 12];
+      const isManglik = manglikHouses.includes(marsPosition?.house);
+
+      return `🔮 *Manglik Dosha Analysis*\n\n*Your Mars Position:* ${marsPosition?.signName || 'Unknown'} (${marsPosition?.house || 'Unknown'}th house)\n\n${isManglik ? '*Manglik Dosha Present*' : '*No Manglik Dosha*'}\n\n${isManglik ?
+        'Mars in houses 1, 2, 4, 7, 8, or 12 from Lagna indicates Manglik dosha.\n\n*Effects:* Can cause delays in marriage, relationship challenges.\n\n*Remedies:*\n• Fast on Tuesdays\n• Donate red items\n• Chant "Om Angarakaya Namaha"\n• Consider marriage to another Manglik\n• Consult priest for specific remedies' :
+        'Mars is not in dosha-causing positions. Generally favorable for marriage timing.'}\n\n*Note:* This is a basic analysis. Consult a qualified astrologer for detailed remedies. 🕉️`;
+    } catch (error) {
+      logger.error('Error in Manglik analysis:', error);
+      return '❌ Sorry, I couldn\'t analyze Manglik dosha right now. Please try again later.';
+    }
+  }
+
+  // Kaal Sarp Dosha analysis
+  if (matchesIntent(message, ['kaal sarp', 'kalsarp', 'kaalsarp', 'kal sarp', 'kalsarp dosha', 'kaal sarp dosha', /^kaal/, /^kal/])) {
+    if (!user.birthDate) {
+      return 'For Kaal Sarp Dosha analysis, I need your complete birth details to check Rahu-Ketu positions.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const kaalSarpAnalysis = vedicCalculator.generateKaalSarpDosha({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (kaalSarpAnalysis.error) {
+        return `I encountered an issue: ${kaalSarpAnalysis.error}`;
+      }
+
+      return kaalSarpAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Kaal Sarp Dosha analysis:', error);
+      return '❌ Sorry, I couldn\'t analyze Kaal Sarp Dosha right now. Please try again later.';
+    }
+  }
+
+  // Sade Sati analysis
+  if (matchesIntent(message, ['sade sati', 'sadesati', 'saturn period', 'saturn transit', 'shani sade sati', /^sade/, /^saturn.*sati/])) {
+    if (!user.birthDate) {
+      return 'For Sade Sati analysis, I need your complete birth details to check Saturn\'s transit through your Moon sign.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const sadeSatiAnalysis = vedicCalculator.generateSadeSatiAnalysis({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (sadeSatiAnalysis.error) {
+        return `I encountered an issue: ${sadeSatiAnalysis.error}`;
+      }
+
+      return sadeSatiAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Sade Sati analysis:', error);
+      return '❌ Sorry, I couldn\'t analyze Sade Sati right now. Please try again later.';
+    }
+  }
+
+  // Vedic Remedies requests
+  if (matchesIntent(message, ['remedies', 'gemstones', 'mantras', 'charities', 'pujas', 'yantras', 'vedic remedies', 'astrological remedies', /^remedies/, /^gemstone/, /^mantra/])) {
+    // Check for specific planet or dosha
+    const planetMatch = message.match(/(?:remedies?|gemstones?|mantras?|charities?)\s+(?:for\s+)?(?:planet\s+)?(\w+)/i);
+    const doshaMatch = message.match(/(?:remedies?|gemstones?|mantras?|charities?)\s+(?:for\s+)?(?:dosha\s+)?(\w+(?:\s+\w+)*)/i);
+
+    if (planetMatch) {
+      const planet = planetMatch[1].toLowerCase();
+      try {
+        const remedies = vedicRemedies.generatePlanetRemedies(planet);
+        if (remedies.error) {
+          return `I don't have remedies information for "${planet}". Available planets: Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu.`;
+        }
+        return remedies.summary;
+      } catch (error) {
+        logger.error('Error generating planet remedies:', error);
+        return '❌ Sorry, I couldn\'t generate remedies right now. Please try again later.';
+      }
+    } else if (doshaMatch) {
+      const dosha = doshaMatch[1].toLowerCase().replace(/\s+/g, '_');
+      try {
+        const remedies = vedicRemedies.generateDoshaRemedies(dosha);
+        if (remedies.error) {
+          return `I don't have remedies for "${dosha}". Available doshas: Kaal Sarp, Manglik, Pitru, Sade Sati.`;
         }
 
-        try {
-          const dashaAnalysis = vimshottariDasha.calculateVimshottariDasha({
-            birthDate: user.birthDate,
-            birthTime: user.birthTime || '12:00',
-            birthPlace: user.birthPlace || 'Delhi',
-            name: user.name
+        let response = `🕉️ *Vedic Remedies for ${dosha.replace(/_/g, ' ').toUpperCase()}*\n\n`;
+
+        if (remedies.gemstones) {
+          response += '*Recommended Gemstones:*\n';
+          remedies.gemstones.forEach(gem => {
+            response += `• ${gem.name} (${gem.sanskrit}) - ${gem.finger}, ${gem.day}\n`;
           });
-
-          if (dashaAnalysis.error) {
-            return `I encountered an issue: ${dashaAnalysis.error}`;
-          }
-
-          return dashaAnalysis.summary;
-        } catch (error) {
-          logger.error('Error in Vimshottari Dasha analysis:', error);
-          return '❌ Sorry, I couldn\'t analyze the Vimshottari Dasha right now. Please try again later.';
-        }
-      }
-
-      // Jaimini Astrology analysis requests
-      if (matchesIntent(message, ['jaimini astrology', 'jaimini', 'karakas', 'jaimini karakas', 'jaimini aspects', /^jaimini/])) {
-        if (!user.birthDate) {
-          return 'For Jaimini Astrology analysis, I need your complete birth details to calculate Karakas and aspects.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+          response += '\n';
         }
 
-        try {
-          const jaiminiAnalysis = jaiminiAstrology.calculateJaiminiKarakas({
-            birthDate: user.birthDate,
-            birthTime: user.birthTime || '12:00',
-            birthPlace: user.birthPlace || 'Delhi',
-            name: user.name
+        if (remedies.mantras) {
+          response += '*Powerful Mantras:*\n';
+          remedies.mantras.forEach(mantra => {
+            response += `• "${mantra.beej}"\n`;
           });
-
-          if (jaiminiAnalysis.error) {
-            return `I encountered an issue: ${jaiminiAnalysis.error}`;
-          }
-
-          return jaiminiAnalysis.summary;
-        } catch (error) {
-          logger.error('Error in Jaimini Astrology analysis:', error);
-          return '❌ Sorry, I couldn\'t analyze the Jaimini Astrology right now. Please try again later.';
+          response += '\n';
         }
+
+        if (remedies.puja) {
+          response += '*Recommended Puja:*\n';
+          response += `• ${remedies.puja.name} (${remedies.puja.duration})\n`;
+          response += `• Benefits: ${remedies.puja.benefits}\n\n`;
+        }
+
+        if (remedies.special) {
+          response += '*Special Practices:*\n';
+          if (remedies.special.fasting) { response += `• Fasting: ${remedies.special.fasting}\n`; }
+          if (remedies.special.offerings) { response += `• Offerings: ${remedies.special.offerings}\n`; }
+          if (remedies.special.rituals) { response += `• Rituals: ${remedies.special.rituals}\n`; }
+        }
+
+        response += '\n🕉️ *Note:* Consult a qualified priest or astrologer before performing pujas. Remedies should be personalized to your birth chart.';
+
+        return response;
+      } catch (error) {
+        logger.error('Error generating dosha remedies:', error);
+        return '❌ Sorry, I couldn\'t generate remedies right now. Please try again later.';
       }
+    } else {
+      // General remedies catalog
+      const catalog = vedicRemedies.getRemediesCatalog();
+      return `🕉️ *Vedic Remedies System*\n\nI can provide comprehensive remedies for:\n\n*Planetary Remedies:*\n• Gemstones, Mantras, Charities for each planet\n• Available for: ${catalog.gemstones.join(', ')}\n\n*Dosha Remedies:*\n• Specialized remedies for: ${catalog.doshas.join(', ')}\n\n*Examples:*\n• "remedies for sun" - Sun-related remedies\n• "gemstones for saturn" - Blue Sapphire details\n• "remedies for kaal sarp dosha" - Kaal Sarp remedies\n• "mantras for venus" - Venus mantras\n\nWhat specific remedies would you like to know about?`;
+    }
+  }
 
-      // Hindu Festivals requests
-      if (matchesIntent(message, ['hindu festivals', 'festival calendar', 'hindu calendar', 'festivals', 'auspicious timings', 'muhurta', /^festival/, /^hindu.*calendar/])) {
-        // Check for specific festival queries
-        const festivalMatch = message.match(/(?:festival|festivals)\s+(?:for|about|info)\s+(.+)/i);
-        const dateMatch = message.match(/(?:festivals?|calendar)\s+(?:for|on)\s+(\d{1,2}[-\/]\d{1,2}[-\/]\d{4}|\d{4}[-\/]\d{1,2}[-\/]\d{1,2})/i);
-        const upcomingMatch = message.match(/(?:upcoming|next|future)\s+(?:festivals?|calendar)/i);
+  // Islamic Astrology requests
+  if (matchesIntent(message, ['islamic astrology', 'ilm e nujum', 'ilm-e-nujum', 'islamic numerology', 'abjad', 'taqdeer', 'destiny islamic', 'muslim astrology', /^islamic/, /^ilm/, /^taqdeer/, /^abjad/])) {
+    // Check for specific Islamic analysis type
+    const numerologyMatch = message.match(/(?:numerology|abjad|ilm.*nujum)\s+(?:for\s+)?(?:name\s+)?(.+)/i);
+    const taqdeerMatch = message.match(/(?:taqdeer|destiny|islamic.*destiny)/i);
 
-        if (festivalMatch) {
-          const festivalName = festivalMatch[1].trim();
-          try {
-            const festivalDetails = hinduFestivals.getFestivalDetails(festivalName);
-            if (festivalDetails.error) {
-              return festivalDetails.error;
-            }
-
-            let response = `🕉️ *${festivalDetails.name} (${festivalDetails.english})*\n\n`;
-            response += `*📅 Date:* ${festivalDetails.date}\n`;
-            response += `*📆 Gregorian Period:* ${festivalDetails.gregorian_period}\n`;
-            response += `*🕉️ Significance:* ${festivalDetails.significance}\n`;
-            response += `*🙏 Deities:* ${festivalDetails.deities}\n\n`;
-
-            response += `*📿 Key Rituals:*\n`;
-            festivalDetails.rituals.forEach(ritual => {
-              response += `• ${ritual}\n`;
-            });
-            response += '\n';
-
-            response += `*⭐ Auspicious Activities:*\n`;
-            festivalDetails.auspicious_activities.forEach(activity => {
-              response += `• ${activity}\n`;
-            });
-            response += '\n';
-
-            response += `*⏰ Duration:* ${festivalDetails.duration}\n`;
-            if (festivalDetails.regional_variations) {
-              response += `*🌍 Regional Variations:* ${festivalDetails.regional_variations}\n`;
-            }
-
-            return response;
-          } catch (error) {
-            logger.error('Error getting festival details:', error);
-            return '❌ Sorry, I couldn\'t retrieve festival information right now. Please try again later.';
-          }
-        } else if (dateMatch) {
-          const dateStr = dateMatch[1];
-          try {
-            // Normalize date format
-            const normalizedDate = dateStr.replace(/[-\/]/g, '-');
-            const festivalsInfo = hinduFestivals.getFestivalsForDate(normalizedDate);
-            return festivalsInfo.summary;
-          } catch (error) {
-            logger.error('Error getting festivals for date:', error);
-            return '❌ Sorry, I couldn\'t retrieve festival information for this date. Please try again later.';
-          }
-        } else if (upcomingMatch) {
-          try {
-            const upcomingFestivals = hinduFestivals.getUpcomingFestivals();
-            return upcomingFestivals.summary;
-          } catch (error) {
-            logger.error('Error getting upcoming festivals:', error);
-            return '❌ Sorry, I couldn\'t retrieve upcoming festival information right now. Please try again later.';
-          }
-        } else {
-          // General Hindu festivals catalog
-          const catalog = hinduFestivals.getFestivalsCatalog();
-          return `🕉️ *Hindu Festivals & Auspicious Timings*\n\nDiscover the rich calendar of Hindu festivals and auspicious periods!\n\n*🪔 Major Hindu Festivals:*\n• Diwali (Festival of Lights) - Lakshmi Puja, prosperity\n• Holi (Festival of Colors) - Spring celebration, renewal\n• Durga Puja - Goddess worship, divine power\n• Maha Shivaratri - Lord Shiva's night, spiritual awakening\n• Raksha Bandhan - Brother-sister bond, protection\n• Ganesh Chaturthi - Lord Ganesha, obstacle removal\n• Navaratri - Nine nights of Goddess, purification\n• Krishna Janmashtami - Lord Krishna's birth, devotion\n• Ram Navami - Lord Rama's birth, righteousness\n• Hanuman Jayanti - Lord Hanuman, strength and devotion\n\n*⏰ Auspicious Timings:*\n• Abhijit Muhurta - Most auspicious time (11:30 AM - 12:30 PM)\n• Brahma Muhurta - Spiritual practices (pre-dawn)\n• Rahu Kalam - Avoid important work (varies by day)\n• Yamagandam - Challenging period (varies by day)\n\n*Examples of Requests:*\n• "festivals for 2024-10-28" - Festivals on Diwali\n• "festival about diwali" - Detailed Diwali information\n• "upcoming festivals" - Next 30 days festival calendar\n• "auspicious timings" - Daily muhurta guidance\n\nWhat festival or timing information would you like to know about?`;
+    if (numerologyMatch) {
+      const name = numerologyMatch[1].trim();
+      try {
+        const numerologyAnalysis = islamicAstrology.calculateIlmNujum(name);
+        if (numerologyAnalysis.error) {
+          return `I encountered an issue: ${numerologyAnalysis.error}`;
         }
+        return numerologyAnalysis.summary;
+      } catch (error) {
+        logger.error('Error in Islamic numerology analysis:', error);
+        return '❌ Sorry, I couldn\'t analyze the Islamic numerology right now. Please try again later.';
       }
-
-      // Vedic numerology requests
-      if (matchesIntent(message, ['vedic numerology', 'chani numerology', 'indian numerology', 'sanskrit numerology', /^vedic.?numerology/, /^chani/, /^indian.?numerology/])) {
-        if (!user.birthDate) {
-          return 'For Vedic Numerology analysis, I need your complete birth details and full name to calculate your Chani numbers.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15/06/1990, Rajesh Kumar Sharma';
-        }
-
-        try {
-          const vedicAnalysis = vedicNumerology.getVedicNumerologyAnalysis(user.birthDate, user.name || 'Unknown');
-
-          if (vedicAnalysis.error) {
-            return `I encountered an issue: ${vedicAnalysis.error}`;
-          }
-
-          return vedicAnalysis.summary;
-        } catch (error) {
-          logger.error('Error generating Vedic numerology analysis:', error);
-          return 'I\'m having trouble calculating your Vedic numerology right now. Please try again later.';
-        }
-      }
-
-      // Ayurvedic astrology requests
-      if (matchesIntent(message, ['ayurvedic astrology', 'ayurveda astrology', 'dosha analysis', 'vata pitta kapha', 'ayurvedic constitution', /^ayurvedic/, /^dosha/, /^vata/, /^pitta/, /^kapha/])) {
-        if (!user.birthDate) {
-          return 'For Ayurvedic Astrology analysis, I need your complete birth details to determine your dosha constitution.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-        }
-
-        try {
-          const ayurvedicAnalysis = ayurvedicAstrology.analyzeAyurvedicConstitution({
-            birthDate: user.birthDate,
-            birthTime: user.birthTime || '12:00',
-            birthPlace: user.birthPlace || 'Delhi'
-          });
-
-          if (ayurvedicAnalysis.error) {
-            return `I encountered an issue: ${ayurvedicAnalysis.error}`;
-          }
-
-          return ayurvedicAnalysis.summary;
-        } catch (error) {
-          logger.error('Error generating Ayurvedic astrology analysis:', error);
-          return 'I\'m having trouble analyzing your Ayurvedic constitution right now. Please try again later.';
-        }
-      }
-
-      // Ashtakavarga analysis requests
-    if (matchesIntent(message, ['ashtakavarga', '8-fold strength', 'bindu analysis', /^ashtakavarga/])) {
+    } else if (taqdeerMatch) {
       if (!user.birthDate) {
-        return 'For Ashtakavarga analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+        return 'For Taqdeer (Islamic Destiny) analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mecca, Saudi Arabia';
       }
 
       try {
-        const ashtakavargaAnalysis = vedicCalculator.generateAshtakavarga({
+        const taqdeerAnalysis = islamicAstrology.calculateTaqdeer({
           birthDate: user.birthDate,
           birthTime: user.birthTime || '12:00',
-          birthPlace: user.birthPlace || 'Delhi',
+          birthPlace: user.birthPlace || 'Mecca',
           name: user.name
         });
 
-        if (ashtakavargaAnalysis.error) {
-          return `I encountered an issue: ${ashtakavargaAnalysis.error}`;
+        if (taqdeerAnalysis.error) {
+          return `I encountered an issue: ${taqdeerAnalysis.error}`;
         }
 
-        return ashtakavargaAnalysis.summary;
-
+        return taqdeerAnalysis.summary;
       } catch (error) {
-        logger.error('Error in Ashtakavarga analysis:', error);
-        return '❌ Sorry, I couldn\'t perform the Ashtakavarga analysis right now. Please try again later.';
+        logger.error('Error in Taqdeer analysis:', error);
+        return '❌ Sorry, I couldn\'t analyze the Islamic destiny right now. Please try again later.';
       }
+    } else {
+      // General Islamic astrology catalog
+      const catalog = islamicAstrology.getIslamicAstrologyCatalog();
+      return '🕌 *Islamic Astrology - Ilm-e-Nujum & Taqdeer*\n\nDiscover your divine path through Islamic astrological wisdom!\n\n*Ilm-e-Nujum (Islamic Numerology):*\n• Abjad system analysis for names\n• Divine qualities and life purpose\n• Spiritual guidance based on name numbers\n\n*Taqdeer (Destiny Analysis):*\n• Lunar mansion influences at birth\n• Planetary guidance in Islamic context\n• Life path and divine purpose\n• Spiritual, worldly, and relationship destiny\n\n*Available Services:*\n• Islamic Numerology (Abjad)\n• Taqdeer Destiny Analysis\n• Lunar Mansions Guidance\n• Islamic Planetary Influences\n• Prayer Times & Auspicious Periods\n\n*Examples:*\n• "ilm e nujum for Muhammad" - Islamic numerology for a name\n• "taqdeer analysis" - Complete destiny analysis\n• "islamic astrology" - General Islamic astrology guidance\n\nWhat aspect of Islamic astrology interests you?';
+    }
+  }
+
+  // Vimshottari Dasha analysis requests
+  if (matchesIntent(message, ['vimshottari dasha', 'dasha analysis', 'planetary periods', 'dasha prediction', 'vimshottari', /^dasha/, /^vimshottari/])) {
+    if (!user.birthDate) {
+      return 'For Vimshottari Dasha analysis, I need your complete birth details to calculate your planetary periods.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
 
-    // Varga Charts analysis requests
-    if (matchesIntent(message, ['varga charts', 'divisional charts', 'navamsa', 'dashamsa', 'd-9', 'd-10', /^varga/, /^divisional/])) {
-      if (!user.birthDate) {
-        return 'For Varga Charts analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    try {
+      const dashaAnalysis = vimshottariDasha.calculateVimshottariDasha({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (dashaAnalysis.error) {
+        return `I encountered an issue: ${dashaAnalysis.error}`;
       }
 
+      return dashaAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Vimshottari Dasha analysis:', error);
+      return '❌ Sorry, I couldn\'t analyze the Vimshottari Dasha right now. Please try again later.';
+    }
+  }
+
+  // Jaimini Astrology analysis requests
+  if (matchesIntent(message, ['jaimini astrology', 'jaimini', 'karakas', 'jaimini karakas', 'jaimini aspects', /^jaimini/])) {
+    if (!user.birthDate) {
+      return 'For Jaimini Astrology analysis, I need your complete birth details to calculate Karakas and aspects.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const jaiminiAnalysis = jaiminiAstrology.calculateJaiminiKarakas({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (jaiminiAnalysis.error) {
+        return `I encountered an issue: ${jaiminiAnalysis.error}`;
+      }
+
+      return jaiminiAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Jaimini Astrology analysis:', error);
+      return '❌ Sorry, I couldn\'t analyze the Jaimini Astrology right now. Please try again later.';
+    }
+  }
+
+  // Hindu Festivals requests
+  if (matchesIntent(message, ['hindu festivals', 'festival calendar', 'hindu calendar', 'festivals', 'auspicious timings', 'muhurta', /^festival/, /^hindu.*calendar/])) {
+    // Check for specific festival queries
+    const festivalMatch = message.match(/(?:festival|festivals)\s+(?:for|about|info)\s+(.+)/i);
+    const dateMatch = message.match(/(?:festivals?|calendar)\s+(?:for|on)\s+(\d{1,2}[-\/]\d{1,2}[-\/]\d{4}|\d{4}[-\/]\d{1,2}[-\/]\d{1,2})/i);
+    const upcomingMatch = message.match(/(?:upcoming|next|future)\s+(?:festivals?|calendar)/i);
+
+    if (festivalMatch) {
+      const festivalName = festivalMatch[1].trim();
       try {
-        const vargaAnalysis = vedicCalculator.generateVargaCharts({
-          birthDate: user.birthDate,
-          birthTime: user.birthTime || '12:00',
-          birthPlace: user.birthPlace || 'Delhi',
-          name: user.name
-        });
-
-        if (vargaAnalysis.error) {
-          return `I encountered an issue: ${vargaAnalysis.error}`;
+        const festivalDetails = hinduFestivals.getFestivalDetails(festivalName);
+        if (festivalDetails.error) {
+          return festivalDetails.error;
         }
 
-        return vargaAnalysis.summary;
+        let response = `🕉️ *${festivalDetails.name} (${festivalDetails.english})*\n\n`;
+        response += `*📅 Date:* ${festivalDetails.date}\n`;
+        response += `*📆 Gregorian Period:* ${festivalDetails.gregorian_period}\n`;
+        response += `*🕉️ Significance:* ${festivalDetails.significance}\n`;
+        response += `*🙏 Deities:* ${festivalDetails.deities}\n\n`;
 
+        response += '*📿 Key Rituals:*\n';
+        festivalDetails.rituals.forEach(ritual => {
+          response += `• ${ritual}\n`;
+        });
+        response += '\n';
+
+        response += '*⭐ Auspicious Activities:*\n';
+        festivalDetails.auspicious_activities.forEach(activity => {
+          response += `• ${activity}\n`;
+        });
+        response += '\n';
+
+        response += `*⏰ Duration:* ${festivalDetails.duration}\n`;
+        if (festivalDetails.regional_variations) {
+          response += `*🌍 Regional Variations:* ${festivalDetails.regional_variations}\n`;
+        }
+
+        return response;
       } catch (error) {
-        logger.error('Error in Varga Charts analysis:', error);
-        return '❌ Sorry, I couldn\'t perform the Varga Charts analysis right now. Please try again later.';
+        logger.error('Error getting festival details:', error);
+        return '❌ Sorry, I couldn\'t retrieve festival information right now. Please try again later.';
       }
-    }
-
-    // Shadbala analysis requests
-    if (matchesIntent(message, ['shadbala', '6-fold strength', 'shad bala', 'planetary strength', /^shadbala/])) {
-      if (!user.birthDate) {
-        return 'For Shadbala analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-      }
-
+    } else if (dateMatch) {
+      const dateStr = dateMatch[1];
       try {
-        const shadbalaAnalysis = vedicCalculator.generateShadbala({
-          birthDate: user.birthDate,
-          birthTime: user.birthTime || '12:00',
-          birthPlace: user.birthPlace || 'Delhi',
-          name: user.name
-        });
-
-        if (shadbalaAnalysis.error) {
-          return `I encountered an issue: ${shadbalaAnalysis.error}`;
-        }
-
-        return shadbalaAnalysis.summary;
-
+        // Normalize date format
+        const normalizedDate = dateStr.replace(/[-\/]/g, '-');
+        const festivalsInfo = hinduFestivals.getFestivalsForDate(normalizedDate);
+        return festivalsInfo.summary;
       } catch (error) {
-        logger.error('Error in Shadbala analysis:', error);
-        return '❌ Sorry, I couldn\'t perform the Shadbala analysis right now. Please try again later.';
+        logger.error('Error getting festivals for date:', error);
+        return '❌ Sorry, I couldn\'t retrieve festival information for this date. Please try again later.';
       }
-    }
-
-    // Muhurta analysis requests
-    if (matchesIntent(message, ['muhurta', 'electional', 'auspicious time', 'auspicious timing', 'electional astrology', /^muhurta/])) {
-      return '🕉️ *Muhurta (Electional Astrology) - Auspicious Timing*\n\nTo find the perfect auspicious time for your event, please provide:\n\n*Event Type:* (wedding, business launch, house warming, education, religious ceremony, etc.)\n\n*Preferred Date:* DD/MM/YYYY\n\n*Location:* City, Country\n\nExample: "Wedding on 15/06/2024 in Mumbai, India"\n\nI\'ll analyze:\n• Panchaka Dosha (5 defects to avoid)\n• Abhijit Muhurta (most auspicious time)\n• Planetary positions for your event type\n• Weekday and lunar phase suitability\n• Alternative dates if needed\n\nWhat event are you planning? 🔮';
-    }
-
-    // Process Muhurta requests with event details
-    const muhurtaMatch = message.match(/(?:muhurta|auspicious.*time).*?(?:for|on)?\s*([a-zA-Z\s]+?)\s*(?:on|at)?\s*(\d{1,2}\/\d{1,2}\/\d{4})\s*(?:in|at)?\s*([a-zA-Z\s,]+)$/i);
-    if (muhurtaMatch) {
-      const eventType = muhurtaMatch[1].trim();
-      const preferredDate = muhurtaMatch[2].trim();
-      const location = muhurtaMatch[3].trim();
-
+    } else if (upcomingMatch) {
       try {
-        const muhurtaAnalysis = vedicCalculator.generateMuhurta({
-          eventType,
-          preferredDate,
-          location
-        });
-
-        if (muhurtaAnalysis.error) {
-          return `I encountered an issue: ${muhurtaAnalysis.error}`;
-        }
-
-        return muhurtaAnalysis.summary;
-
+        const upcomingFestivals = hinduFestivals.getUpcomingFestivals();
+        return upcomingFestivals.summary;
       } catch (error) {
-        logger.error('Error in Muhurta analysis:', error);
-        return '❌ Sorry, I couldn\'t perform the Muhurta analysis right now. Please try again later.';
+        logger.error('Error getting upcoming festivals:', error);
+        return '❌ Sorry, I couldn\'t retrieve upcoming festival information right now. Please try again later.';
       }
+    } else {
+      // General Hindu festivals catalog
+      const catalog = hinduFestivals.getFestivalsCatalog();
+      return '🕉️ *Hindu Festivals & Auspicious Timings*\n\nDiscover the rich calendar of Hindu festivals and auspicious periods!\n\n*🪔 Major Hindu Festivals:*\n• Diwali (Festival of Lights) - Lakshmi Puja, prosperity\n• Holi (Festival of Colors) - Spring celebration, renewal\n• Durga Puja - Goddess worship, divine power\n• Maha Shivaratri - Lord Shiva\'s night, spiritual awakening\n• Raksha Bandhan - Brother-sister bond, protection\n• Ganesh Chaturthi - Lord Ganesha, obstacle removal\n• Navaratri - Nine nights of Goddess, purification\n• Krishna Janmashtami - Lord Krishna\'s birth, devotion\n• Ram Navami - Lord Rama\'s birth, righteousness\n• Hanuman Jayanti - Lord Hanuman, strength and devotion\n\n*⏰ Auspicious Timings:*\n• Abhijit Muhurta - Most auspicious time (11:30 AM - 12:30 PM)\n• Brahma Muhurta - Spiritual practices (pre-dawn)\n• Rahu Kalam - Avoid important work (varies by day)\n• Yamagandam - Challenging period (varies by day)\n\n*Examples of Requests:*\n• "festivals for 2024-10-28" - Festivals on Diwali\n• "festival about diwali" - Detailed Diwali information\n• "upcoming festivals" - Next 30 days festival calendar\n• "auspicious timings" - Daily muhurta guidance\n\nWhat festival or timing information would you like to know about?';
+    }
+  }
+
+  // Vedic numerology requests
+  if (matchesIntent(message, ['vedic numerology', 'chani numerology', 'indian numerology', 'sanskrit numerology', /^vedic.?numerology/, /^chani/, /^indian.?numerology/])) {
+    if (!user.birthDate) {
+      return 'For Vedic Numerology analysis, I need your complete birth details and full name to calculate your Chani numbers.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15/06/1990, Rajesh Kumar Sharma';
     }
 
-    // Panchang analysis requests
-    if (matchesIntent(message, ['panchang', 'hindu calendar', 'almanac', 'daily panchang', 'tithi', /^panchang/])) {
-      return '🕉️ *Panchang (Hindu Almanac) - Daily Guidance*\n\nTo get the Panchang for any date, please provide:\n\n*Date:* DD/MM/YYYY (or "today")\n\n*Location:* City, Country\n\nExample: "Panchang for 15/06/2024 in Mumbai, India"\n\nI\'ll provide complete daily guidance including:\n• Tithi, Nakshatra, Yoga, Karana\n• Sunrise/sunset times\n• Inauspicious periods (Rahukalam, Gulikakalam)\n• Abhijit Muhurta (most auspicious time)\n• Recommended and activities to avoid\n• Overall day rating\n\nWhat date and location would you like? 🔮';
-    }
+    try {
+      const vedicAnalysis = vedicNumerology.getVedicNumerologyAnalysis(user.birthDate, user.name || 'Unknown');
 
-    // Process Panchang requests with date and location
-    const panchangMatch = message.match(/(?:panchang|hindu calendar|almanac|daily panchang).*?(?:for)?\s*(\d{1,2}\/\d{1,2}\/\d{4}|today)\s*(?:in|at)?\s*([a-zA-Z\s,]+)$/i);
-    if (panchangMatch) {
-      let date = panchangMatch[1];
-      const location = panchangMatch[2].trim();
-
-      // Handle "today"
-      if (date.toLowerCase() === 'today') {
-        const now = new Date();
-        date = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+      if (vedicAnalysis.error) {
+        return `I encountered an issue: ${vedicAnalysis.error}`;
       }
 
-      try {
-        const panchangAnalysis = vedicCalculator.generatePanchang({
-          date,
-          location
-        });
+      return vedicAnalysis.summary;
+    } catch (error) {
+      logger.error('Error generating Vedic numerology analysis:', error);
+      return 'I\'m having trouble calculating your Vedic numerology right now. Please try again later.';
+    }
+  }
 
-        if (panchangAnalysis.error) {
-          return `I encountered an issue: ${panchangAnalysis.error}`;
-        }
-
-        return panchangAnalysis.summary;
-
-      } catch (error) {
-        logger.error('Error in Panchang analysis:', error);
-        return '❌ Sorry, I couldn\'t generate the Panchang right now. Please try again later.';
-      }
+  // Ayurvedic astrology requests
+  if (matchesIntent(message, ['ayurvedic astrology', 'ayurveda astrology', 'dosha analysis', 'vata pitta kapha', 'ayurvedic constitution', /^ayurvedic/, /^dosha/, /^vata/, /^pitta/, /^kapha/])) {
+    if (!user.birthDate) {
+      return 'For Ayurvedic Astrology analysis, I need your complete birth details to determine your dosha constitution.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
 
-    // Prashna Astrology processing
-    if (matchesIntent(message, ['prashna', 'horary', 'question astrology', /^prashna/, /^horary/]) ||
-        message.includes('?') && (message.includes('when') || message.includes('will') || message.includes('should'))) {
+    try {
+      const ayurvedicAnalysis = ayurvedicAstrology.analyzeAyurvedicConstitution({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
 
-      // Extract the question
-      const question = message.trim();
+      if (ayurvedicAnalysis.error) {
+        return `I encountered an issue: ${ayurvedicAnalysis.error}`;
+      }
 
-      // Get current time and user's location (simplified - would need user location)
+      return ayurvedicAnalysis.summary;
+    } catch (error) {
+      logger.error('Error generating Ayurvedic astrology analysis:', error);
+      return 'I\'m having trouble analyzing your Ayurvedic constitution right now. Please try again later.';
+    }
+  }
+
+  // Ashtakavarga analysis requests
+  if (matchesIntent(message, ['ashtakavarga', '8-fold strength', 'bindu analysis', /^ashtakavarga/])) {
+    if (!user.birthDate) {
+      return 'For Ashtakavarga analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const ashtakavargaAnalysis = vedicCalculator.generateAshtakavarga({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (ashtakavargaAnalysis.error) {
+        return `I encountered an issue: ${ashtakavargaAnalysis.error}`;
+      }
+
+      return ashtakavargaAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Ashtakavarga analysis:', error);
+      return '❌ Sorry, I couldn\'t perform the Ashtakavarga analysis right now. Please try again later.';
+    }
+  }
+
+  // Varga Charts analysis requests
+  if (matchesIntent(message, ['varga charts', 'divisional charts', 'navamsa', 'dashamsa', 'd-9', 'd-10', /^varga/, /^divisional/])) {
+    if (!user.birthDate) {
+      return 'For Varga Charts analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const vargaAnalysis = vedicCalculator.generateVargaCharts({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (vargaAnalysis.error) {
+        return `I encountered an issue: ${vargaAnalysis.error}`;
+      }
+
+      return vargaAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Varga Charts analysis:', error);
+      return '❌ Sorry, I couldn\'t perform the Varga Charts analysis right now. Please try again later.';
+    }
+  }
+
+  // Shadbala analysis requests
+  if (matchesIntent(message, ['shadbala', '6-fold strength', 'shad bala', 'planetary strength', /^shadbala/])) {
+    if (!user.birthDate) {
+      return 'For Shadbala analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const shadbalaAnalysis = vedicCalculator.generateShadbala({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
+      });
+
+      if (shadbalaAnalysis.error) {
+        return `I encountered an issue: ${shadbalaAnalysis.error}`;
+      }
+
+      return shadbalaAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Shadbala analysis:', error);
+      return '❌ Sorry, I couldn\'t perform the Shadbala analysis right now. Please try again later.';
+    }
+  }
+
+  // Muhurta analysis requests
+  if (matchesIntent(message, ['muhurta', 'electional', 'auspicious time', 'auspicious timing', 'electional astrology', /^muhurta/])) {
+    return '🕉️ *Muhurta (Electional Astrology) - Auspicious Timing*\n\nTo find the perfect auspicious time for your event, please provide:\n\n*Event Type:* (wedding, business launch, house warming, education, religious ceremony, etc.)\n\n*Preferred Date:* DD/MM/YYYY\n\n*Location:* City, Country\n\nExample: "Wedding on 15/06/2024 in Mumbai, India"\n\nI\'ll analyze:\n• Panchaka Dosha (5 defects to avoid)\n• Abhijit Muhurta (most auspicious time)\n• Planetary positions for your event type\n• Weekday and lunar phase suitability\n• Alternative dates if needed\n\nWhat event are you planning? 🔮';
+  }
+
+  // Process Muhurta requests with event details
+  const muhurtaMatch = message.match(/(?:muhurta|auspicious.*time).*?(?:for|on)?\s*([a-zA-Z\s]+?)\s*(?:on|at)?\s*(\d{1,2}\/\d{1,2}\/\d{4})\s*(?:in|at)?\s*([a-zA-Z\s,]+)$/i);
+  if (muhurtaMatch) {
+    const eventType = muhurtaMatch[1].trim();
+    const preferredDate = muhurtaMatch[2].trim();
+    const location = muhurtaMatch[3].trim();
+
+    try {
+      const muhurtaAnalysis = vedicCalculator.generateMuhurta({
+        eventType,
+        preferredDate,
+        location
+      });
+
+      if (muhurtaAnalysis.error) {
+        return `I encountered an issue: ${muhurtaAnalysis.error}`;
+      }
+
+      return muhurtaAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Muhurta analysis:', error);
+      return '❌ Sorry, I couldn\'t perform the Muhurta analysis right now. Please try again later.';
+    }
+  }
+
+  // Panchang analysis requests
+  if (matchesIntent(message, ['panchang', 'hindu calendar', 'almanac', 'daily panchang', 'tithi', /^panchang/])) {
+    return '🕉️ *Panchang (Hindu Almanac) - Daily Guidance*\n\nTo get the Panchang for any date, please provide:\n\n*Date:* DD/MM/YYYY (or "today")\n\n*Location:* City, Country\n\nExample: "Panchang for 15/06/2024 in Mumbai, India"\n\nI\'ll provide complete daily guidance including:\n• Tithi, Nakshatra, Yoga, Karana\n• Sunrise/sunset times\n• Inauspicious periods (Rahukalam, Gulikakalam)\n• Abhijit Muhurta (most auspicious time)\n• Recommended and activities to avoid\n• Overall day rating\n\nWhat date and location would you like? 🔮';
+  }
+
+  // Process Panchang requests with date and location
+  const panchangMatch = message.match(/(?:panchang|hindu calendar|almanac|daily panchang).*?(?:for)?\s*(\d{1,2}\/\d{1,2}\/\d{4}|today)\s*(?:in|at)?\s*([a-zA-Z\s,]+)$/i);
+  if (panchangMatch) {
+    let date = panchangMatch[1];
+    const location = panchangMatch[2].trim();
+
+    // Handle "today"
+    if (date.toLowerCase() === 'today') {
       const now = new Date();
-      const questionTime = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-      // For demo purposes, use a default location. In production, get from user profile
-      const questionPlace = user.birthPlace || 'Delhi, India';
-
-      try {
-        const prashnaAnalysis = vedicCalculator.generatePrashnaAnalysis({
-          question,
-          questionTime,
-          questionPlace
-        });
-
-        if (prashnaAnalysis.error) {
-          return `❌ *Prashna Analysis Error*\n\n${prashnaAnalysis.error}\n\nPlease try again or provide more details.`;
-        }
-
-        return prashnaAnalysis.summary;
-
-      } catch (error) {
-        logger.error('Error in Prashna analysis:', error);
-        return '❌ Sorry, I couldn\'t perform the Prashna analysis right now. Please try again later.';
-      }
+      date = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
     }
 
-    // Default response with interactive options
+    try {
+      const panchangAnalysis = vedicCalculator.generatePanchang({
+        date,
+        location
+      });
 
-   // Solar return analysis requests
-    if (matchesIntent(message, ['solar return', 'birthday chart', 'annual chart', 'year ahead', /^solar.?return/])) {
-     if (!user.birthDate) {
-       return 'For solar return analysis, I need your complete birth details to calculate your annual birthday chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
+      if (panchangAnalysis.error) {
+        return `I encountered an issue: ${panchangAnalysis.error}`;
+      }
 
-     try {
-       const solarReturnAnalysis = vedicCalculator.calculateSolarReturn({
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi'
-       });
+      return panchangAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Panchang analysis:', error);
+      return '❌ Sorry, I couldn\'t generate the Panchang right now. Please try again later.';
+    }
+  }
 
-       if (solarReturnAnalysis.error) {
-         return `I encountered an issue: ${solarReturnAnalysis.error}`;
-       }
+  // Prashna Astrology processing
+  if (matchesIntent(message, ['prashna', 'horary', 'question astrology', /^prashna/, /^horary/]) ||
+        message.includes('?') && (message.includes('when') || message.includes('will') || message.includes('should'))) {
+    // Extract the question
+    const question = message.trim();
 
-       let response = '🌞 *Solar Return Analysis*\n\n';
-       response += `*Your ${solarReturnAnalysis.yearAhead} Birthday Chart:*\n\n`;
+    // Get current time and user's location (simplified - would need user location)
+    const now = new Date();
+    const questionTime = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-       response += `*Solar Return Date:* ${solarReturnAnalysis.solarReturnDate}\n`;
-       response += `*Time:* ${solarReturnAnalysis.solarReturnTime}\n\n`;
+    // For demo purposes, use a default location. In production, get from user profile
+    const questionPlace = user.birthPlace || 'Delhi, India';
 
-       if (solarReturnAnalysis.dominantThemes.length > 0) {
-         response += '*Dominant Themes for the Year:*\n';
-         solarReturnAnalysis.dominantThemes.forEach(theme => {
-           response += `• ${theme}\n`;
-         });
-         response += '\n';
-       }
+    try {
+      const prashnaAnalysis = vedicCalculator.generatePrashnaAnalysis({
+        question,
+        questionTime,
+        questionPlace
+      });
 
-       if (solarReturnAnalysis.opportunities.length > 0) {
-         response += '*Key Opportunities:*\n';
-         solarReturnAnalysis.opportunities.forEach(opportunity => {
-           response += `• ${opportunity}\n`;
-         });
-         response += '\n';
-       }
+      if (prashnaAnalysis.error) {
+        return `❌ *Prashna Analysis Error*\n\n${prashnaAnalysis.error}\n\nPlease try again or provide more details.`;
+      }
 
-       if (solarReturnAnalysis.challenges.length > 0) {
-         response += '*Areas of Growth:*\n';
-         solarReturnAnalysis.challenges.forEach(challenge => {
-           response += `• ${challenge}\n`;
-         });
-         response += '\n';
-       }
+      return prashnaAnalysis.summary;
+    } catch (error) {
+      logger.error('Error in Prashna analysis:', error);
+      return '❌ Sorry, I couldn\'t perform the Prashna analysis right now. Please try again later.';
+    }
+  }
 
-       response += '*Solar Return Summary:*\n';
-       response += `${solarReturnAnalysis.summary}\n\n`;
+  // Default response with interactive options
 
-       response += 'Your solar return reveals the cosmic themes for your coming year! 📅';
+  // Solar return analysis requests
+  if (matchesIntent(message, ['solar return', 'birthday chart', 'annual chart', 'year ahead', /^solar.?return/])) {
+    if (!user.birthDate) {
+      return 'For solar return analysis, I need your complete birth details to calculate your annual birthday chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
 
-       return response;
-     } catch (error) {
-       logger.error('Error generating solar return analysis:', error);
-       return 'I\'m having trouble calculating your solar return chart right now. Please try again later.';
-     }
-   }
+    try {
+      const solarReturnAnalysis = vedicCalculator.calculateSolarReturn({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
+
+      if (solarReturnAnalysis.error) {
+        return `I encountered an issue: ${solarReturnAnalysis.error}`;
+      }
+
+      let response = '🌞 *Solar Return Analysis*\n\n';
+      response += `*Your ${solarReturnAnalysis.yearAhead} Birthday Chart:*\n\n`;
+
+      response += `*Solar Return Date:* ${solarReturnAnalysis.solarReturnDate}\n`;
+      response += `*Time:* ${solarReturnAnalysis.solarReturnTime}\n\n`;
+
+      if (solarReturnAnalysis.dominantThemes.length > 0) {
+        response += '*Dominant Themes for the Year:*\n';
+        solarReturnAnalysis.dominantThemes.forEach(theme => {
+          response += `• ${theme}\n`;
+        });
+        response += '\n';
+      }
+
+      if (solarReturnAnalysis.opportunities.length > 0) {
+        response += '*Key Opportunities:*\n';
+        solarReturnAnalysis.opportunities.forEach(opportunity => {
+          response += `• ${opportunity}\n`;
+        });
+        response += '\n';
+      }
+
+      if (solarReturnAnalysis.challenges.length > 0) {
+        response += '*Areas of Growth:*\n';
+        solarReturnAnalysis.challenges.forEach(challenge => {
+          response += `• ${challenge}\n`;
+        });
+        response += '\n';
+      }
+
+      response += '*Solar Return Summary:*\n';
+      response += `${solarReturnAnalysis.summary}\n\n`;
+
+      response += 'Your solar return reveals the cosmic themes for your coming year! 📅';
+
+      return response;
+    } catch (error) {
+      logger.error('Error generating solar return analysis:', error);
+      return 'I\'m having trouble calculating your solar return chart right now. Please try again later.';
+    }
+  }
 
   // Asteroid analysis requests
   if (matchesIntent(message, ['asteroids', 'asteroid analysis', 'chiron', 'juno', 'vesta', 'pallas', /^asteroid/])) {
@@ -1639,21 +1632,25 @@ const generateAstrologyResponse = async(messageText, user) => {
       response += '*Four Key Asteroids:*\n\n';
 
       // Chiron
+      response += `🌾 *Ceres in ${asteroidAnalysis.asteroids.ceres.sign}*\n`;
+      response += `• Nurturing Style: ${asteroidAnalysis.interpretations.ceres.nurturingStyle}\n`;
+      response += `• Caregiving Approach: ${asteroidAnalysis.interpretations.ceres.caregivingApproach}\n\n`;
+
       response += `🩹 *Chiron in ${asteroidAnalysis.asteroids.chiron.sign}*\n`;
       response += `• Core Wound: ${asteroidAnalysis.interpretations.chiron.coreWound}\n`;
       response += `• Healing Gift: ${asteroidAnalysis.interpretations.chiron.healingGift}\n\n`;
 
-      // Juno
+
       response += `💍 *Juno in ${asteroidAnalysis.asteroids.juno.sign}*\n`;
       response += `• Relationship Style: ${asteroidAnalysis.interpretations.juno.relationshipStyle}\n`;
       response += `• Commitment Style: ${asteroidAnalysis.interpretations.juno.commitmentStyle}\n\n`;
 
-      // Vesta
+
       response += `🏛️ *Vesta in ${asteroidAnalysis.asteroids.vesta.sign}*\n`;
       response += `• Sacred Focus: ${asteroidAnalysis.interpretations.vesta.sacredFocus}\n`;
       response += `• Devotion Style: ${asteroidAnalysis.interpretations.vesta.devotionStyle}\n\n`;
 
-      // Pallas
+
       response += `🎨 *Pallas in ${asteroidAnalysis.asteroids.pallas.sign}*\n`;
       response += `• Wisdom Type: ${asteroidAnalysis.interpretations.pallas.wisdomType}\n`;
       response += `• Problem Solving: ${asteroidAnalysis.interpretations.pallas.problemSolving}\n\n`;
@@ -1674,13 +1671,13 @@ const generateAstrologyResponse = async(messageText, user) => {
   }
 
   // Astrocartography requests
-   if (matchesIntent(message, ['astrocartography', 'astro cartography', 'planetary lines', 'relocation', /^astro.?cartography/])) {
-     if (!user.birthDate) {
-       return 'For astrocartography analysis, I need your complete birth details to map planetary lines across the globe.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, New York, USA';
-     }
+  if (matchesIntent(message, ['astrocartography', 'astro cartography', 'planetary lines', 'relocation', /^astro.?cartography/])) {
+    if (!user.birthDate) {
+      return 'For astrocartography analysis, I need your complete birth details to map planetary lines across the globe.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, New York, USA';
+    }
 
-     try {
-       const astrocartographyAnalysis =
+    try {
+      const astrocartographyAnalysis =
          astrocartographyReader.generateAstrocartography({
            birthDate: user.birthDate,
            birthTime: user.birthTime || '12:00',
@@ -1688,12 +1685,12 @@ const generateAstrologyResponse = async(messageText, user) => {
            name: user.name
          });
 
-       return astrocartographyAnalysis.astrocartographyDescription;
-     } catch (error) {
-       logger.error('Error generating astrocartography analysis:', error);
-       return 'I\'m having trouble mapping the planetary lines right now. Please try again later.';
-     }
-   }
+      return astrocartographyAnalysis.astrocartographyDescription;
+    } catch (error) {
+      logger.error('Error generating astrocartography analysis:', error);
+      return 'I\'m having trouble mapping the planetary lines right now. Please try again later.';
+    }
+  }
 
   // Electional astrology requests
   if (matchesIntent(message, ['electional', 'auspicious time', 'best time', 'election', /^election/]) ||
@@ -1702,46 +1699,46 @@ const generateAstrologyResponse = async(messageText, user) => {
   }
 
   // Horary astrology requests
-   if (matchesIntent(message, ['horary', /^horary/]) ||
+  if (matchesIntent(message, ['horary', /^horary/]) ||
        (matchesIntent(message, ['question']) &&
         matchesIntent(message, ['when', 'will', 'should', 'can', 'does', 'is', 'are']))) {
-     // Extract the question from the message
-     const questionMatch = message.match(/(?:horary|question|ask)\s+(.*)/i);
-     const question = questionMatch ?
-       questionMatch[1].trim() :
-       message.replace(/horary/i, '').trim();
+    // Extract the question from the message
+    const questionMatch = message.match(/(?:horary|question|ask)\s+(.*)/i);
+    const question = questionMatch ?
+      questionMatch[1].trim() :
+      message.replace(/horary/i, '').trim();
 
-     if (!question || question.length < 5) {
-       return 'For horary astrology, please ask a clear, specific question. Horary works best with questions like:\n\n• "When will I get a job?"\n• "Will my relationship work out?"\n• "Should I move to another city?"\n• "When will my health improve?"\n\nWhat is your question?';
-     }
+    if (!question || question.length < 5) {
+      return 'For horary astrology, please ask a clear, specific question. Horary works best with questions like:\n\n• "When will I get a job?"\n• "Will my relationship work out?"\n• "Should I move to another city?"\n• "When will my health improve?"\n\nWhat is your question?';
+    }
 
-     try {
-       const currentTime = new Date()
-         .toLocaleString('en-IN', {
-           timeZone: HORARY_TIMEZONE,
-           year: 'numeric',
-           month: '2-digit',
-           day: '2-digit',
-           hour: '2-digit',
-           minute: '2-digit'
-         })
-         .replace(/(\d+)\/(\d+)\/(\d+),\s*(.+)/, '$2/$1/$3 $4');
+    try {
+      const currentTime = new Date()
+        .toLocaleString('en-IN', {
+          timeZone: HORARY_TIMEZONE,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+        .replace(/(\d+)\/(\d+)\/(\d+),\s*(.+)/, '$2/$1/$3 $4');
 
-       const horaryReading = horaryReader.generateHoraryReading(
-         question,
-         currentTime
-       );
+      const horaryReading = horaryReader.generateHoraryReading(
+        question,
+        currentTime
+      );
 
-       if (!horaryReading.valid) {
-         return horaryReading.reason;
-       }
+      if (!horaryReading.valid) {
+        return horaryReading.reason;
+      }
 
-       return horaryReading.horaryDescription;
-     } catch (error) {
-       logger.error('Error generating horary reading:', error);
-       return 'I\'m having trouble casting the horary chart right now. Please try again later.';
-     }
-   }
+      return horaryReading.horaryDescription;
+    } catch (error) {
+      logger.error('Error generating horary reading:', error);
+      return 'I\'m having trouble casting the horary chart right now. Please try again later.';
+    }
+  }
 
   // Secondary progressions requests
   if (matchesIntent(message, ['progressions', 'secondary progressions', 'progressed chart', /^progressions/])) {
@@ -1844,45 +1841,45 @@ const generateAstrologyResponse = async(messageText, user) => {
   }
 
   // Birth chart requests
-   if (matchesIntent(message, ['birth chart', 'kundli', 'chart', /^kundli/]) ||
+  if (matchesIntent(message, ['birth chart', 'kundli', 'chart', /^kundli/]) ||
        (matchesIntent(message, ['complete']) && matchesIntent(message, ['analysis']))) {
-     if (!user.birthDate) {
-       return 'To generate your complete Vedic birth chart analysis, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
-     }
+    if (!user.birthDate) {
+      return 'To generate your complete Vedic birth chart analysis, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
 
-     try {
-       const chartData = vedicCalculator.generateCompleteVedicAnalysis({
-         name: user.name,
-         birthDate: user.birthDate,
-         birthTime: user.birthTime || '12:00',
-         birthPlace: user.birthPlace || 'Delhi'
-       });
+    try {
+      const chartData = vedicCalculator.generateCompleteVedicAnalysis({
+        name: user.name,
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
 
-       return chartData.comprehensiveDescription;
-     } catch (error) {
-       logger.error('Error generating complete Vedic analysis:', error);
-       // Fallback to basic chart
-       try {
-         const basicChart = vedicCalculator.generateBasicBirthChart({
-           name: user.name,
-           birthDate: user.birthDate,
-           birthTime: user.birthTime || '12:00',
-           birthPlace: user.birthPlace || 'Delhi'
-         });
+      return chartData.comprehensiveDescription;
+    } catch (error) {
+      logger.error('Error generating complete Vedic analysis:', error);
+      // Fallback to basic chart
+      try {
+        const basicChart = vedicCalculator.generateBasicBirthChart({
+          name: user.name,
+          birthDate: user.birthDate,
+          birthTime: user.birthTime || '12:00',
+          birthPlace: user.birthPlace || 'Delhi'
+        });
 
-         let response = '📊 *Your Vedic Birth Chart*\n\n';
-         response += `☀️ *Sun Sign:* ${basicChart.sunSign}\n`;
-         response += `🌙 *Moon Sign:* ${basicChart.moonSign}\n`;
-         response += `⬆️ *Rising Sign:* ${basicChart.risingSign}\n\n`;
-         response +=
+        let response = '📊 *Your Vedic Birth Chart*\n\n';
+        response += `☀️ *Sun Sign:* ${basicChart.sunSign}\n`;
+        response += `🌙 *Moon Sign:* ${basicChart.moonSign}\n`;
+        response += `⬆️ *Rising Sign:* ${basicChart.risingSign}\n\n`;
+        response +=
            'I\'m having trouble generating the full analysis right now. Please try again later.';
 
-         return response;
-       } catch (fallbackError) {
-         return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
-       }
-     }
-   }
+        return response;
+      } catch (fallbackError) {
+        return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
+      }
+    }
+  }
 
   // Synastry analysis requests
   if (matchesIntent(message, ['synastry', 'relationship astrology', 'couple analysis', 'partner compatibility', /^synastry/])) {
@@ -1894,13 +1891,13 @@ const generateAstrologyResponse = async(messageText, user) => {
   }
 
   // Compatibility requests
-   if (matchesIntent(message, ['compatibility', 'match', 'compatible', /^compatib/])) {
-     if (!user.birthDate) {
-       return 'For compatibility analysis, I need your birth details first. Please share your birth date (DD/MM/YYYY) so I can get started.';
-     }
+  if (matchesIntent(message, ['compatibility', 'match', 'compatible', /^compatib/])) {
+    if (!user.birthDate) {
+      return 'For compatibility analysis, I need your birth details first. Please share your birth date (DD/MM/YYYY) so I can get started.';
+    }
 
-     return '💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I\'ll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!';
-   }
+    return '💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I\'ll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!';
+  }
 
   // Profile/birth details
   if (matchesIntent(message, ['profile', 'details', 'birth', /^my (profile|details|birth)/])) {
@@ -1912,13 +1909,13 @@ const generateAstrologyResponse = async(messageText, user) => {
   }
 
   // Help and general responses
-   if (matchesIntent(message, ['help', 'what can you do', 'commands', /^help/, /^what do you do/])) {
-     return '🌟 *I\'m your Personal Cosmic Coach!*\n\nI can help you with:\n\n📅 *Daily Horoscope* - Personalized daily guidance\n📊 *Vedic Birth Chart* - Your cosmic blueprint with advanced dasha & transits\n🕉️ *Hindu Vedic Astrology* - Traditional Kundli, marriage matching, Lagna analysis\n🌏 *BaZi Analysis* - Chinese Four Pillars astrology\n💕 *Compatibility* - Relationship insights\n\n🔮 *Divination Systems:*\n🔮 *Tarot Readings* - Single card, 3-card, or Celtic Cross spreads\n🤲 *Palmistry* - Hand analysis and life path insights\n📜 *Nadi Astrology* - South Indian palm leaf predictions\n\n🌳 *Mystical Traditions:*\n🌳 *Kabbalistic Astrology* - Tree of Life and Sephiroth analysis\n🗓️ *Mayan Calendar* - Tzolk\'in and Haab date calculations\n🍃 *Celtic Astrology* - Tree signs and animal totems\n🔮 *I Ching* - Ancient Chinese oracle\n\n🗺️ *Advanced Systems:*\n🗺️ *Astrocartography* - Planetary lines and relocation guidance\n⏰ *Horary Astrology* - Answers to specific questions\n🪐 *Asteroid Analysis* - Chiron, Juno, Vesta, Pallas insights\n⭐ *Fixed Stars* - Ancient stellar influences and cosmic wisdom\n\n🔬 *Predictive Astrology:*\n🔬 *Secondary Progressions* - Soul\'s journey and life development\n☀️ *Solar Arc Directions* - Major life changes and turning points\n\nJust send me a message like:\n• "What\'s my horoscope today?"\n• "Show me my birth chart"\n• "Asteroid analysis" or "Fixed stars"\n• "Secondary progressions" or "Solar arc directions"\n• "Tarot reading" or "Palmistry"\n• "Kabbalistic analysis" or "Mayan calendar"\n• "I Ching oracle" or "Astrocartography"\n• "Horary: When will I find love?"\n\nWhat aspect of your cosmic journey interests you? ✨';
-   }
+  if (matchesIntent(message, ['help', 'what can you do', 'commands', /^help/, /^what do you do/])) {
+    return '🌟 *I\'m your Personal Cosmic Coach!*\n\nI can help you with:\n\n📅 *Daily Horoscope* - Personalized daily guidance\n📊 *Vedic Birth Chart* - Your cosmic blueprint with advanced dasha & transits\n🕉️ *Hindu Vedic Astrology* - Traditional Kundli, marriage matching, Lagna analysis\n🌏 *BaZi Analysis* - Chinese Four Pillars astrology\n💕 *Compatibility* - Relationship insights\n\n🔮 *Divination Systems:*\n🔮 *Tarot Readings* - Single card, 3-card, or Celtic Cross spreads\n🤲 *Palmistry* - Hand analysis and life path insights\n📜 *Nadi Astrology* - South Indian palm leaf predictions\n\n🌳 *Mystical Traditions:*\n🌳 *Kabbalistic Astrology* - Tree of Life and Sephiroth analysis\n🗓️ *Mayan Calendar* - Tzolk\'in and Haab date calculations\n🍃 *Celtic Astrology* - Tree signs and animal totems\n🔮 *I Ching* - Ancient Chinese oracle\n\n🗺️ *Advanced Systems:*\n🗺️ *Astrocartography* - Planetary lines and relocation guidance\n⏰ *Horary Astrology* - Answers to specific questions\n🪐 *Asteroid Analysis* - Chiron, Juno, Vesta, Pallas insights\n⭐ *Fixed Stars* - Ancient stellar influences and cosmic wisdom\n\n🔬 *Predictive Astrology:*\n🔬 *Secondary Progressions* - Soul\'s journey and life development\n☀️ *Solar Arc Directions* - Major life changes and turning points\n\nJust send me a message like:\n• "What\'s my horoscope today?"\n• "Show me my birth chart"\n• "Asteroid analysis" or "Fixed stars"\n• "Secondary progressions" or "Solar arc directions"\n• "Tarot reading" or "Palmistry"\n• "Kabbalistic analysis" or "Mayan calendar"\n• "I Ching oracle" or "Astrocartography"\n• "Horary: When will I find love?"\n\nWhat aspect of your cosmic journey interests you? ✨';
+  }
 
   // Default response with interactive options
   return `✨ Thank you for your message, ${user.name || 'cosmic explorer'}!\n\nI'm here to guide you through your cosmic journey. I can provide personalized horoscopes, birth chart analysis, compatibility insights, and much more.\n\nWhat aspect of your life would you like cosmic guidance on today? 🌟`;
-}
+};
 
 module.exports = {
   generateAstrologyResponse

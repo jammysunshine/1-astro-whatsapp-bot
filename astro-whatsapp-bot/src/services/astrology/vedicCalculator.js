@@ -9,6 +9,26 @@ const { Astrologer } = require('astrologer');
 const sweph = require('sweph');
 const { VedicRemedies } = require('./vedicRemedies');
 
+const NodeGeocoder = require('node-geocoder');
+const { Client } = require('@googlemaps/google-maps-services-js');
+
+// Initialize Geocoder (using OpenStreetMap for simplicity, can be configured for Google Maps if API key is available)
+const geocoderOptions = {
+  provider: 'openstreetmap', // Can be 'google', 'here', etc.
+  // apiKey: process.env.GOOGLE_MAPS_API_KEY, // Uncomment if using Google Maps Geocoding
+  formatter: null // 'gpx', 'string', ...
+};
+const geocoder = NodeGeocoder(geocoderOptions);
+
+// Initialize Google Maps Services Client for Time Zone API
+const googleMapsClient = new Client({});
+
+// Ensure Google Maps API Key is set for Time Zone API
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+if (!GOOGLE_MAPS_API_KEY) {
+  logger.warn('⚠️ GOOGLE_MAPS_API_KEY is not set. Time Zone API functionality may be limited.');
+}
+
 class VedicCalculator {
   constructor() {
     logger.info('Module: VedicCalculator loaded.');
@@ -246,74 +266,60 @@ class VedicCalculator {
   }
 
   /**
-   * Get coordinates for a place (simplified implementation)
-   * TODO: Implement proper geocoding service for accurate coordinates
+   * Get coordinates for a place using NodeGeocoder
    * @private
+   * @param {string} place - Place name (City, Country)
+   * @returns {Promise<Array>} [latitude, longitude]
    */
-  _getCoordinatesForPlace(place) {
-    // Simplified geocoding - in production, integrate with a geocoding API like Google Maps or OpenStreetMap
-    const placeCoords = {
-      // India
-      delhi: [28.6139, 77.209],
-      mumbai: [19.076, 72.8777],
-      bangalore: [12.9716, 77.5946],
-      chennai: [13.0827, 80.2707],
-      kolkata: [22.5726, 88.3639],
-      hyderabad: [17.385, 78.4867],
-      pune: [18.5204, 73.8567],
-      ahmedabad: [23.0225, 72.5714],
-      jaipur: [26.9124, 75.7873],
-      lucknow: [26.8467, 80.9462],
-      surat: [21.1702, 72.8311],
-      kanpur: [26.4499, 80.3319],
-      nagpur: [21.1458, 79.0882],
-      patna: [25.5941, 85.1376],
-      indore: [22.7196, 75.8577],
-      vadodara: [22.3072, 73.1812],
-      bhopal: [23.2599, 77.4126],
-      coimbatore: [11.0168, 76.9558],
-      ludhiana: [30.9010, 75.8573],
-      agra: [27.1767, 78.0081],
-      // UAE
-      dubai: [25.2048, 55.2708],
-      abudhabi: [24.4539, 54.3773],
-      sharjah: [25.3463, 55.4209],
-      // Australia
-      sydney: [-33.8688, 151.2093],
-      melbourne: [-37.8136, 144.9631],
-      brisbane: [-27.4698, 153.0251],
-      perth: [-31.9505, 115.8605],
-      // Default
-      default: [28.6139, 77.209] // Delhi
-    };
-
-    const normalizedPlace = place.toLowerCase().replace(/\s+/g, '');
-    return placeCoords[normalizedPlace] || placeCoords.default;
+  async _getCoordinatesForPlace(place) {
+    try {
+      const res = await geocoder.geocode(place);
+      if (res && res.length > 0) {
+        return [res[0].latitude, res[0].longitude];
+      }
+    } catch (error) {
+      logger.error(`❌ Error geocoding place "${place}":`, error.message);
+    }
+    // Fallback to default if geocoding fails
+    return [28.6139, 77.209]; // Default to Delhi, India
   }
 
   /**
-   * Get timezone for a place (simplified implementation)
-   * TODO: Implement proper timezone service for accurate timezone calculations
+   * Get timezone for a place using Google Maps Time Zone API
    * @private
+   * @param {number} latitude - Latitude
+   * @param {number} longitude - Longitude
+   * @param {number} timestamp - Unix timestamp of the event
+   * @returns {Promise<number>} UTC offset in hours
    */
-  _getTimezoneForPlace(place) {
-    // Simplified timezone mapping - in production, use a timezone API
-    const placeTimezones = {
-      // India (IST: UTC+5:30)
-      delhi: 5.5, mumbai: 5.5, bangalore: 5.5, chennai: 5.5, kolkata: 5.5,
-      hyderabad: 5.5, pune: 5.5, ahmedabad: 5.5, jaipur: 5.5, lucknow: 5.5,
-      surat: 5.5, kanpur: 5.5, nagpur: 5.5, patna: 5.5, indore: 5.5,
-      vadodara: 5.5, bhopal: 5.5, coimbatore: 5.5, ludhiana: 5.5, agra: 5.5,
-      // UAE (GST: UTC+4)
-      dubai: 4, abudhabi: 4, sharjah: 4,
-      // Australia
-      sydney: 10, melbourne: 10, brisbane: 10, perth: 8,
-      // Default
-      default: 5.5 // IST
-    };
+  async _getTimezoneForPlace(latitude, longitude, timestamp) {
+    if (!GOOGLE_MAPS_API_KEY) {
+      logger.warn('GOOGLE_MAPS_API_KEY is not set. Using default timezone offset (IST).');
+      return 5.5; // Default to IST offset
+    }
 
-    const normalizedPlace = place.toLowerCase().replace(/\s+/g, '');
-    return placeTimezones[normalizedPlace] || placeTimezones.default;
+    try {
+      const response = await googleMapsClient.timezone({
+        params: {
+          location: { lat: latitude, lng: longitude },
+          timestamp: timestamp / 1000, // Google API expects seconds
+          key: GOOGLE_MAPS_API_KEY,
+        },
+        timeout: 1000, // milliseconds
+      });
+
+      if (response.data.status === 'OK') {
+        const rawOffset = response.data.rawOffset; // Offset in seconds from UTC
+        const dstOffset = response.data.dstOffset; // Daylight saving offset in seconds
+        return (rawOffset + dstOffset) / 3600; // Convert to hours
+      } else {
+        logger.error('Google Maps Time Zone API error:', response.data.errorMessage);
+      }
+    } catch (error) {
+      logger.error('❌ Error fetching timezone from Google Maps API:', error.message);
+    }
+    // Fallback to default if API call fails
+    return 5.5; // Default to IST offset
   }
 
   /**
@@ -2056,6 +2062,7 @@ class VedicCalculator {
 
       // Calculate positions for major asteroids
       const asteroids = {
+        ceres: this._calculateAsteroidPosition('ceres', astroData),
         chiron: this._calculateAsteroidPosition('chiron', astroData),
         juno: this._calculateAsteroidPosition('juno', astroData),
         vesta: this._calculateAsteroidPosition('vesta', astroData),
@@ -2064,6 +2071,7 @@ class VedicCalculator {
 
       // Generate interpretations
       const interpretations = {
+        ceres: this._interpretCeres(asteroids.ceres),
         chiron: this._interpretChiron(asteroids.chiron),
         juno: this._interpretJuno(asteroids.juno),
         vesta: this._interpretVesta(asteroids.vesta),
@@ -2127,9 +2135,53 @@ class VedicCalculator {
    * @returns {number} Longitude position
    */
   _getBaseAsteroidPosition(asteroidName, astroData) {
-    // Simplified asteroid position calculations
-    // In production, these would use precise Swiss Ephemeris asteroid data
+    try {
+      // Use Swiss Ephemeris for precise asteroid calculations
+      const asteroidIds = {
+        ceres: 1,
+        pallas: 2,
+        juno: 3,
+        vesta: 4,
+        chiron: 2060
+      };
+
+      const asteroidId = asteroidIds[asteroidName];
+      if (!asteroidId) {
+        throw new Error(`Unknown asteroid: ${asteroidName}`);
+      }
+
+      // Convert birth date to Julian Day
+      const birthJD = this._dateToJulianDay(
+        astroData.year,
+        astroData.month,
+        astroData.date,
+        astroData.hours + astroData.minutes / 60
+      );
+
+      // Calculate asteroid position using Swiss Ephemeris
+      const position = sweph.calc(birthJD, asteroidId, sweph.FLG_SWIEPH | sweph.FLG_SPEED);
+
+      if (position && position.longitude) {
+        return position.longitude[0]; // Return longitude in degrees
+      }
+
+      // Fallback to approximate positions if Swiss Ephemeris fails
+      logger.warn(`Swiss Ephemeris failed for ${asteroidName}, using fallback`);
+      return this._getFallbackAsteroidPosition(asteroidName, astroData);
+
+    } catch (error) {
+      logger.error(`Error calculating ${asteroidName} position with Swiss Ephemeris:`, error);
+      return this._getFallbackAsteroidPosition(asteroidName, astroData);
+    }
+  }
+
+  /**
+   * Fallback asteroid position calculation
+   * @private
+   */
+  _getFallbackAsteroidPosition(asteroidName, astroData) {
     const basePositions = {
+      ceres: 25.5,   // Approximate position in Pisces
       chiron: 15.5,  // Approximate position in Aquarius
       juno: 45.2,    // Approximate position in Taurus
       vesta: 75.8,   // Approximate position in Gemini
@@ -2143,6 +2195,20 @@ class VedicCalculator {
     const variation = (dayOfYear * 0.5) % 30;
 
     return (basePos + variation) % 360;
+  }
+
+  /**
+   * Convert date to Julian Day
+   * @private
+   */
+  _dateToJulianDay(year, month, day, hour) {
+    // Simplified Julian Day calculation
+    const a = Math.floor((14 - month) / 12);
+    const y = year + 4800 - a;
+    const m = month + 12 * a - 3;
+
+    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    return jd + (hour - 12) / 24; // Adjust for time
   }
 
   /**
@@ -2208,6 +2274,86 @@ class VedicCalculator {
     };
 
     return positions[planet] || 0;
+  }
+
+  /**
+   * Interpret Ceres position
+   * @private
+   * @param {Object} ceres - Ceres data
+   * @returns {Object} Ceres interpretation
+   */
+  _interpretCeres(ceres) {
+    const signInterpretations = {
+      'Aries': 'Independent nurturing, self-sufficient caregiving',
+      'Taurus': 'Sensual nurturing, providing material comfort and security',
+      'Gemini': 'Intellectual nurturing, communicative care and teaching',
+      'Cancer': 'Emotional nurturing, intuitive caregiving and protection',
+      'Leo': 'Creative nurturing, dramatic care with warmth and generosity',
+      'Virgo': 'Practical nurturing, health-focused care and service',
+      'Libra': 'Harmonious nurturing, balanced care and relationship support',
+      'Scorpio': 'Intense nurturing, transformative care and deep emotional support',
+      'Sagittarius': 'Adventurous nurturing, expansive care and philosophical guidance',
+      'Capricorn': 'Structured nurturing, responsible care and long-term support',
+      'Aquarius': 'Innovative nurturing, community care and humanitarian support',
+      'Pisces': 'Compassionate nurturing, spiritual care and unconditional love'
+    };
+
+    return {
+      nurturingStyle: signInterpretations[ceres.sign] || 'Unique nurturing approach',
+      caregivingApproach: this._getCeresCaregivingApproach(ceres.sign),
+      cyclesOfLife: this._getCeresLifeCycles(ceres.sign),
+      keyThemes: ['Nurturing', 'Caregiving', 'Cycles', 'Abundance']
+    };
+  }
+
+  /**
+   * Get Ceres caregiving approach
+   * @private
+   * @param {string} sign - Zodiac sign
+   * @returns {string} Caregiving approach
+   */
+  _getCeresCaregivingApproach(sign) {
+    const approaches = {
+      'Aries': 'Direct and empowering care, encouraging independence',
+      'Taurus': 'Sensual and grounding care, providing stability',
+      'Gemini': 'Communicative care, teaching and intellectual support',
+      'Cancer': 'Emotional and protective care, creating safe spaces',
+      'Leo': 'Dramatic and generous care, boosting confidence',
+      'Virgo': 'Practical and health-focused care, detailed attention',
+      'Libra': 'Harmonious care, maintaining balance and beauty',
+      'Scorpio': 'Intense and transformative care, deep healing',
+      'Sagittarius': 'Expansive care, encouraging growth and exploration',
+      'Capricorn': 'Structured care, building long-term security',
+      'Aquarius': 'Innovative care, community and progressive support',
+      'Pisces': 'Compassionate care, spiritual and empathetic nurturing'
+    };
+
+    return approaches[sign] || 'Personal caregiving style';
+  }
+
+  /**
+   * Get Ceres life cycles
+   * @private
+   * @param {string} sign - Zodiac sign
+   * @returns {string} Life cycles
+   */
+  _getCeresLifeCycles(sign) {
+    const cycles = {
+      'Aries': 'Cycles of independence, new beginnings, and self-care',
+      'Taurus': 'Cycles of material abundance, sensual pleasure, and stability',
+      'Gemini': 'Cycles of communication, learning, and mental stimulation',
+      'Cancer': 'Cycles of emotional security, family, and home',
+      'Leo': 'Cycles of creativity, self-expression, and joy',
+      'Virgo': 'Cycles of health, service, and practical organization',
+      'Libra': 'Cycles of harmony, relationships, and aesthetic beauty',
+      'Scorpio': 'Cycles of transformation, intimacy, and rebirth',
+      'Sagittarius': 'Cycles of exploration, philosophy, and expansion',
+      'Capricorn': 'Cycles of achievement, structure, and responsibility',
+      'Aquarius': 'Cycles of innovation, community, and humanitarian work',
+      'Pisces': 'Cycles of compassion, spirituality, and artistic expression'
+    };
+
+    return cycles[sign] || 'Personal life cycles';
   }
 
   /**
@@ -2515,12 +2661,13 @@ class VedicCalculator {
   _generateAsteroidSummary(asteroids, interpretations) {
     let summary = 'Asteroid Analysis:\n\n';
 
+    summary += `🌾 *Ceres in ${asteroids.ceres.sign}*: ${interpretations.ceres.nurturingStyle}\n`;
     summary += `🩹 *Chiron in ${asteroids.chiron.sign}*: ${interpretations.chiron.coreWound}\n`;
     summary += `💍 *Juno in ${asteroids.juno.sign}*: ${interpretations.juno.relationshipStyle}\n`;
     summary += `🏛️ *Vesta in ${asteroids.vesta.sign}*: ${interpretations.vesta.sacredFocus}\n`;
     summary += `🎨 *Pallas in ${asteroids.pallas.sign}*: ${interpretations.pallas.wisdomType}\n\n`;
 
-    summary += 'These four asteroids reveal your deeper psychological patterns, relationship dynamics, spiritual focus, and creative wisdom.';
+    summary += 'These five asteroids reveal your nurturing patterns, core wounds and healing, relationship dynamics, spiritual focus, and creative wisdom.';
 
     return summary;
   }
@@ -10717,65 +10864,6 @@ class VedicCalculator {
         category: 'Mental'
       });
     }
-
-    return remedies;
-  }
-
-    // General remedies for all phases
-    remedies.push({
-      type: 'Saturn Worship',
-      description: 'Regular worship of Lord Saturn (Shani) on Saturdays',
-      urgency: 'High',
-      category: 'Spiritual'
-    });
-
-    remedies.push({
-      type: 'Fasting',
-      description: 'Fast on Saturdays, especially during Sade Sati periods',
-      urgency: 'High',
-      category: 'Spiritual'
-    });
-
-    remedies.push({
-      type: 'Charity',
-      description: 'Donate sesame seeds, black clothes, and iron items to poor',
-      urgency: 'High',
-      category: 'Charitable'
-    });
-
-    // Phase-specific remedies
-    if (currentPhase.phase.includes('Phase 1')) {
-      remedies.push({
-        type: 'Protection',
-        description: 'Wear black sapphire or iron ring for protection',
-        urgency: 'Medium',
-        category: 'Gemstone'
-      });
-    } else if (currentPhase.phase.includes('Phase 2')) {
-      remedies.push({
-        type: 'Mantras',
-        description: 'Chant "Om Sham Shanishcharaya Namaha" daily',
-        urgency: 'High',
-        category: 'Mantra'
-      });
-      remedies.push({
-        type: 'Puja',
-        description: 'Perform Shani Sade Sati Nivaran Puja',
-        urgency: 'High',
-        category: 'Ritual'
-      });
-    } else if (currentPhase.phase.includes('Phase 3')) {
-      remedies.push({
-        type: 'Gratitude',
-        description: 'Express gratitude for lessons learned, maintain positive attitude',
-        urgency: 'Medium',
-        category: 'Mental'
-      });
-    }
-
-    // Moon sign specific remedies
-    const moonSignRemedies = this._getMoonSignSadeSatiRemedies(analysis.moonSign);
-    remedies.push(...moonSignRemedies);
 
     return remedies;
   }

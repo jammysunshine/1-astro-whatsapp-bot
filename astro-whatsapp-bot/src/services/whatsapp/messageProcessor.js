@@ -5,6 +5,23 @@ const { processFlowMessage } = require('../../conversation/conversationEngine');
 const { getMenu } = require('../../conversation/menuLoader');
 const paymentService = require('../payment/paymentService');
 const vedicCalculator = require('../astrology/vedicCalculator');
+const {
+  getUserByPhone,
+  createUser,
+  updateUserProfile,
+  getUserSession,
+  deleteUserSession,
+  incrementCompatibilityChecks
+} = require('../../models/userModel');
+const { getFlow, executeFlowAction } = require('../../conversation/conversationEngine');
+const { generateTarotReading } = require('../astrology/tarotReader');
+const { generatePalmistryAnalysis } = require('../astrology/palmistryReader');
+const { generateKabbalisticChart } = require('../astrology/kabbalisticReader');
+const { generateMayanChart } = require('../astrology/mayanReader');
+const { generateCelticChart } = require('../astrology/celticReader');
+const { generateIChingReading } = require('../astrology/ichingReader');
+const { generateAstrocartography } = require('../astrology/astrocartographyReader');
+const numerologyService = require('../astrology/numerologyService');
 
 /**
  * Process incoming WhatsApp message and generate appropriate response
@@ -268,7 +285,7 @@ const processButtonReply = async (phoneNumber, buttonId, title, user) => {
   // Handle clarification buttons specially (they start with 'year_' or 'time_')
   if (buttonId.startsWith('year_') || buttonId.startsWith('time_')) {
     // Get user session to determine current flow
-    const { getUserSession } = require('../../models/userModel');
+
     const session = await getUserSession(phoneNumber);
 
     // Extract the resolved value from button ID
@@ -289,9 +306,6 @@ const processButtonReply = async (phoneNumber, buttonId, title, user) => {
     }
 
     // Process the resolved value as if it was text input
-    const {
-      processFlowMessage,
-    } = require('../../conversation/conversationEngine');
     const currentFlow =
       session?.currentFlow && session.currentFlow !== 'undefined'
         ? session.currentFlow
@@ -369,11 +383,7 @@ const processButtonReply = async (phoneNumber, buttonId, title, user) => {
  * @param {Object} session - User session
  */
 const processFlowButtonReply = async (phoneNumber, buttonId, user, session) => {
-  const { getFlow } = require('../../conversation/flowLoader');
-  const {
-    processFlowMessage,
-  } = require('../../conversation/conversationEngine');
-  const { getUserSession } = require('../../models/userModel');
+
 
   const flow = getFlow(session.currentFlow);
   if (!flow) {
@@ -602,7 +612,7 @@ const executeMenuAction = async (phoneNumber, user, action) => {
       break;
     case 'get_tarot_reading':
       try {
-        const { generateTarotReading } = require('../astrology/tarotReader');
+
         const reading = generateTarotReading('single');
         response = `🔮 *Tarot Reading*\n\n${reading.cards[0].name}\n${reading.cards[0].meaning}\n\n*Advice:* ${reading.cards[0].advice || 'Trust your intuition'}`;
       } catch (error) {
@@ -613,9 +623,6 @@ const executeMenuAction = async (phoneNumber, user, action) => {
       break;
     case 'get_palmistry_analysis':
       try {
-        const {
-          generatePalmistryAnalysis,
-        } = require('../astrology/palmistryReader');
         const analysis = generatePalmistryAnalysis();
         response = `🤲 *Palmistry Analysis*\n\n*Hand Type:* ${analysis.handType}\n*Personality:* ${analysis.personality}\n\n*Life Path:* ${analysis.lifePath}`;
       } catch (error) {
@@ -629,9 +636,6 @@ const executeMenuAction = async (phoneNumber, user, action) => {
         break;
       }
       try {
-        const {
-          generateKabbalisticChart,
-        } = require('../astrology/kabbalisticReader');
         const analysis = generateKabbalisticChart({
           birthDate: user.birthDate,
           birthTime: user.birthTime || '12:00',
@@ -650,7 +654,7 @@ const executeMenuAction = async (phoneNumber, user, action) => {
         break;
       }
       try {
-        const { generateMayanChart } = require('../astrology/mayanReader');
+
         const analysis = generateMayanChart({
           birthDate: user.birthDate,
           birthTime: user.birthTime || '12:00',
@@ -669,7 +673,7 @@ const executeMenuAction = async (phoneNumber, user, action) => {
         break;
       }
       try {
-        const { generateCelticChart } = require('../astrology/celticReader');
+
         const analysis = generateCelticChart({
           birthDate: user.birthDate,
           birthTime: user.birthTime || '12:00',
@@ -684,7 +688,7 @@ const executeMenuAction = async (phoneNumber, user, action) => {
       break;
     case 'get_iching_reading':
       try {
-        const { generateIChingReading } = require('../astrology/ichingReader');
+
         const reading = generateIChingReading();
         response = `🔮 *I Ching Reading*\n\n*Hexagram:* ${reading.primaryHexagram.number} - ${reading.primaryHexagram.name}\n\n*Judgment:* ${reading.primaryHexagram.judgment.substring(0, 200)}...`;
       } catch (error) {
@@ -698,9 +702,6 @@ const executeMenuAction = async (phoneNumber, user, action) => {
         break;
       }
       try {
-        const {
-          generateAstrocartography,
-        } = require('../astrology/astrocartographyReader');
         const analysis = generateAstrocartography({
           birthDate: user.birthDate,
           birthTime: user.birthTime || '12:00',
@@ -785,7 +786,7 @@ const executeMenuAction = async (phoneNumber, user, action) => {
           'For numerology analysis, I need your full name and birth date.';
       } else {
         try {
-          const numerologyService = require('../astrology/numerologyService');
+
           const report = numerologyService.getNumerologyReport(
             user.birthDate,
             user.name
@@ -865,11 +866,27 @@ const processListReply = async (
 
   for (const menuName of menus) {
     const menu = getMenu(menuName);
-    if (menu && menu.buttons) {
-      const button = menu.buttons.find(btn => btn.id === listId);
-      if (button && button.action) {
-        action = button.action;
-        break;
+    if (menu) {
+      // Check buttons first
+      if (menu.buttons) {
+        const button = menu.buttons.find(btn => btn.id === listId);
+        if (button && button.action) {
+          action = button.action;
+          break;
+        }
+      }
+      // Check sections.rows for list menus
+      if (menu.sections) {
+        for (const section of menu.sections) {
+          if (section.rows) {
+            const row = section.rows.find(r => r.id === listId);
+            if (row && row.action) {
+              action = row.action;
+              break;
+            }
+          }
+        }
+        if (action) break;
       }
     }
   }
@@ -981,9 +998,7 @@ const handleCompatibilityRequest = async (
     await sendMessage(phoneNumber, response);
 
     // Increment compatibility check counter
-    await require('../../models/userModel').incrementCompatibilityChecks(
-      phoneNumber
-    );
+    await incrementCompatibilityChecks(phoneNumber);
   } catch (error) {
     logger.error('Error handling compatibility request:', error);
     await sendMessage(

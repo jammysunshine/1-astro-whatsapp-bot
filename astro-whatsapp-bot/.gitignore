@@ -53,5 +53,7 @@ docs/validation/*.md
 !docs/validation/CONSOLIDATED-FINAL-VALIDATION-SUMMARY.md
 !docs/validation/SUMMARY.md
 
-# Exclude asteroid belt ephemeris file to reduce size
-ephe/seas_18.se1
+# Generated files
+app.pid
+app.log
+test-db.js

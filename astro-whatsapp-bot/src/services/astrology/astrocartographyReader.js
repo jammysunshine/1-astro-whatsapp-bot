@@ -173,6 +173,8 @@ class AstrocartographyReader {
 
   /**
    * Generate astrocartography analysis for a birth chart
+   * NOTE: This is a highly simplified astrocartography implementation for educational purposes.
+   * Real astrocartography requires precise astronomical calculations and professional interpretation.
    * @param {Object} birthData - Birth data object
    * @returns {Object} Astrocartography analysis
    */
@@ -206,6 +208,7 @@ class AstrocartographyReader {
         currentLocation,
         powerSpots,
         relocationGuidance,
+        disclaimer: '⚠️ *Important Disclaimer:* This astrocartography analysis uses simplified calculations for educational purposes. Real astrocartography requires precise astronomical data and professional astrological interpretation. Results should not be used for major life decisions.',
         astrocartographyDescription: this.generateAstrocartographyDescription(
           planetaryLines,
           currentLocation,
@@ -224,12 +227,17 @@ class AstrocartographyReader {
 
   /**
    * Calculate simplified planetary positions
+   * CRITICAL: This uses pseudo-random calculations for demonstration only.
+   * Real astrocartography requires accurate astronomical ephemeris data.
    * @param {string} birthDate - Birth date
    * @param {string} birthTime - Birth time
    * @returns {Object} Planetary positions
    */
   calculatePlanetaryPositions(birthDate, birthTime) {
-    // Simplified calculation - in reality would use astronomical calculations
+    // HIGHLY SIMPLIFIED: Using seed-based pseudo-random positions
+    // In production, integrate with Swiss Ephemeris or similar for accurate calculations
+    logger.warn('Using simplified planetary position calculations - not astronomically accurate');
+
     const [day, month, year] = birthDate.split('/').map(Number);
     const [hour, minute] = birthTime.split(':').map(Number);
 
@@ -375,11 +383,14 @@ class AstrocartographyReader {
 
   /**
    * Get simplified coordinates for a location
+   * TODO: Implement proper geocoding API for accurate coordinates
    * @param {string} location - Location name
    * @returns {Object} Coordinates
    */
   getLocationCoordinates(location) {
+    // Simplified geocoding - in production, use Google Maps API or similar
     const locations = {
+      // India
       delhi: { latitude: 28.6139, longitude: 77.209 },
       mumbai: { latitude: 19.076, longitude: 72.8777 },
       bangalore: { latitude: 12.9716, longitude: 77.5946 },
@@ -390,12 +401,18 @@ class AstrocartographyReader {
       ahmedabad: { latitude: 23.0225, longitude: 72.5714 },
       jaipur: { latitude: 26.9124, longitude: 75.7873 },
       lucknow: { latitude: 26.8467, longitude: 80.9462 },
+      // UAE
+      dubai: { latitude: 25.2048, longitude: 55.2708 },
+      abudhabi: { latitude: 24.4539, longitude: 54.3773 },
+      // Australia
+      sydney: { latitude: -33.8688, longitude: 151.2093 },
+      melbourne: { latitude: -37.8136, longitude: 144.9631 },
+      // Default
+      default: { latitude: 20.5937, longitude: 78.9629 }, // India center
     };
 
-    const normalizedLocation = location.toLowerCase();
-    return (
-      locations[normalizedLocation] || { latitude: 20.5937, longitude: 78.9629 }
-    ); // Default to India center
+    const normalizedLocation = location.toLowerCase().replace(/\s+/g, '');
+    return locations[normalizedLocation] || locations.default;
   }
 
   /**
@@ -566,6 +583,7 @@ class AstrocartographyReader {
     powerSpots
   ) {
     let description = '🗺️ *Astrocartography Analysis*\n\n';
+    description += '⚠️ *Disclaimer:* This analysis uses simplified calculations for educational purposes only. Real astrocartography requires precise astronomical data and should be interpreted by a professional astrologer.\n\n';
 
     description += `📍 *Current Location: ${currentLocation.location}*\n`;
     description += `• Region: ${currentLocation.region}\n`;
@@ -607,7 +625,8 @@ class AstrocartographyReader {
     description += '• Jupiter lines bring expansion and luck\n\n';
 
     description +=
-      '🔮 *Travel Tip:*\nConsider visiting locations along your Venus or Jupiter lines for harmony and growth opportunities.';
+      '🔮 *Travel Tip:*\nConsider visiting locations along your Venus or Jupiter lines for harmony and growth opportunities.\n\n';
+    description += '📚 *Educational Note:* Astrocartography maps how planetary energies influence different geographic locations. This simplified version demonstrates the concept but should not replace professional astrological guidance.';
 
     return description;
   }

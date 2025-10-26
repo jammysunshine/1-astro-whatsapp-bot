@@ -3,8 +3,6 @@
 
 const logger = require('../../utils/logger');
 const { processIncomingMessage } = require('./messageProcessor');
-const { validateWebhookSignature } = require('./webhookValidator');
-const { sendTextMessage, sendInteractiveMessage } = require('./messageSender');
 
 /**
  * Handle incoming WhatsApp webhook events
@@ -71,14 +69,7 @@ const handleWhatsAppWebhook = async (req, res) => {
   }
 };
 
-/**
- * Process individual message
- * @param {Object} message - WhatsApp message object
- * @param {Object} value - Webhook value containing context
- */
-const processMessage = async (message, value) => {
-  await processIncomingMessage(message, value);
-};
+
 
 module.exports = {
   handleWhatsAppWebhook,

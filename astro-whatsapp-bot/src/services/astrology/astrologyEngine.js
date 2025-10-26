@@ -11,9 +11,27 @@ const ichingReader = require('./ichingReader');
 const astrocartographyReader = require('./astrocartographyReader');
 const horaryReader = require('./horaryReader');
 
+// Configuration for horary timezone
+const HORARY_TIMEZONE = process.env.HORARY_TIMEZONE || 'Asia/Kolkata';
+
 logger.info(
   'Module: astrologyEngine loaded. All sub-modules imported successfully.'
 );
+
+/**
+ * Improved intent recognition using regex patterns for better accuracy
+ * @param {string} message - The user message
+ * @param {Array<string|RegExp>} patterns - Array of patterns to match
+ * @returns {boolean} True if any pattern matches
+ */
+const matchesIntent = (message, patterns) => {
+  return patterns.some(pattern => {
+    if (typeof pattern === 'string') {
+      return message.includes(pattern.toLowerCase());
+    }
+    return pattern.test(message);
+  });
+};
 
 /**
  * Generates an astrology response based on user input and user data.
@@ -30,16 +48,12 @@ const generateAstrologyResponse = async (messageText, user) => {
   const message = messageText.toLowerCase().trim();
 
   // Greeting responses
-  if (
-    message.includes('hello') ||
-    message.includes('hi') ||
-    message.includes('hey')
-  ) {
+  if (matchesIntent(message, ['hello', 'hi', 'hey', /^greetings?/])) {
     return `🌟 Hello ${user.name || 'cosmic explorer'}! Welcome to your Personal Cosmic Coach. I'm here to help you navigate your cosmic journey. What would you like to explore today?`;
   }
 
   // Daily horoscope
-  if (message.includes('horoscope') || message.includes('daily')) {
+  if (matchesIntent(message, ['horoscope', 'daily', /^what'?s my (daily )?horoscope/])) {
     if (!user.birthDate) {
       return "I'd love to give you a personalized daily horoscope! Please share your birth date (DD/MM/YYYY) first so I can calculate your sun sign.";
     }
@@ -71,19 +85,14 @@ const generateAstrologyResponse = async (messageText, user) => {
     }
 
     // Add social proof and progress tracking
-    const userCount = 2847; // Mock social proof
+    const userCount = process.env.SOCIAL_PROOF_COUNT || 2847; // Configurable social proof
     const insightsReceived = user.insightsReceived || 0;
 
     return `🌟 *Daily Horoscope for ${sunSign}*\n\n${horoscopeText}\n\n⭐ *${userCount} users* with your sign found today's guidance particularly accurate!\n\n📊 *Your Cosmic Journey:* ${insightsReceived + 1} personalized insights received\n\nRemember, the stars guide us but you create your destiny! ✨`;
   }
 
   // Chinese astrology (BaZi) requests
-  if (
-    message.includes('chinese') ||
-    message.includes('bazi') ||
-    message.includes('four pillars') ||
-    message.includes('八字')
-  ) {
+  if (matchesIntent(message, ['chinese', 'bazi', 'four pillars', '八字', /^ba.?zi/])) {
     if (!user.birthDate) {
       return 'To generate your BaZi (Four Pillars) analysis, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Beijing, China';
     }
@@ -115,11 +124,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Tarot reading requests
-  if (
-    message.includes('tarot') ||
-    message.includes('card') ||
-    message.includes('reading')
-  ) {
+  if (matchesIntent(message, ['tarot', 'card', 'reading', /^tarot/])) {
     try {
       const spread = message.includes('celtic')
         ? 'celtic'
@@ -165,11 +170,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Palmistry requests
-  if (
-    message.includes('palm') ||
-    message.includes('hand') ||
-    message.includes('palmistry')
-  ) {
+  if (matchesIntent(message, ['palm', 'hand', 'palmistry', /^palm/])) {
     try {
       const analysis = palmistryReader.generatePalmistryAnalysis();
 
@@ -198,11 +199,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Nadi astrology requests
-  if (
-    message.includes('nadi') ||
-    message.includes('south indian') ||
-    message.includes('palm leaf')
-  ) {
+  if (matchesIntent(message, ['nadi', 'south indian', 'palm leaf', /^nadi/])) {
     if (!user.birthDate) {
       return 'For Nadi astrology analysis, I need your birth details. Nadi readings are highly specific to exact birth information.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, State, Country)\n\nExample: 15/06/1990, 14:30, Chennai, Tamil Nadu, India';
     }
@@ -240,12 +237,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Kabbalistic astrology requests
-  if (
-    message.includes('kabbalah') ||
-    message.includes('kabbalistic') ||
-    message.includes('tree of life') ||
-    message.includes('sephiroth')
-  ) {
+  if (matchesIntent(message, ['kabbalah', 'kabbalistic', 'tree of life', 'sephiroth', /^kabbal/])) {
     if (!user.birthDate) {
       return "For Kabbalistic analysis, I need your birth details to map your soul's journey on the Tree of Life.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n\nExample: 15/06/1990, 14:30";
     }
@@ -265,12 +257,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Mayan astrology requests
-  if (
-    message.includes('mayan') ||
-    message.includes('tzolk') ||
-    message.includes('haab') ||
-    message.includes('mayan calendar')
-  ) {
+  if (matchesIntent(message, ['mayan', 'tzolk', 'haab', 'mayan calendar', /^mayan/])) {
     if (!user.birthDate) {
       return "For Mayan calendar analysis, I need your birth date to calculate your Tzolk'in and Haab dates.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n\nExample: 15/06/1990";
     }
@@ -290,12 +277,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Celtic astrology requests
-  if (
-    message.includes('celtic') ||
-    message.includes('druid') ||
-    message.includes('tree sign') ||
-    message.includes('celtic astrology')
-  ) {
+  if (matchesIntent(message, ['celtic', 'druid', 'tree sign', 'celtic astrology', /^celtic/])) {
     if (!user.birthDate) {
       return 'For Celtic tree sign analysis, I need your birth date to determine your tree sign and animal totem.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n\nExample: 15/06/1990';
     }
@@ -315,12 +297,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // I Ching requests
-  if (
-    message.includes('i ching') ||
-    message.includes('iching') ||
-    message.includes('hexagram') ||
-    message.includes('oracle')
-  ) {
+  if (matchesIntent(message, ['i ching', 'iching', 'hexagram', 'oracle', /^i.?ching/])) {
     try {
       const question = message
         .replace(/i ching|iching|hexagram|oracle/gi, '')
@@ -335,12 +312,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Astrocartography requests
-  if (
-    message.includes('astrocartography') ||
-    message.includes('astro cartography') ||
-    message.includes('planetary lines') ||
-    message.includes('relocation')
-  ) {
+  if (matchesIntent(message, ['astrocartography', 'astro cartography', 'planetary lines', 'relocation', /^astro.?cartography/])) {
     if (!user.birthDate) {
       return 'For astrocartography analysis, I need your complete birth details to map planetary lines across the globe.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, New York, USA';
     }
@@ -362,14 +334,9 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Horary astrology requests
-  if (
-    message.includes('horary') ||
-    (message.includes('question') &&
-      (message.includes('when') ||
-        message.includes('will') ||
-        message.includes('should') ||
-        message.includes('can')))
-  ) {
+  if (matchesIntent(message, ['horary', /^horary/]) ||
+      (matchesIntent(message, ['question']) &&
+       matchesIntent(message, ['when', 'will', 'should', 'can', 'does', 'is', 'are']))) {
     // Extract the question from the message
     const questionMatch = message.match(/(?:horary|question|ask)\s+(.*)/i);
     const question = questionMatch
@@ -383,7 +350,7 @@ const generateAstrologyResponse = async (messageText, user) => {
     try {
       const currentTime = new Date()
         .toLocaleString('en-IN', {
-          timeZone: 'Asia/Kolkata',
+          timeZone: HORARY_TIMEZONE,
           year: 'numeric',
           month: '2-digit',
           day: '2-digit',
@@ -409,12 +376,8 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Birth chart requests
-  if (
-    message.includes('birth chart') ||
-    message.includes('kundli') ||
-    message.includes('chart') ||
-    (message.includes('complete') && message.includes('analysis'))
-  ) {
+  if (matchesIntent(message, ['birth chart', 'kundli', 'chart', /^kundli/]) ||
+      (matchesIntent(message, ['complete']) && matchesIntent(message, ['analysis']))) {
     if (!user.birthDate) {
       return 'To generate your complete Vedic birth chart analysis, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
@@ -454,11 +417,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Compatibility requests
-  if (
-    message.includes('compatibility') ||
-    message.includes('match') ||
-    message.includes('compatible')
-  ) {
+  if (matchesIntent(message, ['compatibility', 'match', 'compatible', /^compatib/])) {
     if (!user.birthDate) {
       return 'For compatibility analysis, I need your birth details first. Please share your birth date (DD/MM/YYYY) so I can get started.';
     }
@@ -467,11 +426,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Profile/birth details
-  if (
-    message.includes('profile') ||
-    message.includes('details') ||
-    message.includes('birth')
-  ) {
+  if (matchesIntent(message, ['profile', 'details', 'birth', /^my (profile|details|birth)/])) {
     if (user.profileComplete) {
       return `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\nSun Sign: ${vedicCalculator.calculateSunSign(user.birthDate)}\n\nWould you like to update any information or get a reading?`;
     } else {
@@ -480,11 +435,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   }
 
   // Help and general responses
-  if (
-    message.includes('help') ||
-    message.includes('what can you do') ||
-    message.includes('commands')
-  ) {
+  if (matchesIntent(message, ['help', 'what can you do', 'commands', /^help/, /^what do you do/])) {
     return '🌟 *I\'m your Personal Cosmic Coach!*\n\nI can help you with:\n\n📅 *Daily Horoscope* - Personalized daily guidance\n📊 *Vedic Birth Chart* - Your cosmic blueprint with advanced dasha & transits\n🌏 *BaZi Analysis* - Chinese Four Pillars astrology\n💕 *Compatibility* - Relationship insights\n\n🔮 *Divination Systems:*\n🔮 *Tarot Readings* - Single card, 3-card, or Celtic Cross spreads\n🤲 *Palmistry* - Hand analysis and life path insights\n📜 *Nadi Astrology* - South Indian palm leaf predictions\n\n🌳 *Mystical Traditions:*\n🌳 *Kabbalistic Astrology* - Tree of Life and Sephiroth analysis\n🗓️ *Mayan Calendar* - Tzolk\'in and Haab date calculations\n🍃 *Celtic Astrology* - Tree signs and animal totems\n🔮 *I Ching* - Ancient Chinese oracle\n\n🗺️ *Advanced Systems:*\n🗺️ *Astrocartography* - Planetary lines and relocation guidance\n⏰ *Horary Astrology* - Answers to specific questions\n\nJust send me a message like:\n• "What\'s my horoscope today?"\n• "Show me my birth chart"\n• "Tarot reading" or "Palmistry"\n• "Kabbalistic analysis" or "Mayan calendar"\n• "I Ching oracle" or "Astrocartography"\n• "Horary: When will I find love?"\n\nWhat aspect of your cosmic journey interests you? ✨';
   }
 

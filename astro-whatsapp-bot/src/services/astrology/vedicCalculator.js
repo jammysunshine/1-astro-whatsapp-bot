@@ -94,10 +94,9 @@ class VedicCalculator {
   ) {
     try {
       if (!birthDate || typeof birthDate !== 'string') {
-        console.error(
+        logger.error(
           'Invalid birthDate provided to calculateSunSign:',
-          birthDate,
-          typeof birthDate
+          { birthDate, type: typeof birthDate }
         );
         return this._calculateSunSignFallback('01/01/1990'); // Default fallback
       }
@@ -124,7 +123,7 @@ class VedicCalculator {
       // Return sun sign from interpretations
       return chart.interpretations.sunSign;
     } catch (error) {
-      console.error('Error calculating sun sign with astrologer:', error);
+      logger.error('Error calculating sun sign with astrologer:', error);
       // Fallback to simplified calculation
       return this._calculateSunSignFallback(birthDate);
     }
@@ -166,7 +165,7 @@ class VedicCalculator {
 
       return 'Unknown';
     } catch (error) {
-      console.error('Error in fallback sun sign calculation:', error);
+      logger.error('Error in fallback sun sign calculation:', error);
       return 'Unknown';
     }
   }
@@ -209,7 +208,7 @@ class VedicCalculator {
       // Return moon sign from interpretations
       return chart.interpretations.moonSign;
     } catch (error) {
-      console.error('Error calculating moon sign with astrologer:', error);
+      logger.error('Error calculating moon sign with astrologer:', error);
       // Fallback to simplified calculation
       return this._calculateMoonSignFallback(birthDate, birthTime);
     }
@@ -230,18 +229,20 @@ class VedicCalculator {
 
       return this.zodiacSigns[moonSignIndex];
     } catch (error) {
-      console.error('Error in fallback moon sign calculation:', error);
+      logger.error('Error in fallback moon sign calculation:', error);
       return 'Unknown';
     }
   }
 
   /**
    * Get coordinates for a place (simplified implementation)
+   * TODO: Implement proper geocoding service for accurate coordinates
    * @private
    */
   _getCoordinatesForPlace(place) {
-    // Simplified geocoding - in production, use a proper geocoding service
+    // Simplified geocoding - in production, integrate with a geocoding API like Google Maps or OpenStreetMap
     const placeCoords = {
+      // India
       delhi: [28.6139, 77.209],
       mumbai: [19.076, 72.8777],
       bangalore: [12.9716, 77.5946],
@@ -252,19 +253,56 @@ class VedicCalculator {
       ahmedabad: [23.0225, 72.5714],
       jaipur: [26.9124, 75.7873],
       lucknow: [26.8467, 80.9462],
+      surat: [21.1702, 72.8311],
+      kanpur: [26.4499, 80.3319],
+      nagpur: [21.1458, 79.0882],
+      patna: [25.5941, 85.1376],
+      indore: [22.7196, 75.8577],
+      vadodara: [22.3072, 73.1812],
+      bhopal: [23.2599, 77.4126],
+      coimbatore: [11.0168, 76.9558],
+      ludhiana: [30.9010, 75.8573],
+      agra: [27.1767, 78.0081],
+      // UAE
+      dubai: [25.2048, 55.2708],
+      abudhabi: [24.4539, 54.3773],
+      sharjah: [25.3463, 55.4209],
+      // Australia
+      sydney: [-33.8688, 151.2093],
+      melbourne: [-37.8136, 144.9631],
+      brisbane: [-27.4698, 153.0251],
+      perth: [-31.9505, 115.8605],
+      // Default
+      default: [28.6139, 77.209], // Delhi
     };
 
-    const normalizedPlace = place.toLowerCase();
-    return placeCoords[normalizedPlace] || [28.6139, 77.209]; // Default to Delhi
+    const normalizedPlace = place.toLowerCase().replace(/\s+/g, '');
+    return placeCoords[normalizedPlace] || placeCoords.default;
   }
 
   /**
    * Get timezone for a place (simplified implementation)
+   * TODO: Implement proper timezone service for accurate timezone calculations
    * @private
    */
   _getTimezoneForPlace(place) {
-    // Most Indian cities are IST (UTC+5:30)
-    return 5.5;
+    // Simplified timezone mapping - in production, use a timezone API
+    const placeTimezones = {
+      // India (IST: UTC+5:30)
+      delhi: 5.5, mumbai: 5.5, bangalore: 5.5, chennai: 5.5, kolkata: 5.5,
+      hyderabad: 5.5, pune: 5.5, ahmedabad: 5.5, jaipur: 5.5, lucknow: 5.5,
+      surat: 5.5, kanpur: 5.5, nagpur: 5.5, patna: 5.5, indore: 5.5,
+      vadodara: 5.5, bhopal: 5.5, coimbatore: 5.5, ludhiana: 5.5, agra: 5.5,
+      // UAE (GST: UTC+4)
+      dubai: 4, abudhabi: 4, sharjah: 4,
+      // Australia
+      sydney: 10, melbourne: 10, brisbane: 10, perth: 8,
+      // Default
+      default: 5.5, // IST
+    };
+
+    const normalizedPlace = place.toLowerCase().replace(/\s+/g, '');
+    return placeTimezones[normalizedPlace] || placeTimezones.default;
   }
 
   /**
@@ -346,7 +384,7 @@ class VedicCalculator {
         fullChart: chart, // Include complete chart data for advanced features
       };
     } catch (error) {
-      console.error('Error generating natal chart:', error);
+      logger.error('Error generating natal chart:', error);
       return {
         name: user.name,
         birthDate: user.birthDate,
@@ -515,7 +553,7 @@ class VedicCalculator {
             health,
           };
         } catch (astrologerError) {
-          console.warn(
+          logger.warn(
             'Astrologer library failed, falling back to basic horoscope:',
             astrologerError.message
           );
@@ -564,7 +602,7 @@ class VedicCalculator {
         health: "Listen to your body's needs.",
       };
     } catch (error) {
-      console.error('Error generating daily horoscope:', error);
+      logger.error('Error generating daily horoscope:', error);
       return {
         general:
           'Today brings opportunities for growth and self-discovery. Trust your inner wisdom.',
@@ -1150,7 +1188,7 @@ class VedicCalculator {
 
       return analysis;
     } catch (error) {
-      console.error('Error generating detailed chart analysis:', error);
+      logger.error('Error generating detailed chart analysis:', error);
       return this.generateBasicBirthChart(user); // Fallback to basic chart
     }
   }

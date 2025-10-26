@@ -8,7 +8,6 @@ const {
   addBirthDetails,
   updateUserProfile,
 } = require('../../src/models/userModel');
-const { sendMessage } = require('../../src/services/whatsapp/messageSender');
 const logger = require('../../src/utils/logger');
 const mongoose = require('mongoose');
 
@@ -18,10 +17,14 @@ const {
   validateWebhookSignature,
 } = require('../../src/services/whatsapp/webhookValidator');
 
-// Mock sendMessage
+// Mock sendMessage to avoid actual API calls during testing
 jest.mock('../../src/services/whatsapp/messageSender');
+const { sendMessage } = require('../../src/services/whatsapp/messageSender');
 
+// E2E tests use real database operations
 describe('Critical User Flow End-to-End Tests', () => {
+  const testPhone = '+1234567890';
+
   beforeAll(async () => {
     // Set test environment variables
     process.env.NODE_ENV = 'test';
@@ -31,22 +34,21 @@ describe('Critical User Flow End-to-End Tests', () => {
   });
 
   beforeEach(async () => {
-    // Clear database collections before each test
-    try {
-      await User.deleteMany({});
-      await Session.deleteMany({});
-    } catch (error) {
-      // Collections might not exist, that's fine
-    }
-    // Clear all mocks (only for webhookValidator here)
+    // Clear all mocks
     jest.clearAllMocks();
 
     // Setup default mock responses for webhookValidator
     validateWebhookSignature.mockReturnValue(true);
+
+    // Setup default mock responses for sendMessage
+    sendMessage.mockResolvedValue({
+      messaging_product: 'whatsapp',
+      contacts: [{ input: testPhone, wa_id: testPhone }],
+      messages: [{ id: 'test-message-id' }],
+    });
   });
 
   describe('New User Registration Flow', () => {
-    const testPhone = '+1234567890';
 
     it('should complete full new user registration and first reading flow', async () => {
       // Step 1: New user sends birth date directly (welcome step expects date)
@@ -264,10 +266,7 @@ describe('Critical User Flow End-to-End Tests', () => {
 
       expect(confirmResponse.body.success).toBe(true);
 
-      // Wait for async database operations and astrology calculations to complete
-      await new Promise(resolve => setTimeout(resolve, 3000));
-
-      // Verify user profile is complete with astrology data
+      // Check user immediately after confirm
       user = await getUserByPhone(testPhone);
       expect(user).toBeTruthy();
       expect(user.profileComplete).toBe(true);
@@ -346,10 +345,23 @@ describe('Critical User Flow End-to-End Tests', () => {
                     phone_number_id: 'phone-id-daily',
                   },
                   contacts: [
-                    {
-                      profile: { name: 'Existing User' },
-                      wa_id: testPhone,
-                    },
+                {
+
+                  from: testPhone,
+
+                  id: 'msg-birth-time',
+
+                  timestamp: Date.now().toString(),
+
+                  type: 'text',
+
+                  text: {
+
+                    body: '1430',
+
+                  },
+
+                },
                   ],
                   messages: [
                     {

@@ -335,11 +335,21 @@
                  "title": "Jaimini Astrology",
                  "description": "Karakas and alternative Vedic system"
                },
-               {
-                 "id": "btn_hindu_festivals",
-                 "title": "Hindu Festivals",
-                 "description": "Festival calendar and auspicious timings"
-               },
+                {
+                  "id": "btn_hindu_festivals",
+                  "title": "Hindu Festivals",
+                  "description": "Festival calendar and auspicious timings"
+                },
+                {
+                  "id": "btn_vedic_numerology",
+                  "title": "Vedic Numerology",
+                  "description": "Chani system - traditional Indian numerology"
+                },
+                {
+                  "id": "btn_ayurvedic_astrology",
+                  "title": "Ayurvedic Astrology",
+                  "description": "Dosha analysis and Ayurvedic health guidance"
+                },
               {
               "id": "btn_progressions",
               "title": "Secondary Progressions",

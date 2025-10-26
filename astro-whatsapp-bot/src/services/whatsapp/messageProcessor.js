@@ -22,6 +22,10 @@ const celticReader = require('../astrology/celticReader');
 const ichingReader = require('../astrology/ichingReader');
 const { generateAstrocartography } = require('../astrology/astrocartographyReader');
 const numerologyService = require('../astrology/numerologyService');
+const { VedicNumerology } = require('../services/astrology/vedicNumerology');
+const { AyurvedicAstrology } = require('../services/astrology/ayurvedicAstrology');
+const vedicNumerology = new VedicNumerology();
+const ayurvedicAstrology = new AyurvedicAstrology();
 
 // Mapping for list reply IDs to actions
 const listActionMapping = {
@@ -60,7 +64,9 @@ const listActionMapping = {
      btn_islamic: 'get_islamic_astrology_info',
      btn_vimshottari_dasha: 'get_vimshottari_dasha_analysis',
      btn_jaimini_astrology: 'get_jaimini_astrology_analysis',
-     btn_hindu_festivals: 'get_hindu_festivals_info',
+      btn_hindu_festivals: 'get_hindu_festivals_info',
+      btn_vedic_numerology: 'get_vedic_numerology_analysis',
+      btn_ayurvedic_astrology: 'get_ayurvedic_astrology_analysis',
      btn_varga_charts: 'get_varga_charts_analysis',
     btn_shadbala: 'get_shadbala_analysis',
     btn_muhurta: 'get_muhurta_analysis',
@@ -689,7 +695,45 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       case 'get_hindu_festivals_info':
         response = '🕉️ *Hindu Festivals & Auspicious Calendar*\n\nExplore India\'s rich festival heritage and discover auspicious timings for your activities!\n\n*🪔 Major Hindu Festivals:*\n• **Diwali** - Festival of Lights, Lakshmi Puja, prosperity & new beginnings\n• **Holi** - Festival of Colors, spring celebration, renewal & joy\n• **Durga Puja** - Goddess worship, divine power, spiritual purification\n• **Maha Shivaratri** - Lord Shiva\'s night, spiritual awakening, meditation\n• **Raksha Bandhan** - Brother-sister bond, protection, family harmony\n• **Ganesh Chaturthi** - Lord Ganesha, obstacle removal, wisdom\n• **Navaratri** - Nine nights of Goddess, purification, cultural celebration\n• **Krishna Janmashtami** - Lord Krishna\'s birth, devotion, divine love\n• **Ram Navami** - Lord Rama\'s birth, righteousness, ethical living\n• **Hanuman Jayanti** - Lord Hanuman, strength, courage, devotion\n\n*⏰ Auspicious Timings (Muhurtas):*\n• **Abhijit Muhurta** - Most auspicious (11:30 AM - 12:30 PM daily)\n• **Brahma Muhurta** - Spiritual practices (1.5 hours before sunrise)\n• **Rahu Kalam** - Avoid important work (varies by weekday)\n• **Yamagandam** - Challenging period (varies by weekday)\n\n*📅 Festival Information Available:*\n• Detailed significance and rituals for each festival\n• Regional variations and modern celebration tips\n• Auspicious activities for different festivals\n• Upcoming festival calendar (next 30 days)\n• Festival-specific timings and muhurtas\n\n*Examples of Requests:*\n• "festivals for 2024-10-28" - Check Diwali festivals\n• "festival about holi" - Detailed Holi information\n• "upcoming festivals" - Next 30 days calendar\n• "auspicious timings" - Daily muhurta guidance\n• "hindu calendar" - General festival overview\n\n*🌟 Festival Significance:*\n• Cultural preservation and community bonding\n• Spiritual growth and divine connection\n• Seasonal celebrations and agricultural cycles\n• Family traditions and social harmony\n• Auspicious beginnings and prosperity\n\nWhat festival or auspicious timing information interests you? Send your request to explore the divine calendar! 🕉️';
         break;
-     case 'get_varga_charts_analysis':
+      case 'get_vedic_numerology_analysis':
+        if (!user.birthDate) {
+          response = 'I need your birth date and name for Vedic numerology analysis.';
+          break;
+        }
+        try {
+          const vedicAnalysis = vedicNumerology.getVedicNumerologyAnalysis(user.birthDate, user.name);
+          if (vedicAnalysis.error) {
+            response = `❌ ${vedicAnalysis.error}`;
+          } else {
+            response = vedicAnalysis.summary;
+          }
+        } catch (error) {
+          logger.error('Error generating Vedic numerology analysis:', error);
+          response = '❌ Sorry, I couldn\'t generate your Vedic numerology analysis right now. Please try again later.';
+        }
+        break;
+      case 'get_ayurvedic_astrology_analysis':
+        if (!user.birthDate) {
+          response = 'I need your complete birth details for Ayurvedic astrology analysis.';
+          break;
+        }
+        try {
+          const ayurvedicAnalysis = ayurvedicAstrology.analyzeAyurvedicConstitution({
+            birthDate: user.birthDate,
+            birthTime: user.birthTime || '12:00',
+            birthPlace: user.birthPlace || 'Delhi'
+          });
+          if (ayurvedicAnalysis.error) {
+            response = `❌ ${ayurvedicAnalysis.error}`;
+          } else {
+            response = ayurvedicAnalysis.summary;
+          }
+        } catch (error) {
+          logger.error('Error generating Ayurvedic astrology analysis:', error);
+          response = '❌ Sorry, I couldn\'t generate your Ayurvedic astrology analysis right now. Please try again later.';
+        }
+        break;
+      case 'get_varga_charts_analysis':
       if (!user.birthDate) {
         response = 'I need your complete birth details for Varga Charts analysis.';
         break;

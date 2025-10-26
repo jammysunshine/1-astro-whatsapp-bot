@@ -103,7 +103,7 @@ app.get('/debug-whatsapp', async (req, res) => {
       envVarExists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN,
       phoneId: phoneId,
       timestamp: new Date().toISOString(),
-      deploymentCheck: "v2"
+      deploymentCheck: "v3"
     };
 
     // Test WhatsApp API
@@ -133,7 +133,7 @@ app.get('/debug-whatsapp', async (req, res) => {
         phoneId: process.env.W1_WHATSAPP_PHONE_NUMBER_ID,
         error: error.message,
         response: error.response?.data,
-        deploymentCheck: "v2"
+        deploymentCheck: "v3"
       }
     });
   }

@@ -9,9 +9,13 @@ const WHATSAPP_API_URL = 'https://graph.facebook.com/v18.0';
  * @returns {Object} credentials
  */
 const getWhatsAppCredentials = () => {
-  const accessToken = process.env.W1_WHATSAPP_ACCESS_TOKEN;
+  // Reconstruct token from two parts to bypass Render's env var size limit
+  const tokenPart1 = process.env.W1_WHATSAPP_ACCESS_TOKEN_PART1;
+  const tokenPart2 = process.env.W1_WHATSAPP_ACCESS_TOKEN_PART2;
+  const accessToken = tokenPart1 && tokenPart2 ? tokenPart1 + tokenPart2 : process.env.W1_WHATSAPP_ACCESS_TOKEN;
   const phoneNumberId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
   logger.debug(`WhatsApp Access Token (masked): ${accessToken ? accessToken.substring(0, 5) + '...' + accessToken.substring(accessToken.length - 5) : 'Not Set'}`);
+  logger.debug(`WhatsApp Token Length: ${accessToken ? accessToken.length : 0}`);
   logger.debug(`WhatsApp Phone Number ID: ${phoneNumberId || 'Not Set'}`);
   return { accessToken, phoneNumberId };
 };

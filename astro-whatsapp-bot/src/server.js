@@ -92,21 +92,26 @@ app.get('/health', (req, res) => {
 app.get('/debug-whatsapp', async (req, res) => {
   try {
     const axios = require('axios');
-    const token = process.env.W1_WHATSAPP_ACCESS_TOKEN;
+    // Reconstruct token from parts (same logic as messageSender)
+    const tokenPart1 = process.env.W1_WHATSAPP_ACCESS_TOKEN_PART1;
+    const tokenPart2 = process.env.W1_WHATSAPP_ACCESS_TOKEN_PART2;
+    const token = tokenPart1 && tokenPart2 ? tokenPart1 + tokenPart2 : process.env.W1_WHATSAPP_ACCESS_TOKEN;
     const phoneId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
 
     const debug = {
       tokenLength: token ? token.length : 0,
-      tokenActualLength: token ? [...token].length : 0, // Count Unicode characters
+      tokenReconstructed: !!(tokenPart1 && tokenPart2),
+      tokenPart1Length: tokenPart1 ? tokenPart1.length : 0,
+      tokenPart2Length: tokenPart2 ? tokenPart2.length : 0,
       tokenStart: token ? token.substring(0, 10) : null,
       tokenEnd: token ? token.substring(Math.max(0, token.length - 10)) : null,
-      tokenCharAt173: token && token.length >= 173 ? token.charAt(172) : null,
-      tokenCharAt205: token && token.length >= 205 ? token.charAt(204) : null,
       tokenMasked: token ? `${token.substring(0, 20)}...${token.substring(Math.max(0, token.length - 20))}` : null,
       envVarExists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN,
+      envPart1Exists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN_PART1,
+      envPart2Exists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN_PART2,
       phoneId: phoneId,
       timestamp: new Date().toISOString(),
-      deploymentCheck: "v4"
+      deploymentCheck: "v5"
     };
 
     // Test WhatsApp API
@@ -124,19 +129,27 @@ app.get('/debug-whatsapp', async (req, res) => {
       whatsappResponse: response.data
     });
   } catch (error) {
-    const token = process.env.W1_WHATSAPP_ACCESS_TOKEN;
+    // Reconstruct token from parts (same logic as messageSender)
+    const tokenPart1 = process.env.W1_WHATSAPP_ACCESS_TOKEN_PART1;
+    const tokenPart2 = process.env.W1_WHATSAPP_ACCESS_TOKEN_PART2;
+    const token = tokenPart1 && tokenPart2 ? tokenPart1 + tokenPart2 : process.env.W1_WHATSAPP_ACCESS_TOKEN;
     res.json({
       status: 'error',
       debug: {
         tokenLength: token ? token.length : 0,
+        tokenReconstructed: !!(tokenPart1 && tokenPart2),
+        tokenPart1Length: tokenPart1 ? tokenPart1.length : 0,
+        tokenPart2Length: tokenPart2 ? tokenPart2.length : 0,
         tokenStart: token ? token.substring(0, 10) : null,
-        tokenEnd: token ? token.substring(token.length - 10) : null,
-        tokenMasked: token ? `${token.substring(0, 20)}...${token.substring(token.length - 20)}` : null,
+        tokenEnd: token ? token.substring(Math.max(0, token.length - 10)) : null,
+        tokenMasked: token ? `${token.substring(0, 20)}...${token.substring(Math.max(0, token.length - 20))}` : null,
         envVarExists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN,
+        envPart1Exists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN_PART1,
+        envPart2Exists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN_PART2,
         phoneId: process.env.W1_WHATSAPP_PHONE_NUMBER_ID,
         error: error.message,
         response: error.response?.data,
-        deploymentCheck: "v4"
+        deploymentCheck: "v5"
       }
     });
   }

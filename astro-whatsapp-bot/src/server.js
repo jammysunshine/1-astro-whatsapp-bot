@@ -136,7 +136,7 @@ app.get('/debug-whatsapp', async (req, res) => {
         phoneId: process.env.W1_WHATSAPP_PHONE_NUMBER_ID,
         error: error.message,
         response: error.response?.data,
-        deploymentCheck: "v3"
+        deploymentCheck: "v4"
       }
     });
   }

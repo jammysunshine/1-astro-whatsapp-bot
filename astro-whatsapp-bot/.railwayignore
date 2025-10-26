@@ -1,0 +1,66 @@
+# Railway deployment ignore file
+# Exclude documentation and development files to reduce upload size
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Development files
+.github/
+artillery/
+kubernetes/
+owasp-zap/
+prometheus/
+scripts/
+tests/
+logs/
+*.cache
+.cache/
+node_modules/.cache/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Satellite ephemeris files (not needed for astrology)
+ephe/sat/
+
+# Git and version control
+.git/
+.gitignore
+
+# Environment files
+.env*
+
+# Development tools
+.prettierrc
+.snyk
+sonar-project.properties
+
+# Test files
+calculate-sun-signs.js
+test-*.js
+*-test.js
+*test*.js
+
+# Docker files (Railway uses its own)
+docker-compose.yml
+Dockerfile
+
+# Railway specific
+railway.toml
+RAILWAY.md
+
+# Ephemeris files - needed for accurate astronomical calculations
+ephe/ (excluding unnecessary files to reduce size)
+!ephe/seplm80.se1
+!ephe/seplm120.se1
+!ephe/semom80.se1
+!ephe/semom120.se1
+!ephe/seasm80.se1
+
+# Temporary files
+*.log
+*.tmp
+.DS_Store

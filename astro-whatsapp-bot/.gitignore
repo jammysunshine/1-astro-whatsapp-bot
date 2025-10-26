@@ -53,7 +53,5 @@ docs/validation/*.md
 !docs/validation/CONSOLIDATED-FINAL-VALIDATION-SUMMARY.md
 !docs/validation/SUMMARY.md
 
-# Exclude large ephemeris files not needed for basic calculations
-ephe/sepl_18.se1
-ephe/semo_18.se1
+# Exclude asteroid belt ephemeris file to reduce size
 ephe/seas_18.se1

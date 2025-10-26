@@ -26,6 +26,7 @@
     "check-token": "node scripts/whatsapp-token-manager.js check",
     "monitor-token": "node scripts/whatsapp-token-manager.js monitor",
     "token-health": "node scripts/whatsapp-token-manager.js health",
+    "update-render-env": "node scripts/update-render-env.js",
     "clean": "rm -rf node_modules package-lock.json && npm install"
   },
   "jest": {

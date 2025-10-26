@@ -169,27 +169,96 @@ const processTextMessage = async(message, user) => {
     return;
   }
 
-  // Check for menu keywords and redirect to menu actions
-  const lowerMessage = messageText.toLowerCase();
-  if (lowerMessage.includes('horoscope') || lowerMessage.includes('daily')) {
-    await executeMenuAction(phoneNumber, user, 'get_daily_horoscope');
-    return;
-  } else if (lowerMessage.includes('chart') || lowerMessage.includes('birth')) {
-    await executeMenuAction(phoneNumber, user, 'show_user_profile');
-    return;
-  } else if (
-    lowerMessage.includes('compatibility') ||
-    lowerMessage.includes('match')
-  ) {
-    await executeMenuAction(phoneNumber, user, 'initiate_compatibility_flow');
-    return;
-  } else if (
-    lowerMessage.includes('subscription') ||
-    lowerMessage.includes('plan')
-  ) {
-    await executeMenuAction(phoneNumber, user, 'show_subscription_plans');
-    return;
-  }
+   // Check for menu keywords and redirect to menu actions
+   const lowerMessage = messageText.toLowerCase();
+   if (lowerMessage.includes('horoscope') || lowerMessage.includes('daily') || lowerMessage === '1') {
+     await executeMenuAction(phoneNumber, user, 'get_daily_horoscope');
+     return;
+   } else if (lowerMessage.includes('chart') || lowerMessage.includes('birth') || lowerMessage === '2') {
+     await executeMenuAction(phoneNumber, user, 'show_birth_chart');
+     return;
+   } else if (
+     lowerMessage.includes('compatibility') ||
+     lowerMessage.includes('match') ||
+     lowerMessage === '3'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'initiate_compatibility_flow');
+     return;
+   } else if (
+     lowerMessage.includes('tarot') ||
+     lowerMessage === '4'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'get_tarot_reading');
+     return;
+   } else if (
+     lowerMessage.includes('iching') ||
+     lowerMessage.includes('i ching') ||
+     lowerMessage === '5'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'get_iching_reading');
+     return;
+   } else if (
+     lowerMessage.includes('palmistry') ||
+     lowerMessage === '6'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'get_palmistry_analysis');
+     return;
+   } else if (
+     lowerMessage.includes('nadi') ||
+     lowerMessage === '7'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'show_nadi_flow');
+     return;
+   } else if (
+     lowerMessage.includes('kabbalistic') ||
+     lowerMessage === '8'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'get_kabbalistic_analysis');
+     return;
+   } else if (
+     lowerMessage.includes('mayan') ||
+     lowerMessage === '9'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'get_mayan_analysis');
+     return;
+   } else if (
+     lowerMessage.includes('celtic') ||
+     lowerMessage === '10'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'get_celtic_analysis');
+     return;
+   } else if (
+     lowerMessage.includes('horary') ||
+     lowerMessage === '11'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'get_horary_reading');
+     return;
+   } else if (
+     lowerMessage.includes('chinese') ||
+     lowerMessage.includes('bazi') ||
+     lowerMessage === '12'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'show_chinese_flow');
+     return;
+   } else if (
+     lowerMessage.includes('numerology') ||
+     lowerMessage === '13'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'get_numerology_analysis');
+     return;
+   } else if (
+     lowerMessage.includes('astrocartography') ||
+     lowerMessage === '14'
+   ) {
+     await executeMenuAction(phoneNumber, user, 'get_astrocartography_analysis');
+     return;
+   } else if (
+     lowerMessage.includes('subscription') ||
+     lowerMessage.includes('plan')
+   ) {
+     await executeMenuAction(phoneNumber, user, 'show_subscription_plans');
+     return;
+   }
 
   // Generate astrology response based on user input
   const response = await generateAstrologyResponse(messageText, user);
@@ -849,17 +918,10 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       );
     }
     return null;
-  case 'show_comprehensive_menu':
-    const comprehensiveMenu = getMenu('comprehensive_menu');
-    if (comprehensiveMenu) {
-      await sendListMessage(
-        phoneNumber,
-        comprehensiveMenu.body,
-        'Select Service',
-        comprehensiveMenu.sections
-      );
-    }
-    return null;
+   case 'show_comprehensive_menu':
+     const comprehensiveResponse = `🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:\n\n*Core Services:*\n1. 📅 Daily Horoscope\n2. 📊 Full Birth Chart\n3. 💕 Compatibility\n\n*Divination Systems:*\n4. 🔮 Tarot Reading\n5. 🏮 I Ching Oracle\n6. 🤲 Palmistry\n\n*Ancient Traditions:*\n7. 📜 Nadi Astrology\n8. 🌳 Kabbalistic\n9. 🏛️ Mayan Calendar\n10. 🍃 Celtic Wisdom\n\n*Advanced Services:*\n11. ❓ Horary Question\n12. 🐉 Chinese BaZi\n13. 🔢 Numerology\n14. 🌍 Astrocartography\n\nReply with the number or service name to get started!`;
+     await sendMessage(phoneNumber, comprehensiveResponse);
+     return null;
   default:
     logger.warn(`⚠️ Unknown menu action: ${action}`);
     response = `I'm sorry, I don't know how to perform the action: ${action} yet.`;

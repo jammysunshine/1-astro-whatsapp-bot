@@ -189,10 +189,6 @@ const sendListMessage = async(
       type: 'interactive',
       interactive: {
         type: 'list',
-        header: {
-          type: 'text',
-          text: options.headerText || 'Choose an option:'
-        },
         body: {
           text: body
         },
@@ -202,6 +198,14 @@ const sendListMessage = async(
         }
       }
     };
+
+    // Add header if provided
+    if (options.headerText) {
+      messagePayload.interactive.header = {
+        type: 'text',
+        text: options.headerText
+      };
+    }
 
     // Add footer if provided
     if (options.footer) {

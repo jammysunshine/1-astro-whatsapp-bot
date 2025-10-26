@@ -97,13 +97,16 @@ app.get('/debug-whatsapp', async (req, res) => {
 
     const debug = {
       tokenLength: token ? token.length : 0,
+      tokenActualLength: token ? [...token].length : 0, // Count Unicode characters
       tokenStart: token ? token.substring(0, 10) : null,
-      tokenEnd: token ? token.substring(token.length - 10) : null,
-      tokenMasked: token ? `${token.substring(0, 20)}...${token.substring(token.length - 20)}` : null,
+      tokenEnd: token ? token.substring(Math.max(0, token.length - 10)) : null,
+      tokenCharAt173: token && token.length >= 173 ? token.charAt(172) : null,
+      tokenCharAt205: token && token.length >= 205 ? token.charAt(204) : null,
+      tokenMasked: token ? `${token.substring(0, 20)}...${token.substring(Math.max(0, token.length - 20))}` : null,
       envVarExists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN,
       phoneId: phoneId,
       timestamp: new Date().toISOString(),
-      deploymentCheck: "v3"
+      deploymentCheck: "v4"
     };
 
     // Test WhatsApp API

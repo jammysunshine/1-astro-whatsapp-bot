@@ -3,7 +3,7 @@
  * Provides gemstones, mantras, charities, pujas, and yantras for planetary appeasement
  */
 
-const logger = require('../utils/logger');
+const logger = require('../../utils/logger');
 
 class VedicRemedies {
   constructor() {
@@ -438,7 +438,7 @@ class VedicRemedies {
     const charity = this.charities[planetKey];
 
     let summary = `🪐 *${gem.name} (${gem.sanskrit})*\n\n`;
-    summary += `*Wearing Instructions:*\n`;
+    summary += '*Wearing Instructions:*\n';
     summary += `• Weight: ${gem.weight}\n`;
     summary += `• Finger: ${gem.finger}\n`;
     summary += `• Day: ${gem.day}\n`;
@@ -446,12 +446,12 @@ class VedicRemedies {
 
     summary += `*Benefits:* ${gem.benefits}\n\n`;
 
-    summary += `📿 *Mantras:*\n`;
+    summary += '📿 *Mantras:*\n';
     summary += `• Beej: "${mantra.beej}"\n`;
     summary += `• Count: ${mantra.count}\n`;
     summary += `• Time: ${mantra.time}\n\n`;
 
-    summary += `🙏 *Charities:*\n`;
+    summary += '🙏 *Charities:*\n';
     summary += `• Items: ${charity.items.join(', ')}\n`;
     summary += `• Days: ${charity.days.join(', ')}\n`;
     summary += `• Places: ${charity.places.join(', ')}\n\n`;
@@ -459,7 +459,7 @@ class VedicRemedies {
     summary += `*Benefits:* ${charity.benefits}\n\n`;
 
     summary += `⚠️ *Precautions:* ${gem.precautions}\n\n`;
-    summary += `🕉️ *Note:* Consult a qualified astrologer before starting any remedies. Results vary by individual chart.`;
+    summary += '🕉️ *Note:* Consult a qualified astrologer before starting any remedies. Results vary by individual chart.';
 
     return summary;
   }

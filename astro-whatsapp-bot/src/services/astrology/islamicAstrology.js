@@ -3,7 +3,7 @@
  * Provides Islamic numerology, destiny analysis, and traditional Islamic astrological insights
  */
 
-const logger = require('../utils/logger');
+const logger = require('../../utils/logger');
 
 class IslamicAstrology {
   constructor() {
@@ -17,12 +17,12 @@ class IslamicAstrology {
   initializeIslamicDatabases() {
     // Abjad (Islamic Numerology) System
     this.abjadSystem = {
-      'ا': 1, 'ب': 2, 'ج': 3, 'د': 4, 'ه': 5, 'و': 6, 'ز': 7, 'ح': 8, 'ط': 9,
-      'ي': 10, 'ك': 20, 'ل': 30, 'م': 40, 'ن': 50, 'س': 60, 'ع': 70, 'ف': 80,
-      'ص': 90, 'ق': 100, 'ر': 200, 'ش': 300, 'ت': 400, 'ث': 500, 'خ': 600,
-      'ذ': 700, 'ض': 800, 'ظ': 900, 'غ': 1000,
+      ا: 1, ب: 2, ج: 3, د: 4, ه: 5, و: 6, ز: 7, ح: 8, ط: 9,
+      ي: 10, ك: 20, ل: 30, م: 40, ن: 50, س: 60, ع: 70, ف: 80,
+      ص: 90, ق: 100, ر: 200, ش: 300, ت: 400, ث: 500, خ: 600,
+      ذ: 700, ض: 800, ظ: 900, غ: 1000,
       // Persian/Urdu extensions
-      'پ': 2, 'چ': 3, 'ژ': 7, 'گ': 1000, 'ں': 50, 'ہ': 5, 'ی': 10, 'ے': 10
+      پ: 2, چ: 3, ژ: 7, گ: 1000, ں: 50, ہ: 5, ی: 10, ے: 10
     };
 
     // Islamic Lunar Mansions (Manazil al-Qamar - 28 stations)
@@ -188,13 +188,13 @@ class IslamicAstrology {
     try {
       const cleanName = name.replace(/[^\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/g, '');
       let totalValue = 0;
-      let letterValues = [];
+      const letterValues = [];
 
-      for (let char of cleanName) {
+      for (const char of cleanName) {
         const value = this.abjadSystem[char] || 0;
         totalValue += value;
         if (value > 0) {
-          letterValues.push({ letter: char, value: value });
+          letterValues.push({ letter: char, value });
         }
       }
 
@@ -207,12 +207,12 @@ class IslamicAstrology {
       const analysis = this.analyzeNumerologyValue(reducedValue);
 
       return {
-        name: name,
+        name,
         arabic_name: cleanName,
         total_value: totalValue,
         reduced_value: reducedValue,
         letter_breakdown: letterValues,
-        analysis: analysis,
+        analysis,
         summary: this.generateNumerologySummary(name, reducedValue, analysis)
       };
     } catch (error) {
@@ -359,7 +359,7 @@ class IslamicAstrology {
    */
   calculateLunarMansion(date, time) {
     // Simplified calculation - in real implementation would use astronomical calculations
-    const birthDate = new Date(date + ' ' + time);
+    const birthDate = new Date(`${date} ${time}`);
     const dayOfMonth = birthDate.getDate();
 
     // Each mansion is approximately 12.85 degrees (360/28)
@@ -402,7 +402,7 @@ class IslamicAstrology {
    */
   analyzePlanetaryInfluences(date, time) {
     // Simplified analysis - would use actual astronomical calculations
-    const birthDate = new Date(date + ' ' + time);
+    const birthDate = new Date(`${date} ${time}`);
     const dayOfWeek = birthDate.getDay();
 
     // Day of week corresponds to planetary rulership
@@ -495,8 +495,8 @@ class IslamicAstrology {
     // Simplified calculation based on various factors
     let strength = 0;
 
-    if (lunarMansion.nature === 'Favorable') strength += 30;
-    if (lifePath.number >= 5) strength += 20;
+    if (lunarMansion.nature === 'Favorable') { strength += 30; }
+    if (lifePath.number >= 5) { strength += 20; }
 
     // Category-specific calculations
     const categoryFactors = {
@@ -510,8 +510,8 @@ class IslamicAstrology {
       strength += 25;
     }
 
-    if (strength >= 60) return 'Strong';
-    if (strength >= 30) return 'Moderate';
+    if (strength >= 60) { return 'Strong'; }
+    if (strength >= 30) { return 'Moderate'; }
     return 'Developing';
   }
 
@@ -585,7 +585,7 @@ class IslamicAstrology {
     summary += `*Challenges:* ${analysis.challenges}\n\n`;
     summary += `*Islamic Significance:* ${analysis.islamic_significance}\n\n`;
     summary += `*Recommended:* ${analysis.recommended}\n\n`;
-    summary += `🕌 *Remember:* Your name number represents divine qualities bestowed upon you. Use them to serve Allah and benefit humanity.`;
+    summary += '🕌 *Remember:* Your name number represents divine qualities bestowed upon you. Use them to serve Allah and benefit humanity.';
 
     return summary;
   }
@@ -603,20 +603,20 @@ class IslamicAstrology {
     summary += `*Meaning:* ${lunarMansion.meaning}\n`;
     summary += `*Nature:* ${lunarMansion.nature}\n\n`;
 
-    summary += `*Destiny Overview:*\n`;
+    summary += '*Destiny Overview:*\n';
     for (const [key, category] of Object.entries(destinyCategories)) {
       summary += `• *${category.name}:* ${category.strength} strength\n`;
     }
     summary += '\n';
 
-    summary += `*Key Life Areas:*\n`;
+    summary += '*Key Life Areas:*\n';
     const strongestCategory = Object.entries(destinyCategories)
-      .reduce((a, b) => destinyCategories[a[0]].strength === 'Strong' ? a : b);
+      .reduce((a, b) => (destinyCategories[a[0]].strength === 'Strong' ? a : b));
 
     summary += `• Most Blessed: ${destinyCategories[strongestCategory[0]].name}\n`;
     summary += `• Focus Areas: ${destinyCategories[strongestCategory[0]].aspects.join(', ')}\n\n`;
 
-    summary += `*Divine Guidance:* Your destiny is written by Allah, but you have free will to choose your path. Use prayer, knowledge, and good deeds to fulfill your divine purpose. 🕉️`;
+    summary += '*Divine Guidance:* Your destiny is written by Allah, but you have free will to choose your path. Use prayer, knowledge, and good deeds to fulfill your divine purpose. 🕉️';
 
     return summary;
   }

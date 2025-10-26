@@ -113,7 +113,6 @@ class AyurvedicAstrology {
         seasonalGuidance: this.getSeasonalGuidance(constitutions.primary),
         summary: this.generateSummary(constitutions, healthRecommendations)
       };
-
     } catch (error) {
       logger.error('Error analyzing Ayurvedic constitution:', error);
       return {
@@ -181,7 +180,7 @@ class AyurvedicAstrology {
    */
   determineConstitutions(doshaScores) {
     const sortedDoshas = Object.entries(doshaScores)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .map(([dosha, score]) => ({ dosha, score }));
 
     return {
@@ -237,7 +236,7 @@ class AyurvedicAstrology {
    * Get health recommendations based on constitution
    */
   getHealthRecommendations(constitutions, planetaryPositions) {
-    const primary = constitutions.primary;
+    const { primary } = constitutions;
     const constitution = this.constitutions[primary];
 
     return {
@@ -372,10 +371,10 @@ class AyurvedicAstrology {
    * Generate comprehensive summary
    */
   generateSummary(constitutions, healthRecommendations) {
-    const primary = constitutions.primary;
+    const { primary } = constitutions;
     const constitution = this.constitutions[primary];
 
-    let summary = `🕉️ *Ayurvedic Astrology Analysis*\n\n`;
+    let summary = '🕉️ *Ayurvedic Astrology Analysis*\n\n';
     summary += `*Your Primary Constitution:* ${constitution.name}\n\n`;
     summary += `*Physical Characteristics:* ${constitution.physical}\n\n`;
     summary += `*Mental Traits:* ${constitution.mental}\n\n`;
@@ -389,14 +388,14 @@ class AyurvedicAstrology {
       summary += `*Secondary Influence:* ${secondary.name}\n\n`;
     }
 
-    summary += `*Key Ayurvedic Principles:*\n`;
-    summary += `• Balance your dominant dosha through diet and lifestyle\n`;
-    summary += `• Follow seasonal routines for optimal health\n`;
-    summary += `• Practice daily oil massage (Abhyanga) for balance\n`;
-    summary += `• Eat according to your constitution, not cravings\n`;
-    summary += `• Maintain regular daily and seasonal routines\n\n`;
+    summary += '*Key Ayurvedic Principles:*\n';
+    summary += '• Balance your dominant dosha through diet and lifestyle\n';
+    summary += '• Follow seasonal routines for optimal health\n';
+    summary += '• Practice daily oil massage (Abhyanga) for balance\n';
+    summary += '• Eat according to your constitution, not cravings\n';
+    summary += '• Maintain regular daily and seasonal routines\n\n';
 
-    summary += `*Remember:* Ayurveda teaches that health is a balance of body, mind, and spirit. Your astrological chart provides the blueprint for your unique Ayurvedic constitution! 🌿`;
+    summary += '*Remember:* Ayurveda teaches that health is a balance of body, mind, and spirit. Your astrological chart provides the blueprint for your unique Ayurvedic constitution! 🌿';
 
     return summary;
   }
@@ -432,22 +431,22 @@ class AyurvedicAstrology {
    */
   getAyurvedicAstrologyCatalog() {
     return {
-      description: "🕉️ Ayurvedic Astrology - Ancient wisdom linking Vedic astrology with Ayurvedic health principles",
+      description: '🕉️ Ayurvedic Astrology - Ancient wisdom linking Vedic astrology with Ayurvedic health principles',
       features: [
-        "Constitutional analysis (Vata/Pitta/Kapha doshas)",
-        "Planetary health indicators and body part rulerships",
-        "Ayurvedic diet and lifestyle recommendations",
-        "Seasonal health guidance and daily routines",
-        "Herbal remedies and therapeutic practices",
-        "Disease prevention through astrological awareness"
+        'Constitutional analysis (Vata/Pitta/Kapha doshas)',
+        'Planetary health indicators and body part rulerships',
+        'Ayurvedic diet and lifestyle recommendations',
+        'Seasonal health guidance and daily routines',
+        'Herbal remedies and therapeutic practices',
+        'Disease prevention through astrological awareness'
       ],
       benefits: [
-        "Understand your unique mind-body constitution",
-        "Prevent illness through constitutional awareness",
-        "Optimize health through planetary influences",
-        "Follow personalized Ayurvedic routines",
-        "Balance doshas for holistic wellness",
-        "Integrate astrology with traditional medicine"
+        'Understand your unique mind-body constitution',
+        'Prevent illness through constitutional awareness',
+        'Optimize health through planetary influences',
+        'Follow personalized Ayurvedic routines',
+        'Balance doshas for holistic wellness',
+        'Integrate astrology with traditional medicine'
       ]
     };
   }

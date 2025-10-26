@@ -3,7 +3,7 @@
  * Calculates planetary periods and sub-periods for life predictions
  */
 
-const logger = require('../utils/logger');
+const logger = require('../../utils/logger');
 
 class VimshottariDasha {
   constructor() {
@@ -200,7 +200,7 @@ class VimshottariDasha {
    */
   calculateMoonSign(date, time) {
     // Simplified calculation - in production would use astronomical calculations
-    const birthDate = new Date(date + ' ' + time);
+    const birthDate = new Date(`${date} ${time}`);
     const dayOfYear = Math.floor((birthDate - new Date(birthDate.getFullYear(), 0, 0)) / 86400000);
 
     // Approximate Moon sign based on day of year (Moon moves ~12-13 degrees per day)
@@ -218,7 +218,7 @@ class VimshottariDasha {
    * @returns {Object} Current Dasha data
    */
   calculateCurrentDasha(birthDate, birthTime, startingDasha) {
-    const birthDateTime = new Date(birthDate + ' ' + birthTime);
+    const birthDateTime = new Date(`${birthDate} ${birthTime}`);
     const currentDate = new Date();
     const daysSinceBirth = Math.floor((currentDate - birthDateTime) / (1000 * 60 * 60 * 24));
 
@@ -280,7 +280,7 @@ class VimshottariDasha {
       const planet = this.dashaSequence[dashaIndex];
 
       upcoming.push({
-        planet: planet,
+        planet,
         duration_years: this.dashaPeriods[planet],
         general_influence: this.planetarySignifications[planet].general,
         key_themes: this.extractKeyThemes(planet)
@@ -300,15 +300,7 @@ class VimshottariDasha {
     const themes = [];
 
     // Extract 3-4 key themes based on planetary nature
-    if (planet === 'sun') themes.push('Leadership', 'Health', 'Authority', 'Career');
-    else if (planet === 'moon') themes.push('Emotions', 'Family', 'Home', 'Intuition');
-    else if (planet === 'mars') themes.push('Energy', 'Conflicts', 'Property', 'Courage');
-    else if (planet === 'mercury') themes.push('Communication', 'Business', 'Learning', 'Travel');
-    else if (planet === 'jupiter') themes.push('Wisdom', 'Wealth', 'Spirituality', 'Children');
-    else if (planet === 'venus') themes.push('Relationships', 'Luxury', 'Arts', 'Marriage');
-    else if (planet === 'saturn') themes.push('Discipline', 'Hard Work', 'Delays', 'Spirituality');
-    else if (planet === 'rahu') themes.push('Ambition', 'Foreign', 'Innovation', 'Transformation');
-    else if (planet === 'ketu') themes.push('Spirituality', 'Detachment', 'Healing', 'Liberation');
+    if (planet === 'sun') { themes.push('Leadership', 'Health', 'Authority', 'Career'); } else if (planet === 'moon') { themes.push('Emotions', 'Family', 'Home', 'Intuition'); } else if (planet === 'mars') { themes.push('Energy', 'Conflicts', 'Property', 'Courage'); } else if (planet === 'mercury') { themes.push('Communication', 'Business', 'Learning', 'Travel'); } else if (planet === 'jupiter') { themes.push('Wisdom', 'Wealth', 'Spirituality', 'Children'); } else if (planet === 'venus') { themes.push('Relationships', 'Luxury', 'Arts', 'Marriage'); } else if (planet === 'saturn') { themes.push('Discipline', 'Hard Work', 'Delays', 'Spirituality'); } else if (planet === 'rahu') { themes.push('Ambition', 'Foreign', 'Innovation', 'Transformation'); } else if (planet === 'ketu') { themes.push('Spirituality', 'Detachment', 'Healing', 'Liberation'); }
 
     return themes;
   }
@@ -504,27 +496,27 @@ class VimshottariDasha {
     summary += `*Secondary Themes (${currentData.current_bhukti}):*\n`;
     summary += `${this.planetarySignifications[currentData.current_bhukti].general}\n\n`;
 
-    summary += `*Combined Influence:*\n`;
+    summary += '*Combined Influence:*\n';
     summary += `${predictions.combined_influence}\n\n`;
 
-    summary += `*Favorable Areas:*\n`;
+    summary += '*Favorable Areas:*\n';
     predictions.favorable_areas.forEach(area => {
       summary += `• ${area}\n`;
     });
     summary += '\n';
 
-    summary += `*Areas Needing Attention:*\n`;
+    summary += '*Areas Needing Attention:*\n';
     predictions.challenging_areas.forEach(area => {
       summary += `• ${area}\n`;
     });
     summary += '\n';
 
-    summary += `*Recommended Remedies:*\n`;
+    summary += '*Recommended Remedies:*\n';
     summary += `• *Mantra:* ${predictions.remedies.dasha_remedies.mantra}\n`;
     summary += `• *Charity:* ${predictions.remedies.dasha_remedies.charity}\n`;
     summary += `• *Fasting:* ${predictions.remedies.dasha_remedies.fasting}\n\n`;
 
-    summary += `*Note:* Vimshottari Dasha shows planetary periods that influence life events. This is a general analysis - consult a qualified Vedic astrologer for detailed predictions. 🕉️`;
+    summary += '*Note:* Vimshottari Dasha shows planetary periods that influence life events. This is a general analysis - consult a qualified Vedic astrologer for detailed predictions. 🕉️';
 
     return summary;
   }

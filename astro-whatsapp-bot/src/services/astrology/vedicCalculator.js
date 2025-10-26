@@ -472,20 +472,37 @@ class VedicCalculator {
    * @param {string} birthDate - User's birth date in DD/MM/YYYY format
    * @returns {Object} Detailed horoscope data
    */
-  generateDailyHoroscope(birthDate) {
+  async generateDailyHoroscope(birthData) {
     try {
+      const { birthDate, birthTime = '12:00', birthPlace = 'Delhi, India' } = birthData;
+
       if (!birthDate || typeof birthDate !== 'string') {
         throw new Error('Invalid birth date provided');
       }
 
       // Parse birth date
       const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
+
+      // Get coordinates and timezone for birth place
+      const [birthLatitude, birthLongitude] = await this._getCoordinatesForPlace(birthPlace);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+      const birthTimestamp = birthDateTime.getTime();
+      const birthTimezone = await this._getTimezoneForPlace(birthLatitude, birthLongitude, birthTimestamp);
 
       // Get current date for transit calculations
       const now = new Date();
       const currentDay = now.getDate();
       const currentMonth = now.getMonth() + 1; // JS months are 0-based
       const currentYear = now.getFullYear();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      const currentTimestamp = now.getTime();
+
+      // Get timezone for current location (assuming same as birth place for simplicity, or could use current user location)
+      const currentLatitude = birthLatitude;
+      const currentLongitude = birthLongitude;
+      const currentTimezone = await this._getTimezoneForPlace(currentLatitude, currentLongitude, currentTimestamp);
 
       // Use astrologer library for detailed analysis
       if (this.astrologer) {
@@ -494,12 +511,12 @@ class VedicCalculator {
             year,
             month,
             date: day,
-            hours: 12,
-            minutes: 0,
+            hours: hour,
+            minutes: minute,
             seconds: 0,
-            latitude: 28.6139,
-            longitude: 77.209,
-            timezone: 5.5,
+            latitude: birthLatitude,
+            longitude: birthLongitude,
+            timezone: birthTimezone,
             chartType: 'sidereal'
           };
 
@@ -507,12 +524,12 @@ class VedicCalculator {
             year: currentYear,
             month: currentMonth,
             date: currentDay,
-            hours: 12,
-            minutes: 0,
+            hours: currentHour,
+            minutes: currentMinute,
             seconds: 0,
-            latitude: 28.6139,
-            longitude: 77.209,
-            timezone: 5.5,
+            latitude: currentLatitude,
+            longitude: currentLongitude,
+            timezone: currentTimezone,
             chartType: 'sidereal'
           };
 
@@ -590,7 +607,7 @@ class VedicCalculator {
       }
 
       // Fallback to basic horoscope by sun sign
-      const sunSign = this.calculateSunSign(birthDate);
+      const sunSign = await this.calculateSunSign(birthDate, birthTime, birthPlace);
       const basicHoroscopes = {
         Aries:
           'Today brings new opportunities for leadership. Trust your instincts and take bold action. Energy is high - channel it into productive activities.',
@@ -725,9 +742,9 @@ class VedicCalculator {
   async generateDetailedChart(birthData) {
     const { birthDate, birthTime, birthPlace } = birthData;
 
-    const sunSign = this.calculateSunSign(birthDate);
-    const moonSign = this.calculateMoonSign(birthDate, birthTime);
-    const risingSign = this.calculateRisingSign(
+    const sunSign = await this.calculateSunSign(birthDate, birthTime, birthPlace);
+    const moonSign = await this.calculateMoonSign(birthDate, birthTime, birthPlace);
+    const risingSign = await this.calculateRisingSign(
       birthDate,
       birthTime,
       birthPlace
@@ -1353,7 +1370,7 @@ class VedicCalculator {
    * @param {Object} birthData - Birth data object with birthDate, birthTime, birthPlace
    * @returns {Object} Solar return analysis
    */
-  calculateSolarReturn(birthData) {
+  async calculateSolarReturn(birthData) {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
@@ -1374,17 +1391,19 @@ class VedicCalculator {
                         (currentDate.getMonth() + 1 === birthMonth && currentDate.getDate() >= birthDay) ?
                         currentYear + 1 : currentYear;
 
+      // Get coordinates for birth place
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const birthDateTime = new Date(birthYear, birthMonth - 1, birthDay, birthHour, birthMinute);
+      const timestamp = birthDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+
       // Calculate solar return timing
       const solarReturnTiming = this._calculateSolarReturnTime(
         birthYear, birthMonth, birthDay, birthHour, birthMinute, targetYear
       );
 
-      // Get birth place coordinates
-      const [latitude, longitude] = this._getCoordinatesForPlace(birthPlace);
-      const timezone = this._getTimezoneForPlace(birthPlace);
-
       // Generate solar return chart
-      const solarReturnChart = this._generateSolarReturnChart(
+      const solarReturnChart = await this._generateSolarReturnChart(
         birthYear, birthMonth, birthDay, birthHour, birthMinute,
         targetYear, latitude, longitude, timezone
       );
@@ -2081,15 +2100,17 @@ class VedicCalculator {
    * @param {Object} birthData - Birth data object
    * @returns {Object} Asteroid positions and interpretations
    */
-  calculateAsteroids(birthData) {
+  async calculateAsteroids(birthData) {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
 
-      // Get coordinates for birth place
-      const [latitude, longitude] = this._getCoordinatesForPlace(birthPlace);
-      const timezone = this._getTimezoneForPlace(birthPlace);
+      // Get coordinates and timezone for birth place
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+      const timestamp = birthDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
 
       const astroData = {
         year,
@@ -2106,7 +2127,6 @@ class VedicCalculator {
 
       // Calculate positions for major asteroids
       const asteroids = {
-        ceres: this._calculateAsteroidPosition('ceres', astroData),
         chiron: this._calculateAsteroidPosition('chiron', astroData),
         juno: this._calculateAsteroidPosition('juno', astroData),
         vesta: this._calculateAsteroidPosition('vesta', astroData),
@@ -2115,7 +2135,6 @@ class VedicCalculator {
 
       // Generate interpretations
       const interpretations = {
-        ceres: this._interpretCeres(asteroids.ceres),
         chiron: this._interpretChiron(asteroids.chiron),
         juno: this._interpretJuno(asteroids.juno),
         vesta: this._interpretVesta(asteroids.vesta),

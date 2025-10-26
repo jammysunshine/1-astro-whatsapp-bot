@@ -3,7 +3,7 @@
  * Based on Maharishi Jaimini's teachings with Karakas and special aspects
  */
 
-const logger = require('../utils/logger');
+const logger = require('../../utils/logger');
 
 class JaiminiAstrology {
   constructor() {
@@ -29,28 +29,28 @@ class JaiminiAstrology {
 
     // Jaimini Aspects (different from Parasara aspects)
     this.jaiminiAspects = {
-      '3': 'Trine (120°) - harmony and support',
-      '5': 'Quintile (72°) - creativity and children',
-      '7': 'Sextile (60°) - partnership and marriage',
-      '9': 'Square (90°) - challenges and action',
-      '10': 'Decile (36°) - career and status',
-      '12': 'Opposition (180°) - relationships and balance'
+      3: 'Trine (120°) - harmony and support',
+      5: 'Quintile (72°) - creativity and children',
+      7: 'Sextile (60°) - partnership and marriage',
+      9: 'Square (90°) - challenges and action',
+      10: 'Decile (36°) - career and status',
+      12: 'Opposition (180°) - relationships and balance'
     };
 
     // Jaimini Houses (different house system)
     this.jaiminiHouses = {
-      '1': 'Lagna (Ascendant) - self and personality',
-      '2': 'Dhana (Wealth) - family and resources',
-      '3': 'Sahaja (Siblings) - courage and communication',
-      '4': 'Bandhava (Relatives) - home and mother',
-      '5': 'Putra (Children) - intelligence and creativity',
-      '6': 'Ari (Enemies) - service and obstacles',
-      '7': 'Yuvati (Spouse) - marriage and partnerships',
-      '8': 'Randhra (Death) - transformation and secrets',
-      '9': 'Dharma (Religion) - father and spirituality',
-      '10': 'Karma (Action) - career and reputation',
-      '11': 'Labha (Gains) - friends and income',
-      '12': 'Vyaya (Expenses) - foreign lands and spirituality'
+      1: 'Lagna (Ascendant) - self and personality',
+      2: 'Dhana (Wealth) - family and resources',
+      3: 'Sahaja (Siblings) - courage and communication',
+      4: 'Bandhava (Relatives) - home and mother',
+      5: 'Putra (Children) - intelligence and creativity',
+      6: 'Ari (Enemies) - service and obstacles',
+      7: 'Yuvati (Spouse) - marriage and partnerships',
+      8: 'Randhra (Death) - transformation and secrets',
+      9: 'Dharma (Religion) - father and spirituality',
+      10: 'Karma (Action) - career and reputation',
+      11: 'Labha (Gains) - friends and income',
+      12: 'Vyaya (Expenses) - foreign lands and spirituality'
     };
 
     // Jaimini Rashis (signs) with special significations
@@ -137,12 +137,12 @@ class JaiminiAstrology {
 
     // Argalas (obstructions and supports)
     this.argalas = {
-      '2': 'Dhana Argala - wealth and family support',
-      '4': 'Sukha Argala - happiness and home support',
-      '5': 'Putra Argala - children and creativity support',
-      '9': 'Dharma Argala - spiritual and father support',
-      '10': 'Karma Argala - career and action support',
-      '11': 'Labha Argala - gains and friends support'
+      2: 'Dhana Argala - wealth and family support',
+      4: 'Sukha Argala - happiness and home support',
+      5: 'Putra Argala - children and creativity support',
+      9: 'Dharma Argala - spiritual and father support',
+      10: 'Karma Argala - career and action support',
+      11: 'Labha Argala - gains and friends support'
     };
   }
 
@@ -190,7 +190,7 @@ class JaiminiAstrology {
    */
   calculatePlanetaryPositions(date, time) {
     // Simplified calculation - in production would use astronomical calculations
-    const birthDate = new Date(date + ' ' + time);
+    const birthDate = new Date(`${date} ${time}`);
     const dayOfYear = Math.floor((birthDate - new Date(birthDate.getFullYear(), 0, 0)) / 86400000);
 
     // Approximate planetary positions based on birth date
@@ -224,7 +224,7 @@ class JaiminiAstrology {
 
     // Sort planets by strength (highest degree first)
     const sortedPlanets = Object.entries(strengths)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .map(([planet]) => planet);
 
     // Assign Karakas
@@ -244,9 +244,9 @@ class JaiminiAstrology {
     const karakaDetails = {};
     for (const [karaka, planet] of Object.entries(karakas)) {
       karakaDetails[karaka] = {
-        planet: planet,
+        planet,
         significance: this.karakas[karaka],
-        strength: strengths[planet].toFixed(1) + '°'
+        strength: `${strengths[planet].toFixed(1)}°`
       };
     }
 
@@ -276,7 +276,7 @@ class JaiminiAstrology {
         if (aspectType) {
           aspects.push({
             planets: `${planet1} - ${planet2}`,
-            angle: normalizedAngle.toFixed(1) + '°',
+            angle: `${normalizedAngle.toFixed(1)}°`,
             aspect: aspectType,
             significance: this.interpretJaiminiAspect(planet1, planet2, aspectType)
           });
@@ -355,8 +355,8 @@ class JaiminiAstrology {
           const argalaType = this.argalas[house.toString()];
           if (argalaType) {
             argalas.supporting.push({
-              house: house,
-              planet: planet,
+              house,
+              planet,
               type: argalaType,
               strength: 'Strong'
             });
@@ -378,14 +378,14 @@ class JaiminiAstrology {
    */
   generateJaiminiSummary(name, karakas, aspects, argalas) {
     let summary = `🕉️ *Jaimini Astrology Analysis for ${name}*\n\n`;
-    summary += `*Jaimini Karakas (Significators):*\n\n`;
+    summary += '*Jaimini Karakas (Significators):*\n\n';
 
     for (const [karaka, details] of Object.entries(karakas)) {
       summary += `*${karaka.replace(/_/g, ' ').toUpperCase()}:* ${details.planet} (${details.strength})\n`;
       summary += `${details.significance}\n\n`;
     }
 
-    summary += `*Key Jaimini Aspects:*\n`;
+    summary += '*Key Jaimini Aspects:*\n';
     aspects.slice(0, 5).forEach(aspect => {
       summary += `• ${aspect.planets}: ${aspect.aspect}\n`;
       summary += `  ${aspect.significance}\n`;
@@ -393,20 +393,20 @@ class JaiminiAstrology {
     summary += '\n';
 
     if (argalas.supporting.length > 0) {
-      summary += `*Supporting Argalas:*\n`;
+      summary += '*Supporting Argalas:*\n';
       argalas.supporting.slice(0, 3).forEach(argala => {
         summary += `• House ${argala.house}: ${argala.type} (${argala.planet})\n`;
       });
       summary += '\n';
     }
 
-    summary += `*Jaimini System Features:*\n`;
-    summary += `• Alternative to Parasara system\n`;
-    summary += `• Focus on Karakas (significators)\n`;
-    summary += `• Special aspect system\n`;
-    summary += `• Different predictive techniques\n\n`;
+    summary += '*Jaimini System Features:*\n';
+    summary += '• Alternative to Parasara system\n';
+    summary += '• Focus on Karakas (significators)\n';
+    summary += '• Special aspect system\n';
+    summary += '• Different predictive techniques\n\n';
 
-    summary += `*Note:* Jaimini Astrology provides alternative insights to traditional Vedic astrology. Consult a qualified Jaimini astrologer for detailed analysis. 🕉️`;
+    summary += '*Note:* Jaimini Astrology provides alternative insights to traditional Vedic astrology. Consult a qualified Jaimini astrologer for detailed analysis. 🕉️';
 
     return summary;
   }

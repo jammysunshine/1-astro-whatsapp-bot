@@ -3,7 +3,7 @@
  * Includes major Hindu festivals, dates, significance, rituals, and auspicious timings
  */
 
-const logger = require('../utils/logger');
+const logger = require('../../utils/logger');
 
 class HinduFestivals {
   constructor() {
@@ -336,15 +336,15 @@ class HinduFestivals {
         if (this.isFestivalDate(festival, targetDate)) {
           festivals.push({
             ...festival,
-            key: key,
+            key,
             estimated_date: this.getEstimatedGregorianDate(festival, targetDate.getFullYear())
           });
         }
       }
 
       return {
-        date: date,
-        festivals: festivals,
+        date,
+        festivals,
         auspicious_timings: this.getAuspiciousTimingsForDate(targetDate),
         summary: this.generateFestivalSummary(date, festivals)
       };
@@ -382,7 +382,7 @@ class HinduFestivals {
     };
 
     const approx = festivalApproximations[festival.name.toLowerCase().replace(/\s+/g, '_')];
-    if (!approx) return false;
+    if (!approx) { return false; }
 
     return Math.abs(month - approx.month) <= 1 && Math.abs(day - approx.day) <= approx.range;
   }
@@ -396,16 +396,16 @@ class HinduFestivals {
   getEstimatedGregorianDate(festival, year) {
     // Simplified estimation - would use proper lunar calendar in production
     const estimations = {
-      'diwali': `${year}-10-28 to ${year}-11-03`,
-      'holi': `${year}-03-14 to ${year}-03-15`,
-      'durga_puja': `${year}-09-22 to ${year}-10-01`,
-      'maha_shivaratri': `${year}-02-28`,
-      'raksha_bandhan': `${year}-08-19`,
-      'ganesh_chaturthi': `${year}-08-31 to ${year}-09-09`,
-      'navaratri': `${year}-09-26 to ${year}-10-04`,
-      'krishna_janmashtami': `${year}-08-26`,
-      'ram_navami': `${year}-03-30`,
-      'hanuman_jayanti': `${year}-03-29`
+      diwali: `${year}-10-28 to ${year}-11-03`,
+      holi: `${year}-03-14 to ${year}-03-15`,
+      durga_puja: `${year}-09-22 to ${year}-10-01`,
+      maha_shivaratri: `${year}-02-28`,
+      raksha_bandhan: `${year}-08-19`,
+      ganesh_chaturthi: `${year}-08-31 to ${year}-09-09`,
+      navaratri: `${year}-09-26 to ${year}-10-04`,
+      krishna_janmashtami: `${year}-08-26`,
+      ram_navami: `${year}-03-30`,
+      hanuman_jayanti: `${year}-03-29`
     };
 
     return estimations[festival.name.toLowerCase().replace(/\s+/g, '_')] || 'Date varies by lunar calendar';
@@ -627,7 +627,7 @@ class HinduFestivals {
       summary += `🙏 Deities: ${festival.deities}\n\n`;
     });
 
-    summary += `*Auspicious Activities Today:*\n`;
+    summary += '*Auspicious Activities Today:*\n';
     const allActivities = [...new Set(festivals.flatMap(f => f.auspicious_activities))];
     allActivities.slice(0, 5).forEach(activity => {
       summary += `• ${activity}\n`;
@@ -648,7 +648,7 @@ class HinduFestivals {
       return 'No major Hindu festivals in the next 30 days.';
     }
 
-    let summary = `📅 *Upcoming Hindu Festivals*\n\n`;
+    let summary = '📅 *Upcoming Hindu Festivals*\n\n';
     summary += `Found ${upcoming.length} festival(s) in the next 30 days:\n\n`;
 
     upcoming.forEach(item => {

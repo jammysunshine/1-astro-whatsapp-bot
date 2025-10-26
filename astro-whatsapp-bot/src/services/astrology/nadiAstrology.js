@@ -3,7 +3,7 @@
  * Based on ancient palm leaf manuscripts with detailed life predictions
  */
 
-const logger = require('../utils/logger');
+const logger = require('../../utils/logger');
 
 class NadiAstrology {
   constructor() {
@@ -214,7 +214,7 @@ class NadiAstrology {
    * @returns {Object} Nadi leaf information
    */
   determineNadiLeaf(date, time) {
-    const birthDate = new Date(date + ' ' + time);
+    const birthDate = new Date(`${date} ${time}`);
     const day = birthDate.getDate();
     const month = birthDate.getMonth() + 1;
     const year = birthDate.getFullYear();
@@ -265,7 +265,7 @@ class NadiAstrology {
    */
   calculateNadiPlanetary(date, time) {
     // Simplified planetary analysis for Nadi system
-    const birthDate = new Date(date + ' ' + time);
+    const birthDate = new Date(`${date} ${time}`);
     const dayOfWeek = birthDate.getDay();
 
     // Day lord and planetary influences
@@ -303,8 +303,8 @@ class NadiAstrology {
     // Simplified strength calculation
     const baseStrength = (dayOfMonth + month) % 10;
 
-    if (baseStrength >= 7) return 'Strong';
-    if (baseStrength >= 4) return 'Moderate';
+    if (baseStrength >= 7) { return 'Strong'; }
+    if (baseStrength >= 4) { return 'Moderate'; }
     return 'Weak';
   }
 
@@ -365,13 +365,13 @@ class NadiAstrology {
       .filter(([, strength]) => strength === 'Strong')
       .map(([planet]) => planet);
 
-    if (strongPlanets.includes('sun')) return 'Leadership, government, administration';
-    if (strongPlanets.includes('moon')) return 'Psychology, counseling, creative arts';
-    if (strongPlanets.includes('mars')) return 'Military, sports, engineering, surgery';
-    if (strongPlanets.includes('mercury')) return 'Teaching, writing, business, technology';
-    if (strongPlanets.includes('jupiter')) return 'Teaching, law, religion, consulting';
-    if (strongPlanets.includes('venus')) return 'Arts, entertainment, luxury, hospitality';
-    if (strongPlanets.includes('saturn')) return 'Agriculture, research, social work';
+    if (strongPlanets.includes('sun')) { return 'Leadership, government, administration'; }
+    if (strongPlanets.includes('moon')) { return 'Psychology, counseling, creative arts'; }
+    if (strongPlanets.includes('mars')) { return 'Military, sports, engineering, surgery'; }
+    if (strongPlanets.includes('mercury')) { return 'Teaching, writing, business, technology'; }
+    if (strongPlanets.includes('jupiter')) { return 'Teaching, law, religion, consulting'; }
+    if (strongPlanets.includes('venus')) { return 'Arts, entertainment, luxury, hospitality'; }
+    if (strongPlanets.includes('saturn')) { return 'Agriculture, research, social work'; }
 
     return 'Versatile career opportunities in multiple fields';
   }
@@ -544,17 +544,17 @@ class NadiAstrology {
    * @returns {Object} Compatibility factors
    */
   calculateNadiCompatibility(date, time) {
-    const birthDate = new Date(date + ' ' + time);
+    const birthDate = new Date(`${date} ${time}`);
     const day = birthDate.getDate();
 
     // Simplified Nadi calculation
     const nadi = day <= 10 ? 'adi' : day <= 20 ? 'madhya' : 'antya';
 
     return {
-      nadi: nadi,
+      nadi,
       description: this.nadiMatching[nadi].description,
       compatible_nadis: this.nadiMatching[nadi].compatible,
-      marriage_compatibility: 'Good compatibility with ' + this.nadiMatching[nadi].compatible.join(' and ') + ' Nadi partners'
+      marriage_compatibility: `Good compatibility with ${this.nadiMatching[nadi].compatible.join(' and ')} Nadi partners`
     };
   }
 
@@ -577,14 +577,14 @@ class NadiAstrology {
     summary += `*Spiritual Journey:* ${predictions.spiritual_journey}\n\n`;
     summary += `*Life Challenges:* ${predictions.challenges}\n\n`;
 
-    summary += `*Key Remedies:*\n`;
+    summary += '*Key Remedies:*\n';
     summary += `• ${predictions.remedies.general}\n`;
     predictions.remedies.specific.forEach(remedy => {
       summary += `• ${remedy}\n`;
     });
     summary += '\n';
 
-    summary += `*Note:* Nadi Astrology provides detailed insights from ancient palm leaf manuscripts. This is a general reading - consult a qualified Nadi astrologer for complete analysis. 🕉️`;
+    summary += '*Note:* Nadi Astrology provides detailed insights from ancient palm leaf manuscripts. This is a general reading - consult a qualified Nadi astrologer for complete analysis. 🕉️';
 
     return summary;
   }

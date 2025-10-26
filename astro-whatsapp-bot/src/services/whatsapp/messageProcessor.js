@@ -5,7 +5,14 @@ const { processFlowMessage } = require('../../conversation/conversationEngine');
 const { getMenu } = require('../../conversation/menuLoader');
 const paymentService = require('../payment/paymentService');
 const vedicCalculator = require('../astrology/vedicCalculator');
-const { getUserSession, deleteUserSession } = require('../../models/userModel');
+const {
+  getUserByPhone,
+  createUser,
+  updateUserProfile,
+  getUserSession,
+  deleteUserSession,
+  incrementCompatibilityChecks
+} = require('../../models/userModel');
 const { getFlow, executeFlowAction } = require('../../conversation/conversationEngine');
 const { generateTarotReading } = require('../astrology/tarotReader');
 const { generatePalmistryAnalysis } = require('../astrology/palmistryReader');
@@ -991,9 +998,7 @@ const handleCompatibilityRequest = async (
     await sendMessage(phoneNumber, response);
 
     // Increment compatibility check counter
-    await require('../../models/userModel').incrementCompatibilityChecks(
-      phoneNumber
-    );
+    await incrementCompatibilityChecks(phoneNumber);
   } catch (error) {
     logger.error('Error handling compatibility request:', error);
     await sendMessage(

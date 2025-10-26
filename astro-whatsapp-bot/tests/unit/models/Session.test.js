@@ -65,6 +65,7 @@ describe('Session Model', () => {
       const session = await new Session(sessionData).save();
 
       session.flowData.step = 2;
+      session.markModified('flowData');
       await session.save();
 
       const updatedSession = await Session.findById(session._id);

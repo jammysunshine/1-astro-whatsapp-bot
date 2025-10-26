@@ -47,13 +47,22 @@ const connectDB = async () => {
 
     let mongoURI;
 
-    // For testing, set up memory server if not set
-    if (process.env.NODE_ENV === 'test' && !process.env.MONGODB_URI) {
-      const { MongoMemoryServer } = require('mongodb-memory-server');
-      const mongoServer = await MongoMemoryServer.create();
-      mongoURI = mongoServer.getUri();
-      process.env.MONGODB_URI = mongoURI; // Set for consistency
-      logger.info(`🔗 Using test DB: ${mongoURI}`);
+    // For local development without explicit MONGODB_URI, use in-memory server
+    if (process.env.NODE_ENV === 'development' && !process.env.MONGODB_URI) {
+      try {
+        const { MongoMemoryServer } = require('mongodb-memory-server');
+        const mongoServer = await MongoMemoryServer.create({
+          instance: {
+            startupTimeout: 30000,
+          },
+        });
+        mongoURI = mongoServer.getUri();
+        process.env.MONGODB_URI = mongoURI; // Set for consistency
+        logger.info(`🔗 Using in-memory DB for ${process.env.NODE_ENV}: ${mongoURI}`);
+      } catch (error) {
+        logger.error('❌ Failed to start MongoDB Memory Server:', error.message);
+        throw error;
+      }
     }
 
     // Check if MONGODB_URI is set (for testing with memory server)
@@ -70,9 +79,10 @@ const connectDB = async () => {
       const dbHost = process.env.DB_HOST;
       const dbName = process.env.DB_NAME;
 
-      logger.debug(`🔗 Using DB_USER: ${dbUser || 'Not Set'}`);
-      logger.debug(`🔗 Using DB_HOST: ${dbHost || 'Not Set'}`);
-      logger.debug(`🔗 Using DB_NAME: ${dbName || 'Not Set'}`);
+      logger.info(`🔗 Using DB_USER: ${dbUser ? 'Set' : 'Not Set'}`);
+      logger.info(`🔗 Using DB_HOST: ${dbHost || 'Not Set'}`);
+      logger.info(`🔗 Using DB_NAME: ${dbName || 'Not Set'}`);
+      logger.info(`🔗 NODE_ENV: ${process.env.NODE_ENV}`);
 
       if (!dbUser || !dbPassword || !dbHost || !dbName) {
         throw new Error(
@@ -82,7 +92,7 @@ const connectDB = async () => {
 
       mongoURI = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}?retryWrites=true&w=majority`;
       logger.info(
-        `🔗 Attempting DB connection: mongodb+srv://${dbUser}:****@${dbHost}/${dbName}?retryWrites=true&w=majority`
+        `🔗 Attempting DB connection: mongodb+srv://****:****@${dbHost}/${dbName}?retryWrites=true&w=majority`
       );
     }
 
@@ -114,7 +124,7 @@ const connectDB = async () => {
       process.exit(0);
     });
   } catch (error) {
-    logger.error('❌ MongoDB connection failed:', error.message);
+    logger.error('❌ MongoDB connection failed:', error);
     // Don't exit process in production or test, let Railway handle restarts
     if (
       process.env.NODE_ENV !== 'production' &&

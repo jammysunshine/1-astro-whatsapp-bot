@@ -21,6 +21,8 @@ logger.debug(`WhatsApp Access Token (masked): ${whatsappAccessToken ? whatsappAc
 logger.debug(`WhatsApp Phone Number ID: ${whatsappPhoneNumberId || 'Not Set'}`);
 
 // Connect to MongoDB
+connectDB();
+
 const PORT = process.env.W1_PORT || 3000;
 
 // Middleware

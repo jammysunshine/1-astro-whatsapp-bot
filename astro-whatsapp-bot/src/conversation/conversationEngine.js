@@ -308,70 +308,36 @@ const processFlowMessage = async (message, user, flowId) => {
     const flow = getFlow(flowId);
     if (!flow) {
       logger.error(`❌ Conversation flow '${flowId}' not found.`);
-      await sendMessage(
-        phoneNumber,
-        "I'm sorry, I encountered an internal error. Please try again later."
-            );
-
-          else {
-
-            let prompt = nextStep.prompt.replace(
-              '{userName}',
-              user.name || 'cosmic explorer'
-            );
-            // Replace placeholders from session data
-            Object.keys(session.flowData).forEach(key => {
-              prompt = prompt.replace(
-                new RegExp(`{${key}}`, 'g'),
-                session.flowData[key]
+              await sendMessage(
+                phoneNumber,
+                "I'm sorry, I encountered an internal error. Please try again later."
               );
-            });
-            // Add calculated values like sun sign
-            if (session.flowData.birthDate) {
-              const sunSign = vedicCalculator.calculateSunSign(
-                session.flowData.birthDate
-              );
-              prompt = prompt.replace('{sunSign}', sunSign);
+              await deleteUserSession(phoneNumber);
+              return false;
             }
-            await sendMessage(phoneNumber, prompt);
+          } else if (currentStep.action) {
+            // If current step has an action and no next step, execute action
+            await executeFlowAction(
+              phoneNumber,
+              user,
+              flowId,
+              currentStep.action,
+              session.flowData
+            );
+            return true;
+          } else {
+            logger.warn(
+              `⚠️ Flow '${flowId}' ended unexpectedly at step '${currentStepId}'.`
+            );
+            await sendMessage(
+              phoneNumber,
+              "I'm sorry, our conversation ended unexpectedly. Please try again."
+            );
+            await deleteUserSession(phoneNumber);
+            return false;
           }
-          return true;
-        }
-      } else {
-        logger.error(
-          `❌ Next step '${nextStepId}' not found in flow '${flowId}'.`
-        );
-        await sendMessage(
-          phoneNumber,
-          "I'm sorry, I encountered an internal error. Please try again later."
-        );
-        await deleteUserSession(phoneNumber);
-        return false;
-      }
-    } else if (currentStep.action) {
-      // If current step has an action and no next step, execute action
-      await executeFlowAction(
-        phoneNumber,
-        user,
-        flowId,
-        currentStep.action,
-        session.flowData
-      );
-      return true;
-    } else {
-      logger.warn(
-        `⚠️ Flow '${flowId}' ended unexpectedly at step '${currentStepId}'.`
-      );
-      await sendMessage(
-        phoneNumber,
-        "I'm sorry, our conversation ended unexpectedly. Please try again."
-      );
-      await deleteUserSession(phoneNumber);
-      return false;
-    }
-  } catch (error) {
-    logger.error('❌ Error in processFlowMessage:', error);
-    try {
+        } catch (error) {
+          logger.error('❌ Error in processFlowMessage:', error);    try {
       await sendMessage(
         phoneNumber,
         "I'm sorry, I encountered an error. Please try again."

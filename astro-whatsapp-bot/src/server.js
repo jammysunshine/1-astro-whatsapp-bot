@@ -121,13 +121,19 @@ app.get('/debug-whatsapp', async (req, res) => {
       whatsappResponse: response.data
     });
   } catch (error) {
+    const token = process.env.W1_WHATSAPP_ACCESS_TOKEN;
     res.json({
       status: 'error',
       debug: {
-        tokenLength: process.env.W1_WHATSAPP_ACCESS_TOKEN ? process.env.W1_WHATSAPP_ACCESS_TOKEN.length : 0,
+        tokenLength: token ? token.length : 0,
+        tokenStart: token ? token.substring(0, 10) : null,
+        tokenEnd: token ? token.substring(token.length - 10) : null,
+        tokenMasked: token ? `${token.substring(0, 20)}...${token.substring(token.length - 20)}` : null,
+        envVarExists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN,
         phoneId: process.env.W1_WHATSAPP_PHONE_NUMBER_ID,
         error: error.message,
-        response: error.response?.data
+        response: error.response?.data,
+        deploymentCheck: "v2"
       }
     });
   }

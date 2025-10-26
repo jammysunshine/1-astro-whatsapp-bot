@@ -33,6 +33,7 @@ const listActionMapping = {
   btn_birth_chart: 'show_birth_chart',
   btn_compatibility: 'initiate_compatibility_flow',
   btn_synastry: 'get_synastry_analysis',
+  btn_lunar_return: 'get_lunar_return',
   btn_tarot: 'get_tarot_reading',
   btn_iching: 'get_iching_reading',
   btn_palmistry: 'get_palmistry_analysis',
@@ -758,7 +759,21 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       response = 'I need your complete birth details for synastry analysis.';
       break;
     }
-    response = '💕 *Synastry Analysis*\n\nTo perform a detailed relationship astrology analysis, please provide your partner\'s birth details:\n\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 25/12/1985, 09:15, London, UK\n\nThis will compare your charts and reveal:\n• Planetary aspects between you\n• Composite relationship chart\n• Romantic compatibility\n• Communication dynamics\n• Long-term potential';
+    // Check if partner data is provided in the message
+    const partnerDataMatch = messageText.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
+    if (partnerDataMatch) {
+      // Partner data provided, let astrologyEngine handle it
+      response = generateAstrologyResponse(messageText, user);
+    } else {
+      response = '💕 *Synastry Analysis*\n\nTo perform a detailed relationship astrology analysis, please provide your partner\'s birth details:\n\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 25/12/1985, 09:15, London, UK\n\nThis will compare your charts and reveal:\n• Planetary aspects between you\n• Composite relationship chart\n• Romantic compatibility\n• Communication dynamics\n• Long-term potential';
+    }
+    break;
+  case 'get_lunar_return':
+    if (!user.birthDate) {
+      response = 'I need your complete birth details for lunar return analysis.';
+      break;
+    }
+    response = generateAstrologyResponse('lunar return', user);
     break;
   case 'show_divination_menu':
     const divinationMenu = getMenu('divination_menu');

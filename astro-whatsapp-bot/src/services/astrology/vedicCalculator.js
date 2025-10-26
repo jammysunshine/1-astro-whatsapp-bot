@@ -1450,7 +1450,7 @@ class VedicCalculator {
    * @param {number} timezone - Timezone
    * @returns {Object} Solar return chart data
    */
-  _generateSolarReturnChart(birthYear, birthMonth, birthDay, birthHour, birthMinute, targetYear, latitude, longitude, timezone) {
+  async _generateSolarReturnChart(birthYear, birthMonth, birthDay, birthHour, birthMinute, targetYear, latitude, longitude, timezone) {
     try {
       // Calculate solar return timing
       const returnTime = this._calculateSolarReturnTime(
@@ -1496,19 +1496,28 @@ class VedicCalculator {
    * @param {Object} birthData - Birth data object
    * @returns {Object} Dasha calculations
    */
-  calculateVimshottariDasha(birthData) {
+  async calculateVimshottariDasha(birthData) {
     try {
-      const { birthDate, birthTime } = birthData;
+      const { birthDate, birthTime, birthPlace = 'Delhi, India' } = birthData;
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
 
+      // Get coordinates and timezone
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+      const timestamp = birthDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+
       // Calculate moon sign for dasha start
-      const moonLongitude = this.calculateMoonLongitude(
+      const moonLongitude = await this.calculateMoonLongitude(
         year,
         month,
         day,
         hour,
-        minute
+        minute,
+        latitude,
+        longitude,
+        timezone
       );
 
       // Vimshottari Dasha periods (years)
@@ -1572,7 +1581,7 @@ class VedicCalculator {
    * @param {number} minute - Minute
    * @returns {number} Moon longitude in degrees
    */
-  calculateMoonLongitude(year, month, day, hour, minute) {
+  async calculateMoonLongitude(year, month, day, hour, minute, latitude, longitude, timezone) {
     try {
       // Use astrologer library for precise calculation
       if (this.astrologer) {
@@ -1583,9 +1592,9 @@ class VedicCalculator {
           hours: hour,
           minutes: minute,
           seconds: 0,
-          latitude: 28.6139,
-          longitude: 77.209,
-          timezone: 5.5,
+          latitude,
+          longitude,
+          timezone,
           chartType: 'sidereal'
         };
 
@@ -1830,13 +1839,23 @@ class VedicCalculator {
    * @param {Date} currentDate - Current date
    * @returns {Object} Transit analysis
    */
-  calculateAdvancedTransits(natalChart, currentDate = new Date()) {
+  async _calculateAdvancedTransits(natalChart, currentDate = new Date()) {
     try {
       const currentYear = currentDate.getFullYear();
       const currentMonth = currentDate.getMonth() + 1;
       const currentDay = currentDate.getDate();
+      const currentHour = currentDate.getHours();
+      const currentMinute = currentDate.getMinutes();
 
-      // Calculate current planetary positions
+      // Convert current date to Julian Day
+      const currentJD = sweph.swe_julday(
+        currentYear,
+        currentMonth,
+        currentDay,
+        currentHour + currentMinute / 60,
+        sweph.SE_GREG_CAL
+      );
+
       const currentPositions = {};
       const planets = [
         'sun',
@@ -1848,31 +1867,22 @@ class VedicCalculator {
         'saturn'
       ];
 
-      planets.forEach(planet => {
-        // Simplified transit calculation
-        const natalPosition = natalChart.planets[planet];
-        if (natalPosition) {
-          const natalLongitude =
-            natalPosition.degrees +
-            natalPosition.minutes / 60 +
-            natalPosition.seconds / 3600;
-          const transitPosition =
-            (natalLongitude + (currentDate - natalChart.birthDate) * 0.0001) %
-            360;
+      for (const planet of planets) {
+        const natalPlanet = natalChart.planets[planet];
+        if (natalPlanet) {
+          const natalLongitude = natalPlanet.longitude;
+
+          // Calculate transit position using Swiss Ephemeris
+          const transitPositionData = sweph.swe_calc(currentJD, sweph[`SE_${planet.toUpperCase()}`], sweph.FLG_SWIEPH);
+          const transitLongitude = transitPositionData.longitude[0];
+
           currentPositions[planet] = {
-            longitude: transitPosition,
-            aspect: this.calculateTransitAspect(
-              natalLongitude,
-              transitPosition
-            ),
-            influence: this.getTransitInfluence(
-              planet,
-              natalLongitude,
-              transitPosition
-            )
+            longitude: transitLongitude,
+            aspect: this.calculateTransitAspect(natalLongitude, transitLongitude),
+            influence: this.getTransitInfluence(planet, natalLongitude, transitLongitude)
           };
         }
-      });
+      }
 
       // Identify major transits
       const majorTransits = this.identifyMajorTransits(
@@ -1884,7 +1894,7 @@ class VedicCalculator {
         currentDate: `${currentDay}/${currentMonth}/${currentYear}`,
         planetaryPositions: currentPositions,
         majorTransits,
-        nextSignificantTransits: this.calculateNextSignificantTransits(
+        nextSignificantTransits: await this.calculateNextSignificantTransits(
           natalChart,
           currentDate
         )
@@ -2042,38 +2052,38 @@ class VedicCalculator {
    * @param {Date} currentDate - Current date
    * @returns {Array} Next significant transits
    */
-  calculateNextSignificantTransits(natalChart, currentDate) {
+  async calculateNextSignificantTransits(natalChart, currentDate) {
     const nextTransits = [];
     const planets = ['jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
 
-    planets.forEach(planet => {
+    for (const planet of planets) {
       const natalPlanet = natalChart.planets[planet];
       const natalPos = natalPlanet ?
-        natalPlanet.degrees +
-          natalPlanet.minutes / 60 +
-          natalPlanet.seconds / 3600 :
+        natalPlanet.longitude :
         null;
+
       if (natalPos) {
-        // Calculate when next major aspect occurs
-        const nextConjunction = new Date(
-          currentDate.getTime() +
-            (360 - (((currentDate - natalChart.birthDate) * 0.0001) % 360)) *
-              100000
+        // Convert current date to Julian Day
+        const currentJD = sweph.swe_julday(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          currentDate.getDate(),
+          currentDate.getHours() + currentDate.getMinutes() / 60,
+          sweph.SE_GREG_CAL
         );
-        const nextSquare = new Date(
-          currentDate.getTime() +
-            (90 - (((currentDate - natalChart.birthDate) * 0.0001) % 90)) *
-              100000
-        );
+
+        // Find next conjunction (simplified for now, full implementation would involve iteration)
+        // This is a placeholder for more advanced sweph functions to find exact aspect times
+        const nextConjunctionDate = new Date(currentDate);
+        nextConjunctionDate.setFullYear(currentDate.getFullYear() + 1); // Estimate next year
 
         nextTransits.push({
           planet,
-          nextConjunction: nextConjunction.toLocaleDateString(),
-          nextSquare: nextSquare.toLocaleDateString(),
-          significance: this.getTransitSignificance(planet)
+          nextConjunction: nextConjunctionDate.toLocaleDateString(),
+          significance: this._getTransitSignificance(planet)
         });
       }
-    });
+    }
 
     return nextTransits.slice(0, 3);
   }
@@ -2161,11 +2171,10 @@ class VedicCalculator {
    * @param {Object} astroData - Astronomical data
    * @returns {Object} Asteroid position data
    */
-  _calculateAsteroidPosition(asteroidName, astroData) {
+  async _calculateAsteroidPosition(asteroidName, astroData) {
     try {
-      // Use astrologer library to get asteroid position
-      // For now, using simplified calculations - in production would use Swiss Ephemeris directly
-      const basePosition = this._getBaseAsteroidPosition(asteroidName, astroData);
+      // Use Swiss Ephemeris for precise asteroid calculations via _getBaseAsteroidPosition
+      const basePosition = await this._getBaseAsteroidPosition(asteroidName, astroData);
 
       return {
         name: asteroidName.charAt(0).toUpperCase() + asteroidName.slice(1),
@@ -2197,7 +2206,7 @@ class VedicCalculator {
    * @param {Object} astroData - Astro data
    * @returns {number} Longitude position
    */
-  _getBaseAsteroidPosition(asteroidName, astroData) {
+  async _getBaseAsteroidPosition(asteroidName, astroData) {
     try {
       // Use Swiss Ephemeris for precise asteroid calculations
       const asteroidIds = {
@@ -2281,7 +2290,7 @@ class VedicCalculator {
    * @param {Object} astroData - Astro data
    * @returns {number} House number
    */
-  _getHouseFromLongitude(longitude, astroData) {
+  async _getHouseFromLongitude(longitude, astroData) {
     // Simplified house calculation - would need proper ascendant calculation
     const ascendant = 0; // Simplified - should calculate actual ascendant
     const positionFromAsc = (longitude - ascendant + 360) % 360;
@@ -2295,13 +2304,13 @@ class VedicCalculator {
    * @param {Object} astroData - Astro data
    * @returns {Array} Aspects
    */
-  _getAsteroidAspects(asteroidPos, astroData) {
+  async _getAsteroidAspects(asteroidPos, astroData) {
     const aspects = [];
     const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
 
-    planets.forEach(planet => {
+    for (const planet of planets) {
       // Simplified aspect checking - would use actual planetary positions
-      const planetPos = this._getSimplifiedPlanetPosition(planet, astroData);
+      const planetPos = await this._getSimplifiedPlanetPosition(planet, astroData);
       const angle = Math.abs(asteroidPos - planetPos) % 360;
       const minAngle = Math.min(angle, 360 - angle);
 
@@ -2312,7 +2321,7 @@ class VedicCalculator {
           orb: Math.round(minAngle * 10) / 10
         });
       }
-    });
+    }
 
     return aspects;
   }
@@ -2324,7 +2333,7 @@ class VedicCalculator {
    * @param {Object} astroData - Astro data
    * @returns {number} Planet longitude
    */
-  _getSimplifiedPlanetPosition(planet, astroData) {
+  async _getSimplifiedPlanetPosition(planet, astroData) {
     // Simplified planetary positions - in production use actual calculations
     const positions = {
       sun: (astroData.month - 1) * 30 + astroData.date, // Sun moves ~1° per day
@@ -2746,24 +2755,40 @@ class VedicCalculator {
    * @param {number} targetYear - Target year
    * @returns {Object} Solar return timing
    */
-  _calculateSolarReturnTime(birthYear, birthMonth, birthDay, birthHour, birthMinute, targetYear) {
-    // Simplified calculation - in practice would need precise astronomical calculation
-    // For now, approximate the solar return time
+  async _calculateSolarReturnTime(birthYear, birthMonth, birthDay, birthHour, birthMinute, targetYear) {
+    try {
+      // Convert birth date to Julian Day
+      const birthJD = sweph.swe_julday(birthYear, birthMonth, birthDay, birthHour + birthMinute / 60, sweph.SE_GREG_CAL);
 
-    const yearsDiff = targetYear - birthYear;
-    const approxReturnDate = new Date(targetYear, birthMonth - 1, birthDay, birthHour, birthMinute);
+      // Find the exact solar return time for the target year
+      const solarReturnJD = sweph.swe_solret(birthJD, targetYear, sweph.SEFLG_SWIEPH);
 
-    // Add small adjustment for precession (simplified)
-    const adjustmentMinutes = yearsDiff * 6; // Rough adjustment
-    approxReturnDate.setMinutes(approxReturnDate.getMinutes() + adjustmentMinutes);
+      // Convert Julian Day back to Gregorian date and time
+      const gregDate = sweph.swe_revjul(solarReturnJD, sweph.SE_GREG_CAL);
 
-    return {
-      year: approxReturnDate.getFullYear(),
-      month: approxReturnDate.getMonth() + 1,
-      day: approxReturnDate.getDate(),
-      hour: approxReturnDate.getHours(),
-      minute: approxReturnDate.getMinutes()
-    };
+      return {
+        year: gregDate.year,
+        month: gregDate.month,
+        day: gregDate.day,
+        hour: Math.floor(gregDate.hour),
+        minute: Math.round((gregDate.hour - Math.floor(gregDate.hour)) * 60)
+      };
+    } catch (error) {
+      logger.error('Error calculating solar return time with sweph:', error);
+      // Fallback to simplified calculation
+      const yearsDiff = targetYear - birthYear;
+      const approxReturnDate = new Date(targetYear, birthMonth - 1, birthDay, birthHour, birthMinute);
+      const adjustmentMinutes = yearsDiff * 6; // Rough adjustment
+      approxReturnDate.setMinutes(approxReturnDate.getMinutes() + adjustmentMinutes);
+
+      return {
+        year: approxReturnDate.getFullYear(),
+        month: approxReturnDate.getMonth() + 1,
+        day: approxReturnDate.getDate(),
+        hour: approxReturnDate.getHours(),
+        minute: approxReturnDate.getMinutes()
+      };
+    }
   }
 
   /**
@@ -3026,14 +3051,14 @@ class VedicCalculator {
    * @param {number} daysAhead - Number of days to look ahead (default 30)
    * @returns {Object} Cosmic events analysis
    */
-  calculateCosmicEvents(birthData, daysAhead = 30) {
+  async calculateCosmicEvents(birthData, daysAhead = 30) {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
       const currentDate = new Date();
       const endDate = new Date(currentDate.getTime() + (daysAhead * 24 * 60 * 60 * 1000));
 
       // Get user's natal chart for correlation
-      const natalChart = this.generateBasicBirthChart({
+      const natalChart = await this.generateBasicBirthChart({
         name: 'User',
         birthDate,
         birthTime,
@@ -3041,10 +3066,10 @@ class VedicCalculator {
       });
 
       const events = {
-        eclipses: this._calculateUpcomingEclipses(currentDate, endDate, birthPlace),
-        planetaryEvents: this._calculateUpcomingPlanetaryEvents(currentDate, endDate),
+        eclipses: await this._calculateUpcomingEclipses(currentDate, endDate, birthPlace),
+        planetaryEvents: await this._calculateUpcomingPlanetaryEvents(currentDate, endDate),
         seasonalEvents: this._calculateUpcomingSeasonalEvents(currentDate, endDate),
-        personalImpact: this._correlateEventsWithChart(natalChart, currentDate, endDate)
+        personalImpact: await this._correlateEventsWithChart(natalChart, currentDate, endDate)
       };
 
       return {
@@ -3271,11 +3296,11 @@ class VedicCalculator {
    * @param {Date} endDate - End date
    * @returns {Array} Personal impact correlations
    */
-  _correlateEventsWithChart(natalChart, startDate, endDate) {
+  async _correlateEventsWithChart(natalChart, startDate, endDate) {
     const correlations = [];
 
     // Get current transits for the period
-    const transits = this.calculateAdvancedTransits(natalChart.fullChart, startDate);
+    const transits = await this.calculateAdvancedTransits(natalChart.fullChart, startDate);
 
     if (transits.majorTransits) {
       transits.majorTransits.forEach(transit => {
@@ -3555,7 +3580,7 @@ class VedicCalculator {
    * @param {string} questionData.questionPlace - Place where question was asked
    * @returns {Object} Prashna analysis
    */
-  generatePrashnaAnalysis(questionData) {
+  async generatePrashnaAnalysis(questionData) {
     try {
       const { question, questionTime, questionPlace } = questionData;
 
@@ -3570,12 +3595,14 @@ class VedicCalculator {
       const [day, month, year] = datePart.split('/').map(Number);
       const [hour, minute] = timePart.split(':').map(Number);
 
-      // Get coordinates
-      const [latitude, longitude] = this._getCoordinatesForPlace(questionPlace);
-      const timezone = this._getTimezoneForPlace(questionPlace);
+      // Get coordinates and timezone
+      const [latitude, longitude] = await this._getCoordinatesForPlace(questionPlace);
+      const questionDateTime = new Date(year, month - 1, day, hour, minute);
+      const timestamp = questionDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
 
       // Generate horary chart
-      const horaryChart = this._generateHoraryChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const horaryChart = await this._generateHoraryChart(year, month, day, hour, minute, latitude, longitude, timezone);
 
       // Analyze the question
       const questionAnalysis = this._analyzePrashnaQuestion(question, horaryChart);
@@ -3613,7 +3640,7 @@ class VedicCalculator {
    * @param {number} timezone - Timezone
    * @returns {Object} Horary chart data
    */
-  _generateHoraryChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _generateHoraryChart(year, month, day, hour, minute, latitude, longitude, timezone) {
     try {
       const astroData = {
         year,
@@ -3975,7 +4002,7 @@ class VedicCalculator {
    * @param {Object} birthData - User's birth data
    * @returns {Object} Ashtakavarga analysis
    */
-  generateAshtakavarga(birthData) {
+  async generateAshtakavarga(birthData) {
     try {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
@@ -3986,7 +4013,7 @@ class VedicCalculator {
       }
 
       // Generate birth chart
-      const kundli = this.generateVedicKundli(birthData);
+      const kundli = await this.generateVedicKundli(birthData);
       if (kundli.error) {
         return { error: kundli.error };
       }
@@ -4328,7 +4355,7 @@ class VedicCalculator {
    * @param {Object} birthData - User's birth data
    * @returns {Object} Varga charts analysis
    */
-  generateVargaCharts(birthData) {
+  async generateVargaCharts(birthData) {
     try {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
@@ -4339,7 +4366,7 @@ class VedicCalculator {
       }
 
       // Generate main birth chart
-      const mainChart = this.generateVedicKundli(birthData);
+      const mainChart = await this.generateVedicKundli(birthData);
       if (mainChart.error) {
         return { error: mainChart.error };
       }
@@ -4423,12 +4450,14 @@ class VedicCalculator {
    * @param {number} division - Division number
    * @returns {string} Varga Lagna sign
    */
-  _calculateVargaLagna(mainLagna, division) {
-    // Simplified calculation - in practice this involves precise longitude calculations
+  _calculateVargaLagna(mainChart, division) {
+    // This is a simplified calculation. In a real-world scenario, this would involve
+    // more complex calculations based on the specific Varga chart rules and planetary longitudes.
+    // For now, we'll keep the existing simplified logic.
     const signOrder = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-    const lagnaIndex = signOrder.indexOf(mainLagna);
+    const lagnaIndex = signOrder.indexOf(mainChart.lagna);
 
-    if (lagnaIndex === -1) return mainLagna;
+    if (lagnaIndex === -1) return mainChart.lagna;
 
     // For Navamsa (D-9), each sign is divided into 9 parts
     // This is a simplified calculation
@@ -4445,8 +4474,9 @@ class VedicCalculator {
    * @returns {string} Varga sign
    */
   _calculateVargaPosition(sign, longitude, division) {
-    // Simplified Varga calculation
-    // Each sign (30°) is divided by the Varga number
+    // This is a simplified Varga calculation. In a real-world scenario, this would involve
+    // more complex calculations based on the specific Varga chart rules and planetary longitudes.
+    // For now, we'll keep the existing simplified logic.
     const signOrder = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     const signIndex = signOrder.indexOf(sign);
 
@@ -4749,7 +4779,7 @@ class VedicCalculator {
    * @param {Object} birthData - User's birth data
    * @returns {Object} Shadbala analysis
    */
-  generateShadbala(birthData) {
+  async generateShadbala(birthData) {
     try {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
@@ -4760,7 +4790,7 @@ class VedicCalculator {
       }
 
       // Generate birth chart
-      const kundli = this.generateVedicKundli(birthData);
+      const kundli = await this.generateVedicKundli(birthData);
       if (kundli.error) {
         return { error: kundli.error };
       }
@@ -5239,7 +5269,7 @@ class VedicCalculator {
    * @param {string} eventData.location - Event location
    * @returns {Object} Muhurta analysis
    */
-  generateMuhurta(eventData) {
+  async generateMuhurta(eventData) {
     try {
       const { eventType, preferredDate, location } = eventData;
 
@@ -5253,14 +5283,16 @@ class VedicCalculator {
       const [day, month, year] = preferredDate.split('/').map(Number);
 
       // Get location coordinates
-      const [latitude, longitude] = this._getCoordinatesForPlace(location);
-      const timezone = this._getTimezoneForPlace(location);
+      const [latitude, longitude] = await this._getCoordinatesForPlace(location);
+      const eventDateTime = new Date(year, month - 1, day, 12, 0); // Midday for general timezone lookup
+      const timestamp = eventDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
 
       // Generate auspicious timings for the preferred date
-      const muhurtaOptions = this._calculateMuhurtaOptions(eventType, year, month, day, latitude, longitude, timezone);
+      const muhurtaOptions = await this._calculateMuhurtaOptions(eventType, year, month, day, latitude, longitude, timezone);
 
       // Find alternative dates if preferred date is not suitable
-      const alternativeDates = this._findAlternativeMuhurtaDates(eventType, year, month, day, latitude, longitude, timezone);
+      const alternativeDates = await this._findAlternativeMuhurtaDates(eventType, year, month, day, latitude, longitude, timezone);
 
       return {
         eventType,
@@ -5290,14 +5322,14 @@ class VedicCalculator {
    * @param {number} timezone - Timezone
    * @returns {Array} Muhurta options
    */
-  _calculateMuhurtaOptions(eventType, year, month, day, latitude, longitude, timezone) {
+  async _calculateMuhurtaOptions(eventType, year, month, day, latitude, longitude, timezone) {
     const options = [];
 
     // Calculate for 24 hours in 2-hour intervals
     for (let hour = 6; hour <= 18; hour += 2) { // Daytime only (6 AM to 6 PM)
       for (let minute = 0; minute < 60; minute += 30) {
         const muhurtaTime = { hour, minute };
-        const analysis = this._analyzeMuhurtaTime(eventType, year, month, day, hour, minute, latitude, longitude, timezone);
+        const analysis = await this._analyzeMuhurtaTime(eventType, year, month, day, hour, minute, latitude, longitude, timezone);
 
         if (analysis.suitability !== 'Inauspicious') {
           options.push({
@@ -5333,7 +5365,7 @@ class VedicCalculator {
    * @param {number} timezone - Timezone
    * @returns {Object} Time analysis
    */
-  _analyzeMuhurtaTime(eventType, year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _analyzeMuhurtaTime(eventType, year, month, day, hour, minute, latitude, longitude, timezone) {
     const analysis = {
       suitability: 'Neutral',
       score: 50,
@@ -5365,7 +5397,7 @@ class VedicCalculator {
       }
 
       // Check Abhijit Muhurta (most auspicious time)
-      const abhijitCheck = this._checkAbhijitMuhurta(hour, minute, latitude, longitude);
+      const abhijitCheck = await this._checkAbhijitMuhurta(hour, minute, latitude, longitude);
       if (abhijitCheck.isAbhijit) {
         analysis.reasons.push('Abhijit Muhurta - Most auspicious time');
         analysis.score += 25;
@@ -5724,7 +5756,7 @@ class VedicCalculator {
    * @param {number} timezone - Timezone
    * @returns {Array} Alternative dates
    */
-  _findAlternativeMuhurtaDates(eventType, year, month, day, latitude, longitude, timezone) {
+  async _findAlternativeMuhurtaDates(eventType, year, month, day, latitude, longitude, timezone) {
     const alternatives = [];
 
     // Check next 30 days for better Muhurta options
@@ -5734,7 +5766,7 @@ class VedicCalculator {
       const altMonth = checkDate.getMonth() + 1;
       const altDay = checkDate.getDate();
 
-      const options = this._calculateMuhurtaOptions(eventType, altYear, altMonth, altDay, latitude, longitude, timezone);
+      const options = await this._calculateMuhurtaOptions(eventType, altYear, altMonth, altDay, latitude, longitude, timezone);
 
       if (options.length > 0 && options[0].suitability === 'Excellent') {
         alternatives.push({
@@ -5806,7 +5838,7 @@ class VedicCalculator {
    * @param {string} dateData.location - Location for calculations
    * @returns {Object} Panchang analysis
    */
-  generatePanchang(dateData) {
+  async generatePanchang(dateData) {
     try {
       const { date, location } = dateData;
 
@@ -5820,11 +5852,13 @@ class VedicCalculator {
       const [day, month, year] = date.split('/').map(Number);
 
       // Get location coordinates
-      const [latitude, longitude] = this._getCoordinatesForPlace(location);
-      const timezone = this._getTimezoneForPlace(location);
+      const [latitude, longitude] = await this._getCoordinatesForPlace(location);
+      const panchangDateTime = new Date(year, month - 1, day, 12, 0); // Midday for general timezone lookup
+      const timestamp = panchangDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
 
       // Generate Panchang data
-      const panchangData = this._calculatePanchangData(year, month, day, latitude, longitude, timezone);
+      const panchangData = await this._calculatePanchangData(year, month, day, latitude, longitude, timezone);
 
       // Generate daily guidance
       const dailyGuidance = this._generateDailyGuidance(panchangData);
@@ -5855,7 +5889,7 @@ class VedicCalculator {
    * @param {number} timezone - Timezone
    * @returns {Object} Panchang data
    */
-  _calculatePanchangData(year, month, day, latitude, longitude, timezone) {
+  async _calculatePanchangData(year, month, day, latitude, longitude, timezone) {
     const panchangData = {
       date: `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`,
       weekday: this._getWeekdayName(year, month, day),
@@ -5891,8 +5925,8 @@ class VedicCalculator {
       panchangData.moonPhase = this._calculateMoonPhase(chart);
 
       // Calculate day timings (simplified)
-      panchangData.sunrise = this._calculateSunrise(year, month, day, latitude, longitude);
-      panchangData.sunset = this._calculateSunset(year, month, day, latitude, longitude);
+      panchangData.sunrise = await this._calculateSunrise(year, month, day, latitude, longitude, timezone);
+      panchangData.sunset = await this._calculateSunset(year, month, day, latitude, longitude, timezone);
 
       // Calculate inauspicious periods
       panchangData.rahukalam = this._calculateRahukalam(year, month, day, panchangData.sunrise, panchangData.sunset);
@@ -6089,9 +6123,22 @@ class VedicCalculator {
    * @param {number} longitude - Longitude
    * @returns {string} Sunrise time
    */
-  _calculateSunrise(year, month, day, latitude, longitude) {
-    // Simplified sunrise calculation
-    // In practice, this would use astronomical calculations
+  async _calculateSunrise(year, month, day, latitude, longitude, timezone) {
+    try {
+      const jd = sweph.swe_julday(year, month, day, 0, sweph.SE_GREG_CAL);
+      const geopos = [longitude, latitude, 0]; // longitude, latitude, altitude
+      const rsmi = sweph.swe_rise_trans(jd, sweph.SE_SUN, null, sweph.SEFLG_SWIEPH, geopos, 0);
+
+      if (rsmi && rsmi.return_code === 0) {
+        const sunriseTime = rsmi.tret[0]; // Sunrise time in UT
+        const sunriseHour = Math.floor(sunriseTime);
+        const sunriseMinute = Math.round((sunriseTime - sunriseHour) * 60);
+        return `${sunriseHour.toString().padStart(2, '0')}:${sunriseMinute.toString().padStart(2, '0')}`;
+      }
+    } catch (error) {
+      logger.error('Error calculating sunrise with sweph:', error);
+    }
+    // Fallback to simplified calculation
     const baseSunrise = latitude > 0 ? '06:00' : '07:00'; // Northern vs Southern hemisphere
     return baseSunrise;
   }
@@ -6106,8 +6153,22 @@ class VedicCalculator {
    * @param {number} longitude - Longitude
    * @returns {string} Sunset time
    */
-  _calculateSunset(year, month, day, latitude, longitude) {
-    // Simplified sunset calculation
+  async _calculateSunset(year, month, day, latitude, longitude, timezone) {
+    try {
+      const jd = sweph.swe_julday(year, month, day, 0, sweph.SE_GREG_CAL);
+      const geopos = [longitude, latitude, 0]; // longitude, latitude, altitude
+      const rsmi = sweph.swe_set_trans(jd, sweph.SE_SUN, null, sweph.SEFLG_SWIEPH, geopos, 0);
+
+      if (rsmi && rsmi.return_code === 0) {
+        const sunsetTime = rsmi.tret[0]; // Sunset time in UT
+        const sunsetHour = Math.floor(sunsetTime);
+        const sunsetMinute = Math.round((sunsetTime - sunsetHour) * 60);
+        return `${sunsetHour.toString().padStart(2, '0')}:${sunsetMinute.toString().padStart(2, '0')}`;
+      }
+    } catch (error) {
+      logger.error('Error calculating sunset with sweph:', error);
+    }
+    // Fallback to simplified calculation
     const baseSunset = latitude > 0 ? '18:00' : '19:00'; // Northern vs Southern hemisphere
     return baseSunset;
   }
@@ -6122,7 +6183,7 @@ class VedicCalculator {
    * @param {string} sunset - Sunset time
    * @returns {string} Rahukalam time
    */
-  _calculateRahukalam(year, month, day, sunrise, sunset) {
+  async _calculateRahukalam(year, month, day, sunrise, sunset) {
     // Rahukalam varies by weekday
     const date = new Date(year, month - 1, day);
     const weekday = date.getDay(); // 0 = Sunday
@@ -6150,7 +6211,7 @@ class VedicCalculator {
    * @param {string} sunset - Sunset time
    * @returns {string} Gulikakalam time
    */
-  _calculateGulikakalam(year, month, day, sunrise, sunset) {
+  async _calculateGulikakalam(year, month, day, sunrise, sunset) {
     // Gulikakalam varies by weekday (most inauspicious period)
     const date = new Date(year, month - 1, day);
     const weekday = date.getDay();
@@ -6178,7 +6239,7 @@ class VedicCalculator {
    * @param {string} sunset - Sunset time
    * @returns {string} Yamagandam time
    */
-  _calculateYamagandam(year, month, day, sunrise, sunset) {
+  async _calculateYamagandam(year, month, day, sunrise, sunset) {
     // Yamagandam varies by weekday
     const date = new Date(year, month - 1, day);
     const weekday = date.getDay();
@@ -6203,7 +6264,7 @@ class VedicCalculator {
    * @param {string} sunset - Sunset time
    * @returns {string} Abhijit Muhurta time
    */
-  _calculateAbhijitMuhurta(sunrise, sunset) {
+  async _calculateAbhijitMuhurta(sunrise, sunset) {
     // Abhijit Muhurta is noon ± 24 minutes (most auspicious time)
     return '11:36 AM - 12:24 PM';
   }
@@ -6388,7 +6449,7 @@ class VedicCalculator {
    * @param {Object} birthData - User's birth data
    * @returns {Object} Kaal Sarp Dosha analysis
    */
-  generateKaalSarpDosha(birthData) {
+  async generateKaalSarpDosha(birthData) {
     try {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
@@ -6399,7 +6460,7 @@ class VedicCalculator {
       }
 
       // Generate birth chart
-      const kundli = this.generateVedicKundli(birthData);
+      const kundli = await this.generateVedicKundli(birthData);
       if (kundli.error) {
         return { error: kundli.error };
       }
@@ -6957,7 +7018,7 @@ class VedicCalculator {
    * @param {number} yearsAhead - Years to project (default 10)
    * @returns {Object} Future self analysis
    */
-  generateFutureSelfSimulator(birthData, yearsAhead = 10) {
+  async generateFutureSelfSimulator(birthData, yearsAhead = 10) {
     try {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
@@ -6974,7 +7035,7 @@ class VedicCalculator {
       const currentAge = Math.floor((currentDate - birthDateObj) / (365.25 * 24 * 60 * 60 * 1000));
 
       // Generate natal chart
-      const natalChart = this.generateBasicBirthChart({
+      const natalChart = await this.generateBasicBirthChart({
         name,
         birthDate,
         birthTime,
@@ -7644,7 +7705,7 @@ class VedicCalculator {
    * @param {string} groupType - Type of group ('family', 'friends', 'couple', etc.)
    * @returns {Object} Group astrology analysis
    */
-  generateGroupAstrology(familyMembers, groupType = 'family') {
+  async generateGroupAstrology(familyMembers, groupType = 'family') {
     try {
       if (!familyMembers || familyMembers.length < 2) {
         return {
@@ -7653,14 +7714,14 @@ class VedicCalculator {
       }
 
       // Generate individual charts for all members
-      const memberCharts = familyMembers.map(member =>
-        this.generateBasicBirthChart({
+      const memberCharts = await Promise.all(familyMembers.map(async member =>
+        await this.generateBasicBirthChart({
           name: member.name,
           birthDate: member.birthDate,
           birthTime: member.birthTime || '12:00',
           birthPlace: member.birthPlace || 'Delhi'
         })
-      );
+      ));
 
       // Create composite chart
       const compositeChart = this._calculateCompositeChart(memberCharts);
@@ -8281,7 +8342,7 @@ class VedicCalculator {
    * @param {Object} birthData - User's birth data
    * @returns {Object} Complete Vedic Kundli
    */
-  generateVedicKundli(birthData) {
+  async generateVedicKundli(birthData) {
     try {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
@@ -8296,8 +8357,10 @@ class VedicCalculator {
       const [birthHour, birthMinute] = birthTime.split(':').map(Number);
 
       // Get coordinates
-      const [latitude, longitude] = this._getCoordinatesForPlace(birthPlace);
-      const timezone = this._getTimezoneForPlace(birthPlace);
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const birthDateTime = new Date(birthYear, birthMonth - 1, birthDay, birthHour, birthMinute);
+      const timestamp = birthDateTime.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
 
       // Generate complete chart data
       const kundliData = this._generateCompleteKundliData(
@@ -10544,7 +10607,7 @@ class VedicCalculator {
    * @param {Object} birthData - User's birth data
    * @returns {Object} Sade Sati analysis
    */
-  generateSadeSatiAnalysis(birthData) {
+  async generateSadeSatiAnalysis(birthData) {
     try {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
@@ -10555,7 +10618,7 @@ class VedicCalculator {
       }
 
       // Generate birth chart
-      const kundli = this.generateVedicKundli(birthData);
+      const kundli = await this.generateVedicKundli(birthData);
       if (kundli.error) {
         return { error: kundli.error };
       }
@@ -10665,61 +10728,67 @@ class VedicCalculator {
    * @param {Date} currentDate - Current date
    * @returns {Object} Current phase details
    */
-  _calculateSadeSatiPeriod(kundli, currentDate) {
+  async _calculateSadeSatiPeriod(kundli, currentDate) {
     const moon = kundli.planetaryPositions.moon;
     if (!moon) {
       return { phase: 'Unknown', startDate: null, endDate: null, progress: 0 };
     }
 
     const moonSign = moon.sign;
-    const signOrder = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-    const moonSignIndex = signOrder.indexOf(moonSign);
+    const moonLongitude = moon.longitude;
 
-    // Calculate Sade Sati periods (approximately 7.5 years total)
-    const phase1Start = new Date(currentDate.getFullYear() - 2, currentDate.getMonth(), currentDate.getDate()); // 2.5 years before
-    const phase1End = new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()); // 2.5 years after
-    const phase2Start = phase1End;
-    const phase2End = new Date(phase2Start.getFullYear() + 2, phase2Start.getMonth(), phase2Start.getDate() + 15); // 2.5 years
-    const phase3Start = phase2End;
-    const phase3End = new Date(phase3Start.getFullYear() + 2, phase3Start.getMonth(), phase3Start.getDate() + 15); // 2.5 years
+    // Get current Saturn position using sweph
+    const currentJD = sweph.swe_julday(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      currentDate.getDate(),
+      currentDate.getHours() + currentDate.getMinutes() / 60,
+      sweph.SE_GREG_CAL
+    );
+    const saturnPosition = sweph.swe_calc(currentJD, sweph.SE_SATURN, sweph.FLG_SWIEPH);
+    const saturnLongitude = saturnPosition.longitude[0];
 
-    const currentTime = currentDate.getTime();
+    // Calculate the houses from Moon where Saturn is transiting
+    const moonHouse = Math.floor(moonLongitude / 30) + 1; // 1-12
+    const saturnHouse = Math.floor(saturnLongitude / 30) + 1; // 1-12
 
-    if (currentTime >= phase1Start.getTime() && currentTime <= phase1End.getTime()) {
-      const progress = ((currentTime - phase1Start.getTime()) / (phase1End.getTime() - phase1Start.getTime())) * 100;
-      return {
-        phase: 'Phase 1: Rising (12th from Moon)',
-        startDate: phase1Start.toLocaleDateString(),
-        endDate: phase1End.toLocaleDateString(),
-        progress: Math.round(progress),
-        description: 'Building phase - challenges begin, testing period starts'
-      };
-    } else if (currentTime >= phase2Start.getTime() && currentTime <= phase2End.getTime()) {
-      const progress = ((currentTime - phase2Start.getTime()) / (phase2End.getTime() - phase2Start.getTime())) * 100;
-      return {
-        phase: 'Phase 2: Peak (Moon sign)',
-        startDate: phase2Start.toLocaleDateString(),
-        endDate: phase2End.toLocaleDateString(),
-        progress: Math.round(progress),
-        description: 'Maximum intensity - major life changes and karmic lessons'
-      };
-    } else if (currentTime >= phase3Start.getTime() && currentTime <= phase3End.getTime()) {
-      const progress = ((currentTime - phase3Start.getTime()) / (phase3End.getTime() - phase3Start.getTime())) * 100;
-      return {
-        phase: 'Phase 3: Setting (2nd from Moon)',
-        startDate: phase3Start.toLocaleDateString(),
-        endDate: phase3End.toLocaleDateString(),
-        progress: Math.round(progress),
-        description: 'Resolution phase - lessons learned, new stability emerges'
-      };
+    // Sade Sati houses are 12th, 1st, and 2nd from Moon
+    const sadeSatiHouses = [
+      (moonHouse === 1) ? 12 : moonHouse - 1,
+      moonHouse,
+      (moonHouse === 12) ? 1 : moonHouse + 1
+    ];
+
+    let phase = 'Not currently in Sade Sati';
+    let startDate = null;
+    let endDate = null;
+    let progress = 0;
+    let description = 'Period of relative stability and growth';
+
+    if (sadeSatiHouses.includes(saturnHouse)) {
+      // Determine which phase of Sade Sati
+      if (saturnHouse === sadeSatiHouses[0]) {
+        phase = 'Phase 1: Rising (12th from Moon)';
+        description = 'Building phase - challenges begin, testing period starts';
+      } else if (saturnHouse === sadeSatiHouses[1]) {
+        phase = 'Phase 2: Peak (Moon sign)';
+        description = 'Maximum intensity - major life changes and karmic lessons';
+      } else if (saturnHouse === sadeSatiHouses[2]) {
+        phase = 'Phase 3: Setting (2nd from Moon)';
+        description = 'Resolution phase - lessons learned, new stability emerges';
+      }
+
+      // For more precise start/end dates and progress, we would need to iterate Saturn's movement
+      // This is a simplified approximation for the current phase
+      progress = Math.round(((saturnLongitude % 30) / 30) * 100); // Progress within the current sign
     }
 
     return {
-      phase: 'Not currently in Sade Sati',
-      startDate: null,
-      endDate: null,
-      progress: 0,
-      description: 'Period of relative stability and growth'
+      phase,
+      startDate: startDate ? startDate.toLocaleDateString() : null,
+      endDate: endDate ? endDate.toLocaleDateString() : null,
+      progress,
+      description
     };
   }
 
@@ -11238,6 +11307,1074 @@ class VedicCalculator {
       category: 'Spiritual'
     }];
   }
+
+  /**
+   * Calculate composite chart for synastry analysis
+   * @param {Object} chart1 - First person's birth chart
+   * @param {Object} chart2 - Second person's birth chart
+   * @returns {Object} Composite chart data
+   */
+  calculateCompositeChart(chart1, chart2) {
+    try {
+      const composite = {
+        planets: {},
+        houses: {},
+        aspects: [],
+        interpretations: {}
+      };
+
+      // Calculate midpoint positions for each planet
+      const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
+
+      planets.forEach(planet => {
+        if (chart1.fullChart?.planets?.[planet] && chart2.fullChart?.planets?.[planet]) {
+          const pos1 = this._getLongitude(chart1.fullChart.planets[planet]);
+          const pos2 = this._getLongitude(chart2.fullChart.planets[planet]);
+
+          // Calculate midpoint
+          let midpoint = (pos1 + pos2) / 2;
+
+          // Handle 0-360 degree wraparound
+          if (Math.abs(pos1 - pos2) > 180) {
+            midpoint = (midpoint + 180) % 360;
+          }
+
+          // Determine sign and position
+          const signIndex = Math.floor(midpoint / 30);
+          const signName = this.zodiacSigns[signIndex];
+          const degreesInSign = midpoint % 30;
+
+          composite.planets[planet] = {
+            longitude: midpoint,
+            signName,
+            degrees: Math.floor(degreesInSign),
+            minutes: Math.floor((degreesInSign % 1) * 60),
+            seconds: Math.floor(((degreesInSign % 1) * 60 % 1) * 60)
+          };
+        }
+      });
+
+      // Calculate composite houses (simplified - using midpoint of rising signs)
+      const rising1 = this._getLongitude(chart1.fullChart?.houses?.[0] || { longitude: 0 });
+      const rising2 = this._getLongitude(chart2.fullChart?.houses?.[0] || { longitude: 0 });
+      const compositeRising = (rising1 + rising2) / 2;
+
+      for (let i = 0; i < 12; i++) {
+        const houseLongitude = (compositeRising + i * 30) % 360;
+        const signIndex = Math.floor(houseLongitude / 30);
+        composite.houses[i] = {
+          sign: this.zodiacSigns[signIndex],
+          longitude: houseLongitude
+        };
+      }
+
+      // Calculate aspects within composite chart
+      composite.aspects = this._calculateCompositeAspects(composite.planets);
+
+      // Generate interpretations
+      composite.interpretations = this._interpretCompositeChart(composite);
+
+      return composite;
+    } catch (error) {
+      logger.error('Error calculating composite chart:', error);
+      return {
+        error: 'Unable to calculate composite chart',
+        planets: {},
+        houses: {},
+        aspects: [],
+        interpretations: {}
+      };
+    }
+  }
+
+  /**
+   * Calculate Davison relationship chart
+   * @param {Object} person1 - First person's birth data
+   * @param {Object} person2 - Second person's birth data
+   * @returns {Object} Davison chart data
+   */
+  calculateDavisonChart(person1, person2) {
+    try {
+      // Calculate midpoint date and time
+      const date1 = new Date(person1.birthDate.split('/').reverse().join('-'));
+      const date2 = new Date(person2.birthDate.split('/').reverse().join('-'));
+
+      const midpointTime = new Date((date1.getTime() + date2.getTime()) / 2);
+
+      // Calculate midpoint location (simplified - average coordinates)
+      const lat1 = person1.latitude || 28.6139; // Default Delhi
+      const lon1 = person1.longitude || 77.209;
+      const lat2 = person2.latitude || 28.6139;
+      const lon2 = person2.longitude || 77.209;
+
+      const midpointLat = (lat1 + lat2) / 2;
+      const midpointLon = (lon1 + lon2) / 2;
+
+      // Calculate midpoint time
+      const time1 = this._parseTime(person1.birthTime || '12:00');
+      const time2 = this._parseTime(person2.birthTime || '12:00');
+      const midpointMinutes = Math.floor((time1 + time2) / 2);
+      const midpointHour = Math.floor(midpointMinutes / 60) % 24;
+      const midpointMinute = midpointMinutes % 60;
+
+      const davisonData = {
+        year: midpointTime.getFullYear(),
+        month: midpointTime.getMonth() + 1,
+        date: midpointTime.getDate(),
+        hours: midpointHour,
+        minutes: midpointMinute,
+        seconds: 0,
+        latitude: midpointLat,
+        longitude: midpointLon,
+        timezone: 5.5, // IST default
+        chartType: 'sidereal'
+      };
+
+      // Generate chart using astrologer library
+      const davisonChart = this.astrologer.generateNatalChartData(davisonData);
+
+      // Add relationship-specific interpretations
+      davisonChart.relationshipPurpose = this._interpretDavisonPurpose(davisonChart);
+
+      return {
+        chart: davisonChart,
+        midpointDate: `${midpointTime.getDate()}/${midpointTime.getMonth() + 1}/${midpointTime.getFullYear()}`,
+        midpointTime: `${midpointHour.toString().padStart(2, '0')}:${midpointMinute.toString().padStart(2, '0')}`,
+        midpointLocation: `${midpointLat.toFixed(2)}, ${midpointLon.toFixed(2)}`,
+        relationshipPurpose: davisonChart.relationshipPurpose
+      };
+    } catch (error) {
+      logger.error('Error calculating Davison chart:', error);
+      return {
+        error: 'Unable to calculate Davison relationship chart',
+        chart: null,
+        relationshipPurpose: 'Chart calculation failed'
+      };
+    }
+  }
+
+  /**
+   * Calculate synastry aspects between two charts
+   * @param {Object} chart1 - First person's chart
+   * @param {Object} chart2 - Second person's chart
+   * @returns {Array} Synastry aspects
+   */
+  calculateSynastryAspects(chart1, chart2) {
+    try {
+      const aspects = [];
+      const planets1 = chart1.fullChart?.planets || {};
+      const planets2 = chart2.fullChart?.planets || {};
+
+      const majorPlanets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
+
+      // Calculate aspects between all planet combinations
+      majorPlanets.forEach(planet1 => {
+        majorPlanets.forEach(planet2 => {
+          if (planets1[planet1] && planets2[planet2]) {
+            const pos1 = this._getLongitude(planets1[planet1]);
+            const pos2 = this._getLongitude(planets2[planet2]);
+
+            const aspect = this._calculateAspect(pos1, pos2);
+            if (aspect) {
+              aspects.push({
+                planet1,
+                planet2,
+                aspect: aspect.type,
+                orb: aspect.orb,
+                interpretation: this._interpretSynastryAspect(planet1, planet2, aspect.type)
+              });
+            }
+          }
+        });
+      });
+
+      return aspects;
+    } catch (error) {
+      logger.error('Error calculating synastry aspects:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Calculate compatibility score based on synastry analysis
+   * @param {Object} chart1 - First person's chart
+   * @param {Object} chart2 - Second person's chart
+   * @param {Object} compositeChart - Composite chart
+   * @param {Array} synastryAspects - Synastry aspects
+   * @returns {Object} Compatibility analysis
+   */
+  calculateCompatibilityScore(chart1, chart2, compositeChart, synastryAspects) {
+    try {
+      let score = 50; // Base score
+      const factors = {
+        strengths: [],
+        challenges: [],
+        romantic: 0,
+        communication: 0,
+        emotional: 0,
+        spiritual: 0
+      };
+
+      // Analyze synastry aspects
+      synastryAspects.forEach(aspect => {
+        const weight = this._getAspectWeight(aspect.aspect, aspect.orb);
+
+        switch (aspect.aspect) {
+          case 'conjunction':
+            score += weight * 2;
+            factors.strengths.push(`Strong ${aspect.planet1}-${aspect.planet2} connection`);
+            break;
+          case 'trine':
+            score += weight * 1.5;
+            factors.strengths.push(`Harmonious ${aspect.planet1}-${aspect.planet2} flow`);
+            break;
+          case 'sextile':
+            score += weight;
+            factors.strengths.push(`Supportive ${aspect.planet1}-${aspect.planet2} energy`);
+            break;
+          case 'square':
+            score -= weight * 1.2;
+            factors.challenges.push(`${aspect.planet1}-${aspect.planet2} tension requires work`);
+            break;
+          case 'opposition':
+            score -= weight;
+            factors.challenges.push(`${aspect.planet1}-${aspect.planet2} polarity needs balance`);
+            break;
+        }
+
+        // Category-specific scoring
+        if (['venus', 'moon', 'sun'].includes(aspect.planet1) || ['venus', 'moon', 'sun'].includes(aspect.planet2)) {
+          factors.romantic += weight;
+        }
+        if (['mercury'].includes(aspect.planet1) || ['mercury'].includes(aspect.planet2)) {
+          factors.communication += weight;
+        }
+        if (['moon', 'neptune'].includes(aspect.planet1) || ['moon', 'neptune'].includes(aspect.planet2)) {
+          factors.emotional += weight;
+        }
+        if (['jupiter', 'saturn', 'uranus'].includes(aspect.planet1) || ['jupiter', 'saturn', 'uranus'].includes(aspect.planet2)) {
+          factors.spiritual += weight;
+        }
+      });
+
+      // Analyze composite chart
+      if (compositeChart.planets) {
+        // Strong composite sun/moon conjunction is very positive
+        if (compositeChart.planets.sun && compositeChart.planets.moon) {
+          const sunPos = this._getLongitude(compositeChart.planets.sun);
+          const moonPos = this._getLongitude(compositeChart.planets.moon);
+          const angle = Math.abs(sunPos - moonPos) % 360;
+          const minAngle = Math.min(angle, 360 - angle);
+
+          if (minAngle < 10) {
+            score += 15;
+            factors.strengths.push('Powerful composite sun-moon conjunction indicates strong shared identity');
+          }
+        }
+      }
+
+      // Ensure score stays within 0-100 range
+      score = Math.max(0, Math.min(100, score));
+
+      return {
+        overallScore: Math.round(score),
+        categories: {
+          romantic: Math.round(Math.max(0, Math.min(100, 50 + factors.romantic))),
+          communication: Math.round(Math.max(0, Math.min(100, 50 + factors.communication))),
+          emotional: Math.round(Math.max(0, Math.min(100, 50 + factors.emotional))),
+          spiritual: Math.round(Math.max(0, Math.min(100, 50 + factors.spiritual)))
+        },
+        strengths: factors.strengths.slice(0, 5),
+        challenges: factors.challenges.slice(0, 5),
+        summary: this._generateCompatibilitySummary(score, factors)
+      };
+    } catch (error) {
+      logger.error('Error calculating compatibility score:', error);
+      return {
+        overallScore: 50,
+        categories: { romantic: 50, communication: 50, emotional: 50, spiritual: 50 },
+        strengths: [],
+        challenges: [],
+        summary: 'Compatibility analysis could not be completed'
+      };
+    }
+  }
+
+  /**
+   * Perform complete synastry analysis
+   * @param {Object} person1 - First person's data
+   * @param {Object} person2 - Second person's data
+   * @returns {Object} Complete synastry analysis
+   */
+  performSynastryAnalysis(person1, person2) {
+    try {
+      // Generate individual charts
+      const chart1 = this.generateBasicBirthChart(person1);
+      const chart2 = this.generateBasicBirthChart(person2);
+
+      // Calculate composite chart
+      const compositeChart = this.calculateCompositeChart(chart1, chart2);
+
+      // Calculate Davison chart
+      const davisonChart = this.calculateDavisonChart(person1, person2);
+
+      // Calculate synastry aspects
+      const synastryAspects = this.calculateSynastryAspects(chart1, chart2);
+
+      // Calculate compatibility
+      const compatibility = this.calculateCompatibilityScore(chart1, chart2, compositeChart, synastryAspects);
+
+      return {
+        person1: {
+          name: person1.name,
+          chart: chart1
+        },
+        person2: {
+          name: person2.name,
+          chart: chart2
+        },
+        compositeChart,
+        davisonChart,
+        synastryAspects: synastryAspects.slice(0, 10), // Top 10 aspects
+        compatibility,
+        relationshipInsights: this._generateRelationshipInsights(compositeChart, davisonChart, compatibility)
+      };
+    } catch (error) {
+      logger.error('Error performing synastry analysis:', error);
+      return {
+        error: 'Synastry analysis could not be completed',
+        person1: { name: person1.name },
+        person2: { name: person2.name }
+      };
+    }
+  }
+
+  // Helper methods for synastry calculations
+
+  /**
+   * Get longitude from planet data
+   * @private
+   */
+  _getLongitude(planetData) {
+    if (typeof planetData === 'number') return planetData;
+    if (planetData.longitude) return planetData.longitude;
+
+    // Calculate from degrees, minutes, seconds
+    const degrees = planetData.degrees || 0;
+    const minutes = planetData.minutes || 0;
+    const seconds = planetData.seconds || 0;
+
+    return degrees + minutes / 60 + seconds / 3600;
+  }
+
+  /**
+   * Calculate aspects within composite chart
+   * @private
+   */
+  _calculateCompositeAspects(planets) {
+    const aspects = [];
+    const planetKeys = Object.keys(planets);
+
+    planetKeys.forEach((planet1, i) => {
+      planetKeys.slice(i + 1).forEach(planet2 => {
+        const pos1 = this._getLongitude(planets[planet1]);
+        const pos2 = this._getLongitude(planets[planet2]);
+
+        const aspect = this._calculateAspect(pos1, pos2);
+        if (aspect) {
+          aspects.push({
+            planets: `${planet1}-${planet2}`,
+            aspect: aspect.type,
+            orb: aspect.orb
+          });
+        }
+      });
+    });
+
+    return aspects;
+  }
+
+  /**
+   * Calculate aspect between two positions
+   * @private
+   */
+  _calculateAspect(pos1, pos2) {
+    const angle = Math.abs(pos1 - pos2) % 360;
+    const minAngle = Math.min(angle, 360 - angle);
+
+    const aspects = [
+      { type: 'conjunction', angle: 0, orb: 8 },
+      { type: 'sextile', angle: 60, orb: 6 },
+      { type: 'square', angle: 90, orb: 8 },
+      { type: 'trine', angle: 120, orb: 8 },
+      { type: 'opposition', angle: 180, orb: 8 }
+    ];
+
+    for (const aspect of aspects) {
+      if (Math.abs(minAngle - aspect.angle) <= aspect.orb) {
+        return {
+          type: aspect.type,
+          orb: Math.abs(minAngle - aspect.angle)
+        };
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Interpret composite chart
+   * @private
+   */
+  _interpretCompositeChart(composite) {
+    const interpretations = {
+      relationshipNature: 'Harmonious partnership',
+      sharedPurpose: 'Mutual growth and understanding',
+      challenges: [],
+      strengths: []
+    };
+
+    // Analyze dominant planets in composite
+    if (composite.planets) {
+      const strongPlanets = Object.entries(composite.planets)
+        .filter(([_, data]) => data.signName)
+        .slice(0, 3);
+
+      strongPlanets.forEach(([planet, data]) => {
+        interpretations.strengths.push(`${planet} in ${data.signName} brings ${this._getPlanetRelationshipQuality(planet)}`);
+      });
+    }
+
+    return interpretations;
+  }
+
+  /**
+   * Interpret Davison chart purpose
+   * @private
+   */
+  _interpretDavisonPurpose(chart) {
+    const sunSign = chart.interpretations?.sunSign;
+    const moonSign = chart.interpretations?.moonSign;
+
+    const purposes = {
+      'Aries': 'To courageously pursue shared goals and initiate new beginnings together',
+      'Taurus': 'To build a stable, secure foundation and enjoy sensual pleasures together',
+      'Gemini': 'To communicate openly, learn together, and maintain intellectual stimulation',
+      'Cancer': 'To create emotional security, nurture each other, and build a home',
+      'Leo': 'To express creativity, support each other\'s talents, and enjoy life fully',
+      'Virgo': 'To serve each other, improve together, and create practical harmony',
+      'Libra': 'To maintain balance, appreciate beauty, and foster equality in partnership',
+      'Scorpio': 'To transform together, build deep intimacy, and face challenges courageously',
+      'Sagittarius': 'To explore life\'s meaning, expand horizons, and maintain optimism',
+      'Capricorn': 'To build lasting structure, achieve goals, and provide security',
+      'Aquarius': 'To innovate together, maintain independence, and benefit humanity',
+      'Pisces': 'To connect spiritually, show compassion, and heal each other'
+    };
+
+    return purposes[sunSign] || 'To grow together through mutual understanding and support';
+  }
+
+  /**
+   * Interpret synastry aspect
+   * @private
+   */
+  _interpretSynastryAspect(planet1, planet2, aspect) {
+    const interpretations = {
+      'sun-moon': {
+        conjunction: 'Deep emotional and identity fusion',
+        trine: 'Natural emotional understanding',
+        square: 'Identity vs emotional needs tension',
+        opposition: 'Balancing individual and emotional needs'
+      },
+      'venus-mars': {
+        conjunction: 'Intense romantic and sexual attraction',
+        trine: 'Harmonious love and passion',
+        square: 'Love vs desire conflicts',
+        opposition: 'Magnetic attraction with challenges'
+      },
+      'mercury-mercury': {
+        conjunction: 'Mental synchronization',
+        trine: 'Easy communication flow',
+        square: 'Communication misunderstandings',
+        opposition: 'Different thinking styles'
+      }
+    };
+
+    const key = `${planet1}-${planet2}`;
+    const reverseKey = `${planet2}-${planet1}`;
+
+    return interpretations[key]?.[aspect] ||
+           interpretations[reverseKey]?.[aspect] ||
+           `${aspect} aspect creates ${aspect} energy between ${planet1} and ${planet2}`;
+  }
+
+  /**
+   * Get aspect weight for scoring
+   * @private
+   */
+  _getAspectWeight(aspect, orb) {
+    const baseWeights = {
+      conjunction: 15,
+      trine: 10,
+      sextile: 7,
+      square: -8,
+      opposition: -10
+    };
+
+    const baseWeight = baseWeights[aspect] || 0;
+    // Reduce weight for wider orbs
+    const orbPenalty = orb / 2;
+    return Math.max(1, baseWeight - orbPenalty);
+  }
+
+  /**
+   * Get planet relationship quality
+   * @private
+   */
+  _getPlanetRelationshipQuality(planet) {
+    const qualities = {
+      sun: 'shared identity and purpose',
+      moon: 'emotional security and nurturing',
+      mercury: 'clear communication and understanding',
+      venus: 'love, harmony, and shared values',
+      mars: 'passion, action, and drive',
+      jupiter: 'growth, optimism, and expansion',
+      saturn: 'stability, commitment, and structure'
+    };
+
+    return qualities[planet] || 'unique relationship dynamics';
+  }
+
+  /**
+   * Parse time string to minutes
+   * @private
+   */
+  _parseTime(timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    return hours * 60 + minutes;
+  }
+
+  /**
+   * Generate compatibility summary
+   * @private
+   */
+  _generateCompatibilitySummary(score, factors) {
+    if (score >= 80) {
+      return 'Excellent compatibility with strong potential for harmonious partnership';
+    } else if (score >= 65) {
+      return 'Good compatibility with some areas requiring attention and growth';
+    } else if (score >= 50) {
+      return 'Moderate compatibility requiring conscious effort and understanding';
+    } else {
+      return 'Challenging compatibility requiring significant work and compromise';
+    }
+  }
+
+  /**
+   * Generate relationship insights
+   * @private
+   */
+  _generateRelationshipInsights(composite, davison, compatibility) {
+    const insights = [];
+
+    // Composite insights
+    if (composite.interpretations?.relationshipNature) {
+      insights.push({
+        type: 'composite',
+        insight: composite.interpretations.relationshipNature,
+        significance: 'Overall relationship energy and dynamics'
+      });
+    }
+
+    // Davison insights
+    if (davison.relationshipPurpose) {
+      insights.push({
+        type: 'davison',
+        insight: davison.relationshipPurpose,
+        significance: 'Long-term relationship purpose and destiny'
+      });
+    }
+
+    // Compatibility insights
+    if (compatibility.overallScore >= 70) {
+      insights.push({
+        type: 'compatibility',
+        insight: 'Strong natural harmony supports relationship success',
+        significance: 'Positive foundation for partnership'
+      });
+    } else if (compatibility.overallScore >= 50) {
+      insights.push({
+        type: 'compatibility',
+        insight: 'Relationship requires conscious effort and communication',
+        significance: 'Growth opportunities through challenges'
+      });
+    } else {
+      insights.push({
+        type: 'compatibility',
+        insight: 'Significant challenges require deep commitment and understanding',
+        significance: 'Transformation potential through difficulties'
+      });
+    }
+
+    return insights;
+  }
+
+  /**
+   * Calculate Lunar Return - when Moon returns to natal position
+   * @param {Object} birthData - Birth data object
+   * @param {Date} targetDate - Date to calculate return for (optional, defaults to next return)
+   * @returns {Object} Lunar return analysis
+   */
+  calculateLunarReturn(birthData, targetDate = null) {
+    try {
+      const { birthDate, birthTime, birthPlace } = birthData;
+
+      // Get natal moon position
+      const natalChart = this.generateBasicBirthChart(birthData);
+      const natalMoonPosition = natalChart.fullChart?.planets?.moon?.longitude;
+
+      if (!natalMoonPosition) {
+        return { error: 'Unable to calculate natal Moon position' };
+      }
+
+      // Calculate next lunar return
+      const returnDate = targetDate || this._findNextLunarReturn(birthDate, birthTime, birthPlace, natalMoonPosition);
+
+      // Generate lunar return chart
+      const lunarReturnChart = this._generateLunarReturnChart(birthData, returnDate);
+
+      // Analyze the lunar return
+      const analysis = this._analyzeLunarReturnChart(lunarReturnChart, natalChart);
+
+      return {
+        returnDate: returnDate.toISOString(),
+        formattedDate: returnDate.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+        lunarReturnChart,
+        analysis,
+        monthlyThemes: this._extractMonthlyThemes(analysis),
+        emotionalCycle: this._analyzeEmotionalCycle(analysis),
+        recommendations: this._generateLunarReturnRecommendations(analysis)
+      };
+    } catch (error) {
+      logger.error('Error calculating lunar return:', error);
+      return { error: 'Unable to calculate lunar return' };
+    }
+  }
+
+  /**
+   * Find the next lunar return date
+   * @private
+   */
+  _findNextLunarReturn(birthDate, birthTime, birthPlace, natalMoonPosition) {
+    try {
+      // Parse birth date
+      const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+
+      // Get coordinates
+      const [latitude, longitude] = this._getCoordinatesForPlace(birthPlace);
+      const timestamp = birthDateTime.getTime();
+      const timezone = this._getTimezoneForPlace(latitude, longitude, timestamp);
+
+      // Start from current date
+      let currentDate = new Date();
+      currentDate.setHours(hour, minute, 0, 0); // Set to birth time
+
+      // Search for lunar return (Moon takes ~27.3 days to orbit)
+      for (let i = 0; i < 35; i++) { // Search up to 35 days ahead
+        const testDate = new Date(currentDate.getTime() + i * 24 * 60 * 60 * 1000);
+
+        // Calculate moon position for this date
+        const testTimestamp = testDate.getTime();
+        const testTimezone = this._getTimezoneForPlace(latitude, longitude, testTimestamp);
+
+        const astroData = {
+          year: testDate.getFullYear(),
+          month: testDate.getMonth() + 1,
+          date: testDate.getDate(),
+          hours: testDate.getHours(),
+          minutes: testDate.getMinutes(),
+          seconds: 0,
+          latitude,
+          longitude,
+          timezone: testTimezone,
+          chartType: 'sidereal'
+        };
+
+        const testChart = this.astrologer.generateNatalChartData(astroData);
+        const testMoonPosition = testChart.planets?.moon?.longitude;
+
+        if (testMoonPosition !== undefined) {
+          // Check if moon is within 2 degrees of natal position
+          const angleDiff = Math.abs(testMoonPosition - natalMoonPosition);
+          const minDiff = Math.min(angleDiff, 360 - angleDiff);
+
+          if (minDiff <= 2) { // Within 2 degrees orb
+            return testDate;
+          }
+        }
+      }
+
+      // Fallback: approximate based on lunar cycle
+      const lunarCycle = 27.3; // days
+      const daysSinceBirth = (currentDate - birthDateTime) / (1000 * 60 * 60 * 24);
+      const cyclesCompleted = Math.floor(daysSinceBirth / lunarCycle);
+      const nextReturnDays = (cyclesCompleted + 1) * lunarCycle - daysSinceBirth;
+
+      return new Date(currentDate.getTime() + nextReturnDays * 24 * 60 * 60 * 1000);
+    } catch (error) {
+      logger.error('Error finding next lunar return:', error);
+      // Fallback to approximately 27 days from now
+      return new Date(Date.now() + 27 * 24 * 60 * 60 * 1000);
+    }
+  }
+
+  /**
+   * Generate lunar return chart
+   * @private
+   */
+  _generateLunarReturnChart(birthData, returnDate) {
+    try {
+      const { birthPlace } = birthData;
+
+      // Get coordinates for birth place
+      const [latitude, longitude] = this._getCoordinatesForPlace(birthPlace);
+      const timestamp = returnDate.getTime();
+      const timezone = this._getTimezoneForPlace(latitude, longitude, timestamp);
+
+      const astroData = {
+        year: returnDate.getFullYear(),
+        month: returnDate.getMonth() + 1,
+        date: returnDate.getDate(),
+        hours: returnDate.getHours(),
+        minutes: returnDate.getMinutes(),
+        seconds: 0,
+        latitude,
+        longitude,
+        timezone,
+        chartType: 'sidereal'
+      };
+
+      return this.astrologer.generateNatalChartData(astroData);
+    } catch (error) {
+      logger.error('Error generating lunar return chart:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Analyze lunar return chart
+   * @private
+   */
+  _analyzeLunarReturnChart(lunarReturnChart, natalChart) {
+    try {
+      const analysis = {
+        dominantThemes: [],
+        emotionalFocus: '',
+        lifeAreas: [],
+        planetaryInfluences: {},
+        houseEmphasis: {},
+        aspects: []
+      };
+
+      if (!lunarReturnChart) return analysis;
+
+      // Analyze dominant planets in lunar return
+      const planets = lunarReturnChart.planets || {};
+      const planetStrengths = {};
+
+      Object.entries(planets).forEach(([planet, data]) => {
+        if (data.signName) {
+          planetStrengths[planet] = this._getLunarReturnPlanetStrength(planet, data.signName);
+        }
+      });
+
+      // Sort by strength
+      const sortedPlanets = Object.entries(planetStrengths)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 3);
+
+      analysis.dominantThemes = sortedPlanets.map(([planet]) =>
+        this._getLunarReturnTheme(planet, planets[planet]?.signName)
+      );
+
+      // Analyze houses for life areas
+      const houses = lunarReturnChart.houses || {};
+      const housePlanets = {};
+
+      Object.entries(planets).forEach(([planet, data]) => {
+        if (data.longitude) {
+          // Find which house the planet is in
+          for (let i = 0; i < 12; i++) {
+            const nextHouse = houses[(i + 1) % 12];
+            const currentHouse = houses[i];
+
+            if (currentHouse && nextHouse) {
+              const currentLon = this._getLongitude(currentHouse);
+              let nextLon = this._getLongitude(nextHouse);
+
+              if (nextLon < currentLon) nextLon += 360; // Handle 0/360 boundary
+
+              if (data.longitude >= currentLon && data.longitude < nextLon) {
+                if (!housePlanets[i + 1]) housePlanets[i + 1] = [];
+                housePlanets[i + 1].push(planet);
+                break;
+              }
+            }
+          }
+        }
+      });
+
+      // Identify emphasized houses
+      Object.entries(housePlanets).forEach(([house, planetsInHouse]) => {
+        if (planetsInHouse.length > 0) {
+          analysis.houseEmphasis[house] = {
+            planets: planetsInHouse,
+            significance: this._getHouseSignificance(parseInt(house))
+          };
+        }
+      });
+
+      // Analyze aspects in lunar return chart
+      analysis.aspects = this._calculateLunarReturnAspects(planets);
+
+      // Determine emotional focus
+      analysis.emotionalFocus = this._determineEmotionalFocus(planets.moon, natalChart);
+
+      return analysis;
+    } catch (error) {
+      logger.error('Error analyzing lunar return chart:', error);
+      return { dominantThemes: [], emotionalFocus: '', lifeAreas: [] };
+    }
+  }
+
+  /**
+   * Get lunar return planet strength
+   * @private
+   */
+  _getLunarReturnPlanetStrength(planet, sign) {
+    const signStrengths = {
+      'Aries': { mars: 10, sun: 8, jupiter: 6 },
+      'Taurus': { venus: 10, moon: 8, saturn: 6 },
+      'Gemini': { mercury: 10, venus: 6, uranus: 8 },
+      'Cancer': { moon: 10, jupiter: 6, neptune: 8 },
+      'Leo': { sun: 10, mars: 6, jupiter: 8 },
+      'Virgo': { mercury: 10, saturn: 6, venus: 8 },
+      'Libra': { venus: 10, saturn: 6, uranus: 8 },
+      'Scorpio': { mars: 10, pluto: 8, neptune: 6 },
+      'Sagittarius': { jupiter: 10, sun: 6, mars: 8 },
+      'Capricorn': { saturn: 10, mars: 6, venus: 8 },
+      'Aquarius': { uranus: 10, saturn: 6, mercury: 8 },
+      'Pisces': { neptune: 10, venus: 6, jupiter: 8 }
+    };
+
+    return signStrengths[sign]?.[planet] || 5;
+  }
+
+  /**
+   * Get lunar return theme
+   * @private
+   */
+  _getLunarReturnTheme(planet, sign) {
+    const themes = {
+      sun: `Identity and self-expression in ${sign}`,
+      moon: `Emotions and inner life in ${sign}`,
+      mercury: `Communication and learning in ${sign}`,
+      venus: `Relationships and values in ${sign}`,
+      mars: `Action and energy in ${sign}`,
+      jupiter: `Growth and expansion in ${sign}`,
+      saturn: `Responsibility and structure in ${sign}`,
+      uranus: `Innovation and change in ${sign}`,
+      neptune: `Spirituality and imagination in ${sign}`,
+      pluto: `Transformation and power in ${sign}`
+    };
+
+    return themes[planet] || `${planet} themes in ${sign}`;
+  }
+
+  /**
+   * Get house significance
+   * @private
+   */
+  _getHouseSignificance(house) {
+    const significances = {
+      1: 'Personal identity and self-presentation',
+      2: 'Finances and material resources',
+      3: 'Communication and local environment',
+      4: 'Home and family life',
+      5: 'Creativity and children',
+      6: 'Health and daily routines',
+      7: 'Partnerships and relationships',
+      8: 'Transformation and shared resources',
+      9: 'Higher learning and travel',
+      10: 'Career and public life',
+      11: 'Friends and community',
+      12: 'Spirituality and subconscious'
+    };
+
+    return significances[house] || 'General life area';
+  }
+
+  /**
+   * Calculate lunar return aspects
+   * @private
+   */
+  _calculateLunarReturnAspects(planets) {
+    const aspects = [];
+    const majorPlanets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
+
+    majorPlanets.forEach((planet1, i) => {
+      majorPlanets.slice(i + 1).forEach(planet2 => {
+        const pos1 = this._getLongitude(planets[planet1]);
+        const pos2 = this._getLongitude(planets[planet2]);
+
+        if (pos1 && pos2) {
+          const aspect = this._calculateAspect(pos1, pos2);
+          if (aspect) {
+            aspects.push({
+              planets: `${planet1}-${planet2}`,
+              aspect: aspect.type,
+              orb: aspect.orb
+            });
+          }
+        }
+      });
+    });
+
+    return aspects.slice(0, 5); // Return top 5 aspects
+  }
+
+  /**
+   * Determine emotional focus
+   * @private
+   */
+  _determineEmotionalFocus(lunarMoon, natalChart) {
+    if (!lunarMoon || !natalChart) return 'General emotional themes';
+
+    const lunarSign = lunarMoon.signName;
+    const natalMoonSign = natalChart.moonSign;
+
+    const emotionalFocus = {
+      'Aries': 'Bold emotional expression and independence',
+      'Taurus': 'Emotional security and sensual comfort',
+      'Gemini': 'Emotional communication and mental processing',
+      'Cancer': 'Deep emotional nurturing and family connections',
+      'Leo': 'Emotional creativity and self-expression',
+      'Virgo': 'Emotional analysis and practical care',
+      'Libra': 'Emotional harmony and relationship focus',
+      'Scorpio': 'Intense emotional transformation',
+      'Sagittarius': 'Emotional exploration and optimism',
+      'Capricorn': 'Emotional responsibility and structure',
+      'Aquarius': 'Emotional innovation and detachment',
+      'Pisces': 'Emotional intuition and compassion'
+    };
+
+    return emotionalFocus[lunarSign] || 'Balanced emotional energy';
+  }
+
+  /**
+   * Extract monthly themes
+   * @private
+   */
+  _extractMonthlyThemes(analysis) {
+    const themes = [];
+
+    // Add dominant themes
+    themes.push(...analysis.dominantThemes);
+
+    // Add house emphasis themes
+    Object.entries(analysis.houseEmphasis).forEach(([house, data]) => {
+      themes.push(`${data.significance} with ${data.planets.join(', ')} influence`);
+    });
+
+    return themes.slice(0, 5);
+  }
+
+  /**
+   * Analyze emotional cycle
+   * @private
+   */
+  _analyzeEmotionalCycle(analysis) {
+    const emotionalThemes = {
+      'water': 'Deep emotional processing and intuition',
+      'fire': 'Passionate emotional expression and energy',
+      'earth': 'Practical emotional stability and security',
+      'air': 'Intellectual emotional processing and communication'
+    };
+
+    // Determine dominant element in lunar return
+    const elements = { fire: 0, earth: 0, air: 0, water: 0 };
+    const elementSigns = {
+      fire: ['Aries', 'Leo', 'Sagittarius'],
+      earth: ['Taurus', 'Virgo', 'Capricorn'],
+      air: ['Gemini', 'Libra', 'Aquarius'],
+      water: ['Cancer', 'Scorpio', 'Pisces']
+    };
+
+    Object.values(analysis.houseEmphasis || {}).forEach(data => {
+      data.planets.forEach(planet => {
+        const planetData = analysis.planetaryInfluences?.[planet];
+        if (planetData?.signName) {
+          Object.entries(elementSigns).forEach(([element, signs]) => {
+            if (signs.includes(planetData.signName)) {
+              elements[element]++;
+            }
+          });
+        }
+      });
+    });
+
+    const dominantElement = Object.entries(elements)
+      .sort(([,a], [,b]) => b - a)[0][0];
+
+    return emotionalThemes[dominantElement] || 'Balanced emotional energy';
+  }
+
+  /**
+   * Generate lunar return recommendations
+   * @private
+   */
+  _generateLunarReturnRecommendations(analysis) {
+    const recommendations = [];
+
+    // Based on dominant themes
+    analysis.dominantThemes.forEach(theme => {
+      if (theme.includes('Identity')) {
+        recommendations.push('Focus on personal goals and self-expression');
+      } else if (theme.includes('Emotions')) {
+        recommendations.push('Pay attention to emotional needs and relationships');
+      } else if (theme.includes('Communication')) {
+        recommendations.push('Express thoughts clearly and listen actively');
+      } else if (theme.includes('Relationships')) {
+        recommendations.push('Nurture important connections and partnerships');
+      } else if (theme.includes('Action')) {
+        recommendations.push('Take initiative on important projects');
+      }
+    });
+
+    // Based on house emphasis
+    Object.entries(analysis.houseEmphasis).forEach(([house, data]) => {
+      const houseNum = parseInt(house);
+      if (houseNum === 2) {
+        recommendations.push('Review finances and material resources');
+      } else if (houseNum === 6) {
+        recommendations.push('Focus on health and daily routines');
+      } else if (houseNum === 7) {
+        recommendations.push('Strengthen partnership connections');
+      } else if (houseNum === 10) {
+        recommendations.push('Advance career and public goals');
+      }
+    });
+
+    return recommendations.slice(0, 4);
+  }
 }
 
 module.exports = new VedicCalculator();
+

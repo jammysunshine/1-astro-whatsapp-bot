@@ -26,6 +26,58 @@ logger.info(
   'Module: astrologyEngine loaded. All sub-modules imported successfully.'
 );
 
+/**
+ * Extract partner birth data from user message
+ * @param {string} message - User message
+ * @returns {Object|null} Partner data or null if not found
+ */
+const extractPartnerData = (message) => {
+  const lowerMessage = message.toLowerCase();
+
+  // Check if message contains birth date pattern
+  const dateMatch = message.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
+  if (!dateMatch) return null;
+
+  const birthDate = dateMatch[1];
+
+  // Extract name if provided
+  let name = 'Partner';
+  const nameMatch = message.match(/(?:name:?\s*|partner:?\s*)([A-Za-z\s]+)/i);
+  if (nameMatch) {
+    name = nameMatch[1].trim();
+  }
+
+  // Extract birth time if provided
+  let birthTime = '12:00';
+  const timeMatch = message.match(/(\d{1,2}:\d{2})/);
+  if (timeMatch) {
+    birthTime = timeMatch[1];
+  }
+
+  // Extract birth place if provided
+  let birthPlace = 'Delhi, India';
+  const placeMatch = message.match(/(?:place:?\s*|birthplace:?\s*|born in:?\s*)([A-Za-z\s,]+)/i);
+  if (placeMatch) {
+    birthPlace = placeMatch[1].trim();
+  } else {
+    // Try to extract place from remaining text
+    const placePatterns = message.split(birthDate)[1];
+    if (placePatterns) {
+      const placeWords = placePatterns.match(/([A-Za-z\s,]+)/);
+      if (placeWords && placeWords[1].trim().length > 2) {
+        birthPlace = placeWords[1].trim();
+      }
+    }
+  }
+
+  return {
+    name,
+    birthDate,
+    birthTime,
+    birthPlace
+  };
+};
+
 // Initialize Vedic Remedies system
 const vedicRemedies = new VedicRemedies();
 
@@ -1878,6 +1930,157 @@ const generateAstrologyResponse = async(messageText, user) => {
       } catch (fallbackError) {
         return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
       }
+    }
+  }
+
+  // Check for lunar return requests
+  if (matchesIntent(message, ['lunar return', 'monthly lunar', 'moon return', /^lunar/])) {
+    if (!user.birthDate) {
+      return 'For lunar return analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const lunarReturn = vedicCalculator.calculateLunarReturn({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi, India'
+      });
+
+      if (lunarReturn.error) {
+        return `❌ *Lunar Return Error*\n\n${lunarReturn.error}\n\nPlease check your birth details and try again.`;
+      }
+
+      // Format the response
+      let response = `🌙 *Lunar Return Analysis*\n\n`;
+      response += `*Next Lunar Return:* ${lunarReturn.formattedDate}\n\n`;
+
+      // Monthly themes
+      if (lunarReturn.monthlyThemes && lunarReturn.monthlyThemes.length > 0) {
+        response += `*Monthly Themes:*\n`;
+        lunarReturn.monthlyThemes.forEach(theme => {
+          response += `• ${theme}\n`;
+        });
+        response += `\n`;
+      }
+
+      // Emotional cycle
+      if (lunarReturn.emotionalCycle) {
+        response += `*Emotional Focus:* ${lunarReturn.emotionalCycle}\n\n`;
+      }
+
+      // Recommendations
+      if (lunarReturn.recommendations && lunarReturn.recommendations.length > 0) {
+        response += `*Monthly Guidance:*\n`;
+        lunarReturn.recommendations.forEach(rec => {
+          response += `• ${rec}\n`;
+        });
+        response += `\n`;
+      }
+
+      // Analysis details
+      if (lunarReturn.analysis && lunarReturn.analysis.emotionalFocus) {
+        response += `*Key Insights:* ${lunarReturn.analysis.emotionalFocus}\n\n`;
+      }
+
+      response += `*About Lunar Returns:*\n`;
+      response += `Lunar returns occur when the Moon returns to its natal position (approximately every 27.3 days). This chart reveals the emotional and psychological themes for the coming month, showing how you'll feel and what life areas will be emphasized.`;
+
+      return response;
+    } catch (error) {
+      logger.error('Error generating lunar return:', error);
+      return '❌ Sorry, I encountered an error while calculating your lunar return. Please try again later.';
+    }
+  }
+
+  // Check for partner birth details in message (for synastry analysis)
+  const partnerData = extractPartnerData(message);
+  if (partnerData && user.birthDate) {
+    try {
+      // Perform synastry analysis
+      const synastryResult = vedicCalculator.performSynastryAnalysis(
+        {
+          name: user.name || 'You',
+          birthDate: user.birthDate,
+          birthTime: user.birthTime || '12:00',
+          birthPlace: user.birthPlace || 'Delhi, India'
+        },
+        {
+          name: partnerData.name || 'Partner',
+          birthDate: partnerData.birthDate,
+          birthTime: partnerData.birthTime || '12:00',
+          birthPlace: partnerData.birthPlace || 'Delhi, India'
+        }
+      );
+
+      if (synastryResult.error) {
+        return '❌ *Synastry Analysis Error*\n\n' + synastryResult.error + '\n\nPlease check your partner\'s birth details and try again.';
+      }
+
+      // Format the response
+      let response = '💕 *Synastry Analysis: ' + synastryResult.person1.name + ' & ' + synastryResult.person2.name + '*\n\n';
+
+      // Compatibility overview
+      const compat = synastryResult.compatibility;
+      response += '🎯 *Overall Compatibility: ' + compat.overallScore + '/100*\n';
+      response += compat.summary + '\n\n';
+
+      // Category scores
+      response += '📊 *Compatibility Categories:*\n';
+      response += '💖 Romantic: ' + compat.categories.romantic + '/100\n';
+      response += '💬 Communication: ' + compat.categories.communication + '/100\n';
+      response += '❤️ Emotional: ' + compat.categories.emotional + '/100\n';
+      response += '🧘 Spiritual: ' + compat.categories.spiritual + '/100\n\n';
+
+      // Key aspects
+      if (synastryResult.synastryAspects && synastryResult.synastryAspects.length > 0) {
+        response += '🔗 *Key Synastry Aspects:*\n';
+        synastryResult.synastryAspects.slice(0, 5).forEach(aspect => {
+          response += '• ' + aspect.planet1 + '-' + aspect.planet2 + ' ' + aspect.aspect + ': ' + aspect.interpretation + '\n';
+        });
+        response += '\n';
+      }
+
+      // Composite chart insights
+      if (synastryResult.compositeChart && synastryResult.compositeChart.interpretations) {
+        response += '🌟 *Composite Chart Insights:*\n';
+        response += synastryResult.compositeChart.interpretations.relationshipNature + '\n\n';
+      }
+
+      // Davison chart purpose
+      if (synastryResult.davisonChart && synastryResult.davisonChart.relationshipPurpose) {
+        response += '🎭 *Relationship Purpose (Davison Chart):*\n';
+        response += synastryResult.davisonChart.relationshipPurpose + '\n\n';
+      }
+
+      // Strengths and challenges
+      if (compat.strengths && compat.strengths.length > 0) {
+        response += '✅ *Relationship Strengths:*\n';
+        compat.strengths.forEach(strength => {
+          response += '• ' + strength + '\n';
+        });
+        response += '\n';
+      }
+
+      if (compat.challenges && compat.challenges.length > 0) {
+        response += '⚠️ *Areas for Growth:*\n';
+        compat.challenges.forEach(challenge => {
+          response += '• ' + challenge + '\n';
+        });
+        response += '\n';
+      }
+
+      // Relationship insights
+      if (synastryResult.relationshipInsights && synastryResult.relationshipInsights.length > 0) {
+        response += '💡 *Key Relationship Insights:*\n';
+        synastryResult.relationshipInsights.forEach(insight => {
+          response += '• ' + insight.insight + '\n';
+        });
+      }
+
+      return response;
+    } catch (error) {
+      logger.error('Error performing synastry analysis:', error);
+      return '❌ Sorry, I encountered an error while performing the synastry analysis. Please try again later.';
     }
   }
 

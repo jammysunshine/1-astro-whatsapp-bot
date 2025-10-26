@@ -497,16 +497,38 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       response =
           'I\'d love to give you a personalized daily horoscope! Please complete your profile first by providing your birth date.';
     } else {
-      // Start daily horoscope conversation flow
-      const flowStarted = await processFlowMessage(
-        { type: 'text', text: { body: 'start' } },
-        user,
-        'daily_horoscope'
-      );
-      if (flowStarted) {
-        return null; // Flow started, don't send additional response
-      } else {
-        response = 'Sorry, I couldn\'t start the horoscope flow right now.';
+      try {
+        const horoscopeData = await vedicCalculator.generateDailyHoroscope(
+          user.birthDate
+        );
+        const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
+
+        const body = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n💫 *Lucky Color:* ${horoscopeData.luckyColor}\n🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n💝 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\nWhat would you like to explore next?`;
+
+        const buttons = [
+          { type: 'reply', reply: { id: 'horoscope_again', title: '🔄 Another Reading' } },
+          { type: 'reply', reply: { id: 'horoscope_menu', title: '🏠 Main Menu' } }
+        ];
+
+        await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
+
+        // Send main menu
+        const menu = getMenu('main_menu');
+        if (menu) {
+          const menuButtons = menu.buttons.map(button => ({
+            type: 'reply',
+            reply: { id: button.id, title: button.title }
+          }));
+          await sendMessage(
+            phoneNumber,
+            { type: 'button', body: menu.body, buttons: menuButtons },
+            'interactive'
+          );
+        }
+        return null; // Handled, don't send additional response
+      } catch (error) {
+        logger.error('Error generating daily horoscope:', error);
+        response = 'I\'m sorry, I couldn\'t generate your horoscope right now. Please try again later.';
       }
     }
     break;

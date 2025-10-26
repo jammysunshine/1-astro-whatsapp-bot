@@ -295,5 +295,73 @@
         "action": "process_subscription"
       }
     }
+  },
+  "nadi_flow": {
+    "start_step": "nadi_analysis",
+    "steps": {
+      "nadi_analysis": {
+        "interactive": {
+          "type": "button_reply",
+          "body": "📜 *Nadi Astrology Analysis*\n\nBased on ancient Indian Nadi texts, your cosmic blueprint reveals:\n\n🔮 *Primary Nadi:* {nadiResult}\n\nThis ancient system suggests your life path and karmic influences.\n\nWould you like a detailed Nadi reading?",
+          "buttons": [
+            {
+              "id": "nadi_detailed",
+              "title": "📖 Detailed Reading"
+            },
+            {
+              "id": "nadi_menu",
+              "title": "🏠 Main Menu"
+            }
+          ],
+          "button_mappings": {
+            "nadi_detailed": "detailed",
+            "nadi_menu": "menu"
+          }
+        },
+        "fallback_prompt": "Would you like a detailed Nadi reading? Reply 'detailed' or 'menu' for main options.",
+        "validation": "detailed_or_menu",
+        "next_step": "detailed_reading",
+        "error_message": "Please reply 'detailed' or 'menu'"
+      },
+      "detailed_reading": {
+        "prompt": "📜 *Detailed Nadi Analysis*\n\nYour Nadi astrology reveals deep insights about your soul's journey:\n\n🔸 *Karmic Patterns:* Ancient influences shaping your current life\n🔸 *Life Purpose:* Your soul's mission in this incarnation\n🔸 *Spiritual Growth:* Areas for consciousness expansion\n\nThis is a profound system passed down through generations of Indian sages.\n\nWhat aspect would you like to explore further?",
+        "validation": "none",
+        "next_step": null
+      }
+    }
+  },
+  "chinese_flow": {
+    "start_step": "bazi_analysis",
+    "steps": {
+      "bazi_analysis": {
+        "interactive": {
+          "type": "button_reply",
+          "body": "🐉 *Chinese BaZi (Four Pillars) Analysis*\n\nYour Four Pillars reveal your destiny code:\n\n🎯 *Year Pillar:* {yearPillar}\n🎯 *Month Pillar:* {monthPillar}\n🎯 *Day Pillar:* {dayPillar}\n🎯 *Hour Pillar:* {hourPillar}\n\nThis ancient Chinese system predicts life patterns and optimal timing.\n\nWould you like a detailed BaZi interpretation?",
+          "buttons": [
+            {
+              "id": "bazi_detailed",
+              "title": "📖 Detailed Analysis"
+            },
+            {
+              "id": "bazi_menu",
+              "title": "🏠 Main Menu"
+            }
+          ],
+          "button_mappings": {
+            "bazi_detailed": "detailed",
+            "bazi_menu": "menu"
+          }
+        },
+        "fallback_prompt": "Would you like a detailed BaZi analysis? Reply 'detailed' or 'menu' for main options.",
+        "validation": "detailed_or_menu",
+        "next_step": "detailed_analysis",
+        "error_message": "Please reply 'detailed' or 'menu'"
+      },
+      "detailed_analysis": {
+        "prompt": "🐉 *Detailed BaZi Analysis*\n\nYour Four Pillars indicate:\n\n🔸 *Destiny:* Life path and major influences\n🔸 *Wealth:* Financial fortune and opportunities\n🔸 *Health:* Physical well-being patterns\n🔸 *Relationships:* Partnership compatibility\n🔸 *Career:* Professional success indicators\n\nThis 3000-year-old system provides precise life predictions.\n\nWhat area interests you most?",
+        "validation": "none",
+        "next_step": null
+      }
+    }
   }
 }

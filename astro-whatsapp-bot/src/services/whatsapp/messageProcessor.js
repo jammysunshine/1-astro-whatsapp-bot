@@ -13,13 +13,13 @@ const {
   deleteUserSession,
   incrementCompatibilityChecks
 } = require('../../models/userModel');
-const { getFlow, executeFlowAction } = require('../../conversation/conversationEngine');
+const { getFlow } = require('../../conversation/flowLoader');
 const { generateTarotReading } = require('../astrology/tarotReader');
 const { generatePalmistryAnalysis } = require('../astrology/palmistryReader');
-const { generateKabbalisticChart } = require('../astrology/kabbalisticReader');
-const { generateMayanChart } = require('../astrology/mayanReader');
-const { generateCelticChart } = require('../astrology/celticReader');
-const { generateIChingReading } = require('../astrology/ichingReader');
+const kabbalisticReader = require('../astrology/kabbalisticReader');
+const mayanReader = require('../astrology/mayanReader');
+const celticReader = require('../astrology/celticReader');
+const ichingReader = require('../astrology/ichingReader');
 const { generateAstrocartography } = require('../astrology/astrocartographyReader');
 const numerologyService = require('../astrology/numerologyService');
 
@@ -369,6 +369,12 @@ const processMediaMessage = async(message, user) => {
  * @param {Object} user - User object
  */
 const processButtonReply = async(phoneNumber, buttonId, title, user) => {
+  // Handle special buttons
+  if (buttonId === 'horoscope_again') {
+    await executeMenuAction(phoneNumber, user, 'get_daily_horoscope');
+    return;
+  }
+
   // Handle clarification buttons specially (they start with 'year_' or 'time_')
   if (buttonId.startsWith('year_') || buttonId.startsWith('time_')) {
     // Get user session to determine current flow
@@ -742,7 +748,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       break;
     }
     try {
-      const analysis = generateKabbalisticChart({
+      const analysis = kabbalisticReader.generateKabbalisticChart({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
         name: user.name
@@ -760,7 +766,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       break;
     }
     try {
-      const analysis = generateMayanChart({
+      const analysis = mayanReader.generateMayanChart({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
         name: user.name
@@ -778,7 +784,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       break;
     }
     try {
-      const analysis = generateCelticChart({
+      const analysis = celticReader.generateCelticChart({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
         name: user.name
@@ -792,7 +798,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     break;
   case 'get_iching_reading':
     try {
-      const reading = generateIChingReading();
+      const reading = ichingReader.generateIChingReading();
       response = `🔮 *I Ching Reading*\n\n*Hexagram:* ${reading.primaryHexagram.number} - ${reading.primaryHexagram.name}\n\n*Judgment:* ${reading.primaryHexagram.judgment.substring(0, 200)}...`;
     } catch (error) {
       logger.error('Error getting I Ching reading:', error);

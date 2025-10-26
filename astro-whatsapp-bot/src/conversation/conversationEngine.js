@@ -259,8 +259,20 @@ const validateStepInput = async(input, step) => {
     return {
       isValid: false,
       errorMessage:
-          step.error_message ||
-          'Please reply "again" for another reading or "menu" for main options.'
+          step.error_message || 'Please reply "again" or "menu".'
+    };
+
+  case 'detailed_or_menu':
+    if (trimmedInput === 'detailed' || trimmedInput === 'd') {
+      return { isValid: true, cleanedValue: 'detailed' };
+    }
+    if (trimmedInput === 'menu' || trimmedInput === 'm') {
+      return { isValid: true, cleanedValue: 'menu' };
+    }
+    return {
+      isValid: false,
+      errorMessage:
+          step.error_message || 'Please reply "detailed" or "menu".'
     };
 
   case 'none':
@@ -778,6 +790,44 @@ const executeFlowAction = async(
         phoneNumber,
         'I\'m sorry, I couldn\'t generate your numerology report right now. Please try again later.'
       );
+    }
+    break;
+  }
+  case 'nadi_analysis': {
+    // Generate a simple Nadi result based on birth date
+    const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
+    const nadiResult = `Based on your ${sunSign} sun sign, your primary Nadi indicates a ${sunSign.toLowerCase()} life path with strong ${sunSign === 'Leo' || sunSign === 'Sagittarius' || sunSign === 'Aries' ? 'leadership' : sunSign === 'Cancer' || sunSign === 'Scorpio' || sunSign === 'Pisces' ? 'intuitive' : 'practical'} tendencies.`;
+
+    // Update the flow step prompt with the result
+    const flow = getFlow(flowId);
+    if (flow && flow.steps.nadi_analysis) {
+      let { prompt } = flow.steps.nadi_analysis;
+      prompt = prompt.replace('{nadiResult}', nadiResult);
+      await sendMessage(phoneNumber, prompt);
+    } else {
+      await sendMessage(phoneNumber, `📜 *Nadi Analysis*\n\n${nadiResult}`);
+    }
+    break;
+  }
+  case 'bazi_analysis': {
+    // Generate simple BaZi pillars based on birth date
+    const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
+    const yearPillar = `Year of the ${sunSign} Influence`;
+    const monthPillar = `Month of ${sunSign} Energy`;
+    const dayPillar = `Day of ${sunSign} Power`;
+    const hourPillar = `Hour of ${sunSign} Spirit`;
+
+    // Update the flow step prompt with the result
+    const flow = getFlow(flowId);
+    if (flow && flow.steps.bazi_analysis) {
+      let { prompt } = flow.steps.bazi_analysis;
+      prompt = prompt.replace('{yearPillar}', yearPillar);
+      prompt = prompt.replace('{monthPillar}', monthPillar);
+      prompt = prompt.replace('{dayPillar}', dayPillar);
+      prompt = prompt.replace('{hourPillar}', hourPillar);
+      await sendMessage(phoneNumber, prompt);
+    } else {
+      await sendMessage(phoneNumber, `🐉 *BaZi Analysis*\n\n${yearPillar}\n${monthPillar}\n${dayPillar}\n${hourPillar}`);
     }
     break;
   }

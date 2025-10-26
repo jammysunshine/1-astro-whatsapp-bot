@@ -41,7 +41,6 @@ describe('ConversationEngine', () => {
   });
 
 
-
   describe('processFlowMessage', () => {
     it('should initialize session for new flow and access flow.start_step without temporal dead zone error', async() => {
       const message = {
@@ -65,29 +64,29 @@ describe('ConversationEngine', () => {
       });
     });
 
-     it('should handle existing session correctly', async() => {
-       const existingSession = {
-         currentFlow: 'test_flow',
-         currentStep: 'step1',
-         flowData: {}
-       };
-       getUserSession.mockResolvedValue(existingSession);
+    it('should handle existing session correctly', async() => {
+      const existingSession = {
+        currentFlow: 'test_flow',
+        currentStep: 'step1',
+        flowData: {}
+      };
+      getUserSession.mockResolvedValue(existingSession);
 
-       const message = {
-         type: 'text',
-         text: { body: 'test input' }
-       };
-       const user = {
-         phoneNumber: '+1234567890',
-         id: 'user-123'
-       };
-       const flowId = 'test_flow';
+      const message = {
+        type: 'text',
+        text: { body: 'test input' }
+      };
+      const user = {
+        phoneNumber: '+1234567890',
+        id: 'user-123'
+      };
+      const flowId = 'test_flow';
 
-       const result = await conversationEngine.processFlowMessage(message, user, flowId);
+      const result = await conversationEngine.processFlowMessage(message, user, flowId);
 
-       expect(result).toBe(true);
-       expect(setUserSession).not.toHaveBeenCalled();
-     });
+      expect(result).toBe(true);
+      expect(setUserSession).not.toHaveBeenCalled();
+    });
 
     it('should handle interactive messages without validation', async() => {
       const message = {

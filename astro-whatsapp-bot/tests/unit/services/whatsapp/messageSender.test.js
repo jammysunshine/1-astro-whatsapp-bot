@@ -397,11 +397,11 @@ describe('WhatsApp Message Sender', () => {
         message: 'Request failed with status code 400'
       };
 
-       axios.post.mockRejectedValueOnce(apiError);
+      axios.post.mockRejectedValueOnce(apiError);
 
-       await expect(sendListMessage(phoneNumber, body, buttonText, sections))
-         .rejects
-         .toHaveProperty('message', 'Request failed with status code 400');
+      await expect(sendListMessage(phoneNumber, body, buttonText, sections))
+        .rejects
+        .toHaveProperty('message', 'Request failed with status code 400');
 
       // Verify the invalid payload structure was sent
       expect(axios.post).toHaveBeenCalledWith(

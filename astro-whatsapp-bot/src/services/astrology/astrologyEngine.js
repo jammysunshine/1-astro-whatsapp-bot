@@ -309,69 +309,130 @@ const generateAstrologyResponse = async(messageText, user) => {
     }
   }
 
-  // Astrocartography requests
-  if (matchesIntent(message, ['astrocartography', 'astro cartography', 'planetary lines', 'relocation', /^astro.?cartography/])) {
+  // Asteroid analysis requests
+  if (matchesIntent(message, ['asteroids', 'asteroid analysis', 'chiron', 'juno', 'vesta', 'pallas', /^asteroid/])) {
     if (!user.birthDate) {
-      return 'For astrocartography analysis, I need your complete birth details to map planetary lines across the globe.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, New York, USA';
+      return 'For asteroid analysis, I need your complete birth details to calculate Chiron, Juno, Vesta, and Pallas positions.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
 
     try {
-      const astrocartographyAnalysis =
-        astrocartographyReader.generateAstrocartography({
-          birthDate: user.birthDate,
-          birthTime: user.birthTime || '12:00',
-          birthPlace: user.birthPlace || 'London, UK',
-          name: user.name
-        });
+      const asteroidAnalysis = vedicCalculator.calculateAsteroids({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
 
-      return astrocartographyAnalysis.astrocartographyDescription;
+      if (asteroidAnalysis.error) {
+        return `I encountered an issue: ${asteroidAnalysis.error}`;
+      }
+
+      let response = '🪐 *Asteroid Analysis*\n\n';
+      response += '*Four Key Asteroids:*\n\n';
+
+      // Chiron
+      response += `🩹 *Chiron in ${asteroidAnalysis.asteroids.chiron.sign}*\n`;
+      response += `• Core Wound: ${asteroidAnalysis.interpretations.chiron.coreWound}\n`;
+      response += `• Healing Gift: ${asteroidAnalysis.interpretations.chiron.healingGift}\n\n`;
+
+      // Juno
+      response += `💍 *Juno in ${asteroidAnalysis.asteroids.juno.sign}*\n`;
+      response += `• Relationship Style: ${asteroidAnalysis.interpretations.juno.relationshipStyle}\n`;
+      response += `• Commitment Style: ${asteroidAnalysis.interpretations.juno.commitmentStyle}\n\n`;
+
+      // Vesta
+      response += `🏛️ *Vesta in ${asteroidAnalysis.asteroids.vesta.sign}*\n`;
+      response += `• Sacred Focus: ${asteroidAnalysis.interpretations.vesta.sacredFocus}\n`;
+      response += `• Devotion Style: ${asteroidAnalysis.interpretations.vesta.devotionStyle}\n\n`;
+
+      // Pallas
+      response += `🎨 *Pallas in ${asteroidAnalysis.asteroids.pallas.sign}*\n`;
+      response += `• Wisdom Type: ${asteroidAnalysis.interpretations.pallas.wisdomType}\n`;
+      response += `• Problem Solving: ${asteroidAnalysis.interpretations.pallas.problemSolving}\n\n`;
+
+      response += '*Asteroid Wisdom:*\n';
+      response += '• Chiron shows your deepest wounds and healing gifts\n';
+      response += '• Juno reveals your partnership patterns and needs\n';
+      response += '• Vesta indicates your sacred focus and dedication\n';
+      response += '• Pallas shows your strategic wisdom and creativity\n\n';
+
+      response += 'These asteroids add psychological depth to your astrological profile! 🔮';
+
+      return response;
     } catch (error) {
-      logger.error('Error generating astrocartography analysis:', error);
-      return 'I\'m having trouble mapping the planetary lines right now. Please try again later.';
+      logger.error('Error generating asteroid analysis:', error);
+      return 'I\'m having trouble calculating your asteroid positions right now. Please try again later.';
     }
+  }
+
+  // Astrocartography requests
+   if (matchesIntent(message, ['astrocartography', 'astro cartography', 'planetary lines', 'relocation', /^astro.?cartography/])) {
+     if (!user.birthDate) {
+       return 'For astrocartography analysis, I need your complete birth details to map planetary lines across the globe.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, New York, USA';
+     }
+
+     try {
+       const astrocartographyAnalysis =
+         astrocartographyReader.generateAstrocartography({
+           birthDate: user.birthDate,
+           birthTime: user.birthTime || '12:00',
+           birthPlace: user.birthPlace || 'London, UK',
+           name: user.name
+         });
+
+       return astrocartographyAnalysis.astrocartographyDescription;
+     } catch (error) {
+       logger.error('Error generating astrocartography analysis:', error);
+       return 'I\'m having trouble mapping the planetary lines right now. Please try again later.';
+     }
+   }
+
+  // Electional astrology requests
+  if (matchesIntent(message, ['electional', 'auspicious time', 'best time', 'election', /^election/]) ||
+      (matchesIntent(message, ['when should i', 'best date for', 'auspicious date']))) {
+    return '📅 *Electional Astrology - Auspicious Timing*\n\nI can help you find the best dates and times for important events based on astrological factors!\n\nWhat type of event are you planning?\n\n• *Wedding/Marriage* - Venus and Jupiter favorable\n• *Business Launch* - Mercury and Jupiter beneficial\n• *Medical Procedure* - Jupiter and Venus protective\n• *Travel/Journey* - Jupiter and Sagittarius energy\n• *Legal Matters* - Libra and Sagittarius justice\n\nReply with the event type and I\'ll find auspicious timing in the next 30 days!';
   }
 
   // Horary astrology requests
-  if (matchesIntent(message, ['horary', /^horary/]) ||
-      (matchesIntent(message, ['question']) &&
-       matchesIntent(message, ['when', 'will', 'should', 'can', 'does', 'is', 'are']))) {
-    // Extract the question from the message
-    const questionMatch = message.match(/(?:horary|question|ask)\s+(.*)/i);
-    const question = questionMatch ?
-      questionMatch[1].trim() :
-      message.replace(/horary/i, '').trim();
+   if (matchesIntent(message, ['horary', /^horary/]) ||
+       (matchesIntent(message, ['question']) &&
+        matchesIntent(message, ['when', 'will', 'should', 'can', 'does', 'is', 'are']))) {
+     // Extract the question from the message
+     const questionMatch = message.match(/(?:horary|question|ask)\s+(.*)/i);
+     const question = questionMatch ?
+       questionMatch[1].trim() :
+       message.replace(/horary/i, '').trim();
 
-    if (!question || question.length < 5) {
-      return 'For horary astrology, please ask a clear, specific question. Horary works best with questions like:\n\n• "When will I get a job?"\n• "Will my relationship work out?"\n• "Should I move to another city?"\n• "When will my health improve?"\n\nWhat is your question?';
-    }
+     if (!question || question.length < 5) {
+       return 'For horary astrology, please ask a clear, specific question. Horary works best with questions like:\n\n• "When will I get a job?"\n• "Will my relationship work out?"\n• "Should I move to another city?"\n• "When will my health improve?"\n\nWhat is your question?';
+     }
 
-    try {
-      const currentTime = new Date()
-        .toLocaleString('en-IN', {
-          timeZone: HORARY_TIMEZONE,
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit'
-        })
-        .replace(/(\d+)\/(\d+)\/(\d+),\s*(.+)/, '$2/$1/$3 $4');
+     try {
+       const currentTime = new Date()
+         .toLocaleString('en-IN', {
+           timeZone: HORARY_TIMEZONE,
+           year: 'numeric',
+           month: '2-digit',
+           day: '2-digit',
+           hour: '2-digit',
+           minute: '2-digit'
+         })
+         .replace(/(\d+)\/(\d+)\/(\d+),\s*(.+)/, '$2/$1/$3 $4');
 
-      const horaryReading = horaryReader.generateHoraryReading(
-        question,
-        currentTime
-      );
+       const horaryReading = horaryReader.generateHoraryReading(
+         question,
+         currentTime
+       );
 
-      if (!horaryReading.valid) {
-        return horaryReading.reason;
-      }
+       if (!horaryReading.valid) {
+         return horaryReading.reason;
+       }
 
-      return horaryReading.horaryDescription;
-    } catch (error) {
-      logger.error('Error generating horary reading:', error);
-      return 'I\'m having trouble casting the horary chart right now. Please try again later.';
-    }
-  }
+       return horaryReading.horaryDescription;
+     } catch (error) {
+       logger.error('Error generating horary reading:', error);
+       return 'I\'m having trouble casting the horary chart right now. Please try again later.';
+     }
+   }
 
   // Secondary progressions requests
   if (matchesIntent(message, ['progressions', 'secondary progressions', 'progressed chart', /^progressions/])) {
@@ -514,14 +575,23 @@ const generateAstrologyResponse = async(messageText, user) => {
      }
    }
 
-  // Compatibility requests
-  if (matchesIntent(message, ['compatibility', 'match', 'compatible', /^compatib/])) {
+  // Synastry analysis requests
+  if (matchesIntent(message, ['synastry', 'relationship astrology', 'couple analysis', 'partner compatibility', /^synastry/])) {
     if (!user.birthDate) {
-      return 'For compatibility analysis, I need your birth details first. Please share your birth date (DD/MM/YYYY) so I can get started.';
+      return 'For synastry analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
 
-    return '💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I\'ll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!';
+    return '💕 *Synastry Analysis - Relationship Astrology*\n\nI can perform a detailed synastry analysis comparing your birth chart with your partner\'s chart. This reveals how your planetary energies interact!\n\nPlease provide your partner\'s birth details:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 25/12/1985, 09:15, London, UK\n\nThis will show:\n• Planetary aspects between charts\n• Composite chart insights\n• Relationship strengths and challenges\n• Romantic and emotional compatibility';
   }
+
+  // Compatibility requests
+   if (matchesIntent(message, ['compatibility', 'match', 'compatible', /^compatib/])) {
+     if (!user.birthDate) {
+       return 'For compatibility analysis, I need your birth details first. Please share your birth date (DD/MM/YYYY) so I can get started.';
+     }
+
+     return '💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I\'ll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!';
+   }
 
   // Profile/birth details
   if (matchesIntent(message, ['profile', 'details', 'birth', /^my (profile|details|birth)/])) {
@@ -534,7 +604,7 @@ const generateAstrologyResponse = async(messageText, user) => {
 
   // Help and general responses
    if (matchesIntent(message, ['help', 'what can you do', 'commands', /^help/, /^what do you do/])) {
-     return '🌟 *I\'m your Personal Cosmic Coach!*\n\nI can help you with:\n\n📅 *Daily Horoscope* - Personalized daily guidance\n📊 *Vedic Birth Chart* - Your cosmic blueprint with advanced dasha & transits\n🌏 *BaZi Analysis* - Chinese Four Pillars astrology\n💕 *Compatibility* - Relationship insights\n\n🔮 *Divination Systems:*\n🔮 *Tarot Readings* - Single card, 3-card, or Celtic Cross spreads\n🤲 *Palmistry* - Hand analysis and life path insights\n📜 *Nadi Astrology* - South Indian palm leaf predictions\n\n🌳 *Mystical Traditions:*\n🌳 *Kabbalistic Astrology* - Tree of Life and Sephiroth analysis\n🗓️ *Mayan Calendar* - Tzolk\'in and Haab date calculations\n🍃 *Celtic Astrology* - Tree signs and animal totems\n🔮 *I Ching* - Ancient Chinese oracle\n\n🗺️ *Advanced Systems:*\n🗺️ *Astrocartography* - Planetary lines and relocation guidance\n⏰ *Horary Astrology* - Answers to specific questions\n\n🔬 *Predictive Astrology:*\n🔬 *Secondary Progressions* - Soul\'s journey and life development\n☀️ *Solar Arc Directions* - Major life changes and turning points\n\nJust send me a message like:\n• "What\'s my horoscope today?"\n• "Show me my birth chart"\n• "Secondary progressions" or "Solar arc directions"\n• "Tarot reading" or "Palmistry"\n• "Kabbalistic analysis" or "Mayan calendar"\n• "I Ching oracle" or "Astrocartography"\n• "Horary: When will I find love?"\n\nWhat aspect of your cosmic journey interests you? ✨';
+     return '🌟 *I\'m your Personal Cosmic Coach!*\n\nI can help you with:\n\n📅 *Daily Horoscope* - Personalized daily guidance\n📊 *Vedic Birth Chart* - Your cosmic blueprint with advanced dasha & transits\n🌏 *BaZi Analysis* - Chinese Four Pillars astrology\n💕 *Compatibility* - Relationship insights\n\n🔮 *Divination Systems:*\n🔮 *Tarot Readings* - Single card, 3-card, or Celtic Cross spreads\n🤲 *Palmistry* - Hand analysis and life path insights\n📜 *Nadi Astrology* - South Indian palm leaf predictions\n\n🌳 *Mystical Traditions:*\n🌳 *Kabbalistic Astrology* - Tree of Life and Sephiroth analysis\n🗓️ *Mayan Calendar* - Tzolk\'in and Haab date calculations\n🍃 *Celtic Astrology* - Tree signs and animal totems\n🔮 *I Ching* - Ancient Chinese oracle\n\n🗺️ *Advanced Systems:*\n🗺️ *Astrocartography* - Planetary lines and relocation guidance\n⏰ *Horary Astrology* - Answers to specific questions\n🪐 *Asteroid Analysis* - Chiron, Juno, Vesta, Pallas insights\n\n🔬 *Predictive Astrology:*\n🔬 *Secondary Progressions* - Soul\'s journey and life development\n☀️ *Solar Arc Directions* - Major life changes and turning points\n\nJust send me a message like:\n• "What\'s my horoscope today?"\n• "Show me my birth chart"\n• "Asteroid analysis" or "Chiron placement"\n• "Secondary progressions" or "Solar arc directions"\n• "Tarot reading" or "Palmistry"\n• "Kabbalistic analysis" or "Mayan calendar"\n• "I Ching oracle" or "Astrocartography"\n• "Horary: When will I find love?"\n\nWhat aspect of your cosmic journey interests you? ✨';
    }
 
   // Default response with interactive options

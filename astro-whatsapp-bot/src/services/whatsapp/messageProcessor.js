@@ -28,6 +28,7 @@ const listActionMapping = {
   btn_daily_horoscope: 'get_daily_horoscope',
   btn_birth_chart: 'show_birth_chart',
   btn_compatibility: 'initiate_compatibility_flow',
+  btn_synastry: 'get_synastry_analysis',
   btn_tarot: 'get_tarot_reading',
   btn_iching: 'get_iching_reading',
   btn_palmistry: 'get_palmistry_analysis',
@@ -36,9 +37,11 @@ const listActionMapping = {
   btn_mayan: 'get_mayan_analysis',
   btn_celtic: 'get_celtic_analysis',
   btn_horary: 'get_horary_reading',
+  btn_electional: 'get_electional_astrology',
   btn_chinese: 'show_chinese_flow',
   btn_numerology: 'get_numerology_report',
   btn_astrocartography: 'get_astrocartography_analysis',
+  btn_asteroids: 'get_asteroid_analysis',
   btn_progressions: 'get_secondary_progressions',
   btn_solar_arc: 'get_solar_arc_directions'
 };
@@ -829,49 +832,15 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     response =
         'For horary astrology, please ask a specific question like "Horary: When will I find a job?" or "Horary: Will my relationship work out?"';
     break;
-  case 'get_secondary_progressions':
-    if (!user.birthDate) {
-      response = 'I need your complete birth details for secondary progressions analysis.';
-      break;
-    }
-    try {
-      const progressions = vedicCalculator.calculateSecondaryProgressions({
-        birthDate: user.birthDate,
-        birthTime: user.birthTime || '12:00',
-        birthPlace: user.birthPlace || 'Delhi'
-      });
-
-      if (progressions.error) {
-        response = `I encountered an issue: ${progressions.error}`;
-      } else {
-        response = `🔮 *Secondary Progressions*\n\n*Age:* ${progressions.ageInYears} years\n*Life Stage:* ${progressions.ageDescription}\n\n*Key Progressions:*\n${progressions.keyProgressions.map(p => `• ${p.planet}: ${p.position} (${p.significance})`).join('\n')}\n\n*Current Themes:* ${progressions.majorThemes.join(', ')}\n\nSecondary progressions show your soul's journey!`;
-      }
-    } catch (error) {
-      logger.error('Error getting secondary progressions:', error);
-      response = 'I\'m having trouble calculating your secondary progressions.';
-    }
+  case 'get_electional_astrology':
+    response = '📅 *Electional Astrology*\n\nI can find auspicious dates and times for important events!\n\nWhat type of event are you planning?\n\n• *Wedding* - Marriage ceremony\n• *Business* - Business launch or meeting\n• *Medical* - Surgery or treatment\n• *Travel* - Journey or relocation\n• *Legal* - Contract or court date\n\nReply with the event type and I\'ll find the best timing in the next 30 days!';
     break;
-  case 'get_solar_arc_directions':
+  case 'get_synastry_analysis':
     if (!user.birthDate) {
-      response = 'I need your complete birth details for solar arc directions analysis.';
+      response = 'I need your complete birth details for synastry analysis.';
       break;
     }
-    try {
-      const solarArc = vedicCalculator.calculateSolarArcDirections({
-        birthDate: user.birthDate,
-        birthTime: user.birthTime || '12:00',
-        birthPlace: user.birthPlace || 'Delhi'
-      });
-
-      if (solarArc.error) {
-        response = `I encountered an issue: ${solarArc.error}`;
-      } else {
-        response = `☀️ *Solar Arc Directions*\n\n*Age:* ${solarArc.ageInYears} years\n*Arc Movement:* ${solarArc.solarArcDegrees}°\n\n*Key Directions:*\n${solarArc.keyDirections.map(d => `• ${d.planet}: ${d.from} → ${d.to}`).join('\n')}\n\n*Life Changes:* ${solarArc.lifeChanges.join(', ')}\n\nSolar arc directions reveal major life transformations!`;
-      }
-    } catch (error) {
-      logger.error('Error getting solar arc directions:', error);
-      response = 'I\'m having trouble calculating your solar arc directions.';
-    }
+    response = '💕 *Synastry Analysis*\n\nTo perform a detailed relationship astrology analysis, please provide your partner\'s birth details:\n\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 25/12/1985, 09:15, London, UK\n\nThis will compare your charts and reveal:\n• Planetary aspects between you\n• Composite relationship chart\n• Romantic compatibility\n• Communication dynamics\n• Long-term potential';
     break;
   case 'show_divination_menu':
     const divinationMenu = getMenu('divination_menu');
@@ -971,7 +940,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     }
     return null;
    case 'show_comprehensive_menu':
-     const comprehensiveResponse = `🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:\n\n*Core Services:*\n1. 📅 Daily Horoscope\n2. 📊 Full Birth Chart\n3. 💕 Compatibility\n\n*Divination Systems:*\n4. 🔮 Tarot Reading\n5. 🏮 I Ching Oracle\n6. 🤲 Palmistry\n\n*Ancient Traditions:*\n7. 📜 Nadi Astrology\n8. 🌳 Kabbalistic\n9. 🏛️ Mayan Calendar\n10. 🍃 Celtic Wisdom\n\n*Advanced Services:*\n11. ❓ Horary Question\n12. 🐉 Chinese BaZi\n13. 🔢 Numerology\n14. 🌍 Astrocartography\n\n*Predictive Astrology:*\n15. 🔮 Secondary Progressions\n16. ☀️ Solar Arc Directions\n\nReply with the number or service name to get started!`;
+     const comprehensiveResponse = `🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:\n\n*Core Services:*\n1. 📅 Daily Horoscope\n2. 📊 Full Birth Chart\n3. 💕 Compatibility\n4. 💞 Synastry Analysis\n\n*Divination Systems:*\n5. 🔮 Tarot Reading\n6. 🏮 I Ching Oracle\n7. 🤲 Palmistry\n\n*Ancient Traditions:*\n8. 📜 Nadi Astrology\n9. 🌳 Kabbalistic\n10. 🏛️ Mayan Calendar\n11. 🍃 Celtic Wisdom\n\n*Advanced Services:*\n12. ❓ Horary Question\n13. 📅 Electional Astrology\n14. 🐉 Chinese BaZi\n15. 🔢 Numerology\n16. 🌍 Astrocartography\n17. 🪐 Asteroid Analysis\n\n*Predictive Astrology:*\n18. 🔮 Secondary Progressions\n19. ☀️ Solar Arc Directions\n\nReply with the number or service name to get started!`;
      await sendMessage(phoneNumber, comprehensiveResponse);
      return null;
   default:

@@ -130,13 +130,16 @@
             "title": "Full Birth Chart",
             "description": "Complete Vedic astrology analysis"
           },
-          {
-            "id": "btn_compatibility",
-            "title": "Compatibility",
-            "description": "Relationship astrology"
-          }
-        ]
-      },
+           {
+             "id": "btn_compatibility",
+             "title": "Compatibility",
+             "description": "Relationship astrology"
+           },
+           {
+             "id": "btn_synastry",
+             "title": "Synastry Analysis",
+             "description": "Detailed relationship astrology"
+           },
       {
         "title": "Divination Systems",
         "rows": [
@@ -191,6 +194,11 @@
             "description": "Answer specific questions"
           },
           {
+            "id": "btn_electional",
+            "title": "Electional Astrology",
+            "description": "Auspicious timing for events"
+          },
+          {
             "id": "btn_chinese",
             "title": "Chinese BaZi",
             "description": "Four Pillars of Destiny"
@@ -204,6 +212,11 @@
             "id": "btn_astrocartography",
             "title": "Astrocartography",
             "description": "Locational astrology"
+          },
+          {
+            "id": "btn_asteroids",
+            "title": "Asteroid Analysis",
+            "description": "Chiron, Juno, Vesta, Pallas insights"
           },
           {
             "id": "btn_progressions",

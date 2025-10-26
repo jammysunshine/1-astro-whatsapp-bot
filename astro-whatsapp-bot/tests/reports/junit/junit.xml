@@ -1,46 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="12" failures="1" errors="0" time="25.635">
-  <testsuite name="Critical User Flow End-to-End Tests" errors="0" failures="1" skipped="11" timestamp="2025-10-26T19:36:32" time="24.867" tests="12">
-    <testcase classname="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" name="Critical User Flow End-to-End Tests New User Registration Flow should complete full new user registration and first reading flow" time="2.475">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:272:36)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+<testsuites name="jest tests" tests="24" failures="0" errors="0" time="13.13">
+  <testsuite name="WhatsApp Message Sender" errors="0" failures="0" skipped="0" timestamp="2025-10-26T20:34:23" time="8.347" tests="19">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.021">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should generate real daily horoscope for existing user" name="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should generate real daily horoscope for existing user" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.008">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" name="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.008">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" name="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.056">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" name="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should handle API error gracefully" name="WhatsApp Message Sender sendTextMessage should handle API error gracefully" time="0.007">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" name="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.006">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.006">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" time="0.004">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow Profile Management Flow should handle profile viewing request" name="Critical User Flow End-to-End Tests Astrology Readings Flow Profile Management Flow should handle profile viewing request" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.005">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.005">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.007">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" time="0">
-      <skipped/>
+    <testcase classname="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" name="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" time="0.008">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" name="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" time="0.004">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.013">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.007">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message successfully" name="WhatsApp Message Sender sendMediaMessage should send media message successfully" time="0.008">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message with filename" name="WhatsApp Message Sender sendMediaMessage should send media message with filename" time="0.005">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.011">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="ConversationEngine" errors="0" failures="0" skipped="0" timestamp="2025-10-26T20:34:31" time="4.173" tests="5">
+    <testcase classname="ConversationEngine processFlowMessage should initialize session for new flow and access flow.start_step without temporal dead zone error" name="ConversationEngine processFlowMessage should initialize session for new flow and access flow.start_step without temporal dead zone error" time="0.011">
+    </testcase>
+    <testcase classname="ConversationEngine processFlowMessage should handle existing session correctly" name="ConversationEngine processFlowMessage should handle existing session correctly" time="0.003">
+    </testcase>
+    <testcase classname="ConversationEngine processFlowMessage should handle interactive messages without validation" name="ConversationEngine processFlowMessage should handle interactive messages without validation" time="0.003">
+    </testcase>
+    <testcase classname="ConversationEngine processFlowMessage should handle flow not found error" name="ConversationEngine processFlowMessage should handle flow not found error" time="0.004">
+    </testcase>
+    <testcase classname="ConversationEngine processFlowMessage should handle invalid phone number" name="ConversationEngine processFlowMessage should handle invalid phone number" time="0.005">
     </testcase>
   </testsuite>
 </testsuites>

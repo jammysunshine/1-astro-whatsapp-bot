@@ -364,6 +364,117 @@ describe('WhatsApp Message Sender', () => {
         expect.any(Object)
       );
     });
+
+    it('should handle list messages with invalid action keys in rows (would cause API error)', async() => {
+      const body = 'Select an option:';
+      const buttonText = 'Choose';
+      const sections = [
+        {
+          title: 'Section 1',
+          rows: [
+            {
+              id: 'row1',
+              title: 'Row 1',
+              description: 'Description 1',
+              action: 'invalid_action' // This should not be present per WhatsApp API
+            }
+          ]
+        }
+      ];
+
+      // Mock API rejection due to invalid payload
+      const apiError = {
+        response: {
+          data: {
+            error: {
+              code: 100,
+              message: 'Unexpected key "action" on param "interactive[\'action\'][\'sections\'][0][\'rows\'][0]"',
+              type: 'OAuthException'
+            }
+          },
+          status: 400
+        },
+        message: 'Request failed with status code 400'
+      };
+
+       axios.post.mockRejectedValueOnce(apiError);
+
+       await expect(sendListMessage(phoneNumber, body, buttonText, sections))
+         .rejects
+         .toHaveProperty('message', 'Request failed with status code 400');
+
+      // Verify the invalid payload structure was sent
+      expect(axios.post).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          interactive: expect.objectContaining({
+            action: expect.objectContaining({
+              sections: expect.arrayContaining([
+                expect.objectContaining({
+                  rows: expect.arrayContaining([
+                    expect.objectContaining({
+                      id: 'row1',
+                      title: 'Row 1',
+                      description: 'Description 1',
+                      action: 'invalid_action' // This invalid key causes the API error
+                    })
+                  ])
+                })
+              ])
+            })
+          })
+        }),
+        expect.any(Object)
+      );
+    });
+
+    it('should accept valid list messages without action keys in rows', async() => {
+      const body = 'Select an option:';
+      const buttonText = 'Choose';
+      const sections = [
+        {
+          title: 'Section 1',
+          rows: [
+            {
+              id: 'row1',
+              title: 'Row 1',
+              description: 'Description 1'
+              // No action key - this is correct
+            }
+          ]
+        }
+      ];
+      const response = {
+        data: {
+          messages: [{ id: 'msg-valid-123' }]
+        }
+      };
+
+      axios.post.mockResolvedValue(response);
+
+      const result = await sendListMessage(phoneNumber, body, buttonText, sections);
+
+      expect(result).toEqual(response.data);
+      expect(axios.post).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          interactive: expect.objectContaining({
+            action: expect.objectContaining({
+              sections: expect.arrayContaining([
+                expect.objectContaining({
+                  rows: expect.arrayContaining([
+                    expect.not.objectContaining({
+                      action: expect.anything() // Ensure no action key is present
+                    })
+                  ])
+                })
+              ])
+            })
+          })
+        }),
+        expect.any(Object)
+      );
+    });
   });
 
   describe('sendTemplateMessage', () => {

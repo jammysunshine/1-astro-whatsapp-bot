@@ -8,11 +8,13 @@ jest.mock('../../../src/models/userModel');
 jest.mock('../../../src/services/whatsapp/messageSender');
 jest.mock('../../../src/services/astrology/astrologyEngine');
 jest.mock('../../../src/utils/logger');
+jest.mock('../../../src/conversation/flowLoader');
 
-const { getUserByPhone, createUser, addBirthDetails, updateUserProfile } = require('../../../src/models/userModel');
+const { getUserByPhone, createUser, addBirthDetails, updateUserProfile, getUserSession, setUserSession, deleteUserSession } = require('../../../src/models/userModel');
 const { sendMessage } = require('../../../src/services/whatsapp/messageSender');
 const astrologyEngine = require('../../../src/services/astrology/astrologyEngine');
 const logger = require('../../../src/utils/logger');
+const { getFlow } = require('../../../src/conversation/flowLoader');
 
 describe('ConversationEngine', () => {
   beforeEach(() => {
@@ -21,59 +23,127 @@ describe('ConversationEngine', () => {
     createUser.mockResolvedValue({ phoneNumber: '+1234567890' });
     addBirthDetails.mockResolvedValue();
     updateUserProfile.mockResolvedValue();
+    getUserSession.mockResolvedValue(null);
+    setUserSession.mockResolvedValue();
+    deleteUserSession.mockResolvedValue();
     sendMessage.mockResolvedValue({ success: true });
-    astrologyEngine.generateCompleteReading.mockReturnValue({
+    astrologyEngine.generateCompleteReading = jest.fn().mockReturnValue({
       sunSign: 'Pisces',
       moonSign: 'Pisces',
       risingSign: 'Aquarius'
     });
+    getFlow.mockReturnValue({
+      start_step: 'step1',
+      steps: {
+        step1: { type: 'input', validation: 'date' }
+      }
+    });
   });
 
-  describe('processMessage', () => {
-    it('should process onboarding message', async() => {
+
+
+  describe('processFlowMessage', () => {
+    it('should initialize session for new flow and access flow.start_step without temporal dead zone error', async() => {
       const message = {
-        from: '+1234567890',
-        text: { body: 'Hello' },
-        type: 'text'
+        type: 'text',
+        text: { body: 'test input' }
       };
-
-      const result = await conversationEngine.processMessage(message);
-
-      expect(result).toBeDefined();
-      expect(sendMessage).toHaveBeenCalled();
-    });
-
-    it('should handle existing user', async() => {
-      getUserByPhone.mockResolvedValue({
+      const user = {
         phoneNumber: '+1234567890',
-        profileComplete: true
+        id: 'user-123'
+      };
+      const flowId = 'test_flow';
+
+      const result = await conversationEngine.processFlowMessage(message, user, flowId);
+
+      expect(result).toBe(true);
+      expect(getUserSession).toHaveBeenCalledWith('+1234567890');
+      expect(setUserSession).toHaveBeenCalledWith('+1234567890', {
+        currentFlow: 'test_flow',
+        currentStep: 'step1', // This should not cause temporal dead zone error
+        flowData: {}
       });
-
-      const message = {
-        from: '+1234567890',
-        text: { body: 'Daily horoscope' },
-        type: 'text'
-      };
-
-      const result = await conversationEngine.processMessage(message);
-
-      expect(result).toBeDefined();
-      expect(sendMessage).toHaveBeenCalled();
     });
-  });
 
-  describe('handleOnboarding', () => {
-    it('should handle birth date input', async() => {
+     it('should handle existing session correctly', async() => {
+       const existingSession = {
+         currentFlow: 'test_flow',
+         currentStep: 'step1',
+         flowData: {}
+       };
+       getUserSession.mockResolvedValue(existingSession);
+
+       const message = {
+         type: 'text',
+         text: { body: 'test input' }
+       };
+       const user = {
+         phoneNumber: '+1234567890',
+         id: 'user-123'
+       };
+       const flowId = 'test_flow';
+
+       const result = await conversationEngine.processFlowMessage(message, user, flowId);
+
+       expect(result).toBe(true);
+       expect(setUserSession).not.toHaveBeenCalled();
+     });
+
+    it('should handle interactive messages without validation', async() => {
       const message = {
-        from: '+1234567890',
-        text: { body: '15031990' },
-        type: 'text'
+        type: 'interactive',
+        interactive: { type: 'button_reply' }
       };
+      const user = {
+        phoneNumber: '+1234567890',
+        id: 'user-123'
+      };
+      const flowId = 'test_flow';
 
-      const result = await conversationEngine.handleOnboarding(message);
+      const result = await conversationEngine.processFlowMessage(message, user, flowId);
 
-      expect(result).toBeDefined();
-      expect(sendMessage).toHaveBeenCalled();
+      expect(result).toBe(true);
+      // Should return early for interactive messages without processing validation
+    });
+
+    it('should handle flow not found error', async() => {
+      getFlow.mockReturnValue(null);
+
+      const message = {
+        type: 'text',
+        text: { body: 'test input' }
+      };
+      const user = {
+        phoneNumber: '+1234567890',
+        id: 'user-123'
+      };
+      const flowId = 'nonexistent_flow';
+
+      const result = await conversationEngine.processFlowMessage(message, user, flowId);
+
+      expect(result).toBe(false);
+      expect(sendMessage).toHaveBeenCalledWith(
+        '+1234567890',
+        'I\'m sorry, I encountered an internal error. Please try again later.'
+      );
+      expect(deleteUserSession).toHaveBeenCalledWith('+1234567890');
+    });
+
+    it('should handle invalid phone number', async() => {
+      const message = {
+        type: 'text',
+        text: { body: 'test input' }
+      };
+      const user = {
+        id: 'user-123'
+        // Missing phoneNumber
+      };
+      const flowId = 'test_flow';
+
+      const result = await conversationEngine.processFlowMessage(message, user, flowId);
+
+      expect(result).toBe(false);
+      expect(logger.error).toHaveBeenCalledWith('❌ No phone number provided to processFlowMessage');
     });
   });
 });

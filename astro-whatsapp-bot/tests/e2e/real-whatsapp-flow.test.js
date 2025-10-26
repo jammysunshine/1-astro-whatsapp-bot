@@ -381,7 +381,6 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       expect(malformedResponse.body.success).toBe(true);
     });
   });
-});
 
   afterAll(async () => {
     // Close the server to clear any open handles

@@ -11,6 +11,8 @@ const WHATSAPP_API_URL = 'https://graph.facebook.com/v18.0';
 const getWhatsAppCredentials = () => {
   const accessToken = process.env.W1_WHATSAPP_ACCESS_TOKEN;
   const phoneNumberId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
+  logger.debug(`WhatsApp Access Token (masked): ${accessToken ? accessToken.substring(0, 5) + '...' + accessToken.substring(accessToken.length - 5) : 'Not Set'}`);
+  logger.debug(`WhatsApp Phone Number ID: ${phoneNumberId || 'Not Set'}`);
   return { accessToken, phoneNumberId };
 };
 
@@ -30,10 +32,6 @@ const sendTextMessage = async (phoneNumber, message, options = {}) => {
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
     }
-
-    // Debug logging for token issues
-    logger.debug(`🔍 WhatsApp Token Debug - Length: ${WHATSAPP_ACCESS_TOKEN.length}, Starts with: ${WHATSAPP_ACCESS_TOKEN.substring(0, 10)}, Ends with: ${WHATSAPP_ACCESS_TOKEN.substring(WHATSAPP_ACCESS_TOKEN.length - 10)}`);
-    logger.debug(`🔍 Phone Number ID: ${WHATSAPP_PHONE_NUMBER_ID}`);
 
     const url = `${WHATSAPP_API_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 

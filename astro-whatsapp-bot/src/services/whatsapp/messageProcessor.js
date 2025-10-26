@@ -1,11 +1,5 @@
 const logger = require('../../utils/logger');
-const { sendMessage } = require('./messageSender');
-const {
-  getUserByPhone,
-  createUser,
-  addBirthDetails,
-  updateUserProfile,
-} = require('../../models/userModel');
+const { sendMessage, sendListMessage } = require('./messageSender');
 const { generateAstrologyResponse } = require('../astrology/astrologyEngine');
 const { processFlowMessage } = require('../../conversation/conversationEngine');
 const { getMenu } = require('../../conversation/menuLoader');
@@ -836,6 +830,20 @@ const executeMenuAction = async (phoneNumber, user, action) => {
         await sendMessage(
           phoneNumber,
           { type: 'button', body: mainMenu.body, buttons },
+          'interactive'
+        );
+      }
+      return null;
+    case 'show_comprehensive_menu':
+      const comprehensiveMenu = getMenu('comprehensive_menu');
+      if (comprehensiveMenu) {
+        const buttons = comprehensiveMenu.buttons.map(button => ({
+          type: 'reply',
+          reply: { id: button.id, title: button.title },
+        }));
+        await sendMessage(
+          phoneNumber,
+          { type: 'button', body: comprehensiveMenu.body, buttons },
           'interactive'
         );
       }

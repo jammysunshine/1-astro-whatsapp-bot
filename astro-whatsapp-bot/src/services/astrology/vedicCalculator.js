@@ -1573,6 +1573,567 @@ class VedicCalculator {
   }
 
   /**
+   * Calculate Secondary Progressions analysis
+   * @param {Object} birthData - Birth data object with birthDate, birthTime, birthPlace
+   * @returns {Object} Secondary progressions analysis
+   */
+  async calculateSecondaryProgressions(birthData) {
+    try {
+      const { birthDate, birthTime, birthPlace } = birthData;
+
+      // Parse birth date
+      const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+
+      // Calculate current age in days (1 day = 1 year of life)
+      const currentDate = new Date();
+      const ageInDays = Math.floor((currentDate - birthDateTime) / (1000 * 60 * 60 * 24));
+      const ageInYears = Math.floor(ageInDays / 365.25);
+
+      // Calculate progressed date (birth date + age in days)
+      const progressedDate = new Date(birthDateTime.getTime() + ageInDays * 24 * 60 * 60 * 1000);
+
+      // Generate progressed chart
+      const progressedChart = await this._generateProgressedChart(birthData, progressedDate);
+
+      // Analyze the progressed chart
+      const analysis = this._analyzeProgressedChart(progressedChart, birthData, ageInYears);
+
+      return {
+        ageInYears,
+        ageInDays,
+        progressedDate: progressedDate.toISOString(),
+        formattedProgressedDate: progressedDate.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+        progressedChart,
+        analysis,
+        keyProgressions: this._extractKeyProgressions(analysis),
+        majorThemes: this._extractProgressionThemes(analysis),
+        lifeChanges: this._predictLifeChanges(analysis, ageInYears)
+      };
+    } catch (error) {
+      logger.error('Error calculating secondary progressions:', error);
+      return { error: 'Unable to calculate secondary progressions' };
+    }
+  }
+
+  /**
+   * Generate progressed chart for secondary progressions
+   * @private
+   * @param {Object} birthData - Birth data
+   * @param {Date} progressedDate - Progressed date
+   * @returns {Object} Progressed chart data
+   */
+  async _generateProgressedChart(birthData, progressedDate) {
+    try {
+      const { birthPlace } = birthData;
+
+      // Get coordinates
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const timestamp = progressedDate.getTime();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+
+      // Prepare data for astrologer library
+      const astroData = {
+        year: progressedDate.getFullYear(),
+        month: progressedDate.getMonth() + 1,
+        date: progressedDate.getDate(),
+        hours: progressedDate.getHours(),
+        minutes: progressedDate.getMinutes(),
+        seconds: 0,
+        latitude,
+        longitude,
+        timezone,
+        chartType: 'sidereal'
+      };
+
+      // Generate progressed chart
+      const chart = this.astrologer.generateNatalChartData(astroData);
+
+      return chart;
+    } catch (error) {
+      logger.error('Error generating progressed chart:', error);
+      // Return basic chart structure
+      return {
+        planets: {},
+        houses: {},
+        aspects: [],
+        interpretations: {
+          sunSign: 'Unknown',
+          moonSign: 'Unknown',
+          risingSign: 'Unknown'
+        }
+      };
+    }
+  }
+
+  /**
+   * Analyze progressed chart
+   * @private
+   * @param {Object} progressedChart - Progressed chart data
+   * @param {Object} birthData - Birth data
+   * @param {number} ageInYears - Current age in years
+   * @returns {Object} Analysis of progressed chart
+   */
+  _analyzeProgressedChart(progressedChart, birthData, ageInYears) {
+    const analysis = {
+      progressedSunSign: progressedChart.interpretations?.sunSign || 'Unknown',
+      progressedMoonSign: progressedChart.interpretations?.moonSign || 'Unknown',
+      progressedRisingSign: progressedChart.interpretations?.risingSign || 'Unknown',
+      ageDescription: this._getAgeDescription(ageInYears),
+      planetaryPositions: {},
+      aspects: []
+    };
+
+    // Extract progressed planetary positions
+    if (progressedChart.planets) {
+      Object.entries(progressedChart.planets).forEach(([planet, data]) => {
+        if (data.position) {
+          analysis.planetaryPositions[planet] = {
+            sign: data.signName,
+            longitude: data.position.longitude,
+            house: data.house || 'Unknown'
+          };
+        }
+      });
+    }
+
+    // Calculate aspects in progressed chart
+    analysis.aspects = this._calculateProgressedAspects(progressedChart.planets || {});
+
+    return analysis;
+  }
+
+  /**
+   * Calculate aspects in progressed chart
+   * @private
+   * @param {Object} planets - Progressed planets
+   * @returns {Array} Aspects
+   */
+  _calculateProgressedAspects(planets) {
+    const aspects = [];
+    const planetKeys = Object.keys(planets);
+
+    // Define aspect angles
+    const aspects_def = {
+      conjunction: 0,
+      sextile: 60,
+      square: 90,
+      trine: 120,
+      opposition: 180
+    };
+
+    // Check for major aspects
+    for (let i = 0; i < planetKeys.length; i++) {
+      for (let j = i + 1; j < planetKeys.length; j++) {
+        const planet1 = planets[planetKeys[i]];
+        const planet2 = planets[planetKeys[j]];
+
+        if (planet1.position?.longitude && planet2.position?.longitude) {
+          const angle = Math.abs(planet1.position.longitude - planet2.position.longitude) % 360;
+          const minAngle = Math.min(angle, 360 - angle);
+
+          // Check for major aspects (within 5 degrees orb)
+          Object.entries(aspects_def).forEach(([aspectName, aspectAngle]) => {
+            if (Math.abs(minAngle - aspectAngle) <= 5) {
+              aspects.push({
+                planets: `${planet1.name}-${planet2.name}`,
+                aspect: aspectName,
+                angle: Math.round(minAngle * 10) / 10
+              });
+            }
+          });
+        }
+      }
+    }
+
+    return aspects.slice(0, 5); // Return top 5 aspects
+  }
+
+  /**
+   * Get age description for life stage
+   * @private
+   * @param {number} age - Age in years
+   * @returns {string} Age description
+   */
+  _getAgeDescription(age) {
+    if (age < 12) return 'Childhood and early learning';
+    if (age < 19) return 'Adolescence and self-discovery';
+    if (age < 30) return 'Young adulthood and career building';
+    if (age < 40) return 'Mid-life transitions and stability';
+    if (age < 50) return 'Mid-life reflection and change';
+    if (age < 65) return 'Later adulthood and wisdom';
+    return 'Elder years and life review';
+  }
+
+  /**
+   * Extract key progressions from analysis
+   * @private
+   * @param {Object} analysis - Progressed chart analysis
+   * @returns {Array} Key progressions
+   */
+  _extractKeyProgressions(analysis) {
+    const progressions = [];
+
+    // Sun progression
+    if (analysis.progressedSunSign) {
+      progressions.push({
+        planet: 'Sun',
+        position: analysis.progressedSunSign,
+        significance: `Identity and life direction in ${analysis.progressedSunSign}`
+      });
+    }
+
+    // Moon progression
+    if (analysis.progressedMoonSign) {
+      progressions.push({
+        planet: 'Moon',
+        position: analysis.progressedMoonSign,
+        significance: `Emotional nature and inner life in ${analysis.progressedMoonSign}`
+      });
+    }
+
+    // Key aspects
+    analysis.aspects.slice(0, 3).forEach(aspect => {
+      progressions.push({
+        planet: aspect.planets,
+        position: `${aspect.aspect} aspect`,
+        significance: `${aspect.aspect} brings ${this._getAspectSignificance(aspect.aspect)}`
+      });
+    });
+
+    return progressions;
+  }
+
+  /**
+   * Get aspect significance
+   * @private
+   * @param {string} aspect - Aspect type
+   * @returns {string} Significance description
+   */
+  _getAspectSignificance(aspect) {
+    const significances = {
+      conjunction: 'intense focus and new beginnings',
+      sextile: 'opportunities and harmonious growth',
+      square: 'challenges and necessary changes',
+      trine: 'natural talents and ease',
+      opposition: 'balance and integration of opposites'
+    };
+    return significances[aspect] || 'important developments';
+  }
+
+  /**
+   * Extract progression themes
+   * @private
+   * @param {Object} analysis - Analysis data
+   * @returns {Array} Major themes
+   */
+  _extractProgressionThemes(analysis) {
+    const themes = [];
+
+    // Age-based themes
+    themes.push(`Focus on ${analysis.ageDescription.toLowerCase()}`);
+
+    // Sun sign themes
+    if (analysis.progressedSunSign) {
+      const sunThemes = {
+        'Aries': 'Self-discovery and new beginnings',
+        'Taurus': 'Building stability and security',
+        'Gemini': 'Learning and communication',
+        'Cancer': 'Family and emotional foundations',
+        'Leo': 'Creativity and self-expression',
+        'Virgo': 'Service and practical matters',
+        'Libra': 'Relationships and harmony',
+        'Scorpio': 'Transformation and depth',
+        'Sagittarius': 'Exploration and philosophy',
+        'Capricorn': 'Achievement and responsibility',
+        'Aquarius': 'Innovation and community',
+        'Pisces': 'Spirituality and imagination'
+      };
+      if (sunThemes[analysis.progressedSunSign]) {
+        themes.push(sunThemes[analysis.progressedSunSign]);
+      }
+    }
+
+    // Moon sign emotional themes
+    if (analysis.progressedMoonSign) {
+      themes.push(`Emotional focus in ${analysis.progressedMoonSign} themes`);
+    }
+
+    return themes;
+  }
+
+  /**
+   * Predict life changes based on progressions
+   * @private
+   * @param {Object} analysis - Analysis data
+   * @param {number} age - Current age
+   * @returns {Array} Predicted life changes
+   */
+  _predictLifeChanges(analysis, age) {
+    const changes = [];
+
+    // Age-based life changes
+    if (age >= 28 && age <= 32) {
+      changes.push('Saturn Return: Major life restructuring and responsibility');
+    }
+    if (age >= 56 && age <= 60) {
+      changes.push('Second Saturn Return: Life review and wisdom');
+    }
+
+    // Sun sign changes
+    if (analysis.progressedSunSign) {
+      const sunChanges = {
+        'Aries': 'New initiatives and self-discovery',
+        'Taurus': 'Focus on stability and material security',
+        'Gemini': 'Learning new skills and communication',
+        'Cancer': 'Building emotional foundations',
+        'Leo': 'Creative self-expression',
+        'Virgo': 'Practical service and health focus',
+        'Libra': 'Relationship developments',
+        'Scorpio': 'Deep transformation',
+        'Sagittarius': 'Expansion and exploration',
+        'Capricorn': 'Career advancement',
+        'Aquarius': 'Innovation and community involvement',
+        'Pisces': 'Spiritual growth'
+      };
+      if (sunChanges[analysis.progressedSunSign]) {
+        changes.push(`Sun progression: ${sunChanges[analysis.progressedSunSign]}`);
+      }
+    }
+
+    return changes;
+  }
+
+  /**
+   * Calculate Solar Arc Directions analysis
+   * @param {Object} birthData - Birth data object with birthDate, birthTime, birthPlace
+   * @returns {Object} Solar arc directions analysis
+   */
+  async calculateSolarArcDirections(birthData) {
+    try {
+      const { birthDate, birthTime, birthPlace } = birthData;
+
+      // Parse birth date
+      const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+
+      // Calculate current age in days (1 day = 1 degree of arc movement)
+      const currentDate = new Date();
+      const ageInDays = Math.floor((currentDate - birthDateTime) / (1000 * 60 * 60 * 24));
+      const ageInYears = Math.floor(ageInDays / 365.25);
+
+      // Solar arc movement: all planets move the same distance as the Sun
+      const solarArcDegrees = ageInDays; // Each day = 1 degree
+
+      // Generate directed chart (natal chart + solar arc movement)
+      const directedChart = await this._generateDirectedChart(birthData, solarArcDegrees);
+
+      // Analyze the directed chart
+      const analysis = this._analyzeDirectedChart(directedChart, birthData, ageInYears, solarArcDegrees);
+
+      return {
+        ageInYears,
+        ageInDays,
+        solarArcDegrees,
+        directedChart,
+        analysis,
+        keyDirections: this._extractKeyDirections(analysis),
+        lifeChanges: this._predictDirectedLifeChanges(analysis, ageInYears)
+      };
+    } catch (error) {
+      logger.error('Error calculating solar arc directions:', error);
+      return { error: 'Unable to calculate solar arc directions' };
+    }
+  }
+
+  /**
+   * Generate directed chart for solar arc directions
+   * @private
+   * @param {Object} birthData - Birth data
+   * @param {number} solarArcDegrees - Degrees to move all planets
+   * @returns {Object} Directed chart data
+   */
+  async _generateDirectedChart(birthData, solarArcDegrees) {
+    try {
+      const { birthPlace } = birthData;
+
+      // Get coordinates
+      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const timestamp = Date.now();
+      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+
+      // For solar arc, we advance the birth time by the arc degrees
+      // Each degree = 1 day, so solarArcDegrees days from birth
+      const birthDateTime = new Date(
+        birthData.birthDate.split('/').reverse().join('-') + 'T' +
+        birthData.birthTime + ':00'
+      );
+      const directedDateTime = new Date(birthDateTime.getTime() + solarArcDegrees * 24 * 60 * 60 * 1000);
+
+      // Prepare data for astrologer library
+      const astroData = {
+        year: directedDateTime.getFullYear(),
+        month: directedDateTime.getMonth() + 1,
+        date: directedDateTime.getDate(),
+        hours: directedDateTime.getHours(),
+        minutes: directedDateTime.getMinutes(),
+        seconds: 0,
+        latitude,
+        longitude,
+        timezone,
+        chartType: 'sidereal'
+      };
+
+      // Generate directed chart
+      const chart = this.astrologer.generateNatalChartData(astroData);
+
+      return chart;
+    } catch (error) {
+      logger.error('Error generating directed chart:', error);
+      // Return basic chart structure
+      return {
+        planets: {},
+        houses: {},
+        aspects: [],
+        interpretations: {
+          sunSign: 'Unknown',
+          moonSign: 'Unknown',
+          risingSign: 'Unknown'
+        }
+      };
+    }
+  }
+
+  /**
+   * Analyze directed chart
+   * @private
+   * @param {Object} directedChart - Directed chart data
+   * @param {Object} birthData - Birth data
+   * @param {number} ageInYears - Current age in years
+   * @param {number} solarArcDegrees - Solar arc degrees
+   * @returns {Object} Analysis of directed chart
+   */
+  _analyzeDirectedChart(directedChart, birthData, ageInYears, solarArcDegrees) {
+    const analysis = {
+      directedSunSign: directedChart.interpretations?.sunSign || 'Unknown',
+      directedMoonSign: directedChart.interpretations?.moonSign || 'Unknown',
+      directedRisingSign: directedChart.interpretations?.risingSign || 'Unknown',
+      ageDescription: this._getAgeDescription(ageInYears),
+      planetaryPositions: {},
+      aspects: []
+    };
+
+    // Extract directed planetary positions
+    if (directedChart.planets) {
+      Object.entries(directedChart.planets).forEach(([planet, data]) => {
+        if (data.position) {
+          analysis.planetaryPositions[planet] = {
+            sign: data.signName,
+            longitude: data.position.longitude,
+            house: data.house || 'Unknown'
+          };
+        }
+      });
+    }
+
+    // Calculate aspects in directed chart
+    analysis.aspects = this._calculateProgressedAspects(directedChart.planets || {});
+
+    return analysis;
+  }
+
+  /**
+   * Extract key directions from analysis
+   * @private
+   * @param {Object} analysis - Directed chart analysis
+   * @returns {Array} Key directions
+   */
+  _extractKeyDirections(analysis) {
+    const directions = [];
+
+    // Sun direction (most important)
+    if (analysis.directedSunSign) {
+      directions.push({
+        planet: 'Sun',
+        from: 'Natal position',
+        to: analysis.directedSunSign,
+        significance: `Identity and life direction directed to ${analysis.directedSunSign} themes`
+      });
+    }
+
+    // Moon direction (emotional life)
+    if (analysis.directedMoonSign) {
+      directions.push({
+        planet: 'Moon',
+        from: 'Natal position',
+        to: analysis.directedMoonSign,
+        significance: `Emotional nature and inner life directed to ${analysis.directedMoonSign} themes`
+      });
+    }
+
+    // Key aspects
+    analysis.aspects.slice(0, 3).forEach(aspect => {
+      directions.push({
+        planet: aspect.planets,
+        from: 'Natal aspect',
+        to: `${aspect.aspect} aspect`,
+        significance: `Directed ${aspect.aspect} brings ${this._getAspectSignificance(aspect.aspect)}`
+      });
+    });
+
+    return directions;
+  }
+
+  /**
+   * Predict life changes based on directed chart
+   * @private
+   * @param {Object} analysis - Analysis data
+   * @param {number} age - Current age
+   * @returns {Array} Predicted life changes
+   */
+  _predictDirectedLifeChanges(analysis, age) {
+    const changes = [];
+
+    // Age-based life changes
+    if (age >= 28 && age <= 32) {
+      changes.push('Saturn Return: Major life restructuring and responsibility');
+    }
+    if (age >= 56 && age <= 60) {
+      changes.push('Second Saturn Return: Life review and wisdom');
+    }
+
+    // Sun sign directed changes
+    if (analysis.directedSunSign) {
+      const sunChanges = {
+        'Aries': 'Directed toward new initiatives and self-discovery',
+        'Taurus': 'Directed toward building stability and material security',
+        'Gemini': 'Directed toward learning new skills and communication',
+        'Cancer': 'Directed toward building emotional foundations',
+        'Leo': 'Directed toward creative self-expression',
+        'Virgo': 'Directed toward practical service and health focus',
+        'Libra': 'Directed toward relationship developments',
+        'Scorpio': 'Directed toward deep transformation',
+        'Sagittarius': 'Directed toward expansion and exploration',
+        'Capricorn': 'Directed toward career advancement',
+        'Aquarius': 'Directed toward innovation and community involvement',
+        'Pisces': 'Directed toward spiritual growth'
+      };
+      if (sunChanges[analysis.directedSunSign]) {
+        changes.push(`Solar Arc Sun: ${sunChanges[analysis.directedSunSign]}`);
+      }
+    }
+
+    return changes;
+  }
+
+  /**
    * Calculate moon longitude for dasha calculations
    * @param {number} year - Year
    * @param {number} month - Month
@@ -11925,15 +12486,15 @@ class VedicCalculator {
    * @param {Date} targetDate - Date to calculate return for (optional, defaults to next return)
    * @returns {Object} Lunar return analysis
    */
-  calculateLunarReturn(birthData, targetDate = null) {
+  async calculateLunarReturn(birthData, targetDate = null) {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
       // Get natal moon position
-      const natalChart = this.generateBasicBirthChart(birthData);
-      const natalMoonPosition = natalChart.fullChart?.planets?.moon?.longitude;
+      const natalChart = await this.generateBasicBirthChart({ ...birthData, name: 'Lunar Return User' });
+      const natalMoonPosition = natalChart.fullChart?.planets?.moon?.position?.longitude;
 
-      if (!natalMoonPosition) {
+      if (!natalMoonPosition && natalMoonPosition !== 0) {
         return { error: 'Unable to calculate natal Moon position' };
       }
 
@@ -12008,7 +12569,7 @@ class VedicCalculator {
         };
 
         const testChart = this.astrologer.generateNatalChartData(astroData);
-        const testMoonPosition = testChart.planets?.moon?.longitude;
+        const testMoonPosition = testChart.planets?.moon?.position?.longitude;
 
         if (testMoonPosition !== undefined) {
           // Check if moon is within 2 degrees of natal position

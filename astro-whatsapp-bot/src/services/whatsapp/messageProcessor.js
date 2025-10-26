@@ -22,8 +22,8 @@ const celticReader = require('../astrology/celticReader');
 const ichingReader = require('../astrology/ichingReader');
 const { generateAstrocartography } = require('../astrology/astrocartographyReader');
 const numerologyService = require('../astrology/numerologyService');
-const { VedicNumerology } = require('../services/astrology/vedicNumerology');
-const { AyurvedicAstrology } = require('../services/astrology/ayurvedicAstrology');
+const { VedicNumerology } = require('../astrology/vedicNumerology');
+const { AyurvedicAstrology } = require('../astrology/ayurvedicAstrology');
 const vedicNumerology = new VedicNumerology();
 const ayurvedicAstrology = new AyurvedicAstrology();
 
@@ -751,9 +751,23 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   case 'get_muhurta_analysis':
     response = '🕉️ *Muhurta (Electional Astrology) - Auspicious Timing*\n\nMuhurta helps you choose the most auspicious time for important life events!\n\n*Available for:*\n💒 *Weddings & Marriages*\n💼 *Business Launches & New Ventures*\n🏠 *House Warming & Home Ceremonies*\n📚 *Education & Study Beginnings*\n🛐 *Religious Ceremonies & Pujas*\n🎯 *Any Important Life Event*\n\n*What Muhurta Provides:*\n\n🕐 *Top 5 Auspicious Timings* on your preferred date\n📅 *Alternative Dates* if preferred date isn\'t ideal\n🌓 *Panchaka Dosha Analysis* (5 defects to avoid)\n⭐ *Abhijit Muhurta* (most auspicious time of day)\n🪐 *Planetary Considerations* for your event type\n📊 *Detailed Scoring* and reasoning\n\n*How to Request:*\n\nSend your request in this format:\n```\nMuhurta for [event type] on [DD/MM/YYYY] in [City, Country]\n```\n\n*Examples:*\n• "Muhurta for wedding on 15/06/2024 in Mumbai, India"\n• "Auspicious time for business launch on 01/07/2024 in Delhi, India"\n• "House warming muhurta on 20/08/2024 in Bangalore, India"\n\n*Benefits:*\n• Maximize success potential of important events\n• Align with cosmic energies and planetary influences\n• Follow ancient Vedic wisdom for timing\n• Minimize obstacles and challenges\n• Ensure harmony and prosperity\n\nWhat event are you planning? I\'ll find the perfect auspicious time for you! 🕉️';
     break;
-  case 'get_panchang_analysis':
-    response = '🕉️ *Panchang (Hindu Almanac) - Daily Guidance*\n\nPanchang provides traditional Hindu calendar information and daily guidance for spiritual and cultural activities!\n\n*Complete Panchang Includes:*\n\n🌓 *Tithi* - Lunar day with Shukla/Krishna Paksha\n⭐ *Nakshatra* - 27 Lunar constellations\n🪐 *Yoga* - 27 Planetary combinations\n⚡ *Karana* - 11 Half lunar days\n\n🌅 *Sunrise & Sunset* - Local timings for your location\n🌙 *Moon Phase* - Current lunar phase\n📅 *Weekday* - Day of the week\n\n*Inauspicious Periods:*\n😈 *Rahukalam* - Rahu\'s period (avoid important work)\n👹 *Gulikakalam* - Most inauspicious time\n⚠️ *Yamagandam* - Generally inauspicious\n\n⭐ *Abhijit Muhurta* - Most auspicious time of day\n\n*Daily Activity Guidance:*\n✅ *Recommended Activities* - Auspicious for the day\n❌ *Activities to Avoid* - Based on planetary influences\n📊 *Overall Day Rating* - Auspicious/Neutral/Inauspicious\n\n*How to Request:*\n\nSend your request in this format:\n```\nPanchang for [DD/MM/YYYY] in [City, Country]\n```\n\n*Examples:*\n• "Panchang for 15/06/2024 in Mumbai, India"\n• "Daily Panchang for today in Delhi"\n• "Hindu Almanac for Bangalore"\n\n*Perfect for:*\n• Planning religious ceremonies and pujas\n• Choosing auspicious dates for events\n• Daily spiritual practice guidance\n• Understanding cultural and festival timings\n• Avoiding inauspicious periods\n• Wedding and ceremony planning\n\n*Benefits:*\n• Follow traditional Hindu calendar wisdom\n• Plan activities according to cosmic influences\n• Avoid inauspicious times and periods\n• Maximize success of important undertakings\n• Cultural and spiritual awareness\n• Daily guidance for harmonious living\n\nWhat date and location would you like the Panchang for? 🕉️';
-    break;
+   case 'get_panchang_analysis':
+     response = '🕉️ *Panchang (Hindu Almanac) - Daily Guidance*\n\nPanchang provides traditional Hindu calendar information and daily guidance for spiritual and cultural activities!\n\n*Complete Panchang Includes:*\n\n🌓 *Tithi* - Lunar day with Shukla/Krishna Paksha\n⭐ *Nakshatra* - 27 Lunar constellations\n🪐 *Yoga* - 27 Planetary combinations\n⚡ *Karana* - 11 Half lunar days\n\n🌅 *Sunrise & Sunset* - Local timings for your location\n🌙 *Moon Phase* - Current lunar phase\n📅 *Weekday* - Day of the week\n\n*Inauspicious Periods:*\n😈 *Rahukalam* - Rahu\'s period (avoid important work)\n👹 *Gulikakalam* - Most inauspicious time\n⚠️ *Yamagandam* - Generally inauspicious\n\n⭐ *Abhijit Muhurta* - Most auspicious time of day\n\n*Daily Activity Guidance:*\n✅ *Recommended Activities* - Auspicious for the day\n❌ *Activities to Avoid* - Based on planetary influences\n📊 *Overall Day Rating* - Auspicious/Neutral/Inauspicious\n\n*How to Request:*\n\nSend your request in this format:\n```\nPanchang for [DD/MM/YYYY] in [City, Country]\n```\n\n*Examples:*\n• "Panchang for 15/06/2024 in Mumbai, India"\n• "Daily Panchang for today in Delhi"\n• "Hindu Almanac for Bangalore"\n\n*Perfect for:*\n• Planning religious ceremonies and pujas\n• Choosing auspicious dates for events\n• Daily spiritual practice guidance\n• Understanding cultural and festival timings\n• Avoiding inauspicious periods\n• Wedding and ceremony planning\n\n*Benefits:*\n• Follow traditional Hindu calendar wisdom\n• Plan activities according to cosmic influences\n• Avoid inauspicious times and periods\n• Maximize success of important undertakings\n• Cultural and spiritual awareness\n• Daily guidance for harmonious living\n\nWhat date and location would you like the Panchang for? 🕉️';
+     break;
+   case 'get_secondary_progressions':
+     if (!user.birthDate) {
+       response = 'I need your complete birth details for secondary progressions analysis.';
+       break;
+     }
+     response = generateAstrologyResponse('progressions', user);
+     break;
+   case 'get_solar_arc_directions':
+     if (!user.birthDate) {
+       response = 'I need your complete birth details for solar arc directions analysis.';
+       break;
+     }
+     response = generateAstrologyResponse('solar arc', user);
+     break;
   case 'get_synastry_analysis':
     if (!user.birthDate) {
       response = 'I need your complete birth details for synastry analysis.';

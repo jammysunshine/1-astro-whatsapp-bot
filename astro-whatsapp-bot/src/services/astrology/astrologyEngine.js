@@ -1799,7 +1799,7 @@ const generateAstrologyResponse = async(messageText, user) => {
     }
 
     try {
-      const progressions = vedicCalculator.calculateSecondaryProgressions({
+      const progressions = await vedicCalculator.calculateSecondaryProgressions({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
         birthPlace: user.birthPlace || 'Delhi'
@@ -1810,8 +1810,8 @@ const generateAstrologyResponse = async(messageText, user) => {
       }
 
       let response = '🔮 *Secondary Progressions Analysis*\n\n';
-      response += `*Age:* ${progressions.ageInYears} years old\n`;
-      response += `*Life Stage:* ${progressions.ageDescription}\n\n`;
+      response += `*Age:* ${progressions.ageInYears} years old (${progressions.ageInDays} days progressed)\n`;
+      response += `*Progressed Date:* ${progressions.formattedProgressedDate}\n\n`;
 
       response += '*Key Progressed Planets:*\n';
       progressions.keyProgressions.forEach(prog => {
@@ -1820,20 +1820,29 @@ const generateAstrologyResponse = async(messageText, user) => {
       response += '\n';
 
       if (progressions.majorThemes.length > 0) {
-        response += '*Current Themes:*\n';
+        response += '*Current Life Themes:*\n';
         progressions.majorThemes.forEach(theme => {
           response += `• ${theme}\n`;
         });
         response += '\n';
       }
 
-      response += '*How Progressions Work:*\n';
-      response += '• Planets move one day per year of life\n';
-      response += '• Progressed Sun moves ~1° per year\n';
-      response += '• Progressed Moon moves ~13-14° per year\n';
-      response += '• Shows inner development and life timing\n\n';
+      if (progressions.lifeChanges.length > 0) {
+        response += '*Life Changes & Transitions:*\n';
+        progressions.lifeChanges.forEach(change => {
+          response += `• ${change}\n`;
+        });
+        response += '\n';
+      }
 
-      response += 'Secondary progressions reveal your soul\'s journey and life lessons! 🌟';
+      response += '*How Secondary Progressions Work:*\n';
+      response += '• One day after birth equals one year of life\n';
+      response += '• Shows inner psychological development\n';
+      response += '• Reveals timing of major life changes\n';
+      response += '• Progressed Sun moves ~1° per year\n';
+      response += '• Progressed Moon moves ~13° per year\n\n';
+
+      response += 'Secondary progressions reveal your soul\'s journey through time! 🌟';
 
       return response;
     } catch (error) {

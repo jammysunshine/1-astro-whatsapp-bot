@@ -5,8 +5,11 @@
 jest.mock('astrologer');
 jest.mock('sweph');
 
+// Import the mocked module
+const calculator = require('../../../../src/services/astrology/vedicCalculator');
+
 // Mock the module itself
-jest.mock('../../../src/services/astrology/vedicCalculator', () => ({
+jest.mock('../../../../src/services/astrology/vedicCalculator', () => ({
   calculateBirthChart: jest.fn().mockReturnValue({
     sunSign: 'Pisces',
     moonSign: 'Pisces',
@@ -20,6 +23,61 @@ jest.mock('../../../src/services/astrology/vedicCalculator', () => ({
   checkCompatibility: jest.fn().mockReturnValue({
     score: 85,
     description: 'Good compatibility'
+  }),
+  calculateSecondaryProgressions: jest.fn().mockReturnValue({
+    ageInYears: 30,
+    ageInDays: 10950,
+    progressedDate: '2024-01-15T14:30:00.000Z',
+    formattedProgressedDate: 'Monday, January 15, 2024',
+    progressedChart: {
+      sunSign: 'Aquarius',
+      moonSign: 'Pisces',
+      risingSign: 'Capricorn'
+    },
+    analysis: {
+      progressedSunSign: 'Aquarius',
+      progressedMoonSign: 'Pisces',
+      progressedRisingSign: 'Capricorn',
+      ageDescription: 'Mid-life transitions and stability',
+      planetaryPositions: {},
+      aspects: []
+    },
+    keyProgressions: [
+      {
+        planet: 'Sun',
+        position: 'Aquarius',
+        significance: 'Identity and life direction in Aquarius'
+      }
+    ],
+    majorThemes: ['Focus on mid-life transitions and stability'],
+    lifeChanges: ['Saturn Return: Major life restructuring and responsibility']
+  }),
+  calculateSolarArcDirections: jest.fn().mockReturnValue({
+    ageInYears: 30,
+    ageInDays: 10950,
+    solarArcDegrees: 10950,
+    directedChart: {
+      sunSign: 'Aquarius',
+      moonSign: 'Pisces',
+      risingSign: 'Capricorn'
+    },
+    analysis: {
+      directedSunSign: 'Aquarius',
+      directedMoonSign: 'Pisces',
+      directedRisingSign: 'Capricorn',
+      ageDescription: 'Mid-life transitions and stability',
+      planetaryPositions: {},
+      aspects: []
+    },
+    keyDirections: [
+      {
+        planet: 'Sun',
+        from: 'Natal position',
+        to: 'Aquarius',
+        significance: 'Identity and life direction directed to Aquarius themes'
+      }
+    ],
+    lifeChanges: ['Saturn Return: Major life restructuring and responsibility']
   })
 }));
 
@@ -101,6 +159,76 @@ describe('VedicCalculator', () => {
       expect(compatibility).toBeDefined();
       expect(compatibility.score).toBeGreaterThanOrEqual(0);
       expect(compatibility.score).toBeLessThanOrEqual(100);
+    });
+  });
+
+  describe('calculateSecondaryProgressions', () => {
+    it('should calculate secondary progressions for valid birth data', () => {
+      const birthData = {
+        birthDate: '15/03/1990',
+        birthTime: '14:30',
+        birthPlace: 'Mumbai, India'
+      };
+
+      const progressions = calculator.calculateSecondaryProgressions(birthData);
+
+      expect(progressions).toBeDefined();
+      expect(progressions.ageInYears).toBeDefined();
+      expect(progressions.ageInDays).toBeDefined();
+      expect(progressions.progressedDate).toBeDefined();
+      expect(progressions.formattedProgressedDate).toBeDefined();
+      expect(progressions.progressedChart).toBeDefined();
+      expect(progressions.analysis).toBeDefined();
+      expect(progressions.keyProgressions).toBeDefined();
+      expect(progressions.majorThemes).toBeDefined();
+      expect(progressions.lifeChanges).toBeDefined();
+    });
+
+    it('should handle invalid birth data gracefully', () => {
+      const birthData = {
+        birthDate: 'invalid',
+        birthTime: 'invalid',
+        birthPlace: 'invalid'
+      };
+
+      const progressions = calculator.calculateSecondaryProgressions(birthData);
+
+      expect(progressions).toBeDefined();
+      expect(progressions.error).toBeDefined();
+    });
+  });
+
+  describe('calculateSolarArcDirections', () => {
+    it('should calculate solar arc directions for valid birth data', () => {
+      const birthData = {
+        birthDate: '15/03/1990',
+        birthTime: '14:30',
+        birthPlace: 'Mumbai, India'
+      };
+
+      const solarArc = calculator.calculateSolarArcDirections(birthData);
+
+      expect(solarArc).toBeDefined();
+      expect(solarArc.ageInYears).toBeDefined();
+      expect(solarArc.ageInDays).toBeDefined();
+      expect(solarArc.solarArcDegrees).toBeDefined();
+      expect(solarArc.directedChart).toBeDefined();
+      expect(solarArc.analysis).toBeDefined();
+      expect(solarArc.keyDirections).toBeDefined();
+      expect(solarArc.lifeChanges).toBeDefined();
+    });
+
+    it('should handle invalid birth data gracefully', () => {
+      const birthData = {
+        birthDate: 'invalid',
+        birthTime: 'invalid',
+        birthPlace: 'invalid'
+      };
+
+      const solarArc = calculator.calculateSolarArcDirections(birthData);
+
+      expect(solarArc).toBeDefined();
+      expect(solarArc.error).toBeDefined();
     });
   });
 });

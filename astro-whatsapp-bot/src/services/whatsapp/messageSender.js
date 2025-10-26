@@ -31,6 +31,10 @@ const sendTextMessage = async (phoneNumber, message, options = {}) => {
       throw new Error('WhatsApp API credentials not configured');
     }
 
+    // Debug logging for token issues
+    logger.debug(`🔍 WhatsApp Token Debug - Length: ${WHATSAPP_ACCESS_TOKEN.length}, Starts with: ${WHATSAPP_ACCESS_TOKEN.substring(0, 10)}, Ends with: ${WHATSAPP_ACCESS_TOKEN.substring(WHATSAPP_ACCESS_TOKEN.length - 10)}`);
+    logger.debug(`🔍 Phone Number ID: ${WHATSAPP_PHONE_NUMBER_ID}`);
+
     const url = `${WHATSAPP_API_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
     // Prepare message payload

@@ -59,6 +59,7 @@ const connectDB = async () => {
     // Check if MONGODB_URI is set (for testing with memory server)
     if (process.env.MONGODB_URI) {
       mongoURI = process.env.MONGODB_URI;
+      logger.debug(`🔗 Using MONGODB_URI: ${mongoURI}`);
       logger.info(
         `🔗 Attempting DB connection: ${mongoURI.replace(/:([^:@]{4})[^:@]*@/, ':****@')}`
       );
@@ -68,6 +69,10 @@ const connectDB = async () => {
       const dbPassword = process.env.DB_PASSWORD;
       const dbHost = process.env.DB_HOST;
       const dbName = process.env.DB_NAME;
+
+      logger.debug(`🔗 Using DB_USER: ${dbUser || 'Not Set'}`);
+      logger.debug(`🔗 Using DB_HOST: ${dbHost || 'Not Set'}`);
+      logger.debug(`🔗 Using DB_NAME: ${dbName || 'Not Set'}`);
 
       if (!dbUser || !dbPassword || !dbHost || !dbName) {
         throw new Error(

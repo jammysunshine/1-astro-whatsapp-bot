@@ -13,6 +13,14 @@ const { errorHandler } = require('./utils/errorHandler');
 const logger = require('./utils/logger');
 
 const app = express();
+
+// Log WhatsApp credentials at startup
+const whatsappAccessToken = process.env.W1_WHATSAPP_ACCESS_TOKEN;
+const whatsappPhoneNumberId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
+logger.debug(`WhatsApp Access Token (masked): ${whatsappAccessToken ? whatsappAccessToken.substring(0, 5) + '...' + whatsappAccessToken.substring(whatsappAccessToken.length - 5) : 'Not Set'}`);
+logger.debug(`WhatsApp Phone Number ID: ${whatsappPhoneNumberId || 'Not Set'}`);
+
+// Connect to MongoDB
 const PORT = process.env.W1_PORT || 3000;
 
 // Middleware
@@ -78,6 +86,48 @@ app.get('/health', (req, res) => {
     },
     ...(isMemoryCritical && { warning: 'High memory usage detected' }),
   });
+});
+
+// Debug WhatsApp endpoint
+app.get('/debug-whatsapp', async (req, res) => {
+  try {
+    const axios = require('axios');
+    const token = process.env.W1_WHATSAPP_ACCESS_TOKEN;
+    const phoneId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
+
+    const debug = {
+      tokenLength: token ? token.length : 0,
+      tokenStart: token ? token.substring(0, 10) : null,
+      tokenEnd: token ? token.substring(token.length - 10) : null,
+      phoneId: phoneId,
+      timestamp: new Date().toISOString()
+    };
+
+    // Test WhatsApp API
+    const response = await axios.get(`https://graph.facebook.com/v18.0/${phoneId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      timeout: 10000
+    });
+
+    res.json({
+      status: 'success',
+      debug: debug,
+      whatsappResponse: response.data
+    });
+  } catch (error) {
+    res.json({
+      status: 'error',
+      debug: {
+        tokenLength: process.env.W1_WHATSAPP_ACCESS_TOKEN ? process.env.W1_WHATSAPP_ACCESS_TOKEN.length : 0,
+        phoneId: process.env.W1_WHATSAPP_PHONE_NUMBER_ID,
+        error: error.message,
+        response: error.response?.data
+      }
+    });
+  }
 });
 
 // Readiness check endpoint

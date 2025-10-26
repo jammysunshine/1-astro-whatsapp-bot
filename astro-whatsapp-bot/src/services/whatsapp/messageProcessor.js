@@ -25,20 +25,20 @@ const numerologyService = require('../astrology/numerologyService');
 
 // Mapping for list reply IDs to actions
 const listActionMapping = {
-  'btn_daily_horoscope': 'get_daily_horoscope',
-  'btn_birth_chart': 'show_birth_chart',
-  'btn_compatibility': 'initiate_compatibility_flow',
-  'btn_tarot': 'get_tarot_reading',
-  'btn_iching': 'get_iching_reading',
-  'btn_palmistry': 'get_palmistry_analysis',
-  'btn_nadi': 'show_nadi_flow',
-  'btn_kabbalistic': 'get_kabbalistic_analysis',
-  'btn_mayan': 'get_mayan_analysis',
-  'btn_celtic': 'get_celtic_analysis',
-  'btn_horary': 'get_horary_reading',
-  'btn_chinese': 'show_chinese_flow',
-  'btn_numerology': 'get_numerology_report',
-  'btn_astrocartography': 'get_astrocartography_analysis'
+  btn_daily_horoscope: 'get_daily_horoscope',
+  btn_birth_chart: 'show_birth_chart',
+  btn_compatibility: 'initiate_compatibility_flow',
+  btn_tarot: 'get_tarot_reading',
+  btn_iching: 'get_iching_reading',
+  btn_palmistry: 'get_palmistry_analysis',
+  btn_nadi: 'show_nadi_flow',
+  btn_kabbalistic: 'get_kabbalistic_analysis',
+  btn_mayan: 'get_mayan_analysis',
+  btn_celtic: 'get_celtic_analysis',
+  btn_horary: 'get_horary_reading',
+  btn_chinese: 'show_chinese_flow',
+  btn_numerology: 'get_numerology_report',
+  btn_astrocartography: 'get_astrocartography_analysis'
 };
 
 /**

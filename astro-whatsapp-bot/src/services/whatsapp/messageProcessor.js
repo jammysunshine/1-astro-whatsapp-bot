@@ -418,38 +418,20 @@ const processFlowButtonReply = async (phoneNumber, buttonId, user, session) => {
     logger.warn(
       `⚠️ Current step '${session.currentStep}' not interactive for button reply, clearing session to allow menu interactions (v2)`
     );
-    // Clear the session so button clicks can be handled as main menu actions
+    // Clear the session and send main menu
     const { deleteUserSession } = require('../../models/userModel');
     await deleteUserSession(phoneNumber);
-    // Fall back to main menu processing
     const mainMenu = getMenu('main_menu');
     if (mainMenu) {
-      const button = mainMenu.buttons.find(btn => btn.id === buttonId);
-      if (button && button.action) {
-        logger.info(
-          `🎯 Executing main menu action: ${button.action} for button ${buttonId} (fallback from invalid flow state)`
-        );
-        try {
-          await executeMenuAction(phoneNumber, user, button.action);
-          logger.info(
-            `✅ Main menu action ${button.action} completed successfully`
-          );
-        } catch (error) {
-          logger.error(
-            `❌ Error executing main menu action ${button.action}:`,
-            error
-          );
-          await sendMessage(
-            phoneNumber,
-            'Sorry, I encountered an error processing your request. Please try again.'
-          );
-        }
-      } else {
-        await sendMessage(
-          phoneNumber,
-          "I'm sorry, I didn't recognize that option. Please try again."
-        );
-      }
+      const buttons = mainMenu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title },
+      }));
+      await sendMessage(
+        phoneNumber,
+        { type: 'button', body: mainMenu.body, buttons },
+        'interactive'
+      );
     } else {
       await sendMessage(
         phoneNumber,
@@ -544,7 +526,6 @@ const executeMenuAction = async (phoneNumber, user, action) => {
       break;
     case 'show_birth_chart':
       try {
-        const vedicCalculator = require('../services/astrology/vedicCalculator');
         const chartData = vedicCalculator.generateCompleteVedicAnalysis({
           birthDate: user.birthDate,
           birthTime: user.birthTime,
@@ -837,14 +818,11 @@ const executeMenuAction = async (phoneNumber, user, action) => {
     case 'show_comprehensive_menu':
       const comprehensiveMenu = getMenu('comprehensive_menu');
       if (comprehensiveMenu) {
-        const buttons = comprehensiveMenu.buttons.map(button => ({
-          type: 'reply',
-          reply: { id: button.id, title: button.title },
-        }));
-        await sendMessage(
+        await sendListMessage(
           phoneNumber,
-          { type: 'button', body: comprehensiveMenu.body, buttons },
-          'interactive'
+          comprehensiveMenu.body,
+          'Select Service',
+          comprehensiveMenu.sections
         );
       }
       return null;

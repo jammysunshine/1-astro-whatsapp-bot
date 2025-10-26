@@ -201,7 +201,7 @@
       "show_horoscope": {
         "interactive": {
           "type": "button_reply",
-          "body": "🔮 *Your Daily Horoscope*\n\n{sunSign} - {horoscopeText}\n\n💫 *Lucky Color:* {luckyColor}\n🎯 *Lucky Number:* {luckyNumber}\n💝 *Love:* {loveText}\n💼 *Career:* {careerText}\n💰 *Finance:* {financeText}\n🏥 *Health:* {healthText}\n\nWhat would you like to explore next?",
+          "body": "This should not be sent",
           "buttons": [
             {
               "id": "horoscope_again",

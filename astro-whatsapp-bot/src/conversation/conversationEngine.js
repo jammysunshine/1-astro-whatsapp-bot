@@ -493,24 +493,41 @@ const processFlowMessage = async (message, user, flowId) => {
           );
           return true;
         } else {
-          if (nextStep.interactive) {
-            let body = nextStep.interactive.body.replace(
-              '{userName}',
-              user.name || 'cosmic explorer'
-            );
-            // Replace placeholders from session data
-            Object.keys(session.flowData).forEach(key => {
-              body = body.replace(
-                new RegExp(`{${key}}`, 'g'),
-                session.flowData[key]
+            if (nextStep.interactive) {
+              // Check if message was already sent by action
+              if (session.flowData.skipMessage) {
+                session.flowData.skipMessage = false;
+                await setUserSession(phoneNumber, session);
+                return true;
+              }
+
+              let body = nextStep.interactive.body.replace(
+                '{userName}',
+                user.name || 'cosmic explorer'
               );
-            });
-            // Add calculated values like sun sign
-            if (session.flowData.birthDate) {
-              const sunSign = vedicCalculator.calculateSunSign(
-                session.flowData.birthDate
+              // Replace placeholders from session data
+              Object.keys(session.flowData).forEach(key => {
+                body = body.replace(
+                  new RegExp(`{${key}}`, 'g'),
+                  session.flowData[key]
+                );
+              });
+              // Add calculated values like sun sign
+              if (session.flowData.birthDate) {
+                const sunSign = vedicCalculator.calculateSunSign(
+                  session.flowData.birthDate
+                );
+                body = body.replace('{sunSign}', sunSign);
+              }
+              const buttons = nextStep.interactive.buttons.map(button => ({
+                type: 'reply',
+                reply: { id: button.id, title: button.title },
+              }));
+              await sendMessage(
+                phoneNumber,
+                { type: 'button', body, buttons },
+                'interactive'
               );
-              body = body.replace('{sunSign}', sunSign);
             }
             const buttons = nextStep.interactive.buttons.map(button => ({
               type: 'reply',
@@ -834,18 +851,18 @@ const executeFlowAction = async (
         );
         const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
 
-        // Store horoscope data in session for interactive display
-        session.flowData.horoscopeText = horoscopeData.general;
-        session.flowData.luckyColor = horoscopeData.luckyColor;
-        session.flowData.luckyNumber = horoscopeData.luckyNumber;
-        session.flowData.loveText = horoscopeData.love;
-        session.flowData.careerText = horoscopeData.career;
-        session.flowData.financeText = horoscopeData.finance;
-        session.flowData.healthText = horoscopeData.health;
-        session.flowData.sunSign = sunSign;
+        const body = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n💫 *Lucky Color:* ${horoscopeData.luckyColor}\n🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n💝 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\nWhat would you like to explore next?`;
 
-        await setUserSession(phoneNumber, session);
+        const buttons = [
+          { type: 'reply', reply: { id: 'horoscope_again', title: '🔄 Another Reading' } },
+          { type: 'reply', reply: { id: 'horoscope_menu', title: '🏠 Main Menu' } },
+        ];
 
+        await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
+
+        // Skip the flow's message sending
+        const session = await getUserSession(phoneNumber);
+        session.flowData.skipMessage = true;
         await setUserSession(phoneNumber, session);
       } catch (error) {
         logger.error('Error generating daily horoscope:', error);

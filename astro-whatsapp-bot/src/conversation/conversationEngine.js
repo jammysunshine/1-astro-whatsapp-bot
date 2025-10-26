@@ -325,15 +325,18 @@ const processFlowMessage = async(message, user, flowId) => {
       session.flowData = {};
       await setUserSession(phoneNumber, session);
     }
-    if (!flow) {
-      logger.error(`❌ Conversation flow '${flowId}' not found.`);
-      await sendMessage(
-        phoneNumber,
-        'I\'m sorry, I encountered an internal error. Please try again later.'
-      );
-      await deleteUserSession(phoneNumber);
-      return false;
-    }
+    // This second check for flow is redundant after moving its initialization
+    // and should be removed or refactored if it's meant to handle a different case.
+    // For now, commenting it out as it's causing confusion and potential issues.
+    // if (!flow) {
+    //   logger.error(`❌ Conversation flow '${flowId}' not found.`);
+    //   await sendMessage(
+    //     phoneNumber,
+    //     'I\'m sorry, I encountered an internal error. Please try again later.'
+    //   );
+    //   await deleteUserSession(phoneNumber);
+    //   return false;
+    // }
 
     // Get current step from session
     const currentStepId = session.currentStep;

@@ -204,6 +204,16 @@
             "id": "btn_astrocartography",
             "title": "Astrocartography",
             "description": "Locational astrology"
+          },
+          {
+            "id": "btn_progressions",
+            "title": "Secondary Progressions",
+            "description": "Soul's journey and life development"
+          },
+          {
+            "id": "btn_solar_arc",
+            "title": "Solar Arc Directions",
+            "description": "Major life changes and turning points"
           }
         ]
       }

@@ -38,7 +38,9 @@ const listActionMapping = {
   btn_horary: 'get_horary_reading',
   btn_chinese: 'show_chinese_flow',
   btn_numerology: 'get_numerology_report',
-  btn_astrocartography: 'get_astrocartography_analysis'
+  btn_astrocartography: 'get_astrocartography_analysis',
+  btn_progressions: 'get_secondary_progressions',
+  btn_solar_arc: 'get_solar_arc_directions'
 };
 
 /**
@@ -827,6 +829,50 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     response =
         'For horary astrology, please ask a specific question like "Horary: When will I find a job?" or "Horary: Will my relationship work out?"';
     break;
+  case 'get_secondary_progressions':
+    if (!user.birthDate) {
+      response = 'I need your complete birth details for secondary progressions analysis.';
+      break;
+    }
+    try {
+      const progressions = vedicCalculator.calculateSecondaryProgressions({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
+
+      if (progressions.error) {
+        response = `I encountered an issue: ${progressions.error}`;
+      } else {
+        response = `🔮 *Secondary Progressions*\n\n*Age:* ${progressions.ageInYears} years\n*Life Stage:* ${progressions.ageDescription}\n\n*Key Progressions:*\n${progressions.keyProgressions.map(p => `• ${p.planet}: ${p.position} (${p.significance})`).join('\n')}\n\n*Current Themes:* ${progressions.majorThemes.join(', ')}\n\nSecondary progressions show your soul's journey!`;
+      }
+    } catch (error) {
+      logger.error('Error getting secondary progressions:', error);
+      response = 'I\'m having trouble calculating your secondary progressions.';
+    }
+    break;
+  case 'get_solar_arc_directions':
+    if (!user.birthDate) {
+      response = 'I need your complete birth details for solar arc directions analysis.';
+      break;
+    }
+    try {
+      const solarArc = vedicCalculator.calculateSolarArcDirections({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
+
+      if (solarArc.error) {
+        response = `I encountered an issue: ${solarArc.error}`;
+      } else {
+        response = `☀️ *Solar Arc Directions*\n\n*Age:* ${solarArc.ageInYears} years\n*Arc Movement:* ${solarArc.solarArcDegrees}°\n\n*Key Directions:*\n${solarArc.keyDirections.map(d => `• ${d.planet}: ${d.from} → ${d.to}`).join('\n')}\n\n*Life Changes:* ${solarArc.lifeChanges.join(', ')}\n\nSolar arc directions reveal major life transformations!`;
+      }
+    } catch (error) {
+      logger.error('Error getting solar arc directions:', error);
+      response = 'I\'m having trouble calculating your solar arc directions.';
+    }
+    break;
   case 'show_divination_menu':
     const divinationMenu = getMenu('divination_menu');
     if (divinationMenu) {
@@ -925,7 +971,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     }
     return null;
    case 'show_comprehensive_menu':
-     const comprehensiveResponse = `🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:\n\n*Core Services:*\n1. 📅 Daily Horoscope\n2. 📊 Full Birth Chart\n3. 💕 Compatibility\n\n*Divination Systems:*\n4. 🔮 Tarot Reading\n5. 🏮 I Ching Oracle\n6. 🤲 Palmistry\n\n*Ancient Traditions:*\n7. 📜 Nadi Astrology\n8. 🌳 Kabbalistic\n9. 🏛️ Mayan Calendar\n10. 🍃 Celtic Wisdom\n\n*Advanced Services:*\n11. ❓ Horary Question\n12. 🐉 Chinese BaZi\n13. 🔢 Numerology\n14. 🌍 Astrocartography\n\nReply with the number or service name to get started!`;
+     const comprehensiveResponse = `🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:\n\n*Core Services:*\n1. 📅 Daily Horoscope\n2. 📊 Full Birth Chart\n3. 💕 Compatibility\n\n*Divination Systems:*\n4. 🔮 Tarot Reading\n5. 🏮 I Ching Oracle\n6. 🤲 Palmistry\n\n*Ancient Traditions:*\n7. 📜 Nadi Astrology\n8. 🌳 Kabbalistic\n9. 🏛️ Mayan Calendar\n10. 🍃 Celtic Wisdom\n\n*Advanced Services:*\n11. ❓ Horary Question\n12. 🐉 Chinese BaZi\n13. 🔢 Numerology\n14. 🌍 Astrocartography\n\n*Predictive Astrology:*\n15. 🔮 Secondary Progressions\n16. ☀️ Solar Arc Directions\n\nReply with the number or service name to get started!`;
      await sendMessage(phoneNumber, comprehensiveResponse);
      return null;
   default:

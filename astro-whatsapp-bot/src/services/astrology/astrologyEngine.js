@@ -373,46 +373,146 @@ const generateAstrologyResponse = async(messageText, user) => {
     }
   }
 
-  // Birth chart requests
-  if (matchesIntent(message, ['birth chart', 'kundli', 'chart', /^kundli/]) ||
-      (matchesIntent(message, ['complete']) && matchesIntent(message, ['analysis']))) {
+  // Secondary progressions requests
+  if (matchesIntent(message, ['progressions', 'secondary progressions', 'progressed chart', /^progressions/])) {
     if (!user.birthDate) {
-      return 'To generate your complete Vedic birth chart analysis, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      return 'For secondary progressions analysis, I need your complete birth details to calculate your progressed chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
 
     try {
-      const chartData = vedicCalculator.generateCompleteVedicAnalysis({
-        name: user.name,
+      const progressions = vedicCalculator.calculateSecondaryProgressions({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
         birthPlace: user.birthPlace || 'Delhi'
       });
 
-      return chartData.comprehensiveDescription;
-    } catch (error) {
-      logger.error('Error generating complete Vedic analysis:', error);
-      // Fallback to basic chart
-      try {
-        const basicChart = vedicCalculator.generateBasicBirthChart({
-          name: user.name,
-          birthDate: user.birthDate,
-          birthTime: user.birthTime || '12:00',
-          birthPlace: user.birthPlace || 'Delhi'
-        });
-
-        let response = '📊 *Your Vedic Birth Chart*\n\n';
-        response += `☀️ *Sun Sign:* ${basicChart.sunSign}\n`;
-        response += `🌙 *Moon Sign:* ${basicChart.moonSign}\n`;
-        response += `⬆️ *Rising Sign:* ${basicChart.risingSign}\n\n`;
-        response +=
-          'I\'m having trouble generating the full analysis right now. Please try again later.';
-
-        return response;
-      } catch (fallbackError) {
-        return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
+      if (progressions.error) {
+        return `I encountered an issue calculating your progressions: ${progressions.error}`;
       }
+
+      let response = '🔮 *Secondary Progressions Analysis*\n\n';
+      response += `*Age:* ${progressions.ageInYears} years old\n`;
+      response += `*Life Stage:* ${progressions.ageDescription}\n\n`;
+
+      response += '*Key Progressed Planets:*\n';
+      progressions.keyProgressions.forEach(prog => {
+        response += `• *${prog.planet}:* ${prog.position} - ${prog.significance}\n`;
+      });
+      response += '\n';
+
+      if (progressions.majorThemes.length > 0) {
+        response += '*Current Themes:*\n';
+        progressions.majorThemes.forEach(theme => {
+          response += `• ${theme}\n`;
+        });
+        response += '\n';
+      }
+
+      response += '*How Progressions Work:*\n';
+      response += '• Planets move one day per year of life\n';
+      response += '• Progressed Sun moves ~1° per year\n';
+      response += '• Progressed Moon moves ~13-14° per year\n';
+      response += '• Shows inner development and life timing\n\n';
+
+      response += 'Secondary progressions reveal your soul\'s journey and life lessons! 🌟';
+
+      return response;
+    } catch (error) {
+      logger.error('Error generating secondary progressions:', error);
+      return 'I\'m having trouble calculating your secondary progressions right now. Please try again later.';
     }
   }
+
+  // Solar arc directions requests
+  if (matchesIntent(message, ['solar arc', 'arc directions', 'directed chart', /^solar.?arc/])) {
+    if (!user.birthDate) {
+      return 'For solar arc directions analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const solarArc = vedicCalculator.calculateSolarArcDirections({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
+
+      if (solarArc.error) {
+        return `I encountered an issue calculating your solar arc directions: ${solarArc.error}`;
+      }
+
+      let response = '☀️ *Solar Arc Directions Analysis*\n\n';
+      response += `*Age:* ${solarArc.ageInYears} years old\n`;
+      response += `*Solar Arc Movement:* ${solarArc.solarArcDegrees}°\n\n`;
+
+      response += '*Key Directed Planets:*\n';
+      solarArc.keyDirections.slice(0, 3).forEach(direction => {
+        response += `• *${direction.planet}:* ${direction.from} → ${direction.to}\n`;
+        response += `  ${direction.significance}\n`;
+      });
+      response += '\n';
+
+      if (solarArc.lifeChanges.length > 0) {
+        response += '*Life Changes:*\n';
+        solarArc.lifeChanges.forEach(change => {
+          response += `• ${change}\n`;
+        });
+        response += '\n';
+      }
+
+      response += '*How Solar Arc Works:*\n';
+      response += '• All planets move same distance as the Sun\n';
+      response += '• Shows major life changes and turning points\n';
+      response += '• Powerful for predicting significant events\n\n';
+
+      response += 'Solar arc directions reveal major life transformations! ⚡';
+
+      return response;
+    } catch (error) {
+      logger.error('Error generating solar arc directions:', error);
+      return 'I\'m having trouble calculating your solar arc directions right now. Please try again later.';
+    }
+  }
+
+  // Birth chart requests
+   if (matchesIntent(message, ['birth chart', 'kundli', 'chart', /^kundli/]) ||
+       (matchesIntent(message, ['complete']) && matchesIntent(message, ['analysis']))) {
+     if (!user.birthDate) {
+       return 'To generate your complete Vedic birth chart analysis, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+     }
+
+     try {
+       const chartData = vedicCalculator.generateCompleteVedicAnalysis({
+         name: user.name,
+         birthDate: user.birthDate,
+         birthTime: user.birthTime || '12:00',
+         birthPlace: user.birthPlace || 'Delhi'
+       });
+
+       return chartData.comprehensiveDescription;
+     } catch (error) {
+       logger.error('Error generating complete Vedic analysis:', error);
+       // Fallback to basic chart
+       try {
+         const basicChart = vedicCalculator.generateBasicBirthChart({
+           name: user.name,
+           birthDate: user.birthDate,
+           birthTime: user.birthTime || '12:00',
+           birthPlace: user.birthPlace || 'Delhi'
+         });
+
+         let response = '📊 *Your Vedic Birth Chart*\n\n';
+         response += `☀️ *Sun Sign:* ${basicChart.sunSign}\n`;
+         response += `🌙 *Moon Sign:* ${basicChart.moonSign}\n`;
+         response += `⬆️ *Rising Sign:* ${basicChart.risingSign}\n\n`;
+         response +=
+           'I\'m having trouble generating the full analysis right now. Please try again later.';
+
+         return response;
+       } catch (fallbackError) {
+         return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
+       }
+     }
+   }
 
   // Compatibility requests
   if (matchesIntent(message, ['compatibility', 'match', 'compatible', /^compatib/])) {
@@ -433,9 +533,9 @@ const generateAstrologyResponse = async(messageText, user) => {
   }
 
   // Help and general responses
-  if (matchesIntent(message, ['help', 'what can you do', 'commands', /^help/, /^what do you do/])) {
-    return '🌟 *I\'m your Personal Cosmic Coach!*\n\nI can help you with:\n\n📅 *Daily Horoscope* - Personalized daily guidance\n📊 *Vedic Birth Chart* - Your cosmic blueprint with advanced dasha & transits\n🌏 *BaZi Analysis* - Chinese Four Pillars astrology\n💕 *Compatibility* - Relationship insights\n\n🔮 *Divination Systems:*\n🔮 *Tarot Readings* - Single card, 3-card, or Celtic Cross spreads\n🤲 *Palmistry* - Hand analysis and life path insights\n📜 *Nadi Astrology* - South Indian palm leaf predictions\n\n🌳 *Mystical Traditions:*\n🌳 *Kabbalistic Astrology* - Tree of Life and Sephiroth analysis\n🗓️ *Mayan Calendar* - Tzolk\'in and Haab date calculations\n🍃 *Celtic Astrology* - Tree signs and animal totems\n🔮 *I Ching* - Ancient Chinese oracle\n\n🗺️ *Advanced Systems:*\n🗺️ *Astrocartography* - Planetary lines and relocation guidance\n⏰ *Horary Astrology* - Answers to specific questions\n\nJust send me a message like:\n• "What\'s my horoscope today?"\n• "Show me my birth chart"\n• "Tarot reading" or "Palmistry"\n• "Kabbalistic analysis" or "Mayan calendar"\n• "I Ching oracle" or "Astrocartography"\n• "Horary: When will I find love?"\n\nWhat aspect of your cosmic journey interests you? ✨';
-  }
+   if (matchesIntent(message, ['help', 'what can you do', 'commands', /^help/, /^what do you do/])) {
+     return '🌟 *I\'m your Personal Cosmic Coach!*\n\nI can help you with:\n\n📅 *Daily Horoscope* - Personalized daily guidance\n📊 *Vedic Birth Chart* - Your cosmic blueprint with advanced dasha & transits\n🌏 *BaZi Analysis* - Chinese Four Pillars astrology\n💕 *Compatibility* - Relationship insights\n\n🔮 *Divination Systems:*\n🔮 *Tarot Readings* - Single card, 3-card, or Celtic Cross spreads\n🤲 *Palmistry* - Hand analysis and life path insights\n📜 *Nadi Astrology* - South Indian palm leaf predictions\n\n🌳 *Mystical Traditions:*\n🌳 *Kabbalistic Astrology* - Tree of Life and Sephiroth analysis\n🗓️ *Mayan Calendar* - Tzolk\'in and Haab date calculations\n🍃 *Celtic Astrology* - Tree signs and animal totems\n🔮 *I Ching* - Ancient Chinese oracle\n\n🗺️ *Advanced Systems:*\n🗺️ *Astrocartography* - Planetary lines and relocation guidance\n⏰ *Horary Astrology* - Answers to specific questions\n\n🔬 *Predictive Astrology:*\n🔬 *Secondary Progressions* - Soul\'s journey and life development\n☀️ *Solar Arc Directions* - Major life changes and turning points\n\nJust send me a message like:\n• "What\'s my horoscope today?"\n• "Show me my birth chart"\n• "Secondary progressions" or "Solar arc directions"\n• "Tarot reading" or "Palmistry"\n• "Kabbalistic analysis" or "Mayan calendar"\n• "I Ching oracle" or "Astrocartography"\n• "Horary: When will I find love?"\n\nWhat aspect of your cosmic journey interests you? ✨';
+   }
 
   // Default response with interactive options
   return `✨ Thank you for your message, ${user.name || 'cosmic explorer'}!\n\nI'm here to guide you through your cosmic journey. I can provide personalized horoscopes, birth chart analysis, compatibility insights, and much more.\n\nWhat aspect of your life would you like cosmic guidance on today? 🌟`;

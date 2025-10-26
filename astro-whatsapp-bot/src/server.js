@@ -102,7 +102,8 @@ app.get('/debug-whatsapp', async (req, res) => {
       tokenMasked: token ? `${token.substring(0, 20)}...${token.substring(token.length - 20)}` : null,
       envVarExists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN,
       phoneId: phoneId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      deploymentCheck: "v2"
     };
 
     // Test WhatsApp API

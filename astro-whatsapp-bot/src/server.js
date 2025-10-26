@@ -9,7 +9,7 @@ const helmet = require('helmet');
 const { connectDB } = require('./config/database');
 const {
   handleWhatsAppWebhook,
-  verifyWhatsAppWebhook,
+  verifyWhatsAppWebhook
 } = require('./controllers/whatsappController');
 const paymentService = require('./services/payment/paymentService');
 const { errorHandler } = require('./utils/errorHandler');
@@ -20,7 +20,7 @@ const app = express();
 // Log WhatsApp credentials at startup
 const whatsappAccessToken = process.env.W1_WHATSAPP_ACCESS_TOKEN;
 const whatsappPhoneNumberId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
-logger.debug(`WhatsApp Access Token (masked): ${whatsappAccessToken ? whatsappAccessToken.substring(0, 5) + '...' + whatsappAccessToken.substring(whatsappAccessToken.length - 5) : 'Not Set'}`);
+logger.debug(`WhatsApp Access Token (masked): ${whatsappAccessToken ? `${whatsappAccessToken.substring(0, 5)}...${whatsappAccessToken.substring(whatsappAccessToken.length - 5)}` : 'Not Set'}`);
 logger.debug(`WhatsApp Phone Number ID: ${whatsappPhoneNumberId || 'Not Set'}`);
 
 // Connect to MongoDB
@@ -32,7 +32,7 @@ const PORT = process.env.W1_PORT || 3000;
 app.use(
   helmet({
     frameguard: { action: 'deny' },
-    xssFilter: { mode: 'block' },
+    xssFilter: { mode: 'block' }
   })
 );
 app.use(cors());
@@ -41,7 +41,7 @@ app.use(
     verify: (req, res, buf, encoding) => {
       req.rawBody = buf.toString(encoding);
     },
-    limit: '10mb',
+    limit: '10mb'
   })
 );
 app.use(
@@ -50,7 +50,7 @@ app.use(
     verify: (req, res, buf, encoding) => {
       req.rawBody = buf.toString(encoding);
     },
-    limit: '10mb',
+    limit: '10mb'
   })
 );
 
@@ -58,7 +58,7 @@ app.use(
 app.get('/', (req, res) => {
   res.json({
     message: 'Astrology WhatsApp Bot API is running',
-    version: '1.0.0',
+    version: '1.0.0'
   });
 });
 
@@ -69,7 +69,7 @@ app.get('/health', (req, res) => {
     rss: Math.round(memUsage.rss / 1024 / 1024),
     heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024),
     heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024),
-    external: Math.round(memUsage.external / 1024 / 1024),
+    external: Math.round(memUsage.external / 1024 / 1024)
   };
 
   // Check if memory usage is too high (Railway containers typically have 512MB-1GB limits)
@@ -87,14 +87,14 @@ app.get('/health', (req, res) => {
     environment: {
       nodeVersion: process.version,
       platform: process.platform,
-      arch: process.arch,
+      arch: process.arch
     },
-    ...(isMemoryCritical && { warning: 'High memory usage detected' }),
+    ...(isMemoryCritical && { warning: 'High memory usage detected' })
   });
 });
 
 // Debug WhatsApp endpoint
-app.get('/debug-whatsapp', async (req, res) => {
+app.get('/debug-whatsapp', async(req, res) => {
   try {
     const axios = require('axios');
     // Reconstruct token from parts (same logic as messageSender)
@@ -114,15 +114,15 @@ app.get('/debug-whatsapp', async (req, res) => {
       envVarExists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN,
       envPart1Exists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN_PART1,
       envPart2Exists: !!process.env.W1_WHATSAPP_ACCESS_TOKEN_PART2,
-      phoneId: phoneId,
+      phoneId,
       timestamp: new Date().toISOString(),
-      deploymentCheck: "v5"
+      deploymentCheck: 'v5'
     };
 
     // Test WhatsApp API
     const response = await axios.get(`https://graph.facebook.com/v18.0/${phoneId}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       timeout: 10000
@@ -130,7 +130,7 @@ app.get('/debug-whatsapp', async (req, res) => {
 
     res.json({
       status: 'success',
-      debug: debug,
+      debug,
       whatsappResponse: response.data
     });
   } catch (error) {
@@ -154,7 +154,7 @@ app.get('/debug-whatsapp', async (req, res) => {
         phoneId: process.env.W1_WHATSAPP_PHONE_NUMBER_ID,
         error: error.message,
         response: error.response?.data,
-        deploymentCheck: "v5"
+        deploymentCheck: 'v5'
       }
     });
   }
@@ -165,7 +165,7 @@ app.get('/ready', (req, res) => {
   // Check if essential services are available
   const essentialEnvVars = [
     'W1_WHATSAPP_ACCESS_TOKEN',
-    'W1_WHATSAPP_PHONE_NUMBER_ID',
+    'W1_WHATSAPP_PHONE_NUMBER_ID'
   ];
 
   const missingVars = essentialEnvVars.filter(varName => !process.env[varName]);
@@ -179,14 +179,14 @@ app.get('/ready', (req, res) => {
       status: 'ready (with warnings)',
       timestamp: new Date().toISOString(),
       service: 'Astrology WhatsApp Bot API',
-      warnings: `Missing env vars: ${missingVars.join(', ')}`,
+      warnings: `Missing env vars: ${missingVars.join(', ')}`
     });
   }
 
   res.status(200).json({
     status: 'ready',
     timestamp: new Date().toISOString(),
-    service: 'Astrology WhatsApp Bot API',
+    service: 'Astrology WhatsApp Bot API'
   });
 });
 
@@ -195,7 +195,7 @@ app.post('/webhook', handleWhatsAppWebhook);
 app.get('/webhook', verifyWhatsAppWebhook);
 
 // Payment webhook endpoints
-app.post('/webhooks/razorpay', async (req, res) => {
+app.post('/webhooks/razorpay', async(req, res) => {
   try {
     const result = await paymentService.handleRazorpayWebhook(req.body);
     res.status(200).json(result);
@@ -205,7 +205,7 @@ app.post('/webhooks/razorpay', async (req, res) => {
   }
 });
 
-app.post('/webhooks/stripe', async (req, res) => {
+app.post('/webhooks/stripe', async(req, res) => {
   try {
     const result = await paymentService.handleStripeWebhook(req.body);
     res.status(200).json(result);
@@ -224,7 +224,7 @@ app.get('/rate-limit-test', (req, res) => {
 app.use((req, res) => {
   res.status(404).json({
     error: 'Not Found',
-    message: 'Route not found',
+    message: 'Route not found'
   });
 });
 
@@ -276,7 +276,7 @@ if (process.env.NODE_ENV !== 'test') {
       rss: Math.round(memUsage.rss / 1024 / 1024),
       heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024),
       heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024),
-      external: Math.round(memUsage.external / 1024 / 1024),
+      external: Math.round(memUsage.external / 1024 / 1024)
     };
 
     if (memUsageMB.heapUsed > 200) {

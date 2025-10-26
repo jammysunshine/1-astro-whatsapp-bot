@@ -18,7 +18,7 @@ class CelticReader {
         qualities: ['Pioneer', 'Cleansing', 'Innocence', 'Protection'],
         symbol: '🌿',
         treeWisdom:
-          'The birch tree teaches us to release the old and embrace new beginnings with courage and purity.',
+          'The birch tree teaches us to release the old and embrace new beginnings with courage and purity.'
       },
       Rowan: {
         dates: 'Jan 21 - Feb 17',
@@ -28,7 +28,7 @@ class CelticReader {
         qualities: ['Protection', 'Inspiration', 'Vision', 'Defense'],
         symbol: '🌳',
         treeWisdom:
-          'The rowan guards against harm and inspires creative vision and spiritual protection.',
+          'The rowan guards against harm and inspires creative vision and spiritual protection.'
       },
       Ash: {
         dates: 'Feb 18 - Mar 17',
@@ -38,7 +38,7 @@ class CelticReader {
         qualities: ['Strength', 'Adaptability', 'Connection', 'Wisdom'],
         symbol: '🌳',
         treeWisdom:
-          'The ash tree bridges worlds, offering strength, flexibility, and connection to ancient wisdom.',
+          'The ash tree bridges worlds, offering strength, flexibility, and connection to ancient wisdom.'
       },
       Alder: {
         dates: 'Mar 18 - Apr 14',
@@ -48,7 +48,7 @@ class CelticReader {
         qualities: ['Bravery', 'Leadership', 'Oracle', 'Resilience'],
         symbol: '🌳',
         treeWisdom:
-          'The alder teaches courage in the face of adversity and the power of prophetic vision.',
+          'The alder teaches courage in the face of adversity and the power of prophetic vision.'
       },
       Willow: {
         dates: 'Apr 15 - May 12',
@@ -58,7 +58,7 @@ class CelticReader {
         qualities: ['Intuition', 'Dreams', 'Healing', 'Flexibility'],
         symbol: '🌿',
         treeWisdom:
-          'The willow flows with emotional wisdom, healing through intuition and dream work.',
+          'The willow flows with emotional wisdom, healing through intuition and dream work.'
       },
       Hawthorn: {
         dates: 'May 13 - Jun 9',
@@ -68,7 +68,7 @@ class CelticReader {
         qualities: ['Love', 'Protection', 'Magic', 'Transformation'],
         symbol: '🌸',
         treeWisdom:
-          'The hawthorn guards the gateway between worlds, teaching love, protection, and fae magic.',
+          'The hawthorn guards the gateway between worlds, teaching love, protection, and fae magic.'
       },
       Oak: {
         dates: 'Jun 10 - Jul 7',
@@ -78,7 +78,7 @@ class CelticReader {
         qualities: ['Strength', 'Endurance', 'Leadership', 'Stability'],
         symbol: '🌳',
         treeWisdom:
-          'The mighty oak embodies enduring strength, leadership, and the power of steadfast wisdom.',
+          'The mighty oak embodies enduring strength, leadership, and the power of steadfast wisdom.'
       },
       Holly: {
         dates: 'Jul 8 - Aug 4',
@@ -88,7 +88,7 @@ class CelticReader {
         qualities: ['Defense', 'Healing', 'Balance', 'Determination'],
         symbol: '🌿',
         treeWisdom:
-          'The holly teaches defensive strength, healing balance, and determined protection.',
+          'The holly teaches defensive strength, healing balance, and determined protection.'
       },
       Hazel: {
         dates: 'Aug 5 - Sep 1',
@@ -98,7 +98,7 @@ class CelticReader {
         qualities: ['Wisdom', 'Inspiration', 'Poetry', 'Divination'],
         symbol: '🌰',
         treeWisdom:
-          'The hazel tree of wisdom inspires poetry, divination, and profound intellectual insight.',
+          'The hazel tree of wisdom inspires poetry, divination, and profound intellectual insight.'
       },
       Vine: {
         dates: 'Sep 2 - Sep 29',
@@ -108,7 +108,7 @@ class CelticReader {
         qualities: ['Joy', 'Prosperity', 'Celebration', 'Growth'],
         symbol: '🍇',
         treeWisdom:
-          'The vine teaches joyful abundance, prosperity through celebration, and bountiful growth.',
+          'The vine teaches joyful abundance, prosperity through celebration, and bountiful growth.'
       },
       Ivy: {
         dates: 'Sep 30 - Oct 27',
@@ -118,7 +118,7 @@ class CelticReader {
         qualities: ['Endurance', 'Fidelity', 'Determination', 'Resilience'],
         symbol: '🌿',
         treeWisdom:
-          'The ivy demonstrates enduring strength, faithful determination, and resilient growth.',
+          'The ivy demonstrates enduring strength, faithful determination, and resilient growth.'
       },
       Reed: {
         dates: 'Oct 28 - Nov 24',
@@ -128,7 +128,7 @@ class CelticReader {
         qualities: ['Family', 'Community', 'Harmony', 'Communication'],
         symbol: '🌾',
         treeWisdom:
-          'The reed teaches community harmony, family bonds, and the strength of collective wisdom.',
+          'The reed teaches community harmony, family bonds, and the strength of collective wisdom.'
       },
       Elder: {
         dates: 'Nov 25 - Dec 23',
@@ -138,8 +138,8 @@ class CelticReader {
         qualities: ['Transformation', 'Rebirth', 'Wisdom', 'Regeneration'],
         symbol: '🌿',
         treeWisdom:
-          'The elder tree guides through transformation, teaching the wisdom of death and rebirth cycles.',
-      },
+          'The elder tree guides through transformation, teaching the wisdom of death and rebirth cycles.'
+      }
     };
 
     // Celtic Animal Totems
@@ -149,51 +149,51 @@ class CelticReader {
           'Leadership',
           'Majesty',
           'Independence',
-          'Spiritual Authority',
+          'Spiritual Authority'
         ],
-        element: 'Fire',
+        element: 'Fire'
       },
       Salmon: {
         qualities: [
           'Wisdom',
           'Inspiration',
           'Transformation',
-          'Ancient Knowledge',
+          'Ancient Knowledge'
         ],
-        element: 'Water',
+        element: 'Water'
       },
       Bear: {
         qualities: ['Strength', 'Protection', 'Healing', 'Inner Wisdom'],
-        element: 'Earth',
+        element: 'Earth'
       },
       Raven: {
         qualities: ['Magic', 'Transformation', 'Divination', 'Mystery'],
-        element: 'Air',
+        element: 'Air'
       },
       Wolf: {
         qualities: ['Loyalty', 'Family', 'Intuition', 'Social Bonds'],
-        element: 'Earth',
+        element: 'Earth'
       },
       Eagle: {
         qualities: ['Vision', 'Freedom', 'Spirituality', 'Higher Perspective'],
-        element: 'Air',
+        element: 'Air'
       },
       Horse: {
         qualities: ['Freedom', 'Power', 'Journey', 'Wild Spirit'],
-        element: 'Fire',
+        element: 'Fire'
       },
       Swan: {
         qualities: ['Grace', 'Beauty', 'Transformation', 'Inner Beauty'],
-        element: 'Water',
+        element: 'Water'
       },
       Owl: {
         qualities: ['Wisdom', 'Night Vision', 'Mystery', 'Ancient Knowledge'],
-        element: 'Air',
+        element: 'Air'
       },
       Dragon: {
         qualities: ['Power', 'Magic', 'Transformation', 'Ancient Wisdom'],
-        element: 'Fire',
-      },
+        element: 'Fire'
+      }
     };
 
     // Celtic Wheel of the Year (8 festivals)
@@ -201,43 +201,43 @@ class CelticReader {
       Samhain: {
         date: 'Oct 31',
         meaning: 'End of Harvest, Ancestor Connection',
-        season: 'Autumn',
+        season: 'Autumn'
       },
       Yule: {
         date: 'Dec 21',
         meaning: 'Winter Solstice, Rebirth',
-        season: 'Winter',
+        season: 'Winter'
       },
       Imbolc: {
         date: 'Feb 2',
         meaning: 'First Stirrings, Purification',
-        season: 'Winter',
+        season: 'Winter'
       },
       Ostara: {
         date: 'Mar 21',
         meaning: 'Spring Equinox, New Life',
-        season: 'Spring',
+        season: 'Spring'
       },
       Beltane: {
         date: 'May 1',
         meaning: 'Summer Begins, Fertility',
-        season: 'Spring',
+        season: 'Spring'
       },
       Litha: {
         date: 'Jun 21',
         meaning: 'Summer Solstice, Power',
-        season: 'Summer',
+        season: 'Summer'
       },
       Lammas: {
         date: 'Aug 1',
         meaning: 'First Harvest, Gratitude',
-        season: 'Summer',
+        season: 'Summer'
       },
       Mabon: {
         date: 'Sep 21',
         meaning: 'Autumn Equinox, Balance',
-        season: 'Autumn',
-      },
+        season: 'Autumn'
+      }
     };
   }
 
@@ -283,13 +283,13 @@ class CelticReader {
           treeSign,
           animalTotem,
           seasonalInfluence
-        ),
+        )
       };
     } catch (error) {
       logger.error('Error generating Celtic chart:', error);
       return {
         error: 'Unable to generate Celtic analysis at this time',
-        fallback: 'The Celtic wisdom of trees and animals guides your path',
+        fallback: 'The Celtic wisdom of trees and animals guides your path'
       };
     }
   }
@@ -317,7 +317,7 @@ class CelticReader {
         { sign: 'Vine', start: [2, 9], end: [29, 9] },
         { sign: 'Ivy', start: [30, 9], end: [27, 10] },
         { sign: 'Reed', start: [28, 10], end: [24, 11] },
-        { sign: 'Elder', start: [25, 11], end: [23, 12] },
+        { sign: 'Elder', start: [25, 11], end: [23, 12] }
       ];
 
       for (const { sign, start, end } of treeDates) {
@@ -331,20 +331,20 @@ class CelticReader {
         ) {
           return {
             name: sign,
-            ...this.treeSigns[sign],
+            ...this.treeSigns[sign]
           };
         }
       }
 
       return {
         name: 'Birch',
-        ...this.treeSigns['Birch'],
+        ...this.treeSigns['Birch']
       };
     } catch (error) {
       logger.error('Error calculating tree sign:', error);
       return {
         name: 'Oak',
-        ...this.treeSigns['Oak'],
+        ...this.treeSigns['Oak']
       };
     }
   }
@@ -371,13 +371,13 @@ class CelticReader {
 
       return {
         name: animalName,
-        ...this.animalTotems[animalName],
+        ...this.animalTotems[animalName]
       };
     } catch (error) {
       logger.error('Error calculating animal totem:', error);
       return {
         name: 'Raven',
-        ...this.animalTotems['Raven'],
+        ...this.animalTotems['Raven']
       };
     }
   }
@@ -395,20 +395,20 @@ class CelticReader {
       const seasons = {
         Winter: {
           months: [12, 1, 2],
-          qualities: ['Introspection', 'Planning', 'Inner Growth'],
+          qualities: ['Introspection', 'Planning', 'Inner Growth']
         },
         Spring: {
           months: [3, 4, 5],
-          qualities: ['Growth', 'Renewal', 'Creativity'],
+          qualities: ['Growth', 'Renewal', 'Creativity']
         },
         Summer: {
           months: [6, 7, 8],
-          qualities: ['Abundance', 'Energy', 'Expression'],
+          qualities: ['Abundance', 'Energy', 'Expression']
         },
         Autumn: {
           months: [9, 10, 11],
-          qualities: ['Harvest', 'Reflection', 'Gratitude'],
-        },
+          qualities: ['Harvest', 'Reflection', 'Gratitude']
+        }
       };
 
       const season =
@@ -419,14 +419,14 @@ class CelticReader {
       return {
         season,
         qualities: seasons[season].qualities,
-        festivals: this.getSeasonalFestivals(season),
+        festivals: this.getSeasonalFestivals(season)
       };
     } catch (error) {
       logger.error('Error calculating seasonal influence:', error);
       return {
         season: 'Spring',
         qualities: ['Growth', 'Renewal'],
-        festivals: ['Ostara', 'Beltane'],
+        festivals: ['Ostara', 'Beltane']
       };
     }
   }
@@ -441,7 +441,7 @@ class CelticReader {
       Winter: ['Samhain', 'Yule', 'Imbolc'],
       Spring: ['Imbolc', 'Ostara', 'Beltane'],
       Summer: ['Beltane', 'Litha', 'Lammas'],
-      Autumn: ['Lammas', 'Mabon', 'Samhain'],
+      Autumn: ['Lammas', 'Mabon', 'Samhain']
     };
 
     return festivalMap[season] || [];
@@ -458,7 +458,7 @@ class CelticReader {
       guidance: this.combineWisdom(treeSign.treeWisdom, animalTotem),
       meditation: `Meditate with ${treeSign.name} and call upon ${animalTotem.name} for guidance`,
       ritual: this.generateRitual(treeSign, animalTotem),
-      affirmation: this.generateAffirmation(treeSign, animalTotem),
+      affirmation: this.generateAffirmation(treeSign, animalTotem)
     };
 
     return wisdom;
@@ -488,7 +488,7 @@ class CelticReader {
       'Oak-Bear': 'Build strength through oak meditation and bear grounding',
       'Willow-Swan': 'Flow with willow wisdom and swan grace in water rituals',
       'Hawthorn-Eagle':
-        'Seek vision at hawthorn trees and eagle flight meditation',
+        'Seek vision at hawthorn trees and eagle flight meditation'
     };
 
     const key = `${treeSign.name}-${animalTotem.name}`;
@@ -509,7 +509,7 @@ class CelticReader {
       'Birch-Stag': 'I lead with pure intention and protective strength',
       'Oak-Bear': 'I stand strong with ancient wisdom and inner power',
       'Willow-Swan': 'I flow with grace and intuitive wisdom',
-      'Hawthorn-Raven': 'I embrace magical transformation and prophetic vision',
+      'Hawthorn-Raven': 'I embrace magical transformation and prophetic vision'
     };
 
     const key = `${treeSign.name}-${animalTotem.name}`;
@@ -538,7 +538,7 @@ class CelticReader {
       'Ash-Salmon':
         'Path of the Wisdom Keeper - Bridge worlds with ancient knowledge',
       'Rowan-Eagle':
-        'Path of the Visionary Protector - See clearly and defend sacred spaces',
+        'Path of the Visionary Protector - See clearly and defend sacred spaces'
     };
 
     const key = `${treeSign.name}-${animalTotem.name}`;
@@ -562,7 +562,7 @@ class CelticReader {
       coreTraits: uniqueTraits.slice(0, 6),
       strengths: this.calculateStrengths(treeSign, animalTotem),
       challenges: this.calculateChallenges(treeSign, animalTotem),
-      elementalBalance: `${treeSign.element} and ${animalTotem.element} energies`,
+      elementalBalance: `${treeSign.element} and ${animalTotem.element} energies`
     };
   }
 
@@ -682,7 +682,7 @@ class CelticReader {
         animalGuidance: `Call upon ${animalTotem.name} for ${animalTotem.qualities[0].toLowerCase()}`,
         dailyRitual: this.generateRitual(treeSign, animalTotem),
         seasonalWisdom: `Embrace ${this.calculateSeasonalInfluence(birthDate).season.toLowerCase()} energy`,
-        affirmation: this.generateAffirmation(treeSign, animalTotem),
+        affirmation: this.generateAffirmation(treeSign, animalTotem)
       };
     } catch (error) {
       logger.error('Error generating Celtic guidance:', error);
@@ -691,7 +691,7 @@ class CelticReader {
         animalGuidance: 'Seek guidance from animal spirits',
         dailyRitual: 'Meditate in nature',
         seasonalWisdom: 'Flow with the wheel of the year',
-        affirmation: 'I am connected to Celtic wisdom and natural magic',
+        affirmation: 'I am connected to Celtic wisdom and natural magic'
       };
     }
   }

@@ -8,12 +8,12 @@ jest.mock('../../../src/utils/logger');
 
 describe('PaymentService', () => {
   describe('processPayment', () => {
-    it('should process payment successfully', async () => {
+    it('should process payment successfully', async() => {
       const paymentData = {
         amount: 299,
         currency: 'INR',
         phoneNumber: '+1234567890',
-        plan: 'premium',
+        plan: 'premium'
       };
 
       const result = await paymentService.processPayment(paymentData);
@@ -22,12 +22,12 @@ describe('PaymentService', () => {
       expect(result.success).toBe(true);
     });
 
-    it('should handle payment failure', async () => {
+    it('should handle payment failure', async() => {
       const paymentData = {
         amount: 299,
         currency: 'INR',
         phoneNumber: '+1234567890',
-        plan: 'premium',
+        plan: 'premium'
       };
 
       // Mock failure
@@ -43,7 +43,7 @@ describe('PaymentService', () => {
         amount: 299,
         currency: 'INR',
         phoneNumber: '+1234567890',
-        plan: 'premium',
+        plan: 'premium'
       };
 
       const result = paymentService.validatePayment(paymentData);
@@ -56,7 +56,7 @@ describe('PaymentService', () => {
         amount: -1,
         currency: 'invalid',
         phoneNumber: 'invalid',
-        plan: 'invalid',
+        plan: 'invalid'
       };
 
       const result = paymentService.validatePayment(paymentData);
@@ -66,7 +66,7 @@ describe('PaymentService', () => {
   });
 
   describe('getSubscriptionDetails', () => {
-    it('should get subscription details', async () => {
+    it('should get subscription details', async() => {
       const phoneNumber = '+1234567890';
 
       const result = await paymentService.getSubscriptionDetails(phoneNumber);

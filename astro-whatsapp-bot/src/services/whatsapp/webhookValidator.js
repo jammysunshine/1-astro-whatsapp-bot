@@ -50,7 +50,7 @@ const verifyWebhookChallenge = (queryParams, verifyToken) => {
     const {
       'hub.mode': mode,
       'hub.verify_token': token,
-      'hub.challenge': challenge,
+      'hub.challenge': challenge
     } = queryParams;
 
     if (mode && token) {
@@ -59,21 +59,21 @@ const verifyWebhookChallenge = (queryParams, verifyToken) => {
         return {
           success: true,
           challenge,
-          message: 'Webhook verified successfully',
+          message: 'Webhook verified successfully'
         };
       } else {
         logger.warn('⚠️ Webhook verification failed');
         return {
           success: false,
           error: 'Verification failed',
-          message: 'Forbidden',
+          message: 'Forbidden'
         };
       }
     } else {
       return {
         success: true,
         message: 'Webhook endpoint ready',
-        challenge: null,
+        challenge: null
       };
     }
   } catch (error) {
@@ -81,7 +81,7 @@ const verifyWebhookChallenge = (queryParams, verifyToken) => {
     return {
       success: false,
       error: 'Internal server error',
-      message: error.message,
+      message: error.message
     };
   }
 };
@@ -112,47 +112,47 @@ const validateMessageFormat = message => {
 
     // Validate specific message types
     switch (message.type) {
-      case 'text':
-        if (!message.text || typeof message.text.body !== 'string') {
-          logger.warn('⚠️ Text message missing body or invalid format');
-          return false;
-        }
-        break;
-
-      case 'interactive':
-        if (!message.interactive || !message.interactive.type) {
-          logger.warn(
-            '⚠️ Interactive message missing interactive field or type'
-          );
-          return false;
-        }
-        break;
-
-      case 'button':
-        if (!message.button || typeof message.button.payload !== 'string') {
-          logger.warn(
-            '⚠️ Button message missing button field or invalid payload'
-          );
-          return false;
-        }
-        break;
-
-      case 'image':
-      case 'video':
-      case 'audio':
-      case 'document':
-      case 'sticker':
-        if (!message[message.type] || !message[message.type].id) {
-          logger.warn(
-            `⚠️ ${message.type} message missing ${message.type} field or id`
-          );
-          return false;
-        }
-        break;
-
-      default:
-        logger.warn(`⚠️ Unsupported message type: ${message.type}`);
+    case 'text':
+      if (!message.text || typeof message.text.body !== 'string') {
+        logger.warn('⚠️ Text message missing body or invalid format');
         return false;
+      }
+      break;
+
+    case 'interactive':
+      if (!message.interactive || !message.interactive.type) {
+        logger.warn(
+          '⚠️ Interactive message missing interactive field or type'
+        );
+        return false;
+      }
+      break;
+
+    case 'button':
+      if (!message.button || typeof message.button.payload !== 'string') {
+        logger.warn(
+          '⚠️ Button message missing button field or invalid payload'
+        );
+        return false;
+      }
+      break;
+
+    case 'image':
+    case 'video':
+    case 'audio':
+    case 'document':
+    case 'sticker':
+      if (!message[message.type] || !message[message.type].id) {
+        logger.warn(
+          `⚠️ ${message.type} message missing ${message.type} field or id`
+        );
+        return false;
+      }
+      break;
+
+    default:
+      logger.warn(`⚠️ Unsupported message type: ${message.type}`);
+      return false;
     }
 
     return true;
@@ -242,5 +242,5 @@ module.exports = {
   validateWebhookSignature,
   verifyWebhookChallenge,
   validateMessageFormat,
-  validateWebhookPayload,
+  validateWebhookPayload
 };

@@ -5,7 +5,7 @@ const {
   getUserByPhone,
   createUser,
   addBirthDetails,
-  updateUserProfile,
+  updateUserProfile
 } = require('../../../src/models/userModel');
 const User = require('../../../src/models/User');
 const mongoose = require('mongoose');
@@ -14,25 +14,25 @@ const mongoose = require('mongoose');
 jest.mock('../../../src/models/User');
 
 describe('UserModel Functions', () => {
-  beforeAll(async () => {
+  beforeAll(async() => {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test');
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await mongoose.connection.close();
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await User.deleteMany({});
     jest.clearAllMocks();
   });
 
   describe('getUserByPhone', () => {
-    it('should get user by phone number', async () => {
+    it('should get user by phone number', async() => {
       const mockUser = {
         id: 'user-456',
         phoneNumber: '+1234567890',
-        name: 'Test User',
+        name: 'Test User'
       };
 
       User.findOne.mockResolvedValue(mockUser);
@@ -45,10 +45,10 @@ describe('UserModel Functions', () => {
   });
 
   describe('updateUserProfile', () => {
-    it('should update user profile', async () => {
+    it('should update user profile', async() => {
       const mockUser = {
         phoneNumber: '+1234567890',
-        save: jest.fn().mockResolvedValue(),
+        save: jest.fn().mockResolvedValue()
       };
 
       User.findOne.mockResolvedValue(mockUser);

@@ -6,7 +6,7 @@ jest.mock('../../src/utils/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
   warn: jest.fn(),
-  debug: jest.fn(),
+  debug: jest.fn()
 }));
 
 // Mock native modules that may not be available in test environment
@@ -14,8 +14,8 @@ jest.mock('sweph', () => ({
   swe_set_ephe_path: jest.fn(),
   swe_julday: jest.fn(() => 2451545.0), // Mock Julian day
   swe_calc: jest.fn(() => [0, [0, 0, 0, 0, 0, 0]]), // Mock planetary positions
-  swe_get_planet_name: jest.fn((planet) => `Planet ${planet}`),
-  swe_close: jest.fn(),
+  swe_get_planet_name: jest.fn(planet => `Planet ${planet}`),
+  swe_close: jest.fn()
 }));
 
 jest.mock('astrologer', () => ({
@@ -25,13 +25,13 @@ jest.mock('astrologer', () => ({
       moonSign: 'Pisces',
       risingSign: 'Aquarius',
       planets: {},
-      houses: [],
+      houses: []
     })),
     calculateCompatibility: jest.fn(() => ({
       compatibility: 'High',
-      description: 'Great compatibility between these signs.',
-    })),
-  })),
+      description: 'Great compatibility between these signs.'
+    }))
+  }))
 }));
 
 // Set test environment
@@ -72,12 +72,12 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 let mongoServer;
 
 // Global test setup
-beforeAll(async () => {
+beforeAll(async() => {
   // Start MongoDB Memory Server
   mongoServer = await MongoMemoryServer.create({
     instance: {
-      startupTimeout: 30000,
-    },
+      startupTimeout: 30000
+    }
   });
   const mongoUri = mongoServer.getUri();
   process.env.MONGODB_URI = mongoUri;
@@ -90,7 +90,7 @@ beforeAll(async () => {
 }, 60000); // Increase timeout
 
 // Global test teardown
-afterAll(async () => {
+afterAll(async() => {
   // Close database connection
   const mongoose = require('mongoose');
   await mongoose.connection.close();
@@ -124,13 +124,13 @@ expect.extend({
       return {
         message: () =>
           `expected ${received} not to be within range ${floor} - ${ceiling}`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () =>
           `expected ${received} to be within range ${floor} - ${ceiling}`,
-        pass: false,
+        pass: false
       };
     }
   },
@@ -143,7 +143,7 @@ expect.extend({
       if (current === null || current === undefined || !(prop in current)) {
         return {
           message: () => `expected ${propertyPath} to exist`,
-          pass: false,
+          pass: false
         };
       }
       current = current[prop];
@@ -153,13 +153,13 @@ expect.extend({
     if (pass) {
       return {
         message: () => `expected ${propertyPath} not to match ${regex}`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () =>
           `expected ${propertyPath} to match ${regex}, but got ${current}`,
-        pass: false,
+        pass: false
       };
     }
   },
@@ -170,12 +170,12 @@ expect.extend({
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid phone number`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${received} to be a valid phone number`,
-        pass: false,
+        pass: false
       };
     }
   },
@@ -186,12 +186,12 @@ expect.extend({
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid date`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${received} to be a valid date (DD/MM/YYYY)`,
-        pass: false,
+        pass: false
       };
     }
   },
@@ -202,15 +202,15 @@ expect.extend({
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid time`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () => `expected ${received} to be a valid time (HH:MM)`,
-        pass: false,
+        pass: false
       };
     }
-  },
+  }
 });
 
 // Custom matchers for common testing scenarios
@@ -227,13 +227,13 @@ expect.extend({
       return {
         message: () =>
           `expected ${JSON.stringify(received)} not to be a valid JSON API error`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () =>
           `expected ${JSON.stringify(received)} to be a valid JSON API error with required fields: ${requiredFields.join(', ')}`,
-        pass: false,
+        pass: false
       };
     }
   },
@@ -247,13 +247,13 @@ expect.extend({
       return {
         message: () =>
           `expected ${JSON.stringify(received)} not to be a valid WhatsApp webhook`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () =>
           `expected ${JSON.stringify(received)} to be a valid WhatsApp webhook with required fields: ${requiredFields.join(', ')}`,
-        pass: false,
+        pass: false
       };
     }
   },
@@ -270,14 +270,14 @@ expect.extend({
       return {
         message: () =>
           `expected ${JSON.stringify(received)} not to be a valid astrology API response`,
-        pass: true,
+        pass: true
       };
     } else {
       return {
         message: () =>
           `expected ${JSON.stringify(received)} to be a valid astrology API response with required fields: ${requiredFields.join(', ')}`,
-        pass: false,
+        pass: false
       };
     }
-  },
+  }
 });

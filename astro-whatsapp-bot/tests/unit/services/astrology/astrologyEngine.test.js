@@ -26,7 +26,7 @@ describe('AstrologyEngine', () => {
         risingSign: 'Aquarius',
         birthDate: '15/03/1990',
         birthTime: '14:30',
-        birthPlace: 'Mumbai, India',
+        birthPlace: 'Mumbai, India'
       };
 
       const reading = astrologyEngine.generateCompleteReading(user, 'vedic');
@@ -53,7 +53,7 @@ describe('AstrologyEngine', () => {
       const birthData = {
         date: '15/03/1990',
         time: '14:30',
-        place: 'Mumbai, India',
+        place: 'Mumbai, India'
       };
 
       const isValid = astrologyEngine.validateBirthData(birthData);
@@ -65,7 +65,7 @@ describe('AstrologyEngine', () => {
       const birthData = {
         date: 'invalid',
         time: 'invalid',
-        place: '',
+        place: ''
       };
 
       const isValid = astrologyEngine.validateBirthData(birthData);

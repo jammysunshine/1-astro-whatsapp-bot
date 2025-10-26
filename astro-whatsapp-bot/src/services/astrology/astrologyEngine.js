@@ -24,14 +24,12 @@ logger.info(
  * @param {Array<string|RegExp>} patterns - Array of patterns to match
  * @returns {boolean} True if any pattern matches
  */
-const matchesIntent = (message, patterns) => {
-  return patterns.some(pattern => {
-    if (typeof pattern === 'string') {
-      return message.includes(pattern.toLowerCase());
-    }
-    return pattern.test(message);
-  });
-};
+const matchesIntent = (message, patterns) => patterns.some(pattern => {
+  if (typeof pattern === 'string') {
+    return message.includes(pattern.toLowerCase());
+  }
+  return pattern.test(message);
+});
 
 /**
  * Generates an astrology response based on user input and user data.
@@ -40,7 +38,7 @@ const matchesIntent = (message, patterns) => {
  * @param {Object} user - The user object containing profile information.
  * @returns {Promise<string>} The generated astrology response.
  */
-const generateAstrologyResponse = async (messageText, user) => {
+const generateAstrologyResponse = async(messageText, user) => {
   logger.info(
     `Generating astrology response for user ${user.phoneNumber} with message: ${messageText}`
   );
@@ -55,7 +53,7 @@ const generateAstrologyResponse = async (messageText, user) => {
   // Daily horoscope
   if (matchesIntent(message, ['horoscope', 'daily', /^what'?s my (daily )?horoscope/])) {
     if (!user.birthDate) {
-      return "I'd love to give you a personalized daily horoscope! Please share your birth date (DD/MM/YYYY) first so I can calculate your sun sign.";
+      return 'I\'d love to give you a personalized daily horoscope! Please share your birth date (DD/MM/YYYY) first so I can calculate your sun sign.';
     }
 
     const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
@@ -119,31 +117,31 @@ const generateAstrologyResponse = async (messageText, user) => {
       return response;
     } catch (error) {
       logger.error('Error generating BaZi analysis:', error);
-      return "I'm having trouble generating your BaZi analysis right now. Please try again later.";
+      return 'I\'m having trouble generating your BaZi analysis right now. Please try again later.';
     }
   }
 
   // Tarot reading requests
   if (matchesIntent(message, ['tarot', 'card', 'reading', /^tarot/])) {
     try {
-      const spread = message.includes('celtic')
-        ? 'celtic'
-        : message.includes('three')
-          ? 'three'
-          : message.includes('single')
-            ? 'single'
-            : 'single';
+      const spread = message.includes('celtic') ?
+        'celtic' :
+        message.includes('three') ?
+          'three' :
+          message.includes('single') ?
+            'single' :
+            'single';
 
       let reading;
       switch (spread) {
-        case 'celtic':
-          reading = tarotReader.celticCrossReading();
-          break;
-        case 'three':
-          reading = tarotReader.threeCardReading();
-          break;
-        default:
-          reading = tarotReader.singleCardReading();
+      case 'celtic':
+        reading = tarotReader.celticCrossReading();
+        break;
+      case 'three':
+        reading = tarotReader.threeCardReading();
+        break;
+      default:
+        reading = tarotReader.singleCardReading();
       }
 
       let response = '🔮 *Tarot Reading*\n\n';
@@ -165,7 +163,7 @@ const generateAstrologyResponse = async (messageText, user) => {
       return response;
     } catch (error) {
       logger.error('Error generating tarot reading:', error);
-      return "I'm having trouble connecting with the tarot cards right now. Please try again later.";
+      return 'I\'m having trouble connecting with the tarot cards right now. Please try again later.';
     }
   }
 
@@ -194,7 +192,7 @@ const generateAstrologyResponse = async (messageText, user) => {
       return response;
     } catch (error) {
       logger.error('Error generating palmistry analysis:', error);
-      return "I'm having trouble reading the palm lines right now. Please try again later.";
+      return 'I\'m having trouble reading the palm lines right now. Please try again later.';
     }
   }
 
@@ -232,47 +230,47 @@ const generateAstrologyResponse = async (messageText, user) => {
       return response;
     } catch (error) {
       logger.error('Error generating Nadi analysis:', error);
-      return "I'm having trouble accessing the Nadi records right now. Please try again later.";
+      return 'I\'m having trouble accessing the Nadi records right now. Please try again later.';
     }
   }
 
   // Kabbalistic astrology requests
   if (matchesIntent(message, ['kabbalah', 'kabbalistic', 'tree of life', 'sephiroth', /^kabbal/])) {
     if (!user.birthDate) {
-      return "For Kabbalistic analysis, I need your birth details to map your soul's journey on the Tree of Life.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n\nExample: 15/06/1990, 14:30";
+      return 'For Kabbalistic analysis, I need your birth details to map your soul\'s journey on the Tree of Life.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n\nExample: 15/06/1990, 14:30';
     }
 
     try {
       const kabbalisticAnalysis = kabbalisticReader.generateKabbalisticChart({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
-        name: user.name,
+        name: user.name
       });
 
       return kabbalisticAnalysis.kabbalisticDescription;
     } catch (error) {
       logger.error('Error generating Kabbalistic analysis:', error);
-      return "I'm having trouble connecting with the Tree of Life energies right now. Please try again later.";
+      return 'I\'m having trouble connecting with the Tree of Life energies right now. Please try again later.';
     }
   }
 
   // Mayan astrology requests
   if (matchesIntent(message, ['mayan', 'tzolk', 'haab', 'mayan calendar', /^mayan/])) {
     if (!user.birthDate) {
-      return "For Mayan calendar analysis, I need your birth date to calculate your Tzolk'in and Haab dates.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n\nExample: 15/06/1990";
+      return 'For Mayan calendar analysis, I need your birth date to calculate your Tzolk\'in and Haab dates.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n\nExample: 15/06/1990';
     }
 
     try {
       const mayanAnalysis = mayanReader.generateMayanChart({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
-        name: user.name,
+        name: user.name
       });
 
       return mayanAnalysis.mayanDescription;
     } catch (error) {
       logger.error('Error generating Mayan analysis:', error);
-      return "I'm having trouble connecting with the Mayan calendar energies right now. Please try again later.";
+      return 'I\'m having trouble connecting with the Mayan calendar energies right now. Please try again later.';
     }
   }
 
@@ -286,13 +284,13 @@ const generateAstrologyResponse = async (messageText, user) => {
       const celticAnalysis = celticReader.generateCelticChart({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
-        name: user.name,
+        name: user.name
       });
 
       return celticAnalysis.celticDescription;
     } catch (error) {
       logger.error('Error generating Celtic analysis:', error);
-      return "I'm having trouble connecting with the Celtic forest energies right now. Please try again later.";
+      return 'I\'m having trouble connecting with the Celtic forest energies right now. Please try again later.';
     }
   }
 
@@ -307,7 +305,7 @@ const generateAstrologyResponse = async (messageText, user) => {
       return reading.ichingDescription;
     } catch (error) {
       logger.error('Error generating I Ching reading:', error);
-      return "I'm having trouble consulting the I Ching oracle right now. Please try again later.";
+      return 'I\'m having trouble consulting the I Ching oracle right now. Please try again later.';
     }
   }
 
@@ -323,13 +321,13 @@ const generateAstrologyResponse = async (messageText, user) => {
           birthDate: user.birthDate,
           birthTime: user.birthTime || '12:00',
           birthPlace: user.birthPlace || 'London, UK',
-          name: user.name,
+          name: user.name
         });
 
       return astrocartographyAnalysis.astrocartographyDescription;
     } catch (error) {
       logger.error('Error generating astrocartography analysis:', error);
-      return "I'm having trouble mapping the planetary lines right now. Please try again later.";
+      return 'I\'m having trouble mapping the planetary lines right now. Please try again later.';
     }
   }
 
@@ -339,9 +337,9 @@ const generateAstrologyResponse = async (messageText, user) => {
        matchesIntent(message, ['when', 'will', 'should', 'can', 'does', 'is', 'are']))) {
     // Extract the question from the message
     const questionMatch = message.match(/(?:horary|question|ask)\s+(.*)/i);
-    const question = questionMatch
-      ? questionMatch[1].trim()
-      : message.replace(/horary/i, '').trim();
+    const question = questionMatch ?
+      questionMatch[1].trim() :
+      message.replace(/horary/i, '').trim();
 
     if (!question || question.length < 5) {
       return 'For horary astrology, please ask a clear, specific question. Horary works best with questions like:\n\n• "When will I get a job?"\n• "Will my relationship work out?"\n• "Should I move to another city?"\n• "When will my health improve?"\n\nWhat is your question?';
@@ -355,7 +353,7 @@ const generateAstrologyResponse = async (messageText, user) => {
           month: '2-digit',
           day: '2-digit',
           hour: '2-digit',
-          minute: '2-digit',
+          minute: '2-digit'
         })
         .replace(/(\d+)\/(\d+)\/(\d+),\s*(.+)/, '$2/$1/$3 $4');
 
@@ -371,7 +369,7 @@ const generateAstrologyResponse = async (messageText, user) => {
       return horaryReading.horaryDescription;
     } catch (error) {
       logger.error('Error generating horary reading:', error);
-      return "I'm having trouble casting the horary chart right now. Please try again later.";
+      return 'I\'m having trouble casting the horary chart right now. Please try again later.';
     }
   }
 
@@ -387,7 +385,7 @@ const generateAstrologyResponse = async (messageText, user) => {
         name: user.name,
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
-        birthPlace: user.birthPlace || 'Delhi',
+        birthPlace: user.birthPlace || 'Delhi'
       });
 
       return chartData.comprehensiveDescription;
@@ -399,7 +397,7 @@ const generateAstrologyResponse = async (messageText, user) => {
           name: user.name,
           birthDate: user.birthDate,
           birthTime: user.birthTime || '12:00',
-          birthPlace: user.birthPlace || 'Delhi',
+          birthPlace: user.birthPlace || 'Delhi'
         });
 
         let response = '📊 *Your Vedic Birth Chart*\n\n';
@@ -407,11 +405,11 @@ const generateAstrologyResponse = async (messageText, user) => {
         response += `🌙 *Moon Sign:* ${basicChart.moonSign}\n`;
         response += `⬆️ *Rising Sign:* ${basicChart.risingSign}\n\n`;
         response +=
-          "I'm having trouble generating the full analysis right now. Please try again later.";
+          'I\'m having trouble generating the full analysis right now. Please try again later.';
 
         return response;
       } catch (fallbackError) {
-        return "I'm having trouble generating your birth chart right now. Please try again later or contact support.";
+        return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
       }
     }
   }
@@ -422,7 +420,7 @@ const generateAstrologyResponse = async (messageText, user) => {
       return 'For compatibility analysis, I need your birth details first. Please share your birth date (DD/MM/YYYY) so I can get started.';
     }
 
-    return "💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I'll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!";
+    return '💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I\'ll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!';
   }
 
   // Profile/birth details
@@ -430,7 +428,7 @@ const generateAstrologyResponse = async (messageText, user) => {
     if (user.profileComplete) {
       return `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\nSun Sign: ${vedicCalculator.calculateSunSign(user.birthDate)}\n\nWould you like to update any information or get a reading?`;
     } else {
-      return "Let's complete your profile! I need your birth details to provide accurate readings.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India";
+      return 'Let\'s complete your profile! I need your birth details to provide accurate readings.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }
   }
 
@@ -444,5 +442,5 @@ const generateAstrologyResponse = async (messageText, user) => {
 };
 
 module.exports = {
-  generateAstrologyResponse,
+  generateAstrologyResponse
 };

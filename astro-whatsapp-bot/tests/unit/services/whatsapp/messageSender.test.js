@@ -4,7 +4,7 @@
 // Mock dependencies
 jest.mock('axios', () => ({
   post: jest.fn(),
-  get: jest.fn(),
+  get: jest.fn()
 }));
 
 const axios = require('axios');
@@ -14,7 +14,7 @@ const {
   sendListMessage,
   sendTemplateMessage,
   sendMediaMessage,
-  markMessageAsRead,
+  markMessageAsRead
 } = require('../../../../src/services/whatsapp/messageSender');
 const logger = require('../../../../src/utils/logger');
 
@@ -39,12 +39,12 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendTextMessage', () => {
-    it('should send text message successfully', async () => {
+    it('should send text message successfully', async() => {
       const message = 'Hello, this is a test message!';
       const response = {
         data: {
-          messages: [{ id: 'msg-123' }],
-        },
+          messages: [{ id: 'msg-123' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -59,15 +59,15 @@ describe('WhatsApp Message Sender', () => {
           type: 'text',
           text: {
             preview_url: false,
-            body: message,
-          },
+            body: message
+          }
         },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          timeout: 30000,
+          timeout: 30000
         }
       );
 
@@ -77,18 +77,18 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should send text message with preview URL', async () => {
+    it('should send text message with preview URL', async() => {
       const message = 'Check out this link: https://example.com';
       const response = {
         data: {
-          messages: [{ id: 'msg-456' }],
-        },
+          messages: [{ id: 'msg-456' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
 
       const result = await sendTextMessage(phoneNumber, message, {
-        previewUrl: true,
+        previewUrl: true
       });
 
       expect(axios.post).toHaveBeenCalledWith(
@@ -99,8 +99,8 @@ describe('WhatsApp Message Sender', () => {
           type: 'text',
           text: {
             preview_url: true,
-            body: message,
-          },
+            body: message
+          }
         },
         expect.any(Object)
       );
@@ -108,13 +108,13 @@ describe('WhatsApp Message Sender', () => {
       expect(result).toEqual(response.data);
     });
 
-    it('should send text message with context', async () => {
+    it('should send text message with context', async() => {
       const message = 'This is a reply to your previous message.';
       const context = { message_id: 'prev-msg-123' };
       const response = {
         data: {
-          messages: [{ id: 'msg-789' }],
-        },
+          messages: [{ id: 'msg-789' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -129,9 +129,9 @@ describe('WhatsApp Message Sender', () => {
           type: 'text',
           text: {
             preview_url: false,
-            body: message,
+            body: message
           },
-          context,
+          context
         },
         expect.any(Object)
       );
@@ -139,7 +139,7 @@ describe('WhatsApp Message Sender', () => {
       expect(result).toEqual(response.data);
     });
 
-    it('should throw error when WhatsApp API credentials are not configured', async () => {
+    it('should throw error when WhatsApp API credentials are not configured', async() => {
       delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
       delete process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
 
@@ -153,12 +153,12 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should handle API error gracefully', async () => {
+    it('should handle API error gracefully', async() => {
       const errorMessage = 'API Error';
       const errorResponse = {
         response: {
-          data: { error: { message: errorMessage } },
-        },
+          data: { error: { message: errorMessage } }
+        }
       };
 
       axios.post.mockRejectedValue(errorResponse);
@@ -173,7 +173,7 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should handle network error gracefully', async () => {
+    it('should handle network error gracefully', async() => {
       const errorMessage = 'Network Error';
       const errorResponse = new Error(errorMessage);
 
@@ -191,16 +191,16 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendInteractiveButtons', () => {
-    it('should send interactive buttons message successfully', async () => {
+    it('should send interactive buttons message successfully', async() => {
       const body = 'Choose an option:';
       const buttons = [
         { type: 'reply', reply: { id: 'btn1', title: 'Option 1' } },
-        { type: 'reply', reply: { id: 'btn2', title: 'Option 2' } },
+        { type: 'reply', reply: { id: 'btn2', title: 'Option 2' } }
       ];
       const response = {
         data: {
-          messages: [{ id: 'msg-btn-123' }],
-        },
+          messages: [{ id: 'msg-btn-123' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -216,15 +216,15 @@ describe('WhatsApp Message Sender', () => {
           interactive: {
             type: 'button',
             body: { text: body },
-            action: { buttons: buttons.slice(0, 3) },
-          },
+            action: { buttons: buttons.slice(0, 3) }
+          }
         },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          timeout: 30000,
+          timeout: 30000
         }
       );
 
@@ -234,19 +234,19 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should send interactive buttons with header and footer', async () => {
+    it('should send interactive buttons with header and footer', async() => {
       const body = 'Choose an option:';
       const buttons = [
-        { type: 'reply', reply: { id: 'btn1', title: 'Option 1' } },
+        { type: 'reply', reply: { id: 'btn1', title: 'Option 1' } }
       ];
       const options = {
         header: { type: 'text', text: 'Header Text' },
-        footer: 'Footer Text',
+        footer: 'Footer Text'
       };
       const response = {
         data: {
-          messages: [{ id: 'msg-btn-456' }],
-        },
+          messages: [{ id: 'msg-btn-456' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -264,14 +264,14 @@ describe('WhatsApp Message Sender', () => {
             header: options.header,
             body: { text: body },
             action: { buttons: buttons.slice(0, 3) },
-            footer: { text: options.footer },
-          },
+            footer: { text: options.footer }
+          }
         },
         expect.any(Object)
       );
     });
 
-    it('should handle missing WhatsApp API credentials', async () => {
+    it('should handle missing WhatsApp API credentials', async() => {
       delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
       delete process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
 
@@ -282,19 +282,19 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendListMessage', () => {
-    it('should send list message successfully', async () => {
+    it('should send list message successfully', async() => {
       const body = 'Select an option from the list:';
       const buttonText = 'Choose';
       const sections = [
         {
           title: 'Section 1',
-          rows: [{ id: 'row1', title: 'Row 1', description: 'Description 1' }],
-        },
+          rows: [{ id: 'row1', title: 'Row 1', description: 'Description 1' }]
+        }
       ];
       const response = {
         data: {
-          messages: [{ id: 'msg-list-123' }],
-        },
+          messages: [{ id: 'msg-list-123' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -318,16 +318,16 @@ describe('WhatsApp Message Sender', () => {
             body: { text: body },
             action: {
               button: buttonText,
-              sections: sections.slice(0, 10),
-            },
-          },
+              sections: sections.slice(0, 10)
+            }
+          }
         },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          timeout: 30000,
+          timeout: 30000
         }
       );
 
@@ -337,17 +337,17 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should send list message with footer', async () => {
+    it('should send list message with footer', async() => {
       const body = 'Select an option:';
       const buttonText = 'Options';
       const sections = [
-        { title: 'Section 1', rows: [{ id: 'row1', title: 'Row 1' }] },
+        { title: 'Section 1', rows: [{ id: 'row1', title: 'Row 1' }] }
       ];
       const options = { footer: 'Footer text' };
       const response = {
         data: {
-          messages: [{ id: 'msg-list-456' }],
-        },
+          messages: [{ id: 'msg-list-456' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -358,8 +358,8 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v18.0/${phoneNumberId}/messages`,
         expect.objectContaining({
           interactive: expect.objectContaining({
-            footer: { text: options.footer },
-          }),
+            footer: { text: options.footer }
+          })
         }),
         expect.any(Object)
       );
@@ -367,13 +367,13 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendTemplateMessage', () => {
-    it('should send template message successfully', async () => {
+    it('should send template message successfully', async() => {
       const templateName = 'welcome_template';
       const languageCode = 'en';
       const response = {
         data: {
-          messages: [{ id: 'msg-template-123' }],
-        },
+          messages: [{ id: 'msg-template-123' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -393,15 +393,15 @@ describe('WhatsApp Message Sender', () => {
           template: {
             name: templateName,
             language: { code: languageCode },
-            components: [],
-          },
+            components: []
+          }
         },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          timeout: 30000,
+          timeout: 30000
         }
       );
 
@@ -411,19 +411,19 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should send template message with components', async () => {
+    it('should send template message with components', async() => {
       const templateName = 'confirmation_template';
       const languageCode = 'en';
       const components = [
         {
           type: 'body',
-          parameters: [{ type: 'text', text: 'John' }],
-        },
+          parameters: [{ type: 'text', text: 'John' }]
+        }
       ];
       const response = {
         data: {
-          messages: [{ id: 'msg-template-456' }],
-        },
+          messages: [{ id: 'msg-template-456' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -444,8 +444,8 @@ describe('WhatsApp Message Sender', () => {
           template: {
             name: templateName,
             language: { code: languageCode },
-            components,
-          },
+            components
+          }
         },
         expect.any(Object)
       );
@@ -453,14 +453,14 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('sendMediaMessage', () => {
-    it('should send media message successfully', async () => {
+    it('should send media message successfully', async() => {
       const mediaType = 'image';
       const mediaId = 'media-123';
       const caption = 'Beautiful image';
       const response = {
         data: {
-          messages: [{ id: 'msg-media-123' }],
-        },
+          messages: [{ id: 'msg-media-123' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -480,15 +480,15 @@ describe('WhatsApp Message Sender', () => {
           type: mediaType,
           [mediaType]: {
             id: mediaId,
-            caption,
-          },
+            caption
+          }
         },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          timeout: 30000,
+          timeout: 30000
         }
       );
 
@@ -498,15 +498,15 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should send media message with filename', async () => {
+    it('should send media message with filename', async() => {
       const mediaType = 'document';
       const mediaId = 'doc-123';
       const caption = 'Important document';
       const options = { filename: 'report.pdf' };
       const response = {
         data: {
-          messages: [{ id: 'msg-media-456' }],
-        },
+          messages: [{ id: 'msg-media-456' }]
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -522,8 +522,8 @@ describe('WhatsApp Message Sender', () => {
           [mediaType]: {
             id: mediaId,
             caption,
-            filename: options.filename,
-          },
+            filename: options.filename
+          }
         },
         expect.any(Object)
       );
@@ -531,12 +531,12 @@ describe('WhatsApp Message Sender', () => {
   });
 
   describe('markMessageAsRead', () => {
-    it('should mark message as read successfully', async () => {
+    it('should mark message as read successfully', async() => {
       const messageId = 'msg-123';
       const response = {
         data: {
-          success: true,
-        },
+          success: true
+        }
       };
 
       axios.post.mockResolvedValue(response);
@@ -548,14 +548,14 @@ describe('WhatsApp Message Sender', () => {
         {
           messaging_product: 'whatsapp',
           status: 'read',
-          message_id: messageId,
+          message_id: messageId
         },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          timeout: 30000,
+          timeout: 30000
         }
       );
 
@@ -565,7 +565,7 @@ describe('WhatsApp Message Sender', () => {
       );
     });
 
-    it('should handle missing WhatsApp API credentials', async () => {
+    it('should handle missing WhatsApp API credentials', async() => {
       delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
       delete process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
 

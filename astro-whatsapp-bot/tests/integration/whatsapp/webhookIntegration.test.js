@@ -4,10 +4,10 @@
 const request = require('supertest');
 const app = require('../../../src/server');
 const {
-  processIncomingMessage,
+  processIncomingMessage
 } = require('../../../src/services/whatsapp/messageProcessor');
 const {
-  validateWebhookSignature,
+  validateWebhookSignature
 } = require('../../../src/services/whatsapp/webhookValidator');
 const logger = require('../../../src/utils/logger');
 
@@ -18,15 +18,15 @@ jest.mock('../../../src/utils/logger');
 
 // Get mocked functions
 const {
-  verifyWebhookChallenge,
+  verifyWebhookChallenge
 } = require('../../../src/services/whatsapp/webhookValidator');
 
 describe('WhatsApp Webhook Integration', () => {
   describe('GET /webhook - Verification', () => {
-    it('should verify webhook with correct token', async () => {
+    it('should verify webhook with correct token', async() => {
       verifyWebhookChallenge.mockReturnValue({
         success: true,
-        challenge: 'challenge-123',
+        challenge: 'challenge-123'
       });
 
       const response = await request(app)
@@ -34,17 +34,17 @@ describe('WhatsApp Webhook Integration', () => {
         .query({
           'hub.mode': 'subscribe',
           'hub.verify_token': process.env.W1_WHATSAPP_VERIFY_TOKEN,
-          'hub.challenge': 'challenge-123',
+          'hub.challenge': 'challenge-123'
         })
         .expect(200);
 
       expect(response.text).toBe('challenge-123');
     });
 
-    it('should reject webhook verification with wrong token', async () => {
+    it('should reject webhook verification with wrong token', async() => {
       verifyWebhookChallenge.mockReturnValue({
         success: false,
-        message: 'Forbidden',
+        message: 'Forbidden'
       });
 
       const response = await request(app)
@@ -52,18 +52,18 @@ describe('WhatsApp Webhook Integration', () => {
         .query({
           'hub.mode': 'subscribe',
           'hub.verify_token': 'wrong-token',
-          'hub.challenge': 'challenge-123',
+          'hub.challenge': 'challenge-123'
         })
         .expect(403);
 
       expect(response.text).toBe('Forbidden');
     });
 
-    it('should return ready status for verification request without parameters', async () => {
+    it('should return ready status for verification request without parameters', async() => {
       verifyWebhookChallenge.mockReturnValue({
         success: true,
         message: 'Webhook endpoint ready',
-        challenge: null,
+        challenge: null
       });
 
       const response = await request(app).get('/webhook').expect(200);
@@ -80,7 +80,7 @@ describe('WhatsApp Webhook Integration', () => {
       validateWebhookSignature.mockReturnValue(true);
     });
 
-    it('should process valid webhook with text message', async () => {
+    it('should process valid webhook with text message', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -93,13 +93,13 @@ describe('WhatsApp Webhook Integration', () => {
                   messaging_product: 'whatsapp',
                   metadata: {
                     display_phone_number: '+1234567890',
-                    phone_number_id: 'phone-id-123',
+                    phone_number_id: 'phone-id-123'
                   },
                   contacts: [
                     {
                       profile: { name: 'John Doe' },
-                      wa_id: '1234567890',
-                    },
+                      wa_id: '1234567890'
+                    }
                   ],
                   messages: [
                     {
@@ -107,14 +107,14 @@ describe('WhatsApp Webhook Integration', () => {
                       id: 'message-id-123',
                       timestamp: '1234567890',
                       text: { body: 'Hello, astrologer!' },
-                      type: 'text',
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                      type: 'text'
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -127,7 +127,7 @@ describe('WhatsApp Webhook Integration', () => {
       expect(response.body).toEqual({
         success: true,
         message: 'Webhook processed successfully',
-        timestamp: expect.any(String),
+        timestamp: expect.any(String)
       });
 
       expect(processIncomingMessage).toHaveBeenCalledWith(
@@ -136,20 +136,20 @@ describe('WhatsApp Webhook Integration', () => {
           id: 'message-id-123',
           type: 'text',
           timestamp: '1234567890',
-          text: { body: 'Hello, astrologer!' },
+          text: { body: 'Hello, astrologer!' }
         }),
         expect.objectContaining({
           contacts: [
             {
               profile: { name: 'John Doe' },
-              wa_id: '1234567890',
-            },
-          ],
+              wa_id: '1234567890'
+            }
+          ]
         })
       );
     });
 
-    it('should process valid webhook with interactive message', async () => {
+    it('should process valid webhook with interactive message', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -162,13 +162,13 @@ describe('WhatsApp Webhook Integration', () => {
                   messaging_product: 'whatsapp',
                   metadata: {
                     display_phone_number: '+1234567890',
-                    phone_number_id: 'phone-id-456',
+                    phone_number_id: 'phone-id-456'
                   },
                   contacts: [
                     {
                       profile: { name: 'Jane Smith' },
-                      wa_id: '0987654321',
-                    },
+                      wa_id: '0987654321'
+                    }
                   ],
                   messages: [
                     {
@@ -180,16 +180,16 @@ describe('WhatsApp Webhook Integration', () => {
                         type: 'button_reply',
                         button_reply: {
                           id: 'btn_daily_horoscope',
-                          title: 'Daily Horoscope',
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                          title: 'Daily Horoscope'
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -202,7 +202,7 @@ describe('WhatsApp Webhook Integration', () => {
       expect(response.body).toEqual({
         success: true,
         message: 'Webhook processed successfully',
-        timestamp: expect.any(String),
+        timestamp: expect.any(String)
       });
 
       expect(processIncomingMessage).toHaveBeenCalledWith(
@@ -215,22 +215,22 @@ describe('WhatsApp Webhook Integration', () => {
             type: 'button_reply',
             button_reply: {
               id: 'btn_daily_horoscope',
-              title: 'Daily Horoscope',
-            },
-          },
+              title: 'Daily Horoscope'
+            }
+          }
         }),
         expect.objectContaining({
           contacts: [
             {
               profile: { name: 'Jane Smith' },
-              wa_id: '0987654321',
-            },
-          ],
+              wa_id: '0987654321'
+            }
+          ]
         })
       );
     });
 
-    it('should process valid webhook with button message', async () => {
+    it('should process valid webhook with button message', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -243,13 +243,13 @@ describe('WhatsApp Webhook Integration', () => {
                   messaging_product: 'whatsapp',
                   metadata: {
                     display_phone_number: '+1234567890',
-                    phone_number_id: 'phone-id-789',
+                    phone_number_id: 'phone-id-789'
                   },
                   contacts: [
                     {
                       profile: { name: 'Bob Johnson' },
-                      wa_id: '1122334455',
-                    },
+                      wa_id: '1122334455'
+                    }
                   ],
                   messages: [
                     {
@@ -259,15 +259,15 @@ describe('WhatsApp Webhook Integration', () => {
                       type: 'button',
                       button: {
                         payload: 'compatibility_check_payload',
-                        text: 'Check Compatibility',
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                        text: 'Check Compatibility'
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -280,7 +280,7 @@ describe('WhatsApp Webhook Integration', () => {
       expect(response.body).toEqual({
         success: true,
         message: 'Webhook processed successfully',
-        timestamp: expect.any(String),
+        timestamp: expect.any(String)
       });
 
       expect(processIncomingMessage).toHaveBeenCalledWith(
@@ -291,21 +291,21 @@ describe('WhatsApp Webhook Integration', () => {
           timestamp: '1234567892',
           button: {
             payload: 'compatibility_check_payload',
-            text: 'Check Compatibility',
-          },
+            text: 'Check Compatibility'
+          }
         }),
         expect.objectContaining({
           contacts: [
             {
               profile: { name: 'Bob Johnson' },
-              wa_id: '1122334455',
-            },
-          ],
+              wa_id: '1122334455'
+            }
+          ]
         })
       );
     });
 
-    it('should process valid webhook with media message', async () => {
+    it('should process valid webhook with media message', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -318,13 +318,13 @@ describe('WhatsApp Webhook Integration', () => {
                   messaging_product: 'whatsapp',
                   metadata: {
                     display_phone_number: '+1234567890',
-                    phone_number_id: 'phone-id-101',
+                    phone_number_id: 'phone-id-101'
                   },
                   contacts: [
                     {
                       profile: { name: 'Alice Brown' },
-                      wa_id: '5566778899',
-                    },
+                      wa_id: '5566778899'
+                    }
                   ],
                   messages: [
                     {
@@ -334,15 +334,15 @@ describe('WhatsApp Webhook Integration', () => {
                       type: 'image',
                       image: {
                         id: 'image-id-101',
-                        caption: 'My birth chart',
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                        caption: 'My birth chart'
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -355,7 +355,7 @@ describe('WhatsApp Webhook Integration', () => {
       expect(response.body).toEqual({
         success: true,
         message: 'Webhook processed successfully',
-        timestamp: expect.any(String),
+        timestamp: expect.any(String)
       });
 
       expect(processIncomingMessage).toHaveBeenCalledWith(
@@ -366,21 +366,21 @@ describe('WhatsApp Webhook Integration', () => {
           timestamp: '1234567893',
           image: {
             id: 'image-id-101',
-            caption: 'My birth chart',
-          },
+            caption: 'My birth chart'
+          }
         }),
         expect.objectContaining({
           contacts: [
             {
               profile: { name: 'Alice Brown' },
-              wa_id: '5566778899',
-            },
-          ],
+              wa_id: '5566778899'
+            }
+          ]
         })
       );
     });
 
-    it('should handle invalid webhook payload gracefully', async () => {
+    it('should handle invalid webhook payload gracefully', async() => {
       const response = await request(app)
         .post('/webhook')
         .send({ invalid: 'payload' })
@@ -389,11 +389,11 @@ describe('WhatsApp Webhook Integration', () => {
         .expect(400);
 
       expect(response.body).toEqual({
-        error: 'Invalid payload',
+        error: 'Invalid payload'
       });
     });
 
-    it('should handle webhook processing errors gracefully', async () => {
+    it('should handle webhook processing errors gracefully', async() => {
       // Mock processIncomingMessage to throw an error
       processIncomingMessage.mockRejectedValue(new Error('Processing failed'));
 
@@ -409,13 +409,13 @@ describe('WhatsApp Webhook Integration', () => {
                   messaging_product: 'whatsapp',
                   metadata: {
                     display_phone_number: '+1234567890',
-                    phone_number_id: 'phone-id-102',
+                    phone_number_id: 'phone-id-102'
                   },
                   contacts: [
                     {
                       profile: { name: 'Charlie Wilson' },
-                      wa_id: '9988776655',
-                    },
+                      wa_id: '9988776655'
+                    }
                   ],
                   messages: [
                     {
@@ -423,14 +423,14 @@ describe('WhatsApp Webhook Integration', () => {
                       id: 'message-id-102',
                       timestamp: '1234567894',
                       text: { body: 'Hello, astrologer!' },
-                      type: 'text',
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                      type: 'text'
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -442,11 +442,11 @@ describe('WhatsApp Webhook Integration', () => {
 
       expect(response.body).toEqual({
         error: 'Internal server error',
-        message: 'Processing failed',
+        message: 'Processing failed'
       });
     });
 
-    it('should validate webhook signature when provided', async () => {
+    it('should validate webhook signature when provided', async() => {
       validateWebhookSignature.mockReturnValue(false);
 
       const webhookPayload = {
@@ -460,14 +460,14 @@ describe('WhatsApp Webhook Integration', () => {
                     {
                       from: '1234567890',
                       type: 'text',
-                      text: { body: 'Hello' },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                      text: { body: 'Hello' }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -478,7 +478,7 @@ describe('WhatsApp Webhook Integration', () => {
         .expect(401);
 
       expect(response.body).toEqual({
-        error: 'Unauthorized',
+        error: 'Unauthorized'
       });
 
       expect(validateWebhookSignature).toHaveBeenCalledWith(
@@ -490,7 +490,7 @@ describe('WhatsApp Webhook Integration', () => {
   });
 
   describe('Error Handling', () => {
-    it('should handle missing environment variables gracefully', async () => {
+    it('should handle missing environment variables gracefully', async() => {
       // Temporarily unset environment variables
       const originalAccessToken = process.env.W1_WHATSAPP_ACCESS_TOKEN;
       const originalPhoneNumberId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
@@ -509,14 +509,14 @@ describe('WhatsApp Webhook Integration', () => {
                     {
                       from: '1234567890',
                       type: 'text',
-                      text: { body: 'Hello' },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                      text: { body: 'Hello' }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -532,7 +532,7 @@ describe('WhatsApp Webhook Integration', () => {
 
       expect(response.body).toEqual({
         error: 'Internal server error',
-        message: expect.any(String),
+        message: expect.any(String)
       });
     });
   });

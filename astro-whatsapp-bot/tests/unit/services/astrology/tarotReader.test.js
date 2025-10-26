@@ -51,7 +51,7 @@ describe('Tarot Reader Service', () => {
       const user = {
         id: 'user-111',
         birthDate: '25/05/1988',
-        sunSign: 'Gemini',
+        sunSign: 'Gemini'
       };
       const reading = generateTarotReading(user, 'single');
 

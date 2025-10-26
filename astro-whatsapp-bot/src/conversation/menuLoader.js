@@ -35,5 +35,5 @@ loadMenus();
 
 module.exports = {
   loadMenus,
-  getMenu,
+  getMenu
 };

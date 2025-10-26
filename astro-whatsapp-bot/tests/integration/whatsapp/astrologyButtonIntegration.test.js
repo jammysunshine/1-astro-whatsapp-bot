@@ -4,10 +4,10 @@
 const request = require('supertest');
 const app = require('../../../src/server');
 const {
-  processIncomingMessage,
+  processIncomingMessage
 } = require('../../../src/services/whatsapp/messageProcessor');
 const {
-  validateWebhookSignature,
+  validateWebhookSignature
 } = require('../../../src/services/whatsapp/webhookValidator');
 
 // Mock dependencies
@@ -22,7 +22,7 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Tarot Reading Buttons', () => {
-    it('should process single card tarot reading button', async () => {
+    it('should process single card tarot reading button', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -33,8 +33,8 @@ describe('Astrology Button Integration', () => {
                   contacts: [
                     {
                       profile: { name: 'Test User' },
-                      wa_id: '1234567890',
-                    },
+                      wa_id: '1234567890'
+                    }
                   ],
                   messages: [
                     {
@@ -46,16 +46,16 @@ describe('Astrology Button Integration', () => {
                         type: 'button_reply',
                         button_reply: {
                           id: 'btn_tarot_single',
-                          title: 'Single Card',
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                          title: 'Single Card'
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -71,15 +71,15 @@ describe('Astrology Button Integration', () => {
           type: 'interactive',
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_tarot_single',
-            }),
-          }),
+              id: 'btn_tarot_single'
+            })
+          })
         }),
         expect.any(Object)
       );
     });
 
-    it('should process three-card spread tarot reading button', async () => {
+    it('should process three-card spread tarot reading button', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -90,8 +90,8 @@ describe('Astrology Button Integration', () => {
                   contacts: [
                     {
                       profile: { name: 'Test User' },
-                      wa_id: '1234567890',
-                    },
+                      wa_id: '1234567890'
+                    }
                   ],
                   messages: [
                     {
@@ -103,16 +103,16 @@ describe('Astrology Button Integration', () => {
                         type: 'button_reply',
                         button_reply: {
                           id: 'btn_tarot_three_card',
-                          title: 'Three Card Spread',
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                          title: 'Three Card Spread'
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -127,9 +127,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_tarot_three_card',
-            }),
-          }),
+              id: 'btn_tarot_three_card'
+            })
+          })
         }),
         expect.any(Object)
       );
@@ -137,7 +137,7 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Palmistry Reading Buttons', () => {
-    it('should process palmistry reading button', async () => {
+    it('should process palmistry reading button', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -148,8 +148,8 @@ describe('Astrology Button Integration', () => {
                   contacts: [
                     {
                       profile: { name: 'Test User' },
-                      wa_id: '1234567890',
-                    },
+                      wa_id: '1234567890'
+                    }
                   ],
                   messages: [
                     {
@@ -161,16 +161,16 @@ describe('Astrology Button Integration', () => {
                         type: 'button_reply',
                         button_reply: {
                           id: 'btn_palmistry_reading',
-                          title: 'Palmistry Reading',
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                          title: 'Palmistry Reading'
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -185,9 +185,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_palmistry_reading',
-            }),
-          }),
+              id: 'btn_palmistry_reading'
+            })
+          })
         }),
         expect.any(Object)
       );
@@ -195,7 +195,7 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Nadi Astrology Buttons', () => {
-    it('should process Nadi reading button', async () => {
+    it('should process Nadi reading button', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -206,8 +206,8 @@ describe('Astrology Button Integration', () => {
                   contacts: [
                     {
                       profile: { name: 'Test User' },
-                      wa_id: '1234567890',
-                    },
+                      wa_id: '1234567890'
+                    }
                   ],
                   messages: [
                     {
@@ -219,16 +219,16 @@ describe('Astrology Button Integration', () => {
                         type: 'button_reply',
                         button_reply: {
                           id: 'btn_nadi_reading',
-                          title: 'Nadi Reading',
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                          title: 'Nadi Reading'
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -243,9 +243,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_nadi_reading',
-            }),
-          }),
+              id: 'btn_nadi_reading'
+            })
+          })
         }),
         expect.any(Object)
       );
@@ -253,7 +253,7 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Compatibility Check Buttons', () => {
-    it('should process compatibility check button', async () => {
+    it('should process compatibility check button', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -264,8 +264,8 @@ describe('Astrology Button Integration', () => {
                   contacts: [
                     {
                       profile: { name: 'Test User' },
-                      wa_id: '1234567890',
-                    },
+                      wa_id: '1234567890'
+                    }
                   ],
                   messages: [
                     {
@@ -277,16 +277,16 @@ describe('Astrology Button Integration', () => {
                         type: 'button_reply',
                         button_reply: {
                           id: 'btn_compatibility_check',
-                          title: 'Check Compatibility',
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                          title: 'Check Compatibility'
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -301,9 +301,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_compatibility_check',
-            }),
-          }),
+              id: 'btn_compatibility_check'
+            })
+          })
         }),
         expect.any(Object)
       );
@@ -311,7 +311,7 @@ describe('Astrology Button Integration', () => {
   });
 
   describe('Subscription and Payment Buttons', () => {
-    it('should process subscription upgrade button', async () => {
+    it('should process subscription upgrade button', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -322,8 +322,8 @@ describe('Astrology Button Integration', () => {
                   contacts: [
                     {
                       profile: { name: 'Test User' },
-                      wa_id: '1234567890',
-                    },
+                      wa_id: '1234567890'
+                    }
                   ],
                   messages: [
                     {
@@ -335,16 +335,16 @@ describe('Astrology Button Integration', () => {
                         type: 'button_reply',
                         button_reply: {
                           id: 'btn_upgrade_premium',
-                          title: 'Upgrade to Premium',
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                          title: 'Upgrade to Premium'
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -359,15 +359,15 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_upgrade_premium',
-            }),
-          }),
+              id: 'btn_upgrade_premium'
+            })
+          })
         }),
         expect.any(Object)
       );
     });
 
-    it('should process payment method selection button', async () => {
+    it('should process payment method selection button', async() => {
       const webhookPayload = {
         entry: [
           {
@@ -378,8 +378,8 @@ describe('Astrology Button Integration', () => {
                   contacts: [
                     {
                       profile: { name: 'Test User' },
-                      wa_id: '1234567890',
-                    },
+                      wa_id: '1234567890'
+                    }
                   ],
                   messages: [
                     {
@@ -391,16 +391,16 @@ describe('Astrology Button Integration', () => {
                         type: 'button_reply',
                         button_reply: {
                           id: 'btn_pay_upi',
-                          title: 'Pay with UPI',
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                          title: 'Pay with UPI'
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
 
       const response = await request(app)
@@ -415,9 +415,9 @@ describe('Astrology Button Integration', () => {
         expect.objectContaining({
           interactive: expect.objectContaining({
             button_reply: expect.objectContaining({
-              id: 'btn_pay_upi',
-            }),
-          }),
+              id: 'btn_pay_upi'
+            })
+          })
         }),
         expect.any(Object)
       );

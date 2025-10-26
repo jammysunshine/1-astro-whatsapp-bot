@@ -42,7 +42,7 @@ describe('HoraryReader', () => {
     it('should interpret Horary answer', () => {
       const chart = {
         sign: 'Pisces',
-        house: 10,
+        house: 10
       };
 
       const answer = horaryReader.interpretHoraryAnswer(chart);

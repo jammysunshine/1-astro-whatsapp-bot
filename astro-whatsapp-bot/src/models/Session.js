@@ -10,54 +10,54 @@ const sessionSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      index: true,
+      index: true
     },
     phoneNumber: {
       type: String,
       required: true,
-      index: true,
+      index: true
     },
 
     // Conversation state
     currentFlow: {
       type: String,
-      default: null,
+      default: null
     },
     currentStep: {
       type: String,
-      default: null,
+      default: null
     },
     flowData: {
       type: mongoose.Schema.Types.Mixed, // Flexible object for flow-specific data
-      default: {},
+      default: {}
     },
 
     // Context and memory
     context: {
       type: mongoose.Schema.Types.Mixed,
-      default: {},
+      default: {}
     },
     memory: [
       {
         timestamp: { type: Date, default: Date.now },
         type: String, // 'user_input', 'bot_response', 'system_event'
-        content: mongoose.Schema.Types.Mixed,
-      },
+        content: mongoose.Schema.Types.Mixed
+      }
     ],
 
     // Session metadata
     createdAt: {
       type: Date,
       default: Date.now,
-      expires: 86400, // Auto-delete after 24 hours of inactivity
+      expires: 86400 // Auto-delete after 24 hours of inactivity
     },
     lastActivity: {
       type: Date,
-      default: Date.now,
+      default: Date.now
     },
     isActive: {
       type: Boolean,
-      default: true,
+      default: true
     },
 
     // User agent and device info
@@ -65,12 +65,12 @@ const sessionSchema = new mongoose.Schema(
     platform: {
       type: String,
       enum: ['whatsapp', 'web', 'api'],
-      default: 'whatsapp',
-    },
+      default: 'whatsapp'
+    }
   },
   {
     timestamps: true,
-    collection: 'sessions',
+    collection: 'sessions'
   }
 );
 
@@ -80,23 +80,23 @@ sessionSchema.index({ createdAt: 1 }, { expireAfterSeconds: 86400 }); // TTL ind
 sessionSchema.index({ isActive: 1 });
 
 // Pre-save middleware to update lastActivity
-sessionSchema.pre('save', function (next) {
+sessionSchema.pre('save', function(next) {
   this.lastActivity = new Date();
   next();
 });
 
 // Method to update session activity
-sessionSchema.methods.touch = function () {
+sessionSchema.methods.touch = function() {
   this.lastActivity = new Date();
   return this.save();
 };
 
 // Method to add to memory
-sessionSchema.methods.addToMemory = function (type, content) {
+sessionSchema.methods.addToMemory = function(type, content) {
   this.memory.push({
     timestamp: new Date(),
     type,
-    content,
+    content
   });
 
   // Keep only last 50 memory items to prevent unbounded growth
@@ -108,22 +108,22 @@ sessionSchema.methods.addToMemory = function (type, content) {
 };
 
 // Static method to clean up old sessions
-sessionSchema.statics.cleanupOldSessions = async function () {
+sessionSchema.statics.cleanupOldSessions = async function() {
   const cutoffDate = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
 
   const result = await this.deleteMany({
     lastActivity: { $lt: cutoffDate },
-    isActive: false,
+    isActive: false
   });
 
   return result.deletedCount;
 };
 
 // Static method to get active session for phone number
-sessionSchema.statics.getActiveSession = function (phoneNumber) {
+sessionSchema.statics.getActiveSession = function(phoneNumber) {
   return this.findOne({
     phoneNumber,
-    isActive: true,
+    isActive: true
   }).sort({ lastActivity: -1 });
 };
 

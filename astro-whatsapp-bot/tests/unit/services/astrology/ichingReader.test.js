@@ -41,7 +41,7 @@ describe('IChingReader', () => {
   describe('interpretHexagram', () => {
     it('should interpret hexagram', () => {
       const hexagram = {
-        lines: [1, 0, 1, 0, 1, 0],
+        lines: [1, 0, 1, 0, 1, 0]
       };
 
       const interpretation = ichingReader.interpretHexagram(hexagram);

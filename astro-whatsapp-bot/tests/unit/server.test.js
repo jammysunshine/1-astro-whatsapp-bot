@@ -9,13 +9,13 @@ jest.mock('../../src/services/whatsapp/webhookValidator', () => ({
   validateWebhookSignature: jest.fn(() => true),
   verifyWebhookChallenge: jest.fn(() => ({
     success: true,
-    message: 'Webhook endpoint ready',
-  })),
+    message: 'Webhook endpoint ready'
+  }))
 }));
 
 describe('Server Setup', () => {
   describe('GET /health', () => {
-    it('should return health status with correct structure', async () => {
+    it('should return health status with correct structure', async() => {
       const response = await request(app).get('/health').expect(200);
 
       expect(response.body).toHaveProperty('status', 'healthy');
@@ -29,7 +29,7 @@ describe('Server Setup', () => {
   });
 
   describe('GET /', () => {
-    it('should return welcome message with version', async () => {
+    it('should return welcome message with version', async() => {
       const response = await request(app).get('/').expect(200);
 
       expect(response.body).toHaveProperty('message');
@@ -41,7 +41,7 @@ describe('Server Setup', () => {
   });
 
   describe('POST /webhook', () => {
-    it('should return webhook ready message', async () => {
+    it('should return webhook ready message', async() => {
       const response = await request(app)
         .post('/webhook')
         .set('x-hub-signature-256', 'signature')
@@ -54,7 +54,7 @@ describe('Server Setup', () => {
   });
 
   describe('404 Handler', () => {
-    it('should return 404 for non-existent routes', async () => {
+    it('should return 404 for non-existent routes', async() => {
       const response = await request(app)
         .get('/non-existent-route')
         .expect(404);

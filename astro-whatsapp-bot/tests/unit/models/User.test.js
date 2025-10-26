@@ -5,21 +5,21 @@ const User = require('../../../src/models/User');
 const mongoose = require('mongoose');
 
 describe('User Model', () => {
-  beforeAll(async () => {
+  beforeAll(async() => {
     // Connect to test database
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test');
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await mongoose.connection.close();
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await User.deleteMany({});
   });
 
   describe('User Creation', () => {
-    it('should create a new user with valid data', async () => {
+    it('should create a new user with valid data', async() => {
       const userData = {
         id: 'user-456',
         phoneNumber: '+1234567890',
@@ -31,7 +31,7 @@ describe('User Model', () => {
         sunSign: 'Pisces',
         moonSign: 'Pisces',
         risingSign: 'Aquarius',
-        profileComplete: true,
+        profileComplete: true
       };
 
       await new User(userData).save();
@@ -42,7 +42,7 @@ describe('User Model', () => {
       expect(foundUser.phoneNumber).toBe('+1234567890');
     });
 
-    it('should update user profile', async () => {
+    it('should update user profile', async() => {
       const userData = {
         id: 'user-123',
         phoneNumber: '+1234567890',
@@ -54,7 +54,7 @@ describe('User Model', () => {
         sunSign: 'Pisces',
         moonSign: 'Pisces',
         risingSign: 'Aquarius',
-        profileComplete: true,
+        profileComplete: true
       };
 
       const user = await new User(userData).save();

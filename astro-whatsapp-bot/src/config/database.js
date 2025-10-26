@@ -10,7 +10,7 @@ const getConnectionOptions = mongoURI => {
   const baseOptions = {
     maxPoolSize: 10, // Maintain up to 10 socket connections
     serverSelectionTimeoutMS: 30000, // Keep trying to send operations for 30 seconds
-    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+    socketTimeoutMS: 45000 // Close sockets after 45 seconds of inactivity
   };
 
   // Add serverApi for Atlas connections (mongodb+srv)
@@ -18,7 +18,7 @@ const getConnectionOptions = mongoURI => {
     baseOptions.serverApi = {
       version: mongoose.mongo.ServerApiVersion.v1,
       strict: true,
-      deprecationErrors: true,
+      deprecationErrors: true
     };
   }
 
@@ -29,7 +29,7 @@ const getConnectionOptions = mongoURI => {
  * Connect to MongoDB Atlas
  * @returns {Promise<void>}
  */
-const connectDB = async () => {
+const connectDB = async() => {
   try {
     // In test environment, always disconnect first to avoid connection conflicts
     if (process.env.NODE_ENV === 'test') {
@@ -53,8 +53,8 @@ const connectDB = async () => {
         const { MongoMemoryServer } = require('mongodb-memory-server');
         const mongoServer = await MongoMemoryServer.create({
           instance: {
-            startupTimeout: 30000,
-          },
+            startupTimeout: 30000
+          }
         });
         mongoURI = mongoServer.getUri();
         process.env.MONGODB_URI = mongoURI; // Set for consistency
@@ -118,7 +118,7 @@ const connectDB = async () => {
     });
 
     // Graceful shutdown
-    process.on('SIGINT', async () => {
+    process.on('SIGINT', async() => {
       await mongoose.connection.close();
       logger.info('📴 MongoDB connection closed due to app termination');
       process.exit(0);
@@ -140,7 +140,7 @@ const connectDB = async () => {
  * Close database connection
  * @returns {Promise<void>}
  */
-const closeDB = async () => {
+const closeDB = async() => {
   try {
     await mongoose.connection.close();
     logger.info('📴 MongoDB connection closed');
@@ -160,19 +160,19 @@ const getConnectionStatus = () => {
     0: 'disconnected',
     1: 'connected',
     2: 'connecting',
-    3: 'disconnecting',
+    3: 'disconnecting'
   };
 
   return {
     status: states[state] || 'unknown',
     host: mongoose.connection.host || null,
     name: mongoose.connection.name || null,
-    readyState: state,
+    readyState: state
   };
 };
 
 module.exports = {
   connectDB,
   closeDB,
-  getConnectionStatus,
+  getConnectionStatus
 };

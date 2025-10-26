@@ -25,16 +25,16 @@ describe('ConversationEngine', () => {
     astrologyEngine.generateCompleteReading.mockReturnValue({
       sunSign: 'Pisces',
       moonSign: 'Pisces',
-      risingSign: 'Aquarius',
+      risingSign: 'Aquarius'
     });
   });
 
   describe('processMessage', () => {
-    it('should process onboarding message', async () => {
+    it('should process onboarding message', async() => {
       const message = {
         from: '+1234567890',
         text: { body: 'Hello' },
-        type: 'text',
+        type: 'text'
       };
 
       const result = await conversationEngine.processMessage(message);
@@ -43,16 +43,16 @@ describe('ConversationEngine', () => {
       expect(sendMessage).toHaveBeenCalled();
     });
 
-    it('should handle existing user', async () => {
+    it('should handle existing user', async() => {
       getUserByPhone.mockResolvedValue({
         phoneNumber: '+1234567890',
-        profileComplete: true,
+        profileComplete: true
       });
 
       const message = {
         from: '+1234567890',
         text: { body: 'Daily horoscope' },
-        type: 'text',
+        type: 'text'
       };
 
       const result = await conversationEngine.processMessage(message);
@@ -63,11 +63,11 @@ describe('ConversationEngine', () => {
   });
 
   describe('handleOnboarding', () => {
-    it('should handle birth date input', async () => {
+    it('should handle birth date input', async() => {
       const message = {
         from: '+1234567890',
         text: { body: '15031990' },
-        type: 'text',
+        type: 'text'
       };
 
       const result = await conversationEngine.handleOnboarding(message);

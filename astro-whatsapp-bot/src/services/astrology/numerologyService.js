@@ -73,23 +73,23 @@ function getNumerologyReport(birthDate, fullName) {
     lifePath: {
       number: lifePath,
       interpretation:
-        numerologyData.lifePath[lifePath] || 'Interpretation not found.',
+        numerologyData.lifePath[lifePath] || 'Interpretation not found.'
     },
     expression: {
       number: expression,
       interpretation:
-        numerologyData.expression[expression] || 'Interpretation not found.',
+        numerologyData.expression[expression] || 'Interpretation not found.'
     },
     soulUrge: {
       number: soulUrge,
       interpretation:
-        numerologyData.soulUrge[soulUrge] || 'Interpretation not found.',
+        numerologyData.soulUrge[soulUrge] || 'Interpretation not found.'
     },
     personality: {
       number: personality,
       interpretation:
-        numerologyData.personality[personality] || 'Interpretation not found.',
-    },
+        numerologyData.personality[personality] || 'Interpretation not found.'
+    }
   };
 
   return report;
@@ -121,7 +121,7 @@ async function generateFullReport(fullName, birthDate) {
       strengths: getStrengths(lifePath, expression),
       challenges: getChallenges(lifePath, expression),
       careerPaths: getCareerPaths(lifePath, expression),
-      compatibleNumbers: getCompatibleNumbers(lifePath),
+      compatibleNumbers: getCompatibleNumbers(lifePath)
     };
   } catch (error) {
     logger.error('Error generating full numerology report:', error);
@@ -140,7 +140,7 @@ function getStrengths(lifePath, expression) {
     6: ['Responsibility', 'Harmony', 'Nurturing'],
     7: ['Analysis', 'Spirituality', 'Independence'],
     8: ['Ambition', 'Authority', 'Material success'],
-    9: ['Humanitarianism', 'Creativity', 'Compassion'],
+    9: ['Humanitarianism', 'Creativity', 'Compassion']
   };
 
   return strengthsMap[lifePath] || ['Determination', 'Resilience'];
@@ -156,7 +156,7 @@ function getChallenges(lifePath, expression) {
     6: ['Self-sacrifice', 'Martyrdom', 'Over-responsibility'],
     7: ['Isolation', 'Criticism', 'Over-analysis'],
     8: ['Materialism', 'Control issues', 'Workaholism'],
-    9: ['Idealism', 'Self-neglect', 'Impracticality'],
+    9: ['Idealism', 'Self-neglect', 'Impracticality']
   };
 
   return challengesMap[lifePath] || ['Self-doubt', 'Resistance to change'];
@@ -172,7 +172,7 @@ function getCareerPaths(lifePath, expression) {
     6: ['Teacher', 'Nurse', 'Social worker', 'Counselor'],
     7: ['Researcher', 'Analyst', 'Philosopher', 'Scientist'],
     8: ['Executive', 'Business owner', 'Investor', 'Manager'],
-    9: ['Humanitarian', 'Artist', 'Therapist', 'Visionary'],
+    9: ['Humanitarian', 'Artist', 'Therapist', 'Visionary']
   };
 
   return careersMap[lifePath] || ['Professional', 'Creative', 'Service-oriented'];
@@ -188,7 +188,7 @@ function getCompatibleNumbers(lifePath) {
     6: [1, 2, 9],
     7: [4, 5, 8],
     8: [2, 4, 7],
-    9: [3, 6, 9],
+    9: [3, 6, 9]
   };
 
   return compatibilityMap[lifePath] || [lifePath];
@@ -198,5 +198,5 @@ module.exports = {
   getNumerologyReport,
   generateFullReport,
   reduceToSingleDigit, // Export for testing
-  getLetterValue, // Export for testing
+  getLetterValue // Export for testing
 };

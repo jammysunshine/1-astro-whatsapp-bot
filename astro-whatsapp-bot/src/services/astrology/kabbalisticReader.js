@@ -19,12 +19,12 @@ class KabbalisticReader {
           'Divine Will',
           'Pure Consciousness',
           'Unity',
-          'Transcendence',
+          'Transcendence'
         ],
         color: 'Pure White',
         element: 'Spirit',
         description:
-          'The highest Sephirah, representing divine will and pure consciousness',
+          'The highest Sephirah, representing divine will and pure consciousness'
       },
       2: {
         name: 'Chokmah',
@@ -35,11 +35,11 @@ class KabbalisticReader {
           'Pure Wisdom',
           'Creative Force',
           'Divine Masculine',
-          'Expansion',
+          'Expansion'
         ],
         color: 'Gray',
         element: 'Air',
-        description: 'The sphere of pure wisdom and creative force',
+        description: 'The sphere of pure wisdom and creative force'
       },
       3: {
         name: 'Binah',
@@ -49,7 +49,7 @@ class KabbalisticReader {
         qualities: ['Understanding', 'Form', 'Divine Feminine', 'Structure'],
         color: 'Black',
         element: 'Water',
-        description: 'The sphere of understanding and divine feminine wisdom',
+        description: 'The sphere of understanding and divine feminine wisdom'
       },
       4: {
         name: 'Chesed',
@@ -59,7 +59,7 @@ class KabbalisticReader {
         qualities: ['Love', 'Compassion', 'Expansion', 'Benevolence'],
         color: 'Blue',
         element: 'Water',
-        description: 'The sphere of divine love and mercy',
+        description: 'The sphere of divine love and mercy'
       },
       5: {
         name: 'Geburah',
@@ -69,7 +69,7 @@ class KabbalisticReader {
         qualities: ['Strength', 'Justice', 'Discipline', 'Courage'],
         color: 'Red',
         element: 'Fire',
-        description: 'The sphere of strength, justice, and divine severity',
+        description: 'The sphere of strength, justice, and divine severity'
       },
       6: {
         name: 'Tiphareth',
@@ -79,7 +79,7 @@ class KabbalisticReader {
         qualities: ['Beauty', 'Harmony', 'Balance', 'Integration'],
         color: 'Yellow/Gold',
         element: 'Air',
-        description: 'The sphere of beauty, harmony, and the heart of the Tree',
+        description: 'The sphere of beauty, harmony, and the heart of the Tree'
       },
       7: {
         name: 'Netzach',
@@ -90,7 +90,7 @@ class KabbalisticReader {
         color: 'Green',
         element: 'Fire',
         description:
-          'The sphere of victory, creativity, and emotional expression',
+          'The sphere of victory, creativity, and emotional expression'
       },
       8: {
         name: 'Hod',
@@ -101,7 +101,7 @@ class KabbalisticReader {
         color: 'Orange',
         element: 'Water',
         description:
-          'The sphere of glory, communication, and intellectual pursuits',
+          'The sphere of glory, communication, and intellectual pursuits'
       },
       9: {
         name: 'Yesod',
@@ -112,7 +112,7 @@ class KabbalisticReader {
         color: 'Purple/Violet',
         element: 'Air',
         description:
-          'The sphere of the subconscious and foundation of manifestation',
+          'The sphere of the subconscious and foundation of manifestation'
       },
       10: {
         name: 'Malkuth',
@@ -123,12 +123,12 @@ class KabbalisticReader {
           'Manifestation',
           'Physical World',
           'Completion',
-          'Grounding',
+          'Grounding'
         ],
         color: 'Brown/Green',
         element: 'Earth',
-        description: 'The sphere of physical manifestation and earthly kingdom',
-      },
+        description: 'The sphere of physical manifestation and earthly kingdom'
+      }
     };
 
     // Zodiac to Sephiroth mapping
@@ -144,7 +144,7 @@ class KabbalisticReader {
       Sagittarius: 4, // Chesed - Jupiter ruled, expansion and wisdom
       Capricorn: 3, // Binah - Saturn ruled, structure and understanding
       Aquarius: 2, // Chokmah - Uranus co-ruled, innovation and wisdom
-      Pisces: 9, // Yesod - Jupiter exalted, imagination and spirituality
+      Pisces: 9 // Yesod - Jupiter exalted, imagination and spirituality
     };
 
     // Planetary correspondences for Kabbalistic interpretation
@@ -155,7 +155,7 @@ class KabbalisticReader {
       venus: { sephiroth: 7, path: 'Path of Love and Victory' },
       mars: { sephiroth: 5, path: 'Path of Strength' },
       jupiter: { sephiroth: 4, path: 'Path of Mercy' },
-      saturn: { sephiroth: 3, path: 'Path of Understanding' },
+      saturn: { sephiroth: 3, path: 'Path of Understanding' }
     };
   }
 
@@ -210,14 +210,14 @@ class KabbalisticReader {
         kabbalisticDescription: this.generateKabbalisticDescription(
           primarySephirah,
           secondarySephirah
-        ),
+        )
       };
     } catch (error) {
       logger.error('Error generating Kabbalistic chart:', error);
       return {
         error: 'Unable to generate Kabbalistic analysis at this time',
         fallback:
-          'The Tree of Life holds mysteries beyond current comprehension',
+          'The Tree of Life holds mysteries beyond current comprehension'
       };
     }
   }
@@ -233,78 +233,78 @@ class KabbalisticReader {
       '1-2': {
         name: 'Path of the Flaming Sword',
         hebrew: 'א',
-        meaning: 'Unity to Wisdom',
+        meaning: 'Unity to Wisdom'
       },
       '2-3': {
         name: 'Path of the Sanctifying Intelligence',
         hebrew: 'ב',
-        meaning: 'Wisdom to Understanding',
+        meaning: 'Wisdom to Understanding'
       },
       '3-6': {
         name: 'Path of the Triumphant and Eternal Intelligence',
         hebrew: 'ג',
-        meaning: 'Understanding to Beauty',
+        meaning: 'Understanding to Beauty'
       },
       '4-5': {
         name: 'Path of the Constituting Intelligence',
         hebrew: 'ד',
-        meaning: 'Mercy to Strength',
+        meaning: 'Mercy to Strength'
       },
       '4-6': {
         name: 'Path of the Mediating Intelligence',
         hebrew: 'ה',
-        meaning: 'Mercy to Beauty',
+        meaning: 'Mercy to Beauty'
       },
       '5-6': {
         name: 'Path of the Exciting Intelligence',
         hebrew: 'ו',
-        meaning: 'Strength to Beauty',
+        meaning: 'Strength to Beauty'
       },
       '6-7': {
         name: 'Path of the Hidden Intelligence',
         hebrew: 'ז',
-        meaning: 'Beauty to Victory',
+        meaning: 'Beauty to Victory'
       },
       '6-8': {
         name: 'Path of the Perfect Intelligence',
         hebrew: 'ח',
-        meaning: 'Beauty to Glory',
+        meaning: 'Beauty to Glory'
       },
       '6-9': {
         name: 'Path of the Purified Intelligence',
         hebrew: 'ט',
-        meaning: 'Beauty to Foundation',
+        meaning: 'Beauty to Foundation'
       },
       '7-8': {
         name: 'Path of the Renewing Intelligence',
         hebrew: 'י',
-        meaning: 'Victory to Glory',
+        meaning: 'Victory to Glory'
       },
       '7-9': {
         name: 'Path of the Imaginative Intelligence',
         hebrew: 'כ',
-        meaning: 'Victory to Foundation',
+        meaning: 'Victory to Foundation'
       },
       '7-10': {
         name: 'Path of the Corporeal Intelligence',
         hebrew: 'ל',
-        meaning: 'Victory to Kingdom',
+        meaning: 'Victory to Kingdom'
       },
       '8-9': {
         name: 'Path of the Stable Intelligence',
         hebrew: 'מ',
-        meaning: 'Glory to Foundation',
+        meaning: 'Glory to Foundation'
       },
       '8-10': {
         name: 'Path of the Separating Intelligence',
         hebrew: 'נ',
-        meaning: 'Glory to Kingdom',
+        meaning: 'Glory to Kingdom'
       },
       '9-10': {
         name: 'Path of the Faithful Intelligence',
         hebrew: 'ס',
-        meaning: 'Foundation to Kingdom',
-      },
+        meaning: 'Foundation to Kingdom'
+      }
     };
 
     const pathKey = `${Math.min(from, to)}-${Math.max(from, to)}`;
@@ -315,7 +315,7 @@ class KabbalisticReader {
         pathName: path.name,
         hebrewLetter: path.hebrew,
         meaning: path.meaning,
-        meditation: this.generatePathMeditation(path.name, from, to),
+        meditation: this.generatePathMeditation(path.name, from, to)
       };
     }
 
@@ -324,7 +324,7 @@ class KabbalisticReader {
       hebrewLetter: '?',
       meaning: 'Direct connection between spheres',
       meditation:
-        'Meditate on the direct flow of energy between these Sephiroth',
+        'Meditate on the direct flow of energy between these Sephiroth'
     };
   }
 
@@ -366,7 +366,7 @@ class KabbalisticReader {
       'Path of the Separating Intelligence':
         'Separate glory from the physical. Feel the analytical discernment.',
       'Path of the Faithful Intelligence':
-        'Connect foundation to manifestation. Feel the faithful bridge between dream and reality.',
+        'Connect foundation to manifestation. Feel the faithful bridge between dream and reality.'
     };
 
     return (
@@ -390,7 +390,7 @@ class KabbalisticReader {
       '6-4': 'Express divine love through personal beauty',
       '4-3': 'Expand understanding through compassionate wisdom',
       '3-2': 'Structure creative wisdom into practical understanding',
-      '2-1': 'Channel divine inspiration through pure consciousness',
+      '2-1': 'Channel divine inspiration through pure consciousness'
     };
 
     const key = `${Math.min(primary, secondary)}-${Math.max(primary, secondary)}`;
@@ -510,7 +510,7 @@ class KabbalisticReader {
       { sign: 'Virgo', start: [23, 8], end: [22, 9] },
       { sign: 'Libra', start: [23, 9], end: [22, 10] },
       { sign: 'Scorpio', start: [23, 10], end: [21, 11] },
-      { sign: 'Sagittarius', start: [22, 11], end: [21, 12] },
+      { sign: 'Sagittarius', start: [22, 11], end: [21, 12] }
     ];
 
     for (const { sign, start, end } of signDates) {
@@ -546,7 +546,7 @@ class KabbalisticReader {
       'Sagittarius',
       'Capricorn',
       'Aquarius',
-      'Pisces',
+      'Pisces'
     ].indexOf(sunSign);
     const moonSignIndex = (signIndex + 2) % 12; // Approximate
     return [
@@ -561,7 +561,7 @@ class KabbalisticReader {
       'Sagittarius',
       'Capricorn',
       'Aquarius',
-      'Pisces',
+      'Pisces'
     ][moonSignIndex];
   }
 
@@ -581,7 +581,7 @@ class KabbalisticReader {
         dailyFocus: `Focus on ${sephirah.qualities[0].toLowerCase()} and ${sephirah.qualities[1].toLowerCase()}`,
         meditation: `Meditate on the sphere of ${sephirah.name} (${sephirah.hebrew}) and visualize the color ${sephirah.color.toLowerCase()}`,
         affirmation: this.generateAffirmation(sephirah),
-        planetaryInfluence: `Today's planetary energy resonates with ${sephirah.planet}`,
+        planetaryInfluence: `Today's planetary energy resonates with ${sephirah.planet}`
       };
 
       return guidance;
@@ -592,7 +592,7 @@ class KabbalisticReader {
         dailyFocus: 'Seek inner wisdom and divine guidance',
         meditation: 'Meditate on the Tree of Life and your spiritual path',
         affirmation: 'I am connected to divine wisdom and understanding',
-        planetaryInfluence: 'Trust in the cosmic energies guiding your day',
+        planetaryInfluence: 'Trust in the cosmic energies guiding your day'
       };
     }
   }
@@ -613,7 +613,7 @@ class KabbalisticReader {
       Netzach: 'I achieve victory through creative expression',
       Hod: 'I communicate divine glory and intellectual splendor',
       Yesod: 'I connect with the foundation of divine imagination',
-      Malkuth: 'I manifest divine will in the physical kingdom',
+      Malkuth: 'I manifest divine will in the physical kingdom'
     };
 
     return (

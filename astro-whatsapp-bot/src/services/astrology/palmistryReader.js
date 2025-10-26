@@ -18,15 +18,15 @@ class PalmistryReader {
           'Reliable',
           'Patient',
           'Strong-willed',
-          'Grounded',
+          'Grounded'
         ],
         careers: [
           'Agriculture',
           'Construction',
           'Engineering',
           'Finance',
-          'Real Estate',
-        ],
+          'Real Estate'
+        ]
       },
       air: {
         name: 'Air Hand',
@@ -37,15 +37,15 @@ class PalmistryReader {
           'Intellectual',
           'Social',
           'Adaptable',
-          'Curious',
+          'Curious'
         ],
         careers: [
           'Teaching',
           'Writing',
           'Journalism',
           'Public Relations',
-          'Sales',
-        ],
+          'Sales'
+        ]
       },
       water: {
         name: 'Water Hand',
@@ -55,9 +55,9 @@ class PalmistryReader {
           'Intuitive',
           'Creative',
           'Empathetic',
-          'Imaginative',
+          'Imaginative'
         ],
-        careers: ['Arts', 'Music', 'Therapy', 'Counseling', 'Creative Writing'],
+        careers: ['Arts', 'Music', 'Therapy', 'Counseling', 'Creative Writing']
       },
       fire: {
         name: 'Fire Hand',
@@ -68,36 +68,36 @@ class PalmistryReader {
           'Passionate',
           'Charismatic',
           'Bold',
-          'Adventurous',
+          'Adventurous'
         ],
         careers: [
           'Entrepreneurship',
           'Sales',
           'Performing Arts',
           'Leadership',
-          'Sports',
-        ],
-      },
+          'Sports'
+        ]
+      }
     };
 
     // Finger types
     this.fingerTypes = {
       short: {
         description: 'Practical, down-to-earth, impatient',
-        traits: ['Practical', 'Impatient', 'Action-oriented'],
+        traits: ['Practical', 'Impatient', 'Action-oriented']
       },
       long: {
         description: 'Idealistic, thoughtful, patient',
-        traits: ['Idealistic', 'Thoughtful', 'Patient'],
+        traits: ['Idealistic', 'Thoughtful', 'Patient']
       },
       square: {
         description: 'Organized, methodical, reliable',
-        traits: ['Organized', 'Methodical', 'Reliable'],
+        traits: ['Organized', 'Methodical', 'Reliable']
       },
       pointed: {
         description: 'Creative, intuitive, artistic',
-        traits: ['Creative', 'Intuitive', 'Artistic'],
-      },
+        traits: ['Creative', 'Intuitive', 'Artistic']
+      }
     };
 
     // Major lines interpretations
@@ -107,29 +107,29 @@ class PalmistryReader {
         weak: 'Emotional challenges, difficulty in relationships, guarded heart',
         broken: 'Emotional turmoil, heartbreak, need for healing',
         chained: 'Complex emotional patterns, multiple relationships',
-        forked: 'Divided affections, choices in love',
+        forked: 'Divided affections, choices in love'
       },
       head: {
         strong: 'Clear thinking, good concentration, analytical mind',
         weak: 'Poor concentration, scattered thoughts, indecisiveness',
         broken: 'Mental confusion, changes in thinking patterns',
         chained: 'Complex thought processes, analytical challenges',
-        forked: 'Dual nature, versatility in thinking',
+        forked: 'Dual nature, versatility in thinking'
       },
       life: {
         strong: 'Vitality, good health, long life, strong constitution',
         weak: 'Health challenges, low energy, need for lifestyle changes',
         broken: 'Major life changes, health concerns, resilience',
         chained: 'Irregular life patterns, adaptability',
-        forked: 'Multiple life paths, choices and changes',
+        forked: 'Multiple life paths, choices and changes'
       },
       fate: {
         strong: 'Clear life purpose, career success, destiny fulfillment',
         weak: 'Unclear direction, career challenges, need for focus',
         broken: 'Career changes, unexpected opportunities',
         chained: 'Complex career path, multiple interests',
-        forked: 'Multiple career paths, versatility',
-      },
+        forked: 'Multiple career paths, versatility'
+      }
     };
 
     // Mount interpretations (flesh pads at finger bases)
@@ -138,38 +138,38 @@ class PalmistryReader {
         prominent:
           'Love of beauty, sensuality, strong emotions, artistic nature',
         flat: 'Reserved emotions, practical approach to relationships',
-        overdeveloped: 'Overly emotional, dramatic, intense relationships',
+        overdeveloped: 'Overly emotional, dramatic, intense relationships'
       },
       mars: {
         prominent: 'Courage, energy, leadership, competitive spirit',
         flat: 'Calm nature, avoids conflict, peaceful',
-        overdeveloped: 'Aggressive, argumentative, quick-tempered',
+        overdeveloped: 'Aggressive, argumentative, quick-tempered'
       },
       jupiter: {
         prominent: 'Leadership, optimism, generosity, strong ethics',
         flat: 'Modest, humble, prefers background role',
-        overdeveloped: 'Arrogant, overconfident, domineering',
+        overdeveloped: 'Arrogant, overconfident, domineering'
       },
       saturn: {
         prominent: 'Discipline, responsibility, wisdom, serious nature',
         flat: 'Carefree, spontaneous, lacks discipline',
-        overdeveloped: 'Pessimistic, rigid, overly serious',
+        overdeveloped: 'Pessimistic, rigid, overly serious'
       },
       sun: {
         prominent: 'Creativity, charisma, success, artistic talent',
         flat: 'Modest, prefers privacy, lacks confidence',
-        overdeveloped: 'Egotistical, attention-seeking, dramatic',
+        overdeveloped: 'Egotistical, attention-seeking, dramatic'
       },
       mercury: {
         prominent: 'Communication skills, intelligence, adaptability',
         flat: 'Quiet, reserved, prefers listening',
-        overdeveloped: 'Talkative, nervous, scattered thinking',
+        overdeveloped: 'Talkative, nervous, scattered thinking'
       },
       moon: {
         prominent: 'Imagination, intuition, emotional depth',
         flat: 'Practical, logical, grounded',
-        overdeveloped: 'Overly imaginative, moody, unstable',
-      },
+        overdeveloped: 'Overly imaginative, moody, unstable'
+      }
     };
   }
 
@@ -187,7 +187,7 @@ class PalmistryReader {
         headLine,
         lifeLine,
         fateLine,
-        mounts,
+        mounts
       } = handData;
 
       const analysis = {
@@ -197,12 +197,12 @@ class PalmistryReader {
           heartLine,
           headLine,
           lifeLine,
-          fateLine,
+          fateLine
         }),
         mountAnalysis: this.analyzeMounts(mounts),
         overallPersonality: this.generateOverallPersonality(handData),
         lifePredictions: this.generateLifePredictions(handData),
-        recommendations: this.generateRecommendations(handData),
+        recommendations: this.generateRecommendations(handData)
       };
 
       return analysis;
@@ -229,7 +229,7 @@ class PalmistryReader {
       keyTraits: type.traits,
       suitableCareers: type.careers,
       strengths: this.getHandTypeStrengths(handType),
-      challenges: this.getHandTypeChallenges(handType),
+      challenges: this.getHandTypeChallenges(handType)
     };
   }
 
@@ -249,7 +249,7 @@ class PalmistryReader {
       description: type.description,
       traits: type.traits,
       communication: this.getFingerCommunicationStyle(fingerShape),
-      workStyle: this.getFingerWorkStyle(fingerShape),
+      workStyle: this.getFingerWorkStyle(fingerShape)
     };
   }
 
@@ -271,7 +271,7 @@ class PalmistryReader {
           interpretation:
             interpretations[characteristics.strength] ||
             'Line analysis available',
-          additionalFeatures: this.analyzeLineFeatures(characteristics),
+          additionalFeatures: this.analyzeLineFeatures(characteristics)
         };
       }
     });
@@ -300,7 +300,7 @@ class PalmistryReader {
           influence: this.getMountInfluence(
             mountName,
             characteristics.prominence
-          ),
+          )
         };
       }
     });
@@ -361,7 +361,7 @@ class PalmistryReader {
         relationships: this.predictRelationships(handData),
         health: this.predictHealth(handData),
         wealth: this.predictWealth(handData),
-        lifeChanges: this.predictLifeChanges(handData),
+        lifeChanges: this.predictLifeChanges(handData)
       };
 
       return predictions;
@@ -431,7 +431,7 @@ class PalmistryReader {
       earth: ['Reliability', 'Practicality', 'Patience', 'Strong work ethic'],
       air: ['Communication', 'Intellect', 'Adaptability', 'Social skills'],
       water: ['Intuition', 'Creativity', 'Empathy', 'Imagination'],
-      fire: ['Leadership', 'Energy', 'Charisma', 'Courage'],
+      fire: ['Leadership', 'Energy', 'Charisma', 'Courage']
     };
     return strengths[handType.toLowerCase()] || [];
   }
@@ -441,7 +441,7 @@ class PalmistryReader {
       earth: ['Stubbornness', 'Resistance to change', 'Over-cautiousness'],
       air: ['Indecisiveness', 'Superficiality', 'Restlessness'],
       water: ['Moodiness', 'Over-sensitivity', 'Indecisiveness'],
-      fire: ['Impatience', 'Impulsiveness', 'Over-confidence'],
+      fire: ['Impatience', 'Impulsiveness', 'Over-confidence']
     };
     return challenges[handType.toLowerCase()] || [];
   }
@@ -451,7 +451,7 @@ class PalmistryReader {
       short: 'Direct and to-the-point',
       long: 'Thoughtful and detailed',
       square: 'Clear and organized',
-      pointed: 'Creative and expressive',
+      pointed: 'Creative and expressive'
     };
     return styles[fingerShape.toLowerCase()] || 'Balanced communication style';
   }
@@ -461,7 +461,7 @@ class PalmistryReader {
       short: 'Action-oriented and practical',
       long: 'Detail-focused and thorough',
       square: 'Methodical and organized',
-      pointed: 'Creative and innovative',
+      pointed: 'Creative and innovative'
     };
     return styles[fingerShape.toLowerCase()] || 'Balanced work approach';
   }
@@ -483,33 +483,33 @@ class PalmistryReader {
   getMountInfluence(mountName, prominence) {
     const influences = {
       venus:
-        prominence === 'prominent'
-          ? 'Strong influence on relationships and aesthetics'
-          : 'Balanced approach to emotions',
+        prominence === 'prominent' ?
+          'Strong influence on relationships and aesthetics' :
+          'Balanced approach to emotions',
       mars:
-        prominence === 'prominent'
-          ? 'Strong drive and competitive nature'
-          : 'Peaceful and calm demeanor',
+        prominence === 'prominent' ?
+          'Strong drive and competitive nature' :
+          'Peaceful and calm demeanor',
       jupiter:
-        prominence === 'prominent'
-          ? 'Natural leadership and optimism'
-          : 'Modest and humble approach',
+        prominence === 'prominent' ?
+          'Natural leadership and optimism' :
+          'Modest and humble approach',
       saturn:
-        prominence === 'prominent'
-          ? 'Strong sense of responsibility'
-          : 'Carefree and spontaneous',
+        prominence === 'prominent' ?
+          'Strong sense of responsibility' :
+          'Carefree and spontaneous',
       sun:
-        prominence === 'prominent'
-          ? 'Creative and charismatic personality'
-          : 'Modest and private nature',
+        prominence === 'prominent' ?
+          'Creative and charismatic personality' :
+          'Modest and private nature',
       mercury:
-        prominence === 'prominent'
-          ? 'Strong communication and intellectual abilities'
-          : 'Reflective and thoughtful',
+        prominence === 'prominent' ?
+          'Strong communication and intellectual abilities' :
+          'Reflective and thoughtful',
       moon:
-        prominence === 'prominent'
-          ? 'Deep intuition and imagination'
-          : 'Practical and logical thinking',
+        prominence === 'prominent' ?
+          'Deep intuition and imagination' :
+          'Practical and logical thinking'
     };
     return influences[mountName.toLowerCase()] || 'Balanced influence';
   }
@@ -675,22 +675,22 @@ class PalmistryReader {
       heartLine: {
         strength: 'strong',
         length: 'long',
-        characteristics: { curved: true },
+        characteristics: { curved: true }
       },
       headLine: {
         strength: 'medium',
         length: 'medium',
-        characteristics: { straight: true },
+        characteristics: { straight: true }
       },
       lifeLine: {
         strength: 'strong',
         length: 'long',
-        characteristics: { deep: true },
+        characteristics: { deep: true }
       },
       fateLine: {
         strength: 'medium',
         length: 'medium',
-        characteristics: { clear: true },
+        characteristics: { clear: true }
       },
       mounts: {
         venus: { prominence: 'prominent' },
@@ -698,8 +698,8 @@ class PalmistryReader {
         jupiter: { prominence: 'high' },
         saturn: { prominence: 'medium' },
         mercury: { prominence: 'medium' },
-        moon: { prominence: 'high' },
-      },
+        moon: { prominence: 'high' }
+      }
     };
 
     return this.analyzePalm(sampleHandData);
@@ -725,22 +725,22 @@ function generatePalmistryReading(user) {
       heartLine: user.heartLine || {
         strength: 'strong',
         length: 'long',
-        characteristics: { curved: true },
+        characteristics: { curved: true }
       },
       headLine: user.headLine || {
         strength: 'medium',
         length: 'medium',
-        characteristics: { straight: true },
+        characteristics: { straight: true }
       },
       lifeLine: user.lifeLine || {
         strength: 'strong',
         length: 'long',
-        characteristics: { deep: true },
+        characteristics: { deep: true }
       },
       fateLine: user.fateLine || {
         strength: 'medium',
         length: 'medium',
-        characteristics: { clear: true },
+        characteristics: { clear: true }
       },
       mounts: user.mounts || {
         venus: { prominence: 'prominent' },
@@ -748,8 +748,8 @@ function generatePalmistryReading(user) {
         jupiter: { prominence: 'high' },
         saturn: { prominence: 'medium' },
         mercury: { prominence: 'medium' },
-        moon: { prominence: 'high' },
-      },
+        moon: { prominence: 'high' }
+      }
     };
 
     const analysis = module.exports.analyzePalm(handData);
@@ -764,7 +764,7 @@ function generatePalmistryReading(user) {
         fateLine: {},
         mounts: {},
         interpretation: 'Unable to analyze palm at this time',
-        advice: 'Please try again later',
+        advice: 'Please try again later'
       };
     }
 
@@ -777,7 +777,7 @@ function generatePalmistryReading(user) {
       mounts: analysis.mountAnalysis || {},
       interpretation: analysis.overallPersonality,
       advice:
-        analysis.recommendations?.join('. ') || 'Trust your natural abilities',
+        analysis.recommendations?.join('. ') || 'Trust your natural abilities'
     };
   } catch (error) {
     logger.error('Error generating palmistry reading:', error);
@@ -790,7 +790,7 @@ function generatePalmistryReading(user) {
       fateLine: {},
       mounts: {},
       interpretation: 'Please try again later',
-      advice: 'Consult a qualified palmist for detailed analysis',
+      advice: 'Consult a qualified palmist for detailed analysis'
     };
   }
 }

@@ -35,5 +35,5 @@ loadFlows();
 
 module.exports = {
   loadFlows,
-  getFlow,
+  getFlow
 };

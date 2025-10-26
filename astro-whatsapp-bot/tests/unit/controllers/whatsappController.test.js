@@ -3,20 +3,20 @@
 
 // Mock dependencies
 jest.mock('../../../src/services/whatsapp/messageProcessor', () => ({
-  processIncomingMessage: jest.fn(),
+  processIncomingMessage: jest.fn()
 }));
 jest.mock('../../../src/services/whatsapp/webhookValidator', () => ({
-  validateWebhookSignature: jest.fn(),
+  validateWebhookSignature: jest.fn()
 }));
 
 const {
-  handleWhatsAppWebhook,
+  handleWhatsAppWebhook
 } = require('../../../src/controllers/whatsappController');
 const {
-  processIncomingMessage,
+  processIncomingMessage
 } = require('../../../src/services/whatsapp/messageProcessor');
 const {
-  validateWebhookSignature,
+  validateWebhookSignature
 } = require('../../../src/services/whatsapp/webhookValidator');
 const logger = require('../../../src/utils/logger');
 
@@ -33,18 +33,18 @@ describe('WhatsApp Controller', () => {
     req = {
       body: {},
       headers: {},
-      on: jest.fn(), // Mock EventEmitter methods
+      on: jest.fn() // Mock EventEmitter methods
     };
 
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn().mockReturnThis(),
-      send: jest.fn().mockReturnThis(),
+      send: jest.fn().mockReturnThis()
     };
   });
 
   describe('handleWhatsAppWebhook', () => {
-    it('should return 400 for invalid webhook payload', async () => {
+    it('should return 400 for invalid webhook payload', async() => {
       req.body = null;
       req.headers['x-hub-signature-256'] = 'signature';
 
@@ -54,7 +54,7 @@ describe('WhatsApp Controller', () => {
       expect(res.json).toHaveBeenCalledWith({ error: 'Invalid payload' });
     });
 
-    it('should return 200 for valid webhook payload with no entries', async () => {
+    it('should return 200 for valid webhook payload with no entries', async() => {
       req.body = { entry: [] };
       req.headers['x-hub-signature-256'] = 'signature';
 
@@ -64,11 +64,11 @@ describe('WhatsApp Controller', () => {
       expect(res.json).toHaveBeenCalledWith({
         success: true,
         message: 'Webhook processed successfully',
-        timestamp: expect.any(String),
+        timestamp: expect.any(String)
       });
     });
 
-    it('should process valid webhook with messages', async () => {
+    it('should process valid webhook with messages', async() => {
       req.body = {
         entry: [
           {
@@ -82,21 +82,21 @@ describe('WhatsApp Controller', () => {
                       type: 'text',
                       timestamp: '1234567890',
                       text: {
-                        body: 'Hello, astrologer!',
-                      },
-                    },
+                        body: 'Hello, astrologer!'
+                      }
+                    }
                   ],
                   contacts: [
                     {
                       profile: { name: 'John Doe' },
-                      wa_id: '1234567890',
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+                      wa_id: '1234567890'
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       };
       req.headers['x-hub-signature-256'] = 'signature';
 
@@ -111,16 +111,16 @@ describe('WhatsApp Controller', () => {
           type: 'text',
           timestamp: '1234567890',
           text: {
-            body: 'Hello, astrologer!',
-          },
+            body: 'Hello, astrologer!'
+          }
         }),
         expect.objectContaining({
           contacts: [
             {
               profile: { name: 'John Doe' },
-              wa_id: '1234567890',
-            },
-          ],
+              wa_id: '1234567890'
+            }
+          ]
         })
       );
 
@@ -128,23 +128,23 @@ describe('WhatsApp Controller', () => {
       expect(res.json).toHaveBeenCalledWith({
         success: true,
         message: 'Webhook processed successfully',
-        timestamp: expect.any(String),
+        timestamp: expect.any(String)
       });
     });
 
-    it('should handle errors gracefully', async () => {
+    it('should handle errors gracefully', async() => {
       req.body = {
         entry: [
           {
             changes: [
               {
                 value: {
-                  messages: [{}],
-                },
-              },
-            ],
-          },
-        ],
+                  messages: [{}]
+                }
+              }
+            ]
+          }
+        ]
       };
       req.headers['x-hub-signature-256'] = 'signature';
 
@@ -156,7 +156,7 @@ describe('WhatsApp Controller', () => {
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
         error: 'Internal server error',
-        message: 'Processing error',
+        message: 'Processing error'
       });
     });
   });

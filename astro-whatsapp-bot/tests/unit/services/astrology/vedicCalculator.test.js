@@ -10,27 +10,26 @@ jest.mock('../../../src/services/astrology/vedicCalculator', () => ({
   calculateBirthChart: jest.fn().mockReturnValue({
     sunSign: 'Pisces',
     moonSign: 'Pisces',
-    risingSign: 'Aquarius',
+    risingSign: 'Aquarius'
   }),
   generateHoroscope: jest.fn().mockReturnValue({
     daily: 'Test horoscope',
-    weekly: 'Test weekly',
+    weekly: 'Test weekly'
   }),
   generateTransitPreview: jest.fn().mockReturnValue('Test transit preview'),
   checkCompatibility: jest.fn().mockReturnValue({
     score: 85,
-    description: 'Good compatibility',
-  }),
+    description: 'Good compatibility'
+  })
 }));
 
 describe('VedicCalculator', () => {
-
   describe('calculateBirthChart', () => {
     it('should calculate birth chart for valid birth data', () => {
       const birthData = {
         date: '15/03/1990',
         time: '14:30',
-        place: 'Mumbai, India',
+        place: 'Mumbai, India'
       };
 
       const chart = calculator.calculateBirthChart(birthData);
@@ -45,7 +44,7 @@ describe('VedicCalculator', () => {
       const birthData = {
         date: 'invalid',
         time: 'invalid',
-        place: 'invalid',
+        place: 'invalid'
       };
 
       expect(() => calculator.calculateBirthChart(birthData)).toThrow();
@@ -57,7 +56,7 @@ describe('VedicCalculator', () => {
       const chart = {
         sunSign: 'Pisces',
         moonSign: 'Pisces',
-        risingSign: 'Aquarius',
+        risingSign: 'Aquarius'
       };
 
       const horoscope = calculator.generateHoroscope(chart);
@@ -73,7 +72,7 @@ describe('VedicCalculator', () => {
       const chart = {
         sunSign: 'Pisces',
         moonSign: 'Pisces',
-        risingSign: 'Aquarius',
+        risingSign: 'Aquarius'
       };
 
       const preview = calculator.generateTransitPreview(chart);
@@ -88,13 +87,13 @@ describe('VedicCalculator', () => {
       const chart1 = {
         sunSign: 'Pisces',
         moonSign: 'Pisces',
-        risingSign: 'Aquarius',
+        risingSign: 'Aquarius'
       };
 
       const chart2 = {
         sunSign: 'Aries',
         moonSign: 'Aries',
-        risingSign: 'Pisces',
+        risingSign: 'Pisces'
       };
 
       const compatibility = calculator.checkCompatibility(chart1, chart2);

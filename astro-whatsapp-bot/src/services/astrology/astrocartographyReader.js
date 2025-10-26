@@ -17,7 +17,7 @@ class AstrocartographyReader {
         opposition: 'Public recognition, fame, but also ego challenges',
         square: 'Willpower, determination, but also conflicts',
         trine: 'Harmony, success, natural talents',
-        sextile: 'Opportunities, social connections, ease',
+        sextile: 'Opportunities, social connections, ease'
       },
       moon: {
         name: 'Moon Lines',
@@ -26,7 +26,7 @@ class AstrocartographyReader {
         opposition: 'Public emotional life, relationships, sensitivity',
         square: 'Emotional challenges, family conflicts, inner turmoil',
         trine: 'Emotional harmony, family support, intuitive gifts',
-        sextile: 'Emotional opportunities, caring relationships, comfort',
+        sextile: 'Emotional opportunities, caring relationships, comfort'
       },
       mercury: {
         name: 'Mercury Lines',
@@ -36,7 +36,7 @@ class AstrocartographyReader {
         square:
           'Mental challenges, communication conflicts, learning difficulties',
         trine: 'Mental harmony, clear communication, intellectual success',
-        sextile: 'Learning opportunities, social connections, adaptability',
+        sextile: 'Learning opportunities, social connections, adaptability'
       },
       venus: {
         name: 'Venus Lines',
@@ -45,7 +45,7 @@ class AstrocartographyReader {
         opposition: 'Public relationships, social charm, artistic recognition',
         square: 'Relationship challenges, artistic blocks, value conflicts',
         trine: 'Romantic harmony, artistic success, social grace',
-        sextile: 'Love opportunities, creative expression, financial ease',
+        sextile: 'Love opportunities, creative expression, financial ease'
       },
       mars: {
         name: 'Mars Lines',
@@ -54,7 +54,7 @@ class AstrocartographyReader {
         opposition: 'Public action, leadership, competitive success',
         square: 'Conflicts, aggression, physical challenges, accidents',
         trine: 'Physical harmony, successful action, natural courage',
-        sextile: 'Energy opportunities, physical activities, motivation',
+        sextile: 'Energy opportunities, physical activities, motivation'
       },
       jupiter: {
         name: 'Jupiter Lines',
@@ -63,7 +63,7 @@ class AstrocartographyReader {
         opposition: 'Public success, teaching, philosophical influence',
         square: 'Over-expansion, excess, legal challenges, growth blocks',
         trine: 'Natural abundance, wisdom, successful expansion',
-        sextile: 'Growth opportunities, learning, travel possibilities',
+        sextile: 'Growth opportunities, learning, travel possibilities'
       },
       saturn: {
         name: 'Saturn Lines',
@@ -72,7 +72,7 @@ class AstrocartographyReader {
         opposition: 'Public responsibility, authority, career recognition',
         square: 'Restrictions, delays, karmic lessons, authority conflicts',
         trine: 'Natural discipline, career success, structured achievement',
-        sextile: 'Career opportunities, practical achievements, stability',
+        sextile: 'Career opportunities, practical achievements, stability'
       },
       uranus: {
         name: 'Uranus Lines',
@@ -81,7 +81,7 @@ class AstrocartographyReader {
         opposition: 'Public innovation, social change, revolutionary influence',
         square: 'Sudden changes, instability, rebellious conflicts',
         trine: 'Natural innovation, freedom, technological success',
-        sextile: 'Change opportunities, creative freedom, community',
+        sextile: 'Change opportunities, creative freedom, community'
       },
       neptune: {
         name: 'Neptune Lines',
@@ -91,7 +91,7 @@ class AstrocartographyReader {
           'Public spirituality, artistic recognition, healing influence',
         square: 'Illusion, confusion, spiritual challenges, addiction',
         trine: 'Natural spirituality, artistic gifts, healing abilities',
-        sextile: 'Spiritual opportunities, creative inspiration, compassion',
+        sextile: 'Spiritual opportunities, creative inspiration, compassion'
       },
       pluto: {
         name: 'Pluto Lines',
@@ -100,7 +100,7 @@ class AstrocartographyReader {
         opposition: 'Public power, transformative influence, leadership',
         square: 'Power struggles, intense conflicts, forced transformation',
         trine: 'Natural power, transformative success, deep healing',
-        sextile: 'Transformation opportunities, personal power, influence',
+        sextile: 'Transformation opportunities, personal power, influence'
       },
       north_node: {
         name: 'North Node Lines',
@@ -109,7 +109,7 @@ class AstrocartographyReader {
         opposition: 'Public destiny, karmic influence, life lessons',
         square: 'Karmic challenges, growth obstacles, direction confusion',
         trine: 'Natural life path, destiny fulfillment, soul growth',
-        sextile: 'Purpose opportunities, directional clarity, growth',
+        sextile: 'Purpose opportunities, directional clarity, growth'
       },
       south_node: {
         name: 'South Node Lines',
@@ -118,7 +118,7 @@ class AstrocartographyReader {
         opposition: 'Public karma, past life recognition, patterns',
         square: 'Karmic conflicts, stuck patterns, resistance to change',
         trine: 'Karmic harmony, past life wisdom, natural patterns',
-        sextile: 'Karmic opportunities, pattern release, wisdom',
+        sextile: 'Karmic opportunities, pattern release, wisdom'
       },
       ascendant: {
         name: 'Ascendant Lines',
@@ -127,7 +127,7 @@ class AstrocartographyReader {
         opposition: 'Public identity, social roles, reputation',
         square: 'Identity conflicts, self-image challenges, role confusion',
         trine: 'Natural charisma, positive self-image, social ease',
-        sextile: 'Identity opportunities, social connections, presentation',
+        sextile: 'Identity opportunities, social connections, presentation'
       },
       midheaven: {
         name: 'Midheaven Lines',
@@ -136,38 +136,38 @@ class AstrocartographyReader {
         opposition: 'Public recognition, career success, social status',
         square: 'Career challenges, reputation conflicts, authority issues',
         trine: 'Natural career success, public recognition, leadership',
-        sextile: 'Career opportunities, professional growth, status',
-      },
+        sextile: 'Career opportunities, professional growth, status'
+      }
     };
 
     // Geographic regions and their astrological associations
     this.geographicRegions = {
       'North America': {
         energy: 'Innovation and new beginnings',
-        planets: ['uranus', 'sun'],
+        planets: ['uranus', 'sun']
       },
       'South America': {
         energy: 'Passion and transformation',
-        planets: ['mars', 'pluto'],
+        planets: ['mars', 'pluto']
       },
       Europe: { energy: 'Tradition and culture', planets: ['moon', 'saturn'] },
       Asia: {
         energy: 'Spirituality and wisdom',
-        planets: ['jupiter', 'neptune'],
+        planets: ['jupiter', 'neptune']
       },
       Africa: { energy: 'Strength and survival', planets: ['sun', 'mars'] },
       Australia: {
         energy: 'Adventure and freedom',
-        planets: ['uranus', 'jupiter'],
+        planets: ['uranus', 'jupiter']
       },
       'Pacific Islands': {
         energy: 'Peace and harmony',
-        planets: ['venus', 'neptune'],
+        planets: ['venus', 'neptune']
       },
       'Middle East': {
         energy: 'Ancient wisdom and transformation',
-        planets: ['saturn', 'pluto'],
-      },
+        planets: ['saturn', 'pluto']
+      }
     };
   }
 
@@ -213,14 +213,14 @@ class AstrocartographyReader {
           planetaryLines,
           currentLocation,
           powerSpots
-        ),
+        )
       };
     } catch (error) {
       logger.error('Error generating astrocartography:', error);
       return {
         error: 'Unable to generate astrocartography at this time',
         fallback:
-          'Geographic astrology reveals how locations influence your life path',
+          'Geographic astrology reveals how locations influence your life path'
       };
     }
   }
@@ -253,7 +253,7 @@ class AstrocartographyReader {
       positions[planet] = {
         longitude: Math.round(longitude * 10) / 10,
         latitude: 0, // Equatorial for simplicity
-        sign: this.getZodiacSign(longitude),
+        sign: this.getZodiacSign(longitude)
       };
     });
 
@@ -278,7 +278,7 @@ class AstrocartographyReader {
       'Sagittarius',
       'Capricorn',
       'Aquarius',
-      'Pisces',
+      'Pisces'
     ];
     const signIndex = Math.floor(longitude / 30) % 12;
     return signs[signIndex];
@@ -298,16 +298,16 @@ class AstrocartographyReader {
         opposition: this.calculateLinePosition(pos.longitude, 180), // Opposite longitude
         square: [
           this.calculateLinePosition(pos.longitude, 90), // Square aspects
-          this.calculateLinePosition(pos.longitude, 270),
+          this.calculateLinePosition(pos.longitude, 270)
         ],
         trine: [
           this.calculateLinePosition(pos.longitude, 120), // Trine aspects
-          this.calculateLinePosition(pos.longitude, 240),
+          this.calculateLinePosition(pos.longitude, 240)
         ],
         sextile: [
           this.calculateLinePosition(pos.longitude, 60), // Sextile aspects
-          this.calculateLinePosition(pos.longitude, 300),
-        ],
+          this.calculateLinePosition(pos.longitude, 300)
+        ]
       };
     });
 
@@ -353,7 +353,7 @@ class AstrocartographyReader {
           planet,
           aspect: 'conjunction',
           strength: 'Very Strong',
-          influence: this.planetaryLines[planet].conjunction,
+          influence: this.planetaryLines[planet].conjunction
         });
         dominantEnergy = this.planetaryLines[planet].name;
       }
@@ -367,7 +367,7 @@ class AstrocartographyReader {
           planet,
           aspect: 'opposition',
           strength: 'Strong',
-          influence: this.planetaryLines[planet].opposition,
+          influence: this.planetaryLines[planet].opposition
         });
       }
     });
@@ -377,7 +377,7 @@ class AstrocartographyReader {
       coordinates: locationCoords,
       influences,
       dominantEnergy,
-      region: this.getGeographicRegion(locationCoords),
+      region: this.getGeographicRegion(locationCoords)
     };
   }
 
@@ -408,7 +408,7 @@ class AstrocartographyReader {
       sydney: { latitude: -33.8688, longitude: 151.2093 },
       melbourne: { latitude: -37.8136, longitude: 144.9631 },
       // Default
-      default: { latitude: 20.5937, longitude: 78.9629 }, // India center
+      default: { latitude: 20.5937, longitude: 78.9629 } // India center
     };
 
     const normalizedLocation = location.toLowerCase().replace(/\s+/g, '');
@@ -492,7 +492,7 @@ class AstrocartographyReader {
           planets: nearbyPlanets,
           intensity: clusterCount > 2 ? 'High' : 'Medium',
           primaryInfluence: this.planetaryLines[planet].conjunction,
-          location: this.longitudeToLocation(conjLong),
+          location: this.longitudeToLocation(conjLong)
         });
       }
     });
@@ -518,7 +518,7 @@ class AstrocartographyReader {
       2: 'Western Europe',
       139: 'Japan',
       116: 'China',
-      151: 'Australia',
+      151: 'Australia'
     };
 
     // Find closest known longitude
@@ -545,7 +545,7 @@ class AstrocartographyReader {
     const guidance = {
       recommended: [],
       caution: [],
-      opportunities: [],
+      opportunities: []
     };
 
     // Analyze different planetary influences for relocation
@@ -556,14 +556,14 @@ class AstrocartographyReader {
       guidance.opportunities.push({
         planet: planetData.name,
         locations: [this.longitudeToLocation(lines.conjunction.longitude)],
-        benefits: planetData.conjunction,
+        benefits: planetData.conjunction
       });
 
       // Opposition locations (public success but challenges)
       guidance.recommended.push({
         planet: planetData.name,
         locations: [this.longitudeToLocation(lines.opposition.longitude)],
-        effect: planetData.opposition,
+        effect: planetData.opposition
       });
     });
 
@@ -647,7 +647,7 @@ class AstrocartographyReader {
         influences: analysis.influences,
         recommendation: this.generateRecommendation(analysis),
         duration: this.suggestDuration(analysis),
-        activities: this.suggestActivities(analysis),
+        activities: this.suggestActivities(analysis)
       };
 
       return advice;
@@ -658,7 +658,7 @@ class AstrocartographyReader {
         influences: [],
         recommendation: 'Approach with awareness and intuition',
         duration: 'Short visits initially',
-        activities: ['Meditation', 'Nature connection', 'Local exploration'],
+        activities: ['Meditation', 'Nature connection', 'Local exploration']
       };
     }
   }
@@ -712,44 +712,44 @@ class AstrocartographyReader {
 
     analysis.influences.forEach(influence => {
       switch (influence.planet) {
-        case 'sun':
-          activities.push(
-            'Leadership roles',
-            'Creative projects',
-            'Public speaking'
-          );
-          break;
-        case 'moon':
-          activities.push(
-            'Family activities',
-            'Emotional healing',
-            'Intuitive work'
-          );
-          break;
-        case 'venus':
-          activities.push(
-            'Artistic pursuits',
-            'Social events',
-            'Romantic connections'
-          );
-          break;
-        case 'mars':
-          activities.push(
-            'Physical activities',
-            'Competitive sports',
-            'Entrepreneurial ventures'
-          );
-          break;
-        case 'jupiter':
-          activities.push(
-            'Teaching',
-            'Travel',
-            'Philosophical study',
-            'Expansion projects'
-          );
-          break;
-        default:
-          activities.push('Personal growth work', 'Spiritual practices');
+      case 'sun':
+        activities.push(
+          'Leadership roles',
+          'Creative projects',
+          'Public speaking'
+        );
+        break;
+      case 'moon':
+        activities.push(
+          'Family activities',
+          'Emotional healing',
+          'Intuitive work'
+        );
+        break;
+      case 'venus':
+        activities.push(
+          'Artistic pursuits',
+          'Social events',
+          'Romantic connections'
+        );
+        break;
+      case 'mars':
+        activities.push(
+          'Physical activities',
+          'Competitive sports',
+          'Entrepreneurial ventures'
+        );
+        break;
+      case 'jupiter':
+        activities.push(
+          'Teaching',
+          'Travel',
+          'Philosophical study',
+          'Expansion projects'
+        );
+        break;
+      default:
+        activities.push('Personal growth work', 'Spiritual practices');
       }
     });
 

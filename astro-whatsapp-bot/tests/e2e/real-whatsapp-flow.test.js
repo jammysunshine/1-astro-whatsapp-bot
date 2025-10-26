@@ -28,7 +28,7 @@ jest.mock('../../src/services/whatsapp/messageSender', () => ({
 }));
 
 describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
-  beforeAll(async () => {
+  beforeAll(async() => {
     // Set test environment variables
     process.env.NODE_ENV = 'test';
     process.env.W1_SKIP_WEBHOOK_SIGNATURE = 'true';
@@ -36,7 +36,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
     process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test_phone_id';
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     // Clear database collections before each test
     try {
       await User.deleteMany({});
@@ -51,44 +51,44 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
   describe('Complete User Onboarding Flow', () => {
     const testPhone = '+1234567890';
 
-     it('should complete full onboarding and generate real astrology reading', async () => {
-       // Step 1: New user sends birth date directly (welcome step expects date)
-       const birthDateResponse = await request(app)
-         .post('/webhook')
-         .send({
-           entry: [{
-             id: 'test-entry-1',
-             changes: [{
-               field: 'messages',
-               value: {
-                 messaging_product: 'whatsapp',
-                 metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                 contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                 messages: [{
-                   from: testPhone,
-                   id: 'msg-birth-date',
-                   timestamp: Date.now().toString(),
-                   text: { body: '15031990' }, // 15/03/1990
-                   type: 'text'
-                 }]
-               }
-             }]
-           }]
-         })
-         .set('x-hub-signature-256', 'test-signature')
-         .expect(200);
+    it('should complete full onboarding and generate real astrology reading', async() => {
+      // Step 1: New user sends birth date directly (welcome step expects date)
+      const birthDateResponse = await request(app)
+        .post('/webhook')
+        .send({
+          entry: [{
+            id: 'test-entry-1',
+            changes: [{
+              field: 'messages',
+              value: {
+                messaging_product: 'whatsapp',
+                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
+                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
+                messages: [{
+                  from: testPhone,
+                  id: 'msg-birth-date',
+                  timestamp: Date.now().toString(),
+                  text: { body: '15031990' }, // 15/03/1990
+                  type: 'text'
+                }]
+              }
+            }]
+          }]
+        })
+        .set('x-hub-signature-256', 'test-signature')
+        .expect(200);
 
-       expect(birthDateResponse.body.success).toBe(true);
+      expect(birthDateResponse.body.success).toBe(true);
 
-       // Wait for async operations to complete
-       await new Promise(resolve => setTimeout(resolve, 3000));
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
-       // Verify user was created
-       let user = await getUserByPhone(testPhone);
-       expect(user).toBeTruthy();
-       expect(user.profileComplete).toBe(false);
+      // Verify user was created
+      let user = await getUserByPhone(testPhone);
+      expect(user).toBeTruthy();
+      expect(user.profileComplete).toBe(false);
 
-       // Step 2: User provides birth time
+      // Step 2: User provides birth time
       const birthTimeInputResponse = await request(app)
         .post('/webhook')
         .send({
@@ -139,12 +139,12 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
             }]
           }]
         })
-         .set('x-hub-signature-256', 'test-signature')
-         .expect(200);
+        .set('x-hub-signature-256', 'test-signature')
+        .expect(200);
 
-       expect(birthPlaceResponse.body.success).toBe(true);
+      expect(birthPlaceResponse.body.success).toBe(true);
 
-       // Step 4: User selects language (English)
+      // Step 4: User selects language (English)
       const languageResponse = await request(app)
         .post('/webhook')
         .send({
@@ -173,12 +173,12 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
             }]
           }]
         })
-         .set('x-hub-signature-256', 'test-signature')
-         .expect(200);
+        .set('x-hub-signature-256', 'test-signature')
+        .expect(200);
 
-       expect(languageResponse.body.success).toBe(true);
+      expect(languageResponse.body.success).toBe(true);
 
-       // Step 5: User confirms details
+      // Step 5: User confirms details
       const confirmResponse = await request(app)
         .post('/webhook')
         .send({
@@ -258,7 +258,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
   describe('Existing User Astrology Requests', () => {
     const testPhone = '+0987654321';
 
-    beforeEach(async () => {
+    beforeEach(async() => {
       // Create a complete user profile using MongoDB storage
       await createUser(testPhone);
       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
@@ -271,7 +271,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       });
     });
 
-    it('should generate real daily horoscope for existing user', async () => {
+    it('should generate real daily horoscope for existing user', async() => {
       const horoscopeResponse = await request(app)
         .post('/webhook')
         .send({
@@ -308,7 +308,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       console.log('✅ Daily horoscope request processed successfully!');
     });
 
-    it('should handle compatibility request with real calculations', async () => {
+    it('should handle compatibility request with real calculations', async() => {
       const compatibilityResponse = await request(app)
         .post('/webhook')
         .send({
@@ -349,7 +349,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
   });
 
   describe('Error Handling and Edge Cases', () => {
-    it('should handle invalid webhook payload gracefully', async () => {
+    it('should handle invalid webhook payload gracefully', async() => {
       const invalidResponse = await request(app)
         .post('/webhook')
         .send({ invalid: 'payload' })
@@ -359,7 +359,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       expect(invalidResponse.body.error).toBeDefined();
     });
 
-    it('should handle malformed messages gracefully', async () => {
+    it('should handle malformed messages gracefully', async() => {
       const malformedResponse = await request(app)
         .post('/webhook')
         .send({
@@ -382,7 +382,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
     });
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     // Close the server to clear any open handles
     if (app && app.close) {
       await app.close();

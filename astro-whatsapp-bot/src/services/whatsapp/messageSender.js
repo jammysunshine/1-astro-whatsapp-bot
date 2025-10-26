@@ -14,7 +14,7 @@ const getWhatsAppCredentials = () => {
   const tokenPart2 = process.env.W1_WHATSAPP_ACCESS_TOKEN_PART2;
   const accessToken = tokenPart1 && tokenPart2 ? tokenPart1 + tokenPart2 : process.env.W1_WHATSAPP_ACCESS_TOKEN;
   const phoneNumberId = process.env.W1_WHATSAPP_PHONE_NUMBER_ID;
-  logger.debug(`WhatsApp Access Token (masked): ${accessToken ? accessToken.substring(0, 5) + '...' + accessToken.substring(accessToken.length - 5) : 'Not Set'}`);
+  logger.debug(`WhatsApp Access Token (masked): ${accessToken ? `${accessToken.substring(0, 5)}...${accessToken.substring(accessToken.length - 5)}` : 'Not Set'}`);
   logger.debug(`WhatsApp Token Length: ${accessToken ? accessToken.length : 0}`);
   logger.debug(`WhatsApp Phone Number ID: ${phoneNumberId || 'Not Set'}`);
   return { accessToken, phoneNumberId };
@@ -27,11 +27,11 @@ const getWhatsAppCredentials = () => {
  * @param {Object} options - Additional options for message sending
  * @returns {Promise<Object>} WhatsApp API response
  */
-const sendTextMessage = async (phoneNumber, message, options = {}) => {
+const sendTextMessage = async(phoneNumber, message, options = {}) => {
   try {
     const {
       accessToken: WHATSAPP_ACCESS_TOKEN,
-      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID,
+      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID
     } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
@@ -46,8 +46,8 @@ const sendTextMessage = async (phoneNumber, message, options = {}) => {
       type: 'text',
       text: {
         preview_url: options.previewUrl || false,
-        body: message,
-      },
+        body: message
+      }
     };
 
     // Add context if provided (for replying to specific messages)
@@ -63,9 +63,9 @@ const sendTextMessage = async (phoneNumber, message, options = {}) => {
     const response = await axios.post(url, messagePayload, {
       headers: {
         Authorization: `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      timeout: 30000, // 30 second timeout
+      timeout: 30000 // 30 second timeout
     });
 
     logger.info(
@@ -89,7 +89,7 @@ const sendTextMessage = async (phoneNumber, message, options = {}) => {
  * @param {Object} options - Additional options
  * @returns {Promise<Object>} WhatsApp API response
  */
-const sendInteractiveButtons = async (
+const sendInteractiveButtons = async(
   phoneNumber,
   body,
   buttons,
@@ -98,7 +98,7 @@ const sendInteractiveButtons = async (
   try {
     const {
       accessToken: WHATSAPP_ACCESS_TOKEN,
-      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID,
+      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID
     } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
@@ -114,12 +114,12 @@ const sendInteractiveButtons = async (
       interactive: {
         type: 'button',
         body: {
-          text: body,
+          text: body
         },
         action: {
-          buttons: buttons.slice(0, 3), // WhatsApp allows max 3 buttons
-        },
-      },
+          buttons: buttons.slice(0, 3) // WhatsApp allows max 3 buttons
+        }
+      }
     };
 
     // Add header if provided
@@ -130,16 +130,16 @@ const sendInteractiveButtons = async (
     // Add footer if provided
     if (options.footer) {
       messagePayload.interactive.footer = {
-        text: options.footer,
+        text: options.footer
       };
     }
 
     const response = await axios.post(url, messagePayload, {
       headers: {
         Authorization: `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      timeout: 30000, // 30 second timeout
+      timeout: 30000 // 30 second timeout
     });
 
     logger.info(
@@ -164,7 +164,7 @@ const sendInteractiveButtons = async (
  * @param {Object} options - Additional options
  * @returns {Promise<Object>} WhatsApp API response
  */
-const sendListMessage = async (
+const sendListMessage = async(
   phoneNumber,
   body,
   buttonText,
@@ -174,7 +174,7 @@ const sendListMessage = async (
   try {
     const {
       accessToken: WHATSAPP_ACCESS_TOKEN,
-      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID,
+      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID
     } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
@@ -191,31 +191,31 @@ const sendListMessage = async (
         type: 'list',
         header: {
           type: 'text',
-          text: options.headerText || 'Choose an option:',
+          text: options.headerText || 'Choose an option:'
         },
         body: {
-          text: body,
+          text: body
         },
         action: {
           button: buttonText,
-          sections: sections.slice(0, 10), // WhatsApp allows max 10 sections
-        },
-      },
+          sections: sections.slice(0, 10) // WhatsApp allows max 10 sections
+        }
+      }
     };
 
     // Add footer if provided
     if (options.footer) {
       messagePayload.interactive.footer = {
-        text: options.footer,
+        text: options.footer
       };
     }
 
     const response = await axios.post(url, messagePayload, {
       headers: {
         Authorization: `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      timeout: 30000, // 30 second timeout
+      timeout: 30000 // 30 second timeout
     });
 
     logger.info(
@@ -239,7 +239,7 @@ const sendListMessage = async (
  * @param {Array} components - Template components
  * @returns {Promise<Object>} WhatsApp API response
  */
-const sendTemplateMessage = async (
+const sendTemplateMessage = async(
   phoneNumber,
   templateName,
   languageCode = 'en',
@@ -248,7 +248,7 @@ const sendTemplateMessage = async (
   try {
     const {
       accessToken: WHATSAPP_ACCESS_TOKEN,
-      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID,
+      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID
     } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
@@ -264,18 +264,18 @@ const sendTemplateMessage = async (
       template: {
         name: templateName,
         language: {
-          code: languageCode,
+          code: languageCode
         },
-        components,
-      },
+        components
+      }
     };
 
     const response = await axios.post(url, messagePayload, {
       headers: {
         Authorization: `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      timeout: 30000, // 30 second timeout
+      timeout: 30000 // 30 second timeout
     });
 
     logger.info(
@@ -300,7 +300,7 @@ const sendTemplateMessage = async (
  * @param {Object} options - Additional options
  * @returns {Promise<Object>} WhatsApp API response
  */
-const sendMediaMessage = async (
+const sendMediaMessage = async(
   phoneNumber,
   mediaType,
   mediaId,
@@ -310,7 +310,7 @@ const sendMediaMessage = async (
   try {
     const {
       accessToken: WHATSAPP_ACCESS_TOKEN,
-      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID,
+      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID
     } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
@@ -325,8 +325,8 @@ const sendMediaMessage = async (
       type: mediaType,
       [mediaType]: {
         id: mediaId,
-        caption,
-      },
+        caption
+      }
     };
 
     // Add additional media properties if provided
@@ -337,9 +337,9 @@ const sendMediaMessage = async (
     const response = await axios.post(url, messagePayload, {
       headers: {
         Authorization: `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      timeout: 30000, // 30 second timeout
+      timeout: 30000 // 30 second timeout
     });
 
     logger.info(
@@ -364,7 +364,7 @@ const markMessageAsRead = async messageId => {
   try {
     const {
       accessToken: WHATSAPP_ACCESS_TOKEN,
-      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID,
+      phoneNumberId: WHATSAPP_PHONE_NUMBER_ID
     } = getWhatsAppCredentials();
     if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
       throw new Error('WhatsApp API credentials not configured');
@@ -375,15 +375,15 @@ const markMessageAsRead = async messageId => {
     const messagePayload = {
       messaging_product: 'whatsapp',
       status: 'read',
-      message_id: messageId,
+      message_id: messageId
     };
 
     const response = await axios.post(url, messagePayload, {
       headers: {
         Authorization: `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      timeout: 30000, // 30 second timeout
+      timeout: 30000 // 30 second timeout
     });
 
     logger.info(`👁️ Message marked as read: ${messageId}`);
@@ -405,7 +405,7 @@ const markMessageAsRead = async messageId => {
  * @param {Object} options - Additional options
  * @returns {Promise<Object>} WhatsApp API response
  */
-const sendMessage = async (
+const sendMessage = async(
   phoneNumber,
   message,
   messageType = 'text',
@@ -415,46 +415,46 @@ const sendMessage = async (
     let response;
 
     switch (messageType) {
-      case 'text':
-        response = await sendTextMessage(phoneNumber, message, options);
-        break;
-      case 'interactive':
-        if (message.type === 'button') {
-          response = await sendInteractiveButtons(
-            phoneNumber,
-            message.body,
-            message.buttons,
-            options
-          );
-        } else if (message.type === 'list') {
-          response = await sendListMessage(
-            phoneNumber,
-            message.body,
-            message.buttonText,
-            message.sections,
-            options
-          );
-        }
-        break;
-      case 'template':
-        response = await sendTemplateMessage(
+    case 'text':
+      response = await sendTextMessage(phoneNumber, message, options);
+      break;
+    case 'interactive':
+      if (message.type === 'button') {
+        response = await sendInteractiveButtons(
           phoneNumber,
-          message.templateName,
-          message.languageCode,
-          message.components
-        );
-        break;
-      case 'media':
-        response = await sendMediaMessage(
-          phoneNumber,
-          message.mediaType,
-          message.mediaId,
-          message.caption,
+          message.body,
+          message.buttons,
           options
         );
-        break;
-      default:
-        response = await sendTextMessage(phoneNumber, message, options);
+      } else if (message.type === 'list') {
+        response = await sendListMessage(
+          phoneNumber,
+          message.body,
+          message.buttonText,
+          message.sections,
+          options
+        );
+      }
+      break;
+    case 'template':
+      response = await sendTemplateMessage(
+        phoneNumber,
+        message.templateName,
+        message.languageCode,
+        message.components
+      );
+      break;
+    case 'media':
+      response = await sendMediaMessage(
+        phoneNumber,
+        message.mediaType,
+        message.mediaId,
+        message.caption,
+        options
+      );
+      break;
+    default:
+      response = await sendTextMessage(phoneNumber, message, options);
     }
 
     return response;
@@ -474,5 +474,5 @@ module.exports = {
   sendTemplateMessage,
   sendMediaMessage,
   markMessageAsRead,
-  sendMessage,
+  sendMessage
 };

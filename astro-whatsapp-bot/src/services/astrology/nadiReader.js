@@ -15,154 +15,154 @@ class NadiReader {
         name: 'Ashwini',
         rulingPlanet: 'Ketu',
         deity: 'Ashwini Kumaras',
-        nature: 'Light',
+        nature: 'Light'
       },
       {
         name: 'Bharani',
         rulingPlanet: 'Venus',
         deity: 'Yama',
-        nature: 'Fierce',
+        nature: 'Fierce'
       },
       { name: 'Krittika', rulingPlanet: 'Sun', deity: 'Agni', nature: 'Mixed' },
       {
         name: 'Rohini',
         rulingPlanet: 'Moon',
         deity: 'Brahma',
-        nature: 'Fixed',
+        nature: 'Fixed'
       },
       {
         name: 'Mrigashira',
         rulingPlanet: 'Mars',
         deity: 'Soma',
-        nature: 'Soft',
+        nature: 'Soft'
       },
       { name: 'Ardra', rulingPlanet: 'Rahu', deity: 'Rudra', nature: 'Fierce' },
       {
         name: 'Punarvasu',
         rulingPlanet: 'Jupiter',
         deity: 'Aditi',
-        nature: 'Moveable',
+        nature: 'Moveable'
       },
       {
         name: 'Pushya',
         rulingPlanet: 'Saturn',
         deity: 'Brihaspati',
-        nature: 'Light',
+        nature: 'Light'
       },
       {
         name: 'Ashlesha',
         rulingPlanet: 'Mercury',
         deity: 'Nagadevata',
-        nature: 'Fierce',
+        nature: 'Fierce'
       },
       {
         name: 'Magha',
         rulingPlanet: 'Ketu',
         deity: 'Pitris',
-        nature: 'Fierce',
+        nature: 'Fierce'
       },
       {
         name: 'Purva Phalguni',
         rulingPlanet: 'Venus',
         deity: 'Bhaga',
-        nature: 'Moveable',
+        nature: 'Moveable'
       },
       {
         name: 'Uttara Phalguni',
         rulingPlanet: 'Sun',
         deity: 'Aryaman',
-        nature: 'Fixed',
+        nature: 'Fixed'
       },
       {
         name: 'Hasta',
         rulingPlanet: 'Moon',
         deity: 'Savitar',
-        nature: 'Light',
+        nature: 'Light'
       },
       {
         name: 'Chitra',
         rulingPlanet: 'Mars',
         deity: 'Vishwakarma',
-        nature: 'Soft',
+        nature: 'Soft'
       },
       {
         name: 'Swati',
         rulingPlanet: 'Rahu',
         deity: 'Vayu',
-        nature: 'Moveable',
+        nature: 'Moveable'
       },
       {
         name: 'Vishakha',
         rulingPlanet: 'Jupiter',
         deity: 'Indra',
-        nature: 'Mixed',
+        nature: 'Mixed'
       },
       {
         name: 'Anuradha',
         rulingPlanet: 'Saturn',
         deity: 'Mitra',
-        nature: 'Fierce',
+        nature: 'Fierce'
       },
       {
         name: 'Jyeshtha',
         rulingPlanet: 'Mercury',
         deity: 'Indra',
-        nature: 'Fierce',
+        nature: 'Fierce'
       },
       {
         name: 'Mula',
         rulingPlanet: 'Ketu',
         deity: 'Nirriti',
-        nature: 'Fierce',
+        nature: 'Fierce'
       },
       {
         name: 'Purva Ashadha',
         rulingPlanet: 'Venus',
         deity: 'Apas',
-        nature: 'Moveable',
+        nature: 'Moveable'
       },
       {
         name: 'Uttara Ashadha',
         rulingPlanet: 'Sun',
         deity: 'Vishwadevas',
-        nature: 'Fixed',
+        nature: 'Fixed'
       },
       {
         name: 'Shravana',
         rulingPlanet: 'Moon',
         deity: 'Vishwakarma',
-        nature: 'Moveable',
+        nature: 'Moveable'
       },
       {
         name: 'Dhanishta',
         rulingPlanet: 'Mars',
         deity: 'Vasus',
-        nature: 'Light',
+        nature: 'Light'
       },
       {
         name: 'Shatabhisha',
         rulingPlanet: 'Rahu',
         deity: 'Varuna',
-        nature: 'Fixed',
+        nature: 'Fixed'
       },
       {
         name: 'Purva Bhadrapada',
         rulingPlanet: 'Jupiter',
         deity: 'Aja Ekapada',
-        nature: 'Fierce',
+        nature: 'Fierce'
       },
       {
         name: 'Uttara Bhadrapada',
         rulingPlanet: 'Saturn',
         deity: 'Ahir Budhnya',
-        nature: 'Moveable',
+        nature: 'Moveable'
       },
       {
         name: 'Revati',
         rulingPlanet: 'Mercury',
         deity: 'Pushan',
-        nature: 'Soft',
-      },
+        nature: 'Soft'
+      }
     ];
 
     // Nadi systems (based on birth star and other factors)
@@ -172,62 +172,62 @@ class NadiReader {
         characteristics: 'Leadership, independence, pioneering spirit',
         strengths: ['Leadership', 'Innovation', 'Independence'],
         challenges: ['Impatience', 'Stubbornness'],
-        lifePurpose: 'To lead and innovate in chosen field',
+        lifePurpose: 'To lead and innovate in chosen field'
       },
       Madhya: {
         name: 'Madhya Nadi',
         characteristics: 'Balance, harmony, diplomatic nature',
         strengths: ['Diplomacy', 'Balance', 'Harmony'],
         challenges: ['Indecisiveness', 'Over-accommodation'],
-        lifePurpose: 'To bring harmony and balance to situations',
+        lifePurpose: 'To bring harmony and balance to situations'
       },
       Antya: {
         name: 'Antya Nadi',
         characteristics: 'Service, compassion, spiritual inclination',
         strengths: ['Compassion', 'Service', 'Spirituality'],
         challenges: ['Self-sacrifice', 'Boundary issues'],
-        lifePurpose: 'To serve others and contribute to greater good',
-      },
+        lifePurpose: 'To serve others and contribute to greater good'
+      }
     };
 
     // Dasha periods (planetary periods)
     this.dashaPeriods = {
       sun: {
         duration: 6,
-        characteristics: 'Leadership, authority, father figures, government',
+        characteristics: 'Leadership, authority, father figures, government'
       },
       moon: {
         duration: 10,
-        characteristics: 'Emotions, mother, home, mental peace',
+        characteristics: 'Emotions, mother, home, mental peace'
       },
       mars: {
         duration: 7,
-        characteristics: 'Energy, courage, siblings, property',
+        characteristics: 'Energy, courage, siblings, property'
       },
       mercury: {
         duration: 17,
-        characteristics: 'Intelligence, communication, business, education',
+        characteristics: 'Intelligence, communication, business, education'
       },
       jupiter: {
         duration: 16,
-        characteristics: 'Wisdom, spirituality, children, prosperity',
+        characteristics: 'Wisdom, spirituality, children, prosperity'
       },
       venus: {
         duration: 20,
-        characteristics: 'Love, marriage, luxury, arts, beauty',
+        characteristics: 'Love, marriage, luxury, arts, beauty'
       },
       saturn: {
         duration: 19,
-        characteristics: 'Discipline, hard work, longevity, spirituality',
+        characteristics: 'Discipline, hard work, longevity, spirituality'
       },
       rahu: {
         duration: 18,
-        characteristics: 'Ambition, foreign lands, unconventional path',
+        characteristics: 'Ambition, foreign lands, unconventional path'
       },
       ketu: {
         duration: 7,
-        characteristics: 'Spirituality, detachment, past life karma',
-      },
+        characteristics: 'Spirituality, detachment, past life karma'
+      }
     };
   }
 
@@ -256,7 +256,7 @@ class NadiReader {
         predictions,
         remedies: this.generateNadiRemedies(birthNakshatra, nadiSystem),
         lifePurpose: nadiSystem.lifePurpose,
-        compatibility: this.generateCompatibilityInsights(birthNakshatra),
+        compatibility: this.generateCompatibilityInsights(birthNakshatra)
       };
     } catch (error) {
       logger.error('Error calculating Nadi reading:', error);
@@ -291,7 +291,7 @@ class NadiReader {
         nature: nakshatra.nature,
         pada: this.calculatePada(hour, minute),
         characteristics: this.getNakshatraCharacteristics(nakshatra.name),
-        rulingDeity: nakshatra.deity,
+        rulingDeity: nakshatra.deity
       };
     } catch (error) {
       logger.error('Error calculating birth nakshatra:', error);
@@ -360,7 +360,7 @@ class NadiReader {
             duration: period.duration,
             remaining: accumulatedYears - currentPosition,
             characteristics: period.characteristics,
-            influence: this.getDashaInfluence(planet),
+            influence: this.getDashaInfluence(planet)
           };
           break;
         }
@@ -372,7 +372,7 @@ class NadiReader {
           duration: 6,
           remaining: 3,
           characteristics: 'Leadership and authority',
-          influence: 'Period of leadership and self-expression',
+          influence: 'Period of leadership and self-expression'
         }
       );
     } catch (error) {
@@ -406,7 +406,7 @@ class NadiReader {
         ),
         health: this.generateHealthPrediction(birthNakshatra),
         finance: this.generateFinancePrediction(birthNakshatra, dashaPeriod),
-        spiritual: this.generateSpiritualPrediction(birthNakshatra, nadiSystem),
+        spiritual: this.generateSpiritualPrediction(birthNakshatra, nadiSystem)
       };
     } catch (error) {
       logger.error('Error generating Nadi predictions:', error);
@@ -430,7 +430,7 @@ class NadiReader {
         Bharani: [
           'Yam mantra chanting',
           'Red color offerings',
-          'Courage-building activities',
+          'Courage-building activities'
         ],
         Krittika: ['Fire rituals', 'Gold offerings', 'Leadership development'],
         Rohini: ['Brahma mantra', 'White flowers', 'Creative pursuits'],
@@ -441,24 +441,24 @@ class NadiReader {
         Ashlesha: [
           'Snake offerings',
           'Copper items',
-          'Communication improvement',
+          'Communication improvement'
         ],
         Magha: ['Ancestor worship', 'Black color', 'Legacy building'],
         'Purva Phalguni': [
           'Bhaga prayers',
           'Red flowers',
-          'Relationship healing',
+          'Relationship healing'
         ],
         'Uttara Phalguni': [
           'Aryaman worship',
           'White offerings',
-          'Justice pursuits',
+          'Justice pursuits'
         ],
         Hasta: ['Savitar prayers', 'Green color', 'Skill development'],
         Chitra: [
           'Vishwakarma worship',
           'Multi-color offerings',
-          'Creative expression',
+          'Creative expression'
         ],
         Swati: ['Vayu prayers', 'Mixed colors', 'Balance seeking'],
         Vishakha: ['Indra worship', 'Purple offerings', 'Leadership roles'],
@@ -469,7 +469,7 @@ class NadiReader {
         'Uttara Ashadha': [
           'Vishwadevas prayers',
           'Mixed colors',
-          'Community service',
+          'Community service'
         ],
         Shravana: ['Vishwakarma worship', 'White color', 'Learning pursuits'],
         Dhanishta: ['Vasus prayers', 'Gold color', 'Prosperity rituals'],
@@ -477,14 +477,14 @@ class NadiReader {
         'Purva Bhadrapada': [
           'Aja Ekapada prayers',
           'Purple color',
-          'Spiritual growth',
+          'Spiritual growth'
         ],
         'Uttara Bhadrapada': [
           'Ahir Budhnya worship',
           'Mixed colors',
-          'Wisdom seeking',
+          'Wisdom seeking'
         ],
-        Revati: ['Pushan prayers', 'Yellow color', 'Nurturing activities'],
+        Revati: ['Pushan prayers', 'Yellow color', 'Nurturing activities']
       };
 
       const nakshatraRemedy = nakshatraRemedies[birthNakshatra.name];
@@ -526,7 +526,7 @@ class NadiReader {
       return {
         compatibleSigns: compatibleNakshatras,
         bestMatches,
-        relationshipAdvice: this.getRelationshipAdvice(birthNakshatra.name),
+        relationshipAdvice: this.getRelationshipAdvice(birthNakshatra.name)
       };
     } catch (error) {
       logger.error('Error generating compatibility insights:', error);
@@ -579,7 +579,7 @@ class NadiReader {
       Shatabhisha: 'Healing, mystical, research, independent',
       'Purva Bhadrapada': 'Spiritual, creative, mystical, transformative',
       'Uttara Bhadrapada': 'Spiritual, charitable, prosperous, wise',
-      Revati: 'Prosperous, spiritual, guiding, compassionate',
+      Revati: 'Prosperous, spiritual, guiding, compassionate'
     };
     return (
       characteristics[nakshatraName] || 'Unique characteristics and abilities'
@@ -596,7 +596,7 @@ class NadiReader {
       venus: 'Focus on relationships, beauty, and material comforts',
       saturn: 'Time for discipline, hard work, and life lessons',
       rahu: 'Period of ambition, unconventional paths, and growth',
-      ketu: 'Time for spirituality, detachment, and inner wisdom',
+      ketu: 'Time for spirituality, detachment, and inner wisdom'
     };
     return influences[planet] || 'Period of personal growth and development';
   }
@@ -609,7 +609,7 @@ class NadiReader {
     const careerInsights = {
       'Adi Nadi': 'Leadership and pioneering roles',
       'Madhya Nadi': 'Balanced and harmonious work environments',
-      'Antya Nadi': 'Service and helping professions',
+      'Antya Nadi': 'Service and helping professions'
     };
 
     return `Your ${nadiSystem.name} suggests career success in ${careerInsights[nadiSystem.name]}. Current ${dashaPeriod.planet} dasha influences ${dashaPeriod.characteristics}.`;
@@ -659,7 +659,7 @@ class NadiReader {
       Shatabhisha: 'lower abdomen and excretory system',
       'Purva Bhadrapada': 'feet and lower limbs',
       'Uttara Bhadrapada': 'feet and lower limbs',
-      Revati: 'feet and ankles',
+      Revati: 'feet and ankles'
     };
     return healthFocus[nakshatraName] || 'overall well-being and balance';
   }
@@ -693,11 +693,11 @@ class NadiReader {
       Shatabhisha: ['Ardra', 'Purva Bhadrapada'],
       'Purva Bhadrapada': ['Shatabhisha', 'Uttara Bhadrapada', 'Revati'],
       'Uttara Bhadrapada': ['Punarvasu', 'Purva Bhadrapada'],
-      Revati: ['Mrigashira', 'Pushya', 'Purva Bhadrapada'],
+      Revati: ['Mrigashira', 'Pushya', 'Purva Bhadrapada']
     };
     return (
       compatible[nakshatraName] || [
-        'Various nakshatras based on individual charts',
+        'Various nakshatras based on individual charts'
       ]
     );
   }
@@ -730,11 +730,11 @@ class NadiReader {
       Shatabhisha: ['Purva Bhadrapada'],
       'Purva Bhadrapada': ['Uttara Bhadrapada'],
       'Uttara Bhadrapada': ['Punarvasu'],
-      Revati: ['Mrigashira', 'Pushya'],
+      Revati: ['Mrigashira', 'Pushya']
     };
     return (
       bestMatches[nakshatraName] || [
-        'Compatible partners based on full chart analysis',
+        'Compatible partners based on full chart analysis'
       ]
     );
   }
@@ -822,7 +822,7 @@ function generateNadiReading(user) {
         remedies: [],
         predictions: {},
         interpretation:
-          'Please provide your birth date for accurate Nadi analysis',
+          'Please provide your birth date for accurate Nadi analysis'
       };
     }
 
@@ -844,7 +844,7 @@ function generateNadiReading(user) {
         dasaPeriods: [],
         remedies: [],
         predictions: {},
-        interpretation: 'Unable to generate Nadi reading at this time',
+        interpretation: 'Unable to generate Nadi reading at this time'
       };
     }
 
@@ -855,12 +855,12 @@ function generateNadiReading(user) {
           planet: reading.currentDasha.planet,
           startDate: 'Current',
           endDate: `${reading.currentDasha.remaining} years`,
-          effects: reading.currentDasha.influence,
-        },
+          effects: reading.currentDasha.influence
+        }
       ],
       remedies: reading.remedies,
       predictions: reading.predictions,
-      interpretation: `Your ${reading.nadiSystem.name} indicates ${reading.nadiSystem.characteristics}. Current ${reading.currentDasha.planet} dasha brings ${reading.currentDasha.characteristics}.`,
+      interpretation: `Your ${reading.nadiSystem.name} indicates ${reading.nadiSystem.characteristics}. Current ${reading.currentDasha.planet} dasha brings ${reading.currentDasha.characteristics}.`
     };
   } catch (error) {
     logger.error('Error generating Nadi reading:', error);
@@ -870,7 +870,7 @@ function generateNadiReading(user) {
       dasaPeriods: [],
       remedies: ['Consult a qualified Nadi astrologer'],
       predictions: {},
-      interpretation: 'Please try again later',
+      interpretation: 'Please try again later'
     };
   }
 }

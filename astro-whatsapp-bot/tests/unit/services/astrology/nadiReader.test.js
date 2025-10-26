@@ -9,7 +9,7 @@ describe('Nadi Reader Service', () => {
       const user = {
         id: 'user-123',
         birthDate: '15/03/1990',
-        birthPlace: 'Chennai',
+        birthPlace: 'Chennai'
       };
       const reading = generateNadiReading(user);
 
@@ -33,7 +33,7 @@ describe('Nadi Reader Service', () => {
       const user = {
         id: 'user-789',
         birthDate: '10/12/1992',
-        birthPlace: 'Delhi',
+        birthPlace: 'Delhi'
       };
       const reading = generateNadiReading(user);
 
@@ -46,7 +46,7 @@ describe('Nadi Reader Service', () => {
       const user = {
         id: 'user-111',
         birthDate: '25/05/1988',
-        birthPlace: 'Bangalore',
+        birthPlace: 'Bangalore'
       };
       const reading = generateNadiReading(user);
 

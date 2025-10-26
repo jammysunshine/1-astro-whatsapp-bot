@@ -2,7 +2,7 @@
 // Unit tests for Palmistry reading service
 
 const {
-  generatePalmistryReading,
+  generatePalmistryReading
 } = require('services/astrology/palmistryReader');
 
 describe('Palmistry Reader Service', () => {
@@ -29,7 +29,7 @@ describe('Palmistry Reader Service', () => {
         id: 'user-456',
         birthDate: '20/07/1985',
         handType: 'earth',
-        fingerShape: 'square',
+        fingerShape: 'square'
       };
       const reading = generatePalmistryReading(user);
 

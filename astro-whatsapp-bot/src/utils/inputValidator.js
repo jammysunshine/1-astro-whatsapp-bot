@@ -95,14 +95,14 @@ const validateWhatsAppMessage = payload => {
                   messaging_product: Joi.string().valid('whatsapp').required(),
                   metadata: Joi.object({
                     display_phone_number: Joi.string().required(),
-                    phone_number_id: Joi.string().required(),
+                    phone_number_id: Joi.string().required()
                   }).required(),
                   contacts: Joi.array().items(
                     Joi.object({
                       profile: Joi.object({
-                        name: Joi.string().required(),
+                        name: Joi.string().required()
                       }).required(),
-                      wa_id: Joi.string().required(),
+                      wa_id: Joi.string().required()
                     })
                   ),
                   messages: Joi.array().items(
@@ -120,17 +120,17 @@ const validateWhatsAppMessage = payload => {
                           'button',
                           'interactive'
                         )
-                        .required(),
+                        .required()
                     })
-                  ),
+                  )
                 }).required(),
-                field: Joi.string().valid('messages').required(),
+                field: Joi.string().valid('messages').required()
               })
             )
-            .required(),
+            .required()
         })
       )
-      .required(),
+      .required()
   });
 
   const { error, value } = schema.validate(payload, { allowUnknown: true });
@@ -195,7 +195,7 @@ const validateUserProfile = profileData => {
     birthPlace: Joi.string().min(1).max(100).optional(),
     gender: Joi.string().valid('male', 'female', 'other').optional(),
     preferredLanguage: Joi.string().min(2).max(10).optional(),
-    timezone: Joi.string().optional(),
+    timezone: Joi.string().optional()
   });
 
   const { error, value } = schema.validate(profileData);
@@ -227,5 +227,5 @@ module.exports = {
   sanitizeInput,
   isValidPlanId,
   validateUserProfile,
-  checkRateLimit,
+  checkRateLimit
 };

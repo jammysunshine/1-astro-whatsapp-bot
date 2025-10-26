@@ -5,26 +5,26 @@ const Session = require('../../../src/models/Session');
 const mongoose = require('mongoose');
 
 describe('Session Model', () => {
-  beforeAll(async () => {
+  beforeAll(async() => {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test');
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await mongoose.connection.close();
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await Session.deleteMany({});
   });
 
   describe('Session Creation', () => {
-    it('should create a new session with valid data', async () => {
+    it('should create a new session with valid data', async() => {
       const sessionData = {
         sessionId: 'session-123',
         phoneNumber: '+1234567890',
         currentFlow: 'onboarding',
         flowData: { step: 1 },
-        lastActivity: new Date(),
+        lastActivity: new Date()
       };
 
       const session = new Session(sessionData);
@@ -36,13 +36,13 @@ describe('Session Model', () => {
   });
 
   describe('Session Queries', () => {
-    it('should find session by phone number', async () => {
+    it('should find session by phone number', async() => {
       const sessionData = {
         sessionId: 'session-123',
         phoneNumber: '+1234567890',
         currentFlow: 'onboarding',
         flowData: { step: 1 },
-        lastActivity: new Date(),
+        lastActivity: new Date()
       };
 
       await new Session(sessionData).save();
@@ -53,13 +53,13 @@ describe('Session Model', () => {
       expect(foundSession.currentFlow).toBe('onboarding');
     });
 
-    it('should update session flow data', async () => {
+    it('should update session flow data', async() => {
       const sessionData = {
         sessionId: 'session-456',
         phoneNumber: '+1234567890',
         currentFlow: 'onboarding',
         flowData: { step: 1 },
-        lastActivity: new Date(),
+        lastActivity: new Date()
       };
 
       const session = await new Session(sessionData).save();

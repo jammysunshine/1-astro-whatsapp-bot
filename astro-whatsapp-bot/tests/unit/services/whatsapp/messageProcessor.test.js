@@ -4,7 +4,7 @@
 // Mock dependencies
 jest.mock('services/whatsapp/messageSender', () => ({
   sendMessage: jest.fn(),
-  sendTextMessage: jest.fn(),
+  sendTextMessage: jest.fn()
 }));
 jest.mock('models/userModel', () => ({
   getUserByPhone: jest.fn(),
@@ -13,35 +13,35 @@ jest.mock('models/userModel', () => ({
   updateUserProfile: jest.fn(),
   getUserSession: jest.fn(),
   setUserSession: jest.fn(),
-  deleteUserSession: jest.fn(),
+  deleteUserSession: jest.fn()
 }));
 jest.mock('services/astrology/astrologyEngine', () => ({
-  generateAstrologyResponse: jest.fn(),
+  generateAstrologyResponse: jest.fn()
 }));
 jest.mock('conversation/conversationEngine', () => ({
-  processFlowMessage: jest.fn(),
+  processFlowMessage: jest.fn()
 }));
 jest.mock('conversation/menuLoader', () => ({
-  getMenu: jest.fn(),
+  getMenu: jest.fn()
 }));
 jest.mock('services/astrology/vedicCalculator', () => ({
   calculateSunSign: jest.fn(),
-  checkCompatibility: jest.fn(),
+  checkCompatibility: jest.fn()
 }));
 jest.mock('services/payment/paymentService', () => ({
   getSubscriptionStatus: jest.fn(),
   getSubscriptionBenefits: jest.fn(),
   processSubscription: jest.fn(),
-  getPlan: jest.fn(),
+  getPlan: jest.fn()
 }));
 
 const {
-  processIncomingMessage,
+  processIncomingMessage
 } = require('services/whatsapp/messageProcessor');
 const { sendMessage } = require('services/whatsapp/messageSender');
 const { getUserByPhone, createUser } = require('models/userModel');
 const {
-  generateAstrologyResponse,
+  generateAstrologyResponse
 } = require('services/astrology/astrologyEngine');
 const { processFlowMessage } = require('conversation/conversationEngine');
 const { getMenu } = require('conversation/menuLoader');
@@ -62,26 +62,26 @@ describe('WhatsApp Message Processor', () => {
       timestamp: '1234567890',
       type: 'text',
       text: {
-        body: 'Hello, astrologer!',
-      },
+        body: 'Hello, astrologer!'
+      }
     };
 
     value = {
       contacts: [
         {
           profile: { name: 'John Doe' },
-          wa_id: '1234567890',
-        },
-      ],
+          wa_id: '1234567890'
+        }
+      ]
     };
   });
 
   describe('processIncomingMessage', () => {
-    it('should create new user for unknown phone number', async () => {
+    it('should create new user for unknown phone number', async() => {
       getUserByPhone.mockResolvedValue(null);
       createUser.mockResolvedValue({
         id: 'user-123',
-        phoneNumber: '1234567890',
+        phoneNumber: '1234567890'
       });
       processFlowMessage.mockResolvedValue(true);
 
@@ -96,12 +96,12 @@ describe('WhatsApp Message Processor', () => {
       );
     });
 
-    it('should process existing user message', async () => {
+    it('should process existing user message', async() => {
       const existingUser = {
         id: 'user-456',
         phoneNumber: '1234567890',
         birthDate: '15/03/1990',
-        profileComplete: true,
+        profileComplete: true
       };
       getUserByPhone.mockResolvedValue(existingUser);
       generateAstrologyResponse.mockResolvedValue(
@@ -123,11 +123,11 @@ describe('WhatsApp Message Processor', () => {
       );
     });
 
-    it('should handle text messages correctly', async () => {
+    it('should handle text messages correctly', async() => {
       const existingUser = {
         id: 'user-789',
         phoneNumber: '1234567890',
-        profileComplete: true,
+        profileComplete: true
       };
       getUserByPhone.mockResolvedValue(existingUser);
       generateAstrologyResponse.mockResolvedValue('Text message response');
@@ -145,15 +145,15 @@ describe('WhatsApp Message Processor', () => {
       );
     });
 
-    it('should handle interactive button replies', async () => {
+    it('should handle interactive button replies', async() => {
       const existingUser = {
         id: 'user-101',
         phoneNumber: '1234567890',
-        profileComplete: true,
+        profileComplete: true
       };
       getUserByPhone.mockResolvedValue(existingUser);
       getMenu.mockReturnValue({
-        buttons: [{ id: 'btn_daily_horoscope', action: 'get_daily_horoscope' }],
+        buttons: [{ id: 'btn_daily_horoscope', action: 'get_daily_horoscope' }]
       });
       sendMessage.mockResolvedValue({ success: true });
 
@@ -162,23 +162,23 @@ describe('WhatsApp Message Processor', () => {
         type: 'button_reply',
         button_reply: {
           id: 'btn_daily_horoscope',
-          title: 'Daily Horoscope',
-        },
+          title: 'Daily Horoscope'
+        }
       };
 
       await processIncomingMessage(message, value);
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
-        "I'd love to give you a personalized daily horoscope! Please complete your profile first by providing your birth date."
+        'I\'d love to give you a personalized daily horoscope! Please complete your profile first by providing your birth date.'
       );
     });
 
-    it('should handle interactive list replies', async () => {
+    it('should handle interactive list replies', async() => {
       const existingUser = {
         id: 'user-102',
         phoneNumber: '1234567890',
-        profileComplete: true,
+        profileComplete: true
       };
       getUserByPhone.mockResolvedValue(existingUser);
       sendMessage.mockResolvedValue({ success: true });
@@ -189,23 +189,23 @@ describe('WhatsApp Message Processor', () => {
         list_reply: {
           id: 'list_compatibility',
           title: 'Check Compatibility',
-          description: 'Check compatibility with a friend',
-        },
+          description: 'Check compatibility with a friend'
+        }
       };
 
       await processIncomingMessage(message, value);
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
-        "You selected: Check Compatibility\nDescription: Check compatibility with a friend\n\nI'll process your request shortly!"
+        'You selected: Check Compatibility\nDescription: Check compatibility with a friend\n\nI\'ll process your request shortly!'
       );
     });
 
-    it('should handle button messages', async () => {
+    it('should handle button messages', async() => {
       const existingUser = {
         id: 'user-103',
         phoneNumber: '1234567890',
-        profileComplete: true,
+        profileComplete: true
       };
       getUserByPhone.mockResolvedValue(existingUser);
       sendMessage.mockResolvedValue({ success: true });
@@ -213,22 +213,22 @@ describe('WhatsApp Message Processor', () => {
       message.type = 'button';
       message.button = {
         payload: 'daily_horoscope_payload',
-        text: 'Daily Horoscope',
+        text: 'Daily Horoscope'
       };
 
       await processIncomingMessage(message, value);
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
-        "Button pressed: Daily Horoscope\nPayload: daily_horoscope_payload\n\nI'll process your request shortly!"
+        'Button pressed: Daily Horoscope\nPayload: daily_horoscope_payload\n\nI\'ll process your request shortly!'
       );
     });
 
-    it('should handle media messages', async () => {
+    it('should handle media messages', async() => {
       const existingUser = {
         id: 'user-104',
         phoneNumber: '1234567890',
-        profileComplete: true,
+        profileComplete: true
       };
       getUserByPhone.mockResolvedValue(existingUser);
       sendMessage.mockResolvedValue({ success: true });
@@ -236,7 +236,7 @@ describe('WhatsApp Message Processor', () => {
       message.type = 'image';
       message.image = {
         id: 'image-id-123',
-        caption: 'My birth chart',
+        caption: 'My birth chart'
       };
 
       await processIncomingMessage(message, value);
@@ -247,11 +247,11 @@ describe('WhatsApp Message Processor', () => {
       );
     });
 
-    it('should handle unsupported message types gracefully', async () => {
+    it('should handle unsupported message types gracefully', async() => {
       const existingUser = {
         id: 'user-105',
         phoneNumber: '1234567890',
-        profileComplete: true,
+        profileComplete: true
       };
       getUserByPhone.mockResolvedValue(existingUser);
       sendMessage.mockResolvedValue({ success: true });
@@ -263,12 +263,12 @@ describe('WhatsApp Message Processor', () => {
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
         expect.stringContaining(
-          "I'm sorry, I don't support that type of message yet"
+          'I\'m sorry, I don\'t support that type of message yet'
         )
       );
     });
 
-    it('should handle errors gracefully', async () => {
+    it('should handle errors gracefully', async() => {
       getUserByPhone.mockRejectedValue(new Error('Database error'));
       sendMessage.mockResolvedValue({ success: true });
 
@@ -277,7 +277,7 @@ describe('WhatsApp Message Processor', () => {
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
         expect.stringContaining(
-          "I'm sorry, I encountered an error processing your message"
+          'I\'m sorry, I encountered an error processing your message'
         )
       );
       expect(logger.error).toHaveBeenCalledWith(

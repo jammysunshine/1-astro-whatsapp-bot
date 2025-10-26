@@ -1,7 +1,7 @@
 const logger = require('../../utils/logger');
 const {
   updateSubscription,
-  addLoyaltyPoints,
+  addLoyaltyPoints
 } = require('../../models/userModel');
 const Razorpay = require('razorpay');
 let stripe = null;
@@ -22,7 +22,7 @@ class PaymentService {
     if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
       this.razorpay = new Razorpay({
         key_id: process.env.RAZORPAY_KEY_ID,
-        key_secret: process.env.RAZORPAY_KEY_SECRET,
+        key_secret: process.env.RAZORPAY_KEY_SECRET
       });
     } else {
       this.razorpay = null;
@@ -38,8 +38,8 @@ class PaymentService {
         features: [
           'Daily micro-prediction',
           'Birth chart visualization',
-          '7-day transit summary',
-        ],
+          '7-day transit summary'
+        ]
       },
       essential: {
         name: 'Essential',
@@ -48,8 +48,8 @@ class PaymentService {
         features: [
           'Daily personalized horoscope',
           'Weekly video predictions',
-          'Basic compatibility (5 people)',
-        ],
+          'Basic compatibility (5 people)'
+        ]
       },
       premium: {
         name: 'Premium',
@@ -58,8 +58,8 @@ class PaymentService {
         features: [
           'Unlimited AI questions',
           'Priority astrologer access',
-          'Unlimited compatibility',
-        ],
+          'Unlimited compatibility'
+        ]
       },
       vip: {
         name: 'VIP',
@@ -68,29 +68,29 @@ class PaymentService {
         features: [
           'All Premium features',
           'Dedicated astrologer',
-          'Quarterly life planning sessions',
-        ],
-      },
+          'Quarterly life planning sessions'
+        ]
+      }
     };
 
     // Micro-transaction services
     this.microServices = {
       flash_insight: {
         name: 'Flash Insight',
-        price: { INR: 25, AED: 1, AUD: 1 },
+        price: { INR: 25, AED: 1, AUD: 1 }
       },
       transit_alert: {
         name: 'Transit Alert',
-        price: { INR: 15, AED: 0.5, AUD: 0.5 },
+        price: { INR: 15, AED: 0.5, AUD: 0.5 }
       },
       remedial_fix: {
         name: 'Remedial Quick Fix',
-        price: { INR: 50, AED: 2, AUD: 2 },
+        price: { INR: 50, AED: 2, AUD: 2 }
       },
       compatibility_snapshot: {
         name: 'Compatibility Snapshot',
-        price: { INR: 75, AED: 3, AUD: 3 },
-      },
+        price: { INR: 75, AED: 3, AUD: 3 }
+      }
     };
   }
 
@@ -106,13 +106,13 @@ class PaymentService {
       ...plan,
       price:
         plan.price[
-          plan.currency[region] === 'INR'
-            ? 'INR'
-            : plan.currency[region] === 'AED'
-              ? 'AED'
-              : 'AUD'
+          plan.currency[region] === 'INR' ?
+            'INR' :
+            plan.currency[region] === 'AED' ?
+              'AED' :
+              'AUD'
         ],
-      currency: plan.currency[region],
+      currency: plan.currency[region]
     };
   }
 
@@ -153,7 +153,7 @@ class PaymentService {
         {
           type: 'subscription',
           planId,
-          phoneNumber,
+          phoneNumber
         }
       );
 
@@ -176,7 +176,7 @@ class PaymentService {
           plan: planId,
           expiryDate,
           transactionId: paymentResult.transactionId,
-          message: `🎉 Welcome to ${plan.name} plan! Your subscription is active until ${expiryDate.toDateString()}.`,
+          message: `🎉 Welcome to ${plan.name} plan! Your subscription is active until ${expiryDate.toDateString()}.`
         };
       } else {
         throw new Error('Payment failed');
@@ -243,8 +243,8 @@ class PaymentService {
         notes: {
           type: metadata.type || 'subscription',
           planId: metadata.planId,
-          phoneNumber: metadata.phoneNumber,
-        },
+          phoneNumber: metadata.phoneNumber
+        }
       };
 
       const order = await this.razorpay.orders.create(options);
@@ -260,7 +260,7 @@ class PaymentService {
           order.id,
           amount,
           currency
-        ),
+        )
       };
     } catch (error) {
       logger.error('Razorpay payment creation failed:', error);
@@ -288,9 +288,9 @@ class PaymentService {
         metadata: {
           type: metadata.type || 'subscription',
           planId: metadata.planId,
-          phoneNumber: metadata.phoneNumber,
+          phoneNumber: metadata.phoneNumber
         },
-        description: `Astrology Bot ${metadata.type} - ${metadata.planId}`,
+        description: `Astrology Bot ${metadata.type} - ${metadata.planId}`
       });
 
       return {
@@ -300,7 +300,7 @@ class PaymentService {
         amount,
         currency,
         gateway: 'stripe',
-        paymentIntentId: paymentIntent.id,
+        paymentIntentId: paymentIntent.id
       };
     } catch (error) {
       logger.error('Stripe payment creation failed:', error);
@@ -371,7 +371,7 @@ class PaymentService {
         {
           type: 'micro_transaction',
           serviceType,
-          phoneNumber,
+          phoneNumber
         }
       );
 
@@ -389,7 +389,7 @@ class PaymentService {
           amount,
           currency,
           transactionId: paymentResult.transactionId,
-          message: `✅ ${service.name} purchased successfully!`,
+          message: `✅ ${service.name} purchased successfully!`
         };
       } else {
         throw new Error('Payment failed');
@@ -433,7 +433,7 @@ class PaymentService {
       free: 0, // No expiry for free
       essential: 30, // 30 days
       premium: 30, // 30 days
-      vip: 30, // 30 days
+      vip: 30 // 30 days
     };
 
     const days = planDurations[planId] || 30;
@@ -450,9 +450,9 @@ class PaymentService {
    */
   getSubscriptionStatus(user, region = 'india') {
     const plan = this.getPlan(user.subscriptionTier || 'free', region);
-    const isActive = user.subscriptionExpiry
-      ? new Date(user.subscriptionExpiry) > new Date()
-      : user.subscriptionTier === 'free';
+    const isActive = user.subscriptionExpiry ?
+      new Date(user.subscriptionExpiry) > new Date() :
+      user.subscriptionTier === 'free';
 
     return {
       plan: user.subscriptionTier || 'free',
@@ -461,7 +461,7 @@ class PaymentService {
       expiryDate: user.subscriptionExpiry,
       features: plan.features,
       price: plan.price,
-      currency: plan.currency,
+      currency: plan.currency
     };
   }
 
@@ -589,8 +589,8 @@ class PaymentService {
           notes: {
             planId,
             phoneNumber,
-            region,
-          },
+            region
+          }
         };
 
         const order = await this.razorpay.orders.create(options);
@@ -601,7 +601,7 @@ class PaymentService {
           amount: plan.price,
           currency: plan.currency,
           paymentUrl: `https://api.razorpay.com/v1/checkout/embedded?key_id=${process.env.RAZORPAY_KEY_ID}&order_id=${order.id}`,
-          keyId: process.env.RAZORPAY_KEY_ID,
+          keyId: process.env.RAZORPAY_KEY_ID
         };
       } else {
         if (!stripe) {
@@ -615,24 +615,24 @@ class PaymentService {
                 currency: plan.currency.toLowerCase(),
                 product_data: {
                   name: `${plan.name} Subscription`,
-                  description: `Monthly astrology subscription - ${plan.features.join(', ')}`,
+                  description: `Monthly astrology subscription - ${plan.features.join(', ')}`
                 },
-                unit_amount: Math.round(plan.price * 100),
+                unit_amount: Math.round(plan.price * 100)
               },
-              quantity: 1,
-            },
+              quantity: 1
+            }
           ],
           metadata: {
             planId,
             phoneNumber,
-            region,
+            region
           },
           after_completion: {
             type: 'redirect',
             redirect: {
-              url: `${process.env.BASE_URL || 'https://astrologybot.com'}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-            },
-          },
+              url: `${process.env.BASE_URL || 'https://astrologybot.com'}/payment/success?session_id={CHECKOUT_SESSION_ID}`
+            }
+          }
         });
 
         return {
@@ -640,7 +640,7 @@ class PaymentService {
           paymentUrl: paymentLink.url,
           amount: plan.price,
           currency: plan.currency,
-          paymentLinkId: paymentLink.id,
+          paymentLinkId: paymentLink.id
         };
       }
     } catch (error) {

@@ -39,15 +39,15 @@ describe('WebhookValidator', () => {
                   messaging_product: 'whatsapp',
                   metadata: {
                     display_phone_number: '1234567890',
-                    phone_number_id: '1234567890',
+                    phone_number_id: '1234567890'
                   },
                   contacts: [
                     {
                       profile: {
-                        name: 'Test User',
+                        name: 'Test User'
                       },
-                      wa_id: '1234567890',
-                    },
+                      wa_id: '1234567890'
+                    }
                   ],
                   messages: [
                     {
@@ -55,17 +55,17 @@ describe('WebhookValidator', () => {
                       id: 'message-id',
                       timestamp: '1234567890',
                       text: {
-                        body: 'Hello',
+                        body: 'Hello'
                       },
-                      type: 'text',
-                    },
-                  ],
+                      type: 'text'
+                    }
+                  ]
                 },
-                field: 'messages',
-              },
-            ],
-          },
-        ],
+                field: 'messages'
+              }
+            ]
+          }
+        ]
       };
 
       const result = webhookValidator.validateWebhookPayload(payload);
@@ -75,7 +75,7 @@ describe('WebhookValidator', () => {
 
     it('should reject invalid payload', () => {
       const payload = {
-        object: 'invalid',
+        object: 'invalid'
       };
 
       const result = webhookValidator.validateWebhookPayload(payload);

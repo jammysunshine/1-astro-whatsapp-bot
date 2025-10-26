@@ -12,7 +12,7 @@ describe('AstrocartographyReader', () => {
       const birthData = {
         date: '15/03/1990',
         time: '14:30',
-        place: 'Mumbai, India',
+        place: 'Mumbai, India'
       };
 
       const reading = astrocartographyReader.generateAstrocartographyReading(birthData);
@@ -27,7 +27,7 @@ describe('AstrocartographyReader', () => {
       const birthData = {
         date: 'invalid',
         time: 'invalid',
-        place: 'invalid',
+        place: 'invalid'
       };
 
       expect(() => astrocartographyReader.generateAstrocartographyReading(birthData)).toThrow();
@@ -39,7 +39,7 @@ describe('AstrocartographyReader', () => {
       const birthData = {
         date: '15/03/1990',
         time: '14:30',
-        place: 'Mumbai, India',
+        place: 'Mumbai, India'
       };
 
       const lines = astrocartographyReader.calculateAstrocartographyLines(birthData);
@@ -53,7 +53,7 @@ describe('AstrocartographyReader', () => {
   describe('interpretLines', () => {
     it('should interpret Astrocartography lines', () => {
       const lines = [
-        { name: 'Sun Line', description: 'Test description' },
+        { name: 'Sun Line', description: 'Test description' }
       ];
 
       const interpretation = astrocartographyReader.interpretLines(lines);

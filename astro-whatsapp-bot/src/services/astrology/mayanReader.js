@@ -15,133 +15,133 @@ class MayanReader {
         meaning: 'Crocodile/Primal Waters',
         element: 'Water',
         direction: 'East',
-        qualities: ['Creation', 'Instinct', 'Potential', 'Nurturing'],
+        qualities: ['Creation', 'Instinct', 'Potential', 'Nurturing']
       },
       2: {
         name: 'Ik',
         meaning: 'Wind',
         element: 'Air',
         direction: 'North',
-        qualities: ['Communication', 'Spirit', 'Breath', 'Change'],
+        qualities: ['Communication', 'Spirit', 'Breath', 'Change']
       },
       3: {
         name: 'Akbal',
         meaning: 'Night/House',
         element: 'Earth',
         direction: 'West',
-        qualities: ['Dreams', 'Mystery', 'Intuition', 'Protection'],
+        qualities: ['Dreams', 'Mystery', 'Intuition', 'Protection']
       },
       4: {
         name: 'Kan',
         meaning: 'Lizard/Serpent',
         element: 'Fire',
         direction: 'South',
-        qualities: ['Prosperity', 'Abundance', 'Transformation', 'Healing'],
+        qualities: ['Prosperity', 'Abundance', 'Transformation', 'Healing']
       },
       5: {
         name: 'Chicchan',
         meaning: 'Serpent',
         element: 'Fire',
         direction: 'East',
-        qualities: ['Instinct', 'Survival', 'Life Force', 'Sensuality'],
+        qualities: ['Instinct', 'Survival', 'Life Force', 'Sensuality']
       },
       6: {
         name: 'Cimi',
         meaning: 'Death/Transformation',
         element: 'Water',
         direction: 'North',
-        qualities: ['Change', 'Release', 'Rebirth', 'Closure'],
+        qualities: ['Change', 'Release', 'Rebirth', 'Closure']
       },
       7: {
         name: 'Manik',
         meaning: 'Deer/Hand',
         element: 'Earth',
         direction: 'West',
-        qualities: ['Healing', 'Cooperation', 'Skill', 'Craftsmanship'],
+        qualities: ['Healing', 'Cooperation', 'Skill', 'Craftsmanship']
       },
       8: {
         name: 'Lamat',
         meaning: 'Rabbit/Star',
         element: 'Air',
         direction: 'South',
-        qualities: ['Abundance', 'Fertility', 'Art', 'Multiplication'],
+        qualities: ['Abundance', 'Fertility', 'Art', 'Multiplication']
       },
       9: {
         name: 'Muluc',
         meaning: 'Water/Offerings',
         element: 'Water',
         direction: 'East',
-        qualities: ['Purification', 'Flow', 'Emotions', 'Sacrifice'],
+        qualities: ['Purification', 'Flow', 'Emotions', 'Sacrifice']
       },
       10: {
         name: 'Oc',
         meaning: 'Dog/Loyalty',
         element: 'Earth',
         direction: 'North',
-        qualities: ['Loyalty', 'Guidance', 'Friendship', 'Protection'],
+        qualities: ['Loyalty', 'Guidance', 'Friendship', 'Protection']
       },
       11: {
         name: 'Chuen',
         meaning: 'Monkey/Artist',
         element: 'Air',
         direction: 'West',
-        qualities: ['Creativity', 'Playfulness', 'Ingenuity', 'Magic'],
+        qualities: ['Creativity', 'Playfulness', 'Ingenuity', 'Magic']
       },
       12: {
         name: 'Eb',
         meaning: 'Road/Human',
         element: 'Fire',
         direction: 'South',
-        qualities: ['Service', 'Humanity', 'Wisdom', 'Path'],
+        qualities: ['Service', 'Humanity', 'Wisdom', 'Path']
       },
       13: {
         name: 'Ben',
         meaning: 'Reed/Sky',
         element: 'Air',
         direction: 'East',
-        qualities: ['Authority', 'Leadership', 'Divine Connection', 'Growth'],
+        qualities: ['Authority', 'Leadership', 'Divine Connection', 'Growth']
       },
       14: {
         name: 'Ix',
         meaning: 'Jaguar/Magic',
         element: 'Earth',
         direction: 'North',
-        qualities: ['Magic', 'Mystery', 'Shamanism', 'Inner Strength'],
+        qualities: ['Magic', 'Mystery', 'Shamanism', 'Inner Strength']
       },
       15: {
         name: 'Men',
         meaning: 'Eagle/Vision',
         element: 'Fire',
         direction: 'West',
-        qualities: ['Vision', 'Perspective', 'Freedom', 'Spirit'],
+        qualities: ['Vision', 'Perspective', 'Freedom', 'Spirit']
       },
       16: {
         name: 'Cib',
         meaning: 'Vulture/Owl',
         element: 'Air',
         direction: 'South',
-        qualities: ['Wisdom', 'Death', 'Transition', 'Ancestors'],
+        qualities: ['Wisdom', 'Death', 'Transition', 'Ancestors']
       },
       17: {
         name: 'Caban',
         meaning: 'Earthquake/Earth',
         element: 'Earth',
         direction: 'East',
-        qualities: ['Movement', 'Synchronicity', 'Change', 'Foundation'],
+        qualities: ['Movement', 'Synchronicity', 'Change', 'Foundation']
       },
       18: {
         name: 'Eznab',
         meaning: 'Knife/Mirror',
         element: 'Water',
         direction: 'North',
-        qualities: ['Truth', 'Reflection', 'Justice', 'Clarity'],
+        qualities: ['Truth', 'Reflection', 'Justice', 'Clarity']
       },
       19: {
         name: 'Cauac',
         meaning: 'Storm/Rain',
         element: 'Fire',
         direction: 'West',
-        qualities: ['Cleansing', 'Renewal', 'Energy', 'Catalysis'],
+        qualities: ['Cleansing', 'Renewal', 'Energy', 'Catalysis']
       },
       20: {
         name: 'Ahau',
@@ -152,9 +152,9 @@ class MayanReader {
           'Enlightenment',
           'Kingship',
           'Divine Authority',
-          'Illumination',
-        ],
-      },
+          'Illumination'
+        ]
+      }
     };
 
     // Tones (numbers 1-13) and their meanings
@@ -162,68 +162,68 @@ class MayanReader {
       1: {
         name: 'Magnetic',
         meaning: 'Unify, attract, purpose',
-        qualities: ['Leadership', 'New beginnings', 'Magnetic attraction'],
+        qualities: ['Leadership', 'New beginnings', 'Magnetic attraction']
       },
       2: {
         name: 'Lunar',
         meaning: 'Polarize, stabilize, challenge',
-        qualities: ['Cooperation', 'Balance', 'Sensitivity'],
+        qualities: ['Cooperation', 'Balance', 'Sensitivity']
       },
       3: {
         name: 'Electric',
         meaning: 'Activate, bond, service',
-        qualities: ['Creativity', 'Communication', 'Service'],
+        qualities: ['Creativity', 'Communication', 'Service']
       },
       4: {
         name: 'Self-Existing',
         meaning: 'Define, measure, form',
-        qualities: ['Stability', 'Definition', 'Form'],
+        qualities: ['Stability', 'Definition', 'Form']
       },
       5: {
         name: 'Overtone',
         meaning: 'Empower, command, radiance',
-        qualities: ['Empowerment', 'Command', 'Radiance'],
+        qualities: ['Empowerment', 'Command', 'Radiance']
       },
       6: {
         name: 'Rhythmic',
         meaning: 'Organize, balance, equality',
-        qualities: ['Organization', 'Balance', 'Equality'],
+        qualities: ['Organization', 'Balance', 'Equality']
       },
       7: {
         name: 'Resonant',
         meaning: 'Inspire, attune, channel',
-        qualities: ['Inspiration', 'Attunement', 'Guidance'],
+        qualities: ['Inspiration', 'Attunement', 'Guidance']
       },
       8: {
         name: 'Galactic',
         meaning: 'Harmonize, model, integrity',
-        qualities: ['Integrity', 'Modeling', 'Harmony'],
+        qualities: ['Integrity', 'Modeling', 'Harmony']
       },
       9: {
         name: 'Solar',
         meaning: 'Pulse, realize, intention',
-        qualities: ['Intention', 'Realization', 'Pulse'],
+        qualities: ['Intention', 'Realization', 'Pulse']
       },
       10: {
         name: 'Planetary',
         meaning: 'Perfect, manifest, production',
-        qualities: ['Manifestation', 'Production', 'Perfection'],
+        qualities: ['Manifestation', 'Production', 'Perfection']
       },
       11: {
         name: 'Spectral',
         meaning: 'Dissolve, release, liberation',
-        qualities: ['Liberation', 'Release', 'Dissolution'],
+        qualities: ['Liberation', 'Release', 'Dissolution']
       },
       12: {
         name: 'Crystal',
         meaning: 'Dedicate, universalize, cooperation',
-        qualities: ['Cooperation', 'Universalization', 'Dedication'],
+        qualities: ['Cooperation', 'Universalization', 'Dedication']
       },
       13: {
         name: 'Cosmic',
         meaning: 'Transcend, enlighten, presence',
-        qualities: ['Enlightenment', 'Transcendence', 'Presence'],
-      },
+        qualities: ['Enlightenment', 'Transcendence', 'Presence']
+      }
     };
 
     // Haab months (18 months + 5 unlucky days)
@@ -231,118 +231,118 @@ class MayanReader {
       1: {
         name: 'Pop',
         meaning: 'Mat',
-        qualities: ['New beginnings', 'Planting', 'Initiation'],
+        qualities: ['New beginnings', 'Planting', 'Initiation']
       },
       2: {
         name: 'Wo',
         meaning: 'Black Storm',
-        qualities: ['Transformation', 'Cleansing', 'Change'],
+        qualities: ['Transformation', 'Cleansing', 'Change']
       },
       3: {
         name: 'Sip',
         meaning: 'Red Storm',
-        qualities: ['Purification', 'Renewal', 'Energy'],
+        qualities: ['Purification', 'Renewal', 'Energy']
       },
       4: {
-        name: "Sotz'",
+        name: 'Sotz\'',
         meaning: 'Bat',
-        qualities: ['Sovereignty', 'Leadership', 'Authority'],
+        qualities: ['Sovereignty', 'Leadership', 'Authority']
       },
       5: {
         name: 'Sek',
         meaning: 'Death',
-        qualities: ['Transformation', 'Release', 'Rebirth'],
+        qualities: ['Transformation', 'Release', 'Rebirth']
       },
       6: {
         name: 'Xul',
         meaning: 'Dog',
-        qualities: ['Loyalty', 'Guidance', 'Protection'],
+        qualities: ['Loyalty', 'Guidance', 'Protection']
       },
       7: {
         name: 'Yaxkin',
         meaning: 'New Sun',
-        qualities: ['Enlightenment', 'New beginnings', 'Solar energy'],
+        qualities: ['Enlightenment', 'New beginnings', 'Solar energy']
       },
       8: {
         name: 'Mol',
         meaning: 'Water',
-        qualities: ['Flow', 'Emotions', 'Adaptation'],
+        qualities: ['Flow', 'Emotions', 'Adaptation']
       },
       9: {
         name: 'Chen',
         meaning: 'Black Storm',
-        qualities: ['Transformation', 'Cleansing', 'Change'],
+        qualities: ['Transformation', 'Cleansing', 'Change']
       },
       10: {
         name: 'Yax',
         meaning: 'Green Storm',
-        qualities: ['Growth', 'Abundance', 'Nature'],
+        qualities: ['Growth', 'Abundance', 'Nature']
       },
       11: {
         name: 'Sak',
         meaning: 'White Storm',
-        qualities: ['Purification', 'Clarity', 'Truth'],
+        qualities: ['Purification', 'Clarity', 'Truth']
       },
       12: {
         name: 'Keh',
         meaning: 'Red Storm',
-        qualities: ['Energy', 'Action', 'Catalysis'],
+        qualities: ['Energy', 'Action', 'Catalysis']
       },
       13: {
         name: 'Mak',
         meaning: 'Enclosed',
-        qualities: ['Containment', 'Protection', 'Boundaries'],
+        qualities: ['Containment', 'Protection', 'Boundaries']
       },
       14: {
         name: 'Kankin',
         meaning: 'Yellow Sun',
-        qualities: ['Ripening', 'Maturity', 'Harvest'],
+        qualities: ['Ripening', 'Maturity', 'Harvest']
       },
       15: {
         name: 'Muan',
         meaning: 'Owl',
-        qualities: ['Wisdom', 'Night', 'Mystery'],
+        qualities: ['Wisdom', 'Night', 'Mystery']
       },
       16: {
         name: 'Pax',
         meaning: 'Planting Time',
-        qualities: ['Sowing seeds', 'Planning', 'Preparation'],
+        qualities: ['Sowing seeds', 'Planning', 'Preparation']
       },
       17: {
         name: 'Kayab',
         meaning: 'Turtle',
-        qualities: ['Stability', 'Patience', 'Endurance'],
+        qualities: ['Stability', 'Patience', 'Endurance']
       },
       18: {
         name: 'Kumku',
         meaning: 'Granary',
-        qualities: ['Storage', 'Abundance', 'Preservation'],
+        qualities: ['Storage', 'Abundance', 'Preservation']
       },
       19: {
         name: 'Wayeb',
         meaning: 'Five Unlucky Days',
-        qualities: ['Caution', 'Reflection', 'Preparation'],
-      },
+        qualities: ['Caution', 'Reflection', 'Preparation']
+      }
     };
 
     // Year bearers and their significance
     this.yearBearers = {
       Ik: {
         meaning: 'Wind Year',
-        qualities: ['Change', 'Communication', 'Adaptability'],
+        qualities: ['Change', 'Communication', 'Adaptability']
       },
       Manik: {
         meaning: 'Deer Year',
-        qualities: ['Healing', 'Cooperation', 'Skill'],
+        qualities: ['Healing', 'Cooperation', 'Skill']
       },
       Eb: {
         meaning: 'Human Year',
-        qualities: ['Service', 'Wisdom', 'Community'],
+        qualities: ['Service', 'Wisdom', 'Community']
       },
       Caban: {
         meaning: 'Earth Year',
-        qualities: ['Stability', 'Foundation', 'Movement'],
-      },
+        qualities: ['Stability', 'Foundation', 'Movement']
+      }
     };
   }
 
@@ -385,13 +385,13 @@ class MayanReader {
           tzolkin,
           haab,
           yearBearer
-        ),
+        )
       };
     } catch (error) {
       logger.error('Error generating Mayan chart:', error);
       return {
         error: 'Unable to generate Mayan analysis at this time',
-        fallback: 'The Mayan calendar holds ancient wisdom for your journey',
+        fallback: 'The Mayan calendar holds ancient wisdom for your journey'
       };
     }
   }
@@ -435,18 +435,18 @@ class MayanReader {
         meaning: `${this.tones[tone].name} ${this.daySigns[daySign].name}`,
         qualities: [
           ...this.tones[tone].qualities,
-          ...this.daySigns[daySign].qualities,
-        ],
+          ...this.daySigns[daySign].qualities
+        ]
       };
     } catch (error) {
-      logger.error("Error calculating Tzolk'in:", error);
+      logger.error('Error calculating Tzolk\'in:', error);
       return {
         kin: 1,
         tone: this.tones[1],
         daySign: this.daySigns[1],
         fullName: '1 Imix',
         meaning: 'Magnetic Imix',
-        qualities: ['Creation', 'New beginnings'],
+        qualities: ['Creation', 'New beginnings']
       };
     }
   }
@@ -481,7 +481,7 @@ class MayanReader {
         meaning: monthData.meaning,
         qualities: monthData.qualities,
         fullName: `${dayInMonth} ${monthData.name}`,
-        isWayeb: haabMonth === 19,
+        isWayeb: haabMonth === 19
       };
     } catch (error) {
       logger.error('Error calculating Haab:', error);
@@ -492,7 +492,7 @@ class MayanReader {
         meaning: 'Mat',
         qualities: ['New beginnings'],
         fullName: '1 Pop',
-        isWayeb: false,
+        isWayeb: false
       };
     }
   }
@@ -522,7 +522,7 @@ class MayanReader {
         sign: yearBearerName,
         meaning: this.yearBearers[yearBearerName].meaning,
         qualities: this.yearBearers[yearBearerName].qualities,
-        year,
+        year
       };
     } catch (error) {
       logger.error('Error calculating year bearer:', error);
@@ -530,7 +530,7 @@ class MayanReader {
         sign: 'Ik',
         meaning: 'Wind Year',
         qualities: ['Change', 'Communication'],
-        year: new Date().getFullYear(),
+        year: new Date().getFullYear()
       };
     }
   }
@@ -554,7 +554,7 @@ class MayanReader {
     });
 
     const dominantElement = Object.entries(elements).reduce((a, b) =>
-      elements[a[0]] > elements[b[0]] ? a : b
+      (elements[a[0]] > elements[b[0]] ? a : b)
     )[0];
 
     return {
@@ -562,7 +562,7 @@ class MayanReader {
       dominantElement,
       strengths: this.calculateStrengths(tzolkin, haab),
       challenges: this.calculateChallenges(tzolkin, haab),
-      lifePurpose: this.calculateLifePurpose(tzolkin, haab),
+      lifePurpose: this.calculateLifePurpose(tzolkin, haab)
     };
   }
 
@@ -585,18 +585,18 @@ class MayanReader {
       10: 'Path of the Producer - You are here to perfect and manifest abundance',
       11: 'Path of the Liberator - You are here to release old patterns and free others',
       12: 'Path of the Unifier - You are here to cooperate and universalize wisdom',
-      13: 'Path of the Enlightener - You are here to transcend and bring presence',
+      13: 'Path of the Enlightener - You are here to transcend and bring presence'
     };
 
     return (
       paths[
-        tzolkin.tone.name === 'Magnetic'
-          ? 1
-          : parseInt(
-              Object.keys(this.tones).find(
-                key => this.tones[key].name === tzolkin.tone.name
-              )
+        tzolkin.tone.name === 'Magnetic' ?
+          1 :
+          parseInt(
+            Object.keys(this.tones).find(
+              key => this.tones[key].name === tzolkin.tone.name
             )
+          )
       ] ||
       'Path of the Seeker - You are here to discover and share ancient wisdom'
     );
@@ -612,7 +612,7 @@ class MayanReader {
       focus: `Today, embrace the energy of ${tzolkin.daySign.name} and the ${tzolkin.tone.name} tone`,
       activities: this.getDayActivities(tzolkin),
       meditation: `Meditate on ${tzolkin.daySign.meaning} and the qualities of ${tzolkin.tone.meaning}`,
-      affirmation: this.generateAffirmation(tzolkin),
+      affirmation: this.generateAffirmation(tzolkin)
     };
   }
 
@@ -630,7 +630,7 @@ class MayanReader {
       Chicchan: [
         'Physical activities',
         'Sensual experiences',
-        'Survival skills',
+        'Survival skills'
       ],
       Cimi: ['Release rituals', 'Transformation work', 'Closure activities'],
       Manik: ['Healing practices', 'Cooperative work', 'Skill development'],
@@ -646,14 +646,14 @@ class MayanReader {
       Caban: ['Movement practices', 'Earth work', 'Synchronicity observation'],
       Eznab: ['Truth seeking', 'Justice work', 'Reflection practices'],
       Cauac: ['Cleansing rituals', 'Energy work', 'Renewal activities'],
-      Ahau: ['Leadership', 'Enlightenment work', 'Solar practices'],
+      Ahau: ['Leadership', 'Enlightenment work', 'Solar practices']
     };
 
     return (
       activities[tzolkin.daySign.name] || [
         'Spiritual practices',
         'Self-reflection',
-        'Community work',
+        'Community work'
       ]
     );
   }
@@ -669,7 +669,7 @@ class MayanReader {
       Ik: 'I communicate with clarity and adapt to change',
       Akbal: 'I trust my intuition and honor my dreams',
       Kan: 'I attract abundance and heal with divine energy',
-      Chicchan: "I honor my instincts and embrace life's vitality",
+      Chicchan: 'I honor my instincts and embrace life\'s vitality',
       Cimi: 'I embrace change and trust the cycle of transformation',
       Manik: 'I heal myself and others with skillful cooperation',
       Lamat: 'I create abundance and express my artistic soul',
@@ -684,7 +684,7 @@ class MayanReader {
       Caban: 'I move with earth wisdom and observe synchronicity',
       Eznab: 'I reflect truth and wield justice with clarity',
       Cauac: 'I cleanse and renew with storm energy',
-      Ahau: 'I shine with divine light and enlightened authority',
+      Ahau: 'I shine with divine light and enlightened authority'
     };
 
     return (
@@ -776,7 +776,7 @@ class MayanReader {
       Ix: 'To embrace inner magic and guide others shamanically',
       Men: 'To see with spiritual vision and embrace freedom',
       Cib: 'To honor ancestral wisdom and guide transitions',
-      Ben: 'To grow in divine connection and lead with authority',
+      Ben: 'To grow in divine connection and lead with authority'
     };
 
     return (
@@ -795,7 +795,7 @@ class MayanReader {
   generateMayanDescription(tzolkin, haab, yearBearer) {
     let description = '🗓️ *Mayan Calendar Analysis*\n\n';
 
-    description += "🔮 *Tzolk'in (Sacred Calendar):*\n";
+    description += '🔮 *Tzolk\'in (Sacred Calendar):*\n';
     description += `• Kin: ${tzolkin.kin} - ${tzolkin.fullName}\n`;
     description += `• Tone: ${tzolkin.tone.name} (${tzolkin.tone.meaning})\n`;
     description += `• Day Sign: ${tzolkin.daySign.name} (${tzolkin.daySign.meaning})\n`;

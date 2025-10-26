@@ -322,35 +322,13 @@ const processFlowMessage = async (message, user, flowId) => {
 
     if (!currentStep) {
       logger.error(`❌ Current step '${currentStepId}' not found in flow '${flowId}'.`);
-      await sendMessage(
-        phoneNumber,
-        "I'm sorry, I encountered an internal error. Please try again later."
-      );
-      await deleteUserSession(phoneNumber);
-      return false;
-    }
-
-    if (currentStep.action) {
-      // If current step has an action and no next step, execute action
-      await executeFlowAction(
-        phoneNumber,
-        user,
-        flowId,
-        currentStep.action,
-        session.flowData
-      );
-      return true;
-    } else {
-      logger.warn(
-        `⚠️ Flow '${flowId}' ended unexpectedly at step '${currentStepId}'.`
-      );
-      await sendMessage(
-        phoneNumber,
-        "I'm sorry, our conversation ended unexpectedly. Please try again."
-      );
-      await deleteUserSession(phoneNumber);
-      return false;
-    }
+        await sendMessage(
+          phoneNumber,
+          "I'm sorry, I encountered an internal error. Please try again later."
+        );
+        await deleteUserSession(phoneNumber);
+        return false;
+      }
     } else if (currentStep.action) {
       // If current step has an action and no next step, execute action
       await executeFlowAction(
@@ -372,7 +350,6 @@ const processFlowMessage = async (message, user, flowId) => {
       await deleteUserSession(phoneNumber);
       return false;
     }
-  }
   } catch (error) {
     logger.error('❌ Error in processFlowMessage:', error);
     try {
@@ -447,7 +424,7 @@ const executeFlowAction = async (
        logger.info('✅ User profile updated successfully');
 
       // Generate comprehensive birth chart analysis
-      let detailedAnalysis = '';
+      let detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\nUnable to generate detailed analysis at this time.';
       try {
         const fullChart = await vedicCalculator.generateCompleteVedicAnalysis({
           birthDate,
@@ -478,17 +455,28 @@ const executeFlowAction = async (
         }
       } catch (error) {
         logger.warn('Could not generate detailed analysis:', error.message);
+        detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\nUnable to generate detailed analysis at this time. Please try again later.';
       }
 
       // Generate top 3 life patterns
-      const patterns = chartData.lifePatterns || [
+      let patterns = [
         'Strong communication abilities',
         'Natural leadership qualities',
         'Creative problem-solving skills',
       ];
+      try {
+        const chart = await vedicCalculator.generateBasicBirthChart({ birthDate, birthTime, birthPlace });
+        patterns = chart.chartPatterns?.lifePatterns || patterns;
+      } catch (error) {
+        logger.warn('Could not generate life patterns:', error.message);
+      }
 
       // Generate 3-day transit preview with error handling
-      let transits = {};
+      let transits = {
+        today: 'Today brings opportunities for new connections',
+        tomorrow: 'Tomorrow favors focused work and planning',
+        day3: 'Day 3 brings creative inspiration',
+      };
       try {
         transits = await vedicCalculator.generateTransitPreview(
           { birthDate, birthTime, birthPlace },
@@ -497,11 +485,6 @@ const executeFlowAction = async (
       } catch (error) {
         logger.error('❌ Error generating transit preview:', error);
         // Continue with default transits
-        transits = {
-          today: 'Today brings opportunities for new connections',
-          tomorrow: 'Tomorrow favors focused work and planning',
-          day3: 'Day 3 brings creative inspiration',
-        };
       }
 
       // Create comprehensive completion message

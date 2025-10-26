@@ -299,9 +299,6 @@ const processButtonReply = async (phoneNumber, buttonId, title, user) => {
     }
 
     // Process the resolved value as if it was text input
-    const {
-      processFlowMessage,
-
     const currentFlow =
       session?.currentFlow && session.currentFlow !== 'undefined'
         ? session.currentFlow
@@ -619,9 +616,6 @@ const executeMenuAction = async (phoneNumber, user, action) => {
       break;
     case 'get_palmistry_analysis':
       try {
-        const {
-          generatePalmistryAnalysis,
-
         const analysis = generatePalmistryAnalysis();
         response = `🤲 *Palmistry Analysis*\n\n*Hand Type:* ${analysis.handType}\n*Personality:* ${analysis.personality}\n\n*Life Path:* ${analysis.lifePath}`;
       } catch (error) {
@@ -635,9 +629,6 @@ const executeMenuAction = async (phoneNumber, user, action) => {
         break;
       }
       try {
-        const {
-          generateKabbalisticChart,
-
         const analysis = generateKabbalisticChart({
           birthDate: user.birthDate,
           birthTime: user.birthTime || '12:00',
@@ -704,9 +695,6 @@ const executeMenuAction = async (phoneNumber, user, action) => {
         break;
       }
       try {
-        const {
-          generateAstrocartography,
-
         const analysis = generateAstrocartography({
           birthDate: user.birthDate,
           birthTime: user.birthTime || '12:00',
@@ -871,11 +859,27 @@ const processListReply = async (
 
   for (const menuName of menus) {
     const menu = getMenu(menuName);
-    if (menu && menu.buttons) {
-      const button = menu.buttons.find(btn => btn.id === listId);
-      if (button && button.action) {
-        action = button.action;
-        break;
+    if (menu) {
+      // Check buttons first
+      if (menu.buttons) {
+        const button = menu.buttons.find(btn => btn.id === listId);
+        if (button && button.action) {
+          action = button.action;
+          break;
+        }
+      }
+      // Check sections.rows for list menus
+      if (menu.sections) {
+        for (const section of menu.sections) {
+          if (section.rows) {
+            const row = section.rows.find(r => r.id === listId);
+            if (row && row.action) {
+              action = row.action;
+              break;
+            }
+          }
+        }
+        if (action) break;
       }
     }
   }

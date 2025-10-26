@@ -308,13 +308,49 @@ const processFlowMessage = async (message, user, flowId) => {
     const flow = getFlow(flowId);
     if (!flow) {
       logger.error(`❌ Conversation flow '${flowId}' not found.`);
-        await sendMessage(
-          phoneNumber,
-          "I'm sorry, I encountered an internal error. Please try again later."
-        );
-        await deleteUserSession(phoneNumber);
-        return false;
-      }
+      await sendMessage(
+        phoneNumber,
+        "I'm sorry, I encountered an internal error. Please try again later."
+      );
+      await deleteUserSession(phoneNumber);
+      return false;
+    }
+
+    // Get current step from session
+    const currentStepId = session.currentStep;
+    const currentStep = flow.steps[currentStepId];
+
+    if (!currentStep) {
+      logger.error(`❌ Current step '${currentStepId}' not found in flow '${flowId}'.`);
+      await sendMessage(
+        phoneNumber,
+        "I'm sorry, I encountered an internal error. Please try again later."
+      );
+      await deleteUserSession(phoneNumber);
+      return false;
+    }
+
+    if (currentStep.action) {
+      // If current step has an action and no next step, execute action
+      await executeFlowAction(
+        phoneNumber,
+        user,
+        flowId,
+        currentStep.action,
+        session.flowData
+      );
+      return true;
+    } else {
+      logger.warn(
+        `⚠️ Flow '${flowId}' ended unexpectedly at step '${currentStepId}'.`
+      );
+      await sendMessage(
+        phoneNumber,
+        "I'm sorry, our conversation ended unexpectedly. Please try again."
+      );
+      await deleteUserSession(phoneNumber);
+      return false;
+    }
     } else if (currentStep.action) {
       // If current step has an action and no next step, execute action
       await executeFlowAction(
@@ -337,8 +373,9 @@ const processFlowMessage = async (message, user, flowId) => {
       return false;
     }
   }
-  catch (error) {
-    logger.error('❌ Error in processFlowMessage:', error);    try {
+  } catch (error) {
+    logger.error('❌ Error in processFlowMessage:', error);
+    try {
       await sendMessage(
         phoneNumber,
         "I'm sorry, I encountered an error. Please try again."
@@ -383,12 +420,12 @@ const executeFlowAction = async (
       //   // Continue with basic sun sign calculation
       // }
 
-      // Extract key information for prompt replacement
-      const sunSign = chartData.sunSign || 'Pisces'; // Temporary fallback
-      const moonSign = chartData.moonSign || 'Pisces'; // Temporary fallback
-      const risingSign = chartData.risingSign || 'Aquarius'; // Temporary fallback
+       // Extract key information for prompt replacement
+       const sunSign = chartData.sunSign || 'Pisces'; // Temporary fallback
+       const moonSign = chartData.moonSign || 'Pisces'; // Temporary fallback
+       const risingSign = chartData.risingSign || 'Aquarius'; // Temporary fallback
 
-      console.log('🔮 Astrology data:', { sunSign, moonSign, risingSign });
+       logger.debug('🔮 Astrology data:', { sunSign, moonSign, risingSign });
 
       // Update user profile with birth details
       logger.info('Calling addBirthDetails...');
@@ -407,9 +444,7 @@ const executeFlowAction = async (
       logger.info(
         'updateUserProfile called with profileComplete: true. Exiting complete_profile action.'
       );
-      console.log('✅ User profile updated successfully');
-
-      console.log('🔮 Astrology data:', { sunSign, moonSign, risingSign });
+       logger.info('✅ User profile updated successfully');
 
       // Generate comprehensive birth chart analysis
       let detailedAnalysis = '';

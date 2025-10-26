@@ -4,7 +4,12 @@ const {
   addLoyaltyPoints,
 } = require('../../models/userModel');
 const Razorpay = require('razorpay');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+let stripe = null;
+if (process.env.STRIPE_SECRET_KEY) {
+  stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+} else {
+  logger.warn('Stripe not initialized: STRIPE_SECRET_KEY not set');
+}
 
 /**
  * Payment Service with Real Gateway Integration
@@ -153,9 +158,8 @@ class PaymentService {
       );
 
       if (paymentResult.success) {
-        // Calculate expiry (30 days from now for monthly plans)
-        const expiryDate = new Date();
-        expiryDate.setDate(expiryDate.getDate() + 30);
+        // Calculate expiry based on plan (make it dynamic)
+        const expiryDate = this.calculateSubscriptionExpiry(planId);
 
         // Update user subscription
         await updateSubscription(phoneNumber, planId, expiryDate);
@@ -273,6 +277,9 @@ class PaymentService {
    * @returns {Promise<Object>} Payment result
    */
   async processStripePayment(amount, currency, paymentMethod, metadata) {
+    if (!stripe) {
+      throw new Error('Stripe payment gateway not configured');
+    }
     try {
       const paymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(amount * 100), // Stripe expects amount in cents
@@ -416,6 +423,26 @@ class PaymentService {
   }
 
   /**
+   * Calculate subscription expiry date based on plan
+   * @param {string} planId - Plan identifier
+   * @returns {Date} Expiry date
+   */
+  calculateSubscriptionExpiry(planId) {
+    const now = new Date();
+    const planDurations = {
+      free: 0, // No expiry for free
+      essential: 30, // 30 days
+      premium: 30, // 30 days
+      vip: 30, // 30 days
+    };
+
+    const days = planDurations[planId] || 30;
+    const expiryDate = new Date(now);
+    expiryDate.setDate(now.getDate() + days);
+    return expiryDate;
+  }
+
+  /**
    * Get subscription status for user
    * @param {Object} user - User object
    * @param {string} region - User region
@@ -461,8 +488,7 @@ class PaymentService {
 
         if (notes.type === 'subscription') {
           // Process subscription payment
-          const expiryDate = new Date();
-          expiryDate.setDate(expiryDate.getDate() + 30);
+          const expiryDate = this.calculateSubscriptionExpiry(notes.planId);
 
           await updateSubscription(notes.phoneNumber, notes.planId, expiryDate);
           await addLoyaltyPoints(notes.phoneNumber, 50);
@@ -503,8 +529,7 @@ class PaymentService {
 
         if (metadata.type === 'subscription') {
           // Process subscription payment
-          const expiryDate = new Date();
-          expiryDate.setDate(expiryDate.getDate() + 30);
+          const expiryDate = this.calculateSubscriptionExpiry(metadata.planId);
 
           await updateSubscription(
             metadata.phoneNumber,
@@ -579,6 +604,9 @@ class PaymentService {
           keyId: process.env.RAZORPAY_KEY_ID,
         };
       } else {
+        if (!stripe) {
+          throw new Error('Stripe payment gateway not configured');
+        }
         // Create Stripe payment link
         const paymentLink = await stripe.paymentLinks.create({
           line_items: [

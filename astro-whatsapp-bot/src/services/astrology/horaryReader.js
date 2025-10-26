@@ -119,6 +119,8 @@ class HoraryReader {
 
   /**
    * Generate horary reading for a specific question
+   * CRITICAL NOTE: This is a highly simplified horary astrology implementation for educational purposes.
+   * Real horary astrology requires precise astronomical calculations and extensive astrological knowledge.
    * @param {string} question - The question being asked
    * @param {string} questionTime - Time when question was asked (DD/MM/YYYY HH:MM format)
    * @param {Object} location - Location data for chart casting
@@ -158,6 +160,7 @@ class HoraryReader {
         questionAnalysis,
         answer,
         timing: this.determineTiming(chart),
+        disclaimer: '⚠️ *Important Disclaimer:* This horary reading uses simplified calculations for educational purposes. Real horary astrology requires precise astronomical data and should be interpreted by a professional astrologer. Results should not be used for major life decisions.',
         horaryDescription: this.generateHoraryDescription(chart, judge, answer),
       };
     } catch (error) {
@@ -294,6 +297,8 @@ class HoraryReader {
 
   /**
    * Calculate simplified planetary positions for horary
+   * CRITICAL: This uses pseudo-random calculations for demonstration only.
+   * Real horary requires accurate astronomical ephemeris data.
    * @param {number} year - Year
    * @param {number} month - Month
    * @param {number} day - Day
@@ -302,7 +307,10 @@ class HoraryReader {
    * @returns {Object} Planetary positions
    */
   calculateHoraryPositions(year, month, day, hour, minute) {
-    // Simplified calculation - in practice would use astronomical calculations
+    // HIGHLY SIMPLIFIED: Using seed-based pseudo-random positions
+    // In production, integrate with Swiss Ephemeris for accurate calculations
+    logger.warn('Using simplified horary planetary position calculations - not astronomically accurate');
+
     const seed = year * 10000 + month * 100 + day + hour * 100 + minute;
 
     const positions = {};
@@ -330,6 +338,8 @@ class HoraryReader {
 
   /**
    * Calculate ascendant (rising sign) for horary chart
+   * NOTE: This is a highly simplified calculation. Real ascendant calculation requires
+   * complex astronomical mathematics considering latitude, longitude, and precise time.
    * @param {number} hour - Hour
    * @param {number} minute - Minute
    * @param {number} day - Day
@@ -340,7 +350,9 @@ class HoraryReader {
    * @returns {Object} Ascendant data
    */
   calculateAscendant(hour, minute, day, month, year, latitude, longitude) {
-    // Simplified ascendant calculation
+    // HIGHLY SIMPLIFIED: Real calculation requires astronomical precision
+    logger.warn('Using simplified ascendant calculation - not astronomically accurate');
+
     const totalMinutes = hour * 60 + minute;
     const dayOfYear = this.getDayOfYear(day, month);
     const seasonalOffset = Math.sin((dayOfYear / 365) * 2 * Math.PI) * 30;
@@ -796,6 +808,7 @@ class HoraryReader {
    */
   generateHoraryDescription(chart, judge, answer) {
     let description = '🔮 *Horary Astrology Reading*\n\n';
+    description += '⚠️ *Educational Disclaimer:* This horary reading uses simplified astrological calculations for demonstration purposes. Traditional horary astrology requires precise astronomical data and extensive astrological expertise. Consult a professional astrologer for serious matters.\n\n';
 
     description += `⏰ *Chart Cast:* ${chart.questionTime.day}/${chart.questionTime.month}/${chart.questionTime.year} ${chart.questionTime.hour}:${chart.questionTime.minute.toString().padStart(2, '0')}\n`;
     description += `🌍 *Location:* ${chart.location.latitude}°N, ${chart.location.longitude}°E\n\n`;
@@ -837,7 +850,8 @@ class HoraryReader {
     description += '• The judge shows the outcome and timing\n';
     description +=
       '• Angular houses (1,4,7,10) indicate strength and success\n';
-    description += '• The moon reveals the emotional truth of the matter';
+    description += '• The moon reveals the emotional truth of the matter\n\n';
+    description += '🎓 *Learning Note:* Horary astrology is a complex traditional technique that requires years of study. This simplified version demonstrates basic concepts but should not replace professional astrological consultation.';
 
     return description;
   }

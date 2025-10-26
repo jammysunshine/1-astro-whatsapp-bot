@@ -14,10 +14,15 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 class PaymentService {
   constructor() {
     // Initialize payment gateways
-    this.razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
-    });
+    if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+      this.razorpay = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_KEY_SECRET,
+      });
+    } else {
+      this.razorpay = null;
+      console.warn('Razorpay not initialized: RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET not set');
+    }
 
     // Subscription plans with regional pricing
     this.plans = {
@@ -222,6 +227,9 @@ class PaymentService {
    * @returns {Promise<Object>} Payment result
    */
   async processRazorpayPayment(amount, currency, paymentMethod, metadata) {
+    if (!this.razorpay) {
+      throw new Error('Razorpay payment gateway not configured');
+    }
     try {
       const options = {
         amount: amount * 100, // Razorpay expects amount in paisa
@@ -436,6 +444,9 @@ class PaymentService {
    * @returns {Promise<Object>} Processing result
    */
   async handleRazorpayWebhook(webhookData) {
+    if (!this.razorpay) {
+      throw new Error('Razorpay payment gateway not configured');
+    }
     try {
       const { event, payload } = webhookData;
 
@@ -541,6 +552,9 @@ class PaymentService {
       const plan = this.getPlan(planId, region);
 
       if (region === 'india') {
+        if (!this.razorpay) {
+          throw new Error('Razorpay payment gateway not configured');
+        }
         // Create Razorpay order
         const options = {
           amount: plan.price * 100, // Amount in paisa

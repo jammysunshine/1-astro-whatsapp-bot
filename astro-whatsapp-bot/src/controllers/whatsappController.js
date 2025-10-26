@@ -198,7 +198,7 @@ const verifyWhatsAppWebhook = (req, res) => {
       return res.status(403).send(result.message);
     }
   } catch (error) {
-    // logger.error('❌ Error in verifyWhatsAppWebhook:', error);
+    logger.error('❌ Error in verifyWhatsAppWebhook:', error);
     res.status(500).send('Internal server error');
   }
 };

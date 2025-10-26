@@ -53,7 +53,7 @@ const getUserByPhone = async phoneNumber => {
     const user = await User.findOne({ phoneNumber });
     if (user) {
       logger.debug(`🔍 Found user: ${phoneNumber}`);
-      console.log(
+      logger.debug(
         `DEBUG: getUserByPhone returning user with profileComplete: ${user.profileComplete}`
       );
       return user.toObject();
@@ -95,13 +95,11 @@ const updateUserProfile = async (phoneNumber, updateData) => {
       `🔄 Updated user profile: ${phoneNumber}. New profileComplete status: ${user.profileComplete}`
     );
 
-    // Explicitly fetch the user again to confirm the persisted state
-    const updatedUser = await User.findOne({ phoneNumber });
     logger.info(
-      `🔄 Confirmed user profile after update: ${phoneNumber}. Confirmed profileComplete status: ${updatedUser.profileComplete}`
+      `🔄 Confirmed user profile after update: ${phoneNumber}. Confirmed profileComplete status: ${user.profileComplete}`
     );
 
-    return updatedUser.toObject();
+    return user.toObject();
   } catch (error) {
     logger.error(`❌ Error updating user ${phoneNumber}:`, error);
     throw error;
@@ -314,47 +312,33 @@ const deleteUser = async phoneNumber => {
 };
 
 /**
- * Generate a unique user ID
- * @returns {string} Unique user ID
- */
-const generateUserId = () =>
-  `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-/**
- * Generate referral code
- * @returns {string} Unique referral code
- */
-const generateReferralCode = () =>
-  `REF${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
-
-/**
  * Get user session
- * @param {string} sessionId - Session ID
+ * @param {string} phoneNumber - User's phone number
  * @returns {Promise<Object>} Session data
  */
-const getUserSession = async sessionId => {
+const getUserSession = async phoneNumber => {
   try {
-    const session = await Session.findOne({ sessionId });
+    const session = await Session.findOne({ phoneNumber });
     return session ? session.toObject() : null;
   } catch (error) {
-    logger.error(`❌ Error getting session ${sessionId}:`, error);
+    logger.error(`❌ Error getting session for ${phoneNumber}:`, error);
     throw error;
   }
 };
 
 /**
  * Set user session
- * @param {string} sessionId - Session ID
+ * @param {string} phoneNumber - User's phone number
  * @param {Object} sessionData - Session data
  * @returns {Promise<void>}
  */
-const setUserSession = async (sessionId, sessionData) => {
+const setUserSession = async (phoneNumber, sessionData) => {
   try {
     await Session.findOneAndUpdate(
-      { sessionId },
+      { phoneNumber },
       {
         ...sessionData,
-        phoneNumber: sessionId, // Ensure phoneNumber is set
+        phoneNumber, // Ensure phoneNumber is set
       },
       {
         upsert: true, // Create if doesn't exist
@@ -363,22 +347,22 @@ const setUserSession = async (sessionId, sessionData) => {
       }
     );
   } catch (error) {
-    logger.error(`❌ Error setting session ${sessionId}:`, error);
+    logger.error(`❌ Error setting session for ${phoneNumber}:`, error);
     throw error;
   }
 };
 
 /**
  * Delete user session
- * @param {string} sessionId - Session ID
+ * @param {string} phoneNumber - User's phone number
  * @returns {Promise<boolean>} True if deleted
  */
-const deleteUserSession = async sessionId => {
+const deleteUserSession = async phoneNumber => {
   try {
-    const result = await Session.deleteOne({ sessionId });
+    const result = await Session.deleteOne({ phoneNumber });
     return result.deletedCount > 0;
   } catch (error) {
-    logger.error(`❌ Error deleting session ${sessionId}:`, error);
+    logger.error(`❌ Error deleting session for ${phoneNumber}:`, error);
     throw error;
   }
 };
@@ -464,8 +448,6 @@ module.exports = {
   addReferredUser,
   getAllUsers,
   deleteUser,
-  generateUserId,
-  generateReferralCode,
   getUserSession,
   setUserSession,
   deleteUserSession,

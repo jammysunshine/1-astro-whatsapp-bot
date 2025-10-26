@@ -21,7 +21,7 @@ class PaymentService {
       });
     } else {
       this.razorpay = null;
-      console.warn('Razorpay not initialized: RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET not set');
+      logger.warn('Razorpay not initialized: RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET not set');
     }
 
     // Subscription plans with regional pricing

@@ -70,13 +70,18 @@
         "title": "Celtic Wisdom",
         "action": "get_celtic_analysis"
       },
-      {
-        "id": "btn_nadi",
-        "title": "Nadi Astrology",
-        "action": "show_nadi_flow"
-      },
-      {
-        "id": "btn_back_main",
+       {
+         "id": "btn_nadi",
+         "title": "Nadi Astrology",
+         "action": "show_nadi_flow"
+       },
+       {
+         "id": "btn_islamic",
+         "title": "Islamic Astrology",
+         "action": "show_islamic_flow"
+       },
+       {
+         "id": "btn_back_main",
         "title": "Back to Main",
         "action": "show_main_menu"
       }
@@ -135,101 +140,218 @@
              "title": "Compatibility",
              "description": "Relationship astrology"
            },
+            {
+              "id": "btn_synastry",
+              "title": "Synastry Analysis",
+              "description": "Detailed relationship astrology"
+            }
+         ]
+       },
+       {
+         "title": "Divination Systems",
+         "rows": [
            {
-             "id": "btn_synastry",
-             "title": "Synastry Analysis",
-             "description": "Detailed relationship astrology"
+             "id": "btn_tarot",
+             "title": "Tarot Reading",
+             "description": "Ancient card wisdom"
            },
-      {
-        "title": "Divination Systems",
-        "rows": [
-          {
-            "id": "btn_tarot",
-            "title": "Tarot Reading",
-            "description": "Ancient card wisdom"
-          },
-          {
-            "id": "btn_iching",
-            "title": "I Ching Oracle",
-            "description": "Chinese divination system"
-          },
-          {
-            "id": "btn_palmistry",
-            "title": "Palmistry",
-            "description": "Hand reading analysis"
-          }
-        ]
-      },
-      {
-        "title": "Ancient Traditions",
-        "rows": [
-          {
-            "id": "btn_nadi",
-            "title": "Nadi Astrology",
-            "description": "Ancient Indian leaf astrology"
-          },
-          {
-            "id": "btn_kabbalistic",
-            "title": "Kabbalistic",
-            "description": "Jewish mystical tradition"
-          },
-          {
-            "id": "btn_mayan",
-            "title": "Mayan Calendar",
-            "description": "Ancient Mesoamerican wisdom"
-          },
-          {
-            "id": "btn_celtic",
-            "title": "Celtic Wisdom",
-            "description": "Druidic tree astrology"
-          }
-        ]
-      },
-      {
-        "title": "Advanced Services",
-        "rows": [
-          {
-            "id": "btn_horary",
-            "title": "Horary Question",
-            "description": "Answer specific questions"
-          },
-          {
-            "id": "btn_electional",
-            "title": "Electional Astrology",
-            "description": "Auspicious timing for events"
-          },
-          {
-            "id": "btn_chinese",
-            "title": "Chinese BaZi",
-            "description": "Four Pillars of Destiny"
-          },
-          {
-            "id": "btn_numerology",
-            "title": "Numerology",
-            "description": "Numbers and life path analysis"
-          },
-          {
-            "id": "btn_astrocartography",
-            "title": "Astrocartography",
-            "description": "Locational astrology"
-          },
-          {
-            "id": "btn_asteroids",
-            "title": "Asteroid Analysis",
-            "description": "Chiron, Juno, Vesta, Pallas insights"
-          },
-          {
-            "id": "btn_progressions",
-            "title": "Secondary Progressions",
-            "description": "Soul's journey and life development"
-          },
-          {
-            "id": "btn_solar_arc",
-            "title": "Solar Arc Directions",
-            "description": "Major life changes and turning points"
-          }
-        ]
-      }
+           {
+             "id": "btn_iching",
+             "title": "I Ching Oracle",
+             "description": "Chinese divination system"
+           },
+           {
+             "id": "btn_palmistry",
+             "title": "Palmistry",
+             "description": "Hand reading analysis"
+           }
+         ]
+       },
+       {
+         "title": "Ancient Traditions",
+         "rows": [
+           {
+             "id": "btn_nadi",
+             "title": "Nadi Astrology",
+             "description": "Ancient Indian leaf astrology"
+           },
+           {
+             "id": "btn_kabbalistic",
+             "title": "Kabbalistic",
+             "description": "Jewish mystical tradition"
+           },
+           {
+             "id": "btn_mayan",
+             "title": "Mayan Calendar",
+             "description": "Ancient Mesoamerican wisdom"
+           },
+            {
+              "id": "btn_celtic",
+              "title": "Celtic Wisdom",
+              "description": "Druidic tree astrology"
+            },
+            {
+              "id": "btn_islamic",
+              "title": "Islamic Astrology",
+              "description": "Ilm-e-Nujum & Taqdeer destiny analysis"
+            }
+          ]
+        },
+       {
+         "title": "Advanced Services",
+         "rows": [
+           {
+             "id": "btn_horary",
+             "title": "Horary Question",
+             "description": "Answer specific questions"
+           },
+           {
+             "id": "btn_electional",
+             "title": "Electional Astrology",
+             "description": "Auspicious timing for events"
+           },
+           {
+             "id": "btn_chinese",
+             "title": "Chinese BaZi",
+             "description": "Four Pillars of Destiny"
+           },
+           {
+             "id": "btn_numerology",
+             "title": "Numerology",
+             "description": "Numbers and life path analysis"
+           },
+           {
+             "id": "btn_astrocartography",
+             "title": "Astrocartography",
+             "description": "Locational astrology"
+           },
+           {
+             "id": "btn_asteroids",
+             "title": "Asteroid Analysis",
+             "description": "Chiron, Juno, Vesta, Pallas insights"
+           },
+           {
+             "id": "btn_fixed_stars",
+             "title": "Fixed Stars",
+             "description": "Ancient stellar influences"
+           },
+           {
+             "id": "btn_medical_astrology",
+             "title": "Medical Astrology",
+             "description": "Health analysis and wellness insights"
+           },
+           {
+             "id": "btn_financial_astrology",
+             "title": "Financial Astrology",
+             "description": "Wealth patterns and prosperity insights"
+           },
+           {
+             "id": "btn_harmonic_astrology",
+             "title": "Harmonic Astrology",
+             "description": "Deeper chart patterns and hidden harmonics"
+           },
+            {
+              "id": "btn_career_astrology",
+              "title": "Career Astrology",
+              "description": "Professional path and vocational guidance"
+            },
+            {
+              "id": "btn_solar_return",
+              "title": "Solar Return",
+              "description": "Annual birthday chart and yearly themes"
+            },
+            {
+              "id": "btn_event_astrology",
+              "title": "Event Astrology",
+              "description": "Cosmic events and their personal impact"
+            },
+            {
+              "id": "btn_future_self",
+              "title": "Future Self Simulator",
+              "description": "Long-term life timeline and alternative pathways"
+            },
+            {
+              "id": "btn_group_astrology",
+              "title": "Group & Family Astrology",
+              "description": "Combined readings for families and groups"
+            },
+            {
+              "id": "btn_hindu_astrology",
+              "title": "Hindu Vedic Astrology",
+              "description": "Traditional Kundli, marriage matching, Lagna analysis"
+            },
+            {
+              "id": "btn_prashna_astrology",
+              "title": "Prashna (Horary) Astrology",
+              "description": "Question-based predictions using current time"
+            },
+            {
+              "id": "btn_ashtakavarga",
+              "title": "Ashtakavarga Analysis",
+              "description": "8-fold planetary strength analysis"
+            },
+            {
+              "id": "btn_varga_charts",
+              "title": "Varga Charts",
+              "description": "Divisional charts (D-9, D-10, D-12, etc.)"
+            },
+            {
+              "id": "btn_shadbala",
+              "title": "Shadbala Analysis",
+              "description": "6-fold planetary strength calculation"
+            },
+            {
+              "id": "btn_muhurta",
+              "title": "Muhurta (Electional)",
+              "description": "Auspicious timing for events"
+            },
+             {
+               "id": "btn_panchang",
+               "title": "Panchang (Hindu Almanac)",
+               "description": "Daily Hindu calendar and guidance"
+             },
+              {
+                "id": "btn_kaal_sarp",
+                "title": "Kaal Sarp Dosha",
+                "description": "Rahu-Ketu axis analysis and remedies"
+              },
+              {
+                "id": "btn_sade_sati",
+                "title": "Sade Sati Analysis",
+                "description": "Saturn's 7.5-year transit effects and remedies"
+              },
+               {
+                 "id": "btn_vedic_remedies",
+                 "title": "Vedic Remedies",
+                 "description": "Gemstones, mantras, pujas, and charities"
+               },
+               {
+                 "id": "btn_vimshottari_dasha",
+                 "title": "Vimshottari Dasha",
+                 "description": "Planetary periods and life predictions"
+               },
+               {
+                 "id": "btn_jaimini_astrology",
+                 "title": "Jaimini Astrology",
+                 "description": "Karakas and alternative Vedic system"
+               },
+               {
+                 "id": "btn_hindu_festivals",
+                 "title": "Hindu Festivals",
+                 "description": "Festival calendar and auspicious timings"
+               },
+              {
+              "id": "btn_progressions",
+              "title": "Secondary Progressions",
+              "description": "Soul's journey and life development"
+            },
+           {
+             "id": "btn_solar_arc",
+             "title": "Solar Arc Directions",
+             "description": "Major life changes and turning points"
+           }
+         ]
+       }
     ]
   }
 }

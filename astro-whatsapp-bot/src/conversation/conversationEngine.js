@@ -322,14 +322,15 @@ const processFlowMessage = async (message, user, flowId) => {
 
     if (!currentStep) {
       logger.error(`❌ Current step '${currentStepId}' not found in flow '${flowId}'.`);
-        await sendMessage(
-          phoneNumber,
-          "I'm sorry, I encountered an internal error. Please try again later."
-        );
-        await deleteUserSession(phoneNumber);
-        return false;
-      }
-    } else if (currentStep.action) {
+      await sendMessage(
+        phoneNumber,
+        "I'm sorry, I encountered an internal error. Please try again later."
+      );
+      await deleteUserSession(phoneNumber);
+      return false;
+    }
+
+    if (currentStep.action) {
       // If current step has an action and no next step, execute action
       await executeFlowAction(
         phoneNumber,
@@ -388,16 +389,8 @@ const executeFlowAction = async (
 
       // Generate comprehensive birth chart analysis with error handling
       const chartData = {};
-      // Temporarily disable for testing
-      // try {
-      //   chartData = await vedicCalculator.generateDetailedChart({ birthDate, birthTime, birthPlace });
-      //   console.log('✅ Chart data generated:', chartData);
-      // } catch (error) {
-      //   logger.error('❌ Error generating detailed chart:', error);
-      //   // Continue with basic sun sign calculation
-      // }
 
-       // Extract key information for prompt replacement
+      // Extract key information for prompt replacement
        const sunSign = chartData.sunSign || 'Pisces'; // Temporary fallback
        const moonSign = chartData.moonSign || 'Pisces'; // Temporary fallback
        const risingSign = chartData.risingSign || 'Aquarius'; // Temporary fallback

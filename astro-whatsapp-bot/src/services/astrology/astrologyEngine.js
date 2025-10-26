@@ -16,6 +16,8 @@ const { VimshottariDasha } = require('./vimshottariDasha');
 const { JaiminiAstrology } = require('./jaiminiAstrology');
 const { NadiAstrology } = require('./nadiAstrology');
 const { HinduFestivals } = require('./hinduFestivals');
+const { VedicNumerology } = require('./vedicNumerology');
+const { AyurvedicAstrology } = require('./ayurvedicAstrology');
 
 // Configuration for horary timezone
 const HORARY_TIMEZONE = process.env.HORARY_TIMEZONE || 'Asia/Kolkata';
@@ -41,6 +43,12 @@ const nadiAstrology = new NadiAstrology();
 
 // Initialize Hindu Festivals system
 const hinduFestivals = new HinduFestivals();
+
+// Initialize Vedic Numerology system
+const vedicNumerology = new VedicNumerology();
+
+// Initialize Ayurvedic Astrology system
+const ayurvedicAstrology = new AyurvedicAstrology();
 
 /**
  * Improved intent recognition using regex patterns for better accuracy
@@ -1328,7 +1336,51 @@ const generateAstrologyResponse = async(messageText, user) => {
         }
       }
 
-     // Ashtakavarga analysis requests
+      // Vedic numerology requests
+      if (matchesIntent(message, ['vedic numerology', 'chani numerology', 'indian numerology', 'sanskrit numerology', /^vedic.?numerology/, /^chani/, /^indian.?numerology/])) {
+        if (!user.birthDate) {
+          return 'For Vedic Numerology analysis, I need your complete birth details and full name to calculate your Chani numbers.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15/06/1990, Rajesh Kumar Sharma';
+        }
+
+        try {
+          const vedicAnalysis = vedicNumerology.getVedicNumerologyAnalysis(user.birthDate, user.name || 'Unknown');
+
+          if (vedicAnalysis.error) {
+            return `I encountered an issue: ${vedicAnalysis.error}`;
+          }
+
+          return vedicAnalysis.summary;
+        } catch (error) {
+          logger.error('Error generating Vedic numerology analysis:', error);
+          return 'I\'m having trouble calculating your Vedic numerology right now. Please try again later.';
+        }
+      }
+
+      // Ayurvedic astrology requests
+      if (matchesIntent(message, ['ayurvedic astrology', 'ayurveda astrology', 'dosha analysis', 'vata pitta kapha', 'ayurvedic constitution', /^ayurvedic/, /^dosha/, /^vata/, /^pitta/, /^kapha/])) {
+        if (!user.birthDate) {
+          return 'For Ayurvedic Astrology analysis, I need your complete birth details to determine your dosha constitution.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+        }
+
+        try {
+          const ayurvedicAnalysis = ayurvedicAstrology.analyzeAyurvedicConstitution({
+            birthDate: user.birthDate,
+            birthTime: user.birthTime || '12:00',
+            birthPlace: user.birthPlace || 'Delhi'
+          });
+
+          if (ayurvedicAnalysis.error) {
+            return `I encountered an issue: ${ayurvedicAnalysis.error}`;
+          }
+
+          return ayurvedicAnalysis.summary;
+        } catch (error) {
+          logger.error('Error generating Ayurvedic astrology analysis:', error);
+          return 'I\'m having trouble analyzing your Ayurvedic constitution right now. Please try again later.';
+        }
+      }
+
+      // Ashtakavarga analysis requests
     if (matchesIntent(message, ['ashtakavarga', '8-fold strength', 'bindu analysis', /^ashtakavarga/])) {
       if (!user.birthDate) {
         return 'For Ashtakavarga analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';

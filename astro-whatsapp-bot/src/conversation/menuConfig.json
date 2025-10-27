@@ -42,14 +42,102 @@
     ]
   },
   "language_menu": {
-    "type": "interactive",
-    "body": "🌐 *Choose Your Language / اختر لغتك / اختر زبان*\n\nSelect your preferred language for astrology readings:",
-    "buttons": [
+    "type": "list",
+    "body": "🌐 Choose Your Language / اختر لغتك / Choose Your Language\n\nSelect your preferred language for astrology readings:",
+    "buttonText": "Choose Language",
+    "sections": [
       {
-        "id": "lang_en",
-        "title": "🇺🇸 English",
-        "action": "set_language_en"
+        "title": "🌍 Popular Languages",
+        "rows": [
+          {
+            "id": "lang_en",
+            "title": "🇺🇸 English",
+            "description": "English"
+          },
+          {
+            "id": "lang_hi",
+            "title": "🇮🇳 हिंदी",
+            "description": "Hindi"
+          },
+          {
+            "id": "lang_ar",
+            "title": "🇸🇦 العربية",
+            "description": "Arabic"
+          },
+          {
+            "id": "lang_es",
+            "title": "🇪🇸 Español",
+            "description": "Spanish"
+          },
+          {
+            "id": "lang_fr",
+            "title": "🇫🇷 Français",
+            "description": "French"
+          }
+        ]
       },
+      {
+        "title": "🇮🇳 Indian Languages",
+        "rows": [
+          {
+            "id": "lang_ta",
+            "title": "🇮🇳 தமிழ்",
+            "description": "Tamil"
+          },
+          {
+            "id": "lang_te",
+            "title": "🇮🇳 తెలుగు",
+            "description": "Telugu"
+          },
+          {
+            "id": "lang_bn",
+            "title": "🇮🇳 বাংলা",
+            "description": "Bengali"
+          },
+          {
+            "id": "lang_mr",
+            "title": "🇮🇳 मराठी",
+            "description": "Marathi"
+          },
+          {
+            "id": "lang_gu",
+            "title": "🇮🇳 ગુજરાતી",
+            "description": "Gujarati"
+          }
+        ]
+      },
+      {
+        "title": "🌏 More Languages",
+        "rows": [
+          {
+            "id": "lang_de",
+            "title": "🇩🇪 Deutsch",
+            "description": "German"
+          },
+          {
+            "id": "lang_it",
+            "title": "🇮🇹 Italiano",
+            "description": "Italian"
+          },
+          {
+            "id": "lang_pt",
+            "title": "🇵🇹 Português",
+            "description": "Portuguese"
+          },
+          {
+            "id": "lang_ru",
+            "title": "🇷🇺 Русский",
+            "description": "Russian"
+          },
+          {
+            "id": "lang_zh",
+            "title": "🇨🇳 中文",
+            "description": "Chinese"
+          }
+        ]
+      }
+    ]
+  },
       {
         "id": "lang_hi",
         "title": "🇮🇳 हिंदी",

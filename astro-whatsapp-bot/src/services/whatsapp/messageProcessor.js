@@ -655,12 +655,15 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   case 'get_daily_horoscope':
     if (!user.birthDate) {
       const userLanguage = getUserLanguage(user, phoneNumber);
+      const body = translationService.translate('messages.birth_chart.incomplete_profile', userLanguage);
+      const buttons = [
+        { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+        { type: 'reply', reply: { id: 'horoscope_menu', title: translationService.translate('buttons.back_main', userLanguage) || '🏠 Main Menu' } }
+      ];
       await sendMessage(
         phoneNumber,
-        'messages.daily_horoscope.incomplete_profile',
-        'text',
-        {},
-        userLanguage
+        { type: 'button', body, buttons },
+        'interactive'
       );
       return null;
     } else {
@@ -674,8 +677,15 @@ const executeMenuAction = async(phoneNumber, user, action) => {
 
         const userLanguage = getUserLanguage(user, phoneNumber);
 
-        // Use hardcoded English for now since translations are not available
-        const body = `🌟 *Daily Horoscope for ${sunSign}*\n\n${horoscopeData.general}\n\n🎨 *Lucky Color:* ${horoscopeData.luckyColor}\n🔢 *Lucky Number:* ${horoscopeData.luckyNumber}\n💕 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\n✨ *Tomorrow's Outlook:* Stay positive and trust your intuition!`;
+        const body = `${translationService.translate('messages.daily_horoscope.title', userLanguage, { sunSign })
+        }\n\n${translationService.translate('messages.daily_horoscope.general', userLanguage, { general: horoscopeData.general })
+        }\n\n${translationService.translate('messages.daily_horoscope.lucky_color', userLanguage, { color: horoscopeData.luckyColor })
+        }\n${translationService.translate('messages.daily_horoscope.lucky_number', userLanguage, { number: horoscopeData.luckyNumber })
+        }\n${translationService.translate('messages.daily_horoscope.love', userLanguage, { advice: horoscopeData.love })
+        }\n${translationService.translate('messages.daily_horoscope.career', userLanguage, { advice: horoscopeData.career })
+        }\n${translationService.translate('messages.daily_horoscope.finance', userLanguage, { advice: horoscopeData.finance })
+        }\n${translationService.translate('messages.daily_horoscope.health', userLanguage, { advice: horoscopeData.health })
+        }${translationService.translate('messages.daily_horoscope.next', userLanguage)}`;
 
         const buttons = [
           { type: 'reply', reply: { id: 'horoscope_again', title: '🔄 Another Reading' } },
@@ -1223,13 +1233,9 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   case 'show_language_menu': {
     const languageMenu = getMenu('language_menu');
     if (languageMenu) {
-      const buttons = languageMenu.buttons.map(button => ({
-        type: 'reply',
-        reply: { id: button.id, title: button.title }
-      }));
       await sendMessage(
         phoneNumber,
-        { type: 'button', body: languageMenu.body, buttons },
+        languageMenu,
         'interactive'
       );
     }
@@ -1237,12 +1243,82 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   }
   case 'set_language_en': {
     await updateUserProfile(phoneNumber, { preferredLanguage: 'en' });
-    await sendMessage(phoneNumber, '✅ Language set to English! 🇺🇸', 'text');
+    await sendMessage(phoneNumber, translationService.translate('messages.language.set_english', 'en'), 'text');
     return null;
   }
   case 'set_language_hi': {
     await updateUserProfile(phoneNumber, { preferredLanguage: 'hi' });
-    await sendMessage(phoneNumber, '✅ भाषा हिंदी में सेट की गई! 🇮🇳', 'text');
+    await sendMessage(phoneNumber, translationService.translate('messages.language.set_hindi', 'hi'), 'text');
+    return null;
+  }
+  case 'set_language_ar': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'ar' });
+    await sendMessage(phoneNumber, '✅ تم تعيين اللغة إلى العربية! 🇸🇦', 'text');
+    return null;
+  }
+  case 'set_language_es': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'es' });
+    await sendMessage(phoneNumber, '✅ ¡Idioma establecido en español! 🇪🇸', 'text');
+    return null;
+  }
+  case 'set_language_fr': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'fr' });
+    await sendMessage(phoneNumber, '✅ Langue définie en français! 🇫🇷', 'text');
+    return null;
+  }
+  case 'set_language_ta': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'ta' });
+    await sendMessage(phoneNumber, '✅ மொழி தமிழில் அமைக்கப்பட்டது! 🇮🇳', 'text');
+    return null;
+  }
+  case 'set_language_te': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'te' });
+    await sendMessage(phoneNumber, '✅ భాష తెలుగులో సెట్ చేయబడింది! 🇮🇳', 'text');
+    return null;
+  }
+  case 'set_language_bn': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'bn' });
+    await sendMessage(phoneNumber, '✅ ভাষা বাংলায় সেট করা হয়েছে! 🇮🇳', 'text');
+    return null;
+  }
+  case 'set_language_mr': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'mr' });
+    await sendMessage(phoneNumber, '✅ भाषा मराठीमध्ये सेट केली! 🇮🇳', 'text');
+    return null;
+  }
+  case 'set_language_gu': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'gu' });
+    await sendMessage(phoneNumber, '✅ ભાષા ગુજરાતીમાં સેટ કરી! 🇮🇳', 'text');
+    return null;
+  }
+  case 'set_language_de': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'de' });
+    await sendMessage(phoneNumber, '✅ Sprache auf Deutsch eingestellt! 🇩🇪', 'text');
+    return null;
+  }
+  case 'set_language_it': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'it' });
+    await sendMessage(phoneNumber, '✅ Lingua impostata in italiano! 🇮🇹', 'text');
+    return null;
+  }
+  case 'set_language_pt': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'pt' });
+    await sendMessage(phoneNumber, '✅ Idioma definido para português! 🇵🇹', 'text');
+    return null;
+  }
+  case 'set_language_ru': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'ru' });
+    await sendMessage(phoneNumber, '✅ Язык установлен на русский! 🇷🇺', 'text');
+    return null;
+  }
+  case 'set_language_zh': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'zh' });
+    await sendMessage(phoneNumber, '✅ 语言设置为中文! 🇨🇳', 'text');
+    return null;
+  }
+  case 'start_profile_flow': {
+    // Start the onboarding flow for profile update
+    await processFlowMessage({ body: 'update profile' }, user, null);
     return null;
   }
   case 'show_nadi_flow':

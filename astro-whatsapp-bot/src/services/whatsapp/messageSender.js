@@ -74,9 +74,11 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
     );
     return response.data;
   } catch (error) {
+    const errorData = error.response?.data || error.message;
+    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
     logger.error(
       `❌ Error sending message to ${phoneNumber}:`,
-      error.response?.data || error.message
+      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
     );
     throw error;
   }
@@ -148,9 +150,11 @@ const sendInteractiveButtons = async(
     );
     return response.data;
   } catch (error) {
+    const errorData = error.response?.data || error.message;
+    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
     logger.error(
       `❌ Error sending interactive message to ${phoneNumber}:`,
-      error.response?.data || error.message
+      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
     );
     throw error;
   }
@@ -228,9 +232,11 @@ const sendListMessage = async(
     );
     return response.data;
   } catch (error) {
+    const errorData = error.response?.data || error.message;
+    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
     logger.error(
       `❌ Error sending list message to ${phoneNumber}:`,
-      error.response?.data || error.message
+      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
     );
     throw error;
   }
@@ -288,9 +294,11 @@ const sendTemplateMessage = async(
     );
     return response.data;
   } catch (error) {
+    const errorData = error.response?.data || error.message;
+    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
     logger.error(
       `❌ Error sending template message to ${phoneNumber}:`,
-      error.response?.data || error.message
+      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
     );
     throw error;
   }
@@ -352,9 +360,11 @@ const sendMediaMessage = async(
     );
     return response.data;
   } catch (error) {
+    const errorData = error.response?.data || error.message;
+    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
     logger.error(
       `❌ Error sending ${mediaType} message to ${phoneNumber}:`,
-      error.response?.data || error.message
+      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
     );
     throw error;
   }
@@ -394,9 +404,11 @@ const markMessageAsRead = async messageId => {
     logger.info(`👁️ Message marked as read: ${messageId}`);
     return response.data;
   } catch (error) {
+    const errorData = error.response?.data || error.message;
+    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
     logger.error(
       `❌ Error marking message as read ${messageId}:`,
-      error.response?.data || error.message
+      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
     );
     throw error;
   }
@@ -485,9 +497,11 @@ const sendMessage = async(
 
     return response;
   } catch (error) {
+    const errorData = error.response?.data || error.message;
+    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
     logger.error(
       `❌ Error in sendMessage wrapper to ${phoneNumber}:`,
-      error.response?.data || error.message
+      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
     );
     throw error;
   }

@@ -1,88 +1,32 @@
 const logger = require('../../utils/logger');
 
 /**
- * Professional Vedic Astrology Calculator with Astrologer Library
+ * Professional Vedic Astrology Calculator
+ * Main orchestrator class that composes smaller, focused modules
  * Provides complete natal chart analysis using Swiss Ephemeris and astrological interpretations
  */
 
 const { Astrologer } = require('astrologer');
 const sweph = require('sweph');
-const { VedicRemedies } = require('./vedicRemedies');
 
-const NodeGeocoder = require('node-geocoder');
-const { Client } = require('@googlemaps/google-maps-services-js');
-
-// Initialize Geocoder (using OpenStreetMap for simplicity, can be configured for Google Maps if API key is available)
-const geocoderOptions = {
-  provider: 'openstreetmap', // Can be 'google', 'here', etc.
-  // apiKey: process.env.GOOGLE_MAPS_API_KEY, // Uncomment if using Google Maps Geocoding
-  formatter: null // 'gpx', 'string', ...
-};
-const geocoder = NodeGeocoder(geocoderOptions);
-
-// Initialize Google Maps Services Client for Time Zone API
-const googleMapsClient = new Client({});
-
-// Ensure Google Maps API Key is set for Time Zone API
-const { GOOGLE_MAPS_API_KEY } = process.env;
-if (!GOOGLE_MAPS_API_KEY) {
-  logger.warn('⚠️ GOOGLE_MAPS_API_KEY is not set. Time Zone API functionality may be limited.');
-}
+// Import refactored modules
+const VedicCore = require('./core/VedicCore');
+const GeocodingService = require('./geocoding/GeocodingService');
+const SignCalculations = require('./calculations/SignCalculations');
+const WesternCalculator = require('./western/WesternCalculator');
+const HoroscopeGenerator = require('./horoscope/HoroscopeGenerator');
+const VedicCalculatorModule = require('./vedic/VedicCalculator');
+const CompatibilityChecker = require('./compatibility/CompatibilityChecker');
+const ChartGenerator = require('./charts/ChartGenerator');
 
 class VedicCalculator {
   constructor() {
     logger.info('Module: VedicCalculator loaded.');
-    // Lazy initialize the astrologer library to save memory
-    this._astrologer = null;
 
-    // Performance optimization: Add calculation cache
-    this._calculationCache = new Map();
-    this._cacheMaxSize = 100; // Maximum cache entries
-    this._cacheExpirationMs = 30 * 60 * 1000; // 30 minutes
-
-    // Enhanced Swiss Ephemeris initialization
-    this._initializeSwissEphemeris();
-
-    // Initialize calculation constants
-    this._calculationConstants = {
-      // Swiss Ephemeris calculation flags for maximum precision
-      highPrecisionFlags: 2 | 256 | 2048 | 4096,
-      siderealFlags: 2 | 256 | 65536,
-      heliocentricFlags: 2 | 256 | 8,
-
-      // Planet IDs for comprehensive calculations
-      planetIds: {
-        sun: 0,
-        moon: 1,
-        mercury: 2,
-        venus: 3,
-        mars: 4,
-        jupiter: 5,
-        saturn: 6,
-        uranus: 7,
-        neptune: 8,
-        pluto: 9,
-        meanNode: 10,
-        trueNode: 11,
-        meanApogee: 12,
-        oscuApogee: 13,
-        chiron: 15
-      },
-
-      // Ayanamsa systems for Vedic calculations
-      ayanamsas: {
-        lahiri: 1,
-        raman: 3,
-        krishnamurti: 5,
-        fagan: 2
-      }
-    };
-
-    // Zodiac signs (for backward compatibility and internal use)
-    this.zodiacSigns = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
-    ];
+    // Initialize core dependencies
+    this.vedicCore = new VedicCore();
+    this.geocodingService = new GeocodingService();
+    this.signCalculations = new SignCalculations(this.geocodingService, this.vedicCore);
 
     // Initialize astrologer library
     try {
@@ -96,8 +40,15 @@ class VedicCalculator {
       );
     }
 
-    // Performance optimization: Clean cache periodically
-    setInterval(() => this._cleanExpiredCache(), 10 * 60 * 1000); // Clean every 10 minutes
+    // Initialize specialized modules
+    this.westernCalculator = new WesternCalculator(this._astrologer, this.geocodingService, this.vedicCore);
+    this.horoscopeGenerator = new HoroscopeGenerator(this._astrologer, this.geocodingService);
+    this.vedicCalculator = new VedicCalculatorModule(this._astrologer, this.geocodingService, this.vedicCore);
+    this.compatibilityChecker = new CompatibilityChecker(this._astrologer, this.geocodingService, this.vedicCore);
+    this.chartGenerator = new ChartGenerator(this._astrologer, this.geocodingService, this.vedicCore, this.signCalculations);
+
+    // Initialize Swiss Ephemeris
+    this.vedicCore.initializeSwissEphemeris();
   }
 
   /**
@@ -214,63 +165,12 @@ class VedicCalculator {
    * Calculate sun sign from birth date using professional astrology library
    * @param {string} birthDate - Birth date in DD/MM/YYYY format
    * @param {string} birthTime - Birth time in HH:MM format (optional, defaults to noon)
-   * @param {number} latitude - Birth latitude (optional, defaults to Delhi)
-   * @param {number} longitude - Birth longitude (optional, defaults to Delhi)
-   * @param {number} timezone - UTC offset in hours (optional, defaults to IST)
+   * @param {string} birthPlace - Birth place (optional, defaults to Delhi)
    * @param {string} chartType - 'tropical' or 'sidereal' (optional, defaults to 'sidereal' for Vedic)
    * @returns {string} Sun sign
    */
-  async calculateSunSign(
-    birthDate,
-    birthTime = '12:00',
-    birthPlace = 'Delhi, India',
-    chartType = 'sidereal'
-  ) {
-    try {
-      if (!birthDate || typeof birthDate !== 'string') {
-        logger.error(
-          'Invalid birthDate provided to calculateSunSign:',
-          { birthDate, type: typeof birthDate }
-        );
-        return this._calculateSunSignFallback('01/01/1990'); // Default fallback
-      }
-      const [day, month, year] = birthDate.split('/').map(Number);
-      const [hour, minute] = birthTime.split(':').map(Number);
-
-      // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
-      const birthDateTime = new Date(year, month - 1, day, hour, minute);
-      const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
-
-      // Prepare data for astrologer library
-      const astroData = {
-        year,
-        month,
-        date: day,
-        hours: hour,
-        minutes: minute,
-        seconds: 0,
-        latitude,
-        longitude,
-        timezone,
-        chartType
-      };
-
-      // Generate natal chart
-      const chart = this.astrologer.generateNatalChartData(astroData);
-
-      // Return sun sign from interpretations
-      const { sunSign } = chart.interpretations;
-      if (!sunSign || sunSign === 'Unknown' || typeof sunSign !== 'string') {
-        throw new Error('Invalid sun sign from astrologer');
-      }
-      return sunSign;
-    } catch (error) {
-      logger.error('Error calculating sun sign with astrologer:', error);
-      // Fallback to simplified calculation
-      return this._calculateSunSignFallback(birthDate);
-    }
+  async calculateSunSign(birthDate, birthTime = '12:00', birthPlace = 'Delhi, India', chartType = 'sidereal') {
+    return this.signCalculations.calculateSunSign(birthDate, birthTime, birthPlace, chartType);
   }
 
   /**
@@ -335,55 +235,15 @@ class VedicCalculator {
   }
 
   /**
-   * Calculate moon sign (simplified)
+   * Calculate moon sign
    * @param {string} birthDate - Birth date
    * @param {string} birthTime - Birth time in HH:MM format
+   * @param {string} birthPlace - Birth place
+   * @param {string} chartType - Chart type
    * @returns {string} Moon sign
    */
-  async calculateMoonSign(
-    birthDate,
-    birthTime,
-    birthPlace = 'Delhi, India',
-    chartType = 'sidereal'
-  ) {
-    try {
-      const [day, month, year] = birthDate.split('/').map(Number);
-      const [hour, minute] = birthTime.split(':').map(Number);
-
-      // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
-      const birthDateTime = new Date(year, month - 1, day, hour, minute);
-      const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
-
-      // Prepare data for astrologer library
-      const astroData = {
-        year,
-        month,
-        date: day,
-        hours: hour,
-        minutes: minute,
-        seconds: 0,
-        latitude,
-        longitude,
-        timezone,
-        chartType
-      };
-
-      // Generate natal chart
-      const chart = this.astrologer.generateNatalChartData(astroData);
-
-      // Return moon sign from interpretations
-      const { moonSign } = chart.interpretations;
-      if (!moonSign || moonSign === 'Unknown' || typeof moonSign !== 'string') {
-        throw new Error('Invalid moon sign from astrologer');
-      }
-      return moonSign;
-    } catch (error) {
-      logger.error('Error calculating moon sign with astrologer:', error);
-      // Fallback to simplified calculation
-      return this._calculateMoonSignFallback(birthDate, birthTime);
-    }
+  async calculateMoonSign(birthDate, birthTime, birthPlace = 'Delhi, India', chartType = 'sidereal') {
+    return this.signCalculations.calculateMoonSign(birthDate, birthTime, birthPlace, chartType);
   }
 
   /**
@@ -490,6 +350,8 @@ class VedicCalculator {
    * @returns {Object} Western natal chart data
    */
   async generateWesternBirthChart(user, houseSystem = 'P') {
+    return this.westernCalculator.generateWesternBirthChart(user, houseSystem);
+  }
     try {
       const { birthDate, birthTime, birthPlace, name } = user;
 
@@ -1319,110 +1181,7 @@ class VedicCalculator {
    * @returns {Object} Complete natal chart data
    */
   async generateBasicBirthChart(user) {
-    try {
-      const { birthDate, birthTime, birthPlace, name } = user;
-
-      // Calculate key signs with fallback
-      let sunSign; let moonSign; let risingSign;
-      try {
-        sunSign = await this.calculateSunSign(birthDate, birthTime, birthPlace);
-        moonSign = await this.calculateMoonSign(birthDate, birthTime, birthPlace);
-        risingSign = await this.calculateRisingSign(birthDate, birthTime, birthPlace);
-      } catch (error) {
-        // Fallback to simplified calculations
-        sunSign = this._calculateSunSignFallback(birthDate);
-        moonSign = 'Unknown';
-        risingSign = 'Unknown';
-      }
-
-      // Ensure fallbacks if calculations returned invalid values
-      if (!sunSign || sunSign === 'Unknown') {
-        sunSign = this._calculateSunSignFallback(birthDate);
-      }
-      if (!moonSign || moonSign === 'Unknown') {
-        moonSign = 'Unknown'; // Keep as is for now
-      }
-      if (!risingSign || risingSign === 'Unknown') {
-        risingSign = 'Unknown'; // Keep as is for now
-      }
-
-      // Calculate Nakshatra (based on Moon longitude from chart if available)
-      let moonNakshatra = {};
-      try {
-        const moonLongitude = chart.planets?.moon?.longitude || 0;
-        moonNakshatra = this.calculateNakshatra(moonLongitude);
-      } catch (error) {
-        moonNakshatra = { nakshatra: 'Unknown', lord: 'Unknown', pada: 1 };
-      }
-
-      // Try to generate full chart, but don't fail if it doesn't work
-      let chart = {};
-      try {
-        // Parse birth place for coordinates
-        const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
-
-        // Parse birth date and time to create a timestamp for timezone lookup
-        const [day, month, year] = birthDate.split('/').map(Number);
-        const [hour, minute] = birthTime.split(':').map(Number);
-        const birthDateTime = new Date(year, month - 1, day, hour, minute);
-        const timestamp = birthDateTime.getTime();
-
-        const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
-
-        // Generate full natal chart
-        const astroData = {
-          year,
-          month,
-          date: day,
-          hours: hour,
-          minutes: minute,
-          seconds: 0,
-          latitude,
-          longitude,
-          timezone,
-          chartType: 'sidereal' // Vedic astrology
-        };
-
-        chart = this.astrologer.generateNatalChartData(astroData);
-
-        // Generate enhanced description based on chart data
-        const enhancedDescription = this._generateEnhancedDescription(chart);
-      } catch (error) {
-        // Chart generation failed, use basic data
-      }
-
-      return {
-        name,
-        birthDate,
-        birthTime,
-        birthPlace,
-        sunSign: (sunSign && sunSign !== 'Unknown') ? sunSign : this._calculateSunSignFallback(birthDate),
-        moonSign: (moonSign && moonSign !== 'Unknown') ? moonSign : 'Unknown',
-        risingSign: (risingSign && risingSign !== 'Unknown') ? risingSign : 'Unknown',
-        moonNakshatra,
-        dominantElements: chart.interpretations?.dominantElements || [],
-        dominantQualities: chart.interpretations?.dominantQualities || [],
-        planets: chart.planets ? this._formatPlanets(chart.planets) : [],
-        chartPatterns: chart.chartPatterns || [],
-        description: enhancedDescription,
-        personalityTraits: this._extractPersonalityTraits(chart),
-        strengths: this._extractStrengths(chart),
-        challenges: this._extractChallenges(chart),
-        fullChart: chart // Include complete chart data for advanced features
-      };
-    } catch (error) {
-      logger.error('Error generating natal chart:', error);
-      return {
-        name: user.name,
-        birthDate: user.birthDate,
-        birthTime: user.birthTime,
-        birthPlace: user.birthPlace,
-        sunSign: 'Unknown',
-        moonSign: 'Unknown',
-        risingSign: 'Unknown',
-        description: 'Unable to generate birth chart at this time.'
-      };
-    }
+    return this.chartGenerator.generateBasicBirthChart(user);
   }
 
   /**
@@ -1467,10 +1226,12 @@ class VedicCalculator {
 
   /**
    * Generate a detailed daily horoscope using professional astrology
-   * @param {string} birthDate - User's birth date in DD/MM/YYYY format
+   * @param {Object} birthData - User's birth data
    * @returns {Object} Detailed horoscope data
    */
   async generateDailyHoroscope(birthData) {
+    return this.horoscopeGenerator.generateDailyHoroscope(birthData);
+  }
     try {
       const { birthDate, birthTime = '12:00', birthPlace = 'Delhi, India' } = birthData;
 
@@ -1667,6 +1428,8 @@ class VedicCalculator {
    * @returns {Object} Compatibility result
    */
   async checkCompatibility(person1, person2) {
+    return this.compatibilityChecker.checkCompatibility(person1, person2);
+  }
     try {
       // If only signs are provided, fall back to basic compatibility
       if (typeof person1 === 'string' && typeof person2 === 'string') {
@@ -2019,6 +1782,8 @@ class VedicCalculator {
    * @returns {Object} Transit preview
    */
   async generateTransitPreview(birthData, days = 3) {
+    return this.vedicCalculator.generateTransitPreview(birthData, days);
+  }
     try {
       const { birthDate, birthTime = '12:00', birthPlace = 'Delhi, India' } = birthData;
 
@@ -2845,6 +2610,8 @@ class VedicCalculator {
    * @returns {Object} Lunar return analysis
    */
   async calculateLunarReturn(birthData, targetDate = null) {
+    return this.vedicCalculator.calculateLunarReturn(birthData, targetDate);
+  }
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
@@ -3126,6 +2893,8 @@ class VedicCalculator {
    * @returns {Object} Complete Ashtakavarga analysis
    */
   async calculateAshtakavarga(birthData) {
+    return this.vedicCalculator.calculateAshtakavarga(birthData);
+  }
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
@@ -3638,6 +3407,8 @@ class VedicCalculator {
    * @returns {Object} Varga chart analysis
    */
   async calculateVargaChart(birthData, varga = 'D9') {
+    return this.vedicCalculator.calculateVargaChart(birthData, varga);
+  }
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
@@ -20973,6 +20744,8 @@ class VedicCalculator {
    * @returns {Object} Nakshatra details
    */
   calculateNakshatra(longitude) {
+    return this.vedicCalculator.calculateNakshatra(longitude);
+  }
     // Normalize longitude to 0-360
     longitude = ((longitude % 360) + 360) % 360;
 
@@ -21019,6 +20792,8 @@ class VedicCalculator {
    * @returns {Object} Compatibility analysis
    */
   calculateNakshatraPorutham(person1, person2) {
+    return this.vedicCalculator.calculateNakshatraPorutham(person1, person2);
+  }
     try {
       // Get Moon longitudes (Nakshatra is based on Moon)
       const moon1 = person1.moonLongitude || 0;

@@ -40,7 +40,7 @@ class MistralAIService {
         },
         {
           headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
+            Authorization: `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json'
           },
           timeout: 30000
@@ -52,18 +52,18 @@ class MistralAIService {
       return aiResponse.trim();
     } catch (error) {
       // Truncate long error messages
-      const errorMessage = error.message && error.message.length > 200
-        ? error.message.substring(0, 200) + '...'
-        : error.message;
+      const errorMessage = error.message && error.message.length > 200 ?
+        `${error.message.substring(0, 200)}...` :
+        error.message;
       logger.error('❌ Error calling Mistral API:', errorMessage);
 
       if (error.response && error.response.data) {
-        const responseData = typeof error.response.data === 'string'
-          ? error.response.data
-          : JSON.stringify(error.response.data);
-        const truncatedData = responseData.length > 500
-          ? responseData.substring(0, 500) + '...'
-          : responseData;
+        const responseData = typeof error.response.data === 'string' ?
+          error.response.data :
+          JSON.stringify(error.response.data);
+        const truncatedData = responseData.length > 500 ?
+          `${responseData.substring(0, 500)}...` :
+          responseData;
         logger.error('Response data:', truncatedData);
       }
       return 'Sorry, I\'m having trouble connecting to the AI service right now. Please try again later.';

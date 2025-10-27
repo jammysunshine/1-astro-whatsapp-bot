@@ -283,40 +283,40 @@ class TranslationService {
    * Normalize language code to standard format
    */
   normalizeLanguageCode(languageCode) {
-    if (!languageCode) return 'en';
+    if (!languageCode) { return 'en'; }
 
     const code = languageCode.toLowerCase();
 
     // Handle common variations
     const mappings = {
-      'english': 'en',
-      'hindi': 'hi',
-      'arabic': 'ar',
-      'tamil': 'ta',
-      'spanish': 'es',
-      'french': 'fr',
-      'german': 'de',
-      'italian': 'it',
-      'portuguese': 'pt',
-      'russian': 'ru',
-      'dutch': 'nl',
-      'bengali': 'bn',
-      'telugu': 'te',
-      'marathi': 'mr',
-      'gujarati': 'gu',
-      'kannada': 'kn',
-      'malayalam': 'ml',
-      'punjabi': 'pa',
-      'odia': 'or',
-      'assamese': 'as',
-      'urdu': 'ur',
-      'persian': 'fa',
-      'turkish': 'tr',
-      'hebrew': 'he',
-      'chinese': 'zh',
-      'japanese': 'ja',
-      'korean': 'ko',
-      'thai': 'th'
+      english: 'en',
+      hindi: 'hi',
+      arabic: 'ar',
+      tamil: 'ta',
+      spanish: 'es',
+      french: 'fr',
+      german: 'de',
+      italian: 'it',
+      portuguese: 'pt',
+      russian: 'ru',
+      dutch: 'nl',
+      bengali: 'bn',
+      telugu: 'te',
+      marathi: 'mr',
+      gujarati: 'gu',
+      kannada: 'kn',
+      malayalam: 'ml',
+      punjabi: 'pa',
+      odia: 'or',
+      assamese: 'as',
+      urdu: 'ur',
+      persian: 'fa',
+      turkish: 'tr',
+      hebrew: 'he',
+      chinese: 'zh',
+      japanese: 'ja',
+      korean: 'ko',
+      thai: 'th'
     };
 
     return mappings[code] || code;

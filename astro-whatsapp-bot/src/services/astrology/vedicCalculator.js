@@ -197,13 +197,13 @@ class VedicCalculator {
           try {
             logger.debug(`Testing with flag: ${flag}`);
             testResult = sweph.calc(testJD, 0, flag); // 0 = Sun
-            if (testResult) break;
+            if (testResult) { break; }
           } catch (flagError) {
             logger.debug(`Flag ${flag} failed:`, flagError.message);
           }
         }
 
-        logger.debug(`Swiss Ephemeris calc result:`, JSON.stringify(testResult, null, 2));
+        logger.debug('Swiss Ephemeris calc result:', JSON.stringify(testResult, null, 2));
 
         // Check for different possible return formats
         if (testResult) {
@@ -253,7 +253,7 @@ class VedicCalculator {
         // Additional test: Try to calculate houses
         try {
           const houses = sweph.houses(testJD, 28.6139, 77.2090, 'P'); // Delhi coordinates
-          logger.debug(`Houses calculation result:`, JSON.stringify(houses, null, 2));
+          logger.debug('Houses calculation result:', JSON.stringify(houses, null, 2));
 
           // Check for Swiss Ephemeris houses result format
           if (houses && typeof houses === 'object') {
@@ -273,7 +273,6 @@ class VedicCalculator {
         } catch (housesError) {
           logger.warn('⚠️ Swiss Ephemeris houses calculation failed:', housesError.message);
         }
-
       } catch (testError) {
         logger.warn('⚠️ Swiss Ephemeris basic functionality test failed - calculations may be limited:', testError.message);
         logger.debug('Full error details:', testError);
@@ -343,11 +342,11 @@ class VedicCalculator {
    * @returns {boolean} True if position data is valid
    */
   _validatePosition(position) {
-    if (!position) return false;
+    if (!position) { return false; }
 
     // Handle Swiss Ephemeris result format: { flag, error, data }
     if (typeof position === 'object' && position.data) {
-      const data = position.data;
+      const { data } = position;
       // Data should be an array [longitude, latitude, distance, ...]
       if (Array.isArray(data) && data.length >= 3) {
         return typeof data[0] === 'number' && !isNaN(data[0]) && data[0] !== 0;
@@ -496,9 +495,9 @@ class VedicCalculator {
         return [res[0].latitude, res[0].longitude];
       }
     } catch (error) {
-      const errorMessage = error.message && error.message.length > 200
-        ? error.message.substring(0, 200) + '...'
-        : error.message;
+      const errorMessage = error.message && error.message.length > 200 ?
+        `${error.message.substring(0, 200)}...` :
+        error.message;
       logger.error(`❌ Error geocoding place "${place}":`, errorMessage);
     }
     // Fallback to default if geocoding fails
@@ -537,9 +536,9 @@ class VedicCalculator {
         logger.error('Google Maps Time Zone API error:', response.data.errorMessage);
       }
     } catch (error) {
-      const errorMessage = error.message && error.message.length > 200
-        ? error.message.substring(0, 200) + '...'
-        : error.message;
+      const errorMessage = error.message && error.message.length > 200 ?
+        `${error.message.substring(0, 200)}...` :
+        error.message;
       logger.error('❌ Error fetching timezone from Google Maps API:', errorMessage);
     }
     // Fallback to default if API call fails
@@ -604,25 +603,25 @@ class VedicCalculator {
         saturn: 6
       };
 
-       for (const [planetName, planetId] of Object.entries(planetIds)) {
-         try {
-           const position = this._safeCalc(jd, planetId, 2 | 256);
-           if (position && this._validatePosition(position)) {
-             let longitude, speed = 0;
+      for (const [planetName, planetId] of Object.entries(planetIds)) {
+        try {
+          const position = this._safeCalc(jd, planetId, 2 | 256);
+          if (position && this._validatePosition(position)) {
+            let longitude; let speed = 0;
 
-             // Handle Swiss Ephemeris result format: { flag, error, data }
-             if (position.data && Array.isArray(position.data)) {
-               longitude = position.data[0]; // longitude
-               speed = position.data[3] || 0; // speed is usually at index 3
-             } else if (Array.isArray(position.longitude)) {
-               longitude = position.longitude[0];
-               speed = position.longitude[1] || 0;
-             } else if (Array.isArray(position)) {
-               longitude = position[0];
-               speed = position[1] || 0;
-             } else {
-               longitude = position.longitude;
-             }
+            // Handle Swiss Ephemeris result format: { flag, error, data }
+            if (position.data && Array.isArray(position.data)) {
+              longitude = position.data[0]; // longitude
+              speed = position.data[3] || 0; // speed is usually at index 3
+            } else if (Array.isArray(position.longitude)) {
+              longitude = position.longitude[0];
+              speed = position.longitude[1] || 0;
+            } else if (Array.isArray(position)) {
+              longitude = position[0];
+              speed = position[1] || 0;
+            } else {
+              longitude = position.longitude;
+            }
             const signIndex = Math.floor(longitude / 30);
             const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
 

@@ -46,7 +46,7 @@ const handleDefaultResponse = async(message, user) => {
   }
 
   // Default response - let the messageProcessor handle the interactive menu
-  return '🌟 *Welcome to Your Cosmic Journey!*\n\nI\'m your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\n*Choose your path:*\n👤 *Personal Astrology* - Western or Vedic birth charts, horoscopes, and insights\n👨‍👩‍👧‍👦 *Family & Group* - Compatibility, family dynamics, and group readings\n⚙️ *Settings & Profile* - Manage your details, preferences, and subscription\n\nSimply tap a button below to begin!';
+  return '🌟 *Welcome to Your Cosmic Journey!*\n\nI\'m your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\nWhat would you like to explore?';
 };
 
 /**

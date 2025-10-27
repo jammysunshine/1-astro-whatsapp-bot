@@ -1,11 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="10.288">
-  <testsuite name="AstrologyEngine" errors="0" failures="0" skipped="0" timestamp="2025-10-27T07:44:17" time="9.55" tests="3">
-    <testcase classname="AstrologyEngine generateAstrologyResponse should generate astrology response for valid user" name="AstrologyEngine generateAstrologyResponse should generate astrology response for valid user" time="0.009">
+<testsuites name="jest tests" tests="32" failures="2" errors="0" time="21.168">
+  <testsuite name="Critical User Flow End-to-End Tests" errors="0" failures="1" skipped="10" timestamp="2025-10-27T14:52:56" time="12.385" tests="11">
+    <testcase classname="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should generate real daily horoscope for existing user" name="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should generate real daily horoscope for existing user" time="0.293">
+      <failure>Error: expected 200 &quot;OK&quot;, got 500 &quot;Internal Server Error&quot;
+    at Object.expect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:218:10)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)
+----
+    at Test._assertStatus (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:252:14)
+    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:308:13
+    at Test._assertFunction (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:285:13)
+    at Test.assert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:164:23)
+    at Server.localAssert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:120:14)
+    at Object.onceWrapper (node:events:622:28)
+    at Server.emit (node:events:508:28)
+    at emitCloseNT (node:net:2419:8)
+    at processTicksAndRejections (node:internal/process/task_queues:89:21)</failure>
     </testcase>
-    <testcase classname="AstrologyEngine validateBirthData should validate valid birth data" name="AstrologyEngine validateBirthData should validate valid birth data" time="0.005">
+    <testcase classname="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" name="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="AstrologyEngine validateBirthData should reject invalid birth data" name="AstrologyEngine validateBirthData should reject invalid birth data" time="0.006">
+    <testcase classname="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" name="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" name="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" name="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow Profile Management Flow should handle profile viewing request" name="Critical User Flow End-to-End Tests Astrology Readings Flow Profile Management Flow should handle profile viewing request" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" time="0">
+      <skipped/>
+    </testcase>
+  </testsuite>
+  <testsuite name="REAL WhatsApp Bot End-to-End Flow Tests" errors="0" failures="1" skipped="4" timestamp="2025-10-27T14:53:09" time="5.985" tests="5">
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" name="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" time="1.059">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+Expected number of calls: 2
+Received number of calls: 1
+    at Object.toHaveBeenCalledTimes (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:307:27)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" time="0">
+      <skipped/>
+    </testcase>
+  </testsuite>
+  <testsuite name="Astrology Library Integration Tests" errors="0" failures="0" skipped="16" timestamp="2025-10-27T14:53:15" time="0.986" tests="16">
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" name="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" name="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" name="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" name="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" name="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" name="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" name="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" name="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" name="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" name="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should handle user without name" name="Astrology Library Integration Tests Numerology Service Integration should handle user without name" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" name="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" name="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" time="0">
+      <skipped/>
     </testcase>
   </testsuite>
 </testsuites>

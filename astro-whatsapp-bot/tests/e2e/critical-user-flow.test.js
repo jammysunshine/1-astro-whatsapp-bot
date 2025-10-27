@@ -35,9 +35,6 @@ jest.mock('../../src/services/i18n/TranslationService');
 const translationService = require('../../src/services/i18n/TranslationService');
 
 
-
-
-
 // Mock messageProcessor for error handling tests
 jest.mock('../../src/services/whatsapp/messageProcessor');
 const { processIncomingMessage } = require('../../src/services/whatsapp/messageProcessor');

@@ -494,12 +494,8 @@ const sendMessage = async(
 
     return response;
   } catch (error) {
-    const errorData = error.response?.data || error.message;
-    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
-    logger.error(
-      `❌ Error in sendMessage wrapper to ${phoneNumber}:`,
-      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
-    );
+    const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
+    logger.error(`❌ Error in sendMessage wrapper to ${phoneNumber}: ${errorMsg}`);
     throw error;
   }
 };

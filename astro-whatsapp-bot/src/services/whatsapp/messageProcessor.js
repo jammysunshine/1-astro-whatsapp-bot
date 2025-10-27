@@ -221,7 +221,8 @@ const processIncomingMessage = async(message, value) => {
       lastInteraction: user.lastInteraction
     });
   } catch (error) {
-    logger.error(`❌ Error processing message from ${phoneNumber}:`, error);
+    const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
+    logger.error(`❌ Error processing message from ${phoneNumber}: ${errorMsg}`);
     await sendErrorMessage(phoneNumber, error.message);
   }
 };

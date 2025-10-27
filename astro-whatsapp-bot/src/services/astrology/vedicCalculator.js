@@ -284,7 +284,10 @@ class VedicCalculator {
         return [res[0].latitude, res[0].longitude];
       }
     } catch (error) {
-      logger.error(`❌ Error geocoding place "${place}":`, error.message);
+      const errorMessage = error.message && error.message.length > 200
+        ? error.message.substring(0, 200) + '...'
+        : error.message;
+      logger.error(`❌ Error geocoding place "${place}":`, errorMessage);
     }
     // Fallback to default if geocoding fails
     return [28.6139, 77.209]; // Default to Delhi, India
@@ -322,7 +325,10 @@ class VedicCalculator {
         logger.error('Google Maps Time Zone API error:', response.data.errorMessage);
       }
     } catch (error) {
-      logger.error('❌ Error fetching timezone from Google Maps API:', error.message);
+      const errorMessage = error.message && error.message.length > 200
+        ? error.message.substring(0, 200) + '...'
+        : error.message;
+      logger.error('❌ Error fetching timezone from Google Maps API:', errorMessage);
     }
     // Fallback to default if API call fails
     return 5.5; // Default to IST offset

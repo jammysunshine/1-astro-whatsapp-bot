@@ -673,15 +673,9 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         const sunSign = await vedicCalculator.calculateSunSign(user.birthDate);
 
         const userLanguage = getUserLanguage(user, phoneNumber);
-        const body = `${translationService.translate('messages.daily_horoscope.title', userLanguage)
-        }\n\n${sunSign} - ${horoscopeData.general}\n\n${
-          translationService.translate('messages.daily_horoscope.lucky_color', userLanguage, { color: horoscopeData.luckyColor })}\n${
-          translationService.translate('messages.daily_horoscope.lucky_number', userLanguage, { number: horoscopeData.luckyNumber })}\n${
-          translationService.translate('messages.daily_horoscope.love', userLanguage, { advice: horoscopeData.love })}\n${
-          translationService.translate('messages.daily_horoscope.career', userLanguage, { advice: horoscopeData.career })}\n${
-          translationService.translate('messages.daily_horoscope.finance', userLanguage, { advice: horoscopeData.finance })}\n${
-          translationService.translate('messages.daily_horoscope.health', userLanguage, { advice: horoscopeData.health })
-        }${translationService.translate('messages.daily_horoscope.next', userLanguage)}`;
+
+        // Use hardcoded English for now since translations are not available
+        const body = `🌟 *Daily Horoscope for ${sunSign}*\n\n${horoscopeData.general}\n\n🎨 *Lucky Color:* ${horoscopeData.luckyColor}\n🔢 *Lucky Number:* ${horoscopeData.luckyNumber}\n💕 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\n✨ *Tomorrow's Outlook:* Stay positive and trust your intuition!`;
 
         const buttons = [
           { type: 'reply', reply: { id: 'horoscope_again', title: '🔄 Another Reading' } },
@@ -1208,6 +1202,47 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         'interactive'
       );
     }
+    return null;
+  }
+  case 'show_birth_chart': {
+    if (!user.birthDate) {
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.birth_chart.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
+    }
+    // Start birth chart flow
+    await processFlowMessage({ body: 'birth chart' }, user, null);
+    return null;
+  }
+  case 'show_language_menu': {
+    const languageMenu = getMenu('language_menu');
+    if (languageMenu) {
+      const buttons = languageMenu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(
+        phoneNumber,
+        { type: 'button', body: languageMenu.body, buttons },
+        'interactive'
+      );
+    }
+    return null;
+  }
+  case 'set_language_en': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'en' });
+    await sendMessage(phoneNumber, '✅ Language set to English! 🇺🇸', 'text');
+    return null;
+  }
+  case 'set_language_hi': {
+    await updateUserProfile(phoneNumber, { preferredLanguage: 'hi' });
+    await sendMessage(phoneNumber, '✅ भाषा हिंदी में सेट की गई! 🇮🇳', 'text');
     return null;
   }
   case 'show_nadi_flow':

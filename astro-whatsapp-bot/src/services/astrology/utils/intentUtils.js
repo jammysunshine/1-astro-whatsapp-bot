@@ -59,10 +59,11 @@ const extractPartnerData = message => {
  * @returns {boolean} True if any pattern matches
  */
 const matchesIntent = (message, patterns) => patterns.some(pattern => {
+  const lowerMessage = message.toLowerCase();
   if (typeof pattern === 'string') {
-    return message.includes(pattern.toLowerCase());
+    return lowerMessage.includes(pattern.toLowerCase());
   }
-  return pattern.test(message);
+  return pattern.test(lowerMessage);
 });
 
 /**

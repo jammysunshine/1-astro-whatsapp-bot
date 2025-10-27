@@ -14,9 +14,9 @@
         "action": "show_divination_menu"
       },
       {
-        "id": "btn_traditions",
-        "title": "Ancient Traditions",
-        "action": "show_traditions_menu"
+        "id": "btn_language",
+        "title": "🌐 Language",
+        "action": "show_language_menu"
       }
     ]
   },
@@ -37,6 +37,27 @@
       {
         "id": "btn_back_main",
         "title": "Back to Main",
+        "action": "show_main_menu"
+      }
+    ]
+  },
+  "language_menu": {
+    "type": "interactive",
+    "body": "🌐 *Choose Your Language / اختر لغتك / اختر زبان*\n\nSelect your preferred language for astrology readings:",
+    "buttons": [
+      {
+        "id": "lang_en",
+        "title": "🇺🇸 English",
+        "action": "set_language_en"
+      },
+      {
+        "id": "lang_hi",
+        "title": "🇮🇳 हिंदी",
+        "action": "set_language_hi"
+      },
+      {
+        "id": "lang_back",
+        "title": "⬅️ Back to Main",
         "action": "show_main_menu"
       }
     ]

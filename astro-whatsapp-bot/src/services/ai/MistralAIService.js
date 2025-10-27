@@ -51,9 +51,20 @@ class MistralAIService {
       logger.info('✅ Mistral API call successful');
       return aiResponse.trim();
     } catch (error) {
-      logger.error('❌ Error calling Mistral API:', error.message);
-      if (error.response) {
-        logger.error('Response data:', error.response.data);
+      // Truncate long error messages
+      const errorMessage = error.message && error.message.length > 200
+        ? error.message.substring(0, 200) + '...'
+        : error.message;
+      logger.error('❌ Error calling Mistral API:', errorMessage);
+
+      if (error.response && error.response.data) {
+        const responseData = typeof error.response.data === 'string'
+          ? error.response.data
+          : JSON.stringify(error.response.data);
+        const truncatedData = responseData.length > 500
+          ? responseData.substring(0, 500) + '...'
+          : responseData;
+        logger.error('Response data:', truncatedData);
       }
       return 'Sorry, I\'m having trouble connecting to the AI service right now. Please try again later.';
     }

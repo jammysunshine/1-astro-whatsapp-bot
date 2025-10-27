@@ -1,5 +1,6 @@
 const { matchesIntent } = require('../utils/intentUtils');
 const logger = require('../../../utils/logger');
+const mistralAIService = require('../../ai/MistralAIService');
 
 /**
  * Handle greeting responses
@@ -18,12 +19,35 @@ const handleGreeting = (message, user) => {
  * Handle default responses when no specific intent is matched
  * @param {string} message - User message
  * @param {Object} user - User object
- * @returns {string} Default response with interactive options
+ * @returns {Promise<string>} Default response with interactive options or AI-generated response
  */
-const handleDefaultResponse = (message, user) =>
+const handleDefaultResponse = async(message, user) => {
+  // If the message is a question or seems like it needs AI assistance, use Mistral AI
+  const lowerMessage = message.toLowerCase();
+  const isQuestion = lowerMessage.includes('?') ||
+                    lowerMessage.startsWith('what') ||
+                    lowerMessage.startsWith('how') ||
+                    lowerMessage.startsWith('why') ||
+                    lowerMessage.startsWith('when') ||
+                    lowerMessage.startsWith('where') ||
+                    lowerMessage.startsWith('can you') ||
+                    lowerMessage.startsWith('tell me') ||
+                    lowerMessage.includes('explain') ||
+                    lowerMessage.includes('about');
+
+  if (isQuestion && mistralAIService.isConfigured()) {
+    try {
+      logger.info('Using AI for general question response');
+      return await mistralAIService.generateAstrologyResponse(message);
+    } catch (error) {
+      logger.error('AI response failed, falling back to default:', error);
+      // Fall back to default response
+    }
+  }
+
   // Default response with interactive options
-  '🌟 *Welcome to Your Cosmic Journey!*\n\nI\'m your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. Here are some popular cosmic explorations:\n\n🔮 *Daily Guidance:*\n• "horoscope" - Your daily cosmic weather\n• "birth chart" - Your complete astrological blueprint\n• "numerology" - Your soul\'s numerical code\n\n🌏 *World Traditions:*\n• "chinese" - BaZi Four Pillars analysis\n• "vedic" - Traditional Hindu astrology\n• "tarot" - Mystical card readings\n\n💫 *Specialized Insights:*\n• "compatibility" - Relationship astrology\n• "career" - Professional path guidance\n• "future self" - Life timeline simulation\n\n🕉️ *Ancient Wisdom:*\n• "kundli" - Vedic birth chart\n• "remedies" - Planetary healing practices\n• "muhurta" - Auspicious timing\n\nWhat aspect of your cosmic journey interests you most? ✨'
-;
+  return '🌟 *Welcome to Your Cosmic Journey!*\n\nI\'m your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. Here are some popular cosmic explorations:\n\n🔮 *Daily Guidance:*\n• "horoscope" - Your daily cosmic weather\n• "birth chart" - Your complete astrological blueprint\n• "numerology" - Your soul\'s numerical code\n\n🌏 *World Traditions:*\n• "chinese" - BaZi Four Pillars analysis\n• "vedic" - Traditional Hindu astrology\n• "tarot" - Mystical card readings\n\n💫 *Specialized Insights:*\n• "compatibility" - Relationship astrology\n• "career" - Professional path guidance\n• "future self" - Life timeline simulation\n\n🕉️ *Ancient Wisdom:*\n• "kundli" - Vedic birth chart\n• "remedies" - Planetary healing practices\n• "muhurta" - Auspicious timing\n\nWhat aspect of your cosmic journey interests you most? ✨';
+};
 
 /**
  * Handle menu requests

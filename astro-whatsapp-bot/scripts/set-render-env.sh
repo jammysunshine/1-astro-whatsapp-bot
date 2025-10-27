@@ -43,4 +43,7 @@ set_env_var MAX_CONCURRENT_REQUESTS 10
 set_env_var REQUEST_TIMEOUT_MS 30000
 set_env_var LOG_LEVEL info
 
+# AI Services
+set_env_var MISTRAL_API_KEY 3edVHVEFtjzmQKeC4BgBWjLYoIij4Izw
+
 echo "Environment variables set successfully. The service will redeploy automatically."

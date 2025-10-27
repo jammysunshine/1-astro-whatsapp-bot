@@ -119,6 +119,7 @@
   "author": "Astrology Bot Team",
   "license": "MIT",
   "dependencies": {
+    "@google/genai": "^1.27.0",
     "@googlemaps/google-maps-services-js": "^3.4.2",
     "astrologer": "^1.0.2",
     "axios": "^1.6.0",
@@ -133,6 +134,7 @@
     "mongodb": "^6.20.0",
     "mongoose": "^7.8.7",
     "node-geocoder": "^4.4.1",
+    "openai": "^4.0.0",
     "nodemailer": "^6.9.7",
     "razorpay": "^2.9.6",
     "stripe": "^14.5.0",

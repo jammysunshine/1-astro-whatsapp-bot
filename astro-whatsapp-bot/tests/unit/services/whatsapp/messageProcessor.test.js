@@ -202,7 +202,7 @@ describe('WhatsApp Message Processor', () => {
         '1234567890',
         'messages.errors.list_reply',
         'text',
-        {"description": "Check compatibility with a friend", "title": "Check Compatibility"},
+        { description: 'Check compatibility with a friend', title: 'Check Compatibility' },
         'en'
       );
     });
@@ -251,7 +251,7 @@ describe('WhatsApp Message Processor', () => {
         '1234567890',
         'messages.errors.media_acknowledgment',
         'text',
-        {"caption": " with caption: \"My birth chart\"", "type": "image"},
+        { caption: ' with caption: "My birth chart"', type: 'image' },
         'en'
       );
     });

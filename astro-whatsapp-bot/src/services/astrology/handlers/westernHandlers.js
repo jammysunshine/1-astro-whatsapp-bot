@@ -9,7 +9,7 @@ const logger = require('../../../utils/logger');
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Horoscope response or null if not a horoscope request
  */
-const handleHoroscope = async (message, user) => {
+const handleHoroscope = async(message, user) => {
   if (matchesIntent(message, ['horoscope', 'daily', /^what'?s my (daily )?horoscope/])) {
     if (!user.birthDate) {
       return 'I\'d love to give you a personalized daily horoscope! Please share your birth date (DD/MM/YYYY) first so I can calculate your sun sign.';
@@ -38,7 +38,7 @@ const handleHoroscope = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Numerology response or null if not a numerology request
  */
-const handleNumerology = async (message, user) => {
+const handleNumerology = async(message, user) => {
   if (matchesIntent(message, ['numerology', 'numbers', 'life path number', 'expression number', 'soul urge', /^numerology/, /^numbers/])) {
     if (!user.birthDate) {
       return 'For numerology analysis, I need your birth details and full name to calculate your core numbers.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15/06/1990, John Michael Smith';
@@ -69,7 +69,7 @@ const handleNumerology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Solar return response or null if not a solar return request
  */
-const handleSolarReturn = async (message, user) => {
+const handleSolarReturn = async(message, user) => {
   if (matchesIntent(message, ['solar return', 'birthday chart', 'annual chart', 'year ahead', /^solar.?return/])) {
     if (!user.birthDate) {
       return 'For solar return analysis, I need your complete birth details to calculate your annual birthday chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -136,7 +136,7 @@ const handleSolarReturn = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Asteroid analysis response or null if not an asteroid request
  */
-const handleAsteroids = async (message, user) => {
+const handleAsteroids = async(message, user) => {
   if (matchesIntent(message, ['asteroids', 'asteroid analysis', 'chiron', 'juno', 'vesta', 'pallas', /^asteroid/])) {
     if (!user.birthDate) {
       return 'For asteroid analysis, I need your complete birth details to calculate Chiron, Juno, Vesta, and Pallas positions.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';

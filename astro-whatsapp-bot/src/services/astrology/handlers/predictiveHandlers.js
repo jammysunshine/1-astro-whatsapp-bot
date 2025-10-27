@@ -12,7 +12,7 @@ const HORARY_TIMEZONE = process.env.HORARY_TIMEZONE || 'Asia/Kolkata';
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Event astrology response or null if not an event request
  */
-const handleEventAstrology = async (message, user) => {
+const handleEventAstrology = async(message, user) => {
   if (matchesIntent(message, ['event astrology', 'cosmic events', 'eclipses', 'planetary events', 'seasonal astrology', 'cosmic calendar', /^event.?astrology/, /^cosmic.?events/])) {
     if (!user.birthDate) {
       return 'For event astrology analysis, I need your complete birth details to correlate cosmic events with your personal chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -95,7 +95,7 @@ const handleEventAstrology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Future self response or null if not a future self request
  */
-const handleFutureSelf = async (message, user) => {
+const handleFutureSelf = async(message, user) => {
   if (matchesIntent(message, ['future self', 'future self simulator', 'life timeline', 'long-term forecast', 'alternative pathways', 'what will my life be like', /^future.?self/, /^life.?timeline/])) {
     if (!user.birthDate) {
       return 'For future self simulation, I need your complete birth details to create your long-term life timeline.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -194,7 +194,7 @@ const handleFutureSelf = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Group astrology response or null if not a group request
  */
-const handleGroupAstrology = async (message, user) => {
+const handleGroupAstrology = async(message, user) => {
   if (matchesIntent(message, ['group astrology', 'family astrology', 'group reading', 'family reading', 'combined chart', 'group compatibility', /^group.?astrology/, /^family.?astrology/])) {
     if (!user.birthDate) {
       return 'For group astrology analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India\n\nThen I can analyze group dynamics with other members!';
@@ -211,7 +211,7 @@ const handleGroupAstrology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Marriage compatibility response or null if not a marriage request
  */
-const handleMarriageCompatibility = async (message, user) => {
+const handleMarriageCompatibility = async(message, user) => {
   if (matchesIntent(message, ['marriage compatibility', 'guna matching', 'kundli matching', 'marriage matching', 'wedding compatibility', /^guna/, /^marriage.?match/])) {
     if (!user.birthDate) {
       return 'For marriage compatibility analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India\n\nThen I can match it with your partner\'s chart!';
@@ -228,7 +228,7 @@ const handleMarriageCompatibility = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Lagna analysis response or null if not a Lagna request
  */
-const handleLagnaAnalysis = async (message, user) => {
+const handleLagnaAnalysis = async(message, user) => {
   if (matchesIntent(message, ['lagna', 'ascendant', 'lagna analysis', 'rising sign analysis', /^lagna/])) {
     if (!user.birthDate) {
       return 'For Lagna (Ascendant) analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -284,7 +284,7 @@ const handleLagnaAnalysis = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Prashna response or null if not a Prashna request
  */
-const handlePrashna = async (message, user) => {
+const handlePrashna = async(message, user) => {
   if (matchesIntent(message, ['prashna', 'horary', 'question astrology', 'prashna kundli', /^prashna/, /^horary/])) {
     return '🕉️ *Prashna (Horary) Astrology*\n\nPrashna astrology provides answers to specific questions using the exact time you ask them!\n\n*How it works:*\n• Predictions based on planetary positions at the moment of your question\n• No birth details required - just your question and current time\n• Answers specific queries about timing and outcomes\n\n*Perfect for questions like:*\n• "When will I get married?"\n• "Will I get the job?"\n• "When will my health improve?"\n• "Will my business succeed?"\n\n*To ask a Prashna question:*\nSend your question now, and I\'ll analyze the current planetary positions to give you guidance!\n\nExample: "Will I get married this year?"\n\nWhat question is on your mind? 🔮';
   }
@@ -297,7 +297,7 @@ const handlePrashna = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Electional response or null if not an electional request
  */
-const handleElectional = async (message, user) => {
+const handleElectional = async(message, user) => {
   if (matchesIntent(message, ['electional', 'auspicious time', 'best time', 'election', /^election/]) ||
       (matchesIntent(message, ['when should i', 'best date for', 'auspicious date']))) {
     return '📅 *Electional Astrology - Auspicious Timing*\n\nI can help you find the best dates and times for important events based on astrological factors!\n\nWhat type of event are you planning?\n\n• *Wedding/Marriage* - Venus and Jupiter favorable\n• *Business Launch* - Mercury and Jupiter beneficial\n• *Medical Procedure* - Jupiter and Venus protective\n• *Travel/Journey* - Jupiter and Sagittarius energy\n• *Legal Matters* - Libra and Sagittarius justice\n\nReply with the event type and I\'ll find auspicious timing in the next 30 days!';
@@ -311,7 +311,7 @@ const handleElectional = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Horary response or null if not a horary request
  */
-const handleHorary = async (message, user) => {
+const handleHorary = async(message, user) => {
   if (matchesIntent(message, ['horary', /^horary/]) ||
       (matchesIntent(message, ['question']) &&
        matchesIntent(message, ['when', 'will', 'should', 'can', 'does', 'is', 'are']))) {
@@ -361,7 +361,7 @@ const handleHorary = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Secondary progressions response or null if not a progressions request
  */
-const handleSecondaryProgressions = async (message, user) => {
+const handleSecondaryProgressions = async(message, user) => {
   if (matchesIntent(message, ['progressions', 'secondary progressions', 'progressed chart', /^progressions/])) {
     if (!user.birthDate) {
       return 'For secondary progressions analysis, I need your complete birth details to calculate your progressed chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -442,7 +442,7 @@ const handleSecondaryProgressions = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Solar arc response or null if not a solar arc request
  */
-const handleSolarArc = async (message, user) => {
+const handleSolarArc = async(message, user) => {
   if (matchesIntent(message, ['solar arc', 'arc directions', 'directed chart', /^solar.?arc/])) {
     if (!user.birthDate) {
       return 'For solar arc directions analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';

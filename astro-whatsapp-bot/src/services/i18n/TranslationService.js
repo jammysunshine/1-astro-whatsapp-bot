@@ -193,17 +193,17 @@ class TranslationService {
       }
 
       // Other regions
-      if (cleanNumber.startsWith('+1')) return 'en'; // USA
-      if (cleanNumber.startsWith('+44')) return 'en'; // UK
-      if (cleanNumber.startsWith('+33')) return 'fr'; // France
-      if (cleanNumber.startsWith('+49')) return 'de'; // Germany
-      if (cleanNumber.startsWith('+39')) return 'it'; // Italy
-      if (cleanNumber.startsWith('+34')) return 'es'; // Spain
-      if (cleanNumber.startsWith('+351')) return 'pt'; // Portugal
-      if (cleanNumber.startsWith('+7')) return 'ru'; // Russia
-      if (cleanNumber.startsWith('+86')) return 'zh'; // China
-      if (cleanNumber.startsWith('+81')) return 'ja'; // Japan
-      if (cleanNumber.startsWith('+82')) return 'ko'; // Korea
+      if (cleanNumber.startsWith('+1')) { return 'en'; } // USA
+      if (cleanNumber.startsWith('+44')) { return 'en'; } // UK
+      if (cleanNumber.startsWith('+33')) { return 'fr'; } // France
+      if (cleanNumber.startsWith('+49')) { return 'de'; } // Germany
+      if (cleanNumber.startsWith('+39')) { return 'it'; } // Italy
+      if (cleanNumber.startsWith('+34')) { return 'es'; } // Spain
+      if (cleanNumber.startsWith('+351')) { return 'pt'; } // Portugal
+      if (cleanNumber.startsWith('+7')) { return 'ru'; } // Russia
+      if (cleanNumber.startsWith('+86')) { return 'zh'; } // China
+      if (cleanNumber.startsWith('+81')) { return 'ja'; } // Japan
+      if (cleanNumber.startsWith('+82')) { return 'ko'; } // Korea
     }
 
     // Default to English
@@ -232,12 +232,12 @@ class TranslationService {
         return {};
       }
 
-       const bundleContent = await fs.readFile(bundlePath, 'utf8');
-       const bundle = JSON.parse(bundleContent);
+      const bundleContent = await fs.readFile(bundlePath, 'utf8');
+      const bundle = JSON.parse(bundleContent);
 
-       this.resourceBundles.set(languageCode, bundle);
-       this.setCachedResult(cacheKey, bundle);
-       return bundle;
+      this.resourceBundles.set(languageCode, bundle);
+      this.setCachedResult(cacheKey, bundle);
+      return bundle;
     } catch (error) {
       logger.error(`Error loading resource bundle for ${languageCode}:`, error);
       return {};
@@ -276,9 +276,7 @@ class TranslationService {
    * Get nested value from object using dot notation
    */
   getNestedValue(obj, path) {
-    return path.split('.').reduce((current, key) => {
-      return current && current[key] !== undefined ? current[key] : undefined;
-    }, obj);
+    return path.split('.').reduce((current, key) => (current && current[key] !== undefined ? current[key] : undefined), obj);
   }
 
   /**
@@ -287,7 +285,7 @@ class TranslationService {
   async translate(key, languageCode = 'en', parameters = {}) {
     try {
       // Load resource bundle
-      let bundle = await this.loadResourceBundle(languageCode);
+      const bundle = await this.loadResourceBundle(languageCode);
 
       // Try to get the translation
       let translation = this.getNestedValue(bundle, key);

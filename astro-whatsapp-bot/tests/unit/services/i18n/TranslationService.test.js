@@ -60,7 +60,7 @@ describe('TranslationService', () => {
         complete: true
       });
     });
-   });
+  });
 
   describe('getSupportedLanguages', () => {
     it('should return all supported languages', () => {
@@ -109,7 +109,7 @@ describe('TranslationService', () => {
   });
 
   describe('loadResourceBundle', () => {
-    it('should load and cache resource bundle successfully', async () => {
+    it('should load and cache resource bundle successfully', async() => {
       const mockBundle = {
         common: { welcome: 'Welcome!' },
         astrology: { sign: 'Sign' }
@@ -127,7 +127,7 @@ describe('TranslationService', () => {
       );
     });
 
-    it('should return cached bundle if available and not expired', async () => {
+    it('should return cached bundle if available and not expired', async() => {
       const mockBundle = { common: { welcome: 'Welcome!' } };
       TranslationService.resourceBundles.set('en', mockBundle);
       TranslationService.cache.set('bundle_en', { timestamp: Date.now(), data: mockBundle });
@@ -138,7 +138,7 @@ describe('TranslationService', () => {
       expect(fs.readFile).not.toHaveBeenCalled();
     });
 
-    it('should reload bundle if cache is expired', async () => {
+    it('should reload bundle if cache is expired', async() => {
       const mockBundle = { common: { welcome: 'Welcome!' } };
       const expiredTime = Date.now() - (31 * 60 * 1000); // 31 minutes ago
 
@@ -153,14 +153,14 @@ describe('TranslationService', () => {
       expect(fs.readFile).toHaveBeenCalled();
     });
 
-    it('should handle file read errors gracefully', async () => {
+    it('should handle file read errors gracefully', async() => {
       fs.access.mockRejectedValue(new Error('File not found'));
 
       const result = await TranslationService.loadResourceBundle('invalid');
       expect(result).toEqual({});
     });
 
-    it('should handle invalid JSON gracefully', async () => {
+    it('should handle invalid JSON gracefully', async() => {
       fs.readFile.mockResolvedValue('invalid json');
 
       const result = await TranslationService.loadResourceBundle('en');
@@ -185,29 +185,29 @@ describe('TranslationService', () => {
       fs.readFile.mockResolvedValue(JSON.stringify(mockBundle));
     });
 
-    it('should translate simple keys successfully', async () => {
+    it('should translate simple keys successfully', async() => {
       const result = await TranslationService.translate('common.welcome', 'en');
       expect(result).toBe('Welcome!');
     });
 
-    it('should handle parameter interpolation', async () => {
+    it('should handle parameter interpolation', async() => {
       const result = await TranslationService.translate('common.greeting', 'en', { name: 'John' });
       expect(result).toBe('Hello John!');
     });
 
-    it('should handle multiple parameters', async () => {
+    it('should handle multiple parameters', async() => {
       const result = await TranslationService.translate('astrology.sign', 'en', { sign: 'Leo' });
       expect(result).toBe('Your sign is Leo');
     });
 
-    it('should fallback to English for missing translations', async () => {
+    it('should fallback to English for missing translations', async() => {
       // Mock missing translation in target language
       const mockBundleHi = {
-        common: { welcome: 'स्वागत!' },
+        common: { welcome: 'स्वागत!' }
         // missing greeting
       };
 
-      fs.readFile.mockImplementation((filePath) => {
+      fs.readFile.mockImplementation(filePath => {
         if (filePath.includes('hi.json')) {
           return Promise.resolve(JSON.stringify(mockBundleHi));
         }
@@ -221,17 +221,17 @@ describe('TranslationService', () => {
       expect(result).toBe('Hello John!'); // Should fallback to English
     });
 
-    it('should return key if translation not found in any language', async () => {
+    it('should return key if translation not found in any language', async() => {
       const result = await TranslationService.translate('nonexistent.key', 'en');
       expect(result).toBe('nonexistent.key');
     });
 
-    it('should handle nested key access', async () => {
+    it('should handle nested key access', async() => {
       const result = await TranslationService.translate('astrology.error', 'en');
       expect(result).toBe('Error occurred');
     });
 
-    it('should cache translations for performance', async () => {
+    it('should cache translations for performance', async() => {
       await TranslationService.translate('common.welcome', 'en');
       await TranslationService.translate('common.welcome', 'en'); // Should use cache
 
@@ -240,7 +240,7 @@ describe('TranslationService', () => {
   });
 
   describe('translateMultiple', () => {
-    it('should translate multiple keys at once', async () => {
+    it('should translate multiple keys at once', async() => {
       const mockBundle = {
         common: { welcome: 'Welcome!', goodbye: 'Goodbye!' },
         astrology: { sign: 'Sign' }
@@ -262,7 +262,7 @@ describe('TranslationService', () => {
   });
 
   describe('hasTranslation', () => {
-    it('should check if translation exists', async () => {
+    it('should check if translation exists', async() => {
       const mockBundle = {
         common: { welcome: 'Welcome!' }
       };
@@ -278,7 +278,7 @@ describe('TranslationService', () => {
   });
 
   describe('getAvailableKeys', () => {
-    it('should return all available translation keys', async () => {
+    it('should return all available translation keys', async() => {
       const mockBundle = {
         common: { welcome: 'Welcome!', goodbye: 'Goodbye!' },
         astrology: { sign: 'Sign', planet: 'Planet' }
@@ -298,7 +298,7 @@ describe('TranslationService', () => {
   });
 
   describe('reloadBundles', () => {
-    it('should clear cache and reload bundles', async () => {
+    it('should clear cache and reload bundles', async() => {
       TranslationService.resourceBundles.set('en', { old: 'data' });
       TranslationService.cache.set('en', { timestamp: Date.now(), data: { old: 'data' } });
 
@@ -315,7 +315,7 @@ describe('TranslationService', () => {
       TranslationService.resourceBundles.clear();
     });
 
-    it('should handle malformed parameters gracefully', async () => {
+    it('should handle malformed parameters gracefully', async() => {
       const mockBundle = {
         common: { greeting: 'Hello {name}!' }
       };
@@ -326,7 +326,7 @@ describe('TranslationService', () => {
       expect(result).toBe('Hello {name}!'); // Should not interpolate
     });
 
-    it('should handle missing parameters gracefully', async () => {
+    it('should handle missing parameters gracefully', async() => {
       const mockBundle = {
         common: { greeting: 'Hello {name}!' }
       };
@@ -339,7 +339,7 @@ describe('TranslationService', () => {
   });
 
   describe('Performance and caching', () => {
-    it('should cache bundles to improve performance', async () => {
+    it('should cache bundles to improve performance', async() => {
       const mockBundle = { common: { welcome: 'Welcome!' } };
       fs.readFile.mockResolvedValue(JSON.stringify(mockBundle));
 
@@ -351,7 +351,7 @@ describe('TranslationService', () => {
       expect(fs.readFile).toHaveBeenCalledTimes(1);
     });
 
-    it('should expire cache after configured time', async () => {
+    it('should expire cache after configured time', async() => {
       const mockBundle = { common: { welcome: 'Welcome!' } };
       fs.readFile.mockResolvedValue(JSON.stringify(mockBundle));
 

@@ -42,7 +42,7 @@ const ayurvedicAstrology = new AyurvedicAstrology();
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Nadi response or null if not a Nadi request
  */
-const handleNadi = async (message, user) => {
+const handleNadi = async(message, user) => {
   if (matchesIntent(message, ['nadi', 'south indian', 'palm leaf', /^nadi/])) {
     if (!user.birthDate) {
       return 'For Nadi astrology analysis, I need your birth details. Nadi readings are highly specific to exact birth information.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, State, Country)\n\nExample: 15/06/1990, 14:30, Chennai, Tamil Nadu, India';
@@ -75,7 +75,7 @@ const handleNadi = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Fixed stars response or null if not a fixed stars request
  */
-const handleFixedStars = async (message, user) => {
+const handleFixedStars = async(message, user) => {
   if (matchesIntent(message, ['fixed stars', 'fixed star analysis', 'stellar influences', 'ancient stars', /^fixed.?star/])) {
     if (!user.birthDate) {
       return 'For fixed stars analysis, I need your complete birth details to analyze ancient stellar influences on your chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -141,7 +141,7 @@ const handleFixedStars = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Medical astrology response or null if not a medical request
  */
-const handleMedicalAstrology = async (message, user) => {
+const handleMedicalAstrology = async(message, user) => {
   if (matchesIntent(message, ['medical astrology', 'health astrology', 'medical chart', 'health analysis', /^medical/, /^health/])) {
     if (!user.birthDate) {
       return 'For medical astrology analysis, I need your complete birth details to analyze planetary rulerships and health tendencies.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -173,7 +173,7 @@ const handleMedicalAstrology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Financial astrology response or null if not a financial request
  */
-const handleFinancialAstrology = async (message, user) => {
+const handleFinancialAstrology = async(message, user) => {
   if (matchesIntent(message, ['financial astrology', 'wealth astrology', 'money astrology', 'financial chart', 'wealth analysis', /^financial/, /^wealth/, /^money/])) {
     if (!user.birthDate) {
       return 'For financial astrology analysis, I need your complete birth details to analyze wealth patterns and prosperity indicators.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -205,7 +205,7 @@ const handleFinancialAstrology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Harmonic astrology response or null if not a harmonic request
  */
-const handleHarmonicAstrology = async (message, user) => {
+const handleHarmonicAstrology = async(message, user) => {
   if (matchesIntent(message, ['harmonic astrology', 'harmonic chart', 'harmonic analysis', 'deeper patterns', /^harmonic/])) {
     if (!user.birthDate) {
       return 'For harmonic astrology analysis, I need your complete birth details to analyze deeper chart patterns and hidden harmonics.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -237,7 +237,7 @@ const handleHarmonicAstrology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Career astrology response or null if not a career request
  */
-const handleCareerAstrology = async (message, user) => {
+const handleCareerAstrology = async(message, user) => {
   if (matchesIntent(message, ['career astrology', 'vocation', 'career path', 'professional', 'job astrology', /^career/, /^vocation/])) {
     if (!user.birthDate) {
       return 'For career astrology analysis, I need your complete birth details to analyze your professional path and vocational strengths.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -269,7 +269,7 @@ const handleCareerAstrology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Vedic remedies response or null if not a remedies request
  */
-const handleVedicRemedies = async (message, user) => {
+const handleVedicRemedies = async(message, user) => {
   if (matchesIntent(message, ['remedies', 'gemstones', 'mantras', 'charities', 'pujas', 'yantras', 'vedic remedies', 'astrological remedies', /^remedies/, /^gemstone/, /^mantra/])) {
     // Check for specific planet or dosha
     const planetMatch = message.match(/(?:remedies?|gemstones?|mantras?|charities?)\s+(?:for\s+)?(?:planet\s+)?(\w+)/i);
@@ -348,7 +348,7 @@ const handleVedicRemedies = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Islamic astrology response or null if not an Islamic request
  */
-const handleIslamicAstrology = async (message, user) => {
+const handleIslamicAstrology = async(message, user) => {
   if (matchesIntent(message, ['islamic astrology', 'ilm e nujum', 'ilm-e-nujum', 'islamic numerology', 'abjad', 'taqdeer', 'destiny islamic', 'muslim astrology', /^islamic/, /^ilm/, /^taqdeer/, /^abjad/])) {
     // Check for specific Islamic analysis type
     const numerologyMatch = message.match(/(?:numerology|abjad|ilm.*nujum)\s+(?:for\s+)?(?:name\s+)?(.+)/i);
@@ -403,7 +403,7 @@ const handleIslamicAstrology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Vimshottari Dasha response or null if not a dasha request
  */
-const handleVimshottariDasha = async (message, user) => {
+const handleVimshottariDasha = async(message, user) => {
   if (matchesIntent(message, ['vimshottari dasha', 'dasha analysis', 'planetary periods', 'dasha prediction', 'vimshottari', /^dasha/, /^vimshottari/])) {
     if (!user.birthDate) {
       return 'For Vimshottari Dasha analysis, I need your complete birth details to calculate your planetary periods.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -436,7 +436,7 @@ const handleVimshottariDasha = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Jaimini Astrology response or null if not a Jaimini request
  */
-const handleJaiminiAstrology = async (message, user) => {
+const handleJaiminiAstrology = async(message, user) => {
   if (matchesIntent(message, ['jaimini astrology', 'jaimini', 'karakas', 'jaimini karakas', 'jaimini aspects', /^jaimini/])) {
     if (!user.birthDate) {
       return 'For Jaimini Astrology analysis, I need your complete birth details to calculate Karakas and aspects.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
@@ -469,7 +469,7 @@ const handleJaiminiAstrology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Hindu Festivals response or null if not a festivals request
  */
-const handleHinduFestivals = async (message, user) => {
+const handleHinduFestivals = async(message, user) => {
   if (matchesIntent(message, ['hindu festivals', 'festival calendar', 'hindu calendar', 'festivals', 'auspicious timings', 'muhurta', /^festival/, /^hindu.*calendar/])) {
     // Check for specific festival queries
     const festivalMatch = message.match(/(?:festival|festivals)\s+(?:for|about|info)\s+(.+)/i);
@@ -546,7 +546,7 @@ const handleHinduFestivals = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Vedic numerology response or null if not a Vedic numerology request
  */
-const handleVedicNumerology = async (message, user) => {
+const handleVedicNumerology = async(message, user) => {
   if (matchesIntent(message, ['vedic numerology', 'chani numerology', 'indian numerology', 'sanskrit numerology', /^vedic.?numerology/, /^chani/, /^indian.?numerology/])) {
     if (!user.birthDate) {
       return 'For Vedic Numerology analysis, I need your complete birth details and full name to calculate your Chani numbers.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15/06/1990, Rajesh Kumar Sharma';
@@ -574,7 +574,7 @@ const handleVedicNumerology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {Promise<string|null>} Ayurvedic astrology response or null if not an Ayurvedic request
  */
-const handleAyurvedicAstrology = async (message, user) => {
+const handleAyurvedicAstrology = async(message, user) => {
   if (matchesIntent(message, ['ayurvedic astrology', 'ayurveda astrology', 'dosha analysis', 'vata pitta kapha', 'ayurvedic constitution', /^ayurvedic/, /^dosha/, /^vata/, /^pitta/, /^kapha/])) {
     if (!user.birthDate) {
       return 'For Ayurvedic Astrology analysis, I need your complete birth details to determine your dosha constitution.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';

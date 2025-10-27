@@ -4,10 +4,9 @@
 const astrologyEngine = require('../../../../src/services/astrology/astrologyEngine');
 
 
-
 describe('AstrologyEngine', () => {
   describe('generateAstrologyResponse', () => {
-    it('should generate astrology response for valid user', async () => {
+    it('should generate astrology response for valid user', async() => {
       const user = {
         sunSign: 'Pisces',
         moonSign: 'Pisces',

@@ -501,7 +501,7 @@ const processButtonReply = async(phoneNumber, buttonId, title, user) => {
             `❌ Error executing main menu action ${button.action}:`,
             error
           );
-        const userLanguage = getUserLanguage(user, phoneNumber);
+          const userLanguage = getUserLanguage(user, phoneNumber);
           await sendMessage(
             phoneNumber,
             'messages.errors.menu_action_error',
@@ -667,15 +667,15 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         const sunSign = await vedicCalculator.calculateSunSign(user.birthDate);
 
         const userLanguage = getUserLanguage(user, phoneNumber);
-        const body = translationService.translate('messages.daily_horoscope.title', userLanguage) +
-          `\n\n${sunSign} - ${horoscopeData.general}\n\n` +
-          translationService.translate('messages.daily_horoscope.lucky_color', userLanguage, { color: horoscopeData.luckyColor }) + '\n' +
-          translationService.translate('messages.daily_horoscope.lucky_number', userLanguage, { number: horoscopeData.luckyNumber }) + '\n' +
-          translationService.translate('messages.daily_horoscope.love', userLanguage, { advice: horoscopeData.love }) + '\n' +
-          translationService.translate('messages.daily_horoscope.career', userLanguage, { advice: horoscopeData.career }) + '\n' +
-          translationService.translate('messages.daily_horoscope.finance', userLanguage, { advice: horoscopeData.finance }) + '\n' +
-          translationService.translate('messages.daily_horoscope.health', userLanguage, { advice: horoscopeData.health }) +
-          translationService.translate('messages.daily_horoscope.next', userLanguage);
+        const body = `${translationService.translate('messages.daily_horoscope.title', userLanguage)
+        }\n\n${sunSign} - ${horoscopeData.general}\n\n${
+          translationService.translate('messages.daily_horoscope.lucky_color', userLanguage, { color: horoscopeData.luckyColor })}\n${
+          translationService.translate('messages.daily_horoscope.lucky_number', userLanguage, { number: horoscopeData.luckyNumber })}\n${
+          translationService.translate('messages.daily_horoscope.love', userLanguage, { advice: horoscopeData.love })}\n${
+          translationService.translate('messages.daily_horoscope.career', userLanguage, { advice: horoscopeData.career })}\n${
+          translationService.translate('messages.daily_horoscope.finance', userLanguage, { advice: horoscopeData.finance })}\n${
+          translationService.translate('messages.daily_horoscope.health', userLanguage, { advice: horoscopeData.health })
+        }${translationService.translate('messages.daily_horoscope.next', userLanguage)}`;
 
         const buttons = [
           { type: 'reply', reply: { id: 'horoscope_again', title: '🔄 Another Reading' } },
@@ -1239,11 +1239,11 @@ const executeMenuAction = async(phoneNumber, user, action) => {
           user.name
         );
         const userLanguage = getUserLanguage(user, phoneNumber);
-        const response = translationService.translate('messages.numerology_report.title', userLanguage) + '\n\n' +
-          translationService.translate('messages.numerology_report.life_path', userLanguage, { number: report.lifePath.number }) + ' - ' + report.lifePath.interpretation + '\n\n' +
-          translationService.translate('messages.numerology_report.expression', userLanguage, { number: report.expression.number }) + ' - ' + report.expression.interpretation + '\n\n' +
-          translationService.translate('messages.numerology_report.soul_urge', userLanguage, { number: report.soulUrge.number }) + ' - ' + report.soulUrge.interpretation +
-          '\n\n' + translationService.translate('messages.numerology_report.question', userLanguage);
+        const response = `${translationService.translate('messages.numerology_report.title', userLanguage)}\n\n${
+          translationService.translate('messages.numerology_report.life_path', userLanguage, { number: report.lifePath.number })} - ${report.lifePath.interpretation}\n\n${
+          translationService.translate('messages.numerology_report.expression', userLanguage, { number: report.expression.number })} - ${report.expression.interpretation}\n\n${
+          translationService.translate('messages.numerology_report.soul_urge', userLanguage, { number: report.soulUrge.number })} - ${report.soulUrge.interpretation
+        }\n\n${translationService.translate('messages.numerology_report.question', userLanguage)}`;
         await sendMessage(phoneNumber, response);
         return null;
       } catch (error) {
@@ -1352,13 +1352,13 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         );
       } else {
         const userLanguage = getUserLanguage(user, phoneNumber);
-        const response = translationService.translate('messages.astrology_services.astrocartography.title', userLanguage) + '\n\n' +
-          astrocartographyData.astrocartographyDescription + '\n\n' +
-          translationService.translate('messages.astrology_services.astrocartography.key_lines', userLanguage) + '\n' +
-          astrocartographyData.relocationGuidance.map(line => `• ${line}`).join('\n') + '\n\n' +
-          translationService.translate('messages.astrology_services.astrocartography.recommended_locations', userLanguage) + '\n' +
-          astrocartographyData.locationAdvice.map(loc => `• ${loc}`).join('\n') + '\n\n' +
-          translationService.translate('messages.astrology_services.astrocartography.relocate_prompt', userLanguage);
+        const response = `${translationService.translate('messages.astrology_services.astrocartography.title', userLanguage)}\n\n${
+          astrocartographyData.astrocartographyDescription}\n\n${
+          translationService.translate('messages.astrology_services.astrocartography.key_lines', userLanguage)}\n${
+          astrocartographyData.relocationGuidance.map(line => `• ${line}`).join('\n')}\n\n${
+          translationService.translate('messages.astrology_services.astrocartography.recommended_locations', userLanguage)}\n${
+          astrocartographyData.locationAdvice.map(loc => `• ${loc}`).join('\n')}\n\n${
+          translationService.translate('messages.astrology_services.astrocartography.relocate_prompt', userLanguage)}`;
         await sendMessage(phoneNumber, response);
       }
     } catch (error) {
@@ -1403,14 +1403,14 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         );
       } else {
         const userLanguage = getUserLanguage(user, phoneNumber);
-        const response = translationService.translate('messages.astrology_services.harmonic_astrology.title', userLanguage) + '\n\n' +
-          translationService.translate('messages.astrology_services.harmonic_astrology.current_age', userLanguage, { age: harmonicData.currentAge }) + '\n' +
-          translationService.translate('messages.astrology_services.harmonic_astrology.life_stage', userLanguage, { stage: harmonicData.currentStage }) + '\n\n' +
-          translationService.translate('messages.astrology_services.harmonic_astrology.key_periods', userLanguage) + '\n' +
-          harmonicData.harmonicPeriods.map(period => `• ${period}`).join('\n') + '\n\n' +
-          translationService.translate('messages.astrology_services.harmonic_astrology.developmental_themes', userLanguage) + '\n' +
-          harmonicData.developmentalThemes.map(theme => `• ${theme}`).join('\n') + '\n\n' +
-          translationService.translate('messages.astrology_services.harmonic_astrology.next_transition', userLanguage, { transition: harmonicData.nextTransition });
+        const response = `${translationService.translate('messages.astrology_services.harmonic_astrology.title', userLanguage)}\n\n${
+          translationService.translate('messages.astrology_services.harmonic_astrology.current_age', userLanguage, { age: harmonicData.currentAge })}\n${
+          translationService.translate('messages.astrology_services.harmonic_astrology.life_stage', userLanguage, { stage: harmonicData.currentStage })}\n\n${
+          translationService.translate('messages.astrology_services.harmonic_astrology.key_periods', userLanguage)}\n${
+          harmonicData.harmonicPeriods.map(period => `• ${period}`).join('\n')}\n\n${
+          translationService.translate('messages.astrology_services.harmonic_astrology.developmental_themes', userLanguage)}\n${
+          harmonicData.developmentalThemes.map(theme => `• ${theme}`).join('\n')}\n\n${
+          translationService.translate('messages.astrology_services.harmonic_astrology.next_transition', userLanguage, { transition: harmonicData.nextTransition })}`;
         await sendMessage(phoneNumber, response);
       }
     } catch (error) {
@@ -1425,7 +1425,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       );
     }
     return null;
-   default: {
+  default: {
     logger.warn(`⚠️ Unknown menu action: ${action}`);
     const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
@@ -1600,10 +1600,10 @@ const handleCompatibilityRequest = async(
       benefits.maxCompatibilityChecks !== Infinity &&
       user.compatibilityChecks >= benefits.maxCompatibilityChecks
     ) {
-      response += '\n\n' + translationService.translate('messages.compatibility.limit_reached', userLanguage, {
+      response += `\n\n${translationService.translate('messages.compatibility.limit_reached', userLanguage, {
         used: user.compatibilityChecks,
         limit: benefits.maxCompatibilityChecks
-      });
+      })}`;
     }
 
     await sendMessage(phoneNumber, response);
@@ -1643,10 +1643,10 @@ const handleSubscriptionRequest = async(phoneNumber, user, planId) => {
     // Send welcome message based on plan
     const plan = paymentService.getPlan(planId);
     const userLanguage = getUserLanguage(user, phoneNumber);
-    let welcomeMessage = '\n\n' + translationService.translate('messages.errors.welcome_message', userLanguage, {
+    const welcomeMessage = `\n\n${translationService.translate('messages.errors.welcome_message', userLanguage, {
       plan: plan.name,
       features: plan.features.map(feature => `• ${feature}`).join('\n')
-    });
+    })}`;
 
     await sendMessage(phoneNumber, welcomeMessage);
   } catch (error) {

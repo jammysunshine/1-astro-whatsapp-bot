@@ -63,7 +63,7 @@ const buildBaZiResponse = (baziAnalysis, zodiacInfo) => {
  * @param {Object} reading - Tarot reading data
  * @returns {string} Formatted tarot response
  */
-const buildTarotResponse = (reading) => {
+const buildTarotResponse = reading => {
   let response = '🔮 *Tarot Reading*\n\n';
   response += `*Spread:* ${reading.spread}\n\n`;
 
@@ -88,7 +88,7 @@ const buildTarotResponse = (reading) => {
  * @param {Object} analysis - Palmistry analysis data
  * @returns {string} Formatted palmistry response
  */
-const buildPalmistryResponse = (analysis) => {
+const buildPalmistryResponse = analysis => {
   let response = '🤲 *Palmistry Analysis*\n\n';
   response += `*Hand Type:* ${analysis.handType}\n`;
   response += `*Personality:* ${analysis.personality}\n\n`;
@@ -114,7 +114,7 @@ const buildPalmistryResponse = (analysis) => {
  * @param {Object} fixedStarsAnalysis - Fixed stars analysis data
  * @returns {string} Formatted fixed stars response
  */
-const buildFixedStarsResponse = (fixedStarsAnalysis) => {
+const buildFixedStarsResponse = fixedStarsAnalysis => {
   let response = '⭐ *Fixed Stars Analysis*\n\n';
   response += '*Ancient Stellar Influences:*\n\n';
 
@@ -157,7 +157,7 @@ const buildFixedStarsResponse = (fixedStarsAnalysis) => {
  * @param {Object} medicalAnalysis - Medical astrology analysis data
  * @returns {string} Formatted medical astrology response
  */
-const buildMedicalAstrologyResponse = (medicalAnalysis) => {
+const buildMedicalAstrologyResponse = medicalAnalysis => {
   let response = '🏥 *Medical Astrology Analysis*\n\n';
   response += '*Traditional Health Insights:*\n\n';
 
@@ -199,7 +199,7 @@ const buildMedicalAstrologyResponse = (medicalAnalysis) => {
  * @param {Object} financialAnalysis - Financial astrology analysis data
  * @returns {string} Formatted financial astrology response
  */
-const buildFinancialAstrologyResponse = (financialAnalysis) => {
+const buildFinancialAstrologyResponse = financialAnalysis => {
   let response = '💰 *Financial Astrology Analysis*\n\n';
   response += '*Wealth & Prosperity Insights:*\n\n';
 
@@ -245,7 +245,7 @@ const buildFinancialAstrologyResponse = (financialAnalysis) => {
  * @param {Object} harmonicAnalysis - Harmonic astrology analysis data
  * @returns {string} Formatted harmonic astrology response
  */
-const buildHarmonicAstrologyResponse = (harmonicAnalysis) => {
+const buildHarmonicAstrologyResponse = harmonicAnalysis => {
   let response = '🔮 *Harmonic Astrology Analysis*\n\n';
   response += '*Deeper Chart Patterns & Hidden Harmonics:*\n\n';
 
@@ -294,7 +294,7 @@ const buildHarmonicAstrologyResponse = (harmonicAnalysis) => {
  * @param {Object} numerologyAnalysis - Numerology analysis data
  * @returns {string} Formatted numerology response
  */
-const buildNumerologyResponse = (numerologyAnalysis) => {
+const buildNumerologyResponse = numerologyAnalysis => {
   let response = '🔢 *Numerology Analysis*\n\n';
   response += '*Your Core Numbers:*\n\n';
 
@@ -329,7 +329,7 @@ const buildNumerologyResponse = (numerologyAnalysis) => {
  * @param {Object} careerAnalysis - Career astrology analysis data
  * @returns {string} Formatted career astrology response
  */
-const buildCareerAstrologyResponse = (careerAnalysis) => {
+const buildCareerAstrologyResponse = careerAnalysis => {
   let response = '💼 *Career Astrology Analysis*\n\n';
   response += '*Professional Path & Vocation:*\n\n';
 

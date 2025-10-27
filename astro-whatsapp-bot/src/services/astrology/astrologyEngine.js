@@ -30,126 +30,125 @@ const generateAstrologyResponse = async(messageText, user) => {
   try {
     // Basic handlers (greetings, menu, etc.)
     let response = await handleGreeting(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleMenu(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleUpdateProfile(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     // Western astrology handlers
     response = await handleHoroscope(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleNumerology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleSolarReturn(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleAsteroids(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     // Specialized astrology handlers
     response = await handleChineseAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleTarot(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handlePalmistry(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleKabbalistic(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleMayan(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleCeltic(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleIChing(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleAstrocartography(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     // Vedic astrology handlers
     response = await handleNadi(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleFixedStars(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleMedicalAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleFinancialAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleHarmonicAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleCareerAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleVedicRemedies(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleIslamicAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleVimshottariDasha(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleJaiminiAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleHinduFestivals(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleVedicNumerology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleAyurvedicAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     // Predictive astrology handlers
     response = await handleEventAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleFutureSelf(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleGroupAstrology(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleMarriageCompatibility(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleLagnaAnalysis(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handlePrashna(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleElectional(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleHorary(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleSecondaryProgressions(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     response = await handleSolarArc(message, user);
-    if (response) return response;
+    if (response) { return response; }
 
     // Default response if no handlers matched
     return handleDefaultResponse(message, user);
-
   } catch (error) {
     logger.error('Error in generateAstrologyResponse:', error);
     return '❌ Sorry, I\'m experiencing technical difficulties right now. Please try again later.';

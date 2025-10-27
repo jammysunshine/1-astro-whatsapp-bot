@@ -76,26 +76,26 @@ const validateStepInput = async(input, step) => {
             clarificationType: 'year_ambiguity',
             data: { day, month, yy },
             clarificationMessage: `📅 *Birth Year Ambiguity*\n\nYour input suggests ${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}, but the year ${yy.toString().padStart(2, '0')} could be interpreted as:`,
-             clarificationButtons: [
-               {
-                 id: `year_19${yy.toString().padStart(2, '0')}`,
-                 title: `19${yy.toString().padStart(2, '0')}`
-               },
-               {
-                 id: `year_20${yy.toString().padStart(2, '0')}`,
-                 title: `20${yy.toString().padStart(2, '0')}`
-               }
-             ]
-           };
-         }
-         break;
-       }
-     }
-   }
+            clarificationButtons: [
+              {
+                id: `year_19${yy.toString().padStart(2, '0')}`,
+                title: `19${yy.toString().padStart(2, '0')}`
+              },
+              {
+                id: `year_20${yy.toString().padStart(2, '0')}`,
+                title: `20${yy.toString().padStart(2, '0')}`
+              }
+            ]
+          };
+        }
+        break;
+      }
+    }
+  }
 
-   // Default case - invalid validation type
-   return { isValid: false, errorMessage: 'Invalid input format.' };
- };
+  // Default case - invalid validation type
+  return { isValid: false, errorMessage: 'Invalid input format.' };
+};
 
 /**
  * Processes a flow message based on user input and current session state
@@ -104,7 +104,7 @@ const validateStepInput = async(input, step) => {
  * @param {string} flowId - Flow identifier
  * @returns {boolean} Success status
  */
-const processFlowMessage = async (message, user, flowId) => {
+const processFlowMessage = async(message, user, flowId) => {
   try {
     // Check for phone number
     if (!user || !user.phoneNumber) {

@@ -115,17 +115,17 @@ class ChartGenerator {
       };
     } catch (error) {
       logger.error('Error generating natal chart:', error);
-       return {
-         name: user.name,
-         birthDate: user.birthDate,
-         birthTime: user.birthTime,
-         birthPlace: user.birthPlace,
-         sunSign: 'Unknown',
-         moonSign: 'Unknown',
-         risingSign: 'Unknown',
-         planets: {},
-         description: 'Unable to generate birth chart at this time.'
-       };
+      return {
+        name: user.name,
+        birthDate: user.birthDate,
+        birthTime: user.birthTime,
+        birthPlace: user.birthPlace,
+        sunSign: 'Unknown',
+        moonSign: 'Unknown',
+        risingSign: 'Unknown',
+        planets: {},
+        description: 'Unable to generate birth chart at this time.'
+      };
     }
   }
 

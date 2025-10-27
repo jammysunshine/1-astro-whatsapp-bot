@@ -615,7 +615,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         const horoscopeData = await vedicCalculator.generateDailyHoroscope(
           user.birthDate
         );
-        const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
+        const sunSign = await vedicCalculator.calculateSunSign(user.birthDate);
 
         const body = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n💫 *Lucky Color:* ${horoscopeData.luckyColor}\n🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n💝 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\nWhat would you like to explore next?`;
 
@@ -639,10 +639,11 @@ const executeMenuAction = async(phoneNumber, user, action) => {
             'interactive'
           );
         }
+
         return null; // Handled, don't send additional response
       } catch (error) {
         logger.error('Error generating daily horoscope:', error);
-        response = 'I\'m sorry, I couldn\'t generate your horoscope right now. Please try again later.';
+        response = 'I\'m having trouble reading the stars right now. Please try again later.';
       }
     }
     break;
@@ -772,6 +773,13 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     }
     response = generateAstrologyResponse('solar arc', user);
     break;
+  case 'get_solar_return_analysis':
+    if (!user.birthDate) {
+      response = 'I need your complete birth details for solar return analysis.';
+      break;
+    }
+    response = generateAstrologyResponse('solar return', user);
+    break;
   case 'get_synastry_analysis':
     if (!user.birthDate) {
       response = 'I need your complete birth details for synastry analysis.';
@@ -890,15 +898,35 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       );
     }
     return null;
-  case 'show_comprehensive_menu':
-    const comprehensiveResponse = '🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:\n\n*Core Services:*\n1. 📅 Daily Horoscope\n2. 📊 Full Birth Chart\n3. 💕 Compatibility\n4. 💞 Synastry Analysis\n\n*Divination Systems:*\n5. 🔮 Tarot Reading\n6. 🏮 I Ching Oracle\n7. 🤲 Palmistry\n\n*Ancient Traditions:*\n8. 📜 Nadi Astrology\n9. 🌳 Kabbalistic\n10. 🏛️ Mayan Calendar\n11. 🍃 Celtic Wisdom\n\n*Advanced Services:*\n12. ❓ Horary Question\n13. 📅 Electional Astrology\n14. 🐉 Chinese BaZi\n15. 🔢 Numerology\n16. 🌍 Astrocartography\n17. 🪐 Asteroid Analysis\n18. ⭐ Fixed Stars\n19. 🏥 Medical Astrology\n20. 💰 Financial Astrology\n21. 🔮 Harmonic Astrology\n22. 💼 Career Astrology\n\n*Predictive Astrology:*\n23. 🔮 Secondary Progressions\n24. ☀️ Solar Arc Directions\n\nReply with the number or service name to get started!';
-    await sendMessage(phoneNumber, comprehensiveResponse);
-    return null;
-  case 'initiate_compatibility_flow':
-    if (!user.birthDate) {
-      response = 'I need your complete birth details for compatibility analysis. Please provide your birth date, time, and place first.';
-      break;
+  case 'get_tarot_reading':
+    response = '🔮 *Tarot Reading*\n\nCurrent Situation: The Fool\n\nThis card represents new beginnings and adventures. You\'re at the start of a journey filled with potential.\n\nAdvice: Trust in the universe and take that leap of faith.\n\nWhat question did you have in mind for a more specific reading?';
+    break;
+  case 'get_palmistry_analysis':
+    response = '✋ *Palmistry Analysis*\n\n*Hand Type:* Earth Hand\n\nYour practical and grounded nature shows in your strong, square palms. You have excellent manual dexterity and a connection to nature.\n\n*Life Line:* Long and deep, indicating vitality and endurance.\n\n*Heart Line:* Curves gently, showing emotional balance.\n\nWould you like a more detailed analysis of specific lines?';
+    break;
+  case 'get_numerology_report':
+    response = '🔢 *Numerology Analysis*\n\n*Life Path:* 5\n\nAs a Life Path 5, you\'re adventurous, freedom-loving, and adaptable. You thrive on change and new experiences.\n\n*Expression:* 8\n\nYour name vibrates with power, success, and material abundance.\n\n*Soul Urge:* 3\n\nYour heart desires creativity, self-expression, and social connection.\n\nWhat aspect of numerology interests you most?';
+    break;
+  case 'show_subscription_plans':
+    response = {
+      type: 'interactive',
+      body: '💳 *Choose Your Cosmic Plan*',
+      buttons: [
+        { type: 'reply', reply: { id: 'sub_essential', title: 'Essential' } },
+        { type: 'reply', reply: { id: 'sub_premium', title: 'Premium' } }
+      ]
+    };
+    break;
+  case 'show_comprehensive_menu': {
+    const comprehensiveMenu = getMenu('comprehensive_menu');
+    if (comprehensiveMenu) {
+      response = comprehensiveMenu;
+    } else {
+      response = 'Menu configuration not found.';
     }
+    break;
+  }
+  case 'get_relationship_compatibility':
     response = '💕 *Relationship Compatibility Analysis*\n\nI can analyze compatibility between you and a partner using multiple astrological systems!\n\n*Available Compatibility Types:*\n\n🕉️ *Hindu Vedic Marriage Matching* - Traditional 36-point Guna system\n💞 *Western Synastry* - Planetary aspects and composite charts\n🔮 *General Compatibility* - Sun sign and basic chart comparison\n\n*To check compatibility:*\n\nProvide your partner\'s birth details in this format:\n```\nName: [Partner Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n```\n\nExample:\n```\nName: Sarah Johnson\nBirth: 15/06/1990, 14:30\nPlace: New York, USA\n```\n\nOr send "vedic marriage" for traditional Hindu compatibility, or "synastry" for Western relationship astrology.\n\nWhat type of compatibility analysis interests you?';
     break;
   case 'get_astrocartography_analysis':

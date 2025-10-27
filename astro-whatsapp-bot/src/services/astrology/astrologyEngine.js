@@ -1799,28 +1799,30 @@ const generateAstrologyResponse = async(messageText, user) => {
     }
 
     try {
-      const progressions = await vedicCalculator.calculateSecondaryProgressions({
+      const progressions = await vedicCalculator.calculateEnhancedSecondaryProgressions({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
         birthPlace: user.birthPlace || 'Delhi'
-      });
+      }, new Date());
 
       if (progressions.error) {
         return `I encountered an issue calculating your progressions: ${progressions.error}`;
       }
 
-      let response = '🔮 *Secondary Progressions Analysis*\n\n';
-      response += `*Age:* ${progressions.ageInYears} years old (${progressions.ageInDays} days progressed)\n`;
-      response += `*Progressed Date:* ${progressions.formattedProgressedDate}\n\n`;
+      let response = '🔮 *Enhanced Secondary Progressions Analysis*\n\n';
+      response += `⚡ *High-Precision Calculations* - Using Swiss Ephemeris with lunar nodes\n\n`;
+      response += `*Current Age:* ${progressions.ageInYears} years, ${progressions.ageInDays} days progressed\n`;
+      response += `*Progressed Chart Date:* ${progressions.formattedProgressedDate}\n`;
+      response += `*Julian Day:* ${progressions.progressedJulianDay.toFixed(2)}\n\n`;
 
-      response += '*Key Progressed Planets:*\n';
-      progressions.keyProgressions.forEach(prog => {
+      response += '*🔑 Key Progressed Planetary Positions:*\n';
+      progressions.keyProgressions.slice(0, 5).forEach(prog => {
         response += `• *${prog.planet}:* ${prog.position} - ${prog.significance}\n`;
       });
       response += '\n';
 
       if (progressions.majorThemes.length > 0) {
-        response += '*Current Life Themes:*\n';
+        response += '*🌟 Current Life Themes & Psychological Development:*\n';
         progressions.majorThemes.forEach(theme => {
           response += `• ${theme}\n`;
         });
@@ -1828,21 +1830,33 @@ const generateAstrologyResponse = async(messageText, user) => {
       }
 
       if (progressions.lifeChanges.length > 0) {
-        response += '*Life Changes & Transitions:*\n';
+        response += '*🔄 Anticipated Life Changes & Transitions:*\n';
         progressions.lifeChanges.forEach(change => {
           response += `• ${change}\n`;
         });
         response += '\n';
       }
 
-      response += '*How Secondary Progressions Work:*\n';
-      response += '• One day after birth equals one year of life\n';
-      response += '• Shows inner psychological development\n';
-      response += '• Reveals timing of major life changes\n';
-      response += '• Progressed Sun moves ~1° per year\n';
-      response += '• Progressed Moon moves ~13° per year\n\n';
+      if (progressions.lunarNodes) {
+        response += '*🌙 Progressed Lunar Nodes:*\n';
+        response += `• *Rahu:* ${progressions.lunarNodes.rahu.signName} ${progressions.lunarNodes.rahu.degreesInSign.toFixed(1)}°\n`;
+        response += `• *Ketu:* ${progressions.lunarNodes.ketu.signName} ${progressions.lunarNodes.ketu.degreesInSign.toFixed(1)}°\n\n`;
+      }
 
-      response += 'Secondary progressions reveal your soul\'s journey through time! 🌟';
+      response += '*📚 Understanding Secondary Progressions:*\n';
+      response += '• *Time Equation:* One day after birth = one year of life\n';
+      response += '• *Psychological Depth:* Inner development and soul growth\n';
+      response += '• *Timing Precision:* Reveals exact periods of change\n';
+      response += '• *Planetary Motion:* Sun progresses ~1°/year, Moon ~13°/year\n';
+      response += '• *Lunar Nodes:* Include Rahu/Ketu for karmic insights\n\n';
+
+      response += '*💡 How to Use This Information:*\n';
+      response += '• Align important decisions with progressed planetary positions\n';
+      response += '• Prepare for life changes during significant progressed aspects\n';
+      response += '• Use progressed lunar nodes for spiritual guidance\n';
+      response += '• Combine with transits for comprehensive timing analysis\n\n';
+
+      response += 'Your progressed chart reveals the precise unfolding of your soul\'s journey! ✨';
 
       return response;
     } catch (error) {
@@ -1858,46 +1872,81 @@ const generateAstrologyResponse = async(messageText, user) => {
     }
 
     try {
-      const solarArc = vedicCalculator.calculateSolarArcDirections({
+      const solarArc = await vedicCalculator.calculateEnhancedSolarArcDirections({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
         birthPlace: user.birthPlace || 'Delhi'
-      });
+      }, new Date());
 
       if (solarArc.error) {
         return `I encountered an issue calculating your solar arc directions: ${solarArc.error}`;
       }
 
-      let response = '☀️ *Solar Arc Directions Analysis*\n\n';
-      response += `*Age:* ${solarArc.ageInYears} years old\n`;
-      response += `*Solar Arc Movement:* ${solarArc.solarArcDegrees}°\n\n`;
+      let response = '☀️ *Enhanced Solar Arc Directions Analysis*\n\n';
+      response += `⚡ *High-Precision Calculations* - All planets directed by solar movement\n\n`;
+      response += `*Current Age:* ${solarArc.ageInYears} years old\n`;
+      response += `*Solar Arc Movement:* ${solarArc.solarArcDegrees.toFixed(2)}° from birth positions\n`;
+      response += `*Directed Chart Date:* ${solarArc.formattedArcDate}\n\n`;
 
-      response += '*Key Directed Planets:*\n';
-      solarArc.keyDirections.slice(0, 3).forEach(direction => {
+      response += '*🔑 Key Solar Arc Directed Planets:*\n';
+      solarArc.keyDirections.slice(0, 4).forEach(direction => {
         response += `• *${direction.planet}:* ${direction.from} → ${direction.to}\n`;
         response += `  ${direction.significance}\n`;
       });
       response += '\n';
 
       if (solarArc.lifeChanges.length > 0) {
-        response += '*Life Changes:*\n';
+        response += '*🌟 Major Life Changes & Turning Points:*\n';
         solarArc.lifeChanges.forEach(change => {
           response += `• ${change}\n`;
         });
         response += '\n';
       }
 
-      response += '*How Solar Arc Works:*\n';
-      response += '• All planets move same distance as the Sun\n';
-      response += '• Shows major life changes and turning points\n';
-      response += '• Powerful for predicting significant events\n\n';
+      response += '*📚 Understanding Solar Arc Directions:*\n';
+      response += '• *Unified Motion:* All planets move the same arc distance as the Sun\n';
+      response += '• *Major Life Events:* Reveals significant changes and transformations\n';
+      response += '• *Turning Points:* Shows when life direction fundamentally shifts\n';
+      response += '• *Predictive Power:* Highly effective for timing important events\n';
+      response += '• *Orb Influence:* Effects felt within 1-2° of exact aspects\n\n';
 
-      response += 'Solar arc directions reveal major life transformations! ⚡';
+      response += '*💡 How to Use Solar Arc Information:*\n';
+      response += '• Prepare for major changes when solar arcs activate natal planets\n';
+      response += '• Time important decisions around solar arc conjunctions\n';
+      response += '• Use with transits for comprehensive predictive analysis\n';
+      response += '• Combine with secondary progressions for deeper insights\n\n';
+
+      response += 'Solar arc directions illuminate your path of destiny and transformation! ✨';
 
       return response;
     } catch (error) {
       logger.error('Error generating solar arc directions:', error);
       return 'I\'m having trouble calculating your solar arc directions right now. Please try again later.';
+    }
+  }
+
+  // Solar return analysis requests
+  if (matchesIntent(message, ['solar return', 'birthday chart', 'annual chart', 'year ahead', /^solar.?return/])) {
+    if (!user.birthDate) {
+      return 'For solar return analysis, I need your complete birth details to calculate your annual birthday chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+    }
+
+    try {
+      const currentYear = new Date().getFullYear();
+      const solarReturn = await vedicCalculator.calculateSolarReturn({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      }, currentYear);
+
+      if (solarReturn.error) {
+        return `I encountered an issue calculating your solar return: ${solarReturn.error}`;
+      }
+
+      return solarReturn.summary;
+    } catch (error) {
+      logger.error('Error generating solar return analysis:', error);
+      return 'I\'m having trouble calculating your solar return chart right now. Please try again later.';
     }
   }
 
@@ -2126,7 +2175,7 @@ const generateAstrologyResponse = async(messageText, user) => {
   // Profile/birth details
   if (matchesIntent(message, ['profile', 'details', 'birth', /^my (profile|details|birth)/])) {
     if (user.profileComplete) {
-      return `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\nSun Sign: ${vedicCalculator.calculateSunSign(user.birthDate)}\n\nWould you like to update any information or get a reading?`;
+      return `📋 *Your Profile*\n\nName: ${user.name || 'Not set'}\nBirth Date: ${user.birthDate}\nBirth Time: ${user.birthTime || 'Not set'}\nBirth Place: ${user.birthPlace || 'Not set'}\nSun Sign: ${user.sunSign || 'Not calculated'}\n\nWould you like to update any information or get a reading?`;
     } else {
       return 'Let\'s complete your profile! I need your birth details to provide accurate readings.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
     }

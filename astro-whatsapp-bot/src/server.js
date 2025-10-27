@@ -76,9 +76,8 @@ app.get('/health', (req, res) => {
   const isMemoryCritical = memUsageMB.heapUsed > 300; // 300MB threshold
 
   const healthStatus = isMemoryCritical ? 'degraded' : 'healthy';
-  const statusCode = isMemoryCritical ? 503 : 200;
 
-  res.status(statusCode).json({
+  res.status(200).json({
     status: healthStatus,
     timestamp: new Date().toISOString(),
     service: 'Astrology WhatsApp Bot API',

@@ -1,7 +1,28 @@
 {
   "main_menu": {
     "type": "interactive",
-    "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What aspect of your cosmic journey interests you most?",
+    "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What would you like to explore?",
+    "buttons": [
+      {
+        "id": "btn_personal_astrology",
+        "title": "👤 Personal Astrology",
+        "action": "show_personal_astrology_menu"
+      },
+      {
+        "id": "btn_family_group",
+        "title": "👨‍👩‍👧‍👦 Family & Group",
+        "action": "show_family_group_menu"
+      },
+      {
+        "id": "btn_settings_profile",
+        "title": "⚙️ Settings & Profile",
+        "action": "show_settings_profile_menu"
+      }
+    ]
+  },
+  "personal_astrology_menu": {
+    "type": "interactive",
+    "body": "👤 *Personal Astrology*\n\nChoose your preferred astrological tradition:",
     "buttons": [
       {
         "id": "btn_western_astrology",
@@ -14,9 +35,138 @@
         "action": "show_vedic_astrology_menu"
       },
       {
-        "id": "btn_more_options",
-        "title": "⚙️ More Options",
-        "action": "show_more_options_menu"
+        "id": "btn_back_main",
+        "title": "⬅️ Back to Main",
+        "action": "show_main_menu"
+      }
+    ]
+  },
+  "family_group_menu": {
+    "type": "list",
+    "body": "👨‍👩‍👧‍👦 *Family & Group Readings*\n\nExplore astrological dynamics for families, couples, and groups:",
+    "buttonText": "Choose Service",
+    "sections": [
+      {
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "btn_back_main",
+            "title": "🏠 Back to Main Menu",
+            "description": "Return to main menu"
+          }
+        ]
+      },
+      {
+        "title": "👨‍👩‍👧‍👦 Group Readings",
+        "rows": [
+          {
+            "id": "btn_group_astrology",
+            "title": "Group Astrology Analysis",
+            "description": "Combined charts for 2-6 people"
+          },
+          {
+            "id": "btn_family_astrology",
+            "title": "Family Astrology",
+            "description": "Family dynamics and relationships"
+          },
+          {
+            "id": "btn_couple_compatibility",
+            "title": "Couple Compatibility",
+            "description": "Relationship astrology for couples"
+          }
+        ]
+      },
+      {
+        "title": "🎯 Specialized Group Services",
+        "rows": [
+          {
+            "id": "btn_business_astrology",
+            "title": "Business Partnership",
+            "description": "Astrology for business relationships"
+          },
+          {
+            "id": "btn_group_timing",
+            "title": "Group Event Timing",
+            "description": "Auspicious timing for group activities"
+          }
+        ]
+      }
+    ]
+  },
+  "settings_profile_menu": {
+    "type": "list",
+    "body": "⚙️ *Settings & Profile*\n\nManage your account, preferences, and birth details:",
+    "buttonText": "Choose Option",
+    "sections": [
+      {
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "btn_back_main",
+            "title": "🏠 Back to Main Menu",
+            "description": "Return to main menu"
+          }
+        ]
+      },
+      {
+        "title": "👤 Profile Management",
+        "rows": [
+          {
+            "id": "btn_update_profile",
+            "title": "📝 Update Birth Details",
+            "description": "Set or change your birth information"
+          },
+          {
+            "id": "btn_view_profile",
+            "title": "👀 View My Profile",
+            "description": "See your saved birth details"
+          },
+          {
+            "id": "btn_profile_history",
+            "title": "📋 Reading History",
+            "description": "View your past consultations"
+          }
+        ]
+      },
+      {
+        "title": "⚙️ Preferences",
+        "rows": [
+          {
+            "id": "btn_language_settings",
+            "title": "🌐 Language Settings",
+            "description": "Change your language"
+          },
+          {
+            "id": "btn_notification_settings",
+            "title": "🔔 Notification Preferences",
+            "description": "Manage alerts and reminders"
+          },
+          {
+            "id": "btn_privacy_settings",
+            "title": "🔒 Privacy Settings",
+            "description": "Control data sharing"
+          }
+        ]
+      },
+      {
+        "title": "💼 Account & Support",
+        "rows": [
+          {
+            "id": "btn_subscription",
+            "title": "💼 Subscription Plans",
+            "description": "Upgrade your experience"
+          },
+          {
+            "id": "btn_help_support",
+            "title": "❓ Help & Support",
+            "description": "Get assistance"
+          },
+          {
+            "id": "btn_feedback",
+            "title": "💬 Send Feedback",
+            "description": "Share your thoughts"
+          }
+        ]
       }
     ]
   },
@@ -25,6 +175,16 @@
     "body": "🌍 *Western Astrology*\n\nExplore modern astrological techniques and planetary influences:",
     "buttonText": "Choose Service",
     "sections": [
+      {
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "btn_back_main",
+            "title": "🏠 Back to Main Menu",
+            "description": "Return to main menu"
+          }
+        ]
+      },
       {
         "title": "📊 Core Western Services",
         "rows": [
@@ -103,7 +263,17 @@
     "buttonText": "Choose Service",
     "sections": [
       {
-        "title": "📊 Core Vedic Services",
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "btn_back_main",
+            "title": "🏠 Back to Main Menu",
+            "description": "Return to main menu"
+          }
+        ]
+      },
+      {
+        "title": "🕉️ Vedic Services",
         "rows": [
           {
             "id": "btn_vedic_birth_chart",
@@ -119,12 +289,7 @@
             "id": "btn_marriage_matching",
             "title": "Marriage Matching",
             "description": "Kundli Milan compatibility"
-          }
-        ]
-      },
-      {
-        "title": "🔮 Vedic Analysis",
-        "rows": [
+          },
           {
             "id": "btn_kaal_sarp",
             "title": "Kaal Sarp Dosha",
@@ -179,6 +344,16 @@
     "body": "⚙️ *More Options*\n\nAdditional services and settings:",
     "buttonText": "Choose Option",
     "sections": [
+      {
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "btn_back_main",
+            "title": "🏠 Back to Main Menu",
+            "description": "Return to main menu"
+          }
+        ]
+      },
       {
         "title": "🔮 Divination & Mysticism",
         "rows": [

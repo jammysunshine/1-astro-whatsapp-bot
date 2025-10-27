@@ -43,6 +43,26 @@ const getUserLanguage = (user, phoneNumber) => {
   return translationService.detectLanguage(phoneNumber);
 };
 
+/**
+ * Check if user has complete profile and prompt if missing
+ * @param {Object} user - User object
+ * @param {string} phoneNumber - User's phone number
+ * @param {string} serviceName - Name of the service being requested
+ * @returns {boolean} - True if profile is complete, false if needs setup
+ */
+const validateUserProfile = async (user, phoneNumber, serviceName) => {
+  if (!user || !user.birthDetails ||
+      !user.birthDetails.date || !user.birthDetails.time ||
+      !user.birthDetails.place) {
+
+    const profilePrompt = `👤 *Profile Required*\n\nTo provide accurate ${serviceName}, I need your birth details:\n\n📅 *Birth Date* (DD/MM/YYYY)\n🕐 *Birth Time* (HH:MM - 24hr format)\n📍 *Birth Place* (City, Country)\n\n*Example:*\n15/06/1990, 14:30, Mumbai, India\n\nSend your birth details in this format, or use the Settings menu to update your profile permanently.`;
+
+    await sendMessage(phoneNumber, profilePrompt, 'text');
+    return false;
+  }
+  return true;
+};
+
 // Mapping for list reply IDs to actions
 const listActionMapping = {
   btn_daily_horoscope: 'get_daily_horoscope',
@@ -97,18 +117,33 @@ const listActionMapping = {
   btn_vedic_birth_chart: 'get_hindu_astrology_analysis',
   btn_marriage_matching: 'get_synastry_analysis',
   btn_chinese_bazi: 'show_chinese_flow',
-  btn_language_settings: 'show_language_settings_menu',
-  btn_user_profile: 'show_user_profile_menu',
-  btn_subscription: 'show_subscription_plans',
-  btn_help: 'show_help_support',
-  btn_update_birth_date: 'start_profile_flow',
-  btn_update_birth_time: 'start_profile_flow',
-  btn_update_birth_place: 'start_profile_flow',
-  btn_update_name: 'start_profile_flow',
-  btn_view_birth_chart: 'show_birth_chart',
-  btn_recent_readings: 'show_recent_readings',
-  btn_favorite_services: 'show_favorite_services',
-  horoscope_menu: 'show_main_menu'
+    btn_language_settings: 'show_language_settings_menu',
+    btn_user_profile: 'show_user_profile_menu',
+    btn_subscription: 'show_subscription_plans',
+    btn_help: 'show_help_support',
+    btn_update_birth_date: 'start_profile_flow',
+    btn_update_birth_time: 'start_profile_flow',
+    btn_update_birth_place: 'start_profile_flow',
+    btn_update_name: 'start_profile_flow',
+    btn_view_birth_chart: 'show_birth_chart',
+    btn_recent_readings: 'show_recent_readings',
+    btn_favorite_services: 'show_favorite_services',
+    horoscope_menu: 'show_main_menu',
+    // New menu buttons
+    btn_personal_astrology: 'show_personal_astrology_menu',
+    btn_family_group: 'show_family_group_menu',
+    btn_settings_profile: 'show_settings_profile_menu',
+    btn_update_profile: 'start_profile_flow',
+    btn_view_profile: 'show_user_profile',
+    btn_profile_history: 'show_reading_history',
+    btn_notification_settings: 'show_notification_settings',
+    btn_privacy_settings: 'show_privacy_settings',
+    btn_feedback: 'show_feedback_form',
+    btn_group_astrology: 'start_group_astrology_flow',
+    btn_family_astrology: 'start_family_astrology_flow',
+    btn_couple_compatibility: 'start_couple_compatibility_flow',
+    btn_business_astrology: 'start_business_partnership_flow',
+    btn_group_timing: 'start_group_timing_flow'
 };
 
 /**
@@ -692,20 +727,9 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   let response = null;
   switch (action) {
   case 'get_daily_horoscope':
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      const body = translationService.translate('messages.birth_chart.incomplete_profile', userLanguage);
-      const buttons = [
-        { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
-        { type: 'reply', reply: { id: 'horoscope_menu', title: translationService.translate('buttons.back_main', userLanguage) || '🏠 Main Menu' } }
-      ];
-      await sendMessage(
-        phoneNumber,
-        { type: 'button', body, buttons },
-        'interactive'
-      );
+    if (!(await validateUserProfile(user, phoneNumber, 'Daily Horoscope'))) {
       return null;
-    } else {
+    }
       try {
         const horoscopeData = await vedicCalculator.generateDailyHoroscope({
           birthDate: user.birthDate,
@@ -774,18 +798,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     return null;
   }
   case 'get_hindu_astrology_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      const body = translationService.translate('messages.astrology_services.hindu_astrology.incomplete_profile', userLanguage);
-      const buttons = [
-        { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
-      ];
-      await sendMessage(
-        phoneNumber,
-        { type: 'button', body, buttons },
-        'interactive'
-      );
+    if (!(await validateUserProfile(user, phoneNumber, 'Vedic Birth Chart'))) {
       return null;
     }
     const userLanguage = getUserLanguage(user, phoneNumber);
@@ -1257,15 +1270,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     response = generateAstrologyResponse('solar return', user);
     break;
   case 'get_synastry_analysis':
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.synastry.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
+    if (!(await validateUserProfile(user, phoneNumber, 'Compatibility Analysis'))) {
       return null;
     }
     // Check if partner data is provided in the message
@@ -1372,6 +1377,39 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     }
     return null;
   }
+  case 'show_personal_astrology_menu': {
+    const personalMenu = getMenu('personal_astrology_menu');
+    if (personalMenu) {
+      await sendMessage(
+        phoneNumber,
+        personalMenu,
+        'interactive'
+      );
+    }
+    return null;
+  }
+  case 'show_family_group_menu': {
+    const familyMenu = getMenu('family_group_menu');
+    if (familyMenu) {
+      await sendMessage(
+        phoneNumber,
+        familyMenu,
+        'interactive'
+      );
+    }
+    return null;
+  }
+  case 'show_settings_profile_menu': {
+    const settingsMenu = getMenu('settings_profile_menu');
+    if (settingsMenu) {
+      await sendMessage(
+        phoneNumber,
+        settingsMenu,
+        'interactive'
+      );
+    }
+    return null;
+  }
   case 'show_western_astrology_menu': {
     const westernMenu = getMenu('western_astrology_menu');
     if (westernMenu) {
@@ -1425,6 +1463,68 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         'interactive'
       );
     }
+    return null;
+  }
+  case 'show_user_profile': {
+    // Show user's current profile information
+    const user = await getUserByPhone(phoneNumber);
+    if (user && user.birthDetails) {
+      const profileInfo = `👤 *Your Profile*\n\n📅 Birth Date: ${user.birthDetails.date || 'Not set'}\n🕐 Birth Time: ${user.birthDetails.time || 'Not set'}\n📍 Birth Place: ${user.birthDetails.place || 'Not set'}\n🌐 Timezone: ${user.birthDetails.timezone || 'Not set'}\n\nWould you like to update any information?`;
+      await sendMessage(phoneNumber, profileInfo, 'text');
+    } else {
+      await executeMenuAction(phoneNumber, user, 'start_profile_flow');
+    }
+    return null;
+  }
+  case 'show_reading_history': {
+    // Show user's reading history
+    const user = await getUserByPhone(phoneNumber);
+    const historyMessage = user && user.readingHistory && user.readingHistory.length > 0
+      ? `📋 *Your Reading History*\n\n${user.readingHistory.slice(-5).map((reading, index) =>
+          `${index + 1}. ${reading.type} - ${new Date(reading.date).toLocaleDateString()}`
+        ).join('\n')}\n\n*Most recent readings shown*`
+      : `📋 *Reading History*\n\nNo readings found. Start your cosmic journey with a personal astrology reading!`;
+    await sendMessage(phoneNumber, historyMessage, 'text');
+    return null;
+  }
+  case 'show_notification_settings': {
+    const notificationMessage = `🔔 *Notification Settings*\n\nChoose your preferences:\n\n1. *Daily Horoscope* - Receive daily guidance\n2. *Transit Alerts* - Planetary movement notifications\n3. *Festival Reminders* - Hindu calendar alerts\n4. *Reading Reminders* - Follow-up suggestions\n\nReply with the number to toggle settings.`;
+    await sendMessage(phoneNumber, notificationMessage, 'text');
+    return null;
+  }
+  case 'show_privacy_settings': {
+    const privacyMessage = `🔒 *Privacy Settings*\n\nYour data privacy is important:\n\n✅ *Data Storage*: Birth details stored securely\n✅ *No Third-party Sharing*: Your data stays private\n✅ *GDPR Compliant*: You control your data\n\nOptions:\n1. *Export Data* - Download your information\n2. *Delete Account* - Remove all data\n3. *Data Usage* - View how we use your data\n\nReply with your choice or contact support.`;
+    await sendMessage(phoneNumber, privacyMessage, 'text');
+    return null;
+  }
+  case 'show_feedback_form': {
+    const feedbackMessage = `💬 *Send Feedback*\n\nWe'd love to hear from you!\n\nWhat would you like to share?\n\n1. *Bug Report* - Something not working\n2. *Feature Request* - New functionality\n3. *General Feedback* - Your experience\n4. *Rating* - Rate our service\n\nSimply reply with your feedback and we'll respond!`;
+    await sendMessage(phoneNumber, feedbackMessage, 'text');
+    return null;
+  }
+  case 'start_group_astrology_flow': {
+    const groupMessage = `👨‍👩‍👧‍👦 *Group Astrology Analysis*\n\nDiscover the cosmic dynamics of your group!\n\n*What we analyze:*\n🌟 Composite Charts - Combined group energy\n🤝 Compatibility - How members interact\n📊 Group Dynamics - Communication styles\n🎯 Shared Purpose - Collective goals\n⏰ Timing Insights - Best group periods\n\n*To get started:*\n\n1. Send your birth details (if not set)\n2. Provide details for 2-6 group members\n3. Specify group type: family/couple/friends/business\n\n*Format for each member:*\n\`\`\`\nName: [Full Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n\`\`\`\n\nExample:\n\`\`\`\nJohn: 15/06/1990, 14:30, Mumbai, India\nJane: 22/03/1992, 09:15, Delhi, India\nType: family\n\`\`\`\n\nReady to begin? Send member details!`;
+    await sendMessage(phoneNumber, groupMessage, 'text');
+    return null;
+  }
+  case 'start_family_astrology_flow': {
+    const familyMessage = `👪 *Family Astrology*\n\nExplore family relationships and dynamics through the stars!\n\n*Family Analysis Includes:*\n🏠 Family Composite Chart\n❤️ Relationship Compatibility\n👶 Children & Parenting\n👴 Generational Patterns\n🕊️ Family Healing & Growth\n\n*Required Information:*\n- Your birth details\n- Family members' birth details (2-6 people)\n\n*Format:*\n\`\`\`\n[Your Name]: DD/MM/YYYY, HH:MM, City, Country\n[Family Member 1]: DD/MM/YYYY, HH:MM, City, Country\n[Family Member 2]: DD/MM/YYYY, HH:MM, City, Country\n\`\`\`\n\nSend family member details to begin!`;
+    await sendMessage(phoneNumber, familyMessage, 'text');
+    return null;
+  }
+  case 'start_couple_compatibility_flow': {
+    const coupleMessage = `💕 *Couple Compatibility*\n\nDiscover your relationship's cosmic blueprint!\n\n*Analysis Covers:*\n🌟 Synastry Chart - Relationship dynamics\n💫 Composite Chart - Your combined energy\n🔮 Soulmate Connections - Karmic bonds\n⏰ Timing - Best periods for commitment\n💍 Marriage Compatibility - Long-term potential\n\n*Send both birth details:*\n\`\`\`\n[Partner 1]: DD/MM/YYYY, HH:MM, City, Country\n[Partner 2]: DD/MM/YYYY, HH:MM, City, Country\n\`\`\`\n\nExample:\n\`\`\`\nAlex: 15/06/1990, 14:30, London, UK\nJordan: 22/03/1992, 09:15, Manchester, UK\n\`\`\`\n\nShare your details for a cosmic love reading!`;
+    await sendMessage(phoneNumber, coupleMessage, 'text');
+    return null;
+  }
+  case 'start_business_partnership_flow': {
+    const businessMessage = `🤝 *Business Partnership Astrology*\n\nOptimize your business relationships with cosmic insights!\n\n*Business Analysis:*\n💼 Partnership Synastry\n📈 Success Potential\n⚖️ Balance of Power\n🎯 Shared Goals & Vision\n⏰ Strategic Timing\n💰 Financial Compatibility\n\n*Required:*\n- Your birth details\n- Business partner's details\n\n*Format:*\n\`\`\`\n[Your Name]: DD/MM/YYYY, HH:MM, City, Country\n[Partner Name]: DD/MM/YYYY, HH:MM, City, Country\nBusiness Type: [startup/corporation/freelance/etc]\n\`\`\`\n\nSend partnership details!`;
+    await sendMessage(phoneNumber, businessMessage, 'text');
+    return null;
+  }
+  case 'start_group_timing_flow': {
+    const timingMessage = `⏰ *Group Event Timing*\n\nFind the most auspicious times for group activities!\n\n*Perfect for:*\n🎉 Weddings & Celebrations\n🤝 Business Meetings\n👪 Family Gatherings\n🎓 Graduations & Ceremonies\n🏢 Company Events\n\n*We analyze:*\n🕉️ Vedic Muhurta (Auspicious timing)\n🌟 Western Electional Astrology\n📅 Hindu Calendar dates\n⏱️ Hour-by-hour recommendations\n\n*Provide:*\n- Event type and preferred dates\n- Group size and composition\n- Location details\n\nExample: "Family wedding in Mumbai, India - looking for dates in March 2025"\n\nWhat's your group event?`;
+    await sendMessage(phoneNumber, timingMessage, 'text');
     return null;
   }
   case 'show_more_traditions_menu': {

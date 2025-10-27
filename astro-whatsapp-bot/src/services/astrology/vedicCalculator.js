@@ -11,6 +11,8 @@ const sweph = require('sweph');
 const { Client } = require('@googlemaps/google-maps-services-js');
 const googleMapsClient = new Client({});
 const { GOOGLE_MAPS_API_KEY } = process.env;
+const path = require('path');
+const fs = require('fs');
 
 // Import refactored modules
 const VedicCore = require('./core/VedicCore');
@@ -113,51 +115,259 @@ class VedicCalculator {
       logger.info('Initializing Enhanced Swiss Ephemeris system...');
 
       // Set ephemeris path with multiple fallback options
-      const ephemerisPaths = ['./ephe', '/usr/share/sweph/ephe', '/usr/local/share/sweph/ephe'];
+      const ephemerisPaths = [
+        './ephe',
+        path.join(__dirname, '../../../ephe'),
+        '/usr/share/sweph/ephe',
+        '/usr/local/share/sweph/ephe',
+        '/opt/sweph/ephe'
+      ];
 
       let ephemerisSet = false;
-      for (const path of ephemerisPaths) {
+      for (const ephePath of ephemerisPaths) {
         try {
-          sweph.set_ephe_path(path);
-          logger.info(`Swiss Ephemeris path set successfully: ${path}`);
-          ephemerisSet = true;
-          break;
+          // Check if path exists before setting
+          if (fs.existsSync(ephePath)) {
+            sweph.set_ephe_path(ephePath);
+            logger.info(`Swiss Ephemeris path set successfully: ${ephePath}`);
+
+            // Verify the path was set by checking if we can list files
+            try {
+              const files = fs.readdirSync(ephePath);
+              const se1Files = files.filter(file => file.endsWith('.se1'));
+              logger.info(`Found ${se1Files.length} ephemeris data files in ${ephePath}`);
+              if (se1Files.length > 0) {
+                logger.info(`Sample files: ${se1Files.slice(0, 3).join(', ')}`);
+              }
+            } catch (listError) {
+              logger.warn(`Could not list files in ${ephePath}:`, listError.message);
+            }
+
+            ephemerisSet = true;
+            break;
+          } else {
+            logger.debug(`Ephemeris path does not exist: ${ephePath}`);
+          }
         } catch (pathError) {
-          logger.warn(`Failed to set ephemeris path ${path}:`, pathError.message);
+          logger.warn(`Failed to set ephemeris path ${ephePath}:`, pathError.message);
         }
       }
 
       if (!ephemerisSet) {
         logger.warn('⚠️ No valid ephemeris path found. Using built-in calculations where possible.');
+        logger.warn('⚠️ This may result in less accurate astronomical calculations.');
       }
 
       // Set default ayanamsa for Vedic calculations (Lahiri)
       try {
-        sweph.set_sid_mode(1, 0, 0);
-        logger.info('Default ayanamsa set to Lahiri for Vedic calculations.');
+        // Check what constants are available
+        logger.debug('Available Swiss Ephemeris constants:', Object.keys(sweph).filter(key => key.startsWith('SE_')).slice(0, 10));
+
+        if (sweph.SE_SIDM_LAHIRI !== undefined) {
+          sweph.set_sid_mode(sweph.SE_SIDM_LAHIRI, 0, 0);
+          logger.info('Default ayanamsa set to Lahiri for Vedic calculations.');
+        } else {
+          logger.warn('SE_SIDM_LAHIRI constant not available, trying numeric value');
+          sweph.set_sid_mode(1, 0, 0); // Lahiri ayanamsa
+          logger.info('Default ayanamsa set to Lahiri using numeric value.');
+        }
       } catch (ayanamsaError) {
         logger.warn('Could not set default ayanamsa:', ayanamsaError.message);
+        // Try fallback without ayanamsa
+        try {
+          sweph.set_sid_mode(1, 0, 0); // Fallback to numeric value
+          logger.info('Default ayanamsa set to Lahiri using numeric value.');
+        } catch (fallbackError) {
+          logger.warn('Could not set ayanamsa even with fallback:', fallbackError.message);
+        }
       }
 
-      // Test basic functionality (optional - don't fail if ephemeris files are incomplete)
+      // Test basic functionality with multiple approaches
+      let basicTestPassed = false;
+
       try {
         const testJD = sweph.julday(2024, 1, 1, 12, 1);
-        const testPos = sweph.calc(testJD, 0, 2);
-        if (testPos && testPos.longitude) {
-          logger.info('✅ Swiss Ephemeris basic functionality test passed.');
-        } else {
-          logger.warn('⚠️ Swiss Ephemeris basic functionality test returned no data - calculations may be limited.');
+        logger.debug(`Testing Swiss Ephemeris with JD: ${testJD}`);
+
+        // Try different calculation flags
+        const testFlags = [2, 2 | 256, 2 | 65536]; // Basic, with speed, with high precision
+        let testResult = null;
+
+        for (const flag of testFlags) {
+          try {
+            logger.debug(`Testing with flag: ${flag}`);
+            testResult = sweph.calc(testJD, 0, flag); // 0 = Sun
+            if (testResult) break;
+          } catch (flagError) {
+            logger.debug(`Flag ${flag} failed:`, flagError.message);
+          }
         }
+
+        logger.debug(`Swiss Ephemeris calc result:`, JSON.stringify(testResult, null, 2));
+
+        // Check for different possible return formats
+        if (testResult) {
+          logger.info(`Swiss Ephemeris returned type: ${typeof testResult}`);
+          if (typeof testResult === 'object') {
+            logger.info(`Object keys: ${Object.keys(testResult).join(', ')}`);
+          }
+
+          // Handle Swiss Ephemeris result format: { flag, error, data }
+          if (testResult.data && Array.isArray(testResult.data) && testResult.data.length >= 3) {
+            const longitude = testResult.data[0];
+            if (typeof longitude === 'number' && !isNaN(longitude) && longitude !== 0) {
+              logger.info('✅ Swiss Ephemeris basic functionality test passed (result.data format).');
+              basicTestPassed = true;
+            } else {
+              logger.warn('⚠️ Swiss Ephemeris result.data[0] is invalid or zero:', longitude);
+            }
+          } else if (typeof testResult.longitude === 'number' && !isNaN(testResult.longitude)) {
+            logger.info('✅ Swiss Ephemeris basic functionality test passed (object with numeric longitude).');
+            basicTestPassed = true;
+          } else if (Array.isArray(testResult.longitude) && testResult.longitude.length >= 1) {
+            const longitude = testResult.longitude[0];
+            if (typeof longitude === 'number' && !isNaN(longitude)) {
+              logger.info('✅ Swiss Ephemeris basic functionality test passed (object with longitude array).');
+              basicTestPassed = true;
+            } else {
+              logger.warn('⚠️ Swiss Ephemeris returned longitude array but first element is invalid:', longitude);
+            }
+          } else if (Array.isArray(testResult) && testResult.length >= 3) {
+            // Some versions return arrays [longitude, latitude, distance, ...]
+            const longitude = testResult[0];
+            if (typeof longitude === 'number' && !isNaN(longitude)) {
+              logger.info('✅ Swiss Ephemeris basic functionality test passed (array format).');
+              basicTestPassed = true;
+            } else {
+              logger.warn('⚠️ Swiss Ephemeris returned array but longitude is invalid:', longitude);
+            }
+          } else if (testResult.longitude !== undefined) {
+            logger.warn('⚠️ Swiss Ephemeris returned object but longitude is invalid:', testResult.longitude);
+          } else {
+            logger.warn('⚠️ Swiss Ephemeris returned unexpected format - no recognizable longitude field');
+          }
+        } else {
+          logger.warn('⚠️ Swiss Ephemeris basic functionality test returned null/undefined - calculations may be limited.');
+        }
+
+        // Additional test: Try to calculate houses
+        try {
+          const houses = sweph.houses(testJD, 28.6139, 77.2090, 'P'); // Delhi coordinates
+          logger.debug(`Houses calculation result:`, JSON.stringify(houses, null, 2));
+
+          // Check for Swiss Ephemeris houses result format
+          if (houses && typeof houses === 'object') {
+            if (houses.data && houses.data.houses && Array.isArray(houses.data.houses) && houses.data.houses.length >= 12) {
+              // Result format: { flag, data: { houses: [...], points: [...] } }
+              logger.info('✅ Swiss Ephemeris houses calculation test passed (result.data.houses format).');
+            } else if (houses.ascendant || houses.houseCusps) {
+              logger.info('✅ Swiss Ephemeris houses calculation test passed (object format).');
+            } else if (Array.isArray(houses) && houses.length >= 12) {
+              logger.info('✅ Swiss Ephemeris houses calculation test passed (array format).');
+            } else {
+              logger.warn('⚠️ Swiss Ephemeris houses calculation returned object but missing expected properties.');
+            }
+          } else {
+            logger.warn('⚠️ Swiss Ephemeris houses calculation returned invalid data.');
+          }
+        } catch (housesError) {
+          logger.warn('⚠️ Swiss Ephemeris houses calculation failed:', housesError.message);
+        }
+
       } catch (testError) {
         logger.warn('⚠️ Swiss Ephemeris basic functionality test failed - calculations may be limited:', testError.message);
+        logger.debug('Full error details:', testError);
         // Don't throw error - allow the system to continue with limited functionality
       }
+
+      // Store test result for later use
+      this._swissEphemerisWorking = basicTestPassed;
 
       logger.info('Enhanced Swiss Ephemeris system initialized successfully.');
     } catch (error) {
       logger.error('❌ Critical error initializing Swiss Ephemeris:', error.message);
       throw new Error('Failed to initialize core astronomical calculation system');
     }
+  }
+
+  /**
+   * Check if Swiss Ephemeris is working properly
+   * @returns {boolean} True if Swiss Ephemeris calculations are available
+   */
+  isSwissEphemerisWorking() {
+    return this._swissEphemerisWorking || false;
+  }
+
+  /**
+   * Get a status report of the Swiss Ephemeris system
+   * @returns {Object} Status information
+   */
+  getSwissEphemerisStatus() {
+    return {
+      working: this._swissEphemerisWorking || false,
+      astrologerLibrary: this._astrologer ? 'loaded' : 'failed',
+      version: this._astrologer ? 'available' : 'unknown'
+    };
+  }
+
+  /**
+   * Safe wrapper for Swiss Ephemeris calculations with fallback
+   * @param {number} jd - Julian day
+   * @param {number} planetId - Planet identifier
+   * @param {number} flags - Calculation flags
+   * @returns {Object|null} Position data or null if calculation fails
+   */
+  _safeCalc(jd, planetId, flags = 2) {
+    if (!this._swissEphemerisWorking) {
+      logger.debug(`Swiss Ephemeris not working, skipping calculation for planet ${planetId}`);
+      return null;
+    }
+
+    try {
+      const result = sweph.calc(jd, planetId, flags);
+      if (result && this._validatePosition(result)) {
+        return result;
+      } else {
+        logger.debug(`Invalid result from sweph.calc for planet ${planetId}:`, result);
+        return null;
+      }
+    } catch (error) {
+      logger.debug(`Error in sweph.calc for planet ${planetId}:`, error.message);
+      return null;
+    }
+  }
+
+  /**
+   * Validate position data returned from Swiss Ephemeris
+   * @param {Object|Array} position - Position data to validate
+   * @returns {boolean} True if position data is valid
+   */
+  _validatePosition(position) {
+    if (!position) return false;
+
+    // Handle Swiss Ephemeris result format: { flag, error, data }
+    if (typeof position === 'object' && position.data) {
+      const data = position.data;
+      // Data should be an array [longitude, latitude, distance, ...]
+      if (Array.isArray(data) && data.length >= 3) {
+        return typeof data[0] === 'number' && !isNaN(data[0]) && data[0] !== 0;
+      }
+    }
+
+    // Check for direct object format with longitude
+    if (typeof position === 'object' && position.longitude) {
+      if (Array.isArray(position.longitude) && position.longitude.length >= 1) {
+        return typeof position.longitude[0] === 'number' && !isNaN(position.longitude[0]);
+      }
+      return typeof position.longitude === 'number' && !isNaN(position.longitude);
+    }
+
+    // Check for array format [longitude, latitude, distance, ...]
+    if (Array.isArray(position) && position.length >= 1) {
+      return typeof position[0] === 'number' && !isNaN(position[0]);
+    }
+
+    return false;
   }
 
   // Lazy getter for astrologer instance
@@ -394,12 +604,25 @@ class VedicCalculator {
         saturn: 6
       };
 
-      for (const [planetName, planetId] of Object.entries(planetIds)) {
-        try {
-          const position = sweph.calc(jd, planetId, 2 | 256);
-          if (position && position.longitude) {
-            const longitude = position.longitude[0];
-            const speed = position.longitude[1];
+       for (const [planetName, planetId] of Object.entries(planetIds)) {
+         try {
+           const position = this._safeCalc(jd, planetId, 2 | 256);
+           if (position && this._validatePosition(position)) {
+             let longitude, speed = 0;
+
+             // Handle Swiss Ephemeris result format: { flag, error, data }
+             if (position.data && Array.isArray(position.data)) {
+               longitude = position.data[0]; // longitude
+               speed = position.data[3] || 0; // speed is usually at index 3
+             } else if (Array.isArray(position.longitude)) {
+               longitude = position.longitude[0];
+               speed = position.longitude[1] || 0;
+             } else if (Array.isArray(position)) {
+               longitude = position[0];
+               speed = position[1] || 0;
+             } else {
+               longitude = position.longitude;
+             }
             const signIndex = Math.floor(longitude / 30);
             const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
 

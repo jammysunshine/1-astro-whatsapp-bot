@@ -436,10 +436,15 @@ const sendMessage = async(
         if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
         }
+        // Transform buttons to WhatsApp format
+        const whatsappButtons = message.buttons.map(button => ({
+          type: 'reply',
+          reply: { id: button.id, title: button.title }
+        }));
         response = await sendInteractiveButtons(
           phoneNumber,
           translatedBody,
-          message.buttons,
+          whatsappButtons,
           options
         );
       } else if (message.type === 'list') {

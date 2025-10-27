@@ -1,6 +1,6 @@
 {
-  "main_menu": {
-    "type": "interactive",
+   "main_menu": {
+     "type": "button",
     "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What would you like to explore?",
     "buttons": [
       {
@@ -20,8 +20,8 @@
       }
     ]
   },
-  "personal_astrology_menu": {
-    "type": "interactive",
+   "personal_astrology_menu": {
+     "type": "button",
     "body": "👤 *Personal Astrology*\n\nChoose your preferred astrological tradition:",
     "buttons": [
       {

@@ -1,497 +1,259 @@
 {
-   "main_menu": {
-     "type": "interactive",
-     "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What aspect of your cosmic journey interests you most?",
-     "buttons": [
-       {
-         "id": "btn_core_readings",
-         "title": "Core Readings",
-         "action": "show_core_readings_menu"
-       },
-       {
-         "id": "btn_divination",
-         "title": "Divination",
-         "action": "show_divination_menu"
-       },
-       {
-         "id": "btn_traditions",
-         "title": "🌳 Ancient Traditions",
-         "action": "show_traditions_menu"
-       }
-     ]
-   },
-  "core_readings_menu": {
+  "main_menu": {
     "type": "interactive",
-    "body": "🔮 *Core Astrology Readings*\n\nChoose your primary astrological service:",
+    "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What aspect of your cosmic journey interests you most?",
     "buttons": [
       {
-        "id": "btn_daily_horoscope",
-        "title": "Daily Horoscope",
-        "action": "get_daily_horoscope"
+        "id": "btn_western_astrology",
+        "title": "🌍 Western Astrology",
+        "action": "show_western_astrology_menu"
       },
       {
-        "id": "btn_birth_chart",
-        "title": "Birth Chart",
-        "action": "show_birth_chart"
-      },
-      {
-        "id": "btn_back_main",
-        "title": "Back to Main",
-        "action": "show_main_menu"
-      }
-    ]
-  },
-  "language_menu": {
-    "type": "list",
-    "body": "🌐 Choose Your Language / اختر لغتك / Choose Your Language\n\nSelect your preferred language for astrology readings:",
-    "buttonText": "Choose Language",
-    "sections": [
-      {
-        "title": "🌍 Popular Languages",
-        "rows": [
-          {
-            "id": "lang_en",
-            "title": "🇺🇸 English",
-            "description": "English"
-          },
-          {
-            "id": "lang_hi",
-            "title": "🇮🇳 हिंदी",
-            "description": "Hindi"
-          },
-          {
-            "id": "lang_ar",
-            "title": "🇸🇦 العربية",
-            "description": "Arabic"
-          },
-          {
-            "id": "lang_es",
-            "title": "🇪🇸 Español",
-            "description": "Spanish"
-          },
-          {
-            "id": "lang_fr",
-            "title": "🇫🇷 Français",
-            "description": "French"
-          }
-        ]
-      },
-      {
-        "title": "🇮🇳 Indian Languages",
-        "rows": [
-          {
-            "id": "lang_ta",
-            "title": "🇮🇳 தமிழ்",
-            "description": "Tamil"
-          },
-          {
-            "id": "lang_te",
-            "title": "🇮🇳 తెలుగు",
-            "description": "Telugu"
-          },
-          {
-            "id": "lang_bn",
-            "title": "🇮🇳 বাংলা",
-            "description": "Bengali"
-          },
-          {
-            "id": "lang_mr",
-            "title": "🇮🇳 मराठी",
-            "description": "Marathi"
-          },
-          {
-            "id": "lang_gu",
-            "title": "🇮🇳 ગુજરાતી",
-            "description": "Gujarati"
-          }
-        ]
-      },
-      {
-        "title": "🌏 More Languages",
-        "rows": [
-          {
-            "id": "lang_de",
-            "title": "🇩🇪 Deutsch",
-            "description": "German"
-          },
-          {
-            "id": "lang_it",
-            "title": "🇮🇹 Italiano",
-            "description": "Italian"
-          },
-          {
-            "id": "lang_pt",
-            "title": "🇵🇹 Português",
-            "description": "Portuguese"
-          },
-          {
-            "id": "lang_ru",
-            "title": "🇷🇺 Русский",
-            "description": "Russian"
-          },
-          {
-            "id": "lang_zh",
-            "title": "🇨🇳 中文",
-            "description": "Chinese"
-          }
-        ]
-      }
-    ]
-  },
-  "divination_menu": {
-    "type": "interactive",
-    "body": "🔮 *Divination Systems*\n\nExplore mystical arts and ancient wisdom:",
-    "buttons": [
-      {
-        "id": "btn_tarot",
-        "title": "Tarot Reading",
-        "action": "get_tarot_reading"
-      },
-      {
-        "id": "btn_palmistry",
-        "title": "Palmistry",
-        "action": "get_palmistry_analysis"
+        "id": "btn_vedic_astrology",
+        "title": "🕉️ Vedic Astrology",
+        "action": "show_vedic_astrology_menu"
       },
       {
         "id": "btn_more_options",
-        "title": "More Options",
+        "title": "⚙️ More Options",
         "action": "show_more_options_menu"
       }
     ]
   },
-  "traditions_menu": {
-    "type": "interactive",
-    "body": "🌳 *Ancient Traditions*\n\nDiscover wisdom from ancient civilizations:",
-    "buttons": [
-      {
-        "id": "btn_chinese",
-        "title": "Chinese BaZi",
-        "action": "show_chinese_flow"
-      },
-      {
-        "id": "btn_vedic",
-        "title": "Vedic Astrology",
-        "action": "get_hindu_astrology_analysis"
-      },
-      {
-        "id": "btn_more_traditions",
-        "title": "More Traditions",
-        "action": "show_more_traditions_menu"
-      }
-    ]
-  },
-  "more_options_menu": {
-    "type": "interactive",
-    "body": "✨ *More Divination Options*\n\nExplore additional mystical arts:",
-    "buttons": [
-      {
-        "id": "btn_iching",
-        "title": "I Ching Oracle",
-        "action": "get_iching_reading"
-      },
-      {
-        "id": "btn_horary",
-        "title": "Horary Question",
-        "action": "get_horary_reading"
-      },
-      {
-        "id": "btn_back_divination",
-        "title": "Back to Divination",
-        "action": "show_divination_menu"
-      }
-    ]
-  },
-  "more_traditions_menu": {
-    "type": "interactive",
-    "body": "🌍 *More Ancient Traditions*\n\nExplore additional ancient wisdom systems:",
-    "buttons": [
-      {
-        "id": "btn_kabbalistic",
-        "title": "Kabbalistic",
-        "action": "get_kabbalistic_analysis"
-      },
-      {
-        "id": "btn_mayan",
-        "title": "Mayan Calendar",
-        "action": "get_mayan_analysis"
-      },
-      {
-        "id": "btn_back_traditions",
-        "title": "Back to Traditions",
-        "action": "show_traditions_menu"
-      }
-    ]
-  },
-  "comprehensive_menu": {
+  "western_astrology_menu": {
     "type": "list",
-    "body": "🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:",
+    "body": "🌍 *Western Astrology*\n\nExplore modern astrological techniques and planetary influences:",
     "buttonText": "Choose Service",
     "sections": [
       {
-        "title": "Core Services",
+        "title": "📊 Core Western Services",
         "rows": [
           {
             "id": "btn_daily_horoscope",
             "title": "Daily Horoscope",
-            "description": "Personalized daily guidance"
+            "description": "Personalized sun sign guidance"
           },
           {
             "id": "btn_birth_chart",
-            "title": "Full Birth Chart",
-            "description": "Complete Vedic astrology analysis"
+            "title": "Western Birth Chart",
+            "description": "Natal chart with aspects and houses"
           },
-           {
-             "id": "btn_compatibility",
-             "title": "Compatibility",
-             "description": "Relationship astrology"
-           },
-            {
-              "id": "btn_synastry",
-              "title": "Synastry Analysis",
-              "description": "Detailed relationship astrology"
-            }
-         ]
-       },
-       {
-         "title": "Divination Systems",
-         "rows": [
-           {
-             "id": "btn_tarot",
-             "title": "Tarot Reading",
-             "description": "Ancient card wisdom"
-           },
-           {
-             "id": "btn_iching",
-             "title": "I Ching Oracle",
-             "description": "Chinese divination system"
-           },
-           {
-             "id": "btn_palmistry",
-             "title": "Palmistry",
-             "description": "Hand reading analysis"
-           }
-         ]
-       },
-       {
-         "title": "Ancient Traditions",
-         "rows": [
-           {
-             "id": "btn_nadi",
-             "title": "Nadi Astrology",
-             "description": "Ancient Indian leaf astrology"
-           },
-           {
-             "id": "btn_kabbalistic",
-             "title": "Kabbalistic",
-             "description": "Jewish mystical tradition"
-           },
-           {
-             "id": "btn_mayan",
-             "title": "Mayan Calendar",
-             "description": "Ancient Mesoamerican wisdom"
-           },
-            {
-              "id": "btn_celtic",
-              "title": "Celtic Wisdom",
-              "description": "Druidic tree astrology"
-            },
-            {
-              "id": "btn_islamic",
-              "title": "Islamic Astrology",
-              "description": "Ilm-e-Nujum & Taqdeer destiny analysis"
-            }
-          ]
-        },
-        {
-          "title": "Advanced Services 1",
-          "rows": [
-            {
-              "id": "btn_horary",
-              "title": "Horary Question",
-              "description": "Answer specific questions"
-            },
-            {
-              "id": "btn_electional",
-              "title": "Electional Astrology",
-              "description": "Auspicious timing for events"
-            },
-            {
-              "id": "btn_chinese",
-              "title": "Chinese BaZi",
-              "description": "Four Pillars of Destiny"
-            },
-            {
-              "id": "btn_numerology",
-              "title": "Numerology",
-              "description": "Numbers and life path analysis"
-            },
-             {
-               "id": "btn_astrocartography",
-               "title": "Astrocartography",
-               "description": "Locational astrology"
-             },
-             {
-               "id": "btn_mundane_astrology",
-               "title": "Mundane Astrology",
-               "description": "World events and politics"
-             },
-             {
-               "id": "btn_hellenistic_astrology",
-               "title": "Hellenistic Astrology",
-               "description": "Ancient Greek techniques"
-             },
-            {
-              "id": "btn_asteroids",
-              "title": "Asteroid Analysis",
-              "description": "Chiron, Juno, Vesta, Pallas insights"
-            },
-            {
-              "id": "btn_fixed_stars",
-              "title": "Fixed Stars",
-              "description": "Ancient stellar influences"
-            },
-            {
-              "id": "btn_medical_astrology",
-              "title": "Medical Astrology",
-              "description": "Health analysis and wellness insights"
-            }
-          ]
-        },
-        {
-          "title": "Advanced Services 2",
-          "rows": [
-            {
-              "id": "btn_financial_astrology",
-              "title": "Financial Astrology",
-              "description": "Wealth patterns and prosperity insights"
-            },
-            {
-              "id": "btn_harmonic_astrology",
-              "title": "Harmonic Astrology",
-              "description": "Deeper chart patterns and hidden harmonics"
-            },
-             {
-               "id": "btn_career_astrology",
-               "title": "Career Astrology",
-               "description": "Professional path and vocational guidance"
-             },
-             {
-               "id": "btn_solar_return",
-               "title": "Solar Return",
-               "description": "Annual birthday chart and yearly themes"
-             },
-             {
-               "id": "btn_event_astrology",
-               "title": "Event Astrology",
-               "description": "Cosmic events and their personal impact"
-             },
-             {
-               "id": "btn_future_self",
-               "title": "Future Self Simulator",
-               "description": "Long-term life timeline and alternative pathways"
-             },
-             {
-               "id": "btn_group_astrology",
-               "title": "Group & Family Astrology",
-               "description": "Combined readings for families and groups"
-             },
-             {
-               "id": "btn_hindu_astrology",
-               "title": "Hindu Vedic Astrology",
-               "description": "Traditional Kundli, marriage matching, Lagna analysis"
-             },
-             {
-               "id": "btn_prashna_astrology",
-               "title": "Prashna (Horary) Astrology",
-               "description": "Question-based predictions using current time"
-             },
-             {
-               "id": "btn_ashtakavarga",
-               "title": "Ashtakavarga Analysis",
-               "description": "8-fold planetary strength analysis"
-             }
-          ]
-        },
-        {
-          "title": "Advanced Services 3",
-          "rows": [
-             {
-               "id": "btn_varga_charts",
-               "title": "Varga Charts",
-               "description": "Divisional charts (D-9, D-10, D-12, etc.)"
-             },
-             {
-               "id": "btn_shadbala",
-               "title": "Shadbala Analysis",
-               "description": "6-fold planetary strength calculation"
-             },
-             {
-               "id": "btn_muhurta",
-               "title": "Muhurta (Electional)",
-               "description": "Auspicious timing for events"
-             },
-              {
-                "id": "btn_panchang",
-                "title": "Panchang (Hindu Almanac)",
-                "description": "Daily Hindu calendar and guidance"
-              },
-               {
-                 "id": "btn_kaal_sarp",
-                 "title": "Kaal Sarp Dosha",
-                 "description": "Rahu-Ketu axis analysis and remedies"
-               },
-               {
-                 "id": "btn_sade_sati",
-                 "title": "Sade Sati Analysis",
-                 "description": "Saturn's 7.5-year transit effects and remedies"
-               },
-                {
-                  "id": "btn_vedic_remedies",
-                  "title": "Vedic Remedies",
-                  "description": "Gemstones, mantras, pujas, and charities"
-                },
-                {
-                  "id": "btn_vimshottari_dasha",
-                  "title": "Vimshottari Dasha",
-                  "description": "Planetary periods and life predictions"
-                },
-                {
-                  "id": "btn_jaimini_astrology",
-                  "title": "Jaimini Astrology",
-                  "description": "Karakas and alternative Vedic system"
-                },
-                 {
-                   "id": "btn_hindu_festivals",
-                   "title": "Hindu Festivals",
-                   "description": "Festival calendar and auspicious timings"
-                 }
-          ]
-        },
-        {
-          "title": "Advanced Services 4",
-          "rows": [
-                 {
-                   "id": "btn_vedic_numerology",
-                   "title": "Vedic Numerology",
-                   "description": "Chani system - traditional Indian numerology"
-                 },
-                 {
-                   "id": "btn_ayurvedic_astrology",
-                   "title": "Ayurvedic Astrology",
-                   "description": "Dosha analysis and Ayurvedic health guidance"
-                 },
-               {
-               "id": "btn_progressions",
-               "title": "Secondary Progressions",
-               "description": "Soul's journey and life development"
-             },
-            {
-              "id": "btn_solar_arc",
-              "title": "Solar Arc Directions",
-              "description": "Major life changes and turning points"
-            }
-          ]
-        }
+          {
+            "id": "btn_compatibility",
+            "title": "Compatibility/Synastry",
+            "description": "Relationship astrology analysis"
+          }
+        ]
+      },
+      {
+        "title": "🔄 Current & Future",
+        "rows": [
+          {
+            "id": "btn_transits",
+            "title": "Current Transits",
+            "description": "Planetary influences now"
+          },
+          {
+            "id": "btn_solar_return",
+            "title": "Solar Return",
+            "description": "Yearly birthday chart"
+          },
+          {
+            "id": "btn_lunar_return",
+            "title": "Lunar Return",
+            "description": "Monthly lunar chart"
+          },
+          {
+            "id": "btn_progressions",
+            "title": "Secondary Progressions",
+            "description": "Life development patterns"
+          }
+        ]
+      },
+      {
+        "title": "🔬 Advanced Western",
+        "rows": [
+          {
+            "id": "btn_astrocartography",
+            "title": "Astrocartography",
+            "description": "Locational astrology"
+          },
+          {
+            "id": "btn_harmonic_astrology",
+            "title": "Harmonic Astrology",
+            "description": "Chart patterns & harmonics"
+          },
+          {
+            "id": "btn_asteroids",
+            "title": "Asteroid Analysis",
+            "description": "Chiron, Juno, Vesta insights"
+          },
+          {
+            "id": "btn_fixed_stars",
+            "title": "Fixed Stars",
+            "description": "Ancient stellar influences"
+          }
+        ]
+      }
     ]
-  }
+  },
+  "vedic_astrology_menu": {
+    "type": "list",
+    "body": "🕉️ *Vedic Astrology*\n\nDiscover ancient Indian wisdom and traditional techniques:",
+    "buttonText": "Choose Service",
+    "sections": [
+      {
+        "title": "📊 Core Vedic Services",
+        "rows": [
+          {
+            "id": "btn_vedic_birth_chart",
+            "title": "Vedic Birth Chart",
+            "description": "Traditional Kundli analysis"
+          },
+          {
+            "id": "btn_vimshottari_dasha",
+            "title": "Vimshottari Dasha",
+            "description": "Planetary period analysis"
+          },
+          {
+            "id": "btn_marriage_matching",
+            "title": "Marriage Matching",
+            "description": "Kundli Milan compatibility"
+          }
+        ]
+      },
+      {
+        "title": "🔮 Vedic Analysis",
+        "rows": [
+          {
+            "id": "btn_kaal_sarp",
+            "title": "Kaal Sarp Dosha",
+            "description": "Rahu-Ketu axis analysis"
+          },
+          {
+            "id": "btn_sade_sati",
+            "title": "Sade Sati",
+            "description": "Saturn's 7.5-year transit"
+          },
+          {
+            "id": "btn_ashtakavarga",
+            "title": "Ashtakavarga",
+            "description": "8-fold planetary strength"
+          },
+          {
+            "id": "btn_shadbala",
+            "title": "Shadbala Analysis",
+            "description": "6-fold strength calculation"
+          }
+        ]
+      },
+      {
+        "title": "🧘 Vedic Wisdom",
+        "rows": [
+          {
+            "id": "btn_vedic_remedies",
+            "title": "Vedic Remedies",
+            "description": "Mantras, gems, pujas"
+          },
+          {
+            "id": "btn_ayurvedic_astrology",
+            "title": "Ayurvedic Astrology",
+            "description": "Health & constitution analysis"
+          },
+          {
+            "id": "btn_panchang",
+            "title": "Panchang",
+            "description": "Hindu calendar & timings"
+          },
+          {
+            "id": "btn_muhurta",
+            "title": "Muhurta",
+            "description": "Auspicious timing"
+          }
+        ]
+      }
+    ]
+  },
+  "more_options_menu": {
+    "type": "list",
+    "body": "⚙️ *More Options*\n\nAdditional services and settings:",
+    "buttonText": "Choose Option",
+    "sections": [
+      {
+        "title": "🔮 Divination & Mysticism",
+        "rows": [
+          {
+            "id": "btn_tarot",
+            "title": "Tarot Reading",
+            "description": "Ancient card wisdom"
+          },
+          {
+            "id": "btn_palmistry",
+            "title": "Palmistry",
+            "description": "Hand reading analysis"
+          },
+          {
+            "id": "btn_iching",
+            "title": "I Ching Oracle",
+            "description": "Chinese divination"
+          },
+          {
+            "id": "btn_horary",
+            "title": "Horary Astrology",
+            "description": "Question-based predictions"
+          }
+        ]
+      },
+      {
+        "title": "🌍 Ancient Traditions",
+        "rows": [
+          {
+            "id": "btn_chinese_bazi",
+            "title": "Chinese BaZi",
+            "description": "Four Pillars of Destiny"
+          },
+          {
+            "id": "btn_kabbalistic",
+            "title": "Kabbalistic",
+            "description": "Jewish mystical tradition"
+          },
+          {
+            "id": "btn_mayan",
+            "title": "Mayan Calendar",
+            "description": "Ancient Mesoamerican wisdom"
+          },
+          {
+            "id": "btn_celtic",
+            "title": "Celtic Wisdom",
+            "description": "Druidic tree astrology"
+          }
+        ]
+      },
+      {
+        "title": "⚙️ Settings & Profile",
+        "rows": [
+          {
+            "id": "btn_language_settings",
+            "title": "🌐 Language Settings",
+            "description": "Change your language"
+          },
+          {
+            "id": "btn_user_profile",
+            "title": "👤 My Profile",
+            "description": "Update birth details"
+          },
+          {
+            "id": "btn_subscription",
+            "title": "💼 Subscription Plans",
+            "description": "Upgrade your experience"
+          },
+          {
+            "id": "btn_help",
+            "title": "❓ Help & Support",
+            "description": "Get assistance"
+          }
+        ]
+      }
+    ]
+}
 }

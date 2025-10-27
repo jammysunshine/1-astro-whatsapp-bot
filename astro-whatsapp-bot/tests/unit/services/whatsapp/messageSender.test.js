@@ -314,7 +314,6 @@ describe('WhatsApp Message Sender', () => {
           type: 'interactive',
           interactive: {
             type: 'list',
-            header: { type: 'text', text: 'Choose an option:' },
             body: { text: body },
             action: {
               button: buttonText,

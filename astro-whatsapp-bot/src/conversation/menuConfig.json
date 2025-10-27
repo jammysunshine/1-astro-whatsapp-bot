@@ -220,11 +220,21 @@
              "title": "Numerology",
              "description": "Numbers and life path analysis"
            },
-           {
-             "id": "btn_astrocartography",
-             "title": "Astrocartography",
-             "description": "Locational astrology"
-           },
+            {
+              "id": "btn_astrocartography",
+              "title": "Astrocartography",
+              "description": "Locational astrology"
+            },
+            {
+              "id": "btn_mundane_astrology",
+              "title": "Mundane Astrology",
+              "description": "World events and politics"
+            },
+            {
+              "id": "btn_hellenistic_astrology",
+              "title": "Hellenistic Astrology",
+              "description": "Ancient Greek techniques"
+            },
            {
              "id": "btn_asteroids",
              "title": "Asteroid Analysis",

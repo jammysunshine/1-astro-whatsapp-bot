@@ -12,147 +12,147 @@ class VedicNumerology {
     // Sanskrit letter to number mapping (traditional Vedic system)
     this.sanskritMap = {
       // Vowels (स्वर)
-      'अ': 1, 'आ': 1, 'इ': 1, 'ई': 1, 'उ': 1, 'ऊ': 1,
-      'ऋ': 1, 'ॠ': 1, 'ऌ': 1, 'ॡ': 1, 'ए': 1, 'ऐ': 1, 'ओ': 1, 'औ': 1,
-      'अं': 1, 'अः': 1,
+      अ: 1, आ: 1, इ: 1, ई: 1, उ: 1, ऊ: 1,
+      ऋ: 1, ॠ: 1, ऌ: 1, ॡ: 1, ए: 1, ऐ: 1, ओ: 1, औ: 1,
+      अं: 1, अः: 1,
 
       // Consonants (व्यंजन)
-      'क': 2, 'ख': 2, 'ग': 2, 'घ': 2, 'ङ': 2,
-      'च': 3, 'छ': 3, 'ज': 3, 'झ': 3, 'ञ': 3,
-      'ट': 4, 'ठ': 4, 'ड': 4, 'ढ': 4, 'ण': 4,
-      'त': 5, 'थ': 5, 'द': 5, 'ध': 5, 'न': 5,
-      'प': 6, 'फ': 6, 'ब': 6, 'भ': 6, 'म': 6,
-      'य': 7, 'र': 7, 'ल': 7, 'व': 7,
-      'श': 8, 'ष': 8, 'स': 8, 'ह': 8,
-      'क्ष': 9, 'ज्ञ': 9, 'त्र': 9, 'श्र': 9
+      क: 2, ख: 2, ग: 2, घ: 2, ङ: 2,
+      च: 3, छ: 3, ज: 3, झ: 3, ञ: 3,
+      ट: 4, ठ: 4, ड: 4, ढ: 4, ण: 4,
+      त: 5, थ: 5, द: 5, ध: 5, न: 5,
+      प: 6, फ: 6, ब: 6, भ: 6, म: 6,
+      य: 7, र: 7, ल: 7, व: 7,
+      श: 8, ष: 8, स: 8, ह: 8,
+      क्ष: 9, ज्ञ: 9, त्र: 9, श्र: 9
     };
 
     // English letter approximation for names in English
     this.englishMap = {
-      'A': 1, 'I': 1, 'J': 1, 'Q': 1, 'Y': 1,
-      'B': 2, 'K': 2, 'R': 2,
-      'C': 3, 'G': 3, 'L': 3, 'S': 3,
-      'D': 4, 'M': 4, 'T': 4,
-      'E': 5, 'H': 5, 'N': 5, 'X': 5,
-      'U': 6, 'V': 6, 'W': 6,
-      'O': 7, 'Z': 7,
-      'F': 8, 'P': 8
+      A: 1, I: 1, J: 1, Q: 1, Y: 1,
+      B: 2, K: 2, R: 2,
+      C: 3, G: 3, L: 3, S: 3,
+      D: 4, M: 4, T: 4,
+      E: 5, H: 5, N: 5, X: 5,
+      U: 6, V: 6, W: 6,
+      O: 7, Z: 7,
+      F: 8, P: 8
     };
 
     // Vedic number interpretations
     this.vedicInterpretations = {
       1: {
-        name: "Sun (Surya)",
-        qualities: "Leadership, independence, creativity, self-reliance",
-        strengths: "Pioneering spirit, courage, originality",
-        challenges: "Ego, impatience, dominance",
-        career: "Entrepreneur, leader, artist, innovator",
-        health: "Heart, spine, eyes, digestive system",
-        gemstone: "Ruby",
-        mantra: "Om Suryaya Namaha"
+        name: 'Sun (Surya)',
+        qualities: 'Leadership, independence, creativity, self-reliance',
+        strengths: 'Pioneering spirit, courage, originality',
+        challenges: 'Ego, impatience, dominance',
+        career: 'Entrepreneur, leader, artist, innovator',
+        health: 'Heart, spine, eyes, digestive system',
+        gemstone: 'Ruby',
+        mantra: 'Om Suryaya Namaha'
       },
       2: {
-        name: "Moon (Chandra)",
-        qualities: "Sensitivity, intuition, cooperation, adaptability",
-        strengths: "Emotional intelligence, diplomacy, nurturing",
-        challenges: "Mood swings, dependency, indecisiveness",
-        career: "Counselor, teacher, healer, mediator",
-        health: "Stomach, breasts, lymphatic system",
-        gemstone: "Pearl",
-        mantra: "Om Chandraya Namaha"
+        name: 'Moon (Chandra)',
+        qualities: 'Sensitivity, intuition, cooperation, adaptability',
+        strengths: 'Emotional intelligence, diplomacy, nurturing',
+        challenges: 'Mood swings, dependency, indecisiveness',
+        career: 'Counselor, teacher, healer, mediator',
+        health: 'Stomach, breasts, lymphatic system',
+        gemstone: 'Pearl',
+        mantra: 'Om Chandraya Namaha'
       },
       3: {
-        name: "Jupiter (Guru)",
-        qualities: "Wisdom, optimism, communication, expansion",
-        strengths: "Teaching, philosophy, generosity, faith",
-        challenges: "Over-confidence, extravagance, restlessness",
-        career: "Teacher, writer, philosopher, advisor",
-        health: "Liver, thighs, nervous system",
-        gemstone: "Yellow Sapphire",
-        mantra: "Om Gurave Namaha"
+        name: 'Jupiter (Guru)',
+        qualities: 'Wisdom, optimism, communication, expansion',
+        strengths: 'Teaching, philosophy, generosity, faith',
+        challenges: 'Over-confidence, extravagance, restlessness',
+        career: 'Teacher, writer, philosopher, advisor',
+        health: 'Liver, thighs, nervous system',
+        gemstone: 'Yellow Sapphire',
+        mantra: 'Om Gurave Namaha'
       },
       4: {
-        name: "Rahu (North Node)",
-        qualities: "Innovation, unconventional, material success",
-        strengths: "Technical skills, foreign connections, research",
-        challenges: "Instability, deception, obsession",
-        career: "Scientist, engineer, inventor, businessman",
-        health: "Skin, lungs, mysterious illnesses",
-        gemstone: "Hessonite",
-        mantra: "Om Rahave Namaha"
+        name: 'Rahu (North Node)',
+        qualities: 'Innovation, unconventional, material success',
+        strengths: 'Technical skills, foreign connections, research',
+        challenges: 'Instability, deception, obsession',
+        career: 'Scientist, engineer, inventor, businessman',
+        health: 'Skin, lungs, mysterious illnesses',
+        gemstone: 'Hessonite',
+        mantra: 'Om Rahave Namaha'
       },
       5: {
-        name: "Mercury (Budha)",
-        qualities: "Intelligence, communication, adaptability, business",
-        strengths: "Learning, analysis, commerce, versatility",
-        challenges: "Nervousness, criticism, inconsistency",
-        career: "Writer, trader, analyst, communicator",
-        health: "Nervous system, skin, respiratory system",
-        gemstone: "Emerald",
-        mantra: "Om Budhaya Namaha"
+        name: 'Mercury (Budha)',
+        qualities: 'Intelligence, communication, adaptability, business',
+        strengths: 'Learning, analysis, commerce, versatility',
+        challenges: 'Nervousness, criticism, inconsistency',
+        career: 'Writer, trader, analyst, communicator',
+        health: 'Nervous system, skin, respiratory system',
+        gemstone: 'Emerald',
+        mantra: 'Om Budhaya Namaha'
       },
       6: {
-        name: "Venus (Shukra)",
-        qualities: "Harmony, beauty, relationships, luxury",
-        strengths: "Artistic, diplomatic, sensual, prosperous",
-        challenges: "Indulgence, vanity, possessiveness",
-        career: "Artist, designer, diplomat, luxury business",
-        health: "Kidneys, reproductive system, throat",
-        gemstone: "Diamond",
-        mantra: "Om Shukraya Namaha"
+        name: 'Venus (Shukra)',
+        qualities: 'Harmony, beauty, relationships, luxury',
+        strengths: 'Artistic, diplomatic, sensual, prosperous',
+        challenges: 'Indulgence, vanity, possessiveness',
+        career: 'Artist, designer, diplomat, luxury business',
+        health: 'Kidneys, reproductive system, throat',
+        gemstone: 'Diamond',
+        mantra: 'Om Shukraya Namaha'
       },
       7: {
-        name: "Ketu (South Node)",
-        qualities: "Spirituality, detachment, mysticism, liberation",
-        strengths: "Intuition, meditation, healing, wisdom",
-        challenges: "Isolation, confusion, detachment from worldly matters",
-        career: "Spiritual teacher, healer, researcher, monk",
-        health: "Mysterious ailments, spiritual health",
-        gemstone: "Cat's Eye",
-        mantra: "Om Ketave Namaha"
+        name: 'Ketu (South Node)',
+        qualities: 'Spirituality, detachment, mysticism, liberation',
+        strengths: 'Intuition, meditation, healing, wisdom',
+        challenges: 'Isolation, confusion, detachment from worldly matters',
+        career: 'Spiritual teacher, healer, researcher, monk',
+        health: 'Mysterious ailments, spiritual health',
+        gemstone: 'Cat\'s Eye',
+        mantra: 'Om Ketave Namaha'
       },
       8: {
-        name: "Saturn (Shani)",
-        qualities: "Discipline, responsibility, karma, longevity",
-        strengths: "Patience, organization, justice, perseverance",
-        challenges: "Depression, delays, rigidity, pessimism",
-        career: "Administrator, judge, scientist, labor work",
-        health: "Bones, teeth, joints, chronic conditions",
-        gemstone: "Blue Sapphire",
-        mantra: "Om Shanaye Namaha"
+        name: 'Saturn (Shani)',
+        qualities: 'Discipline, responsibility, karma, longevity',
+        strengths: 'Patience, organization, justice, perseverance',
+        challenges: 'Depression, delays, rigidity, pessimism',
+        career: 'Administrator, judge, scientist, labor work',
+        health: 'Bones, teeth, joints, chronic conditions',
+        gemstone: 'Blue Sapphire',
+        mantra: 'Om Shanaye Namaha'
       },
       9: {
-        name: "Mars (Mangal)",
-        qualities: "Energy, courage, leadership, transformation",
-        strengths: "Courage, initiative, protection, surgery",
-        challenges: "Aggression, impatience, accidents, conflicts",
-        career: "Soldier, surgeon, athlete, engineer",
-        health: "Blood, muscles, head, fever",
-        gemstone: "Red Coral",
-        mantra: "Om Mangalaya Namaha"
+        name: 'Mars (Mangal)',
+        qualities: 'Energy, courage, leadership, transformation',
+        strengths: 'Courage, initiative, protection, surgery',
+        challenges: 'Aggression, impatience, accidents, conflicts',
+        career: 'Soldier, surgeon, athlete, engineer',
+        health: 'Blood, muscles, head, fever',
+        gemstone: 'Red Coral',
+        mantra: 'Om Mangalaya Namaha'
       }
     };
 
     // Compound number interpretations
     this.compoundNumbers = {
-      10: "Spiritual leadership and divine guidance",
-      11: "Master intuition and spiritual illumination",
-      12: "Divine wisdom and cosmic consciousness",
-      13: "Transformation and rebirth",
-      14: "Material and spiritual balance",
-      15: "Spiritual discipline and devotion",
-      16: "Harmony and divine love",
-      17: "Spiritual liberation and enlightenment",
-      18: "Material abundance and spiritual wisdom",
-      19: "Humanitarian service and compassion",
-      20: "Universal love and service",
-      21: "Cosmic consciousness and mastery",
-      22: "Master builder and manifestation",
-      23: "Divine communication and inspiration",
-      24: "Cosmic order and divine law",
-      25: "Universal knowledge and wisdom",
-      26: "Divine protection and guidance",
-      27: "Complete spiritual realization"
+      10: 'Spiritual leadership and divine guidance',
+      11: 'Master intuition and spiritual illumination',
+      12: 'Divine wisdom and cosmic consciousness',
+      13: 'Transformation and rebirth',
+      14: 'Material and spiritual balance',
+      15: 'Spiritual discipline and devotion',
+      16: 'Harmony and divine love',
+      17: 'Spiritual liberation and enlightenment',
+      18: 'Material abundance and spiritual wisdom',
+      19: 'Humanitarian service and compassion',
+      20: 'Universal love and service',
+      21: 'Cosmic consciousness and mastery',
+      22: 'Master builder and manifestation',
+      23: 'Divine communication and inspiration',
+      24: 'Cosmic order and divine law',
+      25: 'Universal knowledge and wisdom',
+      26: 'Divine protection and guidance',
+      27: 'Complete spiritual realization'
     };
   }
 
@@ -222,7 +222,7 @@ class VedicNumerology {
     const birthNumber = this.calculateBirthNumber(birthDate);
     const nameNumber = this.calculateVedicNameNumber(name);
 
-    if (!birthNumber || !nameNumber) return null;
+    if (!birthNumber || !nameNumber) { return null; }
 
     return this.reduceToVedicNumber(birthNumber + nameNumber);
   }
@@ -283,17 +283,17 @@ class VedicNumerology {
       summary += `*💎 Recommended Gemstone:* ${birthInterpretation.gemstone}\n`;
       summary += `*🕉️ Mantra:* ${birthInterpretation.mantra}\n\n`;
 
-      summary += `*📊 Vedic Number Compatibility:*\n`;
+      summary += '*📊 Vedic Number Compatibility:*\n';
       const compatibleNumbers = this.getCompatibleNumbers(birthNumber);
       summary += `• Compatible with: ${compatibleNumbers.join(', ')}\n`;
       const challengingNumbers = this.getChallengingNumbers(birthNumber);
       summary += `• Challenging with: ${challengingNumbers.join(', ')}\n\n`;
 
-      summary += `*🔮 Vedic Numerology Summary:*\n`;
+      summary += '*🔮 Vedic Numerology Summary:*\n';
       summary += `Your Vedic numbers reveal a unique cosmic blueprint. The birth number (${birthNumber}) shows your inherent nature, `;
       summary += `the name number (${nameNumber}) indicates how you express yourself, and the destiny number (${destinyNumber}) `;
-      summary += `reveals your life's purpose. These numbers work together to guide your spiritual journey and material success.\n\n`;
-      summary += `Remember: Vedic numerology is a tool for self-understanding. Your free will and karma ultimately shape your destiny! 🕉️`;
+      summary += 'reveals your life\'s purpose. These numbers work together to guide your spiritual journey and material success.\n\n';
+      summary += 'Remember: Vedic numerology is a tool for self-understanding. Your free will and karma ultimately shape your destiny! 🕉️';
 
       return {
         birthNumber,
@@ -304,7 +304,6 @@ class VedicNumerology {
         destinyInterpretation,
         summary
       };
-
     } catch (error) {
       logger.error('Error generating Vedic numerology analysis:', error);
       return {
@@ -356,21 +355,21 @@ class VedicNumerology {
    */
   getVedicNumerologyCatalog() {
     return {
-      description: "🕉️ Vedic Numerology (Chani System) - Traditional Indian numerology based on Sanskrit alphabet and Vedic principles",
+      description: '🕉️ Vedic Numerology (Chani System) - Traditional Indian numerology based on Sanskrit alphabet and Vedic principles',
       features: [
-        "Birth Number (Janma Sankhya) - Your inherent nature",
-        "Name Number (Naam Sankhya) - Your expression",
-        "Destiny Number (Karma Sankhya) - Your life purpose",
-        "Compound Numbers - Complex karmic influences",
-        "Planetary rulerships and gemstone recommendations",
-        "Vedic mantras and spiritual guidance"
+        'Birth Number (Janma Sankhya) - Your inherent nature',
+        'Name Number (Naam Sankhya) - Your expression',
+        'Destiny Number (Karma Sankhya) - Your life purpose',
+        'Compound Numbers - Complex karmic influences',
+        'Planetary rulerships and gemstone recommendations',
+        'Vedic mantras and spiritual guidance'
       ],
       benefits: [
-        "Understand your cosmic blueprint",
-        "Discover life purpose and destiny",
-        "Find compatible relationships",
-        "Choose auspicious names and dates",
-        "Get spiritual guidance and mantras"
+        'Understand your cosmic blueprint',
+        'Discover life purpose and destiny',
+        'Find compatible relationships',
+        'Choose auspicious names and dates',
+        'Get spiritual guidance and mantras'
       ]
     };
   }

@@ -96,8 +96,37 @@ class NotFoundError extends CustomError {
   }
 }
 
+/**
+ * Handle general errors
+ * @param {Error} error - Error object
+ * @param {Object} context - Additional context
+ */
+const handleError = (error, context = {}) => {
+  logger.error('Error occurred:', error, context);
+};
+
+/**
+ * Handle validation errors
+ * @param {Error} error - Validation error
+ * @param {string} field - Field name
+ */
+const handleValidationError = (error, field) => {
+  logger.warn(`Validation error for field ${field}:`, error);
+};
+
+/**
+ * Handle database errors
+ * @param {Error} error - Database error
+ */
+const handleDatabaseError = error => {
+  logger.error('Database error:', error);
+};
+
 module.exports = {
   errorHandler,
+  handleError,
+  handleValidationError,
+  handleDatabaseError,
   CustomError,
   ValidationError,
   AuthenticationError,

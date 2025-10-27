@@ -31,12 +31,12 @@ logger.info(
  * @param {string} message - User message
  * @returns {Object|null} Partner data or null if not found
  */
-const extractPartnerData = (message) => {
+const extractPartnerData = message => {
   const lowerMessage = message.toLowerCase();
 
   // Check if message contains birth date pattern
   const dateMatch = message.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
-  if (!dateMatch) return null;
+  if (!dateMatch) { return null; }
 
   const birthDate = dateMatch[1];
 
@@ -1903,9 +1903,15 @@ const generateAstrologyResponse = async(messageText, user) => {
 
   // Birth chart requests
   if (matchesIntent(message, ['birth chart', 'kundli', 'chart', /^kundli/]) ||
-       (matchesIntent(message, ['complete']) && matchesIntent(message, ['analysis']))) {
+        (matchesIntent(message, ['complete']) && matchesIntent(message, ['analysis']))) {
     if (!user.birthDate) {
-      return 'To generate your complete Vedic birth chart analysis, I need your birth details. Please provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      return '📊 *Complete Vedic Birth Chart Analysis*\n\nI need your complete birth details to create your personalized cosmic blueprint.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - crucial for accuracy!\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India\n\n💡 *Pro Tip:* The more accurate your birth time, the more precise your chart!\n\nSend "menu" to explore other cosmic insights!';
+    }
+
+    // Enhanced birth data validation
+    const validation = this.validateBirthData(user.birthDate, user.birthTime, user.birthPlace);
+    if (!validation.isValid) {
+      return `❌ *Birth Data Validation*\n\n${validation.message}\n\nPlease check and correct your birth details. Send "update profile" to modify your information.`;
     }
 
     try {
@@ -1919,7 +1925,8 @@ const generateAstrologyResponse = async(messageText, user) => {
       return chartData.comprehensiveDescription;
     } catch (error) {
       logger.error('Error generating complete Vedic analysis:', error);
-      // Fallback to basic chart
+
+      // Enhanced fallback with more information
       try {
         const basicChart = vedicCalculator.generateBasicBirthChart({
           name: user.name,
@@ -1928,16 +1935,21 @@ const generateAstrologyResponse = async(messageText, user) => {
           birthPlace: user.birthPlace || 'Delhi'
         });
 
-        let response = '📊 *Your Vedic Birth Chart*\n\n';
+        let response = '📊 *Your Vedic Birth Chart (Basic Analysis)*\n\n';
         response += `☀️ *Sun Sign:* ${basicChart.sunSign}\n`;
         response += `🌙 *Moon Sign:* ${basicChart.moonSign}\n`;
         response += `⬆️ *Rising Sign:* ${basicChart.risingSign}\n\n`;
-        response +=
-           'I\'m having trouble generating the full analysis right now. Please try again later.';
+        response += '⚠️ *Service Note:* I\'m currently experiencing technical difficulties with the full analysis. This basic chart shows your core planetary positions.\n\n';
+        response += '💡 *What you can do next:*\n';
+        response += '• Try again in a few minutes\n';
+        response += '• Send "horoscope" for daily guidance\n';
+        response += '• Send "compatibility" for relationship insights\n\n';
+        response += 'Your birth data is safely stored. The full analysis will be available soon!';
 
         return response;
       } catch (fallbackError) {
-        return 'I\'m having trouble generating your birth chart right now. Please try again later or contact support.';
+        logger.error('Fallback chart generation also failed:', fallbackError);
+        return '⚠️ *Technical Difficulties*\n\nI\'m currently unable to generate your birth chart due to technical issues. This is usually temporary.\n\n💡 *Suggestions:*\n• Try again in 5-10 minutes\n• Send "support" if the issue persists\n• Use other features like "horoscope" or "tarot" in the meantime\n\nYour birth data remains securely stored and will be available when the service is restored.';
       }
     }
   }
@@ -1960,16 +1972,16 @@ const generateAstrologyResponse = async(messageText, user) => {
       }
 
       // Format the response
-      let response = `🌙 *Lunar Return Analysis*\n\n`;
+      let response = '🌙 *Lunar Return Analysis*\n\n';
       response += `*Next Lunar Return:* ${lunarReturn.formattedDate}\n\n`;
 
       // Monthly themes
       if (lunarReturn.monthlyThemes && lunarReturn.monthlyThemes.length > 0) {
-        response += `*Monthly Themes:*\n`;
+        response += '*Monthly Themes:*\n';
         lunarReturn.monthlyThemes.forEach(theme => {
           response += `• ${theme}\n`;
         });
-        response += `\n`;
+        response += '\n';
       }
 
       // Emotional cycle
@@ -1979,11 +1991,11 @@ const generateAstrologyResponse = async(messageText, user) => {
 
       // Recommendations
       if (lunarReturn.recommendations && lunarReturn.recommendations.length > 0) {
-        response += `*Monthly Guidance:*\n`;
+        response += '*Monthly Guidance:*\n';
         lunarReturn.recommendations.forEach(rec => {
           response += `• ${rec}\n`;
         });
-        response += `\n`;
+        response += '\n';
       }
 
       // Analysis details
@@ -1991,8 +2003,8 @@ const generateAstrologyResponse = async(messageText, user) => {
         response += `*Key Insights:* ${lunarReturn.analysis.emotionalFocus}\n\n`;
       }
 
-      response += `*About Lunar Returns:*\n`;
-      response += `Lunar returns occur when the Moon returns to its natal position (approximately every 27.3 days). This chart reveals the emotional and psychological themes for the coming month, showing how you'll feel and what life areas will be emphasized.`;
+      response += '*About Lunar Returns:*\n';
+      response += 'Lunar returns occur when the Moon returns to its natal position (approximately every 27.3 days). This chart reveals the emotional and psychological themes for the coming month, showing how you\'ll feel and what life areas will be emphasized.';
 
       return response;
     } catch (error) {
@@ -2022,29 +2034,29 @@ const generateAstrologyResponse = async(messageText, user) => {
       );
 
       if (synastryResult.error) {
-        return '❌ *Synastry Analysis Error*\n\n' + synastryResult.error + '\n\nPlease check your partner\'s birth details and try again.';
+        return `❌ *Synastry Analysis Error*\n\n${synastryResult.error}\n\nPlease check your partner's birth details and try again.`;
       }
 
       // Format the response
-      let response = '💕 *Synastry Analysis: ' + synastryResult.person1.name + ' & ' + synastryResult.person2.name + '*\n\n';
+      let response = `💕 *Synastry Analysis: ${synastryResult.person1.name} & ${synastryResult.person2.name}*\n\n`;
 
       // Compatibility overview
       const compat = synastryResult.compatibility;
-      response += '🎯 *Overall Compatibility: ' + compat.overallScore + '/100*\n';
-      response += compat.summary + '\n\n';
+      response += `🎯 *Overall Compatibility: ${compat.overallScore}/100*\n`;
+      response += `${compat.summary}\n\n`;
 
       // Category scores
       response += '📊 *Compatibility Categories:*\n';
-      response += '💖 Romantic: ' + compat.categories.romantic + '/100\n';
-      response += '💬 Communication: ' + compat.categories.communication + '/100\n';
-      response += '❤️ Emotional: ' + compat.categories.emotional + '/100\n';
-      response += '🧘 Spiritual: ' + compat.categories.spiritual + '/100\n\n';
+      response += `💖 Romantic: ${compat.categories.romantic}/100\n`;
+      response += `💬 Communication: ${compat.categories.communication}/100\n`;
+      response += `❤️ Emotional: ${compat.categories.emotional}/100\n`;
+      response += `🧘 Spiritual: ${compat.categories.spiritual}/100\n\n`;
 
       // Key aspects
       if (synastryResult.synastryAspects && synastryResult.synastryAspects.length > 0) {
         response += '🔗 *Key Synastry Aspects:*\n';
         synastryResult.synastryAspects.slice(0, 5).forEach(aspect => {
-          response += '• ' + aspect.planet1 + '-' + aspect.planet2 + ' ' + aspect.aspect + ': ' + aspect.interpretation + '\n';
+          response += `• ${aspect.planet1}-${aspect.planet2} ${aspect.aspect}: ${aspect.interpretation}\n`;
         });
         response += '\n';
       }
@@ -2052,20 +2064,20 @@ const generateAstrologyResponse = async(messageText, user) => {
       // Composite chart insights
       if (synastryResult.compositeChart && synastryResult.compositeChart.interpretations) {
         response += '🌟 *Composite Chart Insights:*\n';
-        response += synastryResult.compositeChart.interpretations.relationshipNature + '\n\n';
+        response += `${synastryResult.compositeChart.interpretations.relationshipNature}\n\n`;
       }
 
       // Davison chart purpose
       if (synastryResult.davisonChart && synastryResult.davisonChart.relationshipPurpose) {
         response += '🎭 *Relationship Purpose (Davison Chart):*\n';
-        response += synastryResult.davisonChart.relationshipPurpose + '\n\n';
+        response += `${synastryResult.davisonChart.relationshipPurpose}\n\n`;
       }
 
       // Strengths and challenges
       if (compat.strengths && compat.strengths.length > 0) {
         response += '✅ *Relationship Strengths:*\n';
         compat.strengths.forEach(strength => {
-          response += '• ' + strength + '\n';
+          response += `• ${strength}\n`;
         });
         response += '\n';
       }
@@ -2073,7 +2085,7 @@ const generateAstrologyResponse = async(messageText, user) => {
       if (compat.challenges && compat.challenges.length > 0) {
         response += '⚠️ *Areas for Growth:*\n';
         compat.challenges.forEach(challenge => {
-          response += '• ' + challenge + '\n';
+          response += `• ${challenge}\n`;
         });
         response += '\n';
       }
@@ -2082,7 +2094,7 @@ const generateAstrologyResponse = async(messageText, user) => {
       if (synastryResult.relationshipInsights && synastryResult.relationshipInsights.length > 0) {
         response += '💡 *Key Relationship Insights:*\n';
         synastryResult.relationshipInsights.forEach(insight => {
-          response += '• ' + insight.insight + '\n';
+          response += `• ${insight.insight}\n`;
         });
       }
 
@@ -2129,6 +2141,95 @@ const generateAstrologyResponse = async(messageText, user) => {
   return `✨ Thank you for your message, ${user.name || 'cosmic explorer'}!\n\nI'm here to guide you through your cosmic journey. I can provide personalized horoscopes, birth chart analysis, compatibility insights, and much more.\n\nWhat aspect of your life would you like cosmic guidance on today? 🌟`;
 };
 
+/**
+ * Validate birth data format and completeness
+ * @param {string} birthDate - Birth date string
+ * @param {string} birthTime - Birth time string
+ * @param {string} birthPlace - Birth place string
+ * @returns {Object} Validation result
+ */
+function validateBirthData(birthDate, birthTime, birthPlace) {
+  const result = { isValid: true, message: '' };
+
+  // Validate birth date format
+  if (!birthDate) {
+    result.isValid = false;
+    result.message = 'Birth date is required.';
+    return result;
+  }
+
+  const dateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+  const dateMatch = birthDate.match(dateRegex);
+
+  if (!dateMatch) {
+    result.isValid = false;
+    result.message = 'Birth date must be in DD/MM/YYYY format (e.g., 15/06/1990).';
+    return result;
+  }
+
+  const [, day, month, year] = dateMatch.map(Number);
+
+  // Validate date ranges
+  if (day < 1 || day > 31) {
+    result.isValid = false;
+    result.message = 'Birth day must be between 1 and 31.';
+    return result;
+  }
+
+  if (month < 1 || month > 12) {
+    result.isValid = false;
+    result.message = 'Birth month must be between 1 and 12.';
+    return result;
+  }
+
+  if (year < 1800 || year > new Date().getFullYear()) {
+    result.isValid = false;
+    result.message = `Birth year must be between 1800 and ${new Date().getFullYear()}.`;
+    return result;
+  }
+
+  // Validate birth time format (if provided)
+  if (birthTime) {
+    const timeRegex = /^(\d{1,2}):(\d{2})$/;
+    const timeMatch = birthTime.match(timeRegex);
+
+    if (!timeMatch) {
+      result.isValid = false;
+      result.message = 'Birth time must be in HH:MM format (e.g., 14:30).';
+      return result;
+    }
+
+    const [, hour, minute] = timeMatch.map(Number);
+
+    if (hour < 0 || hour > 23) {
+      result.isValid = false;
+      result.message = 'Birth hour must be between 00 and 23.';
+      return result;
+    }
+
+    if (minute < 0 || minute > 59) {
+      result.isValid = false;
+      result.message = 'Birth minute must be between 00 and 59.';
+      return result;
+    }
+  }
+
+  // Validate birth place
+  if (!birthPlace || birthPlace.trim().length < 2) {
+    result.isValid = false;
+    result.message = 'Birth place is required and should be at least 2 characters long.';
+    return result;
+  }
+
+  // Check for reasonable place format (City, Country)
+  if (!birthPlace.includes(',')) {
+    result.message += '\nTip: Include country for better accuracy (e.g., "Mumbai, India").';
+  }
+
+  return result;
+}
+
 module.exports = {
-  generateAstrologyResponse
+  generateAstrologyResponse,
+  validateBirthData
 };

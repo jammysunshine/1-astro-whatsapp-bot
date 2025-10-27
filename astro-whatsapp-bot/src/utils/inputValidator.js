@@ -66,11 +66,21 @@ const isValidBirthTime = birthTime => {
 };
 
 /**
+ * Validate email address
+ * @param {string} email - Email string
+ * @returns {boolean} True if valid
+ */
+const validateEmail = email => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+/**
  * Validate phone number (basic validation)
  * @param {string} phoneNumber - Phone number string
  * @returns {boolean} True if valid
  */
-const isValidPhoneNumber = phoneNumber => {
+const validatePhoneNumber = phoneNumber => {
   // Basic phone number validation (10-15 digits, may start with +)
   const phoneRegex = /^\+?\d{10,15}$/;
   return phoneRegex.test(phoneNumber.replace(/\s+/g, ''));
@@ -222,7 +232,8 @@ const checkRateLimit = (identifier, limit = 100, windowMs = 900000) => {
 module.exports = {
   isValidBirthDate,
   isValidBirthTime,
-  isValidPhoneNumber,
+  validateEmail,
+  validatePhoneNumber,
   validateWhatsAppMessage,
   sanitizeInput,
   isValidPlanId,

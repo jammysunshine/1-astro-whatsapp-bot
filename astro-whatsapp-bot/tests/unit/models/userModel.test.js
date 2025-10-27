@@ -28,34 +28,53 @@ describe('UserModel Functions', () => {
   });
 
   describe('getUserByPhone', () => {
-    it('should get user by phone number', async() => {
+    it('should get user by phone number', async () => {
       const mockUser = {
         id: 'user-456',
         phoneNumber: '+1234567890',
-        name: 'Test User'
+        name: 'Test User',
+        toObject: jest.fn().mockReturnValue({
+          id: 'user-456',
+          phoneNumber: '+1234567890',
+          name: 'Test User'
+        })
       };
 
       User.findOne.mockResolvedValue(mockUser);
 
       const user = await getUserByPhone('+1234567890');
 
-      expect(user).toEqual(mockUser);
+      expect(user).toEqual({
+        id: 'user-456',
+        phoneNumber: '+1234567890',
+        name: 'Test User'
+      });
       expect(User.findOne).toHaveBeenCalledWith({ phoneNumber: '+1234567890' });
     });
   });
+  });
 
   describe('updateUserProfile', () => {
-    it('should update user profile', async() => {
+    it('should update user profile', async () => {
       const mockUser = {
         phoneNumber: '+1234567890',
-        save: jest.fn().mockResolvedValue()
+        save: jest.fn().mockResolvedValue(),
+        toObject: jest.fn().mockReturnValue({
+          phoneNumber: '+1234567890',
+          name: 'Updated User'
+        })
       };
 
       User.findOne.mockResolvedValue(mockUser);
 
-      await updateUserProfile('+1234567890', { name: 'Updated User' });
+      const result = await updateUserProfile('+1234567890', { name: 'Updated User' });
 
       expect(mockUser.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        phoneNumber: '+1234567890',
+        name: 'Updated User'
+      });
     });
+  });
   });
 });

@@ -121,6 +121,7 @@
   "comprehensive_menu": {
     "type": "list",
     "body": "🌟 *Complete Astrology Services*\n\nChoose from our full range of personalized readings:",
+    "buttonText": "Choose Service",
     "sections": [
       {
         "title": "Core Services",

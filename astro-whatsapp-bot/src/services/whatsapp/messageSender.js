@@ -448,11 +448,15 @@ const sendMessage = async(
         if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
         }
+        // Ensure sections exist and have proper structure
+        const sections = message.sections || [];
+        // Ensure buttonText exists
+        const buttonText = message.buttonText || 'Select';
         response = await sendListMessage(
           phoneNumber,
           translatedBody,
-          message.buttonText,
-          message.sections,
+          buttonText,
+          sections,
           options
         );
       }

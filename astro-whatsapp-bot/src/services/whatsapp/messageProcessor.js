@@ -91,7 +91,8 @@ const listActionMapping = {
   btn_muhurta: 'get_muhurta_analysis',
   btn_panchang: 'get_panchang_analysis',
   btn_progressions: 'get_secondary_progressions',
-  btn_solar_arc: 'get_solar_arc_directions'
+  btn_solar_arc: 'get_solar_arc_directions',
+  horoscope_menu: 'show_main_menu'
 };
 
 /**
@@ -431,6 +432,11 @@ const processButtonReply = async(phoneNumber, buttonId, title, user) => {
   // Handle special buttons
   if (buttonId === 'horoscope_again') {
     await executeMenuAction(phoneNumber, user, 'get_daily_horoscope');
+    return;
+  }
+  
+  if (buttonId === 'horoscope_menu') {
+    await executeMenuAction(phoneNumber, user, 'show_main_menu');
     return;
   }
 
@@ -1298,7 +1304,14 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   case 'show_comprehensive_menu': {
     const comprehensiveMenu = getMenu('comprehensive_menu');
     if (comprehensiveMenu) {
-      await sendMessage(phoneNumber, comprehensiveMenu, 'interactive');
+      // Format the comprehensive menu for list message
+      const listMessage = {
+        type: 'list',
+        body: comprehensiveMenu.body,
+        buttonText: comprehensiveMenu.buttonText || 'Choose Service', // Default if not provided
+        sections: comprehensiveMenu.sections
+      };
+      await sendMessage(phoneNumber, listMessage, 'interactive');
     } else {
       const userLanguage = getUserLanguage(user, phoneNumber);
       await sendMessage(

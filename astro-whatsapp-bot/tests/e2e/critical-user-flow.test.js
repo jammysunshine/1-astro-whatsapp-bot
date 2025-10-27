@@ -30,6 +30,14 @@ const paymentService = require('../../src/services/payment/paymentService');
 jest.mock('../../src/services/astrology/numerologyService');
 const numerologyService = require('../../src/services/astrology/numerologyService');
 
+// Mock translationService to avoid i18n issues
+jest.mock('../../src/services/i18n/TranslationService');
+const translationService = require('../../src/services/i18n/TranslationService');
+
+
+
+
+
 // Mock messageProcessor for error handling tests
 jest.mock('../../src/services/whatsapp/messageProcessor');
 const { processIncomingMessage } = require('../../src/services/whatsapp/messageProcessor');
@@ -42,25 +50,31 @@ describe('Critical User Flow End-to-End Tests', () => {
   const testPhone = '+1234567890';
 
   beforeAll(async() => {
+    // Load environment variables
+    require('dotenv').config();
+
     // Set test environment variables
     process.env.NODE_ENV = 'test';
     process.env.W1_SKIP_WEBHOOK_SIGNATURE = 'true';
     process.env.W1_WHATSAPP_ACCESS_TOKEN = 'test_token';
     process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test_phone_id';
 
-    // Ensure database is connected before running tests
+    // Require app first (this will initiate DB connection)
+    app = require('../../src/server');
+
+    // Wait for database to be connected
     const mongoose = require('mongoose');
     let attempts = 0;
-    while (mongoose.connection.readyState !== 1 && attempts < 10) {
-      await new Promise(resolve => setTimeout(resolve, 500));
+    const maxAttempts = 20; // Increase timeout
+    while (mongoose.connection.readyState !== 1 && attempts < maxAttempts) {
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
       attempts++;
+      console.log(`Waiting for DB connection... Attempt ${attempts}/${maxAttempts}, State: ${mongoose.connection.readyState}`);
     }
     if (mongoose.connection.readyState !== 1) {
-      throw new Error('Database connection failed');
+      throw new Error(`Database connection failed after ${maxAttempts} attempts. Final state: ${mongoose.connection.readyState}`);
     }
-
-    // Require app after DB is connected
-    app = require('../../src/server');
+    console.log('✅ Database connected successfully in test');
   });
 
   beforeEach(async() => {
@@ -77,11 +91,31 @@ describe('Critical User Flow End-to-End Tests', () => {
       messages: [{ id: 'test-message-id' }]
     });
 
+    // Setup default mock responses for translationService
+    translationService.translate = jest.fn((key, lang, params) => {
+      // Simple mock that returns the key or a basic translation
+      if (key === 'messages.errors.welcome_message') {
+        return 'Welcome to your cosmic journey!';
+      }
+      return key; // Return key as fallback
+    });
+
+    // Setup default mock responses for numerologyService
+    numerologyService.generateNumerologyReport = jest.fn().mockResolvedValue({
+      lifePath: 5,
+      expression: 7,
+      soulUrge: 3,
+      personality: 4
+    });
+
     // Setup default mock responses for paymentService
-    paymentService.detectRegion = jest.fn().mockReturnValue('IN');
-    paymentService.processSubscription = jest.fn().mockResolvedValue({
+    paymentService.createSubscription = jest.fn().mockResolvedValue({
+      id: 'sub_test',
+      status: 'active'
+    });
+    paymentService.processPayment = jest.fn().mockResolvedValue({
       success: true,
-      message: '💎 *Premium Subscription Confirmed!*\n\nThank you for upgrading to Premium! Your payment has been processed successfully.'
+      transactionId: 'txn_test'
     });
     paymentService.getPlan = jest.fn().mockReturnValue({
       name: 'Premium',

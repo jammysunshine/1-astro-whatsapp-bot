@@ -280,25 +280,71 @@ class TranslationService {
   }
 
   /**
+   * Normalize language code to standard format
+   */
+  normalizeLanguageCode(languageCode) {
+    if (!languageCode) return 'en';
+
+    const code = languageCode.toLowerCase();
+
+    // Handle common variations
+    const mappings = {
+      'english': 'en',
+      'hindi': 'hi',
+      'arabic': 'ar',
+      'tamil': 'ta',
+      'spanish': 'es',
+      'french': 'fr',
+      'german': 'de',
+      'italian': 'it',
+      'portuguese': 'pt',
+      'russian': 'ru',
+      'dutch': 'nl',
+      'bengali': 'bn',
+      'telugu': 'te',
+      'marathi': 'mr',
+      'gujarati': 'gu',
+      'kannada': 'kn',
+      'malayalam': 'ml',
+      'punjabi': 'pa',
+      'odia': 'or',
+      'assamese': 'as',
+      'urdu': 'ur',
+      'persian': 'fa',
+      'turkish': 'tr',
+      'hebrew': 'he',
+      'chinese': 'zh',
+      'japanese': 'ja',
+      'korean': 'ko',
+      'thai': 'th'
+    };
+
+    return mappings[code] || code;
+  }
+
+  /**
    * Translate a resource key
    */
   async translate(key, languageCode = 'en', parameters = {}) {
     try {
+      // Normalize language code
+      const normalizedLanguage = this.normalizeLanguageCode(languageCode);
+
       // Load resource bundle
-      const bundle = await this.loadResourceBundle(languageCode);
+      const bundle = await this.loadResourceBundle(normalizedLanguage);
 
       // Try to get the translation
       let translation = this.getNestedValue(bundle, key);
 
       // If not found and not English, try English fallback
-      if (translation === undefined && languageCode !== 'en') {
+      if (translation === undefined && normalizedLanguage !== 'en') {
         const englishBundle = await this.loadResourceBundle('en');
         translation = this.getNestedValue(englishBundle, key);
       }
 
       // If still not found, return the key as fallback
       if (translation === undefined) {
-        logger.warn(`Translation missing for key: ${key} in language: ${languageCode}`);
+        logger.warn(`Translation missing for key: ${key} in language: ${normalizedLanguage}`);
         return key;
       }
 

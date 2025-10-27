@@ -8,6 +8,9 @@ const logger = require('../../utils/logger');
 
 const { Astrologer } = require('astrologer');
 const sweph = require('sweph');
+const { Client } = require('@googlemaps/google-maps-services-js');
+const googleMapsClient = new Client({});
+const { GOOGLE_MAPS_API_KEY } = process.env;
 
 // Import refactored modules
 const VedicCore = require('./core/VedicCore');
@@ -23,18 +26,20 @@ class VedicCalculator {
   constructor() {
     logger.info('Module: VedicCalculator loaded.');
 
-    // Initialize core dependencies
-    this.vedicCore = new VedicCore();
-    this.geocodingService = new GeocodingService();
-    this.signCalculations = new SignCalculations(this.geocodingService, this.vedicCore);
-
-    // Initialize astrologer library
+    // Initialize astrologer library first
     try {
       logger.info('Attempting to initialize astrologer library...');
       this._astrologer = new Astrologer();
       logger.info('Astrologer library initialized successfully.');
     } catch (error) {
       logger.error('❌ Error initializing astrologer library:', error.message);
+      this._astrologer = null;
+    }
+
+    // Initialize core dependencies
+    this.vedicCore = new VedicCore();
+    this.geocodingService = new GeocodingService();
+    this.signCalculations = new SignCalculations(this._astrologer, this.geocodingService, this.vedicCore);
       throw new Error(
         'Failed to initialize core astrology library. Please check dependencies and environment.'
       );

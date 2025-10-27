@@ -48,7 +48,7 @@ class VedicCalculator {
     this.chartGenerator = new ChartGenerator(this._astrologer, this.geocodingService, this.vedicCore, this.signCalculations);
 
     // Initialize Swiss Ephemeris
-    this.vedicCore.initializeSwissEphemeris();
+    this._initializeSwissEphemeris();
   }
 
   /**
@@ -98,10 +98,10 @@ class VedicCalculator {
   }
 
   /**
-   * Enhanced Swiss Ephemeris initialization with comprehensive error handling
-   * @private
-   */
-  async _initializeSwissEphemeris() {
+    * Enhanced Swiss Ephemeris initialization with comprehensive error handling
+    * @private
+    */
+  _initializeSwissEphemeris() {
     try {
       logger.info('Initializing Enhanced Swiss Ephemeris system...');
 
@@ -350,8 +350,6 @@ class VedicCalculator {
    * @returns {Object} Western natal chart data
    */
   async generateWesternBirthChart(user, houseSystem = 'P') {
-    return this.westernCalculator.generateWesternBirthChart(user, houseSystem);
-  }
     try {
       const { birthDate, birthTime, birthPlace, name } = user;
 
@@ -1230,8 +1228,6 @@ class VedicCalculator {
    * @returns {Object} Detailed horoscope data
    */
   async generateDailyHoroscope(birthData) {
-    return this.horoscopeGenerator.generateDailyHoroscope(birthData);
-  }
     try {
       const { birthDate, birthTime = '12:00', birthPlace = 'Delhi, India' } = birthData;
 
@@ -1428,8 +1424,6 @@ class VedicCalculator {
    * @returns {Object} Compatibility result
    */
   async checkCompatibility(person1, person2) {
-    return this.compatibilityChecker.checkCompatibility(person1, person2);
-  }
     try {
       // If only signs are provided, fall back to basic compatibility
       if (typeof person1 === 'string' && typeof person2 === 'string') {
@@ -1782,8 +1776,6 @@ class VedicCalculator {
    * @returns {Object} Transit preview
    */
   async generateTransitPreview(birthData, days = 3) {
-    return this.vedicCalculator.generateTransitPreview(birthData, days);
-  }
     try {
       const { birthDate, birthTime = '12:00', birthPlace = 'Delhi, India' } = birthData;
 
@@ -2610,8 +2602,6 @@ class VedicCalculator {
    * @returns {Object} Lunar return analysis
    */
   async calculateLunarReturn(birthData, targetDate = null) {
-    return this.vedicCalculator.calculateLunarReturn(birthData, targetDate);
-  }
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
@@ -2893,8 +2883,6 @@ class VedicCalculator {
    * @returns {Object} Complete Ashtakavarga analysis
    */
   async calculateAshtakavarga(birthData) {
-    return this.vedicCalculator.calculateAshtakavarga(birthData);
-  }
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
@@ -3407,8 +3395,6 @@ class VedicCalculator {
    * @returns {Object} Varga chart analysis
    */
   async calculateVargaChart(birthData, varga = 'D9') {
-    return this.vedicCalculator.calculateVargaChart(birthData, varga);
-  }
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
@@ -20744,8 +20730,6 @@ class VedicCalculator {
    * @returns {Object} Nakshatra details
    */
   calculateNakshatra(longitude) {
-    return this.vedicCalculator.calculateNakshatra(longitude);
-  }
     // Normalize longitude to 0-360
     longitude = ((longitude % 360) + 360) % 360;
 
@@ -20792,8 +20776,6 @@ class VedicCalculator {
    * @returns {Object} Compatibility analysis
    */
   calculateNakshatraPorutham(person1, person2) {
-    return this.vedicCalculator.calculateNakshatraPorutham(person1, person2);
-  }
     try {
       // Get Moon longitudes (Nakshatra is based on Moon)
       const moon1 = person1.moonLongitude || 0;

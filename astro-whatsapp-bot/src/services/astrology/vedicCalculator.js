@@ -37,9 +37,11 @@ class VedicCalculator {
     }
 
     // Initialize core dependencies
-    this.vedicCore = new VedicCore();
-    this.geocodingService = new GeocodingService();
-    this.signCalculations = new SignCalculations(this._astrologer, this.geocodingService, this.vedicCore);
+    try {
+      this.vedicCore = new VedicCore();
+      this.geocodingService = new GeocodingService();
+      this.signCalculations = new SignCalculations(this._astrologer, this.geocodingService, this.vedicCore);
+    } catch (error) {
       throw new Error(
         'Failed to initialize core astrology library. Please check dependencies and environment.'
       );

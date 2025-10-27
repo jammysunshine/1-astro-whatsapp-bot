@@ -1,237 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="62" failures="15" errors="0" time="50.201">
-  <testsuite name="WhatsApp Message Sender" errors="0" failures="1" skipped="0" timestamp="2025-10-26T23:19:50" time="4.322" tests="19">
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.011">
+<testsuites name="jest tests" tests="126" failures="28" errors="0" time="245.637">
+  <testsuite name="WhatsApp Message Sender" errors="0" failures="19" skipped="0" timestamp="2025-10-27T01:15:21" time="23.124" tests="19">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.015">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.005">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.006">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.005">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.007">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.061">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.004">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
     <testcase classname="WhatsApp Message Sender sendTextMessage should handle API error gracefully" name="WhatsApp Message Sender sendTextMessage should handle API error gracefully" time="0.005">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.003">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.005">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.006">
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.005">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
     <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" time="0.007">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.006">
+    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.004">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.033">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-- Expected
-+ Received
-
-  &quot;https://graph.facebook.com/v18.0/test-phone-number-id/messages&quot;,
-@@ -16,14 +16,10 @@
-        ],
-      },
-      &quot;body&quot;: Object {
-        &quot;text&quot;: &quot;Select an option from the list:&quot;,
-      },
--     &quot;header&quot;: Object {
--       &quot;text&quot;: &quot;Choose an option:&quot;,
--       &quot;type&quot;: &quot;text&quot;,
--     },
-      &quot;type&quot;: &quot;list&quot;,
-    },
-    &quot;messaging_product&quot;: &quot;whatsapp&quot;,
-    &quot;to&quot;: &quot;1234567890&quot;,
-    &quot;type&quot;: &quot;interactive&quot;,,
-  {&quot;headers&quot;: {&quot;Authorization&quot;: &quot;Bearer test-whatsapp-access-token&quot;, &quot;Content-Type&quot;: &quot;application/json&quot;}, &quot;timeout&quot;: 30000},
-
-Number of calls: 1
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/whatsapp/messageSender.test.js:309:26)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.008">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.006">
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.009">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" name="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" time="0.007">
+    <testcase classname="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" name="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" time="0.01">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
     <testcase classname="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" name="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" time="0.003">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.003">
+    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.005">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.002">
+    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.011">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message successfully" name="WhatsApp Message Sender sendMediaMessage should send media message successfully" time="0.002">
+    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message successfully" name="WhatsApp Message Sender sendMediaMessage should send media message successfully" time="0.012">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message with filename" name="WhatsApp Message Sender sendMediaMessage should send media message with filename" time="0.002">
+    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message with filename" name="WhatsApp Message Sender sendMediaMessage should send media message with filename" time="0.02">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.003">
+    <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.006">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="UserModel Functions" errors="0" failures="2" skipped="0" timestamp="2025-10-26T23:19:54" time="3.277" tests="2">
-    <testcase classname="UserModel Functions getUserByPhone should get user by phone number" name="UserModel Functions getUserByPhone should get user by phone number" time="0.003">
-      <failure>TypeError: user.toObject is not a function
-    at toObject (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/models/userModel.js:59:19)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:40:20)</failure>
-    </testcase>
-    <testcase classname="UserModel Functions updateUserProfile should update user profile" name="UserModel Functions updateUserProfile should update user profile" time="0.004">
-      <failure>TypeError: user.toObject is not a function
-    at toObject (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/models/userModel.js:102:17)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/models/userModel.test.js:56:7)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="InputValidator" errors="0" failures="4" skipped="0" timestamp="2025-10-26T23:19:57" time="2.941" tests="5">
-    <testcase classname="InputValidator validateEmail should validate valid email" name="InputValidator validateEmail should validate valid email" time="0.003">
-      <failure>TypeError: inputValidator.validateEmail is not a function
-    at Object.validateEmail (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/inputValidator.test.js:11:37)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="InputValidator validateEmail should reject invalid email" name="InputValidator validateEmail should reject invalid email" time="0.002">
-      <failure>TypeError: inputValidator.validateEmail is not a function
-    at Object.validateEmail (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/inputValidator.test.js:19:37)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="InputValidator validatePhoneNumber should validate valid phone number" name="InputValidator validatePhoneNumber should validate valid phone number" time="0.003">
-      <failure>TypeError: inputValidator.validatePhoneNumber is not a function
-    at Object.validatePhoneNumber (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/inputValidator.test.js:29:37)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="InputValidator validatePhoneNumber should reject invalid phone number" name="InputValidator validatePhoneNumber should reject invalid phone number" time="0.002">
-      <failure>TypeError: inputValidator.validatePhoneNumber is not a function
-    at Object.validatePhoneNumber (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/inputValidator.test.js:37:37)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="InputValidator sanitizeInput should sanitize input" name="InputValidator sanitizeInput should sanitize input" time="0.004">
+    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.006">
+      <failure>Error: Instance failed to start within 10000ms
+    at Timeout.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:383:21)
+    at listOnTimeout (node:internal/timers:608:17)
+    at processTimers (node:internal/timers:543:7)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="ErrorHandler" errors="0" failures="4" skipped="0" timestamp="2025-10-26T23:20:00" time="2.882" tests="4">
-    <testcase classname="ErrorHandler handleError should handle error and log it" name="ErrorHandler handleError should handle error and log it" time="0.004">
-      <failure>TypeError: errorHandler.handleError is not a function
-    at Object.handleError (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/errorHandler.test.js:20:35)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+  <testsuite name="InputValidator" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:15:47" time="17.376" tests="5">
+    <testcase classname="InputValidator validateEmail should validate valid email" name="InputValidator validateEmail should validate valid email" time="0.028">
     </testcase>
-    <testcase classname="ErrorHandler handleError should handle error without context" name="ErrorHandler handleError should handle error without context" time="0.003">
-      <failure>TypeError: errorHandler.handleError is not a function
-    at Object.handleError (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/errorHandler.test.js:29:35)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="InputValidator validateEmail should reject invalid email" name="InputValidator validateEmail should reject invalid email" time="0.009">
     </testcase>
-    <testcase classname="ErrorHandler handleValidationError should handle validation error" name="ErrorHandler handleValidationError should handle validation error" time="0.003">
-      <failure>TypeError: errorHandler.handleValidationError is not a function
-    at Object.handleValidationError (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/errorHandler.test.js:41:35)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="InputValidator validatePhoneNumber should validate valid phone number" name="InputValidator validatePhoneNumber should validate valid phone number" time="0.064">
     </testcase>
-    <testcase classname="ErrorHandler handleDatabaseError should handle database error" name="ErrorHandler handleDatabaseError should handle database error" time="0.004">
-      <failure>TypeError: errorHandler.handleDatabaseError is not a function
-    at Object.handleDatabaseError (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/errorHandler.test.js:52:35)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="InputValidator validatePhoneNumber should reject invalid phone number" name="InputValidator validatePhoneNumber should reject invalid phone number" time="0.016">
+    </testcase>
+    <testcase classname="InputValidator sanitizeInput should sanitize input" name="InputValidator sanitizeInput should sanitize input" time="0.084">
     </testcase>
   </testsuite>
-  <testsuite name="Logger" errors="0" failures="4" skipped="0" timestamp="2025-10-26T23:20:03" time="2.858" tests="4">
-    <testcase classname="Logger Logging Methods should log info message" name="Logger Logging Methods should log info message" time="0.006">
+  <testsuite name="ErrorHandler" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:16:05" time="12.987" tests="4">
+    <testcase classname="ErrorHandler handleError should handle error and log it" name="ErrorHandler handleError should handle error and log it" time="0.029">
+    </testcase>
+    <testcase classname="ErrorHandler handleError should handle error without context" name="ErrorHandler handleError should handle error without context" time="0.009">
+    </testcase>
+    <testcase classname="ErrorHandler handleValidationError should handle validation error" name="ErrorHandler handleValidationError should handle validation error" time="0.008">
+    </testcase>
+    <testcase classname="ErrorHandler handleDatabaseError should handle database error" name="ErrorHandler handleDatabaseError should handle database error" time="0.014">
+    </testcase>
+  </testsuite>
+  <testsuite name="Logger" errors="0" failures="3" skipped="0" timestamp="2025-10-27T01:16:18" time="9.759" tests="4">
+    <testcase classname="Logger Logging Methods should log info message" name="Logger Logging Methods should log info message" time="0.036">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: StringContaining &quot;Test info message&quot;
@@ -253,7 +161,7 @@ Number of calls: 0
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Logger Logging Methods should log error message" name="Logger Logging Methods should log error message" time="0.004">
+    <testcase classname="Logger Logging Methods should log error message" name="Logger Logging Methods should log error message" time="0.008">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: StringContaining &quot;Test error message&quot;
@@ -275,7 +183,7 @@ Number of calls: 0
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Logger Logging Methods should log warn message" name="Logger Logging Methods should log warn message" time="0.004">
+    <testcase classname="Logger Logging Methods should log warn message" name="Logger Logging Methods should log warn message" time="0.007">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: StringContaining &quot;Test warn message&quot;
@@ -297,13 +205,115 @@ Number of calls: 0
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Logger Logging Methods should log debug message" name="Logger Logging Methods should log debug message" time="0.003">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
+    <testcase classname="Logger Logging Methods should log debug message" name="Logger Logging Methods should log debug message" time="0.016">
+    </testcase>
+  </testsuite>
+  <testsuite name="WhatsApp Webhook Integration" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:16:36" time="74.86" tests="11">
+    <testcase classname="WhatsApp Webhook Integration GET /webhook - Verification should verify webhook with correct token" name="WhatsApp Webhook Integration GET /webhook - Verification should verify webhook with correct token" time="1.088">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration GET /webhook - Verification should reject webhook verification with wrong token" name="WhatsApp Webhook Integration GET /webhook - Verification should reject webhook verification with wrong token" time="0.272">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration GET /webhook - Verification should return ready status for verification request without parameters" name="WhatsApp Webhook Integration GET /webhook - Verification should return ready status for verification request without parameters" time="0.187">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with text message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with text message" time="0.344">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with interactive message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with interactive message" time="0.168">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with button message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with button message" time="0.094">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with media message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with media message" time="0.104">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should handle invalid webhook payload gracefully" name="WhatsApp Webhook Integration POST /webhook - Message Processing should handle invalid webhook payload gracefully" time="0.056">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should handle webhook processing errors gracefully" name="WhatsApp Webhook Integration POST /webhook - Message Processing should handle webhook processing errors gracefully" time="3.06">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should validate webhook signature when provided" name="WhatsApp Webhook Integration POST /webhook - Message Processing should validate webhook signature when provided" time="0.045">
+    </testcase>
+    <testcase classname="WhatsApp Webhook Integration Error Handling should handle missing environment variables gracefully" name="WhatsApp Webhook Integration Error Handling should handle missing environment variables gracefully" time="0.039">
+    </testcase>
+    <testcase classname=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." name=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." time="0">
+      <failure>{&quot;message&quot;:&quot;&quot;,&quot;stack&quot;:&quot;MongoAPIError: URI must include hostname, domain name, and tld\n    at resolveSRVRecord (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/connection_string.ts:67:11)\n    at MongoClient._connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/mongo_client.ts:478:43)\n    at MongoClient.connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/mongo_client.ts:454:34)\n    at NativeConnection.createClient (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/drivers/node-mongodb-native/connection.js:296:16)\n    at NativeConnection.openUri (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/connection.js:766:34)\n    at Mongoose.connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/index.js:416:15)\n    at connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/config/database.js:100:33)\n    at Object.connectDB (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/server.js:27:1)\n    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)\n    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)\n    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)\n    at Runtime.requireModuleOrMock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1048:21)\n    at Object.require (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/integration/whatsapp/webhookIntegration.test.js:5:13)\n    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)\n    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)\n    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)\n    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:77:13)\n    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)\n    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)&quot;}</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="REAL WhatsApp Bot End-to-End Flow Tests" errors="0" failures="3" skipped="0" timestamp="2025-10-27T01:17:53" time="24.781" tests="5">
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" name="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" time="9.543">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
 
-Expected: StringContaining &quot;Test debug message&quot;
+Expected: &quot;Pisces&quot;
+Received: &quot;Unknown&quot;
+    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:231:28)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" time="1.208">
+      <failure>Error: expect(received).toContain(expected) // indexOf
 
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:48:26)
+Expected value:  &quot;🌟 *Daily Horoscope for Pisces*&quot;
+Received object: {&quot;body&quot;: &quot;🌟 *What would you like to explore today?*·
+Choose from our core astrology services:&quot;, &quot;buttons&quot;: [{&quot;reply&quot;: {&quot;id&quot;: &quot;btn_daily_horoscope&quot;, &quot;title&quot;: &quot;Daily Horoscope&quot;}, &quot;type&quot;: &quot;reply&quot;}, {&quot;reply&quot;: {&quot;id&quot;: &quot;btn_birth_chart&quot;, &quot;title&quot;: &quot;Birth Chart&quot;}, &quot;type&quot;: &quot;reply&quot;}, {&quot;reply&quot;: {&quot;id&quot;: &quot;btn_all_services&quot;, &quot;title&quot;: &quot;All Services&quot;}, &quot;type&quot;: &quot;reply&quot;}], &quot;type&quot;: &quot;button&quot;}
+    at Object.toContain (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:305:27)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" time="0.391">
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: &quot;💕 *Compatibility Analysis*&quot;
+Received string:    &quot;I&apos;m sorry, I couldn&apos;t process the compatibility request right now. Please try again later.&quot;
+    at Object.toContain (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:342:27)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" time="0.122">
+    </testcase>
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" time="0.294">
+    </testcase>
+    <testcase classname=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." name=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." time="0">
+      <failure>{&quot;message&quot;:&quot;&quot;,&quot;stack&quot;:&quot;MongoAPIError: URI must include hostname, domain name, and tld\n    at resolveSRVRecord (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/connection_string.ts:67:11)\n    at MongoClient._connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/mongo_client.ts:478:43)\n    at MongoClient.connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/mongo_client.ts:454:34)\n    at NativeConnection.createClient (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/drivers/node-mongodb-native/connection.js:296:16)\n    at NativeConnection.openUri (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/connection.js:766:34)\n    at Mongoose.connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/index.js:416:15)\n    at connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/config/database.js:100:33)\n    at Object.connectDB (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/server.js:27:1)\n    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)\n    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)\n    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)\n    at Runtime.requireModuleOrMock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1048:21)\n    at Object.require (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:7:13)\n    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)\n    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)\n    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)\n    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:77:13)\n    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)\n    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)&quot;}</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Astrology Button Integration" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:18:20" time="6.329" tests="7">
+    <testcase classname="Astrology Button Integration Tarot Reading Buttons should process single card tarot reading button" name="Astrology Button Integration Tarot Reading Buttons should process single card tarot reading button" time="0.067">
+    </testcase>
+    <testcase classname="Astrology Button Integration Tarot Reading Buttons should process three-card spread tarot reading button" name="Astrology Button Integration Tarot Reading Buttons should process three-card spread tarot reading button" time="0.066">
+    </testcase>
+    <testcase classname="Astrology Button Integration Palmistry Reading Buttons should process palmistry reading button" name="Astrology Button Integration Palmistry Reading Buttons should process palmistry reading button" time="0.024">
+    </testcase>
+    <testcase classname="Astrology Button Integration Nadi Astrology Buttons should process Nadi reading button" name="Astrology Button Integration Nadi Astrology Buttons should process Nadi reading button" time="0.027">
+    </testcase>
+    <testcase classname="Astrology Button Integration Compatibility Check Buttons should process compatibility check button" name="Astrology Button Integration Compatibility Check Buttons should process compatibility check button" time="0.026">
+    </testcase>
+    <testcase classname="Astrology Button Integration Subscription and Payment Buttons should process subscription upgrade button" name="Astrology Button Integration Subscription and Payment Buttons should process subscription upgrade button" time="0.026">
+    </testcase>
+    <testcase classname="Astrology Button Integration Subscription and Payment Buttons should process payment method selection button" name="Astrology Button Integration Subscription and Payment Buttons should process payment method selection button" time="0.027">
+    </testcase>
+    <testcase classname=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." name=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." time="0">
+      <failure>{&quot;message&quot;:&quot;&quot;,&quot;stack&quot;:&quot;MongoAPIError: URI must include hostname, domain name, and tld\n    at resolveSRVRecord (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/connection_string.ts:67:11)\n    at MongoClient._connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/mongo_client.ts:478:43)\n    at MongoClient.connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/mongo_client.ts:454:34)\n    at NativeConnection.createClient (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/drivers/node-mongodb-native/connection.js:296:16)\n    at NativeConnection.openUri (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/connection.js:766:34)\n    at Mongoose.connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/index.js:416:15)\n    at connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/config/database.js:100:33)\n    at Object.connectDB (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/server.js:27:1)\n    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)\n    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)\n    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)\n    at Runtime.requireModuleOrMock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1048:21)\n    at Object.require (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/integration/whatsapp/astrologyButtonIntegration.test.js:5:13)\n    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)\n    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)\n    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)\n    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:77:13)\n    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)\n    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)&quot;}</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Astrology Library Integration Tests" errors="0" failures="2" skipped="0" timestamp="2025-10-27T01:18:27" time="5.397" tests="16">
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" time="0.008">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" time="0.004">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" time="0.003">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" name="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" time="0.003">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" name="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" time="0.007">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" name="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" time="0.006">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" name="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" time="0.01">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" name="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" time="0.002">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" name="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" time="0.003">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" name="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" time="0.002">
+    </testcase>
+    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" name="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" time="0.009">
+      <failure>Error: expect(received).toBeDefined()
+
+Received: undefined
+    at Object.toBeDefined (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/astrology-integration.test.js:148:29)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
@@ -319,75 +329,194 @@ Number of calls: 0
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-26T23:20:06" time="6.063" tests="4">
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.006">
+    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" name="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" time="0.003">
+      <failure>Error: expect(received).toBeDefined()
+
+Received: undefined
+    at Object.toBeDefined (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/astrology-integration.test.js:161:29)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.005">
+    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" name="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" time="0.005">
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.005">
+    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should handle user without name" name="Astrology Library Integration Tests Numerology Service Integration should handle user without name" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="3.026">
+    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" name="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" time="0.008">
     </testcase>
-  </testsuite>
-  <testsuite name="Session Model" errors="0" failures="0" skipped="0" timestamp="2025-10-26T23:20:12" time="3.778" tests="3">
-    <testcase classname="Session Model Session Creation should create a new session with valid data" name="Session Model Session Creation should create a new session with valid data" time="0.391">
-    </testcase>
-    <testcase classname="Session Model Session Queries should find session by phone number" name="Session Model Session Queries should find session by phone number" time="0.139">
-    </testcase>
-    <testcase classname="Session Model Session Queries should update session flow data" name="Session Model Session Queries should update session flow data" time="0.18">
-    </testcase>
-  </testsuite>
-  <testsuite name="User Model" errors="0" failures="0" skipped="0" timestamp="2025-10-26T23:20:16" time="4.031" tests="2">
-    <testcase classname="User Model User Creation should create a new user with valid data" name="User Model User Creation should create a new user with valid data" time="0.374">
-    </testcase>
-    <testcase classname="User Model User Creation should update user profile" name="User Model User Creation should update user profile" time="0.143">
-    </testcase>
-  </testsuite>
-  <testsuite name="Palmistry Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-26T23:20:20" time="3.013" tests="3">
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" name="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" time="0.007">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" name="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" time="0.003">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should handle user with hand data" name="Palmistry Reader Service generatePalmistryReading should handle user with hand data" time="0.004">
+    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" name="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" time="0.009">
     </testcase>
   </testsuite>
-  <testsuite name="Nadi Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-26T23:20:23" time="3.076" tests="4">
-    <testcase classname="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" name="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" time="0.013">
+  <testsuite name="VedicCalculator" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:18:33" time="3.85" tests="9">
+    <testcase classname="VedicCalculator calculateBirthChart should calculate birth chart for valid birth data" name="VedicCalculator calculateBirthChart should calculate birth chart for valid birth data" time="0.006">
     </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should handle missing birth date" name="Nadi Reader Service generateNadiReading should handle missing birth date" time="0.003">
+    <testcase classname="VedicCalculator calculateBirthChart should handle invalid birth data gracefully" name="VedicCalculator calculateBirthChart should handle invalid birth data gracefully" time="0.031">
+    </testcase>
+    <testcase classname="VedicCalculator generateHoroscope should generate horoscope for valid chart" name="VedicCalculator generateHoroscope should generate horoscope for valid chart" time="0.004">
+    </testcase>
+    <testcase classname="VedicCalculator generateTransitPreview should generate transit preview" name="VedicCalculator generateTransitPreview should generate transit preview" time="0.003">
+    </testcase>
+    <testcase classname="VedicCalculator checkCompatibility should check compatibility between two charts" name="VedicCalculator checkCompatibility should check compatibility between two charts" time="0.005">
+    </testcase>
+    <testcase classname="VedicCalculator calculateSecondaryProgressions should calculate secondary progressions for valid birth data" name="VedicCalculator calculateSecondaryProgressions should calculate secondary progressions for valid birth data" time="0.008">
+    </testcase>
+    <testcase classname="VedicCalculator calculateSecondaryProgressions should handle invalid birth data gracefully" name="VedicCalculator calculateSecondaryProgressions should handle invalid birth data gracefully" time="0.004">
+    </testcase>
+    <testcase classname="VedicCalculator calculateSolarArcDirections should calculate solar arc directions for valid birth data" name="VedicCalculator calculateSolarArcDirections should calculate solar arc directions for valid birth data" time="0.003">
+    </testcase>
+    <testcase classname="VedicCalculator calculateSolarArcDirections should handle invalid birth data gracefully" name="VedicCalculator calculateSolarArcDirections should handle invalid birth data gracefully" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:18:37" time="7.432" tests="4">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.013">
+    </testcase>
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.01">
+    </testcase>
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.013">
+    </testcase>
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="3.012">
+    </testcase>
+  </testsuite>
+  <testsuite name="User Model" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:18:44" time="4.643" tests="2">
+    <testcase classname="User Model User Creation should create a new user with valid data" name="User Model User Creation should create a new user with valid data" time="0.422">
+    </testcase>
+    <testcase classname="User Model User Creation should update user profile" name="User Model User Creation should update user profile" time="0.166">
+    </testcase>
+  </testsuite>
+  <testsuite name="Session Model" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:18:49" time="5.035" tests="3">
+    <testcase classname="Session Model Session Creation should create a new session with valid data" name="Session Model Session Creation should create a new session with valid data" time="0.456">
+    </testcase>
+    <testcase classname="Session Model Session Queries should find session by phone number" name="Session Model Session Queries should find session by phone number" time="0.108">
+    </testcase>
+    <testcase classname="Session Model Session Queries should update session flow data" name="Session Model Session Queries should update session flow data" time="0.174">
+    </testcase>
+  </testsuite>
+  <testsuite name="Tarot Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:18:54" time="3.717" tests="5">
+    <testcase classname="Tarot Reader Service generateTarotReading should generate a single card reading" name="Tarot Reader Service generateTarotReading should generate a single card reading" time="0.006">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should generate a three-card spread reading" name="Tarot Reader Service generateTarotReading should generate a three-card spread reading" time="0.004">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" name="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" time="0.003">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should handle invalid spread type" name="Tarot Reader Service generateTarotReading should handle invalid spread type" time="0.003">
+    </testcase>
+    <testcase classname="Tarot Reader Service generateTarotReading should handle user personalization" name="Tarot Reader Service generateTarotReading should handle user personalization" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="Nadi Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:18:58" time="3.982" tests="4">
+    <testcase classname="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" name="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" time="0.007">
+    </testcase>
+    <testcase classname="Nadi Reader Service generateNadiReading should handle missing birth date" name="Nadi Reader Service generateNadiReading should handle missing birth date" time="0.004">
     </testcase>
     <testcase classname="Nadi Reader Service generateNadiReading should provide Dasa period calculations" name="Nadi Reader Service generateNadiReading should provide Dasa period calculations" time="0.004">
     </testcase>
     <testcase classname="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" name="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" time="0.005">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-26T23:20:26" time="3" tests="7">
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.006">
+  <testsuite name="Palmistry Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:19:02" time="3.52" tests="3">
+    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" name="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" time="0.007">
+    </testcase>
+    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" name="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" time="0.004">
+    </testcase>
+    <testcase classname="Palmistry Reader Service generatePalmistryReading should handle user with hand data" name="Palmistry Reader Service generatePalmistryReading should handle user with hand data" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:19:05" time="3.965" tests="7">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.005">
     </testcase>
     <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.006">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.004">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.009">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.005">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.008">
     </testcase>
     <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" name="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.004">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.004">
+    <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.003">
     </testcase>
   </testsuite>
-  <testsuite name="Tarot Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-26T23:20:29" time="3.139" tests="5">
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a single card reading" name="Tarot Reader Service generateTarotReading should generate a single card reading" time="0.005">
+  <testsuite name="WhatsApp Message Processor" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:19:10" time="3.755" tests="9">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" name="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" time="0.004">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a three-card spread reading" name="Tarot Reader Service generateTarotReading should generate a three-card spread reading" time="0.003">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should process existing user message" name="WhatsApp Message Processor processIncomingMessage should process existing user message" time="0.004">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" name="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" time="0.003">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" name="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" time="0.003">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle invalid spread type" name="Tarot Reader Service generateTarotReading should handle invalid spread type" time="0.004">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" time="0.004">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle user personalization" name="Tarot Reader Service generateTarotReading should handle user personalization" time="0.004">
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" time="0.003">
+    </testcase>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle button messages" name="WhatsApp Message Processor processIncomingMessage should handle button messages" time="0.005">
+    </testcase>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle media messages" name="WhatsApp Message Processor processIncomingMessage should handle media messages" time="0.006">
+    </testcase>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" name="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" time="0.005">
+    </testcase>
+    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" name="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="ConversationEngine" errors="0" failures="0" skipped="0" timestamp="2025-10-27T01:19:16" time="4.757" tests="5">
+    <testcase classname="ConversationEngine processFlowMessage should initialize session for new flow and access flow.start_step without temporal dead zone error" name="ConversationEngine processFlowMessage should initialize session for new flow and access flow.start_step without temporal dead zone error" time="0.006">
+    </testcase>
+    <testcase classname="ConversationEngine processFlowMessage should handle existing session correctly" name="ConversationEngine processFlowMessage should handle existing session correctly" time="0.003">
+    </testcase>
+    <testcase classname="ConversationEngine processFlowMessage should handle interactive messages without validation" name="ConversationEngine processFlowMessage should handle interactive messages without validation" time="0.003">
+    </testcase>
+    <testcase classname="ConversationEngine processFlowMessage should handle flow not found error" name="ConversationEngine processFlowMessage should handle flow not found error" time="0.003">
+    </testcase>
+    <testcase classname="ConversationEngine processFlowMessage should handle invalid phone number" name="ConversationEngine processFlowMessage should handle invalid phone number" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Server Setup" errors="0" failures="1" skipped="0" timestamp="2025-10-27T01:19:21" time="4.588" tests="4">
+    <testcase classname="Server Setup GET /health should return health status with correct structure" name="Server Setup GET /health should return health status with correct structure" time="0.055">
+      <failure>Error: expected 200 &quot;OK&quot;, got 503 &quot;Service Unavailable&quot;
+    at Object.expect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/server.test.js:19:58)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)
+----
+    at Test._assertStatus (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:252:14)
+    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:308:13
+    at Test._assertFunction (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:285:13)
+    at Test.assert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:164:23)
+    at Server.localAssert (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/supertest/lib/test.js:120:14)
+    at Object.onceWrapper (node:events:622:28)
+    at Server.emit (node:events:508:28)
+    at emitCloseNT (node:net:2419:8)
+    at processTicksAndRejections (node:internal/process/task_queues:89:21)</failure>
+    </testcase>
+    <testcase classname="Server Setup GET / should return welcome message with version" name="Server Setup GET / should return welcome message with version" time="0.025">
+    </testcase>
+    <testcase classname="Server Setup POST /webhook should return webhook ready message" name="Server Setup POST /webhook should return webhook ready message" time="0.019">
+    </testcase>
+    <testcase classname="Server Setup 404 Handler should return 404 for non-existent routes" name="Server Setup 404 Handler should return 404 for non-existent routes" time="0.02">
+    </testcase>
+    <testcase classname=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." name=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." time="0">
+      <failure>{&quot;message&quot;:&quot;&quot;,&quot;stack&quot;:&quot;MongoAPIError: URI must include hostname, domain name, and tld\n    at resolveSRVRecord (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/connection_string.ts:67:11)\n    at MongoClient._connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/mongo_client.ts:478:43)\n    at MongoClient.connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/node_modules/mongodb/src/mongo_client.ts:454:34)\n    at NativeConnection.createClient (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/drivers/node-mongodb-native/connection.js:296:16)\n    at NativeConnection.openUri (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/connection.js:766:34)\n    at Mongoose.connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/index.js:416:15)\n    at connect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/config/database.js:100:33)\n    at Object.connectDB (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/server.js:27:1)\n    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)\n    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)\n    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)\n    at Runtime.requireModuleOrMock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1048:21)\n    at Object.require (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/server.test.js:5:13)\n    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)\n    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)\n    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)\n    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:77:13)\n    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)\n    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)&quot;}</failure>
     </testcase>
   </testsuite>
 </testsuites>

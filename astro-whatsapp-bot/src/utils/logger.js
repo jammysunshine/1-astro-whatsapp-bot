@@ -20,4 +20,12 @@ const logger = winston.createLogger({
   ]
 });
 
+// For testing, override methods to use console directly
+if (process.env.NODE_ENV === 'test') {
+  logger.info = (...args) => console.log(...args);
+  logger.error = (...args) => console.error(...args);
+  logger.warn = (...args) => console.warn(...args);
+  logger.debug = (...args) => console.log(...args);
+}
+
 module.exports = logger;

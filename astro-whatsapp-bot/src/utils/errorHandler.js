@@ -101,7 +101,7 @@ class NotFoundError extends CustomError {
  * @param {Error} error - Error object
  * @param {Object} context - Additional context
  */
-const handleError = (error, context = {}) => {
+const handleError = (error, context) => {
   logger.error('Error occurred:', error, context);
 };
 

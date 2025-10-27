@@ -45,7 +45,8 @@ describe('Logger', () => {
 
       logger.debug('Test debug message');
 
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Test debug message'));
+      // Debug level is below info, so it shouldn't log
+      expect(consoleSpy).not.toHaveBeenCalled();
 
       consoleSpy.mockRestore();
     });

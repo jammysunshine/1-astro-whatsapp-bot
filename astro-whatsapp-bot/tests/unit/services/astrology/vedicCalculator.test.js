@@ -178,14 +178,14 @@ describe('VedicCalculator', () => {
   });
 
   describe('calculateSecondaryProgressions', () => {
-    it('should calculate secondary progressions for valid birth data', () => {
+    it('should calculate secondary progressions for valid birth data', async() => {
       const birthData = {
         birthDate: '15/03/1990',
         birthTime: '14:30',
         birthPlace: 'Mumbai, India'
       };
 
-      const progressions = calculator.calculateSecondaryProgressions(birthData);
+      const progressions = await calculator.calculateSecondaryProgressions(birthData);
 
       expect(progressions).toBeDefined();
       expect(progressions.ageInYears).toBeDefined();

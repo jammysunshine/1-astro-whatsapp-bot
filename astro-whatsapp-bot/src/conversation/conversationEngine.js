@@ -512,12 +512,20 @@ const executeFlowAction = async(
 
     // Generate comprehensive birth chart analysis
     let detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\nUnable to generate detailed analysis at this time.';
+    let sunSign = 'Unknown';
+    let moonSign = 'Unknown';
+    let risingSign = 'Unknown';
     try {
       const fullChart = await vedicCalculator.generateCompleteVedicAnalysis({
         birthDate,
         birthTime,
         birthPlace
       });
+
+      // Extract signs for user profile
+      sunSign = fullChart.interpretations?.sunSign || 'Unknown';
+      moonSign = fullChart.interpretations?.moonSign || 'Unknown';
+      risingSign = fullChart.interpretations?.risingSign || 'Unknown';
 
       detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\n\n';
       detailedAnalysis += '🌟 *Planetary Positions:*\n';
@@ -543,6 +551,17 @@ const executeFlowAction = async(
     } catch (error) {
       logger.warn('Could not generate detailed analysis:', error.message);
       detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\nUnable to generate detailed analysis at this time. Please try again later.';
+    }
+
+    // Update user with calculated signs
+    try {
+      await updateUserProfile(phoneNumber, {
+        sunSign,
+        moonSign,
+        risingSign
+      });
+    } catch (error) {
+      logger.error('Error updating user with signs:', error);
     }
 
     // Generate top 3 life patterns

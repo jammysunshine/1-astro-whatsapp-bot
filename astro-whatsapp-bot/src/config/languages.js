@@ -6,150 +6,317 @@
  */
 
 const languages = {
-  // Major Indian Languages
-  en: {
-    name: 'English',
-    nativeName: 'English',
-    rtl: false,
-    script: 'Latin',
-    enabled: true
-  },
+  // Core languages with full support
   hi: {
     name: 'Hindi',
-    nativeName: 'हिन्दी',
+    nativeName: 'हिंदी',
     rtl: false,
     script: 'Devanagari',
-    enabled: true
-  },
-  bn: {
-    name: 'Bengali',
-    nativeName: 'বাংলা',
-    rtl: false,
-    script: 'Bengali',
-    enabled: true
-  },
-  te: {
-    name: 'Telugu',
-    nativeName: 'తెలుగు',
-    rtl: false,
-    script: 'Telugu',
-    enabled: true
-  },
-  ml: {
-    name: 'Malayalam',
-    nativeName: 'മലയാളം',
-    rtl: false,
-    script: 'Malayalam',
-    enabled: true
-  },
-  ta: {
-    name: 'Tamil',
-    nativeName: 'தமிழ்',
-    rtl: false,
-    script: 'Tamil',
-    enabled: true
-  },
-  gu: {
-    name: 'Gujarati',
-    nativeName: 'ગુજરાતી',
-    rtl: false,
-    script: 'Gujarati',
-    enabled: true
-  },
-  kn: {
-    name: 'Kannada',
-    nativeName: 'ಕನ್ನಡ',
-    rtl: false,
-    script: 'Kannada',
-    enabled: true
-  },
-  pa: {
-    name: 'Punjabi',
-    nativeName: 'ਪੰਜਾਬੀ',
-    rtl: false,
-    script: 'Gurmukhi',
-    enabled: true
-  },
-  mr: {
-    name: 'Marathi',
-    nativeName: 'मराठी',
-    rtl: false,
-    script: 'Devanagari',
-    enabled: true
-  },
-  ur: {
-    name: 'Urdu',
-    nativeName: 'اردو',
-    rtl: true,
-    script: 'Arabic',
-    enabled: true
+    enabled: true,
+    complete: true,
+    regions: ['IN'],
+    flag: '🇮🇳'
   },
 
-  // Major European Languages
-  es: {
-    name: 'Spanish',
-    nativeName: 'Español',
-    rtl: false,
-    script: 'Latin',
-    enabled: true
-  },
-  fr: {
-    name: 'French',
-    nativeName: 'Français',
-    rtl: false,
-    script: 'Latin',
-    enabled: true
-  },
-  de: {
-    name: 'German',
-    nativeName: 'Deutsch',
-    rtl: false,
-    script: 'Latin',
-    enabled: true
-  },
   ar: {
     name: 'Arabic',
     nativeName: 'العربية',
     rtl: true,
     script: 'Arabic',
-    enabled: true
+    enabled: true,
+    complete: true,
+    regions: ['AE', 'SA', 'EG'],
+    flag: '🇦🇪'
   },
 
-  // Additional Languages
+  ta: {
+    name: 'Tamil',
+    nativeName: 'தமிழ்',
+    rtl: false,
+    script: 'Tamil',
+    enabled: true,
+    complete: true,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  // Indian languages (full implementation planned)
+  bn: {
+    name: 'Bengali',
+    nativeName: 'বাংলা',
+    rtl: false,
+    script: 'Bengali',
+    enabled: true,
+    complete: false,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  te: {
+    name: 'Telugu',
+    nativeName: 'తెలుగు',
+    rtl: false,
+    script: 'Telugu',
+    enabled: true,
+    complete: false,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  mr: {
+    name: 'Marathi',
+    nativeName: 'मराठी',
+    rtl: false,
+    script: 'Devanagari',
+    enabled: true,
+    complete: false,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  gu: {
+    name: 'Gujarati',
+    nativeName: 'ગુજરાતી',
+    rtl: false,
+    script: 'Gujarati',
+    enabled: true,
+    complete: false,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  kn: {
+    name: 'Kannada',
+    nativeName: 'ಕನ್ನಡ',
+    rtl: false,
+    script: 'Kannada',
+    enabled: true,
+    complete: false,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  ml: {
+    name: 'Malayalam',
+    nativeName: 'മലയാളം',
+    rtl: false,
+    script: 'Malayalam',
+    enabled: true,
+    complete: false,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  pa: {
+    name: 'Punjabi',
+    nativeName: 'ਪੰਜਾਬੀ',
+    rtl: false,
+    script: 'Gurmukhi',
+    enabled: true,
+    complete: false,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  or: {
+    name: 'Odia',
+    nativeName: 'ଓଡ଼ିଆ',
+    rtl: false,
+    script: 'Odia',
+    enabled: true,
+    complete: false,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  as: {
+    name: 'Assamese',
+    nativeName: 'অসমীয়া',
+    rtl: false,
+    script: 'Bengali',
+    enabled: true,
+    complete: false,
+    regions: ['IN'],
+    flag: '🇮🇳'
+  },
+
+  ur: {
+    name: 'Urdu',
+    nativeName: 'اردو',
+    rtl: true,
+    script: 'Arabic',
+    enabled: true,
+    complete: false,
+    regions: ['IN', 'PK'],
+    flag: '🇵🇰'
+  },
+
+  // European languages
+  en: {
+    name: 'English',
+    nativeName: 'English',
+    rtl: false,
+    script: 'Latin',
+    enabled: true,
+    complete: true,
+    regions: ['US', 'GB', 'CA', 'AU'],
+    flag: '🇺🇸'
+  },
+
+  es: {
+    name: 'Spanish',
+    nativeName: 'Español',
+    rtl: false,
+    script: 'Latin',
+    enabled: true,
+    complete: false,
+    regions: ['ES', 'MX', 'AR'],
+    flag: '🇪🇸'
+  },
+
+  fr: {
+    name: 'French',
+    nativeName: 'Français',
+    rtl: false,
+    script: 'Latin',
+    enabled: true,
+    complete: false,
+    regions: ['FR', 'CA'],
+    flag: '🇫🇷'
+  },
+
+  de: {
+    name: 'German',
+    nativeName: 'Deutsch',
+    rtl: false,
+    script: 'Latin',
+    enabled: true,
+    complete: false,
+    regions: ['DE', 'AT'],
+    flag: '🇩🇪'
+  },
+
+  it: {
+    name: 'Italian',
+    nativeName: 'Italiano',
+    rtl: false,
+    script: 'Latin',
+    enabled: true,
+    complete: false,
+    regions: ['IT'],
+    flag: '🇮🇹'
+  },
+
   pt: {
     name: 'Portuguese',
     nativeName: 'Português',
     rtl: false,
     script: 'Latin',
-    enabled: true
+    enabled: true,
+    complete: false,
+    regions: ['PT', 'BR'],
+    flag: '🇵🇹'
   },
+
   ru: {
     name: 'Russian',
     nativeName: 'Русский',
     rtl: false,
     script: 'Cyrillic',
-    enabled: true
+    enabled: true,
+    complete: false,
+    regions: ['RU'],
+    flag: '🇷🇺'
   },
+
+  nl: {
+    name: 'Dutch',
+    nativeName: 'Nederlands',
+    rtl: false,
+    script: 'Latin',
+    enabled: true,
+    complete: false,
+    regions: ['NL'],
+    flag: '🇳🇱'
+  },
+
+  // Middle East/UAE languages
+  fa: {
+    name: 'Persian',
+    nativeName: 'فارسی',
+    rtl: true,
+    script: 'Arabic',
+    enabled: true,
+    complete: false,
+    regions: ['IR'],
+    flag: '🇮🇷'
+  },
+
+  tr: {
+    name: 'Turkish',
+    nativeName: 'Türkçe',
+    rtl: false,
+    script: 'Latin',
+    enabled: true,
+    complete: false,
+    regions: ['TR'],
+    flag: '🇹🇷'
+  },
+
+  he: {
+    name: 'Hebrew',
+    nativeName: 'עברית',
+    rtl: true,
+    script: 'Hebrew',
+    enabled: true,
+    complete: false,
+    regions: ['IL'],
+    flag: '🇮🇱'
+  },
+
+  // Asian languages
   zh: {
     name: 'Chinese',
     nativeName: '中文',
     rtl: false,
-    script: 'Chinese',
-    enabled: true
+    script: 'Han',
+    enabled: true,
+    complete: false,
+    regions: ['CN'],
+    flag: '🇨🇳'
   },
+
   ja: {
     name: 'Japanese',
     nativeName: '日本語',
     rtl: false,
-    script: 'Japanese',
-    enabled: true
+    script: 'Hiragana/Katakana',
+    enabled: true,
+    complete: false,
+    regions: ['JP'],
+    flag: '🇯🇵'
   },
+
   ko: {
     name: 'Korean',
     nativeName: '한국어',
     rtl: false,
-    script: 'Korean',
-    enabled: true
+    script: 'Hangul',
+    enabled: true,
+    complete: false,
+    regions: ['KR'],
+    flag: '🇰🇷'
+  },
+
+  th: {
+    name: 'Thai',
+    nativeName: 'ไทย',
+    rtl: false,
+    script: 'Thai',
+    enabled: true,
+    complete: false,
+    regions: ['TH'],
+    flag: '🇹🇭'
   }
 };
 
@@ -196,11 +363,56 @@ const getNativeLanguageName = code => {
   return lang ? lang.nativeName : code;
 };
 
+/**
+ * Get languages by region
+ * @param {string} region - Region code (e.g., 'IN', 'AE')
+ * @returns {Array} Array of language objects for the region
+ */
+const getLanguagesByRegion = (region) => {
+  return Object.entries(languages)
+    .filter(([_, config]) => config.regions && config.regions.includes(region))
+    .map(([code, config]) => ({ code, ...config }));
+};
+
+/**
+ * Get all RTL languages
+ * @returns {Array} Array of RTL language objects
+ */
+const getRTLLanguages = () => {
+  return Object.entries(languages)
+    .filter(([_, config]) => config.rtl)
+    .map(([code, config]) => ({ code, ...config }));
+};
+
+/**
+ * Get complete languages (fully implemented)
+ * @returns {Array} Array of complete language objects
+ */
+const getCompleteLanguages = () => {
+  return Object.entries(languages)
+    .filter(([_, config]) => config.complete)
+    .map(([code, config]) => ({ code, ...config }));
+};
+
+/**
+ * Get placeholder languages (not fully implemented)
+ * @returns {Array} Array of placeholder language objects
+ */
+const getPlaceholderLanguages = () => {
+  return Object.entries(languages)
+    .filter(([_, config]) => !config.complete)
+    .map(([code, config]) => ({ code, ...config }));
+};
+
 module.exports = {
   languages,
   getSupportedLanguages,
   getLanguageInfo,
   isRTL,
   getLanguageName,
-  getNativeLanguageName
+  getNativeLanguageName,
+  getLanguagesByRegion,
+  getRTLLanguages,
+  getCompleteLanguages,
+  getPlaceholderLanguages
 };

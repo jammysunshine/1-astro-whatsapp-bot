@@ -1,6 +1,7 @@
 const logger = require('../../utils/logger');
 const { sendMessage, sendListMessage } = require('./messageSender');
 const { generateAstrologyResponse } = require('../astrology/astrologyEngine');
+const translationService = require('../i18n/TranslationService');
 const { processFlowMessage } = require('../../conversation/conversationEngine');
 const { getMenu } = require('../../conversation/menuLoader');
 const paymentService = require('../payment/paymentService');
@@ -28,6 +29,19 @@ const { AyurvedicAstrology } = require('../astrology/ayurvedicAstrology');
 const vedicNumerology = new VedicNumerology();
 const ayurvedicAstrology = new AyurvedicAstrology();
 const ageHarmonicReader = new AgeHarmonicAstrologyReader();
+
+/**
+ * Get user's preferred language with fallback detection
+ * @param {Object} user - User object
+ * @param {string} phoneNumber - Phone number for detection
+ * @returns {string} Language code
+ */
+const getUserLanguage = (user, phoneNumber) => {
+  if (user && user.preferredLanguage) {
+    return user.preferredLanguage;
+  }
+  return translationService.detectLanguage(phoneNumber);
+};
 
 // Mapping for list reply IDs to actions
 const listActionMapping = {
@@ -194,9 +208,13 @@ const processTextMessage = async(message, user) => {
     } else if (messageText.toLowerCase().includes('premium')) {
       await handleSubscriptionRequest(phoneNumber, user, 'premium');
     } else {
+      const userLanguage = getUserLanguage(user, phoneNumber);
       await sendMessage(
         phoneNumber,
-        '💳 *Subscription Plans*\n\nWhich plan would you like to subscribe to?\n\n⭐ *Essential* - ₹230/month\n💎 *Premium* - ₹299/month\n\nJust reply with "Essential" or "Premium"!'
+        'subscription.plans.prompt',
+        'text',
+        {},
+        userLanguage
       );
     }
     return;
@@ -324,10 +342,11 @@ const processTextMessage = async(message, user) => {
   } else {
     logger.warn('⚠️ Main menu configuration not found.');
     // Fallback to sending response without buttons if menu fails
+    const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
       phoneNumber,
       response ||
-        'I\'m sorry, I\'m having trouble loading the menu options. Please try again later.'
+        translationService.translate('messages.errors.generic_error', userLanguage)
     );
   }
 };
@@ -482,27 +501,39 @@ const processButtonReply = async(phoneNumber, buttonId, title, user) => {
             `❌ Error executing main menu action ${button.action}:`,
             error
           );
+        const userLanguage = getUserLanguage(user, phoneNumber);
           await sendMessage(
             phoneNumber,
-            'Sorry, I encountered an error processing your request. Please try again.'
+            'messages.errors.menu_action_error',
+            'text',
+            {},
+            userLanguage
           );
         }
       } else {
         logger.warn(
           `⚠️ No action defined for button ID: ${buttonId} in main menu`
         );
+        const userLanguage = getUserLanguage(user, phoneNumber);
         await sendMessage(
           phoneNumber,
-          `You selected: ${title}. I'm not sure how to process that yet.`
+          'messages.errors.main_menu_error',
+          'text',
+          { title },
+          userLanguage
         );
       }
     } else {
       logger.warn(
         '⚠️ Main menu configuration not found when processing button reply.'
       );
+      const userLanguage = getUserLanguage(user, phoneNumber);
       await sendMessage(
         phoneNumber,
-        `You selected: ${title}. I'm having trouble processing your request.`
+        'messages.errors.button_error',
+        'text',
+        { title },
+        userLanguage
       );
     }
   }
@@ -522,9 +553,13 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
     // Clear the invalid session and fall back to main menu processing
     const { deleteUserSession } = require('../../models/userModel');
     await deleteUserSession(phoneNumber);
+    const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
       phoneNumber,
-      'I\'m sorry, I encountered an error. Let\'s start over.'
+      'messages.errors.flow_error',
+      'text',
+      {},
+      userLanguage
     );
     return;
   }
@@ -574,9 +609,13 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
         'interactive'
       );
     } else {
+      const userLanguage = getUserLanguage(user, phoneNumber);
       await sendMessage(
         phoneNumber,
-        'I\'m sorry, I encountered an error. Please try again.'
+        'messages.errors.clarification_error',
+        'text',
+        {},
+        userLanguage
       );
     }
     return;
@@ -609,8 +648,15 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   switch (action) {
   case 'get_daily_horoscope':
     if (!user.birthDate) {
-      response =
-          'I\'d love to give you a personalized daily horoscope! Please complete your profile first by providing your birth date.';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.daily_horoscope.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     } else {
       try {
         const horoscopeData = await vedicCalculator.generateDailyHoroscope({
@@ -620,7 +666,16 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         });
         const sunSign = await vedicCalculator.calculateSunSign(user.birthDate);
 
-        const body = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n💫 *Lucky Color:* ${horoscopeData.luckyColor}\n🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n💝 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\nWhat would you like to explore next?`;
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        const body = translationService.translate('messages.daily_horoscope.title', userLanguage) +
+          `\n\n${sunSign} - ${horoscopeData.general}\n\n` +
+          translationService.translate('messages.daily_horoscope.lucky_color', userLanguage, { color: horoscopeData.luckyColor }) + '\n' +
+          translationService.translate('messages.daily_horoscope.lucky_number', userLanguage, { number: horoscopeData.luckyNumber }) + '\n' +
+          translationService.translate('messages.daily_horoscope.love', userLanguage, { advice: horoscopeData.love }) + '\n' +
+          translationService.translate('messages.daily_horoscope.career', userLanguage, { advice: horoscopeData.career }) + '\n' +
+          translationService.translate('messages.daily_horoscope.finance', userLanguage, { advice: horoscopeData.finance }) + '\n' +
+          translationService.translate('messages.daily_horoscope.health', userLanguage, { advice: horoscopeData.health }) +
+          translationService.translate('messages.daily_horoscope.next', userLanguage);
 
         const buttons = [
           { type: 'reply', reply: { id: 'horoscope_again', title: '🔄 Another Reading' } },
@@ -646,88 +701,252 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         return null; // Handled, don't send additional response
       } catch (error) {
         logger.error('Error generating daily horoscope:', error);
-        response = 'I\'m having trouble reading the stars right now. Please try again later.';
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          'messages.daily_horoscope.error',
+          'text',
+          {},
+          userLanguage
+        );
+        return null;
       }
     }
     break;
-  case 'initiate_compatibility_flow':
-    response = '💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I\'ll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!';
-    break;
-  case 'get_hindu_astrology_analysis':
+  case 'initiate_compatibility_flow': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.compatibility.analysis_prompt',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_hindu_astrology_analysis': {
     if (!user.birthDate) {
-      response = 'I need your complete birth details for Hindu Vedic astrology analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.hindu_astrology.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
-    response = '🕉️ *Hindu Vedic Astrology*\n\nDiscover your traditional Vedic Kundli and sacred astrological wisdom!\n\n*Available Services:*\n\n📊 *Complete Kundli* - Full birth chart with 12 houses, planetary positions, and Vedic interpretations\n\n💕 *Marriage Compatibility* - Traditional 36-point Guna matching system\n\n🏠 *Lagna Analysis* - Detailed Ascendant interpretation\n\n🔮 *Manglik Dosha* - Mars placement analysis and remedies\n\n🪐 *Bhava Analysis* - House-by-house life area interpretations\n\n🌟 *Yoga Formations* - Special planetary combinations and their effects\n\n*To get started:*\n1. Send "kundli" for your complete birth chart\n2. Send "marriage matching" to check compatibility with a partner\n3. Send "lagna analysis" for detailed Ascendant reading\n4. Send "manglik check" to analyze Mars placement\n\nWhat aspect of Vedic astrology interests you?';
-    break;
-  case 'get_prashna_astrology_analysis':
-    response = '🕉️ *Prashna (Horary) Astrology*\n\nGet answers to your specific questions using the ancient art of Prashna astrology!\n\n*How Prashna Works:*\n• Predictions based on planetary positions at the exact moment you ask your question\n• No birth details required - just ask your question now!\n• Provides timing and guidance for specific queries\n\n*Perfect for questions about:*\n• Marriage and relationships\n• Career and job prospects\n• Financial matters\n• Health concerns\n• Education and studies\n\n*Simply ask your question now!*\n\nExample: "Will I get married this year?" or "When will I find a new job?"\n\nWhat question is on your mind? 🔮';
-    break;
-  case 'get_ashtakavarga_analysis':
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.hindu_astrology.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_prashna_astrology_analysis': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.prashna_astrology.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_ashtakavarga_analysis': {
     if (!user.birthDate) {
-      response = 'I need your complete birth details for Ashtakavarga analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.ashtakavarga.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
-    response = '🕉️ *Ashtakavarga (8-Fold Strength Analysis)*\n\nAshtakavarga reveals the 8-fold strength of planets across all 12 houses!\n\n*What You\'ll Discover:*\n• Planetary strength distribution (Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn)\n• Bindu (dot) system showing favorable periods\n• Trikona Shodhana - triangle reduction analysis\n• Ekadhipatya - sole lordship of houses\n• Favorable and challenging life areas\n\n*Benefits:*\n• Identify strongest planetary periods for important decisions\n• Understand planetary power distribution in your chart\n• Time activities based on planetary strength\n• Gain deeper insights into life patterns\n\nSend "ashtakavarga" to get your detailed analysis! 🔮';
-    break;
-  case 'get_kaal_sarp_analysis':
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.ashtakavarga.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_kaal_sarp_analysis': {
     if (!user.birthDate) {
-      response = 'I need your complete birth details for Kaal Sarp Dosha analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.kaal_sarp.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
-    response = '🐍 *Kaal Sarp Dosha Analysis*\n\nKaal Sarp Dosha occurs when all planets are positioned between Rahu and Ketu in your birth chart!\n\n*What You\'ll Discover:*\n• Whether Kaal Sarp Dosha is present in your chart\n• Specific type of Kaal Sarp Dosha (12 different types)\n• Severity and strength of the dosha\n• Planets trapped between Rahu-Ketu axis\n• Life areas most affected\n• Detailed effects and challenges\n• Comprehensive remedial measures\n\n*12 Types of Kaal Sarp Dosha:*\n🐍 Anant, Kulik, Vasuki, Shankhpal, Padma, Mahapadma\n🐍 Takshak, Karkotak, Shankhchud, Ghatak, Vishdhar, Sheshnag\n\n*Benefits of Analysis:*\n• Understand life challenges and their astrological cause\n• Learn specific remedies to mitigate dosha effects\n• Gain insights into karmic patterns and life lessons\n• Receive guidance for spiritual growth and protection\n\n*Common Remedies Include:*\n• Mantras and prayers to Rahu and Ketu\n• Gemstone recommendations\n• Charitable activities and donations\n• Specific pujas and rituals\n• Yantra installations\n• Fasting and spiritual practices\n\nSend "kaal sarp dosha" to get your detailed analysis and remedies! 🕉️';
-    break;
-  case 'get_sade_sati_analysis':
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.kaal_sarp.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_sade_sati_analysis': {
     if (!user.birthDate) {
-      response = 'I need your complete birth details for Sade Sati analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.sade_sati.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
-    response = '🪐 *Sade Sati Analysis - Saturn\'s 7.5 Year Transit*\n\nSade Sati is Saturn\'s significant 7.5-year transit through the 12th, 1st, and 2nd houses from your Moon sign!\n\n*What You\'ll Discover:*\n• Current Sade Sati status and phase\n• When your Sade Sati began/will begin\n• Duration and remaining time\n• Specific effects based on your Moon sign\n• Life areas most affected\n• Detailed challenges and opportunities\n• Comprehensive remedial measures\n\n*3 Phases of Sade Sati:*\n🌅 *Rising Phase* (12th house) - Foundation building, preparation\n🏔️ *Peak Phase* (1st house) - Maximum intensity, major life changes\n🌇 *Setting Phase* (2nd house) - Resolution, new beginnings\n\n*Benefits of Analysis:*\n• Understand current life challenges through Saturn\'s lens\n• Prepare for upcoming Sade Sati periods\n• Learn specific remedies to navigate difficulties\n• Gain insights into karmic lessons and growth\n• Receive guidance for spiritual development\n\n*Common Remedies Include:*\n• Saturday fasting and prayers to Lord Shani\n• Blue sapphire (Neelam) gemstone therapy\n• Charitable donations (especially on Saturdays)\n• Chanting "Om Sham Shanicharaya Namaha"\n• Oil donations and sesame seed charities\n• Specific pujas and temple visits\n• Wearing iron rings and protective yantras\n\nSend "sade sati" to get your detailed Saturn transit analysis and remedies! 🕉️';
-    break;
-  case 'get_vedic_remedies_info':
-    response = '🕉️ *Vedic Remedies - Ancient Astrological Solutions*\n\nDiscover comprehensive remedies to harmonize planetary influences and overcome astrological challenges!\n\n*🪐 Planetary Remedies:*\n• **Gemstones** - Ruby, Pearl, Coral, Emerald, Sapphire, etc.\n• **Mantras** - Beej mantras, planetary chants, stotras\n• **Charities** - Donations aligned with planetary energies\n\n*📿 Available Remedies For:*\n• Sun (Surya) - Leadership, health, authority\n• Moon (Chandra) - Emotions, mind, family\n• Mars (Mangal) - Courage, property, marriage\n• Mercury (Budha) - Intelligence, communication, business\n• Jupiter (Guru) - Wisdom, prosperity, spirituality\n• Venus (Shukra) - Love, beauty, luxury\n• Saturn (Shani) - Discipline, longevity, career\n• Rahu - Foreign success, unconventional paths\n• Ketu - Spiritual liberation, detachment\n\n*⚠️ Dosha-Specific Remedies:*\n• Kaal Sarp Dosha - Rahu-Ketu axis remedies\n• Manglik Dosha - Mars placement remedies\n• Pitru Dosha - Ancestral remedies\n• Sade Sati - Saturn transit remedies\n\n*🙏 Advanced Practices:*\n• Navagraha Puja - All planets worship\n• Special pujas for specific doshas\n• Yantra installations for protection\n• Fasting and spiritual disciplines\n\n*Examples of Requests:*\n• "remedies for sun" - Sun-related gemstones and mantras\n• "gemstones for saturn" - Blue Sapphire details\n• "mantras for venus" - Venus mantras and practices\n• "remedies for kaal sarp dosha" - Complete Kaal Sarp remedies\n\n*Benefits:*\n• Mitigate planetary afflictions\n• Enhance positive planetary influences\n• Spiritual growth and protection\n• Harmonize life energies\n• Overcome karmic challenges\n\nWhat remedies would you like to explore? Send your request to get personalized guidance! 🕉️';
-    break;
-  case 'get_islamic_astrology_info':
-    response = '🕌 *Islamic Astrology - Ilm-e-Nujum & Taqdeer*\n\nDiscover your divine destiny through Islamic astrological wisdom! Based on Quranic principles and prophetic traditions.\n\n*Ilm-e-Nujum (Islamic Numerology):*\n• Abjad system analysis (Arabic letter values)\n• Divine qualities revealed through names\n• Spiritual guidance and life purpose\n• Connection to 99 names of Allah\n\n*Taqdeer (Destiny Analysis):*\n• Lunar mansion influences at birth (28 Manazil)\n• Islamic planetary guidance and wisdom\n• Life path according to divine will\n• Spiritual, worldly, and relationship destiny\n• Prayer times and auspicious Islamic periods\n\n*Key Features:*\n• Abjad letter values (Alif=1, Ba=2, etc.)\n• 28 Lunar Mansions (Manazil al-Qamar)\n• Islamic planetary influences\n• Taqdeer destiny categories\n• Prayer time guidance\n• Ramadan and Hajj period insights\n\n*Examples of Requests:*\n• "ilm e nujum for Ahmad" - Islamic numerology analysis\n• "taqdeer analysis" - Complete destiny analysis\n• "islamic astrology" - General Islamic guidance\n• "abjad for Fatima" - Name numerology\n\n*Islamic Principles:*\n• All destiny is from Allah (SWT)\n• Free will within divine framework\n• Prayer and good deeds shape destiny\n• Knowledge serves faith and submission\n\nWhat aspect of Islamic astrology would you like to explore? Send your request to begin your spiritual journey! 🕉️';
-    break;
-  case 'get_vimshottari_dasha_analysis':
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.sade_sati.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_vedic_remedies_info': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.vedic_remedies.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_islamic_astrology_info': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.islamic_astrology.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_vimshottari_dasha_analysis': {
     if (!user.birthDate) {
-      response = 'I need your complete birth details for Vimshottari Dasha analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.vimshottari_dasha.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
-    response = '🕉️ *Vimshottari Dasha - Planetary Periods & Life Predictions*\n\nVimshottari Dasha is the most important predictive technique in Vedic astrology, showing planetary periods that influence your life journey!\n\n*What You\'ll Discover:*\n• Current Dasha (major period) and Bhukti (sub-period)\n• Duration and progress of current planetary influence\n• Life areas affected by current planetary energies\n• Upcoming Dasha periods and their influences\n• Favorable and challenging periods ahead\n• Remedies to enhance positive influences\n\n*Complete Analysis Includes:*\n🪐 *Current Planetary Period* - Which planet\'s energy is dominant now\n⏰ *Time Calculations* - When periods begin and end\n📊 *Progress Tracking* - How far into current period you are\n🔮 *Future Preview* - Next 5 Dasha periods overview\n🙏 *Remedial Measures* - Mantras, charities, and spiritual practices\n\n*Planetary Periods (120-year cycle):*\n• Sun (6 years) - Leadership, authority, health\n• Moon (10 years) - Emotions, family, intuition\n• Mars (7 years) - Energy, courage, property\n• Rahu (18 years) - Ambition, foreign, transformation\n• Jupiter (16 years) - Wisdom, prosperity, spirituality\n• Saturn (19 years) - Discipline, hard work, longevity\n• Mercury (17 years) - Intelligence, communication, business\n• Ketu (7 years) - Spirituality, detachment, liberation\n• Venus (20 years) - Love, luxury, artistic talents\n\n*Benefits of Dasha Analysis:*\n• Understand current life challenges and opportunities\n• Plan important life events during favorable periods\n• Prepare for upcoming changes and transitions\n• Enhance positive planetary influences\n• Mitigate challenging planetary effects\n\nSend "vimshottari dasha" or "dasha analysis" to get your complete planetary periods analysis! 🔮';
-    break;
-  case 'get_jaimini_astrology_analysis':
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.vimshottari_dasha.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_jaimini_astrology_analysis': {
     if (!user.birthDate) {
-      response = 'I need your complete birth details for Jaimini Astrology analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.jaimini_astrology.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
-    response = '🕉️ *Jaimini Astrology - Alternative Vedic System*\n\nJaimini Astrology, founded by Maharishi Jaimini, offers a different perspective from traditional Parasara system!\n\n*What You\'ll Discover:*\n• **Jaimini Karakas** - 8 significators (Atma, Amatya, Bhratru, etc.)\n• **Special Aspects** - Different aspect system (3°, 5°, 7°, 9°, 10°, 12°)\n• **Argalas** - Supports and obstructions in life\n• **Alternative Predictions** - Different predictive techniques\n• **Karakas Analysis** - Soul purpose, career, relationships, health\n\n*Complete Analysis Includes:*\n🏆 *Atma Karaka* - Soul significator and life purpose\n💼 *Amatya Karaka* - Career and professional success\n👨‍👩‍👧‍👦 *Bhratru Karaka* - Siblings and friendships\n👩 *Matru Karaka* - Mother and nurturing relationships\n👨 *Pitru Karaka* - Father and authority figures\n👶 *Putra Karaka* - Children and creative expression\n💑 *Gnati Karaka* - Spouse and marriage\n🏥 *Dara Karaka* - Health and longevity\n\n*Jaimini Aspects (Different from Parasara):*\n• 3° (Trine) - Harmony and natural support\n• 5° (Quintile) - Creativity and children\n• 7° (Sextile) - Partnerships and marriage\n• 9° (Square) - Challenges and dynamic action\n• 10° (Decile) - Career and social status\n• 12° (Opposition) - Balance and relationships\n\n*Benefits of Jaimini System:*\n• Alternative perspective on your chart\n• Different insights from traditional astrology\n• Specialized significators for life areas\n• Enhanced predictive accuracy\n• Deeper understanding of life purpose\n\n*Perfect For:*\n• Those seeking alternative astrological insights\n• Understanding soul purpose and life mission\n• Career and relationship guidance\n• Health and longevity analysis\n• Spiritual growth and self-realization\n\nSend "jaimini astrology" or "karakas" to get your complete Jaimini analysis! 🔮';
-    break;
-  case 'get_hindu_festivals_info':
-    response = '🕉️ *Hindu Festivals & Auspicious Calendar*\n\nExplore India\'s rich festival heritage and discover auspicious timings for your activities!\n\n*🪔 Major Hindu Festivals:*\n• **Diwali** - Festival of Lights, Lakshmi Puja, prosperity & new beginnings\n• **Holi** - Festival of Colors, spring celebration, renewal & joy\n• **Durga Puja** - Goddess worship, divine power, spiritual purification\n• **Maha Shivaratri** - Lord Shiva\'s night, spiritual awakening, meditation\n• **Raksha Bandhan** - Brother-sister bond, protection, family harmony\n• **Ganesh Chaturthi** - Lord Ganesha, obstacle removal, wisdom\n• **Navaratri** - Nine nights of Goddess, purification, cultural celebration\n• **Krishna Janmashtami** - Lord Krishna\'s birth, devotion, divine love\n• **Ram Navami** - Lord Rama\'s birth, righteousness, ethical living\n• **Hanuman Jayanti** - Lord Hanuman, strength, courage, devotion\n\n*⏰ Auspicious Timings (Muhurtas):*\n• **Abhijit Muhurta** - Most auspicious (11:30 AM - 12:30 PM daily)\n• **Brahma Muhurta** - Spiritual practices (1.5 hours before sunrise)\n• **Rahu Kalam** - Avoid important work (varies by weekday)\n• **Yamagandam** - Challenging period (varies by weekday)\n\n*📅 Festival Information Available:*\n• Detailed significance and rituals for each festival\n• Regional variations and modern celebration tips\n• Auspicious activities for different festivals\n• Upcoming festival calendar (next 30 days)\n• Festival-specific timings and muhurtas\n\n*Examples of Requests:*\n• "festivals for 2024-10-28" - Check Diwali festivals\n• "festival about holi" - Detailed Holi information\n• "upcoming festivals" - Next 30 days calendar\n• "auspicious timings" - Daily muhurta guidance\n• "hindu calendar" - General festival overview\n\n*🌟 Festival Significance:*\n• Cultural preservation and community bonding\n• Spiritual growth and divine connection\n• Seasonal celebrations and agricultural cycles\n• Family traditions and social harmony\n• Auspicious beginnings and prosperity\n\nWhat festival or auspicious timing information interests you? Send your request to explore the divine calendar! 🕉️';
-    break;
-  case 'get_vedic_numerology_analysis':
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.jaimini_astrology.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_hindu_festivals_info': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.hindu_festivals.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_vedic_numerology_analysis': {
     if (!user.birthDate) {
-      response = 'I need your birth date and name for Vedic numerology analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.vedic_numerology.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     try {
       const vedicAnalysis = vedicNumerology.getVedicNumerologyAnalysis(user.birthDate, user.name);
       if (vedicAnalysis.error) {
-        response = `❌ ${vedicAnalysis.error}`;
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          vedicAnalysis.error,
+          'text',
+          {},
+          userLanguage
+        );
       } else {
-        response = vedicAnalysis.summary;
+        await sendMessage(phoneNumber, vedicAnalysis.summary);
       }
     } catch (error) {
       logger.error('Error generating Vedic numerology analysis:', error);
-      response = '❌ Sorry, I couldn\'t generate your Vedic numerology analysis right now. Please try again later.';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.vedic_numerology.error',
+        'text',
+        {},
+        userLanguage
+      );
     }
-    break;
-  case 'get_ayurvedic_astrology_analysis':
+    return null;
+  }
+  case 'get_ayurvedic_astrology_analysis': {
     if (!user.birthDate) {
-      response = 'I need your complete birth details for Ayurvedic astrology analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.ayurvedic_astrology.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     try {
       const ayurvedicAnalysis = ayurvedicAstrology.analyzeAyurvedicConstitution({
@@ -736,60 +955,148 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         birthPlace: user.birthPlace || 'Delhi'
       });
       if (ayurvedicAnalysis.error) {
-        response = `❌ ${ayurvedicAnalysis.error}`;
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          ayurvedicAnalysis.error,
+          'text',
+          {},
+          userLanguage
+        );
       } else {
-        response = ayurvedicAnalysis.summary;
+        await sendMessage(phoneNumber, ayurvedicAnalysis.summary);
       }
     } catch (error) {
       logger.error('Error generating Ayurvedic astrology analysis:', error);
-      response = '❌ Sorry, I couldn\'t generate your Ayurvedic astrology analysis right now. Please try again later.';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.ayurvedic_astrology.error',
+        'text',
+        {},
+        userLanguage
+      );
     }
-    break;
-  case 'get_varga_charts_analysis':
+    return null;
+  }
+  case 'get_varga_charts_analysis': {
     if (!user.birthDate) {
-      response = 'I need your complete birth details for Varga Charts analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.varga_charts.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
-    response = '🕉️ *Varga (Divisional) Charts*\n\nVarga charts provide specialized analysis for different aspects of your life!\n\n*Complete Varga Chart Analysis Includes:*\n\n🕉️ *D-9 Navamsa* - Marriage, spouse, spiritual life, children\n💼 *D-10 Dashamsa* - Career, profession, authority, reputation\n👨‍👩‍👧‍👦 *D-12 Dwadasamsa* - Parents, ancestry, spiritual heritage\n🏠 *D-16 Shodasamsa* - Vehicles, pleasures, material comforts\n📚 *D-24 Chaturvimsamsa* - Education, learning, intelligence\n⚕️ *D-30 Trimsamsa* - Health challenges, misfortunes, obstacles\n\n*What You\'ll Learn:*\n• Specialized planetary positions for each life area\n• Strength of different aspects of your life\n• Areas needing attention and improvement\n• Favorable periods for specific activities\n• Deeper understanding beyond the main birth chart\n\n*Benefits:*\n• Comprehensive life analysis across all areas\n• Targeted guidance for specific life challenges\n• Understanding of hidden strengths and weaknesses\n• Spiritual growth and self-improvement insights\n\nSend "varga charts" to get your complete divisional analysis! 🔮';
-    break;
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.varga_charts.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
   case 'get_shadbala_analysis':
     if (!user.birthDate) {
-      response = 'I need your complete birth details for Shadbala analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.shadbala.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
-    response = '🕉️ *Shadbala (6-Fold Planetary Strength)*\n\nShadbala provides the most precise measurement of planetary power in Vedic astrology!\n\n*Complete 6-Fold Analysis Includes:*\n\n🏛️ *Sthana Bala* - Positional strength (exaltation, house placement, sign relationships)\n🧭 *Dig Bala* - Directional strength (planetary directions and orientations)\n⏰ *Kala Bala* - Temporal strength (time-based influences and cycles)\n⚡ *Chesta Bala* - Motivational strength (planetary speed and retrograde motion)\n🌿 *Naisargika Bala* - Natural strength (innate planetary power and hierarchy)\n👁️ *Drik Bala* - Aspect strength (benefic and malefic planetary influences)\n\n*What You\'ll Discover:*\n• Precise strength percentage for each planet (0-100%)\n• Detailed breakdown of all 6 strength components\n• Planetary strength rankings and hierarchy\n• Strongest and weakest planetary periods\n• Recommendations for optimal timing\n• Areas where planetary power can be enhanced\n\n*Benefits:*\n• Know exactly when planets are strongest in your life\n• Time important decisions during peak planetary strength\n• Understand planetary power distribution in your chart\n• Identify periods of maximum opportunity\n• Get guidance on strengthening weak planets\n\n*Advanced Insights:*\n• Beyond basic dignity (exalted, own sign, etc.)\n• Comprehensive strength measurement\n• Predictive power for life events\n• Spiritual growth through planetary understanding\n\nSend "shadbala" to get your complete planetary strength analysis! 🔮';
-    break;
-  case 'get_muhurta_analysis':
-    response = '🕉️ *Muhurta (Electional Astrology) - Auspicious Timing*\n\nMuhurta helps you choose the most auspicious time for important life events!\n\n*Available for:*\n💒 *Weddings & Marriages*\n💼 *Business Launches & New Ventures*\n🏠 *House Warming & Home Ceremonies*\n📚 *Education & Study Beginnings*\n🛐 *Religious Ceremonies & Pujas*\n🎯 *Any Important Life Event*\n\n*What Muhurta Provides:*\n\n🕐 *Top 5 Auspicious Timings* on your preferred date\n📅 *Alternative Dates* if preferred date isn\'t ideal\n🌓 *Panchaka Dosha Analysis* (5 defects to avoid)\n⭐ *Abhijit Muhurta* (most auspicious time of day)\n🪐 *Planetary Considerations* for your event type\n📊 *Detailed Scoring* and reasoning\n\n*How to Request:*\n\nSend your request in this format:\n```\nMuhurta for [event type] on [DD/MM/YYYY] in [City, Country]\n```\n\n*Examples:*\n• "Muhurta for wedding on 15/06/2024 in Mumbai, India"\n• "Auspicious time for business launch on 01/07/2024 in Delhi, India"\n• "House warming muhurta on 20/08/2024 in Bangalore, India"\n\n*Benefits:*\n• Maximize success potential of important events\n• Align with cosmic energies and planetary influences\n• Follow ancient Vedic wisdom for timing\n• Minimize obstacles and challenges\n• Ensure harmony and prosperity\n\nWhat event are you planning? I\'ll find the perfect auspicious time for you! 🕉️';
-    break;
-  case 'get_panchang_analysis':
-    response = '🕉️ *Panchang (Hindu Almanac) - Daily Guidance*\n\nPanchang provides traditional Hindu calendar information and daily guidance for spiritual and cultural activities!\n\n*Complete Panchang Includes:*\n\n🌓 *Tithi* - Lunar day with Shukla/Krishna Paksha\n⭐ *Nakshatra* - 27 Lunar constellations\n🪐 *Yoga* - 27 Planetary combinations\n⚡ *Karana* - 11 Half lunar days\n\n🌅 *Sunrise & Sunset* - Local timings for your location\n🌙 *Moon Phase* - Current lunar phase\n📅 *Weekday* - Day of the week\n\n*Inauspicious Periods:*\n😈 *Rahukalam* - Rahu\'s period (avoid important work)\n👹 *Gulikakalam* - Most inauspicious time\n⚠️ *Yamagandam* - Generally inauspicious\n\n⭐ *Abhijit Muhurta* - Most auspicious time of day\n\n*Daily Activity Guidance:*\n✅ *Recommended Activities* - Auspicious for the day\n❌ *Activities to Avoid* - Based on planetary influences\n📊 *Overall Day Rating* - Auspicious/Neutral/Inauspicious\n\n*How to Request:*\n\nSend your request in this format:\n```\nPanchang for [DD/MM/YYYY] in [City, Country]\n```\n\n*Examples:*\n• "Panchang for 15/06/2024 in Mumbai, India"\n• "Daily Panchang for today in Delhi"\n• "Hindu Almanac for Bangalore"\n\n*Perfect for:*\n• Planning religious ceremonies and pujas\n• Choosing auspicious dates for events\n• Daily spiritual practice guidance\n• Understanding cultural and festival timings\n• Avoiding inauspicious periods\n• Wedding and ceremony planning\n\n*Benefits:*\n• Follow traditional Hindu calendar wisdom\n• Plan activities according to cosmic influences\n• Avoid inauspicious times and periods\n• Maximize success of important undertakings\n• Cultural and spiritual awareness\n• Daily guidance for harmonious living\n\nWhat date and location would you like the Panchang for? 🕉️';
-    break;
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.shadbala.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  case 'get_muhurta_analysis': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.muhurta.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
+  case 'get_panchang_analysis': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.panchang.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
   case 'get_secondary_progressions':
     if (!user.birthDate) {
-      response = 'I need your complete birth details for secondary progressions analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.secondary_progressions.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     response = generateAstrologyResponse('progressions', user);
     break;
   case 'get_solar_arc_directions':
     if (!user.birthDate) {
-      response = 'I need your complete birth details for solar arc directions analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.solar_arc_directions.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     response = generateAstrologyResponse('solar arc', user);
     break;
   case 'get_solar_return_analysis':
     if (!user.birthDate) {
-      response = 'I need your complete birth details for solar return analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.solar_return.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     response = generateAstrologyResponse('solar return', user);
     break;
   case 'get_synastry_analysis':
     if (!user.birthDate) {
-      response = 'I need your complete birth details for synastry analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.synastry.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     // Check if partner data is provided in the message
     const partnerDataMatch = messageText.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
@@ -797,17 +1104,32 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       // Partner data provided, let astrologyEngine handle it
       response = generateAstrologyResponse(messageText, user);
     } else {
-      response = '💕 *Synastry Analysis*\n\nTo perform a detailed relationship astrology analysis, please provide your partner\'s birth details:\n\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM) - optional\n• Birth place (City, Country)\n\nExample: 25/12/1985, 09:15, London, UK\n\nThis will compare your charts and reveal:\n• Planetary aspects between you\n• Composite relationship chart\n• Romantic compatibility\n• Communication dynamics\n• Long-term potential';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.synastry.partner_prompt',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     break;
   case 'get_lunar_return':
     if (!user.birthDate) {
-      response = 'I need your complete birth details for lunar return analysis.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.lunar_return.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     response = generateAstrologyResponse('lunar return', user);
     break;
-  case 'show_divination_menu':
+  case 'show_divination_menu': {
     const divinationMenu = getMenu('divination_menu');
     if (divinationMenu) {
       const buttons = divinationMenu.buttons.map(button => ({
@@ -821,7 +1143,8 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       );
     }
     return null;
-  case 'show_traditions_menu':
+  }
+  case 'show_traditions_menu': {
     const traditionsMenu = getMenu('traditions_menu');
     if (traditionsMenu) {
       const buttons = traditionsMenu.buttons.map(button => ({
@@ -835,10 +1158,18 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       );
     }
     return null;
+  }
   case 'show_nadi_flow':
     if (!user.birthDate) {
-      response =
-          'For Nadi astrology, I need your complete birth details first.';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.nadi_flow.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     } else {
       const flowStarted = await processFlowMessage(
         { type: 'text', text: { body: 'start' } },
@@ -848,14 +1179,28 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       if (flowStarted) {
         return null;
       } else {
-        response = 'Sorry, I couldn\'t start the Nadi analysis right now.';
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          'Sorry, I couldn\'t start the Nadi analysis right now.',
+          'text',
+          {},
+          userLanguage
+        );
+        return null;
       }
     }
-    break;
   case 'show_chinese_flow':
     if (!user.birthDate) {
-      response =
-          'For Chinese BaZi analysis, I need your birth details first.';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.chinese_flow.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     } else {
       const flowStarted = await processFlowMessage(
         { type: 'text', text: { body: 'start' } },
@@ -865,31 +1210,55 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       if (flowStarted) {
         return null;
       } else {
-        response = 'Sorry, I couldn\'t start the Chinese analysis right now.';
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          'Sorry, I couldn\'t start the Chinese analysis right now.',
+          'text',
+          {},
+          userLanguage
+        );
+        return null;
       }
     }
-    break;
   case 'get_numerology_analysis':
     if (!user.birthDate || !user.name) {
-      response =
-          'For numerology analysis, I need your full name and birth date.';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.numerology.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     } else {
       try {
         const report = numerologyService.getNumerologyReport(
           user.birthDate,
           user.name
         );
-        response = '🔢 *Numerology Analysis*\n\n';
-        response += `*Life Path:* ${report.lifePath.number} - ${report.lifePath.interpretation}\n\n`;
-        response += `*Expression:* ${report.expression.number} - ${report.expression.interpretation}\n\n`;
-        response += `*Soul Urge:* ${report.soulUrge.number} - ${report.soulUrge.interpretation}`;
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        const response = translationService.translate('messages.numerology_report.title', userLanguage) + '\n\n' +
+          translationService.translate('messages.numerology_report.life_path', userLanguage, { number: report.lifePath.number }) + ' - ' + report.lifePath.interpretation + '\n\n' +
+          translationService.translate('messages.numerology_report.expression', userLanguage, { number: report.expression.number }) + ' - ' + report.expression.interpretation + '\n\n' +
+          translationService.translate('messages.numerology_report.soul_urge', userLanguage, { number: report.soulUrge.number }) + ' - ' + report.soulUrge.interpretation +
+          '\n\n' + translationService.translate('messages.numerology_report.question', userLanguage);
+        await sendMessage(phoneNumber, response);
+        return null;
       } catch (error) {
         logger.error('Error getting numerology analysis:', error);
-        response =
-            'I\'m having trouble calculating your numerology right now.';
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          'messages.astrology_services.numerology.error',
+          'text',
+          {},
+          userLanguage
+        );
+        return null;
       }
     }
-    break;
   case 'show_main_menu':
     const mainMenu = getMenu('main_menu');
     if (mainMenu) {
@@ -913,32 +1282,57 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   case 'get_numerology_report':
     response = '🔢 *Numerology Analysis*\n\n*Life Path:* 5\n\nAs a Life Path 5, you\'re adventurous, freedom-loving, and adaptable. You thrive on change and new experiences.\n\n*Expression:* 8\n\nYour name vibrates with power, success, and material abundance.\n\n*Soul Urge:* 3\n\nYour heart desires creativity, self-expression, and social connection.\n\nWhat aspect of numerology interests you most?';
     break;
-  case 'show_subscription_plans':
-    response = {
+  case 'show_subscription_plans': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    const response = {
       type: 'interactive',
-      body: '💳 *Choose Your Cosmic Plan*',
+      body: translationService.translate('messages.subscription_plans.title', userLanguage),
       buttons: [
-        { type: 'reply', reply: { id: 'sub_essential', title: 'Essential' } },
-        { type: 'reply', reply: { id: 'sub_premium', title: 'Premium' } }
+        { type: 'reply', reply: { id: 'sub_essential', title: translationService.translate('messages.subscription_plans.essential', userLanguage) } },
+        { type: 'reply', reply: { id: 'sub_premium', title: translationService.translate('messages.subscription_plans.premium', userLanguage) } }
       ]
     };
-    break;
+    await sendMessage(phoneNumber, response, 'interactive');
+    return null;
+  }
   case 'show_comprehensive_menu': {
     const comprehensiveMenu = getMenu('comprehensive_menu');
     if (comprehensiveMenu) {
-      response = comprehensiveMenu;
+      await sendMessage(phoneNumber, comprehensiveMenu, 'interactive');
     } else {
-      response = 'Menu configuration not found.';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.comprehensive_menu.not_found',
+        'text',
+        {},
+        userLanguage
+      );
     }
-    break;
+    return null;
   }
-  case 'get_relationship_compatibility':
-    response = '💕 *Relationship Compatibility Analysis*\n\nI can analyze compatibility between you and a partner using multiple astrological systems!\n\n*Available Compatibility Types:*\n\n🕉️ *Hindu Vedic Marriage Matching* - Traditional 36-point Guna system\n💞 *Western Synastry* - Planetary aspects and composite charts\n🔮 *General Compatibility* - Sun sign and basic chart comparison\n\n*To check compatibility:*\n\nProvide your partner\'s birth details in this format:\n```\nName: [Partner Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n```\n\nExample:\n```\nName: Sarah Johnson\nBirth: 15/06/1990, 14:30\nPlace: New York, USA\n```\n\nOr send "vedic marriage" for traditional Hindu compatibility, or "synastry" for Western relationship astrology.\n\nWhat type of compatibility analysis interests you?';
-    break;
+  case 'get_relationship_compatibility': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.astrology_services.relationship_compatibility.description',
+      'text',
+      {},
+      userLanguage
+    );
+    return null;
+  }
   case 'get_astrocartography_analysis':
     if (!user.birthDate) {
-      response = 'I need your complete birth details for astrocartography analysis. Please provide your birth date, time, and place first.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.astrocartography.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     try {
       const astrocartographyData = await generateAstrocartography({
@@ -948,19 +1342,48 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       });
 
       if (astrocartographyData.error) {
-        response = `I encountered an issue generating your astrocartography: ${astrocartographyData.error}`;
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          'messages.astrology_services.astrocartography.error',
+          'text',
+          { error: astrocartographyData.error },
+          userLanguage
+        );
       } else {
-        response = `🌍 *Astrocartography Analysis*\n\n${astrocartographyData.astrocartographyDescription}\n\n*Key Planetary Lines:*\n${astrocartographyData.relocationGuidance.map(line => `• ${line}`).join('\n')}\n\n*Recommended Locations:*\n${astrocartographyData.locationAdvice.map(loc => `• ${loc}`).join('\n')}\n\nSend "relocate [city, country]" to get specific location analysis!`;
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        const response = translationService.translate('messages.astrology_services.astrocartography.title', userLanguage) + '\n\n' +
+          astrocartographyData.astrocartographyDescription + '\n\n' +
+          translationService.translate('messages.astrology_services.astrocartography.key_lines', userLanguage) + '\n' +
+          astrocartographyData.relocationGuidance.map(line => `• ${line}`).join('\n') + '\n\n' +
+          translationService.translate('messages.astrology_services.astrocartography.recommended_locations', userLanguage) + '\n' +
+          astrocartographyData.locationAdvice.map(loc => `• ${loc}`).join('\n') + '\n\n' +
+          translationService.translate('messages.astrology_services.astrocartography.relocate_prompt', userLanguage);
+        await sendMessage(phoneNumber, response);
       }
     } catch (error) {
       logger.error('Error generating astrocartography:', error);
-      response = 'I\'m sorry, I couldn\'t generate your astrocartography analysis right now. Please try again later.';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'I\'m sorry, I couldn\'t generate your astrocartography analysis right now. Please try again later.',
+        'text',
+        {},
+        userLanguage
+      );
     }
-    break;
+    return null;
   case 'get_harmonic_astrology_analysis':
     if (!user.birthDate) {
-      response = 'I need your complete birth details for age harmonic astrology analysis. Please provide your birth date, time, and place first.';
-      break;
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.harmonic_astrology.incomplete_profile',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
     }
     try {
       const harmonicData = await ageHarmonicReader.generateAgeHarmonicAnalysis({
@@ -970,19 +1393,50 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       });
 
       if (harmonicData.error) {
-        response = `I encountered an issue calculating your age harmonics: ${harmonicData.error}`;
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          'messages.astrology_services.harmonic_astrology.error',
+          'text',
+          { error: harmonicData.error },
+          userLanguage
+        );
       } else {
-        response = `🔢 *Age Harmonic Astrology*\n\n*Current Age:* ${harmonicData.currentAge} years\n*Life Stage:* ${harmonicData.currentStage}\n\n*Key Harmonic Periods:*\n${harmonicData.harmonicPeriods.map(period => `• ${period}`).join('\n')}\n\n*Developmental Themes:*\n${harmonicData.developmentalThemes.map(theme => `• ${theme}`).join('\n')}\n\n*Next Major Transition:* ${harmonicData.nextTransition}`;
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        const response = translationService.translate('messages.astrology_services.harmonic_astrology.title', userLanguage) + '\n\n' +
+          translationService.translate('messages.astrology_services.harmonic_astrology.current_age', userLanguage, { age: harmonicData.currentAge }) + '\n' +
+          translationService.translate('messages.astrology_services.harmonic_astrology.life_stage', userLanguage, { stage: harmonicData.currentStage }) + '\n\n' +
+          translationService.translate('messages.astrology_services.harmonic_astrology.key_periods', userLanguage) + '\n' +
+          harmonicData.harmonicPeriods.map(period => `• ${period}`).join('\n') + '\n\n' +
+          translationService.translate('messages.astrology_services.harmonic_astrology.developmental_themes', userLanguage) + '\n' +
+          harmonicData.developmentalThemes.map(theme => `• ${theme}`).join('\n') + '\n\n' +
+          translationService.translate('messages.astrology_services.harmonic_astrology.next_transition', userLanguage, { transition: harmonicData.nextTransition });
+        await sendMessage(phoneNumber, response);
       }
     } catch (error) {
       logger.error('Error generating age harmonic analysis:', error);
-      response = 'I\'m sorry, I couldn\'t generate your age harmonic analysis right now. Please try again later.';
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'I\'m sorry, I couldn\'t generate your age harmonic analysis right now. Please try again later.',
+        'text',
+        {},
+        userLanguage
+      );
     }
-    break;
-  default:
+    return null;
+   default: {
     logger.warn(`⚠️ Unknown menu action: ${action}`);
-    response = `I'm sorry, I don't know how to perform the action: ${action} yet.`;
-    break;
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.errors.unknown_action',
+      'text',
+      { action },
+      userLanguage
+    );
+    return null;
+  }
   }
   if (response) {
     await sendMessage(phoneNumber, response);
@@ -1013,8 +1467,14 @@ const processListReply = async(
     await executeMenuAction(phoneNumber, user, action);
   } else {
     // Fallback response
-    const response = `You selected: ${title}\nDescription: ${description}\n\nI'll process your request shortly!`;
-    await sendMessage(phoneNumber, response);
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      'messages.errors.list_reply',
+      'text',
+      { title, description },
+      userLanguage
+    );
   }
 };
 
@@ -1027,6 +1487,7 @@ const processListReply = async(
  */
 const processButtonPayload = async(phoneNumber, payload, text, user) => {
   // Generate response based on button payload
+  const userLanguage = getUserLanguage(user, phoneNumber);
   const response = `Button pressed: ${text}\nPayload: ${payload}\n\nI'll process your request shortly!`;
   await sendMessage(phoneNumber, response);
 };
@@ -1036,9 +1497,16 @@ const processButtonPayload = async(phoneNumber, payload, text, user) => {
  * @param {string} phoneNumber - User's phone number
  */
 const sendUnsupportedMessageTypeResponse = async phoneNumber => {
-  const response =
-    'I\'m sorry, I don\'t support that type of message yet. Please send a text message with your question!';
-  await sendMessage(phoneNumber, response);
+  // We need user context for language detection, but this function doesn't have it
+  // For now, use default language or detect from phone number
+  const userLanguage = translationService.detectLanguage(phoneNumber);
+  await sendMessage(
+    phoneNumber,
+    'messages.errors.unsupported_message_type',
+    'text',
+    {},
+    userLanguage
+  );
 };
 
 /**
@@ -1046,9 +1514,14 @@ const sendUnsupportedMessageTypeResponse = async phoneNumber => {
  * @param {string} phoneNumber - User's phone number
  */
 const sendUnsupportedInteractiveTypeResponse = async phoneNumber => {
-  const response =
-    'I\'m sorry, I don\'t support that type of interactive message yet. Please try sending a text message!';
-  await sendMessage(phoneNumber, response);
+  const userLanguage = translationService.detectLanguage(phoneNumber);
+  await sendMessage(
+    phoneNumber,
+    'messages.errors.unsupported_interactive_type',
+    'text',
+    {},
+    userLanguage
+  );
 };
 
 /**
@@ -1058,8 +1531,15 @@ const sendUnsupportedInteractiveTypeResponse = async phoneNumber => {
  * @param {string} caption - Media caption
  */
 const sendMediaAcknowledgment = async(phoneNumber, type, caption) => {
-  const response = `Thank you for sending that ${type}${caption ? ` with caption: "${caption}"` : ''}! I'll process it shortly.`;
-  await sendMessage(phoneNumber, response);
+  const userLanguage = translationService.detectLanguage(phoneNumber);
+  const captionText = caption ? ` with caption: "${caption}"` : '';
+  await sendMessage(
+    phoneNumber,
+    'messages.errors.media_acknowledgment',
+    'text',
+    { type, caption: captionText },
+    userLanguage
+  );
 };
 
 /**
@@ -1068,9 +1548,14 @@ const sendMediaAcknowledgment = async(phoneNumber, type, caption) => {
  * @param {string} errorMessage - Error message
  */
 const sendErrorMessage = async(phoneNumber, errorMessage) => {
-  const response =
-    'I\'m sorry, I encountered an error processing your message. Please try again later!';
-  await sendMessage(phoneNumber, response);
+  const userLanguage = translationService.detectLanguage(phoneNumber);
+  await sendMessage(
+    phoneNumber,
+    'messages.errors.generic_error',
+    'text',
+    {},
+    userLanguage
+  );
   logger.error(`❌ Error sent to ${phoneNumber}: ${errorMessage}`);
 };
 
@@ -1087,9 +1572,13 @@ const handleCompatibilityRequest = async(
 ) => {
   try {
     if (!user.birthDate) {
+      const userLanguage = getUserLanguage(user, phoneNumber);
       await sendMessage(
         phoneNumber,
-        'I need your birth date first to check compatibility. Please complete your profile by providing your birth details.'
+        'messages.compatibility.incomplete_profile',
+        'text',
+        {},
+        userLanguage
       );
       return;
     }
@@ -1102,6 +1591,7 @@ const handleCompatibilityRequest = async(
       otherSign
     );
 
+    const userLanguage = getUserLanguage(user, phoneNumber);
     let response = `💕 *Compatibility Analysis*\n\n*Your Sign:* ${userSign}\n*Their Sign:* ${otherSign}\n\n*Compatibility:* ${compatibility.compatibility}\n\n${compatibility.description}`;
 
     // Check subscription limits
@@ -1110,7 +1600,10 @@ const handleCompatibilityRequest = async(
       benefits.maxCompatibilityChecks !== Infinity &&
       user.compatibilityChecks >= benefits.maxCompatibilityChecks
     ) {
-      response += `\n\n⚠️ *Compatibility Check Limit Reached*\n\nYou've used ${user.compatibilityChecks} of your ${benefits.maxCompatibilityChecks} free compatibility checks. Upgrade to Premium for unlimited compatibility analysis!`;
+      response += '\n\n' + translationService.translate('messages.compatibility.limit_reached', userLanguage, {
+        used: user.compatibilityChecks,
+        limit: benefits.maxCompatibilityChecks
+      });
     }
 
     await sendMessage(phoneNumber, response);
@@ -1119,9 +1612,13 @@ const handleCompatibilityRequest = async(
     await incrementCompatibilityChecks(phoneNumber);
   } catch (error) {
     logger.error('Error handling compatibility request:', error);
+    const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
       phoneNumber,
-      'I\'m sorry, I couldn\'t process the compatibility request right now. Please try again later.'
+      'messages.compatibility.error',
+      'text',
+      {},
+      userLanguage
     );
   }
 };
@@ -1145,18 +1642,22 @@ const handleSubscriptionRequest = async(phoneNumber, user, planId) => {
 
     // Send welcome message based on plan
     const plan = paymentService.getPlan(planId);
-    let welcomeMessage = `\n\n🎉 *Welcome to ${plan.name}!*\n\nYour new features:\n`;
-    plan.features.forEach(feature => {
-      welcomeMessage += `• ${feature}\n`;
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    let welcomeMessage = '\n\n' + translationService.translate('messages.errors.welcome_message', userLanguage, {
+      plan: plan.name,
+      features: plan.features.map(feature => `• ${feature}`).join('\n')
     });
-    welcomeMessage += '\nWhat would you like to explore first?';
 
     await sendMessage(phoneNumber, welcomeMessage);
   } catch (error) {
     logger.error('Error handling subscription request:', error);
+    const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
       phoneNumber,
-      '❌ Sorry, I couldn\'t process your subscription right now. Please try again later or contact support.'
+      'messages.errors.subscription_error',
+      'text',
+      {},
+      userLanguage
     );
   }
 };

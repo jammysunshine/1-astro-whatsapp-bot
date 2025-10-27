@@ -1,41 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="16" failures="1" errors="0" time="21.177">
-  <testsuite name="Astrology Library Integration Tests" errors="0" failures="1" skipped="0" timestamp="2025-10-27T03:34:10" time="15.323" tests="16">
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" time="0.056">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="10.288">
+  <testsuite name="AstrologyEngine" errors="0" failures="0" skipped="0" timestamp="2025-10-27T07:44:17" time="9.55" tests="3">
+    <testcase classname="AstrologyEngine generateAstrologyResponse should generate astrology response for valid user" name="AstrologyEngine generateAstrologyResponse should generate astrology response for valid user" time="0.009">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" time="0.004">
+    <testcase classname="AstrologyEngine validateBirthData should validate valid birth data" name="AstrologyEngine validateBirthData should validate valid birth data" time="0.005">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" time="0.003">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" name="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" time="0.002">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" name="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" time="0.007">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" name="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" time="0.003">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" name="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" time="0.005">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" name="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" time="0.004">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" name="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" time="0.006">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" name="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" time="0.003">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" name="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" time="5.173">
-      <failure>Error: expect(received).toBeDefined()
-
-Received: undefined
-    at Object.toBeDefined (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/astrology-integration.test.js:151:29)</failure>
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" name="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" time="0.629">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" name="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" time="0.003">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should handle user without name" name="Astrology Library Integration Tests Numerology Service Integration should handle user without name" time="0.003">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" name="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" time="0.004">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" name="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" time="0.004">
+    <testcase classname="AstrologyEngine validateBirthData should reject invalid birth data" name="AstrologyEngine validateBirthData should reject invalid birth data" time="0.006">
     </testcase>
   </testsuite>
 </testsuites>

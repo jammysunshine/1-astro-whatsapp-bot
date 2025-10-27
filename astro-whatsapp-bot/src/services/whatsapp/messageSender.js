@@ -1,5 +1,6 @@
 const axios = require('axios');
 const logger = require('../../utils/logger');
+const translationService = require('../i18n/TranslationService');
 
 // WhatsApp Business API configuration
 const WHATSAPP_API_URL = 'https://graph.facebook.com/v18.0';
@@ -413,27 +414,43 @@ const sendMessage = async(
   phoneNumber,
   message,
   messageType = 'text',
-  options = {}
+  options = {},
+  language = 'en'
 ) => {
   try {
     let response;
 
     switch (messageType) {
     case 'text':
-      response = await sendTextMessage(phoneNumber, message, options);
+      // Translate message if it's a resource key (contains dots and no spaces)
+      let translatedMessage = message;
+      if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
+        translatedMessage = await translationService.translate(message, language, options.parameters || {});
+      }
+      response = await sendTextMessage(phoneNumber, translatedMessage, options);
       break;
     case 'interactive':
       if (message.type === 'button') {
+        // Translate body if it's a resource key
+        let translatedBody = message.body;
+        if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
+          translatedBody = await translationService.translate(message.body, language, options.parameters || {});
+        }
         response = await sendInteractiveButtons(
           phoneNumber,
-          message.body,
+          translatedBody,
           message.buttons,
           options
         );
       } else if (message.type === 'list') {
+        // Translate body if it's a resource key
+        let translatedBody = message.body;
+        if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
+          translatedBody = await translationService.translate(message.body, language, options.parameters || {});
+        }
         response = await sendListMessage(
           phoneNumber,
-          message.body,
+          translatedBody,
           message.buttonText,
           message.sections,
           options
@@ -458,7 +475,12 @@ const sendMessage = async(
       );
       break;
     default:
-      response = await sendTextMessage(phoneNumber, message, options);
+      // Translate message if it's a resource key (contains dots and no spaces)
+      let defaultTranslatedMessage = message;
+      if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
+        defaultTranslatedMessage = await translationService.translate(message, language, options.parameters || {});
+      }
+      response = await sendTextMessage(phoneNumber, defaultTranslatedMessage, options);
     }
 
     return response;

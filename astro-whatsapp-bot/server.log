@@ -1,0 +1,51 @@
+[33mwarn[39m: ⚠️ GOOGLE_MAPS_API_KEY is not set. Time Zone API functionality may be limited. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.486Z"}
+[32minfo[39m: Module: VedicCalculator loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.491Z"}
+[32minfo[39m: Initializing Enhanced Swiss Ephemeris system... {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.492Z"}
+[32minfo[39m: Swiss Ephemeris path set successfully: ./ephe {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.493Z"}
+[32minfo[39m: Default ayanamsa set to Lahiri for Vedic calculations. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.493Z"}
+[33mwarn[39m: ⚠️ Swiss Ephemeris basic functionality test returned no data - calculations may be limited. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.493Z"}
+[32minfo[39m: Enhanced Swiss Ephemeris system initialized successfully. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.494Z"}
+[32minfo[39m: Attempting to initialize astrologer library... {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.494Z"}
+[32minfo[39m: Astrologer library initialized successfully. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.494Z"}
+[32minfo[39m: Module: ChineseCalculator loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.496Z"}
+[32minfo[39m: Module: TarotReader loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.499Z"}
+[32minfo[39m: Module: PalmistryReader loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.501Z"}
+[32minfo[39m: Module: NadiReader loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.503Z"}
+[32minfo[39m: Module: KabbalisticReader loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.509Z"}
+[32minfo[39m: Module: MayanReader loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.511Z"}
+[32minfo[39m: Module: CelticReader loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.513Z"}
+[32minfo[39m: Module: IChingReader loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.515Z"}
+[32minfo[39m: Module: AstrocartographyReader loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.518Z"}
+[32minfo[39m: Module: HoraryReader loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.519Z"}
+[32minfo[39m: Module: vedicNumerology loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.530Z"}
+[32minfo[39m: Module: ayurvedicAstrology loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.531Z"}
+[32minfo[39m: Module: astrologyEngine loaded. All sub-modules imported successfully. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.532Z"}
+[32minfo[39m: Module: VedicRemedies loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.532Z"}
+[32minfo[39m: Module: IslamicAstrology loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.533Z"}
+[32minfo[39m: Module: VimshottariDasha loaded with authentic calculations. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.533Z"}
+[32minfo[39m: Module: JaiminiAstrology loaded with authentic calculations. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.533Z"}
+[32minfo[39m: Module: NadiAstrology loaded with authentic palm leaf calculations. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.533Z"}
+[32minfo[39m: Module: HinduFestivals loaded. {"service":"astro-whatsapp-bot","timestamp":"2025-10-27T04:00:53.534Z"}
+/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/conversation/conversationEngine.js:89
+module.exports = {
+^^^^^^
+
+SyntaxError: Unexpected identifier 'module'
+    at wrapSafe (node:internal/modules/cjs/loader:1691:18)
+    at Module._compile (node:internal/modules/cjs/loader:1734:20)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1480:32)
+    at Module._load (node:internal/modules/cjs/loader:1299:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:244:24)
+    at Module.require (node:internal/modules/cjs/loader:1503:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:4:32)
+    at Module._compile (node:internal/modules/cjs/loader:1760:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1480:32)
+    at Module._load (node:internal/modules/cjs/loader:1299:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:244:24)
+
+Node.js v24.10.0

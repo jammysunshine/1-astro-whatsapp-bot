@@ -24,15 +24,15 @@ class JaiminiAstrology {
 
     // Jaimini Chara Dasha sequence - authentic order
     this.charaDashaSequence = [
-      {planet: 'moon', order: ['moon', 'sun', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus']},
-      {planet: 'sun', order: ['sun', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus', 'moon']},
-      {planet: 'mars', order: ['mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus', 'moon', 'sun']},
-      {planet: 'rahu', order: ['rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus', 'moon', 'sun', 'mars']},
-      {planet: 'jupiter', order: ['jupiter', 'saturn', 'mercury', 'ketu', 'venus', 'moon', 'sun', 'mars', 'rahu']},
-      {planet: 'saturn', order: ['saturn', 'mercury', 'ketu', 'venus', 'moon', 'sun', 'mars', 'rahu', 'jupiter']},
-      {planet: 'mercury', order: ['mercury', 'ketu', 'venus', 'moon', 'sun', 'mars', 'rahu', 'jupiter', 'saturn']},
-      {planet: 'ketu', order: ['ketu', 'venus', 'moon', 'sun', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury']},
-      {planet: 'venus', order: ['venus', 'moon', 'sun', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu']}
+      { planet: 'moon', order: ['moon', 'sun', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus'] },
+      { planet: 'sun', order: ['sun', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus', 'moon'] },
+      { planet: 'mars', order: ['mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus', 'moon', 'sun'] },
+      { planet: 'rahu', order: ['rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus', 'moon', 'sun', 'mars'] },
+      { planet: 'jupiter', order: ['jupiter', 'saturn', 'mercury', 'ketu', 'venus', 'moon', 'sun', 'mars', 'rahu'] },
+      { planet: 'saturn', order: ['saturn', 'mercury', 'ketu', 'venus', 'moon', 'sun', 'mars', 'rahu', 'jupiter'] },
+      { planet: 'mercury', order: ['mercury', 'ketu', 'venus', 'moon', 'sun', 'mars', 'rahu', 'jupiter', 'saturn'] },
+      { planet: 'ketu', order: ['ketu', 'venus', 'moon', 'sun', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury'] },
+      { planet: 'venus', order: ['venus', 'moon', 'sun', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu'] }
     ];
 
     // Jaimini Karakas (Significators) - authentic list
@@ -51,10 +51,10 @@ class JaiminiAstrology {
 
     // Jaimini Special Aspects - authentic aspect system
     this.jaiminiAspects = {
-      7: {degree: 180, meaning: 'Saptama (7th) Aspect - Partnership, marriage, open enemies'},
-      8: {degree: 160, meaning: 'Ashtama (8th) Aspect - Transformation, hidden enemies, occult'},
-      9: {degree: 140, meaning: 'Navama (9th) Aspect - Dharma, fortune, father, spiritual guidance'},
-      12: {degree: 90, meaning: 'Dwadasha (12th) Aspect - Losses, moksha, expenditure, spirituality'}
+      7: { degree: 180, meaning: 'Saptama (7th) Aspect - Partnership, marriage, open enemies' },
+      8: { degree: 160, meaning: 'Ashtama (8th) Aspect - Transformation, hidden enemies, occult' },
+      9: { degree: 140, meaning: 'Navama (9th) Aspect - Dharma, fortune, father, spiritual guidance' },
+      12: { degree: 90, meaning: 'Dwadasha (12th) Aspect - Losses, moksha, expenditure, spirituality' }
     };
 
     // Jaimini Upapada Lagna calculation (8th from Atmakaraka)
@@ -62,18 +62,18 @@ class JaiminiAstrology {
 
     // Jaimini Rasi (Sign) significations
     this.rasiSignifications = {
-      aries: {element: 'fire', quality: 'cardinal', karaka: 'mars', meaning: 'Initiation, leadership, new beginnings'},
-      taurus: {element: 'earth', quality: 'fixed', karaka: 'venus', meaning: 'Wealth, stability, values'},
-      gemini: {element: 'air', quality: 'mutable', karaka: 'mercury', meaning: 'Communication, learning, adaptability'},
-      cancer: {element: 'water', quality: 'cardinal', karaka: 'moon', meaning: 'Emotions, home, nurturing'},
-      leo: {element: 'fire', quality: 'fixed', karaka: 'sun', meaning: 'Leadership, creativity, self-expression'},
-      virgo: {element: 'earth', quality: 'mutable', karaka: 'mercury', meaning: 'Service, health, analysis'},
-      libra: {element: 'air', quality: 'cardinal', karaka: 'venus', meaning: 'Relationships, balance, beauty'},
-      scorpio: {element: 'water', quality: 'fixed', karaka: 'mars', meaning: 'Transformation, intensity, mysteries'},
-      sagittarius: {element: 'fire', quality: 'mutable', karaka: 'jupiter', meaning: 'Philosophy, expansion, higher learning'},
-      capricorn: {element: 'earth', quality: 'cardinal', karaka: 'saturn', meaning: 'Ambition, discipline, achievement'},
-      aquarius: {element: 'air', quality: 'fixed', karaka: 'saturn', meaning: 'Innovation, humanitarianism, community'},
-      pisces: {element: 'water', quality: 'mutable', karaka: 'jupiter', meaning: 'Spirituality, compassion, intuition'}
+      aries: { element: 'fire', quality: 'cardinal', karaka: 'mars', meaning: 'Initiation, leadership, new beginnings' },
+      taurus: { element: 'earth', quality: 'fixed', karaka: 'venus', meaning: 'Wealth, stability, values' },
+      gemini: { element: 'air', quality: 'mutable', karaka: 'mercury', meaning: 'Communication, learning, adaptability' },
+      cancer: { element: 'water', quality: 'cardinal', karaka: 'moon', meaning: 'Emotions, home, nurturing' },
+      leo: { element: 'fire', quality: 'fixed', karaka: 'sun', meaning: 'Leadership, creativity, self-expression' },
+      virgo: { element: 'earth', quality: 'mutable', karaka: 'mercury', meaning: 'Service, health, analysis' },
+      libra: { element: 'air', quality: 'cardinal', karaka: 'venus', meaning: 'Relationships, balance, beauty' },
+      scorpio: { element: 'water', quality: 'fixed', karaka: 'mars', meaning: 'Transformation, intensity, mysteries' },
+      sagittarius: { element: 'fire', quality: 'mutable', karaka: 'jupiter', meaning: 'Philosophy, expansion, higher learning' },
+      capricorn: { element: 'earth', quality: 'cardinal', karaka: 'saturn', meaning: 'Ambition, discipline, achievement' },
+      aquarius: { element: 'air', quality: 'fixed', karaka: 'saturn', meaning: 'Innovation, humanitarianism, community' },
+      pisces: { element: 'water', quality: 'mutable', karaka: 'jupiter', meaning: 'Spirituality, compassion, intuition' }
     };
   }
 
@@ -95,36 +95,36 @@ class JaiminiAstrology {
 
       // Calculate precise planetary positions using Swiss Ephemeris
       const planetaryPositions = await this._getPrecisePlanetaryPositions(jd);
-      
+
       // Calculate authentic Jaimini Karakas
       const karakas = await this._calculateAuthenticKarakas(planetaryPositions);
-      
+
       // Calculate Chara Dasha based on Atmakaraka
       const charaDasha = await this._calculateCharaDasha(karakas.atma_karaka, jd, year, month, day, hour, minute);
-      
+
       // Calculate Jaimini-specific aspects
       const jaiminiAspects = this._calculateJaiminiAspects(planetaryPositions);
-      
+
       // Calculate Upapada Lagna
       const upapadaLagna = this._calculateUpapadaLagna(karakas.atma_karaka, planetaryPositions);
-      
+
       // Calculate Argalas (obstructions/supports)
       const argalas = this._calculateArgalas(planetaryPositions, upapadaLagna);
 
       return {
         name,
         planetary_positions: planetaryPositions,
-        karakas: karakas,
+        karakas,
         chara_dasha: charaDasha,
         jaimini_aspects: jaiminiAspects,
         upapada_lagna: upapadaLagna,
-        argalas: argalas,
+        argalas,
         summary: this._generateAuthenticJaiminiSummary(name, karakas, charaDasha, jaiminiAspects)
       };
     } catch (error) {
       logger.error('Error calculating authentic Jaimini Astrology:', error);
       return {
-        error: 'Unable to calculate authentic Jaimini astrology - ' + error.message
+        error: `Unable to calculate authentic Jaimini astrology - ${error.message}`
       };
     }
   }
@@ -175,7 +175,7 @@ class JaiminiAstrology {
           }
         } else {
           const result = sweph.calc(jd, planetId, sweph.FLG_SWIEPH | sweph.FLG_SIDEREAL | sweph.FLG_SPEED);
-          
+
           if (result && result.longitude) {
             planets[planetName] = {
               longitude: result.longitude[0],
@@ -203,7 +203,7 @@ class JaiminiAstrology {
     // Jaimini Karakas are determined by the highest degrees of planets
     // The planets with highest degrees get the karaka designations
     const planetDegrees = [];
-    
+
     for (const [planet, data] of Object.entries(planetaryPositions)) {
       if (data) {
         planetDegrees.push({
@@ -263,7 +263,7 @@ class JaiminiAstrology {
     // Calculate birth date to determine current dasha position
     const birthDateTime = new Date(year, month - 1, day, hour, minute);
     const currentDateTime = new Date();
-    
+
     // Total years since birth
     const totalYears = (currentDateTime - birthDateTime) / (1000 * 60 * 60 * 24 * 365.25);
 
@@ -278,12 +278,12 @@ class JaiminiAstrology {
     // Calculate which planet's period we're in
     let remainingTime = totalYears;
     let currentDashaIndex = 0;
-    
+
     // Find the current dasha by going through the sequence
     for (let i = 0; i < sequence.length; i++) {
       const planet = sequence[i];
       const period = this.charaDasha[planet];
-      
+
       if (remainingTime <= period) {
         currentDashaIndex = i;
         break;
@@ -294,7 +294,7 @@ class JaiminiAstrology {
     const currentDasha = sequence[currentDashaIndex];
     const dashaPeriod = this.charaDasha[currentDasha];
     const timeInCurrentDasha = totalYears - (totalYears - remainingTime);
-    
+
     // Calculate Bhukti (sub-period) within current Dasha
     const bhuktiSequence = this.charaDashaSequence.find(seq => seq.planet === currentDasha)?.order;
     const bhuktiIndex = Math.floor((remainingTime / dashaPeriod) * bhuktiSequence.length);
@@ -306,10 +306,10 @@ class JaiminiAstrology {
       current_bhukti: currentBhukti,
       dasha_progress: (remainingTime / dashaPeriod) * 100,
       years_remaining_in_current_dasha: dashaPeriod - remainingTime,
-      sequence: sequence,
+      sequence,
       sequence_details: sequence.map((planet, index) => ({
         index: index + 1,
-        planet: planet,
+        planet,
         period_years: this.charaDasha[planet],
         is_current: planet === currentDasha
       }))
@@ -328,12 +328,12 @@ class JaiminiAstrology {
       for (let j = i + 1; j < planets.length; j++) {
         const [planet1, pos1] = planets[i];
         const [planet2, pos2] = planets[j];
-        
+
         if (pos1 && pos2) {
           // Calculate longitudinal difference
           let diff = Math.abs(pos1.longitude - pos2.longitude);
-          if (diff > 180) diff = 360 - diff; // Take shorter arc
-          
+          if (diff > 180) { diff = 360 - diff; } // Take shorter arc
+
           // Check for Jaimini aspects
           for (const [housenum, aspectData] of Object.entries(this.jaiminiAspects)) {
             if (Math.abs(diff - aspectData.degree) <= 2) { // 2° orb
@@ -393,7 +393,7 @@ class JaiminiAstrology {
     // In Jaimini, Argalas are formed by planets in specific houses
     // Simplified implementation focusing on key argalas
     for (const [planet, position] of Object.entries(planetaryPositions)) {
-      if (!position) continue;
+      if (!position) { continue; }
 
       // Calculate house position relative to Lagna (approximated by Sun position for now)
       const lagnaApprox = planetaryPositions.sun ? planetaryPositions.sun.longitude : 0;
@@ -420,13 +420,13 @@ class JaiminiAstrology {
    */
   _getArgalaType(house) {
     switch (house) {
-      case 2: return 'dhanargala';
-      case 4: return 'sukhargala';
-      case 5: return 'putrargala';
-      case 9: return 'dharmargala';
-      case 10: return 'karmargala';
-      case 11: return 'labhargala';
-      default: return 'general';
+    case 2: return 'dhanargala';
+    case 4: return 'sukhargala';
+    case 5: return 'putrargala';
+    case 9: return 'dharmargala';
+    case 10: return 'karmargala';
+    case 11: return 'labhargala';
+    default: return 'general';
     }
   }
 
@@ -437,11 +437,11 @@ class JaiminiAstrology {
   _calculateArgalaStrength(position, house) {
     // Simplified strength calculation
     let strength = 10; // Base strength
-    
+
     // Add strength based on planetary condition
-    if (position.longitude > 180 && position.longitude < 240) strength += 5; // In own or friendly sign
-    if (position.speed > 0) strength += 3; // Direct motion adds strength
-    
+    if (position.longitude > 180 && position.longitude < 240) { strength += 5; } // In own or friendly sign
+    if (position.speed > 0) { strength += 3; } // Direct motion adds strength
+
     return strength > 20 ? 'Strong' : strength > 15 ? 'Moderate' : 'Weak';
   }
 
@@ -451,7 +451,7 @@ class JaiminiAstrology {
    */
   _getHouseNumber(planetLongitude, lagnaLongitude) {
     let diff = planetLongitude - lagnaLongitude;
-    if (diff < 0) diff += 360;
+    if (diff < 0) { diff += 360; }
     return Math.floor(diff / 30) + 1;
   }
 
@@ -460,8 +460,8 @@ class JaiminiAstrology {
    * @private
    */
   _getSignFromLongitude(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     const signIndex = Math.floor(longitude / 30);
     return signs[signIndex];
   }
@@ -472,18 +472,18 @@ class JaiminiAstrology {
    */
   _getSignRuler(sign) {
     const rulers = {
-      'Aries': 'Mars',
-      'Taurus': 'Venus', 
-      'Gemini': 'Mercury',
-      'Cancer': 'Moon',
-      'Leo': 'Sun',
-      'Virgo': 'Mercury',
-      'Libra': 'Venus',
-      'Scorpio': 'Mars',
-      'Sagittarius': 'Jupiter',
-      'Capricorn': 'Saturn',
-      'Aquarius': 'Saturn',
-      'Pisces': 'Jupiter'
+      Aries: 'Mars',
+      Taurus: 'Venus',
+      Gemini: 'Mercury',
+      Cancer: 'Moon',
+      Leo: 'Sun',
+      Virgo: 'Mercury',
+      Libra: 'Venus',
+      Scorpio: 'Mars',
+      Sagittarius: 'Jupiter',
+      Capricorn: 'Saturn',
+      Aquarius: 'Saturn',
+      Pisces: 'Jupiter'
     };
     return rulers[sign];
   }
@@ -519,7 +519,7 @@ class JaiminiAstrology {
     summary += `*Current Bhukti:* ${charaDasha.current_bhukti}\n`;
     summary += `*Dasha Progress:* ${charaDasha.dasha_progress.toFixed(2)}%\n\n`;
 
-    summary += `*Key Karakas and Their Positions:*\n`;
+    summary += '*Key Karakas and Their Positions:*\n';
     const karakaOrder = ['atma_karaka', 'amatya_karaka', 'bhratru_karaka', 'matru_karaka', 'pitru_karaka', 'putra_karaka', 'gnatru_karaka', 'daraka_karaka'];
     for (const karaka of karakaOrder) {
       const data = karakas[karaka];
@@ -530,7 +530,7 @@ class JaiminiAstrology {
     summary += '\n';
 
     if (jaiminiAspects.length > 0) {
-      summary += `*Key Jaimini Aspects:*\n`;
+      summary += '*Key Jaimini Aspects:*\n';
       jaiminiAspects.slice(0, 5).forEach(aspect => {
         summary += `• ${aspect.from} -> ${aspect.to}: ${aspect.type} aspect (${aspect.angle.toFixed(2)}°)\n`;
         summary += `  ${aspect.meaning}\n`;
@@ -538,16 +538,16 @@ class JaiminiAstrology {
       summary += '\n';
     }
 
-    summary += `*Jaimini System Insights:*\n`;
-    summary += `• Atma Karaka represents your soul's highest purpose\n`;
-    summary += `• Chara Dasha shows the cosmic timing of life events\n`;
-    summary += `• Jaimini aspects provide unique relationship insights\n`;
-    summary += `• Planetary positions indicate karmic patterns\n\n`;
+    summary += '*Jaimini System Insights:*\n';
+    summary += '• Atma Karaka represents your soul\'s highest purpose\n';
+    summary += '• Chara Dasha shows the cosmic timing of life events\n';
+    summary += '• Jaimini aspects provide unique relationship insights\n';
+    summary += '• Planetary positions indicate karmic patterns\n\n';
 
-    summary += `*Authentic Vedic Insight:*\n`;
-    summary += `This analysis uses Swiss Ephemeris for precise astronomical calculations following Maharishi Jaimini's authentic teachings. Jaimini Astrology focuses on the soul's evolution (Atma Karaka) rather than material conditions, providing deeper spiritual guidance.\n\n`;
+    summary += '*Authentic Vedic Insight:*\n';
+    summary += 'This analysis uses Swiss Ephemeris for precise astronomical calculations following Maharishi Jaimini\'s authentic teachings. Jaimini Astrology focuses on the soul\'s evolution (Atma Karaka) rather than material conditions, providing deeper spiritual guidance.\n\n';
 
-    summary += `*Note:* For comprehensive analysis, consult a qualified Jaimini astrologer. This system is distinct from Parasara and provides different insights. 🕉️`;
+    summary += '*Note:* For comprehensive analysis, consult a qualified Jaimini astrologer. This system is distinct from Parasara and provides different insights. 🕉️';
 
     return summary;
   }

@@ -1,69 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="21" failures="4" errors="0" time="51.046">
-  <testsuite name="REAL WhatsApp Bot End-to-End Flow Tests" errors="0" failures="3" skipped="0" timestamp="2025-10-27T03:12:01" time="39.091" tests="5">
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" name="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" time="18.899">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: &quot;Pisces&quot;
-Received: &quot;Unknown&quot;
-    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:231:28)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+<testsuites name="jest tests" tests="16" failures="1" errors="0" time="21.177">
+  <testsuite name="Astrology Library Integration Tests" errors="0" failures="1" skipped="0" timestamp="2025-10-27T03:34:10" time="15.323" tests="16">
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" time="0.056">
     </testcase>
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" time="0.663">
-      <failure>ValidationError: Session validation failed: sessionId: Path `sessionId` is required.
-    at model.Object.&lt;anonymous&gt;.Document.invalidate (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3219:32)
-    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3012:17
-    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/schematype.js:1368:9
-    at processTicksAndRejections (node:internal/process/task_queues:85:11)</failure>
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" time="0.004">
     </testcase>
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" time="0.075">
-      <failure>ValidationError: Session validation failed: sessionId: Path `sessionId` is required.
-    at model.Object.&lt;anonymous&gt;.Document.invalidate (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3219:32)
-    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3012:17
-    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/schematype.js:1368:9
-    at processTicksAndRejections (node:internal/process/task_queues:85:11)</failure>
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" time="0.003">
     </testcase>
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" time="0.038">
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" name="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" time="0.002">
     </testcase>
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" time="0.075">
+    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" name="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" time="0.007">
     </testcase>
-  </testsuite>
-  <testsuite name="Astrology Library Integration Tests" errors="0" failures="1" skipped="0" timestamp="2025-10-27T03:12:41" time="10.107" tests="16">
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" time="0.005">
+    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" name="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" time="0.003">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" time="0.002">
+    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" name="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" time="0.005">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" time="0.002">
+    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" name="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" time="0.004">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" name="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" time="0.003">
+    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" name="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" time="0.006">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" name="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" time="0.006">
+    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" name="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" time="0.003">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" name="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" time="0.004">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" name="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" time="0.006">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" name="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" time="0.002">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" name="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" time="0.004">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" name="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" time="0.004">
-    </testcase>
-    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" name="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" time="5.008">
+    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" name="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" time="5.173">
       <failure>Error: expect(received).toBeDefined()
 
 Received: undefined
     at Object.toBeDefined (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/astrology-integration.test.js:151:29)</failure>
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" name="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" time="0.793">
+    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" name="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" time="0.629">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" name="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" time="0.004">
+    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" name="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" time="0.003">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should handle user without name" name="Astrology Library Integration Tests Numerology Service Integration should handle user without name" time="0.002">
+    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should handle user without name" name="Astrology Library Integration Tests Numerology Service Integration should handle user without name" time="0.003">
     </testcase>
     <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" name="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" time="0.004">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" name="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" time="0.003">
+    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" name="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" time="0.004">
     </testcase>
   </testsuite>
 </testsuites>

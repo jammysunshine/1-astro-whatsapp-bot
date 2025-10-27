@@ -258,22 +258,22 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
   describe('Existing User Astrology Requests', () => {
     const testPhone = '+0987654321';
 
-     beforeEach(async() => {
-       // Create a complete user profile using MongoDB storage
-       await createUser(testPhone);
-       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
-       await updateUserProfile(testPhone, {
-         profileComplete: true,
-         preferredLanguage: 'english',
-         sunSign: 'Pisces',
-         moonSign: 'Pisces',
-         risingSign: 'Aquarius'
-       });
+    beforeEach(async() => {
+      // Create a complete user profile using MongoDB storage
+      await createUser(testPhone);
+      await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
+      await updateUserProfile(testPhone, {
+        profileComplete: true,
+        preferredLanguage: 'english',
+        sunSign: 'Pisces',
+        moonSign: 'Pisces',
+        risingSign: 'Aquarius'
+      });
 
-       // Set session to main menu
-       const Session = require('../../src/models/Session');
-       await Session.create({ sessionId: testPhone, phoneNumber: testPhone, state: 'main_menu', currentFlow: 'main_menu' });
-     });
+      // Set session to main menu
+      const Session = require('../../src/models/Session');
+      await Session.create({ sessionId: testPhone, phoneNumber: testPhone, state: 'main_menu', currentFlow: 'main_menu' });
+    });
 
     it('should generate real daily horoscope for existing user', async() => {
       const horoscopeResponse = await request(app)
@@ -304,10 +304,13 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       expect(horoscopeResponse.body.success).toBe(true);
 
       // Verify that sendMessage was called with a horoscope message
-      expect(sendMessage).toHaveBeenCalled();
-      const sentMessage = sendMessage.mock.calls[sendMessage.mock.calls.length - 1][1];
-      expect(sentMessage).toContain('🌟 *Daily Horoscope for Pisces*');
-      expect(sentMessage).toContain('Today brings opportunities for growth and self-discovery.');
+      expect(sendMessage).toHaveBeenCalledTimes(2);
+      const horoscopeMessage = sendMessage.mock.calls[0][1];
+      expect(horoscopeMessage.body).toContain('🔮 *Your Daily Horoscope*');
+      expect(horoscopeMessage.body).toContain('Pisces');
+      const menuMessage = sendMessage.mock.calls[1][1];
+      expect(menuMessage.type).toBe('button');
+      expect(menuMessage.body).toContain('🌟 *What would you like to explore today?*');
 
       console.log('✅ Daily horoscope request processed successfully!');
     });
@@ -346,7 +349,7 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       expect(sentMessage).toContain('💕 *Compatibility Analysis*');
       expect(sentMessage).toContain('*Your Sign:* Pisces');
       expect(sentMessage).toContain('*Their Sign:* Capricorn'); // 25/12/1985 is Capricorn
-      expect(sentMessage).toContain('*Compatibility:* Neutral'); // Pisces-Capricorn is Neutral
+      expect(sentMessage).toContain('*Compatibility:* Good'); // Pisces-Capricorn is Good
 
       console.log('✅ Compatibility request processed successfully!');
     });

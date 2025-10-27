@@ -1812,7 +1812,7 @@ const generateAstrologyResponse = async(messageText, user) => {
       }
 
       let response = '🔮 *Enhanced Secondary Progressions Analysis*\n\n';
-      response += `⚡ *High-Precision Calculations* - Using Swiss Ephemeris with lunar nodes\n\n`;
+      response += '⚡ *High-Precision Calculations* - Using Swiss Ephemeris with lunar nodes\n\n';
       response += `*Current Age:* ${progressions.ageInYears} years, ${progressions.ageInDays} days progressed\n`;
       response += `*Progressed Chart Date:* ${progressions.formattedProgressedDate}\n`;
       response += `*Julian Day:* ${progressions.progressedJulianDay.toFixed(2)}\n\n`;
@@ -1885,7 +1885,7 @@ const generateAstrologyResponse = async(messageText, user) => {
       }
 
       let response = '☀️ *Enhanced Solar Arc Directions Analysis*\n\n';
-      response += `⚡ *High-Precision Calculations* - All planets directed by solar movement\n\n`;
+      response += '⚡ *High-Precision Calculations* - All planets directed by solar movement\n\n';
       response += `*Current Age:* ${solarArc.ageInYears} years old\n`;
       response += `*Solar Arc Movement:* ${solarArc.solarArcDegrees.toFixed(2)}° from birth positions\n`;
       response += `*Directed Chart Date:* ${solarArc.formattedArcDate}\n\n`;

@@ -1,151 +1,151 @@
 /**
  * Language Configuration
- * 
+ *
  * This file contains the configuration for all supported languages in the Astrology WhatsApp Bot.
  * It includes language metadata, RTL support information, and script information.
  */
 
 const languages = {
   // Major Indian Languages
-  'en': { 
-    name: 'English', 
+  en: {
+    name: 'English',
     nativeName: 'English',
     rtl: false,
     script: 'Latin',
     enabled: true
   },
-  'hi': { 
-    name: 'Hindi', 
+  hi: {
+    name: 'Hindi',
     nativeName: 'हिन्दी',
     rtl: false,
     script: 'Devanagari',
     enabled: true
   },
-  'bn': { 
-    name: 'Bengali', 
+  bn: {
+    name: 'Bengali',
     nativeName: 'বাংলা',
     rtl: false,
     script: 'Bengali',
     enabled: true
   },
-  'te': { 
-    name: 'Telugu', 
+  te: {
+    name: 'Telugu',
     nativeName: 'తెలుగు',
     rtl: false,
     script: 'Telugu',
     enabled: true
   },
-  'ml': { 
-    name: 'Malayalam', 
+  ml: {
+    name: 'Malayalam',
     nativeName: 'മലയാളം',
     rtl: false,
     script: 'Malayalam',
     enabled: true
   },
-  'ta': { 
-    name: 'Tamil', 
+  ta: {
+    name: 'Tamil',
     nativeName: 'தமிழ்',
     rtl: false,
     script: 'Tamil',
     enabled: true
   },
-  'gu': { 
-    name: 'Gujarati', 
+  gu: {
+    name: 'Gujarati',
     nativeName: 'ગુજરાતી',
     rtl: false,
     script: 'Gujarati',
     enabled: true
   },
-  'kn': { 
-    name: 'Kannada', 
+  kn: {
+    name: 'Kannada',
     nativeName: 'ಕನ್ನಡ',
     rtl: false,
     script: 'Kannada',
     enabled: true
   },
-  'pa': { 
-    name: 'Punjabi', 
+  pa: {
+    name: 'Punjabi',
     nativeName: 'ਪੰਜਾਬੀ',
     rtl: false,
     script: 'Gurmukhi',
     enabled: true
   },
-  'mr': { 
-    name: 'Marathi', 
+  mr: {
+    name: 'Marathi',
     nativeName: 'मराठी',
     rtl: false,
     script: 'Devanagari',
     enabled: true
   },
-  'ur': { 
-    name: 'Urdu', 
+  ur: {
+    name: 'Urdu',
     nativeName: 'اردو',
     rtl: true,
     script: 'Arabic',
     enabled: true
   },
-  
+
   // Major European Languages
-  'es': { 
-    name: 'Spanish', 
+  es: {
+    name: 'Spanish',
     nativeName: 'Español',
     rtl: false,
     script: 'Latin',
     enabled: true
   },
-  'fr': { 
-    name: 'French', 
+  fr: {
+    name: 'French',
     nativeName: 'Français',
     rtl: false,
     script: 'Latin',
     enabled: true
   },
-  'de': { 
-    name: 'German', 
+  de: {
+    name: 'German',
     nativeName: 'Deutsch',
     rtl: false,
     script: 'Latin',
     enabled: true
   },
-  'ar': { 
-    name: 'Arabic', 
+  ar: {
+    name: 'Arabic',
     nativeName: 'العربية',
     rtl: true,
     script: 'Arabic',
     enabled: true
   },
-  
+
   // Additional Languages
-  'pt': { 
-    name: 'Portuguese', 
+  pt: {
+    name: 'Portuguese',
     nativeName: 'Português',
     rtl: false,
     script: 'Latin',
     enabled: true
   },
-  'ru': { 
-    name: 'Russian', 
+  ru: {
+    name: 'Russian',
     nativeName: 'Русский',
     rtl: false,
     script: 'Cyrillic',
     enabled: true
   },
-  'zh': { 
-    name: 'Chinese', 
+  zh: {
+    name: 'Chinese',
     nativeName: '中文',
     rtl: false,
     script: 'Chinese',
     enabled: true
   },
-  'ja': { 
-    name: 'Japanese', 
+  ja: {
+    name: 'Japanese',
     nativeName: '日本語',
     rtl: false,
     script: 'Japanese',
     enabled: true
   },
-  'ko': { 
-    name: 'Korean', 
+  ko: {
+    name: 'Korean',
     nativeName: '한국어',
     rtl: false,
     script: 'Korean',
@@ -157,25 +157,21 @@ const languages = {
  * Get list of all supported languages
  * @returns {Array} Array of language codes
  */
-const getSupportedLanguages = () => {
-  return Object.keys(languages).filter(code => languages[code].enabled);
-};
+const getSupportedLanguages = () => Object.keys(languages).filter(code => languages[code].enabled);
 
 /**
  * Get language information by code
  * @param {string} code - Language code
  * @returns {Object|null} Language information or null if not found
  */
-const getLanguageInfo = (code) => {
-  return languages[code] || null;
-};
+const getLanguageInfo = code => languages[code] || null;
 
 /**
  * Check if language is RTL (Right-to-Left)
  * @param {string} code - Language code
  * @returns {boolean} True if RTL, false otherwise
  */
-const isRTL = (code) => {
+const isRTL = code => {
   const lang = languages[code];
   return lang ? lang.rtl : false;
 };
@@ -185,7 +181,7 @@ const isRTL = (code) => {
  * @param {string} code - Language code
  * @returns {string} Language name or code if not found
  */
-const getLanguageName = (code) => {
+const getLanguageName = code => {
   const lang = languages[code];
   return lang ? lang.name : code;
 };
@@ -195,7 +191,7 @@ const getLanguageName = (code) => {
  * @param {string} code - Language code
  * @returns {string} Native language name or code if not found
  */
-const getNativeLanguageName = (code) => {
+const getNativeLanguageName = code => {
   const lang = languages[code];
   return lang ? lang.nativeName : code;
 };

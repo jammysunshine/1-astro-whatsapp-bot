@@ -50,36 +50,36 @@
         "optional": true,
         "error_message": "Please choose a language or reply 'english'"
       },
-      "confirm_details": {
-        "interactive": {
-          "type": "button_reply",
-          "body": "Perfect! ✨ Here's your cosmic profile:\n\n📅 *Birth Date:* {birthDate}\n🕐 *Birth Time:* {birthTime}\n🌍 *Birth Place:* {birthPlace}\n🌐 *Language:* {preferredLanguage}\n\nIs this information correct?",
-          "buttons": [
-            {
-              "id": "confirm_yes",
-              "title": "✅ Yes, Continue"
-            },
-            {
-              "id": "confirm_no",
-              "title": "🔄 No, Update Info"
-            }
-          ],
-          "button_mappings": {
-            "confirm_yes": "yes",
-            "confirm_no": "no"
-          }
-        },
-        "fallback_prompt": "Is this information correct? Reply 'yes' to get your first reading or 'no' to update.",
-        "validation": "yes_no",
-        "next_step": "complete_onboarding",
-        "error_message": "Please reply 'yes' or 'no'"
-      },
-      "complete_onboarding": {
-        "prompt": "🎉 *Welcome to your cosmic journey!*\n\nYour profile is complete! Here's your *personalized birth chart summary*:\n\n☀️ *Sun Sign:* {sunSign}\n🌙 *Moon Sign:* {moonSign}\n⬆️ *Rising Sign:* {risingSign}\n\n🔥 *Your Top 3 Life Patterns:*\n1. {pattern1}\n2. {pattern2}\n3. {pattern3}\n\n⭐ *2,847 users* with your Sun sign found these insights highly accurate!\n\n💫 *Free 3-Day Transit Preview:*\n{todayTransit}\n{tomorrowTransit}\n{day3Transit}\n\nWhat would you like to explore next?\n\n🔮 Daily Horoscope\n📊 Full Birth Chart\n💕 Compatibility Check\n\nJust reply with your choice!",
-        "validation": "none",
-        "next_step": null,
-        "action": "complete_profile"
-      }
+       "confirm_details": {
+         "interactive": {
+           "type": "button_reply",
+           "body": "Perfect! ✨ Here's your cosmic profile:\n\n📅 *Birth Date:* {birthDate}\n🕐 *Birth Time:* {birthTime}\n🌍 *Birth Place:* {birthPlace}\n🌐 *Language:* {preferredLanguage}\n\nIs this information correct?",
+           "buttons": [
+             {
+               "id": "confirm_yes",
+               "title": "✅ Yes, Continue"
+             },
+             {
+               "id": "confirm_no",
+               "title": "🔄 No, Update Info"
+             }
+           ],
+           "button_mappings": {
+             "confirm_yes": "yes",
+             "confirm_no": "no"
+           }
+         },
+         "fallback_prompt": "Is this information correct? Reply 'yes' to get your first reading or 'no' to update.",
+         "validation": "none",
+         "next_step": "complete_onboarding",
+         "action": "complete_profile",
+         "error_message": "Please reply 'yes' or 'no'"
+       },
+       "complete_onboarding": {
+         "prompt": "🎉 *Welcome to your cosmic journey!*\n\nYour profile is complete! Here's your *personalized birth chart summary*:\n\n☀️ *Sun Sign:* {sunSign}\n🌙 *Moon Sign:* {moonSign}\n⬆️ *Rising Sign:* {risingSign}\n\n🔥 *Your Top 3 Life Patterns:*\n1. {pattern1}\n2. {pattern2}\n3. {pattern3}\n\n⭐ *2,847 users* with your Sun sign found these insights highly accurate!\n\n💫 *Free 3-Day Transit Preview:*\n{todayTransit}\n{tomorrowTransit}\n{day3Transit}\n\nWhat would you like to explore next?\n\n🔮 Daily Horoscope\n📊 Full Birth Chart\n💕 Compatibility Check\n\nJust reply with your choice!",
+         "validation": "none",
+         "next_step": null
+       }
     }
   },
   "subscription": {

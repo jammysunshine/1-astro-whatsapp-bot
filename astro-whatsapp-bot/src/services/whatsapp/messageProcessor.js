@@ -688,8 +688,8 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         }${translationService.translate('messages.daily_horoscope.next', userLanguage)}`;
 
         const buttons = [
-          { type: 'reply', reply: { id: 'horoscope_again', title: '🔄 Another Reading' } },
-          { type: 'reply', reply: { id: 'horoscope_menu', title: '🏠 Main Menu' } }
+          { type: 'reply', reply: { id: 'get_daily_horoscope', title: translationService.translate('buttons.another_reading', userLanguage) || '🔄 Another Reading' } },
+          { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.back_main', userLanguage) || '🏠 Main Menu' } }
         ];
 
         await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
@@ -1321,6 +1321,36 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     await processFlowMessage({ body: 'update profile' }, user, null);
     return null;
   }
+  case 'horoscope_again': {
+    // Same as get_daily_horoscope
+    await executeMenuAction(phoneNumber, user, 'get_daily_horoscope');
+    return null;
+  }
+  case 'horoscope_menu': {
+    // Same as show_main_menu
+    await executeMenuAction(phoneNumber, user, 'show_main_menu');
+    return null;
+  }
+  case 'tarot_detailed': {
+    // Provide a more detailed tarot reading
+    const detailedBody = '🔮 *Detailed Tarot Reading*\n\nPast: The Fool - New beginnings\nPresent: The Magician - Manifestation\nFuture: The High Priestess - Intuition\n\nThis spread suggests you\'re entering a phase of new opportunities where your inner wisdom will guide you to manifest your desires.';
+    const detailedButtons = [
+      { type: 'reply', reply: { id: 'get_tarot_reading', title: '🔄 New Reading' } },
+      { type: 'reply', reply: { id: 'tarot_menu', title: '🏠 Main Menu' } }
+    ];
+    await sendMessage(phoneNumber, { type: 'button', body: detailedBody, buttons: detailedButtons }, 'interactive');
+    return null;
+  }
+  case 'tarot_another': {
+    // Same as get_tarot_reading
+    await executeMenuAction(phoneNumber, user, 'get_tarot_reading');
+    return null;
+  }
+  case 'tarot_menu': {
+    // Same as show_main_menu
+    await executeMenuAction(phoneNumber, user, 'show_main_menu');
+    return null;
+  }
   case 'show_nadi_flow':
     if (!user.birthDate) {
       const userLanguage = getUserLanguage(user, phoneNumber);
@@ -1436,11 +1466,34 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     }
     return null;
   case 'get_tarot_reading':
-    response = '🔮 *Tarot Reading*\n\nCurrent Situation: The Fool\n\nThis card represents new beginnings and adventures. You\'re at the start of a journey filled with potential.\n\nAdvice: Trust in the universe and take that leap of faith.\n\nWhat question did you have in mind for a more specific reading?';
-    break;
+    const tarotBody = '🔮 *Tarot Reading*\n\nCurrent Situation: The Fool\n\nThis card represents new beginnings and adventures. You\'re at the start of a journey filled with potential.\n\nAdvice: Trust in the universe and take that leap of faith.';
+    const tarotButtons = [
+      { type: 'reply', reply: { id: 'tarot_detailed', title: '🔍 Detailed Reading' } },
+      { type: 'reply', reply: { id: 'tarot_another', title: '🔄 Another Card' } },
+      { type: 'reply', reply: { id: 'tarot_menu', title: '🏠 Main Menu' } }
+    ];
+    await sendMessage(phoneNumber, { type: 'button', body: tarotBody, buttons: tarotButtons }, 'interactive');
+    return null;
   case 'get_palmistry_analysis':
-    response = '✋ *Palmistry Analysis*\n\n*Hand Type:* Earth Hand\n\nYour practical and grounded nature shows in your strong, square palms. You have excellent manual dexterity and a connection to nature.\n\n*Life Line:* Long and deep, indicating vitality and endurance.\n\n*Heart Line:* Curves gently, showing emotional balance.\n\nWould you like a more detailed analysis of specific lines?';
-    break;
+    await processFlowMessage(message, user, 'palmistry_flow');
+    return null;
+  }
+  case 'get_iching_reading':
+    await processFlowMessage(message, user, 'iching_flow');
+    return null;
+  }
+  case 'get_horary_reading':
+    await processFlowMessage(message, user, 'horary_flow');
+    return null;
+  }
+  case 'get_kabbalistic_analysis':
+    await processFlowMessage(message, user, 'kabbalistic_flow');
+    return null;
+  }
+  case 'get_mayan_analysis':
+    await processFlowMessage(message, user, 'mayan_flow');
+    return null;
+  }
   case 'get_numerology_report':
     response = '🔢 *Numerology Analysis*\n\n*Life Path:* 5\n\nAs a Life Path 5, you\'re adventurous, freedom-loving, and adaptable. You thrive on change and new experiences.\n\n*Expression:* 8\n\nYour name vibrates with power, success, and material abundance.\n\n*Soul Urge:* 3\n\nYour heart desires creativity, self-expression, and social connection.\n\nWhat aspect of numerology interests you most?';
     break;

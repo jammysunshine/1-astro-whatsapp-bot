@@ -1,25 +1,25 @@
 {
-  "main_menu": {
-    "type": "interactive",
-    "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What aspect of your cosmic journey interests you most?",
-    "buttons": [
-      {
-        "id": "btn_core_readings",
-        "title": "Core Readings",
-        "action": "show_core_readings_menu"
-      },
-      {
-        "id": "btn_divination",
-        "title": "Divination",
-        "action": "show_divination_menu"
-      },
-      {
-        "id": "btn_language",
-        "title": "🌐 Language",
-        "action": "show_language_menu"
-      }
-    ]
-  },
+   "main_menu": {
+     "type": "interactive",
+     "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What aspect of your cosmic journey interests you most?",
+     "buttons": [
+       {
+         "id": "btn_core_readings",
+         "title": "Core Readings",
+         "action": "show_core_readings_menu"
+       },
+       {
+         "id": "btn_divination",
+         "title": "Divination",
+         "action": "show_divination_menu"
+       },
+       {
+         "id": "btn_traditions",
+         "title": "🌳 Ancient Traditions",
+         "action": "show_traditions_menu"
+       }
+     ]
+   },
   "core_readings_menu": {
     "type": "interactive",
     "body": "🔮 *Core Astrology Readings*\n\nChoose your primary astrological service:",

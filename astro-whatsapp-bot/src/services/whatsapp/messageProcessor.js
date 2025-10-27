@@ -199,27 +199,50 @@ const processTextMessage = async(message, user) => {
     return;
   }
 
-  // Check for subscription requests
-  if (
-    messageText.toLowerCase().includes('subscribe') ||
-    messageText.toLowerCase().includes('upgrade')
-  ) {
-    if (messageText.toLowerCase().includes('essential')) {
-      await handleSubscriptionRequest(phoneNumber, user, 'essential');
-    } else if (messageText.toLowerCase().includes('premium')) {
-      await handleSubscriptionRequest(phoneNumber, user, 'premium');
-    } else {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'subscription.plans.prompt',
-        'text',
-        {},
-        userLanguage
-      );
-    }
-    return;
-  }
+   // Check for language change requests
+   if (
+     messageText.toLowerCase().includes('language') ||
+     messageText.toLowerCase().includes('lang') ||
+     messageText.toLowerCase().includes('idioma') ||
+     messageText.toLowerCase().includes('sprache') ||
+     messageText.toLowerCase().includes('lingua')
+   ) {
+     await executeMenuAction(phoneNumber, user, 'show_language_menu');
+     return;
+   }
+
+   // Check for comprehensive menu requests
+   if (
+     messageText.toLowerCase().includes('all services') ||
+     messageText.toLowerCase().includes('comprehensive') ||
+     messageText.toLowerCase().includes('full menu') ||
+     messageText.toLowerCase().includes('complete')
+   ) {
+     await executeMenuAction(phoneNumber, user, 'show_comprehensive_menu');
+     return;
+   }
+
+   // Check for subscription requests
+   if (
+     messageText.toLowerCase().includes('subscribe') ||
+     messageText.toLowerCase().includes('upgrade')
+   ) {
+     if (messageText.toLowerCase().includes('essential')) {
+       await handleSubscriptionRequest(phoneNumber, user, 'essential');
+     } else if (messageText.toLowerCase().includes('premium')) {
+       await handleSubscriptionRequest(phoneNumber, user, 'premium');
+     } else {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       await sendMessage(
+         phoneNumber,
+         'subscription.plans.prompt',
+         'text',
+         {},
+         userLanguage
+       );
+     }
+     return;
+   }
 
   // Check for numerology report request
   if (messageText.toLowerCase() === 'numerology report') {
@@ -734,326 +757,447 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     );
     return null;
   }
-  case 'get_hindu_astrology_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.hindu_astrology.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.hindu_astrology.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_prashna_astrology_analysis': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.prashna_astrology.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_ashtakavarga_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.ashtakavarga.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.ashtakavarga.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_kaal_sarp_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.kaal_sarp.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.kaal_sarp.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_sade_sati_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.sade_sati.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.sade_sati.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_vedic_remedies_info': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.vedic_remedies.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_islamic_astrology_info': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.islamic_astrology.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_vimshottari_dasha_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.vimshottari_dasha.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.vimshottari_dasha.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_jaimini_astrology_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.jaimini_astrology.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.jaimini_astrology.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_hindu_festivals_info': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.hindu_festivals.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_vedic_numerology_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.vedic_numerology.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    try {
-      const vedicAnalysis = vedicNumerology.getVedicNumerologyAnalysis(user.birthDate, user.name);
-      if (vedicAnalysis.error) {
-        const userLanguage = getUserLanguage(user, phoneNumber);
-        await sendMessage(
-          phoneNumber,
-          vedicAnalysis.error,
-          'text',
-          {},
-          userLanguage
-        );
-      } else {
-        await sendMessage(phoneNumber, vedicAnalysis.summary);
-      }
-    } catch (error) {
-      logger.error('Error generating Vedic numerology analysis:', error);
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.vedic_numerology.error',
-        'text',
-        {},
-        userLanguage
-      );
-    }
-    return null;
-  }
-  case 'get_ayurvedic_astrology_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.ayurvedic_astrology.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    try {
-      const ayurvedicAnalysis = ayurvedicAstrology.analyzeAyurvedicConstitution({
-        birthDate: user.birthDate,
-        birthTime: user.birthTime || '12:00',
-        birthPlace: user.birthPlace || 'Delhi'
-      });
-      if (ayurvedicAnalysis.error) {
-        const userLanguage = getUserLanguage(user, phoneNumber);
-        await sendMessage(
-          phoneNumber,
-          ayurvedicAnalysis.error,
-          'text',
-          {},
-          userLanguage
-        );
-      } else {
-        await sendMessage(phoneNumber, ayurvedicAnalysis.summary);
-      }
-    } catch (error) {
-      logger.error('Error generating Ayurvedic astrology analysis:', error);
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.ayurvedic_astrology.error',
-        'text',
-        {},
-        userLanguage
-      );
-    }
-    return null;
-  }
-  case 'get_varga_charts_analysis': {
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.varga_charts.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.varga_charts.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_shadbala_analysis':
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.astrology_services.shadbala.incomplete_profile',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.shadbala.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  case 'get_muhurta_analysis': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.muhurta.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
-  case 'get_panchang_analysis': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    await sendMessage(
-      phoneNumber,
-      'messages.astrology_services.panchang.description',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
+   case 'get_hindu_astrology_analysis': {
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.hindu_astrology.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.hindu_astrology.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_prashna_astrology_analysis': {
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.prashna_astrology.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'get_horary_reading', title: translationService.translate('buttons.ask_question', userLanguage) || '❓ Ask a Question' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_ashtakavarga_analysis': {
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.ashtakavarga.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.ashtakavarga.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_kaal_sarp_analysis': {
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.kaal_sarp.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.kaal_sarp.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_sade_sati_analysis': {
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.sade_sati.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.sade_sati.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_vedic_remedies_info': {
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.vedic_remedies.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_islamic_astrology_info': {
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.islamic_astrology.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_more_traditions_menu', title: translationService.translate('buttons.more_traditions', userLanguage) || '🌍 More Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_vimshottari_dasha_analysis': {
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.vimshottari_dasha.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.vimshottari_dasha.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_jaimini_astrology_analysis': {
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.jaimini_astrology.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.jaimini_astrology.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_hindu_festivals_info': {
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.hindu_festivals.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'get_panchang_analysis', title: translationService.translate('buttons.get_panchang', userLanguage) || '📅 Get Panchang' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_vedic_numerology_analysis': {
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.vedic_numerology.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     try {
+       const vedicAnalysis = vedicNumerology.getVedicNumerologyAnalysis(user.birthDate, user.name);
+       if (vedicAnalysis.error) {
+         const userLanguage = getUserLanguage(user, phoneNumber);
+         const body = vedicAnalysis.error;
+         const buttons = [
+           { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+           { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+         ];
+         await sendMessage(
+           phoneNumber,
+           { type: 'button', body, buttons },
+           'interactive'
+         );
+       } else {
+         const body = vedicAnalysis.summary;
+         const buttons = [
+           { type: 'reply', reply: { id: 'get_numerology_report', title: translationService.translate('buttons.more_numerology', userLanguage) || '🔢 More Numerology' } },
+           { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+           { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+         ];
+         await sendMessage(
+           phoneNumber,
+           { type: 'button', body, buttons },
+           'interactive'
+         );
+       }
+     } catch (error) {
+       logger.error('Error generating Vedic numerology analysis:', error);
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.vedic_numerology.error', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'get_vedic_numerology_analysis', title: translationService.translate('buttons.try_again', userLanguage) || '🔄 Try Again' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+     }
+     return null;
+   }
+   case 'get_ayurvedic_astrology_analysis': {
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.ayurvedic_astrology.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     try {
+       const ayurvedicAnalysis = ayurvedicAstrology.analyzeAyurvedicConstitution({
+         birthDate: user.birthDate,
+         birthTime: user.birthTime || '12:00',
+         birthPlace: user.birthPlace || 'Delhi'
+       });
+       if (ayurvedicAnalysis.error) {
+         const userLanguage = getUserLanguage(user, phoneNumber);
+         const body = ayurvedicAnalysis.error;
+         const buttons = [
+           { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+           { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+         ];
+         await sendMessage(
+           phoneNumber,
+           { type: 'button', body, buttons },
+           'interactive'
+         );
+       } else {
+         const body = ayurvedicAnalysis.summary;
+         const buttons = [
+           { type: 'reply', reply: { id: 'get_medical_astrology_analysis', title: translationService.translate('buttons.medical_astrology', userLanguage) || '🏥 Medical Astrology' } },
+           { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+           { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+         ];
+         await sendMessage(
+           phoneNumber,
+           { type: 'button', body, buttons },
+           'interactive'
+         );
+       }
+     } catch (error) {
+       logger.error('Error generating Ayurvedic astrology analysis:', error);
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.ayurvedic_astrology.error', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'get_ayurvedic_astrology_analysis', title: translationService.translate('buttons.try_again', userLanguage) || '🔄 Try Again' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+     }
+     return null;
+   }
+   case 'get_varga_charts_analysis': {
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.varga_charts.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.varga_charts.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_shadbala_analysis':
+     if (!user.birthDate) {
+       const userLanguage = getUserLanguage(user, phoneNumber);
+       const body = translationService.translate('messages.astrology_services.shadbala.incomplete_profile', userLanguage);
+       const buttons = [
+         { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
+         { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } }
+       ];
+       await sendMessage(
+         phoneNumber,
+         { type: 'button', body, buttons },
+         'interactive'
+       );
+       return null;
+     }
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.shadbala.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'show_birth_chart', title: translationService.translate('buttons.get_birth_chart', userLanguage) || '📊 Get Birth Chart' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   case 'get_muhurta_analysis': {
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.muhurta.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'get_electional_astrology', title: translationService.translate('buttons.get_electional', userLanguage) || '📅 Get Electional' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
+   case 'get_panchang_analysis': {
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const body = translationService.translate('messages.astrology_services.panchang.description', userLanguage);
+     const buttons = [
+       { type: 'reply', reply: { id: 'get_daily_horoscope', title: translationService.translate('buttons.daily_horoscope', userLanguage) || '🌟 Daily Horoscope' } },
+       { type: 'reply', reply: { id: 'show_traditions_menu', title: translationService.translate('buttons.back_traditions', userLanguage) || '🌳 Back to Traditions' } },
+       { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.main_menu', userLanguage) || '🏠 Main Menu' } }
+     ];
+     await sendMessage(
+       phoneNumber,
+       { type: 'button', body, buttons },
+       'interactive'
+     );
+     return null;
+   }
   case 'get_secondary_progressions':
     if (!user.birthDate) {
       const userLanguage = getUserLanguage(user, phoneNumber);
@@ -1474,26 +1618,21 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     ];
     await sendMessage(phoneNumber, { type: 'button', body: tarotBody, buttons: tarotButtons }, 'interactive');
     return null;
-  case 'get_palmistry_analysis':
-    await processFlowMessage(message, user, 'palmistry_flow');
-    return null;
-  }
-  case 'get_iching_reading':
-    await processFlowMessage(message, user, 'iching_flow');
-    return null;
-  }
-  case 'get_horary_reading':
-    await processFlowMessage(message, user, 'horary_flow');
-    return null;
-  }
-  case 'get_kabbalistic_analysis':
-    await processFlowMessage(message, user, 'kabbalistic_flow');
-    return null;
-  }
-  case 'get_mayan_analysis':
-    await processFlowMessage(message, user, 'mayan_flow');
-    return null;
-  }
+   case 'get_palmistry_analysis':
+     await processFlowMessage(message, user, 'palmistry_flow');
+     return null;
+   case 'get_iching_reading':
+     await processFlowMessage(message, user, 'iching_flow');
+     return null;
+   case 'get_horary_reading':
+     await processFlowMessage(message, user, 'horary_flow');
+     return null;
+   case 'get_kabbalistic_analysis':
+     await processFlowMessage(message, user, 'kabbalistic_flow');
+     return null;
+   case 'get_mayan_analysis':
+     await processFlowMessage(message, user, 'mayan_flow');
+     return null;
   case 'get_numerology_report':
     response = '🔢 *Numerology Analysis*\n\n*Life Path:* 5\n\nAs a Life Path 5, you\'re adventurous, freedom-loving, and adaptable. You thrive on change and new experiences.\n\n*Expression:* 8\n\nYour name vibrates with power, success, and material abundance.\n\n*Soul Urge:* 3\n\nYour heart desires creativity, self-expression, and social connection.\n\nWhat aspect of numerology interests you most?';
     break;

@@ -784,8 +784,6 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         );
         return null;
       }
-    }
-    break;
   case 'initiate_compatibility_flow': {
     const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
@@ -2252,5 +2250,7 @@ module.exports = {
   sendMediaAcknowledgment,
   sendErrorMessage,
   handleCompatibilityRequest,
-  handleSubscriptionRequest
+  handleSubscriptionRequest,
+  validateUserProfile,
+  listActionMapping
 };

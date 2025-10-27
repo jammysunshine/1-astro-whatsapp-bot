@@ -148,8 +148,7 @@ describe('WhatsApp Message Sender', () => {
       ).rejects.toThrow('WhatsApp API credentials not configured');
 
       expect(logger.error).toHaveBeenCalledWith(
-        '❌ Error sending message to 1234567890:',
-        'WhatsApp API credentials not configured'
+        '❌ Error sending message to 1234567890: WhatsApp API credentials not configured'
       );
     });
 
@@ -168,8 +167,7 @@ describe('WhatsApp Message Sender', () => {
       ).rejects.toEqual(errorResponse);
 
       expect(logger.error).toHaveBeenCalledWith(
-        `❌ Error sending message to ${phoneNumber}:`,
-        errorResponse.response.data
+        `❌ Error sending message to ${phoneNumber}: API Error`
       );
     });
 
@@ -184,8 +182,7 @@ describe('WhatsApp Message Sender', () => {
       ).rejects.toEqual(errorResponse);
 
       expect(logger.error).toHaveBeenCalledWith(
-        `❌ Error sending message to ${phoneNumber}:`,
-        errorMessage
+        `❌ Error sending message to ${phoneNumber}: Network Error`
       );
     });
   });

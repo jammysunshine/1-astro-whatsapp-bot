@@ -516,37 +516,42 @@ const executeFlowAction = async(
     let moonSign = 'Unknown';
     let risingSign = 'Unknown';
     try {
-      const fullChart = await vedicCalculator.generateCompleteVedicAnalysis({
+      const fullChart = await vedicCalculator.generateBasicBirthChart({
         birthDate,
         birthTime,
-        birthPlace
+        birthPlace,
+        name: phoneNumber // Use phone number as name for now
       });
 
       // Extract signs for user profile
-      sunSign = fullChart.interpretations?.sunSign || 'Unknown';
-      moonSign = fullChart.interpretations?.moonSign || 'Unknown';
-      risingSign = fullChart.interpretations?.risingSign || 'Unknown';
+      sunSign = fullChart.sunSign || 'Unknown';
+      moonSign = fullChart.moonSign || 'Unknown';
+      risingSign = fullChart.risingSign || 'Unknown';
 
       detailedAnalysis = '\n\n📊 *Detailed Chart Analysis:*\n\n';
-      detailedAnalysis += '🌟 *Planetary Positions:*\n';
-      if (fullChart.planets) {
-        Object.entries(fullChart.planets).forEach(([planet, data]) => {
-          detailedAnalysis += `• ${data.name}: ${data.sign} ${data.degrees}°${data.minutes}'${data.seconds}"\n`;
-        });
+      detailedAnalysis += `🌟 *Your Cosmic Blueprint:*\n`;
+      detailedAnalysis += `☀️ *Sun Sign:* ${sunSign}\n`;
+      detailedAnalysis += `🌙 *Moon Sign:* ${moonSign}\n`;
+      detailedAnalysis += `⬆️ *Rising Sign:* ${risingSign}\n\n`;
+
+      if (fullChart.description) {
+        detailedAnalysis += `${fullChart.description}\n\n`;
       }
 
-      detailedAnalysis += '\n🏠 *House Placements:*\n';
-      if (fullChart.houses) {
-        fullChart.houses.forEach((house, index) => {
-          detailedAnalysis += `• House ${index + 1}: ${house.sign}\n`;
+      if (fullChart.personalityTraits && fullChart.personalityTraits.length > 0) {
+        detailedAnalysis += `🧠 *Key Personality Traits:*\n`;
+        fullChart.personalityTraits.slice(0, 3).forEach(trait => {
+          detailedAnalysis += `• ${trait}\n`;
         });
+        detailedAnalysis += '\n';
       }
 
-      detailedAnalysis += '\n🔮 *Key Aspects:*\n';
-      if (fullChart.aspects && fullChart.aspects.length > 0) {
-        fullChart.aspects.slice(0, 5).forEach(aspect => {
-          detailedAnalysis += `• ${aspect.planet1} ${aspect.aspect} ${aspect.planet2}\n`;
+      if (fullChart.strengths && fullChart.strengths.length > 0) {
+        detailedAnalysis += `💪 *Your Strengths:*\n`;
+        fullChart.strengths.forEach(strength => {
+          detailedAnalysis += `• ${strength}\n`;
         });
+        detailedAnalysis += '\n';
       }
     } catch (error) {
       logger.warn('Could not generate detailed analysis:', error.message);
@@ -682,9 +687,11 @@ const executeFlowAction = async(
   }
   case 'show_daily_horoscope': {
     try {
-      const horoscopeData = await vedicCalculator.generateDailyHoroscope(
-        user.birthDate
-      );
+      const horoscopeData = await vedicCalculator.generateDailyHoroscope({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime,
+        birthPlace: user.birthPlace
+      });
       const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
 
       const body = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n💫 *Lucky Color:* ${horoscopeData.luckyColor}\n🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n💝 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\nWhat would you like to explore next?`;

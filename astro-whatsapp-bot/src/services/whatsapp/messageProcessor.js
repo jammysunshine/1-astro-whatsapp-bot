@@ -238,6 +238,7 @@ const processTextMessage = async(message, user) => {
     return;
   } else if (
     lowerMessage.includes('palmistry') ||
+    lowerMessage.includes('palm') ||
      lowerMessage === '6'
   ) {
     await executeMenuAction(phoneNumber, user, 'get_palmistry_analysis');
@@ -612,9 +613,11 @@ const executeMenuAction = async(phoneNumber, user, action) => {
           'I\'d love to give you a personalized daily horoscope! Please complete your profile first by providing your birth date.';
     } else {
       try {
-        const horoscopeData = await vedicCalculator.generateDailyHoroscope(
-          user.birthDate
-        );
+        const horoscopeData = await vedicCalculator.generateDailyHoroscope({
+          birthDate: user.birthDate,
+          birthTime: user.birthTime,
+          birthPlace: user.birthPlace
+        });
         const sunSign = await vedicCalculator.calculateSunSign(user.birthDate);
 
         const body = `🔮 *Your Daily Horoscope*\n\n${sunSign} - ${horoscopeData.general}\n\n💫 *Lucky Color:* ${horoscopeData.luckyColor}\n🎯 *Lucky Number:* ${horoscopeData.luckyNumber}\n💝 *Love:* ${horoscopeData.love}\n💼 *Career:* ${horoscopeData.career}\n💰 *Finance:* ${horoscopeData.finance}\n🏥 *Health:* ${horoscopeData.health}\n\nWhat would you like to explore next?`;
@@ -646,6 +649,9 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         response = 'I\'m having trouble reading the stars right now. Please try again later.';
       }
     }
+    break;
+  case 'initiate_compatibility_flow':
+    response = '💕 *Compatibility Analysis*\n\nI can check how compatible you are with someone else! Please provide their birth date (DD/MM/YYYY) and I\'ll compare it with your chart.\n\nExample: 25/12/1985\n\n*Note:* This is a basic compatibility check. Premium users get detailed relationship insights!';
     break;
   case 'get_hindu_astrology_analysis':
     if (!user.birthDate) {

@@ -141,9 +141,11 @@ const generateAstrologyResponse = async(messageText, user) => {
     }
 
     const sunSign = vedicCalculator.calculateSunSign(user.birthDate);
-    const horoscopeData = vedicCalculator.generateDailyHoroscope(
-      user.birthDate
-    );
+    const horoscopeData = await vedicCalculator.generateDailyHoroscope({
+      birthDate: user.birthDate,
+      birthTime: user.birthTime,
+      birthPlace: user.birthPlace
+    });
 
     // Format the horoscope data into readable text
     let horoscopeText = horoscopeData.general;

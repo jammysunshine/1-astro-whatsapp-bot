@@ -141,8 +141,8 @@ describe('Astrology Library Integration Tests', () => {
   });
 
   describe('Vedic Calculator Integration', () => {
-    it('should calculate valid Vedic birth chart', () => {
-      const chart = vedicCalculator.generateBasicBirthChart(testUser);
+    it('should calculate valid Vedic birth chart', async () => {
+      const chart = await vedicCalculator.generateBasicBirthChart(testUser);
 
       expect(chart).toBeDefined();
       expect(chart.sunSign).toBeDefined();
@@ -153,9 +153,9 @@ describe('Astrology Library Integration Tests', () => {
       expect(typeof chart.moonSign).toBe('string');
     });
 
-    it('should handle invalid birth data gracefully', () => {
+    it('should handle invalid birth data gracefully', async () => {
       const userWithoutBirth = { id: 'test-user-no-birth' };
-      const chart = vedicCalculator.generateBasicBirthChart(userWithoutBirth);
+      const chart = await vedicCalculator.generateBasicBirthChart(userWithoutBirth);
 
       expect(chart).toBeDefined();
       expect(chart.sunSign).toBeDefined();

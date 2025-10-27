@@ -258,18 +258,22 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
   describe('Existing User Astrology Requests', () => {
     const testPhone = '+0987654321';
 
-    beforeEach(async() => {
-      // Create a complete user profile using MongoDB storage
-      await createUser(testPhone);
-      await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
-      await updateUserProfile(testPhone, {
-        profileComplete: true,
-        preferredLanguage: 'english',
-        sunSign: 'Pisces',
-        moonSign: 'Pisces',
-        risingSign: 'Aquarius'
-      });
-    });
+     beforeEach(async() => {
+       // Create a complete user profile using MongoDB storage
+       await createUser(testPhone);
+       await addBirthDetails(testPhone, '15/03/1990', '14:30', 'Mumbai, India');
+       await updateUserProfile(testPhone, {
+         profileComplete: true,
+         preferredLanguage: 'english',
+         sunSign: 'Pisces',
+         moonSign: 'Pisces',
+         risingSign: 'Aquarius'
+       });
+
+       // Set session to main menu
+       const Session = require('../../src/models/Session');
+       await Session.create({ sessionId: testPhone, phoneNumber: testPhone, state: 'main_menu', currentFlow: 'main_menu' });
+     });
 
     it('should generate real daily horoscope for existing user', async() => {
       const horoscopeResponse = await request(app)

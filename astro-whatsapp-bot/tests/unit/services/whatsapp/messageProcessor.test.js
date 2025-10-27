@@ -170,7 +170,10 @@ describe('WhatsApp Message Processor', () => {
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
-        'I\'d love to give you a personalized daily horoscope! Please complete your profile first by providing your birth date.'
+        'messages.daily_horoscope.incomplete_profile',
+        'text',
+        {},
+        'en'
       );
     });
 
@@ -197,7 +200,10 @@ describe('WhatsApp Message Processor', () => {
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
-        'You selected: Check Compatibility\nDescription: Check compatibility with a friend\n\nI\'ll process your request shortly!'
+        'messages.errors.list_reply',
+        'text',
+        {"description": "Check compatibility with a friend", "title": "Check Compatibility"},
+        'en'
       );
     });
 
@@ -243,7 +249,10 @@ describe('WhatsApp Message Processor', () => {
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
-        expect.stringContaining('Thank you for sending that image')
+        'messages.errors.media_acknowledgment',
+        'text',
+        {"caption": " with caption: \"My birth chart\"", "type": "image"},
+        'en'
       );
     });
 
@@ -262,9 +271,10 @@ describe('WhatsApp Message Processor', () => {
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
-        expect.stringContaining(
-          'I\'m sorry, I don\'t support that type of message yet'
-        )
+        'messages.errors.unsupported_message_type',
+        'text',
+        {},
+        'en'
       );
     });
 
@@ -276,9 +286,10 @@ describe('WhatsApp Message Processor', () => {
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
-        expect.stringContaining(
-          'I\'m sorry, I encountered an error processing your message'
-        )
+        'messages.errors.generic_error',
+        'text',
+        {},
+        'en'
       );
       expect(logger.error).toHaveBeenCalledWith(
         expect.stringContaining('Error processing message from 1234567890:'),

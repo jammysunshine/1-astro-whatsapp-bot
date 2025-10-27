@@ -1135,6 +1135,21 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     }
     response = generateAstrologyResponse('lunar return', user);
     break;
+  case 'show_core_readings_menu': {
+    const coreReadingsMenu = getMenu('core_readings_menu');
+    if (coreReadingsMenu) {
+      const buttons = coreReadingsMenu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(
+        phoneNumber,
+        { type: 'button', body: coreReadingsMenu.body, buttons },
+        'interactive'
+      );
+    }
+    return null;
+  }
   case 'show_divination_menu': {
     const divinationMenu = getMenu('divination_menu');
     if (divinationMenu) {
@@ -1160,6 +1175,36 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       await sendMessage(
         phoneNumber,
         { type: 'button', body: traditionsMenu.body, buttons },
+        'interactive'
+      );
+    }
+    return null;
+  }
+  case 'show_more_options_menu': {
+    const moreOptionsMenu = getMenu('more_options_menu');
+    if (moreOptionsMenu) {
+      const buttons = moreOptionsMenu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(
+        phoneNumber,
+        { type: 'button', body: moreOptionsMenu.body, buttons },
+        'interactive'
+      );
+    }
+    return null;
+  }
+  case 'show_more_traditions_menu': {
+    const moreTraditionsMenu = getMenu('more_traditions_menu');
+    if (moreTraditionsMenu) {
+      const buttons = moreTraditionsMenu.buttons.map(button => ({
+        type: 'reply',
+        reply: { id: button.id, title: button.title }
+      }));
+      await sendMessage(
+        phoneNumber,
+        { type: 'button', body: moreTraditionsMenu.body, buttons },
         'interactive'
       );
     }

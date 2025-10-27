@@ -1,7 +1,28 @@
 {
   "main_menu": {
     "type": "interactive",
-    "body": "🌟 *What would you like to explore today?*\n\nChoose from our core astrology services:",
+    "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What aspect of your cosmic journey interests you most?",
+    "buttons": [
+      {
+        "id": "btn_core_readings",
+        "title": "Core Readings",
+        "action": "show_core_readings_menu"
+      },
+      {
+        "id": "btn_divination",
+        "title": "Divination",
+        "action": "show_divination_menu"
+      },
+      {
+        "id": "btn_traditions",
+        "title": "Ancient Traditions",
+        "action": "show_traditions_menu"
+      }
+    ]
+  },
+  "core_readings_menu": {
+    "type": "interactive",
+    "body": "🔮 *Core Astrology Readings*\n\nChoose your primary astrological service:",
     "buttons": [
       {
         "id": "btn_daily_horoscope",
@@ -14,15 +35,15 @@
         "action": "show_birth_chart"
       },
       {
-        "id": "btn_all_services",
-        "title": "All Services",
-        "action": "show_comprehensive_menu"
+        "id": "btn_back_main",
+        "title": "Back to Main",
+        "action": "show_main_menu"
       }
     ]
   },
   "divination_menu": {
     "type": "interactive",
-    "body": "🔮 *Divination Systems*",
+    "body": "🔮 *Divination Systems*\n\nExplore mystical arts and ancient wisdom:",
     "buttons": [
       {
         "id": "btn_tarot",
@@ -35,6 +56,38 @@
         "action": "get_palmistry_analysis"
       },
       {
+        "id": "btn_more_options",
+        "title": "More Options",
+        "action": "show_more_options_menu"
+      }
+    ]
+  },
+  "traditions_menu": {
+    "type": "interactive",
+    "body": "🌳 *Ancient Traditions*\n\nDiscover wisdom from ancient civilizations:",
+    "buttons": [
+      {
+        "id": "btn_chinese",
+        "title": "Chinese BaZi",
+        "action": "show_chinese_flow"
+      },
+      {
+        "id": "btn_vedic",
+        "title": "Vedic Astrology",
+        "action": "get_hindu_astrology_analysis"
+      },
+      {
+        "id": "btn_more_traditions",
+        "title": "More Traditions",
+        "action": "show_more_traditions_menu"
+      }
+    ]
+  },
+  "more_options_menu": {
+    "type": "interactive",
+    "body": "✨ *More Divination Options*\n\nExplore additional mystical arts:",
+    "buttons": [
+      {
         "id": "btn_iching",
         "title": "I Ching Oracle",
         "action": "get_iching_reading"
@@ -45,15 +98,15 @@
         "action": "get_horary_reading"
       },
       {
-        "id": "btn_back_main",
-        "title": "Back to Main",
-        "action": "show_main_menu"
+        "id": "btn_back_divination",
+        "title": "Back to Divination",
+        "action": "show_divination_menu"
       }
     ]
   },
-  "traditions_menu": {
+  "more_traditions_menu": {
     "type": "interactive",
-    "body": "🌳 *Ancient Traditions*",
+    "body": "🌍 *More Ancient Traditions*\n\nExplore additional ancient wisdom systems:",
     "buttons": [
       {
         "id": "btn_kabbalistic",
@@ -66,55 +119,9 @@
         "action": "get_mayan_analysis"
       },
       {
-        "id": "btn_celtic",
-        "title": "Celtic Wisdom",
-        "action": "get_celtic_analysis"
-      },
-       {
-         "id": "btn_nadi",
-         "title": "Nadi Astrology",
-         "action": "show_nadi_flow"
-       },
-       {
-         "id": "btn_islamic",
-         "title": "Islamic Astrology",
-         "action": "show_islamic_flow"
-       },
-       {
-         "id": "btn_back_main",
-        "title": "Back to Main",
-        "action": "show_main_menu"
-      }
-    ]
-  },
-  "more_options_menu": {
-    "type": "interactive",
-    "body": "✨ *More Options*",
-    "buttons": [
-      {
-        "id": "btn_compatibility",
-        "title": "Compatibility",
-        "action": "initiate_compatibility_flow"
-      },
-      {
-        "id": "btn_astrocartography",
-        "title": "Astrocartography",
-        "action": "get_astrocartography_analysis"
-      },
-      {
-        "id": "btn_chinese",
-        "title": "Chinese BaZi",
-        "action": "show_chinese_flow"
-      },
-      {
-        "id": "btn_subscription",
-        "title": "Subscription",
-        "action": "show_subscription_plans"
-      },
-      {
-        "id": "btn_back_main",
-        "title": "Back to Main",
-        "action": "show_main_menu"
+        "id": "btn_back_traditions",
+        "title": "Back to Traditions",
+        "action": "show_traditions_menu"
       }
     ]
   },

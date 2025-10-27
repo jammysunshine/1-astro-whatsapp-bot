@@ -45,8 +45,8 @@ const handleDefaultResponse = async(message, user) => {
     }
   }
 
-  // Default response with interactive options
-  return '🌟 *Welcome to Your Cosmic Journey!*\n\nI\'m your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. Here are some popular cosmic explorations:\n\n🔮 *Daily Guidance:*\n• "horoscope" - Your daily cosmic weather\n• "birth chart" - Your complete astrological blueprint\n• "numerology" - Your soul\'s numerical code\n\n🌏 *World Traditions:*\n• "chinese" - BaZi Four Pillars analysis\n• "vedic" - Traditional Hindu astrology\n• "tarot" - Mystical card readings\n\n💫 *Specialized Insights:*\n• "compatibility" - Relationship astrology\n• "career" - Professional path guidance\n• "future self" - Life timeline simulation\n\n🕉️ *Ancient Wisdom:*\n• "kundli" - Vedic birth chart\n• "remedies" - Planetary healing practices\n• "muhurta" - Auspicious timing\n\nWhat aspect of your cosmic journey interests you most? ✨';
+  // Default response - let the messageProcessor handle the interactive menu
+  return '🌟 *Welcome to Your Cosmic Journey!*\n\nI\'m your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.';
 };
 
 /**

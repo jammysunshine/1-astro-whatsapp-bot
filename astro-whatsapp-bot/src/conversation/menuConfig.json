@@ -138,18 +138,6 @@
       }
     ]
   },
-      {
-        "id": "lang_hi",
-        "title": "🇮🇳 हिंदी",
-        "action": "set_language_hi"
-      },
-      {
-        "id": "lang_back",
-        "title": "⬅️ Back to Main",
-        "action": "show_main_menu"
-      }
-    ]
-  },
   "divination_menu": {
     "type": "interactive",
     "body": "🔮 *Divination Systems*\n\nExplore mystical arts and ancient wisdom:",

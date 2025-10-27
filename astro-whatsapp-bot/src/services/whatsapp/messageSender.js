@@ -74,12 +74,8 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
     );
     return response.data;
   } catch (error) {
-    const errorData = error.response?.data || error.message;
-    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
-    logger.error(
-      `❌ Error sending message to ${phoneNumber}:`,
-      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
-    );
+    const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
+    logger.error(`❌ Error sending message to ${phoneNumber}: ${errorMsg}`);
     throw error;
   }
 };
@@ -150,12 +146,8 @@ const sendInteractiveButtons = async(
     );
     return response.data;
   } catch (error) {
-    const errorData = error.response?.data || error.message;
-    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
-    logger.error(
-      `❌ Error sending interactive message to ${phoneNumber}:`,
-      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
-    );
+    const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
+    logger.error(`❌ Error sending interactive message to ${phoneNumber}: ${errorMsg}`);
     throw error;
   }
 };
@@ -232,12 +224,8 @@ const sendListMessage = async(
     );
     return response.data;
   } catch (error) {
-    const errorData = error.response?.data || error.message;
-    const truncatedData = typeof errorData === 'string' ? errorData.substring(0, 100) : JSON.stringify(errorData).substring(0, 100);
-    logger.error(
-      `❌ Error sending list message to ${phoneNumber}:`,
-      `${truncatedData}${truncatedData.length >= 100 ? '...' : ''}`
-    );
+    const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
+    logger.error(`❌ Error sending list message to ${phoneNumber}: ${errorMsg}`);
     throw error;
   }
 };

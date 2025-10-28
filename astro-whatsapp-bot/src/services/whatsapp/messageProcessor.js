@@ -127,9 +127,15 @@ const listActionMapping = {
   btn_favorite_services: 'show_favorite_services',
   horoscope_menu: 'show_main_menu',
   // New menu buttons
-  btn_personal_astrology: 'show_personal_astrology_menu',
-  btn_family_group: 'show_family_group_menu',
-  btn_settings_profile: 'show_settings_profile_menu',
+   btn_personal_astrology: 'show_personal_astrology_menu',
+   btn_family_group: 'show_family_group_menu',
+   btn_settings_profile: 'show_settings_profile_menu',
+   btn_western_basic: 'show_western_basic_menu',
+   btn_western_advanced: 'show_western_advanced_menu',
+   btn_western_predictive: 'show_western_predictive_menu',
+   btn_vedic_basic: 'show_vedic_basic_menu',
+   btn_vedic_advanced: 'show_vedic_advanced_menu',
+   btn_vedic_predictive: 'show_vedic_predictive_menu',
   btn_update_profile: 'start_profile_flow',
   btn_view_profile: 'show_user_profile',
   btn_profile_history: 'show_reading_history',
@@ -1414,17 +1420,59 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     }
     return null;
   }
-  case 'show_vedic_astrology_menu': {
-    const vedicMenu = getMenu('vedic_astrology_menu');
-    if (vedicMenu) {
-      await sendMessage(
-        phoneNumber,
-        vedicMenu,
-        'interactive'
-      );
-    }
-    return null;
-  }
+   case 'show_vedic_astrology_menu': {
+     const vedicMenu = getMenu('vedic_astrology_menu');
+     if (vedicMenu) {
+       await sendMessage(
+         phoneNumber,
+         vedicMenu,
+         'interactive'
+       );
+     }
+     return null;
+   }
+   case 'show_western_basic_menu': {
+     const menu = getMenu('western_basic_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_western_advanced_menu': {
+     const menu = getMenu('western_advanced_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_western_predictive_menu': {
+     const menu = getMenu('western_predictive_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_vedic_basic_menu': {
+     const menu = getMenu('vedic_basic_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_vedic_advanced_menu': {
+     const menu = getMenu('vedic_advanced_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_vedic_predictive_menu': {
+     const menu = getMenu('vedic_predictive_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
   case 'show_advanced_services_menu': {
     const advancedMenu = getMenu('advanced_services_menu');
     if (advancedMenu) {

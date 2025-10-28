@@ -83,9 +83,35 @@
        }
      ]
    },
-   "western_astrology_menu": {
+    "western_astrology_menu": {
+      "type": "button",
+     "body": "🌍 *Western Astrology*\n\nChoose a category:",
+     "buttons": [
+       {
+         "id": "btn_western_basic",
+         "title": "⭐ Basic Readings",
+         "action": "show_western_basic_menu"
+       },
+       {
+         "id": "btn_western_advanced",
+         "title": "🔬 Advanced Analysis",
+         "action": "show_western_advanced_menu"
+       },
+       {
+         "id": "btn_western_predictive",
+         "title": "🔮 Predictive",
+         "action": "show_western_predictive_menu"
+       },
+       {
+         "id": "btn_back_main",
+         "title": "🏠 Main Menu",
+         "action": "show_main_menu"
+       }
+     ]
+   },
+   "western_basic_menu": {
      "type": "button",
-     "body": "🌍 *Western Astrology*\n\nChoose your preferred Western astrology service:",
+     "body": "⭐ *Western Astrology - Basic Readings*\n\nEssential astrological insights:",
      "buttons": [
        {
          "id": "btn_daily_horoscope",
@@ -98,15 +124,93 @@
          "action": "show_birth_chart"
        },
        {
+         "id": "btn_back_western",
+         "title": "⬅️ Back to Western",
+         "action": "show_western_astrology_menu"
+       }
+     ]
+   },
+   "western_advanced_menu": {
+     "type": "button",
+     "body": "🔬 *Western Astrology - Advanced Analysis*\n\nDeep astrological techniques:",
+     "buttons": [
+       {
+         "id": "btn_transits",
+         "title": "🌌 Current Transits",
+         "action": "get_current_transits"
+       },
+       {
+         "id": "btn_progressions",
+         "title": "⏳ Progressions",
+         "action": "get_secondary_progressions"
+       },
+       {
+         "id": "btn_solar_arc",
+         "title": "☀️ Solar Arc Directions",
+         "action": "get_solar_arc_directions"
+       },
+       {
+         "id": "btn_back_western",
+         "title": "⬅️ Back to Western",
+         "action": "show_western_astrology_menu"
+       }
+     ]
+   },
+   "western_predictive_menu": {
+     "type": "button",
+     "body": "🔮 *Western Astrology - Predictive*\n\nFuture insights and timing:",
+     "buttons": [
+       {
+         "id": "btn_solar_return",
+         "title": "🎂 Solar Return",
+         "action": "get_solar_return_analysis"
+       },
+       {
+         "id": "btn_career_astrology",
+         "title": "💼 Career Guidance",
+         "action": "get_career_astrology_analysis"
+       },
+       {
+         "id": "btn_financial_astrology",
+         "title": "💰 Financial Timing",
+         "action": "get_financial_astrology_analysis"
+       },
+       {
+         "id": "btn_back_western",
+         "title": "⬅️ Back to Western",
+         "action": "show_western_astrology_menu"
+       }
+     ]
+   },
+    "vedic_astrology_menu": {
+      "type": "button",
+     "body": "🕉️ *Vedic Astrology*\n\nChoose a category:",
+     "buttons": [
+       {
+         "id": "btn_vedic_basic",
+         "title": "⭐ Basic Readings",
+         "action": "show_vedic_basic_menu"
+       },
+       {
+         "id": "btn_vedic_advanced",
+         "title": "🔬 Advanced Analysis",
+         "action": "show_vedic_advanced_menu"
+       },
+       {
+         "id": "btn_vedic_predictive",
+         "title": "🔮 Predictive & Remedies",
+         "action": "show_vedic_predictive_menu"
+       },
+       {
          "id": "btn_back_main",
          "title": "🏠 Main Menu",
          "action": "show_main_menu"
        }
      ]
    },
-   "vedic_astrology_menu": {
+   "vedic_basic_menu": {
      "type": "button",
-     "body": "🕉️ *Vedic Astrology*\n\nChoose your preferred Vedic astrology service:",
+     "body": "⭐ *Vedic Astrology - Basic Readings*\n\nEssential Vedic insights:",
      "buttons": [
        {
          "id": "btn_vedic_birth_chart",
@@ -119,9 +223,66 @@
          "action": "get_synastry_analysis"
        },
        {
-         "id": "btn_back_main",
-         "title": "🏠 Main Menu",
-         "action": "show_main_menu"
+         "id": "btn_nadi",
+         "title": "📜 Nadi Astrology",
+         "action": "show_nadi_flow"
+       },
+       {
+         "id": "btn_back_vedic",
+         "title": "⬅️ Back to Vedic",
+         "action": "show_vedic_astrology_menu"
+       }
+     ]
+   },
+   "vedic_advanced_menu": {
+     "type": "button",
+     "body": "🔬 *Vedic Astrology - Advanced Analysis*\n\nDeep Vedic techniques:",
+     "buttons": [
+       {
+         "id": "btn_vimshottari_dasha",
+         "title": "⏳ Vimshottari Dasha",
+         "action": "get_vimshottari_dasha_analysis"
+       },
+       {
+         "id": "btn_hindu_festivals",
+         "title": "🎉 Hindu Festivals",
+         "action": "get_hindu_festivals_info"
+       },
+       {
+         "id": "btn_vedic_numerology",
+         "title": "🔢 Vedic Numerology",
+         "action": "get_vedic_numerology_analysis"
+       },
+       {
+         "id": "btn_back_vedic",
+         "title": "⬅️ Back to Vedic",
+         "action": "show_vedic_astrology_menu"
+       }
+     ]
+   },
+   "vedic_predictive_menu": {
+     "type": "button",
+     "body": "🔮 *Vedic Astrology - Predictive & Remedies*\n\nFuture insights and solutions:",
+     "buttons": [
+       {
+         "id": "btn_vedic_remedies",
+         "title": "🕉️ Vedic Remedies",
+         "action": "get_vedic_remedies_info"
+       },
+       {
+         "id": "btn_ayurvedic_astrology",
+         "title": "🌿 Ayurvedic Astrology",
+         "action": "get_ayurvedic_astrology_analysis"
+       },
+       {
+         "id": "btn_prashna_astrology",
+         "title": "❓ Prashna Astrology",
+         "action": "get_prashna_astrology_analysis"
+       },
+       {
+         "id": "btn_back_vedic",
+         "title": "⬅️ Back to Vedic",
+         "action": "show_vedic_astrology_menu"
        }
      ]
    },

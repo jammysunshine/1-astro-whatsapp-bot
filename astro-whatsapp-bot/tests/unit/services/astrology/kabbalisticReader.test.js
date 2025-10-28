@@ -4,7 +4,18 @@
 const kabbalisticReader = require('../../../src/services/astrology/kabbalisticReader');
 
 // Mock dependencies
-jest.mock('../../../src/utils/logger');
+const logger = require('../../../src/utils/logger');
+
+beforeEach(() => {
+  jest.spyOn(logger, 'info').mockImplementation(() => {});
+  jest.spyOn(logger, 'error').mockImplementation(() => {});
+  jest.spyOn(logger, 'warn').mockImplementation(() => {});
+  jest.spyOn(logger, 'debug').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
 
 describe('KabbalisticReader', () => {
   describe('generateKabbalisticReading', () => {

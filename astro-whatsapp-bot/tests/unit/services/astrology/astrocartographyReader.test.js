@@ -2,9 +2,18 @@
 // Unit tests for Astrocartography Reader
 
 const astrocartographyReader = require('../../../src/services/astrology/astrocartographyReader');
+const logger = require('../../../src/utils/logger');
 
-// Mock dependencies
-jest.mock('../../../src/utils/logger');
+beforeEach(() => {
+  jest.spyOn(logger, 'info').mockImplementation(() => {});
+  jest.spyOn(logger, 'error').mockImplementation(() => {});
+  jest.spyOn(logger, 'warn').mockImplementation(() => {});
+  jest.spyOn(logger, 'debug').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
 
 describe('AstrocartographyReader', () => {
   describe('generateAstrocartographyReading', () => {

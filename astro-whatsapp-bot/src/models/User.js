@@ -22,8 +22,7 @@ const userSchema = new mongoose.Schema(
 
     // Profile information
     name: {
-      type: String,
-      default: 'Cosmic Explorer'
+      type: String
     },
     gender: {
       type: String,

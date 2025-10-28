@@ -29,9 +29,9 @@ const createUser = async(phoneNumber, profileData = {}) => {
       id: userId,
       phoneNumber,
       referralCode,
-      ...profileData
+      name: profileData.name || 'Cosmic Explorer', // Ensure name is set here
+      ...profileData // Spread other profile data
     };
-
     const user = new User(userData);
     await user.save();
 

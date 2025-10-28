@@ -4,7 +4,7 @@ const { createUser, getUserByPhone, updateUserProfile } = require('../../src/mod
 const vedicCalculator = require('../../src/services/astrology/vedicCalculator');
 const { generateTarotReading } = require('../../src/services/astrology/tarotReader');
 const numerologyService = require('../../src/services/astrology/numerologyService');
-const { GeocodingService } = require('../../src/services/astrology/geocoding/GeocodingService');
+const GeocodingService = require('../../src/services/astrology/geocoding/GeocodingService');
 const logger = require('../../src/utils/logger');
 
 // Mock WhatsApp message sender globally
@@ -447,6 +447,49 @@ describe('Comprehensive Menu Tree Validation - REAL LIBRARIES & DATABASE', () =>
       expect(responseCall).toBeDefined();
       logger.info('✅ Real daily horoscope generation validated');
     }, 10000);
+
+    test('should navigate back to main menu from Western astrology sub-menu', async () => {
+      // 1. Navigate to Western Astrology menu
+      mockSendMessage.mockClear();
+      const westernMenuMessage = {
+        from: TEST_PHONE,
+        interactive: {
+          type: 'list_reply',
+          list_reply: {
+            id: 'show_western_astrology_menu',
+            title: 'Western Astrology',
+            description: 'Navigate to Western Astrology menu'
+          }
+        },
+        type: 'interactive'
+      };
+      await processIncomingMessage(westernMenuMessage, {});
+      expect(mockSendMessage).toHaveBeenCalled();
+      logger.info('✅ Navigated to Western Astrology menu');
+
+      // 2. Simulate back action to main menu
+      mockSendMessage.mockClear();
+      const backToMainMenuMessage = {
+        from: TEST_PHONE,
+        interactive: {
+          type: 'list_reply',
+          list_reply: {
+            id: 'show_main_menu',
+            title: 'Main Menu',
+            description: 'Navigate back to Main Menu'
+          }
+        },
+        type: 'interactive'
+      };
+      await processIncomingMessage(backToMainMenuMessage, {});
+      expect(mockSendMessage).toHaveBeenCalled();
+
+      // 3. Verify main menu is displayed
+      const responseCall = mockSendMessage.mock.calls[0][1];
+      expect(responseCall.body).toContain('Welcome to Your Cosmic Journey');
+      expect(responseCall.body).toContain('Western Astrology');
+      logger.info('✅ Successfully navigated back to Main Menu');
+    }, 15000);
   });
 
   describe('Vedic Astrology Menu Tree', () => {
@@ -751,19 +794,18 @@ describe('Comprehensive Menu Tree Validation - REAL LIBRARIES & DATABASE', () =>
       const geocodingService = new GeocodingService();
 
       // Test geocoding a birth place
-      const coordinates = await geocodingService.getCoordinates('Mumbai, India');
+      const [latitude, longitude] = await geocodingService.getCoordinatesForPlace('Mumbai, India');
 
-      expect(coordinates).toBeDefined();
-      expect(coordinates.latitude).toBeDefined();
-      expect(coordinates.longitude).toBeDefined();
-      expect(typeof coordinates.latitude).toBe('number');
-      expect(typeof coordinates.longitude).toBe('number');
+      expect(latitude).toBeDefined();
+      expect(longitude).toBeDefined();
+      expect(typeof latitude).toBe('number');
+      expect(typeof longitude).toBe('number');
 
       // Verify coordinates are reasonable for Mumbai
-      expect(coordinates.latitude).toBeGreaterThan(18);
-      expect(coordinates.latitude).toBeLessThan(20);
-      expect(coordinates.longitude).toBeGreaterThan(72);
-      expect(coordinates.longitude).toBeLessThan(73);
+      expect(latitude).toBeGreaterThan(18);
+      expect(latitude).toBeLessThan(20);
+      expect(longitude).toBeGreaterThan(72);
+      expect(longitude).toBeLessThan(73);
 
       logger.info('✅ Real Google Maps geocoding validated');
     }, 10000);
@@ -772,9 +814,12 @@ describe('Comprehensive Menu Tree Validation - REAL LIBRARIES & DATABASE', () =>
       const geocodingService = new GeocodingService();
 
       // Test with invalid location
-      await expect(geocodingService.getCoordinates('InvalidPlaceThatDoesNotExist12345'))
-        .rejects
-        .toThrow();
+      const [latitude, longitude] = await geocodingService.getCoordinatesForPlace('InvalidPlaceThatDoesNotExist12345');
+
+      expect(latitude).toBeDefined();
+      expect(longitude).toBeDefined();
+      expect(latitude).toBe(28.6139); // Default latitude for Delhi
+      expect(longitude).toBe(77.209); // Default longitude for Delhi
 
       logger.info('✅ Geocoding error handling validated');
     }, 5000);

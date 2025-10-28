@@ -3,6 +3,15 @@ const User = require('../../src/models/User');
 const { processIncomingMessage } = require('../../src/services/whatsapp/messageProcessor');
 const logger = require('../../src/utils/logger');
 
+const TEST_BIRTH_DATA = {
+  date: '15061990',
+  time: '1430',
+  place: 'Mumbai, India',
+  latitude: 19.0760,
+  longitude: 72.8777,
+  timezone: 'Asia/Kolkata'
+};
+
 // Mock external APIs to avoid costs but test integration
 jest.mock('@googlemaps/google-maps-services-js');
 jest.mock('axios');
@@ -396,8 +405,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
         // Create users in database
         const userPromises = loadTestPhones.map(phone =>
-          require('../../src/models/userModel').createUser({
-            phoneNumber: phone,
+          require('../../src/models/userModel').createUser(phone, {
             profileComplete: true,
             birthDate: TEST_BIRTH_DATA.date,
             birthTime: TEST_BIRTH_DATA.time,

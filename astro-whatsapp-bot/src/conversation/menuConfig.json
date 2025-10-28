@@ -85,7 +85,7 @@
    },
     "western_astrology_menu": {
       "type": "button",
-     "body": "🌍 *Western Astrology*\n\nChoose a category:",
+     "body": "🌍 *Western Astrology*\n\nChoose a category:\n\n⭐ *Basic Readings*\n• 🌟 Daily Horoscope\n• 📊 Birth Chart\n\n🔬 *Advanced Analysis*\n• 🌌 Current Transits\n• ⏳ Progressions\n• ☀️ Solar Arc Directions\n\n🔮 *Predictive*\n• 🎂 Solar Return\n• 💼 Career Guidance\n• 💰 Financial Timing",
      "buttons": [
        {
          "id": "btn_western_basic",
@@ -101,11 +101,6 @@
          "id": "btn_western_predictive",
          "title": "🔮 Predictive",
          "action": "show_western_predictive_menu"
-       },
-       {
-         "id": "btn_back_main",
-         "title": "🏠 Main Menu",
-         "action": "show_main_menu"
        }
      ]
    },
@@ -125,7 +120,7 @@
        },
        {
          "id": "btn_back_western",
-         "title": "⬅️ Back to Western",
+         "title": "⬅️ Back to Categories",
          "action": "show_western_astrology_menu"
        }
      ]
@@ -151,7 +146,7 @@
        },
        {
          "id": "btn_back_western",
-         "title": "⬅️ Back to Western",
+         "title": "⬅️ Back to Categories",
          "action": "show_western_astrology_menu"
        }
      ]
@@ -177,14 +172,14 @@
        },
        {
          "id": "btn_back_western",
-         "title": "⬅️ Back to Western",
+         "title": "⬅️ Back to Categories",
          "action": "show_western_astrology_menu"
        }
      ]
    },
     "vedic_astrology_menu": {
       "type": "button",
-     "body": "🕉️ *Vedic Astrology*\n\nChoose a category:",
+     "body": "🕉️ *Vedic Astrology*\n\nChoose a category:\n\n⭐ *Basic Readings*\n• 📊 Vedic Birth Chart\n• 💍 Marriage Matching\n• 📜 Nadi Astrology\n\n🔬 *Advanced Analysis*\n• ⏳ Vimshottari Dasha\n• 🎉 Hindu Festivals\n• 🔢 Vedic Numerology\n\n🔮 *Predictive & Remedies*\n• 🕉️ Vedic Remedies\n• 🌿 Ayurvedic Astrology\n• ❓ Prashna Astrology",
      "buttons": [
        {
          "id": "btn_vedic_basic",
@@ -200,11 +195,6 @@
          "id": "btn_vedic_predictive",
          "title": "🔮 Predictive & Remedies",
          "action": "show_vedic_predictive_menu"
-       },
-       {
-         "id": "btn_back_main",
-         "title": "🏠 Main Menu",
-         "action": "show_main_menu"
        }
      ]
    },
@@ -229,7 +219,7 @@
        },
        {
          "id": "btn_back_vedic",
-         "title": "⬅️ Back to Vedic",
+         "title": "⬅️ Back to Categories",
          "action": "show_vedic_astrology_menu"
        }
      ]
@@ -255,7 +245,7 @@
        },
        {
          "id": "btn_back_vedic",
-         "title": "⬅️ Back to Vedic",
+         "title": "⬅️ Back to Categories",
          "action": "show_vedic_astrology_menu"
        }
      ]
@@ -281,7 +271,7 @@
        },
        {
          "id": "btn_back_vedic",
-         "title": "⬅️ Back to Vedic",
+         "title": "⬅️ Back to Categories",
          "action": "show_vedic_astrology_menu"
        }
      ]

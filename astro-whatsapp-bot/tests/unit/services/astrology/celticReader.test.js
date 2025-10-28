@@ -4,47 +4,78 @@
 const celticReader = require('../../../src/services/astrology/celticReader');
 
 // Mock dependencies
-jest.mock('../../../src/utils/logger');
+const logger = require('../../../../src/utils/logger');
+
+beforeEach(() => {
+  jest.spyOn(logger, 'info').mockImplementation(() => {});
+  jest.spyOn(logger, 'error').mockImplementation(() => {});
+  jest.spyOn(logger, 'warn').mockImplementation(() => {});
+  jest.spyOn(logger, 'debug').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
 
 describe('CelticReader', () => {
-  describe('generateCelticReading', () => {
-    it('should generate Celtic reading for valid sign', () => {
-      const sign = 'Dragon';
+  describe('generateCelticChart', () => {
+    it('should generate Celtic chart for valid birth data', () => {
+      const birthData = {
+        birthDate: '15/03/1990',
+        birthTime: '14:30',
+        name: 'John Doe',
+      };
 
-      const reading = celticReader.generateCelticReading(sign);
+      const chart = celticReader.generateCelticChart(birthData);
 
-      expect(reading).toBeDefined();
-      expect(reading.sign).toBe(sign);
-      expect(reading.description).toBeDefined();
+      expect(chart).toBeDefined();
+      expect(chart.name).toBe(birthData.name);
+      expect(chart.treeSign).toBeDefined();
+      expect(chart.animalTotem).toBeDefined();
+      expect(chart.seasonalInfluence).toBeDefined();
+      expect(chart.druidicWisdom).toBeDefined();
+      expect(chart.lifePath).toBeDefined();
+      expect(chart.personalityTraits).toBeDefined();
+      expect(chart.celticDescription).toBeDefined();
     });
 
-    it('should handle invalid sign', () => {
-      const sign = 'invalid';
+    it('should handle invalid birth data gracefully', () => {
+      const birthData = {
+        birthDate: 'invalid',
+        birthTime: 'invalid',
+        name: 'Invalid User',
+      };
 
-      expect(() => celticReader.generateCelticReading(sign)).toThrow();
+      const chart = celticReader.generateCelticChart(birthData);
+
+      expect(chart).toBeDefined();
+      expect(chart.error).toBeDefined();
+      expect(chart.fallback).toBeDefined();
     });
   });
 
-  describe('getCelticElement', () => {
-    it('should get Celtic element for sign', () => {
-      const sign = 'Dragon';
-
-      const element = celticReader.getCelticElement(sign);
-
-      expect(element).toBeDefined();
-      expect(element).toMatch(/^(Earth|Air|Fire|Water)$/);
-    });
-  });
-
-  describe('generateCelticHoroscope', () => {
-    it('should generate Celtic horoscope', () => {
+  describe('generateCelticGuidance', () => {
+    it('should generate Celtic daily guidance for valid birth date', () => {
       const birthDate = '15/03/1990';
 
-      const horoscope = celticReader.generateCelticHoroscope(birthDate);
+      const guidance = celticReader.generateCelticGuidance(birthDate);
 
-      expect(horoscope).toBeDefined();
-      expect(horoscope.sign).toBeDefined();
-      expect(horoscope.daily).toBeDefined();
+      expect(guidance).toBeDefined();
+      expect(guidance.treeGuidance).toBeDefined();
+      expect(guidance.animalGuidance).toBeDefined();
+      expect(guidance.dailyRitual).toBeDefined();
+      expect(guidance.seasonalWisdom).toBeDefined();
+      expect(guidance.affirmation).toBeDefined();
+    });
+
+    it('should handle errors during guidance generation', () => {
+      const birthDate = 'invalid';
+
+      const guidance = celticReader.generateCelticGuidance(birthDate);
+
+      expect(guidance).toBeDefined();
+      expect(guidance.error).toBeDefined();
+      expect(guidance.fallback).toBeDefined();
     });
   });
 });

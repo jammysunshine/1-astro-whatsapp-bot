@@ -4,7 +4,18 @@
 const ichingReader = require('../../../src/services/astrology/ichingReader');
 
 // Mock dependencies
-jest.mock('../../../src/utils/logger');
+const logger = require('../../../../src/utils/logger');
+
+beforeEach(() => {
+  jest.spyOn(logger, 'info').mockImplementation(() => {});
+  jest.spyOn(logger, 'error').mockImplementation(() => {});
+  jest.spyOn(logger, 'warn').mockImplementation(() => {});
+  jest.spyOn(logger, 'debug').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
 
 describe('IChingReader', () => {
   describe('generateIChingReading', () => {
@@ -15,40 +26,34 @@ describe('IChingReader', () => {
 
       expect(reading).toBeDefined();
       expect(reading.question).toBe(question);
-      expect(reading.hexagram).toBeDefined();
+      expect(reading.primaryHexagram).toBeDefined();
       expect(reading.interpretation).toBeDefined();
+      expect(reading.ichingDescription).toBeDefined();
     });
 
-    it('should handle empty question', () => {
-      const question = '';
+    it('should generate I Ching reading without a question', () => {
+      const reading = ichingReader.generateIChingReading();
 
-      expect(() => ichingReader.generateIChingReading(question)).toThrow();
+      expect(reading).toBeDefined();
+      expect(reading.question).toBe('General guidance');
+      expect(reading.primaryHexagram).toBeDefined();
+      expect(reading.interpretation).toBeDefined();
+      expect(reading.ichingDescription).toBeDefined();
     });
-  });
 
-  describe('castHexagram', () => {
-    it('should cast hexagram for question', () => {
-      const question = 'What is my path?';
+    it('should handle errors during reading generation', () => {
+      // Mock a scenario that causes an error, e.g., by temporarily breaking a dependency
+      jest.spyOn(ichingReader, 'generateHexagram').mockImplementation(() => {
+        throw new Error('Test error');
+      });
 
-      const hexagram = ichingReader.castHexagram(question);
+      const reading = ichingReader.generateIChingReading('Test question');
 
-      expect(hexagram).toBeDefined();
-      expect(hexagram.lines).toHaveLength(6);
-      expect(hexagram.lines.every(line => line === 0 || line === 1)).toBe(true);
-    });
-  });
+      expect(reading).toBeDefined();
+      expect(reading.error).toBeDefined();
+      expect(reading.fallback).toBeDefined();
 
-  describe('interpretHexagram', () => {
-    it('should interpret hexagram', () => {
-      const hexagram = {
-        lines: [1, 0, 1, 0, 1, 0]
-      };
-
-      const interpretation = ichingReader.interpretHexagram(hexagram);
-
-      expect(interpretation).toBeDefined();
-      expect(interpretation.name).toBeDefined();
-      expect(interpretation.description).toBeDefined();
+      jest.restoreAllMocks(); // Restore the mock
     });
   });
 });

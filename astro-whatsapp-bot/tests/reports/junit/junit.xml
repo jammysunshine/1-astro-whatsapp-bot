@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="155" failures="122" errors="0" time="24.297">
-  <testsuite name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation" errors="0" failures="122" skipped="0" timestamp="2025-10-28T21:59:22" time="23.843" tests="155">
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow 6+ level deep navigation: Main -&gt; Western -&gt; Basic -&gt; Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow 6+ level deep navigation: Main -&gt; Western -&gt; Basic -&gt; Birth Chart" time="0.793">
+<testsuites name="jest tests" tests="155" failures="122" errors="0" time="28.913">
+  <testsuite name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation" errors="0" failures="122" skipped="0" timestamp="2025-10-28T22:06:11" time="28.435" tests="155">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow 6+ level deep navigation: Main -&gt; Western -&gt; Basic -&gt; Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow 6+ level deep navigation: Main -&gt; Western -&gt; Basic -&gt; Birth Chart" time="0.913">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You are now in Birth Chart Analysis. What would you like to explore?&quot;
@@ -14,7 +14,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:67:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow 6+ level deep navigation: Main -&gt; Vedic -&gt; Advanced -&gt; Dasha Analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow 6+ level deep navigation: Main -&gt; Vedic -&gt; Advanced -&gt; Dasha Analysis" time="0.205">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow 6+ level deep navigation: Main -&gt; Vedic -&gt; Advanced -&gt; Dasha Analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow 6+ level deep navigation: Main -&gt; Vedic -&gt; Advanced -&gt; Dasha Analysis" time="0.313">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You are now in Dasha Analysis. Please select a Dasha period.&quot;
@@ -27,7 +27,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:83:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should preserve menu state across sessions (return to last menu position)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should preserve menu state across sessions (return to last menu position)" time="0.167">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should preserve menu state across sessions (return to last menu position)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should preserve menu state across sessions (return to last menu position)" time="0.316">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Welcome back! You were last in Western Astrology. Would you like to continue?&quot;
@@ -37,7 +37,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:99:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display breadcrumb navigation for multi-level back functionality" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display breadcrumb navigation for multi-level back functionality" time="0.143">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display breadcrumb navigation for multi-level back functionality" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display breadcrumb navigation for multi-level back functionality" time="0.269">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Main Menu &gt; Vedic Astrology &gt; Advanced Readings&quot;
@@ -50,7 +50,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:113:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should show premium options only for subscribed users (Subscription-tier menu differences)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should show premium options only for subscribed users (Subscription-tier menu differences)" time="0.137">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should show premium options only for subscribed users (Subscription-tier menu differences)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should show premium options only for subscribed users (Subscription-tier menu differences)" time="0.239">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Premium Features&quot;
@@ -60,7 +60,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:136:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display language-dependent menu options based on user preference" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display language-dependent menu options based on user preference" time="0.103">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display language-dependent menu options based on user preference" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display language-dependent menu options based on user preference" time="0.124">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Western Astrology&quot;
@@ -70,7 +70,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:147:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should dynamically change menu options based on profile completion status" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should dynamically change menu options based on profile completion status" time="0.124">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should dynamically change menu options based on profile completion status" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should dynamically change menu options based on profile completion status" time="0.119">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Complete Profile&quot;
@@ -80,7 +80,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:172:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prioritize frequently used menu options (Adaptive menu ordering)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prioritize frequently used menu options (Adaptive menu ordering)" time="0.178">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prioritize frequently used menu options (Adaptive menu ordering)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prioritize frequently used menu options (Adaptive menu ordering)" time="0.179">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;✨ Daily Horoscope (Recommended) ✨&quot;
@@ -90,7 +90,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:192:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Planets in Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Planets in Birth Chart" time="0.147">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Planets in Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Planets in Birth Chart" time="0.173">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Planets in your Birth Chart.&quot;
@@ -103,7 +103,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:208:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Houses in Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Houses in Birth Chart" time="0.165">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Houses in Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Houses in Birth Chart" time="0.16">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Houses in your Birth Chart.&quot;
@@ -116,7 +116,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:218:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Aspects in Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Aspects in Birth Chart" time="0.153">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Aspects in Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Basic -&gt; Aspects in Birth Chart" time="0.145">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Aspects in your Birth Chart.&quot;
@@ -129,7 +129,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:228:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Vimshottari" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Vimshottari" time="0.153">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Vimshottari" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Vimshottari" time="0.21">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Initiating Vimshottari Dasha Analysis.&quot;
@@ -142,7 +142,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:238:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Yogini" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Yogini" time="0.163">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Yogini" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Yogini" time="0.164">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Initiating Yogini Dasha Analysis.&quot;
@@ -155,7 +155,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:248:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Char Dasha" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Char Dasha" time="0.146">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Char Dasha" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Char Dasha" time="0.148">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Initiating Char Dasha Analysis.&quot;
@@ -168,7 +168,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:258:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Narayan Dasha" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Narayan Dasha" time="0.164">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Narayan Dasha" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Dasha -&gt; Narayan Dasha" time="0.193">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Initiating Narayan Dasha Analysis.&quot;
@@ -181,7 +181,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:268:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Parent-Child" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Parent-Child" time="0.17">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Parent-Child" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Parent-Child" time="0.176">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Beginning Parent-Child relationship analysis.&quot;
@@ -194,7 +194,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:278:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Sibling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Sibling" time="0.15">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Sibling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Sibling" time="0.164">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Beginning Sibling relationship analysis.&quot;
@@ -207,7 +207,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:288:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Spousal" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Spousal" time="0.152">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Spousal" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Family -&gt; 4-member -&gt; Spousal" time="0.182">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Beginning Spousal relationship analysis.&quot;
@@ -220,7 +220,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:298:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Lots" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Lots" time="0.15">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Lots" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Lots" time="0.142">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Hellenistic Lots.&quot;
@@ -233,7 +233,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:308:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Decans" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Decans" time="0.165">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Decans" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Decans" time="0.167">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Hellenistic Decans.&quot;
@@ -246,7 +246,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:318:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Terms" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Terms" time="0.147">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Terms" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Terms" time="0.167">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Hellenistic Terms.&quot;
@@ -259,7 +259,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:328:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Triplicities" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Triplicities" time="0.161">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Triplicities" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Triplicities" time="0.148">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Hellenistic Triplicities.&quot;
@@ -272,7 +272,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:338:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Planetary Hours" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Planetary Hours" time="0.149">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Planetary Hours" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hellenistic -&gt; Planetary Hours" time="0.142">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Hellenistic Planetary Hours.&quot;
@@ -285,7 +285,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:348:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow saving quick access bookmarks to favorite menu shortcuts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow saving quick access bookmarks to favorite menu shortcuts" time="0.13">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow saving quick access bookmarks to favorite menu shortcuts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow saving quick access bookmarks to favorite menu shortcuts" time="0.176">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;&apos;Western&apos; added to your favorites.&quot;
@@ -298,7 +298,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:357:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should recall recent path memory for frequently used shortcuts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should recall recent path memory for frequently used shortcuts" time="0.15">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should recall recent path memory for frequently used shortcuts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should recall recent path memory for frequently used shortcuts" time="0.133">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Your recent path: Vedic Astrology. Continue?&quot;
@@ -308,7 +308,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:367:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should list available shortcuts from recent path memory" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should list available shortcuts from recent path memory" time="0.159">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should list available shortcuts from recent path memory" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should list available shortcuts from recent path memory" time="0.157">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Available shortcuts: Western Astrology, Basic Readings.&quot;
@@ -318,7 +318,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:378:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should correctly restore state after network interruption mid-navigation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should correctly restore state after network interruption mid-navigation" time="0.125">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should correctly restore state after network interruption mid-navigation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should correctly restore state after network interruption mid-navigation" time="0.257">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Connection restored. You are in Western Astrology.&quot;
@@ -328,7 +328,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:388:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow user to jump to a bookmarked menu item" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow user to jump to a bookmarked menu item" time="0.156">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow user to jump to a bookmarked menu item" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow user to jump to a bookmarked menu item" time="0.284">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You are now in Western Astrology menu.&quot;
@@ -338,7 +338,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:399:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should clear recent path memory upon user explicit clear command" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should clear recent path memory upon user explicit clear command" time="0.125">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should clear recent path memory upon user explicit clear command" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should clear recent path memory upon user explicit clear command" time="0.264">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Your navigation history has been cleared.&quot;
@@ -348,7 +348,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:409:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Gold tier subscribers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Gold tier subscribers" time="0.11">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Gold tier subscribers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Gold tier subscribers" time="0.148">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Gold Exclusive Insights&quot;
@@ -358,7 +358,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:418:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Platinum tier subscribers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Platinum tier subscribers" time="0.118">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Platinum tier subscribers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Platinum tier subscribers" time="0.192">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Platinum VIP Access&quot;
@@ -368,7 +368,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:427:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth time before showing advanced astrological options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth time before showing advanced astrological options" time="0.107">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth time before showing advanced astrological options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth time before showing advanced astrological options" time="0.115">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Please provide your exact birth time to access advanced readings.&quot;
@@ -378,7 +378,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:440:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth place before showing location-based astrological options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth place before showing location-based astrological options" time="0.092">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth place before showing location-based astrological options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth place before showing location-based astrological options" time="0.105">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Please provide your birth place to access location-based astrology.&quot;
@@ -388,9 +388,9 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:453:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should not show &apos;Complete Profile&apos; after full profile completion" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should not show &apos;Complete Profile&apos; after full profile completion" time="0.094">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should not show &apos;Complete Profile&apos; after full profile completion" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should not show &apos;Complete Profile&apos; after full profile completion" time="0.097">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display a personalized welcome message based on recent activity" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display a personalized welcome message based on recent activity" time="0.129">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display a personalized welcome message based on recent activity" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display a personalized welcome message based on recent activity" time="0.122">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Welcome back! Your last request was Daily Horoscope.&quot;
@@ -400,7 +400,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:472:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Transits -&gt; Weekly Transits" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Transits -&gt; Weekly Transits" time="0.145">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Transits -&gt; Weekly Transits" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Transits -&gt; Weekly Transits" time="0.177">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Displaying Weekly Transits.&quot;
@@ -413,7 +413,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:481:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Transits -&gt; Monthly Transits" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Transits -&gt; Monthly Transits" time="0.127">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Transits -&gt; Monthly Transits" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Transits -&gt; Monthly Transits" time="0.137">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Displaying Monthly Transits.&quot;
@@ -426,7 +426,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:490:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Progressions -&gt; Secondary Progressions" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Progressions -&gt; Secondary Progressions" time="0.138">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Progressions -&gt; Secondary Progressions" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Progressions -&gt; Secondary Progressions" time="0.128">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Initiating Secondary Progressions Analysis.&quot;
@@ -439,7 +439,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:499:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Progressions -&gt; Solar Arc Directions" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Progressions -&gt; Solar Arc Directions" time="0.151">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Progressions -&gt; Solar Arc Directions" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Progressions -&gt; Solar Arc Directions" time="0.154">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Initiating Solar Arc Directions Analysis.&quot;
@@ -452,7 +452,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:508:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Basic -&gt; Sidereal Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Basic -&gt; Sidereal Birth Chart" time="0.133">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Basic -&gt; Sidereal Birth Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Basic -&gt; Sidereal Birth Chart" time="0.139">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Displaying Sidereal Birth Chart.&quot;
@@ -465,7 +465,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:517:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Basic -&gt; Divisional Charts (Varga)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Basic -&gt; Divisional Charts (Varga)" time="0.119">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Basic -&gt; Divisional Charts (Varga)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Basic -&gt; Divisional Charts (Varga)" time="0.141">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Divisional Charts (Varga).&quot;
@@ -478,7 +478,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:526:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Remedial Measures -&gt; Gemstones" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Remedial Measures -&gt; Gemstones" time="0.167">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Remedial Measures -&gt; Gemstones" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Remedial Measures -&gt; Gemstones" time="0.222">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Suggesting Gemstones as remedial measures.&quot;
@@ -491,7 +491,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:536:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Remedial Measures -&gt; Mantras" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Remedial Measures -&gt; Mantras" time="0.151">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Remedial Measures -&gt; Mantras" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Advanced -&gt; Remedial Measures -&gt; Mantras" time="0.183">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Suggesting Mantras as remedial measures.&quot;
@@ -504,7 +504,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:546:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Romantic -&gt; Compatibility Report" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Romantic -&gt; Compatibility Report" time="0.132">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Romantic -&gt; Compatibility Report" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Romantic -&gt; Compatibility Report" time="0.125">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Generating Romantic Compatibility Report.&quot;
@@ -517,7 +517,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:555:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Friendship -&gt; Friendship Analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Friendship -&gt; Friendship Analysis" time="0.128">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Friendship -&gt; Friendship Analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Friendship -&gt; Friendship Analysis" time="0.154">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Generating Friendship Analysis.&quot;
@@ -530,7 +530,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:564:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; I Ching -&gt; Hexagram Reading" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; I Ching -&gt; Hexagram Reading" time="0.157">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; I Ching -&gt; Hexagram Reading" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; I Ching -&gt; Hexagram Reading" time="0.149">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Initiating I Ching Hexagram Reading.&quot;
@@ -543,7 +543,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:573:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Tarot -&gt; Daily Card Pull" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Tarot -&gt; Daily Card Pull" time="0.132">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Tarot -&gt; Daily Card Pull" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Tarot -&gt; Daily Card Pull" time="0.133">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Pulling your Daily Tarot Card.&quot;
@@ -556,7 +556,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:582:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hermetic -&gt; Astrological Magic" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hermetic -&gt; Astrological Magic" time="0.163">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hermetic -&gt; Astrological Magic" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Ancient Wisdom -&gt; Hermetic -&gt; Astrological Magic" time="0.188">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Astrological Magic principles.&quot;
@@ -569,7 +569,7 @@ Number of calls: 4
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:592:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Profile Management -&gt; Edit Birth Data" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Profile Management -&gt; Edit Birth Data" time="0.175">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Profile Management -&gt; Edit Birth Data" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Profile Management -&gt; Edit Birth Data" time="0.151">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;What would you like to edit? (Date, Time, Place)&quot;
@@ -582,7 +582,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:601:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Language Preferences -&gt; Change Language" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Language Preferences -&gt; Change Language" time="0.145">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Language Preferences -&gt; Change Language" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Language Preferences -&gt; Change Language" time="0.132">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Please choose your preferred language.&quot;
@@ -595,7 +595,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:610:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; FAQ -&gt; Getting Started" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; FAQ -&gt; Getting Started" time="0.136">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; FAQ -&gt; Getting Started" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; FAQ -&gt; Getting Started" time="0.127">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Welcome to the FAQ for Getting Started.&quot;
@@ -608,7 +608,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:619:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate back multiple levels using &quot;back&quot; command" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate back multiple levels using &quot;back&quot; command" time="0.154">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate back multiple levels using &quot;back&quot; command" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate back multiple levels using &quot;back&quot; command" time="0.177">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You are now in Vedic Astrology menu.&quot;
@@ -618,7 +618,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:630:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should return to Main Menu from a deep level using &quot;Main Menu&quot; command" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should return to Main Menu from a deep level using &quot;Main Menu&quot; command" time="0.187">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should return to Main Menu from a deep level using &quot;Main Menu&quot; command" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should return to Main Menu from a deep level using &quot;Main Menu&quot; command" time="0.183">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Welcome to the Main Menu!&quot;
@@ -628,7 +628,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:641:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should correctly restore state after network interruption mid-navigation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should correctly restore state after network interruption mid-navigation" time="0.127">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should correctly restore state after network interruption mid-navigation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should correctly restore state after network interruption mid-navigation" time="0.178">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Connection restored. You are in Western Astrology.&quot;
@@ -638,7 +638,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:651:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow user to jump to a bookmarked menu item" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow user to jump to a bookmarked menu item" time="0.156">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow user to jump to a bookmarked menu item" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow user to jump to a bookmarked menu item" time="0.162">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You are now in Western Astrology menu.&quot;
@@ -648,7 +648,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:662:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should clear recent path memory upon user explicit clear command" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should clear recent path memory upon user explicit clear command" time="0.154">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should clear recent path memory upon user explicit clear command" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should clear recent path memory upon user explicit clear command" time="0.187">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Your navigation history has been cleared.&quot;
@@ -658,7 +658,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:672:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Gold tier subscribers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Gold tier subscribers" time="0.106">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Gold tier subscribers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Gold tier subscribers" time="0.103">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Gold Exclusive Insights&quot;
@@ -668,7 +668,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:681:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Platinum tier subscribers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Platinum tier subscribers" time="0.098">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Platinum tier subscribers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display exclusive premium options for Platinum tier subscribers" time="0.124">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Platinum VIP Access&quot;
@@ -678,7 +678,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:690:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth time before showing advanced astrological options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth time before showing advanced astrological options" time="0.092">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth time before showing advanced astrological options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth time before showing advanced astrological options" time="0.174">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Please provide your exact birth time to access advanced readings.&quot;
@@ -688,7 +688,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:703:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth place before showing location-based astrological options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth place before showing location-based astrological options" time="0.141">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth place before showing location-based astrological options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should prompt for missing birth place before showing location-based astrological options" time="0.112">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Please provide your birth place to access location-based astrology.&quot;
@@ -698,9 +698,9 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:716:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should not show &apos;Complete Profile&apos; after full profile completion" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should not show &apos;Complete Profile&apos; after full profile completion" time="0.118">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should not show &apos;Complete Profile&apos; after full profile completion" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should not show &apos;Complete Profile&apos; after full profile completion" time="0.1">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display a personalized welcome message based on recent activity" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display a personalized welcome message based on recent activity" time="0.118">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display a personalized welcome message based on recent activity" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display a personalized welcome message based on recent activity" time="0.146">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Welcome back! Your last request was Daily Horoscope.&quot;
@@ -710,7 +710,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:735:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Compatibility -&gt; Synastry Analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Compatibility -&gt; Synastry Analysis" time="0.147">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Compatibility -&gt; Synastry Analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Compatibility -&gt; Synastry Analysis" time="0.133">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Initiating Synastry Analysis.&quot;
@@ -723,7 +723,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:744:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Compatibility -&gt; Composite Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Compatibility -&gt; Composite Chart" time="0.161">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Compatibility -&gt; Composite Chart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Western -&gt; Compatibility -&gt; Composite Chart" time="0.154">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Generating Composite Chart.&quot;
@@ -736,7 +736,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:753:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Muhurta -&gt; Electional Astrology" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Muhurta -&gt; Electional Astrology" time="0.13">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Muhurta -&gt; Electional Astrology" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Muhurta -&gt; Electional Astrology" time="0.306">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring Electional Astrology for auspicious timings.&quot;
@@ -749,7 +749,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:762:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Muhurta -&gt; Daily Planetary Hours" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Muhurta -&gt; Daily Planetary Hours" time="0.135">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Muhurta -&gt; Daily Planetary Hours" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Vedic -&gt; Muhurta -&gt; Daily Planetary Hours" time="0.278">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Displaying Daily Planetary Hours.&quot;
@@ -762,7 +762,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:771:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Events -&gt; Wedding Timing" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Events -&gt; Wedding Timing" time="0.142">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Events -&gt; Wedding Timing" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Events -&gt; Wedding Timing" time="0.305">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Calculating auspicious wedding timings.&quot;
@@ -775,7 +775,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:780:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Business -&gt; Team Dynamics" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Business -&gt; Team Dynamics" time="0.135">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Business -&gt; Team Dynamics" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Relationships -&gt; Business -&gt; Team Dynamics" time="0.237">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Analyzing Team Dynamics.&quot;
@@ -788,7 +788,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:789:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Horary -&gt; Question Analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Horary -&gt; Question Analysis" time="0.14">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Horary -&gt; Question Analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Horary -&gt; Question Analysis" time="0.157">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Submitting your question for Horary Analysis.&quot;
@@ -801,7 +801,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:798:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Auspicious Timings -&gt; Daily" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Auspicious Timings -&gt; Daily" time="0.155">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Auspicious Timings -&gt; Daily" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Divination -&gt; Auspicious Timings -&gt; Daily" time="0.14">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Displaying Daily Auspicious Timings.&quot;
@@ -814,7 +814,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:807:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Notifications -&gt; Manage Alerts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Notifications -&gt; Manage Alerts" time="0.15">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Notifications -&gt; Manage Alerts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Notifications -&gt; Manage Alerts" time="0.144">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Manage your astrological alerts.&quot;
@@ -827,7 +827,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:816:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Account -&gt; Change Password" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Account -&gt; Change Password" time="0.126">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Account -&gt; Change Password" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Settings -&gt; Account -&gt; Change Password" time="0.193">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Please enter your old password to change it.&quot;
@@ -840,7 +840,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:825:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; FAQ -&gt; Getting Started" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; FAQ -&gt; Getting Started" time="0.14">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; FAQ -&gt; Getting Started" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; FAQ -&gt; Getting Started" time="0.177">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Welcome to the FAQ for Getting Started.&quot;
@@ -853,7 +853,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:834:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; Contact Support -&gt; Live Chat" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; Contact Support -&gt; Live Chat" time="0.16">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; Contact Support -&gt; Live Chat" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; Contact Support -&gt; Live Chat" time="0.146">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Connecting you to a live support agent.&quot;
@@ -866,7 +866,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:843:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; Tutorials -&gt; Video Guides" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; Tutorials -&gt; Video Guides" time="0.14">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; Tutorials -&gt; Video Guides" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Help -&gt; Tutorials -&gt; Video Guides" time="0.135">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Here are our video guides to get you started.&quot;
@@ -879,7 +879,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:852:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Resources -&gt; Glossary -&gt; Astrological Terms" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Resources -&gt; Glossary -&gt; Astrological Terms" time="0.143">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Resources -&gt; Glossary -&gt; Astrological Terms" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate to Resources -&gt; Glossary -&gt; Astrological Terms" time="0.174">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Welcome to the Astrological Terms Glossary.&quot;
@@ -892,7 +892,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:861:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should handle navigation through a 7-level deep path correctly" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should handle navigation through a 7-level deep path correctly" time="0.206">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should handle navigation through a 7-level deep path correctly" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should handle navigation through a 7-level deep path correctly" time="0.183">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Displaying Major Dasha Periods.&quot;
@@ -905,7 +905,7 @@ Number of calls: 6
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:873:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should handle navigation through a 8-level deep path correctly" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should handle navigation through a 8-level deep path correctly" time="0.189">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should handle navigation through a 8-level deep path correctly" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should handle navigation through a 8-level deep path correctly" time="0.221">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Details for Sun Dasha Period.&quot;
@@ -918,7 +918,7 @@ Number of calls: 7
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:886:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display unique submenu options for &apos;relationships&apos; focused users" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display unique submenu options for &apos;relationships&apos; focused users" time="0.11">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display unique submenu options for &apos;relationships&apos; focused users" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should display unique submenu options for &apos;relationships&apos; focused users" time="0.128">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Marriage Compatibility&quot;
@@ -928,7 +928,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:895:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should show specific menu items to users who have completed specific readings" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should show specific menu items to users who have completed specific readings" time="0.12">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should show specific menu items to users who have completed specific readings" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should show specific menu items to users who have completed specific readings" time="0.106">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Recommended: Advanced Chart Interpretations&quot;
@@ -938,9 +938,9 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:905:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should hide &quot;Beginner&quot; options for users who have accessed &quot;Advanced&quot; readings multiple times" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should hide &quot;Beginner&quot; options for users who have accessed &quot;Advanced&quot; readings multiple times" time="0.216">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should hide &quot;Beginner&quot; options for users who have accessed &quot;Advanced&quot; readings multiple times" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should hide &quot;Beginner&quot; options for users who have accessed &quot;Advanced&quot; readings multiple times" time="0.194">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer quick access to &quot;Subscription management&quot; for premium users" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer quick access to &quot;Subscription management&quot; for premium users" time="0.107">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer quick access to &quot;Subscription management&quot; for premium users" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer quick access to &quot;Subscription management&quot; for premium users" time="0.132">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Subscription Management&quot;
@@ -950,7 +950,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:926:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should promote a specific new feature to all users upon launch" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should promote a specific new feature to all users upon launch" time="0.122">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should promote a specific new feature to all users upon launch" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should promote a specific new feature to all users upon launch" time="0.109">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;🎉 New! Explore Daily Horoscopes 2.0! 🎉&quot;
@@ -960,7 +960,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:934:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should indicate menu options with pending actions/notifications" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should indicate menu options with pending actions/notifications" time="0.117">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should indicate menu options with pending actions/notifications" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should indicate menu options with pending actions/notifications" time="0.103">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Daily Horoscope (New!)&quot;
@@ -970,7 +970,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:943:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer a &quot;Go to top&quot; or &quot;Home&quot; option from any deep menu level" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer a &quot;Go to top&quot; or &quot;Home&quot; option from any deep menu level" time="0.151">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer a &quot;Go to top&quot; or &quot;Home&quot; option from any deep menu level" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer a &quot;Go to top&quot; or &quot;Home&quot; option from any deep menu level" time="0.165">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Welcome to the Main Menu!&quot;
@@ -980,7 +980,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:954:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow partial input matching for menu navigation to some depth" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow partial input matching for menu navigation to some depth" time="0.11">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow partial input matching for menu navigation to some depth" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should allow partial input matching for menu navigation to some depth" time="0.143">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You are now in Western Astrology menu.&quot;
@@ -990,7 +990,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:961:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer &quot;back&quot; option even if current menu has no sub-options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer &quot;back&quot; option even if current menu has no sub-options" time="0.177">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer &quot;back&quot; option even if current menu has no sub-options" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer &quot;back&quot; option even if current menu has no sub-options" time="0.193">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You are now in Basic Readings menu.&quot;
@@ -1000,7 +1000,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:973:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should confirm irreversible actions before proceeding with navigation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should confirm irreversible actions before proceeding with navigation" time="0.13">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should confirm irreversible actions before proceeding with navigation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should confirm irreversible actions before proceeding with navigation" time="0.137">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Are you sure you want to delete your profile? This action is irreversible. (Yes/No)&quot;
@@ -1010,7 +1010,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:982:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should limit navigation depth for non-premium users in advanced sections" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should limit navigation depth for non-premium users in advanced sections" time="0.136">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should limit navigation depth for non-premium users in advanced sections" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should limit navigation depth for non-premium users in advanced sections" time="0.189">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;This advanced option is only available for premium subscribers.&quot;
@@ -1023,7 +1023,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:992:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should adapt menu options for users tagged with specific astrological interests" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should adapt menu options for users tagged with specific astrological interests" time="0.121">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should adapt menu options for users tagged with specific astrological interests" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should adapt menu options for users tagged with specific astrological interests" time="0.114">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Horary (Recommended for your interests)&quot;
@@ -1033,7 +1033,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1001:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer a return to previous interaction point after completing a reading" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer a return to previous interaction point after completing a reading" time="0.159">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer a return to previous interaction point after completing a reading" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should offer a return to previous interaction point after completing a reading" time="0.396">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You are back in Birth Chart Analysis.&quot;
@@ -1043,7 +1043,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1013:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should provide a searchable menu if options are too numerous to list" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should provide a searchable menu if options are too numerous to list" time="0.113">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should provide a searchable menu if options are too numerous to list" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should provide a searchable menu if options are too numerous to list" time="0.255">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Too many options to list. Please type keywords to search for a service.&quot;
@@ -1053,7 +1053,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1021:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate using direct commands regardless of current menu depth" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate using direct commands regardless of current menu depth" time="0.141">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate using direct commands regardless of current menu depth" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Deep Menu Path Traversals (45 tests) should navigate using direct commands regardless of current menu depth" time="0.361">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Your Daily Horoscope is being prepared.&quot;
@@ -1063,7 +1063,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1032:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should suggest recent interactions based on user history" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should suggest recent interactions based on user history" time="0.148">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should suggest recent interactions based on user history" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should suggest recent interactions based on user history" time="0.233">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Recent: Daily Horoscope, Compatibility Analysis&quot;
@@ -1073,7 +1073,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1049:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should highlight favorite services based on usage patterns" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should highlight favorite services based on usage patterns" time="0.267">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should highlight favorite services based on usage patterns" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should highlight favorite services based on usage patterns" time="0.462">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;⭐ Birth Chart Analysis&quot;
@@ -1083,7 +1083,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1066:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should offer service completion continuations (follow-up recommendations)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should offer service completion continuations (follow-up recommendations)" time="0.159">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should offer service completion continuations (follow-up recommendations)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should offer service completion continuations (follow-up recommendations)" time="0.148">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You just viewed your Birth Chart. Would you like to explore Transits or Progressions?&quot;
@@ -1093,7 +1093,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1082:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should provide interest-based suggestions (Behavioral personalization)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should provide interest-based suggestions (Behavioral personalization)" time="0.127">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should provide interest-based suggestions (Behavioral personalization)" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should provide interest-based suggestions (Behavioral personalization)" time="0.155">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Based on your interest in Vedic Astrology, you might like: Remedial Measures.&quot;
@@ -1103,7 +1103,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1098:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should apply free tier limitations and prompt for upgrade" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should apply free tier limitations and prompt for upgrade" time="0.118">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should apply free tier limitations and prompt for upgrade" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should apply free tier limitations and prompt for upgrade" time="0.135">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;This is a premium feature. Please upgrade your subscription to access it.&quot;
@@ -1113,7 +1113,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1111:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should unlock premium features upon subscription activation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should unlock premium features upon subscription activation" time="0.098">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should unlock premium features upon subscription activation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should unlock premium features upon subscription activation" time="0.105">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;This is a premium feature.&quot;
@@ -1123,7 +1123,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1127:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should modify menus for trial period users" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should modify menus for trial period users" time="0.11">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should modify menus for trial period users" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should modify menus for trial period users" time="0.152">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;You are on a free trial. Enjoy premium features until [date].&quot;
@@ -1133,7 +1133,7 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1153:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should display billing issue indicators in menu overlays" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should display billing issue indicators in menu overlays" time="0.12">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should display billing issue indicators in menu overlays" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Contextual Menu Behaviors (8 tests) should display billing issue indicators in menu overlays" time="0.125">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;⚠️ Billing Issue: Please update your payment method.&quot;
@@ -1143,68 +1143,68 @@ Number of calls: 1
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1172:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) should handle invalid action IDs gracefully with error message" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) should handle invalid action IDs gracefully with error message" time="0.027">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) should handle invalid action IDs gracefully with error message" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) should handle invalid action IDs gracefully with error message" time="0.038">
       <failure>ReferenceError: mockSendMessage is not defined
     at Object.mockSendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1200:14)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) expired session navigation → fresh menu initialization" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) expired session navigation → fresh menu initialization" time="0.017">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) expired session navigation → fresh menu initialization" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) expired session navigation → fresh menu initialization" time="0.026">
       <failure>ValidationError: Session validation failed: sessionId: Path `sessionId` is required.
     at model.Object.&lt;anonymous&gt;.Document.invalidate (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3219:32)
     at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3012:17
     at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/schematype.js:1368:9
     at processTicksAndRejections (node:internal/process/task_queues:85:11)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) concurrent access conflicts → session isolation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) concurrent access conflicts → session isolation" time="0.037">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) concurrent access conflicts → session isolation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) concurrent access conflicts → session isolation" time="0.143">
       <failure>ReferenceError: mockSendListMessage is not defined
     at Object.mockSendListMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1247:14)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) menu state corruption → recovery and reinitialization" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) menu state corruption → recovery and reinitialization" time="0.013">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) menu state corruption → recovery and reinitialization" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) menu state corruption → recovery and reinitialization" time="0.03">
       <failure>ReferenceError: mockSendMessage is not defined
     at Object.mockSendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1265:14)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) partial message delivery → state consistency" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) partial message delivery → state consistency" time="0.017">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) partial message delivery → state consistency" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) partial message delivery → state consistency" time="0.035">
       <failure>ReferenceError: mockSendMessage is not defined
     at Object.mockSendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1280:14)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) invalid menu structure handling → fallback to main menu" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) invalid menu structure handling → fallback to main menu" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) invalid menu structure handling → fallback to main menu" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) invalid menu structure handling → fallback to main menu" time="0.017">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) network failure mid-navigation → graceful degradation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) network failure mid-navigation → graceful degradation" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) network failure mid-navigation → graceful degradation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) network failure mid-navigation → graceful degradation" time="0.026">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) message timeout during selection → automatic retry" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) message timeout during selection → automatic retry" time="0.007">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) message timeout during selection → automatic retry" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) message timeout during selection → automatic retry" time="0.022">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) service interruption recovery → graceful handling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) service interruption recovery → graceful handling" time="0.014">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) service interruption recovery → graceful handling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) service interruption recovery → graceful handling" time="0.029">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) API quota exhaustion → menu throttling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) API quota exhaustion → menu throttling" time="0.009">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) API quota exhaustion → menu throttling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) API quota exhaustion → menu throttling" time="0.016">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) memory overflow protection → large menu truncation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) memory overflow protection → large menu truncation" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) memory overflow protection → large menu truncation" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) memory overflow protection → large menu truncation" time="0.018">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) recursive menu loop prevention → depth limiting" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) recursive menu loop prevention → depth limiting" time="0.007">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) recursive menu loop prevention → depth limiting" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) recursive menu loop prevention → depth limiting" time="0.013">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) character encoding issues → menu display correction" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) character encoding issues → menu display correction" time="0.007">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) character encoding issues → menu display correction" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) character encoding issues → menu display correction" time="0.018">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) timezone calculation errors → menu timing corrections" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) timezone calculation errors → menu timing corrections" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) timezone calculation errors → menu timing corrections" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) timezone calculation errors → menu timing corrections" time="0.017">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) subscription validation failures → permission-based menus" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) subscription validation failures → permission-based menus" time="0.009">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) subscription validation failures → permission-based menus" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) subscription validation failures → permission-based menus" time="0.01">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) profile incomplete errors → menu restriction enforcement" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) profile incomplete errors → menu restriction enforcement" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) profile incomplete errors → menu restriction enforcement" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) profile incomplete errors → menu restriction enforcement" time="0.01">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) language translation failures → menu fallback handling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) language translation failures → menu fallback handling" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) language translation failures → menu fallback handling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) language translation failures → menu fallback handling" time="0.009">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) image loading failures → menu text-only fallbacks" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) image loading failures → menu text-only fallbacks" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) image loading failures → menu text-only fallbacks" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) image loading failures → menu text-only fallbacks" time="0.012">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) button limit exceeded → menu pagination" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) button limit exceeded → menu pagination" time="0.012">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) button limit exceeded → menu pagination" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) button limit exceeded → menu pagination" time="0.026">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) malformed JSON responses → menu parsing error recovery" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) malformed JSON responses → menu parsing error recovery" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) malformed JSON responses → menu parsing error recovery" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) malformed JSON responses → menu parsing error recovery" time="0.015">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) external service timeout → menu async error handling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) external service timeout → menu async error handling" time="0.009">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) external service timeout → menu async error handling" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) external service timeout → menu async error handling" time="0.016">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) user input sanitization → menu injection prevention" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) user input sanitization → menu injection prevention" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) user input sanitization → menu injection prevention" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Error Recovery (23 tests) user input sanitization → menu injection prevention" time="0.062">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) clears expired sessions automatically after timeout" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) clears expired sessions automatically after timeout" time="0.011">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) clears expired sessions automatically after timeout" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) clears expired sessions automatically after timeout" time="0.026">
       <failure>ValidationError: Session validation failed: sessionId: Path `sessionId` is required.
     at model.Object.&lt;anonymous&gt;.Document.invalidate (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3219:32)
     at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/document.js:3012:17
@@ -1213,31 +1213,31 @@ Number of calls: 1
     </testcase>
     <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) breadcrumb navigation → multi-level back functionality" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) breadcrumb navigation → multi-level back functionality" time="0.014">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) quick access bookmarks → favorite menu shortcuts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) quick access bookmarks → favorite menu shortcuts" time="0.006">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) quick access bookmarks → favorite menu shortcuts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) quick access bookmarks → favorite menu shortcuts" time="0.014">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) recent path memory → frequently used path shortcuts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) recent path memory → frequently used path shortcuts" time="0.007">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) recent path memory → frequently used path shortcuts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) recent path memory → frequently used path shortcuts" time="0.02">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) return to last menu position persistence" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) return to last menu position persistence" time="0.007">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) return to last menu position persistence" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) return to last menu position persistence" time="0.013">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session isolation between concurrent users" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session isolation between concurrent users" time="0.01">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session isolation between concurrent users" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session isolation between concurrent users" time="0.016">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) menu state synchronization across devices" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) menu state synchronization across devices" time="0.007">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) menu state synchronization across devices" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) menu state synchronization across devices" time="0.021">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) automatic session cleanup on logout" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) automatic session cleanup on logout" time="0.01">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) automatic session cleanup on logout" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) automatic session cleanup on logout" time="0.027">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session state recovery after app restart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session state recovery after app restart" time="0.011">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session state recovery after app restart" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session state recovery after app restart" time="0.016">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) idle timeout warnings and grace periods" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) idle timeout warnings and grace periods" time="0.012">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) idle timeout warnings and grace periods" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) idle timeout warnings and grace periods" time="0.013">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session migration between phone numbers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session migration between phone numbers" time="0.008">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session migration between phone numbers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session migration between phone numbers" time="0.022">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) multi-tab session handling and conflicts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) multi-tab session handling and conflicts" time="0.009">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) multi-tab session handling and conflicts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) multi-tab session handling and conflicts" time="0.021">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session export and import capabilities" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session export and import capabilities" time="0.013">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session export and import capabilities" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) session export and import capabilities" time="0.017">
     </testcase>
     <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) audit logging of session activities" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Session Management (14 tests) audit logging of session activities" time="0.011">
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Chinese astrology → Bazi compatibility analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Chinese astrology → Bazi compatibility analysis" time="0.121">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Chinese astrology → Bazi compatibility analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Chinese astrology → Bazi compatibility analysis" time="0.204">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Analyzing Bazi compatibility.&quot;
@@ -1249,7 +1249,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1469:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Kabbalistic astrology → Tree of Life analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Kabbalistic astrology → Tree of Life analysis" time="0.14">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Kabbalistic astrology → Tree of Life analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Kabbalistic astrology → Tree of Life analysis" time="0.136">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Exploring your Tree of Life placement.&quot;
@@ -1261,7 +1261,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1477:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Mayan astrology → Kin analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Mayan astrology → Kin analysis" time="0.116">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Mayan astrology → Kin analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Mayan astrology → Kin analysis" time="0.189">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Analyzing your Mayan day sign energy.&quot;
@@ -1273,7 +1273,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1485:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Celtic astrology → Ogham reading" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Celtic astrology → Ogham reading" time="0.144">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Celtic astrology → Ogham reading" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Celtic astrology → Ogham reading" time="0.156">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Drawing your Celtic Ogham symbol.&quot;
@@ -1285,7 +1285,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1493:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Hellenistic astrology → Arabian Parts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Hellenistic astrology → Arabian Parts" time="0.123">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Hellenistic astrology → Arabian Parts" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Hellenistic astrology → Arabian Parts" time="0.141">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Calculating Arabian Parts (lots).&quot;
@@ -1297,7 +1297,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1501:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Islamic astrology → Falak analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Islamic astrology → Falak analysis" time="0.132">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Islamic astrology → Falak analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Islamic astrology → Falak analysis" time="0.142">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Performing astronomical calculations.&quot;
@@ -1309,7 +1309,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1509:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Palmistry → Life line analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Palmistry → Life line analysis" time="0.148">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Palmistry → Life line analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Palmistry → Life line analysis" time="0.181">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Examining your life line for longevity and vitality.&quot;
@@ -1322,7 +1322,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1518:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Medical astrology → Planetary rulers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Medical astrology → Planetary rulers" time="0.14">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Medical astrology → Planetary rulers" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Medical astrology → Planetary rulers" time="0.129">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Analyzing which planets rule your health.&quot;
@@ -1334,7 +1334,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1526:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Mundane astrology → World transits" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Mundane astrology → World transits" time="0.12">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Mundane astrology → World transits" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Mundane astrology → World transits" time="0.113">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Examining planetary movements affecting world events.&quot;
@@ -1346,7 +1346,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1534:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Horary astrology → Question analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Horary astrology → Question analysis" time="0.148">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Horary astrology → Question analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Horary astrology → Question analysis" time="0.163">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Please ask your specific question for horary analysis.&quot;
@@ -1358,7 +1358,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1542:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Astrocartography → Jupiter lines" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Astrocartography → Jupiter lines" time="0.135">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Astrocartography → Jupiter lines" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Astrocartography → Jupiter lines" time="0.144">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Showing locations where Jupiter influences your life.&quot;
@@ -1370,7 +1370,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1550:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Career astrology → MC analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Career astrology → MC analysis" time="0.125">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Career astrology → MC analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Career astrology → MC analysis" time="0.14">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Analyzing your MC (Midheaven) for career insights.&quot;
@@ -1382,7 +1382,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1558:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Financial astrology → Venus/Jupiter analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Financial astrology → Venus/Jupiter analysis" time="0.131">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Financial astrology → Venus/Jupiter analysis" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Financial astrology → Venus/Jupiter analysis" time="0.193">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Examining your Venus and Jupiter for money attitudes.&quot;
@@ -1394,7 +1394,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1566:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Family astrology → Parent-child dynamics" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Family astrology → Parent-child dynamics" time="0.13">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Family astrology → Parent-child dynamics" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Family astrology → Parent-child dynamics" time="0.131">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Analyzing 4th and 10th house relationships.&quot;
@@ -1406,7 +1406,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1574:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Nadi astrology → Ancient leaf readings" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Nadi astrology → Ancient leaf readings" time="0.132">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Nadi astrology → Ancient leaf readings" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Nadi astrology → Ancient leaf readings" time="0.138">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Initiating Nadi palm leaf analysis.&quot;
@@ -1418,7 +1418,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1582:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Marketplace → Personalized crystals" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Marketplace → Personalized crystals" time="0.132">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Marketplace → Personalized crystals" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Marketplace → Personalized crystals" time="0.16">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Getting crystal recommendations based on your chart.&quot;
@@ -1431,7 +1431,7 @@ Number of calls: 3
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1591:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Support → Live chat" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Support → Live chat" time="0.138">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Support → Live chat" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Support → Live chat" time="0.148">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Opening live chat with an astrologer.&quot;
@@ -1443,7 +1443,7 @@ Number of calls: 2
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-test-suite/comprehensive-menu-navigation.test.js:1599:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Language settings → Arabic selection" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Language settings → Arabic selection" time="0.174">
+    <testcase classname="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Language settings → Arabic selection" name="MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation Additional Specialized Menu Navigation (16 tests for complete 99 total coverage) should navigate to Language settings → Arabic selection" time="0.166">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;+menu_test_user&quot;, StringContaining &quot;Language changed to Arabic.&quot;

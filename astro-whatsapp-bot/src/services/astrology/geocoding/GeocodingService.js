@@ -31,13 +31,34 @@ class GeocodingService {
    * @returns {Promise<Array>} [latitude, longitude]
    */
   async getCoordinatesForPlace(place) {
+    // Validate and sanitize input
+    if (!place || typeof place !== 'string') {
+      logger.warn(`Invalid place input for geocoding: ${place}`);
+      return [28.6139, 77.209]; // Default to Delhi, India
+    }
+
+    // Limit length to prevent potential abuse
+    if (place.length > 200) {
+      logger.warn(`Place input too long for geocoding: ${place.substring(0, 50)}...`);
+      place = place.substring(0, 200);
+    }
+
+    // Basic sanitization to remove potentially harmful characters
+    // Allow only alphanumeric characters, spaces, commas, hyphens, and periods
+    const sanitizedPlace = place.replace(/[^\w\s\-,.'`]/g, '').trim();
+    
+    if (!sanitizedPlace) {
+      logger.warn(`Empty or invalid place after sanitization: ${place}`);
+      return [28.6139, 77.209]; // Default to Delhi, India
+    }
+
     try {
-      const res = await geocoder.geocode(place);
+      const res = await geocoder.geocode(sanitizedPlace);
       if (res && res.length > 0) {
         return [res[0].latitude, res[0].longitude];
       }
     } catch (error) {
-      logger.error(`❌ Error geocoding place "${place}":`, error.message);
+      logger.error(`❌ Error geocoding place "${sanitizedPlace}":`, error.message);
     }
     // Fallback to default if geocoding fails
     return [28.6139, 77.209]; // Default to Delhi, India

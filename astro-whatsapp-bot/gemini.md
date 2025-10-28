@@ -89,6 +89,7 @@ For project-specific instructions, ALWAYS refer to the `INITIAL-PROMPT.md` file 
 
 ## Branch Management Guidelines
 
+*   **MANDATE: All code changes MUST be made on a new branch. NEVER make direct changes to the 'main' branch. This is a critical, non-negotiable rule.**
 *   **Feature Branch Workflow**: Use dedicated feature branches (e.g., 'feature/feature-name', 'bugfix/issue-description') for all significant work to isolate changes and prevent disruption to the main branch
 *   **Branch Naming Convention**: Follow consistent naming patterns (feature/, bugfix/, hotfix/, release/)
 *   **Automated Cleanup**: Delete feature branches after successful merge to keep repository clean

@@ -433,7 +433,11 @@ const sendMessage = async(
       if (message.type === 'button') {
         // Translate body if it's a resource key
         let translatedBody = message.body;
-        if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
+        if (typeof message.body === 'object' && message.body.text) {
+          if (typeof message.body.text === 'string' && message.body.text.includes('.') && !message.body.text.includes(' ')) {
+            translatedBody = { text: await translationService.translate(message.body.text, language, options.parameters || {}) };
+          }
+        } else if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
         }
         // Transform buttons to WhatsApp format
@@ -457,7 +461,11 @@ const sendMessage = async(
       } else if (message.type === 'list') {
         // Translate body if it's a resource key
         let translatedBody = message.body;
-        if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
+        if (typeof message.body === 'object' && message.body.text) {
+          if (typeof message.body.text === 'string' && message.body.text.includes('.') && !message.body.text.includes(' ')) {
+            translatedBody = { text: await translationService.translate(message.body.text, language, options.parameters || {}) };
+          }
+        } else if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
         }
         // Ensure sections exist and have proper structure

@@ -2322,7 +2322,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
           translationService.translate('messages.astrology_services.astrocartography.recommended_locations', userLanguage)}\n${
           astrocartographyData.locationAdvice.map(loc => `• ${loc}`).join('\n')}\n\n${
           translationService.translate('messages.astrology_services.astrocartography.relocate_prompt', userLanguage)}`;
-        await sendMessage(phoneNumber, response);
+        await sendMessage(phoneNumber, response, 'text');
       }
     } catch (error) {
       logger.error('Error generating astrocartography:', error);
@@ -2374,7 +2374,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
           translationService.translate('messages.astrology_services.harmonic_astrology.developmental_themes', userLanguage)}\n${
           harmonicData.developmentalThemes.map(theme => `• ${theme}`).join('\n')}\n\n${
           translationService.translate('messages.astrology_services.harmonic_astrology.next_transition', userLanguage, { transition: harmonicData.nextTransition })}`;
-        await sendMessage(phoneNumber, response);
+        await sendMessage(phoneNumber, response, 'text');
       }
     } catch (error) {
       logger.error('Error generating age harmonic analysis:', error);
@@ -2402,7 +2402,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   }
   }
   if (response) {
-    await sendMessage(phoneNumber, response);
+    await sendMessage(phoneNumber, response, 'text');
   }
 };
 
@@ -2569,9 +2569,9 @@ const handleCompatibilityRequest = async(
       })}`;
     }
 
-    await sendMessage(phoneNumber, response);
+        await sendMessage(phoneNumber, response, 'text');
 
-    // Increment compatibility check counter
+        // Increment compatibility check counter
     await incrementCompatibilityChecks(phoneNumber);
   } catch (error) {
     logger.error('Error handling compatibility request:', error);
@@ -2601,7 +2601,7 @@ const handleSubscriptionRequest = async(phoneNumber, user, planId) => {
       region,
       'card'
     );
-    await sendMessage(phoneNumber, result.message);
+    await sendMessage(phoneNumber, result.message, 'text');
 
     // Send welcome message based on plan
     const plan = paymentService.getPlan(planId);
@@ -2611,7 +2611,7 @@ const handleSubscriptionRequest = async(phoneNumber, user, planId) => {
       features: plan.features.map(feature => `• ${feature}`).join('\n')
     })}`;
 
-    await sendMessage(phoneNumber, welcomeMessage);
+    await sendMessage(phoneNumber, welcomeMessage, 'text');
   } catch (error) {
     logger.error('Error handling subscription request:', error);
     const userLanguage = getUserLanguage(user, phoneNumber);

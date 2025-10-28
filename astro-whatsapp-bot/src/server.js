@@ -24,7 +24,14 @@ logger.debug(`WhatsApp Access Token (masked): ${whatsappAccessToken ? `${whatsap
 logger.debug(`WhatsApp Phone Number ID: ${whatsappPhoneNumberId || 'Not Set'}`);
 
 // Connect to MongoDB
-connectDB();
+(async () => {
+  try {
+    await connectDB();
+  } catch (error) {
+    logger.error('❌ Failed to connect to database:', error);
+    process.exit(1); // Exit if database connection fails at startup
+  }
+})();
 
 const PORT = process.env.W1_PORT || 3000;
 

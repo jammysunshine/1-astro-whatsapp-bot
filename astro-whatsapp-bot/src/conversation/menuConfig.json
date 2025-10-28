@@ -10,32 +10,32 @@
             {
               "id": "show_western_astrology_menu",
               "title": "🌍 Western Astrology",
-              "description": "Birth charts, transits, horoscopes, predictive analysis"
+              "description": "Birth charts transits horoscopes predictive analysis"
             },
             {
               "id": "show_vedic_astrology_menu",
               "title": "🕉️ Vedic Astrology",
-              "description": "Kundli, dasha, remedies, festivals, numerology"
+              "description": "Kundli dasha remedies festivals numerology"
             },
             {
               "id": "show_divination_mystic_menu",
               "title": "🔮 Divination & Mystic",
-              "description": "Tarot, I Ching, palmistry, ancient wisdom traditions"
+              "description": "Tarot I Ching palmistry ancient wisdom traditions"
             },
             {
               "id": "show_relationships_groups_menu",
               "title": "👥 Relationships & Groups",
-              "description": "Compatibility, family, business partnerships"
+              "description": "Compatibility family business partnerships"
             },
             {
               "id": "show_numerology_special_menu",
               "title": "🔢 Numerology & Special Readings",
-              "description": "Life path numbers, name analysis, special insights"
+              "description": "Life path numbers name analysis special insights"
             },
             {
               "id": "show_settings_profile_menu",
               "title": "⚙️ Settings & Profile",
-              "description": "Update profile, language, preferences"
+              "description": "Update profile language preferences"
             }
          ]
        }

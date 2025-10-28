@@ -1,4 +1,4 @@
-const logger = require('utils/logger');
+const logger = require('../../../utils/logger');
 
 /**
  * Extract partner birth data from user message

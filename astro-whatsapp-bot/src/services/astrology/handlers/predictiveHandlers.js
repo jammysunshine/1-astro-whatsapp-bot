@@ -2,7 +2,7 @@ const vedicCalculator = require('../vedicCalculator');
 const horaryReader = require('../horaryReader');
 const { matchesIntent } = require('../utils/intentUtils');
 const { getBirthDetailsPrompt } = require('../../../utils/promptUtils');
-const logger = require('utils/logger');
+const logger = require('../../../utils/logger');
 
 // Configuration for horary timezone
 const HORARY_TIMEZONE = process.env.HORARY_TIMEZONE || 'Asia/Kolkata';

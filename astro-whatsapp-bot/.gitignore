@@ -58,3 +58,6 @@ docs/validation/*.md
 app.pid
 app.log
 test-db.js
+
+# Test reports
+tests/reports/

@@ -1,7 +1,7 @@
 // tests/unit/services/astrology/celticReader.test.js
 // Unit tests for Celtic Reader
 
-const celticReader = require('../../../src/services/astrology/celticReader');
+const celticReader = require('../../../../src/services/astrology/celticReader');
 
 // Mock dependencies
 const logger = require('../../../../src/utils/logger');

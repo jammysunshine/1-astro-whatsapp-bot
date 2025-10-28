@@ -10,6 +10,7 @@ const { matchesIntent } = require('../utils/intentUtils');
 const { buildBaZiResponse, buildTarotResponse, buildPalmistryResponse } = require('../utils/responseBuilders');
 const { getBirthDetailsPrompt, getBirthDatePrompt } = require('../../../utils/promptUtils');
 const logger = require('../../../utils/logger');
+const { validateAndFormatBirthDate, validateAndFormatBirthTime } = require('../utils/validationUtils');
 
 /**
  * Handle Chinese astrology (BaZi) requests
@@ -24,31 +25,25 @@ const handleChineseAstrology = async(message, user) => {
     }
 
     try {
-      // Convert birthDate to DD/MM/YYYY format
-      let formattedBirthDate = user.birthDate;
-      if (user.birthDate.match(/^(\d{2})(\d{2})(\d{2})$/)) { // DDMMYY
-        const [day, month, year] = user.birthDate.match(/^(\d{2})(\d{2})(\d{2})$/).slice(1);
-        formattedBirthDate = `${day}/${month}/${(parseInt(year) < new Date().getFullYear() % 100) ? 2000 + parseInt(year) : 1900 + parseInt(year)}`;
-      } else if (user.birthDate.match(/^(\d{2})(\d{2})(\d{4})$/)) { // DDMMYYYY
-        const [day, month, year] = user.birthDate.match(/^(\d{2})(\d{2})(\d{4})$/).slice(1);
-        formattedBirthDate = `${day}/${month}/${year}`;
-      } else if (user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/)) { // YYYY-MM-DD
-        const [year, month, day] = user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/).slice(1);
-        formattedBirthDate = `${day}/${month}/${year}`;
+      // Validate and format birth date
+      const dateValidation = validateAndFormatBirthDate(user.birthDate);
+      if (!dateValidation.isValid) {
+        logger.warn(`Invalid birth date for user ${user.phoneNumber}: ${dateValidation.error}`);
+        return 'Invalid birth date format. Please update your profile with a valid date (DDMMYY, DDMMYYYY, or YYYY-MM-DD).';
       }
 
-      // Convert birthTime to HH:MM format
-      let formattedBirthTime = user.birthTime || '12:00';
-      if (formattedBirthTime.match(/^(\d{2})(\d{2})$/)) { // HHMM
-        const [hour, minute] = formattedBirthTime.match(/^(\d{2})(\d{2})$/).slice(1);
-        formattedBirthTime = `${hour}:${minute}`;
+      // Validate and format birth time
+      const timeValidation = validateAndFormatBirthTime(user.birthTime);
+      if (!timeValidation.isValid) {
+        logger.warn(`Invalid birth time for user ${user.phoneNumber}: ${timeValidation.error}`);
+        return 'Invalid birth time format. Please update your profile with a valid time (HHMM or HH:MM).';
       }
 
       const baziAnalysis = chineseCalculator.calculateFourPillars(
-        formattedBirthDate,
-        formattedBirthTime
+        dateValidation.formattedDate,
+        timeValidation.formattedTime
       );
-      const zodiacInfo = chineseCalculator.getChineseZodiac(formattedBirthDate);
+      const zodiacInfo = chineseCalculator.getChineseZodiac(dateValidation.formattedDate);
 
       return buildBaZiResponse(baziAnalysis, zodiacInfo);
     } catch (error) {
@@ -132,29 +127,23 @@ const handleKabbalistic = async(message, user) => {
     }
 
     try {
-      // Convert birthDate to DD/MM/YYYY format
-      let formattedBirthDate = user.birthDate;
-      if (user.birthDate.match(/^(\d{2})(\d{2})(\d{2})$/)) { // DDMMYY
-        const [day, month, year] = user.birthDate.match(/^(\d{2})(\d{2})(\d{2})$/).slice(1);
-        formattedBirthDate = `${day}/${month}/${(parseInt(year) < new Date().getFullYear() % 100) ? 2000 + parseInt(year) : 1900 + parseInt(year)}`;
-      } else if (user.birthDate.match(/^(\d{2})(\d{2})(\d{4})$/)) { // DDMMYYYY
-        const [day, month, year] = user.birthDate.match(/^(\d{2})(\d{2})(\d{4})$/).slice(1);
-        formattedBirthDate = `${day}/${month}/${year}`;
-      } else if (user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/)) { // YYYY-MM-DD
-        const [year, month, day] = user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/).slice(1);
-        formattedBirthDate = `${day}/${month}/${year}`;
+      // Validate and format birth date
+      const dateValidation = validateAndFormatBirthDate(user.birthDate);
+      if (!dateValidation.isValid) {
+        logger.warn(`Invalid birth date for user ${user.phoneNumber}: ${dateValidation.error}`);
+        return 'Invalid birth date format. Please update your profile with a valid date (DDMMYY, DDMMYYYY, or YYYY-MM-DD).';
       }
 
-      // Convert birthTime to HH:MM format
-      let formattedBirthTime = user.birthTime || '12:00';
-      if (formattedBirthTime.match(/^(\d{2})(\d{2})$/)) { // HHMM
-        const [hour, minute] = formattedBirthTime.match(/^(\d{2})(\d{2})$/).slice(1);
-        formattedBirthTime = `${hour}:${minute}`;
+      // Validate and format birth time
+      const timeValidation = validateAndFormatBirthTime(user.birthTime);
+      if (!timeValidation.isValid) {
+        logger.warn(`Invalid birth time for user ${user.phoneNumber}: ${timeValidation.error}`);
+        return 'Invalid birth time format. Please update your profile with a valid time (HHMM or HH:MM).';
       }
 
       const kabbalisticAnalysis = kabbalisticReader.generateKabbalisticChart({
-        birthDate: formattedBirthDate,
-        birthTime: formattedBirthTime,
+        birthDate: dateValidation.formattedDate,
+        birthTime: timeValidation.formattedTime,
         name: user.name
       });
 
@@ -180,9 +169,23 @@ const handleMayan = async(message, user) => {
     }
 
     try {
+      // Validate and format birth date
+      const dateValidation = validateAndFormatBirthDate(user.birthDate);
+      if (!dateValidation.isValid) {
+        logger.warn(`Invalid birth date for user ${user.phoneNumber}: ${dateValidation.error}`);
+        return 'Invalid birth date format. Please update your profile with a valid date (DDMMYY, DDMMYYYY, or YYYY-MM-DD).';
+      }
+
+      // Validate and format birth time
+      const timeValidation = validateAndFormatBirthTime(user.birthTime);
+      if (!timeValidation.isValid) {
+        logger.warn(`Invalid birth time for user ${user.phoneNumber}: ${timeValidation.error}`);
+        return 'Invalid birth time format. Please update your profile with a valid time (HHMM or HH:MM).';
+      }
+
       const mayanAnalysis = mayanReader.generateMayanChart({
-        birthDate: user.birthDate,
-        birthTime: user.birthTime || '12:00',
+        birthDate: dateValidation.formattedDate,
+        birthTime: timeValidation.formattedTime,
         name: user.name
       });
 
@@ -208,9 +211,23 @@ const handleCeltic = async(message, user) => {
     }
 
     try {
+      // Validate and format birth date
+      const dateValidation = validateAndFormatBirthDate(user.birthDate);
+      if (!dateValidation.isValid) {
+        logger.warn(`Invalid birth date for user ${user.phoneNumber}: ${dateValidation.error}`);
+        return 'Invalid birth date format. Please update your profile with a valid date (DDMMYY, DDMMYYYY, or YYYY-MM-DD).';
+      }
+
+      // Validate and format birth time
+      const timeValidation = validateAndFormatBirthTime(user.birthTime);
+      if (!timeValidation.isValid) {
+        logger.warn(`Invalid birth time for user ${user.phoneNumber}: ${timeValidation.error}`);
+        return 'Invalid birth time format. Please update your profile with a valid time (HHMM or HH:MM).';
+      }
+
       const celticAnalysis = celticReader.generateCelticChart({
-        birthDate: user.birthDate,
-        birthTime: user.birthTime || '12:00',
+        birthDate: dateValidation.formattedDate,
+        birthTime: timeValidation.formattedTime,
         name: user.name
       });
 
@@ -232,9 +249,24 @@ const handleCeltic = async(message, user) => {
 const handleIChing = async(message, user) => {
   if (matchesIntent(message, ['i ching', 'iching', 'hexagram', 'oracle', /^i.?ching/])) {
     try {
-      const question = message
+      // Sanitize the input by removing I Ching related keywords and cleaning up
+      let question = message
         .replace(/i ching|iching|hexagram|oracle/gi, '')
         .trim();
+      
+      // Limit question length and sanitize input
+      if (question.length > 500) {
+        question = question.substring(0, 500);
+      }
+      
+      // Remove potentially harmful characters but keep basic punctuation
+      question = question.replace(/[<>{}[\]\\]/g, '').trim();
+      
+      // Only proceed if we have a meaningful question after sanitization
+      if (question.length < 3) {
+        question = 'Universal wisdom and guidance';
+      }
+      
       const reading = ichingReader.generateIChingReading(question);
 
       return reading.ichingDescription;
@@ -259,10 +291,24 @@ const handleAstrocartography = async(message, user) => {
     }
 
     try {
+      // Validate and format birth date
+      const dateValidation = validateAndFormatBirthDate(user.birthDate);
+      if (!dateValidation.isValid) {
+        logger.warn(`Invalid birth date for user ${user.phoneNumber}: ${dateValidation.error}`);
+        return 'Invalid birth date format. Please update your profile with a valid date (DDMMYY, DDMMYYYY, or YYYY-MM-DD).';
+      }
+
+      // Validate and format birth time
+      const timeValidation = validateAndFormatBirthTime(user.birthTime);
+      if (!timeValidation.isValid) {
+        logger.warn(`Invalid birth time for user ${user.phoneNumber}: ${timeValidation.error}`);
+        return 'Invalid birth time format. Please update your profile with a valid time (HHMM or HH:MM).';
+      }
+
       const astrocartographyAnalysis =
         astrocartographyReader.generateAstrocartography({
-          birthDate: user.birthDate,
-          birthTime: user.birthTime || '12:00',
+          birthDate: dateValidation.formattedDate,
+          birthTime: timeValidation.formattedTime,
           birthPlace: user.birthPlace || 'London, UK',
           name: user.name
         });

@@ -704,7 +704,6 @@ class PalmistryReader {
 
     return this.analyzePalm(sampleHandData);
   }
-  }
 
   /**
    * Generate a palmistry reading based on user data

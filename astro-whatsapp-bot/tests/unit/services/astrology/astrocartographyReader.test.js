@@ -1,7 +1,7 @@
 // tests/unit/services/astrology/astrocartographyReader.test.js
 // Unit tests for Astrocartography Reader
 
-const astrocartographyReader = require('../../../src/services/astrology/astrocartographyReader');
+const astrocartographyReader = require('../../../../src/services/astrology/astrocartographyReader');
 const logger = require('../../../../src/utils/logger');
 
 beforeEach(() => {

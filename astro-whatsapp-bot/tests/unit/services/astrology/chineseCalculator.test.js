@@ -1,7 +1,7 @@
 // tests/unit/services/astrology/chineseCalculator.test.js
 // Unit tests for Chinese Calculator
 
-const chineseCalculator = require('../../../src/services/astrology/chineseCalculator');
+const chineseCalculator = require('../../../../src/services/astrology/chineseCalculator');
 
 // Mock dependencies
 const logger = require('../../../../src/utils/logger');

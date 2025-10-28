@@ -74,13 +74,31 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
     );
     return response.data;
   } catch (error) {
-    // Handle specific error codes
-    if (error.response?.status === 429) {
+    // Handle specific error codes (enhanced for v24.0)
+    if (error.response?.status === 400) {
+      logger.error(`❌ Bad request for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Bad request: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 401) {
+      logger.error(`🔐 Invalid access token for ${phoneNumber}`);
+      throw new Error(`Invalid access token: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 403) {
+      logger.error(`🚫 Access denied for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Access denied: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 429) {
       logger.warn(`⚠️ Rate limit exceeded for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
       throw new Error(`Rate limit exceeded: ${error.response?.data?.error?.message || error.message}`);
     } else if (error.response?.status === 404) {
       logger.error(`❌ Phone number not registered on WhatsApp: ${phoneNumber}`);
       throw new Error(`Phone number not registered on WhatsApp: ${phoneNumber}`);
+    } else if (error.response?.status === 410) {
+      logger.warn(`⛔ Message no longer available for ${phoneNumber}`);
+      throw new Error(`Message expired: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 413) {
+      logger.error(`📏 Media too large for ${phoneNumber}`);
+      throw new Error(`Media file too large: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 415) {
+      logger.error(`📄 Unsupported media type for ${phoneNumber}`);
+      throw new Error(`Unsupported media type: ${error.response?.data?.error?.message || error.message}`);
     }
     
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
@@ -166,15 +184,33 @@ const sendInteractiveButtons = async(
     );
     return response.data;
   } catch (error) {
-    // Handle specific error codes
-    if (error.response?.status === 429) {
+    // Handle specific error codes (enhanced for v24.0)
+    if (error.response?.status === 400) {
+      logger.error(`❌ Bad request for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Bad request: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 401) {
+      logger.error(`🔐 Invalid access token for ${phoneNumber}`);
+      throw new Error(`Invalid access token: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 403) {
+      logger.error(`🚫 Access denied for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Access denied: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 429) {
       logger.warn(`⚠️ Rate limit exceeded for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
       throw new Error(`Rate limit exceeded: ${error.response?.data?.error?.message || error.message}`);
     } else if (error.response?.status === 404) {
       logger.error(`❌ Phone number not registered on WhatsApp: ${phoneNumber}`);
       throw new Error(`Phone number not registered on WhatsApp: ${phoneNumber}`);
+    } else if (error.response?.status === 410) {
+      logger.warn(`⛔ Message no longer available for ${phoneNumber}`);
+      throw new Error(`Message expired: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 413) {
+      logger.error(`📏 Media too large for ${phoneNumber}`);
+      throw new Error(`Media file too large: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 415) {
+      logger.error(`📄 Unsupported media type for ${phoneNumber}`);
+      throw new Error(`Unsupported media type: ${error.response?.data?.error?.message || error.message}`);
     }
-    
+
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
     logger.error(`❌ Error sending interactive message to ${phoneNumber}: ${errorMsg}`);
     throw error;
@@ -262,15 +298,33 @@ const sendListMessage = async(
     );
     return response.data;
   } catch (error) {
-    // Handle specific error codes
-    if (error.response?.status === 429) {
+    // Handle specific error codes (enhanced for v24.0)
+    if (error.response?.status === 400) {
+      logger.error(`❌ Bad request for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Bad request: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 401) {
+      logger.error(`🔐 Invalid access token for ${phoneNumber}`);
+      throw new Error(`Invalid access token: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 403) {
+      logger.error(`🚫 Access denied for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Access denied: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 429) {
       logger.warn(`⚠️ Rate limit exceeded for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
       throw new Error(`Rate limit exceeded: ${error.response?.data?.error?.message || error.message}`);
     } else if (error.response?.status === 404) {
       logger.error(`❌ Phone number not registered on WhatsApp: ${phoneNumber}`);
       throw new Error(`Phone number not registered on WhatsApp: ${phoneNumber}`);
+    } else if (error.response?.status === 410) {
+      logger.warn(`⛔ Message no longer available for ${phoneNumber}`);
+      throw new Error(`Message expired: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 413) {
+      logger.error(`📏 Media too large for ${phoneNumber}`);
+      throw new Error(`Media file too large: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 415) {
+      logger.error(`📄 Unsupported media type for ${phoneNumber}`);
+      throw new Error(`Unsupported media type: ${error.response?.data?.error?.message || error.message}`);
     }
-    
+
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
     logger.error(`❌ Error sending list message to ${phoneNumber}: ${errorMsg}`);
     throw error;

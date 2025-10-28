@@ -40,6 +40,14 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
     // Clear all mocks before each test
     jest.clearAllMocks();
     await dbManager.cleanupUser('+menu_test_user');
+    
+    // Explicitly set test mode to use mocks
+    process.env.TEST_MODE = 'unit';
+  });
+  
+  afterEach(() => {
+    // Reset test mode after each test
+    delete process.env.TEST_MODE;
   });
 
   // Helper function to simulate a user completing the onboarding successfully

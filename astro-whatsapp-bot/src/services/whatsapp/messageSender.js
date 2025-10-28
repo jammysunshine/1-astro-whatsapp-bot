@@ -120,9 +120,8 @@ const sendInteractiveButtons = async(
       to: phoneNumber,
       type: 'interactive',
       interactive: {
-        type: 'button',
         body: {
-          text: body
+          text: finalBodyTextForButton
         },
         action: {
           buttons: buttons.slice(0, 3) // WhatsApp allows max 3 buttons
@@ -486,25 +485,18 @@ const sendMessage = async(
     case 'interactive':
       if (message.type === 'button') {
         // Translate body if it's a resource key
-        let translatedBody = message.body;
-        if (typeof message.body === 'object' && message.body.text) {
-          if (typeof message.body.text === 'string' && message.body.text.includes('.') && !message.body.text.includes(' ')) {
-            translatedBody = { text: await translationService.translate(message.body.text, language, options.parameters || {}) };
-          }
-        } else if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
-          translatedBody = await translationService.translate(message.body, language, options.parameters || {});
+        let translatedBodyText = message.body && message.body.text; // Get the text from message.body.text
+        if (typeof translatedBodyText === 'string' && translatedBodyText.includes('.') && !translatedBodyText.includes(' ')) {
+          translatedBodyText = await translationService.translate(translatedBodyText, language, options.parameters || {});
         }
         
         // Ensure body text is a string and meets WhatsApp API requirements
-        if (typeof translatedBody === 'object' && translatedBody.text) {
-          translatedBody = translatedBody.text;
-        }
-        if (typeof translatedBody !== 'string') {
-          translatedBody = String(translatedBody || 'Please select an option');
+        if (typeof translatedBodyText !== 'string') {
+          translatedBodyText = String(translatedBodyText || 'Please select an option');
         }
         // WhatsApp list message body has max 1024 characters
-        if (translatedBody.length > 1024) {
-          translatedBody = translatedBody.substring(0, 1024);
+        if (translatedBodyText.length > 1024) {
+          translatedBodyText = translatedBodyText.substring(0, 1024);
         }
         // Transform buttons to WhatsApp format
         const whatsappButtons = message.buttons.map(button => {
@@ -518,9 +510,13 @@ const sendMessage = async(
             reply: { id: button.id, title: button.title }
           };
         });
+        let finalBodyTextForButton = translatedBodyText;
+        if (typeof translatedBodyText === 'object' && translatedBodyText.text) {
+          finalBodyTextForButton = translatedBodyText.text;
+        }
         response = await sendInteractiveButtons(
           phoneNumber,
-          translatedBody,
+          finalBodyTextForButton,
           whatsappButtons,
           options
         );
@@ -533,6 +529,17 @@ const sendMessage = async(
           }
         } else if (typeof message.body === 'string' && message.body.text.includes('.') && !message.body.text.includes(' ')) {
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
+        }
+        // Ensure body text is a string and meets WhatsApp API requirements
+        if (typeof translatedBody === 'object' && translatedBody.text) {
+          translatedBody = translatedBody.text;
+        }
+        if (typeof translatedBody !== 'string') {
+          translatedBody = String(translatedBody || 'Please select an option');
+        }
+        // WhatsApp list message body has max 1024 characters
+        if (translatedBody.length > 1024) {
+          translatedBody = translatedBody.substring(0, 1024);
         }
         // Ensure sections exist and have proper structure
         const sections = message.sections || [];
@@ -603,9 +610,13 @@ const sendMessage = async(
           return response;
         }
         
+        let finalBodyTextForList = translatedBodyText;
+        if (typeof translatedBodyText === 'object' && translatedBodyText.text) {
+          finalBodyTextForList = translatedBodyText.text;
+        }
         response = await sendListMessage(
           phoneNumber,
-          translatedBody,
+          finalBodyTextForList,
           buttonText,
           validatedSections,
           options

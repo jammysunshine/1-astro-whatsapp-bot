@@ -9,6 +9,51 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 - **Phase 2**: Expand to additional channels including web app, mobile app, and other messaging platforms
 - **Phase 3**: Full cross-platform ecosystem with synchronized data and experiences
 
+## Development Standards & Architecture
+
+### WhatsApp Development Rules
+All WhatsApp bot development must follow the comprehensive standards outlined in [WHATSAPP_DEVELOPMENT_RULES.md](WHATSAPP_DEVELOPMENT_RULES.md). Key architectural principles:
+
+#### Message Type Architecture
+- **Interactive Buttons**: Used for structured navigation, confirmations, and limited-choice interactions (max 3 buttons)
+- **Text Messages**: Used for data collection, free-form responses, and error handling
+- **List Messages**: Used for comprehensive menus with multiple options
+
+#### Date/Time Format Standards
+- **Birth Date**: Strict `DDMMYY` (6 digits) or `DDMMYYYY` (8 digits) format only
+- **Birth Time**: Strict `HHMM` (4 digits, 24-hour) format only
+- **Century Disambiguation**: Automatic resolution with clarification buttons when ambiguous
+- **Multilingual Consistency**: All 27+ languages specify identical format requirements
+
+#### Conversation Flow Patterns
+- **Modular Flow Engine**: JSON-configured conversation flows with validation
+- **State Management**: Session-based flow tracking with automatic cleanup
+- **Fallback Mechanisms**: Graceful degradation when services fail
+- **Progressive Disclosure**: Complex features start simple, offer advanced options via buttons
+
+#### Multilingual Support Standards
+- **27+ Languages**: English, Hindi, Arabic, Spanish, Tamil, and 23 others
+- **RTL Support**: Proper text direction for Arabic, Hebrew, Persian
+- **Format Consistency**: Identical date/time specifications across all languages
+- **Translation Keys**: Structured key hierarchy for maintainable translations
+
+#### Error Handling & Validation
+- **Immediate Feedback**: Text responses for validation errors with clear examples
+- **Format Enforcement**: Strict rejection of invalid formats with helpful guidance
+- **Fallback Options**: Button-based recovery options when possible
+- **Multilingual Errors**: Error messages in user's preferred language
+
+### Compliance Checklist
+Before implementing any WhatsApp feature:
+- [ ] Message type follows button vs text guidelines
+- [ ] Date/time inputs use strict DDMMYY/DDMMYYYY and HHMM formats
+- [ ] Error messages provide actionable format examples
+- [ ] All text includes multilingual translations
+- [ ] Input validation prevents invalid formats
+- [ ] Fallback mechanisms handle API failures
+- [ ] Performance impact assessed and optimized
+- [ ] Security review completed for new features
+
 ## Epics and User Stories
 
 ### Epic 1: Core WhatsApp Integration

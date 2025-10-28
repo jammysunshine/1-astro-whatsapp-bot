@@ -419,24 +419,40 @@ const processTextMessage = async(message, user) => {
   // Generate astrology response based on user input
   const response = await generateAstrologyResponse(messageText, user);
 
-  // Always send responses with interactive buttons for better user experience
+  // Always send responses with interactive menu for better user experience
   const mainMenu = getMenu('main_menu');
   if (mainMenu) {
-    const { buttons } = mainMenu;
+    // Handle different menu types (button vs list)
+    if (mainMenu.type === 'list') {
+      // For list type menus, send as is
+      await sendMessage(
+        phoneNumber,
+        mainMenu,
+        'interactive'
+      );
+    } else if (mainMenu.type === 'button' && mainMenu.buttons) {
+      // For button type menus, combine with response if available
+      const combinedBody = response ?
+        `${response}\n\n${mainMenu.body}` :
+        mainMenu.body;
 
-    // Combine the response with the menu body
-    const combinedBody = response ?
-      `${response}\n\n${mainMenu.body}` :
-      mainMenu.body;
-
-    await sendMessage(
-      phoneNumber,
-      { type: 'button', body: combinedBody, buttons },
-      'interactive'
-    );
+      await sendMessage(
+        phoneNumber,
+        { type: 'button', body: combinedBody, buttons: mainMenu.buttons },
+        'interactive'
+      );
+    } else {
+      logger.warn('⚠️ Unsupported menu type or missing buttons/sections:', mainMenu.type);
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        response ||
+          translationService.translate('messages.errors.generic_error', userLanguage)
+      );
+    }
   } else {
     logger.warn('⚠️ Main menu configuration not found.');
-    // Fallback to sending response without buttons if menu fails
+    // Fallback to sending response without menu if menu fails
     const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
       phoneNumber,

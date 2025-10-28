@@ -141,17 +141,23 @@ const listActionMapping = {
    btn_card_symbol: 'show_card_symbol_menu',
    btn_physical_divination: 'show_physical_divination_menu',
    btn_ancient_wisdom: 'show_ancient_wisdom_menu',
-  btn_update_profile: 'start_profile_flow',
-  btn_view_profile: 'show_user_profile',
-  btn_profile_history: 'show_reading_history',
-  btn_notification_settings: 'show_notification_settings',
-  btn_privacy_settings: 'show_privacy_settings',
-  btn_feedback: 'show_feedback_form',
-  btn_group_astrology: 'start_group_astrology_flow',
-  btn_family_astrology: 'start_family_astrology_flow',
-  btn_couple_compatibility: 'start_couple_compatibility_flow',
-  btn_business_astrology: 'start_business_partnership_flow',
-  btn_group_timing: 'start_group_timing_flow'
+   btn_update_profile: 'start_profile_flow',
+   btn_view_profile: 'show_user_profile',
+   btn_profile_history: 'show_reading_history',
+   btn_notification_settings: 'show_notification_settings',
+   btn_privacy_settings: 'show_privacy_settings',
+   btn_feedback: 'show_feedback_form',
+   btn_group_astrology: 'start_group_astrology_flow',
+   btn_family_astrology: 'start_family_astrology_flow',
+   btn_couple_compatibility: 'start_couple_compatibility_flow',
+   btn_business_astrology: 'start_business_partnership_flow',
+   btn_group_timing: 'start_group_timing_flow',
+   // New list menu actions
+   show_western_astrology_menu: 'show_western_astrology_menu',
+   show_vedic_astrology_menu: 'show_vedic_astrology_menu',
+   show_divination_mystic_menu: 'show_divination_mystic_menu',
+   show_relationships_groups_menu: 'show_relationships_groups_menu',
+   show_numerology_special_menu: 'show_numerology_special_menu'
 };
 
 /**
@@ -1989,12 +1995,47 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     await sendMessage(phoneNumber, response, 'interactive');
     return null;
   }
-  case 'show_help_support': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    const helpMessage = '🆘 *Help & Support*\n\nNeed assistance? Here are some quick options:\n\n• Type "menu" to return to main menu\n• Type "language" to change language\n• Contact support for technical issues\n\nAvailable commands:\n• "horoscope" - Daily horoscope\n• "kundli" - Vedic birth chart\n• "tarot" - Tarot reading\n• "compatibility" - Relationship analysis\n\nFor more help, visit our website or contact support.';
-    await sendMessage(phoneNumber, helpMessage);
-    return null;
-  }
+   case 'show_help_support': {
+     const userLanguage = getUserLanguage(user, phoneNumber);
+     const helpMessage = '🆘 *Help & Support*\n\nNeed assistance? Here are some quick options:\n\n• Type "menu" to return to main menu\n• Type "language" to change language\n• Contact support for technical issues\n\nAvailable commands:\n• "horoscope" - Daily horoscope\n• "kundli" - Vedic birth chart\n• "tarot" - Tarot reading\n• "compatibility" - Relationship analysis\n\nFor more help, visit our website or contact support.';
+     await sendMessage(phoneNumber, helpMessage);
+     return null;
+   }
+   case 'show_western_astrology_menu': {
+     const menu = getMenu('western_astrology_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_vedic_astrology_menu': {
+     const menu = getMenu('vedic_astrology_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_divination_mystic_menu': {
+     const menu = getMenu('divination_mystic_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_relationships_groups_menu': {
+     const menu = getMenu('relationships_groups_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_numerology_special_menu': {
+     const menu = getMenu('numerology_special_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
   case 'show_recent_readings': {
     const userLanguage = getUserLanguage(user, phoneNumber);
     const recentMessage = `📋 *Recent Readings*\n\nYour recent astrology consultations:\n\n• Daily Horoscope - ${new Date().toLocaleDateString()}\n• Vedic Birth Chart - ${new Date(Date.now() - 86400000).toLocaleDateString()}\n\nMore detailed history coming soon!`;

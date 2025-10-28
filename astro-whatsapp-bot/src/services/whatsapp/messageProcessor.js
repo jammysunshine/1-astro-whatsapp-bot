@@ -51,9 +51,7 @@ const getUserLanguage = (user, phoneNumber) => {
  * @returns {boolean} - True if profile is complete, false if needs setup
  */
 const validateUserProfile = async(user, phoneNumber, serviceName) => {
-  if (!user || !user.birthDetails ||
-      !user.birthDetails.date || !user.birthDetails.time ||
-      !user.birthDetails.place) {
+  if (!user || !user.birthDate || !user.birthTime || !user.birthPlace) {
     const profilePrompt = `👤 *Profile Required*\n\nTo provide accurate ${serviceName}, I need your birth details:\n\n📅 *Birth Date* (DDMMYY or DDMMYYYY format)\n🕐 *Birth Time* (HHMM format - 24hr)\n📍 *Birth Place* (City, Country)\n\n*Example:*\n150690, 1430, Mumbai, India\n\nSend your birth details in this format, or use the Settings menu to update your profile permanently.`;
 
     await sendMessage(phoneNumber, profilePrompt, 'text');
@@ -1463,8 +1461,8 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   case 'show_user_profile': {
     // Show user's current profile information
     const user = await getUserByPhone(phoneNumber);
-    if (user && user.birthDetails) {
-      const profileInfo = `👤 *Your Profile*\n\n📅 Birth Date: ${user.birthDetails.date || 'Not set'}\n🕐 Birth Time: ${user.birthDetails.time || 'Not set'}\n📍 Birth Place: ${user.birthDetails.place || 'Not set'}\n🌐 Timezone: ${user.birthDetails.timezone || 'Not set'}\n\nWould you like to update any information?`;
+    if (user && user.birthDate) {
+      const profileInfo = `👤 *Your Profile*\n\n📅 Birth Date: ${user.birthDate || 'Not set'}\n🕐 Birth Time: ${user.birthTime || 'Not set'}\n📍 Birth Place: ${user.birthPlace || 'Not set'}\n🌐 Timezone: ${user.timezone || 'Not set'}\n\nWould you like to update any information?`;
       await sendMessage(phoneNumber, profileInfo, 'text');
     } else {
       await executeMenuAction(phoneNumber, user, 'start_profile_flow');

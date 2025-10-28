@@ -198,7 +198,7 @@ const handleFutureSelf = async(message, user) => {
 const handleGroupAstrology = async(message, user) => {
   if (matchesIntent(message, ['group astrology', 'family astrology', 'group reading', 'family reading', 'combined chart', 'group compatibility', /^group.?astrology/, /^family.?astrology/])) {
     if (!user.birthDate) {
-      return getBirthDetailsPrompt('group astrology', 'analyze group dynamics with other members') + '\n\nThen I can analyze group dynamics with other members!';
+      return `${getBirthDetailsPrompt('group astrology', 'analyze group dynamics with other members')}\n\nThen I can analyze group dynamics with other members!`;
     }
 
     return '👨‍👩‍👧‍👦 *Group & Family Astrology*\n\nDiscover the cosmic dynamics of your family or social group! I can create:\n\n🌟 *Composite Charts* - Combined energy of the group\n🤝 *Compatibility Analysis* - How members interact astrologically\n📊 *Group Dynamics* - Communication styles and decision making\n🎯 *Shared Purpose* - Collective goals and challenges\n⏰ *Timing Insights* - Best periods for group activities\n\n*To get a group reading:*\n\n1. Send your birth details (if not already set)\n2. Provide details for 2-6 other group members\n3. Specify group type: "family", "couple", "friends", or "colleagues"\n\n*Format for each member:*\n```\nName: [Full Name]\nBirth: DDMMYY or DDMMYYYY, HHMM\nPlace: [City, Country]\n```\n\nExample:\n```\nJohn: 15061990, 1430, Mumbai, India\nJane: 22031992, 0915, Delhi, India\nType: family\n```\n\nWhat type of group would you like to analyze?';
@@ -215,7 +215,7 @@ const handleGroupAstrology = async(message, user) => {
 const handleMarriageCompatibility = async(message, user) => {
   if (matchesIntent(message, ['marriage compatibility', 'guna matching', 'kundli matching', 'marriage matching', 'wedding compatibility', /^guna/, /^marriage.?match/])) {
     if (!user.birthDate) {
-      return getBirthDetailsPrompt('marriage compatibility', 'match it with your partner\'s chart') + '\n\nThen I can match it with your partner\'s chart!';
+      return `${getBirthDetailsPrompt('marriage compatibility', 'match it with your partner\'s chart')}\n\nThen I can match it with your partner's chart!`;
     }
 
     return '💕 *Hindu Marriage Compatibility (Kundli Matching)*\n\nI can perform traditional Vedic marriage compatibility analysis using the sacred 36-point Guna matching system!\n\n*What I analyze:*\n• *36-Point Guna System* - Varna, Tara, Yoni, Grahamaitri, Gana, Bhakut, Nadi\n• *Manglik Dosha* - Mars placement analysis and remedies\n• *Overall Compatibility* - Traditional Hindu marriage assessment\n\n*To get marriage compatibility:*\n\n1. Send your birth details (if not already set)\n2. Provide your partner\'s birth details\n\n*Partner\'s details format:*\n```\nName: [Partner Name]\nBirth: DDMMYY or DDMMYYYY, HHMM\nPlace: [City, Country]\n```\n\nExample:\n```\nName: Priya Sharma\nBirth: 25121992, 1030\nPlace: Jaipur, India\n```\n\nThis follows traditional Vedic astrology principles used for Hindu marriages! 🕉️';

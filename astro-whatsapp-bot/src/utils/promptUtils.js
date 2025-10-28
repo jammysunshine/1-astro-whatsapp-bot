@@ -103,7 +103,7 @@ const getNameAndBirthDatePrompt = (serviceName, description, exampleName = 'John
   if (description) {
     prompt += ` to ${description}`;
   }
-  prompt += '.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15061990, ' + exampleName;
+  prompt += `.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15061990, ${exampleName}`;
 
   return prompt;
 };

@@ -227,23 +227,38 @@ const isValidPlanId = planId => {
  * @returns {Object} Validation result
  */
 const validateUserProfile = profileData => {
+  // First validate with Joi for basic structure
   const schema = Joi.object({
     name: Joi.string().min(1).max(100).optional(),
-    birthDate: Joi.string()
-      .pattern(/^(\d{2})(\d{2})(\d{2}(\d{2})?)$/)
-      .optional(),
-    birthTime: Joi.string()
-      .pattern(/^(\d{2})(\d{2})$/)
-      .allow('unknown')
-      .optional(),
+    birthDate: Joi.string().optional(),
+    birthTime: Joi.string().allow('unknown').optional(),
     birthPlace: Joi.string().min(1).max(100).optional(),
     gender: Joi.string().valid('male', 'female', 'other').optional(),
     preferredLanguage: Joi.string().min(2).max(10).optional(),
     timezone: Joi.string().optional()
   });
 
-  const { error, value } = schema.validate(profileData);
-  return { isValid: !error, error: error?.message, value };
+  const { error: joiError, value } = schema.validate(profileData);
+  if (joiError) {
+    return { isValid: false, error: joiError.message, value };
+  }
+
+  // Then validate birth date and time with custom logic
+  const errors = [];
+
+  if (value.birthDate && !isValidBirthDate(value.birthDate)) {
+    errors.push('Invalid birth date format or value');
+  }
+
+  if (value.birthTime && value.birthTime !== 'unknown' && !isValidBirthTime(value.birthTime)) {
+    errors.push('Invalid birth time format');
+  }
+
+  if (errors.length > 0) {
+    return { isValid: false, error: errors.join(', '), value };
+  }
+
+  return { isValid: true, error: null, value };
 };
 
 /**

@@ -1859,16 +1859,16 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         return null;
       }
     }
-  case 'show_main_menu':
-    const mainMenu = getMenu('main_menu');
-    if (mainMenu) {
-      await sendMessage(
-        phoneNumber,
-        { type: 'button', body: mainMenu.body, buttons: mainMenu.buttons },
-        'interactive'
-      );
-    }
-    return null;
+   case 'show_main_menu':
+     const mainMenu = getMenu('main_menu');
+     if (mainMenu) {
+       await sendMessage(
+         phoneNumber,
+         mainMenu,
+         'interactive'
+       );
+     }
+     return null;
   case 'get_tarot_reading':
     const tarotBody = '🔮 *Tarot Reading*\n\nCurrent Situation: The Fool\n\nThis card represents new beginnings and adventures. You\'re at the start of a journey filled with potential.\n\nAdvice: Trust in the universe and take that leap of faith.';
     const tarotButtons = [

@@ -74,6 +74,15 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
     );
     return response.data;
   } catch (error) {
+    // Handle specific error codes
+    if (error.response?.status === 429) {
+      logger.warn(`⚠️ Rate limit exceeded for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Rate limit exceeded: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 404) {
+      logger.error(`❌ Phone number not registered on WhatsApp: ${phoneNumber}`);
+      throw new Error(`Phone number not registered on WhatsApp: ${phoneNumber}`);
+    }
+    
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
     logger.error(`❌ Error sending message to ${phoneNumber}: ${errorMsg}`);
     throw error;
@@ -121,9 +130,21 @@ const sendInteractiveButtons = async(
       }
     };
 
-    // Add header if provided
+    // Add header if provided - support different header types
     if (options.header) {
-      messagePayload.interactive.header = options.header;
+      if (typeof options.header === 'string') {
+        // If header is a string, treat as text header
+        messagePayload.interactive.header = {
+          type: 'text',
+          text: options.header
+        };
+      } else if (typeof options.header === 'object') {
+        // If header is an object, use as-is (should have proper structure)
+        // Validate header structure
+        if (options.header.type) {
+          messagePayload.interactive.header = options.header;
+        }
+      }
     }
 
     // Add footer if provided
@@ -146,6 +167,15 @@ const sendInteractiveButtons = async(
     );
     return response.data;
   } catch (error) {
+    // Handle specific error codes
+    if (error.response?.status === 429) {
+      logger.warn(`⚠️ Rate limit exceeded for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Rate limit exceeded: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 404) {
+      logger.error(`❌ Phone number not registered on WhatsApp: ${phoneNumber}`);
+      throw new Error(`Phone number not registered on WhatsApp: ${phoneNumber}`);
+    }
+    
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
     logger.error(`❌ Error sending interactive message to ${phoneNumber}: ${errorMsg}`);
     throw error;
@@ -196,12 +226,21 @@ const sendListMessage = async(
       }
     };
 
-    // Add header if provided
-    if (options.headerText) {
-      messagePayload.interactive.header = {
-        type: 'text',
-        text: options.headerText
-      };
+    // Add header if provided - support different header types
+    if (options.header) {
+      if (typeof options.header === 'string') {
+        // If header is a string, treat as text header
+        messagePayload.interactive.header = {
+          type: 'text',
+          text: options.header
+        };
+      } else if (typeof options.header === 'object') {
+        // If header is an object, use as-is (should have proper structure)
+        // Validate header structure
+        if (options.header.type) {
+          messagePayload.interactive.header = options.header;
+        }
+      }
     }
 
     // Add footer if provided
@@ -224,6 +263,15 @@ const sendListMessage = async(
     );
     return response.data;
   } catch (error) {
+    // Handle specific error codes
+    if (error.response?.status === 429) {
+      logger.warn(`⚠️ Rate limit exceeded for ${phoneNumber}: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Rate limit exceeded: ${error.response?.data?.error?.message || error.message}`);
+    } else if (error.response?.status === 404) {
+      logger.error(`❌ Phone number not registered on WhatsApp: ${phoneNumber}`);
+      throw new Error(`Phone number not registered on WhatsApp: ${phoneNumber}`);
+    }
+    
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
     logger.error(`❌ Error sending list message to ${phoneNumber}: ${errorMsg}`);
     throw error;
@@ -427,7 +475,13 @@ const sendMessage = async(
       if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
         translatedMessage = await translationService.translate(message, language, options.parameters || {});
       }
-      response = await sendTextMessage(phoneNumber, translatedMessage, options);
+      // Ensure text message body is within WhatsApp API limits (4096 chars)
+      let validatedMessage = translatedMessage;
+      if (typeof validatedMessage === 'string' && validatedMessage.length > 4096) {
+        logger.warn(`⚠️ Text message for ${phoneNumber} exceeds 4096 character limit, truncating`);
+        validatedMessage = validatedMessage.substring(0, 4096);
+      }
+      response = await sendTextMessage(phoneNumber, validatedMessage, options);
       break;
     case 'interactive':
       if (message.type === 'button') {
@@ -581,7 +635,13 @@ const sendMessage = async(
       if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
         defaultTranslatedMessage = await translationService.translate(message, language, options.parameters || {});
       }
-      response = await sendTextMessage(phoneNumber, defaultTranslatedMessage, options);
+      // Ensure text message body is within WhatsApp API limits (4096 chars)
+      let validatedDefaultMessage = defaultTranslatedMessage;
+      if (typeof validatedDefaultMessage === 'string' && validatedDefaultMessage.length > 4096) {
+        logger.warn(`⚠️ Default text message for ${phoneNumber} exceeds 4096 character limit, truncating`);
+        validatedDefaultMessage = validatedDefaultMessage.substring(0, 4096);
+      }
+      response = await sendTextMessage(phoneNumber, validatedDefaultMessage, options);
     }
 
     // Add null check for response

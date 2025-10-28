@@ -51,6 +51,14 @@ Any AI executing this scope **MUST** adhere to the following rigorous process to
     *   Document the change and its impact.
     *   Maintain a clear rollback strategy for each step.
 
+5.  **Automated Post-Change Verification (AI's Testing Protocol)**: After *every single code modification*, the AI MUST execute a rigorous verification protocol:
+    *   **Run Relevant Tests**: Automatically identify and execute all directly affected unit, integration, and end-to-end tests.
+    *   **Static Analysis**: Run configured linters (ESLint), formatters (Prettier), and static analysis tools (e.g., SonarQube, Snyk) to ensure code quality and adherence to standards.
+    *   **Type Checking**: If applicable (e.g., TypeScript), perform type checking to catch type-related errors.
+    *   **Performance Smoke Test**: For critical paths, run a quick performance smoke test to detect immediate regressions.
+    *   **Log Analysis**: Review logs for any new errors, warnings, or unexpected behavior.
+    *   **Rollback if Failure**: If any automated verification step fails, the AI MUST immediately revert the last change and report the failure with detailed diagnostics.
+
 This strengthened approach ensures that the implementation is not only tailored to the actual state of the codebase but also leverages advanced analytical capabilities for optimal, verifiable, and safe refactoring.
 
 ## Primary Refactoring Objectives (Refined)

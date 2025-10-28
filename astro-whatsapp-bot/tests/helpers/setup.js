@@ -9,30 +9,8 @@ jest.mock('../../src/utils/logger', () => ({
   debug: jest.fn()
 }));
 
-// Mock native modules that may not be available in test environment
-jest.mock('sweph', () => ({
-  swe_set_ephe_path: jest.fn(),
-  swe_julday: jest.fn(() => 2451545.0), // Mock Julian day
-  swe_calc: jest.fn(() => [0, [0, 0, 0, 0, 0, 0]]), // Mock planetary positions
-  swe_get_planet_name: jest.fn(planet => `Planet ${planet}`),
-  swe_close: jest.fn()
-}));
-
-jest.mock('astrologer', () => ({
-  Astrologer: jest.fn().mockImplementation(() => ({
-    calculateBirthChart: jest.fn(() => ({
-      sunSign: 'Pisces',
-      moonSign: 'Pisces',
-      risingSign: 'Aquarius',
-      planets: {},
-      houses: []
-    })),
-    calculateCompatibility: jest.fn(() => ({
-      compatibility: 'High',
-      description: 'Great compatibility between these signs.'
-    }))
-  }))
-}));
+// Astrological calculation libraries should use real implementations (not mocked)
+// Removed mocks for 'sweph' and 'astrologer' to allow actual calculations in tests
 
 // Set test environment
 process.env.NODE_ENV = 'test';

@@ -55,8 +55,10 @@ class VedicCore {
       'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
     ];
 
-    // Performance optimization: Clean cache periodically
-    setInterval(() => this._cleanExpiredCache(), 10 * 60 * 1000); // Clean every 10 minutes
+    // Performance optimization: Clean cache periodically (skip in test environment)
+    if (process.env.NODE_ENV !== 'test') {
+      setInterval(() => this._cleanExpiredCache(), 10 * 60 * 1000); // Clean every 10 minutes
+    }
   }
 
   /**

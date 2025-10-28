@@ -1,43 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="19" failures="0" errors="0" time="14.137">
-  <testsuite name="Comprehensive Menu Integration Tests - REAL LIBRARIES" errors="0" failures="0" skipped="0" timestamp="2025-10-28T09:04:18" time="13.394" tests="19">
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Menu Structure Validation should load all menu configurations correctly" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Menu Structure Validation should load all menu configurations correctly" time="0.025">
+<testsuites name="jest tests" tests="17" failures="4" errors="0" time="49.779">
+  <testsuite name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY" errors="0" failures="4" skipped="0" timestamp="2025-10-28T09:36:33" time="48.382" tests="17">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL main menu paths and validate responses" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL main menu paths and validate responses" time="1.412">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Main Menu Navigation should display main menu with 6 categories" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Main Menu Navigation should display main menu with 6 categories" time="0.039">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Western astrology sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Western astrology sub-menu paths" time="3.365">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should navigate to Western Astrology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should navigate to Western Astrology menu" time="0.195">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Vedic astrology sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Vedic astrology sub-menu paths" time="0.112">
+      <failure>Error: expect(received).toBeDefined()
+
+Received: undefined
+    at Object.toBeDefined (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-real-calculations.test.js:410:34)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should calculate REAL birth chart" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should calculate REAL birth chart" time="0.152">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL divination &amp; mystic sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL divination &amp; mystic sub-menu paths" time="0.107">
+      <failure>Error: expect(received).toBeDefined()
+
+Received: undefined
+    at Object.toBeDefined (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-real-calculations.test.js:452:34)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should navigate to Vedic Astrology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should navigate to Vedic Astrology menu" time="0.044">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL relationships &amp; groups sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL relationships &amp; groups sub-menu paths" time="0.138">
+      <failure>Error: expect(received).toBeDefined()
+
+Received: undefined
+    at Object.toBeDefined (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-real-calculations.test.js:494:34)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should calculate REAL Vedic birth chart (Kundli)" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should calculate REAL Vedic birth chart (Kundli)" time="0.05">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL numerology &amp; special sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL numerology &amp; special sub-menu paths" time="0.122">
+      <failure>Error: expect(received).toBeDefined()
+
+Received: undefined
+    at Object.toBeDefined (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-real-calculations.test.js:536:34)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should navigate to Divination menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should navigate to Divination menu" time="0.264">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate ALL real calculation services perform actual computations" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate ALL real calculation services perform actual computations" time="4.591">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should generate REAL Tarot reading" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should generate REAL Tarot reading" time="0.045">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate calculation accuracy with known astronomical data" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate calculation accuracy with known astronomical data" time="0.116">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Relationships &amp; Groups Menu - REAL COMPATIBILITY should navigate to Relationships menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Relationships &amp; Groups Menu - REAL COMPATIBILITY should navigate to Relationships menu" time="0.048">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should handle rapid menu navigation through all paths efficiently" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should handle rapid menu navigation through all paths efficiently" time="5.356">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should navigate to Numerology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should navigate to Numerology menu" time="0.139">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should validate menu tree consistency across multiple user sessions" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should validate menu tree consistency across multiple user sessions" time="0.662">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should calculate REAL numerology report" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should calculate REAL numerology report" time="0.026">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate database operations for all menu interactions" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate database operations for all menu interactions" time="0.483">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should create and retrieve user from REAL database" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should create and retrieve user from REAL database" time="0.007">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate user profile updates through menu interactions" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate user profile updates through menu interactions" time="0.158">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should update user profile in REAL database" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should update user profile in REAL database" time="0.056">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate geocoding service integration for location-based calculations" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate geocoding service integration for location-based calculations" time="5.185">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle invalid menu selection gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle invalid menu selection gracefully" time="0.038">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate timezone calculations for global astrology accuracy" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate timezone calculations for global astrology accuracy" time="6.039">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle malformed messages gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle malformed messages gracefully" time="0.035">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should handle all error scenarios gracefully throughout menu tree" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should handle all error scenarios gracefully throughout menu tree" time="0.143">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" time="0.186">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should validate incomplete profile handling for calculation services" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should validate incomplete profile handling for calculation services" time="0.139">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle network-like failures gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle network-like failures gracefully" time="0.025">
-    </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle concurrent user sessions" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle concurrent user sessions" time="0.233">
-    </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Performance &amp; Load Testing should handle multiple menu navigations efficiently" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Performance &amp; Load Testing should handle multiple menu navigations efficiently" time="0.149">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Final Comprehensive Validation Summary should provide comprehensive test coverage summary" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Final Comprehensive Validation Summary should provide comprehensive test coverage summary" time="0.055">
     </testcase>
   </testsuite>
 </testsuites>

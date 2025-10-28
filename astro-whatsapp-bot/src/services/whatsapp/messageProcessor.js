@@ -157,7 +157,15 @@ const listActionMapping = {
   show_vedic_astrology_menu: 'show_vedic_astrology_menu',
   show_divination_mystic_menu: 'show_divination_mystic_menu',
   show_relationships_groups_menu: 'show_relationships_groups_menu',
-  show_numerology_special_menu: 'show_numerology_special_menu'
+  show_numerology_special_menu: 'show_numerology_special_menu',
+  // Individual service actions
+  get_daily_horoscope: 'get_daily_horoscope',
+  show_birth_chart: 'show_birth_chart',
+  get_current_transits: 'get_current_transits',
+  get_secondary_progressions: 'get_secondary_progressions',
+  get_solar_arc_directions: 'get_solar_arc_directions',
+  get_asteroid_analysis: 'get_asteroid_analysis',
+  get_fixed_stars_analysis: 'get_fixed_stars_analysis'
 };
 
 /**

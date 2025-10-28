@@ -340,36 +340,30 @@ This structure ensures that all aspects of the project are well-documented and e
 
 ## 📋 WhatsApp Development Standards
 
-This project follows strict WhatsApp development standards to ensure consistent user experience and maintainable code. All contributors must adhere to the [WhatsApp Development Rules](WHATSAPP_DEVELOPMENT_RULES.md) which cover:
+This project follows strict WhatsApp development standards to ensure consistent user experience and maintainable code. All contributors must adhere to the [WhatsApp Development Guidelines](whatsapp-development-guidelines.md) which cover:
 
-- **Message Type Architecture**: When to use buttons vs text messages
-- **Date/Time Format Standards**: Strict DDMMYY/DDMMYYYY and HHMM format requirements
-- **Conversation Flow Patterns**: Structured flow configuration and state management
-- **Multilingual Support**: Translation standards and RTL language handling
-- **Error Handling**: Validation and fallback mechanisms
-- **Menu Configuration**: Button and list message standards
-- **API Integration**: WhatsApp Business API usage patterns
-- **Testing Standards**: Unit, integration, and end-to-end testing requirements
+- Message type architecture (buttons vs text messages)
+- Date/time format standards (DDMMYY/DDMMYYYY and HHMM formats)
+- Conversation flow patterns and state management
+- Multilingual support standards (27+ languages)
+- Error handling and validation requirements
+- Menu configuration and API integration standards
+- Testing, security, and deployment guidelines
 
-### Key Standards Summary:
-- **Buttons**: Use for structured navigation (max 3 per message)
-- **Text Input**: Use for data collection (birth dates, names, etc.)
-- **Date Formats**: Strict `DDMMYY`/`DDMMYYYY` and `HHMM` only
-- **Languages**: 27+ supported with consistent format specifications
-- **Validation**: Immediate feedback with clear format examples
+**Please review the [WhatsApp Development Guidelines](whatsapp-development-guidelines.md) before implementing any WhatsApp-related features.**
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) and [WhatsApp Development Rules](WHATSAPP_DEVELOPMENT_RULES.md) for details on our code of conduct and development standards.
+We welcome contributions from the community! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) and [WhatsApp Development Guidelines](whatsapp-development-guidelines.md) for details on our code of conduct and development standards.
 
 ### Development Guidelines
 1. Fork the repository
 2. Create a feature branch
-3. **Review and follow [WhatsApp Development Rules](WHATSAPP_DEVELOPMENT_RULES.md)**
+3. **Review and follow [WhatsApp Development Guidelines](whatsapp-development-guidelines.md)**
 4. Make your changes following established patterns
 5. Write tests for your changes
 6. Ensure all tests pass and standards are met
-7. Submit a pull request with reference to relevant rules
+7. Submit a pull request with reference to relevant guidelines
 
 ## 📄 License
 

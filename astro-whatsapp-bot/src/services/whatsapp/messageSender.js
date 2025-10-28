@@ -437,10 +437,17 @@ const sendMessage = async(
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
         }
         // Transform buttons to WhatsApp format
-        const whatsappButtons = message.buttons.map(button => ({
-          type: 'reply',
-          reply: { id: button.id, title: button.title }
-        }));
+        const whatsappButtons = message.buttons.map(button => {
+          // Check if button is already in WhatsApp format
+          if (button.type === 'reply' && button.reply) {
+            return button;
+          }
+          // Otherwise, transform from simple format
+          return {
+            type: 'reply',
+            reply: { id: button.id, title: button.title }
+          };
+        });
         response = await sendInteractiveButtons(
           phoneNumber,
           translatedBody,

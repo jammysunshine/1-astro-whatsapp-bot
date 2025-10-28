@@ -1,7 +1,7 @@
 const vedicCalculator = require('../vedicCalculator');
 const { matchesIntent } = require('../utils/intentUtils');
 const { buildHoroscopeResponse, buildNumerologyResponse } = require('../utils/responseBuilders');
-const { getBirthDetailsPrompt, getNameAndBirthDatePrompt } = require('../../../utils/promptUtils');
+const { getBirthDetailsPrompt, getBirthDatePrompt, getNameAndBirthDatePrompt } = require('../../../utils/promptUtils');
 const logger = require('../../../utils/logger');
 
 /**
@@ -13,7 +13,7 @@ const logger = require('../../../utils/logger');
 const handleHoroscope = async(message, user) => {
   if (matchesIntent(message, ['horoscope', 'daily', /^what'?s my (daily )?horoscope/])) {
     if (!user.birthDate) {
-      return 'I\'d love to give you a personalized daily horoscope! ' + getBirthDatePrompt('horoscope', 'calculate your sun sign');
+      return `I'd love to give you a personalized daily horoscope! ${getBirthDatePrompt('horoscope', 'calculate your sun sign')}`;
     }
 
     try {

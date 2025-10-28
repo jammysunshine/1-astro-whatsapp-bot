@@ -440,6 +440,18 @@ const sendMessage = async(
         } else if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
         }
+        
+        // Ensure body text is a string and meets WhatsApp API requirements
+        if (typeof translatedBody === 'object' && translatedBody.text) {
+          translatedBody = translatedBody.text;
+        }
+        if (typeof translatedBody !== 'string') {
+          translatedBody = String(translatedBody || 'Please select an option');
+        }
+        // WhatsApp list message body has max 1024 characters
+        if (translatedBody.length > 1024) {
+          translatedBody = translatedBody.substring(0, 1024);
+        }
         // Transform buttons to WhatsApp format
         const whatsappButtons = message.buttons.map(button => {
           // Check if button is already in WhatsApp format
@@ -465,18 +477,83 @@ const sendMessage = async(
           if (typeof message.body.text === 'string' && message.body.text.includes('.') && !message.body.text.includes(' ')) {
             translatedBody = { text: await translationService.translate(message.body.text, language, options.parameters || {}) };
           }
-        } else if (typeof message.body === 'string' && message.body.includes('.') && !message.body.includes(' ')) {
+        } else if (typeof message.body === 'string' && message.body.text.includes('.') && !message.body.text.includes(' ')) {
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
         }
         // Ensure sections exist and have proper structure
         const sections = message.sections || [];
-        // Ensure buttonText exists
-        const buttonText = message.buttonText || 'Select';
+        // Use 'button' field from menu config (as seen in menuConfig.json) or fallback to 'buttonText' or default
+        let buttonText = message.button || message.buttonText || 'Choose Option';
+        // Ensure button text meets WhatsApp API requirements (1-20 characters)
+        if (typeof buttonText !== 'string') {
+          buttonText = String(buttonText);
+        }
+        if (buttonText.length < 1) {
+          buttonText = 'Choose';
+        } else if (buttonText.length > 20) {
+          buttonText = buttonText.substring(0, 20);
+        }
+        
+        // Validate sections structure - each section should have a title and rows
+        const validatedSections = sections.map(section => {
+          // Ensure section has a title (required by WhatsApp API)
+          const sectionTitle = section.title && typeof section.title === 'string' && section.title.length <= 24 ? 
+            section.title : 'Options';
+          
+          const validatedRows = (section.rows || []).slice(0, 10).map(row => {
+            // Ensure row ID is a valid string with max 256 characters
+            let rowId = row.id || `row_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+            if (typeof rowId !== 'string') {
+              rowId = String(rowId);
+            }
+            if (rowId.length > 256) {
+              rowId = rowId.substring(0, 256);
+            }
+            
+            // Ensure row title is a valid string with max 24 characters
+            let rowTitle = row.title || 'Option';
+            if (typeof rowTitle !== 'string') {
+              rowTitle = String(rowTitle);
+            }
+            if (rowTitle.length > 24) {
+              rowTitle = rowTitle.substring(0, 24);
+            }
+            
+            // Ensure row description is a valid string with max 72 characters
+            let rowDescription = row.description || '';
+            if (typeof rowDescription !== 'string') {
+              rowDescription = String(rowDescription);
+            }
+            if (rowDescription.length > 72) {
+              rowDescription = rowDescription.substring(0, 72);
+            }
+            
+            return {
+              id: rowId,
+              title: rowTitle,
+              description: rowDescription
+            };
+          });
+          
+          return {
+            title: sectionTitle,
+            rows: validatedRows
+          };
+        }).filter(section => section.rows.length > 0); // Filter out sections with no rows
+        
+        // Ensure at least one section with one row exists, otherwise send a simple text message
+        if (validatedSections.length === 0) {
+          logger.warn(`⚠️ No valid sections found for list message to ${phoneNumber}, sending fallback text`);
+          const fallbackMessage = `Menu options:\n${message.sections?.slice(0, 5).map(s => s.rows?.slice(0, 3).map(r => `• ${r.title || r.id}`).join('\n')).filter(Boolean).join('\n') || 'No options available'}`;
+          response = await sendTextMessage(phoneNumber, fallbackMessage, options);
+          return response;
+        }
+        
         response = await sendListMessage(
           phoneNumber,
           translatedBody,
           buttonText,
-          sections,
+          validatedSections,
           options
         );
       }

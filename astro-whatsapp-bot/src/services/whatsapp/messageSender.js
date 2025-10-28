@@ -3,7 +3,7 @@ const logger = require('../../utils/logger');
 const translationService = require('../i18n/TranslationService');
 
 // WhatsApp Business API configuration
-const WHATSAPP_API_URL = 'https://graph.facebook.com/v18.0';
+const WHATSAPP_API_URL = 'https://graph.facebook.com/v24.0';
 
 /**
  * Get WhatsApp credentials from environment

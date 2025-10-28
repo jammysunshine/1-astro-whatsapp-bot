@@ -1,6 +1,27 @@
 const { TestDatabaseManager, setupWhatsAppMocks, getWhatsAppIntegration } = require('../../utils/testSetup');
 const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
 
+// Mock the messageSender functions to prevent real API calls
+jest.mock('../../../src/services/whatsapp/messageSender', () => ({
+  sendMessage: jest.fn().mockResolvedValue({ success: true, message: 'Mocked success' }),
+  sendListMessage: jest.fn().mockResolvedValue({ success: true, message: 'Mocked success' }),
+  sendInteractiveButtons: jest.fn().mockResolvedValue({ success: true, message: 'Mocked success' }),
+  sendTextMessage: jest.fn().mockResolvedValue({ success: true, message: 'Mocked success' })
+}));
+
+// Import the mocked functions
+const { sendMessage, sendListMessage, sendInteractiveButtons, sendTextMessage } = require('../../../src/services/whatsapp/messageSender');
+
+// Define test phone numbers
+const TEST_PHONES = {
+  session1: '+test_phone_1',
+  session2: '+test_phone_2',
+  menu_test_user: '+menu_test_user'
+};
+
+// Import Session model
+const Session = require('../../../src/models/Session');
+
 describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
   let dbManager;
   let whatsAppIntegration;
@@ -9,17 +30,15 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
   beforeAll(async () => {
     dbManager = new TestDatabaseManager();
     await dbManager.setup();
-    whatsAppIntegration = getWhatsAppIntegration();
-    mocks = setupWhatsAppMocks();
   }, 30000);
 
   afterAll(async () => {
-    mocks.restoreMocks();
     await dbManager.teardown();
   }, 10000);
 
   beforeEach(async () => {
-    mocks.mockSendMessage.mockClear();
+    // Clear all mocks before each test
+    jest.clearAllMocks();
     await dbManager.cleanupUser('+menu_test_user');
   });
 
@@ -30,7 +49,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
     await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
     await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
     await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
-    whatsAppIntegration.mockSendMessage.mockClear();
+    sendMessage.mockClear();
   };
 
   describe('Deep Menu Path Traversals (45 tests)', () => {
@@ -45,7 +64,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Basic Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart Analysis' } }, {});
 
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('You are now in Birth Chart Analysis. What would you like to explore?')
       );
@@ -61,7 +80,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Dasha Analysis' } }, {});
 
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('You are now in Dasha Analysis. Please select a Dasha period.')
       );
@@ -74,10 +93,10 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
 
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Continue' } }, {});
 
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Welcome back! You were last in Western Astrology. Would you like to continue?')
       );
@@ -91,11 +110,11 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
 
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Main Menu > Vedic Astrology > Advanced Readings')
       );
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Type \'back\' to go to previous menu.')
       );
@@ -106,15 +125,15 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).not.toHaveBeenCalledWith(
+      expect(sendMessage).not.toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Premium Features')
       );
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { subscriptionStatus: 'active' } });
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Premium Features')
       );
@@ -125,16 +144,16 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Western Astrology')
       );
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'set language es' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Astrología Occidental')
       );
@@ -147,14 +166,14 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'skip' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Complete Profile')
       );
-      expect(whatsAppIntegration.mockSendMessage).not.toHaveBeenCalledWith(
+      expect(sendMessage).not.toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Advanced Readings')
       );
@@ -166,11 +185,11 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       for (let i = 0; i < 5; i++) {
         await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Daily Horoscope' } }, {});
-        whatsAppIntegration.mockSendMessage.mockClear();
+        sendMessage.mockClear();
       }
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('✨ Daily Horoscope (Recommended) ✨')
       );
@@ -186,7 +205,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Basic Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Planets' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Planets in your Birth Chart.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Planets in your Birth Chart.'));
     });
 
     test('should navigate to Western -> Basic -> Houses in Birth Chart', async () => {
@@ -196,7 +215,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Basic Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Houses' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Houses in your Birth Chart.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Houses in your Birth Chart.'));
     });
 
     test('should navigate to Western -> Basic -> Aspects in Birth Chart', async () => {
@@ -206,7 +225,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Basic Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Aspects' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Aspects in your Birth Chart.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Aspects in your Birth Chart.'));
     });
 
     test('should navigate to Vedic -> Advanced -> Dasha -> Vimshottari', async () => {
@@ -216,7 +235,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Dasha Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vimshottari Dasha' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Vimshottari Dasha Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Vimshottari Dasha Analysis.'));
     });
 
     test('should navigate to Vedic -> Advanced -> Dasha -> Yogini', async () => {
@@ -226,7 +245,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Brahma Dasha Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yogini Dasha' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Yogini Dasha Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Yogini Dasha Analysis.'));
     });
 
     test('should navigate to Vedic -> Advanced -> Dasha -> Char Dasha', async () => {
@@ -236,7 +255,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Dasha Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Char Dasha' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Char Dasha Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Char Dasha Analysis.'));
     });
 
     test('should navigate to Vedic -> Advanced -> Dasha -> Narayan Dasha', async () => {
@@ -246,7 +265,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Dasha Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Narayan Dasha' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Narayan Dasha Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Narayan Dasha Analysis.'));
     });
 
     test('should navigate to Relationships -> Family -> 4-member -> Parent-Child', async () => {
@@ -256,7 +275,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Family' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '4-member analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Parent-Child' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Beginning Parent-Child relationship analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Beginning Parent-Child relationship analysis.'));
     });
 
     test('should navigate to Relationships -> Family -> 4-member -> Sibling', async () => {
@@ -266,7 +285,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Family' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '4-member analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Sibling' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Beginning Sibling relationship analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Beginning Sibling relationship analysis.'));
     });
 
     test('should navigate to Relationships -> Family -> 4-member -> Spousal', async () => {
@@ -276,7 +295,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Family' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '4-member analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Spousal' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Beginning Spousal relationship analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Beginning Spousal relationship analysis.'));
     });
 
     test('should navigate to Divination -> Ancient Wisdom -> Hellenistic -> Lots', async () => {
@@ -286,7 +305,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Ancient Wisdom' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hellenistic' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Lots' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Lots.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Lots.'));
     });
 
     test('should navigate to Divination -> Ancient Wisdom -> Hellenistic -> Decans', async () => {
@@ -296,7 +315,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Ancient Wisdom' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hellenistic' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Decans' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Decans.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Decans.'));
     });
 
     test('should navigate to Divination -> Ancient Wisdom -> Hellenistic -> Terms', async () => {
@@ -306,7 +325,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Ancient Wisdom' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hellenistic' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Terms' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Terms.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Terms.'));
     });
 
     test('should navigate to Divination -> Ancient Wisdom -> Hellenistic -> Triplicities', async () => {
@@ -316,7 +335,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Ancient Wisdom' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hellenistic' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Triplicities' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Triplicities.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Triplicities.'));
     });
 
     test('should navigate to Divination -> Ancient Wisdom -> Hellenistic -> Planetary Hours', async () => {
@@ -326,7 +345,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Ancient Wisdom' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hellenistic' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Planetary Hours' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Planetary Hours.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Hellenistic Planetary Hours.'));
     });
 
     test('should allow saving quick access bookmarks to favorite menu shortcuts', async () => {
@@ -335,7 +354,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Save as Favorite: Western' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('\'Western\' added to your favorites.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('\'Western\' added to your favorites.'));
     });
 
     test('should recall recent path memory for frequently used shortcuts', async () => {
@@ -343,9 +362,9 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Recent' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Your recent path: Vedic Astrology. Continue?'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Your recent path: Vedic Astrology. Continue?'));
     });
 
     test('should list available shortcuts from recent path memory', async () => {
@@ -354,9 +373,9 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Basic Readings' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Shortcuts' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Available shortcuts: Western Astrology, Basic Readings.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Available shortcuts: Western Astrology, Basic Readings.'));
     });
 
     test('should correctly restore state after network interruption mid-navigation', async () => {
@@ -364,9 +383,9 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Network Recovered' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Connection restored. You are in Western Astrology.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Connection restored. You are in Western Astrology.'));
     });
 
     test('should allow user to jump to a bookmarked menu item', async () => {
@@ -375,9 +394,9 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Save as Favorite: Western' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Go to Favorite: Western' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Western Astrology menu.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Western Astrology menu.'));
     });
 
     test('should clear recent path memory upon user explicit clear command', async () => {
@@ -385,27 +404,27 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Clear History' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Your navigation history has been cleared.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Your navigation history has been cleared.'));
     });
 
     test('should display exclusive premium options for Gold tier subscribers', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { subscriptionStatus: 'active', subscriptionTier: 'Gold' } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Gold Exclusive Insights'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Gold Exclusive Insights'));
     });
 
     test('should display exclusive premium options for Platinum tier subscribers', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { subscriptionStatus: 'active', subscriptionTier: 'Platinum' } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Platinum VIP Access'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Platinum VIP Access'));
     });
 
     test('should prompt for missing birth time before showing advanced astrological options', async () => {
@@ -415,10 +434,10 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'skip' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please provide your exact birth time to access advanced readings.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please provide your exact birth time to access advanced readings.'));
     });
 
     test('should prompt for missing birth place before showing location-based astrological options', async () => {
@@ -428,29 +447,29 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'skip' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Location Based Astrology' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please provide your birth place to access location-based astrology.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please provide your birth place to access location-based astrology.'));
     });
 
     test('should not show \'Complete Profile\' after full profile completion', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).not.toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Complete Profile'));
+      expect(sendMessage).not.toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Complete Profile'));
     });
 
     test('should display a personalized welcome message based on recent activity', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Daily Horoscope' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome back! Your last request was Daily Horoscope.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome back! Your last request was Daily Horoscope.'));
     });
 
     test('should navigate to Western -> Transits -> Weekly Transits', async () => {
@@ -459,7 +478,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Transits' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Weekly Transits' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Weekly Transits.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Weekly Transits.'));
     });
 
     test('should navigate to Western -> Transits -> Monthly Transits', async () => {
@@ -468,7 +487,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Transits' } } , {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Monthly Transits' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Monthly Transits.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Monthly Transits.'));
     });
 
     test('should navigate to Western -> Progressions -> Secondary Progressions', async () => {
@@ -477,7 +496,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Progressions' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Secondary Progressions' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Secondary Progressions Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Secondary Progressions Analysis.'));
     });
 
     test('should navigate to Western -> Progressions -> Solar Arc Directions', async () => {
@@ -486,7 +505,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Progressions' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Solar Arc Directions' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Solar Arc Directions Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Solar Arc Directions Analysis.'));
     });
 
     test('should navigate to Vedic -> Basic -> Sidereal Birth Chart', async () => {
@@ -495,7 +514,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Basic Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Sidereal Birth Chart' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Sidereal Birth Chart.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Sidereal Birth Chart.'));
     });
 
     test('should navigate to Vedic -> Basic -> Divisional Charts (Varga)', async () => {
@@ -504,7 +523,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Basic Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Divisional Charts (Varga)' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Divisional Charts (Varga).'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Divisional Charts (Varga).'));
     });
 
     test('should navigate to Vedic -> Advanced -> Remedial Measures -> Gemstones', async () => {
@@ -514,7 +533,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Remedial Measures' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Gemstones' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Suggesting Gemstones as remedial measures.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Suggesting Gemstones as remedial measures.'));
     });
 
     test('should navigate to Vedic -> Advanced -> Remedial Measures -> Mantras', async () => {
@@ -524,7 +543,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Remedial Measures' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Mantras' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Suggesting Mantras as remedial measures.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Suggesting Mantras as remedial measures.'));
     });
 
     test('should navigate to Relationships -> Romantic -> Compatibility Report', async () => {
@@ -533,7 +552,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Relationships' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Romantic' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Compatibility Report' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Generating Romantic Compatibility Report.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Generating Romantic Compatibility Report.'));
     });
 
     test('should navigate to Relationships -> Friendship -> Friendship Analysis', async () => {
@@ -542,7 +561,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Relationships' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Friendship' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Friendship Analysis' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Generating Friendship Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Generating Friendship Analysis.'));
     });
 
     test('should navigate to Divination -> I Ching -> Hexagram Reading', async () => {
@@ -551,7 +570,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Divination' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'I Ching' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hexagram Reading' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating I Ching Hexagram Reading.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating I Ching Hexagram Reading.'));
     });
 
     test('should navigate to Divination -> Tarot -> Daily Card Pull', async () => {
@@ -560,7 +579,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Divination' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Tarot' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Daily Card Pull' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Pulling your Daily Tarot Card.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Pulling your Daily Tarot Card.'));
     });
 
     test('should navigate to Divination -> Ancient Wisdom -> Hermetic -> Astrological Magic', async () => {
@@ -570,7 +589,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Ancient Wisdom' } } , {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hermetic' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Astrological Magic' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Astrological Magic principles.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Astrological Magic principles.'));
     });
 
     test('should navigate to Settings -> Profile Management -> Edit Birth Data', async () => {
@@ -579,7 +598,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Settings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Profile Management' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Edit Birth Data' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('What would you like to edit? (Date, Time, Place)'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('What would you like to edit? (Date, Time, Place)'));
     });
 
     test('should navigate to Settings -> Language Preferences -> Change Language', async () => {
@@ -588,7 +607,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Settings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Language Preferences' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Change Language' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please choose your preferred language.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please choose your preferred language.'));
     });
 
     test('should navigate to Help -> FAQ -> Getting Started', async () => {
@@ -597,7 +616,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Help' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'FAQ' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Getting Started' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the FAQ for Getting Started.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the FAQ for Getting Started.'));
     });
 
     test('should navigate back multiple levels using "back" command', async () => {
@@ -606,9 +625,9 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'back' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Vedic Astrology menu.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Vedic Astrology menu.'));
     });
 
     test('should return to Main Menu from a deep level using "Main Menu" command', async () => {
@@ -617,9 +636,9 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the Main Menu!'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the Main Menu!'));
     });
 
     test('should correctly restore state after network interruption mid-navigation', async () => {
@@ -627,9 +646,9 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Network Recovered' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Connection restored. You are in Western Astrology.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Connection restored. You are in Western Astrology.'));
     });
 
     test('should allow user to jump to a bookmarked menu item', async () => {
@@ -638,9 +657,9 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Save as Favorite: Western' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Go to Favorite: Western' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Western Astrology menu.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Western Astrology menu.'));
     });
 
     test('should clear recent path memory upon user explicit clear command', async () => {
@@ -648,27 +667,27 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Clear History' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Your navigation history has been cleared.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Your navigation history has been cleared.'));
     });
 
     test('should display exclusive premium options for Gold tier subscribers', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { subscriptionStatus: 'active', subscriptionTier: 'Gold' } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Gold Exclusive Insights'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Gold Exclusive Insights'));
     });
 
     test('should display exclusive premium options for Platinum tier subscribers', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { subscriptionStatus: 'active', subscriptionTier: 'Platinum' } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Platinum VIP Access'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Platinum VIP Access'));
     });
 
     test('should prompt for missing birth time before showing advanced astrological options', async () => {
@@ -678,10 +697,10 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'skip' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please provide your exact birth time to access advanced readings.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please provide your exact birth time to access advanced readings.'));
     });
 
     test('should prompt for missing birth place before showing location-based astrological options', async () => {
@@ -691,29 +710,29 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'skip' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Location Based Astrology' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please provide your birth place to access location-based astrology.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please provide your birth place to access location-based astrology.'));
     });
 
     test('should not show \'Complete Profile\' after full profile completion', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).not.toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Complete Profile'));
+      expect(sendMessage).not.toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Complete Profile'));
     });
 
     test('should display a personalized welcome message based on recent activity', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Daily Horoscope' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome back! Your last request was Daily Horoscope.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome back! Your last request was Daily Horoscope.'));
     });
 
     test('should navigate to Western -> Compatibility -> Synastry Analysis', async () => {
@@ -722,7 +741,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Compatibility' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Synastry Analysis' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Synastry Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Synastry Analysis.'));
     });
 
     test('should navigate to Western -> Compatibility -> Composite Chart', async () => {
@@ -731,7 +750,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Compatibility' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Composite Chart' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Generating Composite Chart.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Generating Composite Chart.'));
     });
 
     test('should navigate to Vedic -> Muhurta -> Electional Astrology', async () => {
@@ -740,7 +759,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Muhurta' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Electional Astrology' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Electional Astrology for auspicious timings.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring Electional Astrology for auspicious timings.'));
     });
 
     test('should navigate to Vedic -> Muhurta -> Daily Planetary Hours', async () => {
@@ -749,7 +768,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Muhurta' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Daily Planetary Hours' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Daily Planetary Hours.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Daily Planetary Hours.'));
     });
 
     test('should navigate to Relationships -> Events -> Wedding Timing', async () => {
@@ -758,7 +777,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Relationships' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Events' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Wedding Timing' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Calculating auspicious wedding timings.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Calculating auspicious wedding timings.'));
     });
 
     test('should navigate to Relationships -> Business -> Team Dynamics', async () => {
@@ -767,7 +786,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Relationships' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Business' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Team Dynamics' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing Team Dynamics.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing Team Dynamics.'));
     });
 
     test('should navigate to Divination -> Horary -> Question Analysis', async () => {
@@ -776,7 +795,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Divination' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Horary' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Question Analysis' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Submitting your question for Horary Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Submitting your question for Horary Analysis.'));
     });
 
     test('should navigate to Divination -> Auspicious Timings -> Daily', async () => {
@@ -785,7 +804,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Divination' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Auspicious Timings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Daily' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Daily Auspicious Timings.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Daily Auspicious Timings.'));
     });
 
     test('should navigate to Settings -> Notifications -> Manage Alerts', async () => {
@@ -794,7 +813,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Settings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Notifications' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Manage Alerts' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Manage your astrological alerts.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Manage your astrological alerts.'));
     });
 
     test('should navigate to Settings -> Account -> Change Password', async () => {
@@ -803,7 +822,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Settings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Account' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Change Password' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please enter your old password to change it.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please enter your old password to change it.'));
     });
 
     test('should navigate to Help -> FAQ -> Getting Started', async () => {
@@ -812,7 +831,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Help' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'FAQ' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Getting Started' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the FAQ for Getting Started.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the FAQ for Getting Started.'));
     });
 
     test('should navigate to Help -> Contact Support -> Live Chat', async () => {
@@ -821,7 +840,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Help' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Contact Support' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Live Chat' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Connecting you to a live support agent.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Connecting you to a live support agent.'));
     });
 
     test('should navigate to Help -> Tutorials -> Video Guides', async () => {
@@ -830,7 +849,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Help' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Tutorials' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Video Guides' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Here are our video guides to get you started.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Here are our video guides to get you started.'));
     });
 
     test('should navigate to Resources -> Glossary -> Astrological Terms', async () => {
@@ -839,7 +858,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Resources' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Glossary' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Astrological Terms' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the Astrological Terms Glossary.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the Astrological Terms Glossary.'));
     });
 
     test('should handle navigation through a 7-level deep path correctly', async () => {
@@ -851,7 +870,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Dasha Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vimshottari Dasha' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Major Periods' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Major Dasha Periods.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Displaying Major Dasha Periods.'));
     });
 
     test('should handle navigation through a 8-level deep path correctly', async () => {
@@ -864,26 +883,26 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vimshottari Dasha' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Major Periods' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Sun Dasha' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Details for Sun Dasha Period.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Details for Sun Dasha Period.'));
     });
 
     test('should display unique submenu options for \'relationships\' focused users', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { userFocus: 'relationships' } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Relationships' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Marriage Compatibility'));
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Friendship Bonds'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Marriage Compatibility'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Friendship Bonds'));
     });
 
     test('should show specific menu items to users who have completed specific readings', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { completedReadings: ['Birth Chart Analysis'] } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Western Astrology' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Recommended: Advanced Chart Interpretations'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Recommended: Advanced Chart Interpretations'));
     });
 
     test('should hide "Beginner" options for users who have accessed "Advanced" readings multiple times', async () => {
@@ -892,36 +911,36 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       for(let i = 0; i < 3; i++) {
         await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
         await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
-        whatsAppIntegration.mockSendMessage.mockClear();
+        sendMessage.mockClear();
       }
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).not.toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Basic Readings'));
+      expect(sendMessage).not.toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Basic Readings'));
     });
 
     test('should offer quick access to "Subscription management" for premium users', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { subscriptionStatus: 'active' } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Subscription Management'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Subscription Management'));
     });
 
     test('should promote a specific new feature to all users upon launch', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' }, newFeatureAvailable: true }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('🎉 New! Explore Daily Horoscopes 2.0! 🎉'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('🎉 New! Explore Daily Horoscopes 2.0! 🎉'));
     });
 
     test('should indicate menu options with pending actions/notifications', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { pendingNotifications: ['Daily Horoscope'] } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Daily Horoscope (New!)'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Daily Horoscope (New!)'));
     });
 
     test('should offer a "Go to top" or "Home" option from any deep menu level', async () => {
@@ -930,16 +949,16 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Home' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the Main Menu!'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Welcome to the Main Menu!'));
     });
 
     test('should allow partial input matching for menu navigation to some depth', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Wes Astrolog' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Western Astrology menu.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Western Astrology menu.'));
     });
 
     test('should offer "back" option even if current menu has no sub-options', async () => {
@@ -949,37 +968,37 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Basic Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'back' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Basic Readings menu.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are now in Basic Readings menu.'));
     });
 
     test('should confirm irreversible actions before proceeding with navigation', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Settings' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Delete Profile' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Are you sure you want to delete your profile? This action is irreversible. (Yes/No)'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Are you sure you want to delete your profile? This action is irreversible. (Yes/No)'));
     });
 
     test('should limit navigation depth for non-premium users in advanced sections', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Rare Dashas' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('This advanced option is only available for premium subscribers.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('This advanced option is only available for premium subscribers.'));
     });
 
     test('should adapt menu options for users tagged with specific astrological interests', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { astrologicalInterests: ['Horary'] } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Divination' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Horary (Recommended for your interests)'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Horary (Recommended for your interests)'));
     });
 
     test('should offer a return to previous interaction point after completing a reading', async () => {
@@ -989,17 +1008,17 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Basic Readings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Generate Report' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Return' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are back in Birth Chart Analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('You are back in Birth Chart Analysis.'));
     });
 
     test('should provide a searchable menu if options are too numerous to list', async () => {
       const phoneNumber = '+menu_test_user';
       await simulateOnboarding(phoneNumber);
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Extensive Catalog' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Too many options to list. Please type keywords to search for a service.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Too many options to list. Please type keywords to search for a service.'));
     });
 
     test('should navigate using direct commands regardless of current menu depth', async () => {
@@ -1008,9 +1027,9 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Advanced Readings' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Daily Horoscope' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Your Daily Horoscope is being prepared.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Your Daily Horoscope is being prepared.'));
     });
 
     // 45 tests completed
@@ -1022,12 +1041,12 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Daily Horoscope' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Compatibility Analysis' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Recent: Daily Horoscope, Compatibility Analysis')
       );
@@ -1040,11 +1059,11 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       // Simulate marking 'Birth Chart Analysis' as favorite or frequent use
       for (let i = 0; i < 10; i++) {
         await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart Analysis' } }, {});
-        whatsAppIntegration.mockSendMessage.mockClear();
+        sendMessage.mockClear();
       }
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('⭐ Birth Chart Analysis')
       );
@@ -1057,10 +1076,10 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       // Simulate completing a 'Birth Chart Analysis'
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart Analysis' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'View Full Report' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('You just viewed your Birth Chart. Would you like to explore Transits or Progressions?')
       );
@@ -1073,10 +1092,10 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       // Simulate user showing interest in 'Vedic Astrology' topics
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Vedic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Dasha Analysis' } }, {});
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Based on your interest in Vedic Astrology, you might like: Remedial Measures.')
       );
@@ -1089,11 +1108,11 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       // Simulate user trying to access a premium feature without subscription
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Premium Feature' } }, {});
 
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('This is a premium feature. Please upgrade your subscription to access it.')
       );
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Upgrade Now')
       );
@@ -1105,18 +1124,18 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       // Simulate user without subscription trying to access premium feature
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Premium Feature' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('This is a premium feature.')
       );
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       // Simulate subscription activation
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { subscriptionStatus: 'active' } });
 
       // Now try to access the premium feature again
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Premium Feature' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Welcome to your Premium Feature!')
       );
@@ -1128,14 +1147,14 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       // Simulate user entering a trial period
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { subscriptionStatus: 'trial', trialEndDate: new Date() } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('You are on a free trial. Enjoy premium features until [date].')
       );
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Extend Trial')
       );
@@ -1147,14 +1166,14 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       // Simulate user with a billing issue
       await dbManager.db.collection('users').updateOne({ phoneNumber: phoneNumber }, { $set: { subscriptionStatus: 'active', billingIssue: true } });
-      whatsAppIntegration.mockSendMessage.mockClear();
+      sendMessage.mockClear();
 
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Main Menu' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('⚠️ Billing Issue: Please update your payment method.')
       );
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+      expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Update Payment')
       );
@@ -1447,7 +1466,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Chinese Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Bazi Compatibility' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing Bazi compatibility.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing Bazi compatibility.'));
     }, 10000);
 
     test('should navigate to Kabbalistic astrology → Tree of Life analysis', async () => {
@@ -1455,7 +1474,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Kabbalistic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Tree of Life Analysis' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring your Tree of Life placement.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Exploring your Tree of Life placement.'));
     }, 10000);
 
     test('should navigate to Mayan astrology → Kin analysis', async () => {
@@ -1463,7 +1482,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Mayan Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'K\'in Analysis' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing your Mayan day sign energy.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing your Mayan day sign energy.'));
     }, 10000);
 
     test('should navigate to Celtic astrology → Ogham reading', async () => {
@@ -1471,7 +1490,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Celtic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Ogham Reading' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Drawing your Celtic Ogham symbol.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Drawing your Celtic Ogham symbol.'));
     }, 10000);
 
     test('should navigate to Hellenistic astrology → Arabian Parts', async () => {
@@ -1479,7 +1498,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hellenistic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Arabian Parts' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Calculating Arabian Parts (lots).'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Calculating Arabian Parts (lots).'));
     }, 10000);
 
     test('should navigate to Islamic astrology → Falak analysis', async () => {
@@ -1487,7 +1506,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Islamic Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Falak Analysis' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Performing astronomical calculations.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Performing astronomical calculations.'));
     }, 10000);
 
     test('should navigate to Palmistry → Life line analysis', async () => {
@@ -1496,7 +1515,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Divination' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Palmistry' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Life Line Analysis' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Examining your life line for longevity and vitality.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Examining your life line for longevity and vitality.'));
     }, 10000);
 
     test('should navigate to Medical astrology → Planetary rulers', async () => {
@@ -1504,7 +1523,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Medical Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Planetary Body Rulers' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing which planets rule your health.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing which planets rule your health.'));
     }, 10000);
 
     test('should navigate to Mundane astrology → World transits', async () => {
@@ -1512,7 +1531,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Mundane Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Global Transits' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Examining planetary movements affecting world events.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Examining planetary movements affecting world events.'));
     }, 10000);
 
     test('should navigate to Horary astrology → Question analysis', async () => {
@@ -1520,7 +1539,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Horary Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Question Analysis' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please ask your specific question for horary analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Please ask your specific question for horary analysis.'));
     }, 10000);
 
     test('should navigate to Astrocartography → Jupiter lines', async () => {
@@ -1528,7 +1547,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Astrocartography' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Jupiter Lines' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Showing locations where Jupiter influences your life.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Showing locations where Jupiter influences your life.'));
     }, 10000);
 
     test('should navigate to Career astrology → MC analysis', async () => {
@@ -1536,7 +1555,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Career Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Profession Analysis' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing your MC (Midheaven) for career insights.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing your MC (Midheaven) for career insights.'));
     }, 10000);
 
     test('should navigate to Financial astrology → Venus/Jupiter analysis', async () => {
@@ -1544,7 +1563,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Financial Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Value Systems' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Examining your Venus and Jupiter for money attitudes.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Examining your Venus and Jupiter for money attitudes.'));
     }, 10000);
 
     test('should navigate to Family astrology → Parent-child dynamics', async () => {
@@ -1552,7 +1571,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Family Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Parent-Child Dynamics' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing 4th and 10th house relationships.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Analyzing 4th and 10th house relationships.'));
     }, 10000);
 
     test('should navigate to Nadi astrology → Ancient leaf readings', async () => {
@@ -1560,7 +1579,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Nadi Astrology' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Palm Leaf Reading' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Nadi palm leaf analysis.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Initiating Nadi palm leaf analysis.'));
     }, 10000);
 
     test('should navigate to Marketplace → Personalized crystals', async () => {
@@ -1569,7 +1588,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Marketplace' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Crystals & Gems' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Personalized Crystals' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Getting crystal recommendations based on your chart.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Getting crystal recommendations based on your chart.'));
     }, 10000);
 
     test('should navigate to Support → Live chat', async () => {
@@ -1577,7 +1596,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await simulateOnboarding(phoneNumber);
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Support' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Live Chat' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Opening live chat with an astrologer.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Opening live chat with an astrologer.'));
     }, 10000);
 
     test('should navigate to Language settings → Arabic selection', async () => {
@@ -1586,7 +1605,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Settings' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Language Preferences' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'العربية (Arabic)' } }, {});
-      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Language changed to Arabic.'));
+      expect(sendMessage).toHaveBeenCalledWith(phoneNumber, expect.stringContaining('Language changed to Arabic.'));
     }, 10000);
   });
 

@@ -10,12 +10,12 @@
         "error_message": "Please provide date in DDMMYY (150690) or DDMMYYYY (15061990) format only"
       },
       "ask_birth_time": {
-        "prompt": "Great! 📅 Your birth date reveals your *Sun Sign* and core personality.\n\nFor more accurate insights, what's your birth time? (HHMM or HH:MM, 24-hour format)\n\n*Examples:* 1430 or 14:30\n\n💡 *Why birth time?* It determines your *Rising Sign* (how others see you) and *Moon Sign* (your emotional nature).\n\nOr reply 'skip' if you don't know.",
+        "prompt": "Great! 📅 Your birth date reveals your *Sun Sign* and core personality.\n\nFor more accurate insights, what's your birth time? (HHMM format only, 24-hour)\n\n*Examples:* 1430\n\n💡 *Why birth time?* It determines your *Rising Sign* (how others see you) and *Moon Sign* (your emotional nature).\n\nOr reply 'skip' if you don't know.",
         "validation": "time_or_skip",
         "next_step": "ask_birth_place",
         "data_key": "birthTime",
         "optional": true,
-        "error_message": "Please provide time in HHMM (1430) or HH:MM (14:30) format, or 'skip'"
+        "error_message": "Please provide time in HHMM (1430) format only, or 'skip'"
       },
       "ask_birth_place": {
         "prompt": "Excellent! 🌍 Birth place determines your *local planetary positions* at birth.\n\nPlease provide your birth city and country:\n\n*Example:* Mumbai, India\n\n💡 *Why birth place?* Different locations have unique astrological influences due to latitude/longitude.",
@@ -188,7 +188,7 @@
         "next_step": "ask_birth_date_numerology"
       },
       "ask_birth_date_numerology": {
-        "prompt": "And what is your birth date? (DDMMYY or DDMMYYYY format)\n\n💡 *Examples:*\n• 150690 (June 15, 1990)\n• 15061990 (June 15, 1990)",
+        "prompt": "And what is your birth date? (DDMMYY or DDMMYYYY format only)\n\n💡 *Examples:*\n• 150690 (June 15, 1990)\n• 15061990 (June 15, 1990)",
         "validation": "date",
         "data_key": "birthDate",
         "action": "generate_numerology_report"

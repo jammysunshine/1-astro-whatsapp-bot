@@ -1,6 +1,7 @@
 const vedicCalculator = require('../vedicCalculator');
 const { matchesIntent } = require('../utils/intentUtils');
 const { buildHoroscopeResponse, buildNumerologyResponse } = require('../utils/responseBuilders');
+const { getBirthDetailsPrompt, getNameAndBirthDatePrompt } = require('../../../utils/promptUtils');
 const logger = require('../../../utils/logger');
 
 /**
@@ -12,7 +13,7 @@ const logger = require('../../../utils/logger');
 const handleHoroscope = async(message, user) => {
   if (matchesIntent(message, ['horoscope', 'daily', /^what'?s my (daily )?horoscope/])) {
     if (!user.birthDate) {
-      return 'I\'d love to give you a personalized daily horoscope! Please share your birth date (DD/MM/YYYY) first so I can calculate your sun sign.';
+      return 'I\'d love to give you a personalized daily horoscope! ' + getBirthDatePrompt('horoscope', 'calculate your sun sign');
     }
 
     try {
@@ -41,7 +42,7 @@ const handleHoroscope = async(message, user) => {
 const handleNumerology = async(message, user) => {
   if (matchesIntent(message, ['numerology', 'numbers', 'life path number', 'expression number', 'soul urge', /^numerology/, /^numbers/])) {
     if (!user.birthDate) {
-      return 'For numerology analysis, I need your birth details and full name to calculate your core numbers.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Full name (as it appears on birth certificate)\n\nExample: 15/06/1990, John Michael Smith';
+      return getNameAndBirthDatePrompt('numerology', 'calculate your core numbers');
     }
 
     try {
@@ -72,7 +73,7 @@ const handleNumerology = async(message, user) => {
 const handleSolarReturn = async(message, user) => {
   if (matchesIntent(message, ['solar return', 'birthday chart', 'annual chart', 'year ahead', /^solar.?return/])) {
     if (!user.birthDate) {
-      return 'For solar return analysis, I need your complete birth details to calculate your annual birthday chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      return getBirthDetailsPrompt('solar return', 'calculate your annual birthday chart');
     }
 
     try {
@@ -139,7 +140,7 @@ const handleSolarReturn = async(message, user) => {
 const handleAsteroids = async(message, user) => {
   if (matchesIntent(message, ['asteroids', 'asteroid analysis', 'chiron', 'juno', 'vesta', 'pallas', /^asteroid/])) {
     if (!user.birthDate) {
-      return 'For asteroid analysis, I need your complete birth details to calculate Chiron, Juno, Vesta, and Pallas positions.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      return getBirthDetailsPrompt('asteroid', 'calculate Chiron, Juno, Vesta, and Pallas positions');
     }
 
     try {

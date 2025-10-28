@@ -15,7 +15,7 @@ const HORARY_TIMEZONE = process.env.HORARY_TIMEZONE || 'Asia/Kolkata';
 const handleEventAstrology = async(message, user) => {
   if (matchesIntent(message, ['event astrology', 'cosmic events', 'eclipses', 'planetary events', 'seasonal astrology', 'cosmic calendar', /^event.?astrology/, /^cosmic.?events/])) {
     if (!user.birthDate) {
-      return 'For event astrology analysis, I need your complete birth details to correlate cosmic events with your personal chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      return 'For event astrology analysis, I need your complete birth details to correlate cosmic events with your personal chart.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM)\n• Birth place (City, Country)\n\nExample: 15061990, 1430, Mumbai, India';
     }
 
     try {
@@ -98,7 +98,7 @@ const handleEventAstrology = async(message, user) => {
 const handleFutureSelf = async(message, user) => {
   if (matchesIntent(message, ['future self', 'future self simulator', 'life timeline', 'long-term forecast', 'alternative pathways', 'what will my life be like', /^future.?self/, /^life.?timeline/])) {
     if (!user.birthDate) {
-      return 'For future self simulation, I need your complete birth details to create your long-term life timeline.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      return 'For future self simulation, I need your complete birth details to create your long-term life timeline.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM)\n• Birth place (City, Country)\n\nExample: 15061990, 1430, Mumbai, India';
     }
 
     try {
@@ -197,10 +197,10 @@ const handleFutureSelf = async(message, user) => {
 const handleGroupAstrology = async(message, user) => {
   if (matchesIntent(message, ['group astrology', 'family astrology', 'group reading', 'family reading', 'combined chart', 'group compatibility', /^group.?astrology/, /^family.?astrology/])) {
     if (!user.birthDate) {
-      return 'For group astrology analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India\n\nThen I can analyze group dynamics with other members!';
+      return 'For group astrology analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM)\n• Birth place (City, Country)\n\nExample: 15061990, 1430, Mumbai, India\n\nThen I can analyze group dynamics with other members!';
     }
 
-    return '👨‍👩‍👧‍👦 *Group & Family Astrology*\n\nDiscover the cosmic dynamics of your family or social group! I can create:\n\n🌟 *Composite Charts* - Combined energy of the group\n🤝 *Compatibility Analysis* - How members interact astrologically\n📊 *Group Dynamics* - Communication styles and decision making\n🎯 *Shared Purpose* - Collective goals and challenges\n⏰ *Timing Insights* - Best periods for group activities\n\n*To get a group reading:*\n\n1. Send your birth details (if not already set)\n2. Provide details for 2-6 other group members\n3. Specify group type: "family", "couple", "friends", or "colleagues"\n\n*Format for each member:*\n```\nName: [Full Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n```\n\nExample:\n```\nJohn: 15/06/1990, 14:30, Mumbai, India\nJane: 22/03/1992, 09:15, Delhi, India\nType: family\n```\n\nWhat type of group would you like to analyze?';
+    return '👨‍👩‍👧‍👦 *Group & Family Astrology*\n\nDiscover the cosmic dynamics of your family or social group! I can create:\n\n🌟 *Composite Charts* - Combined energy of the group\n🤝 *Compatibility Analysis* - How members interact astrologically\n📊 *Group Dynamics* - Communication styles and decision making\n🎯 *Shared Purpose* - Collective goals and challenges\n⏰ *Timing Insights* - Best periods for group activities\n\n*To get a group reading:*\n\n1. Send your birth details (if not already set)\n2. Provide details for 2-6 other group members\n3. Specify group type: "family", "couple", "friends", or "colleagues"\n\n*Format for each member:*\n```\nName: [Full Name]\nBirth: DDMMYY or DDMMYYYY, HHMM\nPlace: [City, Country]\n```\n\nExample:\n```\nJohn: 15061990, 1430, Mumbai, India\nJane: 22031992, 0915, Delhi, India\nType: family\n```\n\nWhat type of group would you like to analyze?';
   }
   return null;
 };
@@ -214,10 +214,10 @@ const handleGroupAstrology = async(message, user) => {
 const handleMarriageCompatibility = async(message, user) => {
   if (matchesIntent(message, ['marriage compatibility', 'guna matching', 'kundli matching', 'marriage matching', 'wedding compatibility', /^guna/, /^marriage.?match/])) {
     if (!user.birthDate) {
-      return 'For marriage compatibility analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India\n\nThen I can match it with your partner\'s chart!';
+      return 'For marriage compatibility analysis, I need your complete birth details first.\n\nPlease provide your birth information:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM)\n• Birth place (City, Country)\n\nExample: 15061990, 1430, Mumbai, India\n\nThen I can match it with your partner\'s chart!';
     }
 
-    return '💕 *Hindu Marriage Compatibility (Kundli Matching)*\n\nI can perform traditional Vedic marriage compatibility analysis using the sacred 36-point Guna matching system!\n\n*What I analyze:*\n• *36-Point Guna System* - Varna, Tara, Yoni, Grahamaitri, Gana, Bhakut, Nadi\n• *Manglik Dosha* - Mars placement analysis and remedies\n• *Overall Compatibility* - Traditional Hindu marriage assessment\n\n*To get marriage compatibility:*\n\n1. Send your birth details (if not already set)\n2. Provide your partner\'s birth details\n\n*Partner\'s details format:*\n```\nName: [Partner Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n```\n\nExample:\n```\nName: Priya Sharma\nBirth: 25/12/1992, 10:30\nPlace: Jaipur, India\n```\n\nThis follows traditional Vedic astrology principles used for Hindu marriages! 🕉️';
+    return '💕 *Hindu Marriage Compatibility (Kundli Matching)*\n\nI can perform traditional Vedic marriage compatibility analysis using the sacred 36-point Guna matching system!\n\n*What I analyze:*\n• *36-Point Guna System* - Varna, Tara, Yoni, Grahamaitri, Gana, Bhakut, Nadi\n• *Manglik Dosha* - Mars placement analysis and remedies\n• *Overall Compatibility* - Traditional Hindu marriage assessment\n\n*To get marriage compatibility:*\n\n1. Send your birth details (if not already set)\n2. Provide your partner\'s birth details\n\n*Partner\'s details format:*\n```\nName: [Partner Name]\nBirth: DDMMYY or DDMMYYYY, HHMM\nPlace: [City, Country]\n```\n\nExample:\n```\nName: Priya Sharma\nBirth: 25121992, 1030\nPlace: Jaipur, India\n```\n\nThis follows traditional Vedic astrology principles used for Hindu marriages! 🕉️';
   }
   return null;
 };
@@ -231,7 +231,7 @@ const handleMarriageCompatibility = async(message, user) => {
 const handleLagnaAnalysis = async(message, user) => {
   if (matchesIntent(message, ['lagna', 'ascendant', 'lagna analysis', 'rising sign analysis', /^lagna/])) {
     if (!user.birthDate) {
-      return 'For Lagna (Ascendant) analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      return 'For Lagna (Ascendant) analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM)\n• Birth place (City, Country)\n\nExample: 15061990, 1430, Mumbai, India';
     }
 
     try {
@@ -364,7 +364,7 @@ const handleHorary = async(message, user) => {
 const handleSecondaryProgressions = async(message, user) => {
   if (matchesIntent(message, ['progressions', 'secondary progressions', 'progressed chart', /^progressions/])) {
     if (!user.birthDate) {
-      return 'For secondary progressions analysis, I need your complete birth details to calculate your progressed chart.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      return 'For secondary progressions analysis, I need your complete birth details to calculate your progressed chart.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM)\n• Birth place (City, Country)\n\nExample: 15061990, 1430, Mumbai, India';
     }
 
     try {
@@ -445,7 +445,7 @@ const handleSecondaryProgressions = async(message, user) => {
 const handleSolarArc = async(message, user) => {
   if (matchesIntent(message, ['solar arc', 'arc directions', 'directed chart', /^solar.?arc/])) {
     if (!user.birthDate) {
-      return 'For solar arc directions analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DD/MM/YYYY)\n• Birth time (HH:MM)\n• Birth place (City, Country)\n\nExample: 15/06/1990, 14:30, Mumbai, India';
+      return 'For solar arc directions analysis, I need your complete birth details.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM)\n• Birth place (City, Country)\n\nExample: 15061990, 1430, Mumbai, India';
     }
 
     try {

@@ -54,7 +54,7 @@ const validateUserProfile = async(user, phoneNumber, serviceName) => {
   if (!user || !user.birthDetails ||
       !user.birthDetails.date || !user.birthDetails.time ||
       !user.birthDetails.place) {
-    const profilePrompt = `👤 *Profile Required*\n\nTo provide accurate ${serviceName}, I need your birth details:\n\n📅 *Birth Date* (DD/MM/YYYY)\n🕐 *Birth Time* (HH:MM - 24hr format)\n📍 *Birth Place* (City, Country)\n\n*Example:*\n15/06/1990, 14:30, Mumbai, India\n\nSend your birth details in this format, or use the Settings menu to update your profile permanently.`;
+    const profilePrompt = `👤 *Profile Required*\n\nTo provide accurate ${serviceName}, I need your birth details:\n\n📅 *Birth Date* (DDMMYY or DDMMYYYY format)\n🕐 *Birth Time* (HHMM format - 24hr)\n📍 *Birth Place* (City, Country)\n\n*Example:*\n150690, 1430, Mumbai, India\n\nSend your birth details in this format, or use the Settings menu to update your profile permanently.`;
 
     await sendMessage(phoneNumber, profilePrompt, 'text');
     return false;
@@ -1498,22 +1498,22 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     return null;
   }
   case 'start_group_astrology_flow': {
-    const groupMessage = '👨‍👩‍👧‍👦 *Group Astrology Analysis*\n\nDiscover the cosmic dynamics of your group!\n\n*What we analyze:*\n🌟 Composite Charts - Combined group energy\n🤝 Compatibility - How members interact\n📊 Group Dynamics - Communication styles\n🎯 Shared Purpose - Collective goals\n⏰ Timing Insights - Best group periods\n\n*To get started:*\n\n1. Send your birth details (if not set)\n2. Provide details for 2-6 group members\n3. Specify group type: family/couple/friends/business\n\n*Format for each member:*\n```\nName: [Full Name]\nBirth: DD/MM/YYYY, HH:MM\nPlace: [City, Country]\n```\n\nExample:\n```\nJohn: 15/06/1990, 14:30, Mumbai, India\nJane: 22/03/1992, 09:15, Delhi, India\nType: family\n```\n\nReady to begin? Send member details!';
+    const groupMessage = '👨‍👩‍👧‍👦 *Group Astrology Analysis*\n\nDiscover the cosmic dynamics of your group!\n\n*What we analyze:*\n🌟 Composite Charts - Combined group energy\n🤝 Compatibility - How members interact\n📊 Group Dynamics - Communication styles\n🎯 Shared Purpose - Collective goals\n⏰ Timing Insights - Best group periods\n\n*To get started:*\n\n1. Send your birth details (if not set)\n2. Provide details for 2-6 group members\n3. Specify group type: family/couple/friends/business\n\n*Format for each member:*\n```\nName: [Full Name]\nBirth: DDMMYY or DDMMYYYY, HHMM\nPlace: [City, Country]\n```\n\nExample:\n```\nJohn: 150690, 1430, Mumbai, India\nJane: 220392, 0915, Delhi, India\nType: family\n```\n\nReady to begin? Send member details!';
     await sendMessage(phoneNumber, groupMessage, 'text');
     return null;
   }
   case 'start_family_astrology_flow': {
-    const familyMessage = '👪 *Family Astrology*\n\nExplore family relationships and dynamics through the stars!\n\n*Family Analysis Includes:*\n🏠 Family Composite Chart\n❤️ Relationship Compatibility\n👶 Children & Parenting\n👴 Generational Patterns\n🕊️ Family Healing & Growth\n\n*Required Information:*\n- Your birth details\n- Family members\' birth details (2-6 people)\n\n*Format:*\n```\n[Your Name]: DD/MM/YYYY, HH:MM, City, Country\n[Family Member 1]: DD/MM/YYYY, HH:MM, City, Country\n[Family Member 2]: DD/MM/YYYY, HH:MM, City, Country\n```\n\nSend family member details to begin!';
+    const familyMessage = '👪 *Family Astrology*\n\nExplore family relationships and dynamics through the stars!\n\n*Family Analysis Includes:*\n🏠 Family Composite Chart\n❤️ Relationship Compatibility\n👶 Children & Parenting\n👴 Generational Patterns\n🕊️ Family Healing & Growth\n\n*Required Information:*\n- Your birth details\n- Family members\' birth details (2-6 people)\n\n*Format:*\n```\n[Your Name]: DDMMYY or DDMMYYYY, HHMM, City, Country\n[Family Member 1]: DDMMYY or DDMMYYYY, HHMM, City, Country\n[Family Member 2]: DDMMYY or DDMMYYYY, HHMM, City, Country\n```\n\nSend family member details to begin!';
     await sendMessage(phoneNumber, familyMessage, 'text');
     return null;
   }
   case 'start_couple_compatibility_flow': {
-    const coupleMessage = '💕 *Couple Compatibility*\n\nDiscover your relationship\'s cosmic blueprint!\n\n*Analysis Covers:*\n🌟 Synastry Chart - Relationship dynamics\n💫 Composite Chart - Your combined energy\n🔮 Soulmate Connections - Karmic bonds\n⏰ Timing - Best periods for commitment\n💍 Marriage Compatibility - Long-term potential\n\n*Send both birth details:*\n```\n[Partner 1]: DD/MM/YYYY, HH:MM, City, Country\n[Partner 2]: DD/MM/YYYY, HH:MM, City, Country\n```\n\nExample:\n```\nAlex: 15/06/1990, 14:30, London, UK\nJordan: 22/03/1992, 09:15, Manchester, UK\n```\n\nShare your details for a cosmic love reading!';
+    const coupleMessage = '💕 *Couple Compatibility*\n\nDiscover your relationship\'s cosmic blueprint!\n\n*Analysis Covers:*\n🌟 Synastry Chart - Relationship dynamics\n💫 Composite Chart - Your combined energy\n🔮 Soulmate Connections - Karmic bonds\n⏰ Timing - Best periods for commitment\n💍 Marriage Compatibility - Long-term potential\n\n*Send both birth details:*\n```\n[Partner 1]: DDMMYY or DDMMYYYY, HHMM, City, Country\n[Partner 2]: DDMMYY or DDMMYYYY, HHMM, City, Country\n```\n\nExample:\n```\nAlex: 15061990, 1430, London, UK\nJordan: 22031992, 0915, Manchester, UK\n```\n\nShare your details for a cosmic love reading!';
     await sendMessage(phoneNumber, coupleMessage, 'text');
     return null;
   }
   case 'start_business_partnership_flow': {
-    const businessMessage = '🤝 *Business Partnership Astrology*\n\nOptimize your business relationships with cosmic insights!\n\n*Business Analysis:*\n💼 Partnership Synastry\n📈 Success Potential\n⚖️ Balance of Power\n🎯 Shared Goals & Vision\n⏰ Strategic Timing\n💰 Financial Compatibility\n\n*Required:*\n- Your birth details\n- Business partner\'s details\n\n*Format:*\n```\n[Your Name]: DD/MM/YYYY, HH:MM, City, Country\n[Partner Name]: DD/MM/YYYY, HH:MM, City, Country\nBusiness Type: [startup/corporation/freelance/etc]\n```\n\nSend partnership details!';
+    const businessMessage = '🤝 *Business Partnership Astrology*\n\nOptimize your business relationships with cosmic insights!\n\n*Business Analysis:*\n💼 Partnership Synastry\n📈 Success Potential\n⚖️ Balance of Power\n🎯 Shared Goals & Vision\n⏰ Strategic Timing\n💰 Financial Compatibility\n\n*Required:*\n- Your birth details\n- Business partner\'s details\n\n*Format:*\n```\n[Your Name]: DDMMYY or DDMMYYYY, HHMM, City, Country\n[Partner Name]: DDMMYY or DDMMYYYY, HHMM, City, Country\nBusiness Type: [startup/corporation/freelance/etc]\n```\n\nSend partnership details!';
     await sendMessage(phoneNumber, businessMessage, 'text');
     return null;
   }
@@ -1795,7 +1795,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     return null;
   case 'get_palmistry_analysis': {
     const userLanguage = getUserLanguage(user, phoneNumber);
-    const palmistryBody = '✋ *Palmistry Analysis*\n\n' + translationService.translate('messages.palmistry.introduction', userLanguage) || 'Your palm reveals the story of your life path, character, and destiny.\n\n*Hand Type:* Determined by your dominant traits\n*Life Line:* Shows vitality and life changes\n*Heart Line:* Reveals emotional patterns\n*Head Line:* Indicates intellect and decision-making\n*Fate Line:* Shows career and life direction\n\nThis ancient art has been practiced for thousands of years across cultures.';
+    const palmistryBody = `✋ *Palmistry Analysis*\n\n${translationService.translate('messages.palmistry.introduction', userLanguage)}` || 'Your palm reveals the story of your life path, character, and destiny.\n\n*Hand Type:* Determined by your dominant traits\n*Life Line:* Shows vitality and life changes\n*Heart Line:* Reveals emotional patterns\n*Head Line:* Indicates intellect and decision-making\n*Fate Line:* Shows career and life direction\n\nThis ancient art has been practiced for thousands of years across cultures.';
 
     const buttons = [
       { type: 'reply', reply: { id: 'palmistry_detailed', title: translationService.translate('buttons.detailed_reading', userLanguage) || '📖 Detailed Analysis' } },
@@ -1808,7 +1808,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   }
   case 'get_iching_reading': {
     const userLanguage = getUserLanguage(user, phoneNumber);
-    const ichingBody = '🪙 *I Ching Oracle*\n\n' + translationService.translate('messages.iching.introduction', userLanguage) || 'The ancient Chinese Book of Changes offers profound wisdom through hexagram readings.\n\n*What the I Ching reveals:*\n🔮 Life situations and their outcomes\n🎯 Right timing for decisions\n🌟 Inner wisdom and guidance\n⚖️ Balance between action and inaction\n\nThis 3000-year-old divination system provides timeless insights for modern challenges.';
+    const ichingBody = `🪙 *I Ching Oracle*\n\n${translationService.translate('messages.iching.introduction', userLanguage)}` || 'The ancient Chinese Book of Changes offers profound wisdom through hexagram readings.\n\n*What the I Ching reveals:*\n🔮 Life situations and their outcomes\n🎯 Right timing for decisions\n🌟 Inner wisdom and guidance\n⚖️ Balance between action and inaction\n\nThis 3000-year-old divination system provides timeless insights for modern challenges.';
 
     const buttons = [
       { type: 'reply', reply: { id: 'iching_cast', title: translationService.translate('buttons.cast_hexagram', userLanguage) || '🪙 Cast Hexagram' } },
@@ -1821,7 +1821,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   }
   case 'get_horary_reading': {
     const userLanguage = getUserLanguage(user, phoneNumber);
-    const horaryBody = '⏰ *Horary Astrology*\n\n' + translationService.translate('messages.horary.introduction', userLanguage) || 'Traditional horary astrology answers specific questions by analyzing the exact moment you ask them.\n\n*Perfect for questions about:*\n❓ When will something happen?\n🤔 Should I take this action?\n🔍 What are the prospects?\n⚖️ What is the right choice?\n\nThe chart is cast for the moment of your question, revealing the cosmic answer.';
+    const horaryBody = `⏰ *Horary Astrology*\n\n${translationService.translate('messages.horary.introduction', userLanguage)}` || 'Traditional horary astrology answers specific questions by analyzing the exact moment you ask them.\n\n*Perfect for questions about:*\n❓ When will something happen?\n🤔 Should I take this action?\n🔍 What are the prospects?\n⚖️ What is the right choice?\n\nThe chart is cast for the moment of your question, revealing the cosmic answer.';
 
     const buttons = [
       { type: 'reply', reply: { id: 'horary_ask', title: translationService.translate('buttons.ask_question', userLanguage) || '❓ Ask a Question' } },
@@ -1834,7 +1834,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   }
   case 'get_kabbalistic_analysis': {
     const userLanguage = getUserLanguage(user, phoneNumber);
-    const kabbalisticBody = '✡️ *Kabbalistic Astrology*\n\n' + translationService.translate('messages.kabbalistic.introduction', userLanguage) || 'Ancient Jewish mysticism meets astrology in this profound system of the Tree of Life.\n\n*What Kabbalah reveals:*\n🌳 Your position on the Tree of Life\n🔯 Soul\'s journey through the Sephiroth\n🕉️ Karmic patterns and spiritual growth\n✨ Divine purpose and life mission\n\nThis sacred wisdom integrates astrology with mystical traditions.';
+    const kabbalisticBody = `✡️ *Kabbalistic Astrology*\n\n${translationService.translate('messages.kabbalistic.introduction', userLanguage)}` || 'Ancient Jewish mysticism meets astrology in this profound system of the Tree of Life.\n\n*What Kabbalah reveals:*\n🌳 Your position on the Tree of Life\n🔯 Soul\'s journey through the Sephiroth\n🕉️ Karmic patterns and spiritual growth\n✨ Divine purpose and life mission\n\nThis sacred wisdom integrates astrology with mystical traditions.';
 
     const buttons = [
       { type: 'reply', reply: { id: 'kabbalistic_birth_chart', title: translationService.translate('buttons.birth_chart', userLanguage) || '📊 Birth Chart' } },
@@ -1847,7 +1847,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
   }
   case 'get_mayan_analysis': {
     const userLanguage = getUserLanguage(user, phoneNumber);
-    const mayanBody = '🗿 *Mayan Astrology*\n\n' + translationService.translate('messages.mayan.introduction', userLanguage) || 'The ancient Mayan civilization developed sophisticated calendar systems and astrological wisdom.\n\n*Mayan systems include:*\n📅 Haab - 365-day solar calendar\n🗓️ Tzolkin - 260-day sacred calendar\n👑 Day signs and their meanings\n🌟 Galactic and cosmic influences\n\nDiscover your Mayan day sign and its profound meanings.';
+    const mayanBody = `🗿 *Mayan Astrology*\n\n${translationService.translate('messages.mayan.introduction', userLanguage)}` || 'The ancient Mayan civilization developed sophisticated calendar systems and astrological wisdom.\n\n*Mayan systems include:*\n📅 Haab - 365-day solar calendar\n🗓️ Tzolkin - 260-day sacred calendar\n👑 Day signs and their meanings\n🌟 Galactic and cosmic influences\n\nDiscover your Mayan day sign and its profound meanings.';
 
     const buttons = [
       { type: 'reply', reply: { id: 'mayan_day_sign', title: translationService.translate('buttons.day_sign', userLanguage) || '👑 Day Sign' } },

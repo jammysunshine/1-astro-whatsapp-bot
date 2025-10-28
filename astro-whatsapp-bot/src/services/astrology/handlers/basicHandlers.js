@@ -1,6 +1,7 @@
 const { matchesIntent } = require('../utils/intentUtils');
 const logger = require('../../../utils/logger');
 const mistralAIService = require('../../ai/MistralAIService');
+const { getBirthDetailsPrompt } = require('../../../utils/promptUtils');
 
 /**
  * Handle greeting responses
@@ -70,7 +71,8 @@ const handleMenu = (message, user) => {
  */
 const handleUpdateProfile = (message, user) => {
   if (matchesIntent(message, ['update profile', 'change details', 'edit info', 'set birth'])) {
-    return '📝 *Update Your Cosmic Profile*\n\nTo provide accurate astrological guidance, I need your birth details. Please share:\n\n*Required:*\n• Birth date (DD/MM/YYYY)\n• Birth place (City, Country)\n\n*Recommended:*\n• Birth time (HH:MM) for precise calculations\n• Full name for personalized readings\n\n*Example:*\n15/06/1990, 14:30, Mumbai, India\n\nSend your details now, and I\'ll update your profile for future readings! ✨';
+    const prompt = getBirthDetailsPrompt('profile update', 'provide accurate astrological guidance', true, true);
+    return `📝 *Update Your Cosmic Profile*\n\n${prompt}\n\nSend your details now, and I'll update your profile for future readings! ✨`;
   }
   return null;
 };

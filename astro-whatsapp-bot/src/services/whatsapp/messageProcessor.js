@@ -855,9 +855,13 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         return null;
       }
 
-      // Format Vedic Kundli response
+      // Format Vedic Kundli response with input sanitization
+      const sanitizedName = kundli.name ? 
+        kundli.name.replace(/[<>'"&]/g, '').substring(0, 50) : 
+        'Unknown';
+      
       let response = `🕉️ *Vedic Kundli (Birth Chart)*\n\n`;
-      response += `*Name:* ${kundli.name || 'Unknown'}\n`;
+      response += `*Name:* ${sanitizedName}\n`;
       response += `*Birth:* ${kundli.birthDetails.date} at ${kundli.birthDetails.time}\n`;
       response += `*Place:* ${kundli.birthDetails.place}\n\n`;
 

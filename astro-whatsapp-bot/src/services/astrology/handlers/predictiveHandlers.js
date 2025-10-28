@@ -2,7 +2,7 @@ const vedicCalculator = require('../vedicCalculator');
 const horaryReader = require('../horaryReader');
 const { matchesIntent } = require('../utils/intentUtils');
 const { getBirthDetailsPrompt } = require('../../../utils/promptUtils');
-const logger = require('../../../utils/logger');
+const logger = require('utils/logger');
 
 // Configuration for horary timezone
 const HORARY_TIMEZONE = process.env.HORARY_TIMEZONE || 'Asia/Kolkata';
@@ -114,8 +114,13 @@ const handleFutureSelf = async(message, user) => {
         return `I encountered an issue: ${futureSelfAnalysis.error}`;
       }
 
+      // Sanitize user name to prevent XSS
+      const sanitizedName = user.name ? 
+        user.name.replace(/[<>'"&]/g, '').substring(0, 50) : 
+        'cosmic explorer';
+      
       let response = `🔮 *Future Self Simulator - ${futureSelfAnalysis.projectionYears} Year Projection*\n\n`;
-      response += `Hello ${user.name || 'cosmic explorer'}! Let's explore the potential pathways of your future self.\n\n`;
+      response += `Hello ${sanitizedName}! Let's explore the potential pathways of your future self.\n\n`;
 
       // Current life stage
       if (futureSelfAnalysis.lifeStages.length > 0) {

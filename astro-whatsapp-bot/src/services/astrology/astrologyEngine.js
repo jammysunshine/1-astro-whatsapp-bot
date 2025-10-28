@@ -1,4 +1,4 @@
-const logger = require('../../utils/logger');
+const logger = require('utils/logger');
 
 // Import utility functions
 const { extractPartnerData, matchesIntent, validateBirthData } = require('./utils/intentUtils');

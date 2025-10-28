@@ -1,4 +1,4 @@
-const logger = require('../../../utils/logger');
+const logger = require('utils/logger');
 
 const NodeGeocoder = require('node-geocoder');
 const { Client } = require('@googlemaps/google-maps-services-js');

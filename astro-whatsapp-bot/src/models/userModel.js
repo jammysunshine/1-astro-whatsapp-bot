@@ -1,4 +1,4 @@
-const logger = require('../utils/logger');
+const logger = require('utils/logger');
 const User = require('./User');
 const Session = require('./Session');
 

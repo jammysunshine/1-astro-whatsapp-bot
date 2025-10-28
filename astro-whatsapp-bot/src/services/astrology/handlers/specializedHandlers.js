@@ -9,7 +9,7 @@ const astrocartographyReader = require('../astrocartographyReader');
 const { matchesIntent } = require('../utils/intentUtils');
 const { buildBaZiResponse, buildTarotResponse, buildPalmistryResponse } = require('../utils/responseBuilders');
 const { getBirthDetailsPrompt, getBirthDatePrompt } = require('../../../utils/promptUtils');
-const logger = require('../../../utils/logger');
+const logger = require('utils/logger');
 const { validateAndFormatBirthDate, validateAndFormatBirthTime } = require('../utils/validationUtils');
 
 /**

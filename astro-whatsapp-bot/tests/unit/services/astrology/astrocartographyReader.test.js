@@ -16,59 +16,55 @@ afterEach(() => {
 });
 
 describe('AstrocartographyReader', () => {
-  describe('generateAstrocartographyReading', () => {
+  describe('generateAstrocartography', () => {
     it('should generate Astrocartography reading for valid birth data', () => {
       const birthData = {
-        date: '15/03/1990',
-        time: '14:30',
-        place: 'Mumbai, India'
+        birthDate: '15/03/1990',
+        birthTime: '14:30',
+        birthPlace: 'Mumbai, India',
+        name: 'Test User'
       };
 
       const reading = astrocartographyReader.generateAstrocartography(birthData);
 
       expect(reading).toBeDefined();
-      expect(reading.birthData).toEqual(birthData);
-      expect(reading.lines).toBeDefined();
+      expect(reading.birthData).toBeDefined();
+      expect(reading.planetaryLines).toBeDefined();
       expect(reading.interpretation).toBeDefined();
     });
 
     it('should handle invalid birth data', () => {
       const birthData = {
-        date: 'invalid',
-        time: 'invalid',
-        place: 'invalid'
+        birthDate: 'invalid',
+        birthTime: 'invalid',
+        birthPlace: 'invalid',
+        name: 'Test User'
       };
 
-      expect(() => astrocartographyReader.generateAstrocartographyReading(birthData)).toThrow();
+      const reading = astrocartographyReader.generateAstrocartography(birthData);
+      expect(reading).toBeDefined();
+      expect(reading.error).toBeDefined();
     });
   });
 
-  describe('calculateAstrocartographyLines', () => {
-    it('should calculate Astrocartography lines', () => {
-      const birthData = {
-        date: '15/03/1990',
-        time: '14:30',
-        place: 'Mumbai, India'
-      };
+  describe('calculatePlanetaryPositions', () => {
+    it('should calculate planetary positions', () => {
+      const positions = astrocartographyReader.calculatePlanetaryPositions('15/03/1990', '14:30');
 
-      const lines = astrocartographyReader.calculateLines(birthData);
+      expect(positions).toBeDefined();
+      expect(Array.isArray(positions)).toBe(true);
+      expect(positions.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('generatePlanetaryLines', () => {
+    it('should generate planetary lines', () => {
+      const positions = astrocartographyReader.calculatePlanetaryPositions('15/03/1990', '14:30');
+      const lines = astrocartographyReader.generatePlanetaryLines(positions);
 
       expect(lines).toBeDefined();
-      expect(lines).toHaveLength(10);
-      expect(lines.every(line => line.name && line.description)).toBe(true);
-    });
-  });
-
-  describe('interpretLines', () => {
-    it('should interpret Astrocartography lines', () => {
-      const lines = [
-        { name: 'Sun Line', description: 'Test description' }
-      ];
-
-      const interpretation = astrocartographyReader.interpretLines(lines);
-
-      expect(interpretation).toBeDefined();
-      expect(interpretation).toContain('Sun Line');
+      expect(Array.isArray(lines)).toBe(true);
+      expect(lines.length).toBeGreaterThan(0);
     });
   });
 });

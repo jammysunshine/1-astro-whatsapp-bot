@@ -759,39 +759,292 @@ Current Coverage: Assumes stable connections
 
 ---
 
-## HOW TO START IMPLEMENTING RIGHT NOW
+## REVISED APPROACH: CONSOLIDATED TEST FILE STRUCTURE
 
-### **For Any AI Starting Implementation:**
+## **🚀 NEW CONSOLIDATED STRATEGY**
 
-**Step 1: Clone Test Template (Immediate Action)**
+### **Glossary Change:**
+- **Before**: 452+ individual test files = Too many files
+- **After**: ~25 consolidated test files = Better maintainability
+- **Coverage**: Same 100% comprehensive coverage maintained
+
+### **Consolidated Test File Organization:**
+
+| **Test Suite File** | **Test Scenarios Included** | **Why Consolidated** |
+|---------------------|----------------------------|---------------------|
+| `onboarding-flow.integration.test.js` | 23 onboarding edge cases | User profile completion is one logical flow |
+| `menu-navigation.integration.test.js` | 67 menu path validation | Navigation testing is inter-related |
+| `astrology-calculations.test.js` | 95 calculation scenarios | Mathematical computations belong together |
+| `real-apis.integration.test.js` | 52 real API validations | External services need coordinated testing |
+| `database-operations.test.js` | 34 database scenarios | Data integrity tests complement each other |
+| `security-validation.test.js` | 44 security tests | Security tests require comprehensive coverage |
+| `performance-load.test.js` | 27 performance tests | Load testing needs combined scenarios |
+| `accessibility-international.test.js` | 51 accessibility + i18n | Cross-cutting concerns |
+| `cross-platform.test.js` | 16 device compatibility | Platform validation belongs together |
+| `error-recovery.test.js` | 61 error handling scenarios | Error conditions need unified testing |
+| **Total: ~11 Files** | **298 test scenarios** | **Better organization, same coverage** |
+
+## **BENEFITS OF CONSOLIDATED APPROACH:**
+
+### **✅ Maintainability:**
+- **25 test files** instead of 452+ (17x reduction)
+- **Each file has a clear purpose** and logical grouping
+- **Easier to run related tests** together as suites
+
+### **✅ Development Efficiency:**
+- **One file per testing domain** makes debugging easier
+- **Shared setup/teardown** within a domain
+- **Natural test organization** by functionality
+
+### **✅ Better CI/CD:**
+- **Fewer files to manage** in build pipelines
+- **Logical test execution** by feature area
+- **Cleaner test reporting** with domain-based results
+
+## **HOW TO IMPLEMENT NEW CONSOLIDATED APPROACH**
+
+### **Step 1: Create Consolidated Test Structure**
 ```bash
-cd /path/to/astro-whatsapp-bot
-mkdir -p tests/e2e/onboarding tests/e2e/navigation tests/e2e/astrology
-cp test-template.js tests/e2e/onboarding/ONBOARDING_001.test.js
+cd astro-whatsapp-bot
+
+# Remove old structure and create new consolidated approach
+rm -rf tests/e2e/onboarding tests/e2e/navigation tests/e2e/astrology
+mkdir -p tests/e2e/consolidated
+
+# Create consolidated test files
+touch tests/e2e/consolidated/onboarding-flow.integration.test.js
+touch tests/e2e/consolidated/menu-navigation.integration.test.js
+touch tests/e2e/consolidated/astrology-calculations.test.js
+touch tests/e2e/consolidated/real-apis.integration.test.js
+touch tests/e2e/consolidated/database-operations.test.js
+touch tests/e2e/consolidated/security-validation.test.js
+touch tests/e2e/consolidated/performance-load.test.js
+touch tests/e2e/consolidated/accessibility-international.test.js
+touch tests/e2e/consolidated/cross-platform.test.js
+touch tests/e2e/consolidated/error-recovery.test.js
 ```
 
-**Step 2: Set Environment Variables (Run Once)**
-```bash
-export MONGODB_URI="your-real-mongodb-atlas-connection"
-export GOOGLE_MAPS_API_KEY="your-real-api-key"
-export MISTRAL_API_KEY="your-real-mistral-key"
-export W1_WHATSAPP_ACCESS_TOKEN="test-token"
-export W1_WHATSAPP_PHONE_NUMBER_ID="test-phone-id"
-```
-
-**Step 3: Implement First Test (Start Now)**
+### **Step 2: Implement Consolidated Onboarding Tests**
 ```javascript
-// Edit ONBOARDING_001.test.js with specifications above
-// Run: npm test -- tests/e2e/onboarding/ONBOARDING_001.test.js
+// File: tests/e2e/consolidated/onboarding-flow.integration.test.js
+
+const { TestDatabaseManager, getWhatsAppIntegration, isRealAPIMode } = require('../../utils/testSetup');
+const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
+
+describe('ONBOARDING FLOW INTEGRATION: Complete User Profile Creation Journey', () => {
+  let dbManager;
+  let whatsAppIntegration;
+
+  beforeAll(async () => {
+    dbManager = new TestDatabaseManager();
+    await dbManager.setup();
+    whatsAppIntegration = getWhatsAppIntegration();
+  });
+
+  afterAll(async () => {
+    await dbManager.teardown();
+  });
+
+  beforeEach(async () => {
+    await dbManager.cleanupUser('+onboarding_test');
+  });
+
+  describe('Input Validation Scenarios (10 tests)', () => {
+    test('handles invalid date formats (abc123 → error message)', async () => {
+      const result = await processIncomingMessage({
+        from: '+onboarding_test',
+        type: 'text',
+        text: { body: 'abc123' }
+      }, {});
+
+      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+        '+onboarding_test',
+        expect.stringContaining('Please provide date in DDMMYY')
+      );
+    });
+
+    test('rejects future dates (31122025 → rejection)', async () => {
+      await processIncomingMessage({
+        from: '+onboarding_test',
+        type: 'text',
+        text: { body: '31122025' }
+      }, {});
+
+      expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
+        '+onboarding_test',
+        expect.stringContaining('cannot be in the future')
+      );
+    });
+
+    // ... 8 more input validation test cases consolidated
+  });
+
+  describe('Time Handling Scenarios (6 tests)', () => {
+    test('auto-formats short time input (930 → 0930)', async () => {
+      // Complete onboarding flow test
+      await processIncomingMessage({
+        from: '+onboarding_test',
+        type: 'text',
+        text: { body: '15061990' }
+      }, {});
+
+      whatsAppIntegration.clearMessages?.();
+
+      await processIncomingMessage({
+        from: '+onboarding_test',
+        type: 'text',
+        text: { body: '930' }
+      }, {});
+
+      const user = await dbManager.db.collection('users').findOne({ phoneNumber: '+onboarding_test' });
+      expect(user.birthTime).toBe('0930'); // Auto-formatted
+    });
+
+    test('rejects invalid hours (2530 → validation error)', async () => {
+      // Complete onboarding flow test for hour validation
+      // ... implementation
+    });
+
+    // ... 4 more time validation scenarios
+  });
+
+  describe('Location/Geocoding Scenarios (5 tests)', () => {
+    test('integrates real geocoding with profile completion', async () => {
+      if (isRealAPIMode()) {
+        // Complete flow with real geocoding
+        // ... real implementation
+      } else {
+        // Mocked version
+        // ... mocked implementation
+      }
+    });
+
+    // ... 4 more location handling tests
+  });
+
+  describe('Language Selection Scenarios (2 tests)', () => {
+    test('handles language switching mid-flow', async () => {
+      // ... implementation
+    });
+
+    test('defaults to English for invalid language codes', async () => {
+      // ... implementation
+    });
+  });
+
+  // TOTAL: 23 onboarding scenarios consolidated into 1 comprehensive test file
+});
 ```
 
-### **Expected Daily Progress Rate:**
-- **Day 1**: Complete 23 onboarding tests (focus: input validation)
-- **Day 2**: Complete 23 navigation error recovery tests
-- **Day 3-4**: Complete 45 deep menu path tests
-- **And so on...**
+### **Step 3: Implement Menu Navigation Suite**
+```javascript
+// File: tests/e2e/consolidated/menu-navigation.integration.test.js
 
-**All 298 tests can be implemented in parallel by multiple AIs or sequentially.** No waiting for phases - start with any test file you want!
+describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
+  // 67 menu navigation test scenarios consolidated
+
+  describe('Main Menu Navigation (6 paths)', () => {
+    test('navigates to Western Astrology submenu', async () => {
+      // Complete navigation flow test
+    });
+
+    // ... 5 more main menu navigation tests
+  });
+
+  describe('Sub-menu Depth Testing (15 paths)', () => {
+    test('6-level deep navigation (Main → Vedic → Dasha → Period)', async () => {
+      // Deep navigation path test
+    });
+
+    // ... 14 more deep navigation scenarios
+  });
+
+  describe('Error Recovery (25 scenarios)', () => {
+    test('handles invalid action IDs gracefully', async () => {
+      // Error recovery test
+    });
+
+    // ... 24 more error handling scenarios
+  });
+
+  describe('Session Management (14 scenarios)', () => {
+    test('clears expired sessions automatically', async () => {
+      // Session timeout test
+    });
+
+    // ... 13 more session management tests
+  });
+
+  // TOTAL: 67 navigation scenarios in 1 file
+});
+```
+
+## **TEST EXECUTION APPROACH FOR CONSOLIDATED FILES**
+
+### **Individual Domain Testing:**
+```bash
+# Test just onboarding scenarios
+npm test -- tests/e2e/consolidated/onboarding-flow.integration.test.js
+
+# Test just menu navigation
+npm test -- tests/e2e/consolidated/menu-navigation.integration.test.js
+
+# Test complete astrology functionality
+npm test -- tests/e2e/consolidated/astrology-calculations.test.js
+```
+
+### **Full Suite Testing:**
+```bash
+# Run all consolidated tests
+npm test -- tests/e2e/consolidated/
+
+# Exclude expensive real API tests
+npm test -- tests/e2e/consolidated/ --testPathIgnorePatterns="real-apis"
+```
+
+### **Partial Suite Execution:**
+```bash
+# Run only onboarding scenarios with real APIs
+USE_REAL_APIS=true npm test -- tests/e2e/consolidated/onboarding-flow.integration.test.js tests/e2e/consolidated/real-apis.integration.test.js
+```
+
+## **MAINTENANCE ADVANTAGES OF CONSOLIDATED APPROACH**
+
+### **Before (Problems):**
+- 452+ files = Hard to navigate, maintain
+- Each file: Small scope, hard to run related tests
+- CI/CD: Thousands of individual test files
+- Debugging: Need to find the right file among 400+
+
+### **After (Advantages):**
+- 25 consolidated files = Logical organization
+- Each test file covers complete feature domain
+- Related scenarios grouped together
+- CI/CD: Manageable number of test suites
+- Debugging: Clear which file contains which scenarios
+
+## **IMPLEMENTATION PRIORITY FOR CONSOLIDATED APPROACH**
+
+### **Phase 1: Core Functionality (Week 1-2) - 4 Files**
+1. `onboarding-flow.integration.test.js` - User registration (23 tests)
+2. `menu-navigation.integration.test.js` - Menu workflows (67 tests)
+3. `astrology-calculations.test.js` - Core astronomy (95 tests)
+4. `database-operations.test.js` - Data integrity (34 tests)
+
+### **Phase 2: Quality Assurance (Week 3-4) - 4 Files**
+5. `security-validation.test.js` - Attack prevention (44 tests)
+6. `real-apis.integration.test.js` - External services (52 tests)
+7. `error-recovery.test.js` - Exception handling (61 tests)
+8. `performance-load.test.js` - Scalability testing (27 tests)
+
+### **Phase 3: Extended Compatibility (Week 5) - 3 Files**
+9. `accessibility-international.test.js` - Global user support (51 tests)
+10. `cross-platform.test.js` - Device compatibility (16 tests)
+11. `real-time-features.test.js` - Async operations (11 tests)
+
+**Coverage maintained: 100% (298 test scenarios)**
+**Organization improved: 25 files vs 452+ files**
+**Maintainability enhanced: Each file focuses on one feature domain**
 
 ## TOTAL TESTING GAPS IDENTIFIED
 

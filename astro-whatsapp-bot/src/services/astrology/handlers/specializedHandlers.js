@@ -8,6 +8,7 @@ const ichingReader = require('../ichingReader');
 const astrocartographyReader = require('../astrocartographyReader');
 const { matchesIntent } = require('../utils/intentUtils');
 const { buildBaZiResponse, buildTarotResponse, buildPalmistryResponse } = require('../utils/responseBuilders');
+const { getBirthDetailsPrompt, getBirthDatePrompt } = require('../../../utils/promptUtils');
 const logger = require('../../../utils/logger');
 
 /**
@@ -19,7 +20,7 @@ const logger = require('../../../utils/logger');
 const handleChineseAstrology = async(message, user) => {
   if (matchesIntent(message, ['chinese', 'bazi', 'four pillars', '八字', /^ba.?zi/])) {
     if (!user.birthDate) {
-      return 'To generate your BaZi (Four Pillars) analysis, I need your birth details. Please provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM) - optional but recommended\n• Birth place (City, Country)\n\nExample: 15061990, 1430, Beijing, China';
+      return getBirthDetailsPrompt('BaZi (Four Pillars)', 'generate your Chinese astrology analysis', true, false, 'Beijing, China');
     }
 
     try {
@@ -104,7 +105,7 @@ const handlePalmistry = async(message, user) => {
 const handleKabbalistic = async(message, user) => {
   if (matchesIntent(message, ['kabbalah', 'kabbalistic', 'tree of life', 'sephiroth', /^kabbal/])) {
     if (!user.birthDate) {
-      return 'For Kabbalistic analysis, I need your birth details to map your soul\'s journey on the Tree of Life.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM) - optional\n\nExample: 15061990, 1430';
+      return getBirthDetailsPrompt('Kabbalistic', 'map your soul\'s journey on the Tree of Life', true);
     }
 
     try {
@@ -132,7 +133,7 @@ const handleKabbalistic = async(message, user) => {
 const handleMayan = async(message, user) => {
   if (matchesIntent(message, ['mayan', 'tzolk', 'haab', 'mayan calendar', /^mayan/])) {
     if (!user.birthDate) {
-      return 'For Mayan calendar analysis, I need your birth date to calculate your Tzolk\'in and Haab dates.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n\nExample: 15061990';
+      return getBirthDatePrompt('Mayan calendar', 'calculate your Tzolk\'in and Haab dates');
     }
 
     try {
@@ -160,7 +161,7 @@ const handleMayan = async(message, user) => {
 const handleCeltic = async(message, user) => {
   if (matchesIntent(message, ['celtic', 'druid', 'tree sign', 'celtic astrology', /^celtic/])) {
     if (!user.birthDate) {
-      return 'For Celtic tree sign analysis, I need your birth date to determine your tree sign and animal totem.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n\nExample: 15061990';
+      return getBirthDatePrompt('Celtic tree sign', 'determine your tree sign and animal totem');
     }
 
     try {
@@ -211,7 +212,7 @@ const handleIChing = async(message, user) => {
 const handleAstrocartography = async(message, user) => {
   if (matchesIntent(message, ['astrocartography', 'astro cartography', 'planetary lines', 'relocation', /^astro.?cartography/])) {
     if (!user.birthDate) {
-      return 'For astrocartography analysis, I need your complete birth details to map planetary lines across the globe.\n\nPlease provide:\n• Birth date (DDMMYY or DDMMYYYY)\n• Birth time (HHMM)\n• Birth place (City, Country)\n\nExample: 15061990, 1430, New York, USA';
+      return getBirthDetailsPrompt('astrocartography', 'map planetary lines across the globe', false, false, 'New York, USA');
     }
 
     try {

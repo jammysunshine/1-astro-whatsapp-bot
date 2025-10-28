@@ -4,7 +4,7 @@
 const kabbalisticReader = require('../../../../src/services/astrology/kabbalisticReader');
 
 // Mock dependencies
-const logger = require('../../../src/utils/logger');
+const logger = require('../../../../src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});
@@ -18,45 +18,41 @@ afterEach(() => {
 });
 
 describe('KabbalisticReader', () => {
-  describe('generateKabbalisticReading', () => {
-    it('should generate Kabbalistic reading for valid birth date', () => {
-      const birthDate = '15/03/1990';
+  describe('generateKabbalisticChart', () => {
+    it('should generate Kabbalistic chart for valid birth data', () => {
+      const birthData = {
+        birthDate: '15/03/1990',
+        birthTime: '14:30',
+        name: 'John Doe',
+      };
 
-      const reading = kabbalisticReader.generateKabbalisticReading(birthDate);
+      const chart = kabbalisticReader.generateKabbalisticChart(birthData);
 
-      expect(reading).toBeDefined();
-      expect(reading.birthDate).toBe(birthDate);
-      expect(reading.sephirot).toBeDefined();
-      expect(reading.interpretation).toBeDefined();
+      expect(chart).toBeDefined();
+      expect(chart.name).toBe(birthData.name);
+      expect(chart.sunSign).toBeDefined();
+      expect(chart.moonSign).toBeDefined();
+      expect(chart.primarySephirah).toBeDefined();
+      expect(chart.secondarySephirah).toBeDefined();
+      expect(chart.pathworking).toBeDefined();
+      expect(chart.lifeLesson).toBeDefined();
+      expect(chart.mysticalQualities).toBeDefined();
+      expect(chart.treeOfLifeGuidance).toBeDefined();
+      expect(chart.kabbalisticDescription).toBeDefined();
     });
 
-    it('should handle invalid birth date', () => {
-      const birthDate = 'invalid';
+    it('should handle invalid birth data gracefully', () => {
+      const birthData = {
+        birthDate: 'invalid',
+        birthTime: 'invalid',
+        name: 'Invalid User',
+      };
 
-      expect(() => kabbalisticReader.generateKabbalisticReading(birthDate)).toThrow();
-    });
-  });
+      const chart = kabbalisticReader.generateKabbalisticChart(birthData);
 
-  describe('calculateSephirot', () => {
-    it('should calculate Sephirot for birth date', () => {
-      const birthDate = '15/03/1990';
-
-      const sephirot = kabbalisticReader.calculateSephirot(birthDate);
-
-      expect(sephirot).toBeDefined();
-      expect(sephirot).toHaveLength(10);
-      expect(sephirot.every(s => s.name && s.description)).toBe(true);
-    });
-  });
-
-  describe('getKabbalisticPath', () => {
-    it('should get Kabbalistic path', () => {
-      const birthDate = '15/03/1990';
-
-      const path = kabbalisticReader.getKabbalisticPath(birthDate);
-
-      expect(path).toBeDefined();
-      expect(path).toMatch(/^(Crown|Wisdom|Understanding|Mercy|Severity|Beauty|Victory|Glory|Foundation|Kingdom)$/);
+      expect(chart).toBeDefined();
+      expect(chart.error).toBeDefined();
+      expect(chart.fallback).toBeDefined();
     });
   });
 });

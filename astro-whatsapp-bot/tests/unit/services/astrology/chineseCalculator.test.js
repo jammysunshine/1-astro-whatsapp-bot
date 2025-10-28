@@ -4,7 +4,7 @@
 const chineseCalculator = require('../../../src/services/astrology/chineseCalculator');
 
 // Mock dependencies
-const logger = require('../../../src/utils/logger');
+const logger = require('../../../../src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});
@@ -18,43 +18,52 @@ afterEach(() => {
 });
 
 describe('ChineseCalculator', () => {
-  describe('calculateChineseSign', () => {
-    it('should calculate Chinese sign for valid birth year', () => {
-      const birthYear = 1990;
+  describe('getChineseZodiac', () => {
+    it('should calculate Chinese zodiac for valid birth date', () => {
+      const birthDate = '15/03/1990'; // Year of the Horse
 
-      const sign = chineseCalculator.calculateChineseSign(birthYear);
+      const zodiac = chineseCalculator.getChineseZodiac(birthDate);
 
-      expect(sign).toBeDefined();
-      expect(sign).toMatch(/^(Rat|Ox|Tiger|Rabbit|Dragon|Snake|Horse|Goat|Monkey|Rooster|Dog|Pig)$/);
+      expect(zodiac).toBeDefined();
+      expect(zodiac.animal).toBe('Horse');
+      expect(zodiac.element).toBeDefined();
+      expect(zodiac.traits).toBeDefined();
+      expect(zodiac.elementTraits).toBeDefined();
     });
 
-    it('should handle invalid birth year', () => {
-      const birthYear = 'invalid';
+    it('should handle invalid birth date for Chinese zodiac', () => {
+      const birthDate = 'invalid';
 
-      expect(() => chineseCalculator.calculateChineseSign(birthYear)).toThrow();
-    });
-  });
+      const zodiac = chineseCalculator.getChineseZodiac(birthDate);
 
-  describe('generateChineseReading', () => {
-    it('should generate Chinese reading for valid sign', () => {
-      const sign = 'Dragon';
-
-      const reading = chineseCalculator.generateChineseReading(sign);
-
-      expect(reading).toBeDefined();
-      expect(reading.sign).toBe(sign);
-      expect(reading.description).toBeDefined();
+      expect(zodiac).toBeDefined();
+      expect(zodiac.error).toBeDefined();
     });
   });
 
-  describe('getElement', () => {
-    it('should get element for sign', () => {
-      const sign = 'Dragon';
+  describe('calculateFourPillars', () => {
+    it('should calculate Four Pillars for valid birth data', () => {
+      const birthDate = '15/03/1990';
+      const birthTime = '14:30';
 
-      const element = chineseCalculator.getElement(sign);
+      const pillars = chineseCalculator.calculateFourPillars(birthDate, birthTime);
 
-      expect(element).toBeDefined();
-      expect(element).toMatch(/^(Wood|Fire|Earth|Metal|Water)$/);
+      expect(pillars).toBeDefined();
+      expect(pillars.pillars).toBeDefined();
+      expect(pillars.dayMaster).toBeDefined();
+      expect(pillars.elementAnalysis).toBeDefined();
+      expect(pillars.chineseNotation).toBeDefined();
+      expect(pillars.interpretation).toBeDefined();
+    });
+
+    it('should handle invalid birth data for Four Pillars', () => {
+      const birthDate = 'invalid';
+      const birthTime = 'invalid';
+
+      const pillars = chineseCalculator.calculateFourPillars(birthDate, birthTime);
+
+      expect(pillars).toBeDefined();
+      expect(pillars.error).toBeDefined();
     });
   });
 });

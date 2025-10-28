@@ -4,7 +4,7 @@
 const numerologyService = require('../../../../src/services/astrology/numerologyService');
 
 // Mock dependencies
-const logger = require('../../../src/utils/logger');
+const logger = require('../../../../src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});
@@ -18,51 +18,53 @@ afterEach(() => {
 });
 
 describe('NumerologyService', () => {
-  describe('calculateLifePath', () => {
-    it('should calculate life path number for valid birth date', () => {
+  describe('generateFullReport', () => {
+    it('should calculate life path number for valid birth date', async () => {
       const birthDate = '15/03/1990';
+      const fullName = 'John Doe';
 
-      const lifePath = numerologyService.calculateLifePath(birthDate);
+      const report = await numerologyService.generateFullReport(fullName, birthDate);
 
-      expect(lifePath).toBeGreaterThanOrEqual(1);
-      expect(lifePath).toBeLessThanOrEqual(9);
+      expect(report.lifePath).toBeGreaterThanOrEqual(1);
+      expect(report.lifePath).toBeLessThanOrEqual(9);
     });
 
-    it('should handle invalid birth date', () => {
+    it('should handle invalid birth date', async () => {
       const birthDate = 'invalid';
+      const fullName = 'John Doe';
 
-      expect(() => numerologyService.calculateLifePath(birthDate)).toThrow();
-    });
-  });
-
-  describe('calculateDestinyNumber', () => {
-    it('should calculate destiny number for valid name', () => {
-      const name = 'John Doe';
-
-      const destiny = numerologyService.calculateDestinyNumber(name);
-
-      expect(destiny).toBeGreaterThanOrEqual(1);
-      expect(destiny).toBeLessThanOrEqual(9);
+      await expect(numerologyService.generateFullReport(fullName, birthDate)).rejects.toThrow();
     });
 
-    it('should handle empty name', () => {
-      const name = '';
-
-      expect(() => numerologyService.calculateDestinyNumber(name)).toThrow();
-    });
-  });
-
-  describe('generateNumerologyReport', () => {
-    it('should generate numerology report', () => {
+  describe('generateFullReport', () => {
+    it('should generate numerology report with life path, expression, soul urge, personality, destiny, and maturity numbers', async () => {
       const birthDate = '15/03/1990';
       const name = 'John Doe';
 
-      const report = numerologyService.generateNumerologyReport(birthDate, name);
+      const report = await numerologyService.generateFullReport(name, birthDate);
 
       expect(report).toBeDefined();
       expect(report.lifePath).toBeDefined();
+      expect(report.expression).toBeDefined();
+      expect(report.soulUrge).toBeDefined();
+      expect(report.personality).toBeDefined();
       expect(report.destiny).toBeDefined();
-      expect(report.description).toBeDefined();
+      expect(report.maturity).toBeDefined();
+      expect(report.lifePathDescription).toBeDefined();
+      expect(report.expressionDescription).toBeDefined();
+      expect(report.soulUrgeDescription).toBeDefined();
+      expect(report.personalityDescription).toBeDefined();
+      expect(report.strengths).toBeDefined();
+      expect(report.challenges).toBeDefined();
+      expect(report.careerPaths).toBeDefined();
+      expect(report.compatibleNumbers).toBeDefined();
+    });
+
+    it('should handle empty name for numerology report', async () => {
+      const birthDate = '15/03/1990';
+      const name = '';
+
+      await expect(numerologyService.generateFullReport(name, birthDate)).rejects.toThrow();
     });
   });
 });

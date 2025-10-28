@@ -47,14 +47,14 @@ describe('Critical User Flow End-to-End Tests', () => {
   const testPhone = '+1234567890';
 
   beforeAll(async() => {
-    // Load environment variables
-    require('dotenv').config();
-
-    // Set test environment variables
+    // Set test environment variables BEFORE requiring app
     process.env.NODE_ENV = 'test';
     process.env.W1_SKIP_WEBHOOK_SIGNATURE = 'true';
     process.env.W1_WHATSAPP_ACCESS_TOKEN = 'test_token';
     process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test_phone_id';
+    
+    // Load environment variables
+    require('dotenv').config();
 
     // Require app first (this will initiate DB connection)
     app = require('../../src/server');

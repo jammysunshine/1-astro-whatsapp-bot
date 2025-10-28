@@ -4,7 +4,7 @@
 const paymentService = require('../../../../src/services/payment/paymentService');
 
 // Mock dependencies
-const logger = require('../../../src/utils/logger');
+const logger = require('../../../../src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});

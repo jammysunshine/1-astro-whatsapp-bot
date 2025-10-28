@@ -18,23 +18,27 @@ describe('ONBOARDING_002: Future Date Rejection', () => {
 
   beforeEach(async () => {
     mocks.mockSendMessage.mockClear();
-    await dbManager.cleanupUser('+test_onboarding_002');
+    await dbManager.cleanupUser('+test123');
   });
 
   test('should reject future birth dates', async () => {
-    const phoneNumber = '+test_onboarding_002';
+    const phoneNumber = '+test123';
     const futureDateMessage = {
       from: phoneNumber,
       type: 'text',
-      text: { body: '31122025' }
+      text: { body: '31122025' } // Future date
     };
+
+    // Simulate initial message to trigger onboarding
+    await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'hi' } }, {});
+    mocks.mockSendMessage.mockClear(); // Clear initial 'hi' response
 
     await processIncomingMessage(futureDateMessage, {});
 
     expect(mocks.mockSendMessage).toHaveBeenCalledTimes(1);
     const responseCall = mocks.mockSendMessage.mock.calls[0];
     expect(responseCall[0]).toBe(phoneNumber);
-    expect(responseCall[1]).toContain('Birth date cannot be in the future');
+    expect(responseCall[1]).toContain('Birth date cannot be in the future. Please enter your actual birth date.');
 
     const userCreated = await dbManager.db.collection('users').findOne({ phoneNumber });
     expect(userCreated).toBeNull();

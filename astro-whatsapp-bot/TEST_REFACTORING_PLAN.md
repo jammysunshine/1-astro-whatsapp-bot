@@ -1,7 +1,7 @@
-# Comprehensive Test Refactoring and Consolidation Plan (Enhanced)
+# Comprehensive Test Refactoring and Consolidation Plan
 
 ## Overview
-This document outlines an **enhanced and strengthened** comprehensive plan for refactoring and consolidating test scripts in the astro-whatsapp-bot project. The primary goal is to eliminate redundancy, significantly improve test reliability and efficiency, and ensure comprehensive coverage using real services instead of mocks (with the explicit exception of payment services). This refactoring is crucial for maintaining a high-quality, maintainable, and scalable codebase.
+This document outlines the scope and plan for refactoring and consolidating test scripts in the astro-whatsapp-bot project. The primary goal is to eliminate redundancy while ensuring comprehensive coverage using real services instead of mocks, with the exception of payment services which can be mocked.
 
 ## Current Test Landscape Analysis
 
@@ -14,345 +14,550 @@ Based on the recent changes, we have:
 - `critical-user-flow.test.js` (existing flow tests)
 - `real-whatsapp-flow.test.js` (existing flow tests)
 - `astrology-integration.test.js` (existing integration tests)
-*(And numerous unit tests across `unit/services/astrology/`, `unit/services/whatsapp/`, `unit/models/`, `unit/utils/`)*
 
-### Test Types Classification (Refined)
--   **Unit Tests**: Validate individual functions, methods, or small classes in isolation. Focus on business logic and algorithms.
--   **Integration Tests**: Verify interactions between multiple components, modules, or external services (e.g., database, external APIs).
--   **End-to-End (E2E) Tests**: Simulate complete user journeys through the application, covering UI interactions, backend logic, and external integrations.
--   **Performance Tests**: Measure system responsiveness, throughput, and resource utilization under various load conditions.
--   **API Contract Tests**: Ensure external API integrations adhere to defined contracts.
--   **Security Tests**: Identify vulnerabilities and ensure adherence to security best practices.
--   **Regression Tests**: A broad suite of tests run to ensure new changes do not break existing functionality.
+### Test Types Classification
+- **End-to-End Tests**: Full user journey scenarios
+- **Integration Tests**: Service-to-service communication
+- **Unit Tests**: Individual function validation
+- **Performance Tests**: Load and response time validation
+- **API Tests**: Third-party service integration verification
 
-## Test Validity Assessment (Refined)
+## Test Validity Assessment
 
-### Tests for Retirement/Archival (High Redundancy/Outdated)
--   `astrology-integration.test.js`: Largely superseded by `real-astrology-calculations.test.js` and `comprehensive-menu-integration.test.js`. **Candidate for archival/removal.**
--   `real-whatsapp-flow.test.js`: Significant overlap with `comprehensive-menu-tree-real-calculations.test.js`. **Candidate for merging key unique scenarios and then archival/removal.**
--   `comprehensive-menu-tree-validation.test.js`: Appears to be a duplicate of `comprehensive-menu-tree-real-calculations.test.js`. **Candidate for removal.**
--   Tests specifically designed for old button-based navigation: **Outdated, require removal or complete refactoring to list-based.**
+### Outdated Tests
+- `astrology-integration.test.js` - Partially redundant with new `real-astrology-calculations.test.js` and `comprehensive-menu-integration.test.js`
+- `real-whatsapp-flow.test.js` - Overlapping coverage with `comprehensive-menu-tree-real-calculations.test.js`
+- Tests using old button-based navigation may need updates to match new list-based structure
+- Tests with limited menu coverage may be superseded by comprehensive test suite
 
-### Tests Requiring Refactoring/Updates (Valid but Need Modernization)
--   `critical-user-flow.test.js`: Core user journey tests remain valid but need updates to align with the new list-based navigation and real service integration principles.
--   Error handling tests: Need to be updated to reflect new error paths and real service responses.
--   Database operation tests: Need to be updated to explicitly use real MongoDB Atlas and handle new schema considerations.
+### Valid Tests Requiring Updates
+- `critical-user-flow.test.js` - Core user journey tests remain valid but need updates for new list-based navigation
+- Error handling tests with updated error paths
+- Database operation tests with new schema considerations
 
-### Tests Requiring Enhancement (Valid but Need Deeper Real Service Integration)
--   All unit tests in `unit/services/astrology/` directory: Currently likely mocked; need to be refactored to use real astrological libraries and data for validation.
--   `messageProcessor.test.js`: Needs updates to handle the new list-based navigation and its modularized structure.
--   All model tests (`Session.test.js`, `User.test.js`, `userModel.test.js`): Could benefit from direct real database integration for persistence validation.
--   Utility tests: Some may need to be enhanced to validate interactions with real services or configurations.
+### Valid Tests Requiring Enhancement
+- All unit tests in `unit/services/astrology/` directory - Currently likely mocked, need real service validation
+- `messageProcessor.test.js` - Needs updates for new list-based navigation
+- All model tests - Could benefit from real database integration
+- Utility tests - Some may need real service validation
 
-## Refactoring Scope (Strengthened)
+## Refactoring Scope
 
 ### Objectives
-1.  **Achieve 100% Real Service Integration (Except Payments)**: Migrate all tests (unit, integration, E2E) to use real astrological libraries, real MongoDB Atlas, and real external APIs (Google Maps, Mistral, etc.).
-2.  **Eliminate Redundancy & Consolidate**: Reduce the total number of test files and scenarios by merging overlapping tests and archiving outdated ones, while maintaining or improving overall test coverage.
-3.  **Enhance Test Reliability**: Minimize false positives/negatives by reducing reliance on mocks and testing against actual system behavior.
-4.  **Improve Test Maintainability**: Create a unified, well-structured test architecture with clear responsibilities and shared utilities.
-5.  **Ensure Calculation Accuracy**: Rigorously validate all astrological calculations using real libraries and known data sets.
-6.  **Optimize Test Performance**: Identify and optimize slow tests to ensure the comprehensive suite runs efficiently within CI/CD.
+1. Maintain comprehensive coverage while eliminating redundancy
+2. Replace mock-based tests with real service tests where possible
+3. Consolidate overlapping test scenarios
+4. Ensure all astrological calculations use real libraries
+5. Use real MongoDB Atlas database instead of localhost
+6. Integrate real Google Maps and Mistral API calls
+7. Mock only payment services to avoid costs
 
 ### Constraints
--   **NO MOCKING for Astrological Libraries, Databases, or External APIs (except Payment)**: This is a strict mandate.
--   **Exclusive Use of Real MongoDB Atlas**: Never use localhost for database testing.
--   **Payment Service Mocking**: Payment services MUST be mocked to avoid real transaction costs and external dependencies during testing.
--   **Maintain Backward Compatibility**: Refactored tests must ensure existing application functionality remains intact.
--   **Side Branch Development**: All changes related to this refactoring MUST be done on a dedicated feature branch, never directly on `main`.
+- Absolutely no mocking for astro libraries, databases, or external APIs except payment
+- Use only real MongoDB Atlas (never localhost)
+- Include payment service mock to avoid real transaction costs
+- Maintain backward compatibility of functionality
 
-## Consolidation Strategy (Elaborated)
+## Consolidation Strategy
 
--   **Comprehensive Test Inventory & Mapping**:
-    -   Utilize automated tools to generate a detailed inventory of all 33+ test files, mapping their current purpose, dependencies, and mocking levels.
-    -   Create a visual test coverage matrix to identify overlaps and gaps against the new list-based menu structure and core functionalities.
--   **Redundancy Elimination**:
-    -   **Retire**: `astrology-integration.test.js` and `comprehensive-menu-tree-validation.test.js` (if confirmed duplicate) will be archived/removed after verifying their coverage is fully absorbed by other tests.
-    -   **Merge**: Key unique scenarios from `real-whatsapp-flow.test.js` will be carefully merged into the comprehensive E2E suite.
--   **Unified Test Architecture Design**:
-    -   **Shared Test Utilities**: Develop a centralized `test-utils/` directory for common functionalities like:
-        -   Real MongoDB Atlas connection management (pooling, test data seeding/cleanup).
-        -   Secure API key loading for external services.
-        -   Standardized test data generation and isolation.
-        -   Custom Jest matchers for astrological data validation.
-    -   **Consistent Test Patterns**: Establish clear patterns for writing unit, integration, and E2E tests that leverage real services.
--   **API Key Management for Testing**:
-    -   Implement secure loading of API keys (Google Maps, Mistral, WhatsApp) from environment variables for test environments.
-    -   Develop strategies to handle API rate limits during testing (e.g., delays between calls, using test-specific quotas).
--   **Payment Mocking Framework**:
-    -   Design a robust mocking framework for payment services that accurately simulates various payment scenarios (success, failure, pending) without incurring real costs.
--   **Test Data Management**:
-    -   Implement a strategy for generating unique test data for each test run to ensure isolation and prevent conflicts in the real MongoDB Atlas.
-    -   Develop automated cleanup procedures to maintain database hygiene after tests.
--   **Migration to Real Services**:
-    -   **Unit Tests**: Systematically refactor all unit tests in `unit/services/astrology/` to import and use real astrological libraries directly, validating their outputs against known results.
-    -   **Model Tests**: Update all model tests to perform CRUD operations against a real, isolated MongoDB Atlas instance.
-    -   **Message Processor/Sender Tests**: Refactor to integrate with real WhatsApp API calls (where appropriate for E2E) or robust mocks for specific unit tests.
--   **Refactor Error Handling Tests**: Update to trigger and validate actual error responses from real services and ensure graceful degradation.
--   **New Test Development**: Create new tests for any uncovered scenarios, especially for the new list-based menu structure and complex astrological interactions.
+- **Inventory all 33 test files** across all directories and map their current purpose and mocking level
+- **Identify redundant tests** between old and new suites:
+  - Archive `astrology-integration.test.js` as it's largely superseded by comprehensive tests
+  - Merge key scenarios from `real-whatsapp-flow.test.js` into comprehensive suite
+  - Remove `comprehensive-menu-tree-validation.test.js` if it's duplicate of `comprehensive-menu-tree-real-calculations.test.js`
+- **Update tests for new menu structure** to work with list-based navigation:
+  - Update `messageProcessor.test.js` to handle new list reply actions
+  - Update button navigation tests to use list-based navigation
+- **Document test purposes and coverage** in a comprehensive matrix showing overlap
+- **Remove outdated tests** that are superseded by new comprehensive suite
+- **Design unified test architecture** that supports real service integration:
+  - Create shared test utilities for database connections
+  - Create shared configuration for API keys and environment variables
+  - Establish consistent patterns for real service integration
+- **Create shared utilities** for connecting to real MongoDB Atlas:
+  - Connection pooling utilities
+  - Test data seeding functions
+  - Test data cleanup functions
+- **Establish API key management** for Google Maps and Mistral services:
+  - Secure storage and retrieval of API keys
+  - Rate limiting handling
+  - Error handling for API unavailability
+- **Design payment mock framework** that can be consistently applied across all payment-related tests
+- **Create test data management** procedures for real database usage:
+  - Unique test identifiers to prevent conflicts
+  - Proper data isolation between test runs
+  - Cleanup procedures to maintain database hygiene
+- **Migrate existing tests** to use real services instead of mocks:
+  - Convert all astrology unit tests in `unit/services/astrology/` to use real libraries
+  - Update all model tests to use real MongoDB Atlas
+  - Replace mock implementations with real service calls (except payment)
+- **Consolidate overlapping scenarios** into unified test cases:
+  - Combine similar e2e test scenarios
+  - Maintain coverage while reducing redundancy
+- **Refactor error handling tests** to work with real services:
+  - Test actual API error responses
+  - Validate real service failure scenarios
+  - Ensure proper fallback mechanisms
+- **Update database integration tests** to use real MongoDB Atlas:
+  - Replace mock database calls
+  - Test actual database operations
+  - Validate connection handling under load
+- **Create new tests** for uncovered scenarios in the new menu structure:
+  - Add tests for the 50+ menu paths if not already covered
+  - Include performance and load tests for new navigation
+- **Execute comprehensive test suite** with real services
+- **Verify performance** of tests using real APIs:
+  - Monitor execution times
+  - Identify and optimize slow tests
+  - Check for rate limiting issues
+- **Optimize slow tests** without compromising coverage:
+  - Implement caching where appropriate
+  - Optimize database queries
+  - Reduce unnecessary API calls
+- **Document test execution procedures** and environment requirements
+- **Establish test maintenance guidelines**
 
-## Test Categories for New Architecture (Enhanced)
+## Test Categories for New Architecture
 
-### 1. Comprehensive End-to-End (E2E) Tests (Real Services)
--   **Full User Journey Validation**: Simulate complete user flows from initial message, through menu navigation, profile updates, and complex astrological reading requests.
--   **All Menu Paths**: Validate all 50+ menu paths, including sub-menus and back navigation, using real calculations and data.
--   **Cross-Service Data Consistency**: Verify data integrity and consistency across MongoDB, Redis, and external APIs throughout user journeys.
--   **Onboarding & Profile Management**: Thoroughly test user onboarding, profile completion, and updates.
+### 1. Comprehensive End-to-End Tests
+- Full user journey from initial message to complex astrological reading
+- All 50+ menu paths validation using real calculations
+- User profile completion and update workflows
+- Cross-service navigation and data consistency
 
 ### 2. Real Service Integration Tests
--   **Astrological Library Validation**: Direct testing of astrological libraries with diverse, known input data to ensure calculation accuracy.
--   **Database Interaction**: Validate all CRUD operations against real MongoDB Atlas, including indexing and query performance.
--   **External API Integration**: Verify correct interaction with Google Maps (geocoding, timezone), Mistral AI (special readings), and WhatsApp Business API (message sending/receiving).
--   **Redis Integration**: Test cache-aside, write-through, and invalidation strategies for all cached data types.
+- Astro library calculations with real input/output validation
+- Database operations using real MongoDB Atlas
+- Google Maps geocoding and timezone calculations
+- Mistral AI service integration for special readings
 
 ### 3. Payment Service Tests (Mocked)
--   **Subscription Flow Validation**: Test user subscription, plan selection, and upgrade processes using the mocked payment framework.
--   **Billing Cycle Management**: Simulate various billing scenarios and ensure correct handling.
--   **Error Scenarios**: Test how the system responds to mocked payment failures or delays.
+- Subscription flow validation using mocked payment
+- Plan selection and upgrade processes
+- Billing cycle management with mocked transactions
 
-### 4. Performance and Load Tests (Real Services)
--   **Concurrent User Handling**: Simulate high concurrent user loads to validate system stability and responsiveness.
--   **Response Time Benchmarking**: Measure and validate API response times under load, ensuring adherence to performance budgets.
--   **Resource Utilization**: Monitor CPU, memory, and network usage during load tests.
--   **API Rate Limiting**: Verify the effectiveness of rate limiting under stress.
+### 4. Performance and Load Tests
+- Concurrent user session handling with real services
+- Response time validation under load
+- Database connection handling during high traffic
+- API rate limiting and recovery scenarios
 
-### 5. Error Handling and Resilience Tests (Real Services)
--   **Invalid Input Handling**: Test how the system responds to malformed or invalid user input, ensuring appropriate error messages.
--   **External Service Failure**: Simulate failures of external APIs (e.g., Google Maps, Mistral) and Redis to validate graceful degradation and fallback mechanisms.
--   **Database Connection Issues**: Test application behavior during MongoDB connection loss and recovery.
--   **Network Timeouts**: Validate handling of network timeouts for all external calls.
+### 5. Error Handling and Edge Cases
+- Invalid user input with real service responses
+- API failure recovery using actual error responses
+- Database connection issues with real error handling
+- Network timeout scenarios with realistic delays
 
-## Implementation Details (Enhanced)
+## Implementation Details
 
 ### Database Integration
--   **Dedicated Test Database**: All tests will connect to a dedicated MongoDB Atlas instance for testing, configured via environment variables.
--   **Test Data Isolation**: Implement a robust test data management strategy using unique identifiers (e.g., UUIDs) for users and sessions to prevent test interference.
--   **Automated Cleanup**: Comprehensive `beforeEach`/`afterEach` hooks for seeding and cleaning up test data to ensure a clean state for every test.
--   **No Localhost Fallbacks**: Strictly enforce the use of MongoDB Atlas for all database interactions in tests.
+- All tests will connect to real MongoDB Atlas using environment variables
+- Test data will be properly isolated using unique identifiers
+- Comprehensive cleanup procedures for test completion
+- No localhost database fallbacks
 
 ### API Service Integration
--   **Secure API Key Management**: API keys for Google Maps, Mistral, and WhatsApp will be loaded securely from environment variables.
--   **Rate Limit Management**: Implement strategies within tests to manage API rate limits (e.g., delays between calls, using test-specific quotas).
--   **Error Simulation**: Develop utilities to simulate various API error responses (e.g., 4xx, 5xx, network timeouts) for resilience testing.
+- Google Maps API integration for geocoding tests
+- Mistral API calls for AI-powered readings
+- Proper API key management and error handling
+- Rate limiting considerations in test design
 
-### Astrological Library Integration
--   **Direct Library Usage**: All astrological calculations will directly use the real underlying libraries.
--   **Known Test Data**: Utilize a curated set of known astrological data (birth dates, times, places) with pre-calculated expected results for validation.
--   **Accuracy Assertions**: Implement precise assertions to verify the accuracy of planetary positions, house cusps, aspects, and other astrological outputs.
+### Astro Library Integration
+- All astrological calculations using real libraries
+- Birth chart generation with actual astronomical data
+- Compatibility analysis with real algorithmic results
+- Numerology calculations with authentic algorithms
 
 ### Payment Mocking
--   **Dedicated Mock Framework**: A dedicated mock framework will simulate payment gateway interactions, allowing for testing of various payment scenarios (success, failure, refunds) without real transactions.
--   **Configurable Mocks**: Mocks will be configurable to simulate different payment responses based on test requirements.
+- Payment service will be mocked to avoid real transaction costs
+- Subscription flows will simulate payment processing
+- Plan benefits validation without actual charges
 
-## Expected Outcomes (Quantified)
+## Expected Outcomes
 
 ### Improved Test Quality
--   **Higher Confidence**: Significantly increased confidence in the application's real-world behavior due to real service integration.
--   **Reduced Mock-Implementation Gaps**: Elimination of discrepancies between mocked behavior and actual service responses.
--   **Enhanced Coverage**: Broader and deeper coverage of actual service interactions and edge cases.
+- Higher confidence in real-world behavior
+- Elimination of mock-implementation gaps
+- Better coverage of actual service interactions
 
 ### Reduced Maintenance Overhead
--   **Consolidated Scenarios**: Reduced number of test files and scenarios, simplifying test suite management.
--   **Unified Architecture**: Easier to update and extend tests due to a consistent architecture.
--   **Clear Documentation**: Improved documentation for test purposes, setup, and maintenance.
+- Consolidated test scenarios reducing duplication
+- Unified architecture simplifying updates
+- Clear documentation for future maintenance
 
 ### Performance Considerations
--   **Optimized Execution**: Test suite execution time optimized to run efficiently within CI/CD pipelines.
--   **Rate Limit Awareness**: Tests are designed to respect and handle external API rate limits.
--   **Robust Timeouts**: Proper timeout configurations prevent hanging tests.
+- Longer execution times due to real service calls
+- Potential API rate limiting considerations
+- Proper timeout configurations for external services
 
-## Success Metrics (Quantified & Measurable)
-
-### Coverage Metrics
--   **Overall Test Coverage**: Maintain or exceed 95% code coverage for application logic.
--   **Real Service Adoption**: >95% of non-payment related tests successfully use real services.
--   **Menu Path Validation**: 100% of defined menu paths validated with E2E tests.
--   **Error Handling Coverage**: >90% of defined error scenarios covered by tests.
-
-### Performance Metrics
--   **Full Test Suite Execution Time**: <30 minutes in CI/CD for the entire suite.
--   **Individual E2E Test Time**: <1 minute per critical E2E test.
--   **API Rate Limit Breaches**: Zero instances of tests hitting external API rate limits during CI/CD runs.
--   **Test Environment Resource Usage**: CPU and memory usage of test runners remain within defined thresholds.
-
-### Quality Metrics
--   **Zero False Positives/Negatives**: Tests consistently reflect actual application behavior.
--   **Calculation Accuracy**: 100% accuracy for astrological calculations against known data sets.
--   **Test Data Isolation**: Zero test data conflicts between concurrent test runs.
--   **Test Flakiness**: Flakiness rate of critical tests reduced to <1%.
-
-## Risk Mitigation (Enhanced)
-
-### Potential Risks
-1.  **Calculation Accuracy Loss**: Astrological calculations are critical and complex.
-2.  **Functionality Regression**: New changes breaking existing features.
-3.  **Performance Degradation**: Test suite becoming too slow due to real service calls.
-4.  **External Service Dependencies**: Unavailability or changes in external APIs.
-5.  **Cost Management**: Accidental real transactions or exceeding API quotas.
-6.  **Test Data Management Complexity**: Managing isolated and clean data in a real database.
-
-### Mitigation Strategies (Enhanced)
-1.  **Maintain Calculation Accuracy**:
-    *   **Golden Master Testing**: Implement golden master tests using existing production data (anonymized) to compare results before and after refactoring.
-    *   **Cross-Validation**: Use multiple astrological libraries or known external sources to cross-validate calculation results.
-    *   **Rigorous Peer Review**: Critical calculation logic changes must undergo thorough peer review by domain experts.
-2.  **Functionality Regression**:
-    *   **Test-Driven Refactoring (TDR)**: Write characterization tests for existing behavior before refactoring, ensuring no unintended changes.
-    *   **Small, Atomic Changes**: Implement refactoring in tiny, verifiable steps, running tests after each change.
-    *   **Automated Regression Suite**: Leverage a comprehensive CI/CD pipeline to run all tests after every commit.
-    *   **Feature Toggles**: Use feature flags for gradual rollout of refactored components in production.
-3.  **Performance Degradation (Test Suite)**:
-    *   **Parallel Test Execution**: Configure Jest/test runner to execute tests in parallel where possible.
-    *   **Test Optimization**: Identify and optimize slow tests (e.g., by reducing redundant setup, optimizing database interactions).
-    *   **Selective Test Runs**: Implement strategies for running only affected tests during development, and the full suite in CI/CD.
-    *   **Dedicated Test Environment**: Use a dedicated, high-performance test environment for CI/CD.
-4.  **External Service Dependencies**:
-    *   **Robust Retry Mechanisms**: Implement exponential backoff and jitter for API calls within tests.
-    *   **Circuit Breakers**: Use circuit breakers for external API calls to prevent cascading failures.
-    *   **Fallback Strategies**: Design tests to validate graceful degradation when external services are unavailable.
-    *   **Service Virtualization**: For highly unstable or costly APIs, consider service virtualization for specific test scenarios.
-5.  **Cost Management**:
-    *   **Strict Payment Mocking**: Ensure all payment-related interactions are thoroughly mocked.
-    *   **API Usage Monitoring**: Implement monitoring for external API usage to stay within free tiers.
-    *   **Test-Specific API Keys**: Use separate API keys for testing with limited quotas.
-6.  **Test Data Management Complexity**:
-    *   **Test Data Factories**: Develop factories to generate realistic and unique test data programmatically.
-    *   **Database Transactions**: Use database transactions for tests where possible to ensure atomicity and easy rollback.
-    *   **Dedicated Test Schemas/Collections**: Use separate schemas or collections for test data to avoid conflicts with development data.
-
-## Implementation Approach (Enhanced)
-
-This plan provides the complete framework for refactoring and consolidating the test suite to use real services while maintaining comprehensive coverage. The implementation follows a phased, iterative approach, with each step building on the previous to ensure a systematic transformation from mock-based to real-service-based testing.
-
-### Phase 1: Foundational Assessment & Setup
--   **Step 1.1: Comprehensive Assessment and Inventory**:
-    -   Audit all test files, mapping purpose, dependencies, and current mocking levels.
-    -   Identify and validate true duplicates (e.g., `comprehensive-menu-tree-validation.test.js`).
-    -   Map current test coverage to the new list-based menu structure.
-    -   Document all necessary API keys and environment variables.
-    -   Create a detailed test coverage matrix.
--   **Step 1.2: Environment and Infrastructure Setup**:
-    -   Configure dedicated real MongoDB Atlas connection for all test environments.
-    -   Set up secure API key management for external services.
-    -   Implement a robust payment service mocking framework.
-    -   Create shared test utilities (DB connection, data seeding/cleanup, API handlers).
-
-### Phase 2: Unit Test Migration to Real Services
--   **Step 2.1: Convert Astrology Unit Tests**:
-    -   Systematically refactor all unit tests in `unit/services/astrology/` to import and use real astrological libraries directly.
-    -   Validate calculations against known, pre-computed results.
--   **Step 2.2: Update Message Processor & Model Tests**:
-    -   Refactor `messageProcessor.test.js` to handle new list-based navigation and its modularized structure.
-    -   Update all model tests (`Session.test.js`, `User.test.js`, `userModel.test.js`) to use real MongoDB Atlas with proper isolation.
--   **Step 2.3: Enhance Utility Tests**: Update utility tests where appropriate to use real services or configurations.
-
-### Phase 3: Integration and End-to-End Test Consolidation
--   **Step 3.1: Update E2E Tests for New Navigation**:
-    -   Modify `comprehensive-menu-integration.test.js` and `critical-user-flow.test.js` for the new list-based menu structure.
--   **Step 3.2: Consolidate Overlapping E2E Tests**:
-    -   Merge key unique scenarios from `real-whatsapp-flow.test.js` into the comprehensive E2E suite.
-    -   Archive `astrology-integration.test.js` and `real-whatsapp-flow.test.js` after full coverage verification.
--   **Step 3.3: Verify API Integration Tests**:
-    -   Ensure `external-api-integration.test.js` uses real endpoints and tests actual API error responses.
--   **Step 3.4: Refactor Error Handling Tests**: Update to work with real service responses and validate fallback mechanisms.
-
-### Phase 4: Performance Optimization, New Test Development & Cleanup
--   **Step 4.1: Performance Optimization & Validation**:
-    -   Execute the comprehensive test suite with real services to identify bottlenecks.
-    -   Optimize slow tests (caching, query optimization, parallel execution).
-    -   Implement proper cleanup procedures for all real service tests.
--   **Step 4.2: New Test Development**:
-    -   Create new tests for any remaining uncovered scenarios in the new menu structure (e.g., advanced timing operations, complex compatibility edge cases).
--   **Step 4.3: Consolidation and Cleanup**:
-    -   Remove confirmed redundant tests (e.g., `comprehensive-menu-tree-validation.test.js`).
-    -   Update documentation for the new test architecture.
-    -   Create test maintenance guidelines.
-
-## Implementation Requirements for Executing AI (Strengthened Mandate)
-
-### Critical Mandate for AI Execution
-Any AI executing this scope **MUST** adhere to the following rigorous process to ensure high-quality, safe, and efficient test refactoring:
-
-1.  **MANDATE: All code changes MUST be made on a new branch. NEVER make direct changes to the 'main' branch. This is a critical, non-negotiable rule.**
-2.  **Thoroughly Review and Internalize Existing Test Scripts**: Before *any* modification, the AI must not just read, but deeply analyze and build an internal, actionable representation of:
-    *   **Test Coverage Gaps**: Identify areas lacking sufficient test coverage.
-    *   **Mocking Levels**: Understand where mocks are currently used and where real service integration is required.
-    *   **Test Dependencies**: Map dependencies between test files and the application code.
-    *   **All existing auto test scripts** in the project at that point in time.
-
-3.  **Generate Independent, Optimized Test Refactoring Plan**: Based on its comprehensive analysis, the AI must formulate its own detailed test refactoring plan. This plan should:
-    *   Identify optimal strategies for migrating from mocks to real services.
-    *   Propose specific consolidation and elimination targets for redundant tests.
-    *   Outline a precise sequence of incremental changes, prioritizing high-impact areas first.
-    *   Define clear verification steps for each refactoring task.
-
-4.  **Synthesize and Validate Plans**: The AI will then merge its independently generated plan with this comprehensive plan. This involves:
-    *   Identifying commonalities and divergences.
-    *   Justifying any proposed deviations from this document's plan.
-    *   Ensuring the combined approach leverages the strengths of both perspectives, prioritizing safety, correctness, and test efficiency.
-
-5.  **Execute with Iterative Verification**: The AI will execute the unified plan in small, atomic steps. **Crucially, after each significant change, the AI MUST:**
-    *   **Run All Relevant Tests**: Automatically identify and execute all directly affected unit, integration, and end-to-end tests.
-    *   **Static Analysis**: Run configured linters (ESLint), formatters (Prettier), and static analysis tools (e.g., SonarQube, Snyk) to ensure code quality and adherence to standards.
-    *   **Type Checking**: If applicable (e.g., TypeScript), perform type checking to catch type-related errors.
-    *   **Performance Smoke Test**: For critical paths, run a quick performance smoke test to detect immediate regressions in test execution time.
-    *   **Log Analysis**: Review test logs for any new errors, warnings, or unexpected behavior.
-    *   **Rollback if Failure**: If any automated verification step fails, the AI MUST immediately revert the last change and report the failure with detailed diagnostics.
-
-6.  **Automated Post-Implementation Testing (AI's Detailed Testing Protocol)**: After implementing any changes as part of this refactoring plan, the AI MUST execute a rigorous verification protocol:
-    *   **Full Regression Test Suite**: Execute the entire suite of unit, integration, and end-to-end tests to confirm that no existing functionality has been broken.
-    *   **Targeted Test Execution**: Run specific test categories relevant to the changes made (e.g., if refactoring astrological calculations, run all astrology-related unit and integration tests).
-    *   **Performance Benchmarking**: Re-run performance tests to ensure that test execution times remain within acceptable limits and that any performance optimizations are validated.
-    *   **Coverage Analysis**: Verify that test coverage metrics are maintained or improved, especially for refactored code.
-    *   **Test Data Integrity**: Confirm that test data seeding and cleanup mechanisms are working correctly and that no data conflicts occur.
-    *   **External Service Interaction Validation**: For tests involving real external services, verify that API calls are made correctly, responses are handled as expected, and rate limits are respected.
-    *   **Error Scenario Validation**: Re-test all relevant error handling scenarios to ensure they are still robust and provide appropriate feedback.
-    *   **Cross-Browser/Environment Testing**: If applicable, ensure tests pass across different environments or configurations.
-    *   **Automated Reporting**: Generate comprehensive test reports (e.g., JUnit XML, HTML reports) and analyze them for any anomalies.
-    *   **Rollback if Failure**: If any automated verification step fails, the AI MUST immediately revert the last change and report the failure with detailed diagnostics, including logs and test reports.
-
-This strengthened approach ensures that the implementation is not only tailored to the actual state of the codebase but also leverages advanced analytical capabilities for optimal, verifiable, and safe test refactoring.
-
-## Expected Challenges (Enhanced)
-
-1.  **API Rate Limiting**:
-    *   **Challenge**: Real service calls may hit rate limits during testing, leading to flaky tests or blocked execution.
-    *   **Mitigation**: Implement intelligent retry mechanisms with exponential backoff. Utilize test-specific API keys with higher quotas if available. Implement caching strategies within tests for static API responses. Consider using service virtualization for highly rate-limited APIs.
-
-2.  **Test Execution Time**:
-    *   **Challenge**: Integrating real services will significantly increase test execution time, impacting CI/CD feedback loops.
-    *   **Mitigation**: Optimize critical path tests. Implement parallel test execution. Leverage dedicated, high-performance test environments. Explore selective test execution strategies (e.g., running only affected tests for pull requests, full suite nightly).
-
-3.  **Cost Management**:
-    *   **Challenge**: Accidental real transactions or exceeding API quotas can incur unexpected costs.
-    *   **Mitigation**: Strictly enforce payment service mocking. Implement robust monitoring for external API usage. Use separate, limited-quota API keys for test environments. Schedule comprehensive tests during off-peak hours or less expensive times.
-
-4.  **Database Isolation**:
-    *   **Challenge**: Ensuring proper test data isolation in a real MongoDB Atlas instance to prevent conflicts between concurrent tests.
-    *   **Mitigation**: Implement robust test data seeding and cleanup procedures (e.g., using transactions or unique collection names per test suite). Use unique identifiers for all test entities.
-
-5.  **External Dependencies**:
-    *   **Challenge**: Tests will depend on the availability and stability of external services.
-    *   **Mitigation**: Implement proper retry mechanisms and circuit breakers for external calls. Design tests to validate graceful degradation when services are unavailable. Monitor external service status and integrate with incident management.
-
-## Success Metrics (Quantified & Measurable)
+## Success Metrics
 
 ### Coverage Metrics
--   **Overall Test Coverage**: Maintain or exceed 95% code coverage for application logic.
--   **Real Service Adoption**: >95% of non-payment related tests successfully use real services.
--   **Menu Path Validation**: 100% of defined menu paths validated with E2E tests.
--   **Error Handling Coverage**: >90% of defined error scenarios covered by tests.
+- Maintain or exceed current test coverage percentages
+- Ensure all menu paths are validated with real calculations
+- Verify comprehensive error handling coverage
 
 ### Performance Metrics
--   **Full Test Suite Execution Time**: <30 minutes in CI/CD for the entire suite.
--   **Individual E2E Test Time**: <1 minute per critical E2E test.
--   **API Rate Limit Breaches**: Zero instances of tests hitting external API rate limits during CI/CD runs.
--   **Test Environment Resource Usage**: CPU and memory usage of test runners remain within defined thresholds.
+- All tests complete within reasonable timeframes (under 5 minutes each where possible)
+- No tests fail due to timeout issues
+- Proper handling of rate limitations
 
 ### Quality Metrics
--   **Zero False Positives/Negatives**: Tests consistently reflect actual application behavior.
--   **Calculation Accuracy**: 100% accuracy for astrological calculations against known data sets.
--   **Test Data Isolation**: Zero test data conflicts between concurrent test runs.
--   **Test Flakiness**: Flakiness rate of critical tests reduced to <1%.
+- Zero false positives due to mock-behavior mismatches
+- Comprehensive validation of real service interactions
+- Proper isolation of test data and operations
 
-This **enhanced and strengthened** test refactoring plan provides a detailed, strategic approach to transforming the testing landscape of the Astrology WhatsApp Bot. It emphasizes a rigorous, AI-driven execution model, comprehensive validation, and measurable outcomes, ensuring a highly reliable, efficient, and maintainable test suite.
+## Risk Mitigation
+
+### External Service Dependencies
+- Proper error handling for API unavailability
+- Comprehensive retry mechanisms where appropriate
+- Environment-specific configurations
+
+### Cost Management
+- Payment service mocking to avoid transaction costs
+- API usage monitoring and optimization
+- Test execution scheduling where appropriate
+
+### Test Data Management
+- Proper cleanup procedures for real database
+- Unique identifiers to prevent data conflicts
+- Isolation of test scenarios
+
+## Implementation Approach
+
+This plan provides the complete framework for refactoring and consolidating the test suite to use real services while maintaining comprehensive coverage. The implementation follows the 6-step approach outlined above, with each step building on the previous to ensure a systematic transformation from mock-based to real-service-based testing.
+
+# Complete Test Files Assessment
+
+## Test Directory Structure Overview
+
+### End-to-End Tests (e2e)
+- `astrology-integration.test.js` - Astrology library integration tests
+- `comprehensive-menu-integration.test.js` - Menu integration with real libraries
+- `comprehensive-menu-tree-real-calculations.test.js` - Comprehensive menu tree with real calculations
+- `comprehensive-menu-tree-validation.test.js` - Menu tree validation (appears to be duplicate of above?)
+- `critical-user-flow.test.js` - Critical user flow scenarios
+- `external-api-integration.test.js` - External API integration tests
+- `real-astrology-calculations.test.js` - Real astrology calculation tests
+- `real-whatsapp-flow.test.js` - Real WhatsApp flow tests
+
+### Unit Tests (unit)
+- `server.test.js` - Server-level tests
+
+#### Unit/Services/Astrology (13 files)
+- `astrocartographyReader.test.js` - Astrocartography reader unit tests
+- `astrologyEngine.test.js` - Astrology engine unit tests
+- `celticReader.test.js` - Celtic astrology reader unit tests
+- `chineseCalculator.test.js` - Chinese astrology calculator unit tests
+- `horaryReader.test.js` - Horary astrology reader unit tests
+- `ichingReader.test.js` - I Ching reader unit tests
+- `kabbalisticReader.test.js` - Kabbalistic astrology reader unit tests
+- `mayanReader.test.js` - Mayan astrology reader unit tests
+- `nadiReader.test.js` - Nadi astrology reader unit tests
+- `numerologyService.test.js` - Numerology service unit tests
+- `palmistryReader.test.js` - Palmistry reader unit tests
+- `tarotReader.test.js` - Tarot reader unit tests
+- `vedicCalculator.test.js` - Vedic calculator unit tests
+
+#### Unit/Services/WhatsApp (4 files)
+- `messageProcessor.test.js` - WhatsApp message processor unit tests
+- `messageSender.test.js` - WhatsApp message sender unit tests
+- `webhookValidator.test.js` - WhatsApp webhook validator unit tests
+- `whatsappService.test.js` - WhatsApp service unit tests
+
+#### Unit/Models (3 files)
+- `Session.test.js` - Session model unit tests
+- `User.test.js` - User model unit tests
+- `userModel.test.js` - User model helper functions unit tests
+
+#### Unit/Utils (3 files)
+- `errorHandler.test.js` - Error handler utility unit tests
+- `inputValidator.test.js` - Input validator utility unit tests
+- `logger.test.js` - Logger utility unit tests
+
+#### Unit/Conversation, Unit/Controllers, Unit/I18N, Unit/Payment
+- No files visible in these directories
+
+### Integration Tests (integration)
+- `whatsapp/` directory - No files visible
+
+### Other Directories
+- `helpers/` - Contains helper files for tests
+- `mocks/` - Contains mock files
+- `performance/` - Performance testing directory
+- `reports/` - Test reports directory
+- `security/` - Security testing directory
+
+## Total Test Count
+- **Total Directories**: 15 test-related directories
+- **Total Test Files**: 33 individual test files
+- **Additional**: Multiple test categories requiring assessment
+
+## Detailed Validity Assessment
+
+### Outdated/Redundant Tests
+1. **`comprehensive-menu-tree-validation.test.js`** - Likely duplicate of `comprehensive-menu-tree-real-calculations.test.js`
+2. **Multiple astrology reader unit tests** - May be superseded by comprehensive integration tests
+3. **Old messageProcessor.test.js** - May need updates for new menu structure
+
+### Valid Tests Requiring Real Service Updates
+1. **All unit tests in `unit/services/astrology/`** - Currently likely mocked, need real service validation
+2. **`messageProcessor.test.js`** - Needs updates for new list-based navigation
+3. **`messageSender.test.js`** - May need real service integration
+4. **All model tests** - Could benefit from real database integration
+5. **Utility tests** - Some may need real service validation
+
+### Tests with Good Coverage
+1. **New comprehensive e2e tests** - Excellent coverage with real calculations
+2. **`real-astrology-calculations.test.js`** - Good service import validation
+3. **`external-api-integration.test.js`** - Good API integration approach
+
+## Comprehensive Implementation Action Steps
+
+### Step 1: Comprehensive Assessment and Inventory
+- **Audit all 33 test files** across e2e, unit, integration, and other directories for current mocking levels
+- **Identify and validate true duplicates** between similar test files:
+  - Confirm if `comprehensive-menu-tree-validation.test.js` is indeed duplicate of `comprehensive-menu-tree-real-calculations.test.js`
+  - Map coverage overlap between `real-whatsapp-flow.test.js` and comprehensive tests
+  - Validate redundancy level of `astrology-integration.test.js`
+- **Map current test coverage** to new list-based menu structure
+- **Document all necessary API keys** and environment variables needed:
+  - MongoDB Atlas connection details
+  - Google Maps API key
+  - Mistral API key
+  - WhatsApp access tokens
+- **Create test coverage matrix** showing current vs required coverage
+
+### Step 2: Environment and Infrastructure Setup
+- **Configure real MongoDB Atlas connection** for all test environments
+- **Set up secure API key management** for external services
+- **Implement payment service mocking framework** to prevent real transactions
+- **Create shared test utilities**:
+  - Database connection pooling
+  - Test data seeding and cleanup functions
+  - API rate limiting handlers
+  - Error response utilities
+
+### Step 3: Unit Test Migration to Real Services
+- **Convert all astrology unit tests** in `unit/services/astrology/` to use real libraries:
+  - `astrocartographyReader.test.js` - migrate to real astrocartography calculations
+  - `astrologyEngine.test.js` - migrate to real engine calculations
+  - `celticReader.test.js` - migrate to real celtic calculations
+  - `chineseCalculator.test.js` - migrate to real chinese calculations
+  - `horaryReader.test.js` - migrate to real horary calculations
+  - `ichingReader.test.js` - migrate to real i ching calculations
+  - `kabbalisticReader.test.js` - migrate to real kabbalistic calculations
+  - `mayanReader.test.js` - migrate to real mayan calculations
+  - `nadiReader.test.js` - migrate to real nadi calculations
+  - `numerologyService.test.js` - migrate to real numerology calculations
+  - `palmistryReader.test.js` - migrate to real palmistry calculations
+  - `tarotReader.test.js` - migrate to real tarot calculations
+  - `vedicCalculator.test.js` - migrate to real vedic calculations
+- **Update message processor tests** to handle new list-based navigation
+- **Update all model tests** to use real MongoDB Atlas with proper isolation
+- **Enhance utility tests** where appropriate to use real services
+
+### Step 4: Integration and End-to-End Test Updates
+- **Update e2e tests** for new list-based navigation:
+  - Modify `comprehensive-menu-integration.test.js` for new menu structure
+  - Update `critical-user-flow.test.js` for new navigation patterns
+- **Consolidate overlapping e2e tests** while maintaining coverage:
+  - Merge key scenarios from `real-whatsapp-flow.test.js` into comprehensive suite
+  - Preserve unique scenarios that are not covered elsewhere
+- **Ensure payment services remain mocked** to avoid costs across all tests
+- **Verify all API integration tests** use real endpoints:
+  - Update `external-api-integration.test.js` for current API implementations
+  - Test actual API error responses and handling
+
+### Step 5: Performance Optimization and Validation
+- **Execute comprehensive test suite** with real services to identify performance bottlenecks
+- **Validate performance under real service load**:
+  - Monitor API response times
+  - Check database query performance
+  - Identify tests that may need optimization
+- **Optimize slow tests** without compromising coverage:
+  - Implement caching for repeated calculations
+  - Optimize database queries and connections
+  - Consider parallel execution for independent tests
+- **Implement proper cleanup procedures** for all real service tests
+- **Verify error handling** works with actual service responses
+
+### Step 6: Consolidation and Cleanup
+- **Archive or remove redundant tests**:
+  - Remove `comprehensive-menu-tree-validation.test.js` if confirmed duplicate
+  - Archive `astrology-integration.test.js` after confirming coverage in other tests
+- **Update documentation** for new test architecture
+- **Create test maintenance guidelines** for future development
+
+## Expected Challenges
+
+1. **API Rate Limiting** - Real service calls may hit rate limits during testing:
+   - Google Maps API has daily usage quotas
+   - Mistral API may have rate limits
+   - Need to implement rate limiting strategies and caching
+   - Consider using test-specific API endpoints or quotas
+
+2. **Test Execution Time** - Real services will slow test execution significantly:
+   - Individual tests may go from milliseconds to seconds
+   - Comprehensive test suites may take 10-20x longer
+   - Need to optimize critical path tests
+   - Consider parallel execution strategies
+
+3. **Cost Management** - Need to ensure payment services remain mocked:
+   - Verify all payment service calls are properly mocked
+   - Implement monitoring for any accidental real transactions
+   - Ensure API usage stays within free tiers where possible
+
+4. **Database Isolation** - Real MongoDB will need proper test data isolation:
+   - Implement proper test data cleanup procedures
+   - Use unique identifiers to prevent test conflicts
+   - Implement proper session management for concurrent tests
+   - Ensure data consistency across test runs
+
+5. **External Dependencies** - Tests will depend on external service availability:
+   - Implement proper retry mechanisms
+   - Handle service outages gracefully
+   - Create fallback testing strategies
+   - Monitor external service status
+
+## Success Metrics
+
+- **Coverage Maintenance**: Maintain or improve overall test coverage
+- **Real Service Adoption**: 95%+ tests use real services (except payment)
+- **Performance**: Tests complete within acceptable timeframes (under 10 minutes per test file)
+- **Reliability**: Tests pass consistently with real service integration
+- **Maintainability**: Clear documentation for future test maintenance
+
+This comprehensive assessment reveals that while the new e2e tests provide excellent coverage, there's significant opportunity to enhance unit and integration tests by replacing mocks with real services, following the same approach as the new comprehensive e2e tests.
+
+# Comprehensive Test Assessment Report
+
+## Current Test Files Inventory
+
+### Located Test Files in `/astro-whatsapp-bot/tests/e2e/`:
+
+1. **`comprehensive-menu-tree-real-calculations.test.js`** (New - 1065 lines)
+   - Comprehensive menu tree validation with real calculations
+   - Tests 40+ menu paths using real MongoDB Atlas
+   - Validates all astrological calculations (birth charts, tarot, numerology, etc.)
+   - Performance and load testing included
+
+2. **`comprehensive-menu-integration.test.js`** (New - 998 lines)
+   - Menu integration tests with real libraries
+   - Real MongoDB operations
+   - Navigation validation across all menu categories
+   - Error handling and edge cases
+
+3. **`external-api-integration.test.js`** (New - 509 lines)
+   - Google Maps and external API integration tests
+   - Safe testing of API integrations
+   - Performance and scalability validation
+
+4. **`real-astrology-calculations.test.js`** (New - 326 lines)
+   - Astrology library integration tests
+   - Real calculation validations
+   - Service import validation
+
+5. **`critical-user-flow.test.js`** (Old - 318 lines)
+   - Critical user flow end-to-end tests
+   - Onboarding and daily horoscope flows
+   - Error handling and security validation
+
+6. **`real-whatsapp-flow.test.js`** (Old - 233 lines)
+   - Real WhatsApp bot end-to-end flows
+   - User onboarding and astrology requests
+   - Error handling scenarios
+
+7. **`astrology-integration.test.js`** (Old - 329 lines)
+   - Astrology library integration tests
+   - Tarot, palmistry, and numerology validations
+   - Cross-system compatibility tests
+
+## Test Validity Analysis
+
+### Redundant Tests
+- **`astrology-integration.test.js`** (Old) - Partially redundant with new `real-astrology-calculations.test.js` and `comprehensive-menu-integration.test.js`
+- **`real-whatsapp-flow.test.js`** (Old) - Overlapping coverage with `comprehensive-menu-tree-real-calculations.test.js`
+- **Some tests in `critical-user-flow.test.js`** - May have overlapping scenarios with comprehensive suite
+
+### Valid Tests Requiring Enhancement
+- **`critical-user-flow.test.js`** - Core user journey tests remain valid but need real service updates
+- **Specific onboarding flows** - Still relevant but need to integrate with new menu structure
+- **Subscription flow tests** - Still relevant with payment mocking
+
+### Outdated Tests
+- **Old button navigation tests** - Superseded by new list-based navigation tests
+- **Limited menu coverage tests** - Now covered by comprehensive test suite
+- **Mock-heavy tests** - Need migration to real service architecture
+
+## Coverage Gaps Analysis
+
+### Well-Covered Areas
+- Menu navigation (comprehensively covered)
+- Astrological calculations (well validated)
+- Database operations (adequately tested)
+- Error handling (well addressed)
+
+### Potential Gaps Identified
+- Specific payment flow validation with mocked services
+- Advanced timing operations (electional astrology)
+- Complex compatibility scenarios with multiple users
+- Specific edge cases in geocoding
+
+## Assessment Summary
+
+### Current State
+- **Total Test Files**: 7
+- **New Comprehensive Tests**: 4 (1998 lines total)
+- **Old Legacy Tests**: 3 (880 lines total)
+- **Current Test Suite Status**: Overlapping coverage with comprehensive improvements
+
+### Redundancy Level
+- **High Redundancy**: `astrology-integration.test.js` (70% overlap with new tests)
+- **Medium Redundancy**: `real-whatsapp-flow.test.js` (50% overlap)
+- **Low Redundancy**: `critical-user-flow.test.js` (30% overlap but with important scenarios)
+
+### Recommendations
+
+1. **Phase 1**: Archive `astrology-integration.test.js` as it's largely superseded
+2. **Phase 2**: Merge key scenarios from `real-whatsapp-flow.test.js` into comprehensive suite
+3. **Phase 3**: Enhance `critical-user-flow.test.js` with real service integration
+4. **Phase 4**: Update all remaining tests to use real services instead of mocks
+
+### Test Migration Priority
+1. **Critical**: Update `critical-user-flow.test.js` to use real services
+2. **High**: Consolidate `real-whatsapp-flow.test.js` scenarios
+3. **Medium**: Verify `external-api-integration.test.js` coverage is adequate
+4. **Low**: Archive `astrology-integration.test.js` after validation
+
+## Validation Requirements
+
+### Pre-Migration Checks
+- Ensure comprehensive suite covers all scenarios from older tests
+- Validate that payment mocking is properly implemented
+- Verify environment variables are properly configured for real services
+- Confirm API key security protocols for production use
+
+### Post-Migration Validation
+- Run complete test suite to ensure no regressions
+- Validate test execution times are reasonable
+- Confirm all real service dependencies are accessible
+- Verify error handling works with actual service responses
+
+This assessment reveals a well-structured but somewhat redundant test suite. The new comprehensive tests provide excellent coverage, making some older tests partially or fully redundant. The plan moving forward should focus on consolidating the best elements of older tests while maintaining the comprehensive real-service approach of the new test suite.
+
+## Implementation Requirements for Executing AI
+
+### Critical Mandate
+Any AI executing this scope must follow this essential process:
+
+1. **Thoroughly Review Existing Test Scripts**: Before implementing any changes, the AI must read and analyze all existing auto test scripts in the project at that point in time.
+
+2. **Create Independent Plan**: Based on the review of existing scripts, the AI must create their own implementation plan for achieving this scope.
+
+3. **Merge Plans**: The AI should merge their independently created plan with this comprehensive plan, creating a combined approach that leverages both perspectives.
+
+4. **Create Final Scope and Plan**: The AI should produce a final, unified scope and plan that incorporates both approaches for optimal results.
+
+This approach ensures that the implementation is tailored to the actual state of the codebase while leveraging the comprehensive framework provided in this document.

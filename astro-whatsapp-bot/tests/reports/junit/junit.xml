@@ -1,44 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="299" failures="35" errors="0" time="168.275">
-  <testsuite name="REAL WhatsApp Bot End-to-End Flow Tests" errors="0" failures="3" skipped="0" timestamp="2025-10-28T11:29:46" time="17.606" tests="5">
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" name="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" time="7.463">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:224:36)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
-    </testcase>
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" time="3.774">
-      <failure>Error: expect(received).toContain(expected) // indexOf
-
-Expected substring: &quot;🔮 *Your Daily Horoscope*&quot;
-Received string:    &quot;[object Promise]·
-[object Promise]·
-[object Promise]
-[object Promise]
-[object Promise]
-[object Promise]
-[object Promise]
-[object Promise][object Promise]&quot;
-    at Object.toContain (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:309:37)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
-    </testcase>
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" time="0.091">
-      <failure>Error: expect(received).toContain(expected) // indexOf
-
-Expected substring: &quot;💕 *Compatibility Analysis*&quot;
-Received string:    &quot;messages.compatibility.error&quot;
-    at Object.toContain (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:349:27)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
-    </testcase>
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" time="0.019">
-    </testcase>
-    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" time="0.047">
-    </testcase>
-  </testsuite>
-  <testsuite name="Critical User Flow End-to-End Tests" errors="0" failures="10" skipped="0" timestamp="2025-10-28T11:30:04" time="18.589" tests="11">
-    <testcase classname="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should generate real daily horoscope for existing user" name="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should generate real daily horoscope for existing user" time="0.108">
+<testsuites name="jest tests" tests="130" failures="26" errors="0" time="97.06">
+  <testsuite name="Critical User Flow End-to-End Tests" errors="0" failures="10" skipped="0" timestamp="2025-10-28T12:37:31" time="21.199" tests="11">
+    <testcase classname="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should generate real daily horoscope for existing user" name="Critical User Flow End-to-End Tests Existing User Daily Horoscope Flow should generate real daily horoscope for existing user" time="0.203">
       <failure>Error: expected 200 &quot;OK&quot;, got 500 &quot;Internal Server Error&quot;
     at Object.expect (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:215:10)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
@@ -66,14 +29,14 @@ Received string:    &quot;messages.compatibility.error&quot;
     at emitCloseNT (node:net:2419:8)
     at processTicksAndRejections (node:internal/process/task_queues:89:21)</failure>
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" name="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" time="1.048">
+    <testcase classname="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" name="Critical User Flow End-to-End Tests Interactive Button Flow should process interactive button reply for compatibility checking" time="1.044">
       <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: &gt;= 1
 Received number of calls:    0
     at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:308:27)</failure>
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" name="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" time="3.033">
+    <testcase classname="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" name="Critical User Flow End-to-End Tests Error Handling Flow should handle processing errors gracefully" time="3.026">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: &quot;5566778899&quot;, &quot;I&apos;m sorry, I encountered an error processing your message. Please try again later!&quot;
@@ -82,51 +45,51 @@ Number of calls: 0
     at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:375:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" name="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" time="3.41">
+    <testcase classname="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" name="Critical User Flow End-to-End Tests Performance and Scalability Flow should handle high volume of messages without crashing" time="3.509">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledTimes(expected)
 
 Expected number of calls: 20
 Received number of calls: 0
     at Object.toHaveBeenCalledTimes (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:480:27)</failure>
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" name="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" time="0.017">
+    <testcase classname="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" name="Critical User Flow End-to-End Tests Security and Compliance Flow should validate webhook signatures when provided" time="0.013">
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" time="1.054">
+    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle subscription plan inquiry" time="1.032">
       <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: &gt;= 1
 Received number of calls:    0
     at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:638:27)</failure>
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" time="1.053">
+    <testcase classname="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" name="Critical User Flow End-to-End Tests Subscription and Payment Flow should handle premium subscription request" time="1.049">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledTimes(expected)
 
 Expected number of calls: 2
 Received number of calls: 0
     at Object.toHaveBeenCalledTimes (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:703:27)</failure>
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow Profile Management Flow should handle profile viewing request" name="Critical User Flow End-to-End Tests Astrology Readings Flow Profile Management Flow should handle profile viewing request" time="1.149">
+    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow Profile Management Flow should handle profile viewing request" name="Critical User Flow End-to-End Tests Astrology Readings Flow Profile Management Flow should handle profile viewing request" time="1.078">
       <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: &gt;= 1
 Received number of calls:    0
     at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:794:29)</failure>
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" time="1.06">
+    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle tarot reading request" time="1.024">
       <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: &gt;= 1
 Received number of calls:    0
     at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:869:27)</failure>
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" time="1.061">
+    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle palmistry reading request" time="1.028">
       <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: &gt;= 1
 Received number of calls:    0
     at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:927:27)</failure>
     </testcase>
-    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" time="1.058">
+    <testcase classname="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" name="Critical User Flow End-to-End Tests Astrology Readings Flow should handle numerology report request" time="1.044">
       <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: &gt;= 1
@@ -134,119 +97,75 @@ Received number of calls:    0
     at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/critical-user-flow.test.js:985:27)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE" errors="0" failures="4" skipped="0" timestamp="2025-10-28T11:30:23" time="6.042" tests="26">
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Menu Structure Validation should validate complete menu tree structure" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Menu Structure Validation should validate complete menu tree structure" time="0.038">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Main Menu Navigation should display main menu with all 6 categories" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Main Menu Navigation should display main menu with all 6 categories" time="0.506">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
-
-Expected number of calls: &gt;= 1
-Received number of calls:    0
-    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-validation.test.js:298:31)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Main Menu Navigation should navigate to all main menu categories" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Main Menu Navigation should navigate to all main menu categories" time="0.032">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should navigate through Western astrology sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should navigate through Western astrology sub-menus" time="0.058">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should calculate REAL Western birth chart with astrology libraries" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should calculate REAL Western birth chart with astrology libraries" time="0.019">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should generate REAL daily horoscope with Vedic calculations" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should generate REAL daily horoscope with Vedic calculations" time="0.013">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should navigate back to main menu from Western astrology sub-menu" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should navigate back to main menu from Western astrology sub-menu" time="0.015">
-      <failure>Error: expect(received).toContain(expected) // indexOf
-
-Matcher error: received value must not be null nor undefined
-
-Received has value: undefined
-    at Object.toContain (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-validation.test.js:489:33)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Vedic Astrology Menu Tree should navigate through Vedic astrology sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Vedic Astrology Menu Tree should navigate through Vedic astrology sub-menus" time="0.057">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Vedic Astrology Menu Tree should calculate REAL Vedic Kundli with astrology libraries" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Vedic Astrology Menu Tree should calculate REAL Vedic Kundli with astrology libraries" time="0.013">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Divination &amp; Mystic Menu Tree should navigate through divination sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Divination &amp; Mystic Menu Tree should navigate through divination sub-menus" time="0.054">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Divination &amp; Mystic Menu Tree should generate REAL Tarot reading with tarot library" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Divination &amp; Mystic Menu Tree should generate REAL Tarot reading with tarot library" time="0.011">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Relationships &amp; Groups Menu Tree should navigate through relationships sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Relationships &amp; Groups Menu Tree should navigate through relationships sub-menus" time="0.031">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Numerology &amp; Special Menu Tree should navigate through numerology sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Numerology &amp; Special Menu Tree should navigate through numerology sub-menus" time="0.041">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Numerology &amp; Special Menu Tree should calculate REAL numerology report with numerology library" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Numerology &amp; Special Menu Tree should calculate REAL numerology report with numerology library" time="0.014">
-    </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Real Database Operations should perform REAL MongoDB user creation and retrieval" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Real Database Operations should perform REAL MongoDB user creation and retrieval" time="0.015">
+  <testsuite name="REAL WhatsApp Bot End-to-End Flow Tests" errors="0" failures="3" skipped="0" timestamp="2025-10-28T12:37:52" time="15.415" tests="5">
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" name="REAL WhatsApp Bot End-to-End Flow Tests Complete User Onboarding Flow should complete full onboarding and generate real astrology reading" time="7.311">
       <failure>Error: expect(received).toBe(expected) // Object.is equality
 
-Expected: &quot;Test User&quot;
-Received: &quot;Cosmic Explorer&quot;
-    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-validation.test.js:766:34)
+Expected: true
+Received: false
+    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:224:36)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Real Database Operations should perform REAL MongoDB user profile updates" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Real Database Operations should perform REAL MongoDB user profile updates" time="0.028">
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should generate real daily horoscope for existing user" time="4.5">
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: &quot;🔮 *Your Daily Horoscope*&quot;
+Received string:    &quot;[object Promise]·
+[object Promise]·
+[object Promise]
+[object Promise]
+[object Promise]
+[object Promise]
+[object Promise]
+[object Promise][object Promise]&quot;
+    at Object.toContain (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:309:37)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Geocoding Integration Tests should test REAL Google Maps geocoding for birth places" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Geocoding Integration Tests should test REAL Google Maps geocoding for birth places" time="1.024">
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" name="REAL WhatsApp Bot End-to-End Flow Tests Existing User Astrology Requests should handle compatibility request with real calculations" time="0.068">
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: &quot;💕 *Compatibility Analysis*&quot;
+Received string:    &quot;messages.compatibility.error&quot;
+    at Object.toContain (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-whatsapp-flow.test.js:349:27)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Geocoding Integration Tests should handle geocoding errors gracefully" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Geocoding Integration Tests should handle geocoding errors gracefully" time="0.635">
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle invalid webhook payload gracefully" time="0.018">
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" time="0.035">
+    <testcase classname="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" name="REAL WhatsApp Bot End-to-End Flow Tests Error Handling and Edge Cases should handle malformed messages gracefully" time="0.043">
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle invalid menu selections" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle invalid menu selections" time="0.016">
+  </testsuite>
+  <testsuite name="External API Integration Tests - SAFE VALIDATION" errors="0" failures="9" skipped="0" timestamp="2025-10-28T12:38:08" time="5.284" tests="15">
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Google Maps Integration - SAFE TESTING should validate Google Maps client setup" name="External API Integration Tests - SAFE VALIDATION Google Maps Integration - SAFE TESTING should validate Google Maps client setup" time="0.006">
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle malformed messages" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle malformed messages" time="0.013">
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Google Maps Integration - SAFE TESTING should handle astrocartography requests safely" name="External API Integration Tests - SAFE VALIDATION Google Maps Integration - SAFE TESTING should handle astrocartography requests safely" time="0.226">
       <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: &gt;= 1
 Received number of calls:    0
-    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-validation.test.js:892:33)
+    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:96:33)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Concurrent User Sessions should handle multiple concurrent users navigating menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Concurrent User Sessions should handle multiple concurrent users navigating menus" time="0.123">
+    <testcase classname="External API Integration Tests - SAFE VALIDATION OpenAI/Gemini Integration - SAFE TESTING should validate AI service imports" name="External API Integration Tests - SAFE VALIDATION OpenAI/Gemini Integration - SAFE TESTING should validate AI service imports" time="0.004">
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Performance &amp; Load Testing should handle rapid menu navigation efficiently" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Performance &amp; Load Testing should handle rapid menu navigation efficiently" time="0.05">
+    <testcase classname="External API Integration Tests - SAFE VALIDATION OpenAI/Gemini Integration - SAFE TESTING should handle AI-powered readings safely" name="External API Integration Tests - SAFE VALIDATION OpenAI/Gemini Integration - SAFE TESTING should handle AI-powered readings safely" time="0.023">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
+
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:151:33)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL Vedic calculator integration" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL Vedic calculator integration" time="0.009">
+    <testcase classname="External API Integration Tests - SAFE VALIDATION WhatsApp API Integration - SAFE TESTING should validate WhatsApp service setup" name="External API Integration Tests - SAFE VALIDATION WhatsApp API Integration - SAFE TESTING should validate WhatsApp service setup" time="0.005">
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL Tarot reader integration" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL Tarot reader integration" time="0.004">
+    <testcase classname="External API Integration Tests - SAFE VALIDATION WhatsApp API Integration - SAFE TESTING should handle WhatsApp message processing" name="External API Integration Tests - SAFE VALIDATION WhatsApp API Integration - SAFE TESTING should handle WhatsApp message processing" time="0.01">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
+
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:199:33)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL numerology service integration" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL numerology service integration" time="0.005">
-    </testcase>
-  </testsuite>
-  <testsuite name="External API Integration Tests - SAFE VALIDATION" errors="0" failures="10" skipped="0" timestamp="2025-10-28T11:30:29" time="4.191" tests="15">
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Google Maps Integration - SAFE TESTING should validate Google Maps client setup" name="External API Integration Tests - SAFE VALIDATION Google Maps Integration - SAFE TESTING should validate Google Maps client setup" time="0.006">
-    </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Google Maps Integration - SAFE TESTING should handle astrocartography requests safely" name="External API Integration Tests - SAFE VALIDATION Google Maps Integration - SAFE TESTING should handle astrocartography requests safely" time="0.023">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;data&apos;)
-    at data (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:73:67)
-    at sendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:430:18)
-    at sendErrorMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:2499:3)
-    at processIncomingMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:249:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:94:9)</failure>
-    </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION OpenAI/Gemini Integration - SAFE TESTING should validate AI service imports" name="External API Integration Tests - SAFE VALIDATION OpenAI/Gemini Integration - SAFE TESTING should validate AI service imports" time="0.003">
-    </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION OpenAI/Gemini Integration - SAFE TESTING should handle AI-powered readings safely" name="External API Integration Tests - SAFE VALIDATION OpenAI/Gemini Integration - SAFE TESTING should handle AI-powered readings safely" time="0.01">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;data&apos;)
-    at data (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:73:67)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at sendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:430:18)
-    at sendErrorMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:2499:3)
-    at processIncomingMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:249:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:149:9)</failure>
-    </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION WhatsApp API Integration - SAFE TESTING should validate WhatsApp service setup" name="External API Integration Tests - SAFE VALIDATION WhatsApp API Integration - SAFE TESTING should validate WhatsApp service setup" time="0.003">
-    </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION WhatsApp API Integration - SAFE TESTING should handle WhatsApp message processing" name="External API Integration Tests - SAFE VALIDATION WhatsApp API Integration - SAFE TESTING should handle WhatsApp message processing" time="0.011">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;data&apos;)
-    at data (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:73:67)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at sendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:430:18)
-    at sendErrorMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:2499:3)
-    at processIncomingMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:249:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:197:9)</failure>
-    </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Database Integration - REAL MONGO OPERATIONS should perform REAL database CRUD operations" name="External API Integration Tests - SAFE VALIDATION Database Integration - REAL MONGO OPERATIONS should perform REAL database CRUD operations" time="0.204">
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Database Integration - REAL MONGO OPERATIONS should perform REAL database CRUD operations" name="External API Integration Tests - SAFE VALIDATION Database Integration - REAL MONGO OPERATIONS should perform REAL database CRUD operations" time="0.226">
       <failure>Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: &quot;es&quot;
@@ -256,27 +175,25 @@ Received: undefined
     </testcase>
     <testcase classname="External API Integration Tests - SAFE VALIDATION Database Integration - REAL MONGO OPERATIONS should handle database connection errors gracefully" name="External API Integration Tests - SAFE VALIDATION Database Integration - REAL MONGO OPERATIONS should handle database connection errors gracefully" time="0.008">
     </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Payment Integration - SAFE TESTING should validate payment service setup" name="External API Integration Tests - SAFE VALIDATION Payment Integration - SAFE TESTING should validate payment service setup" time="0.002">
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Payment Integration - SAFE TESTING should validate payment service setup" name="External API Integration Tests - SAFE VALIDATION Payment Integration - SAFE TESTING should validate payment service setup" time="0.001">
     </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Payment Integration - SAFE TESTING should handle payment-related requests safely" name="External API Integration Tests - SAFE VALIDATION Payment Integration - SAFE TESTING should handle payment-related requests safely" time="0.012">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;data&apos;)
-    at data (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:73:67)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at sendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:430:18)
-    at sendErrorMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:2499:3)
-    at processIncomingMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:249:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:260:9)</failure>
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Payment Integration - SAFE TESTING should handle payment-related requests safely" name="External API Integration Tests - SAFE VALIDATION Payment Integration - SAFE TESTING should handle payment-related requests safely" time="0.023">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
+
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:262:33)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Error Handling &amp; Resilience should handle network timeouts gracefully" name="External API Integration Tests - SAFE VALIDATION Error Handling &amp; Resilience should handle network timeouts gracefully" time="0.009">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;data&apos;)
-    at data (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:73:67)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at sendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:430:18)
-    at sendErrorMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:2499:3)
-    at processIncomingMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:249:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:292:9)</failure>
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Error Handling &amp; Resilience should handle network timeouts gracefully" name="External API Integration Tests - SAFE VALIDATION Error Handling &amp; Resilience should handle network timeouts gracefully" time="0.02">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
+
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:295:33)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Error Handling &amp; Resilience should handle malformed data gracefully" name="External API Integration Tests - SAFE VALIDATION Error Handling &amp; Resilience should handle malformed data gracefully" time="0.007">
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Error Handling &amp; Resilience should handle malformed data gracefully" name="External API Integration Tests - SAFE VALIDATION Error Handling &amp; Resilience should handle malformed data gracefully" time="0.004">
       <failure>CastError: Cast to string failed for value &quot;{ phoneNumber: &apos;+incomplete&apos;, profileComplete: false }&quot; (type Object) at path &quot;phoneNumber&quot; for model &quot;User&quot;
     at SchemaString.Object.&lt;anonymous&gt;.SchemaString.cast (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/schema/string.js:606:11)
     at SchemaString.Object.&lt;anonymous&gt;.SchemaType.applySetters (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/mongoose/lib/schematype.js:1219:12)
@@ -290,466 +207,244 @@ Received: undefined
     at Object.createUser (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/models/userModel.js:19:26)
     at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:310:32)</failure>
     </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should handle concurrent requests efficiently" name="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should handle concurrent requests efficiently" time="0.02">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;data&apos;)
-    at data (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:73:67)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at sendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:430:18)
-    at sendErrorMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:2499:3)
-    at processIncomingMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:249:5)
-    at async Promise.all (index 0)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:377:9)</failure>
-    </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should handle high-volume user load testing" name="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should handle high-volume user load testing" time="0.183">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;data&apos;)
-    at data (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:73:67)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at sendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:430:18)
-    at sendErrorMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:2499:3)
-    at processIncomingMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:249:5)
-    at async Promise.all (index 0)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:447:9)</failure>
-    </testcase>
-    <testcase classname="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should maintain response times under load" name="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should maintain response times under load" time="0.111">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;data&apos;)
-    at data (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:73:67)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at sendMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageSender.js:430:18)
-    at sendErrorMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:2499:3)
-    at processIncomingMessage (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/whatsapp/messageProcessor.js:249:5)
-    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:494:11)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="Server Setup" errors="0" failures="1" skipped="0" timestamp="2025-10-28T11:30:34" time="3.86" tests="4">
-    <testcase classname="Server Setup GET /health should return health status with correct structure" name="Server Setup GET /health should return health status with correct structure" time="0.034">
-      <failure>Error: expect(received).toHaveProperty(path, value)
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should handle concurrent requests efficiently" name="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should handle concurrent requests efficiently" time="0.12">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
-Expected path: &quot;status&quot;
-
-Expected value: &quot;healthy&quot;
-Received value: &quot;degraded&quot;
-    at Object.toHaveProperty (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/server.test.js:21:29)
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:384:33)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Server Setup GET / should return welcome message with version" name="Server Setup GET / should return welcome message with version" time="0.01">
-    </testcase>
-    <testcase classname="Server Setup POST /webhook should return webhook ready message" name="Server Setup POST /webhook should return webhook ready message" time="0.011">
-    </testcase>
-    <testcase classname="Server Setup 404 Handler should return 404 for non-existent routes" name="Server Setup 404 Handler should return 404 for non-existent routes" time="0.009">
-    </testcase>
-  </testsuite>
-  <testsuite name="AstrologyEngine" errors="0" failures="1" skipped="0" timestamp="2025-10-28T11:30:38" time="2.612" tests="3">
-    <testcase classname="AstrologyEngine generateAstrologyResponse should generate astrology response for valid user" name="AstrologyEngine generateAstrologyResponse should generate astrology response for valid user" time="0.002">
-    </testcase>
-    <testcase classname="AstrologyEngine validateBirthData should validate valid birth data" name="AstrologyEngine validateBirthData should validate valid birth data" time="0.001">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should handle high-volume user load testing" name="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should handle high-volume user load testing" time="0.557">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
-Expected: true
-Received: false
-    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/astrology/astrologyEngine.test.js:30:30)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="AstrologyEngine validateBirthData should reject invalid birth data" name="AstrologyEngine validateBirthData should reject invalid birth data" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Logger" errors="0" failures="3" skipped="0" timestamp="2025-10-28T11:30:41" time="2.102" tests="4">
-    <testcase classname="Logger Logging Methods should log info message" name="Logger Logging Methods should log info message" time="0.003">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: StringContaining &quot;Test info message&quot;
-
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:18:26)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="Logger Logging Methods should log error message" name="Logger Logging Methods should log error message" time="0.001">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: StringContaining &quot;Test error message&quot;
-
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:28:26)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="Logger Logging Methods should log warn message" name="Logger Logging Methods should log warn message" time="0.001">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: StringContaining &quot;Test warn message&quot;
-
-Number of calls: 0
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/utils/logger.test.js:38:26)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="Logger Logging Methods should log debug message" name="Logger Logging Methods should log debug message" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Message Processor" errors="0" failures="2" skipped="0" timestamp="2025-10-28T11:30:43" time="2.276" tests="9">
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" name="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should process existing user message" name="WhatsApp Message Processor processIncomingMessage should process existing user message" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" name="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" time="0.002">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: &quot;1234567890&quot;, &quot;👤 *Profile Required*·
-To provide accurate Daily Horoscope, I need your birth details:·
-📅 *Birth Date* (DD/MM/YYYY)
-🕐 *Birth Time* (HH:MM - 24hr format)
-📍 *Birth Place* (City, Country)·
-*Example:*
-15/06/1990, 14:30, Mumbai, India·
-Send your birth details in this format, or use the Settings menu to update your profile permanently.&quot;, &quot;text&quot;
-Received: &quot;1234567890&quot;, &quot;👤 *Profile Required*·
-To provide accurate Daily Horoscope, I need your birth details:·
-📅 *Birth Date* (DDMMYY or DDMMYYYY format)
-🕐 *Birth Time* (HHMM format - 24hr)
-📍 *Birth Place* (City, Country)·
-*Example:*
-150690, 1430, Mumbai, India·
-Send your birth details in this format, or use the Settings menu to update your profile permanently.&quot;, &quot;text&quot;
-
-Number of calls: 1
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/whatsapp/messageProcessor.test.js:174:27)
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/external-api-integration.test.js:454:33)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle button messages" name="WhatsApp Message Processor processIncomingMessage should handle button messages" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle media messages" name="WhatsApp Message Processor processIncomingMessage should handle media messages" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" name="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" time="0.001">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" name="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" time="0.003">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: StringContaining &quot;Error processing message from 1234567890:&quot;, Any&lt;Error&gt;
-Received
-       1: &quot;❌ Error processing message from 1234567890: Database error&quot;
-       2: &quot;❌ Error sent to 1234567890: Database error&quot;
-
-Number of calls: 2
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/whatsapp/messageProcessor.test.js:295:28)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    <testcase classname="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should maintain response times under load" name="External API Integration Tests - SAFE VALIDATION Performance &amp; Scalability should maintain response times under load" time="0.061">
     </testcase>
   </testsuite>
-  <testsuite name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:30:45" time="22.539" tests="17">
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL main menu paths and validate responses" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL main menu paths and validate responses" time="1.216">
+  <testsuite name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY" errors="0" failures="0" skipped="0" timestamp="2025-10-28T12:38:14" time="22.698" tests="17">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL main menu paths and validate responses" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL main menu paths and validate responses" time="1.213">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Western astrology sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Western astrology sub-menu paths" time="2.27">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Western astrology sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Western astrology sub-menu paths" time="2.237">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Vedic astrology sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Vedic astrology sub-menu paths" time="0.181">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Vedic astrology sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL Vedic astrology sub-menu paths" time="0.127">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL divination &amp; mystic sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL divination &amp; mystic sub-menu paths" time="0.158">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL divination &amp; mystic sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL divination &amp; mystic sub-menu paths" time="0.118">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL relationships &amp; groups sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL relationships &amp; groups sub-menu paths" time="0.11">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL relationships &amp; groups sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL relationships &amp; groups sub-menu paths" time="0.099">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL numerology &amp; special sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL numerology &amp; special sub-menu paths" time="0.123">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL numerology &amp; special sub-menu paths" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Complete Menu Tree Traversal - All Paths Tested should traverse ALL numerology &amp; special sub-menu paths" time="0.106">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate ALL real calculation services perform actual computations" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate ALL real calculation services perform actual computations" time="2.75">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate ALL real calculation services perform actual computations" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate ALL real calculation services perform actual computations" time="2.523">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate calculation accuracy with known astronomical data" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate calculation accuracy with known astronomical data" time="0.034">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate calculation accuracy with known astronomical data" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Calculation Validation - All Services Tested should validate calculation accuracy with known astronomical data" time="0.035">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should handle rapid menu navigation through all paths efficiently" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should handle rapid menu navigation through all paths efficiently" time="2.851">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should handle rapid menu navigation through all paths efficiently" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should handle rapid menu navigation through all paths efficiently" time="2.726">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should validate menu tree consistency across multiple user sessions" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should validate menu tree consistency across multiple user sessions" time="0.13">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should validate menu tree consistency across multiple user sessions" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Menu Tree Performance &amp; Load Testing should validate menu tree consistency across multiple user sessions" time="0.126">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate database operations for all menu interactions" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate database operations for all menu interactions" time="0.1">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate database operations for all menu interactions" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate database operations for all menu interactions" time="0.112">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate user profile updates through menu interactions" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate user profile updates through menu interactions" time="0.028">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate user profile updates through menu interactions" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Real Database Integration Throughout Menu Tree should validate user profile updates through menu interactions" time="0.035">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate geocoding service integration for location-based calculations" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate geocoding service integration for location-based calculations" time="4.864">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate geocoding service integration for location-based calculations" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate geocoding service integration for location-based calculations" time="4.305">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate timezone calculations for global astrology accuracy" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate timezone calculations for global astrology accuracy" time="4.609">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate timezone calculations for global astrology accuracy" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Geocoding Integration Throughout Menu Tree should validate timezone calculations for global astrology accuracy" time="5.216">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should handle all error scenarios gracefully throughout menu tree" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should handle all error scenarios gracefully throughout menu tree" time="0.058">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should handle all error scenarios gracefully throughout menu tree" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should handle all error scenarios gracefully throughout menu tree" time="0.054">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should validate incomplete profile handling for calculation services" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should validate incomplete profile handling for calculation services" time="0.04">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should validate incomplete profile handling for calculation services" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Comprehensive Error Handling Validation should validate incomplete profile handling for calculation services" time="0.074">
     </testcase>
-    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Final Comprehensive Validation Summary should provide comprehensive test coverage summary" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Final Comprehensive Validation Summary should provide comprehensive test coverage summary" time="0.01">
-    </testcase>
-  </testsuite>
-  <testsuite name="Comprehensive Performance Test Suite" errors="0" failures="1" skipped="0" timestamp="2025-10-28T11:31:08" time="18.249" tests="27">
-    <testcase classname="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for health check endpoint as mandated by gemini.md" name="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for health check endpoint as mandated by gemini.md" time="0.037">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  - 1
-+ Received  + 2
-
-  Object {
-    &quot;environment&quot;: Any&lt;Object&gt;,
-    &quot;memory&quot;: Any&lt;Object&gt;,
-    &quot;service&quot;: &quot;Astrology WhatsApp Bot API&quot;,
--   &quot;status&quot;: &quot;healthy&quot;,
-+   &quot;status&quot;: &quot;degraded&quot;,
-    &quot;timestamp&quot;: Any&lt;String&gt;,
-    &quot;uptime&quot;: Any&lt;Number&gt;,
-+   &quot;warning&quot;: &quot;High memory usage detected&quot;,
-  }
-    at Object.toEqual (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/performance/comprehensive-performance-test-suite.test.js:40:29)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for webhook endpoint as mandated by gemini.md" name="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for webhook endpoint as mandated by gemini.md" time="0.017">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for all critical endpoints as mandated by gemini.md" name="Comprehensive Performance Test Suite Response Time Performance Testing should maintain sub-2-second response times for all critical endpoints as mandated by gemini.md" time="0.017">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Throughput Performance Testing should handle minimum 100 requests per second throughput as mandated by gemini.md" name="Comprehensive Performance Test Suite Throughput Performance Testing should handle minimum 100 requests per second throughput as mandated by gemini.md" time="0.744">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Throughput Performance Testing should maintain consistent throughput under sustained load as mandated by gemini.md" name="Comprehensive Performance Test Suite Throughput Performance Testing should maintain consistent throughput under sustained load as mandated by gemini.md" time="14.089">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain memory usage under 512MB as mandated by gemini.md" name="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain memory usage under 512MB as mandated by gemini.md" time="0.493">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain CPU usage under 80% as mandated by gemini.md" name="Comprehensive Performance Test Suite Resource Usage Performance Testing should maintain CPU usage under 80% as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Caching Performance Testing should implement caching with hit rate tracking as mandated by gemini.md" name="Comprehensive Performance Test Suite Caching Performance Testing should implement caching with hit rate tracking as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Caching Performance Testing should implement Redis caching with proper configuration as mandated by gemini.md" name="Comprehensive Performance Test Suite Caching Performance Testing should implement Redis caching with proper configuration as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Database Performance Testing should implement database optimization with query tuning as mandated by gemini.md" name="Comprehensive Performance Test Suite Database Performance Testing should implement database optimization with query tuning as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Database Performance Testing should implement connection pooling with resource utilization optimization as mandated by gemini.md" name="Comprehensive Performance Test Suite Database Performance Testing should implement connection pooling with resource utilization optimization as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement asynchronous processing with queuing as mandated by gemini.md" name="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement asynchronous processing with queuing as mandated by gemini.md" time="0.003">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement background jobs with improved throughput as mandated by gemini.md" name="Comprehensive Performance Test Suite Asynchronous Processing Performance Testing should implement background jobs with improved throughput as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement code profiling with bottleneck identification as mandated by gemini.md" name="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement code profiling with bottleneck identification as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement memory management with leak prevention as mandated by gemini.md" name="Comprehensive Performance Test Suite Code Profiling and Optimization Testing should implement memory management with leak prevention as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement API efficiency with round trip reduction as mandated by gemini.md" name="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement API efficiency with round trip reduction as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement compression with bandwidth reduction as mandated by gemini.md" name="Comprehensive Performance Test Suite API Efficiency Performance Testing should implement compression with bandwidth reduction as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement lazy loading with faster load times as mandated by gemini.md" name="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement lazy loading with faster load times as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement resource optimization with faster load times as mandated by gemini.md" name="Comprehensive Performance Test Suite Lazy Loading Performance Testing should implement resource optimization with faster load times as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement connection pooling for external APIs with reduced connection overhead as mandated by gemini.md" name="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement connection pooling for external APIs with reduced connection overhead as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement CDN usage for static assets with improved delivery performance as mandated by gemini.md" name="Comprehensive Performance Test Suite Connection Pooling Performance Testing should implement CDN usage for static assets with improved delivery performance as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Concurrency Performance Testing should implement concurrency management with optimal resource utilization as mandated by gemini.md" name="Comprehensive Performance Test Suite Concurrency Performance Testing should implement concurrency management with optimal resource utilization as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Concurrency Performance Testing should implement threading with optimal resource utilization as mandated by gemini.md" name="Comprehensive Performance Test Suite Concurrency Performance Testing should implement threading with optimal resource utilization as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Budget Testing should implement performance budget with automated compliance checking as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Budget Testing should implement performance budget with automated compliance checking as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Budget Testing should implement performance monitoring with real-time dashboards as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Budget Testing should implement performance monitoring with real-time dashboards as mandated by gemini.md" time="0.002">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Optimization Testing should implement performance optimization with monitoring and benchmarking as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Optimization Testing should implement performance optimization with monitoring and benchmarking as mandated by gemini.md" time="0.001">
-    </testcase>
-    <testcase classname="Comprehensive Performance Test Suite Performance Optimization Testing should implement monitoring and benchmarking infrastructure as mandated by gemini.md" name="Comprehensive Performance Test Suite Performance Optimization Testing should implement monitoring and benchmarking infrastructure as mandated by gemini.md" time="0.002">
+    <testcase classname="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Final Comprehensive Validation Summary should provide comprehensive test coverage summary" name="COMPREHENSIVE MENU TREE VALIDATION - REAL CALCULATIONS ONLY Final Comprehensive Validation Summary should provide comprehensive test coverage summary" time="0.014">
     </testcase>
   </testsuite>
-  <testsuite name="Astrology Library Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:31:27" time="8.52" tests="16">
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" time="0.003">
+  <testsuite name="Astrology Library Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-10-28T12:38:37" time="8.953" tests="16">
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid single card tarot reading" time="0.006">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" time="0.003">
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid three-card spread reading" time="0.004">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" time="0.002">
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" name="Astrology Library Integration Tests Tarot Reader Integration should generate valid Celtic cross reading" time="0.004">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" name="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" time="0.001">
+    <testcase classname="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" name="Astrology Library Integration Tests Tarot Reader Integration should handle invalid spread type gracefully" time="0.003">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" name="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" time="0.003">
+    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" name="Astrology Library Integration Tests Palmistry Reader Integration should generate valid palmistry reading" time="0.004">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" name="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" time="0.002">
+    <testcase classname="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" name="Astrology Library Integration Tests Palmistry Reader Integration should generate sample reading when no user provided" time="0.003">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" name="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" time="0.003">
+    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" name="Astrology Library Integration Tests Nadi Reader Integration should generate valid Nadi astrology reading" time="0.004">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" name="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" time="0.001">
+    <testcase classname="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" name="Astrology Library Integration Tests Nadi Reader Integration should handle missing birth date" time="0.002">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" name="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" time="0.001">
+    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" name="Astrology Library Integration Tests Chinese Calculator Integration should calculate valid Chinese zodiac sign" time="0.004">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" name="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" time="0.001">
+    <testcase classname="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" name="Astrology Library Integration Tests Chinese Calculator Integration should handle different birth dates correctly" time="0.003">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" name="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" time="5.307">
+    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" name="Astrology Library Integration Tests Vedic Calculator Integration should calculate valid Vedic birth chart" time="5.097">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" name="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" time="0.536">
+    <testcase classname="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" name="Astrology Library Integration Tests Vedic Calculator Integration should handle invalid birth data gracefully" time="0.729">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" name="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" time="0.002">
+    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" name="Astrology Library Integration Tests Numerology Service Integration should generate valid numerology report" time="0.008">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should handle user without name" name="Astrology Library Integration Tests Numerology Service Integration should handle user without name" time="0.001">
+    <testcase classname="Astrology Library Integration Tests Numerology Service Integration should handle user without name" name="Astrology Library Integration Tests Numerology Service Integration should handle user without name" time="0.004">
     </testcase>
-    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" name="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" time="0.004">
+    <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" name="Astrology Library Integration Tests Cross-System Compatibility should generate compatible readings across different systems" time="0.007">
     </testcase>
     <testcase classname="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" name="Astrology Library Integration Tests Cross-System Compatibility should handle edge cases consistently across systems" time="0.004">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Webhook Integration" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:31:35" time="6.267" tests="11">
-    <testcase classname="WhatsApp Webhook Integration GET /webhook - Verification should verify webhook with correct token" name="WhatsApp Webhook Integration GET /webhook - Verification should verify webhook with correct token" time="0.024">
+  <testsuite name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE" errors="0" failures="4" skipped="0" timestamp="2025-10-28T12:38:46" time="11.428" tests="26">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Menu Structure Validation should validate complete menu tree structure" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Menu Structure Validation should validate complete menu tree structure" time="0.042">
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration GET /webhook - Verification should reject webhook verification with wrong token" name="WhatsApp Webhook Integration GET /webhook - Verification should reject webhook verification with wrong token" time="0.012">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Main Menu Navigation should display main menu with all 6 categories" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Main Menu Navigation should display main menu with all 6 categories" time="0.561">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
+
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-validation.test.js:297:31)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration GET /webhook - Verification should return ready status for verification request without parameters" name="WhatsApp Webhook Integration GET /webhook - Verification should return ready status for verification request without parameters" time="0.015">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Main Menu Navigation should navigate to all main menu categories" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Main Menu Navigation should navigate to all main menu categories" time="0.058">
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with text message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with text message" time="0.014">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should navigate through Western astrology sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should navigate through Western astrology sub-menus" time="0.091">
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with interactive message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with interactive message" time="0.01">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should calculate REAL Western birth chart with astrology libraries" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should calculate REAL Western birth chart with astrology libraries" time="0.03">
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with button message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with button message" time="0.013">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should generate REAL daily horoscope with Vedic calculations" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should generate REAL daily horoscope with Vedic calculations" time="0.016">
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with media message" name="WhatsApp Webhook Integration POST /webhook - Message Processing should process valid webhook with media message" time="0.009">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should navigate back to main menu from Western astrology sub-menu" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Western Astrology Menu Tree should navigate back to main menu from Western astrology sub-menu" time="0.029">
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Matcher error: received value must not be null nor undefined
+
+Received has value: undefined
+    at Object.toContain (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-validation.test.js:488:33)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should handle invalid webhook payload gracefully" name="WhatsApp Webhook Integration POST /webhook - Message Processing should handle invalid webhook payload gracefully" time="0.011">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Vedic Astrology Menu Tree should navigate through Vedic astrology sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Vedic Astrology Menu Tree should navigate through Vedic astrology sub-menus" time="0.072">
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should handle webhook processing errors gracefully" name="WhatsApp Webhook Integration POST /webhook - Message Processing should handle webhook processing errors gracefully" time="3.02">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Vedic Astrology Menu Tree should calculate REAL Vedic Kundli with astrology libraries" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Vedic Astrology Menu Tree should calculate REAL Vedic Kundli with astrology libraries" time="0.016">
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration POST /webhook - Message Processing should validate webhook signature when provided" name="WhatsApp Webhook Integration POST /webhook - Message Processing should validate webhook signature when provided" time="0.02">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Divination &amp; Mystic Menu Tree should navigate through divination sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Divination &amp; Mystic Menu Tree should navigate through divination sub-menus" time="0.065">
     </testcase>
-    <testcase classname="WhatsApp Webhook Integration Error Handling should handle missing environment variables gracefully" name="WhatsApp Webhook Integration Error Handling should handle missing environment variables gracefully" time="0.016">
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Divination &amp; Mystic Menu Tree should generate REAL Tarot reading with tarot library" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Divination &amp; Mystic Menu Tree should generate REAL Tarot reading with tarot library" time="0.015">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Relationships &amp; Groups Menu Tree should navigate through relationships sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Relationships &amp; Groups Menu Tree should navigate through relationships sub-menus" time="0.065">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Numerology &amp; Special Menu Tree should navigate through numerology sub-menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Numerology &amp; Special Menu Tree should navigate through numerology sub-menus" time="0.062">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Numerology &amp; Special Menu Tree should calculate REAL numerology report with numerology library" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Numerology &amp; Special Menu Tree should calculate REAL numerology report with numerology library" time="0.02">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Real Database Operations should perform REAL MongoDB user creation and retrieval" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Real Database Operations should perform REAL MongoDB user creation and retrieval" time="0.023">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: &quot;Test User&quot;
+Received: &quot;Cosmic Explorer&quot;
+    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-validation.test.js:765:34)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Real Database Operations should perform REAL MongoDB user profile updates" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Real Database Operations should perform REAL MongoDB user profile updates" time="0.048">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Geocoding Integration Tests should test REAL Google Maps geocoding for birth places" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Geocoding Integration Tests should test REAL Google Maps geocoding for birth places" time="2.534">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Geocoding Integration Tests should handle geocoding errors gracefully" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Geocoding Integration Tests should handle geocoding errors gracefully" time="3.696">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" time="0.038">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle invalid menu selections" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle invalid menu selections" time="0.013">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle malformed messages" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Error Handling &amp; Edge Cases should handle malformed messages" time="0.023">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
+
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/comprehensive-menu-tree-validation.test.js:891:33)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Concurrent User Sessions should handle multiple concurrent users navigating menus" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Concurrent User Sessions should handle multiple concurrent users navigating menus" time="0.114">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Performance &amp; Load Testing should handle rapid menu navigation efficiently" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Performance &amp; Load Testing should handle rapid menu navigation efficiently" time="0.054">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL Vedic calculator integration" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL Vedic calculator integration" time="0.007">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL Tarot reader integration" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL Tarot reader integration" time="0.003">
+    </testcase>
+    <testcase classname="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL numerology service integration" name="Comprehensive Menu Tree Validation - REAL LIBRARIES &amp; DATABASE Astrology Library Integration Tests should validate REAL numerology service integration" time="0.003">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:31:42" time="5.104" tests="4">
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.003">
+  <testsuite name="Comprehensive Menu Integration Tests - REAL LIBRARIES" errors="0" failures="0" skipped="0" timestamp="2025-10-28T12:38:58" time="5.125" tests="19">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Menu Structure Validation should load all menu configurations correctly" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Menu Structure Validation should load all menu configurations correctly" time="0.031">
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.002">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Main Menu Navigation should display main menu with 6 categories" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Main Menu Navigation should display main menu with 6 categories" time="0.038">
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.002">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should navigate to Western Astrology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should navigate to Western Astrology menu" time="0.183">
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="3.007">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should calculate REAL birth chart" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should calculate REAL birth chart" time="0.012">
     </testcase>
-  </testsuite>
-  <testsuite name="Comprehensive Menu Integration Tests - REAL LIBRARIES" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:31:47" time="4.659" tests="19">
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Menu Structure Validation should load all menu configurations correctly" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Menu Structure Validation should load all menu configurations correctly" time="0.051">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should navigate to Vedic Astrology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should navigate to Vedic Astrology menu" time="0.037">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Main Menu Navigation should display main menu with 6 categories" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Main Menu Navigation should display main menu with 6 categories" time="0.009">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should calculate REAL Vedic birth chart (Kundli)" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should calculate REAL Vedic birth chart (Kundli)" time="0.159">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should navigate to Western Astrology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should navigate to Western Astrology menu" time="0.144">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should navigate to Divination menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should navigate to Divination menu" time="0.025">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should calculate REAL birth chart" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should calculate REAL birth chart" time="0.025">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should generate REAL Tarot reading" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should generate REAL Tarot reading" time="0.023">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should navigate to Vedic Astrology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should navigate to Vedic Astrology menu" time="0.132">
-    </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should calculate REAL Vedic birth chart (Kundli)" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should calculate REAL Vedic birth chart (Kundli)" time="0.026">
-    </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should navigate to Divination menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should navigate to Divination menu" time="0.034">
-    </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should generate REAL Tarot reading" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should generate REAL Tarot reading" time="0.027">
-    </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Relationships &amp; Groups Menu - REAL COMPATIBILITY should navigate to Relationships menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Relationships &amp; Groups Menu - REAL COMPATIBILITY should navigate to Relationships menu" time="0.116">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Relationships &amp; Groups Menu - REAL COMPATIBILITY should navigate to Relationships menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Relationships &amp; Groups Menu - REAL COMPATIBILITY should navigate to Relationships menu" time="0.087">
     </testcase>
     <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should navigate to Numerology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should navigate to Numerology menu" time="0.026">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should calculate REAL numerology report" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should calculate REAL numerology report" time="0.097">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should calculate REAL numerology report" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should calculate REAL numerology report" time="0.081">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should create and retrieve user from REAL database" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should create and retrieve user from REAL database" time="0.011">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should create and retrieve user from REAL database" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should create and retrieve user from REAL database" time="0.009">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should update user profile in REAL database" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should update user profile in REAL database" time="0.021">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should update user profile in REAL database" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should update user profile in REAL database" time="0.026">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle invalid menu selection gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle invalid menu selection gracefully" time="0.083">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle invalid menu selection gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle invalid menu selection gracefully" time="0.107">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle malformed messages gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle malformed messages gracefully" time="0.028">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle malformed messages gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle malformed messages gracefully" time="0.02">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" time="0.033">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" time="0.053">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle network-like failures gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle network-like failures gracefully" time="0.015">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle network-like failures gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle network-like failures gracefully" time="0.019">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle concurrent user sessions" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle concurrent user sessions" time="0.074">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle concurrent user sessions" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle concurrent user sessions" time="0.08">
     </testcase>
-    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Performance &amp; Load Testing should handle multiple menu navigations efficiently" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Performance &amp; Load Testing should handle multiple menu navigations efficiently" time="0.067">
-    </testcase>
-  </testsuite>
-  <testsuite name="Astrology Button Integration" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:31:52" time="3.346" tests="7">
-    <testcase classname="Astrology Button Integration Tarot Reading Buttons should process single card tarot reading button" name="Astrology Button Integration Tarot Reading Buttons should process single card tarot reading button" time="0.037">
-    </testcase>
-    <testcase classname="Astrology Button Integration Tarot Reading Buttons should process three-card spread tarot reading button" name="Astrology Button Integration Tarot Reading Buttons should process three-card spread tarot reading button" time="0.012">
-    </testcase>
-    <testcase classname="Astrology Button Integration Palmistry Reading Buttons should process palmistry reading button" name="Astrology Button Integration Palmistry Reading Buttons should process palmistry reading button" time="0.01">
-    </testcase>
-    <testcase classname="Astrology Button Integration Nadi Astrology Buttons should process Nadi reading button" name="Astrology Button Integration Nadi Astrology Buttons should process Nadi reading button" time="0.01">
-    </testcase>
-    <testcase classname="Astrology Button Integration Compatibility Check Buttons should process compatibility check button" name="Astrology Button Integration Compatibility Check Buttons should process compatibility check button" time="0.01">
-    </testcase>
-    <testcase classname="Astrology Button Integration Subscription and Payment Buttons should process subscription upgrade button" name="Astrology Button Integration Subscription and Payment Buttons should process subscription upgrade button" time="0.009">
-    </testcase>
-    <testcase classname="Astrology Button Integration Subscription and Payment Buttons should process payment method selection button" name="Astrology Button Integration Subscription and Payment Buttons should process payment method selection button" time="0.01">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Performance &amp; Load Testing should handle multiple menu navigations efficiently" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Performance &amp; Load Testing should handle multiple menu navigations efficiently" time="0.043">
     </testcase>
   </testsuite>
-  <testsuite name="Real Astrology Calculations Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:31:56" time="3.367" tests="21">
-    <testcase classname="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should load Western astrology services successfully" name="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should load Western astrology services successfully" time="0.415">
+  <testsuite name="Real Astrology Calculations Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-10-28T12:39:04" time="3.747" tests="21">
+    <testcase classname="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should load Western astrology services successfully" name="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should load Western astrology services successfully" time="0.484">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should validate WesternCalculator class structure" name="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should validate WesternCalculator class structure" time="0.003">
     </testcase>
-    <testcase classname="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should load Vedic astrology services successfully" name="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should load Vedic astrology services successfully" time="0.002">
+    <testcase classname="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should load Vedic astrology services successfully" name="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should load Vedic astrology services successfully" time="0.001">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should validate VedicCalculator can be instantiated" name="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should validate VedicCalculator can be instantiated" time="0.002">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should validate VimshottariDasha basic functionality" name="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should validate VimshottariDasha basic functionality" time="0.001">
     </testcase>
-    <testcase classname="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should load divination services successfully" name="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should load divination services successfully" time="0.001">
+    <testcase classname="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should load divination services successfully" name="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should load divination services successfully" time="0.002">
     </testcase>
-    <testcase classname="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate TarotReader functionality" name="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate TarotReader functionality" time="0.001">
+    <testcase classname="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate TarotReader functionality" name="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate TarotReader functionality" time="0.002">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate IChingReader functionality" name="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate IChingReader functionality" time="0.003">
     </testcase>
-    <testcase classname="Real Astrology Calculations Integration Tests Numerology - Service Integration should load numerology services successfully" name="Real Astrology Calculations Integration Tests Numerology - Service Integration should load numerology services successfully" time="0.002">
+    <testcase classname="Real Astrology Calculations Integration Tests Numerology - Service Integration should load numerology services successfully" name="Real Astrology Calculations Integration Tests Numerology - Service Integration should load numerology services successfully" time="0.003">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Numerology - Service Integration should validate numerology calculations" name="Real Astrology Calculations Integration Tests Numerology - Service Integration should validate numerology calculations" time="0.002">
     </testcase>
-    <testcase classname="Real Astrology Calculations Integration Tests Chinese Astrology - Service Integration should load Chinese astrology services successfully" name="Real Astrology Calculations Integration Tests Chinese Astrology - Service Integration should load Chinese astrology services successfully" time="0.002">
+    <testcase classname="Real Astrology Calculations Integration Tests Chinese Astrology - Service Integration should load Chinese astrology services successfully" name="Real Astrology Calculations Integration Tests Chinese Astrology - Service Integration should load Chinese astrology services successfully" time="0.001">
     </testcase>
-    <testcase classname="Real Astrology Calculations Integration Tests Astrocartography - Service Integration should load astrocartography services successfully" name="Real Astrology Calculations Integration Tests Astrocartography - Service Integration should load astrocartography services successfully" time="0.001">
+    <testcase classname="Real Astrology Calculations Integration Tests Astrocartography - Service Integration should load astrocartography services successfully" name="Real Astrology Calculations Integration Tests Astrocartography - Service Integration should load astrocartography services successfully" time="0.002">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Palmistry - Service Integration should load palmistry services successfully" name="Real Astrology Calculations Integration Tests Palmistry - Service Integration should load palmistry services successfully" time="0.001">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Palmistry - Service Integration should validate PalmistryReader functionality" name="Real Astrology Calculations Integration Tests Palmistry - Service Integration should validate PalmistryReader functionality" time="0.001">
     </testcase>
-    <testcase classname="Real Astrology Calculations Integration Tests Celtic Astrology - Service Integration should load Celtic astrology services successfully" name="Real Astrology Calculations Integration Tests Celtic Astrology - Service Integration should load Celtic astrology services successfully" time="0.002">
+    <testcase classname="Real Astrology Calculations Integration Tests Celtic Astrology - Service Integration should load Celtic astrology services successfully" name="Real Astrology Calculations Integration Tests Celtic Astrology - Service Integration should load Celtic astrology services successfully" time="0.001">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Mayan Astrology - Service Integration should load Mayan astrology services successfully" name="Real Astrology Calculations Integration Tests Mayan Astrology - Service Integration should load Mayan astrology services successfully" time="0.001">
     </testcase>
@@ -757,237 +452,11 @@ Number of calls: 2
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Relationships &amp; Compatibility - Service Integration should load compatibility services successfully" name="Real Astrology Calculations Integration Tests Relationships &amp; Compatibility - Service Integration should load compatibility services successfully" time="0.001">
     </testcase>
-    <testcase classname="Real Astrology Calculations Integration Tests Special Readings - AI Integration should load AI services successfully" name="Real Astrology Calculations Integration Tests Special Readings - AI Integration should load AI services successfully" time="0.001">
+    <testcase classname="Real Astrology Calculations Integration Tests Special Readings - AI Integration should load AI services successfully" name="Real Astrology Calculations Integration Tests Special Readings - AI Integration should load AI services successfully" time="0.002">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Service Integration Validation should validate all astrology services can be imported" name="Real Astrology Calculations Integration Tests Service Integration Validation should validate all astrology services can be imported" time="0.002">
     </testcase>
     <testcase classname="Real Astrology Calculations Integration Tests Service Integration Validation should validate core astrology functionality" name="Real Astrology Calculations Integration Tests Service Integration Validation should validate core astrology functionality" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="User Model" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:31:59" time="3.279" tests="2">
-    <testcase classname="User Model User Creation should create a new user with valid data" name="User Model User Creation should create a new user with valid data" time="0.392">
-    </testcase>
-    <testcase classname="User Model User Creation should update user profile" name="User Model User Creation should update user profile" time="0.187">
-    </testcase>
-  </testsuite>
-  <testsuite name="Session Model" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:03" time="2.886" tests="3">
-    <testcase classname="Session Model Session Creation should create a new session with valid data" name="Session Model Session Creation should create a new session with valid data" time="0.373">
-    </testcase>
-    <testcase classname="Session Model Session Queries should find session by phone number" name="Session Model Session Queries should find session by phone number" time="0.139">
-    </testcase>
-    <testcase classname="Session Model Session Queries should update session flow data" name="Session Model Session Queries should update session flow data" time="0.122">
-    </testcase>
-  </testsuite>
-  <testsuite name="ConversationEngine" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:06" time="3.05" tests="5">
-    <testcase classname="ConversationEngine processFlowMessage should initialize session for new flow and access flow.start_step without temporal dead zone error" name="ConversationEngine processFlowMessage should initialize session for new flow and access flow.start_step without temporal dead zone error" time="0.003">
-    </testcase>
-    <testcase classname="ConversationEngine processFlowMessage should handle existing session correctly" name="ConversationEngine processFlowMessage should handle existing session correctly" time="0.002">
-    </testcase>
-    <testcase classname="ConversationEngine processFlowMessage should handle interactive messages without validation" name="ConversationEngine processFlowMessage should handle interactive messages without validation" time="0.001">
-    </testcase>
-    <testcase classname="ConversationEngine processFlowMessage should handle flow not found error" name="ConversationEngine processFlowMessage should handle flow not found error" time="0.002">
-    </testcase>
-    <testcase classname="ConversationEngine processFlowMessage should handle invalid phone number" name="ConversationEngine processFlowMessage should handle invalid phone number" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="InputValidator" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:09" time="2.201" tests="5">
-    <testcase classname="InputValidator validateEmail should validate valid email" name="InputValidator validateEmail should validate valid email" time="0.003">
-    </testcase>
-    <testcase classname="InputValidator validateEmail should reject invalid email" name="InputValidator validateEmail should reject invalid email" time="0.002">
-    </testcase>
-    <testcase classname="InputValidator validatePhoneNumber should validate valid phone number" name="InputValidator validatePhoneNumber should validate valid phone number" time="0.001">
-    </testcase>
-    <testcase classname="InputValidator validatePhoneNumber should reject invalid phone number" name="InputValidator validatePhoneNumber should reject invalid phone number" time="0.001">
-    </testcase>
-    <testcase classname="InputValidator sanitizeInput should sanitize input" name="InputValidator sanitizeInput should sanitize input" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="VedicCalculator" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:11" time="2.472" tests="9">
-    <testcase classname="VedicCalculator calculateBirthChart should calculate birth chart for valid birth data" name="VedicCalculator calculateBirthChart should calculate birth chart for valid birth data" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator calculateBirthChart should handle invalid birth data gracefully" name="VedicCalculator calculateBirthChart should handle invalid birth data gracefully" time="0.01">
-    </testcase>
-    <testcase classname="VedicCalculator generateHoroscope should generate horoscope for valid chart" name="VedicCalculator generateHoroscope should generate horoscope for valid chart" time="0.001">
-    </testcase>
-    <testcase classname="VedicCalculator generateTransitPreview should generate transit preview" name="VedicCalculator generateTransitPreview should generate transit preview" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator checkCompatibility should check compatibility between two charts" name="VedicCalculator checkCompatibility should check compatibility between two charts" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator calculateSecondaryProgressions should calculate secondary progressions for valid birth data" name="VedicCalculator calculateSecondaryProgressions should calculate secondary progressions for valid birth data" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator calculateSecondaryProgressions should handle invalid birth data gracefully" name="VedicCalculator calculateSecondaryProgressions should handle invalid birth data gracefully" time="0.001">
-    </testcase>
-    <testcase classname="VedicCalculator calculateSolarArcDirections should calculate solar arc directions for valid birth data" name="VedicCalculator calculateSolarArcDirections should calculate solar arc directions for valid birth data" time="0.001">
-    </testcase>
-    <testcase classname="VedicCalculator calculateSolarArcDirections should handle invalid birth data gracefully" name="VedicCalculator calculateSolarArcDirections should handle invalid birth data gracefully" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Tarot Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:14" time="2.093" tests="5">
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a single card reading" name="Tarot Reader Service generateTarotReading should generate a single card reading" time="0.003">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a three-card spread reading" name="Tarot Reader Service generateTarotReading should generate a three-card spread reading" time="0.002">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" name="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" time="0.002">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle invalid spread type" name="Tarot Reader Service generateTarotReading should handle invalid spread type" time="0.001">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle user personalization" name="Tarot Reader Service generateTarotReading should handle user personalization" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="WebhookValidator" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:16" time="2.474" tests="4">
-    <testcase classname="WebhookValidator validateWebhookSignature should validate correct signature" name="WebhookValidator validateWebhookSignature should validate correct signature" time="0.002">
-    </testcase>
-    <testcase classname="WebhookValidator validateWebhookSignature should reject invalid signature" name="WebhookValidator validateWebhookSignature should reject invalid signature" time="0.002">
-    </testcase>
-    <testcase classname="WebhookValidator validateWebhookPayload should validate valid payload" name="WebhookValidator validateWebhookPayload should validate valid payload" time="0.002">
-    </testcase>
-    <testcase classname="WebhookValidator validateWebhookPayload should reject invalid payload" name="WebhookValidator validateWebhookPayload should reject invalid payload" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="TranslationService" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:18" time="2.245" tests="30">
-    <testcase classname="TranslationService Initialization should initialize with supported languages" name="TranslationService Initialization should initialize with supported languages" time="0.003">
-    </testcase>
-    <testcase classname="TranslationService Initialization should have correct language metadata" name="TranslationService Initialization should have correct language metadata" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService getSupportedLanguages should return all supported languages" name="TranslationService getSupportedLanguages should return all supported languages" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should detect language from Indian phone numbers" name="TranslationService detectLanguage should detect language from Indian phone numbers" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should detect language from UAE phone numbers" name="TranslationService detectLanguage should detect language from UAE phone numbers" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should detect language from Saudi phone numbers" name="TranslationService detectLanguage should detect language from Saudi phone numbers" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should detect language from UK phone numbers" name="TranslationService detectLanguage should detect language from UK phone numbers" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should return default language for unknown numbers" name="TranslationService detectLanguage should return default language for unknown numbers" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should respect explicit language parameter" name="TranslationService detectLanguage should respect explicit language parameter" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should handle invalid phone numbers gracefully" name="TranslationService detectLanguage should handle invalid phone numbers gracefully" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should load and cache resource bundle successfully" name="TranslationService loadResourceBundle should load and cache resource bundle successfully" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should return cached bundle if available and not expired" name="TranslationService loadResourceBundle should return cached bundle if available and not expired" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should reload bundle if cache is expired" name="TranslationService loadResourceBundle should reload bundle if cache is expired" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should handle file read errors gracefully" name="TranslationService loadResourceBundle should handle file read errors gracefully" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should handle invalid JSON gracefully" name="TranslationService loadResourceBundle should handle invalid JSON gracefully" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should translate simple keys successfully" name="TranslationService translate should translate simple keys successfully" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should handle parameter interpolation" name="TranslationService translate should handle parameter interpolation" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should handle multiple parameters" name="TranslationService translate should handle multiple parameters" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should fallback to English for missing translations" name="TranslationService translate should fallback to English for missing translations" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should return key if translation not found in any language" name="TranslationService translate should return key if translation not found in any language" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService translate should handle nested key access" name="TranslationService translate should handle nested key access" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService translate should cache translations for performance" name="TranslationService translate should cache translations for performance" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translateMultiple should translate multiple keys at once" name="TranslationService translateMultiple should translate multiple keys at once" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService hasTranslation should check if translation exists" name="TranslationService hasTranslation should check if translation exists" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService getAvailableKeys should return all available translation keys" name="TranslationService getAvailableKeys should return all available translation keys" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService reloadBundles should clear cache and reload bundles" name="TranslationService reloadBundles should clear cache and reload bundles" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService Error handling should handle malformed parameters gracefully" name="TranslationService Error handling should handle malformed parameters gracefully" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService Error handling should handle missing parameters gracefully" name="TranslationService Error handling should handle missing parameters gracefully" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService Performance and caching should cache bundles to improve performance" name="TranslationService Performance and caching should cache bundles to improve performance" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService Performance and caching should expire cache after configured time" name="TranslationService Performance and caching should expire cache after configured time" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Message Sender" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:21" time="2.268" tests="19">
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.021">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should handle API error gracefully" name="WhatsApp Message Sender sendTextMessage should handle API error gracefully" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons with header and footer" time="0.001">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" name="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" name="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.008">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message successfully" name="WhatsApp Message Sender sendMediaMessage should send media message successfully" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender sendMediaMessage should send media message with filename" name="WhatsApp Message Sender sendMediaMessage should send media message with filename" time="0.001">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.001">
-    </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="Nadi Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:23" time="2.277" tests="4">
-    <testcase classname="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" name="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" time="0.013">
-    </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should handle missing birth date" name="Nadi Reader Service generateNadiReading should handle missing birth date" time="0.004">
-    </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should provide Dasa period calculations" name="Nadi Reader Service generateNadiReading should provide Dasa period calculations" time="0.005">
-    </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" name="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" time="0.015">
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:25" time="2.14" tests="7">
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.004">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.001">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" name="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.001">
-    </testcase>
-    <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Palmistry Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:27" time="2.319" tests="3">
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" name="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" time="0.023">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" name="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" time="0.004">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should handle user with hand data" name="Palmistry Reader Service generatePalmistryReading should handle user with hand data" time="0.004">
-    </testcase>
-  </testsuite>
-  <testsuite name="ErrorHandler" errors="0" failures="0" skipped="0" timestamp="2025-10-28T11:32:30" time="2.108" tests="4">
-    <testcase classname="ErrorHandler handleError should handle error and log it" name="ErrorHandler handleError should handle error and log it" time="0.003">
-    </testcase>
-    <testcase classname="ErrorHandler handleError should handle error without context" name="ErrorHandler handleError should handle error without context" time="0.001">
-    </testcase>
-    <testcase classname="ErrorHandler handleValidationError should handle validation error" name="ErrorHandler handleValidationError should handle validation error" time="0.001">
-    </testcase>
-    <testcase classname="ErrorHandler handleDatabaseError should handle database error" name="ErrorHandler handleDatabaseError should handle database error" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

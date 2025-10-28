@@ -1,7 +1,7 @@
 // tests/unit/services/astrology/numerologyService.test.js
 // Unit tests for Numerology Service
 
-const numerologyService = require('../../../src/services/astrology/numerologyService');
+const numerologyService = require('../../../../src/services/astrology/numerologyService');
 
 // Mock dependencies
 const logger = require('../../../src/utils/logger');

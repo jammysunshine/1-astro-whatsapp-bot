@@ -8,11 +8,10 @@ const GeocodingService = require('../../src/services/astrology/geocoding/Geocodi
 const logger = require('../../src/utils/logger');
 
 // Mock WhatsApp message sender globally
-jest.mock('../../src/services/whatsapp/messageSender', () => ({
-  sendMessage: jest.fn().mockResolvedValue(true)
-}));
+jest.mock('../../src/services/whatsapp/messageSender');
 
-const mockSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
+const messageSenderMocks = require('../../src/services/whatsapp/messageSender');
+const mockSendMessage = messageSenderMocks.sendMessage;
 
 // Test configuration
 const TEST_DB_NAME = 'test_astro_whatsapp_comprehensive';

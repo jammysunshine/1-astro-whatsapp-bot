@@ -1,7 +1,7 @@
 // tests/unit/services/astrology/mayanReader.test.js
 // Unit tests for Mayan Reader
 
-const mayanReader = require('../../../src/services/astrology/mayanReader');
+const mayanReader = require('../../../../src/services/astrology/mayanReader');
 
 // Mock dependencies
 const logger = require('../../../src/utils/logger');

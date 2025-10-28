@@ -1,7 +1,7 @@
 // tests/unit/services/astrology/kabbalisticReader.test.js
 // Unit tests for Kabbalistic Reader
 
-const kabbalisticReader = require('../../../src/services/astrology/kabbalisticReader');
+const kabbalisticReader = require('../../../../src/services/astrology/kabbalisticReader');
 
 // Mock dependencies
 const logger = require('../../../src/utils/logger');

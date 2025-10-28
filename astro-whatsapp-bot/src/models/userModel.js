@@ -19,23 +19,27 @@ const createUser = async(phoneNumber, profileData = {}) => {
     const existingUser = await User.findOne({ phoneNumber });
     if (existingUser) {
       logger.warn(`⚠️ User already exists: ${phoneNumber}`);
-      return existingUser;
+      return existingUser.toObject();
     }
 
     const userId = User.generateUserId();
     const referralCode = User.generateReferralCode();
 
+    // Ensure name is always set with proper default
     const userData = {
       id: userId,
       phoneNumber,
       referralCode,
-      name: profileData.name || 'Cosmic Explorer', // Ensure name is set here
+      name: profileData.name || 'Cosmic Explorer', // Ensure default is set
       ...profileData // Spread other profile data
     };
+    
+    logger.info(`🆕 Creating new user with data:`, userData);
+
     const user = new User(userData);
     await user.save();
 
-    logger.info(`🆕 Created new user: ${phoneNumber}`);
+    logger.info(`🆕 Created new user: ${phoneNumber} with name: ${user.name}`);
     return user.toObject();
   } catch (error) {
     logger.error(`❌ Error creating user ${phoneNumber}:`, error);
@@ -79,17 +83,24 @@ const updateUserProfile = async(phoneNumber, updateData) => {
       `Attempting to update user profile for ${phoneNumber} with data:`,
       updateData
     );
-    const user = await User.findOne({ phoneNumber });
+    
+    // Use findOneAndUpdate for atomic update
+    const user = await User.findOneAndUpdate(
+      { phoneNumber },
+      { 
+        ...updateData,
+        lastInteraction: new Date(),
+        updatedAt: new Date()
+      },
+      { 
+        new: true,
+        runValidators: true
+      }
+    );
 
     if (!user) {
       throw new Error(`User not found: ${phoneNumber}`);
     }
-
-    // Apply updates
-    Object.assign(user, updateData);
-    user.lastInteraction = new Date();
-
-    await user.save();
 
     logger.info(
       `🔄 Updated user profile: ${phoneNumber}. New profileComplete status: ${user.profileComplete}`
@@ -121,12 +132,16 @@ const addBirthDetails = async(
   birthPlace = null
 ) => {
   try {
+    // Ensure all required fields are present for profile completion
     const updateData = {
       birthDate,
       birthTime,
       birthPlace,
-      profileComplete: !!(birthDate && birthPlace)
+      profileComplete: !!(birthDate && birthDate.trim() && birthPlace && birthPlace.trim())
     };
+
+    logger.info(`🎂 Setting profileComplete to ${updateData.profileComplete} for user: ${phoneNumber}`);
+    logger.info(`🎂 Birth data: date=${birthDate}, time=${birthTime}, place=${birthPlace}`);
 
     const user = await User.findOneAndUpdate({ phoneNumber }, updateData, {
       new: true,
@@ -138,6 +153,7 @@ const addBirthDetails = async(
     }
 
     logger.info(`🎂 Added birth details for user: ${phoneNumber}`);
+    logger.info(`📊 Profile completion status: ${user.profileComplete}`);
     return user.toObject();
   } catch (error) {
     logger.error(`❌ Error adding birth details for ${phoneNumber}:`, error);

@@ -1,7 +1,7 @@
 // tests/unit/services/payment/paymentService.test.js
 // Unit tests for Payment Service
 
-const paymentService = require('../../../src/services/payment/paymentService');
+const paymentService = require('../../../../src/services/payment/paymentService');
 
 // Mock dependencies
 const logger = require('../../../src/utils/logger');

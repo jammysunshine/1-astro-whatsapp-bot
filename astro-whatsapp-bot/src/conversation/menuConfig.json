@@ -1,46 +1,51 @@
 {
-   "main_menu": {
-     "type": "button",
-    "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What would you like to explore?",
-    "buttons": [
-      {
-        "id": "btn_personal_astrology",
-        "title": "👤 Personal Astrology",
-        "action": "show_personal_astrology_menu"
-      },
-      {
-        "id": "btn_family_group",
-        "title": "👨‍👩‍👧‍👦 Family & Group",
-        "action": "show_family_group_menu"
-      },
-      {
-        "id": "btn_settings_profile",
-        "title": "⚙️ Settings & Profile",
-        "action": "show_settings_profile_menu"
-      }
-    ]
-  },
-   "personal_astrology_menu": {
-     "type": "button",
-    "body": "👤 *Personal Astrology*\n\nChoose your preferred astrological tradition:",
-    "buttons": [
-      {
-        "id": "btn_western_astrology",
-        "title": "🌍 Western Astrology",
-        "action": "show_western_astrology_menu"
-      },
-      {
-        "id": "btn_vedic_astrology",
-        "title": "🕉️ Vedic Astrology",
-        "action": "show_vedic_astrology_menu"
-      },
-      {
-        "id": "btn_back_main",
-        "title": "⬅️ Back to Main",
-        "action": "show_main_menu"
-      }
-    ]
-  },
+    "main_menu": {
+      "type": "button",
+     "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars. What would you like to explore?\n\n👤 *Personal Astrology*\n• Western & Vedic birth charts\n• Daily horoscopes & transits\n• Compatibility analysis\n\n🔮 *Divination & Ancient Wisdom*\n• Tarot card readings\n• Palmistry analysis\n• I Ching oracle\n• Chinese Bazi astrology\n\n👨‍👩‍👧‍👦 *Relationships & Groups*\n• Couple compatibility\n• Family astrology\n• Business partnerships",
+     "buttons": [
+       {
+         "id": "btn_personal_astrology",
+         "title": "👤 Personal Astrology",
+         "action": "show_personal_astrology_menu"
+       },
+       {
+         "id": "btn_divination_wisdom",
+         "title": "🔮 Divination & Wisdom",
+         "action": "show_divination_wisdom_menu"
+       },
+       {
+         "id": "btn_family_group",
+         "title": "👨‍👩‍👧‍👦 Family & Group",
+         "action": "show_family_group_menu"
+       },
+       {
+         "id": "btn_settings_profile",
+         "title": "⚙️ Settings & Profile",
+         "action": "show_settings_profile_menu"
+       }
+     ]
+   },
+    "personal_astrology_menu": {
+      "type": "button",
+     "body": "👤 *Personal Astrology*\n\nChoose your preferred astrological tradition:\n\n🌍 *Western Astrology*\n• Birth charts & horoscopes\n• Transits & progressions\n• Career & financial timing\n\n🕉️ *Vedic Astrology*\n• Kundli & birth charts\n• Marriage matching\n• Dasha & remedies",
+     "buttons": [
+       {
+         "id": "btn_western_astrology",
+         "title": "🌍 Western Astrology",
+         "action": "show_western_astrology_menu"
+       },
+       {
+         "id": "btn_vedic_astrology",
+         "title": "🕉️ Vedic Astrology",
+         "action": "show_vedic_astrology_menu"
+       },
+       {
+         "id": "btn_back_main",
+         "title": "⬅️ Back to Main",
+         "action": "show_main_menu"
+       }
+     ]
+   },
    "family_group_menu": {
      "type": "button",
      "body": "👨‍👩‍👧‍👦 *Family & Group Readings*\n\nExplore astrological dynamics for relationships and groups:",
@@ -273,6 +278,100 @@
          "id": "btn_back_vedic",
          "title": "⬅️ Back to Categories",
          "action": "show_vedic_astrology_menu"
+       }
+     ]
+   },
+    "divination_wisdom_menu": {
+      "type": "button",
+     "body": "🔮 *Divination & Ancient Wisdom*\n\nChoose a mystical tradition:\n\n🔮 *Card & Symbol Divination*\n• Tarot card readings\n• I Ching oracle\n\n✋ *Physical Divination*\n• Palmistry analysis\n• Chinese face reading\n\n🌏 *Ancient Wisdom*\n• Mayan astrology\n• Celtic astrology\n• Kabbalistic astrology\n\n❓ *Question Answering*\n• Horary astrology\n• Astrocartography",
+     "buttons": [
+       {
+         "id": "btn_card_symbol",
+         "title": "🔮 Cards & Symbols",
+         "action": "show_card_symbol_menu"
+       },
+       {
+         "id": "btn_physical_divination",
+         "title": "✋ Physical Divination",
+         "action": "show_physical_divination_menu"
+       },
+       {
+         "id": "btn_ancient_wisdom",
+         "title": "🌏 Ancient Wisdom",
+         "action": "show_ancient_wisdom_menu"
+       },
+       {
+         "id": "btn_back_main",
+         "title": "⬅️ Back to Main",
+         "action": "show_main_menu"
+       }
+     ]
+   },
+   "card_symbol_menu": {
+     "type": "button",
+     "body": "🔮 *Cards & Symbol Divination*\n\nAncient systems of symbolic wisdom:",
+     "buttons": [
+       {
+         "id": "btn_tarot",
+         "title": "🔮 Tarot Reading",
+         "action": "get_tarot_reading"
+       },
+       {
+         "id": "btn_iching",
+         "title": "🪙 I Ching Oracle",
+         "action": "get_iching_reading"
+       },
+       {
+         "id": "btn_back_divination",
+         "title": "⬅️ Back to Divination",
+         "action": "show_divination_wisdom_menu"
+       }
+     ]
+   },
+   "physical_divination_menu": {
+     "type": "button",
+     "body": "✋ *Physical Divination*\n\nReading the body's wisdom:",
+     "buttons": [
+       {
+         "id": "btn_palmistry",
+         "title": "✋ Palmistry",
+         "action": "get_palmistry_analysis"
+       },
+       {
+         "id": "btn_chinese_bazi",
+         "title": "🏮 Chinese Bazi",
+         "action": "show_chinese_flow"
+       },
+       {
+         "id": "btn_back_divination",
+         "title": "⬅️ Back to Divination",
+         "action": "show_divination_wisdom_menu"
+       }
+     ]
+   },
+   "ancient_wisdom_menu": {
+     "type": "button",
+     "body": "🌏 *Ancient Wisdom Traditions*\n\nTimeless astrological systems:",
+     "buttons": [
+       {
+         "id": "btn_mayan",
+         "title": "🗿 Mayan Astrology",
+         "action": "get_mayan_analysis"
+       },
+       {
+         "id": "btn_celtic",
+         "title": "🍀 Celtic Astrology",
+         "action": "get_celtic_analysis"
+       },
+       {
+         "id": "btn_kabbalistic",
+         "title": "✡️ Kabbalistic Astrology",
+         "action": "get_kabbalistic_analysis"
+       },
+       {
+         "id": "btn_back_divination",
+         "title": "⬅️ Back to Divination",
+         "action": "show_divination_wisdom_menu"
        }
      ]
    },

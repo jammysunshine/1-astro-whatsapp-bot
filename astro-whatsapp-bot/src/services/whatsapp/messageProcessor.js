@@ -73,9 +73,10 @@ const listActionMapping = {
   btn_nadi: 'show_nadi_flow',
   btn_kabbalistic: 'get_kabbalistic_analysis',
   btn_mayan: 'get_mayan_analysis',
-  btn_celtic: 'get_celtic_analysis',
-  btn_horary: 'get_horary_reading',
-  btn_electional: 'get_electional_astrology',
+   btn_celtic: 'get_celtic_analysis',
+   btn_horary: 'get_horary_reading',
+   btn_electional: 'get_electional_astrology',
+   btn_astrocartography: 'get_astrocartography_analysis',
   btn_chinese: 'show_chinese_flow',
   btn_numerology: 'get_numerology_report',
   btn_astrocartography: 'get_astrocartography_analysis',
@@ -136,6 +137,10 @@ const listActionMapping = {
    btn_vedic_basic: 'show_vedic_basic_menu',
    btn_vedic_advanced: 'show_vedic_advanced_menu',
    btn_vedic_predictive: 'show_vedic_predictive_menu',
+   btn_divination_wisdom: 'show_divination_wisdom_menu',
+   btn_card_symbol: 'show_card_symbol_menu',
+   btn_physical_divination: 'show_physical_divination_menu',
+   btn_ancient_wisdom: 'show_ancient_wisdom_menu',
   btn_update_profile: 'start_profile_flow',
   btn_view_profile: 'show_user_profile',
   btn_profile_history: 'show_reading_history',
@@ -1468,6 +1473,34 @@ const executeMenuAction = async(phoneNumber, user, action) => {
    }
    case 'show_vedic_predictive_menu': {
      const menu = getMenu('vedic_predictive_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_divination_wisdom_menu': {
+     const menu = getMenu('divination_wisdom_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_card_symbol_menu': {
+     const menu = getMenu('card_symbol_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_physical_divination_menu': {
+     const menu = getMenu('physical_divination_menu');
+     if (menu) {
+       await sendMessage(phoneNumber, menu, 'interactive');
+     }
+     return null;
+   }
+   case 'show_ancient_wisdom_menu': {
+     const menu = getMenu('ancient_wisdom_menu');
      if (menu) {
        await sendMessage(phoneNumber, menu, 'interactive');
      }

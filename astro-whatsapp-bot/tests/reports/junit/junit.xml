@@ -1,139 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="38" failures="3" errors="0" time="8.441">
-  <testsuite name="API FAILURE RECOVERY: Complete External API Integration Testing Suite" errors="0" failures="3" skipped="0" timestamp="2025-10-28T16:08:38" time="7.917" tests="38">
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_001: Handle Google Maps API quota exceeded → Fallback coordinate handling" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_001: Handle Google Maps API quota exceeded → Fallback coordinate handling" time="0.128">
+<testsuites name="jest tests" tests="19" failures="0" errors="0" time="10.402">
+  <testsuite name="Comprehensive Menu Integration Tests - REAL LIBRARIES" errors="0" failures="0" skipped="0" timestamp="2025-10-28T16:57:57" time="9.938" tests="19">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Menu Structure Validation should load all menu configurations correctly" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Menu Structure Validation should load all menu configurations correctly" time="0.048">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_002: Service outage recovery → Offline coordinate caching" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_002: Service outage recovery → Offline coordinate caching" time="0.033">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Main Menu Navigation should display main menu with 6 categories" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Main Menu Navigation should display main menu with 6 categories" time="0.047">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_003: Rate limiting responses → Exponential backoff testing" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_003: Rate limiting responses → Exponential backoff testing" time="0.046">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should navigate to Western Astrology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should navigate to Western Astrology menu" time="0.124">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_004: API key invalidation → Authentication error handling" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_004: API key invalidation → Authentication error handling" time="0.024">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: 403
-Received: &quot;REQUEST_DENIED&quot;
-    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/api-integration/api-failure-recovery.test.js:108:32)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should calculate REAL birth chart" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Western Astrology Menu - REAL CALCULATIONS should calculate REAL birth chart" time="0.034">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_005: Network timeout scenarios → Timeout recovery" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_005: Network timeout scenarios → Timeout recovery" time="0.026">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should navigate to Vedic Astrology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should navigate to Vedic Astrology menu" time="0.163">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_006: Partial response data → Fallback coordinate validation" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite GOOGLE MAPS API FAILURE RECOVERY (6 Scenarios) API_FAILURE_006: Partial response data → Fallback coordinate validation" time="0.03">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should calculate REAL Vedic birth chart (Kundli)" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Vedic Astrology Menu - REAL CALCULATIONS should calculate REAL Vedic birth chart (Kundli)" time="0.032">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_007: API response parsing errors → Fallback generation methods" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_007: API response parsing errors → Fallback generation methods" time="0.026">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should navigate to Divination menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should navigate to Divination menu" time="0.026">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_008: Content filtering violations → Alternative content generation" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_008: Content filtering violations → Alternative content generation" time="0.051">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should generate REAL Tarot reading" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Divination &amp; Mystic Menu - REAL READINGS should generate REAL Tarot reading" time="0.026">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_009: Model performance degradation → Quality threshold handling" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_009: Model performance degradation → Quality threshold handling" time="0.03">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Relationships &amp; Groups Menu - REAL COMPATIBILITY should navigate to Relationships menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Relationships &amp; Groups Menu - REAL COMPATIBILITY should navigate to Relationships menu" time="0.088">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_010: Token limit exceedances → Content truncation strategies" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_010: Token limit exceedances → Content truncation strategies" time="0.022">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should navigate to Numerology menu" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should navigate to Numerology menu" time="0.021">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_011: Rate limiting enforcement → Request throttling validation" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_011: Rate limiting enforcement → Request throttling validation" time="0.025">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should calculate REAL numerology report" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Numerology &amp; Special Menu - REAL CALCULATIONS should calculate REAL numerology report" time="0.145">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_012: Authentication failures → API key rotation" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_012: Authentication failures → API key rotation" time="0.029">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should create and retrieve user from REAL database" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should create and retrieve user from REAL database" time="0.011">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_013: Service availability issues → Circuit breaker pattern" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_013: Service availability issues → Circuit breaker pattern" time="0.026">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should update user profile in REAL database" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Database Operations - REAL MONGO CALLS should update user profile in REAL database" time="0.031">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_014: Response quality degradation → Fallback to template responses" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite MISTRAL AI INTEGRATION FAILURE RECOVERY (8 Scenarios) API_FAILURE_014: Response quality degradation → Fallback to template responses" time="0.021">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle invalid menu selection gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle invalid menu selection gracefully" time="0.073">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_015: Connection pool exhaustion → Connection management" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_015: Connection pool exhaustion → Connection management" time="0.035">
-      <failure>Error: Connection pool exhausted
-    at Db.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/api-integration/api-failure-recovery.test.js:318:17)
-    at /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-mock/build/index.js:397:39
-    at Db.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-mock/build/index.js:404:13)
-    at Db.mockConstructor (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-mock/build/index.js:148:19)
-    at Object.collection (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/api-integration/api-failure-recovery.test.js:325:41)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle malformed messages gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle malformed messages gracefully" time="0.023">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_016: Transaction rollback on failures → Data consistency" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_016: Transaction rollback on failures → Data consistency" time="0.202">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle incomplete user profiles gracefully" time="0.067">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_017: Index corruption recovery → Query optimization fallback" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_017: Index corruption recovery → Query optimization fallback" time="0.054">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle network-like failures gracefully" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle network-like failures gracefully" time="0.012">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_018: Replica set failures → Read preference failover" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_018: Replica set failures → Read preference failover" time="0.054">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle concurrent user sessions" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Error Handling &amp; Edge Cases should handle concurrent user sessions" time="0.117">
     </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_019: Schema migration conflicts → Backward compatibility" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_019: Schema migration conflicts → Backward compatibility" time="0.184">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_020: Cache invalidation failures → Refresh strategy validation" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite DATABASE TRANSACTION INTEGRITY FAILURE RECOVERY (6 Scenarios) API_FAILURE_020: Cache invalidation failures → Refresh strategy validation" time="0.066">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite PAYMENT API FAILURE RECOVERY (4 Scenarios) API_FAILURE_021: Payment gateway failures → Transaction state management" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite PAYMENT API FAILURE RECOVERY (4 Scenarios) API_FAILURE_021: Payment gateway failures → Transaction state management" time="0.013">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite PAYMENT API FAILURE RECOVERY (4 Scenarios) API_FAILURE_022: Subscription renewal failures → Grace period handling" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite PAYMENT API FAILURE RECOVERY (4 Scenarios) API_FAILURE_022: Subscription renewal failures → Grace period handling" time="0.02">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite PAYMENT API FAILURE RECOVERY (4 Scenarios) API_FAILURE_023: Webhook processing failures → Event deduplication" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite PAYMENT API FAILURE RECOVERY (4 Scenarios) API_FAILURE_023: Webhook processing failures → Event deduplication" time="0.015">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite PAYMENT API FAILURE RECOVERY (4 Scenarios) API_FAILURE_024: Currency conversion failures → Exchange rate fallback" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite PAYMENT API FAILURE RECOVERY (4 Scenarios) API_FAILURE_024: Currency conversion failures → Exchange rate fallback" time="0.015">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite WHATSAPP API FAILURE RECOVERY (4 Scenarios) API_FAILURE_025: Message delivery failures → Retry mechanisms" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite WHATSAPP API FAILURE RECOVERY (4 Scenarios) API_FAILURE_025: Message delivery failures → Retry mechanisms" time="0.018">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite WHATSAPP API FAILURE RECOVERY (4 Scenarios) API_FAILURE_026: Rate limit reached → Queue management" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite WHATSAPP API FAILURE RECOVERY (4 Scenarios) API_FAILURE_026: Rate limit reached → Queue management" time="0.027">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: 10
-Received: 20
-    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/api-integration/api-failure-recovery.test.js:588:43)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite WHATSAPP API FAILURE RECOVERY (4 Scenarios) API_FAILURE_027: Session expiration handling → Authentication refresh" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite WHATSAPP API FAILURE RECOVERY (4 Scenarios) API_FAILURE_027: Session expiration handling → Authentication refresh" time="0.025">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite WHATSAPP API FAILURE RECOVERY (4 Scenarios) API_FAILURE_028: Media upload failures → Alternative delivery methods" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite WHATSAPP API FAILURE RECOVERY (4 Scenarios) API_FAILURE_028: Media upload failures → Alternative delivery methods" time="0.015">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_029: Multi-system correlation failures → Event tracing" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_029: Multi-system correlation failures → Event tracing" time="0.02">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_030: Health check failures → Automated recovery procedures" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_030: Health check failures → Automated recovery procedures" time="0.018">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_031: Performance degradation detection → Load balancing fallback" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_031: Performance degradation detection → Load balancing fallback" time="0.018">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_032: Configuration update failures → Hot reload validation" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_032: Configuration update failures → Hot reload validation" time="0.04">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_033: External service dependencies → Mock data fallback" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_033: External service dependencies → Mock data fallback" time="0.037">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_034: System-wide monitoring failures → Alert escalation" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite INTEGRATION RECOVERY &amp; MONITORING (6 Scenarios) API_FAILURE_034: System-wide monitoring failures → Alert escalation" time="0.019">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite REAL-TIME DATA SYNCHRONIZATION FAILURE RECOVERY (5 Scenarios) API_FAILURE_035: Ephemeris data sync failures → Local calculation fallback" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite REAL-TIME DATA SYNCHRONIZATION FAILURE RECOVERY (5 Scenarios) API_FAILURE_035: Ephemeris data sync failures → Local calculation fallback" time="0.041">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite REAL-TIME DATA SYNCHRONIZATION FAILURE RECOVERY (5 Scenarios) API_FAILURE_036: Live transit calculation failures → Cached transit data" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite REAL-TIME DATA SYNCHRONIZATION FAILURE RECOVERY (5 Scenarios) API_FAILURE_036: Live transit calculation failures → Cached transit data" time="0.022">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite REAL-TIME DATA SYNCHRONIZATION FAILURE RECOVERY (5 Scenarios) API_FAILURE_037: Timezone synchronization failures → UTC fallback" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite REAL-TIME DATA SYNCHRONIZATION FAILURE RECOVERY (5 Scenarios) API_FAILURE_037: Timezone synchronization failures → UTC fallback" time="0.019">
-    </testcase>
-    <testcase classname="API FAILURE RECOVERY: Complete External API Integration Testing Suite REAL-TIME DATA SYNCHRONIZATION FAILURE RECOVERY (5 Scenarios) API_FAILURE_038: Weather integration failures → Weather-independent predictions" name="API FAILURE RECOVERY: Complete External API Integration Testing Suite REAL-TIME DATA SYNCHRONIZATION FAILURE RECOVERY (5 Scenarios) API_FAILURE_038: Weather integration failures → Weather-independent predictions" time="0.015">
+    <testcase classname="Comprehensive Menu Integration Tests - REAL LIBRARIES Performance &amp; Load Testing should handle multiple menu navigations efficiently" name="Comprehensive Menu Integration Tests - REAL LIBRARIES Performance &amp; Load Testing should handle multiple menu navigations efficiently" time="0.076">
     </testcase>
   </testsuite>
 </testsuites>

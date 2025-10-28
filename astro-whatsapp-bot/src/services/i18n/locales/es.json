@@ -1,0 +1,38 @@
+{
+  "messages": {
+    "daily_horoscope": {
+      "title": "🌟 Horóscopo Diario para {sunSign}",
+      "general": "{general}",
+      "lucky_color": "🎨 Color de la Suerte: {color}",
+      "lucky_number": "🔢 Número de la Suerte: {number}",
+      "love": "💕 Amor: {advice}",
+      "career": "💼 Carrera: {advice}",
+      "finance": "💰 Finanzas: {advice}",
+      "health": "🏥 Salud: {advice}",
+      "next": "\n✨ Pronóstico de Mañana: ¡Sé positivo y confía en tu intuición!"
+    },
+    "birth_chart": {
+      "incomplete_profile": "Necesito los detalles de tu nacimiento para crear tu carta natal. Por favor proporciona:\n• Fecha de nacimiento (formato DDMMYY o DDMMYYYY)\n• Hora de nacimiento (formato HHMM)\n• Lugar de nacimiento (Ciudad, País)\n\nEjemplo: 150690 o 15061990, 1430, Madrid, España"
+    },
+    "welcome": {
+      "greeting": "🌟 ¡Bienvenido a tu Viaje Cósmico!\n\nSoy tu Entrenador Cósmico Personal, listo para guiarte a través de los misterios de las estrellas."
+    },
+    "language": {
+      "selection": "🌐 Elige tu Idioma / Choose Your Language / اختر لغتك",
+      "prompt": "Elige tu idioma preferido para las lecturas astrológicas:",
+      "set_english": "✅ Language set to English! 🇺🇸",
+      "set_hindi": "✅ भाषा हिंदी में सेट की गई! 🇮🇳",
+      "set_spanish": "✅ ¡Idioma establecido en español! 🇪🇸"
+    }
+  },
+  "buttons": {
+    "core_readings": "Lecturas Principales",
+    "divination": "Adivinación",
+    "traditions": "Tradiciones Antiguas",
+    "language": "🌐 Idioma",
+    "back_main": "Volver al Inicio",
+    "back_divination": "Volver a Adivinación",
+    "back_traditions": "Volver a Tradiciones",
+    "update_profile": "📝 Actualizar Perfil"
+  }
+}

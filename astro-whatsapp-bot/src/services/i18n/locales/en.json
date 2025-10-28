@@ -1,0 +1,38 @@
+{
+  "messages": {
+    "daily_horoscope": {
+      "title": "🌟 Daily Horoscope for {sunSign}",
+      "general": "{general}",
+      "lucky_color": "🎨 Lucky Color: {color}",
+      "lucky_number": "🔢 Lucky Number: {number}",
+      "love": "💕 Love: {advice}",
+      "career": "💼 Career: {advice}",
+      "finance": "💰 Finance: {advice}",
+      "health": "🏥 Health: {advice}",
+      "next": "\n✨ Tomorrow's Outlook: Stay positive and trust your intuition!"
+    },
+    "birth_chart": {
+      "incomplete_profile": "I need your birth details to create your birth chart. Please provide:\n• Birth date (DDMMYY or DDMMYYYY format)\n• Birth time (HHMM format)\n• Birth place (City, Country)\n\nExample: 150690 or 15061990, 1430, Mumbai, India"
+    },
+    "welcome": {
+      "greeting": "🌟 Welcome to Your Cosmic Journey!\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars."
+    },
+    "language": {
+      "selection": "🌐 Choose Your Language / اختر لغتك / Choose Your Language",
+      "prompt": "Select your preferred language for astrology readings:",
+      "set_english": "✅ Language set to English! 🇺🇸",
+      "set_hindi": "✅ भाषा हिंदी में सेट की गई! 🇮🇳"
+    }
+  },
+  "buttons": {
+    "core_readings": "Core Readings",
+    "divination": "Divination",
+    "traditions": "Ancient Traditions",
+    "language": "🌐 Language",
+    "back_main": "Back to Main",
+    "back_divination": "Back to Divination",
+    "back_traditions": "Back to Traditions",
+    "update_profile": "📝 Update Profile",
+    "another_reading": "🔄 Another Reading"
+  }
+}

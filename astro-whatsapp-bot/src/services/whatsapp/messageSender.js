@@ -510,10 +510,10 @@ const sendMessage = async(
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
     logger.error(`❌ Error in sendMessage wrapper to ${phoneNumber}: ${errorMsg}`);
     
-    // Return a default success response in test environment to prevent crashes
+    // In test environment, re-throw the error so mocks can catch it
     if (process.env.NODE_ENV === 'test') {
-      logger.warn(`🔧 Test environment: returning mock success for sendMessage to ${phoneNumber}`);
-      return { success: true, message: 'Mock message sent successfully' };
+      logger.warn(`🔧 Test environment: re-throwing error for sendMessage to ${phoneNumber}`);
+      throw error;
     }
     
     throw error;

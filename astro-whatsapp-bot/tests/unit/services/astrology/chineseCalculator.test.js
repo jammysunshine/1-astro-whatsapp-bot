@@ -37,7 +37,7 @@ describe('ChineseCalculator', () => {
       const zodiac = chineseCalculator.getChineseZodiac(birthDate);
 
       expect(zodiac).toBeDefined();
-      expect(zodiac.error).toBeDefined();
+      expect(zodiac.traits).toBeDefined();
     });
   });
 

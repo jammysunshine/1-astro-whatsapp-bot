@@ -24,7 +24,7 @@ describe('AstrocartographyReader', () => {
         place: 'Mumbai, India'
       };
 
-      const reading = astrocartographyReader.generateAstrocartographyReading(birthData);
+      const reading = astrocartographyReader.generateAstrocartography(birthData);
 
       expect(reading).toBeDefined();
       expect(reading.birthData).toEqual(birthData);
@@ -51,7 +51,7 @@ describe('AstrocartographyReader', () => {
         place: 'Mumbai, India'
       };
 
-      const lines = astrocartographyReader.calculateAstrocartographyLines(birthData);
+      const lines = astrocartographyReader.calculateLines(birthData);
 
       expect(lines).toBeDefined();
       expect(lines).toHaveLength(10);

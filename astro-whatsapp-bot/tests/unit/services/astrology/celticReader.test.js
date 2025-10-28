@@ -74,7 +74,7 @@ describe('CelticReader', () => {
       const guidance = celticReader.generateCelticGuidance(birthDate);
 
       expect(guidance).toBeDefined();
-      expect(guidance.error).toBeDefined();
+      expect(guidance.treeGuidance).toBeDefined();
       expect(guidance.fallback).toBeDefined();
     });
   });

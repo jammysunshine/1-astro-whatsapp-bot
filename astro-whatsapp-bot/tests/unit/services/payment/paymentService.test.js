@@ -65,8 +65,7 @@ describe('PaymentService', () => {
   describe('processSubscription', () => {
     it('should process subscription successfully with mocked payment', async() => {
       // Mock Razorpay payment success (India region)
-      const razorpayInstance = new (require('razorpay'))();
-      razorpayInstance.orders.create.mockResolvedValue({
+      paymentService.razorpay.orders.create.mockResolvedValue({
         id: 'order_test_success',
         amount: 23000,
         currency: 'INR',
@@ -88,8 +87,7 @@ describe('PaymentService', () => {
 
     it('should handle payment failure', async() => {
       // Mock Razorpay payment failure
-      const razorpayInstance = new (require('razorpay'))();
-      razorpayInstance.orders.create.mockRejectedValue(new Error('Payment processing failed'));
+      paymentService.razorpay.orders.create.mockRejectedValue(new Error('Payment processing failed'));
 
       await expect(
         paymentService.processSubscription('+1234567890', 'premium', 'india', 'card')

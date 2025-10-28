@@ -169,7 +169,7 @@ describe('WhatsApp Message Processor', () => {
       await processIncomingMessage(message, value);
 
       // Should send profile prompt since user has no birthDetails
-      const expectedProfilePrompt = '👤 *Profile Required*\n\nTo provide accurate Daily Horoscope, I need your birth details:\n\n📅 *Birth Date* (DD/MM/YYYY)\n🕐 *Birth Time* (HH:MM - 24hr format)\n📍 *Birth Place* (City, Country)\n\n*Example:*\n15/06/1990, 14:30, Mumbai, India\n\nSend your birth details in this format, or use the Settings menu to update your profile permanently.';
+      const expectedProfilePrompt = '👤 *Profile Required*\n\nTo provide accurate Daily Horoscope, I need your birth details:\n\n📅 *Birth Date* (DDMMYY or DDMMYYYY format)\n🕐 *Birth Time* (HHMM format - 24hr)\n📍 *Birth Place* (City, Country)\n\n*Example:*\n150690, 1430, Mumbai, India\n\nSend your birth details in this format, or use the Settings menu to update your profile permanently.';
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
@@ -293,8 +293,10 @@ describe('WhatsApp Message Processor', () => {
         'en'
       );
       expect(logger.error).toHaveBeenCalledWith(
-        expect.stringContaining('Error processing message from 1234567890:'),
-        expect.any(Error)
+        '❌ Error processing message from 1234567890: Database error'
+      );
+      expect(logger.error).toHaveBeenCalledWith(
+        '❌ Error sent to 1234567890: Database error'
       );
     });
   });

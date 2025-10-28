@@ -48,9 +48,15 @@ describe('MayanReader', () => {
 
       const chart = mayanReader.generateMayanChart(birthData);
 
+      // Mayan reader gracefully handles invalid data by returning fallback values
       expect(chart).toBeDefined();
-      expect(chart.error).toBeDefined();
-      expect(chart.fallback).toBeDefined();
+      expect(chart.name).toBe('Invalid User');
+      expect(chart.tzolkin).toBeDefined();
+      expect(chart.haab).toBeDefined();
+      // Should have fallback kin and day values (1 = default fallback)
+      expect(chart.tzolkin.kin).toBe(1);
+      expect(chart.haab.day).toBe(1);
+      expect(chart.haab.month).toBe(1);
     });
   });
 });

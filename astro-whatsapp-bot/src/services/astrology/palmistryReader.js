@@ -704,13 +704,13 @@ class PalmistryReader {
 
     return this.analyzePalm(sampleHandData);
   }
-}
+  }
 
-/**
- * Generate a palmistry reading based on user data
- * @param {Object} user - User data with hand characteristics
- * @returns {Object} Formatted palmistry reading
- */
+  /**
+   * Generate a palmistry reading based on user data
+   * @param {Object} user - User data with hand characteristics
+   * @returns {Object} Formatted palmistry reading
+   */
   generatePalmistryReading(user) {
     try {
       if (!user) {

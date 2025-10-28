@@ -1,23 +1,557 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="137" failures="11" errors="0" time="72.581">
-  <testsuite name="Server Setup" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:25:25" time="10.042" tests="4">
-    <testcase classname="Server Setup GET /health should return health status with correct structure" name="Server Setup GET /health should return health status with correct structure" time="0.089">
-    </testcase>
-    <testcase classname="Server Setup GET / should return welcome message with version" name="Server Setup GET / should return welcome message with version" time="0.031">
-    </testcase>
-    <testcase classname="Server Setup POST /webhook should return webhook ready message" name="Server Setup POST /webhook should return webhook ready message" time="0.038">
-    </testcase>
-    <testcase classname="Server Setup 404 Handler should return 404 for non-existent routes" name="Server Setup 404 Handler should return 404 for non-existent routes" time="0.095">
-    </testcase>
-  </testsuite>
-  <testsuite name="MayanReader" errors="0" failures="1" skipped="0" timestamp="2025-10-28T18:25:35" time="3.098" tests="2">
-    <testcase classname="MayanReader generateMayanChart should generate Mayan chart for valid birth data" name="MayanReader generateMayanChart should generate Mayan chart for valid birth data" time="0.013">
-    </testcase>
-    <testcase classname="MayanReader generateMayanChart should handle invalid birth data gracefully" name="MayanReader generateMayanChart should handle invalid birth data gracefully" time="0.007">
-      <failure>Error: expect(received).toBeDefined()
+<testsuites name="jest tests" tests="135" failures="11" errors="0" time="105.733">
+  <testsuite name="Real Astrology Calculations Integration Tests" errors="0" failures="7" skipped="0" timestamp="2025-10-28T19:39:36" time="15.663" tests="21">
+    <testcase classname="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should load Western astrology services successfully" name="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should load Western astrology services successfully" time="8.735">
+      <failure>Error: expect(received).not.toThrow()
 
-Received: undefined
-    at Object.toBeDefined (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/astrology/mayanReader.test.js:52:27)
+Error name:    &quot;SyntaxError&quot;
+Error message: &quot;/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/astrology/tarotReader.js: Missing semicolon. (824:51)·
+  822 |    * @returns {Object} Formatted tarot reading
+  823 |    */
+&gt; 824 |   generateTarotReading(user, spreadType = &apos;single&apos;) {
+      |                                                    ^
+  825 |     try {
+  826 |       let reading;
+  827 |&quot;
+
+      1 | const chineseCalculator = require(&apos;../chineseCalculator&apos;);
+    &gt; 2 | const tarotReader = require(&apos;../tarotReader&apos;);
+        |                     ^
+      3 | const palmistryReader = require(&apos;../palmistryReader&apos;);
+      4 | const kabbalisticReader = require(&apos;../kabbalisticReader&apos;);
+      5 | const mayanReader = require(&apos;../mayanReader&apos;);
+
+      at constructor (node_modules/@babel/parser/src/parse-error.ts:95:45)
+      at Parser.toParseError [as raise] (node_modules/@babel/parser/src/tokenizer/index.ts:1507:19)
+      at Parser.raise [as semicolon] (node_modules/@babel/parser/src/parser/util.ts:149:10)
+      at Parser.semicolon [as parseExpressionStatement] (node_modules/@babel/parser/src/parser/statement.ts:1363:10)
+      at Parser.parseExpressionStatement [as parseStatementContent] (node_modules/@babel/parser/src/parser/statement.ts:702:19)
+      at Parser.parseStatementContent [as parseStatementLike] (node_modules/@babel/parser/src/parser/statement.ts:482:17)
+      at Parser.parseStatementLike [as parseModuleItem] (node_modules/@babel/parser/src/parser/statement.ts:419:17)
+      at Parser.parseModuleItem [as parseBlockOrModuleBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1443:16)
+      at Parser.parseBlockOrModuleBlockBody [as parseBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1417:10)
+      at Parser.parseBlockBody [as parseProgram] (node_modules/@babel/parser/src/parser/statement.ts:229:10)
+      at Parser.parseProgram [as parseTopLevel] (node_modules/@babel/parser/src/parser/statement.ts:203:25)
+      at Parser.parseTopLevel [as parse] (node_modules/@babel/parser/src/parser/index.ts:88:25)
+      at parse (node_modules/@babel/parser/src/index.ts:86:38)
+      at parser (node_modules/@babel/core/src/parser/index.ts:29:19)
+          at parser.next (&lt;anonymous&gt;)
+      at normalizeFile (node_modules/@babel/core/src/transformation/normalize-file.ts:50:24)
+          at normalizeFile.next (&lt;anonymous&gt;)
+      at run (node_modules/@babel/core/src/transformation/index.ts:41:36)
+          at run.next (&lt;anonymous&gt;)
+      at transform (node_modules/@babel/core/src/transform.ts:29:20)
+          at transform.next (&lt;anonymous&gt;)
+      at evaluateSync (node_modules/gensync/index.js:251:28)
+      at sync (node_modules/gensync/index.js:89:14)
+      at fn (node_modules/@babel/core/src/errors/rewrite-stack-trace.ts:99:14)
+      at transformSync (node_modules/@babel/core/src/transform.ts:66:52)
+      at ScriptTransformer.transformSource (node_modules/@jest/transform/build/ScriptTransformer.js:545:31)
+      at ScriptTransformer._transformAndBuildScript (node_modules/@jest/transform/build/ScriptTransformer.js:674:40)
+      at ScriptTransformer.transform (node_modules/@jest/transform/build/ScriptTransformer.js:726:19)
+      at Object.require (src/services/astrology/handlers/specializedHandlers.js:2:21)
+      at Object.require (src/services/astrology/astrologyEngine.js:9:150)
+      at require (tests/e2e/real-astrology-calculations.test.js:68:9)
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at Object.toThrow (tests/e2e/real-astrology-calculations.test.js:69:14)
+    at Object.toThrow (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-astrology-calculations.test.js:69:14)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should validate WesternCalculator class structure" name="Real Astrology Calculations Integration Tests Western Astrology - Service Integration should validate WesternCalculator class structure" time="0.004">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should load Vedic astrology services successfully" name="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should load Vedic astrology services successfully" time="0.103">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should validate VedicCalculator can be instantiated" name="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should validate VedicCalculator can be instantiated" time="0.002">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should validate VimshottariDasha basic functionality" name="Real Astrology Calculations Integration Tests Vedic Astrology - Service Integration should validate VimshottariDasha basic functionality" time="0.001">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should load divination services successfully" name="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should load divination services successfully" time="0.018">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;SyntaxError&quot;
+Error message: &quot;/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/astrology/tarotReader.js: Missing semicolon. (824:51)·
+  822 |    * @returns {Object} Formatted tarot reading
+  823 |    */
+&gt; 824 |   generateTarotReading(user, spreadType = &apos;single&apos;) {
+      |                                                    ^
+  825 |     try {
+  826 |       let reading;
+  827 |&quot;
+
+      128 |       // Test that divination services can be imported
+      129 |       expect(() =&gt; {
+    &gt; 130 |         require(&apos;../../src/services/astrology/tarotReader&apos;);
+          |         ^
+      131 |       }).not.toThrow();
+      132 |
+      133 |       expect(() =&gt; {
+
+      at constructor (node_modules/@babel/parser/src/parse-error.ts:95:45)
+      at Parser.toParseError [as raise] (node_modules/@babel/parser/src/tokenizer/index.ts:1507:19)
+      at Parser.raise [as semicolon] (node_modules/@babel/parser/src/parser/util.ts:149:10)
+      at Parser.semicolon [as parseExpressionStatement] (node_modules/@babel/parser/src/parser/statement.ts:1363:10)
+      at Parser.parseExpressionStatement [as parseStatementContent] (node_modules/@babel/parser/src/parser/statement.ts:702:19)
+      at Parser.parseStatementContent [as parseStatementLike] (node_modules/@babel/parser/src/parser/statement.ts:482:17)
+      at Parser.parseStatementLike [as parseModuleItem] (node_modules/@babel/parser/src/parser/statement.ts:419:17)
+      at Parser.parseModuleItem [as parseBlockOrModuleBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1443:16)
+      at Parser.parseBlockOrModuleBlockBody [as parseBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1417:10)
+      at Parser.parseBlockBody [as parseProgram] (node_modules/@babel/parser/src/parser/statement.ts:229:10)
+      at Parser.parseProgram [as parseTopLevel] (node_modules/@babel/parser/src/parser/statement.ts:203:25)
+      at Parser.parseTopLevel [as parse] (node_modules/@babel/parser/src/parser/index.ts:88:25)
+      at parse (node_modules/@babel/parser/src/index.ts:86:38)
+      at parser (node_modules/@babel/core/src/parser/index.ts:29:19)
+          at parser.next (&lt;anonymous&gt;)
+      at normalizeFile (node_modules/@babel/core/src/transformation/normalize-file.ts:50:24)
+          at normalizeFile.next (&lt;anonymous&gt;)
+      at run (node_modules/@babel/core/src/transformation/index.ts:41:36)
+          at run.next (&lt;anonymous&gt;)
+      at transform (node_modules/@babel/core/src/transform.ts:29:20)
+          at transform.next (&lt;anonymous&gt;)
+      at evaluateSync (node_modules/gensync/index.js:251:28)
+      at sync (node_modules/gensync/index.js:89:14)
+      at fn (node_modules/@babel/core/src/errors/rewrite-stack-trace.ts:99:14)
+      at transformSync (node_modules/@babel/core/src/transform.ts:66:52)
+      at ScriptTransformer.transformSource (node_modules/@jest/transform/build/ScriptTransformer.js:545:31)
+      at ScriptTransformer._transformAndBuildScript (node_modules/@jest/transform/build/ScriptTransformer.js:674:40)
+      at ScriptTransformer.transform (node_modules/@jest/transform/build/ScriptTransformer.js:726:19)
+      at require (tests/e2e/real-astrology-calculations.test.js:130:9)
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at Object.toThrow (tests/e2e/real-astrology-calculations.test.js:131:14)
+    at Object.toThrow (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-astrology-calculations.test.js:131:14)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate TarotReader functionality" name="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate TarotReader functionality" time="0.013">
+      <failure>Jest encountered an unexpected token
+
+Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.
+
+Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.
+
+By default &quot;node_modules&quot; folder is ignored by transformers.
+
+Here&apos;s what you can do:
+ • If you are trying to use ECMAScript Modules, see https://jestjs.io/docs/ecmascript-modules for how to enable it.
+ • If you are trying to use TypeScript, see https://jestjs.io/docs/getting-started#using-typescript
+ • To have some of your &quot;node_modules&quot; files transformed, you can specify a custom &quot;transformIgnorePatterns&quot; in your config.
+ • If you need a custom transformation specify a &quot;transform&quot; option in your config.
+ • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the &quot;moduleNameMapper&quot; config option.
+
+You&apos;ll find more details and examples of these config options in the docs:
+https://jestjs.io/docs/configuration
+For information about custom transformations, see:
+https://jestjs.io/docs/code-transformation
+
+Details:
+
+SyntaxError: /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/astrology/tarotReader.js: Missing semicolon. (824:51)
+
+  822 |    * @returns {Object} Formatted tarot reading
+  823 |    */
+&gt; 824 |   generateTarotReading(user, spreadType = &apos;single&apos;) {
+      |                                                    ^
+  825 |     try {
+  826 |       let reading;
+  827 |
+    at constructor (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parse-error.ts:95:45)
+    at Parser.toParseError [as raise] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/tokenizer/index.ts:1507:19)
+    at Parser.raise [as semicolon] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/util.ts:149:10)
+    at Parser.semicolon [as parseExpressionStatement] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:1363:10)
+    at Parser.parseExpressionStatement [as parseStatementContent] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:702:19)
+    at Parser.parseStatementContent [as parseStatementLike] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:482:17)
+    at Parser.parseStatementLike [as parseModuleItem] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:419:17)
+    at Parser.parseModuleItem [as parseBlockOrModuleBlockBody] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:1443:16)
+    at Parser.parseBlockOrModuleBlockBody [as parseBlockBody] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:1417:10)
+    at Parser.parseBlockBody [as parseProgram] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:229:10)
+    at Parser.parseProgram [as parseTopLevel] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:203:25)
+    at Parser.parseTopLevel [as parse] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/index.ts:88:25)
+    at parse (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/index.ts:86:38)
+    at parser (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/parser/index.ts:29:19)
+    at parser.next (&lt;anonymous&gt;)
+    at normalizeFile (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transformation/normalize-file.ts:50:24)
+    at normalizeFile.next (&lt;anonymous&gt;)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transformation/index.ts:41:36)
+    at run.next (&lt;anonymous&gt;)
+    at transform (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transform.ts:29:20)
+    at transform.next (&lt;anonymous&gt;)
+    at evaluateSync (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/gensync/index.js:251:28)
+    at sync (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/gensync/index.js:89:14)
+    at fn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/errors/rewrite-stack-trace.ts:99:14)
+    at transformSync (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transform.ts:66:52)
+    at Object.process (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-config/node_modules/babel-jest/build/index.js:273:57)
+    at ScriptTransformer.transformSource (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@jest/transform/build/ScriptTransformer.js:545:31)
+    at ScriptTransformer._transformAndBuildScript (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@jest/transform/build/ScriptTransformer.js:674:40)
+    at ScriptTransformer.transform (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@jest/transform/build/ScriptTransformer.js:726:19)
+    at Runtime.transformFile (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1465:53)
+    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1397:34)
+    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)
+    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)
+    at Runtime.requireModuleOrMock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1048:21)
+    at Object.require (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-astrology-calculations.test.js:142:27)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate IChingReader functionality" name="Real Astrology Calculations Integration Tests Divination Systems - Service Integration should validate IChingReader functionality" time="0.091">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Numerology - Service Integration should load numerology services successfully" name="Real Astrology Calculations Integration Tests Numerology - Service Integration should load numerology services successfully" time="0.079">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Numerology - Service Integration should validate numerology calculations" name="Real Astrology Calculations Integration Tests Numerology - Service Integration should validate numerology calculations" time="0.002">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Chinese Astrology - Service Integration should load Chinese astrology services successfully" name="Real Astrology Calculations Integration Tests Chinese Astrology - Service Integration should load Chinese astrology services successfully" time="0.001">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Astrocartography - Service Integration should load astrocartography services successfully" name="Real Astrology Calculations Integration Tests Astrocartography - Service Integration should load astrocartography services successfully" time="0.086">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Palmistry - Service Integration should load palmistry services successfully" name="Real Astrology Calculations Integration Tests Palmistry - Service Integration should load palmistry services successfully" time="0.013">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;SyntaxError&quot;
+Error message: &quot;/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/astrology/palmistryReader.js: Missing semicolon. (714:32)·
+  712 |  * @returns {Object} Formatted palmistry reading
+  713 |  */
+&gt; 714 |   generatePalmistryReading(user) {
+      |                                 ^
+  715 |     try {
+  716 |       if (!user) {
+  717 |         // Generate sample analysis for demo&quot;
+
+      219 |     test(&apos;should load palmistry services successfully&apos;, () =&gt; {
+      220 |       expect(() =&gt; {
+    &gt; 221 |         require(&apos;../../src/services/astrology/palmistryReader&apos;);
+          |         ^
+      222 |       }).not.toThrow();
+      223 |
+      224 |       logger.info(&apos;✅ Palmistry services loaded successfully&apos;);
+
+      at constructor (node_modules/@babel/parser/src/parse-error.ts:95:45)
+      at Parser.toParseError [as raise] (node_modules/@babel/parser/src/tokenizer/index.ts:1507:19)
+      at Parser.raise [as semicolon] (node_modules/@babel/parser/src/parser/util.ts:149:10)
+      at Parser.semicolon [as parseExpressionStatement] (node_modules/@babel/parser/src/parser/statement.ts:1363:10)
+      at Parser.parseExpressionStatement [as parseStatementContent] (node_modules/@babel/parser/src/parser/statement.ts:702:19)
+      at Parser.parseStatementContent [as parseStatementLike] (node_modules/@babel/parser/src/parser/statement.ts:482:17)
+      at Parser.parseStatementLike [as parseModuleItem] (node_modules/@babel/parser/src/parser/statement.ts:419:17)
+      at Parser.parseModuleItem [as parseBlockOrModuleBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1443:16)
+      at Parser.parseBlockOrModuleBlockBody [as parseBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1417:10)
+      at Parser.parseBlockBody [as parseProgram] (node_modules/@babel/parser/src/parser/statement.ts:229:10)
+      at Parser.parseProgram [as parseTopLevel] (node_modules/@babel/parser/src/parser/statement.ts:203:25)
+      at Parser.parseTopLevel [as parse] (node_modules/@babel/parser/src/parser/index.ts:88:25)
+      at parse (node_modules/@babel/parser/src/index.ts:86:38)
+      at parser (node_modules/@babel/core/src/parser/index.ts:29:19)
+          at parser.next (&lt;anonymous&gt;)
+      at normalizeFile (node_modules/@babel/core/src/transformation/normalize-file.ts:50:24)
+          at normalizeFile.next (&lt;anonymous&gt;)
+      at run (node_modules/@babel/core/src/transformation/index.ts:41:36)
+          at run.next (&lt;anonymous&gt;)
+      at transform (node_modules/@babel/core/src/transform.ts:29:20)
+          at transform.next (&lt;anonymous&gt;)
+      at evaluateSync (node_modules/gensync/index.js:251:28)
+      at sync (node_modules/gensync/index.js:89:14)
+      at fn (node_modules/@babel/core/src/errors/rewrite-stack-trace.ts:99:14)
+      at transformSync (node_modules/@babel/core/src/transform.ts:66:52)
+      at ScriptTransformer.transformSource (node_modules/@jest/transform/build/ScriptTransformer.js:545:31)
+      at ScriptTransformer._transformAndBuildScript (node_modules/@jest/transform/build/ScriptTransformer.js:674:40)
+      at ScriptTransformer.transform (node_modules/@jest/transform/build/ScriptTransformer.js:726:19)
+      at require (tests/e2e/real-astrology-calculations.test.js:221:9)
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at Object.toThrow (tests/e2e/real-astrology-calculations.test.js:222:14)
+    at Object.toThrow (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-astrology-calculations.test.js:222:14)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Palmistry - Service Integration should validate PalmistryReader functionality" name="Real Astrology Calculations Integration Tests Palmistry - Service Integration should validate PalmistryReader functionality" time="0.022">
+      <failure>Jest encountered an unexpected token
+
+Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.
+
+Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.
+
+By default &quot;node_modules&quot; folder is ignored by transformers.
+
+Here&apos;s what you can do:
+ • If you are trying to use ECMAScript Modules, see https://jestjs.io/docs/ecmascript-modules for how to enable it.
+ • If you are trying to use TypeScript, see https://jestjs.io/docs/getting-started#using-typescript
+ • To have some of your &quot;node_modules&quot; files transformed, you can specify a custom &quot;transformIgnorePatterns&quot; in your config.
+ • If you need a custom transformation specify a &quot;transform&quot; option in your config.
+ • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the &quot;moduleNameMapper&quot; config option.
+
+You&apos;ll find more details and examples of these config options in the docs:
+https://jestjs.io/docs/configuration
+For information about custom transformations, see:
+https://jestjs.io/docs/code-transformation
+
+Details:
+
+SyntaxError: /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/astrology/palmistryReader.js: Missing semicolon. (714:32)
+
+  712 |  * @returns {Object} Formatted palmistry reading
+  713 |  */
+&gt; 714 |   generatePalmistryReading(user) {
+      |                                 ^
+  715 |     try {
+  716 |       if (!user) {
+  717 |         // Generate sample analysis for demo
+    at constructor (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parse-error.ts:95:45)
+    at Parser.toParseError [as raise] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/tokenizer/index.ts:1507:19)
+    at Parser.raise [as semicolon] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/util.ts:149:10)
+    at Parser.semicolon [as parseExpressionStatement] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:1363:10)
+    at Parser.parseExpressionStatement [as parseStatementContent] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:702:19)
+    at Parser.parseStatementContent [as parseStatementLike] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:482:17)
+    at Parser.parseStatementLike [as parseModuleItem] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:419:17)
+    at Parser.parseModuleItem [as parseBlockOrModuleBlockBody] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:1443:16)
+    at Parser.parseBlockOrModuleBlockBody [as parseBlockBody] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:1417:10)
+    at Parser.parseBlockBody [as parseProgram] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:229:10)
+    at Parser.parseProgram [as parseTopLevel] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:203:25)
+    at Parser.parseTopLevel [as parse] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/index.ts:88:25)
+    at parse (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/index.ts:86:38)
+    at parser (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/parser/index.ts:29:19)
+    at parser.next (&lt;anonymous&gt;)
+    at normalizeFile (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transformation/normalize-file.ts:50:24)
+    at normalizeFile.next (&lt;anonymous&gt;)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transformation/index.ts:41:36)
+    at run.next (&lt;anonymous&gt;)
+    at transform (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transform.ts:29:20)
+    at transform.next (&lt;anonymous&gt;)
+    at evaluateSync (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/gensync/index.js:251:28)
+    at sync (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/gensync/index.js:89:14)
+    at fn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/errors/rewrite-stack-trace.ts:99:14)
+    at transformSync (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transform.ts:66:52)
+    at Object.process (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-config/node_modules/babel-jest/build/index.js:273:57)
+    at ScriptTransformer.transformSource (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@jest/transform/build/ScriptTransformer.js:545:31)
+    at ScriptTransformer._transformAndBuildScript (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@jest/transform/build/ScriptTransformer.js:674:40)
+    at ScriptTransformer.transform (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@jest/transform/build/ScriptTransformer.js:726:19)
+    at Runtime.transformFile (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1465:53)
+    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1397:34)
+    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)
+    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)
+    at Runtime.requireModuleOrMock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1048:21)
+    at Object.require (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-astrology-calculations.test.js:228:31)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Celtic Astrology - Service Integration should load Celtic astrology services successfully" name="Real Astrology Calculations Integration Tests Celtic Astrology - Service Integration should load Celtic astrology services successfully" time="0.085">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Mayan Astrology - Service Integration should load Mayan astrology services successfully" name="Real Astrology Calculations Integration Tests Mayan Astrology - Service Integration should load Mayan astrology services successfully" time="0.116">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Islamic Astrology - Service Integration should load Islamic astrology services successfully" name="Real Astrology Calculations Integration Tests Islamic Astrology - Service Integration should load Islamic astrology services successfully" time="0.089">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Relationships &amp; Compatibility - Service Integration should load compatibility services successfully" name="Real Astrology Calculations Integration Tests Relationships &amp; Compatibility - Service Integration should load compatibility services successfully" time="0.002">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Special Readings - AI Integration should load AI services successfully" name="Real Astrology Calculations Integration Tests Special Readings - AI Integration should load AI services successfully" time="0.001">
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Service Integration Validation should validate all astrology services can be imported" name="Real Astrology Calculations Integration Tests Service Integration Validation should validate all astrology services can be imported" time="0.015">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;SyntaxError&quot;
+Error message: &quot;/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/astrology/tarotReader.js: Missing semicolon. (824:51)·
+  822 |    * @returns {Object} Formatted tarot reading
+  823 |    */
+&gt; 824 |   generateTarotReading(user, spreadType = &apos;single&apos;) {
+      |                                                    ^
+  825 |     try {
+  826 |       let reading;
+  827 |&quot;
+
+      1 | const chineseCalculator = require(&apos;../chineseCalculator&apos;);
+    &gt; 2 | const tarotReader = require(&apos;../tarotReader&apos;);
+        |                     ^
+      3 | const palmistryReader = require(&apos;../palmistryReader&apos;);
+      4 | const kabbalisticReader = require(&apos;../kabbalisticReader&apos;);
+      5 | const mayanReader = require(&apos;../mayanReader&apos;);
+
+      at constructor (node_modules/@babel/parser/src/parse-error.ts:95:45)
+      at Parser.toParseError [as raise] (node_modules/@babel/parser/src/tokenizer/index.ts:1507:19)
+      at Parser.raise [as semicolon] (node_modules/@babel/parser/src/parser/util.ts:149:10)
+      at Parser.semicolon [as parseExpressionStatement] (node_modules/@babel/parser/src/parser/statement.ts:1363:10)
+      at Parser.parseExpressionStatement [as parseStatementContent] (node_modules/@babel/parser/src/parser/statement.ts:702:19)
+      at Parser.parseStatementContent [as parseStatementLike] (node_modules/@babel/parser/src/parser/statement.ts:482:17)
+      at Parser.parseStatementLike [as parseModuleItem] (node_modules/@babel/parser/src/parser/statement.ts:419:17)
+      at Parser.parseModuleItem [as parseBlockOrModuleBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1443:16)
+      at Parser.parseBlockOrModuleBlockBody [as parseBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1417:10)
+      at Parser.parseBlockBody [as parseProgram] (node_modules/@babel/parser/src/parser/statement.ts:229:10)
+      at Parser.parseProgram [as parseTopLevel] (node_modules/@babel/parser/src/parser/statement.ts:203:25)
+      at Parser.parseTopLevel [as parse] (node_modules/@babel/parser/src/parser/index.ts:88:25)
+      at parse (node_modules/@babel/parser/src/index.ts:86:38)
+      at parser (node_modules/@babel/core/src/parser/index.ts:29:19)
+          at parser.next (&lt;anonymous&gt;)
+      at normalizeFile (node_modules/@babel/core/src/transformation/normalize-file.ts:50:24)
+          at normalizeFile.next (&lt;anonymous&gt;)
+      at run (node_modules/@babel/core/src/transformation/index.ts:41:36)
+          at run.next (&lt;anonymous&gt;)
+      at transform (node_modules/@babel/core/src/transform.ts:29:20)
+          at transform.next (&lt;anonymous&gt;)
+      at evaluateSync (node_modules/gensync/index.js:251:28)
+      at sync (node_modules/gensync/index.js:89:14)
+      at fn (node_modules/@babel/core/src/errors/rewrite-stack-trace.ts:99:14)
+      at transformSync (node_modules/@babel/core/src/transform.ts:66:52)
+      at ScriptTransformer.transformSource (node_modules/@jest/transform/build/ScriptTransformer.js:545:31)
+      at ScriptTransformer._transformAndBuildScript (node_modules/@jest/transform/build/ScriptTransformer.js:674:40)
+      at ScriptTransformer.transform (node_modules/@jest/transform/build/ScriptTransformer.js:726:19)
+      at Object.require (src/services/astrology/handlers/specializedHandlers.js:2:21)
+      at Object.require (src/services/astrology/astrologyEngine.js:9:150)
+      at require (tests/e2e/real-astrology-calculations.test.js:309:11)
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at toThrow (tests/e2e/real-astrology-calculations.test.js:310:16)
+          at Array.forEach (&lt;anonymous&gt;)
+      at Object.forEach (tests/e2e/real-astrology-calculations.test.js:307:16)
+    at toThrow (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-astrology-calculations.test.js:310:16)
+    at Array.forEach (&lt;anonymous&gt;)
+    at Object.forEach (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-astrology-calculations.test.js:307:16)
+    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Real Astrology Calculations Integration Tests Service Integration Validation should validate core astrology functionality" name="Real Astrology Calculations Integration Tests Service Integration Validation should validate core astrology functionality" time="0.012">
+      <failure>Jest encountered an unexpected token
+
+Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.
+
+Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.
+
+By default &quot;node_modules&quot; folder is ignored by transformers.
+
+Here&apos;s what you can do:
+ • If you are trying to use ECMAScript Modules, see https://jestjs.io/docs/ecmascript-modules for how to enable it.
+ • If you are trying to use TypeScript, see https://jestjs.io/docs/getting-started#using-typescript
+ • To have some of your &quot;node_modules&quot; files transformed, you can specify a custom &quot;transformIgnorePatterns&quot; in your config.
+ • If you need a custom transformation specify a &quot;transform&quot; option in your config.
+ • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the &quot;moduleNameMapper&quot; config option.
+
+You&apos;ll find more details and examples of these config options in the docs:
+https://jestjs.io/docs/configuration
+For information about custom transformations, see:
+https://jestjs.io/docs/code-transformation
+
+Details:
+
+SyntaxError: /Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/astrology/tarotReader.js: Missing semicolon. (824:51)
+
+  822 |    * @returns {Object} Formatted tarot reading
+  823 |    */
+&gt; 824 |   generateTarotReading(user, spreadType = &apos;single&apos;) {
+      |                                                    ^
+  825 |     try {
+  826 |       let reading;
+  827 |
+    at constructor (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parse-error.ts:95:45)
+    at Parser.toParseError [as raise] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/tokenizer/index.ts:1507:19)
+    at Parser.raise [as semicolon] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/util.ts:149:10)
+    at Parser.semicolon [as parseExpressionStatement] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:1363:10)
+    at Parser.parseExpressionStatement [as parseStatementContent] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:702:19)
+    at Parser.parseStatementContent [as parseStatementLike] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:482:17)
+    at Parser.parseStatementLike [as parseModuleItem] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:419:17)
+    at Parser.parseModuleItem [as parseBlockOrModuleBlockBody] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:1443:16)
+    at Parser.parseBlockOrModuleBlockBody [as parseBlockBody] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:1417:10)
+    at Parser.parseBlockBody [as parseProgram] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:229:10)
+    at Parser.parseProgram [as parseTopLevel] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/statement.ts:203:25)
+    at Parser.parseTopLevel [as parse] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/parser/index.ts:88:25)
+    at parse (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/parser/src/index.ts:86:38)
+    at parser (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/parser/index.ts:29:19)
+    at parser.next (&lt;anonymous&gt;)
+    at normalizeFile (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transformation/normalize-file.ts:50:24)
+    at normalizeFile.next (&lt;anonymous&gt;)
+    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transformation/index.ts:41:36)
+    at run.next (&lt;anonymous&gt;)
+    at transform (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transform.ts:29:20)
+    at transform.next (&lt;anonymous&gt;)
+    at evaluateSync (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/gensync/index.js:251:28)
+    at sync (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/gensync/index.js:89:14)
+    at fn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/errors/rewrite-stack-trace.ts:99:14)
+    at transformSync (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@babel/core/src/transform.ts:66:52)
+    at Object.process (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-config/node_modules/babel-jest/build/index.js:273:57)
+    at ScriptTransformer.transformSource (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@jest/transform/build/ScriptTransformer.js:545:31)
+    at ScriptTransformer._transformAndBuildScript (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@jest/transform/build/ScriptTransformer.js:674:40)
+    at ScriptTransformer.transform (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/@jest/transform/build/ScriptTransformer.js:726:19)
+    at Runtime.transformFile (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1465:53)
+    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1397:34)
+    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)
+    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)
+    at Runtime.requireModuleOrMock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1048:21)
+    at Object.require (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/astrology/handlers/specializedHandlers.js:2:21)
+    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)
+    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)
+    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)
+    at Runtime.requireModuleOrMock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1048:21)
+    at Object.require (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/astrology/astrologyEngine.js:9:150)
+    at Runtime._execModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1439:24)
+    at Runtime._loadModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1022:12)
+    at Runtime.requireModule (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:882:12)
+    at Runtime.requireModuleOrMock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runtime/build/index.js:1048:21)
+    at Object.require (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/e2e/real-astrology-calculations.test.js:318:31)
     at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
@@ -34,165 +568,34 @@ Received: undefined
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="AstrologyEngine" errors="0" failures="1" skipped="0" timestamp="2025-10-28T18:25:38" time="2.94" tests="3">
-    <testcase classname="AstrologyEngine generateAstrologyResponse should generate astrology response for valid user" name="AstrologyEngine generateAstrologyResponse should generate astrology response for valid user" time="0.007">
+  <testsuite name="PaymentService" errors="0" failures="1" skipped="0" timestamp="2025-10-28T19:39:52" time="2.659" tests="9">
+    <testcase classname="PaymentService getPlan should return plan details for valid plan" name="PaymentService getPlan should return plan details for valid plan" time="0.005">
     </testcase>
-    <testcase classname="AstrologyEngine validateBirthData should validate valid birth data" name="AstrologyEngine validateBirthData should validate valid birth data" time="0.006">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/astrology/astrologyEngine.test.js:30:30)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="PaymentService getPlan should return free plan for invalid plan" name="PaymentService getPlan should return free plan for invalid plan" time="0.004">
     </testcase>
-    <testcase classname="AstrologyEngine validateBirthData should reject invalid birth data" name="AstrologyEngine validateBirthData should reject invalid birth data" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="WhatsApp Message Processor" errors="0" failures="2" skipped="0" timestamp="2025-10-28T18:25:42" time="2.575" tests="9">
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" name="WhatsApp Message Processor processIncomingMessage should create new user for unknown phone number" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should process existing user message" name="WhatsApp Message Processor processIncomingMessage should process existing user message" time="0.004">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" name="WhatsApp Message Processor processIncomingMessage should handle text messages correctly" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive button replies" time="0.009">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: &quot;1234567890&quot;, &quot;👤 *Profile Required*·
-To provide accurate Daily Horoscope, I need your birth details:·
-📅 *Birth Date* (DD/MM/YYYY)
-🕐 *Birth Time* (HH:MM - 24hr format)
-📍 *Birth Place* (City, Country)·
-*Example:*
-15/06/1990, 14:30, Mumbai, India·
-Send your birth details in this format, or use the Settings menu to update your profile permanently.&quot;, &quot;text&quot;
-Received: &quot;1234567890&quot;, &quot;👤 *Profile Required*·
-To provide accurate Daily Horoscope, I need your birth details:·
-📅 *Birth Date* (DDMMYY or DDMMYYYY format)
-🕐 *Birth Time* (HHMM format - 24hr)
-📍 *Birth Place* (City, Country)·
-*Example:*
-150690, 1430, Mumbai, India·
-Send your birth details in this format, or use the Settings menu to update your profile permanently.&quot;, &quot;text&quot;
-
-Number of calls: 1
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/whatsapp/messageProcessor.test.js:174:27)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" name="WhatsApp Message Processor processIncomingMessage should handle interactive list replies" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle button messages" name="WhatsApp Message Processor processIncomingMessage should handle button messages" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle media messages" name="WhatsApp Message Processor processIncomingMessage should handle media messages" time="0.003">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" name="WhatsApp Message Processor processIncomingMessage should handle unsupported message types gracefully" time="0.001">
-    </testcase>
-    <testcase classname="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" name="WhatsApp Message Processor processIncomingMessage should handle errors gracefully" time="0.002">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: StringContaining &quot;Error processing message from 1234567890:&quot;, Any&lt;Error&gt;
-Received
-       1: &quot;❌ Error processing message from 1234567890: Database error&quot;
-       2: &quot;❌ Error sent to 1234567890: Database error&quot;
-
-Number of calls: 2
-    at Object.toHaveBeenCalledWith (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/whatsapp/messageProcessor.test.js:295:28)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="PaymentService" errors="0" failures="4" skipped="0" timestamp="2025-10-28T18:25:44" time="2.773" tests="5">
-    <testcase classname="PaymentService processPayment should process payment successfully" name="PaymentService processPayment should process payment successfully" time="0.004">
+    <testcase classname="PaymentService processSubscription should process subscription successfully with mocked payment" name="PaymentService processSubscription should process subscription successfully with mocked payment" time="0.007">
       <failure>Error: Payment processing failed
-    at PaymentService.processStripePayment (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/payment/paymentService.js:307:13)
-    at PaymentService.processStripePayment [as processPayment] (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/payment/paymentService.js:212:27)
-    at Object.processPayment (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/payment/paymentService.test.js:30:43)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
+    at PaymentService.processRazorpayPayment (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/payment/paymentService.js:267:13)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    at PaymentService.processPayment (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/payment/paymentService.js:205:16)
+    at PaymentService.processSubscription (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/src/services/payment/paymentService.js:148:29)
+    at Object.&lt;anonymous&gt; (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/payment/paymentService.test.js:76:22)</failure>
     </testcase>
-    <testcase classname="PaymentService processPayment should handle payment failure" name="PaymentService processPayment should handle payment failure" time="0.006">
+    <testcase classname="PaymentService processSubscription should handle payment failure" name="PaymentService processSubscription should handle payment failure" time="0.003">
     </testcase>
-    <testcase classname="PaymentService validatePayment should validate valid payment data" name="PaymentService validatePayment should validate valid payment data" time="0.003">
-      <failure>TypeError: paymentService.validatePayment is not a function
-    at Object.validatePayment (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/payment/paymentService.test.js:60:37)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="PaymentService detectRegion should detect UAE region from phone number" name="PaymentService detectRegion should detect UAE region from phone number" time="0.001">
     </testcase>
-    <testcase classname="PaymentService validatePayment should reject invalid payment data" name="PaymentService validatePayment should reject invalid payment data" time="0.002">
-      <failure>TypeError: paymentService.validatePayment is not a function
-    at Object.validatePayment (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/payment/paymentService.test.js:73:37)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="PaymentService detectRegion should detect Australia region from phone number" name="PaymentService detectRegion should detect Australia region from phone number" time="0.001">
     </testcase>
-    <testcase classname="PaymentService getSubscriptionDetails should get subscription details" name="PaymentService getSubscriptionDetails should get subscription details" time="0.002">
-      <failure>TypeError: paymentService.getSubscriptionDetails is not a function
-    at Object.getSubscriptionDetails (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/tests/unit/services/payment/paymentService.test.js:83:43)
-    at Promise.then.completed (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="PaymentService detectRegion should default to India region" name="PaymentService detectRegion should default to India region" time="0.002">
+    </testcase>
+    <testcase classname="PaymentService calculateSubscriptionExpiry should calculate expiry date based on plan" name="PaymentService calculateSubscriptionExpiry should calculate expiry date based on plan" time="0.002">
+    </testcase>
+    <testcase classname="PaymentService calculateSubscriptionExpiry should handle invalid plan with default duration" name="PaymentService calculateSubscriptionExpiry should handle invalid plan with default duration" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Logger" errors="0" failures="3" skipped="0" timestamp="2025-10-28T18:25:47" time="2.651" tests="4">
-    <testcase classname="Logger Logging Methods should log info message" name="Logger Logging Methods should log info message" time="0.002">
+  <testsuite name="Logger" errors="0" failures="3" skipped="0" timestamp="2025-10-28T19:39:55" time="2.308" tests="4">
+    <testcase classname="Logger Logging Methods should log info message" name="Logger Logging Methods should log info message" time="0.004">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: StringContaining &quot;Test info message&quot;
@@ -236,7 +639,7 @@ Number of calls: 0
     at runTestInternal (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mohitmendiratta/Projects/bots/w1/astro-whatsapp-bot/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Logger Logging Methods should log warn message" name="Logger Logging Methods should log warn message" time="0.002">
+    <testcase classname="Logger Logging Methods should log warn message" name="Logger Logging Methods should log warn message" time="0.001">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: StringContaining &quot;Test warn message&quot;
@@ -261,80 +664,146 @@ Number of calls: 0
     <testcase classname="Logger Logging Methods should log debug message" name="Logger Logging Methods should log debug message" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:25:50" time="5.455" tests="4">
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.003">
+  <testsuite name="WhatsApp Controller" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:39:57" time="5.26" tests="4">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Controller handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.004">
     </testcase>
     <testcase classname="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Controller handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.002">
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.002">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Controller handleWhatsAppWebhook should process valid webhook with messages" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="3.01">
-    </testcase>
-  </testsuite>
-  <testsuite name="UserModel Functions" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:25:55" time="3.305" tests="4">
-    <testcase classname="UserModel Functions getUserByPhone should get user by phone number" name="UserModel Functions getUserByPhone should get user by phone number" time="0.8">
-    </testcase>
-    <testcase classname="UserModel Functions updateUserProfile should update user profile" name="UserModel Functions updateUserProfile should update user profile" time="0.031">
-    </testcase>
-    <testcase classname="UserModel Functions createUser should create a new user with proper defaults" name="UserModel Functions createUser should create a new user with proper defaults" time="0.019">
-    </testcase>
-    <testcase classname="UserModel Functions createUser should create user with default name when not provided" name="UserModel Functions createUser should create user with default name when not provided" time="0.017">
+    <testcase classname="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" name="WhatsApp Controller handleWhatsAppWebhook should handle errors gracefully" time="3.008">
     </testcase>
   </testsuite>
-  <testsuite name="Session Model" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:25:59" time="3.182" tests="3">
-    <testcase classname="Session Model Session Creation should create a new session with valid data" name="Session Model Session Creation should create a new session with valid data" time="0.427">
+  <testsuite name="UserModel Functions" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:02" time="3.399" tests="4">
+    <testcase classname="UserModel Functions getUserByPhone should get user by phone number" name="UserModel Functions getUserByPhone should get user by phone number" time="0.814">
     </testcase>
-    <testcase classname="Session Model Session Queries should find session by phone number" name="Session Model Session Queries should find session by phone number" time="0.138">
+    <testcase classname="UserModel Functions updateUserProfile should update user profile" name="UserModel Functions updateUserProfile should update user profile" time="0.187">
     </testcase>
-    <testcase classname="Session Model Session Queries should update session flow data" name="Session Model Session Queries should update session flow data" time="0.164">
+    <testcase classname="UserModel Functions createUser should create a new user with proper defaults" name="UserModel Functions createUser should create a new user with proper defaults" time="0.052">
     </testcase>
-  </testsuite>
-  <testsuite name="User Model" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:02" time="3.097" tests="2">
-    <testcase classname="User Model User Creation should create a new user with valid data" name="User Model User Creation should create a new user with valid data" time="0.446">
-    </testcase>
-    <testcase classname="User Model User Creation should update user profile" name="User Model User Creation should update user profile" time="0.136">
+    <testcase classname="UserModel Functions createUser should create user with default name when not provided" name="UserModel Functions createUser should create user with default name when not provided" time="0.02">
     </testcase>
   </testsuite>
-  <testsuite name="ConversationEngine" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:05" time="3.333" tests="5">
-    <testcase classname="ConversationEngine processFlowMessage should initialize session for new flow and access flow.start_step without temporal dead zone error" name="ConversationEngine processFlowMessage should initialize session for new flow and access flow.start_step without temporal dead zone error" time="0.004">
+  <testsuite name="User Model" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:06" time="3.38" tests="2">
+    <testcase classname="User Model User Creation should create a new user with valid data" name="User Model User Creation should create a new user with valid data" time="0.394">
     </testcase>
-    <testcase classname="ConversationEngine processFlowMessage should handle existing session correctly" name="ConversationEngine processFlowMessage should handle existing session correctly" time="0.002">
-    </testcase>
-    <testcase classname="ConversationEngine processFlowMessage should handle interactive messages without validation" name="ConversationEngine processFlowMessage should handle interactive messages without validation" time="0.002">
-    </testcase>
-    <testcase classname="ConversationEngine processFlowMessage should handle flow not found error" name="ConversationEngine processFlowMessage should handle flow not found error" time="0.002">
-    </testcase>
-    <testcase classname="ConversationEngine processFlowMessage should handle invalid phone number" name="ConversationEngine processFlowMessage should handle invalid phone number" time="0.002">
+    <testcase classname="User Model User Creation should update user profile" name="User Model User Creation should update user profile" time="0.166">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:09" time="2.787" tests="7">
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.002">
+  <testsuite name="Session Model" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:09" time="3.583" tests="3">
+    <testcase classname="Session Model Session Creation should create a new session with valid data" name="Session Model Session Creation should create a new session with valid data" time="0.414">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.002">
+    <testcase classname="Session Model Session Queries should find session by phone number" name="Session Model Session Queries should find session by phone number" time="0.085">
     </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.001">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" name="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" time="0.001">
-    </testcase>
-    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.002">
-    </testcase>
-    <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.001">
+    <testcase classname="Session Model Session Queries should update session flow data" name="Session Model Session Queries should update session flow data" time="0.023">
     </testcase>
   </testsuite>
-  <testsuite name="WhatsApp Message Sender" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:11" time="2.413" tests="19">
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.005">
+  <testsuite name="VedicCalculator" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:15" time="3.394" tests="9">
+    <testcase classname="VedicCalculator calculateBirthChart should calculate birth chart for valid birth data" name="VedicCalculator calculateBirthChart should calculate birth chart for valid birth data" time="0.008">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.003">
+    <testcase classname="VedicCalculator calculateBirthChart should handle invalid birth data gracefully" name="VedicCalculator calculateBirthChart should handle invalid birth data gracefully" time="0.035">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.002">
+    <testcase classname="VedicCalculator generateHoroscope should generate horoscope for valid chart" name="VedicCalculator generateHoroscope should generate horoscope for valid chart" time="0.005">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.026">
+    <testcase classname="VedicCalculator generateTransitPreview should generate transit preview" name="VedicCalculator generateTransitPreview should generate transit preview" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should handle API error gracefully" name="WhatsApp Message Sender sendTextMessage should handle API error gracefully" time="0.003">
+    <testcase classname="VedicCalculator checkCompatibility should check compatibility between two charts" name="VedicCalculator checkCompatibility should check compatibility between two charts" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.002">
+    <testcase classname="VedicCalculator calculateSecondaryProgressions should calculate secondary progressions for valid birth data" name="VedicCalculator calculateSecondaryProgressions should calculate secondary progressions for valid birth data" time="0.004">
+    </testcase>
+    <testcase classname="VedicCalculator calculateSecondaryProgressions should handle invalid birth data gracefully" name="VedicCalculator calculateSecondaryProgressions should handle invalid birth data gracefully" time="0.002">
+    </testcase>
+    <testcase classname="VedicCalculator calculateSolarArcDirections should calculate solar arc directions for valid birth data" name="VedicCalculator calculateSolarArcDirections should calculate solar arc directions for valid birth data" time="0.004">
+    </testcase>
+    <testcase classname="VedicCalculator calculateSolarArcDirections should handle invalid birth data gracefully" name="VedicCalculator calculateSolarArcDirections should handle invalid birth data gracefully" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="InputValidator" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:18" time="3.524" tests="5">
+    <testcase classname="InputValidator validateEmail should validate valid email" name="InputValidator validateEmail should validate valid email" time="0.002">
+    </testcase>
+    <testcase classname="InputValidator validateEmail should reject invalid email" name="InputValidator validateEmail should reject invalid email" time="0.002">
+    </testcase>
+    <testcase classname="InputValidator validatePhoneNumber should validate valid phone number" name="InputValidator validatePhoneNumber should validate valid phone number" time="0.002">
+    </testcase>
+    <testcase classname="InputValidator validatePhoneNumber should reject invalid phone number" name="InputValidator validatePhoneNumber should reject invalid phone number" time="0.002">
+    </testcase>
+    <testcase classname="InputValidator sanitizeInput should sanitize input" name="InputValidator sanitizeInput should sanitize input" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="TranslationService" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:22" time="2.96" tests="30">
+    <testcase classname="TranslationService Initialization should initialize with supported languages" name="TranslationService Initialization should initialize with supported languages" time="0.003">
+    </testcase>
+    <testcase classname="TranslationService Initialization should have correct language metadata" name="TranslationService Initialization should have correct language metadata" time="0.001">
+    </testcase>
+    <testcase classname="TranslationService getSupportedLanguages should return all supported languages" name="TranslationService getSupportedLanguages should return all supported languages" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService detectLanguage should detect language from Indian phone numbers" name="TranslationService detectLanguage should detect language from Indian phone numbers" time="0.003">
+    </testcase>
+    <testcase classname="TranslationService detectLanguage should detect language from UAE phone numbers" name="TranslationService detectLanguage should detect language from UAE phone numbers" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService detectLanguage should detect language from Saudi phone numbers" name="TranslationService detectLanguage should detect language from Saudi phone numbers" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService detectLanguage should detect language from UK phone numbers" name="TranslationService detectLanguage should detect language from UK phone numbers" time="0.001">
+    </testcase>
+    <testcase classname="TranslationService detectLanguage should return default language for unknown numbers" name="TranslationService detectLanguage should return default language for unknown numbers" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService detectLanguage should respect explicit language parameter" name="TranslationService detectLanguage should respect explicit language parameter" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService detectLanguage should handle invalid phone numbers gracefully" name="TranslationService detectLanguage should handle invalid phone numbers gracefully" time="0.003">
+    </testcase>
+    <testcase classname="TranslationService loadResourceBundle should load and cache resource bundle successfully" name="TranslationService loadResourceBundle should load and cache resource bundle successfully" time="0.003">
+    </testcase>
+    <testcase classname="TranslationService loadResourceBundle should return cached bundle if available and not expired" name="TranslationService loadResourceBundle should return cached bundle if available and not expired" time="0.001">
+    </testcase>
+    <testcase classname="TranslationService loadResourceBundle should reload bundle if cache is expired" name="TranslationService loadResourceBundle should reload bundle if cache is expired" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService loadResourceBundle should handle file read errors gracefully" name="TranslationService loadResourceBundle should handle file read errors gracefully" time="0.016">
+    </testcase>
+    <testcase classname="TranslationService loadResourceBundle should handle invalid JSON gracefully" name="TranslationService loadResourceBundle should handle invalid JSON gracefully" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService translate should translate simple keys successfully" name="TranslationService translate should translate simple keys successfully" time="0.004">
+    </testcase>
+    <testcase classname="TranslationService translate should handle parameter interpolation" name="TranslationService translate should handle parameter interpolation" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService translate should handle multiple parameters" name="TranslationService translate should handle multiple parameters" time="0.003">
+    </testcase>
+    <testcase classname="TranslationService translate should fallback to English for missing translations" name="TranslationService translate should fallback to English for missing translations" time="0.004">
+    </testcase>
+    <testcase classname="TranslationService translate should return key if translation not found in any language" name="TranslationService translate should return key if translation not found in any language" time="0.003">
+    </testcase>
+    <testcase classname="TranslationService translate should handle nested key access" name="TranslationService translate should handle nested key access" time="0.003">
+    </testcase>
+    <testcase classname="TranslationService translate should cache translations for performance" name="TranslationService translate should cache translations for performance" time="0.003">
+    </testcase>
+    <testcase classname="TranslationService translateMultiple should translate multiple keys at once" name="TranslationService translateMultiple should translate multiple keys at once" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService hasTranslation should check if translation exists" name="TranslationService hasTranslation should check if translation exists" time="0.003">
+    </testcase>
+    <testcase classname="TranslationService getAvailableKeys should return all available translation keys" name="TranslationService getAvailableKeys should return all available translation keys" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService reloadBundles should clear cache and reload bundles" name="TranslationService reloadBundles should clear cache and reload bundles" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService Error handling should handle malformed parameters gracefully" name="TranslationService Error handling should handle malformed parameters gracefully" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService Error handling should handle missing parameters gracefully" name="TranslationService Error handling should handle missing parameters gracefully" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService Performance and caching should cache bundles to improve performance" name="TranslationService Performance and caching should cache bundles to improve performance" time="0.002">
+    </testcase>
+    <testcase classname="TranslationService Performance and caching should expire cache after configured time" name="TranslationService Performance and caching should expire cache after configured time" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="WhatsApp Message Sender" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:25" time="2.641" tests="19">
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message successfully" name="WhatsApp Message Sender sendTextMessage should send text message successfully" time="0.004">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with preview URL" name="WhatsApp Message Sender sendTextMessage should send text message with preview URL" time="0.002">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should send text message with context" name="WhatsApp Message Sender sendTextMessage should send text message with context" time="0.001">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" name="WhatsApp Message Sender sendTextMessage should throw error when WhatsApp API credentials are not configured" time="0.021">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should handle API error gracefully" name="WhatsApp Message Sender sendTextMessage should handle API error gracefully" time="0.002">
+    </testcase>
+    <testcase classname="WhatsApp Message Sender sendTextMessage should handle network error gracefully" name="WhatsApp Message Sender sendTextMessage should handle network error gracefully" time="0.001">
     </testcase>
     <testcase classname="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" name="WhatsApp Message Sender sendInteractiveButtons should send interactive buttons message successfully" time="0.002">
     </testcase>
@@ -342,15 +811,15 @@ Number of calls: 0
     </testcase>
     <testcase classname="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" name="WhatsApp Message Sender sendInteractiveButtons should handle missing WhatsApp API credentials" time="0.002">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.002">
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message successfully" name="WhatsApp Message Sender sendListMessage should send list message successfully" time="0.004">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.003">
+    <testcase classname="WhatsApp Message Sender sendListMessage should send list message with footer" name="WhatsApp Message Sender sendListMessage should send list message with footer" time="0.002">
     </testcase>
     <testcase classname="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" name="WhatsApp Message Sender sendListMessage should handle list messages with invalid action keys in rows (would cause API error)" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" name="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" time="0.002">
+    <testcase classname="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" name="WhatsApp Message Sender sendListMessage should accept valid list messages without action keys in rows" time="0.003">
     </testcase>
-    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.002">
+    <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message successfully" name="WhatsApp Message Sender sendTemplateMessage should send template message successfully" time="0.003">
     </testcase>
     <testcase classname="WhatsApp Message Sender sendTemplateMessage should send template message with components" name="WhatsApp Message Sender sendTemplateMessage should send template message with components" time="0.002">
     </testcase>
@@ -360,157 +829,71 @@ Number of calls: 0
     </testcase>
     <testcase classname="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" name="WhatsApp Message Sender markMessageAsRead should mark message as read successfully" time="0.002">
     </testcase>
-    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.003">
+    <testcase classname="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" name="WhatsApp Message Sender markMessageAsRead should handle missing WhatsApp API credentials" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="Tarot Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:14" time="2.564" tests="5">
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a single card reading" name="Tarot Reader Service generateTarotReading should generate a single card reading" time="0.002">
+  <testsuite name="NumerologyService" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:27" time="2.82" tests="2">
+    <testcase classname="NumerologyService generateFullReport should generate numerology report with life path, expression, soul urge, personality, destiny, and maturity numbers" name="NumerologyService generateFullReport should generate numerology report with life path, expression, soul urge, personality, destiny, and maturity numbers" time="0.009">
     </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a three-card spread reading" name="Tarot Reader Service generateTarotReading should generate a three-card spread reading" time="0.001">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" name="Tarot Reader Service generateTarotReading should generate a Celtic cross spread reading" time="0.002">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle invalid spread type" name="Tarot Reader Service generateTarotReading should handle invalid spread type" time="0.001">
-    </testcase>
-    <testcase classname="Tarot Reader Service generateTarotReading should handle user personalization" name="Tarot Reader Service generateTarotReading should handle user personalization" time="0.002">
+    <testcase classname="NumerologyService generateFullReport should handle empty name for numerology report" name="NumerologyService generateFullReport should handle empty name for numerology report" time="0.007">
     </testcase>
   </testsuite>
-  <testsuite name="KabbalisticReader" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:16" time="2.282" tests="2">
-    <testcase classname="KabbalisticReader generateKabbalisticChart should generate Kabbalistic chart for valid birth data" name="KabbalisticReader generateKabbalisticChart should generate Kabbalistic chart for valid birth data" time="0.008">
+  <testsuite name="MayanReader" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:30" time="3.597" tests="2">
+    <testcase classname="MayanReader generateMayanChart should generate Mayan chart for valid birth data" name="MayanReader generateMayanChart should generate Mayan chart for valid birth data" time="0.02">
     </testcase>
-    <testcase classname="KabbalisticReader generateKabbalisticChart should handle invalid birth data gracefully" name="KabbalisticReader generateKabbalisticChart should handle invalid birth data gracefully" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="ErrorHandler" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:19" time="2.376" tests="4">
-    <testcase classname="ErrorHandler handleError should handle error and log it" name="ErrorHandler handleError should handle error and log it" time="0.002">
-    </testcase>
-    <testcase classname="ErrorHandler handleError should handle error without context" name="ErrorHandler handleError should handle error without context" time="0.001">
-    </testcase>
-    <testcase classname="ErrorHandler handleValidationError should handle validation error" name="ErrorHandler handleValidationError should handle validation error" time="0.002">
-    </testcase>
-    <testcase classname="ErrorHandler handleDatabaseError should handle database error" name="ErrorHandler handleDatabaseError should handle database error" time="0.001">
+    <testcase classname="MayanReader generateMayanChart should handle invalid birth data gracefully" name="MayanReader generateMayanChart should handle invalid birth data gracefully" time="0.006">
     </testcase>
   </testsuite>
-  <testsuite name="InputValidator" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:21" time="2.256" tests="5">
-    <testcase classname="InputValidator validateEmail should validate valid email" name="InputValidator validateEmail should validate valid email" time="0.002">
+  <testsuite name="ErrorHandler" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:34" time="3.248" tests="4">
+    <testcase classname="ErrorHandler handleError should handle error and log it" name="ErrorHandler handleError should handle error and log it" time="0.006">
     </testcase>
-    <testcase classname="InputValidator validateEmail should reject invalid email" name="InputValidator validateEmail should reject invalid email" time="0.001">
+    <testcase classname="ErrorHandler handleError should handle error without context" name="ErrorHandler handleError should handle error without context" time="0.003">
     </testcase>
-    <testcase classname="InputValidator validatePhoneNumber should validate valid phone number" name="InputValidator validatePhoneNumber should validate valid phone number" time="0.001">
+    <testcase classname="ErrorHandler handleValidationError should handle validation error" name="ErrorHandler handleValidationError should handle validation error" time="0.004">
     </testcase>
-    <testcase classname="InputValidator validatePhoneNumber should reject invalid phone number" name="InputValidator validatePhoneNumber should reject invalid phone number" time="0.001">
-    </testcase>
-    <testcase classname="InputValidator sanitizeInput should sanitize input" name="InputValidator sanitizeInput should sanitize input" time="0.002">
+    <testcase classname="ErrorHandler handleDatabaseError should handle database error" name="ErrorHandler handleDatabaseError should handle database error" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="WebhookValidator" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:23" time="2.355" tests="4">
+  <testsuite name="Nadi Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:37" time="3.257" tests="4">
+    <testcase classname="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" name="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" time="0.008">
+    </testcase>
+    <testcase classname="Nadi Reader Service generateNadiReading should handle missing birth date" name="Nadi Reader Service generateNadiReading should handle missing birth date" time="0.002">
+    </testcase>
+    <testcase classname="Nadi Reader Service generateNadiReading should provide Dasa period calculations" name="Nadi Reader Service generateNadiReading should provide Dasa period calculations" time="0.003">
+    </testcase>
+    <testcase classname="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" name="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="WhatsApp Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:40" time="2.885" tests="7">
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" name="WhatsApp Service handleWhatsAppWebhook should return 400 for invalid webhook payload" time="0.003">
+    </testcase>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" name="WhatsApp Service handleWhatsAppWebhook should return 200 for valid webhook payload with no entries" time="0.002">
+    </testcase>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" name="WhatsApp Service handleWhatsAppWebhook should process valid webhook with messages" time="0.002">
+    </testcase>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" name="WhatsApp Service handleWhatsAppWebhook should handle interactive button reply messages" time="0.002">
+    </testcase>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" name="WhatsApp Service handleWhatsAppWebhook should handle webhook with status updates" time="0.001">
+    </testcase>
+    <testcase classname="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" name="WhatsApp Service handleWhatsAppWebhook should handle error during webhook processing" time="0.002">
+    </testcase>
+    <testcase classname="WhatsApp Service processIncomingMessage should process incoming messages correctly" name="WhatsApp Service processIncomingMessage should process incoming messages correctly" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="WebhookValidator" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:43" time="2.472" tests="4">
     <testcase classname="WebhookValidator validateWebhookSignature should validate correct signature" name="WebhookValidator validateWebhookSignature should validate correct signature" time="0.002">
     </testcase>
-    <testcase classname="WebhookValidator validateWebhookSignature should reject invalid signature" name="WebhookValidator validateWebhookSignature should reject invalid signature" time="0.002">
+    <testcase classname="WebhookValidator validateWebhookSignature should reject invalid signature" name="WebhookValidator validateWebhookSignature should reject invalid signature" time="0.001">
     </testcase>
     <testcase classname="WebhookValidator validateWebhookPayload should validate valid payload" name="WebhookValidator validateWebhookPayload should validate valid payload" time="0.001">
     </testcase>
     <testcase classname="WebhookValidator validateWebhookPayload should reject invalid payload" name="WebhookValidator validateWebhookPayload should reject invalid payload" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="TranslationService" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:26" time="2.365" tests="30">
-    <testcase classname="TranslationService Initialization should initialize with supported languages" name="TranslationService Initialization should initialize with supported languages" time="0.003">
+  <testsuite name="KabbalisticReader" errors="0" failures="0" skipped="0" timestamp="2025-10-28T19:40:46" time="2.342" tests="2">
+    <testcase classname="KabbalisticReader generateKabbalisticChart should generate Kabbalistic chart for valid birth data" name="KabbalisticReader generateKabbalisticChart should generate Kabbalistic chart for valid birth data" time="0.006">
     </testcase>
-    <testcase classname="TranslationService Initialization should have correct language metadata" name="TranslationService Initialization should have correct language metadata" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService getSupportedLanguages should return all supported languages" name="TranslationService getSupportedLanguages should return all supported languages" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should detect language from Indian phone numbers" name="TranslationService detectLanguage should detect language from Indian phone numbers" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should detect language from UAE phone numbers" name="TranslationService detectLanguage should detect language from UAE phone numbers" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should detect language from Saudi phone numbers" name="TranslationService detectLanguage should detect language from Saudi phone numbers" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should detect language from UK phone numbers" name="TranslationService detectLanguage should detect language from UK phone numbers" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should return default language for unknown numbers" name="TranslationService detectLanguage should return default language for unknown numbers" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should respect explicit language parameter" name="TranslationService detectLanguage should respect explicit language parameter" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService detectLanguage should handle invalid phone numbers gracefully" name="TranslationService detectLanguage should handle invalid phone numbers gracefully" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should load and cache resource bundle successfully" name="TranslationService loadResourceBundle should load and cache resource bundle successfully" time="0.003">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should return cached bundle if available and not expired" name="TranslationService loadResourceBundle should return cached bundle if available and not expired" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should reload bundle if cache is expired" name="TranslationService loadResourceBundle should reload bundle if cache is expired" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should handle file read errors gracefully" name="TranslationService loadResourceBundle should handle file read errors gracefully" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService loadResourceBundle should handle invalid JSON gracefully" name="TranslationService loadResourceBundle should handle invalid JSON gracefully" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should translate simple keys successfully" name="TranslationService translate should translate simple keys successfully" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should handle parameter interpolation" name="TranslationService translate should handle parameter interpolation" time="0.003">
-    </testcase>
-    <testcase classname="TranslationService translate should handle multiple parameters" name="TranslationService translate should handle multiple parameters" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should fallback to English for missing translations" name="TranslationService translate should fallback to English for missing translations" time="0.003">
-    </testcase>
-    <testcase classname="TranslationService translate should return key if translation not found in any language" name="TranslationService translate should return key if translation not found in any language" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should handle nested key access" name="TranslationService translate should handle nested key access" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translate should cache translations for performance" name="TranslationService translate should cache translations for performance" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService translateMultiple should translate multiple keys at once" name="TranslationService translateMultiple should translate multiple keys at once" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService hasTranslation should check if translation exists" name="TranslationService hasTranslation should check if translation exists" time="0.001">
-    </testcase>
-    <testcase classname="TranslationService getAvailableKeys should return all available translation keys" name="TranslationService getAvailableKeys should return all available translation keys" time="0.002">
-    </testcase>
-    <testcase classname="TranslationService reloadBundles should clear cache and reload bundles" name="TranslationService reloadBundles should clear cache and reload bundles" time="0.004">
-    </testcase>
-    <testcase classname="TranslationService Error handling should handle malformed parameters gracefully" name="TranslationService Error handling should handle malformed parameters gracefully" time="0.004">
-    </testcase>
-    <testcase classname="TranslationService Error handling should handle missing parameters gracefully" name="TranslationService Error handling should handle missing parameters gracefully" time="0.004">
-    </testcase>
-    <testcase classname="TranslationService Performance and caching should cache bundles to improve performance" name="TranslationService Performance and caching should cache bundles to improve performance" time="0.005">
-    </testcase>
-    <testcase classname="TranslationService Performance and caching should expire cache after configured time" name="TranslationService Performance and caching should expire cache after configured time" time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="Nadi Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:28" time="2.569" tests="4">
-    <testcase classname="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" name="Nadi Reader Service generateNadiReading should generate a Nadi astrology reading" time="0.007">
-    </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should handle missing birth date" name="Nadi Reader Service generateNadiReading should handle missing birth date" time="0.001">
-    </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should provide Dasa period calculations" name="Nadi Reader Service generateNadiReading should provide Dasa period calculations" time="0.001">
-    </testcase>
-    <testcase classname="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" name="Nadi Reader Service generateNadiReading should include traditional Nadi remedies" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="Palmistry Reader Service" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:31" time="2.304" tests="3">
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" name="Palmistry Reader Service generatePalmistryReading should generate a palmistry reading" time="0.004">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" name="Palmistry Reader Service generatePalmistryReading should generate sample reading when no user provided" time="0.002">
-    </testcase>
-    <testcase classname="Palmistry Reader Service generatePalmistryReading should handle user with hand data" name="Palmistry Reader Service generatePalmistryReading should handle user with hand data" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="VedicCalculator" errors="0" failures="0" skipped="0" timestamp="2025-10-28T18:26:33" time="2.529" tests="9">
-    <testcase classname="VedicCalculator calculateBirthChart should calculate birth chart for valid birth data" name="VedicCalculator calculateBirthChart should calculate birth chart for valid birth data" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator calculateBirthChart should handle invalid birth data gracefully" name="VedicCalculator calculateBirthChart should handle invalid birth data gracefully" time="0.011">
-    </testcase>
-    <testcase classname="VedicCalculator generateHoroscope should generate horoscope for valid chart" name="VedicCalculator generateHoroscope should generate horoscope for valid chart" time="0.001">
-    </testcase>
-    <testcase classname="VedicCalculator generateTransitPreview should generate transit preview" name="VedicCalculator generateTransitPreview should generate transit preview" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator checkCompatibility should check compatibility between two charts" name="VedicCalculator checkCompatibility should check compatibility between two charts" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator calculateSecondaryProgressions should calculate secondary progressions for valid birth data" name="VedicCalculator calculateSecondaryProgressions should calculate secondary progressions for valid birth data" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator calculateSecondaryProgressions should handle invalid birth data gracefully" name="VedicCalculator calculateSecondaryProgressions should handle invalid birth data gracefully" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator calculateSolarArcDirections should calculate solar arc directions for valid birth data" name="VedicCalculator calculateSolarArcDirections should calculate solar arc directions for valid birth data" time="0.002">
-    </testcase>
-    <testcase classname="VedicCalculator calculateSolarArcDirections should handle invalid birth data gracefully" name="VedicCalculator calculateSolarArcDirections should handle invalid birth data gracefully" time="0.001">
+    <testcase classname="KabbalisticReader generateKabbalisticChart should handle invalid birth data gracefully" name="KabbalisticReader generateKabbalisticChart should handle invalid birth data gracefully" time="0.003">
     </testcase>
   </testsuite>
 </testsuites>

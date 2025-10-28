@@ -25,7 +25,7 @@ describe('AstrologyEngine', () => {
 
   describe('validateBirthData', () => {
     it('should validate valid birth data', () => {
-      const result = astrologyEngine.validateBirthData('15/03/1990', '14:30', 'Mumbai, India');
+      const result = astrologyEngine.validateBirthData('15031990', '1430', 'Mumbai, India');
 
       expect(result.isValid).toBe(true);
     });

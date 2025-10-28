@@ -12,9 +12,8 @@ const TEST_BIRTH_DATA = {
   timezone: 'Asia/Kolkata'
 };
 
-// Mock external APIs to avoid costs but test integration
-jest.mock('@googlemaps/google-maps-services-js');
-jest.mock('axios');
+// External API Integration Tests
+// Note: Mocking is handled by tests/e2e/setup.js shared configuration
 
 describe('External API Integration Tests - SAFE VALIDATION', () => {
   let testUser;

@@ -78,8 +78,8 @@ const validateBirthData = (birthDate, birthTime, birthPlace) => {
 
   if (!birthDate) {
     errors.push('Birth date is required');
-  } else if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(birthDate)) {
-    errors.push('Birth date must be in DD/MM/YYYY format');
+  } else if (!/^(\d{2})(\d{2})(\d{2}(\d{2})?)$/.test(birthDate)) {
+    errors.push('Birth date must be in DDMMYY or DDMMYYYY format');
   }
 
   if (!birthTime) {

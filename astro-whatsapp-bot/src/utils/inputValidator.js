@@ -6,12 +6,13 @@ const { ValidationError } = require('./errorHandler');
  */
 
 /**
- * Validate birth date format (DD/MM/YYYY)
+ * Validate birth date format (DDMMYY or DDMMYYYY)
  * @param {string} birthDate - Birth date string
  * @returns {boolean} True if valid
  */
 const isValidBirthDate = birthDate => {
-  const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+  // Support both DDMMYY (6 digits) and DDMMYYYY (8 digits) formats
+  const dateRegex = /^(\d{2})(\d{2})(\d{2}(\d{2})?)$/;
   const match = birthDate.match(dateRegex);
 
   if (!match) {
@@ -20,7 +21,40 @@ const isValidBirthDate = birthDate => {
 
   const day = parseInt(match[1], 10);
   const month = parseInt(match[2], 10);
-  const year = parseInt(match[3], 10);
+  let year = parseInt(match[3], 10);
+
+  // Handle 2-digit year ambiguity (DDMMYY format)
+  if (match[3].length === 2) {
+    const yy = year;
+    const currentYear = new Date().getFullYear();
+    const year1900 = 1900 + yy;
+    const year2000 = 2000 + yy;
+
+    // Check which century makes sense (not future date)
+    const date1900 = new Date(year1900, month - 1, day);
+    const date2000 = new Date(year2000, month - 1, day);
+
+    const is1900Valid = date1900 <= new Date() &&
+                       date1900.getFullYear() === year1900 &&
+                       date1900.getMonth() === month - 1 &&
+                       date1900.getDate() === day;
+
+    const is2000Valid = date2000 <= new Date() &&
+                       date2000.getFullYear() === year2000 &&
+                       date2000.getMonth() === month - 1 &&
+                       date2000.getDate() === day;
+
+    if (is1900Valid && !is2000Valid) {
+      year = year1900;
+    } else if (!is1900Valid && is2000Valid) {
+      year = year2000;
+    } else if (is1900Valid && is2000Valid) {
+      // Both valid, prefer 2000s for recent births
+      year = year2000;
+    } else {
+      return false; // Neither interpretation is valid
+    }
+  }
 
   // Basic date validation
   if (month < 1 || month > 12) {
@@ -43,7 +77,7 @@ const isValidBirthDate = birthDate => {
 };
 
 /**
- * Validate birth time format (HH:MM)
+ * Validate birth time format (HHMM)
  * @param {string} birthTime - Birth time string
  * @returns {boolean} True if valid
  */
@@ -52,7 +86,7 @@ const isValidBirthTime = birthTime => {
     return true;
   }
 
-  const timeRegex = /^(\d{2}):(\d{2})$/;
+  const timeRegex = /^(\d{2})(\d{2})$/;
   const match = birthTime.match(timeRegex);
 
   if (!match) {
@@ -196,10 +230,10 @@ const validateUserProfile = profileData => {
   const schema = Joi.object({
     name: Joi.string().min(1).max(100).optional(),
     birthDate: Joi.string()
-      .pattern(/^(\d{2})\/(\d{2})\/(\d{4})$/)
+      .pattern(/^(\d{2})(\d{2})(\d{2}(\d{2})?)$/)
       .optional(),
     birthTime: Joi.string()
-      .pattern(/^(\d{2}):(\d{2})$/)
+      .pattern(/^(\d{2})(\d{2})$/)
       .allow('unknown')
       .optional(),
     birthPlace: Joi.string().min(1).max(100).optional(),

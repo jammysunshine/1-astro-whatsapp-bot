@@ -109,8 +109,8 @@ const updateUserProfile = async(phoneNumber, updateData) => {
 /**
  * Add birth details to user profile
  * @param {string} phoneNumber - User's WhatsApp phone number
- * @param {string} birthDate - Birth date in DD/MM/YYYY format
- * @param {string} birthTime - Birth time in HH:MM format (optional but recommended)
+ * @param {string} birthDate - Birth date in DDMMYY or DDMMYYYY format
+ * @param {string} birthTime - Birth time in HHMM format (optional but recommended)
  * @param {string} birthPlace - Birth place (City, Country)
  * @returns {Promise<Object>} Updated user object
  */

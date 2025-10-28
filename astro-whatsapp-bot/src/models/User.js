@@ -41,11 +41,11 @@ const userSchema = new mongoose.Schema(
 
     // Birth details for astrology
     birthDate: {
-      type: String, // DD/MM/YYYY format
+      type: String, // DDMMYY or DDMMYYYY format
       default: null
     },
     birthTime: {
-      type: String, // HH:MM format
+      type: String, // HHMM format
       default: null
     },
     birthPlace: {

@@ -88,13 +88,90 @@ const validateStepInput = async(input, step) => {
             ]
           };
         }
-        break;
+        return { isValid: true, cleanedValue: `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}` };
       }
     }
-  }
 
-  // Default case - invalid validation type
-  return { isValid: false, errorMessage: 'Invalid input format.' };
+    // Check for 8-digit format (DDMMYYYY)
+    const longDateRegex = /^(\d{2})(\d{2})(\d{4})$/;
+    const longMatch = input.match(longDateRegex);
+    if (longMatch) {
+      [, day, month, year] = longMatch.map(Number);
+      const date = new Date(year, month - 1, day);
+      if (date <= new Date() && date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
+        return { isValid: true, cleanedValue: `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}` };
+      }
+    }
+
+    // Check for YYYY-MM-DD format (for consistency with internal date handling)
+    const isoDateRegex = /^(\d{4})-(\d{2})-(\d{2})$/;
+    const isoMatch = input.match(isoDateRegex);
+    if (isoMatch) {
+      [, year, month, day] = isoMatch.map(Number);
+      const date = new Date(year, month - 1, day);
+      if (date <= new Date() && date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
+        return { isValid: true, cleanedValue: `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}` };
+      }
+    }
+
+    return { isValid: false, errorMessage: 'Please provide date in DDMMYY (150690), DDMMYYYY (15061990) or YYYY-MM-DD (1990-06-15) format only, and ensure it is not a future date.' };
+
+  case 'time_or_skip':
+    if (trimmedInput === 'skip') {
+      return { isValid: true, cleanedValue: 'skip' };
+    }
+    // HHMM format (24-hour)
+    const timeRegex = /^([01]?[0-9]|2[0-3])[0-5][0-9]$/;
+    if (input.match(timeRegex)) {
+      return { isValid: true, cleanedValue: input };
+    }
+    return { isValid: false, errorMessage: 'Please provide time in HHMM (1430) format only, or \'skip\'' };
+
+  case 'language_choice':
+    const supportedLanguages = ['en', 'hi']; // Extend as needed
+    if (supportedLanguages.includes(trimmedInput)) {
+      return { isValid: true, cleanedValue: trimmedInput };
+    }
+    return { isValid: false, errorMessage: 'Please choose a supported language (e.g., \'en\' for English, \'hi\' for Hindi).' };
+
+  case 'plan_choice':
+    const supportedPlans = ['essential', 'premium', 'vip']; // Extend as needed
+    if (supportedPlans.includes(trimmedInput)) {
+      return { isValid: true, cleanedValue: trimmedInput };
+    }
+    return { isValid: false, errorMessage: 'Please choose a valid plan (essential, premium, or vip).' };
+
+  case 'yes_no':
+    if (trimmedInput === 'yes' || trimmedInput === 'no') {
+      return { isValid: true, cleanedValue: trimmedInput };
+    }
+    return { isValid: false, errorMessage: 'Please reply \'yes\' or \'no\'.' };
+
+  case 'yes_no_or_menu':
+    if (trimmedInput === 'yes' || trimmedInput === 'no' || trimmedInput === 'menu') {
+      return { isValid: true, cleanedValue: trimmedInput };
+    }
+    return { isValid: false, errorMessage: 'Please reply \'yes\', \'no\', or \'menu\'.' };
+
+  case 'again_or_menu':
+    if (trimmedInput === 'again' || trimmedInput === 'menu') {
+      return { isValid: true, cleanedValue: trimmedInput };
+    }
+    return { isValid: false, errorMessage: 'Please reply \'again\' or \'menu\'.' };
+
+  case 'detailed_or_menu':
+    if (trimmedInput === 'detailed' || trimmedInput === 'menu') {
+      return { isValid: true, cleanedValue: trimmedInput };
+    }
+    return { isValid: false, errorMessage: 'Please reply \'detailed\' or \'menu\'.' };
+
+  case 'none':
+    return { isValid: true, cleanedValue: input.trim() };
+
+  default:
+    logger.warn(`⚠️ Unknown validation type: ${step.validation}`);
+    return { isValid: false, errorMessage: 'An unexpected validation error occurred.' };
+  }
 };
 
 /**

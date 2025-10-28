@@ -26,7 +26,9 @@ const generateAstrologyResponse = async(messageText, user) => {
 
   const message = messageText.toLowerCase().trim();
 
-  // Try each handler in order of priority
+  // TODO: Consider refactoring this sequential handler execution to a more explicit
+  // intent recognition system for better performance and to avoid logic conflicts
+  // if multiple handlers could potentially match the same input.
   try {
     // Basic handlers (greetings, menu, etc.)
     let response = await handleGreeting(message, user);

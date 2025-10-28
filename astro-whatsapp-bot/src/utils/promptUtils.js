@@ -42,6 +42,14 @@ const getBirthDetailsPrompt = (serviceName, description, timeOptional = false, i
 
   prompt += `15061990, ${timeOptional ? '1430 (optional), ' : '1430, '}${examplePlace}`;
 
+  // Add disclaimer about default values
+  if (timeOptional) {
+    prompt += '\n\n💡 *Note:* If birth time is not provided, calculations will use 12:00 PM (noon) by default, which may affect accuracy.';
+  }
+  // Assuming birthPlace is always required if not provided by user, a default is used by the calculator
+  prompt += '\n\n🌍 *Note:* If birth place is not provided, calculations will use a default location (e.g., Delhi, India), which may affect accuracy.';
+
+
   return prompt;
 };
 

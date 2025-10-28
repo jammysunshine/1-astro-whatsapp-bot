@@ -78,12 +78,54 @@ const validateBirthData = (birthDate, birthTime, birthPlace) => {
 
   if (!birthDate) {
     errors.push('Birth date is required');
-  } else if (!/^(\d{2})(\d{2})(\d{2}(\d{2})?)$/.test(birthDate)) {
-    errors.push('Birth date must be in DDMMYY or DDMMYYYY format');
+  } else {
+    let day, month, year;
+    let isValidDate = false;
+
+    // Try DDMMYY format
+    const shortDateRegex = /^(\d{2})(\d{2})(\d{2})$/;
+    const shortMatch = birthDate.match(shortDateRegex);
+    if (shortMatch) {
+      [, day, month] = shortMatch.map(Number);
+      const yy = parseInt(shortMatch[3]);
+      year = (yy < new Date().getFullYear() % 100) ? 2000 + yy : 1900 + yy; // Simple heuristic for 2-digit year
+      const date = new Date(year, month - 1, day);
+      if (date <= new Date() && date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
+        isValidDate = true;
+      }
+    }
+
+    // Try DDMMYYYY format
+    const longDateRegex = /^(\d{2})(\d{2})(\d{4})$/;
+    const longMatch = birthDate.match(longDateRegex);
+    if (!isValidDate && longMatch) {
+      [, day, month, year] = longMatch.map(Number);
+      const date = new Date(year, month - 1, day);
+      if (date <= new Date() && date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
+        isValidDate = true;
+      }
+    }
+
+    // Try YYYY-MM-DD format
+    const isoDateRegex = /^(\d{4})-(\d{2})-(\d{2})$/;
+    const isoMatch = birthDate.match(isoDateRegex);
+    if (!isValidDate && isoMatch) {
+      [, year, month, day] = isoMatch.map(Number);
+      const date = new Date(year, month - 1, day);
+      if (date <= new Date() && date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
+        isValidDate = true;
+      }
+    }
+
+    if (!isValidDate) {
+      errors.push('Birth date must be a valid date in DDMMYY, DDMMYYYY or YYYY-MM-DD format, and not a future date.');
+    }
   }
 
   if (!birthTime) {
     errors.push('Birth time is recommended for accurate calculations');
+  } else if (!/^([01]?[0-9]|2[0-3])[0-5][0-9]$/.test(birthTime)) {
+    errors.push('Birth time must be in HHMM (24-hour) format');
   }
 
   if (!birthPlace) {

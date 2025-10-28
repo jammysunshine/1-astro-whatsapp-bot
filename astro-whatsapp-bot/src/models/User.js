@@ -35,8 +35,7 @@ const userSchema = new mongoose.Schema(
       default: 'en'
     },
     timezone: {
-      type: String,
-      default: () => Intl.DateTimeFormat().resolvedOptions().timeZone
+      type: String
     },
 
     // Birth details for astrology

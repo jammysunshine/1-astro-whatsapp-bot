@@ -350,12 +350,27 @@ const getUserSession = async phoneNumber => {
  */
 const setUserSession = async(phoneNumber, sessionData) => {
   try {
+    // Generate sessionId if not provided and it's a new session (upsert)
+    const update = {
+      ...sessionData,
+      phoneNumber // Ensure phoneNumber is set
+    };
+
+    // Only generate sessionId if it's a new session being created (upsert: true)
+    // and sessionData doesn't already contain one.
+    // This logic assumes that if a sessionData.sessionId is provided, it's for an existing session.
+    // If upsert creates a new document, sessionData.sessionId would be undefined.
+    if (!sessionData.sessionId) {
+      // Check if a session already exists for this phoneNumber
+      const existingSession = await Session.findOne({ phoneNumber });
+      if (!existingSession) {
+        update.sessionId = Session.generateSessionId();
+      }
+    }
+
     await Session.findOneAndUpdate(
       { phoneNumber },
-      {
-        ...sessionData,
-        phoneNumber // Ensure phoneNumber is set
-      },
+      update,
       {
         upsert: true, // Create if doesn't exist
         new: true,

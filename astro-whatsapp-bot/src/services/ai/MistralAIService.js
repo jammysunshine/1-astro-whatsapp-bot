@@ -24,6 +24,10 @@ class MistralAIService {
       return 'AI response unavailable. Please configure MISTRAL_API_KEY in environment variables.';
     }
 
+    // Basic sanitization: limit length and remove some special characters
+    const sanitizedPrompt = prompt.substring(0, 1000) // Limit prompt length
+                                  .replace(/[<>'"`]/g, ''); // Remove common injection characters
+
     try {
       const response = await axios.post(
         `${this.baseUrl}/chat/completions`,
@@ -32,7 +36,7 @@ class MistralAIService {
           messages: [
             {
               role: 'user',
-              content: prompt
+              content: sanitizedPrompt // Use sanitized prompt
             }
           ],
           temperature: 0.7,

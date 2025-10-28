@@ -23,14 +23,7 @@ const handleChineseAstrology = async(message, user) => {
       return getBirthDetailsPrompt('BaZi (Four Pillars)', 'generate your Chinese astrology analysis', true, false, 'Beijing, China');
     }
 
-    try {
-      const baziAnalysis = chineseCalculator.calculateFourPillars(
-        user.birthDate,
-        user.birthTime || '12:00'
-      );
-      const zodiacInfo = chineseCalculator.getChineseZodiac(user.birthDate);
-
-      return buildBaZiResponse(baziAnalysis, zodiacInfo);
+    try {\n      // Convert birthDate to DD/MM/YYYY format\n      let formattedBirthDate = user.birthDate;\n      if (user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{2})$/)) { // DDMMYY\n        const [day, month, year] = user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{2})$/).slice(1);\n        formattedBirthDate = `${day}/${month}/${(parseInt(year) < new Date().getFullYear() % 100) ? 2000 + parseInt(year) : 1900 + parseInt(year)}`;\n      } else if (user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{4})$/)) { // DDMMYYYY\n        const [day, month, year] = user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{4})$/).slice(1);\n        formattedBirthDate = `${day}/${month}/${year}`;\n      } else if (user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/)) { // YYYY-MM-DD\n        const [year, month, day] = user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/).slice(1);\n        formattedBirthDate = `${day}/${month}/${year}`;\n      }\n\n      // Convert birthTime to HH:MM format\n      let formattedBirthTime = user.birthTime || \'12:00\';\n      if (formattedBirthTime.match(/^(\\d{2})(\\d{2})$/)) { // HHMM\n        const [hour, minute] = formattedBirthTime.match(/^(\d{2})(\d{2})$/).slice(1);\n        formattedBirthTime = `${hour}:${minute}`;\n      }\n\n\n      const baziAnalysis = chineseCalculator.calculateFourPillars(\n        formattedBirthDate,\n        formattedBirthTime\n      );\n      const zodiacInfo = chineseCalculator.getChineseZodiac(formattedBirthDate);\n\n      return buildBaZiResponse(baziAnalysis, zodiacInfo);
     } catch (error) {
       logger.error('Error generating BaZi analysis:', error);
       return 'I\'m having trouble generating your BaZi analysis right now. Please try again later.';
@@ -64,6 +57,9 @@ const handleTarot = async(message, user) => {
       case 'three':
         reading = tarotReader.threeCardReading();
         break;
+      case 'single':
+        reading = tarotReader.singleCardReading();
+        break;
       default:
         reading = tarotReader.singleCardReading();
       }
@@ -86,7 +82,7 @@ const handleTarot = async(message, user) => {
 const handlePalmistry = async(message, user) => {
   if (matchesIntent(message, ['palm', 'hand', 'palmistry', /^palm/])) {
     try {
-      const analysis = palmistryReader.generatePalmistryAnalysis();
+      const analysis = palmistryReader.generatePalmistryReading(user);
       return buildPalmistryResponse(analysis);
     } catch (error) {
       logger.error('Error generating palmistry analysis:', error);
@@ -109,9 +105,29 @@ const handleKabbalistic = async(message, user) => {
     }
 
     try {
+      // Convert birthDate to DD/MM/YYYY format
+      let formattedBirthDate = user.birthDate;
+      if (user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{2})$/)) { // DDMMYY
+        const [day, month, year] = user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{2})$/).slice(1);
+        formattedBirthDate = `${day}/${month}/${(parseInt(year) < new Date().getFullYear() % 100) ? 2000 + parseInt(year) : 1900 + parseInt(year)}`;
+      } else if (user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{4})$/)) { // DDMMYYYY
+        const [day, month, year] = user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{4})$/).slice(1);
+        formattedBirthDate = `${day}/${month}/${year}`;
+      } else if (user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/)) { // YYYY-MM-DD
+        const [year, month, day] = user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/).slice(1);
+        formattedBirthDate = `${day}/${month}/${year}`;
+      }
+
+      // Convert birthTime to HH:MM format
+      let formattedBirthTime = user.birthTime || '12:00';
+      if (formattedBirthTime.match(/^(\\d{2})(\\d{2})$/)) { // HHMM
+        const [hour, minute] = formattedBirthTime.match(/^(\\d{2})(\\d{2})$/).slice(1);
+        formattedBirthTime = `${hour}:${minute}`;
+      }
+
       const kabbalisticAnalysis = kabbalisticReader.generateKabbalisticChart({
-        birthDate: user.birthDate,
-        birthTime: user.birthTime || '12:00',
+        birthDate: formattedBirthDate,
+        birthTime: formattedBirthTime,
         name: user.name
       });
 
@@ -137,9 +153,22 @@ const handleMayan = async(message, user) => {
     }
 
     try {
+      // Convert birthDate to DD/MM/YYYY format
+      let formattedBirthDate = user.birthDate;
+      if (user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{2})$/)) { // DDMMYY
+        const [day, month, year] = user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{2})$/).slice(1);
+        formattedBirthDate = `${day}/${month}/${(parseInt(year) < new Date().getFullYear() % 100) ? 2000 + parseInt(year) : 1900 + parseInt(year)}`;
+      } else if (user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{4})$/)) { // DDMMYYYY
+        const [day, month, year] = user.birthDate.match(/^(\\d{2})(\\d{2})(\\d{4})$/).slice(1);
+        formattedBirthDate = `${day}/${month}/${year}`;
+      } else if (user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/)) { // YYYY-MM-DD
+        const [year, month, day] = user.birthDate.match(/^(\d{4})-(\d{2})-(\d{2})$/).slice(1);
+        formattedBirthDate = `${day}/${month}/${year}`;
+      }
+
       const mayanAnalysis = mayanReader.generateMayanChart({
-        birthDate: user.birthDate,
-        birthTime: user.birthTime || '12:00',
+        birthDate: formattedBirthDate,
+        birthTime: user.birthTime || '12:00', // birthTime is not used in mayanReader, but passed for consistency
         name: user.name
       });
 

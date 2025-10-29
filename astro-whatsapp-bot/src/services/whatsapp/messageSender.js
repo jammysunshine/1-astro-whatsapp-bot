@@ -749,6 +749,13 @@ const sendMessage = async(
         if (typeof translatedBody === 'object' && translatedBody.text) {
           finalBodyTextForList = translatedBody.text;
         }
+
+        // Debug logging for list message
+        logger.info(`📋 Sending list message to ${phoneNumber}:`);
+        logger.info(`   Body: "${finalBodyTextForList.substring(0, 50)}..."`);
+        logger.info(`   Button: "${buttonText}"`);
+        logger.info(`   Sections: ${validatedSections.length}`);
+
         response = await sendListMessage(
           phoneNumber,
           finalBodyTextForList,

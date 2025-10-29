@@ -1,87 +1,75 @@
-const { matchesIntent } = require('../utils/intentUtils');
 const logger = require('../../../utils/logger');
-const mistralAIService = require('../../ai/MistralAIService');
-const { getBirthDetailsPrompt } = require('../../../utils/promptUtils');
 
 /**
- * Handle greeting responses
+ * Handle greeting messages
  * @param {string} message - User message
  * @param {Object} user - User object
- * @returns {string|null} Greeting response or null if not a greeting
+ * @returns {string|null} Response or null if not handled
  */
 const handleGreeting = (message, user) => {
-  if (matchesIntent(message, ['hello', 'hi', 'hey', /^greetings?/])) {
-    return `🌟 Hello ${user.name || 'cosmic explorer'}! Welcome to your Personal Cosmic Coach. I'm here to help you navigate your cosmic journey. What would you like to explore today?`;
+  const greetings = ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening'];
+
+  if (greetings.some(greeting => message.includes(greeting))) {
+    return `🌟 Hello! I'm the Astro Wisdom Bot. I can help you with astrology readings, numerology, tarot, and more mystical insights.\n\nUse the menu to explore available services.`;
   }
+
   return null;
-};
-
-/**
- * Handle default responses when no specific intent is matched
- * @param {string} message - User message
- * @param {Object} user - User object
- * @returns {Promise<string>} Default response with interactive options or AI-generated response
- */
-const handleDefaultResponse = async(message, user) => {
-  // If the message is a question or seems like it needs AI assistance, use Mistral AI
-  const lowerMessage = message.toLowerCase();
-  const isQuestion = lowerMessage.includes('?') ||
-                    lowerMessage.startsWith('what') ||
-                    lowerMessage.startsWith('how') ||
-                    lowerMessage.startsWith('why') ||
-                    lowerMessage.startsWith('when') ||
-                    lowerMessage.startsWith('where') ||
-                    lowerMessage.startsWith('can you') ||
-                    lowerMessage.startsWith('tell me') ||
-                    lowerMessage.includes('explain') ||
-                    lowerMessage.includes('about');
-
-  if (isQuestion && mistralAIService.isConfigured()) {
-    try {
-      logger.info('Using AI for general question response');
-      return await mistralAIService.generateAstrologyResponse(message);
-    } catch (error) {
-      logger.error('AI response failed, falling back to default:', error);
-      // Fall back to default response
-    }
-  }
-
-  // Default response - let the messageProcessor handle the interactive menu
-  return '🌟 *Welcome to Your Cosmic Journey!*\n\nI\'m your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\nWhat would you like to explore?';
 };
 
 /**
  * Handle menu requests
  * @param {string} message - User message
  * @param {Object} user - User object
- * @returns {string|null} Menu response or null if not a menu request
+ * @returns {string|null} Response or null if not handled
  */
 const handleMenu = (message, user) => {
-  if (matchesIntent(message, ['menu', 'help', 'options', 'what can you do', 'commands'])) {
-    return '🌟 *Cosmic Coach Menu - Your Guide to the Stars*\n\n*🔮 BASIC READINGS*\nhoroscope - Daily cosmic guidance\nbirth chart - Complete astrological analysis\nnumerology - Soul\'s numerical blueprint\n\n*🌏 WORLD TRADITIONS*\nchinese/bazi - Four Pillars of Destiny\nvedic/kundli - Hindu astrology\nislamic - Ilm-e-Nujum & Taqdeer\ntarot - Mystical card readings\n\n*💫 SPECIALIZED INSIGHTS*\ncompatibility - Relationship analysis\ncareer - Professional guidance\nmedical - Health astrology\nfinancial - Wealth patterns\nfuture self - Life timeline\n\n*🕉️ ANCIENT WISDOM*\nremedies - Planetary healing\nmuhurta - Auspicious timing\npanchang - Hindu calendar\nfestivals - Sacred celebrations\n\n*🔍 ADVANCED ANALYSIS*\ndasha - Planetary periods\nashtakavarga - Strength analysis\nvarga charts - Divisional charts\nprogressions - Soul\'s evolution\n\nSimply type any of these keywords to begin your cosmic exploration! ✨';
+  const menuKeywords = ['menu', 'options', 'services', 'help'];
+
+  if (menuKeywords.some(keyword => message.includes(keyword))) {
+    return "📋 Use the interactive menu buttons below to explore services, or type 'menu' at any time.";
   }
+
   return null;
 };
 
 /**
- * Handle update profile requests
+ * Handle profile update requests
  * @param {string} message - User message
  * @param {Object} user - User object
- * @returns {string|null} Profile update response or null if not a profile request
+ * @returns {string|null} Response or null if not handled
  */
 const handleUpdateProfile = (message, user) => {
-  if (matchesIntent(message, ['update profile', 'change details', 'edit info', 'set birth'])) {
-    const prompt = getBirthDetailsPrompt('profile update', 'provide accurate astrological guidance', true, true);
-    return `📝 *Update Your Cosmic Profile*\n\n${prompt}\n\nSend your details now, and I'll update your profile for future readings! ✨`;
+  const profileKeywords = ['update', 'profile', 'birth', 'change', 'edit'];
+
+  if (profileKeywords.some(keyword => message.includes(keyword))) {
+    return `📝 Profile Update\n\nTo update your birth details, send:\nBirth date (DDMMYY): 150690\nBirth time (HHMM): 1430\nBirth place: Mumbai, India`;
   }
+
   return null;
 };
 
-logger.info('Module: basicHandlers loaded successfully.');
+/**
+ * Handle default responses when no handlers match
+ * @param {string} message - User message
+ * @param {Object} user - User object
+ * @returns {string} Default response
+ */
+const handleDefaultResponse = (message, user) => {
+  const helpfulHints = [
+    "Try asking about your daily horoscope or birth chart!",
+    "I can analyze compatibility, provide numerology insights, or give tarot readings.",
+    "Use the menu to see all available astrology services.",
+    "Tell me your birth details to get personalized readings."
+  ];
+
+  const randomHint = helpfulHints[Math.floor(Math.random() * helpfulHints.length)];
+
+  return `🌟 I understand you're looking for astrological guidance!\n\n${randomHint}\n\nWhat would you like to explore today?`;
+};
 
 module.exports = {
   handleGreeting,
-  handleDefaultResponse,
   handleMenu,
-  handleUpdateProfile
+  handleUpdateProfile,
+  handleDefaultResponse
 };

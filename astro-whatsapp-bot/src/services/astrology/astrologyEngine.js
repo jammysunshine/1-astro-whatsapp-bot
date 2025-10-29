@@ -75,13 +75,7 @@ const generateAstrologyResponse = async(messageText, user) => {
   }
 };
 
-/**
- * Validate birth data format and completeness
- * @param {string} birthDate - Birth date string
- * @param {string} birthTime - Birth time string
- * @param {string} birthPlace - Birth place string
- * @returns {Object} Validation result
- */
+
 
 
 module.exports = {

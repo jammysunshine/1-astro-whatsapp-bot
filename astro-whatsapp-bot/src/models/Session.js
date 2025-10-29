@@ -127,8 +127,8 @@ sessionSchema.statics.getActiveSession = function(phoneNumber) {
   }).sort({ lastActivity: -1 });
 };
 
-module.exports = mongoose.model('Session', sessionSchema);
-
 sessionSchema.statics.generateSessionId = function() {
   return `sess_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 };
+
+module.exports = mongoose.model('Session', sessionSchema);

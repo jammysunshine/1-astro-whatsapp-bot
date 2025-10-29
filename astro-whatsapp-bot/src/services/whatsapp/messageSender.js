@@ -604,6 +604,12 @@ const sendMessage = async(
 
     switch (messageType) {
     case 'text':
+      // Handle undefined/null messages
+      if (message == null) {
+        logger.warn(`⚠️ Null/undefined message for ${phoneNumber}, using fallback`);
+        message = 'messages.errors.generic_error';
+      }
+
       // Translate message if it's a resource key (contains dots and no spaces)
       let translatedMessage = message;
       if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {

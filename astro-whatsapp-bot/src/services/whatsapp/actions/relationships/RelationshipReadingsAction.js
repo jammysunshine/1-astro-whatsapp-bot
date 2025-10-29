@@ -14,7 +14,6 @@ class RelationshipReadingsAction extends BaseAction {
 
       await this.sendRelationshipReadings();
       return { success: true, type: 'relationship_readings' };
-
     } catch (error) {
       await this.handleExecutionError(error);
       return { success: false, reason: error.message };
@@ -22,21 +21,21 @@ class RelationshipReadingsAction extends BaseAction {
   }
 
   async sendRelationshipReadings() {
-    const analysis = `👪 *Family & Relationship Astrology*\n\n` +
-      `Discover the cosmic bonds that connect families and loved ones through astrological synastry and composite charts.\n\n` +
-      `*❤️ RELATIONSHIP ASTROLOGY COVERS:*\n` +
-      `• **Composite Charts** - Your relationship as an entity\n` +
-      `• **Synastry Analysis** - How your planets interact\n` +
-      `• **Family Dynamics** - Karmic family patterns\n` +
-      `• **Soul Contracts** - Life lessons with relatives\n` +
-      `• **Timing Charts** - Best times for family decisions\n\n` +
-      `*👨‍👩‍👧 ASTROLOGY FOR EVERY BOND:*\n` +
-      `• Romantic partnerships and marriages\n` +
-      `• Parent-child relationships and karma\n` +
-      `• Sibling connections and rivalry\n` +
-      `• Extended family dynamics\n` +
-      `• Friendship and soul partnerships\n\n` +
-      `*Your birth chart holds the key to understanding every relationship in your life.*`;
+    const analysis = '👪 *Family & Relationship Astrology*\n\n' +
+      'Discover the cosmic bonds that connect families and loved ones through astrological synastry and composite charts.\n\n' +
+      '*❤️ RELATIONSHIP ASTROLOGY COVERS:*\n' +
+      '• **Composite Charts** - Your relationship as an entity\n' +
+      '• **Synastry Analysis** - How your planets interact\n' +
+      '• **Family Dynamics** - Karmic family patterns\n' +
+      '• **Soul Contracts** - Life lessons with relatives\n' +
+      '• **Timing Charts** - Best times for family decisions\n\n' +
+      '*👨‍👩‍👧 ASTROLOGY FOR EVERY BOND:*\n' +
+      '• Romantic partnerships and marriages\n' +
+      '• Parent-child relationships and karma\n' +
+      '• Sibling connections and rivalry\n' +
+      '• Extended family dynamics\n' +
+      '• Friendship and soul partnerships\n\n' +
+      '*Your birth chart holds the key to understanding every relationship in your life.*';
 
     const userLanguage = this.getUserLanguage();
     const buttons = [

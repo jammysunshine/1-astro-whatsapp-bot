@@ -40,12 +40,11 @@ class TraditionalHorary {
 
       return {
         summary: analysis.summary,
-        question: question,
+        question,
         answer: analysis.answer,
         timing: analysis.timing,
         confidence: analysis.confidence
       };
-
     } catch (error) {
       console.error('Error casting horary chart:', error);
       return {
@@ -78,7 +77,7 @@ class TraditionalHorary {
     const summary = this.formatHoraryAnalysis(question, questionType, wisdom);
 
     return {
-      summary: summary,
+      summary,
       answer: wisdom.answer,
       timing: wisdom.timing,
       confidence: wisdom.confidence,
@@ -128,16 +127,16 @@ class TraditionalHorary {
     const isFavorableMoon = moonPhase === 'waxing';
 
     const factors = [];
-    if (isGoodHour) factors.push('Good hour for consultation');
-    if (isBeneficialDay) factors.push('Beneficial planetary day');
-    if (isFavorableMoon) factors.push('Favorable moon phase');
+    if (isGoodHour) { factors.push('Good hour for consultation'); }
+    if (isBeneficialDay) { factors.push('Beneficial planetary day'); }
+    if (isFavorableMoon) { factors.push('Favorable moon phase'); }
 
     // Generate interpretation based on question type
     const wisdom = this.generateQuestionInterpretation(questionType, isGoodHour);
 
     return {
       ...wisdom,
-      factors: factors
+      factors
     };
   }
 
@@ -172,7 +171,7 @@ class TraditionalHorary {
     const daysSinceNewMoon = (date.getTime() - new Date('2024-01-11').getTime()) / (1000 * 60 * 60 * 24);
     const phase = daysSinceNewMoon % 29.5;
 
-    if (phase < 14.75) return 'waxing';
+    if (phase < 14.75) { return 'waxing'; }
     return 'waning';
   }
 
@@ -239,13 +238,13 @@ class TraditionalHorary {
    * @returns {string} Formatted analysis
    */
   formatHoraryAnalysis(question, questionType, wisdom) {
-    let analysis = `⏰ *Traditional Horary Analysis*\n\n`;
+    let analysis = '⏰ *Traditional Horary Analysis*\n\n';
     analysis += `Question: "${question}"\n\n`;
     analysis += `📜 *Determination:* ${wisdom.answer.determination}\n`;
     analysis += `🎯 *Astrological Confidence:* ${wisdom.answer.confidence}\n\n`;
 
     if (wisdom.factors && wisdom.factors.length > 0) {
-      analysis += `*Key Astrological Factors:*`;
+      analysis += '*Key Astrological Factors:*';
       wisdom.factors.forEach(factor => {
         analysis += `\n• ${factor}`;
       });
@@ -255,13 +254,13 @@ class TraditionalHorary {
     analysis += `*Timing:* ${wisdom.timing}\n\n`;
 
     // Add traditional horary wisdom
-    analysis += `*🕉️ Traditional Horary Wisdom:*\n`;
-    analysis += `Horary astrology casts the chart at the moment of your question to provide divine guidance. The celestial configuration reveals hidden influences and timing for affairs of life.\n\n`;
+    analysis += '*🕉️ Traditional Horary Wisdom:*\n';
+    analysis += 'Horary astrology casts the chart at the moment of your question to provide divine guidance. The celestial configuration reveals hidden influences and timing for affairs of life.\n\n';
 
-    analysis += `*Planetary Language:* Each planet speaks about different life areas:\n`;
-    analysis += `• Sun: Self, life force, paternity\n• Moon: Emotions, home, changeability\n• Mars: Energy, courage, conflict\n• Mercury: Communication, learning\n• Jupiter: Fortune, growth, wisdom\n• Venus: Relationships, beauty, resources\n• Saturn: Discipline, karma, longevity\n\n`;
+    analysis += '*Planetary Language:* Each planet speaks about different life areas:\n';
+    analysis += '• Sun: Self, life force, paternity\n• Moon: Emotions, home, changeability\n• Mars: Energy, courage, conflict\n• Mercury: Communication, learning\n• Jupiter: Fortune, growth, wisdom\n• Venus: Relationships, beauty, resources\n• Saturn: Discipline, karma, longevity\n\n';
 
-    analysis += `*Remember:* This reading is cast at your question's exact moment. True horary requires purity of intention and genuine concern for the matter. 🕉️`;
+    analysis += '*Remember:* This reading is cast at your question\'s exact moment. True horary requires purity of intention and genuine concern for the matter. 🕉️';
 
     return analysis;
   }

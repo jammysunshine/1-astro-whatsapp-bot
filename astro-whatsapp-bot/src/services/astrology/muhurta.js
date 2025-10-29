@@ -107,28 +107,28 @@ class Muhurta {
 
     // Yoga preferences for elections
     this.yogaElectional = {
-      'Vishkumbha': 'Avoid beginning new activities',
-      'Priti': 'Good for love and harmony',
-      'Ayushman': 'Auspicious for longevity and health',
-      'Saubhagya': 'Excellent for marriage and relationships',
-      'Shobhana': 'Good for beauty and auspicious activities',
-      'Atiganda': 'Very inauspicious for any activity',
-      'Sukarman': 'Good for business and commerce',
-      'Dhriti': 'Good for stability and endurance',
-      'Shula': 'Causes conflicts and arguments',
-      'Ganda': 'Very inauspicious',
-      'Vriddhi': 'Good for growth and prosperity',
-      'Dhruva': 'Good for fixed and permanent activities',
-      'Vyatipata': 'Avoid travel and new ventures',
-      'Variyan': 'Good for achievement and success',
-      'Parigha': 'Causes obstruction and delay',
-      'Shiva': 'Excellent for spiritual activities',
-      'Siddha': 'Good for completion of work',
-      'Sadhya': 'Good for accomplishment',
-      'Shubha': 'Highly auspicious',
-      'Shukla': 'Good for purity and clarity',
-      'Brahma': 'Good for creative activities',
-      'Indra': 'Excellent for leadership work'
+      Vishkumbha: 'Avoid beginning new activities',
+      Priti: 'Good for love and harmony',
+      Ayushman: 'Auspicious for longevity and health',
+      Saubhagya: 'Excellent for marriage and relationships',
+      Shobhana: 'Good for beauty and auspicious activities',
+      Atiganda: 'Very inauspicious for any activity',
+      Sukarman: 'Good for business and commerce',
+      Dhriti: 'Good for stability and endurance',
+      Shula: 'Causes conflicts and arguments',
+      Ganda: 'Very inauspicious',
+      Vriddhi: 'Good for growth and prosperity',
+      Dhruva: 'Good for fixed and permanent activities',
+      Vyatipata: 'Avoid travel and new ventures',
+      Variyan: 'Good for achievement and success',
+      Parigha: 'Causes obstruction and delay',
+      Shiva: 'Excellent for spiritual activities',
+      Siddha: 'Good for completion of work',
+      Sadhya: 'Good for accomplishment',
+      Shubha: 'Highly auspicious',
+      Shukla: 'Good for purity and clarity',
+      Brahma: 'Good for creative activities',
+      Indra: 'Excellent for leadership work'
     };
   }
 
@@ -247,7 +247,7 @@ class Muhurta {
 
     // Analyze each day in range (up to 30 days max)
     const maxDays = Math.min(30, Math.ceil((endDate - startDate) / (24 * 60 * 60 * 1000)));
-    let currentDate = new Date(startDate);
+    const currentDate = new Date(startDate);
 
     for (let day = 0; day < maxDays; day++) {
       const dayAnalysis = await this.analyzeDailyMuhurta(currentDate, location, requirements);
@@ -262,7 +262,7 @@ class Muhurta {
 
     // Sort top alternatives by rating and score
     analysis.topAlternatives.sort((a, b) => {
-      const ratingOrder = { 'Very Auspicious': 4, 'Excellent': 3, 'Auspicious': 2, 'Good': 1 };
+      const ratingOrder = { 'Very Auspicious': 4, Excellent: 3, Auspicious: 2, Good: 1 };
       return ratingOrder[b.rating] - ratingOrder[a.rating] || b.score - a.score;
     });
 
@@ -276,7 +276,7 @@ class Muhurta {
   async analyzeDailyMuhurta(date, location, requirements) {
     const dateStr = date.toISOString().split('T')[0];
     let score = 0;
-    let factors = [];
+    const factors = [];
 
     try {
       // Check planetary positions and ascendant
@@ -310,7 +310,7 @@ class Muhurta {
       if (requirements.planetary) {
         for (const planet of requirements.planetary) {
           if (dailyPlanets[planet]) {
-            const sign = dailyPlanets[planet].sign;
+            const { sign } = dailyPlanets[planet];
             if (requirements.ascendants.includes(sign)) {
               score += 3;
               factors.push(`Beneficial ${planet} position`);
@@ -330,11 +330,7 @@ class Muhurta {
 
       // Determine rating
       let rating;
-      if (score >= 12) rating = 'Very Auspicious';
-      else if (score >= 9) rating = 'Excellent';
-      else if (score >= 6) rating = 'Auspicious';
-      else if (score >= 4) rating = 'Good';
-      else rating = 'Moderate';
+      if (score >= 12) { rating = 'Very Auspicious'; } else if (score >= 9) { rating = 'Excellent'; } else if (score >= 6) { rating = 'Auspicious'; } else if (score >= 4) { rating = 'Good'; } else { rating = 'Moderate'; }
 
       return {
         date: dateStr,
@@ -344,7 +340,6 @@ class Muhurta {
         recommendedMuhurtas: ['Abhijit (12:00-12:48)', 'Rutu Mahalaya (Morning)'],
         cautions: score < 4 ? ['Consider alternative date'] : []
       };
-
     } catch (error) {
       logger.warn('Daily muhurta analysis error:', error.message);
       return {
@@ -534,7 +529,7 @@ ${recommendations.enhancements?.map(item => `✨ ${item}`).join('\n') || 'Tradit
   }
 
   getRatingScore(rating) {
-    const scores = { 'Very Auspicious': 4, 'Excellent': 3, 'Auspicious': 2, 'Good': 1, 'Moderate': 0 };
+    const scores = { 'Very Auspicious': 4, Excellent: 3, Auspicious: 2, Good: 1, Moderate: 0 };
     return scores[rating] || 0;
   }
 

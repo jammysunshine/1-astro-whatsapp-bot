@@ -41,7 +41,6 @@ class IChingAction extends BaseAction {
         type: 'iching_reading',
         hexagram: reading.hexagramNumber
       };
-
     } catch (error) {
       this.logger.error('Error in IChingAction:', error);
       await this.handleExecutionError(error);
@@ -67,7 +66,6 @@ class IChingAction extends BaseAction {
         advice: this.getHexagramAdvice(hexagramNumber),
         timestamp: new Date().toISOString()
       };
-
     } catch (error) {
       this.logger.error('Error generating I Ching reading:', error);
       return null;
@@ -97,19 +95,19 @@ class IChingAction extends BaseAction {
   getHexagramMeaning(hexagramNumber) {
     // Simplified interpretations - in full system would have all 64
     const interpretations = {
-      1: "The Creative - Pure yang energy. New beginnings, creativity, leadership.",
-      2: "The Receptive - Pure yin energy. Patience, receptivity, nurturing.",
-      11: "Peace - Harmony and balance in all relationships.",
-      12: "Standstill - Temporary stagnation requires patience and inner stability.",
-      15: "Modesty - True power comes from restraint and humility.",
-      16: "Enthusiasm - Joy and inspiration move heaven and earth.",
-      24: "Return - The light returns. Small beginnings bring great success.",
-      50: "The Cauldron - Sacred vessel of transformation and nourishment."
+      1: 'The Creative - Pure yang energy. New beginnings, creativity, leadership.',
+      2: 'The Receptive - Pure yin energy. Patience, receptivity, nurturing.',
+      11: 'Peace - Harmony and balance in all relationships.',
+      12: 'Standstill - Temporary stagnation requires patience and inner stability.',
+      15: 'Modesty - True power comes from restraint and humility.',
+      16: 'Enthusiasm - Joy and inspiration move heaven and earth.',
+      24: 'Return - The light returns. Small beginnings bring great success.',
+      50: 'The Cauldron - Sacred vessel of transformation and nourishment.'
     };
 
     return interpretations[hexagramNumber] ||
       `Hexagram ${hexagramNumber}: Ancient wisdom flows through subtle changes. ` +
-      `Trust the timing of the universe and maintain inner harmony.`;
+      'Trust the timing of the universe and maintain inner harmony.';
   }
 
   /**
@@ -119,14 +117,14 @@ class IChingAction extends BaseAction {
    */
   getHexagramAdvice(hexagramNumber) {
     const advice = {
-      1: "Embrace new beginnings with courage and clarity. The time is ripe for bold action.",
-      2: "Remain receptive and patient. True strength lies in gentle persistence.",
-      11: "Foster peace in all relationships. Small concessions lead to great harmony.",
-      12: "Stay centered during stagnation. This pause allows deeper understanding to emerge."
+      1: 'Embrace new beginnings with courage and clarity. The time is ripe for bold action.',
+      2: 'Remain receptive and patient. True strength lies in gentle persistence.',
+      11: 'Foster peace in all relationships. Small concessions lead to great harmony.',
+      12: 'Stay centered during stagnation. This pause allows deeper understanding to emerge.'
     };
 
     return advice[hexagramNumber] ||
-      "Flow with life's changes. What seems challenging today opens new paths tomorrow.";
+      'Flow with life\'s changes. What seems challenging today opens new paths tomorrow.';
   }
 
   /**
@@ -168,7 +166,6 @@ class IChingAction extends BaseAction {
         message.interactive,
         'interactive'
       );
-
     } catch (error) {
       this.logger.error('Error sending I Ching reading:', error);
       await this.handleExecutionError(error);
@@ -181,7 +178,7 @@ class IChingAction extends BaseAction {
    * @returns {string} Formatted reading
    */
   formatIChingReading(reading) {
-    let response = `🪙 *I Ching - The Book of Changes*\n\n`;
+    let response = '🪙 *I Ching - The Book of Changes*\n\n';
 
     response += `*Hexagram #${reading.hexagramNumber}*\n\n`;
 
@@ -193,8 +190,8 @@ class IChingAction extends BaseAction {
 
     response += `*💫 Guidance:*\n${reading.advice}\n\n`;
 
-    response += `*"The Tao that can be told is not the eternal Tao. The name that can be named is not the eternal name."*\n\n`;
-    response += `*The I Ching reflects the fundamental principle that change is the only constant. How you navigate these changes determines your path.*`;
+    response += '*"The Tao that can be told is not the eternal Tao. The name that can be named is not the eternal name."*\n\n';
+    response += '*The I Ching reflects the fundamental principle that change is the only constant. How you navigate these changes determines your path.*';
 
     return response;
   }

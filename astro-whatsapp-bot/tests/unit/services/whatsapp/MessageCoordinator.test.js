@@ -81,7 +81,7 @@ describe('MessageCoordinator', () => {
   });
 
   describe('validateMessage', () => {
-    test('should validate environment variables', async () => {
+    test('should validate environment variables', async() => {
       const message = { type: 'text', from: '+1234567890' };
       const phoneNumber = '+1234567890';
 
@@ -89,7 +89,7 @@ describe('MessageCoordinator', () => {
       expect(result).toBeUndefined(); // Should not throw
     });
 
-    test('should reject invalid message structure', async () => {
+    test('should reject invalid message structure', async() => {
       const message = null;
       const phoneNumber = null;
 
@@ -97,7 +97,7 @@ describe('MessageCoordinator', () => {
         .resolves.toBe(false);
     });
 
-    test('should reject missing environment variables', async () => {
+    test('should reject missing environment variables', async() => {
       // Temporarily clear environment
       delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
 
@@ -117,7 +117,7 @@ describe('MessageCoordinator', () => {
       mockFlowEngine.processFlowMessage = jest.fn();
     });
 
-    test('should return true for existing complete users', async () => {
+    test('should return true for existing complete users', async() => {
       const user = { id: '1', profileComplete: true, isNew: false };
       const message = { type: 'text' };
 
@@ -126,7 +126,7 @@ describe('MessageCoordinator', () => {
       expect(mockFlowEngine.processFlowMessage).not.toHaveBeenCalled();
     });
 
-    test('should handle onboarding for new users', async () => {
+    test('should handle onboarding for new users', async() => {
       const user = { id: '1', profileComplete: false, isNew: true };
       const message = { type: 'text' };
 
@@ -137,7 +137,7 @@ describe('MessageCoordinator', () => {
       expect(mockFlowEngine.processFlowMessage).toHaveBeenCalledWith(message, user, 'onboarding');
     });
 
-    test('should handle onboarding for incomplete profiles', async () => {
+    test('should handle onboarding for incomplete profiles', async() => {
       const user = { id: '1', profileComplete: false, isNew: false };
       const message = { type: 'text' };
 
@@ -158,7 +158,7 @@ describe('MessageCoordinator', () => {
       });
     });
 
-    test('should route text messages to text processor', async () => {
+    test('should route text messages to text processor', async() => {
       const message = { type: 'text', from: '+123', text: { body: 'test' } };
       const user = { id: '1', profileComplete: true };
 
@@ -171,7 +171,7 @@ describe('MessageCoordinator', () => {
       expect(mockMediaProcessor.process).not.toHaveBeenCalled();
     });
 
-    test('should route interactive messages to interactive processor', async () => {
+    test('should route interactive messages to interactive processor', async() => {
       const message = { type: 'interactive', from: '+123', interactive: {} };
       const user = { id: '1', profileComplete: true };
 
@@ -184,7 +184,7 @@ describe('MessageCoordinator', () => {
       expect(mockMediaProcessor.process).not.toHaveBeenCalled();
     });
 
-    test('should route button messages to interactive processor', async () => {
+    test('should route button messages to interactive processor', async() => {
       const message = { type: 'button', from: '+123', button: {} };
       const user = { id: '1', profileComplete: true };
 
@@ -197,7 +197,7 @@ describe('MessageCoordinator', () => {
       expect(mockMediaProcessor.process).not.toHaveBeenCalled();
     });
 
-    test('should route media messages to media processor', async () => {
+    test('should route media messages to media processor', async() => {
       const message = { type: 'image', from: '+123', image: {} };
       const user = { id: '1', profileComplete: true };
 
@@ -210,7 +210,7 @@ describe('MessageCoordinator', () => {
       expect(mockInteractiveProcessor.process).not.toHaveBeenCalled();
     });
 
-    test('should handle unsupported message types', async () => {
+    test('should handle unsupported message types', async() => {
       const message = { type: 'unsupported', from: '+123' };
       const user = { id: '1', profileComplete: true };
 
@@ -237,7 +237,7 @@ describe('MessageCoordinator', () => {
       mockFlowEngine.processFlowMessage = jest.fn();
     });
 
-    test('should process complete message flow', async () => {
+    test('should process complete message flow', async() => {
       const message = {
         type: 'text',
         from: '+1234567890',
@@ -261,7 +261,7 @@ describe('MessageCoordinator', () => {
       expect(mockUserModel.updateUserProfile).toHaveBeenCalledWith('+1234567890', expect.any(Object));
     });
 
-    test('should handle new user creation', async () => {
+    test('should handle new user creation', async() => {
       mockUserModel.getUserByPhone.mockResolvedValue(null);
       mockUserModel.createUser.mockResolvedValue({
         id: 'new_user',
@@ -279,7 +279,7 @@ describe('MessageCoordinator', () => {
       expect(mockFlowEngine.processFlowMessage).toHaveBeenCalledWith(message, expect.any(Object), 'onboarding');
     });
 
-    test('should handle global errors', async () => {
+    test('should handle global errors', async() => {
       // Force an error in validation
       const originalValidate = coordinator.validateMessage;
       coordinator.validateMessage = jest.fn().mockRejectedValue(new Error('Test error'));

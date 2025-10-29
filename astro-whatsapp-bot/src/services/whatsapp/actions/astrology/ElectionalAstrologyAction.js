@@ -9,7 +9,6 @@ class ElectionalAstrologyAction extends BaseAction {
     try {
       await this.sendElectionalAstrologyGuide();
       return { success: true, type: 'electional_astrology' };
-
     } catch (error) {
       await this.handleExecutionError(error);
       return { success: false, reason: error.message };
@@ -17,26 +16,26 @@ class ElectionalAstrologyAction extends BaseAction {
   }
 
   async sendElectionalAstrologyGuide() {
-    const guide = `🔮 *Electional Astrology - Cosmic Timing Perfection*\n\n` +
-      `Electional astrology chooses the optimal moment for important life events by analyzing planetary placements for success, harmony, and longevity.\n\n` +
-      `*📅 PERFECT TIMING FOR:*\n` +
-      `• Weddings and marriage ceremonies\n` +
-      `• Business launches and incorporations\n` +
-      `• Major purchases (homes, vehicles)\n` +
-      `• Surgeries and medical procedures\n` +
-      `• Starting new ventures or projects\n` +
-      `• Important meetings and decisions\n` +
-      `• Signature of contracts and agreements\n\n` +
-      `*⚡ COSMIC SUCCESS FACTORS:*\n` +
-      `• Benefic planets (Venus, Jupiter) in strong positions\n` +
-      `• Malefic planets (Mars, Saturn) in weakened positions\n` +
-      `• Planetary hours aligned with purpose\n` +
-      `• Moon in favorable signs for the activity\n` +
-      `• Void-of-course Moon avoided\n\n` +
-      `*🕐 EXACT MOMENT MATTERS:*\n` +
-      `Even a few minutes difference in timing can dramatically change outcomes. Electional astrology finds the perfect cosmic signature for your important decisions.\n\n` +
-      `*✨ Choose Your Perfect Time*\n` +
-      `*Let the universe bless your journey with perfect timing.*`;
+    const guide = '🔮 *Electional Astrology - Cosmic Timing Perfection*\n\n' +
+      'Electional astrology chooses the optimal moment for important life events by analyzing planetary placements for success, harmony, and longevity.\n\n' +
+      '*📅 PERFECT TIMING FOR:*\n' +
+      '• Weddings and marriage ceremonies\n' +
+      '• Business launches and incorporations\n' +
+      '• Major purchases (homes, vehicles)\n' +
+      '• Surgeries and medical procedures\n' +
+      '• Starting new ventures or projects\n' +
+      '• Important meetings and decisions\n' +
+      '• Signature of contracts and agreements\n\n' +
+      '*⚡ COSMIC SUCCESS FACTORS:*\n' +
+      '• Benefic planets (Venus, Jupiter) in strong positions\n' +
+      '• Malefic planets (Mars, Saturn) in weakened positions\n' +
+      '• Planetary hours aligned with purpose\n' +
+      '• Moon in favorable signs for the activity\n' +
+      '• Void-of-course Moon avoided\n\n' +
+      '*🕐 EXACT MOMENT MATTERS:*\n' +
+      'Even a few minutes difference in timing can dramatically change outcomes. Electional astrology finds the perfect cosmic signature for your important decisions.\n\n' +
+      '*✨ Choose Your Perfect Time*\n' +
+      '*Let the universe bless your journey with perfect timing.*';
 
     const userLanguage = this.getUserLanguage();
     const buttons = [{

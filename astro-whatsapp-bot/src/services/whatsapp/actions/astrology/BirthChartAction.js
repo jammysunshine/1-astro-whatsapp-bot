@@ -52,7 +52,6 @@ class BirthChartAction extends BaseAction {
           hasHouses: !!chartData.houses
         }
       };
-
     } catch (error) {
       this.logger.error('Error in BirthChartAction:', error);
       await this.handleExecutionError(error);
@@ -75,7 +74,6 @@ class BirthChartAction extends BaseAction {
       // Fallback to Western chart if Vedic fails
       this.logger.warn('Vedic chart generation failed, using Western fallback');
       return await this.generateWesternChart();
-
     } catch (error) {
       this.logger.error('Chart generation failed completely:', error);
       return this.generateFallbackChart();
@@ -161,7 +159,6 @@ class BirthChartAction extends BaseAction {
         message.interactive,
         'interactive'
       );
-
     } catch (error) {
       this.logger.error('Error sending chart response:', error);
       // Fallback to simple text message
@@ -227,7 +224,7 @@ class BirthChartAction extends BaseAction {
    * @returns {string} Sanitized name
    */
   sanitizeName(name) {
-    if (!name) return 'Unknown';
+    if (!name) { return 'Unknown'; }
     // Remove potentially harmful characters
     return name.replace(/[<>'"&]/g, '').substring(0, 50);
   }
@@ -243,12 +240,12 @@ class BirthChartAction extends BaseAction {
     if (chartData.birthDetails) {
       const { date, time, place } = chartData.birthDetails;
       info += `📅 ${date || 'Unknown'}`;
-      if (time) info += ` ${time}`;
-      if (place) info += `\n📍 ${place}`;
+      if (time) { info += ` ${time}`; }
+      if (place) { info += `\n📍 ${place}`; }
     } else if (this.user) {
       info += `📅 ${this.user.birthDate || 'Not set'}`;
-      if (this.user.birthTime) info += ` ${this.user.birthTime}`;
-      if (this.user.birthPlace) info += `\n📍 ${this.user.birthPlace}`;
+      if (this.user.birthTime) { info += ` ${this.user.birthTime}`; }
+      if (this.user.birthPlace) { info += `\n📍 ${this.user.birthPlace}`; }
     }
 
     return info;
@@ -316,7 +313,7 @@ class BirthChartAction extends BaseAction {
     if (chartData.kundliSummary) {
       // Truncate summary if too long
       const summary = chartData.kundliSummary.length > 300 ?
-        chartData.kundliSummary.substring(0, 300) + '...' :
+        `${chartData.kundliSummary.substring(0, 300)}...` :
         chartData.kundliSummary;
       response += `\n${summary}`;
     }

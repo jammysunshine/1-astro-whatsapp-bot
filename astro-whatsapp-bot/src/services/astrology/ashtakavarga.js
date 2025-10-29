@@ -194,12 +194,7 @@ class Ashtakavarga {
       let points = 0;
 
       // 1. Friendship/Natural Relationships
-      if (relationships.ownSign.includes(rashiIndex)) points += 4;
-      else if (relationships.exalted.includes(rashiIndex)) points += 4;
-      else if (relationships.friendlySigns.includes(rashiIndex)) points += 4;
-      else if (relationships.neutralSigns.includes(rashiIndex)) points += 3;
-      else if (relationships.enemySigns.includes(rashiIndex)) points += 1;
-      else points += 3; // Mula-trikona or other relationships
+      if (relationships.ownSign.includes(rashiIndex)) { points += 4; } else if (relationships.exalted.includes(rashiIndex)) { points += 4; } else if (relationships.friendlySigns.includes(rashiIndex)) { points += 4; } else if (relationships.neutralSigns.includes(rashiIndex)) { points += 3; } else if (relationships.enemySigns.includes(rashiIndex)) { points += 1; } else { points += 3; } // Mula-trikona or other relationships
 
       // 2. Trikonasphuta: Relationships with houses 1, 5, 9 from planet's position
       const planetPosition = natalChart.planets[planetName]?.sign || 0;
@@ -209,7 +204,7 @@ class Ashtakavarga {
         (planetPosition + 8) % 12  // 9th from planet
       ];
 
-      if (trikonalHouses.includes(rashiIndex)) points += 3;
+      if (trikonalHouses.includes(rashiIndex)) { points += 3; }
 
       // 3. Ekadhipatya: If rashi lord is in trikona from planet
       const rashiLord = this.houseLords[rashiIndex];
@@ -217,7 +212,7 @@ class Ashtakavarga {
         const lordPosition = natalChart.planets[rashiLord].sign;
         const distance = (lordPosition - planetPosition + 12) % 12;
 
-        if ([0, 4, 8].includes(distance)) points += 2;
+        if ([0, 4, 8].includes(distance)) { points += 2; }
       }
 
       // 4. Aspect considerations
@@ -429,7 +424,7 @@ class Ashtakavarga {
   generateAshtakavargaSummary(predictions, areasAnalysis, averageStrength, timing) {
     return `🔢 **Ashtakavarga Analysis - Advanced Vedic 64-Point System**
 
-**Overall Strength:** ${averageStrength}/56 (${Math.round((averageStrength/56)*100)}%)
+**Overall Strength:** ${averageStrength}/56 (${Math.round((averageStrength / 56) * 100)}%)
 **Strongest Areas:** ${areasAnalysis.strongestAreas.length}/12 rashis
 **Weakest Areas:** ${areasAnalysis.weakestAreas.length}/12 rashis
 
@@ -486,7 +481,7 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
 
   generateHousePrediction(house, points, averageStrength) {
     const strength = points > averageStrength ? 'Above Average' :
-                    points < averageStrength - 10 ? 'Below Average' : 'Average';
+      points < averageStrength - 10 ? 'Below Average' : 'Average';
 
     const houseName = this.bhavas[house].name;
     const significations = this.bhavas[house].significations.join(', ');
@@ -495,8 +490,8 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
   }
 
   assessPlanetaryStrength(percentage) {
-    if (percentage >= 70) return 'Strong';
-    if (percentage >= 50) return 'Moderate';
+    if (percentage >= 70) { return 'Strong'; }
+    if (percentage >= 50) { return 'Moderate'; }
     return 'Weak';
   }
 
@@ -552,9 +547,9 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
   }
 
   formatLifeAreasSummary(lifeAreas) {
-    return Object.values(lifeAreas).slice(0, 6).map(area =>
+    return `${Object.values(lifeAreas).slice(0, 6).map(area =>
       `${area.name}: ${area.strength}/56 points`
-    ).join('\n• ') + '\n• [... and 6 more areas]';
+    ).join('\n• ')}\n• [... and 6 more areas]`;
   }
 
   /**

@@ -46,7 +46,6 @@ class LanguageMenuAction extends BaseAction {
         type: 'language_menu',
         languagesCount: languagesMenu.sections[0]?.rows?.length || 0
       };
-
     } catch (error) {
       this.logger.error('Error in LanguageMenuAction:', error);
       await this.handleExecutionError(error);
@@ -64,7 +63,7 @@ class LanguageMenuAction extends BaseAction {
     const currentLangInfo = languages.find(lang => lang.code === currentLanguage);
 
     return {
-      title: `🌐 Language Settings`,
+      title: '🌐 Language Settings',
       body: `Current Language: ${currentLangInfo?.name || 'English'}\n\nChoose your preferred language for all astrology services and menus.\n\n🇿 Select a language below:`,
       sections: [
         {
@@ -106,13 +105,13 @@ class LanguageMenuAction extends BaseAction {
       { code: 'pa', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ', flag: '🇮🇳', users: '152M' },
       { code: 'or', name: 'Oriya', nativeName: 'ଓଡ଼ିଆ', flag: '🇮🇳', users: '35M' },
       { code: 'as', name: 'Assamese', nativeName: 'অসমীয়া', flag: '🇮🇳', users: '24M' },
-      { code: 'mai', name: 'Maithili', nativeName: 'मैथिली', flag: '🇮🇳', users: '34M' },
-      { code: 'ne', name: 'Nepali', nativeName: 'नेपाली', flag: '🇳🇵', users: '19M' },
-      { code: 'si', name: 'Sinhala', nativeName: 'සිංහල', flag: '🇱🇰', users: '17M' },
-      { code: 'sd', name: 'Sindhi', nativeName: 'سنڌي', flag: '🇵🇰', users: '24M' },
-      { code: 'zgh', name: 'Tamaziɣt', nativeName: 'ⵜⴰⵎⴰⵣⵉⵖⵜ', flag: '🇲🇦', users: '8M' },
-      { code: 'am', name: 'Amharic', nativeName: 'አማርኛ', flag: '🇪🇹', users: '33M' },
-      { code: 'sw', name: 'Swahili', nativeName: 'Kiswahili', flag: '🇹🇿', users: '16M' }
+      { code: 'fa', name: 'Persian', nativeName: 'فارسی', flag: '🇮🇷', users: '75M', rtl: true },
+      { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷', users: '78M' },
+      { code: 'he', name: 'Hebrew', nativeName: 'עברית', flag: '🇮🇱', users: '9M', rtl: true },
+      { code: 'zh', name: 'Chinese', nativeName: '中文', flag: '🇨🇳', users: '918M' },
+      { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵', users: '128M' },
+      { code: 'ko', name: 'Korean', nativeName: '한국어', flag: '🇰🇷', users: '77M' },
+      { code: 'nl', name: 'Dutch', nativeName: 'Nederlands', flag: '🇳🇱', users: '22M' }
     ];
   }
 
@@ -124,7 +123,7 @@ class LanguageMenuAction extends BaseAction {
     const languages = [
       'en', 'hi', 'ar', 'es', 'fr', 'bn', 'ur', 'pt', 'ru', 'de',
       'it', 'th', 'ta', 'te', 'gu', 'mr', 'kn', 'ml', 'pa', 'or',
-      'as', 'mai', 'ne', 'si', 'sd', 'zgh', 'am', 'sw'
+      'as', 'fa', 'tr', 'he', 'zh', 'ja', 'ko', 'nl'
     ];
 
     return languages.map(code => ({

@@ -24,7 +24,6 @@ class PalmistryAction extends BaseAction {
 
       this.logExecution('complete', 'Palmistry analysis sent');
       return { success: true, type: 'palmistry_analysis' };
-
     } catch (error) {
       this.logger.error('Error in PalmistryAction:', error);
       await this.handleExecutionError(error);
@@ -33,19 +32,19 @@ class PalmistryAction extends BaseAction {
   }
 
   async sendPalmistryAnalysis() {
-    const analysis = `✋ *Palmistry - The Map of Your Life*\n\n` +
-      `Your hands reveal your inner blueprint - past, present, and potential future.\n\n` +
-      `*📖 MAJOR PALM FEATURES:*\n` +
-      `• *Life Line* - Vitality, general life flow, and major life changes\n` +
-      `• *Heart Line* - Emotional nature, relationships, and affection\n` +
-      `• *Head Line* - Intellect, reasoning, and approach to problem-solving\n` +
-      `• *Fate Line* - Career path, external influences, and life's direction\n\n` +
-      `*🏔️ MOUNTS OF THE HAND:*\n` +
-      `• Sun Mount - Success, creativity, and recognition\n` +
-      `• Moon Mount - Intuition, imagination, and spirituality\n` +
-      `• Venus Mount - Love, passion, and sensuality\n` +
-      `• Mars Mount - Energy, courage, and self-defense\n\n` +
-      `*For personalized palmistry analysis, please share a clear photo of your dominant hand (palm facing up).*`;
+    const analysis = '✋ *Palmistry - The Map of Your Life*\n\n' +
+      'Your hands reveal your inner blueprint - past, present, and potential future.\n\n' +
+      '*📖 MAJOR PALM FEATURES:*\n' +
+      '• *Life Line* - Vitality, general life flow, and major life changes\n' +
+      '• *Heart Line* - Emotional nature, relationships, and affection\n' +
+      '• *Head Line* - Intellect, reasoning, and approach to problem-solving\n' +
+      '• *Fate Line* - Career path, external influences, and life\'s direction\n\n' +
+      '*🏔️ MOUNTS OF THE HAND:*\n' +
+      '• Sun Mount - Success, creativity, and recognition\n' +
+      '• Moon Mount - Intuition, imagination, and spirituality\n' +
+      '• Venus Mount - Love, passion, and sensuality\n' +
+      '• Mars Mount - Energy, courage, and self-defense\n\n' +
+      '*For personalized palmistry analysis, please share a clear photo of your dominant hand (palm facing up).*';
 
     const userLanguage = this.getUserLanguage();
     const buttons = [{

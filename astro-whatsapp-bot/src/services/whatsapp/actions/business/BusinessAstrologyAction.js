@@ -14,7 +14,6 @@ class BusinessAstrologyAction extends BaseAction {
 
       await this.sendBusinessAstrology();
       return { success: true, type: 'business_astrology' };
-
     } catch (error) {
       await this.handleExecutionError(error);
       return { success: false, reason: error.message };
@@ -22,21 +21,21 @@ class BusinessAstrologyAction extends BaseAction {
   }
 
   async sendBusinessAstrology() {
-    const analysis = `🤝 *Business & Partnership Astrology*\n\n` +
-      `Optimize business ventures, partnerships, and financial decisions with cosmic timing and astrological insights.\n\n` +
-      `*💼 BUSINESS ASTROLOGY REVEALS:*\n` +
-      `• **Partnership Synastry** - Business partner compatibility\n` +
-      `• **Financial Astrology** - Money and wealth cycles\n` +
-      `• **Business Timing** - Optimal launch periods\n` +
-      `• **Team Dynamics** - Staff and client interactions\n` +
-      `• **Market Cycles** - Economic astrology patterns\n\n` +
-      `*📈 COMMERCIAL ASTROLOGY TOOLS:*\n` +
-      `• **Electional Astrology** - Choose perfect business incorporation dates\n` +
-      `• **Horary Astrology** - Answer specific business questions\n` +
-      `• **Solar Returns** - Annual business planning\n` +
-      `• **Transits** - Major business cycle changes\n\n` +
-      `*🚀 COSMIC BUSINESS ADVANTAGE:*\n` +
-      `When you align your business decisions with cosmic cycles, success becomes predictable and sustainable. Your birth chart reveals your most profitable ventures and ideal business partners.`;
+    const analysis = '🤝 *Business & Partnership Astrology*\n\n' +
+      'Optimize business ventures, partnerships, and financial decisions with cosmic timing and astrological insights.\n\n' +
+      '*💼 BUSINESS ASTROLOGY REVEALS:*\n' +
+      '• **Partnership Synastry** - Business partner compatibility\n' +
+      '• **Financial Astrology** - Money and wealth cycles\n' +
+      '• **Business Timing** - Optimal launch periods\n' +
+      '• **Team Dynamics** - Staff and client interactions\n' +
+      '• **Market Cycles** - Economic astrology patterns\n\n' +
+      '*📈 COMMERCIAL ASTROLOGY TOOLS:*\n' +
+      '• **Electional Astrology** - Choose perfect business incorporation dates\n' +
+      '• **Horary Astrology** - Answer specific business questions\n' +
+      '• **Solar Returns** - Annual business planning\n' +
+      '• **Transits** - Major business cycle changes\n\n' +
+      '*🚀 COSMIC BUSINESS ADVANTAGE:*\n' +
+      'When you align your business decisions with cosmic cycles, success becomes predictable and sustainable. Your birth chart reveals your most profitable ventures and ideal business partners.';
 
     const userLanguage = this.getUserLanguage();
     const buttons = [

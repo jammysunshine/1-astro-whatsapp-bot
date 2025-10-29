@@ -39,7 +39,6 @@ class VedicAstrologyMenuAction extends BaseAction {
         sections: menuData.sections?.length || 0,
         totalItems: this.countMenuItems(menuData)
       };
-
     } catch (error) {
       this.logger.error('Error in VedicAstrologyMenuAction:', error);
       await this.handleExecutionError(error);
@@ -87,7 +86,6 @@ class VedicAstrologyMenuAction extends BaseAction {
       // Also send numbered fallback instructions
       const fallbackText = '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-14 for services, 15 to go back.';
       await this.sendMessage(fallbackText, 'text');
-
     } catch (error) {
       this.logger.error('Error sending vedic astrology menu:', error);
       // Fallback to numbered text menu
@@ -115,7 +113,7 @@ class VedicAstrologyMenuAction extends BaseAction {
    * @returns {string} Numbered text menu
    */
   generateNumberedMenuText(menuData) {
-    let menuText = `🕉️ *Vedic Astrology Services*\n\nChoose by replying with a number:\n\n`;
+    let menuText = '🕉️ *Vedic Astrology Services*\n\nChoose by replying with a number:\n\n';
 
     let itemCount = 1;
     if (menuData.sections) {
@@ -129,7 +127,7 @@ class VedicAstrologyMenuAction extends BaseAction {
       });
     }
 
-    menuText += `\n\nJust reply with the number of your choice! 🔢`;
+    menuText += '\n\nJust reply with the number of your choice! 🔢';
     return menuText;
   }
 
@@ -139,11 +137,9 @@ class VedicAstrologyMenuAction extends BaseAction {
    * @returns {number} Total number of menu items
    */
   countMenuItems(menuData) {
-    if (!menuData.sections) return 0;
+    if (!menuData.sections) { return 0; }
 
-    return menuData.sections.reduce((total, section) => {
-      return total + (section.rows ? section.rows.length : 0);
-    }, 0);
+    return menuData.sections.reduce((total, section) => total + (section.rows ? section.rows.length : 0), 0);
   }
 
   /**

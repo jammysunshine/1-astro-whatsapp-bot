@@ -46,7 +46,6 @@ class CompatibilityAction extends BaseAction {
         type: 'compatibility_flow_start',
         initiated: true
       };
-
     } catch (error) {
       this.logger.error('Error in CompatibilityAction:', error);
       await this.handleExecutionError(error);
@@ -60,7 +59,7 @@ class CompatibilityAction extends BaseAction {
   async sendCompatibilityPrompt() {
     const userLanguage = this.getUserLanguage();
     const promptMessage = translationService.translate('messages.compatibility.prompt', userLanguage) ||
-      `🤝 *Synastry Compatibility Analysis*\n\nTo analyze compatibility between you and another person, I need their birth details:\n\n📅 *Birth Date* (DDMMYY format)\n🕐 *Birth Time* (HHMM 24hr format)\n📍 *Birth Place* (City, Country)\n\n*Examples:*\n150690\n1430\nMumbai, India\n\nSend their birth details to analyze your relationship compatibility!`;
+      '🤝 *Synastry Compatibility Analysis*\n\nTo analyze compatibility between you and another person, I need their birth details:\n\n📅 *Birth Date* (DDMMYY format)\n🕐 *Birth Time* (HHMM 24hr format)\n📍 *Birth Place* (City, Country)\n\n*Examples:*\n150690\n1430\nMumbai, India\n\nSend their birth details to analyze your relationship compatibility!';
 
     await sendMessage(this.phoneNumber, promptMessage, 'text');
   }
@@ -89,7 +88,6 @@ class CompatibilityAction extends BaseAction {
       );
 
       return compatibility;
-
     } catch (error) {
       this.logger.error('Error calculating compatibility:', error);
       throw error;
@@ -140,7 +138,6 @@ class CompatibilityAction extends BaseAction {
 
       // Update compatibility counter
       await this.incrementCompatibilityCount();
-
     } catch (error) {
       this.logger.error('Error sending compatibility result:', error);
       await this.handleExecutionError(error);
@@ -162,7 +159,7 @@ class CompatibilityAction extends BaseAction {
 
     // Key aspects
     if (compatibility.keyAspects && compatibility.keyAspects.length > 0) {
-      analysis += `*Key Aspects:*\n`;
+      analysis += '*Key Aspects:*\n';
       compatibility.keyAspects.slice(0, 5).forEach(aspect => {
         analysis += `• ${aspect.description}\n`;
       });
@@ -171,7 +168,7 @@ class CompatibilityAction extends BaseAction {
 
     // Strengths
     if (compatibility.strengths && compatibility.strengths.length > 0) {
-      analysis += `*💪 Strengths:*\n`;
+      analysis += '*💪 Strengths:*\n';
       compatibility.strengths.slice(0, 3).forEach(strength => {
         analysis += `• ${strength}\n`;
       });
@@ -180,7 +177,7 @@ class CompatibilityAction extends BaseAction {
 
     // Challenges
     if (compatibility.challenges && compatibility.challenges.length > 0) {
-      analysis += `*⚠️ Areas for Growth:*\n`;
+      analysis += '*⚠️ Areas for Growth:*\n';
       compatibility.challenges.slice(0, 2).forEach(challenge => {
         analysis += `• ${challenge}\n`;
       });
@@ -192,7 +189,7 @@ class CompatibilityAction extends BaseAction {
       analysis += `*💫 Relationship Wisdom:*\n${compatibility.advice}\n\n`;
     }
 
-    analysis += `*Synastry reveals the cosmic dance between souls. Remember, all relationships bring opportunities for growth and learning.*`;
+    analysis += '*Synastry reveals the cosmic dance between souls. Remember, all relationships bring opportunities for growth and learning.*';
 
     return analysis;
   }

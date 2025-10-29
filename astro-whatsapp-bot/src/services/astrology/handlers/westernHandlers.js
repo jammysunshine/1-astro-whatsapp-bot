@@ -221,7 +221,7 @@ const handleSolarReturn = (message, user) => {
  * @param {Object} user - User object
  * @returns {Object} Analysis components
  */
-const generateSolarReturnAnalysis = (user) => {
+const generateSolarReturnAnalysis = user => {
   const sunSign = getSunSign(user.birthDate);
   const age = new Date().getFullYear() - new Date(`20${user.birthDate.substring(4)}`).getFullYear();
 
@@ -293,7 +293,7 @@ const generateSolarReturnAnalysis = (user) => {
       intro: `${age}-year solar return focuses on achievement and legacy.`,
       areas: '🏔️ Career advancement, reputation, long-term goals',
       chart: 'Saturn position demands serious commitment',
-      timing: 'Q1 sets foundation for year's achievements',
+      timing: 'Q1 sets foundation for year\'s achievements',
       opportunities: 'Career promotions, leadership positions, legacy building'
     },
     Aquarius: {

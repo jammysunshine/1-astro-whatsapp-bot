@@ -20,7 +20,6 @@ class BabyNameSuggestionAction extends BaseAction {
 
       await this.sendBabyNameIntro();
       return { success: true, type: 'baby_name_suggestions' };
-
     } catch (error) {
       this.logger.error('Error in BabyNameSuggestionAction:', error);
       await this.handleExecutionError(error);
@@ -29,19 +28,19 @@ class BabyNameSuggestionAction extends BaseAction {
   }
 
   async sendBabyNameIntro() {
-    const analysis = `👶 *Vedic Baby Name Suggestions - Cosmic Naming*\n\n` +
-      `In Vedic tradition, a child's name carries lifetime influence. Choose names that resonate with their birth chart for maximum harmony.\n\n` +
-      `*🔆 VEDIC NAME PRINCIPLES:*\n` +
-      `• First letter based on birth star (Nakshatra)\n` +
-      `• Sound vibrations align with planetary energies\n` +
-      `• Numerology harmonizes with life path\n` +
-      `• Cultural significance and family traditions\n\n` +
-      `*🌟 NAME CONSIDERATIONS:*\n` +
-      `• Nakshatra (27 constellations) influence personality\n` +
-      `• Planetary rulers affect life energies\n` +
-      `• Number vibrations impact destiny\n` +
-      `• Meaning should inspire positive qualities\n\n` +
-      `*✨ A perfect name awakens the soul's highest potential.*`;
+    const analysis = '👶 *Vedic Baby Name Suggestions - Cosmic Naming*\n\n' +
+      'In Vedic tradition, a child\'s name carries lifetime influence. Choose names that resonate with their birth chart for maximum harmony.\n\n' +
+      '*🔆 VEDIC NAME PRINCIPLES:*\n' +
+      '• First letter based on birth star (Nakshatra)\n' +
+      '• Sound vibrations align with planetary energies\n' +
+      '• Numerology harmonizes with life path\n' +
+      '• Cultural significance and family traditions\n\n' +
+      '*🌟 NAME CONSIDERATIONS:*\n' +
+      '• Nakshatra (27 constellations) influence personality\n' +
+      '• Planetary rulers affect life energies\n' +
+      '• Number vibrations impact destiny\n' +
+      '• Meaning should inspire positive qualities\n\n' +
+      '*✨ A perfect name awakens the soul\'s highest potential.*';
 
     const userLanguage = this.getUserLanguage();
     const buttons = [{

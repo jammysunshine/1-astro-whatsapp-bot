@@ -57,7 +57,6 @@ class VargaChartsAction extends BaseAction {
           keyInsights: vargaData.analysis?.keyInsights?.length || 0
         }
       };
-
     } catch (error) {
       this.logger.error('Error in VargaChartsAction:', error);
       await this.handleExecutionError(error);
@@ -79,7 +78,6 @@ class VargaChartsAction extends BaseAction {
         birthTime: this.user.birthTime,
         birthPlace: this.user.birthPlace
       }, keyVargas);
-
     } catch (error) {
       this.logger.error('Varga calculation failed:', error);
       return {
@@ -117,7 +115,6 @@ class VargaChartsAction extends BaseAction {
         message.interactive,
         'interactive'
       );
-
     } catch (error) {
       this.logger.error('Error sending varga response:', error);
       // Fallback to simple text message
@@ -279,13 +276,13 @@ class VargaChartsAction extends BaseAction {
 
     // Show strongest planets
     const sortedPlanets = Object.entries(strengthAnalysis)
-      .sort(([,a], [,b]) => b.score - a.score)
+      .sort(([, a], [, b]) => b.score - a.score)
       .slice(0, 3);
 
     sortedPlanets.forEach(([planet, data]) => {
       const strength = data.score > 9 ? 'Very Strong' :
-                      data.score > 6 ? 'Strong' :
-                      data.score > 3 ? 'Moderate' : 'Needs Support';
+        data.score > 6 ? 'Strong' :
+          data.score > 3 ? 'Moderate' : 'Needs Support';
       response += `\n• ${planet}: ${strength} (${data.favorableVargas.length} favorable vargas)`;
     });
 

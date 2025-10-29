@@ -25,7 +25,6 @@ class PrashnaAstrologyAction extends BaseAction {
 
       // Call the legacy implementation
       return await executeMenuAction(this.phoneNumber, this.user, 'get_prashna_astrology_analysis');
-
     } catch (error) {
       this.logger.error('Error in PrashnaAstrologyAction:', error);
       await this.handleExecutionError(error);

@@ -48,7 +48,6 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
         this.logger.warn(`⚠️ Unsupported interactive type: ${type}`);
         await this.sendUnsupportedInteractiveTypeResponse(phoneNumber);
       }
-
     } catch (error) {
       this.logger.error(`❌ Error processing interactive message from ${phoneNumber}:`, error);
       await this.handleProcessingError(phoneNumber, error);
@@ -77,7 +76,6 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
 
       // For button messages, treat as direct action payload
       await this.processButtonPayload(phoneNumber, payload, text, user);
-
     } catch (error) {
       this.logger.error(`❌ Error processing button message from ${phoneNumber}:`, error);
       await this.handleProcessingError(phoneNumber, error);
@@ -227,7 +225,6 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
         session.currentFlow : 'onboarding';
 
       await processFlowMessage(mockMessage, user, currentFlow);
-
     } catch (error) {
       this.logger.error('Error processing clarification button:', error);
       await this.handleProcessingError(phoneNumber, error);
@@ -261,7 +258,6 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
       // Process mapped value as text input
       const mockMessage = { type: 'text', text: { body: mappedValue } };
       await processFlowMessage(mockMessage, user, session.currentFlow);
-
     } catch (error) {
       this.logger.error('Error processing flow button:', error);
       await this.handleProcessingError(phoneNumber, error);

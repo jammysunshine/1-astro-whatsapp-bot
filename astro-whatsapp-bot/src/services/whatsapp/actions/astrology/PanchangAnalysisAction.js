@@ -25,7 +25,6 @@ class PanchangAnalysisAction extends BaseAction {
 
       // Call the legacy implementation
       return await executeMenuAction(this.phoneNumber, this.user, 'get_panchang_analysis');
-
     } catch (error) {
       this.logger.error('Error in PanchangAnalysisAction:', error);
       await this.handleExecutionError(error);

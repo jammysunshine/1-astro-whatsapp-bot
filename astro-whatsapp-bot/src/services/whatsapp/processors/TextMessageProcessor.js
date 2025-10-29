@@ -57,7 +57,6 @@ class TextMessageProcessor extends BaseMessageProcessor {
         // Profile incomplete - redirect to onboarding
         await processFlowMessage(message, user, 'onboarding');
       }
-
     } catch (error) {
       this.logger.error(`❌ Error processing text message from ${phoneNumber}:`, error);
       await this.handleProcessingError(phoneNumber, error);
@@ -164,7 +163,7 @@ class TextMessageProcessor extends BaseMessageProcessor {
    * @param {string} messageText - Message text
    * @returns {string|null} Action identifier or null
    */
-  getNumberedMenuAction(phoneNumber, messageText) {
+  async getNumberedMenuAction(phoneNumber, messageText) {
     try {
       // Check if message is a number (for numbered menu selections)
       const numberMatch = messageText.match(/^\s*(\d+)\s*$/);
@@ -390,7 +389,7 @@ class TextMessageProcessor extends BaseMessageProcessor {
     try {
       const menu = await this.getMainMenu(language);
       if (menu && menu.type === 'button') {
-        const combinedText = text + '\n\n' + menu.body;
+        const combinedText = `${text}\n\n${menu.body}`;
         await sendMessage(phoneNumber, { type: 'button', body: combinedText, buttons: menu.buttons }, 'interactive');
       } else {
         await sendMessage(phoneNumber, text, 'text');

@@ -93,7 +93,7 @@ class ActionRegistryInitializer {
     }
 
     console.info('✅ ActionRegistry initialized successfully');
-    console.info(`📊 Registry stats:`, this.registry.getStats());
+    console.info('📊 Registry stats:', this.registry.getStats());
 
     return this.registry;
   }
@@ -284,14 +284,14 @@ class ActionRegistryInitializer {
     this.registry.registerButton('show_help_support', 'show_help_support');
 
     // Navigation buttons (some of these may not exist as separate actions)
-    try { this.registry.registerButton('get_more_compatibility_details', CompatibilityAction.actionId); } catch(e) {}
-    try { this.registry.registerButton('get_relationship_advice', CompatibilityAction.actionId); } catch(e) {}
-    try { this.registry.registerButton('get_transit_predictions', CurrentTransitsAction.actionId); } catch(e) {}
-    try { this.registry.registerButton('get_numerology_timeline', NumerologyReportAction.actionId); } catch(e) {}
-    try { this.registry.registerButton('get_name_analysis', NumerologyReportAction.actionId); } catch(e) {}
-    try { this.registry.registerButton('show_quick_start', 'show_help_support'); } catch(e) {}
-    try { this.registry.registerButton('contact_support', 'show_help_support'); } catch(e) {}
-    try { this.registry.registerButton('show_commands_list', 'show_help_support'); } catch(e) {}
+    try { this.registry.registerButton('get_more_compatibility_details', CompatibilityAction.actionId); } catch (e) {}
+    try { this.registry.registerButton('get_relationship_advice', CompatibilityAction.actionId); } catch (e) {}
+    try { this.registry.registerButton('get_transit_predictions', CurrentTransitsAction.actionId); } catch (e) {}
+    try { this.registry.registerButton('get_numerology_timeline', NumerologyReportAction.actionId); } catch (e) {}
+    try { this.registry.registerButton('get_name_analysis', NumerologyReportAction.actionId); } catch (e) {}
+    try { this.registry.registerButton('show_quick_start', 'show_help_support'); } catch (e) {}
+    try { this.registry.registerButton('contact_support', 'show_help_support'); } catch (e) {}
+    try { this.registry.registerButton('show_commands_list', 'show_help_support'); } catch (e) {}
 
     // Language buttons - all 28 supported languages
     this.registry.registerButton('set_language_en', SetLanguageAction.actionId);

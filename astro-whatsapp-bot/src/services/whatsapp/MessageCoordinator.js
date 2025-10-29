@@ -2,7 +2,6 @@ const logger = require('../../utils/logger');
 const TextMessageProcessor = require('./processors/TextMessageProcessor');
 const InteractiveMessageProcessor = require('./processors/InteractiveMessageProcessor');
 const MediaMessageProcessor = require('./processors/MediaMessageProcessor');
-const createInitializedRegistry = require('./ActionRegistryInitializer');
 const { ValidationService } = require('./utils/ValidationService');
 const { getUserByPhone, createUser, updateUserProfile } = require('../../models/userModel');
 const { processFlowMessage } = require('../../conversation/conversationEngine');
@@ -15,12 +14,32 @@ const { processFlowMessage } = require('../../conversation/conversationEngine');
 class MessageCoordinator {
   constructor() {
     this.logger = logger;
-    this.registry = createInitializedRegistry(); // Use the initialized registry with all actions
-    this.textProcessor = new TextMessageProcessor(this.registry);
-    this.interactiveProcessor = new InteractiveMessageProcessor(this.registry);
-    this.mediaProcessor = new MediaMessageProcessor();
+    this.initialized = false;
+  }
 
-    this.logger.info('🎯 MessageCoordinator initialized with new action architecture');
+  /**
+   * Initialize the coordinator with registry and processors
+   */
+  async initialize() {
+    if (this.initialized) return this;
+
+    try {
+      // Import and initialize registry asynchronously
+      const createInitializedRegistry = require('./ActionRegistryInitializer');
+      this.registry = await createInitializedRegistry();
+
+      // Create processors
+      this.textProcessor = new TextMessageProcessor(this.registry);
+      this.interactiveProcessor = new InteractiveMessageProcessor(this.registry);
+      this.mediaProcessor = new MediaMessageProcessor();
+
+      this.initialized = true;
+      this.logger.info('🎯 MessageCoordinator initialized with new action architecture');
+      return this;
+    } catch (error) {
+      this.logger.error('❌ Failed to initialize MessageCoordinator:', error);
+      throw error;
+    }
   }
 
   /**
@@ -58,7 +77,6 @@ class MessageCoordinator {
 
       // 5. Update user interaction timestamp
       await this.updateUserInteraction(user, phoneNumber);
-
     } catch (error) {
       await this.handleGlobalError(phoneNumber, error, message);
     }
@@ -190,7 +208,6 @@ class MessageCoordinator {
       );
 
       // Could also send error details to admin/logging system here
-
     } catch (sendError) {
       this.logger.error('❌ Failed to send error message to user:', sendError.message);
     }
@@ -260,5 +277,21 @@ class MessageCoordinator {
   }
 }
 
-// Export singleton instance
-module.exports = new MessageCoordinator();
+// Create and export asynchronously initialized singleton
+let coordinatorInstance = null;
+
+async function getMessageCoordinator() {
+  if (!coordinatorInstance) {
+    const coordinator = new MessageCoordinator();
+    coordinatorInstance = await coordinator.initialize();
+  }
+  return coordinatorInstance;
+}
+
+// Export both the class and the factory function
+module.exports = {
+  MessageCoordinator,
+  getMessageCoordinator,
+  // For backwards compatibility, export a promise that resolves to the singleton
+  initialize: getMessageCoordinator
+};

@@ -25,7 +25,6 @@ class DashaAnalysisAction extends BaseAction {
 
       // Call the legacy implementation
       return await executeMenuAction(this.phoneNumber, this.user, 'get_vimshottari_dasha_analysis');
-
     } catch (error) {
       this.logger.error('Error in DashaAnalysisAction:', error);
       await this.handleExecutionError(error);

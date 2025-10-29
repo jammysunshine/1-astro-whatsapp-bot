@@ -37,7 +37,6 @@ class UpdateProfileAction extends BaseAction {
         type: 'profile_update_initiated',
         currentProfileComplete: currentUser.profileComplete
       };
-
     } catch (error) {
       this.logger.error('Error in UpdateProfileAction:', error);
       await this.handleExecutionError(error);
@@ -74,7 +73,7 @@ class UpdateProfileAction extends BaseAction {
     await sendMessage(this.phoneNumber, menuMessage.interactive, 'interactive');
 
     // Add helpful instruction
-    setTimeout(async () => {
+    setTimeout(async() => {
       try {
         const hintMessage = '💡 *Tip:* Choose "Update Birth Details" for complete astrology readings. This is the most requested update!';
         await sendMessage(this.phoneNumber, hintMessage, 'text');
@@ -148,24 +147,24 @@ Choose what to update:`;
   async handleProfileUpdate(updateType) {
     try {
       switch (updateType) {
-        case 'profile_update_name':
-          await this.handleNameUpdate();
-          break;
+      case 'profile_update_name':
+        await this.handleNameUpdate();
+        break;
 
-        case 'profile_update_birth':
-          await this.startBirthDetailsFlow();
-          break;
+      case 'profile_update_birth':
+        await this.startBirthDetailsFlow();
+        break;
 
-        case 'profile_update_language':
-          await this.sendLanguageUpdateInstructions();
-          break;
+      case 'profile_update_language':
+        await this.sendLanguageUpdateInstructions();
+        break;
 
-        case 'profile_update_preferences':
-          await this.sendPreferencesUpdateInstructions();
-          break;
+      case 'profile_update_preferences':
+        await this.sendPreferencesUpdateInstructions();
+        break;
 
-        default:
-          await this.sendInvalidUpdateError();
+      default:
+        await this.sendInvalidUpdateError();
       }
     } catch (error) {
       this.logger.error(`Error handling profile update ${updateType}:`, error);
@@ -193,10 +192,10 @@ Choose what to update:`;
     const flowMessage = `🎂 *Update Birth Details*
 
 ${currentUser.birthDate ?
-  `📅 Current birth date: ${this.formatBirthDate(currentUser.birthDate)}\n` +
+    `📅 Current birth date: ${this.formatBirthDate(currentUser.birthDate)}\n` +
   `${currentUser.birthTime ? `⏰ Current time: ${this.formatBirthTime(currentUser.birthTime)}\n` : ''}` +
-  `${currentUser.birthPlace ? `📍 Current place: ${currentUser.birthPlace}\n\n` : '\n'}`
-  : '👋 Welcome! For accurate astrology readings, we need your birth details.\n\n'
+  `${currentUser.birthPlace ? `📍 Current place: ${currentUser.birthPlace}\n\n` : '\n'}` :
+    '👋 Welcome! For accurate astrology readings, we need your birth details.\n\n'
 }
 
 💫 *Please provide your birth information in order:*
@@ -243,8 +242,8 @@ ${this.getBirthDetailsInstructions()}`;
 • Place: ${birthData.birthPlace}
 
 ${updatedUser.profileComplete ?
-  '✅ Your profile is now complete! You can access all astrology services.' :
-  '⚠️ Profile still incomplete. Add birth place for full analysis.'}
+    '✅ Your profile is now complete! You can access all astrology services.' :
+    '⚠️ Profile still incomplete. Add birth place for full analysis.'}
 
 🌟 Ready for comprehensive astrology readings!`;
       await sendMessage(this.phoneNumber, successMessage, 'text');
@@ -253,7 +252,6 @@ ${updatedUser.profileComplete ?
       await this.clearSessionExpectation();
 
       return { success: true, profileComplete: updatedUser.profileComplete };
-
     } catch (error) {
       this.logger.error('Error updating birth details:', error);
       await this.sendBirthDetailsError();
@@ -288,7 +286,6 @@ ${updatedUser.profileComplete ?
       await this.clearSessionExpectation();
 
       return { success: true };
-
     } catch (error) {
       this.logger.error('Error updating name:', error);
       await this.sendNameUpdateError();
@@ -345,7 +342,7 @@ ${updatedUser.profileComplete ?
       if (birthDate.length === 6) {
         const day = birthDate.substring(0, 2);
         const month = birthDate.substring(2, 4);
-        const year = '19' + birthDate.substring(4, 6);
+        const year = `19${birthDate.substring(4, 6)}`;
         return `${day}/${month}/${year}`;
       } else {
         const day = birthDate.substring(0, 2);
@@ -382,9 +379,9 @@ ${updatedUser.profileComplete ?
    */
   getLanguageDisplay(languageCode) {
     const languages = {
-      'en': 'English', 'hi': 'Hindi', 'ar': 'Arabic', 'es': 'Spanish',
-      'fr': 'French', 'bn': 'Bengali', 'ur': 'Urdu', 'pt': 'Portuguese',
-      'ru': 'Russian', 'de': 'German', 'it': 'Italian', 'th': 'Thai'
+      en: 'English', hi: 'Hindi', ar: 'Arabic', es: 'Spanish',
+      fr: 'French', bn: 'Bengali', ur: 'Urdu', pt: 'Portuguese',
+      ru: 'Russian', de: 'German', it: 'Italian', th: 'Thai'
     };
     return languages[languageCode] || languageCode || 'English';
   }

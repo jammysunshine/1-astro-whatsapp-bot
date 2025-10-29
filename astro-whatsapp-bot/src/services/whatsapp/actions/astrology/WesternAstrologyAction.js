@@ -33,7 +33,6 @@ class WesternAstrologyAction extends BaseAction {
         type: 'western_astrology_menu',
         category: 'western'
       };
-
     } catch (error) {
       this.logger.error('Error in WesternAstrologyAction:', error);
       await this.handleExecutionError(error);
@@ -47,21 +46,21 @@ class WesternAstrologyAction extends BaseAction {
   async sendWesternAstrologyMenu() {
     const userLanguage = this.getUserLanguage();
 
-    const menuMessage = `🌟 *Western Astrology - Tropical Wisdom*\n\n` +
-      `Western astrology interprets the cosmos through the lens of psychology, mythology, and modern life. Based on the Tropical Zodiac that aligns with the seasons.\n\n` +
-      `*🌟 CORE FEATURES:*\n` +
-      `• Complete Birth Chart Analysis\n` +
-      `• Planetary Aspects & Angles\n` +
-      `• House Systems & Life Areas\n` +
-      `• Current Transits & Influences\n` +
-      `• Solar & Lunar Returns\n` +
-      `• Composite Charts for Relationships\n\n` +
-      `*🔍 ASTROLOGY APPROACHES:*\n` +
-      `• Psychological Astrology (Jungian)\n` +
-      `• Evolutionary Astrology\n` +
-      `• Horary Astrology (Question-based)\n` +
-      `• Electional Astrology (Timing)\n\n` +
-      `*What would you like to explore?*`;
+    const menuMessage = '🌟 *Western Astrology - Tropical Wisdom*\n\n' +
+      'Western astrology interprets the cosmos through the lens of psychology, mythology, and modern life. Based on the Tropical Zodiac that aligns with the seasons.\n\n' +
+      '*🌟 CORE FEATURES:*\n' +
+      '• Complete Birth Chart Analysis\n' +
+      '• Planetary Aspects & Angles\n' +
+      '• House Systems & Life Areas\n' +
+      '• Current Transits & Influences\n' +
+      '• Solar & Lunar Returns\n' +
+      '• Composite Charts for Relationships\n\n' +
+      '*🔍 ASTROLOGY APPROACHES:*\n' +
+      '• Psychological Astrology (Jungian)\n' +
+      '• Evolutionary Astrology\n' +
+      '• Horary Astrology (Question-based)\n' +
+      '• Electional Astrology (Timing)\n\n' +
+      '*What would you like to explore?*';
 
     const westernButtons = [
       {

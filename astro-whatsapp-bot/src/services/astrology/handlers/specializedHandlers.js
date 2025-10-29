@@ -9,7 +9,7 @@ const astrocartographyReader = require('../astrocartographyReader');
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleTarot = async (message, user) => {
+const handleTarot = async(message, user) => {
   if (!message.includes('tarot') && !message.includes('cards')) {
     return null;
   }
@@ -33,7 +33,7 @@ const handleTarot = async (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleIChing = async (message, user) => {
+const handleIChing = async(message, user) => {
   if (!message.includes('iching') && !message.includes('i ching') && !message.includes('oracle')) {
     return null;
   }
@@ -60,7 +60,7 @@ const { PrashnaAstrology } = require('../prashnaAstrology');
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handlePrashna = async (message, user) => {
+const handlePrashna = async(message, user) => {
   if (!message.includes('prashna') && !message.includes('question') && !message.includes('answer') && !message.includes('consult') && !message.includes('horary')) {
     return null;
   }
@@ -106,12 +106,12 @@ const handlePrashna = async (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleChineseAstrology = async (message, user) => {
+const handleChineseAstrology = async(message, user) => {
   if (!message.includes('chinese') && !message.includes('bazi') && !message.includes('four pillars')) {
     return null;
   }
 
-  return `🏮 *Chinese Astrology - Four Pillars*\n\nAncient Chinese wisdom analyzes life through heavenly stems and earthly branches, revealing your Ba Zi (Eight Characters) destiny chart.\n\nFour Pillars reveal:\n• Day Master (core self)\n• Year Pillar (ancestral influences)\n• Month Pillar (family/siblings)\n• Hour Pillar (children/legacy)\n\nThese elements combine to show your natural talents, challenges, and optimal life path in harmony with Chinese cosmology.`;
+  return '🏮 *Chinese Astrology - Four Pillars*\n\nAncient Chinese wisdom analyzes life through heavenly stems and earthly branches, revealing your Ba Zi (Eight Characters) destiny chart.\n\nFour Pillars reveal:\n• Day Master (core self)\n• Year Pillar (ancestral influences)\n• Month Pillar (family/siblings)\n• Hour Pillar (children/legacy)\n\nThese elements combine to show your natural talents, challenges, and optimal life path in harmony with Chinese cosmology.';
 };
 
 /**
@@ -120,12 +120,12 @@ const handleChineseAstrology = async (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleKabbalistic = async (message, user) => {
+const handleKabbalistic = async(message, user) => {
   if (!message.includes('kabbal') && !message.includes('tree of life') && !message.includes('sephiroth')) {
     return null;
   }
 
-  return `✡️ *Kabbalistic Astrology*\n\nHebrew mystical tradition connects the Tree of Life (Etz Chaim) with planetary influences. The ten Sephiroth represent divine emanations:\n\n🌳 *Tree Structure:*\n• Kether (Crown) - divine will\n• Chokmah (Wisdom) - pure understanding\n• Binah (Understanding) - analytical wisdom\n• Chesed (Mercy) - unconditional love\n• Geburah (Severity) - divine justice\n• Tiphareth (Beauty) - harmony\n• Netzach (Victory) - enduring passion\n• Hod (Glory) - intellect and communication\n• Yesod (Foundation) - astral/emotional realm\n• Malkuth (Kingdom) - physical manifestation\n\nPlanets bridge kabbalistic spheres, revealing soul's journey through divine light.`;
+  return '✡️ *Kabbalistic Astrology*\n\nHebrew mystical tradition connects the Tree of Life (Etz Chaim) with planetary influences. The ten Sephiroth represent divine emanations:\n\n🌳 *Tree Structure:*\n• Kether (Crown) - divine will\n• Chokmah (Wisdom) - pure understanding\n• Binah (Understanding) - analytical wisdom\n• Chesed (Mercy) - unconditional love\n• Geburah (Severity) - divine justice\n• Tiphareth (Beauty) - harmony\n• Netzach (Victory) - enduring passion\n• Hod (Glory) - intellect and communication\n• Yesod (Foundation) - astral/emotional realm\n• Malkuth (Kingdom) - physical manifestation\n\nPlanets bridge kabbalistic spheres, revealing soul\'s journey through divine light.';
 };
 
 /**
@@ -134,12 +134,12 @@ const handleKabbalistic = async (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleMayan = async (message, user) => {
+const handleMayan = async(message, user) => {
   if (!message.includes('mayan') && !message.includes('maya') && !message.includes('aztec')) {
     return null;
   }
 
-  return `🗿 *Mayan Astrology*\n\nAncient Mesoamerican calendar system reveals divine cycles through day signs and cosmic energies. Your Mayan birth sign determines your archetypal energies:\n\n🌞 *Key Elements:*\n• Tzolkin (260-day sacred calendar)\n• Haab (365-day solar calendar)\n• Thirteen galactic tones\n• Twenty day signs\n• Nahual (spirit companion)\n• Galactic signature\n\n🗓️ *Mayan Day Signs:*\n• Imox - primordial waters, intuitive wisdom\n• Ik - breath of life, vital energy\n• Akbal - darkness, inner strength\n• Kan - seed, abundance\n• Chicchan - serpent, kundalini energy\n\nYour Mayan sign reveals archetypal forces guiding your sacred service.`;
+  return '🗿 *Mayan Astrology*\n\nAncient Mesoamerican calendar system reveals divine cycles through day signs and cosmic energies. Your Mayan birth sign determines your archetypal energies:\n\n🌞 *Key Elements:*\n• Tzolkin (260-day sacred calendar)\n• Haab (365-day solar calendar)\n• Thirteen galactic tones\n• Twenty day signs\n• Nahual (spirit companion)\n• Galactic signature\n\n🗓️ *Mayan Day Signs:*\n• Imox - primordial waters, intuitive wisdom\n• Ik - breath of life, vital energy\n• Akbal - darkness, inner strength\n• Kan - seed, abundance\n• Chicchan - serpent, kundalini energy\n\nYour Mayan sign reveals archetypal forces guiding your sacred service.';
 };
 
 /**
@@ -148,12 +148,12 @@ const handleMayan = async (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleCeltic = async (message, user) => {
+const handleCeltic = async(message, user) => {
   if (!message.includes('celtic') && !message.includes('druid') && !message.includes('tree sign')) {
     return null;
   }
 
-  return `🌿 *Celtic Tree Astrology*\n\nDruid wisdom connects human destiny with sacred trees through Ogham alphabet. Your Celtic tree sign reveals personality and life path:\n\n🌳 *Celtic Tree Signs:*\n• Birch - new beginnings, purification\n• Rowan - protection, inspiration\n• Alder - warrior spirit, courage\n• Willow - intuition, healing\n• Hawthorn - love, beauty, transformation\n• Oak - strength, endurance, leadership\n• Holly - courage, survival instinct\n• Hazel - wisdom, divination\n• Vine - joy, spiritual growth\n• Ivy - determination, independence\n• Reed - loyalty, family bonds\n• Elder - transformation, regeneration\n\nEach tree offers unique energies for personal growth and understanding natural cycles.`;
+  return '🌿 *Celtic Tree Astrology*\n\nDruid wisdom connects human destiny with sacred trees through Ogham alphabet. Your Celtic tree sign reveals personality and life path:\n\n🌳 *Celtic Tree Signs:*\n• Birch - new beginnings, purification\n• Rowan - protection, inspiration\n• Alder - warrior spirit, courage\n• Willow - intuition, healing\n• Hawthorn - love, beauty, transformation\n• Oak - strength, endurance, leadership\n• Holly - courage, survival instinct\n• Hazel - wisdom, divination\n• Vine - joy, spiritual growth\n• Ivy - determination, independence\n• Reed - loyalty, family bonds\n• Elder - transformation, regeneration\n\nEach tree offers unique energies for personal growth and understanding natural cycles.';
 };
 
 /**
@@ -162,7 +162,7 @@ const handleCeltic = async (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleAstrocartography = async (message, user) => {
+const handleAstrocartography = async(message, user) => {
   if (!message.includes('astro') && !message.includes('cartography') && !message.includes('geographic')) {
     return null;
   }
@@ -198,7 +198,7 @@ const handleAstrocartography = async (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleVargaCharts = async (message, user) => {
+const handleVargaCharts = async(message, user) => {
   if (!message.includes('varga') && !message.includes('division') && !message.includes('divisional') &&
       !message.includes('navamsa') && !message.includes('dashamsa') && !message.includes('hora')) {
     return null;
@@ -225,7 +225,7 @@ const handleVargaCharts = async (message, user) => {
     }
 
     // Basic summary for handler
-    let response = `🕉️ *Vedic Varga Charts Analysis*\n\nKey Divisional Charts:\n`;
+    let response = '🕉️ *Vedic Varga Charts Analysis*\n\nKey Divisional Charts:\n';
 
     if (vargaAnalysis.vargaCharts.NAVAMSA) {
       response += `💍 Navamsa (Marriage): Ascendant in ${vargaAnalysis.vargaCharts.NAVAMSA.ascendantSign}\n`;
@@ -239,13 +239,26 @@ const handleVargaCharts = async (message, user) => {
       response += `💰 Hora (Wealth): Ascendant in ${vargaAnalysis.vargaCharts.HORA.ascendantSign}\n`;
     }
 
-    response += `\nVarga charts divide your birth chart to show specialized life areas. For detailed analysis, use the menu options.`;
+    response += '\nVarga charts divide your birth chart to show specialized life areas. For detailed analysis, use the menu options.';
 
     return response;
   } catch (error) {
     console.error('Varga charts error:', error);
     return '❌ Error analyzing varga charts. Please try again.';
   }
+};
+
+/**
+ * Handle Palmistry requests
+ * @param {string} message - User message
+ * @param {Object} user - User object
+ * @returns {string|null} Response or null if not handled
+ */
+const handlePalmistry = async(message, user) => {
+  if (!message.includes('palmistry') && !message.includes('palm reading')) {
+    return null;
+  }
+  return '✋ *Palmistry Analysis*\n\nPalmistry analysis is not yet implemented. Please check back later!';
 };
 
 module.exports = {

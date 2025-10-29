@@ -242,7 +242,7 @@ class VargaCharts {
     }
 
     const vargaInfo = this.vargaDetails[vargaName];
-    const divisional = vargaInfo.divisional;
+    const { divisional } = vargaInfo;
 
     // For D-1, just return the birth chart
     if (divisional === 1) {
@@ -637,8 +637,8 @@ class VargaCharts {
       Saturn: [1, 8, 9]
     };
 
-    if (favorableHouses[planet]?.includes(house)) return 3;
-    if (challengingHouses[planet]?.includes(house)) return 0;
+    if (favorableHouses[planet]?.includes(house)) { return 3; }
+    if (challengingHouses[planet]?.includes(house)) { return 0; }
     return 1.5; // Neutral placement
   }
 

@@ -32,7 +32,6 @@ class VedicAstrologyAction extends BaseAction {
         type: 'vedic_astrology_menu',
         category: 'vedic'
       };
-
     } catch (error) {
       this.logger.error('Error in VedicAstrologyAction:', error);
       await this.handleExecutionError(error);
@@ -46,21 +45,21 @@ class VedicAstrologyAction extends BaseAction {
   async sendVedicAstrologyMenu() {
     const userLanguage = this.getUserLanguage();
 
-    const menuMessage = `🕉️ *Vedic Astrology - Ancient Wisdom*\n\n` +
-      `Jyotish (Vedic astrology) reveals your karmic path through ancient Indian spiritual science. Using Sidereal Zodiac and lunar-based calculations for profound life guidance.\n\n` +
-      `*🕉️ SACRED FEATURES:*\n` +
-      `• Complete Vedic Birth Chart (Kundli)\n` +
-      `• Vimshottari Dasha Periods\n` +
-      `• Nakshatras & Lunar Mansions\n` +
-      `• Planetary Strengths (Shadbala)\n` +
-      `• Varga Charts & Harmonic Analysis\n` +
-      `• Muhurta & Auspicious Timing\n\n` +
-      `*🔍 VEDIC SYSTEMS:*\n` +
-      `• Parashari System (Classical)\n` +
-      `• Jaimini Astrology (Spiritual)\n` +
-      `• Nadi Astrology (Remedial)\n` +
-      `• Tajika Astrology (Predictive)\n\n` +
-      `*🌟 What wisdom shall we explore?*`;
+    const menuMessage = '🕉️ *Vedic Astrology - Ancient Wisdom*\n\n' +
+      'Jyotish (Vedic astrology) reveals your karmic path through ancient Indian spiritual science. Using Sidereal Zodiac and lunar-based calculations for profound life guidance.\n\n' +
+      '*🕉️ SACRED FEATURES:*\n' +
+      '• Complete Vedic Birth Chart (Kundli)\n' +
+      '• Vimshottari Dasha Periods\n' +
+      '• Nakshatras & Lunar Mansions\n' +
+      '• Planetary Strengths (Shadbala)\n' +
+      '• Varga Charts & Harmonic Analysis\n' +
+      '• Muhurta & Auspicious Timing\n\n' +
+      '*🔍 VEDIC SYSTEMS:*\n' +
+      '• Parashari System (Classical)\n' +
+      '• Jaimini Astrology (Spiritual)\n' +
+      '• Nadi Astrology (Remedial)\n' +
+      '• Tajika Astrology (Predictive)\n\n' +
+      '*🌟 What wisdom shall we explore?*';
 
     const vedicButtons = [
       {

@@ -39,7 +39,6 @@ class WesternAstrologyMenuAction extends BaseAction {
         sections: menuData.sections?.length || 0,
         totalItems: this.countMenuItems(menuData)
       };
-
     } catch (error) {
       this.logger.error('Error in WesternAstrologyMenuAction:', error);
       await this.handleExecutionError(error);
@@ -87,7 +86,6 @@ class WesternAstrologyMenuAction extends BaseAction {
       // Also send numbered fallback instructions
       const fallbackText = '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-13 for services, 14 to go back.';
       await this.sendMessage(fallbackText, 'text');
-
     } catch (error) {
       this.logger.error('Error sending western astrology menu:', error);
       // Fallback to numbered text menu
@@ -115,7 +113,7 @@ class WesternAstrologyMenuAction extends BaseAction {
    * @returns {string} Numbered text menu
    */
   generateNumberedMenuText(menuData) {
-    let menuText = `🌍 *Western Astrology Services*\n\nChoose by replying with a number:\n\n`;
+    let menuText = '🌍 *Western Astrology Services*\n\nChoose by replying with a number:\n\n';
 
     let itemCount = 1;
     if (menuData.sections) {
@@ -129,7 +127,7 @@ class WesternAstrologyMenuAction extends BaseAction {
       });
     }
 
-    menuText += `\n\nJust reply with the number of your choice! 🔢`;
+    menuText += '\n\nJust reply with the number of your choice! 🔢';
     return menuText;
   }
 
@@ -139,11 +137,9 @@ class WesternAstrologyMenuAction extends BaseAction {
    * @returns {number} Total number of menu items
    */
   countMenuItems(menuData) {
-    if (!menuData.sections) return 0;
+    if (!menuData.sections) { return 0; }
 
-    return menuData.sections.reduce((total, section) => {
-      return total + (section.rows ? section.rows.length : 0);
-    }, 0);
+    return menuData.sections.reduce((total, section) => total + (section.rows ? section.rows.length : 0), 0);
   }
 
   /**

@@ -41,7 +41,6 @@ class CurrentTransitsAction extends BaseAction {
         type: 'current_transits',
         planetsAnalyzed: transits.length
       };
-
     } catch (error) {
       this.logger.error('Error in CurrentTransitsAction:', error);
       await this.handleExecutionError(error);
@@ -70,7 +69,6 @@ class CurrentTransitsAction extends BaseAction {
 
       // Sort by significance and date
       return transits.sort((a, b) => b.significance - a.significance);
-
     } catch (error) {
       this.logger.error('Error calculating transits:', error);
       return [];
@@ -87,17 +85,17 @@ class CurrentTransitsAction extends BaseAction {
     // This is a simplified implementation.
     // In a real system, this would use ephemeris calculations
     const transitPhases = {
-      'Sun': { sign: 'Libra', house: 7, aspects: ['trine Moon'] },
-      'Moon': { sign: 'Cancer', house: 4, aspects: ['conjunct Venus'] },
-      'Mercury': { sign: 'Virgo', house: 6, aspects: ['square Mars'] },
-      'Venus': { sign: 'Leo', house: 5, aspects: ['sextile Jupiter'] },
-      'Mars': { sign: 'Aries', house: 1, aspects: ['opposition Saturn'] },
-      'Jupiter': { sign: 'Pisces', house: 12, aspects: ['trine Neptune'] },
-      'Saturn': { sign: 'Aquarius', house: 11, aspects: ['conjunct Uranus'] }
+      Sun: { sign: 'Libra', house: 7, aspects: ['trine Moon'] },
+      Moon: { sign: 'Cancer', house: 4, aspects: ['conjunct Venus'] },
+      Mercury: { sign: 'Virgo', house: 6, aspects: ['square Mars'] },
+      Venus: { sign: 'Leo', house: 5, aspects: ['sextile Jupiter'] },
+      Mars: { sign: 'Aries', house: 1, aspects: ['opposition Saturn'] },
+      Jupiter: { sign: 'Pisces', house: 12, aspects: ['trine Neptune'] },
+      Saturn: { sign: 'Aquarius', house: 11, aspects: ['conjunct Uranus'] }
     };
 
     const transit = transitPhases[planet];
-    if (!transit) return null;
+    if (!transit) { return null; }
 
     return {
       planet,
@@ -118,16 +116,16 @@ class CurrentTransitsAction extends BaseAction {
    */
   getTransitMeaning(planet, transit) {
     const meanings = {
-      'Sun': `Solar influence in ${transit.sign} brings focus on identity, leadership, and life purpose. In house ${transit.natalHouse}, this enhances self-expression.`,
-      'Moon': `Lunar transits affect emotions and intuition. In ${transit.sign}, emotional patterns may emerge, influencing home and family matters.`,
-      'Mercury': `Mercury transits affect communication and thinking. Current position suggests changes in how you process information and express ideas.`,
-      'Venus': `Venus transits influence relationships and values. This period brings opportunities for harmony and creative expression.`,
-      'Mars': `Mars transits bring energy and drive. You may feel more motivated to take action in career and personal goals.`,
-      'Jupiter': `Jupiter transits expand horizons. This is a time of growth, learning, and new opportunities.`,
-      'Saturn': `Saturn transits bring structure and responsibility. A period for building foundations and long-term planning.`
+      Sun: `Solar influence in ${transit.sign} brings focus on identity, leadership, and life purpose. In house ${transit.natalHouse}, this enhances self-expression.`,
+      Moon: `Lunar transits affect emotions and intuition. In ${transit.sign}, emotional patterns may emerge, influencing home and family matters.`,
+      Mercury: 'Mercury transits affect communication and thinking. Current position suggests changes in how you process information and express ideas.',
+      Venus: 'Venus transits influence relationships and values. This period brings opportunities for harmony and creative expression.',
+      Mars: 'Mars transits bring energy and drive. You may feel more motivated to take action in career and personal goals.',
+      Jupiter: 'Jupiter transits expand horizons. This is a time of growth, learning, and new opportunities.',
+      Saturn: 'Saturn transits bring structure and responsibility. A period for building foundations and long-term planning.'
     };
 
-    return meanings[planet] || `Planetary influence bringing important changes and opportunities for growth.`;
+    return meanings[planet] || 'Planetary influence bringing important changes and opportunities for growth.';
   }
 
   /**
@@ -137,13 +135,13 @@ class CurrentTransitsAction extends BaseAction {
    */
   getTransitDuration(planet) {
     const durations = {
-      'Sun': '2-3 days',
-      'Moon': '2-3 days',
-      'Mercury': '3-4 weeks',
-      'Venus': '3-4 weeks',
-      'Mars': '6-8 weeks',
-      'Jupiter': '12-13 months',
-      'Saturn': '2.5-3 years'
+      Sun: '2-3 days',
+      Moon: '2-3 days',
+      Mercury: '3-4 weeks',
+      Venus: '3-4 weeks',
+      Mars: '6-8 weeks',
+      Jupiter: '12-13 months',
+      Saturn: '2.5-3 years'
     };
 
     return durations[planet] || 'Variable';
@@ -188,7 +186,6 @@ class CurrentTransitsAction extends BaseAction {
         message.interactive,
         'interactive'
       );
-
     } catch (error) {
       this.logger.error('Error sending transit analysis:', error);
       await this.handleExecutionError(error);
@@ -204,9 +201,9 @@ class CurrentTransitsAction extends BaseAction {
     let analysis = `🌌 *Current Planetary Transits*\n*For ${this.user.name || 'You'}*\n\n`;
 
     if (transits.length === 0) {
-      analysis += `No significant planetary transits detected at this time. This is a period of relative cosmic stability.\n\n`;
+      analysis += 'No significant planetary transits detected at this time. This is a period of relative cosmic stability.\n\n';
     } else {
-      analysis += `*Major Influences This Month:*\n\n`;
+      analysis += '*Major Influences This Month:*\n\n';
       transits.slice(0, 5).forEach((transit, index) => {
         analysis += `${index + 1}. *${transit.planet}* in ${transit.transitSign}\n`;
         analysis += `   ${transit.influence}\n`;
@@ -215,19 +212,19 @@ class CurrentTransitsAction extends BaseAction {
     }
 
     // Add general advice
-    analysis += `*💫 Current Cosmic Climate:*\n`;
+    analysis += '*💫 Current Cosmic Climate:*\n';
     if (transits.length > 3) {
-      analysis += `• High activity period - many changes and opportunities\n`;
+      analysis += '• High activity period - many changes and opportunities\n';
     } else if (transits.length > 1) {
-      analysis += `• Moderate activity - focus on important relationships\n`;
+      analysis += '• Moderate activity - focus on important relationships\n';
     } else {
-      analysis += `• Quiet period - ideal for reflection and preparation\n`;
+      analysis += '• Quiet period - ideal for reflection and preparation\n';
     }
 
-    analysis += `• Pay attention to dreams and intuition\n`;
-    analysis += `• Be open to sudden opportunities\n\n`;
+    analysis += '• Pay attention to dreams and intuition\n';
+    analysis += '• Be open to sudden opportunities\n\n';
 
-    analysis += `*Transits show cosmic timing. Use this awareness to align your actions with the universe's flow.*`;
+    analysis += '*Transits show cosmic timing. Use this awareness to align your actions with the universe\'s flow.*';
 
     return analysis;
   }

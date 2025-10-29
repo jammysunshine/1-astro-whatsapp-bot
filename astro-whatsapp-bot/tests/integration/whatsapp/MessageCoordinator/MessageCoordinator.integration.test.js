@@ -53,7 +53,7 @@ describe('MessageCoordinator Integration Tests', () => {
       updateUserProfile.mockResolvedValue(null);
     });
 
-    test('should handle daily horoscope request from existing user', async () => {
+    test('should handle daily horoscope request from existing user', async() => {
       // Arrange
       const message = {
         type: 'text',
@@ -79,7 +79,7 @@ describe('MessageCoordinator Integration Tests', () => {
       }));
     });
 
-    test('should handle interactive button response', async () => {
+    test('should handle interactive button response', async() => {
       // Arrange
       const message = {
         type: 'interactive',
@@ -107,7 +107,7 @@ describe('MessageCoordinator Integration Tests', () => {
       expect(mockInteractiveProcessor.process).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
     });
 
-    test('should handle media message upload', async () => {
+    test('should handle media message upload', async() => {
       // Arrange
       const message = {
         type: 'image',
@@ -133,7 +133,7 @@ describe('MessageCoordinator Integration Tests', () => {
       expect(mockMediaProcessor.process).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
     });
 
-    test('should handle new user onboarding flow', async () => {
+    test('should handle new user onboarding flow', async() => {
       // Arrange
       getUserByPhone.mockResolvedValueOnce(null);
       createUser.mockResolvedValue({
@@ -167,7 +167,7 @@ describe('MessageCoordinator Integration Tests', () => {
       expect(coordinator.textProcessor.process).not.toHaveBeenCalled();
     });
 
-    test('should handle unsupported message types gracefully', async () => {
+    test('should handle unsupported message types gracefully', async() => {
       // Arrange
       const message = {
         type: 'unsupported_type',
@@ -197,7 +197,7 @@ describe('MessageCoordinator Integration Tests', () => {
       mockSendMessage.mockResolvedValue(null);
     });
 
-    test('should handle database connection errors gracefully', async () => {
+    test('should handle database connection errors gracefully', async() => {
       // Arrange
       getUserByPhone.mockRejectedValue(new Error('Database connection failed'));
 
@@ -217,7 +217,7 @@ describe('MessageCoordinator Integration Tests', () => {
         expect.stringContaining('unexpected error'), 'text');
     });
 
-    test('should handle processor errors and continue processing', async () => {
+    test('should handle processor errors and continue processing', async() => {
       // Arrange
       const mockTextProcessor = coordinator.textProcessor;
       mockTextProcessor.process.mockRejectedValue(new Error('Processor failed'));
@@ -238,7 +238,7 @@ describe('MessageCoordinator Integration Tests', () => {
       expect(mockSendMessage).toHaveBeenCalled(); // Should send error message
     });
 
-    test('should handle missing environment variables', async () => {
+    test('should handle missing environment variables', async() => {
       // Arrange
       delete process.env.W1_WHATSAPP_ACCESS_TOKEN;
 
@@ -266,7 +266,7 @@ describe('MessageCoordinator Integration Tests', () => {
       mockSendMessage.mockResolvedValue(null);
     });
 
-    test('should update user interaction timestamp', async () => {
+    test('should update user interaction timestamp', async() => {
       // Arrange
       const message = {
         type: 'text',
@@ -287,7 +287,7 @@ describe('MessageCoordinator Integration Tests', () => {
       }));
     });
 
-    test('should handle user lookup errors', async () => {
+    test('should handle user lookup errors', async() => {
       // Arrange
       getUserByPhone.mockRejectedValue(new Error('User lookup failed'));
 
@@ -312,7 +312,7 @@ describe('MessageCoordinator Integration Tests', () => {
       mockSendMessage.mockResolvedValue(null);
     });
 
-    test('should route text messages correctly', async () => {
+    test('should route text messages correctly', async() => {
       // Arrange
       const message = {
         type: 'text',
@@ -331,7 +331,7 @@ describe('MessageCoordinator Integration Tests', () => {
       expect(coordinator.mediaProcessor.process).not.toHaveBeenCalled();
     });
 
-    test('should route interactive messages correctly', async () => {
+    test('should route interactive messages correctly', async() => {
       // Arrange
       const message = {
         type: 'interactive',
@@ -350,7 +350,7 @@ describe('MessageCoordinator Integration Tests', () => {
       expect(coordinator.mediaProcessor.process).not.toHaveBeenCalled();
     });
 
-    test('should route media messages correctly', async () => {
+    test('should route media messages correctly', async() => {
       // Arrange
       const message = {
         type: 'image',
@@ -369,7 +369,7 @@ describe('MessageCoordinator Integration Tests', () => {
       expect(coordinator.interactiveProcessor.process).not.toHaveBeenCalled();
     });
 
-    test('should route button messages correctly', async () => {
+    test('should route button messages correctly', async() => {
       // Arrange
       const message = {
         type: 'button',
@@ -430,7 +430,7 @@ describe('MessageCoordinator Integration Tests', () => {
   });
 
   describe('Performance and Scaling', () => {
-    test('should handle rapid successive messages', async () => {
+    test('should handle rapid successive messages', async() => {
       // Arrange
       const message = {
         type: 'text',
@@ -455,7 +455,7 @@ describe('MessageCoordinator Integration Tests', () => {
       expect(updateUserProfile).toHaveBeenCalledTimes(10);
     });
 
-    test('should handle different user loads', async () => {
+    test('should handle different user loads', async() => {
       // Arrange
       const users = ['+1111111111', '+2222222222', '+3333333333'];
       const messages = users.map(phone => ({
@@ -467,7 +467,7 @@ describe('MessageCoordinator Integration Tests', () => {
       }));
 
       // Setup different user responses
-      getUserByPhone.mockImplementation((phone) => {
+      getUserByPhone.mockImplementation(phone => {
         const userIndex = users.indexOf(phone);
         return Promise.resolve({
           id: `user_${userIndex}`,

@@ -57,7 +57,6 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       default:
         await this.sendUnsupportedMediaTypeResponse(phoneNumber, type);
       }
-
     } catch (error) {
       this.logger.error(`❌ Error processing media message from ${phoneNumber}:`, error);
       await this.handleProcessingError(phoneNumber, error);
@@ -96,7 +95,6 @@ class MediaMessageProcessor extends BaseMessageProcessor {
 
       // Generic image acknowledgment
       await this.sendImageAcknowledgment(phoneNumber, 'accepted');
-
     } catch (error) {
       this.logger.error('Error processing image message:', error);
       await this.handleProcessingError(phoneNumber, error);
@@ -124,7 +122,6 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       ) || `Thank you for sharing a video (${id}). Video analysis is not yet available.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
-
     } catch (error) {
       this.logger.error('Error processing video message:', error);
       await this.handleProcessingError(phoneNumber, error);
@@ -152,7 +149,6 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       ) || `Thank you for sharing an audio message (${id}). Voice analysis is not yet available.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
-
     } catch (error) {
       this.logger.error('Error processing audio message:', error);
       await this.handleProcessingError(phoneNumber, error);
@@ -186,7 +182,6 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       ) || `Thank you for sharing a document (${filename || id}). Document analysis is not yet available.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
-
     } catch (error) {
       this.logger.error('Error processing document message:', error);
       await this.handleProcessingError(phoneNumber, error);
@@ -223,7 +218,6 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       ) || `✋ Thank you for sharing your palm image! Palmistry analysis for image ${image.id} is being prepared.\n\nThis ancient art reveals insights about:\n• Life purpose and destiny\n• Health indicators\n• Relationship patterns\n• Career tendencies\n\nYour personalized palm reading will be available soon!`;
 
       await this.sendAcknowledgment(phoneNumber, palmistryMessage);
-
     } catch (error) {
       this.logger.error('Error handling palmistry request:', error);
       await this.handleProcessingError(phoneNumber, error);
@@ -246,7 +240,6 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       ) || `🕉️ Thank you for sharing your birth chart image (${image.id}). Visual chart analysis is not yet available.\n\nFor textual birth chart readings, please use the "Birth Chart" option from the main menu.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
-
     } catch (error) {
       this.logger.error('Error handling kundli request:', error);
       await this.handleProcessingError(phoneNumber, error);
@@ -269,7 +262,6 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       ) || `🔮 Thank you for sharing your photo (${image.id}). Photo analysis and aura reading services are not yet available.\n\nFor other divination methods, please try Tarot, I Ching, or Palmistry from the main menu.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
-
     } catch (error) {
       this.logger.error('Error handling photo reading request:', error);
       await this.handleProcessingError(phoneNumber, error);
@@ -292,7 +284,6 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       ) || `📊 Thank you for uploading your chart file (${document.filename}). Chart file analysis is not yet available.\n\nPlease use our built-in birth chart generator for personalized readings.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
-
     } catch (error) {
       this.logger.error('Error handling chart file upload:', error);
       await this.handleProcessingError(phoneNumber, error);
@@ -305,7 +296,7 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    * @returns {boolean} True if palmistry request
    */
   isPalmistryRequest(caption) {
-    if (!caption) return false;
+    if (!caption) { return false; }
     const palmistryKeywords = ['palm', 'hand', 'palmistry', 'palm reading', 'hand reading'];
     const lowerCaption = caption.toLowerCase();
     return palmistryKeywords.some(keyword => lowerCaption.includes(keyword));
@@ -317,7 +308,7 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    * @returns {boolean} True if kundli request
    */
   isKundliRequest(caption) {
-    if (!caption) return false;
+    if (!caption) { return false; }
     const kundliKeywords = ['kundli', 'chart', 'birth chart', 'natal chart', 'horoscope'];
     const lowerCaption = caption.toLowerCase();
     return kundliKeywords.some(keyword => lowerCaption.includes(keyword));
@@ -329,7 +320,7 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    * @returns {boolean} True if photo reading request
    */
   isPhotoReadingRequest(caption) {
-    if (!caption) return false;
+    if (!caption) { return false; }
     const photoKeywords = ['photo reading', 'photo analysis', 'aura', 'energy', 'vibe'];
     const lowerCaption = caption.toLowerCase();
     return photoKeywords.some(keyword => lowerCaption.includes(keyword));
@@ -342,7 +333,7 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    * @returns {boolean} True if chart file
    */
   isChartFile(mimeType, filename) {
-    if (!mimeType && !filename) return false;
+    if (!mimeType && !filename) { return false; }
 
     const chartExtensions = ['.pdf', '.png', '.jpg', '.jpeg', '.svg'];
     const chartMimes = ['application/pdf', 'image/png', 'image/jpeg'];

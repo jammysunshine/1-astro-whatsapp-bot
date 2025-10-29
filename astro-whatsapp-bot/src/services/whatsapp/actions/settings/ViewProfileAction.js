@@ -45,7 +45,6 @@ class ViewProfileAction extends BaseAction {
         profileComplete: freshUserData.profileComplete,
         subscriptionTier: freshUserData.subscriptionTier
       };
-
     } catch (error) {
       this.logger.error('Error in ViewProfileAction:', error);
       await this.handleExecutionError(error);
@@ -134,7 +133,7 @@ class ViewProfileAction extends BaseAction {
    * Send option to edit profile
    */
   async sendEditOption() {
-    setTimeout(async () => {
+    setTimeout(async() => {
       try {
         const editMessage = '💡 *Need to update your information?* Use Settings → Update Profile to edit your birth details, name, or preferences.\n\nOr type "settings" to see all options.';
         await sendMessage(this.phoneNumber, editMessage, 'text');
@@ -156,7 +155,7 @@ class ViewProfileAction extends BaseAction {
         // DDMMYY format
         const day = birthDate.substring(0, 2);
         const month = birthDate.substring(2, 4);
-        const year = '19' + birthDate.substring(4, 6);
+        const year = `19${birthDate.substring(4, 6)}`;
         return `${day}/${month}/${year}`;
       } else {
         // DDMMYYYY format
@@ -194,25 +193,25 @@ class ViewProfileAction extends BaseAction {
    */
   getLanguageDisplay(languageCode) {
     const languages = {
-      'en': 'English',
-      'hi': 'Hindi',
-      'ar': 'Arabic',
-      'es': 'Spanish',
-      'fr': 'French',
-      'bn': 'Bengali',
-      'ur': 'Urdu',
-      'pt': 'Portuguese',
-      'ru': 'Russian',
-      'de': 'German',
-      'it': 'Italian',
-      'th': 'Thai',
-      'ta': 'Tamil',
-      'te': 'Telugu',
-      'gu': 'Gujarati',
-      'mr': 'Marathi',
-      'kn': 'Kannada',
-      'ml': 'Malayalam',
-      'pa': 'Punjabi'
+      en: 'English',
+      hi: 'Hindi',
+      ar: 'Arabic',
+      es: 'Spanish',
+      fr: 'French',
+      bn: 'Bengali',
+      ur: 'Urdu',
+      pt: 'Portuguese',
+      ru: 'Russian',
+      de: 'German',
+      it: 'Italian',
+      th: 'Thai',
+      ta: 'Tamil',
+      te: 'Telugu',
+      gu: 'Gujarati',
+      mr: 'Marathi',
+      kn: 'Kannada',
+      ml: 'Malayalam',
+      pa: 'Punjabi'
     };
     return languages[languageCode] || languageCode || 'English';
   }
@@ -260,7 +259,7 @@ class ViewProfileAction extends BaseAction {
    */
   formatDate(date) {
     try {
-      if (!date) return 'Never';
+      if (!date) { return 'Never'; }
       const d = new Date(date);
       return d.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -278,8 +277,8 @@ class ViewProfileAction extends BaseAction {
    * @returns {string} Masked phone number
    */
   maskPhoneNumber(phone) {
-    if (!phone || phone.length < 4) return phone;
-    const length = phone.length;
+    if (!phone || phone.length < 4) { return phone; }
+    const { length } = phone;
     const last4 = phone.substring(length - 4);
     return `...${last4}`;
   }

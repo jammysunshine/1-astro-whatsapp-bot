@@ -14,7 +14,6 @@ class SolarReturnAction extends BaseAction {
 
       await this.sendSolarReturnAnalysis();
       return { success: true, type: 'solar_return' };
-
     } catch (error) {
       await this.handleExecutionError(error);
       return { success: false, reason: error.message };
@@ -22,19 +21,19 @@ class SolarReturnAction extends BaseAction {
   }
 
   async sendSolarReturnAnalysis() {
-    const analysis = `☀️ *Solar Return - Your Annual Cosmic Blueprint*\n\n` +
-      `The solar return marks your personal New Year when the Sun returns to your natal position. This chart reveals the themes, opportunities, and challenges for your upcoming year.\n\n` +
-      `*🌅 SOLAR RETURN SIGNIFICANCE:*\n` +
-      `• Annual life themes and lessons\n` +
-      `• Major opportunities and challenges\n` +
-      `• Career and relationship developments\n` +
-      `• Health and spiritual growth areas\n` +
-      `• Financial cycles and abundance patterns\n\n` +
-      `*🕐 TIMING INSIGHT:*\n` +
-      `Your solar return occurs once each year around your birthday. The planetary placements at that moment create your annual destiny blueprint.\n\n` +
-      `*✨ UNLOCK YOUR YEAR'S DESTINY:*\n` +
-      `Understanding your solar return chart helps you consciously align with the universe's timing for your personal growth journey.\n\n` +
-      `*The coming year holds special cosmic gifts for your soul's evolution.*`;
+    const analysis = '☀️ *Solar Return - Your Annual Cosmic Blueprint*\n\n' +
+      'The solar return marks your personal New Year when the Sun returns to your natal position. This chart reveals the themes, opportunities, and challenges for your upcoming year.\n\n' +
+      '*🌅 SOLAR RETURN SIGNIFICANCE:*\n' +
+      '• Annual life themes and lessons\n' +
+      '• Major opportunities and challenges\n' +
+      '• Career and relationship developments\n' +
+      '• Health and spiritual growth areas\n' +
+      '• Financial cycles and abundance patterns\n\n' +
+      '*🕐 TIMING INSIGHT:*\n' +
+      'Your solar return occurs once each year around your birthday. The planetary placements at that moment create your annual destiny blueprint.\n\n' +
+      '*✨ UNLOCK YOUR YEAR\'S DESTINY:*\n' +
+      'Understanding your solar return chart helps you consciously align with the universe\'s timing for your personal growth journey.\n\n' +
+      '*The coming year holds special cosmic gifts for your soul\'s evolution.*';
 
     const userLanguage = this.getUserLanguage();
     const buttons = [{

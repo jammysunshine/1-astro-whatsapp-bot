@@ -38,7 +38,6 @@ class ShowMainMenuAction extends BaseAction {
         menuType: 'main',
         buttons: menuData.buttons?.length || 0
       };
-
     } catch (error) {
       this.logger.error('Error in ShowMainMenuAction:', error);
       await this.handleExecutionError(error);

@@ -126,7 +126,9 @@
       "set_tamil": "✅ Language set to Tamil! 🇮🇳",
       "set_arabic": "✅ Language set to Arabic! 🇸🇦",
       "set_french": "✅ Language set to French! 🇫🇷",
-      "set_german": "✅ Language set to German! 🇩🇪"
+      "set_german": "✅ Language set to German! 🇩🇪",
+      "set_confirmation": "✅ Language set to {language}! {flag}",
+      "set_confirmation_guide": "🌟 Language set to {flag} {name}!\n\nYou can now:\n- Access all menu options in your language\n- Get astrology readings with translations\n- Change language anytime via Settings\n\nMain menu: \"menu\" or \"Menu\""
     },
     "subscription": {
       "plans": {

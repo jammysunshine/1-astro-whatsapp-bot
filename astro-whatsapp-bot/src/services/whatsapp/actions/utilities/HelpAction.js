@@ -32,7 +32,6 @@ class HelpAction extends BaseAction {
         type: 'help_information',
         helpType: 'comprehensive'
       };
-
     } catch (error) {
       this.logger.error('Error in HelpAction:', error);
       await this.handleExecutionError(error);
@@ -83,7 +82,6 @@ class HelpAction extends BaseAction {
         message.interactive,
         'interactive'
       );
-
     } catch (error) {
       this.logger.error('Error sending help information:', error);
       await this.handleExecutionError(error);
@@ -95,49 +93,49 @@ class HelpAction extends BaseAction {
    * @returns {string} Formatted help text
    */
   formatHelpMessage() {
-    let help = `🆘 *Help & Support - Cosmic Companion*\n\n`;
+    let help = '🆘 *Help & Support - Cosmic Companion*\n\n';
 
-    help += `*👋 Welcome to your personal astrology guide!*\n`;
-    help += `I'm here to help you understand the cosmic influences on your life through:\n\n`;
+    help += '*👋 Welcome to your personal astrology guide!*\n';
+    help += 'I\'m here to help you understand the cosmic influences on your life through:\n\n';
 
     // Main Features
-    help += `*🌟 CORE FEATURES:*\n`;
-    help += `• **Daily Horoscope** - Cosmic guidance for each day\n`;
-    help += `• **Birth Chart** - Your complete astrological blueprint\n`;
-    help += `• **Compatibility** - Relationship analysis with others\n`;
-    help += `• **Current Transits** - Planetary influences right now\n`;
-    help += `• **Numerology** - Numbers that reveal your life path\n`;
-    help += `• **Tarot Reading** - Mystical card guidance\n\n`;
+    help += '*🌟 CORE FEATURES:*\n';
+    help += '• **Daily Horoscope** - Cosmic guidance for each day\n';
+    help += '• **Birth Chart** - Your complete astrological blueprint\n';
+    help += '• **Compatibility** - Relationship analysis with others\n';
+    help += '• **Current Transits** - Planetary influences right now\n';
+    help += '• **Numerology** - Numbers that reveal your life path\n';
+    help += '• **Tarot Reading** - Mystical card guidance\n\n';
 
     // How to Use
-    help += `*📱 HOW TO USE:*\n`;
-    help += `• Send "menu" anytime to see all options\n`;
-    help += `• Complete your birth profile for personalized readings\n`;
-    help += `• Use keywords like "horoscope", "chart", "tarot"\n`;
-    help += `• Interactive buttons guide your journey\n\n`;
+    help += '*📱 HOW TO USE:*\n';
+    help += '• Send "menu" anytime to see all options\n';
+    help += '• Complete your birth profile for personalized readings\n';
+    help += '• Use keywords like "horoscope", "chart", "tarot"\n';
+    help += '• Interactive buttons guide your journey\n\n';
 
     // Getting Started
-    help += `*🚀 GETTING STARTED:*\n`;
-    help += `1. **Complete Profile**: Birth date, time, place\n`;
-    help += `2. **Choose Reading**: Pick from main menu\n`;
-    help += `3. **Explore Features**: Try different services\n`;
-    help += `4. **Ask Questions**: Natural language supported\n\n`;
+    help += '*🚀 GETTING STARTED:*\n';
+    help += '1. **Complete Profile**: Birth date, time, place\n';
+    help += '2. **Choose Reading**: Pick from main menu\n';
+    help += '3. **Explore Features**: Try different services\n';
+    help += '4. **Ask Questions**: Natural language supported\n\n';
 
     // Tips
-    help += `*💡 TIPS:*\n`;
-    help += `• All readings are personalized to your chart\n`;
-    help += `• Multilingual support available\n`;
-    help += `• Daily horoscopes refresh automatically\n`;
-    help += `• Your data is private and secure\n\n`;
+    help += '*💡 TIPS:*\n';
+    help += '• All readings are personalized to your chart\n';
+    help += '• Multilingual support available\n';
+    help += '• Daily horoscopes refresh automatically\n';
+    help += '• Your data is private and secure\n\n';
 
     // Support
-    help += `*📞 NEED ASSISTANCE?*\n`;
-    help += `• Quick start guide: Tap "🚀 Quick Start"\n`;
-    help += `• Command reference: Tap "📋 Commands"\n`;
-    help += `• Support contact: Tap "📞 Support"\n`;
-    help += `• Profile setup: Available in main menu\n\n`;
+    help += '*📞 NEED ASSISTANCE?*\n';
+    help += '• Quick start guide: Tap "🚀 Quick Start"\n';
+    help += '• Command reference: Tap "📋 Commands"\n';
+    help += '• Support contact: Tap "📞 Support"\n';
+    help += '• Profile setup: Available in main menu\n\n';
 
-    help += `*✨ Remember: The universe has a plan for you. Let the stars guide your journey.*`;
+    help += '*✨ Remember: The universe has a plan for you. Let the stars guide your journey.*';
 
     return help;
   }
@@ -155,18 +153,18 @@ class HelpAction extends BaseAction {
    * @returns {string} Quick start text
    */
   formatQuickStartGuide() {
-    return `🚀 *Quick Start Guide*\n\n` +
-      `*🎯 First Steps:*\n` +
-      `1. Complete your birth profile (required for most features)\n` +
-      `2. Try "Daily Horoscope" for immediate cosmic guidance\n` +
-      `3. Explore "Birth Chart" to understand your blueprint\n\n` +
-      `*✨ Try These Commands:*\n` +
-      `• "menu" - See all available options\n` +
-      `• "horoscope" - Get daily guidance\n` +
-      `• "chart" - View your birth chart\n` +
-      `• "tarot" - Mystical card reading\n` +
-      `• "compatibility" - Relationship analysis\n\n` +
-      `Ready to explore the cosmos? Send "menu" to begin!`;
+    return '🚀 *Quick Start Guide*\n\n' +
+      '*🎯 First Steps:*\n' +
+      '1. Complete your birth profile (required for most features)\n' +
+      '2. Try "Daily Horoscope" for immediate cosmic guidance\n' +
+      '3. Explore "Birth Chart" to understand your blueprint\n\n' +
+      '*✨ Try These Commands:*\n' +
+      '• "menu" - See all available options\n' +
+      '• "horoscope" - Get daily guidance\n' +
+      '• "chart" - View your birth chart\n' +
+      '• "tarot" - Mystical card reading\n' +
+      '• "compatibility" - Relationship analysis\n\n' +
+      'Ready to explore the cosmos? Send "menu" to begin!';
   }
 
   /**
@@ -182,30 +180,30 @@ class HelpAction extends BaseAction {
    * @returns {string} Commands text
    */
   formatCommandsList() {
-    return `📋 *Available Commands*\n\n` +
+    return '📋 *Available Commands*\n\n' +
 
-      `*🎯 ASTROLOGY COMMANDS:*\n` +
-      `• "horoscope" - Daily horoscope\n` +
-      `• "chart" - Birth chart analysis\n` +
-      `• "transits" - Current planetary influences\n` +
-      `• "compatibility" - Relationship analysis\n` +
-      `• "numerology" - Life path numbers\n\n` +
+      '*🎯 ASTROLOGY COMMANDS:*\n' +
+      '• "horoscope" - Daily horoscope\n' +
+      '• "chart" - Birth chart analysis\n' +
+      '• "transits" - Current planetary influences\n' +
+      '• "compatibility" - Relationship analysis\n' +
+      '• "numerology" - Life path numbers\n\n' +
 
-      `*🔮 DIVINATION COMMANDS:*\n` +
-      `• "tarot" - Tarot card reading\n` +
-      `• "iching" - I Ching consultation\n` +
-      `• "palmistry" - Hand analysis\n\n` +
+      '*🔮 DIVINATION COMMANDS:*\n' +
+      '• "tarot" - Tarot card reading\n' +
+      '• "iching" - I Ching consultation\n' +
+      '• "palmistry" - Hand analysis\n\n' +
 
-      `*⚙️ SYSTEM COMMANDS:*\n` +
-      `• "menu" - Main navigation\n` +
-      `• "help" - This help guide\n` +
-      `• "profile" - User settings\n` +
-      `• "language" - Change language\n\n` +
+      '*⚙️ SYSTEM COMMANDS:*\n' +
+      '• "menu" - Main navigation\n' +
+      '• "help" - This help guide\n' +
+      '• "profile" - User settings\n' +
+      '• "language" - Change language\n\n' +
 
-      `*💡 TIPS:*\n` +
-      `• Commands work in any language\n` +
-      `• Try natural language: "What's my destiny?"\n` +
-      `• Interactive buttons for easy navigation`;
+      '*💡 TIPS:*\n' +
+      '• Commands work in any language\n' +
+      '• Try natural language: "What\'s my destiny?"\n' +
+      '• Interactive buttons for easy navigation';
   }
 
   /**
@@ -221,27 +219,27 @@ class HelpAction extends BaseAction {
    * @returns {string} Support text
    */
   formatSupportInfo() {
-    return `📞 *Contact Support*\n\n` +
-      `*🆘 Need Help?*\n` +
-      `We're here to assist you on your cosmic journey!\n\n` +
+    return '📞 *Contact Support*\n\n' +
+      '*🆘 Need Help?*\n' +
+      'We\'re here to assist you on your cosmic journey!\n\n' +
 
-      `*📧 Contact Methods:*\n` +
-      `• In-app: Use the feedback option in settings\n` +
-      `• Email: support@cosmiccompanion.com\n` +
-      `• Hours: 24/7 (AI assistant available)\n\n` +
+      '*📧 Contact Methods:*\n' +
+      '• In-app: Use the feedback option in settings\n' +
+      '• Email: support@cosmiccompanion.com\n' +
+      '• Hours: 24/7 (AI assistant available)\n\n' +
 
-      `*❓ Common Questions:*\n` +
-      `• How do I complete my profile? → Use "Settings" menu\n` +
-      `• Why do I need birth details? → For accurate calculations\n` +
-      `• Can I change my language? → Yes, in profile settings\n` +
-      `• Is my data secure? → Yes, fully encrypted and private\n\n` +
+      '*❓ Common Questions:*\n' +
+      '• How do I complete my profile? → Use "Settings" menu\n' +
+      '• Why do I need birth details? → For accurate calculations\n' +
+      '• Can I change my language? → Yes, in profile settings\n' +
+      '• Is my data secure? → Yes, fully encrypted and private\n\n' +
 
-      `*🕐 Response Time:*\n` +
-      `• General questions: Immediate (this chat)\n` +
-      `• Technical issues: Within 24 hours\n` +
-      `• Custom consultations: 2-3 business days\n\n` +
+      '*🕐 Response Time:*\n' +
+      '• General questions: Immediate (this chat)\n' +
+      '• Technical issues: Within 24 hours\n' +
+      '• Custom consultations: 2-3 business days\n\n' +
 
-      `*💫 Thank you for choosing Cosmic Companion!*`;
+      '*💫 Thank you for choosing Cosmic Companion!*';
   }
 
   /**

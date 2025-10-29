@@ -25,7 +25,6 @@ class MuhurtaAction extends BaseAction {
 
       // Call the legacy implementation
       return await executeMenuAction(this.phoneNumber, this.user, 'get_muhurta_analysis');
-
     } catch (error) {
       this.logger.error('Error in MuhurtaAction:', error);
       await this.handleExecutionError(error);

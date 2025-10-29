@@ -17,7 +17,7 @@ class KeywordMapper {
    * Initialize with default keyword mappings
    */
   initialize() {
-    if (this.initialized) return;
+    if (this.initialized) { return; }
 
     // Basic astrology actions
     this.addKeywordMapping(['horoscope', 'horo', 'daily horoscope'], 'get_daily_horoscope');
@@ -120,7 +120,7 @@ class KeywordMapper {
     }
 
     const cleanText = text.toLowerCase().trim();
-    if (!cleanText) return null;
+    if (!cleanText) { return null; }
 
     // Direct exact matches first
     if (this.keywordMap.has(cleanText)) {
@@ -193,7 +193,7 @@ class KeywordMapper {
     const longer = str1.length > str2.length ? str1 : str2;
     const shorter = str1.length > str2.length ? str2 : str1;
 
-    if (longer.length === 0) return 1.0;
+    if (longer.length === 0) { return 1.0; }
 
     const editDistance = this.levenshteinDistance(longer, shorter);
     return (longer.length - editDistance) / longer.length;
@@ -278,30 +278,29 @@ class KeywordMapper {
 
       // For now, handle basic language variations manually
       const localizedMappings = {
-        'hi': {
-          'कुंडली': 'show_birth_chart',
+        hi: {
+          कुंडली: 'show_birth_chart',
           'जन्म चार्ट': 'show_birth_chart',
-          'तारोट': 'get_tarot_reading',
-          'मेनू': 'show_main_menu'
+          तारोट: 'get_tarot_reading',
+          मेनू: 'show_main_menu'
         },
-        'ar': {
-          'الكوكبة': 'get_daily_horoscope',
-          'التنجيم': 'show_birth_chart',
-          'التاروت': 'get_tarot_reading',
-          'القائمة': 'show_main_menu'
+        ar: {
+          الكوكبة: 'get_daily_horoscope',
+          التنجيم: 'show_birth_chart',
+          التاروت: 'get_tarot_reading',
+          القائمة: 'show_main_menu'
         },
-        'es': {
-          'horóscopo': 'get_daily_horoscope',
+        es: {
+          horóscopo: 'get_daily_horoscope',
           'carta natal': 'show_birth_chart',
-          'tarot': 'get_tarot_reading',
-          'menú': 'show_main_menu'
+          tarot: 'get_tarot_reading',
+          menú: 'show_main_menu'
         }
       };
 
       if (localizedMappings[language] && localizedMappings[language][input]) {
         return localizedMappings[language][input];
       }
-
     } catch (error) {
       logger.warn(`⚠️ Error matching localized keywords: ${error.message}`);
     }

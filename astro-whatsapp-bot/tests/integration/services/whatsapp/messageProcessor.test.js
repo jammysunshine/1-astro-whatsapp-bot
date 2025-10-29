@@ -15,7 +15,7 @@ const {
   validateUserProfile,
   listActionMapping
 } = require('../../../../src/services/whatsapp/messageProcessor');
-const sendMessage = require('../../../../src/services/whatsapp/messageSender').sendMessage;
+const { sendMessage } = require('../../../../src/services/whatsapp/messageSender');
 const logger = require('../../../../src/utils/logger');
 
 describe('WhatsApp Message Processor Integration Tests', () => {

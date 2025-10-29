@@ -25,7 +25,6 @@ class KaalSarpAnalysisAction extends BaseAction {
 
       // Call the legacy implementation
       return await executeMenuAction(this.phoneNumber, this.user, 'get_kaal_sarp_analysis');
-
     } catch (error) {
       this.logger.error('Error in KaalSarpAnalysisAction:', error);
       await this.handleExecutionError(error);

@@ -14,7 +14,6 @@ class MantraRecommendationAction extends BaseAction {
 
       await this.sendMantraGuide();
       return { success: true, type: 'mantra_recommendations' };
-
     } catch (error) {
       await this.handleExecutionError(error);
       return { success: false, reason: error.message };
@@ -22,30 +21,30 @@ class MantraRecommendationAction extends BaseAction {
   }
 
   async sendMantraGuide() {
-    const guide = `🪬 *Personal Mantra - Cosmic Vibrations*\n\n` +
-      `Mantras are sacred sounds that align you with divine planetary energies. Based on your birth chart, specific mantras can harmonize planetary influences and accelerate spiritual growth.\n\n` +
-      `*🪬 POWERFUL MANTRAS:*\n` +
-      `• Gayatri Mantra - Universal illumination\n` +
-      `• Mahamrityunjaya - Healing and protection\n` +
-      `• Durga Mantra - Strength and victory\n` +
-      `• Vishnu Mantra - Preservation and harmony\n` +
-      `• Shiva Mantra - Transformation and dissolution\n\n` +
-      `*⭐ PLANETARY MANTRAS:*\n` +
-      `• Sun: Om Suryaya Namaha (Leadership & Vitality)\n` +
-      `• Moon: Om Chandraya Namaha (Peace & Intuition)\n` +
-      `• Mars: Om Mangalaya Namaha (Courage & Action)\n` +
-      `• Mercury: Om Budhaya Namaha (Wisdom & Communication)\n` +
-      `• Jupiter: Om Gurave Namaha (Expansion & Fortune)\n` +
-      `• Venus: Om Shukraya Namaha (Beauty & Harmony)\n` +
-      `• Saturn: Om Shanischraya Namaha (Discipline & Structure)\n\n` +
-      `*🔊 SIGNIFICANCE POWER TIMES:*\n` +
-      `• Dawn & dusk - Maximum spiritual receptivity\n` +
-      `• Full moon - Enhanced intuition\n` +
-      `• Planetary days - Align with specific energies\n` +
-      `• Meditation practice - Deepening connection\n\n` +
-      `*✨ SACRED VIBRATIONS:*\n` +
-      `Mantras create ripple effects through the cosmos. They purify consciousness, align with universal harmony, and manifest positive planetary influences in your life.\n\n` +
-      `*Your personal mantra holds the key to cosmic alignment.*`;
+    const guide = '🪬 *Personal Mantra - Cosmic Vibrations*\n\n' +
+      'Mantras are sacred sounds that align you with divine planetary energies. Based on your birth chart, specific mantras can harmonize planetary influences and accelerate spiritual growth.\n\n' +
+      '*🪬 POWERFUL MANTRAS:*\n' +
+      '• Gayatri Mantra - Universal illumination\n' +
+      '• Mahamrityunjaya - Healing and protection\n' +
+      '• Durga Mantra - Strength and victory\n' +
+      '• Vishnu Mantra - Preservation and harmony\n' +
+      '• Shiva Mantra - Transformation and dissolution\n\n' +
+      '*⭐ PLANETARY MANTRAS:*\n' +
+      '• Sun: Om Suryaya Namaha (Leadership & Vitality)\n' +
+      '• Moon: Om Chandraya Namaha (Peace & Intuition)\n' +
+      '• Mars: Om Mangalaya Namaha (Courage & Action)\n' +
+      '• Mercury: Om Budhaya Namaha (Wisdom & Communication)\n' +
+      '• Jupiter: Om Gurave Namaha (Expansion & Fortune)\n' +
+      '• Venus: Om Shukraya Namaha (Beauty & Harmony)\n' +
+      '• Saturn: Om Shanischraya Namaha (Discipline & Structure)\n\n' +
+      '*🔊 SIGNIFICANCE POWER TIMES:*\n' +
+      '• Dawn & dusk - Maximum spiritual receptivity\n' +
+      '• Full moon - Enhanced intuition\n' +
+      '• Planetary days - Align with specific energies\n' +
+      '• Meditation practice - Deepening connection\n\n' +
+      '*✨ SACRED VIBRATIONS:*\n' +
+      'Mantras create ripple effects through the cosmos. They purify consciousness, align with universal harmony, and manifest positive planetary influences in your life.\n\n' +
+      '*Your personal mantra holds the key to cosmic alignment.*';
 
     const userLanguage = this.getUserLanguage();
     const buttons = [{

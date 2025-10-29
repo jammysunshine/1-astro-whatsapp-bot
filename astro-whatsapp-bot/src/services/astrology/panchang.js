@@ -330,25 +330,20 @@ class Panchang {
     let score = 0;
 
     // Tithi scoring
-    if (tithi.type === 'Auspicious') score += 3;
-    else if (tithi.type === 'Neutral') score += 2;
-    else score += 1;
+    if (tithi.type === 'Auspicious') { score += 3; } else if (tithi.type === 'Neutral') { score += 2; } else { score += 1; }
 
     // Yoga scoring
-    if (yoga.nature === 'Auspicious') score += 3;
-    else if (yoga.nature === 'Neutral') score += 2;
-    else score += 1;
+    if (yoga.nature === 'Auspicious') { score += 3; } else if (yoga.nature === 'Neutral') { score += 2; } else { score += 1; }
 
     // Karana scoring
-    if (karana.nature === 'Auspicious') score += 2;
-    else if (karana.nature === 'Neutral') score += 1;
+    if (karana.nature === 'Auspicious') { score += 2; } else if (karana.nature === 'Neutral') { score += 1; }
 
     // Nakshatra scoring (simplified)
     score += 2; // Most nakshatras are neutral
 
     const rating = score >= 8 ? 'Very Auspicious' :
-                   score >= 6 ? 'Auspicious' :
-                   score >= 4 ? 'Neutral' : 'Inauspicious';
+      score >= 6 ? 'Auspicious' :
+        score >= 4 ? 'Neutral' : 'Inauspicious';
 
     return {
       score,
@@ -362,7 +357,7 @@ class Panchang {
    * @private
    */
   normalizeAngle(angle) {
-    if (angle < 0) return angle + 360;
+    if (angle < 0) { return angle + 360; }
     return angle % 360;
   }
 
@@ -376,8 +371,8 @@ class Panchang {
     const auspicious = [1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13];
     const inauspicious = [4, 9, 14, 15]; // 15 = Amavasya
 
-    if (auspicious.includes(tithiNumber)) return 'Auspicious';
-    if (inauspicious.includes(tithiNumber)) return 'Inauspicious';
+    if (auspicious.includes(tithiNumber)) { return 'Auspicious'; }
+    if (inauspicious.includes(tithiNumber)) { return 'Inauspicious'; }
     return 'Neutral';
   }
 

@@ -1,24 +1,6 @@
 const logger = require('../../../utils/logger');
 const { Muhurta } = require('../muhurta');
 
-/**
- * Handle secondary progressions analysis
- * @param {string} message - User message
- * @param {Object} user - User object
- * @returns {string|null} Response or null if not handled
- */
-const handleSecondaryProgressions = (message, user) => {
-  if (!message.includes('progression') && !message.includes('secondary') && !message.includes('life pattern')) {
-    return null;
-  }
-
-  if (!user.birthDate) {
-    return '⏳ Secondary Progressions Analysis\n\n👤 I need your birth details for this advanced timing analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
-  }
-
-  const analysis = generateSecondaryProgressionsAnalysis(user);
-  return `⏳ *Secondary Progressions Analysis*\n\n${analysis.overview}\n\n🕐 *Current Progressive Year:* ${analysis.currentYear}\n\n📈 *Key Activations:*\n${analysis.keyActivations}\n\n🎯 *Life Themes:*\n${analysis.lifeThemes}\n\n🌟 *Development Focus:*\n${analysis.developmentFocus}`;
-};
 
 /**
  * Handle solar arc directions analysis
@@ -63,7 +45,7 @@ const handleEventAstrology = (message, user) => {
  * @param {Object} user - User object
  * @returns {Object} Analysis components
  */
-const generateSecondaryProgressionsAnalysis = (user) => {
+const generateSecondaryProgressionsAnalysis = user => {
   const currentYear = new Date().getFullYear();
   const birthYear = user.birthDate.length === 6 ?
     parseInt(`19${user.birthDate.substring(4)}`) :
@@ -84,7 +66,7 @@ const generateSecondaryProgressionsAnalysis = (user) => {
 
   return {
     overview: `Your ${age}-year progressed chart reveals life patterns developing over time.`,
-    currentYear: `${ageTheme.year} (ages ${Math.floor(age/5)*5}-${Math.floor(age/5)*5 + 4})`,
+    currentYear: `${ageTheme.year} (ages ${Math.floor(age / 5) * 5}-${Math.floor(age / 5) * 5 + 4})`,
     keyActivations: ageTheme.activations,
     lifeThemes: ageTheme.themes,
     developmentFocus: ageTheme.focus
@@ -96,7 +78,7 @@ const generateSecondaryProgressionsAnalysis = (user) => {
  * @param {Object} user - User object
  * @returns {Object} Analysis components
  */
-const generateSolarArcAnalysis = (user) => {
+const generateSolarArcAnalysis = user => {
   const currentYear = new Date().getFullYear();
   const birthYear = user.birthDate.length === 6 ?
     parseInt(`19${user.birthDate.substring(4)}`) :
@@ -147,7 +129,7 @@ const generateSolarArcAnalysis = (user) => {
  * @param {Object} user - User object
  * @returns {Object} Analysis components
  */
-const generateEventAstrologyAnalysis = (user) => {
+const generateEventAstrologyAnalysis = user => {
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
@@ -195,8 +177,8 @@ const generateRecommendedDates = (user, year) => {
     `${year}-12-15 to ${year}-12-25\tCapricorn influence - career milestones`
   ];
 
-  return recommendations.slice(0, 4).join('\n• ') +
-         '\n\n*Note: These are general auspicious periods. Professional timing consultation recommended for major events.*';
+  return `${recommendations.slice(0, 4).join('\n• ')
+  }\n\n*Note: These are general auspicious periods. Professional timing consultation recommended for major events.*`;
 };
 
 /**
@@ -256,7 +238,7 @@ const handleMarriageCompatibility = (message, user) => {
     return null;
   }
 
-  return `💍 *Marriage Compatibility Analysis*\n\nCosmic compatibility combines synastry, composite charts, and astral timing for optimal union assessment.\n\n🎭 *Compatibility Factors:*\n• Synastry analysis of planetary interactions\n• Composite chart for relationship identity\n• Venus-Mars aspects for passion and harmony\n• Moon connections for emotional bonding\n• Seventh house themes for partnership patterns\n\n✨ *Higher Compatibility Elements:*\n• Shared Jupiter connections (faith, wisdom)\n• Beneficial Saturn aspects (commitment, structure)\n• Harmonious Uranus links (freedom, excitement)\n• Supportive Neptune bonds (spirituality, dreams)\n\n💫 *Timing Wisdom:* "The stars impel but do not compel" - choose partners who become your compliment, not your supplement.`;
+  return '💍 *Marriage Compatibility Analysis*\n\nCosmic compatibility combines synastry, composite charts, and astral timing for optimal union assessment.\n\n🎭 *Compatibility Factors:*\n• Synastry analysis of planetary interactions\n• Composite chart for relationship identity\n• Venus-Mars aspects for passion and harmony\n• Moon connections for emotional bonding\n• Seventh house themes for partnership patterns\n\n✨ *Higher Compatibility Elements:*\n• Shared Jupiter connections (faith, wisdom)\n• Beneficial Saturn aspects (commitment, structure)\n• Harmonious Uranus links (freedom, excitement)\n• Supportive Neptune bonds (spirituality, dreams)\n\n💫 *Timing Wisdom:* "The stars impel but do not compel" - choose partners who become your compliment, not your supplement.';
 };
 
 /**
@@ -286,7 +268,7 @@ const handlePrashna = (message, user) => {
     return null;
   }
 
-  return `❓ *Prashna Astrology - Question-Based Divination*\n\nAncient Vedic system answers your questions through horary charts cast at the moment of inquiry.\n\n🔮 *Prashna Methodology:*\n• Chart cast for exact question time\n• Day lord shows immediate influences\n• House positions reveal answer context\n• Planetary strength indicates outcome probability\n•⁹Dasha periods show timing of resolution\n\n📊 *Question Categories:*\n• Career and Financial\n• Relationships and Marriage\n• Health and Recovery\n• Timing and Events\n• Yes/No Query Format\n\n💫 *Key Insight:* Prashna astrology provides direct, personalized answers by reading the language of the stars at your question's birth moment.`;
+  return '❓ *Prashna Astrology - Question-Based Divination*\n\nAncient Vedic system answers your questions through horary charts cast at the moment of inquiry.\n\n🔮 *Prashna Methodology:*\n• Chart cast for exact question time\n• Day lord shows immediate influences\n• House positions reveal answer context\n• Planetary strength indicates outcome probability\n•⁹Dasha periods show timing of resolution\n\n📊 *Question Categories:*\n• Career and Financial\n• Relationships and Marriage\n• Health and Recovery\n• Timing and Events\n• Yes/No Query Format\n\n💫 *Key Insight:* Prashna astrology provides direct, personalized answers by reading the language of the stars at your question\'s birth moment.';
 };
 
 /**
@@ -295,7 +277,7 @@ const handlePrashna = (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleElectional = async (message, user) => {
+const handleElectional = async(message, user) => {
   if (!message.includes('electional') && !message.includes('auspicious') && !message.includes('timing') && !message.includes('muhurta') && !message.includes('wedding time') && !message.includes('business opening')) {
     return null;
   }
@@ -347,7 +329,6 @@ const handleElectional = async (message, user) => {
     }
 
     return muhurtaAnalysis.summary;
-
   } catch (error) {
     console.error('Electional astrology error:', error);
     return '📅 *Electional Astrology - Auspicious Timing*\n\nClassical art of choosing optimal moments for important beginnings through celestial alignment.\n\n🎯 *Electional Foundations:*\n• Moon void of course timing\n• Ascendant placement preference\n• Benefic planet configuration\n• Planetary hour alignment\n• Day and hour lord harmony\n\nPlease specify event type: wedding, business, house, travel, medical, spiritual';
@@ -360,7 +341,7 @@ const handleElectional = async (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleHorary = async (message, user) => {
+const handleHorary = async(message, user) => {
   if (!message.includes('horary') && !message.includes('horoscope') && !message.includes('chart') && !message.includes('moment')) {
     return null;
   }
@@ -380,7 +361,7 @@ const handleHorary = async (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleSecondaryProgressions = async (message, user) => {
+const handleSecondaryProgressions = async(message, user) => {
   if (!message.includes('progression') && !message.includes('secondary') && !message.includes('life pattern')) {
     return null;
   }

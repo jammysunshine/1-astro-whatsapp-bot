@@ -42,7 +42,6 @@ class NumerologyReportAction extends BaseAction {
         type: 'numerology_report',
         numbersCalculated: Object.keys(numerologyData).length
       };
-
     } catch (error) {
       this.logger.error('Error in NumerologyReportAction:', error);
       await this.handleExecutionError(error);
@@ -70,7 +69,6 @@ class NumerologyReportAction extends BaseAction {
       }
 
       return report;
-
     } catch (error) {
       this.logger.error('Error generating numerology report:', error);
       // Return basic fallback calculations
@@ -318,7 +316,6 @@ class NumerologyReportAction extends BaseAction {
         message.interactive,
         'interactive'
       );
-
     } catch (error) {
       this.logger.error('Error sending numerology report:', error);
       await this.handleExecutionError(error);
@@ -354,10 +351,10 @@ class NumerologyReportAction extends BaseAction {
     }
 
     if (data.isFallback) {
-      report += `*⚠️ Note:* This is a basic calculation. For detailed analysis, complete numerology charts are recommended.\n\n`;
+      report += '*⚠️ Note:* This is a basic calculation. For detailed analysis, complete numerology charts are recommended.\n\n';
     }
 
-    report += `*🔍 Your numerology reveals the patterns of your soul's journey. Numbers are the universal language through which the cosmos communicates with us.*`;
+    report += '*🔍 Your numerology reveals the patterns of your soul\'s journey. Numbers are the universal language through which the cosmos communicates with us.*';
 
     return report;
   }

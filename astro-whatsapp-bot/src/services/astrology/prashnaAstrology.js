@@ -288,11 +288,11 @@ class PrashnaAstrology {
    */
   analyzeRulingPlanet(significator, horaryChart) {
     const planet = horaryChart.planets[significator.planet];
-    if (!planet) return { status: 'Not found', condition: 'Neutral' };
+    if (!planet) { return { status: 'Not found', condition: 'Neutral' }; }
 
     let condition = 'Neutral';
-    let strength = planet.strength;
-    let aspects = [];
+    let { strength } = planet;
+    const aspects = [];
     let dignity = 'Neutral';
 
     // Check dignity
@@ -350,17 +350,13 @@ class PrashnaAstrology {
     let score = 0;
 
     // Ruling planet condition
-    if (rulingPlanet.condition === 'Favorable') score += 2;
-    else if (rulingPlanet.condition === 'Difficult') score -= 2;
+    if (rulingPlanet.condition === 'Favorable') { score += 2; } else if (rulingPlanet.condition === 'Difficult') { score -= 2; }
 
     // Dignity strength
-    if (rulingPlanet.dignity === 'Exalted') score += 2;
-    else if (rulingPlanet.dignity === 'Own Sign') score += 1;
-    else if (rulingPlanet.dignity === 'Debilitated') score -= 2;
+    if (rulingPlanet.dignity === 'Exalted') { score += 2; } else if (rulingPlanet.dignity === 'Own Sign') { score += 1; } else if (rulingPlanet.dignity === 'Debilitated') { score -= 2; }
 
     // House position
-    if ([1, 5, 9].includes(rulingPlanet.house)) score += 1;
-    else if ([6, 8, 12].includes(rulingPlanet.house)) score -= 1;
+    if ([1, 5, 9].includes(rulingPlanet.house)) { score += 1; } else if ([6, 8, 12].includes(rulingPlanet.house)) { score -= 1; }
 
     // Moon condition (mind of questioner)
     const moonSign = horaryChart.planets.moon?.sign;
@@ -483,7 +479,7 @@ class PrashnaAstrology {
     let accuracyScore = 50; // Base 50%
 
     // Moon void of course = less reliable
-    const moon = horaryChart.planets.moon;
+    const { moon } = horaryChart.planets;
     if (moon && this.isVoidOfCourse(moon, horaryChart)) {
       accuracyScore -= 20;
       // Moon void means question not ready or answer unclear
@@ -519,22 +515,22 @@ class PrashnaAstrology {
     const probability = `${prediction.probability}% likely`;
     const timingInfo = timing.period;
 
-    let summary = `🔮 **PRASHNA ASTROLOGY READING**\n\n`;
+    let summary = '🔮 **PRASHNA ASTROLOGY READING**\n\n';
     summary += `**Question:** "${question}"\n\n`;
     summary += `**Answer:** ${answer} (${probability})\n`;
     summary += `**Outcome:** ${prediction.outcome}\n`;
     summary += `**Timing:** ${timingInfo}\n\n`;
 
-    summary += `**Recommendations:**\n`;
+    summary += '**Recommendations:**\n';
     recommendations.actions.forEach(action => {
       summary += `✅ ${action}\n`;
     });
-    summary += `\n⚠️ **Precautions:**\n`;
+    summary += '\n⚠️ **Precautions:**\n';
     recommendations.precautions.forEach(precaution => {
       summary += `⚠️ ${precaution}\n`;
     });
 
-    summary += `\n📿 **Suggested Mantras:**\n`;
+    summary += '\n📿 **Suggested Mantras:**\n';
     recommendations.mantras.forEach(mantra => {
       summary += `🕉️ ${mantra}\n`;
     });
@@ -542,7 +538,7 @@ class PrashnaAstrology {
     summary += `\n⏰ **Timing Advice:**\n${recommendations.timing_advice}\n\n`;
 
     summary += `*Prashna accuracy: ${prediction.confidence} (${prediction.probability}%)\n`;
-    summary += `Chart cast at exact moment of question.* 🪐`;
+    summary += 'Chart cast at exact moment of question.* 🪐';
 
     return summary;
   }

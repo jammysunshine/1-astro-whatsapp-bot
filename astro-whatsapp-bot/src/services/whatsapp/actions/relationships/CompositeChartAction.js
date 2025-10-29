@@ -20,7 +20,6 @@ class CompositeChartAction extends BaseAction {
 
       await this.sendCompositeChartIntro();
       return { success: true, type: 'composite_chart_intro' };
-
     } catch (error) {
       this.logger.error('Error in CompositeChartAction:', error);
       await this.handleExecutionError(error);
@@ -29,20 +28,20 @@ class CompositeChartAction extends BaseAction {
   }
 
   async sendCompositeChartIntro() {
-    const analysis = `🌟 *Composite Chart - The Soul of Your Relationship*\n\n` +
-      `A composite chart shows your relationship as a living entity with its own birth chart. This reveals the relationship's purpose, challenges, and potential.\n\n` +
-      `*❤️ COMPOSITE CHART REVEALS:*\n` +
-      `• The relationship's personality and character\n` +
-      `• Shared life purpose and karmic lessons\n` +
-      `• Natural strengths and relationship dynamics\n` +
-      `• Communication style and emotional patterns\n` +
-      `• Long-term potential and growth areas\n\n` +
-      `*🔮 RELATIONSHIP TYPES:*\n` +
-      `• Romantic partnerships and marriages\n` +
-      `• Business partnerships and collaborations\n` +
-      `• Family relationships and healing\n` +
-      `• Creative collaborations and projects\n\n` +
-      `*Your composite chart is the blueprint of your relationship's soul.*`;
+    const analysis = '🌟 *Composite Chart - The Soul of Your Relationship*\n\n' +
+      'A composite chart shows your relationship as a living entity with its own birth chart. This reveals the relationship\'s purpose, challenges, and potential.\n\n' +
+      '*❤️ COMPOSITE CHART REVEALS:*\n' +
+      '• The relationship\'s personality and character\n' +
+      '• Shared life purpose and karmic lessons\n' +
+      '• Natural strengths and relationship dynamics\n' +
+      '• Communication style and emotional patterns\n' +
+      '• Long-term potential and growth areas\n\n' +
+      '*🔮 RELATIONSHIP TYPES:*\n' +
+      '• Romantic partnerships and marriages\n' +
+      '• Business partnerships and collaborations\n' +
+      '• Family relationships and healing\n' +
+      '• Creative collaborations and projects\n\n' +
+      '*Your composite chart is the blueprint of your relationship\'s soul.*';
 
     const userLanguage = this.getUserLanguage();
     const buttons = [{

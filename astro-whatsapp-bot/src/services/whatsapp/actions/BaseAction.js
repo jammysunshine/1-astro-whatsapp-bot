@@ -102,7 +102,7 @@ class BaseAction {
    */
   logExecution(result) {
     logger.info(`🔧 Executed ${this.getActionName()} for ${this.phoneNumber}:`,
-               result ? 'success' : 'no response');
+      result ? 'success' : 'no response');
   }
 }
 

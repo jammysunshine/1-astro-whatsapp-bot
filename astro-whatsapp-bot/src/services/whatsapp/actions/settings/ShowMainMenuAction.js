@@ -41,7 +41,6 @@ class ShowMainMenuAction extends BaseAction {
         menuType: 'main',
         language: userLanguage
       };
-
     } catch (error) {
       this.logger.error('Error showing main menu:', error);
       await this.handleExecutionError(error);
@@ -89,7 +88,6 @@ class ShowMainMenuAction extends BaseAction {
         message.interactive,
         'interactive'
       );
-
     } catch (error) {
       this.logger.error('Error sending fallback menu:', error);
       // Final fallback to plain text
@@ -269,7 +267,7 @@ Type "menu" to see this menu again.`;
     const defaults = {
       'messages.menus.main.welcome': '🕉️ *Welcome to Astro Insights*\n\nDiscover your cosmic blueprint through ancient wisdom and modern astrology.',
       'menu.section.astrology': '🔮 Astrology Services',
-      'menu.daily_horoscope': '☀️ Daily Horoscope',
+      'menu.daily_horoscope': '☀️ Daily Horoscope'
       // Add more defaults as needed
     };
     return defaults[key] || '';

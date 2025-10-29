@@ -16,7 +16,6 @@ class HealthAstrologyAction extends BaseAction {
 
       await this.sendHealthAnalysis();
       return { success: true, type: 'health_astrology' };
-
     } catch (error) {
       await this.handleExecutionError(error);
       return { success: false, reason: error.message };
@@ -24,19 +23,19 @@ class HealthAstrologyAction extends BaseAction {
   }
 
   async sendHealthAnalysis() {
-    const analysis = `🏥 *Medical Astrology - Body & Spirit Integration*\n\n` +
-      `Astrology reveals the cosmic influences on health, vitality, and healing patterns in your life.\n\n` +
-      `*🔬 MEDICAL ASTROLOGY INSIGHTS:*\n` +
-      `• **1st House** - Overall vitality and physical body\n` +
-      `• **6th House** - Daily health routines and service\n` +
-      `• **8th House** - Deep healing and transformation\n` +
-      `• **12th House** - Chronic conditions and spiritual healing\n\n` +
-      `*⭐ KEY PLANETS FOR HEALTH:*\n` +
-      `• **Mars** - Energy, surgery, inflammation, vitality\n` +
-      `• **Saturn** - Bones, teeth, joints, chronic conditions\n` +
-      `• **Moon** - Emotions, stomach, digestion, fluids\n` +
-      `• **6th House Ruler** - Daily health and wellness\n\n` +
-      `*Note: Medical astrology complements professional healthcare but should not replace medical advice.*`;
+    const analysis = '🏥 *Medical Astrology - Body & Spirit Integration*\n\n' +
+      'Astrology reveals the cosmic influences on health, vitality, and healing patterns in your life.\n\n' +
+      '*🔬 MEDICAL ASTROLOGY INSIGHTS:*\n' +
+      '• **1st House** - Overall vitality and physical body\n' +
+      '• **6th House** - Daily health routines and service\n' +
+      '• **8th House** - Deep healing and transformation\n' +
+      '• **12th House** - Chronic conditions and spiritual healing\n\n' +
+      '*⭐ KEY PLANETS FOR HEALTH:*\n' +
+      '• **Mars** - Energy, surgery, inflammation, vitality\n' +
+      '• **Saturn** - Bones, teeth, joints, chronic conditions\n' +
+      '• **Moon** - Emotions, stomach, digestion, fluids\n' +
+      '• **6th House Ruler** - Daily health and wellness\n\n' +
+      '*Note: Medical astrology complements professional healthcare but should not replace medical advice.*';
 
     const userLanguage = this.getUserLanguage();
     const buttons = [{

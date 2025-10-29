@@ -49,7 +49,6 @@ class DailyHoroscopeAction extends BaseAction {
         type: 'horoscope',
         responseLength: horoscopeResponse.length
       };
-
     } catch (error) {
       this.logger.error('Error in DailyHoroscopeAction:', error);
       await this.handleExecutionError(error);
@@ -72,7 +71,6 @@ class DailyHoroscopeAction extends BaseAction {
 
       // Fallback if astrology engine fails
       return this.generateFallbackHoroscope();
-
     } catch (error) {
       this.logger.warn('Astrology engine failed, using fallback:', error.message);
       return this.generateFallbackHoroscope();
@@ -180,7 +178,6 @@ class DailyHoroscopeAction extends BaseAction {
         message.interactive,
         'interactive'
       );
-
     } catch (error) {
       this.logger.error('Error sending horoscope response:', error);
       // Fallback to simple text message

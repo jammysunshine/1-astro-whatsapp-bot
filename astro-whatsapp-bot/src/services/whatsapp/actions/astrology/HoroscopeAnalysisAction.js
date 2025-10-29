@@ -25,7 +25,6 @@ class HoroscopeAnalysisAction extends BaseAction {
 
       // Call the legacy implementation
       return await executeMenuAction(this.phoneNumber, this.user, 'get_horoscope');
-
     } catch (error) {
       this.logger.error('Error in HoroscopeAnalysisAction:', error);
       await this.handleExecutionError(error);

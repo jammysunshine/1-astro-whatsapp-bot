@@ -3,7 +3,7 @@
  * Handles Hindu calendar and daily timing requests
  */
 const logger = require('../../../../utils/logger');
-const { Panchang } = require('../../../panchang');
+const { Panchang } = require('../../panchang');
 
 const handlePanchang = async (message, user) => {
   if (!message.includes('panchang') && !message.includes('daily calendar') && !message.includes('hindu calendar')) {

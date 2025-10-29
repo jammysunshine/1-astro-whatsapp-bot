@@ -4,7 +4,7 @@
  */
 const logger = require('../../../../utils/logger');
 
-const vimshottariDasha = require('../../../vimshottariDasha');
+const vimshottariDasha = require('../../vimshottariDasha');
 
 const handleVimshottariDasha = async (message, user) => {
   if (!message.includes('dasha') && !message.includes('vimshottari') && !message.includes('planetary period') && !message.includes('dasha analysis')) {

@@ -3,7 +3,7 @@
  * Handles gemstone and remedy recommendations
  */
 const logger = require('../../../../utils/logger');
-const { VedicRemedies } = require('../../../vedicRemedies');
+const VedicRemedies = require('../../vedicRemedies');
 
 const handleVedicRemedies = async (message, user) => {
   if (!message.includes('remedy') && !message.includes('remedies') && !message.includes('gem') && !message.includes('gemstone')) {

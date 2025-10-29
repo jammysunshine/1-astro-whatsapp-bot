@@ -3,7 +3,7 @@
  * Handles evolutionary potential and future self analysis
  */
 const logger = require('../../../../utils/logger');
-const { AgeHarmonicAstrologyReader } = require('../../../ageHarmonicAstrology');
+const { AgeHarmonicAstrologyReader } = require('../vedic/calculations');
 
 const handleFutureSelf = async (message, user) => {
   if (!message.includes('future') && !message.includes('self') && !message.includes('potential') && !message.includes('evolution')) {

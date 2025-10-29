@@ -3,7 +3,7 @@
  * Handles Vedic numerology and name number analysis requests
  */
 const logger = require('../../../../utils/logger');
-const vedicNumerology = require('../../../vedicNumerology');
+const vedicNumerology = require('../../vedicNumerology');
 
 const handleVedicNumerology = async (message, user) => {
   if (!message.includes('vedic') && !message.includes('numerology') && !message.includes('numbers')) {

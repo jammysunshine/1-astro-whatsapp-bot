@@ -28,11 +28,6 @@
             "description": "Compatibility, family synergy, and group dynamics"
           },
           {
-            "id": "show_numerology_special_menu",
-            "title": "🔢 Numerology & Readings",
-            "description": "Life path numbers and harmonic astrology insights"
-          },
-          {
             "id": "show_settings_profile_menu",
             "title": "⚙️ Settings & Profile",
             "description": "Manage your profile and app preferences"
@@ -217,23 +212,44 @@
     ]
   },
   "settings_profile_menu": {
-    "type": "button",
+    "type": "list",
+    "button": "Choose Setting",
     "body": "⚙️ *Settings & Profile*\n\nManage your account and preferences:",
-    "buttons": [
+    "sections": [
       {
-        "id": "btn_update_profile",
-        "title": "📝 Update Profile",
-        "action": "start_profile_flow"
+        "title": "👤 Profile Management",
+        "rows": [
+          {
+            "id": "btn_update_profile",
+            "title": "📝 Update Profile",
+            "description": "Edit birth details and information"
+          },
+          {
+            "id": "btn_view_profile",
+            "title": "👀 View Profile",
+            "description": "See your current profile settings"
+          }
+        ]
       },
       {
-        "id": "btn_view_profile",
-        "title": "👀 View Profile",
-        "action": "show_user_profile"
+        "title": "🌐 Language Settings",
+        "rows": [
+          {
+            "id": "show_language_menu",
+            "title": "🌐 Change Language",
+            "description": "Select your preferred language"
+          }
+        ]
       },
       {
-        "id": "btn_back_main",
-        "title": "🏠 Main Menu",
-        "action": "show_main_menu"
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "show_main_menu",
+            "title": "🏠 Back to Main Menu",
+            "description": "Return to main service categories"
+          }
+        ]
       }
     ]
   },
@@ -734,6 +750,113 @@
         "id": "btn_back_divination",
         "title": "⬅️ Back to Divination",
         "action": "show_divination_wisdom_menu"
+      }
+    ]
+  },
+  "language_menu": {
+    "type": "list",
+    "button": "Choose Language",
+    "body": "🌐 *Choose Your Language*\n\nSelect your preferred language for all readings and responses:",
+    "sections": [
+      {
+        "title": "🌍 Popular Languages",
+        "rows": [
+          {
+            "id": "set_language_en",
+            "title": "🇺🇸 English",
+            "description": "Default English interface"
+          },
+          {
+            "id": "set_language_hi",
+            "title": "🇮🇳 Hindi (हिन्दी)",
+            "description": "हिन्दी भाषा में संदेश"
+          },
+          {
+            "id": "set_language_ar",
+            "title": "🇸🇦 Arabic (العربية)",
+            "description": "الرسائل باللغة العربية"
+          },
+          {
+            "id": "set_language_es",
+            "title": "🇪🇸 Spanish (Español)",
+            "description": "Mensajes en español"
+          },
+          {
+            "id": "set_language_fr",
+            "title": "🇫🇷 French (Français)",
+            "description": "Messages en français"
+          }
+        ]
+      },
+      {
+        "title": "🗣️ Indian Languages",
+        "rows": [
+          {
+            "id": "set_language_ta",
+            "title": "🇮🇳 Tamil (தமிழ்)",
+            "description": "தமிழ் மொழியில் செய்திகள்"
+          },
+          {
+            "id": "set_language_te",
+            "title": "🇮🇳 Telugu (తెలుగు)",
+            "description": "తెలుగు భాషలో సందేశాలు"
+          },
+          {
+            "id": "set_language_bn",
+            "title": "🇮🇳 Bengali (বাংলা)",
+            "description": "বাংলায় বার্তা"
+          },
+          {
+            "id": "set_language_mr",
+            "title": "🇮🇳 Marathi (मराठी)",
+            "description": "मराठी भाषेत संदेश"
+          },
+          {
+            "id": "set_language_gu",
+            "title": "🇮🇳 Gujarati (ગુજરાતી)",
+            "description": "ગુજરાતી ભાષામાં સંદેશો"
+          }
+        ]
+      },
+      {
+        "title": "🌏 International",
+        "rows": [
+          {
+            "id": "set_language_de",
+            "title": "🇩🇪 German (Deutsch)",
+            "description": "Nachrichten auf Deutsch"
+          },
+          {
+            "id": "set_language_it",
+            "title": "🇮🇹 Italian (Italiano)",
+            "description": "Messaggi in italiano"
+          },
+          {
+            "id": "set_language_pt",
+            "title": "🇵🇹 Portuguese (Português)",
+            "description": "Mensagens em português"
+          },
+          {
+            "id": "set_language_ru",
+            "title": "🇷🇺 Russian (Русский)",
+            "description": "Сообщения на русском"
+          },
+          {
+            "id": "set_language_zh",
+            "title": "🇨🇳 Chinese (中文)",
+            "description": "中文信息"
+          }
+        ]
+      },
+      {
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "show_main_menu",
+            "title": "🏠 Back to Main Menu",
+            "description": "Return to main service categories"
+          }
+        ]
       }
     ]
   },

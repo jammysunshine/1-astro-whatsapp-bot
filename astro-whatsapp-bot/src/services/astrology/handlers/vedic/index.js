@@ -8,6 +8,12 @@ const { handleVedicRemedies } = require('./VedicRemediesHandler');
 const { handlePanchang } = require('./PanchangHandler');
 const { handleAshtakavarga } = require('./AshtakavargaHandler');
 const { handleFutureSelf } = require('./FutureSelfHandler');
+const { handleIslamicAstrology } = require('./IslamicAstrologyHandler');
+const { handleVimshottariDasha } = require('./VimshottariDashaHandler');
+const { handleJaiminiAstrology } = require('./JaiminiAstrologyHandler');
+const { handleHinduFestivals } = require('./HinduFestivalsHandler');
+const { handleVedicNumerology } = require('./VedicNumerologyHandler');
+const { handleAyurvedicAstrology } = require('./AyurvedicAstrologyHandler');
 
 // Export all handlers
 module.exports = {
@@ -20,5 +26,11 @@ module.exports = {
   handleVedicRemedies,
   handlePanchang,
   handleAshtakavarga,
-  handleFutureSelf
+  handleFutureSelf,
+  handleIslamicAstrology,
+  handleVimshottariDasha,
+  handleJaiminiAstrology,
+  handleHinduFestivals,
+  handleVedicNumerology,
+  handleAyurvedicAstrology
 };

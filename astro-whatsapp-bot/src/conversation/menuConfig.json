@@ -1,31 +1,48 @@
 {
   "main_menu": {
-    "type": "button",
+    "type": "list",
+    "button": "Choose Service",
     "body": "🌟 *Astro Wisdom Portal*\n\nDiscover cosmic insights through astrology, numerology, and divination traditions.\n\nChoose your preferred service:",
-    "buttons": [
+    "sections": [
       {
-        "id": "show_western_astrology_menu",
-        "title": "🌍 Western Astrology"
+        "title": "🔮 Core Astrology",
+        "rows": [
+          {
+            "id": "show_western_astrology_menu",
+            "title": "🌍 Western Astrology",
+            "description": "Modern western astrological readings"
+          },
+          {
+            "id": "show_vedic_astrology_menu",
+            "title": "🕉️ Vedic Astrology",
+            "description": "Traditional Indian astrology - Kundli"
+          },
+          {
+            "id": "show_divination_mystic_menu",
+            "title": "🔮 Divination & Mystics",
+            "description": "Tarot, palmistry, and mystical readings"
+          }
+        ]
       },
       {
-        "id": "show_vedic_astrology_menu",
-        "title": "🕉️ Vedic Astrology"
-      },
-      {
-        "id": "show_divination_mystic_menu",
-        "title": "🔮 Divination & Mystics"
-      },
-      {
-        "id": "show_relationships_groups_menu",
-        "title": "👥 Relationships"
-      },
-      {
-        "id": "show_settings_profile_menu",
-        "title": "⚙️ Settings"
-      },
-      {
-        "id": "show_numerology_special_menu",
-        "title": "🔢 Numerology & Special"
+        "title": "👥 Social & Special",
+        "rows": [
+          {
+            "id": "show_relationships_groups_menu",
+            "title": "👥 Relationships",
+            "description": "Compatibility, synastry, and group astrology"
+          },
+          {
+            "id": "show_numerology_special_menu",
+            "title": "🔢 Numerology & Special",
+            "description": "Life path, lunar returns, mundane astrology"
+          },
+          {
+            "id": "show_settings_profile_menu",
+            "title": "⚙️ Settings & Profile",
+            "description": "Manage your account and preferences"
+          }
+        ]
       }
     ]
   },

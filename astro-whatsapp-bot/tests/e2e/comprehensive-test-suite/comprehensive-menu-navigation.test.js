@@ -1224,6 +1224,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
       await processIncomingMessage(message, {});
 
       expect(sendMessage).toHaveBeenCalled();
+      console.log('sendMessage mock calls:', sendMessage.mock.calls);
       const errorCall = sendMessage.mock.calls.find(call =>
         call[1] && (call[1].includes('not available') || call[1].includes('error') || call[1].includes('try again'))
       );

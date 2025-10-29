@@ -1,5 +1,5 @@
 const logger = require('../../utils/logger');
-const { sendMessage, sendListMessage } = require('./messageSender');
+const { sendMessage, sendListMessage, getNumberedMenuAction } = require('./messageSender');
 const { generateAstrologyResponse } = require('../astrology/astrologyEngine');
 const translationService = require('../i18n/TranslationService');
 const { processFlowMessage } = require('../../conversation/conversationEngine');
@@ -261,6 +261,14 @@ const processTextMessage = async(message, user) => {
   const messageText = text.body;
 
   logger.info(`💬 Text message from ${phoneNumber}: ${messageText}`);
+
+  // Check for numbered menu input from fallback menus
+  const numberedAction = getNumberedMenuAction(phoneNumber, messageText);
+  if (numberedAction) {
+    logger.info(`🔢 Numbered menu action detected: ${numberedAction} for ${phoneNumber}`);
+    await executeMenuAction(phoneNumber, user, numberedAction);
+    return;
+  }
 
   // Check for compatibility requests with birth dates
   const compatibilityMatch = messageText.match(/(\d{2}\/\d{2}\/\d{4})/);
@@ -2155,7 +2163,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     return null;
   case 'get_tarot_reading':
     try {
-      const tarotReading = generateTarotReading(user, 'single');
+      const tarotReading = tarotReader.generateTarotReading(user, 'single');
 
       if (tarotReading.error) {
         const userLanguage = getUserLanguage(user, phoneNumber);

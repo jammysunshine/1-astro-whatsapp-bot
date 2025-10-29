@@ -2,6 +2,9 @@ const axios = require('axios');
 const logger = require('../../utils/logger');
 const translationService = require('../i18n/TranslationService');
 
+// Simple in-memory store for numbered menu mappings (in production, use Redis/DB)
+const numberedMenuMappings = new Map();
+
 // WhatsApp Business API configuration
 const WHATSAPP_API_URL = 'https://graph.facebook.com/v24.0';
 
@@ -743,10 +746,10 @@ const sendMessage = async(
           };
         }).filter(section => section.rows.length > 0); // Filter out sections with no rows
 
-        // Ensure at least one section with one row exists, otherwise send a simple text message
+        // Ensure at least one section with one row exists, otherwise send numbered text fallback
         if (validatedSections.length === 0) {
-          logger.warn(`⚠️ No valid sections found for list message to ${phoneNumber}, sending fallback text`);
-          const fallbackMessage = `Menu options:\n${message.sections?.slice(0, 5).map(s => s.rows?.slice(0, 3).map(r => `• ${r.title || r.id}`).join('\n')).filter(Boolean).join('\n') || 'No options available'}`;
+          logger.warn(`⚠️ No valid sections found for list message to ${phoneNumber}, sending numbered fallback`);
+          const fallbackMessage = `Menu options:\n${message.sections?.slice(0, 5).map(s => s.rows?.slice(0, 3).map(r => `• ${r.title || r.id}`).join('\n')).filter(Boolean).join('\n') || 'No options available'}\n\nType a number (1-9) or option name to select.`;
           response = await sendTextMessage(phoneNumber, fallbackMessage, options);
           return response;
         }
@@ -755,13 +758,55 @@ const sendMessage = async(
         if (typeof translatedBody === 'object' && translatedBody.text) {
           finalBodyTextForList = translatedBody.text;
         }
-        response = await sendListMessage(
-          phoneNumber,
-          finalBodyTextForList,
-          buttonText,
-          validatedSections,
-          options
-        );
+
+        // Debug logging for list message
+        logger.info(`📋 Sending list message to ${phoneNumber}:`);
+        logger.info(`   Body: "${finalBodyTextForList.substring(0, 50)}..."`);
+        logger.info(`   Button: "${buttonText}"`);
+        logger.info(`   Sections: ${validatedSections.length}`);
+
+        try {
+          response = await sendListMessage(
+            phoneNumber,
+            finalBodyTextForList,
+            buttonText,
+            validatedSections,
+            options
+          );
+        } catch (error) {
+        // If list message fails, create a fallback numbered menu
+        logger.warn(`⚠️ List message failed for ${phoneNumber}, sending numbered fallback`);
+        const numberedMenu = createNumberedMenuFallback(message, phoneNumber);
+
+        // Store the menu context for number-based responses
+        if (!numberedMenuMappings.has(phoneNumber)) {
+          numberedMenuMappings.set(phoneNumber, {});
+        }
+
+        // Flatten and store all menu options for easy lookup
+        const menuMappings = {};
+        let currentIndex = 1;
+
+        message.sections?.forEach(section => {
+          section.rows?.forEach(row => {
+            menuMappings[currentIndex.toString()] = row.id;
+            menuMappings[row.title.toLowerCase()] = row.id;
+            currentIndex++;
+
+            // Also map variations for flexibility
+            if (row.title.includes('(') && row.title.includes(')')) {
+              // Handle emoji variations like "🔮 Tarot Reading" -> map "tarot", "tarot reading", etc.
+              const cleanTitle = row.title.replace(/^[^\wа-яё]+/i, '').replace(/[^\wа-яё]+$/i, '').toLowerCase();
+              menuMappings[cleanTitle] = row.id;
+            }
+          });
+        });
+
+        numberedMenuMappings.set(phoneNumber, menuMappings);
+        logger.info(`🔢 Stored ${Object.keys(menuMappings).length} menu mappings for ${phoneNumber}`);
+
+        response = await sendTextMessage(phoneNumber, numberedMenu, options);
+        }
       }
       break;
     case 'template':
@@ -817,6 +862,114 @@ const sendMessage = async(
   }
 };
 
+/**
+ * Create a numbered fallback menu from original menu data
+ * @param {Object} message - Original interactive message object
+ * @param {string} phoneNumber - User's phone number
+ * @returns {string} Numbered menu text
+ */
+const createNumberedMenuFallback = (message, phoneNumber) => {
+  const sections = message.sections || [];
+
+  // Store mappings first
+  if (!numberedMenuMappings.has(phoneNumber)) {
+    numberedMenuMappings.set(phoneNumber, {});
+  }
+
+  let menuText = '📋 *Menu Options:*\n\n';
+
+  // Add the main menu body if available
+  if (message.body && typeof message.body === 'string') {
+    menuText = `${message.body}\n\n${menuText}`;
+  } else if (message.body && message.body.text) {
+    menuText = `${message.body.text}\n\n${menuText}`;
+  }
+
+  let menuMappings = {};
+  let currentIndex = 1;
+
+  // Process each section
+  sections.forEach(section => {
+    if (section.title) {
+      menuText += `_${section.title}_\n`;
+    }
+
+    section.rows?.forEach(row => {
+      menuText += `${currentIndex}. ${row.title}`;
+      if (row.description) {
+        menuText += `\n    ${row.description}`;
+      }
+      menuText += '\n\n';
+
+      // Map number to action ID
+      menuMappings[currentIndex.toString()] = row.id;
+
+      // Also map the clean title for flexibility (remove emoji prefix)
+      const cleanTitle = row.title.replace(/^[^\wа-яё\s]+/g, '').toLowerCase().trim();
+      if (cleanTitle && cleanTitle !== row.title.toLowerCase()) {
+        menuMappings[cleanTitle] = row.id;
+      }
+
+      currentIndex++;
+    });
+  });
+
+  // Store mappings
+  numberedMenuMappings.set(phoneNumber, menuMappings);
+
+  menuText += '\n💡 *How to use:*\n• Type a number (1, 2, 3, etc.) to select\n• Or type the option name\n• Or type "menu" to see options again';
+
+  return menuText;
+};
+
+/**
+ * Find action ID from numbered input or text match
+ * @param {string} phoneNumber - User's phone number
+ * @param {string} userInput - User's text input
+ * @returns {string|null} Action ID or null if not found
+ */
+const getNumberedMenuAction = (phoneNumber, userInput) => {
+  const userMappings = numberedMenuMappings.get(phoneNumber);
+  if (!userMappings) {
+    return null;
+  }
+
+  const cleanInput = userInput.trim().toLowerCase();
+
+  // Check direct number mappings
+  if (userMappings[cleanInput]) {
+    return userMappings[cleanInput];
+  }
+
+  // Check partial matches for text input (remove prefixes)
+  const cleanedInput = cleanInput.replace(/^[\d\.•\-*]+/, '').trim();
+
+  // Try direct match first
+  if (userMappings[cleanedInput]) {
+    return userMappings[cleanedInput];
+  }
+
+  // Try partial matches
+  for (const [key, value] of Object.entries(userMappings)) {
+    if (!isNaN(key) && (cleanedInput === key || cleanedInput.includes(key))) {
+      return value;
+    }
+    if (isNaN(key) && (cleanedInput.includes(key) || key.includes(cleanedInput))) {
+      return value;
+    }
+  }
+
+  return null;
+};
+
+/**
+ * Clear numbered menu mappings for a user
+ * @param {string} phoneNumber - User's phone number
+ */
+const clearNumberedMenuMappings = (phoneNumber) => {
+  numberedMenuMappings.delete(phoneNumber);
+};
+
 module.exports = {
   sendTextMessage,
   sendInteractiveButtons,
@@ -824,5 +977,8 @@ module.exports = {
   sendTemplateMessage,
   sendMediaMessage,
   markMessageAsRead,
-  sendMessage
+  sendMessage,
+  createNumberedMenuFallback,
+  getNumberedMenuAction,
+  clearNumberedMenuMappings
 };

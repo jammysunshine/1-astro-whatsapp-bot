@@ -18,6 +18,7 @@ const MuhurtaAction = require('./actions/astrology/MuhurtaAction');
 const PanchangAnalysisAction = require('./actions/astrology/PanchangAnalysisAction');
 const HoroscopeAnalysisAction = require('./actions/astrology/HoroscopeAnalysisAction');
 const DashaAnalysisAction = require('./actions/astrology/DashaAnalysisAction');
+const HinduFestivalsAction = require('./actions/astrology/HinduFestivalsAction');
 const TarotReadingAction = require('./actions/divination/TarotReadingAction');
 const CompatibilityAction = require('./actions/astrology/CompatibilityAction');
 const CurrentTransitsAction = require('./actions/astrology/CurrentTransitsAction');
@@ -114,6 +115,7 @@ class ActionRegistryInitializer {
     this.registry.registerAction(PanchangAnalysisAction.actionId, PanchangAnalysisAction);
     this.registry.registerAction(HoroscopeAnalysisAction.actionId, HoroscopeAnalysisAction);
     this.registry.registerAction(DashaAnalysisAction.actionId, DashaAnalysisAction);
+    this.registry.registerAction(HinduFestivalsAction.actionId, HinduFestivalsAction);
     // Temporarily disable TarotReadingAction until tarotReader module is available
     try {
       this.registry.registerAction(TarotReadingAction.actionId, TarotReadingAction);
@@ -225,6 +227,10 @@ class ActionRegistryInitializer {
     this.registry.registerKeyword('dasha', DashaAnalysisAction.actionId);
     this.registry.registerKeyword('panchang', PanchangAnalysisAction.actionId);
     this.registry.registerKeyword('calendar', PanchangAnalysisAction.actionId);
+    this.registry.registerKeyword('hindu festivals', HinduFestivalsAction.actionId);
+    this.registry.registerKeyword('festivals', HinduFestivalsAction.actionId);
+    this.registry.registerKeyword('festival dates', HinduFestivalsAction.actionId);
+    this.registry.registerKeyword('auspicious dates', HinduFestivalsAction.actionId);
     this.registry.registerKeyword('fixed stars', FixedStarsAction.actionId);
     this.registry.registerKeyword('stellar', FixedStarsAction.actionId);
     this.registry.registerKeyword('lunar nodes', LunarNodesAction.actionId);

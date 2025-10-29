@@ -278,6 +278,7 @@ const processTextMessage = async(message, user) => {
   const { from, text } = message;
   const phoneNumber = from;
   const messageText = text.body;
+  let response = null;
 
   logger.info(`💬 Text message from ${phoneNumber}: ${messageText}`);
 
@@ -285,8 +286,8 @@ const processTextMessage = async(message, user) => {
   const numberedAction = getNumberedMenuAction(phoneNumber, messageText);
   if (numberedAction) {
     logger.info(`🔢 Numbered menu action detected: ${numberedAction} for ${phoneNumber}`);
-    await executeMenuAction(phoneNumber, user, numberedAction);
-    return;
+    response = await executeMenuAction(phoneNumber, user, numberedAction);
+    if (response !== null) return; // If executeMenuAction handled the response, return
   }
 
   // Check for compatibility requests with birth dates
@@ -296,8 +297,8 @@ const processTextMessage = async(message, user) => {
     (messageText.toLowerCase().includes('compatibility') ||
       messageText.toLowerCase().includes('match'))
   ) {
-    await handleCompatibilityRequest(phoneNumber, user, compatibilityMatch[1]);
-    return;
+    response = await handleCompatibilityRequest(phoneNumber, user, compatibilityMatch[1]);
+    if (response !== null) return;
   }
 
   // Check for language change requests
@@ -308,8 +309,8 @@ const processTextMessage = async(message, user) => {
      messageText.toLowerCase().includes('sprache') ||
      messageText.toLowerCase().includes('lingua')
   ) {
-    await executeMenuAction(phoneNumber, user, 'show_language_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_language_menu');
+    if (response !== null) return;
   }
 
   // Check for comprehensive menu requests
@@ -319,8 +320,8 @@ const processTextMessage = async(message, user) => {
      messageText.toLowerCase().includes('full menu') ||
      messageText.toLowerCase().includes('complete')
   ) {
-    await executeMenuAction(phoneNumber, user, 'show_comprehensive_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_comprehensive_menu');
+    if (response !== null) return;
   }
 
   // Check for subscription requests
@@ -329,12 +330,12 @@ const processTextMessage = async(message, user) => {
      messageText.toLowerCase().includes('upgrade')
   ) {
     if (messageText.toLowerCase().includes('essential')) {
-      await handleSubscriptionRequest(phoneNumber, user, 'essential');
+      response = await handleSubscriptionRequest(phoneNumber, user, 'essential');
     } else if (messageText.toLowerCase().includes('premium')) {
-      await handleSubscriptionRequest(phoneNumber, user, 'premium');
+      response = await handleSubscriptionRequest(phoneNumber, user, 'premium');
     } else {
       const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
+      response = await sendMessage(
         phoneNumber,
         'subscription.plans.prompt',
         'text',
@@ -342,13 +343,13 @@ const processTextMessage = async(message, user) => {
         userLanguage
       );
     }
-    return;
+    if (response !== null) return;
   }
 
   // Check for numerology report request
   if (messageText.toLowerCase() === 'numerology report') {
-    await processFlowMessage(message, user, 'numerology_flow');
-    return;
+    response = await processFlowMessage(message, user, 'numerology_flow');
+    if (response !== null) return;
   }
 
   // Check for menu keywords and redirect to menu actions
@@ -356,236 +357,236 @@ const processTextMessage = async(message, user) => {
 
   // Western Astrology menu navigation
   if (lowerMessage.includes('western astrology') || lowerMessage.includes('western menu')) {
-    await executeMenuAction(phoneNumber, user, 'show_western_astrology_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_western_astrology_menu');
+    if (response !== null) return;
   }
   // Vedic Astrology menu navigation
   else if (lowerMessage.includes('vedic astrology') || lowerMessage.includes('hindu astrology') || lowerMessage.includes('indian astrology')) {
-    await executeMenuAction(phoneNumber, user, 'show_vedic_astrology_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_vedic_astrology_menu');
+    if (response !== null) return;
   }
   // Divination & Mystic menu navigation
   else if (lowerMessage.includes('divination') || lowerMessage.includes('mystic')) {
-    await executeMenuAction(phoneNumber, user, 'show_divination_mystic_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_divination_mystic_menu');
+    if (response !== null) return;
   }
   // Relationships & Groups menu navigation
   else if (lowerMessage.includes('relationships') || lowerMessage.includes('family') || lowerMessage.includes('compatibility')) {
-    await executeMenuAction(phoneNumber, user, 'show_relationships_groups_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_relationships_groups_menu');
+    if (response !== null) return;
   }
   // Numerology & Special menu navigation
   else if (lowerMessage.includes('numerology') || lowerMessage.includes('special')) {
-    await executeMenuAction(phoneNumber, user, 'show_numerology_special_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_numerology_special_menu');
+    if (response !== null) return;
   }
   // Settings & Profile menu navigation
   else if (lowerMessage.includes('settings') || lowerMessage.includes('profile')) {
-    await executeMenuAction(phoneNumber, user, 'show_settings_profile_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_settings_profile_menu');
+    if (response !== null) return;
   }
   // Main menu navigation
   else if (lowerMessage.includes('main menu') || lowerMessage.includes('home')) {
-    await executeMenuAction(phoneNumber, user, 'show_main_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_main_menu');
+    if (response !== null) return;
   }
   // Back navigation
   else if (lowerMessage.includes('back') || lowerMessage.includes('return')) {
-    await executeMenuAction(phoneNumber, user, 'navigate_back');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'navigate_back');
+    if (response !== null) return;
   }
   // Continue navigation
   else if (lowerMessage.includes('continue')) {
-    await executeMenuAction(phoneNumber, user, 'continue_navigation');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'continue_navigation');
+    if (response !== null) return;
   }
   // Western Basic Readings
   else if (lowerMessage.includes('basic readings') || lowerMessage.includes('basic charts')) {
-    await executeMenuAction(phoneNumber, user, 'show_western_basic_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_western_basic_menu');
+    if (response !== null) return;
   }
   // Western Advanced Readings
   else if (lowerMessage.includes('advanced readings') || lowerMessage.includes('advanced charts')) {
-    await executeMenuAction(phoneNumber, user, 'show_western_advanced_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_western_advanced_menu');
+    if (response !== null) return;
   }
   // Western Predictive Readings
   else if (lowerMessage.includes('predictive') || lowerMessage.includes('transits') || lowerMessage.includes('progressions')) {
-    await executeMenuAction(phoneNumber, user, 'show_western_predictive_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_western_predictive_menu');
+    if (response !== null) return;
   }
   // Vedic Basic Readings
   else if (lowerMessage.includes('vedic basic') || lowerMessage.includes('hindu basic')) {
-    await executeMenuAction(phoneNumber, user, 'show_vedic_basic_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_vedic_basic_menu');
+    if (response !== null) return;
   }
   // Vedic Advanced Readings
   else if (lowerMessage.includes('vedic advanced') || lowerMessage.includes('hindu advanced')) {
-    await executeMenuAction(phoneNumber, user, 'show_vedic_advanced_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_vedic_advanced_menu');
+    if (response !== null) return;
   }
   // Vedic Predictive Readings
   else if (lowerMessage.includes('vedic predictive') || lowerMessage.includes('dashas') || lowerMessage.includes('dasha')) {
-    await executeMenuAction(phoneNumber, user, 'show_vedic_predictive_menu');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_vedic_predictive_menu');
+    if (response !== null) return;
   }
   // Birth Chart Analysis
   else if (lowerMessage.includes('birth chart analysis') || lowerMessage.includes('natal chart')) {
-    await executeMenuAction(phoneNumber, user, 'show_birth_chart');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_birth_chart');
+    if (response !== null) return;
   }
   // Planets, Houses, Aspects in Birth Chart
   else if (lowerMessage.includes('planets')) {
-    await executeMenuAction(phoneNumber, user, 'explore_planets');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'explore_planets');
+    if (response !== null) return;
   } else if (lowerMessage.includes('houses')) {
-    await executeMenuAction(phoneNumber, user, 'explore_houses');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'explore_houses');
+    if (response !== null) return;
   } else if (lowerMessage.includes('aspects')) {
-    await executeMenuAction(phoneNumber, user, 'explore_aspects');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'explore_aspects');
+    if (response !== null) return;
   }
   // Dasha Analysis
   else if (lowerMessage.includes('vimshottari')) {
-    await executeMenuAction(phoneNumber, user, 'get_vimshottari_dasha_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_vimshottari_dasha_analysis');
+    if (response !== null) return;
   } else if (lowerMessage.includes('yogini')) {
-    await executeMenuAction(phoneNumber, user, 'get_yogini_dasha_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_yogini_dasha_analysis');
+    if (response !== null) return;
   } else if (lowerMessage.includes('char dasha')) {
-    await executeMenuAction(phoneNumber, user, 'get_char_dasha_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_char_dasha_analysis');
+    if (response !== null) return;
   } else if (lowerMessage.includes('narayan')) {
-    await executeMenuAction(phoneNumber, user, 'get_narayan_dasha_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_narayan_dasha_analysis');
+    if (response !== null) return;
   }
   // 4-member analysis
   else if (lowerMessage.includes('parent-child')) {
-    await executeMenuAction(phoneNumber, user, 'analyze_parent_child');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'analyze_parent_child');
+    if (response !== null) return;
   } else if (lowerMessage.includes('sibling')) {
-    await executeMenuAction(phoneNumber, user, 'analyze_sibling');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'analyze_sibling');
+    if (response !== null) return;
   } else if (lowerMessage.includes('spousal')) {
-    await executeMenuAction(phoneNumber, user, 'analyze_spousal');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'analyze_spousal');
+    if (response !== null) return;
   }
   // Hellenistic
   else if (lowerMessage.includes('lots')) {
-    await executeMenuAction(phoneNumber, user, 'explore_lots');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'explore_lots');
+    if (response !== null) return;
   } else if (lowerMessage.includes('decans')) {
-    await executeMenuAction(phoneNumber, user, 'explore_decans');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'explore_decans');
+    if (response !== null) return;
   } else if (lowerMessage.includes('terms')) {
-    await executeMenuAction(phoneNumber, user, 'explore_terms');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'explore_terms');
+    if (response !== null) return;
   } else if (lowerMessage.includes('triplicities')) {
-    await executeMenuAction(phoneNumber, user, 'explore_triplicities');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'explore_triplicities');
+    if (response !== null) return;
   } else if (lowerMessage.includes('planetary hours')) {
-    await executeMenuAction(phoneNumber, user, 'explore_planetary_hours');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'explore_planetary_hours');
+    if (response !== null) return;
   }
   // Existing keyword matching
   else if (lowerMessage.includes('horoscope') || lowerMessage.includes('daily') || lowerMessage === '1') {
-    await executeMenuAction(phoneNumber, user, 'get_daily_horoscope');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_daily_horoscope');
+    if (response !== null) return;
   } else if (lowerMessage.includes('chart') || lowerMessage.includes('birth') || lowerMessage === '2') {
-    await executeMenuAction(phoneNumber, user, 'show_birth_chart');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_birth_chart');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('compatibility') ||
      lowerMessage.includes('match') ||
      lowerMessage === '3'
   ) {
-    await executeMenuAction(phoneNumber, user, 'initiate_compatibility_flow');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'initiate_compatibility_flow');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('tarot') ||
      lowerMessage === '4'
   ) {
-    await executeMenuAction(phoneNumber, user, 'get_tarot_reading');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_tarot_reading');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('iching') ||
      lowerMessage.includes('i ching') ||
      lowerMessage === '5'
   ) {
-    await executeMenuAction(phoneNumber, user, 'get_iching_reading');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_iching_reading');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('palmistry') ||
     lowerMessage.includes('palm') ||
      lowerMessage === '6'
   ) {
-    await executeMenuAction(phoneNumber, user, 'get_palmistry_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_palmistry_analysis');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('nadi') ||
      lowerMessage === '7'
   ) {
-    await executeMenuAction(phoneNumber, user, 'show_nadi_flow');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_nadi_flow');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('kabbalistic') ||
      lowerMessage === '8'
   ) {
-    await executeMenuAction(phoneNumber, user, 'get_kabbalistic_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_kabbalistic_analysis');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('mayan') ||
      lowerMessage === '9'
   ) {
-    await executeMenuAction(phoneNumber, user, 'get_mayan_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_mayan_analysis');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('celtic') ||
      lowerMessage === '10'
   ) {
-    await executeMenuAction(phoneNumber, user, 'get_celtic_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_celtic_analysis');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('horary') ||
      lowerMessage === '11'
   ) {
-    await executeMenuAction(phoneNumber, user, 'get_horary_reading');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_horary_reading');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('chinese') ||
      lowerMessage.includes('bazi') ||
      lowerMessage === '12'
   ) {
-    await executeMenuAction(phoneNumber, user, 'show_chinese_flow');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_chinese_flow');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('numerology') ||
      lowerMessage === '13'
   ) {
-    await executeMenuAction(phoneNumber, user, 'get_numerology_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_numerology_analysis');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('astrocartography') ||
      lowerMessage === '14'
   ) {
-    await executeMenuAction(phoneNumber, user, 'get_astrocartography_analysis');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'get_astrocartography_analysis');
+    if (response !== null) return;
   } else if (
     lowerMessage.includes('subscription') ||
      lowerMessage.includes('plan')
   ) {
-    await executeMenuAction(phoneNumber, user, 'show_subscription_plans');
-    return;
+    response = await executeMenuAction(phoneNumber, user, 'show_subscription_plans');
+    if (response !== null) return;
   }
 
-  // If response is not already set by a specific case, generate it based on the action
+  // If no specific action matched, generate astrology response based on user input
   if (response === null) {
-    response = await generateAstrologyResponse(action, user);
+    response = await generateAstrologyResponse(messageText, user);
   }
 
   // Ensure response is a valid string before sending
   if (!response || typeof response !== 'string') {
-    logger.warn(`⚠️ Invalid response from generateAstrologyResponse for action: ${action}`);
+    logger.warn(`⚠️ Invalid response from generateAstrologyResponse for message: ${messageText}`);
     const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
       phoneNumber,

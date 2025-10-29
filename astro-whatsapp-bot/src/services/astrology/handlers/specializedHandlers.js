@@ -192,6 +192,62 @@ const handleAstrocartography = async (message, user) => {
   }
 };
 
+/**
+ * Handle Varga Charts requests
+ * @param {string} message - User message
+ * @param {Object} user - User object
+ * @returns {string|null} Response or null if not handled
+ */
+const handleVargaCharts = async (message, user) => {
+  if (!message.includes('varga') && !message.includes('division') && !message.includes('divisional') &&
+      !message.includes('navamsa') && !message.includes('dashamsa') && !message.includes('hora')) {
+    return null;
+  }
+
+  if (!user.birthDate) {
+    return '🕉️ Varga Charts require your birth details. Please complete your profile first.';
+  }
+
+  try {
+    const { VargaCharts } = require('../vargaCharts');
+    const vargaService = new VargaCharts();
+
+    const birthData = {
+      birthDate: user.birthDate,
+      birthTime: user.birthTime || '12:00',
+      birthPlace: user.birthPlace || 'Unknown'
+    };
+
+    const vargaAnalysis = await vargaService.calculateVargaCharts(birthData, ['NAVAMSA', 'DASHAMSA', 'HORA']);
+
+    if (vargaAnalysis.error) {
+      return `🕉️ *Vedic Varga Charts*\n\n${vargaAnalysis.fallbackMessage || 'Unable to calculate divisional charts at this time.'}`;
+    }
+
+    // Basic summary for handler
+    let response = `🕉️ *Vedic Varga Charts Analysis*\n\nKey Divisional Charts:\n`;
+
+    if (vargaAnalysis.vargaCharts.NAVAMSA) {
+      response += `💍 Navamsa (Marriage): Ascendant in ${vargaAnalysis.vargaCharts.NAVAMSA.ascendantSign}\n`;
+    }
+
+    if (vargaAnalysis.vargaCharts.DASHAMSA) {
+      response += `🏢 Dashamsa (Career): Ascendant in ${vargaAnalysis.vargaCharts.DASHAMSA.ascendantSign}\n`;
+    }
+
+    if (vargaAnalysis.vargaCharts.HORA) {
+      response += `💰 Hora (Wealth): Ascendant in ${vargaAnalysis.vargaCharts.HORA.ascendantSign}\n`;
+    }
+
+    response += `\nVarga charts divide your birth chart to show specialized life areas. For detailed analysis, use the menu options.`;
+
+    return response;
+  } catch (error) {
+    console.error('Varga charts error:', error);
+    return '❌ Error analyzing varga charts. Please try again.';
+  }
+};
+
 module.exports = {
   handleChineseAstrology,
   handleTarot,
@@ -201,5 +257,6 @@ module.exports = {
   handleCeltic,
   handleIChing,
   handlePrashna,
-  handleAstrocartography
+  handleAstrocartography,
+  handleVargaCharts
 };

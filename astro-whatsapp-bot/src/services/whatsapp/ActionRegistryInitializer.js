@@ -47,6 +47,7 @@ const FixedStarsAction = require('./actions/astrology/FixedStarsAction');
 const LunarNodesAction = require('./actions/astrology/LunarNodesAction');
 const TraditionalHoraryAction = require('./actions/astrology/TraditionalHoraryAction');
 const RemedialMeasuresAction = require('./actions/astrology/RemedialMeasuresAction');
+const VargaChartsAction = require('./actions/astrology/VargaChartsAction');
 
 /**
  * ActionRegistryInitializer - Sets up and initializes the ActionRegistry with all available actions.
@@ -149,6 +150,7 @@ class ActionRegistryInitializer {
     this.registry.registerAction(LunarNodesAction.actionId, LunarNodesAction);
     this.registry.registerAction(TraditionalHoraryAction.actionId, TraditionalHoraryAction);
     this.registry.registerAction(RemedialMeasuresAction.actionId, RemedialMeasuresAction);
+    this.registry.registerAction(VargaChartsAction.actionId, VargaChartsAction);
 
     console.info('📝 Registered action classes with registry');
   }

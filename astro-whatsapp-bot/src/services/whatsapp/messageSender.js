@@ -645,10 +645,9 @@ const sendMessage = async(
             reply: { id: button.id, title: button.title }
           };
         });
-        let finalBodyTextForButton = translatedBodyText;
-        if (typeof translatedBodyText === 'object' && translatedBodyText.text) {
-          finalBodyTextForButton = translatedBodyText.text;
-        }
+        const finalBodyTextForButton = typeof translatedBodyText === 'string'
+          ? translatedBodyText
+          : (translatedBodyText?.text || String(translatedBodyText || 'Please select an option'));
         response = await sendInteractiveButtons(
           phoneNumber,
           finalBodyTextForButton,

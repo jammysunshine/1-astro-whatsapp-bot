@@ -1230,7 +1230,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       await processIncomingMessage(message, {});
 
-      expect(mockSendListMessage).toHaveBeenCalled();
+      expect(sendListMessage).toHaveBeenCalled();
 
       console.log('✅ Automatic expired session cleanup validated');
     }, 10000);
@@ -1270,7 +1270,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       await processIncomingMessage(corruptedMessage, {});
 
-      expect(mockSendMessage).toHaveBeenCalled();
+      expect(sendMessage).toHaveBeenCalled();
 
       console.log('✅ Menu state corruption recovery validated');
     }, 10000);
@@ -1393,7 +1393,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       await processIncomingMessage(message, {});
 
-      expect(mockSendListMessage).toHaveBeenCalled();
+      expect(sendListMessage).toHaveBeenCalled();
 
       console.log('✅ Automatic expired session cleanup validated');
     }, 10000);

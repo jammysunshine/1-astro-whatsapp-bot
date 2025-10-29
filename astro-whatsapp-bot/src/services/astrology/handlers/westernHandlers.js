@@ -5,12 +5,12 @@ const logger = require('../../../utils/logger');
  * @param {string} birthDate - Birth date in DDMMYY or DDMMYYYY format
  * @returns {string} Sun sign name
  */
-const getSunSign = (birthDate) => {
-  if (!birthDate) return 'Unknown';
+const getSunSign = birthDate => {
+  if (!birthDate) { return 'Unknown'; }
 
   // Extract day and month from birth date
-  let birthDateStr = birthDate.toString();
-  let day, month;
+  const birthDateStr = birthDate.toString();
+  let day; let month;
 
   if (birthDateStr.length === 6) {
     // DDMMYY format
@@ -31,13 +31,13 @@ const getSunSign = (birthDate) => {
 
   // Calculate zodiac sign based on month and day
   const signs = {
-    'Capricorn': [1, 1, 19], 'Aquarius': [1, 20, 31], 'Pisces': [2, 1, 18],
-    'Aries': [3, 1, 20], 'Taurus': [3, 21, 31], 'Gemini': [4, 1, 20],
-    'Cancer': [5, 1, 22], 'Leo': [5, 23, 31], 'Virgo': [6, 1, 22],
-    'Libra': [6, 23, 31], 'Scorpio': [7, 1, 22], 'Sagittarius': [7, 23, 31],
-    'Capricorn': [8, 1, 22], 'Aquarius': [8, 23, 31], 'Pisces': [9, 1, 22],
-    'Aries': [10, 1, 23], 'Taurus': [10, 24, 31], 'Gemini': [11, 1, 21],
-    'Cancer': [11, 22, 30], 'Leo': [12, 1, 21], 'Sagittarius': [12, 22, 31]
+    Capricorn: [1, 1, 19], Aquarius: [1, 20, 31], Pisces: [2, 1, 18],
+    Aries: [3, 1, 20], Taurus: [3, 21, 31], Gemini: [4, 1, 20],
+    Cancer: [5, 1, 22], Leo: [5, 23, 31], Virgo: [6, 1, 22],
+    Libra: [6, 23, 31], Scorpio: [7, 1, 22], Sagittarius: [7, 23, 31],
+    Capricorn: [8, 1, 22], Aquarius: [8, 23, 31], Pisces: [9, 1, 22],
+    Aries: [10, 1, 23], Taurus: [10, 24, 31], Gemini: [11, 1, 21],
+    Cancer: [11, 22, 30], Leo: [12, 1, 21], Sagittarius: [12, 22, 31]
   };
 
   for (const [sign, [sigMonth, startDay, endDay]] of Object.entries(signs)) {
@@ -62,7 +62,7 @@ const handleHoroscope = (message, user) => {
 
   // Check if user has birth data
   if (!user.birthDate) {
-    return `🌟 Daily Horoscope\n\n👤 I need your birth date to provide your daily horoscope.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)`;
+    return '🌟 Daily Horoscope\n\n👤 I need your birth date to provide your daily horoscope.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
   }
 
   const sunSign = getSunSign(user.birthDate);
@@ -78,7 +78,7 @@ const handleHoroscope = (message, user) => {
  * @param {string} sign - Zodiac sign
  * @returns {Object} Daily insights
  */
-const generateDailyInsights = (sign) => {
+const generateDailyInsights = sign => {
   const insights = {
     Aries: { general: 'Today brings unexpected opportunities and new beginnings.', career: 'Be bold in communication', love: 'Rekindle old connections', finance: 'Opportunities from technology', health: 'Focus on fitness', numbers: '3, 8, 15' },
     Taurus: { general: 'Stability and persistence will serve you well today.', career: 'Focus on long-term goals', love: 'Quality time matters', finance: 'Conservative approach pays', health: 'Rest and recovery', numbers: '1, 4, 12' },
@@ -109,7 +109,7 @@ const handleNumerology = (message, user) => {
   }
 
   if (!user.birthDate && !user.name) {
-    return `🔢 Numerology Analysis\n\n👤 I need your birth date to calculate numerology.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)`;
+    return '🔢 Numerology Analysis\n\n👤 I need your birth date to calculate numerology.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
   }
 
   const lifePathNumber = calculateLifePathNumber(user.birthDate);
@@ -124,8 +124,8 @@ const handleNumerology = (message, user) => {
  * @param {string} birthDate - Birth date
  * @returns {number} Life path number (1-9)
  */
-const calculateLifePathNumber = (birthDate) => {
-  if (!birthDate) return 1;
+const calculateLifePathNumber = birthDate => {
+  if (!birthDate) { return 1; }
 
   const digits = birthDate.toString().replace(/\D/g, '');
   let sum = digits.split('').reduce((acc, digit) => acc + parseInt(digit), 0);
@@ -143,10 +143,10 @@ const calculateLifePathNumber = (birthDate) => {
  * @param {string} name - Person's name
  * @returns {number} Name number (1-9)
  */
-const calculateNameNumber = (name) => {
-  if (!name) return 1;
+const calculateNameNumber = name => {
+  if (!name) { return 1; }
 
-  const letterValues = { a:1,i:9,j:1,q:8,r:9,b:2,c:3,d:4,e:5,f:6,g:3,h:8,k:2,l:3,s:1,t:4,u:3,v:6,w:6,x:5,y:7,z:8 };
+  const letterValues = { a: 1, i: 9, j: 1, q: 8, r: 9, b: 2, c: 3, d: 4, e: 5, f: 6, g: 3, h: 8, k: 2, l: 3, s: 1, t: 4, u: 3, v: 6, w: 6, x: 5, y: 7, z: 8 };
   const digits = name.toLowerCase().replace(/[^a-z]/g, '').split('').map(letter => letterValues[letter] || 1);
 
   let sum = digits.reduce((acc, num) => acc + num, 0);
@@ -208,7 +208,7 @@ const handleSolarReturn = (message, user) => {
     return null;
   }
 
-  return `☀️ Solar Return Analysis\n\nYour solar return chart reveals the themes and opportunities for the year ahead.\n\nThis advanced analysis requires your complete birth details. Please ensure your profile is updated.`;
+  return '☀️ Solar Return Analysis\n\nYour solar return chart reveals the themes and opportunities for the year ahead.\n\nThis advanced analysis requires your complete birth details. Please ensure your profile is updated.';
 };
 
 /**
@@ -222,7 +222,7 @@ const handleAsteroids = (message, user) => {
     return null;
   }
 
-  return `☄️ Asteroid Analysis\n\nPlanetary asteroids like Chiron, Ceres, Juno, and Pallas provide deep insights into healing, nurturing, relationships, and wisdom.\n\nThis specialized reading requires birth chart analysis.`;
+  return '☄️ Asteroid Analysis\n\nPlanetary asteroids like Chiron, Ceres, Juno, and Pallas provide deep insights into healing, nurturing, relationships, and wisdom.\n\nThis specialized reading requires birth chart analysis.';
 };
 
 module.exports = {

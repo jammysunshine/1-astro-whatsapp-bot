@@ -76,8 +76,6 @@ const generateAstrologyResponse = async(messageText, user) => {
 };
 
 
-
-
 module.exports = {
   generateAstrologyResponse,
   validateBirthData

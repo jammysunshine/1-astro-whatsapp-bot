@@ -49,10 +49,14 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
       to: phoneNumber,
       type: 'text',
       text: {
-        preview_url: options.previewUrl || false,
         body: message
       }
     };
+
+    // Add preview_url only if explicitly set to true
+    if (options.previewUrl === true) {
+      messagePayload.text.preview_url = true;
+    }
 
     // Add context if provided (for replying to specific messages)
     if (options.context) {
@@ -63,6 +67,9 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
     if (options.recipientType) {
       messagePayload.recipient_type = options.recipientType;
     }
+
+    // Log the actual payload being sent for debugging parameter validation errors
+    logger.debug(`📦 Payload for ${phoneNumber}:`, JSON.stringify(messagePayload, null, 2));
 
     const response = await axios.post(url, messagePayload, {
       headers: {
@@ -138,7 +145,7 @@ const sendInteractiveButtons = async(
     // Prepare interactive message payload
     const messagePayload = {
       messaging_product: 'whatsapp',
-      to: phoneNumber,
+      to: phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`,
       type: 'interactive',
       interactive: {
         type: 'button',
@@ -251,7 +258,7 @@ const sendListMessage = async(
     // Prepare list message payload
     const messagePayload = {
       messaging_product: 'whatsapp',
-      to: phoneNumber,
+      to: phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`,
       type: 'interactive',
       interactive: {
         type: 'list',
@@ -604,6 +611,17 @@ const sendMessage = async(
   language = 'en'
 ) => {
   try {
+    // Input validation
+    if (message === null || message === undefined) {
+      logger.error(`❌ Message content is null/undefined for ${phoneNumber}`);
+      throw new Error('Message content cannot be null or undefined');
+    }
+
+    if (typeof message === 'string' && message.trim().length === 0) {
+      logger.error(`❌ Message content is empty string for ${phoneNumber}`);
+      throw new Error('Message content cannot be empty string');
+    }
+
     let response;
 
     switch (messageType) {
@@ -655,9 +673,9 @@ const sendMessage = async(
             reply: { id: button.id, title: button.title }
           };
         });
-        const finalBodyTextForButton = typeof translatedBodyText === 'string'
-          ? translatedBodyText
-          : (translatedBodyText?.text || String(translatedBodyText || 'Please select an option'));
+        const finalBodyTextForButton = typeof translatedBodyText === 'string' ?
+          translatedBodyText :
+          (translatedBodyText?.text || String(translatedBodyText || 'Please select an option'));
         response = await sendInteractiveButtons(
           phoneNumber,
           finalBodyTextForButton,
@@ -775,37 +793,37 @@ const sendMessage = async(
           );
         } catch (error) {
         // If list message fails, create a fallback numbered menu
-        logger.warn(`⚠️ List message failed for ${phoneNumber}, sending numbered fallback`);
-        const numberedMenu = createNumberedMenuFallback(message, phoneNumber);
+          logger.warn(`⚠️ List message failed for ${phoneNumber}, sending numbered fallback`);
+          const numberedMenu = createNumberedMenuFallback(message, phoneNumber);
 
-        // Store the menu context for number-based responses
-        if (!numberedMenuMappings.has(phoneNumber)) {
-          numberedMenuMappings.set(phoneNumber, {});
-        }
+          // Store the menu context for number-based responses
+          if (!numberedMenuMappings.has(phoneNumber)) {
+            numberedMenuMappings.set(phoneNumber, {});
+          }
 
-        // Flatten and store all menu options for easy lookup
-        const menuMappings = {};
-        let currentIndex = 1;
+          // Flatten and store all menu options for easy lookup
+          const menuMappings = {};
+          let currentIndex = 1;
 
-        message.sections?.forEach(section => {
-          section.rows?.forEach(row => {
-            menuMappings[currentIndex.toString()] = row.id;
-            menuMappings[row.title.toLowerCase()] = row.id;
-            currentIndex++;
+          message.sections?.forEach(section => {
+            section.rows?.forEach(row => {
+              menuMappings[currentIndex.toString()] = row.id;
+              menuMappings[row.title.toLowerCase()] = row.id;
+              currentIndex++;
 
-            // Also map variations for flexibility
-            if (row.title.includes('(') && row.title.includes(')')) {
+              // Also map variations for flexibility
+              if (row.title.includes('(') && row.title.includes(')')) {
               // Handle emoji variations like "🔮 Tarot Reading" -> map "tarot", "tarot reading", etc.
-              const cleanTitle = row.title.replace(/^[^\wа-яё]+/i, '').replace(/[^\wа-яё]+$/i, '').toLowerCase();
-              menuMappings[cleanTitle] = row.id;
-            }
+                const cleanTitle = row.title.replace(/^[^\wа-яё]+/i, '').replace(/[^\wа-яё]+$/i, '').toLowerCase();
+                menuMappings[cleanTitle] = row.id;
+              }
+            });
           });
-        });
 
-        numberedMenuMappings.set(phoneNumber, menuMappings);
-        logger.info(`🔢 Stored ${Object.keys(menuMappings).length} menu mappings for ${phoneNumber}`);
+          numberedMenuMappings.set(phoneNumber, menuMappings);
+          logger.info(`🔢 Stored ${Object.keys(menuMappings).length} menu mappings for ${phoneNumber}`);
 
-        response = await sendTextMessage(phoneNumber, numberedMenu, options);
+          response = await sendTextMessage(phoneNumber, numberedMenu, options);
         }
       }
       break;
@@ -885,7 +903,7 @@ const createNumberedMenuFallback = (message, phoneNumber) => {
     menuText = `${message.body.text}\n\n${menuText}`;
   }
 
-  let menuMappings = {};
+  const menuMappings = {};
   let currentIndex = 1;
 
   // Process each section
@@ -966,7 +984,7 @@ const getNumberedMenuAction = (phoneNumber, userInput) => {
  * Clear numbered menu mappings for a user
  * @param {string} phoneNumber - User's phone number
  */
-const clearNumberedMenuMappings = (phoneNumber) => {
+const clearNumberedMenuMappings = phoneNumber => {
   numberedMenuMappings.delete(phoneNumber);
 };
 

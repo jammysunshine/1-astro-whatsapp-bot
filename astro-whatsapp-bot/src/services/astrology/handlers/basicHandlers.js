@@ -10,7 +10,7 @@ const handleGreeting = (message, user) => {
   const greetings = ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening'];
 
   if (greetings.some(greeting => message.includes(greeting))) {
-    return `🌟 Hello! I'm the Astro Wisdom Bot. I can help you with astrology readings, numerology, tarot, and more mystical insights.\n\nUse the menu to explore available services.`;
+    return '🌟 Hello! I\'m the Astro Wisdom Bot. I can help you with astrology readings, numerology, tarot, and more mystical insights.\n\nUse the menu to explore available services.';
   }
 
   return null;
@@ -26,7 +26,7 @@ const handleMenu = (message, user) => {
   const menuKeywords = ['menu', 'options', 'services', 'help'];
 
   if (menuKeywords.some(keyword => message.includes(keyword))) {
-    return "📋 Use the interactive menu buttons below to explore services, or type 'menu' at any time.";
+    return '📋 Use the interactive menu buttons below to explore services, or type \'menu\' at any time.';
   }
 
   return null;
@@ -42,7 +42,7 @@ const handleUpdateProfile = (message, user) => {
   const profileKeywords = ['update', 'profile', 'birth', 'change', 'edit'];
 
   if (profileKeywords.some(keyword => message.includes(keyword))) {
-    return `📝 Profile Update\n\nTo update your birth details, send:\nBirth date (DDMMYY): 150690\nBirth time (HHMM): 1430\nBirth place: Mumbai, India`;
+    return '📝 Profile Update\n\nTo update your birth details, send:\nBirth date (DDMMYY): 150690\nBirth time (HHMM): 1430\nBirth place: Mumbai, India';
   }
 
   return null;
@@ -56,10 +56,10 @@ const handleUpdateProfile = (message, user) => {
  */
 const handleDefaultResponse = (message, user) => {
   const helpfulHints = [
-    "Try asking about your daily horoscope or birth chart!",
-    "I can analyze compatibility, provide numerology insights, or give tarot readings.",
-    "Use the menu to see all available astrology services.",
-    "Tell me your birth details to get personalized readings."
+    'Try asking about your daily horoscope or birth chart!',
+    'I can analyze compatibility, provide numerology insights, or give tarot readings.',
+    'Use the menu to see all available astrology services.',
+    'Tell me your birth details to get personalized readings.'
   ];
 
   const randomHint = helpfulHints[Math.floor(Math.random() * helpfulHints.length)];

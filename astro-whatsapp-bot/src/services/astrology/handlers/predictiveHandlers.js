@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const { Muhurta } = require('../muhurta');
 
 /**
  * Handle secondary progressions analysis
@@ -294,12 +295,63 @@ const handlePrashna = (message, user) => {
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handleElectional = (message, user) => {
-  if (!message.includes('electional') && !message.includes('auspicious') && !message.includes('timing') && !message.includes('muhurta')) {
+const handleElectional = async (message, user) => {
+  if (!message.includes('electional') && !message.includes('auspicious') && !message.includes('timing') && !message.includes('muhurta') && !message.includes('wedding time') && !message.includes('business opening')) {
     return null;
   }
 
-  return `📅 *Electional Astrology - Auspicious Timing*\n\nClassical art of choosing optimal moments for important beginnings through celestial alignment.\n\n🎯 *Electional Foundations:*\n• Moon void of course timing\n• Ascendant placement preference\n• Benefic planet configuration\n• Planetary hour alignment\n• Day and hour lord harmony\n\n🏆 *Ideal Elections For:*\n• • Business openings and partnerships\n• Marriage and relationship beginnings\n• Medical procedures and treatments\n• Travel and journey commencements\n• Property purchases and construction\n\n✨ *Electional Wisdom:* Perfect timing arises when celestial intention supports human intention, creating harmony between microcosm and macrocosm.`;
+  try {
+    const muhurtaService = new Muhurta();
+
+    // Extract event type from message
+    let eventType = 'general';
+    const messageLower = message.toLowerCase();
+
+    if (messageLower.includes('wedding') || messageLower.includes('marriage')) {
+      eventType = 'wedding';
+    } else if (messageLower.includes('business') || messageLower.includes('opening') || messageLower.includes('launch')) {
+      eventType = 'business';
+    } else if (messageLower.includes('house') || messageLower.includes('property') || messageLower.includes('home')) {
+      eventType = 'house';
+    } else if (messageLower.includes('travel') || messageLower.includes('journey')) {
+      eventType = 'travel';
+    } else if (messageLower.includes('medical') || messageLower.includes('surgery') || messageLower.includes('treatment')) {
+      eventType = 'medical';
+    } else if (messageLower.includes('spiritual') || messageLower.includes('ritual') || messageLower.includes('ceremony')) {
+      eventType = 'spiritual';
+    }
+
+    // Create a date range (next 30 days)
+    const today = new Date();
+    const endDate = new Date();
+    endDate.setDate(today.getDate() + 30);
+
+    const startDateStr = today.toISOString().split('T')[0];
+    const endDateStr = endDate.toISOString().split('T')[0];
+
+    const eventData = {
+      eventType,
+      preferredDateRange: `${startDateStr}|${endDateStr}`,
+      location: {
+        latitude: user.latitude || 28.6139,
+        longitude: user.longitude || 77.2090,
+        timezone: user.timezone || 5.5
+      },
+      constraints: {}
+    };
+
+    const muhurtaAnalysis = await muhurtaService.calculateMuhurta(eventData);
+
+    if (muhurtaAnalysis.error) {
+      return '❌ Unable to calculate electional timing. Please ensure location details are provided.';
+    }
+
+    return muhurtaAnalysis.summary;
+
+  } catch (error) {
+    console.error('Electional astrology error:', error);
+    return '📅 *Electional Astrology - Auspicious Timing*\n\nClassical art of choosing optimal moments for important beginnings through celestial alignment.\n\n🎯 *Electional Foundations:*\n• Moon void of course timing\n• Ascendant placement preference\n• Benefic planet configuration\n• Planetary hour alignment\n• Day and hour lord harmony\n\nPlease specify event type: wedding, business, house, travel, medical, spiritual';
+  }
 };
 
 /**

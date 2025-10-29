@@ -53,30 +53,20 @@ const longitudeToHouse = (longitude, ascendant) => {
 };
 
 /**
- * Handle Fixed Stars analysis requests
- * @param {string} message - User message
- * @param {Object} user - User object
- * @returns {string|null} Response or null if not handled
+ * Handle Fixed Stars placeholder - moved to modular handler
+ * This is a transitional comment - actual implementation is imported
  */
-const handleFixedStars = async (message, user) => {
-  if (!message.includes('fixed star') && !message.includes('fixed') && !message.includes('star') && !message.includes('constellation') && !message.includes('stars analysis')) {
-    return null;
-  }
 
-  if (!user.birthDate) {
-    return '⭐ *Fixed Stars Analysis*\n\n👤 I need your birth details for personalized fixed star analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
-  }
+/**
+ * Handle Medical Astrology placeholder - moved to modular handler
 
-  try {
-    // Calculate personalized fixed star analysis using Swiss Ephemeris
-    const analysis = await calculateFixedStarsAnalysis(user);
+ */
 
-    return `⭐ *Fixed Stars Analysis - Stellar Influences*\n\n${analysis.introduction}\n\n🌟 *Your Stellar Conjunctions:*\n${analysis.conjunctions.map(c => `• ${c.star} conjunct ${c.planet}: ${c.interpretation}`).join('\n')}\n\n${analysis.conjunctions.length === 0 ? 'No major fixed star conjunctions within 2° orb.' : ''}\n\n🪐 *Major Fixed Stars:*\n${analysis.majorStars.map(s => `• ${s.name}(${s.constellation}): ${s.influence}`).join('\n')}\n\n⚡ *Key Fixed Star Meanings:*\n• Regulus: Power/authority, leadership potential\n• Aldebaran: Honor/success, material achievements  \n• Antares: Power struggles, transformation through crisis\n• Fomalhaut: Spiritual wisdom, prosperity through service\n• Spica: Success through helpfulness, harvest abundance\n\n🔮 *Paranatellonta:* Fixed star influences blend with planetary energies, creating unique life themes and potentials.\n\n💫 *Orb:* Conjunctions within 2° activate the star's full influence. 🕉️`;
-  } catch (error) {
-    console.error('Fixed Stars analysis error:', error);
-    return '❌ Error calculating Fixed Stars analysis. Please try again.';
-  }
-};
+/**
+ * Handle Financial Astrology placeholder - moved to modular handler
+
+ */
+;
 
 /**
  * Handle Medical Astrology requests - Personalized Health Analysis

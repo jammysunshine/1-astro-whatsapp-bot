@@ -101,17 +101,710 @@ const handleMedicalAstrology = async (message, user) => {
 };
 
 /**
- * Handle Financial Astrology requests
+ * Handle Financial Astrology requests - Personalized Wealth Timing Analysis
  * @param {string} message - User message
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
 const handleFinancialAstrology = async (message, user) => {
-  if (!message.includes('financial') && !message.includes('money') && !message.includes('wealth') && !message.includes('business')) {
+  if (!message.includes('financial') && !message.includes('money') && !message.includes('wealth') && !message.includes('business') && !message.includes('finance')) {
     return null;
   }
 
-  return `💰 *Financial Astrology Analysis*\n\nVenus rules wealth and possessions. Jupiter expands fortunes. Saturn builds lasting foundations. Mars drives ambitious enterprises.\n\n🪐 *Planetary Finance Indicators:*\n• Jupiter: Prosperity and abundance\n• Venus: Income and luxury\n• Saturn: Long-term wealth building\n• Mercury: Commerce and trade\n• Mars: Risk-taking investments\n\n📅 *Financial Cycles:*\n• Jupiter Return (12 years): Major wealth periods\n• Saturn Opposition (30 years): Peak financial challenges\n• Venus Transit: Income opportunities\n\n⚠️ *Caution:* Mars-Uranus aspects cause market volatility. Saturn-Neptune aspects bring financial illusions.\n\n📊 *Market Weather:*\n• Bull Markets: Jupiter expansion\n• Bear Markets: Saturn contraction\n• Volatile Periods: Mars transits\n\n💫 *Wealth Building:* Financial astrology reveals optimal timing for investments, career moves, and business decisions. Jupiter-Venus aspects bring prosperity breakthroughs.\n\n🕉️ *Ancient Finance:* Vedic texts teach "Dhana Yoga" - planetary combinations creating wealth.`;
+  if (!user.birthDate) {
+    return '💰 *Financial Astrology Analysis*\n\n👤 I need your birth details for personalized wealth timing analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
+  }
+
+  try {
+    // Calculate personalized financial analysis using Swiss Ephemeris
+    const financialAnalysis = await calculateFinancialAstrologyAnalysis(user);
+
+    return `💰 *Financial Astrology - Personalized Wealth Timing Analysis*\n\n${financialAnalysis.introduction}\n\n🪐 *Wealth Planets Analysis:*\n${financialAnalysis.wealthPlanets.map(p => `• ${p.planet}: ${p.interpretation}`).join('\n')}\n\n📅 *Financial Timing Cycles:*\n${financialAnalysis.financialCycles.map(c => `• ${c.cycle}: ${c.description}`).join('\n')}\n\n💰 *Wealth Houses Analysis:*\n${financialAnalysis.wealthHouses.map(h => `• ${h.house}: ${h.interpretation}`).join('\n')}\n\n⚠️ *Risk Assessment:*\n${financialAnalysis.riskAssessment.map(r => `• ${r.area}: ${r.level}`).join('\n')}\n\n📈 *Prosperity Opportunities:*\n${financialAnalysis.prosperityOpportunities.map(o => `• ${o.opportunity}: ${o.timing}`).join('\n')}\n\n💫 *Wealth Building Strategy:*\n${financialAnalysis.strategy}\n\n🕉️ "Jupiter opens doors, Saturn conserves, Venus attracts - together they guide your financial destiny"`;
+  } catch (error) {
+    console.error('Financial Astrology analysis error:', error);
+    return '❌ Error calculating financial astrology analysis. Please try again.';
+  }
+};
+
+/**
+ * Calculate Jaimini karakas using Swiss Ephemeris
+ * @param {Object} user - User object with birth data
+ * @returns {Object} Jaimini karaka analysis
+ */
+const calculateJaiminiKarakaAnalysis = async (user) => {
+  try {
+    // Parse birth date and time from user data
+    const birthYear = user.birthDate.length === 6 ?
+      parseInt(`19${user.birthDate.substring(4)}`) :
+      parseInt(user.birthDate.substring(4));
+    const birthMonth = parseInt(user.birthDate.substring(2, 4)) - 1;
+    const birthDay = parseInt(user.birthDate.substring(0, 2));
+    const birthHour = user.birthTime ? parseInt(user.birthTime.split(':')[0]) : 12;
+    const birthMinute = user.birthTime ? parseInt(user.birthTime.split(':')[1]) : 0;
+
+    // Convert to Julian Day
+    const timezone = user.timezone || 5.5;
+    const utcTime = new Date(Date.UTC(birthYear, birthMonth, birthDay, birthHour - timezone, birthMinute));
+    const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
+
+    // Calculate planetary positions using Swiss Ephemeris
+    const planets = {};
+    const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
+                           sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
+    const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+
+    planetEphemIds.forEach((ephemId, index) => {
+      const result = sweph.swe_calc_ut(julianDay, ephemId, sweph.SEFLG_SPEED);
+      if (result.rc >= 0) {
+        planets[planetNames[index]] = {
+          longitude: result.longitude[0],
+          latitude: result.latitude[0],
+          speed: result.speed[0]
+        };
+      }
+    });
+
+    // Jaimini karaka system - calculate significators based on distance from Moon
+    const moonLongitude = planets.Moon.longitude;
+    const karakas = calculateJaiminiKarakas(planets, moonLongitude);
+
+    const introduction = `Jaimini astrology uses karakas (significators) as controllers of life aspects. Unlike Western ruling planets, Jaimini karakas are determined by each planet's distance from the Moon, measuring from 0° to 360°.`;
+
+    const primaryKaraka = karakas.find(k => k.significator === 'Atmākāraka (Primary Karaka)');
+    const secondaryKaraka = karakas.find(k => k.significator === 'Amātyakāraka (Career Karaka)');
+
+    // Calculate sphuta positions (special Jaimini calculations)
+    const sphutaAnalysis = calculateSphutaPositions(planets);
+
+    // Generate insights based on karakas
+    const insights = generateJaiminiInsights(karakas);
+
+    const guidance = `In Jaimini system, the Atmākāraka shows your soul's expression, while Amātyakāraka reveals career fulfillment. Consider your strongest karakas when making important life decisions. 🕉️`;
+
+    return {
+      introduction,
+      karakas,
+      primaryKaraka: primaryKaraka?.planet || 'Undetermined',
+      secondaryKaraka: secondaryKaraka?.planet || 'Undetermined',
+      sphutaAnalysis,
+      insights,
+      guidance
+    };
+
+  } catch (error) {
+    console.error('Jaimini Karaka calculation error:', error);
+    throw new Error('Failed to calculate Jaimini astrology analysis');
+  }
+};
+
+/**
+ * Calculate Jaimini karakas based on distance from Moon
+ * @param {Object} planets - Planetary positions
+ * @param {number} moonLongitude - Moon's longitude
+ * @returns {Array} Karaka interpretations
+ */
+const calculateJaiminiKarakas = (planets, moonLongitude) => {
+  const karakaRanges = [];
+
+  // Calculate each planet's distance from Moon (forward direction)
+  for (const [planetName, planetData] of Object.entries(planets)) {
+    if (planetData.longitude !== undefined && planetName !== 'Moon') {
+      let distance = planetData.longitude - moonLongitude;
+
+      // Handle wraparound
+      if (distance < 0) {
+        distance += 360;
+      }
+
+      if (distance >= 360) {
+        distance -= 360;
+      }
+
+      karakaRanges.push({
+        planet: planetName,
+        distance: distance,
+        longitude: planetData.longitude,
+        karaka: getKarakaFromDistance(distance)
+      });
+    }
+  }
+
+  // Assign karakas based on closest planets (smallest distances)
+  karakaRanges.sort((a, b) => a.distance - b.distance);
+
+  const karakas = [];
+
+  // Assign specific karakas based on closest planets
+  const karakaAssignments = [
+    { significator: 'Atmākāraka (Primary Karaka)', index: 0 },
+    { significator: 'Amātyakāraka (Career Karaka)', index: 1 },
+    { significator: 'Bhrātṛkāraka (Siblings Karaka)', index: 2 },
+    { significator: 'Mātṛkāraka (Mother Karaka)', index: 3 },
+    { significator: 'Pitr̥kāraka (Father Karaka)', index: 4 },
+    { significator: 'Putrakāraka (Children Karaka)', index: 5 },
+    { significator: 'Gnātikāraka (Relatives Karaka)', index: 6 }
+  ];
+
+  karakaAssignments.forEach(assignment => {
+    if (karakaRanges[assignment.index]) {
+      const karaka = karakaRanges[assignment.index];
+      karakas.push({
+        planet: karaka.planet,
+        significator: assignment.significator,
+        distance: karaka.distance.toFixed(2),
+        description: getKarakaDescription(assignment.significator)
+      });
+    }
+  });
+
+  return karakas;
+};
+
+/**
+ * Get karaka type based on distance
+ * @param {number} distance - Distance from Moon in degrees
+ * @returns {string} Karaka type
+ */
+const getKarakaFromDistance = (distance) => {
+  if (distance < 30) return 'Atmākāraka (Primary Karaka)';
+  if (distance < 60) return 'Amātyakāraka (Career Karaka)';
+  if (distance < 90) return 'Bhrātṛkāraka (Siblings Karaka)';
+  if (distance < 120) return 'Mātṛkāraka (Mother Karaka)';
+  if (distance < 150) return 'Pitr̥kāraka (Father Karaka)';
+  if (distance < 180) return 'Putrakāraka (Children Karaka)';
+  if (distance < 210) return 'Gnātikāraka (Relatives Karaka)';
+  return 'Additional Significator';
+};
+
+/**
+ * Get description for karaka significator
+ * @param {string} karaka - Karaka significator name
+ * @returns {string} Description
+ */
+const getKarakaDescription = (karaka) => {
+  const descriptions = {
+    'Atmākāraka (Primary Karaka)': 'Soul expression, personality, core being',
+    'Amātyakāraka (Career Karaka)': 'Profession, career, public status',
+    'Bhrātṛkāraka (Siblings Karaka)': 'Siblings, associates, close friends',
+    'Mātṛkāraka (Mother Karaka)': 'Mother, nurturing, home environment',
+    'Pitr̥kāraka (Father Karaka)': 'Father, authority, traditional values',
+    'Putrakāraka (Children Karaka)': 'Children, creativity, legacy',
+    'Gnātikāraka (Relatives Karaka)': 'Relatives, community, social connections'
+  };
+
+  return descriptions[karaka] || 'General significator';
+};
+
+/**
+ * Calculate sphuta positions (Jaimini special calculations)
+ * @param {Object} planets - Planetary positions
+ * @returns {Array} Sphuta analysis
+ */
+const calculateSphutaPositions = (planets) => {
+  const sphuta = [];
+
+  // Basic sphuta calculations (simplified)
+  if (planets.Sun?.longitude && planets.Moon?.longitude) {
+    const sunMoonDistance = Math.abs(planets.Sun.longitude - planets.Moon.longitude);
+    sphuta.push({
+      position: 'Sun-Moon Relationship',
+      interpretation: sunMoonDistance < 90 ? 'Harmonious soul-mind connection' : 'Diverse personality expression'
+    });
+  }
+
+  if (planets.Mars?.longitude) {
+    const marsSign = this.longitudeToSign(planets.Mars.longitude);
+    sphuta.push({
+      position: `${marsSign} Mars Sphuta`,
+      interpretation: `Martial energy expresses as ${marsSign.toLowerCase()} qualities in action`
+    });
+  }
+
+  if (planets.Jupiter?.longitude) {
+    const jupiterDegrees = Math.floor(planets.Jupiter.longitude % 30);
+    sphuta.push({
+      position: `Jupiter in ${Math.floor(jupiterDegrees / 6) + 1}° range`,
+      interpretation: `Wisdom manifests in ${jupiterDegrees < 15 ? 'structure and discipline' : 'expansion and growth'}`
+    });
+  }
+
+  return sphuta;
+};
+
+/**
+ * Generate insights based on Jaimini karakas
+ * @param {Array} karakas - Jaimini karaka assignments
+ * @returns {Array} Life insights
+ */
+const generateJaiminiInsights = (karakas) => {
+  const insights = [];
+
+  const primaryPlanet = karakas.find(k => k.significator.includes('Primary'))?.planet;
+  const careerPlanet = karakas.find(k => k.significator.includes('Career'))?.planet;
+
+  if (primaryPlanet) {
+    insights.push(`Your ${primaryPlanet} Atmakaraka suggests your soul's journey involves ${getPlanetQualities(primaryPlanet)} expression.`);
+  }
+
+  if (careerPlanet) {
+    insights.push(`Your Amatyakaraka ${careerPlanet} indicates career fulfillment through ${getCareerQualities(careerPlanet)} pathways.`);
+  }
+
+  // Look for important aspect combinations
+  const marsAsKaraka = karakas.some(k => k.planet === 'Mars');
+  const saturnAsKaraka = karakas.some(k => k.planet === 'Saturn');
+
+  if (marsAsKaraka) {
+    insights.push('Mars as karaka suggests transformative life experiences and disciplined action for growth.');
+  }
+
+  if (saturnAsKaraka) {
+    insights.push('Saturn karakaship indicates karmic responsibilities and structured life lessons.');
+  }
+
+  return insights.slice(0, 3);
+};
+
+/**
+ * Get personality qualities based on planet
+ * @param {string} planet - Planet name
+ * @returns {string} Quality description
+ */
+const getPlanetQualities = (planet) => {
+  const qualities = {
+    Sun: 'leadership and self-expression',
+    Moon: 'emotional intelligence and adaptability',
+    Mars: 'determination and transformative energy',
+    Mercury: 'intellectual exploration and communication',
+    Jupiter: 'wisdom and philosophical growth',
+    Venus: 'harmony and creative expression',
+    Saturn: 'discipline and spiritual responsibility'
+  };
+
+  return qualities[planet] || 'spiritual growth';
+};
+
+/**
+ * Get career qualities based on planet
+ * @param {string} planet - Planet name
+ * @returns {string} Career quality description
+ */
+const getCareerQualities = (planet) => {
+  const qualities = {
+    Sun: 'leadership and creative performance',
+    Moon: 'public service and emotional care',
+    Mars: 'competitive action and heroic endeavors',
+    Mercury: 'communication and intellectual work',
+    Jupiter: 'teaching and expansive opportunities',
+    Venus: 'artistic and relationship-focused careers',
+    Saturn: 'authoritative and traditional fields'
+  };
+
+  return qualities[planet] || 'professional development';
+};
+
+/**
+ * Calculate personalized financial astrology analysis using Swiss Ephemeris
+ * @param {Object} user - User object with birth data
+ * @returns {Object} Financial astrology wealth analysis
+ */
+  try {
+    // Parse birth date and time from user data
+    const birthYear = user.birthDate.length === 6 ?
+      parseInt(`19${user.birthDate.substring(4)}`) :
+      parseInt(user.birthDate.substring(4));
+    const birthMonth = parseInt(user.birthDate.substring(2, 4)) - 1;
+    const birthDay = parseInt(user.birthDate.substring(0, 2));
+    const birthHour = user.birthTime ? parseInt(user.birthTime.split(':')[0]) : 12;
+    const birthMinute = user.birthTime ? parseInt(user.birthTime.split(':')[1]) : 0;
+
+    // Calculate current age for financial timing
+    const currentDate = new Date();
+    const birthDateObj = new Date(birthYear, birthMonth, birthDay);
+    const currentAge = Math.floor((currentDate - birthDateObj) / (365.25 * 24 * 60 * 60 * 1000));
+
+    // Convert to Julian Day
+    const timezone = user.timezone || 5.5;
+    const utcTime = new Date(Date.UTC(birthYear, birthMonth, birthDay, birthHour - timezone, birthMinute));
+    const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
+
+    // Calculate planetary positions using Swiss Ephemeris
+    const planets = {};
+    const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
+                           sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
+    const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+
+    planetEphemIds.forEach((ephemId, index) => {
+      const result = sweph.swe_calc_ut(julianDay, ephemId, sweph.SEFLG_SPEED);
+      if (result.rc >= 0) {
+        planets[planetNames[index]] = {
+          longitude: result.longitude[0],
+          latitude: result.latitude[0],
+          speed: result.speed[0]
+        };
+      }
+    });
+
+    // Calculate houses (Placidus system for financial analysis)
+    const defaultLat = 28.6139;
+    const defaultLng = 77.2090;
+    const lat = user.latitude || defaultLat;
+    const lng = user.longitude || defaultLng;
+
+    const cusps = new Array(13);
+    sweph.swe_houses(julianDay, lat, lng, 'P', cusps);
+
+    const houses = {};
+    for (let i = 1; i <= 12; i++) {
+      houses[i] = {
+        cusp: cusps[i],
+        sign: this.longitudeToSign(cusps[i])
+      };
+    }
+
+    // Analyze financial indicators based on chart
+    const wealthPlanets = analyzeWealthPlanets(planets, cusps);
+    const financialCycles = analyzeFinancialTiming(currentAge, planets, cusps);
+    const wealthHouses = analyzeWealthHouses(planets, cusps);
+    const riskAssessment = assessFinancialRisks(planets, cusps);
+    const prosperityOpportunities = identifyProsperityOpportunities(planets, cusps);
+    const strategy = determineWealthBuildingStrategy(wealthPlanets, riskAssessment);
+
+    const introduction = `Your birth chart reveals your financial potential, wealth-building patterns, and optimal timing for prosperity. Planets influence income, expenses, investments, and financial security.`;
+
+    return {
+      introduction,
+      wealthPlanets,
+      financialCycles,
+      wealthHouses,
+      riskAssessment,
+      prosperityOpportunities,
+      strategy
+    };
+
+  } catch (error) {
+    console.error('Financial Astrology calculation error:', error);
+    throw new Error('Failed to calculate financial astrology analysis');
+  }
+};
+
+/**
+ * Analyze wealth-related planets in the chart
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} Wealth planet interpretations
+ */
+const analyzeWealthPlanets = (planets, cusps) => {
+  const wealthPlanets = [];
+
+  // Jupiter - prosperity and expansion
+  if (planets.Jupiter?.longitude) {
+    const jupiterHouse = this.longitudeToHouse(planets.Jupiter.longitude, cusps[0]);
+    wealthPlanets.push({
+      planet: 'Jupiter',
+      interpretation: getWealthPlanetInterpretation('Jupiter', jupiterHouse)
+    });
+  }
+
+  // Venus - income, luxury, valuables
+  if (planets.Venus?.longitude) {
+    const venusHouse = this.longitudeToHouse(planets.Venus.longitude, cusps[0]);
+    wealthPlanets.push({
+      planet: 'Venus',
+      interpretation: getWealthPlanetInterpretation('Venus', venusHouse)
+    });
+  }
+
+  // Moon - emotional relationship to wealth
+  if (planets.Moon?.longitude) {
+    const moonHouse = this.longitudeToHouse(planets.Moon.longitude, cusps[0]);
+    wealthPlanets.push({
+      planet: 'Moon',
+      interpretation: getWealthPlanetInterpretation('Moon', moonHouse)
+    });
+  }
+
+  // Mars - risk-taking, action in business
+  if (planets.Mars?.longitude) {
+    const marsHouse = this.longitudeToHouse(planets.Mars.longitude, cusps[0]);
+    wealthPlanets.push({
+      planet: 'Mars',
+      interpretation: getWealthPlanetInterpretation('Mars', marsHouse)
+    });
+  }
+
+  // Saturn - long-term wealth building
+  if (planets.Saturn?.longitude) {
+    const saturnHouse = this.longitudeToHouse(planets.Saturn.longitude, cusps[0]);
+    wealthPlanets.push({
+      planet: 'Saturn',
+      interpretation: getWealthPlanetInterpretation('Saturn', saturnHouse)
+    });
+  }
+
+  return wealthPlanets.slice(0, 4); // Top 4 wealth indicators
+};
+
+/**
+ * Analyze wealth-related houses (2nd, 8th, 11th)
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} Wealth house interpretations
+ */
+const analyzeWealthHouses = (planets, cusps) => {
+  const wealthHouses = [];
+
+  // 2nd House - personal wealth and values
+  const secondHouseSign = this.longitudeToSign(cusps[1]);
+  wealthHouses.push({
+    house: '2nd House (Personal Wealth)',
+    interpretation: `${secondHouseSign} in 2nd house indicates wealth through personal values. Your relationship with money reflects your core self-worth.`
+  });
+
+  // 8th House - shared wealth, investments, insurance
+  const eighthHouseSign = this.longitudeToSign(cusps[7]);
+  wealthHouses.push({
+    house: '8th House (Shared/Transformative Wealth)',
+    interpretation: `${eighthHouseSign} in 8th house shows wealth through partnerships or transformative changes. Inheritance, investments, or shared resources are potential sources.`
+  });
+
+  // 11th House - gains, hopes, wishes fulfillment
+  const eleventhHouseSign = this.longitudeToSign(cusps[10]);
+  wealthHouses.push({
+    house: '11th House (Gains & Life Goals)',
+    interpretation: `${eleventhHouseSign} in 11th house indicates wealth through achievements and collective efforts. Groups, networks, and fulfilled goals generate prosperity.`
+  });
+
+  return wealthHouses;
+};
+
+/**
+ * Analyze financial timing and abundance cycles
+ * @param {number} currentAge - Current age in years
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} Financial timing cycles
+ */
+const analyzeFinancialTiming = (currentAge, planets, cusps) => {
+  const cycles = [];
+
+  // Jupiter return cycles (ages 12, 24, 36, 48, 60, 72...)
+  const jupiterCycles = [12, 24, 36, 48, 60, 72, 84];
+  if (jupiterCycles.some(age => currentAge >= age - 1 && currentAge <= age + 1)) {
+    cycles.push({
+      cycle: 'Jupiter Return (Abundance & Growth)',
+      description: 'Expansion of wealth and increased prosperity opportunities'
+    });
+  }
+
+  // Saturn return (ages 28-30) - career = financial
+  if (currentAge >= 27 && currentAge <= 33) {
+    cycles.push({
+      cycle: 'Saturn Return (Career = Financial Maturity)',
+      description: 'Financial stability through established career and disciplined wealth building'
+    });
+  }
+
+  // Venus returns (every ~1.6 years) - current financial flow
+  cycles.push({
+    cycle: 'Venus Cycle (Income Flow)',
+    description: 'Natural rhythm of financial intake and expenditure'
+  });
+
+  // Transiting Jupiter periods
+  cycles.push({
+    cycle: 'Jupiter Transits (Wealth Expansion)',
+    description: '12-year cycles of prosperity and abundance when Jupiter transits wealth houses'
+  });
+
+  return cycles.slice(0, 3);
+};
+
+/**
+ * Assess financial risks based on chart placements
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} Risk assessment areas
+ */
+const assessFinancialRisks = (planets, cusps) => {
+  const risks = [];
+
+  // Mars in 8th house - potential financial losses
+  if (planets.Mars?.longitude) {
+    const marsHouse = this.longitudeToHouse(planets.Mars.longitude, cusps[0]);
+    if (marsHouse === 8) {
+      risks.push({
+        area: 'Investment Risks',
+        level: 'Elevated - Mars in 8th can indicate sudden financial changes or aggressive investment tendencies'
+      });
+    }
+  }
+
+  // Saturn in 2nd house - material lack concerns
+  if (planets.Saturn?.longitude) {
+    const saturnHouse = this.longitudeToHouse(planets.Saturn.longitude, cusps[0]);
+    if (saturnHouse === 2) {
+      risks.push({
+        area: 'Security Concerns',
+        level: 'Moderate - Saturn creates structure but may indicate periods of financial limitation for learning'
+      });
+    }
+  }
+
+  // Uranus in financial houses - unexpected changes
+  if (planets.Mercury?.longitude) { // Using Mercury as proxy for Uranus risk
+    const mercuryHouse = this.longitudeToHouse(planets.Mercury.longitude, cusps[0]);
+    if (mercuryHouse === 2 || mercuryHouse === 8 || mercuryHouse === 11) {
+      risks.push({
+        area: 'Market Volatility',
+        level: 'Variable - Planetary placements suggest adapting to changing financial conditions'
+      });
+    }
+  }
+
+  // Default assessment
+  if (risks.length === 0) {
+    risks.push({
+      area: 'General Risk Assessment',
+      level: 'Balanced - Chart shows moderate financial stability with prudent risk management'
+    });
+  }
+
+  return risks.slice(0, 3);
+};
+
+/**
+ * Identify prosperity opportunities from chart
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} Prosperity opportunity timings
+ */
+const identifyProsperityOpportunities = (planets, cusps) => {
+  const opportunities = [];
+
+  // Jupiter in beneficial houses
+  if (planets.Jupiter?.longitude) {
+    const jupiterHouse = this.longitudeToHouse(planets.Jupiter.longitude, cusps[0]);
+    if ([2, 5, 9, 11].includes(jupiterHouse)) {
+      opportunities.push({
+        opportunity: 'Abundance Expansion',
+        timing: 'Jupiter is well-placed for wealth building and prosperous growth'
+      });
+    }
+  }
+
+  // Venus wealth indicators
+  if (planets.Venus?.longitude) {
+    const venusHouse = this.longitudeToHouse(planets.Venus.longitude, cusps[0]);
+    if (venusHouse === 2 || venusHouse === 11) {
+      opportunities.push({
+        opportunity: 'Income Opportunities',
+        timing: 'Venus suggests natural flow of money and appreciation of valuable assets'
+      });
+    }
+  }
+
+  // Saturn in wealth houses (delays = long-term success)
+  if (planets.Saturn?.longitude) {
+    const saturnHouse = this.longitudeToHouse(planets.Saturn.longitude, cusps[0]);
+    if (saturnHouse === 2) {
+      opportunities.push({
+        opportunity: 'Long-term Financial Security',
+        timing: 'Saturn indicates building lasting wealth through disciplined effort'
+      });
+    }
+  }
+
+  // Default opportunities
+  if (opportunities.length === 0) {
+    opportunities.push({
+      opportunity: 'Balanced Financial Growth',
+      timing: 'Chart supports steady wealth accumulation through consistent strategy'
+    });
+  }
+
+  return opportunities.slice(0, 3);
+};
+
+/**
+ * Determine overall wealth building strategy
+ * @param {Array} wealthPlanets - Wealth planet influences
+ * @param {Array} riskAssessment - Financial risk factors
+ * @returns {string} Strategy recommendation
+ */
+const determineWealthBuildingStrategy = (wealthPlanets, riskAssessment) => {
+  let strategy = 'Focus on ';
+
+  const hasJupiter = wealthPlanets.some(p => p.planet === 'Jupiter');
+  const hasVenus = wealthPlanets.some(p => p.planet === 'Venus');
+  const hasSaturn = wealthPlanets.some(p => p.planet === 'Saturn');
+  const highRisk = riskAssessment.some(r => r.level.includes('Elevated'));
+
+  if (hasJupiter) {
+    strategy += 'expansion and opportunity recognition. Jupiter favors growth ventures and fortunate circumstances.';
+  } else if (hasVenus) {
+    strategy += 'value appreciation and luxury sector investments. Venus supports financial comfort through beautiful, valuable pursuits.';
+  } else if (hasSaturn) {
+    strategy += 'long-term structural building. Saturn rewards patience and conservative wealth accumulation strategies.';
+  } else {
+    strategy += 'balanced diversification. Multiple approaches to wealth building will serve you well.';
+  }
+
+  if (highRisk) {
+    strategy += ' Consider conservative strategies and build financial safety nets to mitigate volatile periods.';
+  } else {
+    strategy += ' Your chart supports moderate risk-taking with good potential for steady growth.';
+  }
+
+  return strategy;
+};
+
+/**
+ * Get interpretation for wealth planets based on house placements
+ * @param {string} planet - Planet name
+ * @param {number} house - House number
+ * @returns {string} Wealth interpretation
+ */
+const getWealthPlanetInterpretation = (planet, house) => {
+  const interpretations = {
+    Jupiter: {
+      2: 'Jupiter in 2nd house suggests abundant personal wealth and optimistic money management',
+      11: 'Jupiter in 11th house indicates prosperity through goals, wishes, and humanitarian efforts',
+      9: 'Jupiter in 9th house supports wealth through philosophy, teaching, or international ventures',
+      default: 'Jupiter expansion favors wealth accumulation through positive opportunities'
+    },
+    Venus: {
+      2: 'Venus in 2nd house indicates financial harmony and profit through aesthetic or luxury pursuits',
+      7: 'Venus in 7th house suggests wealth through partnerships and balanced financial relationships',
+      11: 'Venus in 11th house indicates material gains through friends, groups, and fulfilled aspirations',
+      default: 'Venus supports income through beautiful, harmonious financial activities'
+    },
+    Moon: {
+      2: 'Moon in 2nd house connects emotional security to financial well-being',
+      8: 'Moon in 8th house indicates wealth through shared resources or emotional transformation',
+      11: 'Moon in 11th house supports prosperity through emotional fulfillment of goals',
+      default: 'Moon influences wealth comfort and financial relationship with emotions'
+    },
+    Mars: {
+      2: 'Mars in 2nd house drives action-oriented wealth building and resource acquisition',
+      10: 'Mars in 10th house indicates career-driven wealth and public achievement',
+      11: 'Mars in 11th house supports gains through effort and competitive achievement',
+      default: 'Mars activates wealth through action, competition, and strategic risk-taking'
+    },
+    Saturn: {
+      2: 'Saturn in 2nd house requires disciplined wealth building but rewards long-term security',
+      11: 'Saturn in 11th house indicates steady gains through patient effort and group achievement',
+      default: 'Saturn supports wealth through structured, conservative, long-term planning'
+    }
+  };
+
+  const planetInterp = interpretations[planet];
+  if (planetInterp && planetInterp[house]) {
+    return planetInterp[house];
+  }
+
+  return planetInterp?.default || `${planet}'s energy influences your approach to wealth and financial decisions`;
+};
 };
 
 /**
@@ -366,27 +1059,29 @@ const handleVimshottariDasha = async (message, user) => {
 };
 
 /**
- * Handle Jaimini Astrology requests
+ * Handle Jaimini Astrology requests - Karaka Analysis
  * @param {string} message - User message
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
 const handleJaiminiAstrology = async (message, user) => {
-  if (!message.includes('jaimini') && !message.includes('sphuta') && !message.includes('karma')) {
+  if (!message.includes('jaimini') && !message.includes('sphuta') && !message.includes('karaka') && !message.includes('jaimini astrology')) {
     return null;
   }
 
-  return null; // No service file yet - placeholder for future implementation
-
-  /* Future implementation:
-  try {
-    const chart = jaiminiCalculator.calculateSphutaChart(user);
-    return `🌟 *Jaimini Astrology - Sphuta Chart*\n\n${chart.sphutaAnalysis}\n\n🎯 *Karaka Elements:*\n${chart.karakas.join('\n')}\n\n🔮 *Sphuta Predictions:* ${chart.predictions}`;
-  } catch (error) {
-    console.error('Jaimini calculation error:', error);
-    return '❌ Error generating Jaimini analysis.';
+  if (!user.birthDate) {
+    return '🌟 *Jaimini Astrology - Karaka Analysis*\n\n👤 I need your birth details for Jaimini karaka calculations.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
   }
-  */
+
+  try {
+    // Calculate Jaimini karakas using Swiss Ephemeris
+    const karakaAnalysis = await calculateJaiminiKarakaAnalysis(user);
+
+    return `🌟 *Jaimini Astrology - Karaka (Significator) Analysis*\n\n${karakaAnalysis.introduction}\n\n🪐 *Your Planetary Karakas:*\n${karakaAnalysis.karakas.map(k => `• ${k.name}: ${k.significator} (${k.planet}: ${k.description})`).join('\n')}\n\n📊 *Karaka Hierarchy:*\n${karakaAnalysis.primaryKaraka} ${karakaAnalysis.secondaryKaraka}\n\n🔮 *Sphuta Positions (Jaimini calculation):*\n${karakaAnalysis.sphutaAnalysis.map(s => `• ${s.position}: ${s.interpretation}`).join('\n')}\n\n🎯 *Key Insights:*\n${karakaAnalysis.insights.map(i => `• ${i.insight}`).join('\n')}\n\n🧘 *Jaimini Wisdom:*\n${karakaAnalysis.guidance}\n\n✨ *Note:* Jaimini astrology focuses on karakas (significators) as controllers of life aspects, different from mainstream Western ruling planets. 🕉️`;
+  } catch (error) {
+    console.error('Jaimini Astrology analysis error:', error);
+    return '❌ Error generating Jaimini astrology analysis. Please try again.';
+  }
 };
 
 /**

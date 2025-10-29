@@ -1,12 +1,27 @@
-// Connected to actual service implementations - QUICK WINS
-const vimshottariDasha = require('../vimshottariDasha');
-const vedicNumerology = require('../vedicNumerology');
-const ayurvedicAstrology = require('../ayurvedicAstrology');
-const vedicRemedies = require('../vedicRemedies');
-const { NadiAstrology } = require('../nadiAstrology');
-const MundaneAstrologyReader = require('../mundaneAstrology');
-const { AgeHarmonicAstrologyReader } = require('../ageHarmonicAstrology');
-const { Panchang } = require('../panchang');
+/**
+ * Modern Vedic Handlers - Decomposed Architecture
+ * Each handler now in its own dedicated file for maintainability
+ */
+
+// Import decomposed handlers from individual modules
+const {
+  handleNadi,
+  handleFixedStars,
+  handleMedicalAstrology,
+  handleFinancialAstrology,
+  handleHarmonicAstrology,
+  handleCareerAstrology,
+  handleVedicRemedies,
+  handlePanchang,
+  handleAshtakavarga,
+  handleFutureSelf
+} = require('./vedic');
+
+// Utility functions and calculation modules remain in this file for complex calculations
+// These can be further decomposed in future refactoring phases
+
+// Swiss Ephemeris library for astronomical calculations
+const sweph = require('sweph');
 
 /**
  * Utility function to get zodiac sign from longitude
@@ -35,46 +50,6 @@ const longitudeToSign = (longitude) => {
 const longitudeToHouse = (longitude, ascendant) => {
   const angle = ((longitude - ascendant + 360) % 360);
   return Math.floor(angle / 30) + 1;
-};
-
-// Swiss Ephemeris library for astronomical calculations
-const sweph = require('sweph');
-
-/**
- * Handle Nadi Astrology requests
- * @param {string} message - User message
- * @param {Object} user - User object
- * @returns {string|null} Response or null if not handled
- */
-const handleNadi = async (message, user) => {
-  if (!message.includes('nadi') && !message.includes('palm leaf') && !message.includes('scripture')) {
-    return null;
-  }
-
-  if (!user.birthDate) {
-    return '🌿 *Nadi Astrology Palm Leaf Reading*\n\n👤 I need your complete birth details for authentic Nadi palm leaf correlation.\n\nSend format: DDMMYY or DDMMYYYY, HHMM, City, Country\nExample: 150691, 1430, Delhi, India';
-  }
-
-  try {
-    const nadiService = new NadiAstrology();
-    const birthData = {
-      birthDate: user.birthDate,
-      birthTime: user.birthTime || '12:00',
-      birthPlace: user.birthPlace || 'Unknown',
-      name: user.name || 'User'
-    };
-
-    const reading = await nadiService.performNadiReading(birthData);
-
-    if (reading.error) {
-      return '❌ Unable to perform authentic Nadi reading. Please ensure your birth details are complete.';
-    }
-
-    return reading.summary;
-  } catch (error) {
-    console.error('Nadi reading error:', error);
-    return '❌ Error generating Nadi palm leaf reading. Please try again.';
-  }
 };
 
 /**

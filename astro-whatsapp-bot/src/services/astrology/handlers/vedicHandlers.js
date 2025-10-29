@@ -52,73 +52,8 @@ const longitudeToHouse = (longitude, ascendant) => {
   return Math.floor(angle / 30) + 1;
 };
 
-/**
- * Handle Fixed Stars placeholder - moved to modular handler
- * This is a transitional comment - actual implementation is imported
- */
-
-/**
- * Handle Medical Astrology placeholder - moved to modular handler
-
- */
-
-/**
- * Handle Financial Astrology placeholder - moved to modular handler
-
- */
-;
-
-/**
- * Handle Medical Astrology requests - Personalized Health Analysis
- * @param {string} message - User message
- * @param {Object} user - User object
- * @returns {string|null} Response or null if not handled
- */
-const handleMedicalAstrology = async (message, user) => {
-  if (!message.includes('medical') && !message.includes('health') && !message.includes('disease') && !message.includes('illness') && !message.includes('health analysis')) {
-    return null;
-  }
-
-  if (!user.birthDate) {
-    return '🏥 *Medical Astrology Analysis*\n\n👤 I need your birth details for personalized health analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
-  }
-
-  try {
-    // Calculate personalized health analysis using Swiss Ephemeris
-    const healthAnalysis = await calculateMedicalAstrologyAnalysis(user);
-
-    return `🏥 *Medical Astrology - Personalized Health Analysis*\n\n${healthAnalysis.introduction}\n\n🩺 *Your Health Indicators:*\n${healthAnalysis.healthIndicators.map(h => `• ${h.planet}: ${h.interpretation}`).join('\n')}\n\n🏥 *Key Health Houses:*\n${healthAnalysis.houseAnalysis.map(h => `• ${h.house}: ${h.interpretation}`).join('\n')}\n\n⚠️ *Potential Health Focus Areas:*\n${healthAnalysis.focusAreas.map(a => `• ${a.area}: ${a.insights}`).join('\n')}\n\n🧘 *Health Maintenance Suggestions:*\n${healthAnalysis.recommendations.map(r => `• ${r.suggestion}`).join('\n')}\n\n💊 *IMPORTANT: This astrological analysis complements but does not replace professional medical advice. Consult healthcare providers for health concerns.\n\n🕉️ "The celestial bodies influence the vital forces of our earthly constitution" - Vedic Medical Tradition.`;
-  } catch (error) {
-    console.error('Medical astrology analysis error:', error);
-    return '❌ Error calculating medical astrology analysis. Please try again.';
-  }
-};
-
-/**
- * Handle Financial Astrology requests - Personalized Wealth Timing Analysis
- * @param {string} message - User message
- * @param {Object} user - User object
- * @returns {string|null} Response or null if not handled
- */
-const handleFinancialAstrology = async (message, user) => {
-  if (!message.includes('financial') && !message.includes('money') && !message.includes('wealth') && !message.includes('business') && !message.includes('finance')) {
-    return null;
-  }
-
-  if (!user.birthDate) {
-    return '💰 *Financial Astrology Analysis*\n\n👤 I need your birth details for personalized wealth timing analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
-  }
-
-  try {
-    // Calculate personalized financial analysis using Swiss Ephemeris
-    const financialAnalysis = await calculateFinancialAstrologyAnalysis(user);
-
-    return `💰 *Financial Astrology - Personalized Wealth Timing Analysis*\n\n${financialAnalysis.introduction}\n\n🪐 *Wealth Planets Analysis:*\n${financialAnalysis.wealthPlanets.map(p => `• ${p.planet}: ${p.interpretation}`).join('\n')}\n\n📅 *Financial Timing Cycles:*\n${financialAnalysis.financialCycles.map(c => `• ${c.cycle}: ${c.description}`).join('\n')}\n\n💰 *Wealth Houses Analysis:*\n${financialAnalysis.wealthHouses.map(h => `• ${h.house}: ${h.interpretation}`).join('\n')}\n\n⚠️ *Risk Assessment:*\n${financialAnalysis.riskAssessment.map(r => `• ${r.area}: ${r.level}`).join('\n')}\n\n📈 *Prosperity Opportunities:*\n${financialAnalysis.prosperityOpportunities.map(o => `• ${o.opportunity}: ${o.timing}`).join('\n')}\n\n💫 *Wealth Building Strategy:*\n${financialAnalysis.strategy}\n\n🕉️ "Jupiter opens doors, Saturn conserves, Venus attracts - together they guide your financial destiny"`;
-  } catch (error) {
-    console.error('Financial Astrology analysis error:', error);
-    return '❌ Error calculating financial astrology analysis. Please try again.';
-  }
-};
+// All core handlers now imported from modular files above.
+// Complex calculation functions remain here for further decomposition in future phases.
 
 /**
  * Calculate Jaimini karakas using Swiss Ephemeris

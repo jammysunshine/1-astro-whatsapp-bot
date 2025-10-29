@@ -1,69 +1,59 @@
 const BaseAction = require('../BaseAction');
-const { ResponseBuilder } = require('../../utils/ResponseBuilder');
-const { sendMessage } = require('../../messageSender');
 
+/**
+ * MuhurtaAction - Provides auspicious timing for important activities using Vedic electional astrology.
+ * Reuses the existing implementation from the legacy messageProcessor.
+ */
 class MuhurtaAction extends BaseAction {
-  static get actionId() { return 'get_muhurta_timing'; }
+  /**
+   * Unique action identifier
+   */
+  static get actionId() {
+    return 'get_muhurta_analysis';
+  }
 
+  /**
+   * Execute the muhurta analysis action
+   * @returns {Promise<Object|null>} Action result
+   */
   async execute() {
     try {
-      await this.sendMuhurtaGuide();
-      return { success: true, type: 'muhurta' };
+      this.logExecution('start', 'Generating muhurta timing analysis');
+
+      // Import the legacy executeMenuAction function
+      const { executeMenuAction } = require('../../../__LEGACY__messageProcessor.js.ARCHIVED');
+
+      // Call the legacy implementation
+      return await executeMenuAction(this.phoneNumber, this.user, 'get_muhurta_analysis');
 
     } catch (error) {
+      this.logger.error('Error in MuhurtaAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: error.message };
+      return { success: false, reason: 'execution_error', error: error.message };
     }
   }
 
-  async sendMuhurtaGuide() {
-    const guide = `🗓️ *Muhurta - Vedic Auspicious Timing*\n\n` +
-      `Muhurta (electional astrology) is the Vedic art of choosing perfectly auspicious moments for life's important events through planetary alignment and lunar mansions.\n\n` +
-      `*🕐 VEDIC TIMING WISDOM:*\n` +
-      `• Muhurta = Perfect Time (48-minute window)\n` +
-      `• Based on Vedic calendar and lunar positions\n` +
-      `• Considers five types of defects (Panchang)\n` +
-      `• Aligns with Nakshatras and planetary hours\n` +
-      `• Ensures success and blessings for new beginnings\n\n` +
-      `*🌟 MUHURTA TIMING FOR:*\n` +
-      `• Gruhapravesh (home entering)\n` +
-      `• Marriage ceremonies\n` +
-      `• Business inauguration\n` +
-      `• Religious ceremonies and pujas\n` +
-      `• Travel embarkation\n` +
-      `• Educational beginnings\n\n` +
-      `*✨ MUHURTA CONSIDERATIONS:*\n` +
-      `• Tithi (lunar day) favorable potency\n` +
-      `• Nakshatra auspicious stars\n` +
-      `• Yoga planetary combinations\n` +
-      `• Karana half-day lunar influences\n` +
-      `• Var weekday strength\n\n` +
-      `*🪐 PERFECT VEDIC TIMING:*\n` +
-      `When you begin at the right cosmic moment, the entire universe conspires to support your success and bring blessings to your venture.\n\n` +
-      `*Let Vedic wisdom bless your important beginnings.*`;
-
-    const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
-
-    const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, guide, buttons, userLanguage
-    );
-
-    await sendMessage(message.to, message.interactive, 'interactive');
+  /**
+   * Handle execution errors
+   * @param {Error} error - Execution error
+   */
+  async handleExecutionError(error) {
+    const { sendMessage } = require('../../messageSender');
+    await sendMessage(this.phoneNumber, 'I encountered an error generating your muhurta analysis. Please try again.', 'text');
   }
 
+  /**
+   * Get action metadata for registration
+   * @returns {Object} Action metadata
+   */
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Find auspicious Muhurta timing for important events',
-      keywords: ['muhurta', 'auspicious timing', 'vedic election', 'perfect moment'],
+      description: 'Provide auspicious timing analysis for important activities using Vedic electional astrology',
+      keywords: ['muhurta', 'auspicious time', 'electional astrology', 'vedic timing'],
       category: 'astrology',
       subscriptionRequired: true,
-      cooldown: 1800000
+      cooldown: 3600000 // 1 hour cooldown
     };
   }
 }

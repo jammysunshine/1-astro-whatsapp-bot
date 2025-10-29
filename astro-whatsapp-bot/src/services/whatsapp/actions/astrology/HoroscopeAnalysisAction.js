@@ -1,33 +1,33 @@
 const BaseAction = require('../BaseAction');
 
 /**
- * PanchangAnalysisAction - Provides Hindu calendar and panchang analysis.
+ * HoroscopeAnalysisAction - Provides daily horoscope readings.
  * Reuses the existing implementation from the legacy messageProcessor.
  */
-class PanchangAnalysisAction extends BaseAction {
+class HoroscopeAnalysisAction extends BaseAction {
   /**
    * Unique action identifier
    */
   static get actionId() {
-    return 'get_panchang_analysis';
+    return 'get_horoscope_analysis';
   }
 
   /**
-   * Execute the panchang analysis action
+   * Execute the horoscope analysis action
    * @returns {Promise<Object|null>} Action result
    */
   async execute() {
     try {
-      this.logExecution('start', 'Generating panchang analysis');
+      this.logExecution('start', 'Generating horoscope analysis');
 
       // Import the legacy executeMenuAction function
       const { executeMenuAction } = require('../../../__LEGACY__messageProcessor.js.ARCHIVED');
 
       // Call the legacy implementation
-      return await executeMenuAction(this.phoneNumber, this.user, 'get_panchang_analysis');
+      return await executeMenuAction(this.phoneNumber, this.user, 'get_horoscope');
 
     } catch (error) {
-      this.logger.error('Error in PanchangAnalysisAction:', error);
+      this.logger.error('Error in HoroscopeAnalysisAction:', error);
       await this.handleExecutionError(error);
       return { success: false, reason: 'execution_error', error: error.message };
     }
@@ -39,7 +39,7 @@ class PanchangAnalysisAction extends BaseAction {
    */
   async handleExecutionError(error) {
     const { sendMessage } = require('../../messageSender');
-    await sendMessage(this.phoneNumber, 'I encountered an error generating your panchang analysis. Please try again.', 'text');
+    await sendMessage(this.phoneNumber, 'I encountered an error generating your horoscope. Please try again.', 'text');
   }
 
   /**
@@ -49,8 +49,8 @@ class PanchangAnalysisAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Provide Hindu calendar analysis and panchang information',
-      keywords: ['panchang', 'hindu calendar', 'tithi', 'nakshatra', 'calendar'],
+      description: 'Provide daily horoscope analysis and astrological guidance',
+      keywords: ['horoscope', 'daily horoscope', 'daily reading', 'day guide'],
       category: 'astrology',
       subscriptionRequired: false,
       cooldown: 1800000 // 30 minutes cooldown
@@ -58,4 +58,4 @@ class PanchangAnalysisAction extends BaseAction {
   }
 }
 
-module.exports = PanchangAnalysisAction;
+module.exports = HoroscopeAnalysisAction;

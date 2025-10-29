@@ -9,6 +9,12 @@ const BirthChartAction = require('./actions/astrology/BirthChartAction');
 const ShowMainMenuAction = require('./actions/menu/ShowMainMenuAction');
 const WesternAstrologyMenuAction = require('./actions/menu/WesternAstrologyMenuAction');
 const VedicAstrologyMenuAction = require('./actions/menu/VedicAstrologyMenuAction');
+
+// Key Astrology Actions
+const MuhurtaAction = require('./actions/astrology/MuhurtaAction');
+const PanchangAnalysisAction = require('./actions/astrology/PanchangAnalysisAction');
+const HoroscopeAnalysisAction = require('./actions/astrology/HoroscopeAnalysisAction');
+const DashaAnalysisAction = require('./actions/astrology/DashaAnalysisAction');
 const TarotReadingAction = require('./actions/divination/TarotReadingAction');
 const CompatibilityAction = require('./actions/astrology/CompatibilityAction');
 const CurrentTransitsAction = require('./actions/astrology/CurrentTransitsAction');
@@ -28,14 +34,11 @@ const BusinessAstrologyAction = require('./actions/business/BusinessAstrologyAct
 const SolarReturnAction = require('./actions/astrology/SolarReturnAction');
 const SecondaryProgressionsAction = require('./actions/astrology/SecondaryProgressionsAction');
 const ElectionalAstrologyAction = require('./actions/astrology/ElectionalAstrologyAction');
-const MuhurtaAction = require('./actions/astrology/MuhurtaAction');
 const CompositeChartAction = require('./actions/relationships/CompositeChartAction');
 const BabyNameSuggestionAction = require('./actions/utilities/BabyNameSuggestionAction');
 const GemstoneRecommendationAction = require('./actions/utilities/GemstoneRecommendationAction');
 const MantraRecommendationAction = require('./actions/utilities/MantraRecommendationAction');
 const ColorTherapyAction = require('./actions/utilities/ColorTherapyAction');
-const DashaAnalysisAction = require('./actions/astrology/DashaAnalysisAction');
-const PanchangAnalysisAction = require('./actions/astrology/PanchangAnalysisAction');
 const FixedStarsAction = require('./actions/astrology/FixedStarsAction');
 const LunarNodesAction = require('./actions/astrology/LunarNodesAction');
 const TraditionalHoraryAction = require('./actions/astrology/TraditionalHoraryAction');
@@ -99,6 +102,12 @@ class ActionRegistryInitializer {
     this.registry.registerAction(ShowMainMenuAction.actionId, ShowMainMenuAction);
     this.registry.registerAction(WesternAstrologyMenuAction.actionId, WesternAstrologyMenuAction);
     this.registry.registerAction(VedicAstrologyMenuAction.actionId, VedicAstrologyMenuAction);
+
+    // Key Astrology Actions (using legacy implementations)
+    this.registry.registerAction(MuhurtaAction.actionId, MuhurtaAction);
+    this.registry.registerAction(PanchangAnalysisAction.actionId, PanchangAnalysisAction);
+    this.registry.registerAction(HoroscopeAnalysisAction.actionId, HoroscopeAnalysisAction);
+    this.registry.registerAction(DashaAnalysisAction.actionId, DashaAnalysisAction);
     // Temporarily disable TarotReadingAction until tarotReader module is available
     try {
       this.registry.registerAction(TarotReadingAction.actionId, TarotReadingAction);

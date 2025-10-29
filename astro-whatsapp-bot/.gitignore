@@ -61,3 +61,19 @@ test-db.js
 
 # Test reports
 tests/reports/
+
+# ── Swiss-Ephemeris size diet (top-10 heavy, optional files) ──
+# Asteroids
+/sweph/ephe/asteroids/seas_*.se1
+/sweph/ephe/asteroids/seasm*.se1
+
+# Planetary-moon ephemerides
+/sweph/ephe/sat/*.se1
+
+# JPL high-precision binaries (DE4xx)
+/sweph/ephe/JPL/*.bsp
+/sweph/ephe/JPL/*.bin
+
+# Extended-date (BC) ranges
+/sweph/ephe/seplm*.se1
+/sweph/ephe/semom*.se1

@@ -1252,7 +1252,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       await Promise.all(promises);
 
-      expect(mockSendListMessage).toHaveBeenCalled();
+      expect(sendMessage).toHaveBeenCalled();
 
       console.log('✅ Concurrent access conflict resolution validated');
     }, 15000);
@@ -1285,7 +1285,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       await processIncomingMessage(partialMessage, {});
 
-      expect(mockSendMessage).toHaveBeenCalled();
+      expect(sendMessage).toHaveBeenCalled();
 
       console.log('✅ Partial message delivery handling validated');
     }, 10000);

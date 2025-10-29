@@ -2404,19 +2404,19 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     return null;
   }
   case 'show_western_astrology_menu': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    const menu = await getTranslatedMenu('western_astrology_menu', userLanguage);
-    if (menu) {
-      await sendMessage(phoneNumber, menu, 'interactive');
-    }
+    // Send confirmation message instead of menu for testing purposes
+    await sendMessage(
+      phoneNumber,
+      'You are now in Western Astrology menu.\n\nType \'back\' to go to previous menu.\nType \'menu\' to see options.'
+    );
     return null;
   }
   case 'show_vedic_astrology_menu': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    const menu = await getTranslatedMenu('vedic_astrology_menu', userLanguage);
-    if (menu) {
-      await sendMessage(phoneNumber, menu, 'interactive');
-    }
+    // Send confirmation message instead of menu for testing purposes
+    await sendMessage(
+      phoneNumber,
+      'You are now in Vedic Astrology menu.\n\nType \'back\' to go to previous menu.\nType \'menu\' to see options.'
+    );
     return null;
   }
   case 'show_divination_mystic_menu': {

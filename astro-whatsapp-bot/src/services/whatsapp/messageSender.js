@@ -370,7 +370,7 @@ const sendTemplateMessage = async(
     // Prepare template message payload
     const messagePayload = {
       messaging_product: 'whatsapp',
-      to: phoneNumber,
+      to: phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`,
       type: 'template',
       template: {
         name: templateName,
@@ -461,7 +461,7 @@ const sendMediaMessage = async(
     // Prepare media message payload
     const messagePayload = {
       messaging_product: 'whatsapp',
-      to: phoneNumber,
+      to: phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`,
       type: mediaType,
       [mediaType]: {
         id: mediaId,

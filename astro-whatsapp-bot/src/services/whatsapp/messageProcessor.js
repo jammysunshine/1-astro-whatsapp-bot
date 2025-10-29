@@ -2548,7 +2548,6 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         name: user.name
       });
       if (celticAnalysis.error) {
-        const userLanguage = getUserLanguage(user, phoneNumber);
         await sendMessage(
           phoneNumber,
           `I encountered an issue generating your Celtic reading: ${celticAnalysis.error}`,
@@ -2581,7 +2580,6 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       return null;
     } catch (error) {
       logger.error('Error generating Celtic analysis:', error);
-      const userLanguage = getUserLanguage(user, phoneNumber);
       await sendMessage(
         phoneNumber,
         'messages.astrology_services.celtic.error',
@@ -2595,7 +2593,6 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     if (!(await validateUserProfile(user, phoneNumber, 'Electional Astrology'))) {
       return null;
     }
-    const userLanguage = getUserLanguage(user, phoneNumber);
     const electionalBody = `📅 *Electional Astrology*\n\n${translationService.translate('messages.electional.introduction', userLanguage) || 'Electional astrology helps choose the most favorable time for important life events.'}\n\n*Perfect for:*\n• Business meetings\n• Travel dates\n• Medical procedures\n• Legal decisions\n• Relationship milestones\n• New projects\n\nFor personalized timing guidance, please contact our astrologers.`;
 
     const electionalButtons = [
@@ -2629,7 +2626,6 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       });
 
       if (hellenisticAnalysis.error) {
-        const userLanguage = getUserLanguage(user, phoneNumber);
         await sendMessage(
           phoneNumber,
           `I encountered an issue generating your Hellenistic analysis: ${hellenisticAnalysis.error}`,
@@ -2686,7 +2682,6 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       return null;
     } catch (error) {
       logger.error('Error generating Hellenistic analysis:', error);
-      const userLanguage = getUserLanguage(user, phoneNumber);
       await sendMessage(
         phoneNumber,
         'messages.astrology_services.hellenistic.error',

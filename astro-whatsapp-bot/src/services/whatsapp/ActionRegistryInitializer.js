@@ -4,7 +4,11 @@ const ActionRegistry = require('./ActionRegistry');
 // Phase 1 Actions
 const DailyHoroscopeAction = require('./actions/astrology/DailyHoroscopeAction');
 const BirthChartAction = require('./actions/astrology/BirthChartAction');
+
+// Menu Actions
 const ShowMainMenuAction = require('./actions/menu/ShowMainMenuAction');
+const WesternAstrologyMenuAction = require('./actions/menu/WesternAstrologyMenuAction');
+const VedicAstrologyMenuAction = require('./actions/menu/VedicAstrologyMenuAction');
 const TarotReadingAction = require('./actions/divination/TarotReadingAction');
 const CompatibilityAction = require('./actions/astrology/CompatibilityAction');
 const CurrentTransitsAction = require('./actions/astrology/CurrentTransitsAction');
@@ -91,8 +95,10 @@ class ActionRegistryInitializer {
     this.registry.registerAction(CurrentTransitsAction.actionId, CurrentTransitsAction);
     this.registry.registerAction(NumerologyReportAction.actionId, NumerologyReportAction);
 
-    // Phase 1 - Menu & Divination
+    // Menu Actions
     this.registry.registerAction(ShowMainMenuAction.actionId, ShowMainMenuAction);
+    this.registry.registerAction(WesternAstrologyMenuAction.actionId, WesternAstrologyMenuAction);
+    this.registry.registerAction(VedicAstrologyMenuAction.actionId, VedicAstrologyMenuAction);
     // Temporarily disable TarotReadingAction until tarotReader module is available
     try {
       this.registry.registerAction(TarotReadingAction.actionId, TarotReadingAction);

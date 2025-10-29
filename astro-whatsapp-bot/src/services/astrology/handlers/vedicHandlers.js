@@ -214,6 +214,48 @@ const handlePanchang = async (message, user) => {
   }
 };
 
+/**
+ * Handle Ashtakavarga analysis requests
+ * @param {string} message - User message
+ * @param {Object} user - User object
+ * @returns {string|null} Response or null if not handled
+ */
+const handleAshtakavarga = async (message, user) => {
+  if (!message.includes('ashtakavarga') && !message.includes('64-point') && !message.includes('benefic') && !message.includes('strength analysis')) {
+    return null;
+  }
+
+  if (!user.birthDate) {
+    return '🔢 *Ashtakavarga Analysis*\n\n👤 I need your complete birth details for this advanced Vedic 64-point analysis.\n\nSend format: DDMMYY or DDMMYYYY, HHMM, City, Country\nExample: 150691, 1430, Delhi, India';
+  }
+
+  try {
+    const { Ashtakavarga } = require('../ashtakavarga');
+    const ashtakavargaService = new Ashtakavarga();
+
+    const birthData = {
+      birthDate: user.birthDate,
+      birthTime: user.birthTime || '12:00',
+      birthPlace: {
+        latitude: user.latitude || 28.6139,  // Default Delhi
+        longitude: user.longitude || 77.2090,
+        timezone: user.timezone || 5.5
+      }
+    };
+
+    const analysis = await ashtakavargaService.generateAshtakavargaAnalysis(birthData);
+
+    if (analysis.error) {
+      return '❌ Unable to generate Ashtakavarga analysis.';
+    }
+
+    return analysis.summary;
+  } catch (error) {
+    console.error('Ashtakavarga analysis error:', error);
+    return '❌ Error generating Ashtakavarga analysis. Please try again.';
+  }
+};
+
 const handleFutureSelf = async (message, user) => {
   if (!message.includes('future') && !message.includes('self') && !message.includes('potential') && !message.includes('evolution')) {
     return null;
@@ -418,6 +460,7 @@ module.exports = {
   handleHarmonicAstrology,
   handleCareerAstrology,
   handlePanchang,
+  handleAshtakavarga,
   handleVedicRemedies,
   handleFutureSelf,
   handleIslamicAstrology,

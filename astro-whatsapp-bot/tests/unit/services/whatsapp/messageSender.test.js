@@ -58,7 +58,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: phoneNumber,
+          to: phoneNumber, // Text messages do NOT get + prefix
           type: 'text',
           text: {
             body: message
@@ -97,7 +97,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: phoneNumber,
+          to: phoneNumber, // Text messages do NOT get + prefix
           type: 'text',
           text: {
             preview_url: true,
@@ -127,7 +127,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: phoneNumber,
+          to: phoneNumber, // Text messages do NOT get + prefix
           type: 'text',
           text: {
             body: message
@@ -209,7 +209,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber,
+          to: "+" + phoneNumber, // Interactive messages DO get + prefix
           type: 'interactive',
           interactive: {
             type: 'button',
@@ -255,7 +255,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber,
+          to: "+" + phoneNumber, // Interactive messages DO get + prefix
           type: 'interactive',
           interactive: {
             type: 'button',
@@ -308,7 +308,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber,
+          to: "+" + phoneNumber, // List messages DO get + prefix
           type: 'interactive',
           interactive: {
             type: 'list',
@@ -355,7 +355,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber,
+          to: "+" + phoneNumber, // List messages DO get + prefix
           type: 'interactive',
           interactive: {
             type: 'list',
@@ -370,8 +370,6 @@ describe('WhatsApp Message Sender', () => {
         expect.any(Object)
       );
     });
-
-
 
     it('should accept valid list messages without action keys in rows', async() => {
       const body = 'Select an option:';
@@ -444,7 +442,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber,
+          to: "+" + phoneNumber, // Template messages DO get + prefix
           type: 'template',
           template: {
             name: templateName,
@@ -495,7 +493,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber,
+          to: "+" + phoneNumber, // Template messages DO get + prefix
           type: 'template',
           template: {
             name: templateName,
@@ -532,7 +530,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber,
+          to: "+" + phoneNumber, // Media messages DO get + prefix
           type: mediaType,
           [mediaType]: {
             id: mediaId,
@@ -573,7 +571,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber,
+          to: "+" + phoneNumber, // Media messages DO get + prefix
           type: mediaType,
           [mediaType]: {
             id: mediaId,
@@ -643,13 +641,13 @@ describe('WhatsApp Message Sender', () => {
 
       axios.post.mockResolvedValue(response);
 
-      const result = await sendMessage(phoneNumber, messageData, 'text');
+      const result = await sendMessage(phoneNumber, message, 'text');
 
       expect(axios.post).toHaveBeenCalledWith(
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: phoneNumber,
+          to: phoneNumber, // Text messages do NOT get + prefix
           type: 'text',
           text: { body: message }
         },
@@ -657,8 +655,6 @@ describe('WhatsApp Message Sender', () => {
       );
       expect(result).toEqual(response.data);
     });
-
-
   });
 
   // Tests for input validation and phone number handling
@@ -681,7 +677,7 @@ describe('WhatsApp Message Sender', () => {
       expect(axios.post).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({
-          to: "+" + phoneNumber
+          to: "+" + phoneNumber // Interactive messages DO get + prefix
         }),
         expect.any(Object)
       );
@@ -702,7 +698,7 @@ describe('WhatsApp Message Sender', () => {
       expect(axios.post).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({
-          to: phoneNumber
+          to: phoneNumber // Text messages do NOT get + prefix
         }),
         expect.any(Object)
       );
@@ -732,7 +728,7 @@ describe('WhatsApp Message Sender', () => {
           `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
           {
             messaging_product: 'whatsapp',
-            to: "+" + phoneNumber,
+            to: "+" + phoneNumber, // Media messages DO get + prefix
             type: mediaType,
             [mediaType]: {
               id: mediaId,

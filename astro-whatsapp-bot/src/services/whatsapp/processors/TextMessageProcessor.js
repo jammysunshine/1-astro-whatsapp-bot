@@ -71,9 +71,20 @@ class TextMessageProcessor extends BaseMessageProcessor {
    * @param {string} phoneNumber - Phone number
    */
   async processCompleteUserMessage(messageText, user, phoneNumber) {
+    // Handle navigation keywords first
+    if (messageText.toLowerCase() === 'back' || messageText.toLowerCase() === 'menu') {
+      await this.executeAction('show_main_menu', user, phoneNumber);
+      return;
+    }
+
     // Check for numbered menu actions (legacy support)
     const numberedAction = this.getNumberedMenuAction(phoneNumber, messageText);
     if (numberedAction) {
+      // Special handling for 'back' action from numbered selection
+      if (numberedAction === 'back') {
+        await this.executeAction('show_main_menu', user, phoneNumber);
+        return;
+      }
       await this.executeAction(numberedAction, user, phoneNumber);
       return;
     }
@@ -206,7 +217,8 @@ class TextMessageProcessor extends BaseMessageProcessor {
         10: 'get_financial_astrology_analysis',
         11: 'get_medical_astrology_analysis',
         12: 'get_event_astrology_analysis',
-        13: 'show_main_menu'
+        13: 'show_main_menu',
+        14: 'back' // Navigate back option
       },
       vedic_astrology_menu: {
         1: 'get_hindu_astrology_analysis',
@@ -222,7 +234,8 @@ class TextMessageProcessor extends BaseMessageProcessor {
         11: 'get_prashna_astrology_analysis',
         12: 'get_muhurta_analysis',
         13: 'get_panchang_analysis',
-        14: 'show_main_menu'
+        14: 'show_main_menu',
+        15: 'back' // Navigate back option
       },
       relationships_groups_menu: {
         1: 'start_couple_compatibility_flow',
@@ -230,7 +243,8 @@ class TextMessageProcessor extends BaseMessageProcessor {
         3: 'start_family_astrology_flow',
         4: 'start_business_partnership_flow',
         5: 'start_group_timing_flow',
-        6: 'show_main_menu'
+        6: 'show_main_menu',
+        7: 'back' // Navigate back option
       },
       numerology_special_menu: {
         1: 'get_numerology_analysis',
@@ -239,7 +253,8 @@ class TextMessageProcessor extends BaseMessageProcessor {
         4: 'get_future_self_analysis',
         5: 'get_electional_astrology',
         6: 'get_mundane_astrology_analysis',
-        7: 'show_main_menu'
+        7: 'show_main_menu',
+        8: 'back' // Navigate back option
       },
       divination_mystic_menu: {
         1: 'get_tarot_reading',
@@ -253,7 +268,8 @@ class TextMessageProcessor extends BaseMessageProcessor {
         9: 'get_islamic_astrology_info',
         10: 'get_horary_reading',
         11: 'get_astrocartography_analysis',
-        12: 'show_main_menu'
+        12: 'show_main_menu',
+        13: 'back' // Navigate back option
       }
     };
 

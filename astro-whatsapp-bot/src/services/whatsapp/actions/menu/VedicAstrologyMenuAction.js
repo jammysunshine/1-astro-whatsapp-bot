@@ -85,7 +85,7 @@ class VedicAstrologyMenuAction extends BaseAction {
       await this.sendMessage(message, 'interactive');
 
       // Also send numbered fallback instructions
-      const fallbackText = '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-14 to select services.';
+      const fallbackText = '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-14 for services, 15 to go back.';
       await this.sendMessage(fallbackText, 'text');
 
     } catch (error) {

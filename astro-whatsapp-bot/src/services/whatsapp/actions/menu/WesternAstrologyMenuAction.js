@@ -85,7 +85,7 @@ class WesternAstrologyMenuAction extends BaseAction {
       await this.sendMessage(message, 'interactive');
 
       // Also send numbered fallback instructions
-      const fallbackText = '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-13 to select services.';
+      const fallbackText = '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-13 for services, 14 to go back.';
       await this.sendMessage(fallbackText, 'text');
 
     } catch (error) {

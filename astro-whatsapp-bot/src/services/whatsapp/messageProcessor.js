@@ -904,33 +904,114 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
  */
 const executeMenuAction = async(phoneNumber, user, action) => {
   let response = null;
-  let userLanguage;
 
   try {
-    userLanguage = getUserLanguage(user, phoneNumber);
-  } catch (error) {
-    logger.warn(`⚠️ Failed to get user language for ${phoneNumber}, defaulting to 'en'`);
-    userLanguage = 'en';
-  }
+    const userLanguage = getUserLanguage(user, phoneNumber);
 
-  switch (action) {
-  case 'get_daily_horoscope':
-    // Validate profile and delegate to astrology engine
-    if (!(await validateUserProfile(user, phoneNumber, 'Daily Horoscope'))) {
+    switch (action) {
+    case 'get_daily_horoscope':
+      if (!(await validateUserProfile(user, phoneNumber, 'Daily Horoscope'))) {
+        return null;
+      }
+      response = generateAstrologyResponse('daily horoscope', user);
+      break;
+    case 'initiate_compatibility_flow': {
+      await sendMessage(
+        phoneNumber,
+        translationService.translate('messages.compatibility.analysis_prompt', userLanguage) ||
+          'Please provide the birth date of the person you want compatibility analysis with (format: DDMMYY or DDMMYYYY).',
+        'text',
+        {},
+        userLanguage
+      );
       return null;
     }
-    response = generateAstrologyResponse('daily horoscope', user);
-    break;
-  case 'initiate_compatibility_flow': {
-    await sendMessage(
-      phoneNumber,
-      'messages.compatibility.analysis_prompt',
-      'text',
-      {},
-      userLanguage
-    );
-    return null;
-  }
+    case 'get_hindu_astrology_analysis': {
+      if (!(await validateUserProfile(user, phoneNumber, 'Vedic Birth Chart'))) {
+        return null;
+      }
+      // Standard Vedic birth chart implementation
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      const body = translationService.translate('messages.astrology_services.vedic_chart.description', userLanguage) ||
+        '🕉️ *Vedic Birth Chart Analysis*\n\nAncient Indian astrology reveals your karmic blueprint through Jyotish calculations.';
+      const buttons = [
+        { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle('get_birth_chart', userLanguage, '📊 Birth Chart') } },
+        { type: 'reply', reply: { id: 'show_main_menu', title: getButtonTitle('main_menu', userLanguage, '🏠 Main') } }
+      ];
+      await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
+      return null;
+    }
+    case 'get_ashtakavarga_analysis': {
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      if (!user.birthDate) {
+        const body = 'Please complete your birth profile to view Ashtakavarga analysis.';
+        const buttons = [
+          { type: 'reply', reply: { id: 'start_profile_flow', title: getButtonTitle('update_profile', userLanguage, '📝 Update Profile') } },
+          { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back') } }
+        ];
+        await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
+        return null;
+      }
+      const body = translationService.translate('messages.astrology_services.ashtakavarga.description', userLanguage) ||
+        'Ashtakavarga is an eight-part division system in Vedic astrology that determines planetary strengths.';
+      const buttons = [
+        { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle('get_birth_chart', userLanguage, '📊 Birth Chart') } },
+        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back') } }
+      ];
+      await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
+      return null;
+    }
+    // MENU DISPLAY CASES - These show sub-menus, not perform actions
+    case 'show_core_readings_menu':
+    case 'show_divination_menu':
+    case 'show_traditions_menu':
+    case 'show_more_options_menu':
+    case 'show_personal_astrology_menu':
+    case 'show_family_group_menu':
+    case 'show_advanced_services_menu':
+    case 'show_western_astrology_menu':
+    case 'show_vedic_astrology_menu':
+    case 'show_divination_mystic_menu':
+    case 'show_relationships_groups_menu':
+    case 'show_numerology_special_menu':
+    case 'show_language_settings_menu':
+    case 'show_user_profile_menu':
+    case 'show_recent_readings':
+    case 'show_favorite_services':
+    case 'show_western_basic_menu':
+    case 'show_western_advanced_menu':
+    case 'show_western_predictive_menu':
+    case 'show_vedic_basic_menu':
+    case 'show_vedic_advanced_menu':
+    case 'show_vedic_predictive_menu':
+    case 'show_divination_wisdom_menu':
+    case 'show_card_symbol_menu':
+    case 'show_physical_divination_menu':
+    case 'show_ancient_wisdom_menu':
+    case 'show_help_support':
+    case 'show_notification_settings':
+    case 'show_privacy_settings':
+    case 'show_feedback_form':
+    case 'start_group_astrology_flow':
+    case 'start_family_astrology_flow':
+    case 'start_couple_compatibility_flow':
+    case 'start_business_partnership_flow':
+    case 'start_group_timing_flow':
+    case 'show_subscription_plans':
+    case 'show_comprehensive_menu':
+    case 'show_language_menu':
+    case 'show_user_profile':
+    case 'show_reading_history': {
+      const menuType = action.replace('show_', '').replace('_menu', '');
+      const translatedMenu = await getTranslatedMenu(menuType, userLanguage);
+      if (translatedMenu) {
+        await sendMessage(phoneNumber, translatedMenu, 'interactive');
+        return null;
+      }
+      // Fallback for missing menu
+      await sendMessage(phoneNumber, `Menu for ${menuType} is being prepared. Please check back later.`, 'text');
+      return null;
+    }
   case 'get_hindu_astrology_analysis': {
     if (!(await validateUserProfile(user, phoneNumber, 'Vedic Birth Chart'))) {
       return null;
@@ -1013,32 +1094,23 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     return null;
   }
   case 'get_ashtakavarga_analysis': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
     if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      const body = translationService.translate('messages.astrology_services.ashtakavarga.incomplete_profile', userLanguage);
+      const body = translationService.translate('messages.astrology_services.ashtakavarga.incomplete_profile', userLanguage) || 'Please complete your birth profile to view Ashtakavarga analysis.';
       const buttons = [
         { type: 'reply', reply: { id: 'start_profile_flow', title: getButtonTitle('update_profile', userLanguage, '📝 Update Profile') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back to Traditions') } }
+        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back') } }
       ];
-      await sendMessage(
-        phoneNumber,
-        { type: 'button', body, buttons },
-        'interactive'
-      );
+      await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
       return null;
     }
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    const body = translationService.translate('messages.astrology_services.ashtakavarga.description', userLanguage);
+    const body = translationService.translate('messages.astrology_services.ashtakavarga.description', userLanguage) || 'Ashtakavarga is an eight-part division system in Vedic astrology that helps determine planetary strengths in different areas of life.';
     const buttons = [
-      { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle('get_birth_chart', userLanguage, '📊 Get Birth Chart') } },
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back to Traditions') } },
-      { type: 'reply', reply: { id: 'show_main_menu', title: getButtonTitle('main_menu', userLanguage, '🏠 Main Menu') } }
+      { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle('get_birth_chart', userLanguage, '📊 Birth Chart') } },
+      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back') } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: getButtonTitle('main_menu', userLanguage, '🏠 Home') } }
     ];
-    await sendMessage(
-      phoneNumber,
-      { type: 'button', body, buttons },
-      'interactive'
-    );
+    await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
     return null;
   }
   case 'get_kaal_sarp_analysis': {
@@ -1129,11 +1201,12 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     return null;
   }
   case 'get_vimshottari_dasha_analysis': {
+    const userLanguage = getUserLanguage(user, phoneNumber);
     if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
+      const body = 'Please complete your profile with birth details first.';
       const buttons = [
         { type: 'reply', reply: { id: 'start_profile_flow', title: getButtonTitle('buttons.update_profile', userLanguage, '📝 Update Profile') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('buttons.back_traditions', userLanguage, '🌳 Back to Traditions') } }
+        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back') } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1142,11 +1215,11 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       );
       return null;
     }
-    const userLanguage = getUserLanguage(user, phoneNumber);
+    const body = 'Vimshottari Dasa is Vedic astrology\'s primary predictive method for analyzing planetary periods and their influences on life events. Coming Soon!';
     const buttons = [
-      { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle('buttons.get_birth_chart', userLanguage, '📊 Get Birth Chart') } },
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('buttons.back_traditions', userLanguage, '🌳 Back to Traditions') } },
-      { type: 'reply', reply: { id: 'show_main_menu', title: getButtonTitle('buttons.main_menu', userLanguage, '🏠 Main Menu') } }
+      { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle('get_birth_chart', userLanguage, '📊 Birth Chart') } },
+      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back') } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: getButtonTitle('main_menu', userLanguage, '🏠 Home') } }
     ];
     await sendMessage(
       phoneNumber,
@@ -2760,19 +2833,82 @@ const executeMenuAction = async(phoneNumber, user, action) => {
 
     await sendMessage(phoneNumber, { type: 'button', body: careerBody, buttons: careerButtons }, 'interactive');
     return null;
-  case 'get_event_astrology_analysis':
-    if (!(await validateUserProfile(user, phoneNumber, 'Event Astrology'))) {
+  // Fix invalid response types from generateAstrologyResponse
+  if (respontypeof response !== 'string') {
+    logger.warn(`Invalid response from generateAstrologyResponse for message '${messageText}': ${typeof response}`);
+    if (response !== null) logger.warn(`Response value: ${JSON.stringify(response).slice(0, 200)}`);
+    const userLanguage =	getUserLanguage(user, phoneNumber);
+    await sendMessage(
+      phoneNumber,
+      '❌ Sorry, I couldn\'t generate a response for that request. Please try again or contact support.',
+      'text',
+      {},
+      userLanguage
+    );
+    return;
+  }
+
+  // Always send responses with interactive menu for better user experience
+  const userLanguage = getUserLanguage(user, phoneNumber);
+  const mainMenu = await getTranslatedMenu('main_menu', userLanguage);
+  if (mainMenu) {
+    // Handle different menu types (button vs list)
+    if (mainMenu.type === 'list') {
+      // For list type menus, send as is
+      await sendMessage(
+        phoneNumber,
+        mainMenu,
+        'interactive'
+      );
+    } else if (mainMenu.type === 'button' && mainMenu.buttons) {
+      // For button type menus, combine with response if available
+      const combinedBody = response ?
+        `${response}\n\n${mainMenu.body}` :
+        mainMenu.body;
+
+      await sendMessage(
+        phoneNumber,
+        { type: 'button', body: combinedBody, buttons: mainMenu.buttons },
+        'interactive'
+      );
+    } else {
+      logger.warn('⚠️ Unsupported menu type or missing buttons/sections:', mainMenu.type);
+      await sendMessage(
+        phoneNumber,
+        response ||
+          translationService.translate('messages.errors.generic_error', userLanguage)
+      );
+    }
+  } else {
+    logger.warn('⚠️ Main menu configuration not found.');
+    // Fallback to sending response without menu if menu fails
+    await sendMessage(
+      phoneNumber,
+      response ||
+        translationService.translate('messages.errors.generic_error', userLanguage)
+    );
+  }
+};
+    if (!user.birthDate) {
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      const body = translationService.translate('messages.astrology_services.panchang.incomplete_profile', userLanguage, 'Please set your birth date first.');
+      const buttons = [
+        { type: 'reply', reply: { id: 'start_profile_flow', title: '📝 Update Profile' } },
+        { type: 'reply', reply: { id: 'show_traditions_menu', title: '🌳 Back to Traditions' } }
+      ];
+      await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
       return null;
     }
-    const userLanguageEvent = getUserLanguage(user, phoneNumber);
-    const eventBody = `🎯 *Event Astrology*\n\n${translationService.translate('messages.event.introduction', userLanguageEvent) || 'Event astrology analyzes cosmic conditions at the time of specific events.'}\n\n*Perfect for analyzing:*\n• Births\n• Weddings\n• Business launches\n• Travel dates\n• Medical procedures\n• Important decisions\n\nEach event creates its own unique cosmic signature.`;
+    const userLanguagePanchang = getUserLanguage(user, phoneNumber);
+    const panchangBody = `🗓️ *Panchang (Hindu Calendar)*\n\n${translationService.translate('messages.astrology_services.panchang.description', userLanguagePanchang) || 'The Hindu calendar shows auspicious times for various activities.'}\n\n*Includes:*\n• Tithi (lunar day)\n• Nakshatra\n• Yoga\n• Karana\n• Auspicious times\n\nHelps you choose the best times for important activities.`;
 
-    const eventButtons = [
-      { type: 'reply', reply: { id: 'get_event_astrology_analysis', title: '🎯 Event Insights' } },
+    const panchangButtons = [
+      { type: 'reply', reply: { id: 'get_daily_horoscope', title: '☀️ Daily Horoscope' } },
+      { type: 'reply', reply: { id: 'show_traditions_menu', title: '🌳 Back to Traditions' } },
       { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
     ];
 
-    await sendMessage(phoneNumber, { type: 'button', body: eventBody, buttons: eventButtons }, 'interactive');
+    await sendMessage(phoneNumber, { type: 'button', body: panchangBody, buttons: panchangButtons }, 'interactive');
     return null;
   case 'get_future_self_analysis':
     if (!(await validateUserProfile(user, phoneNumber, 'Future Self Analysis'))) {

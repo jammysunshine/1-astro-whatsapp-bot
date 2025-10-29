@@ -6,8 +6,8 @@ This document outlines an **enhanced and strengthened** comprehensive plan for r
 ## Analysis Summary
 
 ### Identified Large Files Needing Refactoring:
-1.  `src/services/astrology/vedicCalculator.js` - 21,084 lines (monolithic facade, **CRITICAL**)
-2.  `src/services/whatsapp/messageProcessor.js` - 2,256 lines (needs modularization, **HIGH**)
+1.  `src/services/astrology/vedicCalculator.js` - 21,083 lines (monolithic facade, **CRITICAL**)
+2.  `src/services/whatsapp/messageProcessor.js` - 3,198 lines (needs modularization, **HIGH**)
 3.  `src/services/astrology/vedic/VedicCalculator.js` - 1,583 lines (modularized component, but still large)
 4.  `src/services/astrology/nadiAstrology.js` - 1,173 lines (needs review and modularization)
 5.  `src/services/astrology/ichingReader.js` - 1,063 lines (needs review and modularization)
@@ -72,7 +72,7 @@ This strengthened approach ensures that the implementation is not only tailored 
 -   **Complete Removal**: The `vedicCalculator.js` file must be entirely removed only after all dependencies are resolved and verified.
 
 ### 2. Modularize `messageProcessor.js` (Priority 2 - HIGH)
-**Problem**: A 2,256 line file handling all WhatsApp message types, leading to mixed concerns and complex logic.
+**Problem**: A 3,198 line file handling all WhatsApp message types, leading to mixed concerns and complex logic.
 **Refined Approach**:
 -   **Granular Extraction**: Decompose `messageProcessor.js` into highly specialized, single-responsibility modules based on message type and interaction phase.
     *   `src/services/whatsapp/messageProcessor.js` (main coordinator/router)

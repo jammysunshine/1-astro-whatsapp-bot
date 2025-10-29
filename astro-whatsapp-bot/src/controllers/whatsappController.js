@@ -1,7 +1,5 @@
 const logger = require('../utils/logger');
-const {
-  processIncomingMessage
-} = require('../services/whatsapp/messageProcessor');
+const MessageCoordinator = require('../services/whatsapp/MessageCoordinator');
 const {
   validateWebhookSignature,
   verifyWebhookChallenge
@@ -18,7 +16,7 @@ const processMessageWithRetry = async(message, value, maxRetries = 3) => {
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      await processIncomingMessage(message, value);
+      await MessageCoordinator.processIncomingMessage(message, value);
       return; // Success, exit retry loop
     } catch (error) {
       lastError = error;

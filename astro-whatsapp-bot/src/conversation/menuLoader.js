@@ -16,6 +16,7 @@ const loadMenus = () => {
     const data = fs.readFileSync(MENU_CONFIG_PATH, 'utf8');
     menuConfigurations = JSON.parse(data);
     logger.info('✅ Menu configurations loaded successfully.');
+    return menuConfigurations; // Return the loaded configurations
   } catch (error) {
     logger.error(
       `❌ Error loading menu configurations from ${MENU_CONFIG_PATH}:`,

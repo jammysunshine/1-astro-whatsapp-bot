@@ -18,7 +18,7 @@ const MuhurtaAction = require('./actions/astrology/MuhurtaAction');
 const PanchangAnalysisAction = require('./actions/astrology/PanchangAnalysisAction');
 const HoroscopeAnalysisAction = require('./actions/astrology/HoroscopeAnalysisAction');
 const DashaAnalysisAction = require('./actions/astrology/DashaAnalysisAction');
-const HinduFestivalsAction = require('./actions/astrology/HinduFestivalsAction');
+// const HinduFestivalsAction = require('./actions/astrology/HinduFestivalsAction');
 const TarotReadingAction = require('./actions/divination/TarotReadingAction');
 const CompatibilityAction = require('./actions/astrology/CompatibilityAction');
 const CurrentTransitsAction = require('./actions/astrology/CurrentTransitsAction');
@@ -45,9 +45,14 @@ const MantraRecommendationAction = require('./actions/utilities/MantraRecommenda
 const ColorTherapyAction = require('./actions/utilities/ColorTherapyAction');
 const FixedStarsAction = require('./actions/astrology/FixedStarsAction');
 const LunarNodesAction = require('./actions/astrology/LunarNodesAction');
-const TraditionalHoraryAction = require('./actions/astrology/TraditionalHoraryAction');
+// Temporarily disabled due to syntax issues
+// const TraditionalHoraryAction = require('./actions/astrology/TraditionalHoraryAction');
 const RemedialMeasuresAction = require('./actions/astrology/RemedialMeasuresAction');
 const VargaChartsAction = require('./actions/astrology/VargaChartsAction');
+
+// Language and Settings Actions
+const LanguageMenuAction = require('./actions/menu/LanguageMenuAction');
+const SetLanguageAction = require('./actions/settings/SetLanguageAction');
 
 /**
  * ActionRegistryInitializer - Sets up and initializes the ActionRegistry with all available actions.
@@ -116,7 +121,7 @@ class ActionRegistryInitializer {
     this.registry.registerAction(PanchangAnalysisAction.actionId, PanchangAnalysisAction);
     this.registry.registerAction(HoroscopeAnalysisAction.actionId, HoroscopeAnalysisAction);
     this.registry.registerAction(DashaAnalysisAction.actionId, DashaAnalysisAction);
-    this.registry.registerAction(HinduFestivalsAction.actionId, HinduFestivalsAction);
+    // this.registry.registerAction(HinduFestivalsAction.actionId, HinduFestivalsAction);
     // Temporarily disable TarotReadingAction until tarotReader module is available
     try {
       this.registry.registerAction(TarotReadingAction.actionId, TarotReadingAction);
@@ -148,9 +153,14 @@ class ActionRegistryInitializer {
     this.registry.registerAction(PanchangAnalysisAction.actionId, PanchangAnalysisAction);
     this.registry.registerAction(FixedStarsAction.actionId, FixedStarsAction);
     this.registry.registerAction(LunarNodesAction.actionId, LunarNodesAction);
-    this.registry.registerAction(TraditionalHoraryAction.actionId, TraditionalHoraryAction);
+    // Temporarily disable TraditionalHoraryAction due to import issues
+    // this.registry.registerAction(TraditionalHoraryAction.actionId, TraditionalHoraryAction);
     this.registry.registerAction(RemedialMeasuresAction.actionId, RemedialMeasuresAction);
     this.registry.registerAction(VargaChartsAction.actionId, VargaChartsAction);
+
+    // Language and Settings Actions
+    this.registry.registerAction(LanguageMenuAction.actionId, LanguageMenuAction);
+    // Note: SetLanguageAction handles all individual language settings via dynamic languageCode
 
     console.info('📝 Registered action classes with registry');
   }
@@ -229,19 +239,26 @@ class ActionRegistryInitializer {
     this.registry.registerKeyword('dasha', DashaAnalysisAction.actionId);
     this.registry.registerKeyword('panchang', PanchangAnalysisAction.actionId);
     this.registry.registerKeyword('calendar', PanchangAnalysisAction.actionId);
-    this.registry.registerKeyword('hindu festivals', HinduFestivalsAction.actionId);
-    this.registry.registerKeyword('festivals', HinduFestivalsAction.actionId);
-    this.registry.registerKeyword('festival dates', HinduFestivalsAction.actionId);
-    this.registry.registerKeyword('auspicious dates', HinduFestivalsAction.actionId);
+    // this.registry.registerKeyword('hindu festivals', HinduFestivalsAction.actionId);
+    // this.registry.registerKeyword('festivals', HinduFestivalsAction.actionId);
+    // this.registry.registerKeyword('festival dates', HinduFestivalsAction.actionId);
+    // this.registry.registerKeyword('auspicious dates', HinduFestivalsAction.actionId);
     this.registry.registerKeyword('fixed stars', FixedStarsAction.actionId);
     this.registry.registerKeyword('stellar', FixedStarsAction.actionId);
     this.registry.registerKeyword('lunar nodes', LunarNodesAction.actionId);
     this.registry.registerKeyword('rahu ketu', LunarNodesAction.actionId);
-    this.registry.registerKeyword('horary', TraditionalHoraryAction.actionId);
-    this.registry.registerKeyword('questions', TraditionalHoraryAction.actionId);
+    // Temporarily disabled due to import issues
+    // this.registry.registerKeyword('horary', TraditionalHoraryAction.actionId);
+    // this.registry.registerKeyword('questions', TraditionalHoraryAction.actionId);
     this.registry.registerKeyword('remedial', RemedialMeasuresAction.actionId);
     this.registry.registerKeyword('remedies', RemedialMeasuresAction.actionId);
     this.registry.registerKeyword('healing', RemedialMeasuresAction.actionId);
+
+    // Language and Settings keywords
+    this.registry.registerKeyword('language', LanguageMenuAction.actionId);
+    this.registry.registerKeyword('languages', LanguageMenuAction.actionId);
+    this.registry.registerKeyword('settings', 'show_main_menu'); // Will need to add settings menu
+    this.registry.registerKeyword('language menu', LanguageMenuAction.actionId);
 
     console.info('🔤 Registered keyword mappings');
   }
@@ -272,6 +289,36 @@ class ActionRegistryInitializer {
     try { this.registry.registerButton('show_quick_start', 'show_help_support'); } catch(e) {}
     try { this.registry.registerButton('contact_support', 'show_help_support'); } catch(e) {}
     try { this.registry.registerButton('show_commands_list', 'show_help_support'); } catch(e) {}
+
+    // Language buttons - all 28 supported languages
+    this.registry.registerButton('set_language_en', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_hi', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_ar', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_es', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_fr', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_bn', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_ur', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_pt', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_ru', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_de', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_it', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_th', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_ta', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_te', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_gu', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_mr', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_kn', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_ml', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_pa', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_or', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_as', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_mai', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_ne', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_si', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_sd', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_zgh', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_am', SetLanguageAction.actionId);
+    this.registry.registerButton('set_language_sw', SetLanguageAction.actionId);
 
     console.info('🔘 Registered button ID mappings');
   }

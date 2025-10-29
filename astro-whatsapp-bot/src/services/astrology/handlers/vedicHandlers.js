@@ -148,17 +148,29 @@ const handleHarmonicAstrology = async (message, user) => {
 };
 
 /**
- * Handle Career Astrology requests
+ * Handle Career Astrology requests - Personalized Professional Guidance
  * @param {string} message - User message
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
 const handleCareerAstrology = async (message, user) => {
-  if (!message.includes('career') && !message.includes('job') && !message.includes('profession') && !message.includes('work')) {
+  if (!message.includes('career') && !message.includes('job') && !message.includes('profession') && !message.includes('work') && !message.includes('career analysis')) {
     return null;
   }
 
-  return `💼 *Career Astrology Analysis*\n\nYour profession and success path are written in the stars. The 10th house shows career destiny, Midheaven reveals public image.\n\n🪐 *Career Planets:*\n• Sun: Leadership and authority roles\n• Mars: Military, engineering, competitive fields\n• Mercury: Communication, teaching, business\n• Jupiter: Teaching, law, philosophy, international work\n• Venus: Arts, beauty, luxury industries\n• Saturn: Government, construction, traditional careers\n• Uranus: Technology, innovation, unconventional paths\n\n📊 *Career Success Indicators:*\n• 10th Lord strong: Professional achievement\n• Sun-Mercury aspects: Communication careers\n• Venus-Jupiter: Creative prosperity\n• Saturn exalted: Long-term stability\n\n🎯 *Saturn Return (29-30)*: Career testing and maturity\n\n⚡ *Uranus Opposition (40-42)*: Career changes and reinvention\n\n🚀 *Jupiter Return (12, 24, 36, 48, 60, 72)*: Expansion opportunities\n\n💫 *Vocation vs. Career:* True calling (5th house) vs. professional path (10th house). Midheaven aspects reveal how the world sees your work.\n\n🕉️ *Cosmic Calling:* Your MC-lord shows life's work. Exalted rulers bring exceptional success. Retrograde planets indicate behind-the-scenes careers.`;
+  if (!user.birthDate) {
+    return '💼 *Career Astrology Analysis*\n\n👤 I need your birth details for personalized career guidance.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
+  }
+
+  try {
+    // Calculate personalized career analysis using Swiss Ephemeris
+    const careerAnalysis = await calculateCareerAstrologyAnalysis(user);
+
+    return `💼 *Career Astrology - Professional Path Analysis*\n\n${careerAnalysis.introduction}\n\n🏗️ *Midheaven (MC) Analysis:*\n${careerAnalysis.midheavenAnalysis}\n\n🏛️ *10th House Planets:*\n${careerAnalysis.tenthHousePlanets.map(p => `• ${p.planet}: ${p.interpretation}`).join('\n')}\n\n${careerAnalysis.tenthHousePlanets.length === 0 ? '*No planets in 10th house - career indicated by energy patterns and angular planets.*\n' : ''}\n⚡ *Key Career Planets:*\n${careerAnalysis.careerPlanets.map(p => `• ${p.planet}: ${p.interpretation}`).join('\n')}\n\n📅 *Career Timing:*\n${careerAnalysis.careerTiming.map(t => `• ${t.event}: ${t.description}`).join('\n')}\n\n🎯 * Career Direction:*\n${careerAnalysis.careerDirection}\n\n🚀 *Success Potential:*\n${careerAnalysis.successPotential}\n\n🕉️ "Saturn governs karma, Jupiter brings fortune, Mars drives ambition - together they reveal your professional destiny".`;
+  } catch (error) {
+    console.error('Career Astrology analysis error:', error);
+    return '❌ Error calculating career astrology analysis. Please try again.';
+  }
 };
 
 /**
@@ -939,6 +951,395 @@ const getPlanetHealthInterpretation = (planet, house, longitude) => {
   }
 
   return `${planet} in ${sign} - ${planet} influences your approach to health and healing processes.`;
+};
+
+/**
+ * Calculate personalized career astrology analysis using Swiss Ephemeris
+ * @param {Object} user - User object with birth data
+ * @returns {Object} Career astrology analysis
+ */
+const calculateCareerAstrologyAnalysis = async (user) => {
+  try {
+    // Parse birth date and time from user data
+    const birthYear = user.birthDate.length === 6 ?
+      parseInt(`19${user.birthDate.substring(4)}`) :
+      parseInt(user.birthDate.substring(4));
+    const birthMonth = parseInt(user.birthDate.substring(2, 4)) - 1;
+    const birthDay = parseInt(user.birthDate.substring(0, 2));
+    const birthHour = user.birthTime ? parseInt(user.birthTime.split(':')[0]) : 12;
+    const birthMinute = user.birthTime ? parseInt(user.birthTime.split(':')[1]) : 0;
+
+    // Calculate current age for career timing
+    const currentDate = new Date();
+    const birthDateObj = new Date(birthYear, birthMonth, birthDay);
+    const currentAge = Math.floor((currentDate - birthDateObj) / (365.25 * 24 * 60 * 60 * 1000));
+
+    // Convert to Julian Day
+    const timezone = user.timezone || 5.5;
+    const utcTime = new Date(Date.UTC(birthYear, birthMonth, birthDay, birthHour - timezone, birthMinute));
+    const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
+
+    // Calculate planetary positions using Swiss Ephemeris
+    const planets = {};
+    const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
+                           sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
+    const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+
+    planetEphemIds.forEach((ephemId, index) => {
+      const result = sweph.swe_calc_ut(julianDay, ephemId, sweph.SEFLG_SPEED);
+      if (result.rc >= 0) {
+        planets[planetNames[index]] = {
+          longitude: result.longitude[0],
+          latitude: result.latitude[0],
+          speed: result.speed[0]
+        };
+      }
+    });
+
+    // Calculate houses (Placidus system for career analysis)
+    const defaultLat = 28.6139;
+    const defaultLng = 77.2090;
+    const lat = user.latitude || defaultLat;
+    const lng = user.longitude || defaultLng;
+
+    const cusps = new Array(13);
+    sweph.swe_houses(julianDay, lat, lng, 'P', cusps);
+
+    const houses = {};
+    for (let i = 1; i <= 12; i++) {
+      houses[i] = {
+        cusp: cusps[i],
+        sign: this.longitudeToSign(cusps[i])
+      };
+    }
+
+    // Analyze career indicators based on chart
+    const midheavenAnalysis = analyzeMidheaven(cusps[9], planets); // MC is cusps[9] (10th cusp)
+    const tenthHousePlanets = analyzeTenthHousePlanets(planets, cusps);
+    const careerPlanets = analyzeCareerPlanets(planets, cusps);
+    const careerTiming = analyzeCareerTiming(currentAge, planets, cusps);
+    const careerDirection = determineCareerDirection(midheavenAnalysis, tenthHousePlanets, careerPlanets);
+    const successPotential = assessSuccessPotential(midheavenAnalysis, tenthHousePlanets, careerPlanets);
+
+    const introduction = `Your birth chart reveals your professional calling, career strengths, and optimal timing for success. The Midheaven (MC) represents your public face and career direction.`;
+
+    return {
+      introduction,
+      midheavenAnalysis,
+      tenthHousePlanets,
+      careerPlanets,
+      careerTiming,
+      careerDirection,
+      successPotential
+    };
+
+  } catch (error) {
+    console.error('Career Astrology calculation error:', error);
+    throw new Error('Failed to calculate career astrology analysis');
+  }
+};
+
+/**
+ * Analyze Midheaven (MC) for career insights
+ * @param {number} mcLongitude - Midheaven longitude
+ * @param {Object} planets - Planetary positions
+ * @returns {string} Midheaven analysis
+ */
+const analyzeMidheaven = (mcLongitude, planets) => {
+  const mcSign = this.longitudeToSign(mcLongitude);
+
+  // Find planets conjunct MC (within 10°)
+  const mcConjuncts = [];
+  for (const [planetName, planetData] of Object.entries(planets)) {
+    if (planetData.longitude !== undefined) {
+      const diff = Math.abs(planetData.longitude - mcLongitude);
+      if (diff <= 10 || diff >= 350) { // Accounting for 360° wraparound
+        mcConjuncts.push(planetName);
+      }
+    }
+  }
+
+  let analysis = `Midheaven in ${mcSign}: `;
+
+  // Sign-specific career themes
+  const signThemes = {
+    Aries: 'Leadership, pioneering, competitive fields, military, sports',
+    Taurus: 'Finance, banking, real estate, arts, luxury goods, food industry',
+    Gemini: 'Communications, marketing, education, journalism, travel, technology',
+    Cancer: 'Healthcare, hospitality, family businesses, real estate, emotional care',
+    Leo: 'Entertainment, politics, leadership roles, creative fields, luxury',
+    Virgo: 'Healthcare, service industries, research, analysis, teaching, writing',
+    Libra: 'Legal fields, partnerships, diplomacy, arts, counseling, social work',
+    Scorpio: 'Research, investigation, psychology, regenerative work, crisis management',
+    Sagittarius: 'Teaching, higher education, travel, publishing, philosophy, law',
+    Capricorn: 'Government, corporate leadership, real estate, traditional careers',
+    Aquarius: 'Technology, innovation, social change, humanitarian work, aviation',
+    Pisces: 'Arts, healing, spirituality, marine industries, compassionate care'
+  };
+
+  analysis += signThemes[mcSign] || 'Creative and humanitarian fields';
+
+  if (mcConjuncts.length > 0) {
+    analysis += `. Planets conjunct MC (${mcConjuncts.join(', ')}) strongly influence your public image and career expression.`;
+  }
+
+  return analysis;
+};
+
+/**
+ * Analyze planets in 10th house for career insights
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} 10th house planet interpretations
+ */
+const analyzeTenthHousePlanets = (planets, cusps) => {
+  const tenthCusp = cusps[9]; // 10th house cusp
+  const nextCusp = cusps[10] || (cusps[9] + 30) % 360; // 11th house or approximate
+
+  const tenthPlanets = [];
+
+  for (const [planetName, planetData] of Object.entries(planets)) {
+    if (planetData.longitude !== undefined) {
+      // Check if planet is in 10th house (between 10th and 11th cusps)
+      const isInTenth = this.isPointInHouse(planetData.longitude, tenthCusp, nextCusp);
+
+      if (isInTenth) {
+        const interpretation = getTenthHousePlanetInterpretation(planetName);
+        tenthPlanets.push({
+          planet: planetName,
+          interpretation: interpretation
+        });
+      }
+    }
+  }
+
+  return tenthPlanets;
+};
+
+/**
+ * Analyze career-related planets in the chart
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} Career planet interpretations
+ */
+const analyzeCareerPlanets = (planets, cusps) => {
+  const careerPlanets = [];
+
+  // Analyze key career planets
+  if (planets.Sun?.longitude) {
+    const sunHouse = this.longitudeToHouse(planets.Sun.longitude, cusps[0]);
+    careerPlanets.push({
+      planet: 'Sun',
+      interpretation: getCareerPlanetInterpretation('Sun', sunHouse)
+    });
+  }
+
+  if (planets.Mars?.longitude) {
+    const marsHouse = this.longitudeToHouse(planets.Mars.longitude, cusps[0]);
+    careerPlanets.push({
+      planet: 'Mars',
+      interpretation: getCareerPlanetInterpretation('Mars', marsHouse)
+    });
+  }
+
+  if (planets.Jupiter?.longitude) {
+    const jupiterHouse = this.longitudeToHouse(planets.Jupiter.longitude, cusps[0]);
+    careerPlanets.push({
+      planet: 'Jupiter',
+      interpretation: getCareerPlanetInterpretation('Jupiter', jupiterHouse)
+    });
+  }
+
+  if (planets.Saturn?.longitude) {
+    const saturnHouse = this.longitudeToHouse(planets.Saturn.longitude, cusps[0]);
+    careerPlanets.push({
+      planet: 'Saturn',
+      interpretation: getCareerPlanetInterpretation('Saturn', saturnHouse)
+    });
+  }
+
+  if (planets.Mercury?.longitude) {
+    const mercuryHouse = this.longitudeToHouse(planets.Mercury.longitude, cusps[0]);
+    careerPlanets.push({
+      planet: 'Mercury',
+      interpretation: getCareerPlanetInterpretation('Mercury', mercuryHouse)
+    });
+  }
+
+  return careerPlanets.slice(0, 4); // Top 4 career planets
+};
+
+/**
+ * Analyze career timing based on age and planetary returns
+ * @param {number} currentAge - Current age in years
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} Career timing events
+ */
+const analyzeCareerTiming = (currentAge, planets, cusps) => {
+  const timingEvents = [];
+
+  // Saturn return (ages 28-30)
+  if (currentAge >= 25 && currentAge <= 35) {
+    timingEvents.push({
+      event: 'Saturn Return (Career Maturity)',
+      description: 'Major career restructuring and professional commitment period'
+    });
+  }
+
+  // Jupiter return (ages 12, 24, 36, 48, 60, 72...)
+  const jupiterCycles = [12, 24, 36, 48, 60, 72, 84];
+  if (jupiterCycles.some(age => currentAge >= age - 1 && currentAge <= age + 1)) {
+    timingEvents.push({
+      event: 'Jupiter Return (Career Expansion)',
+      description: 'Opportunities for professional growth and new career possibilities'
+    });
+  }
+
+  // Uranus opposition (ages 40-42)
+  if (currentAge >= 38 && currentAge <= 46) {
+    timingEvents.push({
+      event: 'Uranus Opposition (Career Change)',
+      description: 'Innovation and unexpected career opportunities or changes'
+    });
+  }
+
+  // Solar return around birthday
+  timingEvents.push({
+    event: 'Solar Return (Yearly Career Theme)',
+    description: 'Anniversary of birth sets yearly career and personal growth themes'
+  });
+
+  return timingEvents.slice(0, 3); // Top 3 timing events
+};
+
+/**
+ * Determine overall career direction based on major placements
+ * @param {string} mcAnalysis - Midheaven analysis
+ * @param {Array} tenthHousePlanets - 10th house planets
+ * @param {Array} careerPlanets - Career planet influences
+ * @returns {string} Career direction summary
+ */
+const determineCareerDirection = (mcAnalysis, tenthHousePlanets, careerPlanets) => {
+  let direction = 'Your chart shows ';
+
+  if (mcAnalysis.includes('Aries') || mcAnalysis.includes('Mars') || careerPlanets.some(p => p.planet === 'Mars')) {
+    direction += 'natural leadership and executive potential. ';
+  }
+
+  if (mcAnalysis.includes('Taurus') || mcAnalysis.includes('Venus') || careerPlanets.some(p => p.planet === 'Venus')) {
+    direction += 'artistic or financial expertise. ';
+  }
+
+  if (mcAnalysis.includes('Gemini') || mcAnalysis.includes('Mercury') || careerPlanets.some(p => p.planet === 'Mercury')) {
+    direction += 'communication and intellectual pursuits. ';
+  }
+
+  if (mcAnalysis.includes('Cancer') || mcAnalysis.includes('Moon') || careerPlanets.some(p => p.planet === 'Moon')) {
+    direction += 'caregiving and family-oriented fields. ';
+  }
+
+  if (mcAnalysis.includes('Leo') || mcAnalysis.includes('Sun') || careerPlanets.some(p => p.planet === 'Sun')) {
+    direction += 'creative leadership or entertainment. ';
+  }
+
+  if (tenthHousePlanets.length === 0 && careerPlanets.length >= 3) {
+    direction += 'Career direction shows through angular planet positions and key career planets rather than direct 10th house occupation. ';
+  }
+
+  return direction || 'balanced career potential with multiple life directions possible. Consider your interests and natural talents in choosing a professional path.';
+};
+
+/**
+ * Assess career success potential based on placements
+ * @param {string} mcAnalysis - Midheaven analysis
+ * @param {Array} tenthHousePlanets - 10th house planets
+ * @param {Array} careerPlanets - Career planet influences
+ * @returns {string} Success potential assessment
+ */
+const assessSuccessPotential = (mcAnalysis, tenthHousePlanets, careerPlanets) => {
+  let score = 0;
+
+  // Award points for career-enhancing placements
+  if (tenthHousePlanets.length > 0) score += 2;
+  if (mcAnalysis.includes('Sun') || mcAnalysis.includes('Jupiter')) score += 2;
+  if (careerPlanets.some(p => p.planet === 'Jupiter')) score += 1;
+  if (careerPlanets.some(p => p.planet === 'Saturn')) score += 1; // Saturn gives stability
+
+  let potential = '';
+  if (score >= 4) {
+    potential = 'Excellent career success potential with natural leadership and abundant opportunities.';
+  } else if (score >= 2) {
+    potential = 'Good career prospects with steady progression through consistent effort.';
+  } else {
+    potential = 'Moderate career potential requiring focused effort and self-motivation.';
+  }
+
+  return potential;
+};
+
+/**
+ * Check if a point is between two house cusps
+ * @param {number} longitude - Point longitude
+ * @param {number} startCusp - Starting house cusp
+ * @param {number} endCusp - Next house cusp
+ * @returns {boolean} True if point is in house
+ */
+const isPointInHouse = (longitude, startCusp, endCusp) => {
+  // Handle normal case
+  if (startCusp < endCusp) {
+    return longitude >= startCusp && longitude < endCusp;
+  }
+  // Handle wraparound at 0° Aries
+  else {
+    return longitude >= startCusp || longitude < endCusp;
+  }
+};
+
+/**
+ * Get interpretation for planets in 10th house
+ * @param {string} planet - Planet name
+ * @returns {string} Career interpretation
+ */
+const getTenthHousePlanetInterpretation = (planet) => {
+  const interpretations = {
+    Sun: 'Radiant public presence and leadership potential in chosen field',
+    Moon: 'Public service orientation with emotional connection to career',
+    Mars: 'Dynamic energy drives ambitious career pursuits and competition',
+    Mercury: 'Communicative skills enhance professional reputation and networking',
+    Jupiter: 'Abundant opportunities and success through expansive career choices',
+    Venus: 'Harmonious work environment with potential for creative or diplomatic roles',
+    Saturn: 'Structured career approach with gradual but lasting professional achievement'
+  };
+
+  return interpretations[planet] || `${planet} in 10th house: Public recognition and reputation through professional endeavors`;
+};
+
+/**
+ * Get interpretation for career planets based on their house placements
+ * @param {string} planet - Planet name
+ * @param {number} house - House number
+ * @returns {string} Career planet interpretation
+ */
+const getCareerPlanetInterpretation = (planet, house) => {
+  // Focus on career strength and challenges
+  if (planet === 'Sun' && [1, 4, 5, 9, 10].includes(house)) {
+    return 'Sun placement indicates strong career vitality and natural leadership potential';
+  }
+  if (planet === 'Mars' && [3, 6, 10, 11].includes(house)) {
+    return 'Mars placement shows action-oriented career approach with competitive drive';
+  }
+  if (planet === 'Jupiter' && [1, 2, 5, 7, 9, 10, 11].includes(house)) {
+    return 'Jupiter placement suggests career abundance and beneficial opportunities';
+  }
+  if (planet === 'Saturn' && [2, 10, 11].includes(house)) {
+    return 'Saturn placement indicates career structure and long-term professional stability';
+  }
+  if (planet === 'Mercury' && [3, 6, 9, 10, 11].includes(house)) {
+    return 'Mercury placement shows career success through communication and adaptability';
+  }
+
+  return `${planet} in ${house}th house contributes to professional development and reputation building`;
 };
 
 /**

@@ -139,7 +139,7 @@ const sendInteractiveButtons = async(
       type: 'interactive',
       interactive: {
         body: {
-          text: finalBodyTextForButton
+          text: body
         },
         action: {
           buttons: buttons.slice(0, 3) // WhatsApp allows max 3 buttons

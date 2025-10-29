@@ -2558,6 +2558,10 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       );
     }
     return null;
+  case 'navigate_back':
+    // Navigate back to previous menu - for now, just show main menu
+    await executeMenuAction(phoneNumber, user, 'show_main_menu');
+    return null;
   default: {
     logger.warn(`⚠️ Unknown menu action: ${action}`);
     const userLanguage = getUserLanguage(user, phoneNumber);
@@ -2684,7 +2688,7 @@ const sendErrorMessage = async(phoneNumber, errorMessage) => {
   const userLanguage = translationService.detectLanguage(phoneNumber);
   await sendMessage(
     phoneNumber,
-    'messages.errors.generic_error',
+    'messages.errors.generic',
     'text',
     {},
     userLanguage

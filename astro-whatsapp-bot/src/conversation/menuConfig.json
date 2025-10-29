@@ -1,41 +1,41 @@
 {
    "main_menu": {
      "type": "list",
-     "button": "translation:buttons.choose_service",
-     "body": "translation:messages.welcome.greeting_extended",
+     "button": "Choose Service",
+     "body": "Welcome to Astro Wisdom! Discover insights about yourself through astrology, numerology, and divination.\n\nChoose a service to explore:",
      "sections": [
        {
-         "title": "translation:messages.menu.astrology_traditions",
+         "title": "Astrology Traditions",
          "rows": [
            {
              "id": "show_western_astrology_menu",
-             "title": "🌍 translation:messages.services.western_astrology",
-             "description": "translation:messages.services.western_description"
+             "title": "🌍 Western Astrology",
+             "description": "Birth charts and horoscopes based on tropical zodiac"
            },
            {
              "id": "show_vedic_astrology_menu",
-             "title": "🕉️ translation:messages.services.vedic_astrology",
-             "description": "translation:messages.services.vedic_description"
+             "title": "🕉️ Vedic Astrology",
+             "description": "Ancient Indian Vedic birth chart and Kundli analysis"
            },
            {
              "id": "show_divination_mystic_menu",
-             "title": "🔮 translation:messages.services.divination_mystic",
-             "description": "translation:messages.services.divination_description"
+             "title": "🔮 Divination & Mystic Arts",
+             "description": "Tarot, palmistry, I Ching, and mystical traditions"
            },
            {
              "id": "show_relationships_groups_menu",
-             "title": "👥 translation:messages.services.relationships",
-             "description": "translation:messages.services.relationships_description"
+             "title": "👥 Relationships & Groups",
+             "description": "Compatibility, family synergy, and group dynamics"
            },
            {
              "id": "show_numerology_special_menu",
-             "title": "🔢 translation:messages.services.numerology",
-             "description": "translation:messages.services.numerology_description"
+             "title": "🔢 Numerology & Special Readings",
+             "description": "Life path numbers and harmonic astrology insights"
            },
            {
              "id": "show_settings_profile_menu",
-             "title": "⚙️ translation:messages.services.settings",
-             "description": "translation:messages.services.settings_description"
+             "title": "⚙️ Settings & Profile",
+             "description": "Manage your profile and app preferences"
            }
          ]
        }

@@ -65,7 +65,7 @@ class RealWhatsAppIntegration {
     this.testNumbers = [
       '+1234567890', // Staging number
       '+1987654321', // Test number
-      '+1555123456', // Development number
+      '+1555123456' // Development number
     ];
     this.sentMessages = [];
   }

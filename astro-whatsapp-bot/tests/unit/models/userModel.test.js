@@ -18,7 +18,7 @@ describe('UserModel Functions', () => {
     const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/astro-whatsapp-bot-test';
     await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useUnifiedTopology: true
     });
   });
 
@@ -32,7 +32,7 @@ describe('UserModel Functions', () => {
       phoneNumber: {
         $in: [
           '+1234567890',
-          '+1234567891', 
+          '+1234567891',
           '+1234567892',
           '+1234567893'
         ]
@@ -47,7 +47,7 @@ describe('UserModel Functions', () => {
       phoneNumber: {
         $in: [
           '+1234567890',
-          '+1234567891', 
+          '+1234567891',
           '+1234567892',
           '+1234567893'
         ]
@@ -56,7 +56,7 @@ describe('UserModel Functions', () => {
   });
 
   describe('getUserByPhone', () => {
-    it('should get user by phone number', async () => {
+    it('should get user by phone number', async() => {
       // Create a test user directly in database
       const testUserData = {
         id: 'user-test-123',
@@ -64,7 +64,7 @@ describe('UserModel Functions', () => {
         name: 'Test User',
         referralCode: 'TEST123'
       };
-      
+
       const testUser = new User(testUserData);
       await testUser.save();
 
@@ -78,7 +78,7 @@ describe('UserModel Functions', () => {
   });
 
   describe('updateUserProfile', () => {
-    it('should update user profile', async () => {
+    it('should update user profile', async() => {
       // Create a test user first
       const testUserData = {
         id: 'user-test-456',
@@ -86,16 +86,16 @@ describe('UserModel Functions', () => {
         name: 'Original Name',
         referralCode: 'TEST456'
       };
-      
+
       const testUser = new User(testUserData);
       await testUser.save();
 
       // Update the user profile
-      const updateData = { 
+      const updateData = {
         name: 'Updated User',
         preferredLanguage: 'es'
       };
-      
+
       const result = await updateUserProfile('+1234567891', updateData);
 
       expect(result).toBeDefined();
@@ -103,9 +103,9 @@ describe('UserModel Functions', () => {
       expect(result.preferredLanguage).toBe('es');
     });
   });
-  
+
   describe('createUser', () => {
-    it('should create a new user with proper defaults', async () => {
+    it('should create a new user with proper defaults', async() => {
       const phoneNumber = '+1234567892';
       const profileData = {
         name: 'New Test User'
@@ -120,8 +120,8 @@ describe('UserModel Functions', () => {
       // Check that default values are set
       expect(user.preferredLanguage).toBe('en'); // Default from schema
     });
-    
-    it('should create user with default name when not provided', async () => {
+
+    it('should create user with default name when not provided', async() => {
       const phoneNumber = '+1234567893';
 
       const user = await createUser(phoneNumber);

@@ -33,8 +33,8 @@ const createUser = async(phoneNumber, profileData = {}) => {
       name: profileData.name || 'Cosmic Explorer', // Ensure default is set
       ...profileData // Spread other profile data
     };
-    
-    logger.info(`🆕 Creating new user with data:`, userData);
+
+    logger.info('🆕 Creating new user with data:', userData);
 
     const user = new User(userData);
     await user.save();
@@ -83,16 +83,16 @@ const updateUserProfile = async(phoneNumber, updateData) => {
       `Attempting to update user profile for ${phoneNumber} with data:`,
       updateData
     );
-    
+
     // Use findOneAndUpdate for atomic update
     const user = await User.findOneAndUpdate(
       { phoneNumber },
-      { 
+      {
         ...updateData,
         lastInteraction: new Date(),
         updatedAt: new Date()
       },
-      { 
+      {
         new: true,
         runValidators: true
       }

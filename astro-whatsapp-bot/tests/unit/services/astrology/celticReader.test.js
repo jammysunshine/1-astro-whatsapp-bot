@@ -23,7 +23,7 @@ describe('CelticReader', () => {
       const birthData = {
         birthDate: '15/03/1990',
         birthTime: '14:30',
-        name: 'John Doe',
+        name: 'John Doe'
       };
 
       const chart = celticReader.generateCelticChart(birthData);
@@ -43,7 +43,7 @@ describe('CelticReader', () => {
       const birthData = {
         birthDate: 'invalid',
         birthTime: 'invalid',
-        name: 'Invalid User',
+        name: 'Invalid User'
       };
 
       const chart = celticReader.generateCelticChart(birthData);

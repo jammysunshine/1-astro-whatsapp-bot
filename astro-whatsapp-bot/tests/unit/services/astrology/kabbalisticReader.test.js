@@ -23,7 +23,7 @@ describe('KabbalisticReader', () => {
       const birthData = {
         birthDate: '15/03/1990',
         birthTime: '14:30',
-        name: 'John Doe',
+        name: 'John Doe'
       };
 
       const chart = kabbalisticReader.generateKabbalisticChart(birthData);
@@ -45,7 +45,7 @@ describe('KabbalisticReader', () => {
       const birthData = {
         birthDate: 'invalid',
         birthTime: 'invalid',
-        name: 'Invalid User',
+        name: 'Invalid User'
       };
 
       const chart = kabbalisticReader.generateKabbalisticChart(birthData);

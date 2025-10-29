@@ -10,27 +10,27 @@ const logger = require('../../../utils/logger');
  * @param {string} birthDate - Raw birth date string
  * @returns {Object} { isValid: boolean, formattedDate: string, error: string }
  */
-const validateAndFormatBirthDate = (birthDate) => {
+const validateAndFormatBirthDate = birthDate => {
   if (!birthDate || typeof birthDate !== 'string') {
-    return { 
-      isValid: false, 
-      formattedDate: null, 
-      error: 'Birth date is required and must be a string' 
+    return {
+      isValid: false,
+      formattedDate: null,
+      error: 'Birth date is required and must be a string'
     };
   }
 
   // Limit input length to prevent abuse
   if (birthDate.length > 20) {
-    return { 
-      isValid: false, 
-      formattedDate: null, 
-      error: 'Birth date is too long' 
+    return {
+      isValid: false,
+      formattedDate: null,
+      error: 'Birth date is too long'
     };
   }
 
   // Sanitize input - remove potentially harmful characters
   const sanitizedDate = birthDate.replace(/[<>'"`]/g, '').trim();
-  
+
   if (sanitizedDate !== birthDate) {
     logger.warn('⚠️ Sanitized potentially harmful characters from birth date input');
   }
@@ -44,7 +44,7 @@ const validateAndFormatBirthDate = (birthDate) => {
       const numericDay = parseInt(day, 10);
       const numericMonth = parseInt(month, 10);
       const numericYear = parseInt(year, 10);
-      
+
       // Validate date ranges
       if (numericDay >= 1 && numericDay <= 31 && numericMonth >= 1 && numericMonth <= 12) {
         const fullYear = (numericYear < new Date().getFullYear() % 100) ? 2000 + numericYear : 1900 + numericYear;
@@ -57,7 +57,7 @@ const validateAndFormatBirthDate = (birthDate) => {
       const numericDay = parseInt(day, 10);
       const numericMonth = parseInt(month, 10);
       const numericYear = parseInt(year, 10);
-      
+
       // Validate date ranges
       if (numericDay >= 1 && numericDay <= 31 && numericMonth >= 1 && numericMonth <= 12 && numericYear >= 1900 && numericYear <= new Date().getFullYear()) {
         formattedDate = `${day}/${month}/${year}`;
@@ -69,7 +69,7 @@ const validateAndFormatBirthDate = (birthDate) => {
       const numericDay = parseInt(day, 10);
       const numericMonth = parseInt(month, 10);
       const numericYear = parseInt(year, 10);
-      
+
       // Validate date ranges
       if (numericDay >= 1 && numericDay <= 31 && numericMonth >= 1 && numericMonth <= 12 && numericYear >= 1900 && numericYear <= new Date().getFullYear()) {
         formattedDate = `${day}/${month}/${year}`;
@@ -84,10 +84,10 @@ const validateAndFormatBirthDate = (birthDate) => {
     logger.error('Error validating birth date:', err);
   }
 
-  return { 
-    isValid: !!formattedDate, 
-    formattedDate, 
-    error 
+  return {
+    isValid: !!formattedDate,
+    formattedDate,
+    error
   };
 };
 
@@ -96,36 +96,36 @@ const validateAndFormatBirthDate = (birthDate) => {
  * @param {string} birthTime - Raw birth time string
  * @returns {Object} { isValid: boolean, formattedTime: string, error: string }
  */
-const validateAndFormatBirthTime = (birthTime) => {
+const validateAndFormatBirthTime = birthTime => {
   if (!birthTime) {
     // Default to noon if no time provided
-    return { 
-      isValid: true, 
-      formattedTime: '12:00', 
-      error: null 
+    return {
+      isValid: true,
+      formattedTime: '12:00',
+      error: null
     };
   }
 
   if (typeof birthTime !== 'string') {
-    return { 
-      isValid: false, 
-      formattedTime: null, 
-      error: 'Birth time must be a string' 
+    return {
+      isValid: false,
+      formattedTime: null,
+      error: 'Birth time must be a string'
     };
   }
 
   // Limit input length to prevent abuse
   if (birthTime.length > 10) {
-    return { 
-      isValid: false, 
-      formattedTime: null, 
-      error: 'Birth time is too long' 
+    return {
+      isValid: false,
+      formattedTime: null,
+      error: 'Birth time is too long'
     };
   }
 
   // Sanitize input - remove potentially harmful characters
   const sanitizedTime = birthTime.replace(/[<>'"`]/g, '').trim();
-  
+
   if (sanitizedTime !== birthTime) {
     logger.warn('⚠️ Sanitized potentially harmful characters from birth time input');
   }
@@ -138,7 +138,7 @@ const validateAndFormatBirthTime = (birthTime) => {
       const [_, hour, minute] = sanitizedTime.match(/^(\d{2})(\d{2})$/);
       const numericHour = parseInt(hour, 10);
       const numericMinute = parseInt(minute, 10);
-      
+
       // Validate time ranges
       if (numericHour >= 0 && numericHour <= 23 && numericMinute >= 0 && numericMinute <= 59) {
         formattedTime = `${hour}:${minute}`;
@@ -149,7 +149,7 @@ const validateAndFormatBirthTime = (birthTime) => {
       const [_, hour, minute] = sanitizedTime.match(/^(\d{1,2}):(\d{2})$/);
       const numericHour = parseInt(hour, 10);
       const numericMinute = parseInt(minute, 10);
-      
+
       // Validate time ranges
       if (numericHour >= 0 && numericHour <= 23 && numericMinute >= 0 && numericMinute <= 59) {
         formattedTime = `${hour.padStart(2, '0')}:${minute}`;
@@ -164,10 +164,10 @@ const validateAndFormatBirthTime = (birthTime) => {
     logger.error('Error validating birth time:', err);
   }
 
-  return { 
-    isValid: !!formattedTime, 
-    formattedTime, 
-    error 
+  return {
+    isValid: !!formattedTime,
+    formattedTime,
+    error
   };
 };
 
@@ -176,53 +176,53 @@ const validateAndFormatBirthTime = (birthTime) => {
  * @param {string} birthPlace - Raw birth place string
  * @returns {Object} { isValid: boolean, formattedPlace: string, error: string }
  */
-const validateAndFormatBirthPlace = (birthPlace) => {
+const validateAndFormatBirthPlace = birthPlace => {
   if (!birthPlace) {
     // Default to Delhi, India if no place provided
-    return { 
-      isValid: true, 
-      formattedPlace: 'Delhi, India', 
-      error: null 
+    return {
+      isValid: true,
+      formattedPlace: 'Delhi, India',
+      error: null
     };
   }
 
   if (typeof birthPlace !== 'string') {
-    return { 
-      isValid: false, 
-      formattedPlace: null, 
-      error: 'Birth place must be a string' 
+    return {
+      isValid: false,
+      formattedPlace: null,
+      error: 'Birth place must be a string'
     };
   }
 
   // Limit input length to prevent abuse
   if (birthPlace.length > 100) {
-    return { 
-      isValid: false, 
-      formattedPlace: null, 
-      error: 'Birth place is too long (max 100 characters)' 
+    return {
+      isValid: false,
+      formattedPlace: null,
+      error: 'Birth place is too long (max 100 characters)'
     };
   }
 
   // Sanitize input - remove potentially harmful characters but allow common punctuation
   const sanitizedPlace = birthPlace.replace(/[<>'"`]/g, '').trim();
-  
+
   if (sanitizedPlace !== birthPlace) {
     logger.warn('⚠️ Sanitized potentially harmful characters from birth place input');
   }
 
   // Ensure we have something meaningful
   if (sanitizedPlace.length < 2) {
-    return { 
-      isValid: false, 
-      formattedPlace: null, 
-      error: 'Birth place is too short' 
+    return {
+      isValid: false,
+      formattedPlace: null,
+      error: 'Birth place is too short'
     };
   }
 
-  return { 
-    isValid: true, 
-    formattedPlace: sanitizedPlace, 
-    error: null 
+  return {
+    isValid: true,
+    formattedPlace: sanitizedPlace,
+    error: null
   };
 };
 

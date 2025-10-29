@@ -13,27 +13,27 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
   let whatsAppIntegration;
   let mocks;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     dbManager = new TestDatabaseManager();
     await dbManager.setup();
     whatsAppIntegration = getWhatsAppIntegration();
     mocks = setupWhatsAppMocks();
   }, 30000);
 
-  afterAll(async () => {
+  afterAll(async() => {
     mocks.restoreMocks();
     await dbManager.teardown();
   }, 10000);
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     mocks.mockSendMessage.mockClear();
     await dbManager.cleanupUser('+security_test');
   });
 
   describe('Input Validation & Sanitization (25 tests)', () => {
-    test('prevents SQL injection through date input sanitization', async () => {
+    test('prevents SQL injection through date input sanitization', async() => {
       const phoneNumber = '+security_test';
-      const dangerousInput = "'; DROP TABLE users; SELECT '1";
+      const dangerousInput = '\'; DROP TABLE users; SELECT \'1';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: dangerousInput } }, {});
 
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
@@ -47,7 +47,7 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       console.log('✅ SQL injection prevention validated');
     });
 
-    test('sanitizes XSS payloads in location inputs', async () => {
+    test('sanitizes XSS payloads in location inputs', async() => {
       const phoneNumber = '+security_test';
       const xssPayload = 'Mumbai, India<script>alert("xss")</script>';
 
@@ -63,7 +63,7 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       console.log('✅ XSS payload sanitization validated');
     });
 
-    test('blocks command injection in geocoding service calls', async () => {
+    test('blocks command injection in geocoding service calls', async() => {
       const phoneNumber = '+security_test';
       // Attempt to inject command via location input
       const commandInjection = 'London, UK && rm -rf /';
@@ -80,7 +80,7 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       console.log('✅ Command injection blocking validated');
     });
 
-    test('handles buffer overflow attempts in name inputs', async () => {
+    test('handles buffer overflow attempts in name inputs', async() => {
       const phoneNumber = '+security_test';
       // Create extremely long input string
       const longInput = 'A'.repeat(10000);
@@ -93,14 +93,14 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       console.log('✅ Buffer overflow protection validated');
     });
 
-    test('prevents Unicode attack vectors in user data', async () => {
+    test('prevents Unicode attack vectors in user data', async() => {
       const phoneNumber = '+security_test';
       // Various Unicode attack patterns
       const unicodeAttacks = [
         'Test\u0000Null', // Null byte injection
         'Test\ufffd', // Replacement character abuse
         'Test\u202eRTL', // Right-to-left override
-        'Test\u200eLTR', // Left-to-right mark
+        'Test\u200eLTR' // Left-to-right mark
       ];
 
       for (const attack of unicodeAttacks) {
@@ -113,7 +113,7 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       console.log('✅ Unicode attack vector prevention validated');
     });
 
-    test('sanitizes control character abuse in messages', async () => {
+    test('sanitizes control character abuse in messages', async() => {
       const phoneNumber = '+security_test';
       // Control characters that could cause issues
       const controlChars = '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F';
@@ -126,7 +126,7 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       console.log('✅ Control character sanitization validated');
     });
 
-    test('validates input length limits to prevent memory exhaustion', async () => {
+    test('validates input length limits to prevent memory exhaustion', async() => {
       const phoneNumber = '+security_test';
       const extremelyLongInput = 'X'.repeat(100000); // 100KB of data
 
@@ -138,7 +138,7 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       console.log('✅ Memory exhaustion protection validated');
     });
 
-    test('prevents path traversal in ephemeris file requests', async () => {
+    test('prevents path traversal in ephemeris file requests', async() => {
       const phoneNumber = '+security_test';
       // Attempt directory traversal
       const pathTraversal = '../../../etc/passwd';
@@ -151,7 +151,7 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       console.log('✅ Path traversal blocking validated');
     });
 
-    test('sanitizes HTML content in message responses', async () => {
+    test('sanitizes HTML content in message responses', async() => {
       const phoneNumber = '+security_test';
       const htmlInput = '<b>Bold</b><i>Italic</i><script>malicious()</script>';
 
@@ -163,68 +163,68 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       console.log('✅ HTML sanitization validated');
     });
 
-    test('validates email format protection against injection', async () => {
+    test('validates email format protection against injection', async() => {
       // Even though we don't collect emails, test general format validation
       console.log('✅ Email format validation structure validated');
     });
 
-    test('prevents CRLF injection in HTTP headers', async () => {
+    test('prevents CRLF injection in HTTP headers', async() => {
       console.log('✅ CRLF injection prevention structure validated');
     });
 
-    test('sanitizes JSON input from external APIs', async () => {
+    test('sanitizes JSON input from external APIs', async() => {
       console.log('✅ JSON input sanitization structure validated');
     });
 
-    test('validates URL scheme restrictions for external links', async () => {
+    test('validates URL scheme restrictions for external links', async() => {
       console.log('✅ URL scheme validation structure validated');
     });
 
-    test('prevents directory listing through file path inputs', async () => {
+    test('prevents directory listing through file path inputs', async() => {
       console.log('✅ Directory listing prevention structure validated');
     });
 
-    test('handles integer overflow in numerical calculations', async () => {
+    test('handles integer overflow in numerical calculations', async() => {
       console.log('✅ Integer overflow handling structure validated');
     });
 
-    test('validates timezone offset ranges to prevent abuse', async () => {
+    test('validates timezone offset ranges to prevent abuse', async() => {
       console.log('✅ Timezone offset range validation structure validated');
     });
 
-    test('prevents symlink following in file operations', async () => {
+    test('prevents symlink following in file operations', async() => {
       console.log('✅ Symlink following prevention structure validated');
     });
 
-    test('sanitizes CSV data from external sources', async () => {
+    test('sanitizes CSV data from external sources', async() => {
       console.log('✅ CSV data sanitization structure validated');
     });
 
-    test('validates XML input for XXE attack prevention', async () => {
+    test('validates XML input for XXE attack prevention', async() => {
       console.log('✅ XML XXE attack prevention structure validated');
     });
 
-    test('handles floating point precision errors in calculations', async () => {
+    test('handles floating point precision errors in calculations', async() => {
       console.log('✅ Floating point precision error handling structure validated');
     });
 
-    test('prevents race conditions in concurrent user operations', async () => {
+    test('prevents race conditions in concurrent user operations', async() => {
       console.log('✅ Race condition prevention structure validated');
     });
 
-    test('validates regular expression input patterns', async () => {
+    test('validates regular expression input patterns', async() => {
       console.log('✅ Regex input validation structure validated');
     });
 
-    test('prevents infinite loops in input processing', async () => {
+    test('prevents infinite loops in input processing', async() => {
       console.log('✅ Infinite loop prevention structure validated');
     });
 
-    test('sanitizes error messages to prevent information leakage', async () => {
+    test('sanitizes error messages to prevent information leakage', async() => {
       console.log('✅ Error message sanitization structure validated');
     });
 
-    test('handles memory pressure from large input processing', async () => {
+    test('handles memory pressure from large input processing', async() => {
       console.log('✅ Memory pressure handling structure validated');
     });
 
@@ -232,79 +232,79 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
   });
 
   describe('Authentication & Authorization (19 tests)', () => {
-    test('prevents session fixation through proper session ID regeneration', async () => {
+    test('prevents session fixation through proper session ID regeneration', async() => {
       console.log('✅ Session fixation prevention structure validated');
     });
 
-    test('enforces session timeout limits for inactive users', async () => {
+    test('enforces session timeout limits for inactive users', async() => {
       console.log('✅ Session timeout enforcement structure validated');
     });
 
-    test('limits concurrent sessions per user account', async () => {
+    test('limits concurrent sessions per user account', async() => {
       console.log('✅ Concurrent session limitation structure validated');
     });
 
-    test('validates request origin to prevent hijacking', async () => {
+    test('validates request origin to prevent hijacking', async() => {
       console.log('✅ Request origin validation structure validated');
     });
 
-    test('prevents session hijacking through secure session handling', async () => {
+    test('prevents session hijacking through secure session handling', async() => {
       console.log('✅ Session hijacking prevention structure validated');
     });
 
-    test('enforces password complexity for authenticated users', async () => {
+    test('enforces password complexity for authenticated users', async() => {
       console.log('✅ Password complexity enforcement structure validated');
     });
 
-    test('validates two-factor authentication integration', async () => {
+    test('validates two-factor authentication integration', async() => {
       console.log('✅ Two-factor authentication validation structure validated');
     });
 
-    test('handles account lockout after failed login attempts', async () => {
+    test('handles account lockout after failed login attempts', async() => {
       console.log('✅ Account lockout handling structure validated');
     });
 
-    test('prevents brute force attacks on user accounts', async () => {
+    test('prevents brute force attacks on user accounts', async() => {
       console.log('✅ Brute force attack prevention structure validated');
     });
 
-    test('validates API key security for external services', async () => {
+    test('validates API key security for external services', async() => {
       console.log('✅ API key security validation structure validated');
     });
 
-    test('handles secure token expiration and refresh', async () => {
+    test('handles secure token expiration and refresh', async() => {
       console.log('✅ Token expiration and refresh handling structure validated');
     });
 
-    test('prevents unauthorized access to premium features', async () => {
+    test('prevents unauthorized access to premium features', async() => {
       console.log('✅ Premium feature access prevention structure validated');
     });
 
-    test('validates role-based permission systems', async () => {
+    test('validates role-based permission systems', async() => {
       console.log('✅ Role-based permission validation structure validated');
     });
 
-    test('handles secure logout and session cleanup', async () => {
+    test('handles secure logout and session cleanup', async() => {
       console.log('✅ Secure logout handling structure validated');
     });
 
-    test('prevents privilege escalation through parameter manipulation', async () => {
+    test('prevents privilege escalation through parameter manipulation', async() => {
       console.log('✅ Privilege escalation prevention structure validated');
     });
 
-    test('validates cross-site request forgery protections', async () => {
+    test('validates cross-site request forgery protections', async() => {
       console.log('✅ CSRF protection validation structure validated');
     });
 
-    test('handles secure password reset workflows', async () => {
+    test('handles secure password reset workflows', async() => {
       console.log('✅ Password reset security handling structure validated');
     });
 
-    test('prevents clickjacking through frame options', async () => {
+    test('prevents clickjacking through frame options', async() => {
       console.log('✅ Clickjacking prevention structure validated');
     });
 
-    test('validates secure headers implementation', async () => {
+    test('validates secure headers implementation', async() => {
       console.log('✅ Secure headers validation structure validated');
     });
 

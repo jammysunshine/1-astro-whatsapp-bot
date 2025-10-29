@@ -11,7 +11,7 @@ class TarotReader {
     // Major Arcana cards (simplified for brevity)
     this.majorArcana = [
       { name: 'The Fool', number: 0, upright: 'New beginnings', reversed: 'Recklessness' },
-      { name: 'The Magician', number: 1, upright: 'Manifestation', reversed: 'Manipulation' },
+      { name: 'The Magician', number: 1, upright: 'Manifestation', reversed: 'Manipulation' }
       // Add more major arcana cards...
     ];
 
@@ -40,7 +40,7 @@ class TarotReader {
     // Simplified deck for testing - normally would include full deck
     const deck = [
       ...this.majorArcana,
-      { name: 'Ace of Wands', upright: 'Inspiration', reversed: 'Lack of energy' },
+      { name: 'Ace of Wands', upright: 'Inspiration', reversed: 'Lack of energy' }
       // Add more cards...
     ];
 

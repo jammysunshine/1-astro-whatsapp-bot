@@ -31,24 +31,24 @@ const generateAstrologyResponse = async(messageText, user) => {
     const handlerGroups = [
       // Basic handlers (greetings, menu, etc.)
       [handleGreeting, handleMenu, handleUpdateProfile],
-      
+
       // Western astrology handlers
       [handleHoroscope, handleNumerology, handleSolarReturn, handleAsteroids],
-      
+
       // Specialized astrology handlers
-      [handleChineseAstrology, handleTarot, handlePalmistry, handleKabbalistic, 
-       handleMayan, handleCeltic, handleIChing, handleAstrocartography],
-      
+      [handleChineseAstrology, handleTarot, handlePalmistry, handleKabbalistic,
+        handleMayan, handleCeltic, handleIChing, handleAstrocartography],
+
       // Vedic astrology handlers
       [handleNadi, handleFixedStars, handleMedicalAstrology, handleFinancialAstrology,
-       handleHarmonicAstrology, handleCareerAstrology, handleVedicRemedies,
-       handleIslamicAstrology, handleVimshottariDasha, handleJaiminiAstrology,
-       handleHinduFestivals, handleVedicNumerology, handleAyurvedicAstrology],
-      
+        handleHarmonicAstrology, handleCareerAstrology, handleVedicRemedies,
+        handleIslamicAstrology, handleVimshottariDasha, handleJaiminiAstrology,
+        handleHinduFestivals, handleVedicNumerology, handleAyurvedicAstrology],
+
       // Predictive astrology handlers
-      [handleEventAstrology, handleFutureSelf, handleGroupAstrology, 
-       handleMarriageCompatibility, handleLagnaAnalysis, handlePrashna, 
-       handleElectional, handleHorary, handleSecondaryProgressions, handleSolarArc]
+      [handleEventAstrology, handleFutureSelf, handleGroupAstrology,
+        handleMarriageCompatibility, handleLagnaAnalysis, handlePrashna,
+        handleElectional, handleHorary, handleSecondaryProgressions, handleSolarArc]
     ];
 
     // Execute handlers sequentially until one returns a response

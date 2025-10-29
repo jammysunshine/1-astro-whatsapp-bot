@@ -100,7 +100,7 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
       logger.error(`📄 Unsupported media type for ${phoneNumber}`);
       throw new Error(`Unsupported media type: ${error.response?.data?.error?.message || error.message}`);
     }
-    
+
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
     logger.error(`❌ Error sending message to ${phoneNumber}: ${errorMsg}`);
     throw error;
@@ -630,7 +630,7 @@ const sendMessage = async(
         if (typeof translatedBodyText === 'string' && translatedBodyText && translatedBodyText.includes('.') && !translatedBodyText.includes(' ')) {
           translatedBodyText = await translationService.translate(translatedBodyText, language, options.parameters || {});
         }
-        
+
         // Ensure body text is a string and meets WhatsApp API requirements
         if (typeof translatedBodyText !== 'string') {
           translatedBodyText = String(translatedBodyText || 'Please select an option');
@@ -668,7 +668,7 @@ const sendMessage = async(
           if (typeof message.body.text === 'string' && message.body.text && message.body.text.includes('.') && !message.body.text.includes(' ')) {
             translatedBody = { text: await translationService.translate(message.body.text, language, options.parameters || {}) };
           }
-        } else if (typeof message.body === 'string' && message.body && message.body.text && message.body.text.includes('.') && !message.body.text.includes(' ')) {
+        } else if (typeof message.body === 'string' && message.body && message.body.includes('.') && !message.body.includes(' ')) {
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
         }
         // Ensure body text is a string and meets WhatsApp API requirements
@@ -695,13 +695,13 @@ const sendMessage = async(
         } else if (buttonText.length > 20) {
           buttonText = buttonText.substring(0, 20);
         }
-        
+
         // Validate sections structure - each section should have a title and rows
         const validatedSections = sections.map(section => {
           // Ensure section has a title (required by WhatsApp API)
-          const sectionTitle = section.title && typeof section.title === 'string' && section.title.length <= 24 ? 
+          const sectionTitle = section.title && typeof section.title === 'string' && section.title.length <= 24 ?
             section.title : 'Options';
-          
+
           const validatedRows = (section.rows || []).slice(0, 10).map(row => {
             // Ensure row ID is a valid string with max 256 characters
             let rowId = row.id || `row_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
@@ -711,7 +711,7 @@ const sendMessage = async(
             if (rowId.length > 256) {
               rowId = rowId.substring(0, 256);
             }
-            
+
             // Ensure row title is a valid string with max 24 characters
             let rowTitle = row.title || 'Option';
             if (typeof rowTitle !== 'string') {
@@ -720,7 +720,7 @@ const sendMessage = async(
             if (rowTitle.length > 24) {
               rowTitle = rowTitle.substring(0, 24);
             }
-            
+
             // Ensure row description is a valid string with max 72 characters
             let rowDescription = row.description || '';
             if (typeof rowDescription !== 'string') {
@@ -729,20 +729,20 @@ const sendMessage = async(
             if (rowDescription.length > 72) {
               rowDescription = rowDescription.substring(0, 72);
             }
-            
+
             return {
               id: rowId,
               title: rowTitle,
               description: rowDescription
             };
           });
-          
+
           return {
             title: sectionTitle,
             rows: validatedRows
           };
         }).filter(section => section.rows.length > 0); // Filter out sections with no rows
-        
+
         // Ensure at least one section with one row exists, otherwise send a simple text message
         if (validatedSections.length === 0) {
           logger.warn(`⚠️ No valid sections found for list message to ${phoneNumber}, sending fallback text`);
@@ -750,10 +750,10 @@ const sendMessage = async(
           response = await sendTextMessage(phoneNumber, fallbackMessage, options);
           return response;
         }
-        
-        let finalBodyTextForList = translatedBodyText;
-        if (typeof translatedBodyText === 'object' && translatedBodyText.text) {
-          finalBodyTextForList = translatedBodyText.text;
+
+        let finalBodyTextForList = translatedBody;
+        if (typeof translatedBody === 'object' && translatedBody.text) {
+          finalBodyTextForList = translatedBody.text;
         }
         response = await sendListMessage(
           phoneNumber,
@@ -806,13 +806,13 @@ const sendMessage = async(
   } catch (error) {
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
     logger.error(`❌ Error in sendMessage wrapper to ${phoneNumber}: ${errorMsg}`);
-    
+
     // In test environment, re-throw the error so mocks can catch it
     if (process.env.NODE_ENV === 'test') {
       logger.warn(`🔧 Test environment: re-throwing error for sendMessage to ${phoneNumber}`);
       throw error;
     }
-    
+
     throw error;
   }
 };

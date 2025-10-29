@@ -326,151 +326,140 @@ const processTextMessage = async(message, user) => {
 
   // Check for menu keywords and redirect to menu actions
   const lowerMessage = messageText.toLowerCase();
-  
+
   // Western Astrology menu navigation
   if (lowerMessage.includes('western astrology') || lowerMessage.includes('western menu')) {
     await executeMenuAction(phoneNumber, user, 'show_western_astrology_menu');
     return;
-  } 
+  }
   // Vedic Astrology menu navigation
   else if (lowerMessage.includes('vedic astrology') || lowerMessage.includes('hindu astrology') || lowerMessage.includes('indian astrology')) {
     await executeMenuAction(phoneNumber, user, 'show_vedic_astrology_menu');
     return;
-  } 
+  }
   // Divination & Mystic menu navigation
   else if (lowerMessage.includes('divination') || lowerMessage.includes('mystic')) {
     await executeMenuAction(phoneNumber, user, 'show_divination_mystic_menu');
     return;
-  } 
+  }
   // Relationships & Groups menu navigation
   else if (lowerMessage.includes('relationships') || lowerMessage.includes('family') || lowerMessage.includes('compatibility')) {
     await executeMenuAction(phoneNumber, user, 'show_relationships_groups_menu');
     return;
-  } 
+  }
   // Numerology & Special menu navigation
   else if (lowerMessage.includes('numerology') || lowerMessage.includes('special')) {
     await executeMenuAction(phoneNumber, user, 'show_numerology_special_menu');
     return;
-  } 
+  }
   // Settings & Profile menu navigation
   else if (lowerMessage.includes('settings') || lowerMessage.includes('profile')) {
     await executeMenuAction(phoneNumber, user, 'show_settings_profile_menu');
     return;
-  } 
+  }
   // Main menu navigation
   else if (lowerMessage.includes('main menu') || lowerMessage.includes('home')) {
     await executeMenuAction(phoneNumber, user, 'show_main_menu');
     return;
-  } 
+  }
   // Back navigation
   else if (lowerMessage.includes('back') || lowerMessage.includes('return')) {
     await executeMenuAction(phoneNumber, user, 'navigate_back');
     return;
-  } 
+  }
   // Continue navigation
   else if (lowerMessage.includes('continue')) {
     await executeMenuAction(phoneNumber, user, 'continue_navigation');
     return;
-  } 
+  }
   // Western Basic Readings
   else if (lowerMessage.includes('basic readings') || lowerMessage.includes('basic charts')) {
     await executeMenuAction(phoneNumber, user, 'show_western_basic_menu');
     return;
-  } 
+  }
   // Western Advanced Readings
   else if (lowerMessage.includes('advanced readings') || lowerMessage.includes('advanced charts')) {
     await executeMenuAction(phoneNumber, user, 'show_western_advanced_menu');
     return;
-  } 
+  }
   // Western Predictive Readings
   else if (lowerMessage.includes('predictive') || lowerMessage.includes('transits') || lowerMessage.includes('progressions')) {
     await executeMenuAction(phoneNumber, user, 'show_western_predictive_menu');
     return;
-  } 
+  }
   // Vedic Basic Readings
   else if (lowerMessage.includes('vedic basic') || lowerMessage.includes('hindu basic')) {
     await executeMenuAction(phoneNumber, user, 'show_vedic_basic_menu');
     return;
-  } 
+  }
   // Vedic Advanced Readings
   else if (lowerMessage.includes('vedic advanced') || lowerMessage.includes('hindu advanced')) {
     await executeMenuAction(phoneNumber, user, 'show_vedic_advanced_menu');
     return;
-  } 
+  }
   // Vedic Predictive Readings
   else if (lowerMessage.includes('vedic predictive') || lowerMessage.includes('dashas') || lowerMessage.includes('dasha')) {
     await executeMenuAction(phoneNumber, user, 'show_vedic_predictive_menu');
     return;
-  } 
+  }
   // Birth Chart Analysis
   else if (lowerMessage.includes('birth chart analysis') || lowerMessage.includes('natal chart')) {
     await executeMenuAction(phoneNumber, user, 'show_birth_chart');
     return;
-  } 
+  }
   // Planets, Houses, Aspects in Birth Chart
   else if (lowerMessage.includes('planets')) {
     await executeMenuAction(phoneNumber, user, 'explore_planets');
     return;
-  } 
-  else if (lowerMessage.includes('houses')) {
+  } else if (lowerMessage.includes('houses')) {
     await executeMenuAction(phoneNumber, user, 'explore_houses');
     return;
-  } 
-  else if (lowerMessage.includes('aspects')) {
+  } else if (lowerMessage.includes('aspects')) {
     await executeMenuAction(phoneNumber, user, 'explore_aspects');
     return;
-  } 
+  }
   // Dasha Analysis
   else if (lowerMessage.includes('vimshottari')) {
     await executeMenuAction(phoneNumber, user, 'get_vimshottari_dasha_analysis');
     return;
-  } 
-  else if (lowerMessage.includes('yogini')) {
+  } else if (lowerMessage.includes('yogini')) {
     await executeMenuAction(phoneNumber, user, 'get_yogini_dasha_analysis');
     return;
-  } 
-  else if (lowerMessage.includes('char dasha')) {
+  } else if (lowerMessage.includes('char dasha')) {
     await executeMenuAction(phoneNumber, user, 'get_char_dasha_analysis');
     return;
-  } 
-  else if (lowerMessage.includes('narayan')) {
+  } else if (lowerMessage.includes('narayan')) {
     await executeMenuAction(phoneNumber, user, 'get_narayan_dasha_analysis');
     return;
-  } 
+  }
   // 4-member analysis
   else if (lowerMessage.includes('parent-child')) {
     await executeMenuAction(phoneNumber, user, 'analyze_parent_child');
     return;
-  } 
-  else if (lowerMessage.includes('sibling')) {
+  } else if (lowerMessage.includes('sibling')) {
     await executeMenuAction(phoneNumber, user, 'analyze_sibling');
     return;
-  } 
-  else if (lowerMessage.includes('spousal')) {
+  } else if (lowerMessage.includes('spousal')) {
     await executeMenuAction(phoneNumber, user, 'analyze_spousal');
     return;
-  } 
+  }
   // Hellenistic
   else if (lowerMessage.includes('lots')) {
     await executeMenuAction(phoneNumber, user, 'explore_lots');
     return;
-  } 
-  else if (lowerMessage.includes('decans')) {
+  } else if (lowerMessage.includes('decans')) {
     await executeMenuAction(phoneNumber, user, 'explore_decans');
     return;
-  } 
-  else if (lowerMessage.includes('terms')) {
+  } else if (lowerMessage.includes('terms')) {
     await executeMenuAction(phoneNumber, user, 'explore_terms');
     return;
-  } 
-  else if (lowerMessage.includes('triplicities')) {
+  } else if (lowerMessage.includes('triplicities')) {
     await executeMenuAction(phoneNumber, user, 'explore_triplicities');
     return;
-  } 
-  else if (lowerMessage.includes('planetary hours')) {
+  } else if (lowerMessage.includes('planetary hours')) {
     await executeMenuAction(phoneNumber, user, 'explore_planetary_hours');
     return;
-  } 
+  }
   // Existing keyword matching
   else if (lowerMessage.includes('horoscope') || lowerMessage.includes('daily') || lowerMessage === '1') {
     await executeMenuAction(phoneNumber, user, 'get_daily_horoscope');
@@ -1003,18 +992,18 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       }
 
       // Format Vedic Kundli response with input sanitization
-      const sanitizedName = kundli.name ? 
-        kundli.name.replace(/[<>'"&]/g, '').substring(0, 50) : 
+      const sanitizedName = kundli.name ?
+        kundli.name.replace(/[<>'"&]/g, '').substring(0, 50) :
         'Unknown';
-      
-      let response = `🕉️ *Vedic Kundli (Birth Chart)*\n\n`;
+
+      let response = '🕉️ *Vedic Kundli (Birth Chart)*\n\n';
       response += `*Name:* ${sanitizedName}\n`;
       response += `*Birth:* ${kundli.birthDetails.date} at ${kundli.birthDetails.time}\n`;
       response += `*Place:* ${kundli.birthDetails.place}\n\n`;
 
       response += `*Lagna (Ascendant):* ${kundli.lagna.sign} (${kundli.lagna.longitude?.toFixed(1)}°)\n\n`;
 
-      response += `*Planetary Positions:*\n`;
+      response += '*Planetary Positions:*\n';
       Object.entries(kundli.planetaryPositions).forEach(([planet, data]) => {
         if (data.sign) {
           response += `• ${planet.charAt(0).toUpperCase() + planet.slice(1)}: ${data.sign} (${data.longitude?.toFixed(1)}°)\n`;
@@ -1889,21 +1878,21 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       }
 
       // Format birth chart response
-      let response = `🌟 *Western Birth Chart Analysis*\n\n`;
+      let response = '🌟 *Western Birth Chart Analysis*\n\n';
       response += `*Name:* ${birthChart.name || 'Unknown'}\n`;
       response += `*Birth:* ${birthChart.birthDate} at ${birthChart.birthTime}\n`;
       response += `*Place:* ${birthChart.birthPlace}\n\n`;
 
       response += `*Ascendant:* ${birthChart.ascendant.sign}\n\n`;
 
-      response += `*Planetary Positions:*\n`;
+      response += '*Planetary Positions:*\n';
       Object.entries(birthChart.planets).forEach(([planet, data]) => {
         if (data.sign) {
           response += `• ${planet.charAt(0).toUpperCase() + planet.slice(1)}: ${data.sign} (${data.longitude?.toFixed(1)}°)\n`;
         }
       });
 
-      response += `\n*Key Aspects:*\n`;
+      response += '\n*Key Aspects:*\n';
       if (birthChart.aspectPatterns && birthChart.aspectPatterns.length > 0) {
         birthChart.aspectPatterns.slice(0, 3).forEach(pattern => {
           response += `• ${pattern.type}: ${pattern.description}\n`;
@@ -2306,7 +2295,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       }
 
       // Format numerology report response
-      let response = `🔢 *Complete Numerology Report*\n\n`;
+      let response = '🔢 *Complete Numerology Report*\n\n';
       response += `*Name:* ${user.name}\n`;
       response += `*Birth Date:* ${user.birthDate}\n\n`;
 
@@ -2324,8 +2313,8 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         response += `${numerologyReport.personality.interpretation}\n\n`;
       }
 
-      response += `*What does this mean for you?*\n`;
-      response += `Your numerology reveals your core blueprint and life patterns. These numbers show your natural talents, challenges, and life purpose.`;
+      response += '*What does this mean for you?*\n';
+      response += 'Your numerology reveals your core blueprint and life patterns. These numbers show your natural talents, challenges, and life purpose.';
 
       const buttons = [
         { type: 'reply', reply: { id: 'get_numerology_report', title: '🔄 Recalculate' } },
@@ -2750,9 +2739,9 @@ const handleCompatibilityRequest = async(
       })}`;
     }
 
-        await sendMessage(phoneNumber, response, 'text');
+    await sendMessage(phoneNumber, response, 'text');
 
-        // Increment compatibility check counter
+    // Increment compatibility check counter
     await incrementCompatibilityChecks(phoneNumber);
   } catch (error) {
     logger.error('Error handling compatibility request:', error);

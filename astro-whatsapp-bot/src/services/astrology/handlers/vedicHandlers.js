@@ -55,11 +55,23 @@ const handleNadi = async (message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleFixedStars = async (message, user) => {
-  if (!message.includes('fixed star') && !message.includes('fixed') && !message.includes('star') && !message.includes('constellation')) {
+  if (!message.includes('fixed star') && !message.includes('fixed') && !message.includes('star') && !message.includes('constellation') && !message.includes('stars analysis')) {
     return null;
   }
 
-  return `⭐ *Fixed Stars Analysis*\n\nFixed stars are permanent stellar bodies that powerfully influence human destiny. Twenty-eight nakshatras and major fixed stars create the backdrop of our earthly dramas.\n\n🌟 *Key Fixed Stars:*\n• Regulus (Royal Star) - Power and authority, but can bring downfall\n• Aldebaran (Bull's Eye) - Royal honors, but violent if afflicted\n• Antares (Heart of Scorpio) - Power struggles, transformation\n• Fomalhaut (Fish's Mouth) - Spiritual wisdom, prosperity\n• Spica (Virgin's Spike) - Success through service\n\n🔮 *Paranatellonta:* When planets conjoin these stars, their influence intensifies. The star's nature blends with planetary energy, creating complex personality patterns.\n\n🪐 *Mundane Effects:* Fixed stars influence world leaders, nations, and historical events. Their position maps the cosmic script of human civilization.\n\n💫 *Note:* Fixed star analysis requires birth chart calculation. Each star's influence lasts approximately 2° orb of conjunction. 🕉️`;
+  if (!user.birthDate) {
+    return '⭐ *Fixed Stars Analysis*\n\n👤 I need your birth details for personalized fixed star analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
+  }
+
+  try {
+    // Calculate personalized fixed star analysis using Swiss Ephemeris
+    const analysis = await calculateFixedStarsAnalysis(user);
+
+    return `⭐ *Fixed Stars Analysis - Stellar Influences*\n\n${analysis.introduction}\n\n🌟 *Your Stellar Conjunctions:*\n${analysis.conjunctions.map(c => `• ${c.star} conjunct ${c.planet}: ${c.interpretation}`).join('\n')}\n\n${analysis.conjunctions.length === 0 ? 'No major fixed star conjunctions within 2° orb.' : ''}\n\n🪐 *Major Fixed Stars:*\n${analysis.majorStars.map(s => `• ${s.name}(${s.constellation}): ${s.influence}`).join('\n')}\n\n⚡ *Key Fixed Star Meanings:*\n• Regulus: Power/authority, leadership potential\n• Aldebaran: Honor/success, material achievements  \n• Antares: Power struggles, transformation through crisis\n• Fomalhaut: Spiritual wisdom, prosperity through service\n• Spica: Success through helpfulness, harvest abundance\n\n🔮 *Paranatellonta:* Fixed star influences blend with planetary energies, creating unique life themes and potentials.\n\n💫 *Orb:* Conjunctions within 2° activate the star's full influence. 🕉️`;
+  } catch (error) {
+    console.error('Fixed Stars analysis error:', error);
+    return '❌ Error calculating Fixed Stars analysis. Please try again.';
+  }
 };
 
 /**
@@ -442,6 +454,182 @@ const handleAyurvedicAstrology = async (message, user) => {
     console.error('Ayurvedic Astrology error:', error);
     return '❌ Error determining Ayurvedic constitution. Please try again.';
   }
+};
+
+/**
+ * Calculate Fixed Stars analysis using Swiss Ephemeris
+ * @param {Object} user - User object with birth data
+ * @returns {Object} Fixed stars analysis with conjunctions
+ */
+const calculateFixedStarsAnalysis = async (user) => {
+  try {
+    // Parse birth date and time from user data
+    const birthYear = user.birthDate.length === 6 ?
+      parseInt(`19${user.birthDate.substring(4)}`) :
+      parseInt(user.birthDate.substring(4));
+    const birthMonth = parseInt(user.birthDate.substring(2, 4)) - 1;
+    const birthDay = parseInt(user.birthDate.substring(0, 2));
+    const birthHour = user.birthTime ? parseInt(user.birthTime.split(':')[0]) : 12;
+    const birthMinute = user.birthTime ? parseInt(user.birthTime.split(':')[1]) : 0;
+
+    // Convert to Julian Day
+    const timezone = user.timezone || 5.5;
+    const utcTime = new Date(Date.UTC(birthYear, birthMonth, birthDay, birthHour - timezone, birthMinute));
+    const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
+
+    // Major fixed stars with their coordinates and influences
+    const fixedStars = [
+      { name: 'Regulus', constellation: 'Leo', longitude: 149.86, // 29°50' Leo
+        magnitude: 1.35, influence: 'Power, authority, leadership (can bring downfall if afflicted)' },
+      { name: 'Aldebaran', constellation: 'Taurus', longitude: 68.98, // 08°34' Taurus
+        magnitude: 0.85, influence: 'Honor, success, material achievements (violent if afflicted)' },
+      { name: 'Antares', constellation: 'Scorpio', longitude: 248.07, // 08°07' Scorpio
+        magnitude: 1.09, influence: 'Power struggles, transformation through crisis (intense energy)' },
+      { name: 'Fomalhaut', constellation: 'Pisces', longitude: 331.83, // 01°50' Pisces
+        magnitude: 1.16, influence: 'Spiritual wisdom, prosperity through service (mystical qualities)' },
+      { name: 'Spica', constellation: 'Virgo', longitude: 201.30, // 11°30' Virgo
+        magnitude: 0.97, influence: 'Success through helpfulness, harvest abundance (beneficial)' },
+      { name: 'Sirius', constellation: 'Canis Major', longitude: 101.29, // 11°18' Cancer
+        magnitude: -1.46, influence: 'Brightest star, brings heavenly favor, honor, wealth' },
+      { name: 'Vega', constellation: 'Lyra', longitude: 279.23, // 09°23' Capricorn
+        magnitude: 0.03, influence: 'Greatest good fortune, success in arts, music, literature' }
+    ];
+
+    // Calculate planetary positions using Swiss Ephemeris
+    const planets = {};
+    const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
+                           sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
+    const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+
+    planetEphemIds.forEach((ephemId, index) => {
+      const result = sweph.swe_calc_ut(julianDay, ephemId, sweph.SEFLG_SPEED);
+      if (result.rc >= 0) {
+        planets[planetNames[index]] = {
+          longitude: result.longitude[0],
+          latitude: result.latitude[0],
+          speed: result.speed[0]
+        };
+      }
+    });
+
+    // Find conjunctions between planets and fixed stars (within 2° orb)
+    const conjunctions = [];
+    const conjOrb = 2; // 2-degree orb for fixed star conjunctions
+
+    fixedStars.forEach(star => {
+      planetNames.forEach(planetName => {
+        if (planets[planetName]) {
+          const planetLong = planets[planetName].longitude;
+          const starLong = star.longitude;
+
+          // Check for conjunction (accounting for 360° wraparound)
+          const diff1 = Math.abs(planetLong - starLong);
+          const diff2 = Math.abs(planetLong - (starLong + 360));
+          const diff3 = Math.abs(planetLong - (starLong - 360));
+          const minDiff = Math.min(diff1, diff2, diff3);
+
+          if (minDiff <= conjOrb) {
+            const exactOrb = minDiff;
+            const interpretation = getFixedStarInterpretation(star.name, planetName, exactOrb);
+            conjunctions.push({
+              star: star.name,
+              planet: planetName,
+              orb: exactOrb.toFixed(2),
+              interpretation: interpretation
+            });
+          }
+        }
+      });
+    });
+
+    // Prepare major stars list for menu
+    const majorStars = fixedStars.map(star => ({
+      name: star.name,
+      constellation: star.constellation,
+      influence: star.influence
+    }));
+
+    const introduction = `Fixed stars are permanent celestial bodies that powerfully influence human destiny. Your birth chart shows connections to ${conjunctions.length} major fixed star${conjunctions.length !== 1 ? 's' : ''} through planetary conjunctions.`;
+
+    return {
+      introduction,
+      conjunctions,
+      majorStars
+    };
+
+  } catch (error) {
+    console.error('Fixed Stars calculation error:', error);
+    throw new Error('Failed to calculate Fixed Stars analysis');
+  }
+};
+
+/**
+ * Get interpretation for fixed star and planet conjunction
+ * @param {string} starName - Fixed star name
+ * @param {string} planetName - Planet name
+ * @param {number} orb - Exact orb
+ * @returns {string} Interpretation text
+ */
+const getFixedStarInterpretation = (starName, planetName, orb) => {
+  const interpretations = {
+    Regulus: {
+      Sun: `${orb < 1 ? 'Exceptional' : 'Strong'} leadership potential with royal favor. Authority and command over others.`,
+      Moon: `Emotional sensitivity with protective nature. Female authority figures may be significant.`,
+      Mars: `Dynamic leadership with martial qualities. Risk of downfall through arrogance or violence.`,
+      Venus: `Charm and grace with royal elegance. Beloved by many, potential for luxurious arts.`,
+      Jupiter: `Divine authority and wisdom. Benevolent rule and expansive influence.`,
+      Saturn: `Structured authority with karmic responsibilities. Long-term reputation building.`,
+      Mercury: `Strategic intelligence with prophetic communication. Wise counsel and truth.`
+    },
+    Aldebaran: {
+      Sun: `Warrior spirit with honorable victories. Martial courage tempered by nobility.`,
+      Moon: `Protective instincts with passionate nurturing. Courageous defense of loved ones.`,
+      Mars: `Violent potential for both destruction and creation. Ambitious drive.`,
+      Venus: `Passionate romance with dramatic attractions. Material success through arts.`,
+      Jupiter: `Fortune through honorable deeds. Justice and fairness in prosperity.`,
+      Saturn: `Material success through persistent effort. Enduring reputation.`,
+      Mercury: `Strategic mind with prophetic speech. Intellectual authority.`
+    },
+    Antares: {
+      Sun: `Transformational leadership through crisis. Phoenix-like rebirth from challenges.`,
+      Moon: `Deep emotional intensity with regenerative power. Crisis leading to renewal.`,
+      Mars: `Martial power through transformation. Destruction clearing path for renewal.`,
+      Venus: `Intense relationships with transformative love. Crisis leading to rebirth.`,
+      Jupiter: `Wisdom through suffering. Profound spiritual transformation.`,
+      Saturn: `Structural transformation through endurance. Rebirth from loss.`,
+      Mercury: `Communications about deep mysteries. Strategic thinking through crisis.`
+    },
+    Fomalhaut: {
+      Sun: `Spiritual leadership through service. Mystical qualities with altruistic nature.`,
+      Moon: `Intuitive sensitivity with spiritual perception. Dreams and visions.`,
+      Mars: `Martial action in service of higher goals. Spiritual warrior.`,
+      Venus: `Spiritual beauty and grace. Love transcending physical forms.`,
+      Jupiter: `Divine wisdom through prosperity. Fortune through benevolent service.`,
+      Saturn: `Spiritual discipline and endurance. Karma through service.`,
+      Mercury: `Inspired communication of spiritual truths. Prophetic wisdom.`
+    },
+    Spica: {
+      Sun: `Bright success through helpful service. Beneficent rulership.`,
+      Moon: `Nurturing kindness with intuitive service. Gentle healing.`,
+      Mars: `Active service with graceful strength. Helpful in competition.`,
+      Venus: `Grace and beauty through caring service. Charitable arts.`,
+      Jupiter: `Abundant success through benevolence. Fortunate service.`,
+      Saturn: `Enduring success through patient service. Karmic fulfillment.`,
+      Mercury: `Intelligent communication with helpful information. Wise teaching.`
+    }
+  };
+
+  // Get specific interpretation or generic fallback
+  const planetInterp = interpretations[starName]?.[planetName];
+  if (planetInterp) {
+    return `${planetInterp} (orb: ${orb}°)`;
+  }
+
+  // Generic interpretation
+  return `${starName}'s ${planetName === 'Sun' ? 'radiant' : planetName === 'Moon' ? 'intuitive' :
+         planetName === 'Mars' ? 'dynamic' : planetName === 'Venus' ? 'harmonious' :
+         planetName === 'Jupiter' ? 'expansive' : planetName === 'Saturn' ? 'disciplined' : ' analytical'}
+  qualities enhance your potential (orb: ${orb}°).`;
 };
 
 /**

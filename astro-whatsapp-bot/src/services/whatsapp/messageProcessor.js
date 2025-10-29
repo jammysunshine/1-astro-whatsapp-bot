@@ -2834,16 +2834,16 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     await sendMessage(phoneNumber, { type: 'button', body: careerBody, buttons: careerButtons }, 'interactive');
     return null;
   // Fix invalid response types from generateAstrologyResponse
-  if (respontypeof response !== 'string') {
+  if (response && typeof response !== 'string') {
     logger.warn(`Invalid response from generateAstrologyResponse for message '${messageText}': ${typeof response}`);
     if (response !== null) logger.warn(`Response value: ${JSON.stringify(response).slice(0, 200)}`);
-    const userLanguage =	getUserLanguage(user, phoneNumber);
+    const errorLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
       phoneNumber,
       '❌ Sorry, I couldn\'t generate a response for that request. Please try again or contact support.',
       'text',
       {},
-      userLanguage
+      errorLanguage
     );
     return;
   }

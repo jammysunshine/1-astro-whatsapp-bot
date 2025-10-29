@@ -75,32 +75,28 @@ const handleFixedStars = async (message, user) => {
 };
 
 /**
- * Handle Medical Astrology requests
+ * Handle Medical Astrology requests - Personalized Health Analysis
  * @param {string} message - User message
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
 const handleMedicalAstrology = async (message, user) => {
-  if (!message.includes('medical') && !message.includes('health') && !message.includes('disease') && !message.includes('illness')) {
+  if (!message.includes('medical') && !message.includes('health') && !message.includes('disease') && !message.includes('illness') && !message.includes('health analysis')) {
     return null;
   }
 
+  if (!user.birthDate) {
+    return '🏥 *Medical Astrology Analysis*\n\n👤 I need your birth details for personalized health analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
+  }
+
   try {
-    // Use mundane reader for health analysis as it can analyze planetary health indicators
-    const mundaneReader = new MundaneAstrologyReader();
-    // Get current planetary positions for health analysis
-    const chartData = {
-      planets: {}, // Would need to get actual planetary positions
-      houses: {},
-      aspects: []
-    };
+    // Calculate personalized health analysis using Swiss Ephemeris
+    const healthAnalysis = await calculateMedicalAstrologyAnalysis(user);
 
-    const healthAnalysis = await mundaneReader.generateMundaneAnalysis(chartData, 'health');
-
-    return `🏥 *Medical Astrology Analysis*\n\nPlanetary positions indicate health strengths and vulnerabilities. Medical astrology connects celestial bodies with bodily systems.\n\n🌙 *Lunar Influence 2-3 days:*\n• New Moon: Rest and renewal\n• Full Moon: Peak energy, then depletion\n• Moon void: Medical procedures advised against\n\n☀️ *Sun Transits 30 days:* Vital force, immune system\n\n🩸 *Mars Transits 40 days:* Surgery timing, inflammation\n\nSaturn: Chronic conditions, bone health\nVenus: Reproductive health, harmony\nMercury: Nervous system, communication\nJupiter: Expansion, liver health\n\n⚕️ *Planetary Rulerships:*\n• Aries/Mars: Head, brain\n• Taurus/Venus: Throat, thyroid\n• Gemini/Mercury: Lungs, nervous system\n• Cancer/Moon: Stomach, breasts\n• Leo/Sun: Heart, spine\n• Virgo/Mercury: Intestines, digestion\n• Libra/Venus: Kidneys, skin\n• Scorpio/Mars/Pluto: Reproductive system\n• Sagittarius/Jupiter: Liver, hips\n• Capricorn/Saturn: Knees, skeletal system\n• Aquarius/Uranus: Ankles, circulation\n• Pisces/Jupiter/Neptune: Feet, lymphatic system\n\n🕉️ *Ancient Wisdom:* "A physician without knowledge of astrology has no right to call himself a physician" - Hippocrates\n\n💊 *Note:* Medical astrology complements modern medicine. Consult healthcare professionals for medical decisions.`;
+    return `🏥 *Medical Astrology - Personalized Health Analysis*\n\n${healthAnalysis.introduction}\n\n🩺 *Your Health Indicators:*\n${healthAnalysis.healthIndicators.map(h => `• ${h.planet}: ${h.interpretation}`).join('\n')}\n\n🏥 *Key Health Houses:*\n${healthAnalysis.houseAnalysis.map(h => `• ${h.house}: ${h.interpretation}`).join('\n')}\n\n⚠️ *Potential Health Focus Areas:*\n${healthAnalysis.focusAreas.map(a => `• ${a.area}: ${a.insights}`).join('\n')}\n\n🧘 *Health Maintenance Suggestions:*\n${healthAnalysis.recommendations.map(r => `• ${r.suggestion}`).join('\n')}\n\n💊 *IMPORTANT: This astrological analysis complements but does not replace professional medical advice. Consult healthcare providers for health concerns.\n\n🕉️ "The celestial bodies influence the vital forces of our earthly constitution" - Vedic Medical Tradition.`;
   } catch (error) {
-    console.error('Medical astrology error:', error);
-    return '❌ Error generating medical astrology analysis.';
+    console.error('Medical astrology analysis error:', error);
+    return '❌ Error calculating medical astrology analysis. Please try again.';
   }
 };
 
@@ -630,6 +626,319 @@ const getFixedStarInterpretation = (starName, planetName, orb) => {
          planetName === 'Mars' ? 'dynamic' : planetName === 'Venus' ? 'harmonious' :
          planetName === 'Jupiter' ? 'expansive' : planetName === 'Saturn' ? 'disciplined' : ' analytical'}
   qualities enhance your potential (orb: ${orb}°).`;
+};
+
+/**
+ * Calculate personalized medical astrology analysis using Swiss Ephemeris
+ * @param {Object} user - User object with birth data
+ * @returns {Object} Medical astrology health analysis
+ */
+const calculateMedicalAstrologyAnalysis = async (user) => {
+  try {
+    // Parse birth date and time from user data
+    const birthYear = user.birthDate.length === 6 ?
+      parseInt(`19${user.birthDate.substring(4)}`) :
+      parseInt(user.birthDate.substring(4));
+    const birthMonth = parseInt(user.birthDate.substring(2, 4)) - 1;
+    const birthDay = parseInt(user.birthDate.substring(0, 2));
+    const birthHour = user.birthTime ? parseInt(user.birthTime.split(':')[0]) : 12;
+    const birthMinute = user.birthTime ? parseInt(user.birthTime.split(':')[1]) : 0;
+
+    // Convert to Julian Day
+    const timezone = user.timezone || 5.5;
+    const utcTime = new Date(Date.UTC(birthYear, birthMonth, birthDay, birthHour - timezone, birthMinute));
+    const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
+
+    // Calculate planetary positions using Swiss Ephemeris
+    const planets = {};
+    const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
+                           sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
+    const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+
+    planetEphemIds.forEach((ephemId, index) => {
+      const result = sweph.swe_calc_ut(julianDay, ephemId, sweph.SEFLG_SPEED);
+      if (result.rc >= 0) {
+        planets[planetNames[index]] = {
+          longitude: result.longitude[0],
+          latitude: result.latitude[0],
+          speed: result.speed[0]
+        };
+      }
+    });
+
+    // Calculate houses (Placidus system for medical analysis)
+    const defaultLat = 28.6139;
+    const defaultLng = 77.2090;
+    const lat = user.latitude || defaultLat;
+    const lng = user.longitude || defaultLng;
+
+    const cusps = new Array(13);
+    sweph.swe_houses(julianDay, lat, lng, 'P', cusps);
+
+    const houses = {};
+    for (let i = 1; i <= 12; i++) {
+      houses[i] = {
+        cusp: cusps[i],
+        sign: this.longitudeToSign(cusps[i])
+      };
+    }
+
+    // Analyze health indicators based on chart
+    const healthIndicators = analyzeChartHealthIndicators(planets, cusps);
+    const houseAnalysis = analyzeHealthHouses(planets, cusps);
+    const focusAreas = identifyHealthFocusAreas(planets, cusps);
+    const recommendations = generateHealthRecommendations(focusAreas);
+
+    const introduction = `Your birth chart reveals innate health patterns and potential challenges. Medical astrology helps understand how planetary influences affect your physical well-being and vitality.`;
+
+    return {
+      introduction,
+      healthIndicators,
+      houseAnalysis,
+      focusAreas,
+      recommendations
+    };
+
+  } catch (error) {
+    console.error('Medical Astrology calculation error:', error);
+    throw new Error('Failed to calculate medical astrology analysis');
+  }
+};
+
+/**
+ * Analyze planetary health indicators in birth chart
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} Health indicator interpretations
+ */
+const analyzeChartHealthIndicators = (planets, cusps) => {
+  const indicators = [];
+
+  // Check each planet's position and aspects for health insights
+  if (planets.Sun?.longitude) {
+    const sunHouse = this.longitudeToHouse(planets.Sun.longitude, cusps[0]);
+    const interpretation = getPlanetHealthInterpretation('Sun', sunHouse, planets.Sun.longitude);
+    indicators.push({ planet: 'Sun', interpretation });
+  }
+
+  if (planets.Moon?.longitude) {
+    const moonHouse = this.longitudeToHouse(planets.Moon.longitude, cusps[0]);
+    const interpretation = getPlanetHealthInterpretation('Moon', moonHouse, planets.Moon.longitude);
+    indicators.push({ planet: 'Moon', interpretation });
+  }
+
+  if (planets.Mars?.longitude) {
+    const marsHouse = this.longitudeToHouse(planets.Mars.longitude, cusps[0]);
+    const interpretation = getPlanetHealthInterpretation('Mars', marsHouse, planets.Mars.longitude);
+    indicators.push({ planet: 'Mars', interpretation });
+  }
+
+  if (planets.Jupiter?.longitude) {
+    const jupiterHouse = this.longitudeToHouse(planets.Jupiter.longitude, cusps[0]);
+    const interpretation = getPlanetHealthInterpretation('Jupiter', jupiterHouse, planets.Jupiter.longitude);
+    indicators.push({ planet: 'Jupiter', interpretation });
+  }
+
+  if (planets.Saturn?.longitude) {
+    const saturnHouse = this.longitudeToHouse(planets.Saturn.longitude, cusps[0]);
+    const interpretation = getPlanetHealthInterpretation('Saturn', saturnHouse, planets.Saturn.longitude);
+    indicators.push({ planet: 'Saturn', interpretation });
+  }
+
+  if (planets.Mercury?.longitude) {
+    const mercuryHouse = this.longitudeToHouse(planets.Mercury.longitude, cusps[0]);
+    const interpretation = getPlanetHealthInterpretation('Mercury', mercuryHouse, planets.Mercury.longitude);
+    indicators.push({ planet: 'Mercury', interpretation });
+  }
+
+  return indicators.slice(0, 5); // Top 5 health indicators
+};
+
+/**
+ * Analyze health-related houses (6th, 8th, 12th)
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} House analysis interpretations
+ */
+const analyzeHealthHouses = (planets, cusps) => {
+  const houseAnalysis = [];
+
+  // 6th House - Illness and service (daily routine and health)
+  const sixthHouseSign = this.longitudeToSign(cusps[5]);
+  houseAnalysis.push({
+    house: '6th House (Daily Health & Service)',
+    interpretation: `${sixthHouseSign} in 6th house suggests health maintained through daily routines. Pay attention to diet, exercise, and work-life balance for optimal wellness.`
+  });
+
+  // 8th House - Chronic conditions, surgery, transformation
+  const eighthHouseSign = this.longitudeToSign(cusps[7]);
+  houseAnalysis.push({
+    house: '8th House (Chronic Conditions & Recovery)',
+    interpretation: `${eighthHouseSign} in 8th house indicates transformation through health challenges. Focus on regenerative practices and understanding root causes of ailments.`
+  });
+
+  // 12th House - Isolation, hospitalization, spiritual health
+  const twelfthHouseSign = this.longitudeToSign(cusps[11]);
+  houseAnalysis.push({
+    house: '12th House (Rest & Spiritual Health)',
+    interpretation: `${twelfthHouseSign} in 12th house shows health recovery through rest and spiritual practices. Meditation and solitude can be powerful healers for you.`
+  });
+
+  return houseAnalysis;
+};
+
+/**
+ * Identify health focus areas based on chart
+ * @param {Object} planets - Planetary positions
+ * @param {Array} cusps - House cusps
+ * @returns {Array} Focus areas with insights
+ */
+const identifyHealthFocusAreas = (planets, cusps) => {
+  const focusAreas = [];
+
+  // Check for potential health concerns based on planetary placements
+
+  // Saturn in challenging positions (chronic conditions)
+  if (planets.Saturn?.longitude) {
+    const saturnHouse = this.longitudeToHouse(planets.Saturn.longitude, cusps[0]);
+    if (saturnHouse === 6 || saturnHouse === 12) {
+      focusAreas.push({
+        area: 'Chronic Conditions',
+        insights: 'Saturn\'s position suggests long-term health maintenance. Consistent healthcare routines and preventive medicine are important.'
+      });
+    }
+  }
+
+  // Mars in 8th house (potential for surgery or crisis)
+  if (planets.Mars?.longitude) {
+    const marsHouse = this.longitudeToHouse(planets.Mars.longitude, cusps[0]);
+    if (marsHouse === 8) {
+      focusAreas.push({
+        area: 'Acute Health Episodes',
+        insights: 'Mars in 8th house may indicate intense but recoverable health episodes. Regular health monitoring can help prevent crises.'
+      });
+    }
+  }
+
+  // Sun vitality placement
+  if (planets.Sun?.longitude) {
+    const sunHouse = this.longitudeToHouse(planets.Sun.longitude, cusps[0]);
+    if (sunHouse === 6) {
+      focusAreas.push({
+        area: 'Energy Management',
+        insights: 'Sun in 6th house suggests health benefits from daily life adjustments. Consider how work and routine affect your energy levels.'
+      });
+    }
+  }
+
+  // Moon emotional health
+  if (planets.Moon?.longitude) {
+    const moonHouse = this.longitudeToHouse(planets.Moon.longitude, cusps[0]);
+    if (moonHouse === 12) {
+      focusAreas.push({
+        area: 'Emotional Well-being',
+        insights: 'Moon\'s placement indicates emotional health recovery through periods of rest and introspection.'
+      });
+    }
+  }
+
+  // Default if no major indications
+  if (focusAreas.length === 0) {
+    focusAreas.push({
+      area: 'General Wellness',
+      insights: 'Your chart shows balanced health indicators. Focus on preventive healthcare and maintaining healthy lifestyle habits.'
+    });
+  }
+
+  return focusAreas.slice(0, 3); // Top 3 focus areas
+};
+
+/**
+ * Generate health recommendations based on focus areas
+ * @param {Array} focusAreas - Health focus areas
+ * @returns {Array} Health maintenance suggestions
+ */
+const generateHealthRecommendations = (focusAreas) => {
+  const recommendations = [];
+
+  const hasChronic = focusAreas.some(area => area.area === 'Chronic Conditions');
+  const hasAcute = focusAreas.some(area => area.area === 'Acute Health Episodes');
+  const hasEmotional = focusAreas.some(area => area.area === 'Emotional Well-being');
+
+  if (hasChronic) {
+    recommendations.push('Establish consistent health routines and consider specialized medical guidance for long-term health management');
+  }
+
+  if (hasAcute) {
+    recommendations.push('Regular health check-ups and understanding crisis triggers can help manage intense health periods');
+  }
+
+  if (hasEmotional) {
+    recommendations.push('Practice restorative activities like meditation, nature time, or gentle exercise for emotional health balance');
+  }
+
+  // General recommendations
+  recommendations.push('Maintain a balanced diet, regular sleep schedule, and stress management practices');
+  recommendations.push('Listen to your body\'s signals and seek medical attention when needed rather than delaying');
+
+  return recommendations;
+};
+
+/**
+ * Get health interpretation for a planet based on house placement
+ * @param {string} planet - Planet name
+ * @param {number} house - House number
+ * @param {number} longitude - Planet longitude
+ * @returns {string} Health interpretation
+ */
+const getPlanetHealthInterpretation = (planet, house, longitude) => {
+  const sign = this.longitudeToSign(longitude);
+
+  // Planet-specific health interpretations
+  const interpretations = {
+    Sun: {
+      6: 'Sun in 6th house suggests vitality through daily routine. Health benefits from regular physical activity and organizational structure.',
+      8: 'Sun in 8th house indicates transformative health experiences. Recovery comes through understanding deeper life patterns.',
+      12: 'Sun in 12th house shows vitality renewed through rest and contemplation. Spiritual practices support overall health.',
+      default: 'Sun represents core vitality and life force energy.'
+    },
+    Moon: {
+      6: 'Moon in 6th house connects emotional well-being to daily habits. Digestive health benefits from stable routines.',
+      8: 'Moon in 8th house suggests emotional release through health challenges. Psychological healing supports physical recovery.',
+      12: 'Moon in 12th house indicates health recovery through emotional processing and dream work during rest periods.',
+      default: 'Moon governs emotional health and bodily fluids. Lunar cycles influence energy patterns.'
+    },
+    Mars: {
+      6: 'Mars in 6th house drives activity-oriented health approach. Consider martial arts, competitive sports, or vigorous exercise.',
+      8: 'Mars in 8th house may bring intense health experiences. Use energy constructively through transformative practices.',
+      12: 'Mars in 12th house suggests subconscious healing through rest. Avoid overexertion during recovery periods.',
+      default: 'Mars governs physical vitality, surgery timing, and inflammation. Martial energy affects both health crises and recovery.'
+    },
+    Jupiter: {
+      6: 'Jupiter in 6th house suggests health through expansion. Consider holistic health approaches and learning new wellness practices.',
+      8: 'Jupiter in 8th house indicates profound healing transformations. Alternative medicine may be particularly beneficial.',
+      12: 'Jupiter in 12th house shows restorative sanctuary periods. Spiritual practices enhance health recovery.',
+      default: 'Jupiter represents healing capacity and overall life force. Optimism and growth support health regeneration.'
+    },
+    Saturn: {
+      6: 'Saturn in 6th house requires disciplined health habits. Consider structural medicine, consistent routines, and lifestyle discipline.',
+      8: 'Saturn in 8th house indicates long-term transformation potential. Patience and persistent effort support deep healing.',
+      12: 'Saturn in 12th house suggests learning through health challenges. Contemplative practices aid recovery in isolation.',
+      default: 'Saturn governs longevity and chronic conditions. Structured, consistent approaches to health maintenance.'
+    },
+    Mercury: {
+      6: 'Mercury in 6th house connects communication to health. Consider learning about nutrition, anatomy, and health practices.',
+      12: 'Mercury in 12th house indicates health insights through introspection. Journaling and self-reflection support well-being.',
+      default: 'Mercury governs nervous system, communication, and mental processing. Quick adaptability affects health responses.'
+    }
+  };
+
+  const planetInterp = interpretations[planet];
+  if (planetInterp) {
+    return planetInterp[house] || `${planet} in ${sign} - ${planetInterp.default}`;
+  }
+
+  return `${planet} in ${sign} - ${planet} influences your approach to health and healing processes.`;
 };
 
 /**

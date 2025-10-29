@@ -6,6 +6,7 @@ const vedicRemedies = require('../vedicRemedies');
 const { NadiAstrology } = require('../nadiAstrology');
 const MundaneAstrologyReader = require('../mundaneAstrology');
 const { AgeHarmonicAstrologyReader } = require('../ageHarmonicAstrology');
+const { Panchang } = require('../panchang');
 
 /**
  * Handle Nadi Astrology requests
@@ -175,6 +176,41 @@ const handleVedicRemedies = async (message, user) => {
   } catch (error) {
     console.error('Vedic remedies error:', error);
     return '❌ Error retrieving Vedic remedies. Please try again.';
+  }
+};
+
+/**
+ * Handle Panchang (Hindu Calendar) requests
+ * @param {string} message - User message
+ * @param {Object} user - User object
+ * @returns {string|null} Response or null if not handled
+ */
+const handlePanchang = async (message, user) => {
+  if (!message.includes('panchang') && !message.includes('daily calendar') && !message.includes('hindu calendar')) {
+    return null;
+  }
+
+  try {
+    const panchangService = new Panchang();
+    const today = new Date();
+    const dateData = {
+      date: `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`,
+      time: `${today.getHours()}:${today.getMinutes()}`,
+      latitude: user.latitude || 28.6139, // Default Delhi
+      longitude: user.longitude || 77.2090,
+      timezone: user.timezone || 5.5 // IST
+    };
+
+    const panchang = await panchangService.generatePanchang(dateData);
+
+    if (panchang.error) {
+      return '❌ Unable to generate panchang for today.';
+    }
+
+    return panchang.summary;
+  } catch (error) {
+    console.error('Panchang generation error:', error);
+    return '❌ Error generating daily panchang. Please try again.';
   }
 };
 
@@ -381,6 +417,7 @@ module.exports = {
   handleFinancialAstrology,
   handleHarmonicAstrology,
   handleCareerAstrology,
+  handlePanchang,
   handleVedicRemedies,
   handleFutureSelf,
   handleIslamicAstrology,

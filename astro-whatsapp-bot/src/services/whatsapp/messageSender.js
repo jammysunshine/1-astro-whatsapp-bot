@@ -49,10 +49,14 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
       to: phoneNumber,
       type: 'text',
       text: {
-        preview_url: options.previewUrl || false,
         body: message
       }
     };
+
+    // Add preview_url only if explicitly set to true
+    if (options.previewUrl === true) {
+      messagePayload.text.preview_url = true;
+    }
 
     // Add context if provided (for replying to specific messages)
     if (options.context) {
@@ -63,6 +67,9 @@ const sendTextMessage = async(phoneNumber, message, options = {}) => {
     if (options.recipientType) {
       messagePayload.recipient_type = options.recipientType;
     }
+
+    // Log the actual payload being sent for debugging parameter validation errors
+    logger.debug(`📦 Payload for ${phoneNumber}:`, JSON.stringify(messagePayload, null, 2));
 
     const response = await axios.post(url, messagePayload, {
       headers: {
@@ -604,6 +611,36 @@ const sendMessage = async(
   language = 'en'
 ) => {
   try {
+    // COMPREHENSIVE LOGGING FOR DEBUGGING WHATSAPP COMMUNICATION ISSUES
+
+    // Log input parameters
+    logger.info(`📤 ATTEMPTING TO SEND ${messageType.toUpperCase()} MESSAGE:`);
+    logger.info(`📞 Recipient: ${phoneNumber}`);
+    logger.info(`🔤 Language: ${language}`);
+
+    // Check if message is empty or undefined
+    if (message === null || message === undefined) {
+      logger.error(`❌ CRITICAL: Message content is NULL/UNDEFINED`);
+      throw new Error('Message content cannot be null or undefined');
+    }
+
+    if (typeof message === 'string' && message.trim().length === 0) {
+      logger.error(`❌ CRITICAL: Message content is EMPTY STRING`);
+      throw new Error('Message content cannot be empty string');
+    }
+
+    logger.info(`📝 Raw message input (${typeof message}): ${JSON.stringify(message)}`);
+
+    // Log message details for debugging parameter validation errors
+    if (typeof message === 'string') {
+      logger.info(`📏 Message string length: ${message.length} characters`);
+      logger.info(`📄 Message preview: "${message.substring(0, 100)}${message.length > 100 ? '...' : ''}"`);
+    } else if (typeof message === 'object') {
+      logger.info(`📦 Message object keys: ${Object.keys(message).join(', ')}`);
+      if (message.type) logger.info(`🔸 Message type: ${message.type}`);
+      if (message.body) logger.info(`🔸 Message body: ${JSON.stringify(message.body).substring(0, 100)}`);
+    }
+
     let response;
 
     switch (messageType) {

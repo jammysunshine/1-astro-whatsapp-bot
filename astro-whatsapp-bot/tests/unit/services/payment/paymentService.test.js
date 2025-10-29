@@ -2,6 +2,9 @@
 // Unit tests for Payment Service
 
 const paymentService = require('../../../../src/services/payment/paymentService');
+const { getUserByPhone, createUser } = require('../../../../src/models/userModel');
+const User = require('../../../../src/models/User');
+const mongoose = require('mongoose');
 
 // Mock dependencies
 const logger = require('../../../../src/utils/logger');
@@ -20,24 +23,49 @@ jest.mock('razorpay', () => jest.fn().mockImplementation(() => ({
   }
 })));
 
-beforeEach(() => {
-  jest.spyOn(logger, 'info').mockImplementation(() => {});
-  jest.spyOn(logger, 'error').mockImplementation(() => {});
-  jest.spyOn(logger, 'warn').mockImplementation(() => {});
-  jest.spyOn(logger, 'debug').mockImplementation(() => {});
+describe('PaymentService', () => {
+  beforeAll(async() => {
+    // Use the MongoDB URI from environment or default to test database
+    const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://test:test@cluster0.abc123.mongodb.net/astro-whatsapp-bot-test?retryWrites=true&w=majority';
+    await mongoose.connect(mongoUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+  });
 
-  // Mock environment variables for payment gateways
-  process.env.STRIPE_SECRET_KEY = 'test_stripe_key';
-  process.env.RAZORPAY_KEY_ID = 'test_razorpay_key';
-  process.env.RAZORPAY_KEY_SECRET = 'test_razorpay_secret';
-});
+  afterAll(async() => {
+    await mongoose.connection.close();
+  });
 
-afterEach(() => {
-  jest.restoreAllMocks();
-  delete process.env.STRIPE_SECRET_KEY;
-  delete process.env.RAZORPAY_KEY_ID;
-  delete process.env.RAZORPAY_KEY_SECRET;
-});
+  beforeEach(async() => {
+    jest.spyOn(logger, 'info').mockImplementation(() => {});
+    jest.spyOn(logger, 'error').mockImplementation(() => {});
+    jest.spyOn(logger, 'warn').mockImplementation(() => {});
+    jest.spyOn(logger, 'debug').mockImplementation(() => {});
+
+    // Clean up test data before each test
+    await User.deleteMany({
+      phoneNumber: '+1234567890'
+    });
+
+    // Mock environment variables for payment gateways
+    process.env.STRIPE_SECRET_KEY = 'test_stripe_key';
+    process.env.RAZORPAY_KEY_ID = 'test_razorpay_key';
+    process.env.RAZORPAY_KEY_SECRET = 'test_razorpay_secret';
+  });
+
+  afterEach(async() => {
+    jest.restoreAllMocks();
+    delete process.env.STRIPE_SECRET_KEY;
+    delete process.env.RAZORPAY_KEY_ID;
+    delete process.env.RAZORPAY_KEY_SECRET;
+
+    // Clean up test data after each test
+    await User.deleteMany({
+      phoneNumber: '+1234567890'
+    });
+  });
+};+++++++ REPLACE
 
 describe('PaymentService', () => {
   describe('getPlan', () => {

@@ -38,8 +38,7 @@ const PORT = process.env.W1_PORT || 3000;
 // Middleware
 app.use(
   helmet({
-    frameguard: { action: 'deny' },
-    xssFilter: { mode: 'block' }
+    frameguard: { action: 'deny' }
   })
 );
 app.use(cors());

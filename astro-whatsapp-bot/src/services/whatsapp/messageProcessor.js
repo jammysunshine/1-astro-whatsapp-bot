@@ -879,61 +879,12 @@ const executeMenuAction = async(phoneNumber, user, action) => {
 
   switch (action) {
   case 'get_daily_horoscope':
+    // Validate profile and delegate to astrology engine
     if (!(await validateUserProfile(user, phoneNumber, 'Daily Horoscope'))) {
       return null;
     }
-    try {
-      const horoscopeData = await vedicCalculator.generateDailyHoroscope({
-        birthDate: user.birthDate,
-        birthTime: user.birthTime,
-        birthPlace: user.birthPlace
-      });
-      const sunSign = await vedicCalculator.calculateSunSign(user.birthDate);
-
-      const body = `${translationService.translate('messages.daily_horoscope.title', userLanguage, { sunSign })
-      }\n\n${translationService.translate('messages.daily_horoscope.general', userLanguage, { general: horoscopeData.general })
-      }\n\n${translationService.translate('messages.daily_horoscope.lucky_color', userLanguage, { color: horoscopeData.luckyColor })
-      }\n${translationService.translate('messages.daily_horoscope.lucky_number', userLanguage, { number: horoscopeData.luckyNumber })
-      }\n${translationService.translate('messages.daily_horoscope.love', userLanguage, { advice: horoscopeData.love })
-      }\n${translationService.translate('messages.daily_horoscope.career', userLanguage, { advice: horoscopeData.career })
-      }\n${translationService.translate('messages.daily_horoscope.finance', userLanguage, { advice: horoscopeData.finance })
-      }\n${translationService.translate('messages.daily_horoscope.health', userLanguage, { advice: horoscopeData.health })
-      }${translationService.translate('messages.daily_horoscope.next', userLanguage)}`;
-
-      const buttons = [
-        { type: 'reply', reply: { id: 'get_daily_horoscope', title: translationService.translate('buttons.another_reading', userLanguage) || '🔄 Another Reading' } },
-        { type: 'reply', reply: { id: 'show_main_menu', title: translationService.translate('buttons.back_main', userLanguage) || '🏠 Main Menu' } }
-      ];
-
-      await sendMessage(phoneNumber, { type: 'button', body, buttons }, 'interactive');
-
-      // Send main menu
-      const menu = await getTranslatedMenu('main_menu', userLanguage);
-      if (menu) {
-        const menuButtons = menu.buttons.map(button => ({
-          type: 'reply',
-          reply: { id: button.id, title: button.title }
-        }));
-        await sendMessage(
-          phoneNumber,
-          { type: 'button', body: menu.body, buttons: menuButtons },
-          'interactive'
-        );
-      }
-
-      return null; // Handled, don't send additional response
-    } catch (error) {
-      logger.error('Error generating daily horoscope:', error);
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      await sendMessage(
-        phoneNumber,
-        'messages.daily_horoscope.error',
-        'text',
-        {},
-        userLanguage
-      );
-      return null;
-    }
+    response = generateAstrologyResponse('daily horoscope', user);
+    break;
   case 'initiate_compatibility_flow': {
     const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
@@ -1501,21 +1452,68 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     response = generateAstrologyResponse('lunar return', user);
     break;
   case 'get_current_transits':
-    if (!user.birthDate) {
-      const userLanguage = getUserLanguage(user, phoneNumber);
-      const body = translationService.translate('messages.birth_chart.incomplete_profile', userLanguage);
-      const buttons = [
-        { type: 'reply', reply: { id: 'start_profile_flow', title: translationService.translate('buttons.update_profile', userLanguage) || '📝 Update Profile' } },
-        { type: 'reply', reply: { id: 'show_western_astrology_menu', title: translationService.translate('buttons.back_western', userLanguage) || '🌍 Back to Western' } }
-      ];
-      await sendMessage(
-        phoneNumber,
-        { type: 'button', body, buttons },
-        'interactive'
-      );
+    if (!(await validateUserProfile(user, phoneNumber, 'Current Transits'))) {
       return null;
     }
     response = generateAstrologyResponse('current transits', user);
+    break;
+  case 'get_synastry_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Compatibility Analysis'))) {
+      return null;
+    }
+    // Check if partner data is available in context
+    const partnerData = messageText && messageText.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
+    if (partnerData) {
+      response = generateAstrologyResponse('synastry ' + partnerData[1], user);
+    } else {
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.synastry.partner_prompt',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
+    }
+    break;
+  case 'get_lunar_return':
+    if (!(await validateUserProfile(user, phoneNumber, 'Lunar Return'))) {
+      return null;
+    }
+    response = generateAstrologyResponse('lunar return', user);
+    break;
+  case 'get_solar_return_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Solar Return'))) {
+      return null;
+    }
+    response = generateAstrologyResponse('solar return', user);
+    break;
+  case 'get_secondary_progressions':
+    if (!(await validateUserProfile(user, phoneNumber, 'Secondary Progressions'))) {
+      return null;
+    }
+    response = generateAstrologyResponse('progressions', user);
+    break;
+  case 'get_solar_arc_directions':
+    if (!(await validateUserProfile(user, phoneNumber, 'Solar Arc Directions'))) {
+      return null;
+    }
+    response = generateAstrologyResponse('solar arc', user);
+    break;
+  case 'get_horoscope':
+    // Alias for daily horoscope
+    if (!(await validateUserProfile(user, phoneNumber, 'Daily Horoscope'))) {
+      return null;
+    }
+    response = generateAstrologyResponse('daily horoscope', user);
+    break;
+  case 'get_numerology_analysis':
+    // Comprehensive numerology analysis
+    if (!(await validateUserProfile(user, phoneNumber, 'Numerology Analysis'))) {
+      return null;
+    }
+    response = generateAstrologyResponse('numerology', user);
     break;
   case 'show_core_readings_menu': {
     const userLanguage = getUserLanguage(user, phoneNumber);
@@ -2536,6 +2534,259 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         userLanguage
       );
     }
+    return null;
+  case 'get_celtic_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Celtic Astrology'))) {
+      return null;
+    }
+    try {
+      const celticAnalysis = celticReader.generateCelticReading(user);
+      if (celticAnalysis.error) {
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          `I encountered an issue generating your Celtic reading: ${celticAnalysis.error}`,
+          'text',
+          {},
+          userLanguage
+        );
+        return null;
+      }
+
+      // Format Celtic reading response
+      let response = '🍀 *Celtic Astrology Reading*\n\n';
+      response += `*Tree Sign:* ${celticAnalysis.treeSign || 'Unknown'}\n`;
+      response += `*Meaning:* ${celticAnalysis.meaning || 'Not available'}\n\n`;
+      
+      if (celticAnalysis.personality) {
+        response += `*Personality:* ${celticAnalysis.personality}\n\n`;
+      }
+      
+      if (celticAnalysis.guidance) {
+        response += `*Life Guidance:* ${celticAnalysis.guidance}\n\n`;
+      }
+
+      const buttons = [
+        { type: 'reply', reply: { id: 'get_celtic_analysis', title: '🔄 Another Reading' } },
+        { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+      ];
+
+      await sendMessage(phoneNumber, { type: 'button', body: response, buttons }, 'interactive');
+      return null;
+    } catch (error) {
+      logger.error('Error generating Celtic analysis:', error);
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.celtic.error',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
+    }
+  case 'get_electional_astrology':
+    if (!(await validateUserProfile(user, phoneNumber, 'Electional Astrology'))) {
+      return null;
+    }
+    const userLanguage = getUserLanguage(user, phoneNumber);
+    const electionalBody = `📅 *Electional Astrology*\n\n${translationService.translate('messages.electional.introduction', userLanguage) || 'Electional astrology helps choose the most favorable time for important life events.'}\n\n*Perfect for:*\n• Business meetings\n• Travel dates\n• Medical procedures\n• Legal decisions\n• Relationship milestones\n• New projects\n\nFor personalized timing guidance, please contact our astrologers.`;
+
+    const electionalButtons = [
+      { type: 'reply', reply: { id: 'get_electional_astrology', title: '📅 More Timing Info' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: electionalBody, buttons: electionalButtons }, 'interactive');
+    return null;
+  case 'get_mundane_astrology_analysis':
+    const userLanguageMundane = getUserLanguage(user, phoneNumber);
+    const mundaneBody = `🌍 *Mundane Astrology*\n\n${translationService.translate('messages.mundane.introduction', userLanguageMundane) || 'Mundane astrology studies cosmic influences on world events, nations, and collective human activities.'}\n\n*Includes analysis of:*\n• National events\n• Economic cycles\n• Weather patterns\n• Wars and conflicts\n• Political developments\n• Social movements\n\nFor world event astrology insights, please contact our specialized astrologers.`;
+
+    const mundaneButtons = [
+      { type: 'reply', reply: { id: 'get_mundane_astrology_analysis', title: '🌍 More World Events' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: mundaneBody, buttons: mundaneButtons }, 'interactive');
+    return null;
+  case 'get_hellenistic_astrology_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Hellenistic Astrology'))) {
+      return null;
+    }
+    try {
+      const hellenisticAnalysis = await HellenisticAstrologyReader.generateHellenisticReading({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi'
+      });
+
+      if (hellenisticAnalysis.error) {
+        const userLanguage = getUserLanguage(user, phoneNumber);
+        await sendMessage(
+          phoneNumber,
+          `I encountered an issue generating your Hellenistic reading: ${hellenisticAnalysis.error}`,
+          'text',
+          {},
+          userLanguage
+        );
+        return null;
+      }
+
+      // Format Hellenistic reading response
+      let response = '🏛️ *Hellenistic Astrology Reading*\n\n';
+      response += `*Ancient Method: ${hellenisticAnalysis.method || 'Classical Techniques'}*\n\n`;
+      
+      if (hellenisticAnalysis.lots) {
+        response += `*Lot Analysis:*\n`;
+        Object.entries(hellenisticAnalysis.lots).slice(0, 3).forEach(([lot, details]) => {
+          response += `• ${lot}: ${details.position}\n`;
+        });
+        response += `\n`;
+      }
+      
+      if (hellenisticAnalysis.terms) {
+        response += `*Planetary Terms:*\n`;
+        hellenisticAnalysis.terms.slice(0, 3).forEach(term => {
+          response += `• ${term.planet}: ${term.position}\n`;
+        });
+        response += `\n`;
+      }
+
+      if (hellenisticAnalysis.timing) {
+        response += `*Timing Period:*\n${hellenisticAnalysis.timing}\n\n`;
+      }
+
+      const buttons = [
+        { type: 'reply', reply: { id: 'get_hellenistic_astrology_analysis', title: '🏛️ More Ancient Wisdom' } },
+        { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+      ];
+
+      await sendMessage(phoneNumber, { type: 'button', body: response, buttons }, 'interactive');
+      return null;
+    } catch (error) {
+      logger.error('Error generating Hellenistic analysis:', error);
+      const userLanguage = getUserLanguage(user, phoneNumber);
+      await sendMessage(
+        phoneNumber,
+        'messages.astrology_services.hellenistic.error',
+        'text',
+        {},
+        userLanguage
+      );
+      return null;
+    }
+  case 'get_asteroid_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Asteroid Analysis'))) {
+      return null;
+    }
+    const userLanguageAsteroid = getUserLanguage(user, phoneNumber);
+    const asteroidBody = `☄️ *Asteroid Analysis*\n\n${translationService.translate('messages.asteroid.introduction', userLanguageAsteroid) || 'Asteroid astrology explores the influence of celestial bodies like Chiron, Ceres, Pallas, and Juno.'}\n\n*Asteroids analyzed:*\n• Chiron - Wound & Healing\n• Ceres - Nurturing & Motherhood\n• Pallas - Wisdom & Strategy\n• Juno - Partnership & Marriage\n• Vesta - Devotion & Focus\n\nEach asteroid adds depth to your birth chart interpretation.`;
+
+    const asteroidButtons = [
+      { type: 'reply', reply: { id: 'get_asteroid_analysis', title: '☄️ Detailed Analysis' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: asteroidBody, buttons: asteroidButtons }, 'interactive');
+    return null;
+  case 'get_fixed_stars_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Fixed Stars Analysis'))) {
+      return null;
+    }
+    const userLanguageFixed = getUserLanguage(user, phoneNumber);
+    const fixedStarsBody = `⭐ *Fixed Stars Analysis*\n\n${translationService.translate('messages.fixed_stars.introduction', userLanguageFixed) || 'Fixed star astrology studies the influence of specific stars in your birth chart.'}\n\n*Major Fixed Stars:*\n• Regulus - Royalty & Leadership\n• Spica - Success & Abundance\n• Antares - Power & Transformation\n• Fomalhaut - Guidance & Protection\n• Vega - Inspiration & Artistry\n\nThese ancient stellar influences add nuance to planetary interpretations.`;
+
+    const fixedStarsButtons = [
+      { type: 'reply', reply: { id: 'get_fixed_stars_analysis', title: '⭐ Stellar Insights' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: fixedStarsBody, buttons: fixedStarsButtons }, 'interactive');
+    return null;
+  case 'get_medical_astrology_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Medical Astrology'))) {
+      return null;
+    }
+    const userLanguageMedical = getUserLanguage(user, phoneNumber);
+    const medicalBody = `🏥 *Medical Astrology*\n\n${translationService.translate('messages.medical.introduction', userLanguageMedical) || 'Medical astrology explores the connection between planetary positions and health patterns.'}\n\n*Health areas covered:*\n• Body system influences\n• Constitutional type\n• Periods of vitality\n• Vulnerable periods\n• Healing opportunities\n\n*Note: This is for educational purposes only and should not replace professional medical advice.*`;
+
+    const medicalButtons = [
+      { type: 'reply', reply: { id: 'get_medical_astrology_analysis', title: '🏥 Health Insights' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: medicalBody, buttons: medicalButtons }, 'interactive');
+    return null;
+  case 'get_financial_astrology_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Financial Astrology'))) {
+      return null;
+    }
+    const userLanguageFinancial = getUserLanguage(user, phoneNumber);
+    const financialBody = `💰 *Financial Astrology*\n\n${translationService.translate('messages.financial.introduction', userLanguageFinancial) || 'Financial astrology identifies favorable periods for money matters and investments.'}\n\n*Includes analysis of:*\n• Investment timing\n• Business opportunities\n• Expense periods\n• Income fluctuations\n• Financial growth cycles\n\n*Note: This is for educational purposes only and should not replace professional financial advice.*`;
+
+    const financialButtons = [
+      { type: 'reply', reply: { id: 'get_financial_astrology_analysis', title: '💰 Money Timing' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: financialBody, buttons: financialButtons }, 'interactive');
+    return null;
+  case 'get_career_astrology_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Career Astrology'))) {
+      return null;
+    }
+    const userLanguageCareer = getUserLanguage(user, phoneNumber);
+    const careerBody = `💼 *Career Astrology*\n\n${translationService.translate('messages.career.introduction', userLanguageCareer) || 'Career astrology reveals your professional strengths and optimal timing for work decisions.'}\n\n*Career insights include:*\n• Suitable professions\n• Career timing\n• Leadership potential\n• Work challenges\n• Professional growth\n• Success periods`;
+
+    const careerButtons = [
+      { type: 'reply', reply: { id: 'get_career_astrology_analysis', title: '💼 Career Path' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: careerBody, buttons: careerButtons }, 'interactive');
+    return null;
+  case 'get_event_astrology_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Event Astrology'))) {
+      return null;
+    }
+    const userLanguageEvent = getUserLanguage(user, phoneNumber);
+    const eventBody = `🎯 *Event Astrology*\n\n${translationService.translate('messages.event.introduction', userLanguageEvent) || 'Event astrology analyzes cosmic conditions at the time of specific events.'}\n\n*Perfect for analyzing:*\n• Births\n• Weddings\n• Business launches\n• Travel dates\n• Medical procedures\n• Important decisions\n\nEach event creates its own unique cosmic signature.`;
+
+    const eventButtons = [
+      { type: 'reply', reply: { id: 'get_event_astrology_analysis', title: '🎯 Event Insights' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: eventBody, buttons: eventButtons }, 'interactive');
+    return null;
+  case 'get_future_self_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Future Self Analysis'))) {
+      return null;
+    }
+    const userLanguageFuture = getUserLanguage(user, phoneNumber);
+    const futureBody = `🔮 *Future Self Analysis*\n\n${translationService.translate('messages.future_self.introduction', userLanguageFuture) || 'Future self analysis explores potential evolutionary paths based on your cosmic blueprint.'}\n\n*This exploration covers:*\n• Potential development\n• Life purpose evolution\n• Spiritual growth\n• Consciousness expansion\n• Future possibilities\n\nA journey into your highest potential.`;
+
+    const futureButtons = [
+      { type: 'reply', reply: { id: 'get_future_self_analysis', title: '🔮 Potential Path' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: futureBody, buttons: futureButtons }, 'interactive');
+    return null;
+  case 'get_group_astrology_analysis':
+    if (!(await validateUserProfile(user, phoneNumber, 'Group Astrology'))) {
+      return null;
+    }
+    const userLanguageGroup = getUserLanguage(user, phoneNumber);
+    const groupBody = `👥 *Group Astrology Analysis*\n\n${translationService.translate('messages.group.introduction', userLanguageGroup) || 'Group astrology explores cosmic dynamics within collective entities.'}\n\n*Analyzes:*\n• Group energy patterns\n• Interpersonal dynamics\n• Collective strengths\n• Potential conflicts\n• Optimal collaboration\n\nFor group or relationship chart analysis, please contact our astrologers.`;
+
+    const groupButtons = [
+      { type: 'reply', reply: { id: 'get_group_astrology_analysis', title: '👥 Group Dynamics' } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: '🏠 Main Menu' } }
+    ];
+
+    await sendMessage(phoneNumber, { type: 'button', body: groupBody, buttons: groupButtons }, 'interactive');
     return null;
   case 'navigate_back':
     // Navigate back to previous menu - for now, just show main menu

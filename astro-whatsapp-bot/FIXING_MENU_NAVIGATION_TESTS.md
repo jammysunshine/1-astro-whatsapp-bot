@@ -72,9 +72,7 @@ const TEST_PHONES = {
 };
 
 // Imported required modules
-const Session = require('../../../src/models/Session');
-```
-
+   const Session = require('../../../src/models/Session');
 ### 3. Updated Test Assertions
 Modified test expectations to match what the implementation actually sends:
 
@@ -137,10 +135,15 @@ Some tests reference `Session` model which is not imported.
      session2: '+test_phone_2',
      menu_test_user: '+menu_test_user'
    };
+<<<<<<< HEAD
    
-   const Session = require('../../../src/models/Session');
-   ```
+=======
 
+>>>>>>> fixes
+
+>>>>>>> fixes
+   const Session = require('../../../src/models/Session');
+   const Session = require('../../../src/models/Session');
 3. **Complete Mock Setup**:
    ```javascript
    // Mock all external services

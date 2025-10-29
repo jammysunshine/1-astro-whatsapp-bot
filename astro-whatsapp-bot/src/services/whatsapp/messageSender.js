@@ -612,7 +612,7 @@ const sendMessage = async(
 
       // Translate message if it's a resource key (contains dots and no spaces)
       let translatedMessage = message;
-      if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
+      if (typeof message === 'string' && message && message.includes('.') && !message.includes(' ')) {
         translatedMessage = await translationService.translate(message, language, options.parameters || {});
       }
       // Ensure text message body is within WhatsApp API limits (4096 chars)
@@ -627,7 +627,7 @@ const sendMessage = async(
       if (message.type === 'button') {
         // Translate body if it's a resource key
         let translatedBodyText = message.body && message.body.text; // Get the text from message.body.text
-        if (typeof translatedBodyText === 'string' && translatedBodyText.includes('.') && !translatedBodyText.includes(' ')) {
+        if (typeof translatedBodyText === 'string' && translatedBodyText && translatedBodyText.includes('.') && !translatedBodyText.includes(' ')) {
           translatedBodyText = await translationService.translate(translatedBodyText, language, options.parameters || {});
         }
         
@@ -665,10 +665,10 @@ const sendMessage = async(
         // Translate body if it's a resource key
         let translatedBody = message.body;
         if (typeof message.body === 'object' && message.body.text) {
-          if (typeof message.body.text === 'string' && message.body.text.includes('.') && !message.body.text.includes(' ')) {
+          if (typeof message.body.text === 'string' && message.body.text && message.body.text.includes('.') && !message.body.text.includes(' ')) {
             translatedBody = { text: await translationService.translate(message.body.text, language, options.parameters || {}) };
           }
-        } else if (typeof message.body === 'string' && message.body.text.includes('.') && !message.body.text.includes(' ')) {
+        } else if (typeof message.body === 'string' && message.body && message.body.text && message.body.text.includes('.') && !message.body.text.includes(' ')) {
           translatedBody = await translationService.translate(message.body, language, options.parameters || {});
         }
         // Ensure body text is a string and meets WhatsApp API requirements
@@ -784,7 +784,7 @@ const sendMessage = async(
     default:
       // Translate message if it's a resource key (contains dots and no spaces)
       let defaultTranslatedMessage = message;
-      if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
+      if (typeof message === 'string' && message && message.includes('.') && !message.includes(' ')) {
         defaultTranslatedMessage = await translationService.translate(message, language, options.parameters || {});
       }
       // Ensure text message body is within WhatsApp API limits (4096 chars)

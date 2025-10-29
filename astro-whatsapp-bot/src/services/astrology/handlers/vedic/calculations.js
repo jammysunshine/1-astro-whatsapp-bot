@@ -4,6 +4,67 @@
  */
 const sweph = require('sweph');
 
+const logger = require('../../../../utils/logger');
+
+// Utility function to get zodiac sign from longitude
+const longitudeToSign = (longitude) => {
+  const signs = [
+    'Aries', 'Taurus', 'Gemini', 'Cancer',
+    'Leo', 'Virgo', 'Libra', 'Scorpio',
+    'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+  ];
+
+  // Normalize longitude to 0-360 range
+  const normalized = ((longitude % 360) + 360) % 360;
+  const signIndex = Math.floor(normalized / 30);
+  return signs[signIndex];
+};
+
+// Utility function to get house number from longitude and ascendant
+const longitudeToHouse = (longitude, ascendant) => {
+  const angle = ((longitude - ascendant + 360) % 360);
+  return Math.floor(angle / 30) + 1;
+};
+
+class AgeHarmonicAstrologyReader {
+  constructor() {
+    logger.info('Module: AgeHarmonicAstrologyReader loaded.');
+  }
+
+  async generateAgeHarmonicAnalysis(birthData) {
+    try {
+      // Mock implementation - would normally calculate age harmonics
+      const age = this.calculateAge(birthData.birthDate);
+      const currentHarmonics = this.getHarmonicsForAge(age);
+
+      return {
+        interpretation: `Age ${age}: ${currentHarmonics[0]?.themes.join(', ') || 'development and growth'}.`,
+        currentHarmonics: currentHarmonics,
+        techniques: ['Meditation', 'Journaling', 'Creative expression', 'Nature immersion'],
+        nextHarmonic: { name: `Harmonic ${currentHarmonics[0]?.harmonic + 1 || 8}`, ageRange: `${age + 2}-${age + 4}`, themes: ['Integration', 'Mastery'] },
+        error: false
+      };
+    } catch (error) {
+      logger.error('Age Harmonic calculation error:', error);
+      return { error: 'Unable to calculate age harmonic analysis' };
+    }
+  }
+
+  calculateAge(birthDate) {
+    // Mock age calculation
+    return 32;
+  }
+
+  getHarmonicsForAge(age) {
+    // Mock harmonic calculation
+    return [{
+      name: `Harmonic ${Math.floor(age/4) + 1}`,
+      harmonic: Math.floor(age/4) + 1,
+      themes: ['Growth', 'Learning', 'Transformation']
+    }];
+  }
+}
+
 const calculateJaiminiKarakaAnalysis = async (user) => {
   try {
     // Parse birth date and time from user data

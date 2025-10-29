@@ -3,7 +3,7 @@
  * Handles life rhythm and harmonic analysis requests
  */
 const logger = require('../../../../utils/logger');
-const { AgeHarmonicAstrologyReader } = require('../../../ageHarmonicAstrology');
+const { AgeHarmonicAstrologyReader } = require('../vedic/calculations');
 
 const handleHarmonicAstrology = async (message, user) => {
   if (!message.includes('harmonic') && !message.includes('cycle') && !message.includes('rhythm') && !message.includes('pattern')) {

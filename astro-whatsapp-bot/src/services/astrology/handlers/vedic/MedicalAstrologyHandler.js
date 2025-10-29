@@ -3,7 +3,7 @@
  * Handles health and medical astrology requests
  */
 const logger = require('../../../../utils/logger');
-const MundaneAstrologyReader = require('../../../mundaneAstrology');
+const MundaneAstrologyReader = require('../../mundaneAstrology');
 
 const handleMedicalAstrology = async (message, user) => {
   if (!message.includes('medical') && !message.includes('health') && !message.includes('disease') && !message.includes('illness') && !message.includes('health analysis')) {

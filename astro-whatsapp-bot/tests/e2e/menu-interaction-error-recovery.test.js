@@ -14,11 +14,11 @@ const messageSender = require('../../../src/services/whatsapp/messageSender');
 describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Scenarios)', () => {
   let dbManager;
   let whatsAppIntegration;
-  let testUser = '+menu_test_user';
-  let testUser2 = '+menu_test_user_2';
+  const testUser = '+menu_test_user';
+  const testUser2 = '+menu_test_user_2';
   let testUserData;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     dbManager = new TestDatabaseManager();
     await dbManager.setup();
     whatsAppIntegration = getWhatsAppIntegration();
@@ -36,11 +36,11 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
     await dbManager.createTestUser(testUser2, { ...testUserData, name: 'Menu Test User 2' });
   }, 60000);
 
-  afterAll(async () => {
+  afterAll(async() => {
     await dbManager.teardown();
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     messageSender.sendMessage.mockClear();
     messageSender.sendListMessage.mockClear();
     messageSender.sendButtonMessage.mockClear();
@@ -49,8 +49,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
   });
 
   describe('INVALID MENU SELECTIONS (4/4 Scenarios)', () => {
-
-    test('MENU_ERROR_001: Invalid menu ID selection → Graceful fallback', async () => {
+    test('MENU_ERROR_001: Invalid menu ID selection → Graceful fallback', async() => {
       // Test handling of completely invalid menu selections
 
       const invalidMenuIds = [
@@ -88,7 +87,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_002: Out-of-bounds menu option selection', async () => {
+    test('MENU_ERROR_002: Out-of-bounds menu option selection', async() => {
       // Test selection of menu options that don't exist in current context
 
       const outOfBoundsSelections = [
@@ -121,7 +120,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_003: Malformed menu selection data', async () => {
+    test('MENU_ERROR_003: Malformed menu selection data', async() => {
       // Test handling of corrupted or malformed menu selection data
 
       const malformedSelections = [
@@ -143,7 +142,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
           interactive: {
             type: 'list_reply',
             list_reply: {
-              title: 'Valid Title',
+              title: 'Valid Title'
               // Missing id and description
             }
           },
@@ -173,23 +172,21 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_004: Concurrent duplicate menu selections', async () => {
+    test('MENU_ERROR_004: Concurrent duplicate menu selections', async() => {
       // Test behavior when multiple users select same menu option simultaneously
 
-      const concurrentSelections = Array(5).fill().map(async (_, i) => {
-        return processIncomingMessage({
-          from: testUser,
-          interactive: {
-            type: 'list_reply',
-            list_reply: {
-              id: 'show_western_astrology_menu',
-              title: 'Western Astrology',
-              description: `Concurrent access ${i}`
-            }
-          },
-          type: 'interactive'
-        }, {});
-      });
+      const concurrentSelections = Array(5).fill().map(async(_, i) => processIncomingMessage({
+        from: testUser,
+        interactive: {
+          type: 'list_reply',
+          list_reply: {
+            id: 'show_western_astrology_menu',
+            title: 'Western Astrology',
+            description: `Concurrent access ${i}`
+          }
+        },
+        type: 'interactive'
+      }, {}));
 
       await Promise.all(concurrentSelections);
       expect(messageSender.sendMessage).toHaveBeenCalled();
@@ -197,7 +194,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       // Should handle concurrent menu access without conflicts
     });
 
-    test('MENU_ERROR_005: Menu selection during session timeout', async () => {
+    test('MENU_ERROR_005: Menu selection during session timeout', async() => {
       // Test menu navigation after user session has expired
 
       // Simulate selecting menu after long delay (simulating session timeout)
@@ -223,8 +220,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
   });
 
   describe('NETWORK & COMMUNICATION ERRORS (5/5 Scenarios)', () => {
-
-    test('MENU_ERROR_006: Network timeout during menu display', async () => {
+    test('MENU_ERROR_006: Network timeout during menu display', async() => {
       // Test timeout scenarios during menu loading
 
       // Mock network timeout scenario
@@ -235,7 +231,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
         requestCount++;
         if (requestCount === 1) {
           // Simulate timeout on first attempt
-          return new Promise((resolve) => setTimeout(resolve, 35000)); // 35 second timeout
+          return new Promise(resolve => setTimeout(resolve, 35000)); // 35 second timeout
         }
         return Promise.resolve({ success: true });
       });
@@ -263,7 +259,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       expect(requestCount).toBeGreaterThan(0);
     });
 
-    test('MENU_ERROR_007: Partial menu data corruption', async () => {
+    test('MENU_ERROR_007: Partial menu data corruption', async() => {
       // Test handling of incomplete or corrupted menu response data
 
       // Mock corrupted menu data
@@ -291,7 +287,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_008: WhatsApp API rate limit exceeded', async () => {
+    test('MENU_ERROR_008: WhatsApp API rate limit exceeded', async() => {
       // Test menu operation when hitting WhatsApp rate limits
 
       let apiCallCount = 0;
@@ -333,7 +329,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       expect(apiCallCount).toBe(8); // Initial 5 + 3 retries for rate limited calls
     });
 
-    test('MENU_ERROR_009: Menu display failure recovery', async () => {
+    test('MENU_ERROR_009: Menu display failure recovery', async() => {
       // Test recovery when menu fails to display properly
 
       const displayFailureScenarios = [
@@ -370,7 +366,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_010: Connection interruption during menu flow', async () => {
+    test('MENU_ERROR_010: Connection interruption during menu flow', async() => {
       // Test menu navigation when connection is interrupted mid-flow
 
       const menuFlowInterruption = {
@@ -395,8 +391,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
   });
 
   describe('SESSION & STATE MANAGEMENT ERRORS (4/4 Scenarios)', () => {
-
-    test('MENU_ERROR_011: Session state corruption recovery', async () => {
+    test('MENU_ERROR_011: Session state corruption recovery', async() => {
       // Test recovery from corrupted session state during menu navigation
 
       const corruptedStates = [
@@ -430,7 +425,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_012: Menu navigation path interruption', async () => {
+    test('MENU_ERROR_012: Menu navigation path interruption', async() => {
       // Test recovery when user navigation path is unexpectedly interrupted
 
       const interruptedNavigation = {
@@ -454,7 +449,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       // Should preserve completed navigation steps
     });
 
-    test('MENU_ERROR_013: Browser cache synchronization errors', async () => {
+    test('MENU_ERROR_013: Browser cache synchronization errors', async() => {
       // Test menu state synchronization issues with cached data
 
       const cacheSyncErrors = [
@@ -486,7 +481,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_014: Menu permission access failures', async () => {
+    test('MENU_ERROR_014: Menu permission access failures', async() => {
       // Test menu access when user lacks required permissions
 
       const permissionFailures = [
@@ -523,8 +518,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
   });
 
   describe('DATA INTEGRITY & CORRUPTION ERRORS (4/4 Scenarios)', () => {
-
-    test('MENU_ERROR_015: Menu data validation failures', async () => {
+    test('MENU_ERROR_015: Menu data validation failures', async() => {
       // Test handling of invalid or inconsistent menu configuration data
 
       const validationFailures = [
@@ -551,7 +545,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_016: Menu state synchronization across devices', async () => {
+    test('MENU_ERROR_016: Menu state synchronization across devices', async() => {
       // Test menu state consistency when user switches between devices
 
       const deviceSwitches = [
@@ -573,7 +567,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
             }
           },
           type: 'interactive',
-          deviceSwitch: deviceSwitch
+          deviceSwitch
         };
 
         await processIncomingMessage(syncRequest, {});
@@ -584,7 +578,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_017: Menu response parsing failures', async () => {
+    test('MENU_ERROR_017: Menu response parsing failures', async() => {
       // Test handling of malformed WhatsApp menu response data
 
       const parsingFailures = [
@@ -612,7 +606,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_018: Menu interaction logging errors', async () => {
+    test('MENU_ERROR_018: Menu interaction logging errors', async() => {
       // Test error handling when menu interaction logging fails
 
       const loggingFailures = [
@@ -648,8 +642,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
   });
 
   describe('PERFORMANCE & RECOVERY ERRORS (3/3 Scenarios)', () => {
-
-    test('MENU_ERROR_019: Menu performance degradation recovery', async () => {
+    test('MENU_ERROR_019: Menu performance degradation recovery', async() => {
       // Test recovery strategies when menu performance degrades
 
       const performanceIssues = [
@@ -682,7 +675,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_020: Menu accessibility error handling', async () => {
+    test('MENU_ERROR_020: Menu accessibility error handling', async() => {
       // Test menu functionality with accessibility concerns
 
       const accessibilityIssues = [
@@ -710,7 +703,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_021: Menu error reporting and monitoring', async () => {
+    test('MENU_ERROR_021: Menu error reporting and monitoring', async() => {
       // Test error reporting and monitoring for menu interactions
 
       const monitoringScenarios = [
@@ -740,8 +733,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
   });
 
   describe('FALLBACK & RECOVERY SYSTEMS (3/3 Scenarios)', () => {
-
-    test('MENU_ERROR_022: Menu backup/recovery systems', async () => {
+    test('MENU_ERROR_022: Menu backup/recovery systems', async() => {
       // Test backup menu systems when primary menus fail
 
       const systemFailures = [
@@ -775,7 +767,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_023: Recovery from interrupted menu flows', async () => {
+    test('MENU_ERROR_023: Recovery from interrupted menu flows', async() => {
       // Test recovery mechanisms for incomplete menu interactions
 
       const interruptedFlows = [
@@ -803,7 +795,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       }
     });
 
-    test('MENU_ERROR_024: Menu integration testing across modules', async () => {
+    test('MENU_ERROR_024: Menu integration testing across modules', async() => {
       // Comprehensive integration test covering all menu error recovery aspects
       const comprehensiveTest = {
         user: testUser,

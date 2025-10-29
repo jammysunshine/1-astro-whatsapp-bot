@@ -79,7 +79,7 @@ const validateBirthData = (birthDate, birthTime, birthPlace) => {
   if (!birthDate) {
     errors.push('Birth date is required');
   } else {
-    let day, month, year;
+    let day; let month; let year;
     let isValidDate = false;
 
     // Try DDMMYY format

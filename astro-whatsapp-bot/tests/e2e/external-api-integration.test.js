@@ -19,7 +19,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
   let testUser;
   const TEST_PHONE = '+1234567892';
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     require('dotenv').config();
 
     if (!process.env.MONGODB_URI) {
@@ -28,7 +28,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useUnifiedTopology: true
     });
 
     // Create test user
@@ -45,7 +45,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
     logger.info('✅ API integration test user created');
   }, 30000);
 
-  afterAll(async () => {
+  afterAll(async() => {
     try {
       await User.deleteMany({ phoneNumber: TEST_PHONE });
       await mongoose.connection.close();
@@ -70,7 +70,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
       logger.info('✅ Google Maps client setup validated');
     });
 
-    test('should handle astrocartography requests safely', async () => {
+    test('should handle astrocartography requests safely', async() => {
       const mockSendMessage = jest.fn();
       const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
       require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
@@ -125,7 +125,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
       logger.info('✅ AI service imports validated');
     });
 
-    test('should handle AI-powered readings safely', async () => {
+    test('should handle AI-powered readings safely', async() => {
       const mockSendMessage = jest.fn();
       const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
       require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
@@ -180,7 +180,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
       logger.info('✅ WhatsApp service setup validated');
     });
 
-    test('should handle WhatsApp message processing', async () => {
+    test('should handle WhatsApp message processing', async() => {
       const mockSendMessage = jest.fn();
       const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
       require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
@@ -205,7 +205,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
   });
 
   describe('Database Integration - REAL MONGO OPERATIONS', () => {
-    test('should perform REAL database CRUD operations', async () => {
+    test('should perform REAL database CRUD operations', async() => {
       // Test user creation (already done)
       const user = await require('../../src/models/userModel').getUserByPhone(TEST_PHONE);
       expect(user).toBeDefined();
@@ -224,7 +224,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
       logger.info('✅ Real MongoDB CRUD operations validated');
     }, 10000);
 
-    test('should handle database connection errors gracefully', async () => {
+    test('should handle database connection errors gracefully', async() => {
       // Test with invalid phone number
       const invalidUser = await require('../../src/models/userModel').getUserByPhone('+invalid');
       expect(invalidUser).toBeNull();
@@ -243,7 +243,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
       logger.info('✅ Payment service setup validated');
     });
 
-    test('should handle payment-related requests safely', async () => {
+    test('should handle payment-related requests safely', async() => {
       const mockSendMessage = jest.fn();
       const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
       require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
@@ -268,7 +268,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
   });
 
   describe('Error Handling & Resilience', () => {
-    test('should handle network timeouts gracefully', async () => {
+    test('should handle network timeouts gracefully', async() => {
       const mockSendMessage = jest.fn();
       const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
       require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
@@ -299,7 +299,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
       }
     }, 20000);
 
-    test('should handle malformed data gracefully', async () => {
+    test('should handle malformed data gracefully', async() => {
       const mockSendMessage = jest.fn();
       const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
       require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
@@ -340,7 +340,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
   });
 
   describe('Performance & Scalability', () => {
-    test('should handle concurrent requests efficiently', async () => {
+    test('should handle concurrent requests efficiently', async() => {
       const mockSendMessage = jest.fn();
       const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
       require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
@@ -388,7 +388,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
       }
     }, 60000);
 
-    test('should handle high-volume user load testing', async () => {
+    test('should handle high-volume user load testing', async() => {
       const mockSendMessage = jest.fn();
       const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
       require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
@@ -464,7 +464,7 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
       }
     }, 120000);
 
-    test('should maintain response times under load', async () => {
+    test('should maintain response times under load', async() => {
       const mockSendMessage = jest.fn();
       const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
       require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;

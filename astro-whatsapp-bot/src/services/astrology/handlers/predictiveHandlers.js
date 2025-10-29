@@ -115,10 +115,10 @@ const handleFutureSelf = async(message, user) => {
       }
 
       // Sanitize user name to prevent XSS
-      const sanitizedName = user.name ? 
-        user.name.replace(/[<>'"&]/g, '').substring(0, 50) : 
+      const sanitizedName = user.name ?
+        user.name.replace(/[<>'"&]/g, '').substring(0, 50) :
         'cosmic explorer';
-      
+
       let response = `🔮 *Future Self Simulator - ${futureSelfAnalysis.projectionYears} Year Projection*\n\n`;
       response += `Hello ${sanitizedName}! Let's explore the potential pathways of your future self.\n\n`;
 

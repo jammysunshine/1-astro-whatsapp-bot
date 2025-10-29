@@ -52,7 +52,7 @@ describe('Critical User Flow End-to-End Tests', () => {
     process.env.W1_SKIP_WEBHOOK_SIGNATURE = 'true';
     process.env.W1_WHATSAPP_ACCESS_TOKEN = 'test_token';
     process.env.W1_WHATSAPP_PHONE_NUMBER_ID = 'test_phone_id';
-    
+
     // Load environment variables
     require('dotenv').config();
 

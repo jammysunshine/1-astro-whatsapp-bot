@@ -23,7 +23,7 @@ describe('MayanReader', () => {
       const birthData = {
         birthDate: '15/03/1990',
         birthTime: '14:30',
-        name: 'John Doe',
+        name: 'John Doe'
       };
 
       const chart = mayanReader.generateMayanChart(birthData);
@@ -43,7 +43,7 @@ describe('MayanReader', () => {
       const birthData = {
         birthDate: 'invalid',
         birthTime: 'invalid',
-        name: 'Invalid User',
+        name: 'Invalid User'
       };
 
       const chart = mayanReader.generateMayanChart(birthData);

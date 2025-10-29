@@ -13,25 +13,25 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
   let whatsAppIntegration;
   let mocks;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     dbManager = new TestDatabaseManager();
     await dbManager.setup();
     whatsAppIntegration = getWhatsAppIntegration();
     mocks = setupWhatsAppMocks();
   }, 30000);
 
-  afterAll(async () => {
+  afterAll(async() => {
     mocks.restoreMocks();
     await dbManager.teardown();
   }, 10000);
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     mocks.mockSendMessage.mockClear();
     await dbManager.cleanupUser('+calc_test_user');
   });
 
   describe('Birth Data Edge Cases (67 tests)', () => {
-    test('calculates chart accurately for exact solstice birth moment', async () => {
+    test('calculates chart accurately for exact solstice birth moment', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '21121990' } }, {});
@@ -47,7 +47,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       );
     });
 
-    test('handles February 29th leap year birth correctly', async () => {
+    test('handles February 29th leap year birth correctly', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '29021992' } }, {});
@@ -63,7 +63,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       );
     });
 
-    test('handles polar latitude birth calculations', async () => {
+    test('handles polar latitude birth calculations', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
@@ -73,7 +73,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
-    test('incorporates eclipse energy in birth chart', async () => {
+    test('incorporates eclipse energy in birth chart', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '16072000' } }, {});
@@ -89,7 +89,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       );
     });
 
-    test('calculates accurate midnight boundary charts', async () => {
+    test('calculates accurate midnight boundary charts', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '01011990' } }, {});
@@ -99,7 +99,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
-    test('accurately calculates pre-1900 historical charts', async () => {
+    test('accurately calculates pre-1900 historical charts', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '01011850' } }, {});
@@ -109,7 +109,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
-    test('handles ancient birth date astronomical verification', async () => {
+    test('handles ancient birth date astronomical verification', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '01010001' } }, {});
@@ -119,7 +119,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
-    test('provides future birth predictive calculations', async () => {
+    test('provides future birth predictive calculations', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '01012050' } }, {});
@@ -135,7 +135,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       );
     });
 
-    test('reproduces famous birth charts accurately', async () => {
+    test('reproduces famous birth charts accurately', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '29081958' } }, {});
@@ -151,7 +151,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       );
     });
 
-    test('maintains accuracy with seconds-level precision', async () => {
+    test('maintains accuracy with seconds-level precision', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
@@ -161,7 +161,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
-    test('handles global timezone offset calculations correctly', async () => {
+    test('handles global timezone offset calculations correctly', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
@@ -171,7 +171,7 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
-    test('correctly handles DST transition adjustments', async () => {
+    test('correctly handles DST transition adjustments', async() => {
       const phoneNumber = '+calc_test_user';
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
       await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '28031993' } }, {});
@@ -182,27 +182,27 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
     });
 
     // Continue with remaining Birth Data Edge Case tests...
-    test('handles extreme latitude polar region calculations', async () => {
+    test('handles extreme latitude polar region calculations', async() => {
       console.log('✅ Extreme latitude calculation structure validated');
     });
 
-    test('processes birth charts for mountains and subterranean locations', async () => {
+    test('processes birth charts for mountains and subterranean locations', async() => {
       console.log('✅ Mountain/subterranean location calculation structure validated');
     });
 
-    test('calculates mobile births for planes/cars with motion', async () => {
+    test('calculates mobile births for planes/cars with motion', async() => {
       console.log('✅ Mobile birth calculation structure validated');
     });
 
-    test('integrates sacred site spiritual energy factors', async () => {
+    test('integrates sacred site spiritual energy factors', async() => {
       console.log('✅ Sacred site energy calculation structure validated');
     });
 
-    test('incorporates historical battleground karmic influences', async () => {
+    test('incorporates historical battleground karmic influences', async() => {
       console.log('✅ Historical battleground karmic calculation structure validated');
     });
 
-    test('considers natural disaster environmental energy patterns', async () => {
+    test('considers natural disaster environmental energy patterns', async() => {
       console.log('✅ Natural disaster environmental energy calculation structure validated');
     });
 
@@ -210,44 +210,44 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
   });
 
   describe('Location-Based Calculations (28 tests)', () => {
-    test('calculates accurately for North Pole coordinates', async () => {
+    test('calculates accurately for North Pole coordinates', async() => {
       console.log('✅ North Pole astrological calculation structure validated');
     });
 
-    test('handles Pacific International Dateline transitions', async () => {
+    test('handles Pacific International Dateline transitions', async() => {
       console.log('✅ International Dateline transition structure validated');
     });
 
-    test('accounts for mountain peak altitude astronomical corrections', async () => {
+    test('accounts for mountain peak altitude astronomical corrections', async() => {
       console.log('✅ Mountain peak altitude correction structure validated');
     });
 
-    test('processes subterranean birth location charts', async () => {
+    test('processes subterranean birth location charts', async() => {
       console.log('✅ Subterranean location calculation structure validated');
     });
 
-    test('calculates moving location charts for aircraft/airports', async () => {
+    test('calculates moving location charts for aircraft/airports', async() => {
       console.log('✅ Aircraft moving location calculation structure validated');
     });
 
-    test('integrates sacred site spiritual geographic energy', async () => {
+    test('integrates sacred site spiritual geographic energy', async() => {
       console.log('✅ Sacred site geographic energy structure validated');
     });
 
-    test('incorporates historical karmic energy from battlefields', async () => {
+    test('incorporates historical karmic energy from battlefields', async() => {
       console.log('✅ Historical karmic energy structure validated');
     });
 
-    test('considers disaster zone environmental energy patterns', async () => {
+    test('considers disaster zone environmental energy patterns', async() => {
       console.log('✅ Disaster zone environmental energy structure validated');
     });
 
     // Continue with remaining location-based calculation tests...
-    test('handles tropical zone eclipse calculations', async () => {
+    test('handles tropical zone eclipse calculations', async() => {
       console.log('✅ Tropical zone eclipse calculation structure validated');
     });
 
-    test('processes equatorial region planetary position variations', async () => {
+    test('processes equatorial region planetary position variations', async() => {
       console.log('✅ Equatorial planetary variation structure validated');
     });
 
@@ -255,40 +255,40 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
   });
 
   describe('Planetary Configuration Edges (19 tests)', () => {
-    test('reflects accurate retrograde influence patterns', async () => {
+    test('reflects accurate retrograde influence patterns', async() => {
       console.log('✅ Retrograde influence calculation structure validated');
     });
 
-    test('handles multiple planet conjunction complexity', async () => {
+    test('handles multiple planet conjunction complexity', async() => {
       console.log('✅ Multiple planet conjunction calculation structure validated');
     });
 
-    test('incorporates eclipse energy during planetary birth moments', async () => {
+    test('incorporates eclipse energy during planetary birth moments', async() => {
       console.log('✅ Eclipse energy planetary birth structure validated');
     });
 
-    test('considers comet visitation astronomical rare event energy', async () => {
+    test('considers comet visitation astronomical rare event energy', async() => {
       console.log('✅ Comet visitation rare event energy structure validated');
     });
 
-    test('validates Grand Trine formation harmonious calculations', async () => {
+    test('validates Grand Trine formation harmonious calculations', async() => {
       console.log('✅ Grand Trine formation calculation structure validated');
     });
 
-    test('accurately interprets T-Square tension pattern interactions', async () => {
+    test('accurately interprets T-Square tension pattern interactions', async() => {
       console.log('✅ T-Square tension pattern structure validated');
     });
 
-    test('recognizes Kite formation unique opportunity signatures', async () => {
+    test('recognizes Kite formation unique opportunity signatures', async() => {
       console.log('✅ Kite formation opportunity signature structure validated');
     });
 
-    test('analyzes complex aspect web energy flow patterns', async () => {
+    test('analyzes complex aspect web energy flow patterns', async() => {
       console.log('✅ Complex aspect web energy flow structure validated');
     });
 
     // Continue with remaining planetary configuration tests...
-    test('handles mysterious outer planet transit patterns', async () => {
+    test('handles mysterious outer planet transit patterns', async() => {
       console.log('✅ Outer planet transit pattern structure validated');
     });
 

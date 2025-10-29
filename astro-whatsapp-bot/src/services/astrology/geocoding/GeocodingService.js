@@ -46,7 +46,7 @@ class GeocodingService {
     // Basic sanitization to remove potentially harmful characters
     // Allow only alphanumeric characters, spaces, commas, hyphens, and periods
     const sanitizedPlace = place.replace(/[^\w\s\-,.'`]/g, '').trim();
-    
+
     if (!sanitizedPlace) {
       logger.warn(`Empty or invalid place after sanitization: ${place}`);
       return [28.6139, 77.209]; // Default to Delhi, India

@@ -253,20 +253,20 @@ const handleIChing = async(message, user) => {
       let question = message
         .replace(/i ching|iching|hexagram|oracle/gi, '')
         .trim();
-      
+
       // Limit question length and sanitize input
       if (question.length > 500) {
         question = question.substring(0, 500);
       }
-      
+
       // Remove potentially harmful characters but keep basic punctuation
       question = question.replace(/[<>{}[\]\\]/g, '').trim();
-      
+
       // Only proceed if we have a meaningful question after sanitization
       if (question.length < 3) {
         question = 'Universal wisdom and guidance';
       }
-      
+
       const reading = ichingReader.generateIChingReading(question);
 
       return reading.ichingDescription;

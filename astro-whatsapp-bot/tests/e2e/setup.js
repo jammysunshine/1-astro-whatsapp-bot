@@ -15,46 +15,42 @@ jest.mock('../../src/services/whatsapp/messageSender', () => ({
 }));
 
 // Mock Stripe for payment processing
-jest.mock('stripe', () => {
-  return jest.fn().mockImplementation(() => ({
-    paymentIntents: {
-      create: jest.fn().mockResolvedValue({
-        id: 'pi_e2e_test',
-        client_secret: 'secret_e2e_test',
-        amount: 10000,
-        currency: 'usd',
-        status: 'succeeded'
-      })
-    },
-    paymentLinks: {
-      create: jest.fn().mockResolvedValue({
-        id: 'plink_e2e_test',
-        url: 'https://checkout.stripe.com/pay/test'
-      })
-    }
-  }));
-});
+jest.mock('stripe', () => jest.fn().mockImplementation(() => ({
+  paymentIntents: {
+    create: jest.fn().mockResolvedValue({
+      id: 'pi_e2e_test',
+      client_secret: 'secret_e2e_test',
+      amount: 10000,
+      currency: 'usd',
+      status: 'succeeded'
+    })
+  },
+  paymentLinks: {
+    create: jest.fn().mockResolvedValue({
+      id: 'plink_e2e_test',
+      url: 'https://checkout.stripe.com/pay/test'
+    })
+  }
+})));
 
 // Mock Razorpay for payment processing
-jest.mock('razorpay', () => {
-  return jest.fn().mockImplementation(() => ({
-    orders: {
-      create: jest.fn().mockResolvedValue({
-        id: 'order_e2e_test',
-        amount: 10000,
-        currency: 'INR',
-        receipt: 'receipt_e2e_test',
-        status: 'created'
-      }),
-      fetch: jest.fn().mockResolvedValue({
-        id: 'order_e2e_test',
-        amount: 10000,
-        currency: 'INR',
-        notes: { type: 'subscription', phoneNumber: '+e2e1234567890' }
-      })
-    }
-  }));
-});
+jest.mock('razorpay', () => jest.fn().mockImplementation(() => ({
+  orders: {
+    create: jest.fn().mockResolvedValue({
+      id: 'order_e2e_test',
+      amount: 10000,
+      currency: 'INR',
+      receipt: 'receipt_e2e_test',
+      status: 'created'
+    }),
+    fetch: jest.fn().mockResolvedValue({
+      id: 'order_e2e_test',
+      amount: 10000,
+      currency: 'INR',
+      notes: { type: 'subscription', phoneNumber: '+e2e1234567890' }
+    })
+  }
+})));
 
 // Mock external HTTP requests (axios) for safety
 jest.mock('axios');

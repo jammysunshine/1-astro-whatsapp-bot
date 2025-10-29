@@ -7,22 +7,18 @@ const paymentService = require('../../../../src/services/payment/paymentService'
 const logger = require('../../../../src/utils/logger');
 
 // Mock Stripe
-jest.mock('stripe', () => {
-  return jest.fn().mockImplementation(() => ({
-    paymentIntents: {
-      create: jest.fn()
-    }
-  }));
-});
+jest.mock('stripe', () => jest.fn().mockImplementation(() => ({
+  paymentIntents: {
+    create: jest.fn()
+  }
+})));
 
 // Mock Razorpay
-jest.mock('razorpay', () => {
-  return jest.fn().mockImplementation(() => ({
-    orders: {
-      create: jest.fn()
-    }
-  }));
-});
+jest.mock('razorpay', () => jest.fn().mockImplementation(() => ({
+  orders: {
+    create: jest.fn()
+  }
+})));
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});

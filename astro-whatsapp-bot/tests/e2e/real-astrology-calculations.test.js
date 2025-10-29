@@ -21,7 +21,7 @@ describe('Real Astrology Calculations Integration Tests', () => {
   let testUser;
   const TEST_PHONE = '+1234567891';
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     require('dotenv').config();
 
     if (!process.env.MONGODB_URI) {
@@ -30,7 +30,7 @@ describe('Real Astrology Calculations Integration Tests', () => {
 
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useUnifiedTopology: true
     });
 
     // Create test user
@@ -47,7 +47,7 @@ describe('Real Astrology Calculations Integration Tests', () => {
     logger.info('✅ Astrology test user created');
   }, 30000);
 
-  afterAll(async () => {
+  afterAll(async() => {
     try {
       await User.deleteMany({ phoneNumber: TEST_PHONE });
       await mongoose.connection.close();
@@ -145,7 +145,7 @@ describe('Real Astrology Calculations Integration Tests', () => {
       expect(typeof tarotReader.generateTarotReading).toBe('function');
 
       // Test that it can generate a basic reading
-      const reading = tarotReader.generateTarotReading("Test question");
+      const reading = tarotReader.generateTarotReading('Test question');
       expect(reading).toBeDefined();
 
       logger.info('✅ TarotReader functionality validated');
@@ -159,7 +159,7 @@ describe('Real Astrology Calculations Integration Tests', () => {
       expect(typeof ichingReader.generateIChingReading).toBe('function');
 
       // Test that it can generate a basic reading
-      const reading = ichingReader.generateIChingReading("Test question");
+      const reading = ichingReader.generateIChingReading('Test question');
       expect(reading).toBeDefined();
 
       logger.info('✅ IChingReader functionality validated');

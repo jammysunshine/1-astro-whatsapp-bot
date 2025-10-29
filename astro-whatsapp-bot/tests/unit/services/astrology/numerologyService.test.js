@@ -19,7 +19,7 @@ afterEach(() => {
 
 describe('NumerologyService', () => {
   describe('generateFullReport', () => {
-    it('should generate numerology report with life path, expression, soul urge, personality, destiny, and maturity numbers', async () => {
+    it('should generate numerology report with life path, expression, soul urge, personality, destiny, and maturity numbers', async() => {
       const birthDate = '15/03/1990';
       const name = 'John Doe';
 
@@ -42,7 +42,7 @@ describe('NumerologyService', () => {
       expect(report.compatibleNumbers).toBeDefined();
     });
 
-    it('should handle empty name for numerology report', async () => {
+    it('should handle empty name for numerology report', async() => {
       const birthDate = '15/03/1990';
       const name = '';
 

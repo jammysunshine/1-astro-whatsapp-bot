@@ -26,7 +26,7 @@ class MistralAIService {
 
     // Basic sanitization: limit length and remove some special characters
     const sanitizedPrompt = prompt.substring(0, 1000) // Limit prompt length
-                                  .replace(/[<>'"`]/g, ''); // Remove common injection characters
+      .replace(/[<>'"`]/g, ''); // Remove common injection characters
 
     try {
       const response = await axios.post(

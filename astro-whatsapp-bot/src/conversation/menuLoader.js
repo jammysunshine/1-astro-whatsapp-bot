@@ -5,7 +5,7 @@ const logger = require('../utils/logger');
 
 const MENU_CONFIG_PATH = path.join(__dirname, 'menuConfig.json');
 let menuConfigurations = {};
-let userLanguageCache = new Map(); // Cache for translated menus
+const userLanguageCache = new Map(); // Cache for translated menus
 
 /**
  * Loads base menu configurations from menuConfig.json.
@@ -32,7 +32,7 @@ const loadMenus = () => {
  * @param {string} languageCode - The user's language code (e.g., 'ar', 'hi').
  * @returns {Object|undefined} The translated menu configuration object.
  */
-const getTranslatedMenu = async (menuId, languageCode = 'en') => {
+const getTranslatedMenu = async(menuId, languageCode = 'en') => {
   try {
     // Generate cache key
     const cacheKey = `${menuId}_${languageCode}`;
@@ -77,7 +77,7 @@ const getTranslatedMenu = async (menuId, languageCode = 'en') => {
  * @param {Object} menu - The menu object to translate.
  * @param {string} languageCode - Language code.
  */
-const translateMenuFields = async (menu, languageCode) => {
+const translateMenuFields = async(menu, languageCode) => {
   if (typeof menu !== 'object' || menu === null) {
     return;
   }
@@ -124,13 +124,11 @@ const getMenu = menuId => menuConfigurations[menuId];
  * Gets cache statistics for monitoring.
  * @returns {Object} Cache statistics.
  */
-const getCacheStats = () => {
-  return {
-    baseMenusLoaded: Object.keys(menuConfigurations).length,
-    cachedMenus: userLanguageCache.size,
-    supportedLanguages: TranslationService.getSupportedLanguages().length
-  };
-};
+const getCacheStats = () => ({
+  baseMenusLoaded: Object.keys(menuConfigurations).length,
+  cachedMenus: userLanguageCache.size,
+  supportedLanguages: TranslationService.getSupportedLanguages().length
+});
 
 // Load menus immediately when the module is imported
 loadMenus();

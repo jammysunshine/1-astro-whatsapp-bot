@@ -897,7 +897,6 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
  */
 const executeMenuAction = async(phoneNumber, user, action) => {
   let response = null;
-  const userLanguage = getUserLanguage(user, phoneNumber);
 
   switch (action) {
   case 'get_daily_horoscope':
@@ -2155,7 +2154,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     return null;
   case 'get_tarot_reading':
     try {
-      const tarotReading = generateTarotReading(user, 'single');
+      const tarotReading = tarotReader.generateTarotReading(user, 'single');
 
       if (tarotReading.error) {
         const userLanguage = getUserLanguage(user, phoneNumber);

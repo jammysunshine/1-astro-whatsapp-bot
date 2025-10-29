@@ -8,6 +8,35 @@ const MundaneAstrologyReader = require('../mundaneAstrology');
 const { AgeHarmonicAstrologyReader } = require('../ageHarmonicAstrology');
 const { Panchang } = require('../panchang');
 
+/**
+ * Utility function to get zodiac sign from longitude
+ * @param {number} longitude - Longitude in degrees (0-360)
+ * @returns {string} Zodiac sign name
+ */
+const longitudeToSign = (longitude) => {
+  const signs = [
+    'Aries', 'Taurus', 'Gemini', 'Cancer',
+    'Leo', 'Virgo', 'Libra', 'Scorpio',
+    'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+  ];
+
+  // Normalize longitude to 0-360 range
+  const normalized = ((longitude % 360) + 360) % 360;
+  const signIndex = Math.floor(normalized / 30);
+  return signs[signIndex];
+};
+
+/**
+ * Utility function to get house number from longitude and ascendant
+ * @param {number} longitude - Planet longitude in degrees
+ * @param {number} ascendant - Ascendant longitude in degrees
+ * @returns {number} House number (1-12)
+ */
+const longitudeToHouse = (longitude, ascendant) => {
+  const angle = ((longitude - ascendant + 360) % 360);
+  return Math.floor(angle / 30) + 1;
+};
+
 // Swiss Ephemeris library for astronomical calculations
 const sweph = require('sweph');
 
@@ -313,7 +342,7 @@ const calculateSphutaPositions = (planets) => {
   }
 
   if (planets.Mars?.longitude) {
-    const marsSign = this.longitudeToSign(planets.Mars.longitude);
+    const marsSign = longitudeToSign(planets.Mars.longitude);
     sphuta.push({
       position: `${marsSign} Mars Sphuta`,
       interpretation: `Martial energy expresses as ${marsSign.toLowerCase()} qualities in action`
@@ -408,6 +437,7 @@ const getCareerQualities = (planet) => {
  * @param {Object} user - User object with birth data
  * @returns {Object} Financial astrology wealth analysis
  */
+const calculateFinancialAstrologyAnalysis = async (user) => {
   try {
     // Parse birth date and time from user data
     const birthYear = user.birthDate.length === 6 ?
@@ -458,7 +488,7 @@ const getCareerQualities = (planet) => {
     for (let i = 1; i <= 12; i++) {
       houses[i] = {
         cusp: cusps[i],
-        sign: this.longitudeToSign(cusps[i])
+        sign: longitudeToSign(cusps[i])
       };
     }
 
@@ -499,7 +529,7 @@ const analyzeWealthPlanets = (planets, cusps) => {
 
   // Jupiter - prosperity and expansion
   if (planets.Jupiter?.longitude) {
-    const jupiterHouse = this.longitudeToHouse(planets.Jupiter.longitude, cusps[0]);
+    const jupiterHouse = longitudeToHouse(planets.Jupiter.longitude, cusps[0]);
     wealthPlanets.push({
       planet: 'Jupiter',
       interpretation: getWealthPlanetInterpretation('Jupiter', jupiterHouse)
@@ -508,7 +538,7 @@ const analyzeWealthPlanets = (planets, cusps) => {
 
   // Venus - income, luxury, valuables
   if (planets.Venus?.longitude) {
-    const venusHouse = this.longitudeToHouse(planets.Venus.longitude, cusps[0]);
+    const venusHouse = longitudeToHouse(planets.Venus.longitude, cusps[0]);
     wealthPlanets.push({
       planet: 'Venus',
       interpretation: getWealthPlanetInterpretation('Venus', venusHouse)
@@ -517,7 +547,7 @@ const analyzeWealthPlanets = (planets, cusps) => {
 
   // Moon - emotional relationship to wealth
   if (planets.Moon?.longitude) {
-    const moonHouse = this.longitudeToHouse(planets.Moon.longitude, cusps[0]);
+    const moonHouse = longitudeToHouse(planets.Moon.longitude, cusps[0]);
     wealthPlanets.push({
       planet: 'Moon',
       interpretation: getWealthPlanetInterpretation('Moon', moonHouse)
@@ -526,7 +556,7 @@ const analyzeWealthPlanets = (planets, cusps) => {
 
   // Mars - risk-taking, action in business
   if (planets.Mars?.longitude) {
-    const marsHouse = this.longitudeToHouse(planets.Mars.longitude, cusps[0]);
+    const marsHouse = longitudeToHouse(planets.Mars.longitude, cusps[0]);
     wealthPlanets.push({
       planet: 'Mars',
       interpretation: getWealthPlanetInterpretation('Mars', marsHouse)
@@ -535,7 +565,7 @@ const analyzeWealthPlanets = (planets, cusps) => {
 
   // Saturn - long-term wealth building
   if (planets.Saturn?.longitude) {
-    const saturnHouse = this.longitudeToHouse(planets.Saturn.longitude, cusps[0]);
+    const saturnHouse = longitudeToHouse(planets.Saturn.longitude, cusps[0]);
     wealthPlanets.push({
       planet: 'Saturn',
       interpretation: getWealthPlanetInterpretation('Saturn', saturnHouse)
@@ -555,21 +585,21 @@ const analyzeWealthHouses = (planets, cusps) => {
   const wealthHouses = [];
 
   // 2nd House - personal wealth and values
-  const secondHouseSign = this.longitudeToSign(cusps[1]);
+  const secondHouseSign = longitudeToSign(cusps[1]);
   wealthHouses.push({
     house: '2nd House (Personal Wealth)',
     interpretation: `${secondHouseSign} in 2nd house indicates wealth through personal values. Your relationship with money reflects your core self-worth.`
   });
 
   // 8th House - shared wealth, investments, insurance
-  const eighthHouseSign = this.longitudeToSign(cusps[7]);
+  const eighthHouseSign = longitudeToSign(cusps[7]);
   wealthHouses.push({
     house: '8th House (Shared/Transformative Wealth)',
     interpretation: `${eighthHouseSign} in 8th house shows wealth through partnerships or transformative changes. Inheritance, investments, or shared resources are potential sources.`
   });
 
   // 11th House - gains, hopes, wishes fulfillment
-  const eleventhHouseSign = this.longitudeToSign(cusps[10]);
+  const eleventhHouseSign = longitudeToSign(cusps[10]);
   wealthHouses.push({
     house: '11th House (Gains & Life Goals)',
     interpretation: `${eleventhHouseSign} in 11th house indicates wealth through achievements and collective efforts. Groups, networks, and fulfilled goals generate prosperity.`
@@ -631,7 +661,7 @@ const assessFinancialRisks = (planets, cusps) => {
 
   // Mars in 8th house - potential financial losses
   if (planets.Mars?.longitude) {
-    const marsHouse = this.longitudeToHouse(planets.Mars.longitude, cusps[0]);
+    const marsHouse = longitudeToHouse(planets.Mars.longitude, cusps[0]);
     if (marsHouse === 8) {
       risks.push({
         area: 'Investment Risks',
@@ -642,7 +672,7 @@ const assessFinancialRisks = (planets, cusps) => {
 
   // Saturn in 2nd house - material lack concerns
   if (planets.Saturn?.longitude) {
-    const saturnHouse = this.longitudeToHouse(planets.Saturn.longitude, cusps[0]);
+    const saturnHouse = longitudeToHouse(planets.Saturn.longitude, cusps[0]);
     if (saturnHouse === 2) {
       risks.push({
         area: 'Security Concerns',
@@ -653,7 +683,7 @@ const assessFinancialRisks = (planets, cusps) => {
 
   // Uranus in financial houses - unexpected changes
   if (planets.Mercury?.longitude) { // Using Mercury as proxy for Uranus risk
-    const mercuryHouse = this.longitudeToHouse(planets.Mercury.longitude, cusps[0]);
+    const mercuryHouse = longitudeToHouse(planets.Mercury.longitude, cusps[0]);
     if (mercuryHouse === 2 || mercuryHouse === 8 || mercuryHouse === 11) {
       risks.push({
         area: 'Market Volatility',
@@ -684,7 +714,7 @@ const identifyProsperityOpportunities = (planets, cusps) => {
 
   // Jupiter in beneficial houses
   if (planets.Jupiter?.longitude) {
-    const jupiterHouse = this.longitudeToHouse(planets.Jupiter.longitude, cusps[0]);
+    const jupiterHouse = longitudeToHouse(planets.Jupiter.longitude, cusps[0]);
     if ([2, 5, 9, 11].includes(jupiterHouse)) {
       opportunities.push({
         opportunity: 'Abundance Expansion',
@@ -695,7 +725,7 @@ const identifyProsperityOpportunities = (planets, cusps) => {
 
   // Venus wealth indicators
   if (planets.Venus?.longitude) {
-    const venusHouse = this.longitudeToHouse(planets.Venus.longitude, cusps[0]);
+    const venusHouse = longitudeToHouse(planets.Venus.longitude, cusps[0]);
     if (venusHouse === 2 || venusHouse === 11) {
       opportunities.push({
         opportunity: 'Income Opportunities',
@@ -706,7 +736,7 @@ const identifyProsperityOpportunities = (planets, cusps) => {
 
   // Saturn in wealth houses (delays = long-term success)
   if (planets.Saturn?.longitude) {
-    const saturnHouse = this.longitudeToHouse(planets.Saturn.longitude, cusps[0]);
+    const saturnHouse = longitudeToHouse(planets.Saturn.longitude, cusps[0]);
     if (saturnHouse === 2) {
       opportunities.push({
         opportunity: 'Long-term Financial Security',
@@ -756,55 +786,55 @@ const determineWealthBuildingStrategy = (wealthPlanets, riskAssessment) => {
     strategy += ' Your chart supports moderate risk-taking with good potential for steady growth.';
   }
 
-  return strategy;
+    return strategy;
 };
 
 /**
- * Get interpretation for wealth planets based on house placements
- * @param {string} planet - Planet name
- * @param {number} house - House number
- * @returns {string} Wealth interpretation
- */
-const getWealthPlanetInterpretation = (planet, house) => {
-  const interpretations = {
-    Jupiter: {
-      2: 'Jupiter in 2nd house suggests abundant personal wealth and optimistic money management',
-      11: 'Jupiter in 11th house indicates prosperity through goals, wishes, and humanitarian efforts',
-      9: 'Jupiter in 9th house supports wealth through philosophy, teaching, or international ventures',
-      default: 'Jupiter expansion favors wealth accumulation through positive opportunities'
-    },
-    Venus: {
-      2: 'Venus in 2nd house indicates financial harmony and profit through aesthetic or luxury pursuits',
-      7: 'Venus in 7th house suggests wealth through partnerships and balanced financial relationships',
-      11: 'Venus in 11th house indicates material gains through friends, groups, and fulfilled aspirations',
-      default: 'Venus supports income through beautiful, harmonious financial activities'
-    },
-    Moon: {
-      2: 'Moon in 2nd house connects emotional security to financial well-being',
-      8: 'Moon in 8th house indicates wealth through shared resources or emotional transformation',
-      11: 'Moon in 11th house supports prosperity through emotional fulfillment of goals',
-      default: 'Moon influences wealth comfort and financial relationship with emotions'
-    },
-    Mars: {
-      2: 'Mars in 2nd house drives action-oriented wealth building and resource acquisition',
-      10: 'Mars in 10th house indicates career-driven wealth and public achievement',
-      11: 'Mars in 11th house supports gains through effort and competitive achievement',
-      default: 'Mars activates wealth through action, competition, and strategic risk-taking'
-    },
-    Saturn: {
-      2: 'Saturn in 2nd house requires disciplined wealth building but rewards long-term security',
-      11: 'Saturn in 11th house indicates steady gains through patient effort and group achievement',
-      default: 'Saturn supports wealth through structured, conservative, long-term planning'
+ * Calculate personalized career astrology analysis using Swiss Ephemeris
+   * @param {string} planet - Planet name
+   * @param {number} house - House number
+   * @returns {string} Wealth interpretation
+   */
+  const getWealthPlanetInterpretation = (planet, house) => {
+    const interpretations = {
+      Jupiter: {
+        2: 'Jupiter in 2nd house suggests abundant personal wealth and optimistic money management',
+        11: 'Jupiter in 11th house indicates prosperity through goals, wishes, and humanitarian efforts',
+        9: 'Jupiter in 9th house supports wealth through philosophy, teaching, or international ventures',
+        default: 'Jupiter expansion favors wealth accumulation through positive opportunities'
+      },
+      Venus: {
+        2: 'Venus in 2nd house indicates financial harmony and profit through aesthetic or luxury pursuits',
+        7: 'Venus in 7th house suggests wealth through partnerships and balanced financial relationships',
+        11: 'Venus in 11th house indicates material gains through friends, groups, and fulfilled aspirations',
+        default: 'Venus supports income through beautiful, harmonious financial activities'
+      },
+      Moon: {
+        2: 'Moon in 2nd house connects emotional security to financial well-being',
+        8: 'Moon in 8th house indicates wealth through shared resources or emotional transformation',
+        11: 'Moon in 11th house supports prosperity through emotional fulfillment of goals',
+        default: 'Moon influences wealth comfort and financial relationship with emotions'
+      },
+      Mars: {
+        2: 'Mars in 2nd house drives action-oriented wealth building and resource acquisition',
+        10: 'Mars in 10th house indicates career-driven wealth and public achievement',
+        11: 'Mars in 11th house supports gains through effort and competitive achievement',
+        default: 'Mars activates wealth through action, competition, and strategic risk-taking'
+      },
+      Saturn: {
+        2: 'Saturn in 2nd house requires disciplined wealth building but rewards long-term security',
+        11: 'Saturn in 11th house indicates steady gains through patient effort and group achievement',
+        default: 'Saturn supports wealth through structured, conservative, long-term planning'
+      }
+    };
+
+    const planetInterp = interpretations[planet];
+    if (planetInterp && planetInterp[house]) {
+      return planetInterp[house];
     }
+
+    return planetInterp?.default || `${planet}'s energy influences your approach to wealth and financial decisions`;
   };
-
-  const planetInterp = interpretations[planet];
-  if (planetInterp && planetInterp[house]) {
-    return planetInterp[house];
-  }
-
-  return planetInterp?.default || `${planet}'s energy influences your approach to wealth and financial decisions`;
-};
 };
 
 /**
@@ -1386,7 +1416,7 @@ const calculateMedicalAstrologyAnalysis = async (user) => {
     for (let i = 1; i <= 12; i++) {
       houses[i] = {
         cusp: cusps[i],
-        sign: this.longitudeToSign(cusps[i])
+        sign: longitudeToSign(cusps[i])
       };
     }
 

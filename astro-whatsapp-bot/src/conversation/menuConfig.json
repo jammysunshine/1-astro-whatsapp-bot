@@ -755,96 +755,176 @@
   },
   "language_menu": {
     "type": "list",
-    "button": "Choose Language",
-    "body": "🌐 *Choose Your Language*\n\nSelect your preferred language for all readings and responses:",
+    "button": "translation:buttons.choose_language",
+    "body": "translation:messages.language.prompt",
     "sections": [
       {
-        "title": "🌍 Popular Languages",
+        "title": "Popular Languages",
         "rows": [
           {
             "id": "set_language_en",
             "title": "🇺🇸 English",
-            "description": "Default English interface"
+            "description": "English language"
           },
           {
             "id": "set_language_hi",
-            "title": "🇮🇳 Hindi (हिन्दी)",
-            "description": "हिन्दी भाषा में संदेश"
+            "title": "🇮🇳 Hindi / हिंदी",
+            "description": "Hindi language"
           },
           {
             "id": "set_language_ar",
-            "title": "🇸🇦 Arabic (العربية)",
-            "description": "الرسائل باللغة العربية"
+            "title": "🇸🇦 Arabic / العربية",
+            "description": "Arabic language"
           },
           {
             "id": "set_language_es",
-            "title": "🇪🇸 Spanish (Español)",
-            "description": "Mensajes en español"
+            "title": "🇪🇸 Spanish / Español",
+            "description": "Spanish language"
           },
           {
             "id": "set_language_fr",
-            "title": "🇫🇷 French (Français)",
-            "description": "Messages en français"
+            "title": "🇫🇷 French / Français",
+            "description": "French language"
           }
         ]
       },
       {
-        "title": "🗣️ Indian Languages",
+        "title": "🇮🇳 Indian Languages",
         "rows": [
           {
-            "id": "set_language_ta",
-            "title": "🇮🇳 Tamil (தமிழ்)",
-            "description": "தமிழ் மொழியில் செய்திகள்"
-          },
-          {
-            "id": "set_language_te",
-            "title": "🇮🇳 Telugu (తెలుగు)",
-            "description": "తెలుగు భాషలో సందేశాలు"
-          },
-          {
             "id": "set_language_bn",
-            "title": "🇮🇳 Bengali (বাংলা)",
-            "description": "বাংলায় বার্তা"
-          },
-          {
-            "id": "set_language_mr",
-            "title": "🇮🇳 Marathi (मराठी)",
-            "description": "मराठी भाषेत संदेश"
+            "title": "🇮🇳 Bengali / বাংলা",
+            "description": "Bengali language"
           },
           {
             "id": "set_language_gu",
-            "title": "🇮🇳 Gujarati (ગુજરાતી)",
-            "description": "ગુજરાતી ભાષામાં સંદેશો"
+            "title": "🇮🇳 Gujarati / ગુજરાતી",
+            "description": "Gujarati language"
+          },
+          {
+            "id": "set_language_kn",
+            "title": "🇮🇳 Kannada / ಕನ್ನಡ",
+            "description": "Kannada language"
+          },
+          {
+            "id": "set_language_ml",
+            "title": "🇮🇳 Malayalam / മലയാളം",
+            "description": "Malayalam language"
+          },
+          {
+            "id": "set_language_mr",
+            "title": "🇮🇳 Marathi / मराठी",
+            "description": "Marathi language"
+          },
+          {
+            "id": "set_language_or",
+            "title": "🇮🇳 Odia / ଓଡ଼ିଆ",
+            "description": "Odia language"
+          },
+          {
+            "id": "set_language_pa",
+            "title": "🇮🇳 Punjabi / ਪੰਜਾਬੀ",
+            "description": "Punjabi language"
+          },
+          {
+            "id": "set_language_as",
+            "title": "🇮🇳 Assamese / অসমীয়া",
+            "description": "Assamese language"
+          },
+          {
+            "id": "set_language_ta",
+            "title": "🇮🇳 Tamil / தமிழ்",
+            "description": "Tamil language"
+          },
+          {
+            "id": "set_language_te",
+            "title": "🇮🇳 Telugu / తెలుగు",
+            "description": "Telugu language"
+          },
+          {
+            "id": "set_language_ur",
+            "title": "🇮🇳 Urdu / اردو",
+            "description": "Urdu language"
           }
         ]
       },
       {
-        "title": "🌏 International",
+        "title": "🌐 Middle East & Central Asia",
+        "rows": [
+          {
+            "id": "set_language_fa",
+            "title": "🇮🇷 Persian / فارسی",
+            "description": "Persian language"
+          },
+          {
+            "id": "set_language_he",
+            "title": "🇮🇱 Hebrew / עברית",
+            "description": "Hebrew language"
+          },
+          {
+            "id": "set_language_tr",
+            "title": "🇹🇷 Turkish / Türkçe",
+            "description": "Turkish language"
+          }
+        ]
+      },
+      {
+        "title": "🇪🇺 European Languages",
         "rows": [
           {
             "id": "set_language_de",
-            "title": "🇩🇪 German (Deutsch)",
-            "description": "Nachrichten auf Deutsch"
+            "title": "🇩🇪 German / Deutsch",
+            "description": "German language"
           },
           {
             "id": "set_language_it",
-            "title": "🇮🇹 Italian (Italiano)",
-            "description": "Messaggi in italiano"
+            "title": "🇮🇹 Italian / Italiano",
+            "description": "Italian language"
+          },
+          {
+            "id": "set_language_nl",
+            "title": "🇳🇱 Dutch / Nederlands",
+            "description": "Dutch language"
           },
           {
             "id": "set_language_pt",
-            "title": "🇵🇹 Portuguese (Português)",
-            "description": "Mensagens em português"
+            "title": "🇵🇹 Portuguese / Português",
+            "description": "Portuguese language"
           },
           {
             "id": "set_language_ru",
-            "title": "🇷🇺 Russian (Русский)",
-            "description": "Сообщения на русском"
-          },
+            "title": "🇷🇺 Russian / Русский",
+            "description": "Russian language"
+          }
+        ]
+      },
+      {
+        "title": "🌏 East Asian Languages",
+        "rows": [
           {
             "id": "set_language_zh",
-            "title": "🇨🇳 Chinese (中文)",
-            "description": "中文信息"
+            "title": "🇨🇳 Chinese / 中文",
+            "description": "Chinese language"
+          },
+          {
+            "id": "set_language_ja",
+            "title": "🇯🇵 Japanese / 日本語",
+            "description": "Japanese language"
+          },
+          {
+            "id": "set_language_ko",
+            "title": "🇰🇷 Korean / 한국어",
+            "description": "Korean language"
+          }
+        ]
+      },
+      {
+        "title": "🌏 Southeast Asia",
+        "rows": [
+          {
+            "id": "set_language_th",
+            "title": "🇹🇭 Thai / ไทย",
+            "description": "Thai language"
           }
         ]
       },
@@ -854,7 +934,7 @@
           {
             "id": "show_main_menu",
             "title": "🏠 Back to Main Menu",
-            "description": "Return to main service categories"
+            "description": "Return to main services"
           }
         ]
       }

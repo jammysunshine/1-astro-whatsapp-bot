@@ -759,14 +759,15 @@ const sendMessage = async(
         logger.info(`   Button: "${buttonText}"`);
         logger.info(`   Sections: ${validatedSections.length}`);
 
-        response = await sendListMessage(
-          phoneNumber,
-          finalBodyTextForList,
-          buttonText,
-          validatedSections,
-          options
-        );
-      } catch (error) {
+        try {
+          response = await sendListMessage(
+            phoneNumber,
+            finalBodyTextForList,
+            buttonText,
+            validatedSections,
+            options
+          );
+        } catch (error) {
         // If list message fails, create a fallback numbered menu
         logger.warn(`⚠️ List message failed for ${phoneNumber}, sending numbered fallback`);
         const numberedMenu = createNumberedMenuFallback(message, phoneNumber);
@@ -799,6 +800,7 @@ const sendMessage = async(
         logger.info(`🔢 Stored ${Object.keys(menuMappings).length} menu mappings for ${phoneNumber}`);
 
         response = await sendTextMessage(phoneNumber, numberedMenu, options);
+        }
       }
       break;
     case 'template':

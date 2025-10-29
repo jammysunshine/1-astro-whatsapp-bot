@@ -25,6 +25,11 @@ Some tests fail due to missing variables:
 - `TEST_PHONES` not defined in test scope
 - `Session` model not imported properly
 
+### 4. Error Handling Issues
+When exceptions occur in the conversation engine, they're caught and converted to generic error messages:
+- "I'm sorry, I encountered an internal error. Please try again later."
+- This prevents the tests from seeing the expected messages
+
 ## Solutions Implemented
 
 ### 1. Updated Message Processor Functions
@@ -59,7 +64,7 @@ Updated test file at `tests/e2e/comprehensive-test-suite/comprehensive-menu-navi
 // Added proper mocks for WhatsApp message sender functions
 jest.mock('../../../src/services/whatsapp/messageSender', () => ({
   sendMessage: jest.fn().mockResolvedValue({ success: true, message: 'Mocked success' }),
-  sendListMessage: jest.fn().mockResolvedValue({ success: true, message: 'Mocked success' }),
+  sendListMessage: jest.fn().mockResolvedValue({ success: true, message: 'Mocked success' },
   sendInteractiveButtons: jest.fn().mockResolvedValue({ success: true, message: 'Mocked success' }),
   sendTextMessage: jest.fn().mockResolvedValue({ success: true, message: 'Mocked success' })
 }));
@@ -90,6 +95,17 @@ expect(sendMessage).toHaveBeenCalledWith(
 );
 ```
 
+### 4. Fixed Error Handling Messages
+Corrected the error message key in the conversation engine:
+
+```javascript
+// Before
+await sendMessage(user.phoneNumber, 'messages.errors.generic_error', 'text');
+
+// After
+await sendMessage(user.phoneNumber, 'messages.errors.generic', 'text');
+```
+
 ## Remaining Issues to Fix
 
 ### 1. Authentication Errors (401)
@@ -107,12 +123,24 @@ Some tests reference `Session` model which is not imported.
 
 **Solution**: Add proper import statement for Session model.
 
+### 4. Mock Function References
+Some tests are using `whatsAppIntegration.mockSendMessage` instead of directly using `sendMessage`.
+
+**Solution**: Replace all references to use the properly mocked `sendMessage` function directly.
+
+### 5. Interactive Message Processing
+Tests are sending interactive messages but the implementation might not be handling them correctly.
+
+**Solution**: Ensure the processInteractiveMessage function properly handles all message types.
+
 ## Recommended Approach
 
 ### Short-term Fix
 1. Complete the mocking setup for all external dependencies
 2. Fix all test expectations to match actual implementation behavior
 3. Add missing variable definitions and imports
+4. Correct all mock function references
+5. Ensure interactive message processing works correctly
 
 ### Long-term Fix
 1. Refactor the test suite to properly isolate units under test
@@ -152,7 +180,13 @@ Some tests reference `Session` model which is not imported.
    jest.mock('../../src/services/astrology/vedicCalculator');
    ```
 
-4. **Align Test Expectations**:
+4. **Fix Mock Function References**:
+   Replace all `whatsAppIntegration.mockSendMessage` with `sendMessage` in test assertions.
+
+5. **Ensure Interactive Message Processing**:
+   Verify that the processInteractiveMessage function correctly handles all message types, especially list_reply and button_reply.
+
+6. **Align Test Expectations**:
    Update all test assertions to match actual implementation behavior rather than assumed behavior.
 
 ## Test Verification

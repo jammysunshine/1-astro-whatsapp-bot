@@ -175,6 +175,24 @@ const validateStepInput = async(input, step) => {
 };
 
 /**
+ * Validates and executes a menu action
+ * @param {string} phoneNumber - User's phone number
+ * @param {Object} user - User object
+ * @param {string} action - Menu action to execute
+ * @returns {boolean} Success status
+ */
+const executeMenuAction = async(phoneNumber, user, action) => {
+  try {
+    // Route to messageProcessor for execution
+    const { executeMenuAction: executeAction } = require('../services/whatsapp/messageProcessor');
+    return await executeAction(phoneNumber, user, action);
+  } catch (error) {
+    logger.error('Error executing menu action:', error);
+    return false;
+  }
+};
+
+/**
  * Processes a flow message based on user input and current session state
  * @param {Object} message - WhatsApp message object
  * @param {Object} user - User object with phoneNumber and id

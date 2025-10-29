@@ -1,221 +1,48 @@
 {
-  "common": {
-    "welcome": "Welcome to Astro Bot! 🌟",
-    "goodbye": "Goodbye! Have a great day! 🙏",
-    "yes": "Yes",
-    "no": "No",
-    "ok": "OK",
-    "cancel": "Cancel",
-    "back": "Back",
-    "next": "Next",
-    "continue": "Continue",
-    "retry": "Retry",
-    "loading": "Loading...",
-    "error": "An error occurred. Please try again.",
-    "success": "Success!",
-    "confirm": "Confirm",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "view": "View",
-    "close": "Close"
-  },
-  "menu": {
-    "main": {
-      "title": "🌟 Astrology Services",
-      "description": "Choose your astrological service",
-      "items": {
-        "daily_horoscope": {
-          "title": "📅 Daily Horoscope",
-          "description": "Your personalized daily astrological guidance"
-        },
-        "birth_chart": {
-          "title": "📊 Birth Chart",
-          "description": "Complete natal chart analysis"
-        },
-        "compatibility": {
-          "title": "💕 Compatibility",
-          "description": "Check astrological compatibility"
-        },
-        "tarot_reading": {
-          "title": "🔮 Tarot Reading",
-          "description": "Get insights from tarot cards"
-        },
-        "numerology": {
-          "title": "🔢 Numerology",
-          "description": "Discover your numerological profile"
-        },
-        "palmistry": {
-          "title": "✋ Palmistry",
-          "description": "Hand reading analysis"
-        },
-        "settings": {
-          "title": "⚙️ Settings",
-          "description": "Language and preferences"
-        },
-        "help": {
-          "title": "❓ Help",
-          "description": "How to use Astro Bot"
-        }
-      }
-    }
-  },
-  "prompts": {
-    "birth_date": {
-      "request": "Please enter your birth date (DDMMYY or DDMMYYYY format)",
-      "invalid": "Invalid date format. Please use DDMMYY or DDMMYYYY format.",
-      "confirmed": "Birth date confirmed: {date}"
+  "messages": {
+    "errors": {
+      "generic_error": "ఒక దోషం సంభవించింది. దయచేసి మళ్లీ ప్రయత్నించండి.",
+      "main_menu_error": "ప్రధాన మెను అందుబాటులో లేదు.",
+      "button_error": "బటన్ కనుగొనబడలేదు.",
+      "flow_error": "ప్రవాహం దోషం సంభవించింది.",
+      "clarification_error": "దయచేసి వేచి ఉండండి, నాకు మరిన్ని సమాచారం అవసరం.",
+      "menu_action_error": "మెను చర్యను నిర్వర్తించలేకపోయింది.",
+      "subscription_error": "సబ్స్క్రిప్షన్ దోషం.",
+      "layer_error": "ఒక దోషం సంభవించింది.",
+      "generic": "ఏదో తప్పు జరిగింది."
     },
-    "birth_time": {
-      "request": "Please enter your birth time (HHMM format)",
-      "invalid": "Invalid time format. Please use HHMM format.",
-      "confirmed": "Birth time confirmed: {time}"
-    },
-    "birth_place": {
-      "request": "Please enter your birth place (City, Country)",
-      "invalid": "Please provide a valid city and country.",
-      "confirmed": "Birth place confirmed: {place}"
-    },
-    "name": {
-      "request": "Please enter your name",
-      "invalid": "Please provide a valid name.",
-      "confirmed": "Name confirmed: {name}"
-    },
-    "language": {
-      "request": "Please select your preferred language",
-      "changed": "Language changed to {language}"
-    }
-  },
-  "astrology": {
-    "signs": {
-      "aries": "Aries",
-      "taurus": "Taurus",
-      "gemini": "Gemini",
-      "cancer": "Cancer",
-      "leo": "Leo",
-      "virgo": "Virgo",
-      "libra": "Libra",
-      "scorpio": "Scorpio",
-      "sagittarius": "Sagittarius",
-      "capricorn": "Capricorn",
-      "aquarius": "Aquarius",
-      "pisces": "Pisces"
-    },
-    "planets": {
-      "sun": "Sun",
-      "moon": "Moon",
-      "mercury": "Mercury",
-      "venus": "Venus",
-      "mars": "Mars",
-      "jupiter": "Jupiter",
-      "saturn": "Saturn",
-      "uranus": "Uranus",
-      "neptune": "Neptune",
-      "pluto": "Pluto"
-    },
-    "houses": {
-      "1": "1st House (Self)",
-      "2": "2nd House (Wealth)",
-      "3": "3rd House (Communication)",
-      "4": "4th House (Home)",
-      "5": "5th House (Creativity)",
-      "6": "6th House (Health)",
-      "7": "7th House (Relationships)",
-      "8": "8th House (Transformation)",
-      "9": "9th House (Travel)",
-      "10": "10th House (Career)",
-      "11": "11th House (Friends)",
-      "12": "12th House (Spirituality)"
-    },
-    "horoscope": {
-      "daily": {
-        "title": "Daily Horoscope for {sign}",
-        "general": "🌟 *{sign} Daily Guidance*\n\n{prediction}\n\nLucky Color: {color}\nLucky Number: {number}",
-        "love": "💕 *Love & Relationships:* {advice}",
-        "career": "💼 *Career & Finance:* {advice}",
-        "health": "🏥 *Health & Wellness:* {advice}"
-      }
+    "daily_horoscope": {
+      "title": "*{sunSign} దైనిక రాశిఫలం* - {date}",
+      "general": "సాధారణ: {general}",
+      "lucky_color": "అదృష్ట రంగు: {color}",
+      "lucky_number": "అదృష్ట సంఖ్య: {number}",
+      "love": "ప్రేమ: {advice}",
+      "career": "వృత్తి: {advice}",
+      "finance": "ఆర్థికం: {advice}",
+      "health": "ఆరోగ్యం: {advice}",
+      "next": "\n_మూలం: వైదిక జ్యోతిషం_",
+      "error": "దైనిక రాశిఫలం సృష్టించే సమయంలో దోషం"
     },
     "birth_chart": {
-      "title": "Birth Chart Analysis",
-      "sun_sign": "Sun Sign: {sign}",
-      "moon_sign": "Moon Sign: {sign}",
-      "rising_sign": "Rising Sign: {sign}",
-      "description": "Your complete astrological profile shows {sun_sign} energy with {moon_sign} emotional nature and {rising_sign} outward personality."
+      "incomplete_profile": "మీ జన్మ చార్ట్‌ను సృష్టించడానికి నాకు మీ జన్మ సమాచారం అవసరం. దయచేసి పేర్కొనండి:\n• జన్మ తేదీ (DDMMYY లేదా DDMMYYYY రూపం)\n• జన్మ సమయం (HHMM రూపం)\n• జన్మ స్థలం (నగరం, రాష్ట్రం, దేశం)\n\nఉదాహరణ: 150690 లేదా 15061990, 1430, హైదరాబాద్, భారతదేశం",
+      "error": "జన్మ చార్ట్ సృష్టించే సమయంలో దోషం"
     },
-    "compatibility": {
-      "title": "Compatibility Analysis",
-      "score": "Compatibility Score: {score}%",
-      "excellent": "Excellent Match! 🌟",
-      "good": "Good Compatibility 👍",
-      "neutral": "Neutral Compatibility 🤔",
-      "challenging": "Challenging Combination ⚠️",
-      "description": "{person1} and {person2} show {rating} compatibility. {details}"
-    }
-  },
-  "errors": {
-    "generic": "Sorry, I encountered an error. Please try again.",
-    "invalid_input": "Invalid input. Please check your response and try again.",
-    "service_unavailable": "This service is temporarily unavailable. Please try again later.",
-    "user_not_found": "User not found. Please start over.",
-    "invalid_date": "Please provide a valid date in DD/MM/YYYY format.",
-    "invalid_time": "Please provide a valid time in HH:MM format.",
-    "location_not_found": "Location not found. Please provide a valid city and country.",
-    "payment_failed": "Payment processing failed. Please try again.",
-    "subscription_expired": "Your subscription has expired. Please renew to continue.",
-    "rate_limit": "Too many requests. Please wait a moment and try again."
-  },
-  "settings": {
     "language": {
-      "title": "Language Settings",
-      "current": "Current language: {language}",
-      "changed": "Language changed successfully!"
+      "selection": "🌐 మీ భాష ఎంచుకోండి / اختر لغتك / Choose Your Language",
+      "prompt": "జ్యోతిష చదువుల కోసం మీకు నచ్చిన భాషను ఎంచుకోండి:",
+      "set_english": "✅ భాష ఇంగ్లీష్‌లో సెట్ చేయబడింది! 🇺🇸",
+      "set_hindi": "✅ భాష హిందీలో సెట్ చేయబడింది! 🇮🇳",
+      "set_spanish": "✅ భాష స్పానిష్‌లో సెట్ చేయబడింది! 🇪🇸",
+      "set_telugu": "✅ భాష తెలుగులో సెట్ చేయబడింది! 🇮🇳"
     },
-    "notifications": {
-      "title": "Notification Settings",
-      "enabled": "Notifications enabled",
-      "disabled": "Notifications disabled"
+    "welcome": {
+      "greeting": "🌟 మీ కాస్మిక్ ప్రయాణానికి స్వాగతం!\n\nనేను మీ వ్యక్తిగత కాస్మిక్ కోచ్, నక్షత్రాల రహస్యాల ద్వారా మిమ్మల్ని మార్గనిర్దేశం చేయడానికి సిద్ధంగా ఉన్నాను."
     }
   },
-  "help": {
-    "title": "Help & Support",
-    "getting_started": "To get started, provide your birth details (date, time, place) for personalized readings.",
-    "commands": "Available commands:\n• /start - Restart conversation\n• /help - Show this help\n• /settings - Change preferences\n• /language - Change language",
-    "contact": "For support, contact us at support@astrobot.com"
-  },
-  "subscription": {
-    "free": {
-      "name": "Free",
-      "description": "Basic features with limited usage"
-    },
-    "essential": {
-      "name": "Essential",
-      "description": "Daily horoscopes and basic compatibility"
-    },
-    "premium": {
-      "name": "Premium",
-      "description": "Unlimited AI questions and priority support"
-    },
-    "vip": {
-      "name": "VIP",
-      "description": "Dedicated astrologer and exclusive features"
-    },
-    "upgrade": "Upgrade to {plan} for {price} {currency}/month",
-    "renewal": "Your subscription renews on {date}",
-    "expired": "Your subscription has expired. Renew now to continue enjoying premium features."
-  },
-  "payment": {
-    "processing": "Processing payment...",
-    "success": "Payment successful! Welcome to {plan}.",
-    "failed": "Payment failed. Please try again.",
-    "cancelled": "Payment cancelled.",
-    "refund": "Refund processed successfully."
-  },
-  "_metadata": {
-    "language": "te",
-    "name": "Telugu",
-    "status": "placeholder",
-    "note": "[PLACEHOLDER - Full translation needed]",
-    "last_updated": "2025-10-28T06:19:50.492Z"
+  "buttons": {
+    "core_readings": "మౌలిక చదువులు",
+    "divination": "వారాస్తు",
+    "traditions": "ప్రాచీన సంప్రదాయాలు",
+    "language": "🌐 భాష"
   }
 }

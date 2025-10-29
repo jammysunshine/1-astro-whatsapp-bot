@@ -1,221 +1,216 @@
 {
-  "common": {
-    "welcome": "Welcome to Astro Bot! 🌟",
-    "goodbye": "Goodbye! Have a great day! 🙏",
-    "yes": "Yes",
-    "no": "No",
-    "ok": "OK",
-    "cancel": "Cancel",
-    "back": "Back",
-    "next": "Next",
-    "continue": "Continue",
-    "retry": "Retry",
-    "loading": "Loading...",
-    "error": "An error occurred. Please try again.",
-    "success": "Success!",
-    "confirm": "Confirm",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "view": "View",
-    "close": "Close"
-  },
-  "menu": {
-    "main": {
-      "title": "🌟 Astrology Services",
-      "description": "Choose your astrological service",
-      "items": {
-        "daily_horoscope": {
-          "title": "📅 Daily Horoscope",
-          "description": "Your personalized daily astrological guidance"
-        },
-        "birth_chart": {
-          "title": "📊 Birth Chart",
-          "description": "Complete natal chart analysis"
-        },
-        "compatibility": {
-          "title": "💕 Compatibility",
-          "description": "Check astrological compatibility"
-        },
-        "tarot_reading": {
-          "title": "🔮 Tarot Reading",
-          "description": "Get insights from tarot cards"
-        },
-        "numerology": {
-          "title": "🔢 Numerology",
-          "description": "Discover your numerological profile"
-        },
-        "palmistry": {
-          "title": "✋ Palmistry",
-          "description": "Hand reading analysis"
-        },
-        "settings": {
-          "title": "⚙️ Settings",
-          "description": "Language and preferences"
-        },
-        "help": {
-          "title": "❓ Help",
-          "description": "How to use Astro Bot"
-        }
-      }
-    }
-  },
-  "prompts": {
-    "birth_date": {
-      "request": "Please enter your birth date (DDMMYY or DDMMYYYY format)",
-      "invalid": "Invalid date format. Please use DDMMYY or DDMMYYYY format.",
-      "confirmed": "Birth date confirmed: {date}"
+  "messages": {
+    "errors": {
+      "generic_error": "Произошла ошибка. Попробуйте еще раз.",
+      "main_menu_error": "Главное меню недоступно.",
+      "button_error": "Кнопка не найдена.",
+      "flow_error": "Произошла ошибка потока.",
+      "clarification_error": "Подождите, мне нужна дополнительная информация.",
+      "menu_action_error": "Не удалось выполнить действие меню.",
+      "subscription_error": "Ошибка подписки.",
+      "layer_error": "Произошла ошибка.",
+      "generic": "Что-то пошло не так."
     },
-    "birth_time": {
-      "request": "Please enter your birth time (HHMM format)",
-      "invalid": "Invalid time format. Please use HHMM format.",
-      "confirmed": "Birth time confirmed: {time}"
-    },
-    "birth_place": {
-      "request": "Please enter your birth place (City, Country)",
-      "invalid": "Please provide a valid city and country.",
-      "confirmed": "Birth place confirmed: {place}"
-    },
-    "name": {
-      "request": "Please enter your name",
-      "invalid": "Please provide a valid name.",
-      "confirmed": "Name confirmed: {name}"
-    },
-    "language": {
-      "request": "Please select your preferred language",
-      "changed": "Language changed to {language}"
-    }
-  },
-  "astrology": {
-    "signs": {
-      "aries": "Aries",
-      "taurus": "Taurus",
-      "gemini": "Gemini",
-      "cancer": "Cancer",
-      "leo": "Leo",
-      "virgo": "Virgo",
-      "libra": "Libra",
-      "scorpio": "Scorpio",
-      "sagittarius": "Sagittarius",
-      "capricorn": "Capricorn",
-      "aquarius": "Aquarius",
-      "pisces": "Pisces"
-    },
-    "planets": {
-      "sun": "Sun",
-      "moon": "Moon",
-      "mercury": "Mercury",
-      "venus": "Venus",
-      "mars": "Mars",
-      "jupiter": "Jupiter",
-      "saturn": "Saturn",
-      "uranus": "Uranus",
-      "neptune": "Neptune",
-      "pluto": "Pluto"
-    },
-    "houses": {
-      "1": "1st House (Self)",
-      "2": "2nd House (Wealth)",
-      "3": "3rd House (Communication)",
-      "4": "4th House (Home)",
-      "5": "5th House (Creativity)",
-      "6": "6th House (Health)",
-      "7": "7th House (Relationships)",
-      "8": "8th House (Transformation)",
-      "9": "9th House (Travel)",
-      "10": "10th House (Career)",
-      "11": "11th House (Friends)",
-      "12": "12th House (Spirituality)"
-    },
-    "horoscope": {
-      "daily": {
-        "title": "Daily Horoscope for {sign}",
-        "general": "🌟 *{sign} Daily Guidance*\n\n{prediction}\n\nLucky Color: {color}\nLucky Number: {number}",
-        "love": "💕 *Love & Relationships:* {advice}",
-        "career": "💼 *Career & Finance:* {advice}",
-        "health": "🏥 *Health & Wellness:* {advice}"
-      }
+    "daily_horoscope": {
+      "title": "*Ежедневный Гороскоп {sunSign}* - {date}",
+      "general": "Общее: {general}",
+      "lucky_color": "Счастливый цвет: {color}",
+      "lucky_number": "Счастливое число: {number}",
+      "love": "Любовь: {advice}",
+      "career": "Карьера: {advice}",
+      "finance": "Финансы: {advice}",
+      "health": "Здоровье: {advice}",
+      "next": "\n_Источник: Ведическая астрология_",
+      "error": "Ошибка при генерации ежедневного гороскопа."
     },
     "birth_chart": {
-      "title": "Birth Chart Analysis",
-      "sun_sign": "Sun Sign: {sign}",
-      "moon_sign": "Moon Sign: {sign}",
-      "rising_sign": "Rising Sign: {sign}",
-      "description": "Your complete astrological profile shows {sun_sign} energy with {moon_sign} emotional nature and {rising_sign} outward personality."
+      "incomplete_profile": "Мне нужны ваши данные рождения, чтобы создать вашу натальную карту. Укажите:\n• Дата рождения (формат ДДММГГ или ДДММГГГГ)\n• Время рождения (формат ЧЧММ)\n• Место рождения (город, страна)\n\nПример: 150690 или 15061990, 1430, Москва, Россия",
+      "error": "Ошибка при генерации натальной карты."
+    },
+    "subscription_plans": {
+      "title": "*Выберите Ваш План Подписки*",
+      "essential": "Базовый план - 500₽/месяц",
+      "premium": "Премиум план - 1000₽/месяц"
+    },
+    "menu": {
+      "body": "Добро пожаловать в Ваш Персональный Космический Коуч. Выберите опцию:",
+      "button": "Выбрать Опцию",
+      "astrology_traditions": "🌟 Astrology Traditions"
+    },
+    "buttons": {
+      "main_menu": "🏠 Главное Меню",
+      "back_main": "🏠 Главное Меню",
+      "another_reading": "🔄 Еще одно Чтение",
+      "update_profile": "📝 Обновить Профиль",
+      "get_birth_chart": "📊 Получить Натальную Карту",
+      "try_again": "🔄 Попытаться Снова",
+      "detailed_reading": "📖 Подробное Чтение",
+      "cast_hexagram": "🪙 Бросить Гексаграмму",
+      "learn_more": "📚 Узнать Больше",
+      "ask_question": "❓ Задать Вопрос",
+      "see_examples": "📝 Посмотреть Примеры",
+      "get_electional": "📅 Получить Элекционал",
+      "day_sign": "👑 Знак Дня",
+      "calendar": "📅 Календарь",
+      "birth_chart": "📊 Натальная Карта",
+      "tree_of_life": "🌳 Древо Жизни",
+      "get_panchang": "📅 Получить Панчанг",
+      "daily_horoscope": "🌟 Ежедневный Гороскоп",
+      "tr_main": "🌟 Ежедневное Чтение",
+      "tr_tarot": "🃏 Таро",
+      "tr_birthchart": "📊 Натальная Карта",
+      "tr_compatibility": "💕 Совместимость",
+      "tr_settings": "⚙️ Настройки"
     },
     "compatibility": {
-      "title": "Compatibility Analysis",
-      "score": "Compatibility Score: {score}%",
-      "excellent": "Excellent Match! 🌟",
-      "good": "Good Compatibility 👍",
-      "neutral": "Neutral Compatibility 🤔",
-      "challenging": "Challenging Combination ⚠️",
-      "description": "{person1} and {person2} show {rating} compatibility. {details}"
-    }
-  },
-  "errors": {
-    "generic": "Sorry, I encountered an error. Please try again.",
-    "invalid_input": "Invalid input. Please check your response and try again.",
-    "service_unavailable": "This service is temporarily unavailable. Please try again later.",
-    "user_not_found": "User not found. Please start over.",
-    "invalid_date": "Please provide a valid date in DD/MM/YYYY format.",
-    "invalid_time": "Please provide a valid time in HH:MM format.",
-    "location_not_found": "Location not found. Please provide a valid city and country.",
-    "payment_failed": "Payment processing failed. Please try again.",
-    "subscription_expired": "Your subscription has expired. Please renew to continue.",
-    "rate_limit": "Too many requests. Please wait a moment and try again."
-  },
-  "settings": {
+      "analysis_prompt": "Поделитесь данными рождения вашего партнера (ДДММГГ, ЧЧММ, город, страна):",
+      "incomplete_profile": "Сначала завершите свой профиль для анализа совместимости.",
+      "partner_prompt": "Поделитесь данными рождения вашего партнера (ДДММГГ или формат)",
+      "error": "Ошибка в анализе совместимости."
+    },
+    "astrology_services": {
+      "hindu_astrology": {
+        "error": "Ошибка при генерации индуистской астрологии."
+      },
+      "prashna_astrology": {
+        "description": "*Прашна Астрология*\nБожественное руководство через звезды!"
+      },
+      "ashtakavarga": {
+        "incomplete_profile": "Завершите свой профиль для Ashtakavarga.",
+        "description": "Анализ системы силы 8 раз."
+      },
+      "kaal_sarp": {
+        "incomplete_profile": "Завершите свой профиль для Kaal Sarp Dosha.",
+        "description": "Анализ Kaal Sarp Dosha."
+      },
+      "sade_sati": {
+        "incomplete_profile": "Завершите свой профиль для Sade Sati.",
+        "description": "Анализ Sade Sati."
+      },
+      "vedic_remedies": {
+        "description": "Ведические средства от планетарных проблем."
+      },
+      "islamic_astrology": {
+        "description": "Взгляды исламской астрологии."
+      },
+      "vimshottari_dasha": {
+        "incomplete_profile": "Завершите свой профиль для Vimshottari Dasha.",
+        "description": "Анализ планетарного периода 120 лет."
+      },
+      "jaimini_astrology": {
+        "incomplete_profile": "Завершите свой профиль для астрологии Jaimini.",
+        "description": "Анализ астрологии Jaimini."
+      },
+      "hindu_festivals": {
+        "description": "Календарь индуистских фестивалей."
+      },
+      "muhurta": {
+        "description": "Выбор благоприятного времени."
+      },
+      "panchang": {
+        "description": "Ежедневный ведический календарь."
+      }
+    },
+    "numerology_report": {
+      "title": "*Численный Анализ*",
+      "life_path": "Число Жизненного Пути {number}: {interpretation}",
+      "expression": "Число Выражения {number}: {interpretation}",
+      "soul_urge": "Число Желания Души {number}: {interpretation}"
+    },
     "language": {
-      "title": "Language Settings",
-      "current": "Current language: {language}",
-      "changed": "Language changed successfully!"
+      "selection": "🌐 Выберите Ваш Язык / اختر لغتك / Choose Your Language",
+      "prompt": "Выберите ваш предпочтительный язык для астрологических чтений:",
+      "set_english": "✅ Язык установлен на английский! 🇺🇸",
+      "set_hindi": "✅ Язык установлен на хинди! 🇮🇳",
+      "set_spanish": "✅ Язык установлен на испанский! 🇪🇸",
+      "set_tamil": "✅ Язык установлен на тамильский! 🇮🇳",
+      "set_arabic": "✅ Язык установлен на арабский! 🇸🇦",
+      "set_french": "✅ Язык установлен на французский! 🇫🇷",
+      "set_german": "✅ Язык установлен на немецкий! 🇩🇪",
+      "set_russian": "✅ Язык установлен на русский! 🇷🇺"
     },
-    "notifications": {
-      "title": "Notification Settings",
-      "enabled": "Notifications enabled",
-      "disabled": "Notifications disabled"
+    "subscription": {
+      "plans": {
+        "prompt": "Выберите план подписки.",
+        "welcome_message": "Добро пожаловать в {plan}!",
+        "limit_reached": "Вы достигли своего лимита ({used}/{limit})."
+      }
+    },
+    "palmistry": {
+      "introduction": "Хиромантия раскрывает историю вашего жизненного пути через анализ линий и холмов на вашей ладони."
+    },
+    "iching": {
+      "introduction": "Древний I Ching предлагает глубокую мудрость через чтения гексаграмм."
+    },
+    "horary": {
+      "introduction": "Гороскопная астрология отвечает на конкретные вопросы, анализируя точный момент их постановки."
+    },
+    "kabbalistic": {
+      "introduction": "Каббала интегрирует астрологию с мистическими учениями Древа Жизни."
+    },
+    "mayan": {
+      "introduction": "Майянская астрология использует священные календари и глифы для духовного руководства."
+    },
+    "celtic": {
+      "introduction": "Кельтская астрология связывается с природой и духовной мудростью предков."
+    },
+    "settings": {
+      "menu": "Меню Настроек",
+      "profile": "Настройки Профиля",
+      "language": "Настройки Языка",
+      "notifications": "Уведомления",
+      "privacy": "Конфиденциальность"
+    },
+    "welcome": {
+      "greeting": "🌟 Добро пожаловать в Ваше Космическое Путешествие!\n\nЯ Ваш Персональный Космический Коуч, готовый провести вас через тайны звезд.",
+      "greeting_extended": "🌟 Welcome to Your Cosmic Journey!\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\nChoose your preferred astrology tradition:"
+    },
+    "services": {
+      "western_astrology": "Western Astrology",
+      "western_description": "Birth charts transits horoscopes predictive analysis",
+      "vedic_astrology": "Vedic Astrology",
+      "vedic_description": "Kundli dasha remedies festivals numerology",
+      "divination_mystic": "Divination & Mystic",
+      "divination_description": "Tarot I Ching palmistry ancient wisdom traditions",
+      "relationships": "Relationships & Groups",
+      "relationships_description": "Compatibility family business partnerships",
+      "numerology": "Numerology & Special Readings",
+      "numerology_description": "Life path numbers name analysis special insights",
+      "settings": "Settings & Profile",
+      "settings_description": "Update profile language preferences"
     }
   },
-  "help": {
-    "title": "Help & Support",
-    "getting_started": "To get started, provide your birth details (date, time, place) for personalized readings.",
-    "commands": "Available commands:\n• /start - Restart conversation\n• /help - Show this help\n• /settings - Change preferences\n• /language - Change language",
-    "contact": "For support, contact us at support@astrobot.com"
-  },
-  "subscription": {
-    "free": {
-      "name": "Free",
-      "description": "Basic features with limited usage"
-    },
-    "essential": {
-      "name": "Essential",
-      "description": "Daily horoscopes and basic compatibility"
-    },
-    "premium": {
-      "name": "Premium",
-      "description": "Unlimited AI questions and priority support"
-    },
-    "vip": {
-      "name": "VIP",
-      "description": "Dedicated astrologer and exclusive features"
-    },
-    "upgrade": "Upgrade to {plan} for {price} {currency}/month",
-    "renewal": "Your subscription renews on {date}",
-    "expired": "Your subscription has expired. Renew now to continue enjoying premium features."
-  },
-  "payment": {
-    "processing": "Processing payment...",
-    "success": "Payment successful! Welcome to {plan}.",
-    "failed": "Payment failed. Please try again.",
-    "cancelled": "Payment cancelled.",
-    "refund": "Refund processed successfully."
-  },
-  "_metadata": {
-    "language": "ru",
-    "name": "Russian",
-    "status": "placeholder",
-    "note": "[PLACEHOLDER - Full translation needed]",
-    "last_updated": "2025-10-28T06:19:50.478Z"
+  "buttons": {
+    "core_readings": "Основные Чтения",
+    "divination": "Гадание",
+    "traditions": "Древние Традиции",
+    "language": "🌐 Язык",
+    "back_main": "⬅️ Назад к Главному",
+    "back_divination": "⬅️ Назад к Гаданию",
+    "back_traditions": "⬅️ Назад к Традициям",
+    "update_profile": "📝 Обновить Профиль",
+    "get_daily_horoscope": "🌟 Ежедневный Гороскоп",
+    "show_birth_chart": "📊 Натальная Карта",
+    "get_synastry_analysis": "💕 Совместимость",
+    "get_tarot_reading": "🃏 Гадание на Таро",
+    "get_iching_reading": "🪙 Оракул I Ching",
+    "get_palmistry_analysis": "✋ Хиромантия",
+    "show_nadi_flow": "🔮 Поток Nadi",
+    "get_kabbalistic_analysis": "✡️ Каббалистический Анализ",
+    "get_mayan_analysis": "🗿 Майянская Астрология",
+    "get_celtic_analysis": "🌿 Кельтская Астрология",
+    "get_horary_reading": "⏰ Гороскопное Чтение",
+    "show_chinese_flow": "🐉 Китайский Поток",
+    "get_numerology_analysis": "🔢 Нумерологический Анализ",
+    "get_astrocartography_analysis": "🗺️ Астрокартография",
+    "show_subscription_plans": "💎 Планы Подписок",
+    "show_help_support": "🆘 Помощь и Поддержка",
+    "show_user_profile": "👤 Профиль Пользователя",
+    "show_recent_readings": "📋 Недавние Чтения",
+    "show_favorite_services": "⭐ Любимые Сервисы",
+    "get_current_transits": "⭐ Текущие Транзиты",
+    "get_hindu_astrology_analysis": "🕉️ Индуистская Астрология",
+    "start_profile_flow": "📝 Создать Профиль",
+    "choose_service": "Choose Service"
   }
 }

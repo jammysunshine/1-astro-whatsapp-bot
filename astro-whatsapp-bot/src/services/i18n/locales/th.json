@@ -1,221 +1,112 @@
 {
-  "common": {
-    "welcome": "Welcome to Astro Bot! 🌟",
-    "goodbye": "Goodbye! Have a great day! 🙏",
-    "yes": "Yes",
-    "no": "No",
-    "ok": "OK",
-    "cancel": "Cancel",
-    "back": "Back",
-    "next": "Next",
-    "continue": "Continue",
-    "retry": "Retry",
-    "loading": "Loading...",
-    "error": "An error occurred. Please try again.",
-    "success": "Success!",
-    "confirm": "Confirm",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "view": "View",
-    "close": "Close"
-  },
-  "menu": {
-    "main": {
-      "title": "🌟 Astrology Services",
-      "description": "Choose your astrological service",
-      "items": {
-        "daily_horoscope": {
-          "title": "📅 Daily Horoscope",
-          "description": "Your personalized daily astrological guidance"
-        },
-        "birth_chart": {
-          "title": "📊 Birth Chart",
-          "description": "Complete natal chart analysis"
-        },
-        "compatibility": {
-          "title": "💕 Compatibility",
-          "description": "Check astrological compatibility"
-        },
-        "tarot_reading": {
-          "title": "🔮 Tarot Reading",
-          "description": "Get insights from tarot cards"
-        },
-        "numerology": {
-          "title": "🔢 Numerology",
-          "description": "Discover your numerological profile"
-        },
-        "palmistry": {
-          "title": "✋ Palmistry",
-          "description": "Hand reading analysis"
-        },
-        "settings": {
-          "title": "⚙️ Settings",
-          "description": "Language and preferences"
-        },
-        "help": {
-          "title": "❓ Help",
-          "description": "How to use Astro Bot"
-        }
-      }
-    }
-  },
-  "prompts": {
-    "birth_date": {
-      "request": "Please enter your birth date (DDMMYY or DDMMYYYY format)",
-      "invalid": "Invalid date format. Please use DDMMYY or DDMMYYYY format.",
-      "confirmed": "Birth date confirmed: {date}"
+  "messages": {
+    "errors": {
+      "generic_error": "เกิดข้อผิดพลาด กรุณาลองใหม่",
+      "main_menu_error": "เมนูหลักไม่พร้อมใช้งาน",
+      "button_error": "ไม่พบปุ่ม",
+      "flow_error": "เกิดข้อผิดพลาดในการไหล",
+      "clarification_error": "รอสักครู่ ฉันต้องการข้อมูลเพิ่มเติม",
+      "menu_action_error": "ไม่สามารถดำเนินการเมนูได้",
+      "subscription_error": "ข้อผิดพลาดในการสมัครสมาชิก",
+      "layer_error": "เกิดข้อผิดพลาด",
+      "generic": "มีบางอย่างผิดปกติ"
     },
-    "birth_time": {
-      "request": "Please enter your birth time (HHMM format)",
-      "invalid": "Invalid time format. Please use HHMM format.",
-      "confirmed": "Birth time confirmed: {time}"
-    },
-    "birth_place": {
-      "request": "Please enter your birth place (City, Country)",
-      "invalid": "Please provide a valid city and country.",
-      "confirmed": "Birth place confirmed: {place}"
-    },
-    "name": {
-      "request": "Please enter your name",
-      "invalid": "Please provide a valid name.",
-      "confirmed": "Name confirmed: {name}"
-    },
-    "language": {
-      "request": "Please select your preferred language",
-      "changed": "Language changed to {language}"
-    }
-  },
-  "astrology": {
-    "signs": {
-      "aries": "Aries",
-      "taurus": "Taurus",
-      "gemini": "Gemini",
-      "cancer": "Cancer",
-      "leo": "Leo",
-      "virgo": "Virgo",
-      "libra": "Libra",
-      "scorpio": "Scorpio",
-      "sagittarius": "Sagittarius",
-      "capricorn": "Capricorn",
-      "aquarius": "Aquarius",
-      "pisces": "Pisces"
-    },
-    "planets": {
-      "sun": "Sun",
-      "moon": "Moon",
-      "mercury": "Mercury",
-      "venus": "Venus",
-      "mars": "Mars",
-      "jupiter": "Jupiter",
-      "saturn": "Saturn",
-      "uranus": "Uranus",
-      "neptune": "Neptune",
-      "pluto": "Pluto"
-    },
-    "houses": {
-      "1": "1st House (Self)",
-      "2": "2nd House (Wealth)",
-      "3": "3rd House (Communication)",
-      "4": "4th House (Home)",
-      "5": "5th House (Creativity)",
-      "6": "6th House (Health)",
-      "7": "7th House (Relationships)",
-      "8": "8th House (Transformation)",
-      "9": "9th House (Travel)",
-      "10": "10th House (Career)",
-      "11": "11th House (Friends)",
-      "12": "12th House (Spirituality)"
-    },
-    "horoscope": {
-      "daily": {
-        "title": "Daily Horoscope for {sign}",
-        "general": "🌟 *{sign} Daily Guidance*\n\n{prediction}\n\nLucky Color: {color}\nLucky Number: {number}",
-        "love": "💕 *Love & Relationships:* {advice}",
-        "career": "💼 *Career & Finance:* {advice}",
-        "health": "🏥 *Health & Wellness:* {advice}"
-      }
+    "daily_horoscope": {
+      "title": "*{sunSign} ดวงรายวัน* - {date}",
+      "general": "โดยรวม: {general}",
+      "lucky_color": "สีมงคล: {color}",
+      "lucky_number": "ตัวเลขมงคล: {number}",
+      "love": "ความรัก: {advice}",
+      "career": "อาชีพ: {advice}",
+      "finance": "การเงิน: {advice}",
+      "health": "สุขภาพ: {advice}",
+      "next": "\n_ที่มา: โหราศาสตร์พระเวท_",
+      "error": "เกิดข้อผิดพลาดในการสร้างดวงรายวัน"
     },
     "birth_chart": {
-      "title": "Birth Chart Analysis",
-      "sun_sign": "Sun Sign: {sign}",
-      "moon_sign": "Moon Sign: {sign}",
-      "rising_sign": "Rising Sign: {sign}",
-      "description": "Your complete astrological profile shows {sun_sign} energy with {moon_sign} emotional nature and {rising_sign} outward personality."
+      "incomplete_profile": "ฉันต้องการข้อมูลวันเกิดของคุณเพื่อสร้างแผนภูมิการเกิด โปรดระบุ:\n• วันเกิด (รูปแบบ DDMMYY หรือ DDMMYYYY)\n• เวลาถือกำเนิด (รูปแบบ HHMM)\n• สถานที่เกิด (เมือง จังหวัด ประเทศ)\n\nตัวอย่าง: 150690 หรือ 15061990, 1430, Bangkok, Thailand",
+      "error": "เกิดข้อผิดพลาดในการสร้างแผนภูมิการเกิด"
+    },
+    "subscription_plans": {
+      "title": "*เลือกแผนการสมัครสมาชิก*",
+      "essential": "แผนพื้นฐาน - 300฿/เดือน",
+      "premium": "แผนพรีเมี่ยม - 600฿/เดือน"
+    },
+    "menu": {
+      "body": "ยินดีต้อนรับสู่โค้ชจักรวาลส่วนตัวของคุณ เลือกตัวเลือก:",
+      "button": "เลือกตัวเลือก",
+      "astrology_traditions": "🌟 Astrology Traditions"
+    },
+    "buttons": {
+      "main_menu": "🏠 เมนูหลัก",
+      "back_main": "🏠 เมนูหลัก",
+      "another_reading": "🔄 อ่านอีกครั้ง",
+      "update_profile": "📝 อัปเดตโปรไฟล์",
+      "get_birth_chart": "📊 รับแผนภูมิการเกิด",
+      "try_again": "🔄 ลองใหม่",
+      "detailed_reading": "📖 การอ่านรายละเอียด",
+      "cast_hexagram": "🪙 ทอยเฮกซาแกรม",
+      "learn_more": "📚 เรียนรู้เพิ่มเติม",
+      "ask_question": "❓ ถามคำถาม",
+      "see_examples": "📝 ดูตัวอย่าง",
+      "get_electional": "📅 ได้รับเลือกตั้ง",
+      "day_sign": "👑 สัญญาณวัน",
+      "calendar": "📅 ปฏิทิน",
+      "birth_chart": "📊 แผนภูมิการเกิด",
+      "tree_of_life": "🌳 ต้นไม้แห่งชีวิต",
+      "get_panchang": "📅 รับโอมชาง",
+      "daily_horoscope": "🌟 ดวงรายวัน",
+      "tr_main": "🌟 การอ่านรายวัน",
+      "tr_tarot": "🃏 ทาโรต์",
+      "tr_birthchart": "📊 แผนภูมิการเกิด",
+      "tr_compatibility": "💕 ความเข้ากันได้",
+      "tr_settings": "⚙️ การตั้งค่า"
     },
     "compatibility": {
-      "title": "Compatibility Analysis",
-      "score": "Compatibility Score: {score}%",
-      "excellent": "Excellent Match! 🌟",
-      "good": "Good Compatibility 👍",
-      "neutral": "Neutral Compatibility 🤔",
-      "challenging": "Challenging Combination ⚠️",
-      "description": "{person1} and {person2} show {rating} compatibility. {details}"
-    }
-  },
-  "errors": {
-    "generic": "Sorry, I encountered an error. Please try again.",
-    "invalid_input": "Invalid input. Please check your response and try again.",
-    "service_unavailable": "This service is temporarily unavailable. Please try again later.",
-    "user_not_found": "User not found. Please start over.",
-    "invalid_date": "Please provide a valid date in DD/MM/YYYY format.",
-    "invalid_time": "Please provide a valid time in HH:MM format.",
-    "location_not_found": "Location not found. Please provide a valid city and country.",
-    "payment_failed": "Payment processing failed. Please try again.",
-    "subscription_expired": "Your subscription has expired. Please renew to continue.",
-    "rate_limit": "Too many requests. Please wait a moment and try again."
-  },
-  "settings": {
+      "analysis_prompt": "แบ่งปันข้อมูลวันเกิดคู่ของคุณ (DDMMYY, HHMM, เมือง, ประเทศ):",
+      "incomplete_profile": "กรุณาเสร็จสิ้นโปรไฟล์ของคุณก่อนสำหรับการวิเคราะห์ความเข้ากันได้",
+      "partner_prompt": "แบ่งปันข้อมูลวันเกิดคู่ของคุณ (DDMMYY หรือรูปแบบ)",
+      "error": "เกิดข้อผิดพลาดในการวิเคราะห์ความเข้ากันได้"
+    },
     "language": {
-      "title": "Language Settings",
-      "current": "Current language: {language}",
-      "changed": "Language changed successfully!"
+      "selection": "🌐 เลือกภาษาของคุณ / اختر لغتك / Choose Your Language",
+      "prompt": "เลือกภาษาที่ต้องการสำหรับการอ่านโหราศาสตร์:",
+      "set_english": "✅ ตั้งภาษาเป็นอังกฤษ! 🇺🇸",
+      "set_hindi": "✅ ตั้งภาษาเป็นฮินดี! 🇮🇳",
+      "set_spanish": "✅ ตั้งภาษาเป็นสเปน! 🇪🇸",
+      "set_tamil": "✅ ตั้งภาษาเป็นทมิฬ! 🇮🇳",
+      "set_arabic": "✅ ตั้งภาษาเป็นอาหรับ! 🇸🇦",
+      "set_french": "✅ ตั้งภาษาเป็นฝรั่งเศส! 🇫🇷",
+      "set_german": "✅ ตั้งภาษาเป็นเยอรมัน! 🇩🇪",
+      "set_chinese": "✅ ตั้งภาษาเป็นจีน! 🇨🇳",
+      "set_japanese": "✅ ตั้งภาษาเป็นญี่ปุ่น! 🇯🇵",
+      "set_korean": "✅ ตั้งภาษาเป็นเกาหลี! 🇰🇷",
+      "set_thai": "✅ ตั้งภาษาเป็นไทย! 🇹🇭"
     },
-    "notifications": {
-      "title": "Notification Settings",
-      "enabled": "Notifications enabled",
-      "disabled": "Notifications disabled"
+    "welcome": {
+      "greeting": "🌟 ยินดีต้อนรับสู่วิถีจักรวาลของคุณ!\n\nฉันเป็นโค้ชจักรวาลส่วนตัวของคุณ พร้อมที่จะนำทางคุณผ่านความลึกลับของดวงดาว",
+      "greeting_extended": "🌟 Welcome to Your Cosmic Journey!\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\nChoose your preferred astrology tradition:"
+    },
+    "services": {
+      "western_astrology": "Western Astrology",
+      "western_description": "Birth charts transits horoscopes predictive analysis",
+      "vedic_astrology": "Vedic Astrology",
+      "vedic_description": "Kundli dasha remedies festivals numerology",
+      "divination_mystic": "Divination & Mystic",
+      "divination_description": "Tarot I Ching palmistry ancient wisdom traditions",
+      "relationships": "Relationships & Groups",
+      "relationships_description": "Compatibility family business partnerships",
+      "numerology": "Numerology & Special Readings",
+      "numerology_description": "Life path numbers name analysis special insights",
+      "settings": "Settings & Profile",
+      "settings_description": "Update profile language preferences"
     }
   },
-  "help": {
-    "title": "Help & Support",
-    "getting_started": "To get started, provide your birth details (date, time, place) for personalized readings.",
-    "commands": "Available commands:\n• /start - Restart conversation\n• /help - Show this help\n• /settings - Change preferences\n• /language - Change language",
-    "contact": "For support, contact us at support@astrobot.com"
-  },
-  "subscription": {
-    "free": {
-      "name": "Free",
-      "description": "Basic features with limited usage"
-    },
-    "essential": {
-      "name": "Essential",
-      "description": "Daily horoscopes and basic compatibility"
-    },
-    "premium": {
-      "name": "Premium",
-      "description": "Unlimited AI questions and priority support"
-    },
-    "vip": {
-      "name": "VIP",
-      "description": "Dedicated astrologer and exclusive features"
-    },
-    "upgrade": "Upgrade to {plan} for {price} {currency}/month",
-    "renewal": "Your subscription renews on {date}",
-    "expired": "Your subscription has expired. Renew now to continue enjoying premium features."
-  },
-  "payment": {
-    "processing": "Processing payment...",
-    "success": "Payment successful! Welcome to {plan}.",
-    "failed": "Payment failed. Please try again.",
-    "cancelled": "Payment cancelled.",
-    "refund": "Refund processed successfully."
-  },
-  "_metadata": {
-    "language": "th",
-    "name": "Thai",
-    "status": "placeholder",
-    "note": "[PLACEHOLDER - Full translation needed]",
-    "last_updated": "2025-10-28T06:19:50.535Z"
+  "buttons": {
+    "core_readings": "การอ่านหลัก",
+    "divination": "การทำนาย",
+    "traditions": "ประเพณีโบราณ",
+    "language": "🌐 ภาษา",
+    "choose_service": "Choose Service"
   }
 }

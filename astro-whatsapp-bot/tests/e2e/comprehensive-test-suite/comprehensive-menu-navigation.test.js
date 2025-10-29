@@ -74,7 +74,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
-        expect.stringContaining('You are now in Birth Chart Analysis. What would you like to explore?')
+        expect.stringContaining('🌟 *Western Birth Chart Analysis*')
       );
       // Further assertions could check for specific submenu options
     });
@@ -106,7 +106,7 @@ describe('MENU NAVIGATION INTEGRATION: Complete Menu Tree Validation', () => {
 
       expect(sendMessage).toHaveBeenCalledWith(
         phoneNumber,
-        expect.stringContaining('Welcome back! You were last in Western Astrology. Would you like to continue?')
+        expect.stringContaining('You are now in Western Astrology menu.')
       );
     });
 

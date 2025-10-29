@@ -1,221 +1,217 @@
 {
-  "common": {
-    "welcome": "Welcome to Astro Bot! 🌟",
-    "goodbye": "Goodbye! Have a great day! 🙏",
-    "yes": "Yes",
-    "no": "No",
-    "ok": "OK",
-    "cancel": "Cancel",
-    "back": "Back",
-    "next": "Next",
-    "continue": "Continue",
-    "retry": "Retry",
-    "loading": "Loading...",
-    "error": "An error occurred. Please try again.",
-    "success": "Success!",
-    "confirm": "Confirm",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "view": "View",
-    "close": "Close"
-  },
-  "menu": {
-    "main": {
-      "title": "🌟 Astrology Services",
-      "description": "Choose your astrological service",
-      "items": {
-        "daily_horoscope": {
-          "title": "📅 Daily Horoscope",
-          "description": "Your personalized daily astrological guidance"
-        },
-        "birth_chart": {
-          "title": "📊 Birth Chart",
-          "description": "Complete natal chart analysis"
-        },
-        "compatibility": {
-          "title": "💕 Compatibility",
-          "description": "Check astrological compatibility"
-        },
-        "tarot_reading": {
-          "title": "🔮 Tarot Reading",
-          "description": "Get insights from tarot cards"
-        },
-        "numerology": {
-          "title": "🔢 Numerology",
-          "description": "Discover your numerological profile"
-        },
-        "palmistry": {
-          "title": "✋ Palmistry",
-          "description": "Hand reading analysis"
-        },
-        "settings": {
-          "title": "⚙️ Settings",
-          "description": "Language and preferences"
-        },
-        "help": {
-          "title": "❓ Help",
-          "description": "How to use Astro Bot"
-        }
-      }
-    }
-  },
-  "prompts": {
-    "birth_date": {
-      "request": "Please enter your birth date (DDMMYY or DDMMYYYY format)",
-      "invalid": "Invalid date format. Please use DDMMYY or DDMMYYYY format.",
-      "confirmed": "Birth date confirmed: {date}"
+  "messages": {
+    "errors": {
+      "generic_error": "エラーが発生しました。もう一度お試しください。",
+      "main_menu_error": "メインメニューが利用できません。",
+      "button_error": "ボタンが見つかりません。",
+      "flow_error": "フローのエラーが発生しました。",
+      "clarification_error": "お待ちください。追加情報が必要です。",
+      "menu_action_error": "メニューアクションを実行できませんでした。",
+      "subscription_error": "サブスクリプションエラー。",
+      "layer_error": "エラーが発生しました。",
+      "generic": "問題が発生しました。"
     },
-    "birth_time": {
-      "request": "Please enter your birth time (HHMM format)",
-      "invalid": "Invalid time format. Please use HHMM format.",
-      "confirmed": "Birth time confirmed: {time}"
-    },
-    "birth_place": {
-      "request": "Please enter your birth place (City, Country)",
-      "invalid": "Please provide a valid city and country.",
-      "confirmed": "Birth place confirmed: {place}"
-    },
-    "name": {
-      "request": "Please enter your name",
-      "invalid": "Please provide a valid name.",
-      "confirmed": "Name confirmed: {name}"
-    },
-    "language": {
-      "request": "Please select your preferred language",
-      "changed": "Language changed to {language}"
-    }
-  },
-  "astrology": {
-    "signs": {
-      "aries": "Aries",
-      "taurus": "Taurus",
-      "gemini": "Gemini",
-      "cancer": "Cancer",
-      "leo": "Leo",
-      "virgo": "Virgo",
-      "libra": "Libra",
-      "scorpio": "Scorpio",
-      "sagittarius": "Sagittarius",
-      "capricorn": "Capricorn",
-      "aquarius": "Aquarius",
-      "pisces": "Pisces"
-    },
-    "planets": {
-      "sun": "Sun",
-      "moon": "Moon",
-      "mercury": "Mercury",
-      "venus": "Venus",
-      "mars": "Mars",
-      "jupiter": "Jupiter",
-      "saturn": "Saturn",
-      "uranus": "Uranus",
-      "neptune": "Neptune",
-      "pluto": "Pluto"
-    },
-    "houses": {
-      "1": "1st House (Self)",
-      "2": "2nd House (Wealth)",
-      "3": "3rd House (Communication)",
-      "4": "4th House (Home)",
-      "5": "5th House (Creativity)",
-      "6": "6th House (Health)",
-      "7": "7th House (Relationships)",
-      "8": "8th House (Transformation)",
-      "9": "9th House (Travel)",
-      "10": "10th House (Career)",
-      "11": "11th House (Friends)",
-      "12": "12th House (Spirituality)"
-    },
-    "horoscope": {
-      "daily": {
-        "title": "Daily Horoscope for {sign}",
-        "general": "🌟 *{sign} Daily Guidance*\n\n{prediction}\n\nLucky Color: {color}\nLucky Number: {number}",
-        "love": "💕 *Love & Relationships:* {advice}",
-        "career": "💼 *Career & Finance:* {advice}",
-        "health": "🏥 *Health & Wellness:* {advice}"
-      }
+    "daily_horoscope": {
+      "title": "*{sunSign} デイリーホロスコープ* - {date}",
+      "general": "総合運勢：{general}",
+      "lucky_color": "幸運色：{color}",
+      "lucky_number": "幸運番号：{number}",
+      "love": "恋愛：{advice}",
+      "career": "仕事：{advice}",
+      "finance": "金運：{advice}",
+      "health": "健康：{advice}",
+      "next": "\n_出典：ベーダ占星術_",
+      "error": "デイリーホロスコープ生成エラー。"
     },
     "birth_chart": {
-      "title": "Birth Chart Analysis",
-      "sun_sign": "Sun Sign: {sign}",
-      "moon_sign": "Moon Sign: {sign}",
-      "rising_sign": "Rising Sign: {sign}",
-      "description": "Your complete astrological profile shows {sun_sign} energy with {moon_sign} emotional nature and {rising_sign} outward personality."
+      "incomplete_profile": "出生図を作成するために出生データを必要とします。次の情報を提供してください：\n• 生年月日（DDMMYYまたはDDMMYYYYの形式）\n• 出生時間（HHMM形式）\n• 出生地（市区町村、都道府県、国）\n\n例：150690または15061990, 1430, 東京, 日本",
+      "error": "出生図生成エラー。"
+    },
+    "subscription_plans": {
+      "title": "*サブスクリプションプランを選択*",
+      "essential": "エッセンシャルプラン - ¥500/月",
+      "premium": "プレミアムプラン - ¥1000/月"
+    },
+    "menu": {
+      "body": "パーソナル宇宙コーチへようこそ。オプションを選択してください：",
+      "button": "オプションを選択",
+      "astrology_traditions": "🌟 Astrology Traditions"
+    },
+    "buttons": {
+      "main_menu": "🏠 メインメニュー",
+      "back_main": "🏠 メインメニュー",
+      "another_reading": "🔄 別のリーディング",
+      "update_profile": "📝 プロフィール更新",
+      "get_birth_chart": "📊 出生図を取得",
+      "try_again": "🔄 再試行",
+      "detailed_reading": "📖 詳細リーディング",
+      "cast_hexagram": "🪙 六爻を投げる",
+      "learn_more": "📚 もっと学ぶ",
+      "ask_question": "❓ 質問する",
+      "see_examples": "📝 例を見る",
+      "get_electional": "📅 選挙日を取得",
+      "day_sign": "👑 日の兆候",
+      "calendar": "📅 カレンダー",
+      "birth_chart": "📊 出生図",
+      "tree_of_life": "🌳 生命の樹",
+      "get_panchang": "📅 パンチャングを取得",
+      "daily_horoscope": "🌟 デイリーホロスコープ",
+      "tr_main": "🌟 デイリーリーディング",
+      "tr_tarot": "🃏 タロット",
+      "tr_birthchart": "📊 出生図",
+      "tr_compatibility": "💕 相性",
+      "tr_settings": "⚙️ 設定"
     },
     "compatibility": {
-      "title": "Compatibility Analysis",
-      "score": "Compatibility Score: {score}%",
-      "excellent": "Excellent Match! 🌟",
-      "good": "Good Compatibility 👍",
-      "neutral": "Neutral Compatibility 🤔",
-      "challenging": "Challenging Combination ⚠️",
-      "description": "{person1} and {person2} show {rating} compatibility. {details}"
-    }
-  },
-  "errors": {
-    "generic": "Sorry, I encountered an error. Please try again.",
-    "invalid_input": "Invalid input. Please check your response and try again.",
-    "service_unavailable": "This service is temporarily unavailable. Please try again later.",
-    "user_not_found": "User not found. Please start over.",
-    "invalid_date": "Please provide a valid date in DD/MM/YYYY format.",
-    "invalid_time": "Please provide a valid time in HH:MM format.",
-    "location_not_found": "Location not found. Please provide a valid city and country.",
-    "payment_failed": "Payment processing failed. Please try again.",
-    "subscription_expired": "Your subscription has expired. Please renew to continue.",
-    "rate_limit": "Too many requests. Please wait a moment and try again."
-  },
-  "settings": {
+      "analysis_prompt": "パートナーの出生データ（DDMMYY、HHMM、市区町村、国）を共有してください：",
+      "incomplete_profile": "相性分析のためにまずプロフィールを完了してください。",
+      "partner_prompt": "パートナーの出生データ（DDMMYYまたは形式）を共有してください。",
+      "error": "相性分析エラー。"
+    },
+    "astrology_services": {
+      "hindu_astrology": {
+        "error": "ヒンドゥー占星術生成エラー。"
+      },
+      "prashna_astrology": {
+        "description": "*プラシュナ占星術*\n星々を通じた神聖な導き！"
+      },
+      "ashtakavarga": {
+        "incomplete_profile": "Ashtakavargaのためにプロフィールを完了してください。",
+        "description": "8倍力システム分析。"
+      },
+      "kaal_sarp": {
+        "incomplete_profile": "Kaal Sarp Doshaのためにプロフィールを完了してください。",
+        "description": "Kaal Sarp Dosha分析。"
+      },
+      "sade_sati": {
+        "incomplete_profile": "Sade Satiのためにプロフィールを完了してください。",
+        "description": "Sade Sati分析。"
+      },
+      "vedic_remedies": {
+        "description": "惑星問題のためのベーダ療法。"
+      },
+      "islamic_astrology": {
+        "description": "イスラム占星術の見解。"
+      },
+      "vimshottari_dasha": {
+        "incomplete_profile": "Vimshottari Dashaのためにプロフィールを完了してください。",
+        "description": "120年惑星周期分析。"
+      },
+      "jaimini_astrology": {
+        "incomplete_profile": "Jaimini占星術のためにプロフィールを完了してください。",
+        "description": "Jaimini占星術分析。"
+      },
+      "hindu_festivals": {
+        "description": "ヒンドゥー祭りカレンダー。"
+      },
+      "muhurta": {
+        "description": "吉祥なタイミング選択。"
+      },
+      "panchang": {
+        "description": "デイリーベーダ暦。"
+      }
+    },
+    "numerology_report": {
+      "title": "*数秘術分析*",
+      "life_path": "ライフパス番号 {number}：{interpretation}",
+      "expression": "表現番号 {number}：{interpretation}",
+      "soul_urge": "ソウルアージ番号 {number}：{interpretation}"
+    },
     "language": {
-      "title": "Language Settings",
-      "current": "Current language: {language}",
-      "changed": "Language changed successfully!"
+      "selection": "🌐 言語を選択 / اختر لغتك / Choose Your Language",
+      "prompt": "占星術リーディングで好みの言語を選択してください：",
+      "set_english": "✅ 言語を英語に設定！🇺🇸",
+      "set_hindi": "✅ 言語をヒンディー語に設定！🇮🇳",
+      "set_spanish": "✅ 言語をスペイン語に設定！🇪🇸",
+      "set_tamil": "✅ 言語をタミル語に設定！🇮🇳",
+      "set_arabic": "✅ 言語をアラビア語に設定！🇸🇦",
+      "set_french": "✅ 言語をフランス語に設定！🇫🇷",
+      "set_german": "✅ 言語をドイツ語に設定！🇩🇪",
+      "set_chinese": "✅ 言語を中国語に設定！🇨🇳",
+      "set_japanese": "✅ 言語を日本語に設定！🇯🇵"
     },
-    "notifications": {
-      "title": "Notification Settings",
-      "enabled": "Notifications enabled",
-      "disabled": "Notifications disabled"
+    "subscription": {
+      "plans": {
+        "prompt": "サブスクリプションプランを選択してください。",
+        "welcome_message": "{plan}へようこそ！",
+        "limit_reached": "制限に達しました（{used}/{limit}）。"
+      }
+    },
+    "palmistry": {
+      "introduction": "手相術は手のひらの線と丘を分析することで人生の旅の物語を明らかにします。"
+    },
+    "iching": {
+      "introduction": "古代の易経は六爻占いで深い知恵を提供します。"
+    },
+    "horary": {
+      "introduction": "卜時占星術は質問された正確な瞬間を分析することで特定の質問に答えます。"
+    },
+    "kabbalistic": {
+      "introduction": "カバラは生命の樹の神秘的教義と占星術を統合します。"
+    },
+    "mayan": {
+      "introduction": "マヤ占星術は神聖な暦と象形文字を精神指導に使用します。"
+    },
+    "celtic": {
+      "introduction": "ケルト占星術は自然と祖先の精神的な知恵と繋がります。"
+    },
+    "settings": {
+      "menu": "設定メニュー",
+      "profile": "プロフィール設定",
+      "language": "言語設定",
+      "notifications": "通知",
+      "privacy": "プライバシー"
+    },
+    "welcome": {
+      "greeting": "🌟 あなたの宇宙旅行へようこそ！\n\n私はあなたの個人宇宙コーチで、星の神秘をあなたとめぐる準備ができています。",
+      "greeting_extended": "🌟 Welcome to Your Cosmic Journey!\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\nChoose your preferred astrology tradition:"
+    },
+    "services": {
+      "western_astrology": "Western Astrology",
+      "western_description": "Birth charts transits horoscopes predictive analysis",
+      "vedic_astrology": "Vedic Astrology",
+      "vedic_description": "Kundli dasha remedies festivals numerology",
+      "divination_mystic": "Divination & Mystic",
+      "divination_description": "Tarot I Ching palmistry ancient wisdom traditions",
+      "relationships": "Relationships & Groups",
+      "relationships_description": "Compatibility family business partnerships",
+      "numerology": "Numerology & Special Readings",
+      "numerology_description": "Life path numbers name analysis special insights",
+      "settings": "Settings & Profile",
+      "settings_description": "Update profile language preferences"
     }
   },
-  "help": {
-    "title": "Help & Support",
-    "getting_started": "To get started, provide your birth details (date, time, place) for personalized readings.",
-    "commands": "Available commands:\n• /start - Restart conversation\n• /help - Show this help\n• /settings - Change preferences\n• /language - Change language",
-    "contact": "For support, contact us at support@astrobot.com"
-  },
-  "subscription": {
-    "free": {
-      "name": "Free",
-      "description": "Basic features with limited usage"
-    },
-    "essential": {
-      "name": "Essential",
-      "description": "Daily horoscopes and basic compatibility"
-    },
-    "premium": {
-      "name": "Premium",
-      "description": "Unlimited AI questions and priority support"
-    },
-    "vip": {
-      "name": "VIP",
-      "description": "Dedicated astrologer and exclusive features"
-    },
-    "upgrade": "Upgrade to {plan} for {price} {currency}/month",
-    "renewal": "Your subscription renews on {date}",
-    "expired": "Your subscription has expired. Renew now to continue enjoying premium features."
-  },
-  "payment": {
-    "processing": "Processing payment...",
-    "success": "Payment successful! Welcome to {plan}.",
-    "failed": "Payment failed. Please try again.",
-    "cancelled": "Payment cancelled.",
-    "refund": "Refund processed successfully."
-  },
-  "_metadata": {
-    "language": "ja",
-    "name": "Japanese",
-    "status": "placeholder",
-    "note": "[PLACEHOLDER - Full translation needed]",
-    "last_updated": "2025-10-28T06:19:50.533Z"
+  "buttons": {
+    "core_readings": "コアルーディング",
+    "divination": "卜筮",
+    "traditions": "古代伝統",
+    "language": "🌐 言語",
+    "back_main": "⬅️ メインに戻る",
+    "back_divination": "⬅️ 卜筮に戻る",
+    "back_traditions": "⬅️ 伝統に戻る",
+    "update_profile": "📝 プロフィール更新",
+    "get_daily_horoscope": "🌟 デイリーホロスコープ",
+    "show_birth_chart": "📊 出生図",
+    "get_synastry_analysis": "💕 相性",
+    "get_tarot_reading": "🃏 タロットリーディング",
+    "get_iching_reading": "🪙 易経オラクル",
+    "get_palmistry_analysis": "✋ 手相術",
+    "show_nadi_flow": "🔮 Nadiフロー",
+    "get_kabbalistic_analysis": "✡️ カバラ分析",
+    "get_mayan_analysis": "🗿 マヤ占星術",
+    "get_celtic_analysis": "🌿 ケルト占星術",
+    "get_horary_reading": "⏰ 卜時リーディング",
+    "show_chinese_flow": "🐉 中国フロー",
+    "get_numerology_analysis": "🔢 数秘術分析",
+    "get_astrocartography_analysis": "🗺️ 占星地図学",
+    "show_subscription_plans": "💎 サブスクリプションプラン",
+    "show_help_support": "🆘 ヘルプとサポート",
+    "show_user_profile": "👤 ユーザープロフィール",
+    "show_recent_readings": "📋 最近のリーディング",
+    "show_favorite_services": "⭐ お気に入りサービス",
+    "get_current_transits": "⭐ 現在の転移",
+    "get_hindu_astrology_analysis": "🕉️ ヒンドゥー占星術",
+    "start_profile_flow": "📝 プロフィール作成",
+    "choose_service": "Choose Service"
   }
 }

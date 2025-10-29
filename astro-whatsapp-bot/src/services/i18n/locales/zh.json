@@ -1,221 +1,216 @@
 {
-  "common": {
-    "welcome": "Welcome to Astro Bot! 🌟",
-    "goodbye": "Goodbye! Have a great day! 🙏",
-    "yes": "Yes",
-    "no": "No",
-    "ok": "OK",
-    "cancel": "Cancel",
-    "back": "Back",
-    "next": "Next",
-    "continue": "Continue",
-    "retry": "Retry",
-    "loading": "Loading...",
-    "error": "An error occurred. Please try again.",
-    "success": "Success!",
-    "confirm": "Confirm",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "view": "View",
-    "close": "Close"
-  },
-  "menu": {
-    "main": {
-      "title": "🌟 Astrology Services",
-      "description": "Choose your astrological service",
-      "items": {
-        "daily_horoscope": {
-          "title": "📅 Daily Horoscope",
-          "description": "Your personalized daily astrological guidance"
-        },
-        "birth_chart": {
-          "title": "📊 Birth Chart",
-          "description": "Complete natal chart analysis"
-        },
-        "compatibility": {
-          "title": "💕 Compatibility",
-          "description": "Check astrological compatibility"
-        },
-        "tarot_reading": {
-          "title": "🔮 Tarot Reading",
-          "description": "Get insights from tarot cards"
-        },
-        "numerology": {
-          "title": "🔢 Numerology",
-          "description": "Discover your numerological profile"
-        },
-        "palmistry": {
-          "title": "✋ Palmistry",
-          "description": "Hand reading analysis"
-        },
-        "settings": {
-          "title": "⚙️ Settings",
-          "description": "Language and preferences"
-        },
-        "help": {
-          "title": "❓ Help",
-          "description": "How to use Astro Bot"
-        }
-      }
-    }
-  },
-  "prompts": {
-    "birth_date": {
-      "request": "Please enter your birth date (DDMMYY or DDMMYYYY format)",
-      "invalid": "Invalid date format. Please use DDMMYY or DDMMYYYY format.",
-      "confirmed": "Birth date confirmed: {date}"
+  "messages": {
+    "errors": {
+      "generic_error": "发生错误。请重试。",
+      "main_menu_error": "主菜单不可用。",
+      "button_error": "未找到按钮。",
+      "flow_error": "发生流程错误。",
+      "clarification_error": "请稍等，我需要更多信息。",
+      "menu_action_error": "无法执行菜单操作。",
+      "subscription_error": "订阅错误。",
+      "layer_error": "发生错误。",
+      "generic": "出现问题。"
     },
-    "birth_time": {
-      "request": "Please enter your birth time (HHMM format)",
-      "invalid": "Invalid time format. Please use HHMM format.",
-      "confirmed": "Birth time confirmed: {time}"
-    },
-    "birth_place": {
-      "request": "Please enter your birth place (City, Country)",
-      "invalid": "Please provide a valid city and country.",
-      "confirmed": "Birth place confirmed: {place}"
-    },
-    "name": {
-      "request": "Please enter your name",
-      "invalid": "Please provide a valid name.",
-      "confirmed": "Name confirmed: {name}"
-    },
-    "language": {
-      "request": "Please select your preferred language",
-      "changed": "Language changed to {language}"
-    }
-  },
-  "astrology": {
-    "signs": {
-      "aries": "Aries",
-      "taurus": "Taurus",
-      "gemini": "Gemini",
-      "cancer": "Cancer",
-      "leo": "Leo",
-      "virgo": "Virgo",
-      "libra": "Libra",
-      "scorpio": "Scorpio",
-      "sagittarius": "Sagittarius",
-      "capricorn": "Capricorn",
-      "aquarius": "Aquarius",
-      "pisces": "Pisces"
-    },
-    "planets": {
-      "sun": "Sun",
-      "moon": "Moon",
-      "mercury": "Mercury",
-      "venus": "Venus",
-      "mars": "Mars",
-      "jupiter": "Jupiter",
-      "saturn": "Saturn",
-      "uranus": "Uranus",
-      "neptune": "Neptune",
-      "pluto": "Pluto"
-    },
-    "houses": {
-      "1": "1st House (Self)",
-      "2": "2nd House (Wealth)",
-      "3": "3rd House (Communication)",
-      "4": "4th House (Home)",
-      "5": "5th House (Creativity)",
-      "6": "6th House (Health)",
-      "7": "7th House (Relationships)",
-      "8": "8th House (Transformation)",
-      "9": "9th House (Travel)",
-      "10": "10th House (Career)",
-      "11": "11th House (Friends)",
-      "12": "12th House (Spirituality)"
-    },
-    "horoscope": {
-      "daily": {
-        "title": "Daily Horoscope for {sign}",
-        "general": "🌟 *{sign} Daily Guidance*\n\n{prediction}\n\nLucky Color: {color}\nLucky Number: {number}",
-        "love": "💕 *Love & Relationships:* {advice}",
-        "career": "💼 *Career & Finance:* {advice}",
-        "health": "🏥 *Health & Wellness:* {advice}"
-      }
+    "daily_horoscope": {
+      "title": "*{sunSign} 每日星座运势* - {date}",
+      "general": "综合运势：{general}",
+      "lucky_color": "幸运颜色：{color}",
+      "lucky_number": "幸运数字：{number}",
+      "love": "爱情：{advice}",
+      "career": "事业：{advice}",
+      "finance": "财务：{advice}",
+      "health": "健康：{advice}",
+      "next": "\n_来源：吠陀占星术_",
+      "error": "生成每日星座运势时出错。"
     },
     "birth_chart": {
-      "title": "Birth Chart Analysis",
-      "sun_sign": "Sun Sign: {sign}",
-      "moon_sign": "Moon Sign: {sign}",
-      "rising_sign": "Rising Sign: {sign}",
-      "description": "Your complete astrological profile shows {sun_sign} energy with {moon_sign} emotional nature and {rising_sign} outward personality."
+      "incomplete_profile": "我需要您的出生数据来创建您的出生图。请提供：\n• 出生日期（格式 DDMMYY 或 DDMMYYYY）\n• 出生时间（格式 HHMM）\n• 出生地点（城市，省份，国家）\n\n例如：150690 或 15061990, 1430, 上海, 中国",
+      "error": "生成出生图时出错。"
+    },
+    "subscription_plans": {
+      "title": "*选择您的订阅计划*",
+      "essential": "基础计划 - ¥50/月",
+      "premium": "高级计划 - ¥100/月"
+    },
+    "menu": {
+      "body": "欢迎使用您的个人宇宙教练。选择一个选项：",
+      "button": "选择选项",
+      "astrology_traditions": "🌟 Astrology Traditions"
+    },
+    "buttons": {
+      "main_menu": "🏠 主菜单",
+      "back_main": "🏠 主菜单",
+      "another_reading": "🔄 另一个解读",
+      "update_profile": "📝 更新资料",
+      "get_birth_chart": "📊 获取出生图",
+      "try_again": "🔄 再次尝试",
+      "detailed_reading": "📖 详细解读",
+      "cast_hexagram": "🪙 投掷六爻",
+      "learn_more": "📚 了解更多",
+      "ask_question": "❓ 提出问题",
+      "see_examples": "📝 查看示例",
+      "get_electional": "📅 获取择日",
+      "day_sign": "👑 白天符号",
+      "calendar": "📅 日历",
+      "birth_chart": "📊 出生图",
+      "tree_of_life": "🌳 生命之树",
+      "get_panchang": "📅 获取潘chang",
+      "daily_horoscope": "🌟 每日星座运势",
+      "tr_main": "🌟 每日解读",
+      "tr_tarot": "🃏 塔罗牌",
+      "tr_birthchart": "📊 出生图",
+      "tr_compatibility": "💕 相容性",
+      "tr_settings": "⚙️ 设置"
     },
     "compatibility": {
-      "title": "Compatibility Analysis",
-      "score": "Compatibility Score: {score}%",
-      "excellent": "Excellent Match! 🌟",
-      "good": "Good Compatibility 👍",
-      "neutral": "Neutral Compatibility 🤔",
-      "challenging": "Challenging Combination ⚠️",
-      "description": "{person1} and {person2} show {rating} compatibility. {details}"
-    }
-  },
-  "errors": {
-    "generic": "Sorry, I encountered an error. Please try again.",
-    "invalid_input": "Invalid input. Please check your response and try again.",
-    "service_unavailable": "This service is temporarily unavailable. Please try again later.",
-    "user_not_found": "User not found. Please start over.",
-    "invalid_date": "Please provide a valid date in DD/MM/YYYY format.",
-    "invalid_time": "Please provide a valid time in HH:MM format.",
-    "location_not_found": "Location not found. Please provide a valid city and country.",
-    "payment_failed": "Payment processing failed. Please try again.",
-    "subscription_expired": "Your subscription has expired. Please renew to continue.",
-    "rate_limit": "Too many requests. Please wait a moment and try again."
-  },
-  "settings": {
+      "analysis_prompt": "分享您伴侣的出生数据（DDMMYY，HHMM，城市，国家）：",
+      "incomplete_profile": "请先完成您的资料进行相容性分析。",
+      "partner_prompt": "分享您伴侣的出生数据（DDMMYY 或格式）",
+      "error": "相容性分析出错。"
+    },
+    "astrology_services": {
+      "hindu_astrology": {
+        "error": "生成印度教占星术时出错。"
+      },
+      "prashna_astrology": {
+        "description": "*普拉什那占星术*\n通过星辰的指引！"
+      },
+      "ashtakavarga": {
+        "incomplete_profile": "完成您的资料以获得 Ashtakavarga。",
+        "description": "8 次力量系统分析。"
+      },
+      "kaal_sarp": {
+        "incomplete_profile": "完成您的资料以获得 Kaal Sarp Dosha。",
+        "description": "Kaal Sarp Dosha 分析。"
+      },
+      "sade_sati": {
+        "incomplete_profile": "完成您的资料以获得 Sade Sati。",
+        "description": "Sade Sati 分析。"
+      },
+      "vedic_remedies": {
+        "description": "吠陀疗法解决行星问题。"
+      },
+      "islamic_astrology": {
+        "description": "伊斯兰占星术的观点。"
+      },
+      "vimshottari_dasha": {
+        "incomplete_profile": "完成您的资料以获得 Vimshottari Dasha。",
+        "description": "120 年行星周期分析。"
+      },
+      "jaimini_astrology": {
+        "incomplete_profile": "完成您的资料以获得 Jaimini 占星术。",
+        "description": "Jaimini 占星术分析。"
+      },
+      "hindu_festivals": {
+        "description": "印度教节日日历。"
+      },
+      "muhurta": {
+        "description": "选择吉祥时间。"
+      },
+      "panchang": {
+        "description": "每日吠陀日历。"
+      }
+    },
+    "numerology_report": {
+      "title": "*命理分析*",
+      "life_path": "生命之路数字 {number}：{interpretation}",
+      "expression": "表达数字 {number}：{interpretation}",
+      "soul_urge": "灵魂愿望数字 {number}：{interpretation}"
+    },
     "language": {
-      "title": "Language Settings",
-      "current": "Current language: {language}",
-      "changed": "Language changed successfully!"
+      "selection": "🌐 选择您的语言 / اختر لغتك / Choose Your Language",
+      "prompt": "选择您偏好的占星解读语言：",
+      "set_english": "✅ 语言设置为英语！🇺🇸",
+      "set_hindi": "✅ 语言设置为印地语！🇮🇳",
+      "set_spanish": "✅ 语言设置为西班牙语！🇪🇸",
+      "set_tamil": "✅ 语言设置为泰米尔语！🇮🇳",
+      "set_arabic": "✅ 语言设置为阿拉伯语！🇸🇦",
+      "set_french": "✅ 语言设置为法语！🇫🇷",
+      "set_german": "✅ 语言设置为德语！🇩🇪",
+      "set_chinese": "✅ 语言设置为中文！🇨🇳"
     },
-    "notifications": {
-      "title": "Notification Settings",
-      "enabled": "Notifications enabled",
-      "disabled": "Notifications disabled"
+    "subscription": {
+      "plans": {
+        "prompt": "选择订阅计划。",
+        "welcome_message": "欢迎加入 {plan}！",
+        "limit_reached": "您已达到您的限制（{used}/{limit}）。"
+      }
+    },
+    "palmistry": {
+      "introduction": "手相术通过分析手掌上的纹路和突起来揭示您的人生历程故事。"
+    },
+    "iching": {
+      "introduction": "古老的易经通过卦象解读提供深刻的智慧。"
+    },
+    "horary": {
+      "introduction": "择时占星术通过分析提出问题的确切时刻来回答特定问题。"
+    },
+    "kabbalistic": {
+      "introduction": "卡巴拉将占星术与生命之树的神秘教义相结合。"
+    },
+    "mayan": {
+      "introduction": "玛雅占星术使用神圣的日历和符号进行精神指导。"
+    },
+    "celtic": {
+      "introduction": "凯尔特占星术与自然和祖先的精神智慧相连。"
+    },
+    "settings": {
+      "menu": "设置菜单",
+      "profile": "资料设置",
+      "language": "语言设置",
+      "notifications": "通知",
+      "privacy": "隐私"
+    },
+    "welcome": {
+      "greeting": "🌟 欢迎您开启宇宙之旅！\n\n我是您的个人宇宙教练，准备带领您穿越星辰的奥秘。",
+      "greeting_extended": "🌟 Welcome to Your Cosmic Journey!\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\nChoose your preferred astrology tradition:"
+    },
+    "services": {
+      "western_astrology": "Western Astrology",
+      "western_description": "Birth charts transits horoscopes predictive analysis",
+      "vedic_astrology": "Vedic Astrology",
+      "vedic_description": "Kundli dasha remedies festivals numerology",
+      "divination_mystic": "Divination & Mystic",
+      "divination_description": "Tarot I Ching palmistry ancient wisdom traditions",
+      "relationships": "Relationships & Groups",
+      "relationships_description": "Compatibility family business partnerships",
+      "numerology": "Numerology & Special Readings",
+      "numerology_description": "Life path numbers name analysis special insights",
+      "settings": "Settings & Profile",
+      "settings_description": "Update profile language preferences"
     }
   },
-  "help": {
-    "title": "Help & Support",
-    "getting_started": "To get started, provide your birth details (date, time, place) for personalized readings.",
-    "commands": "Available commands:\n• /start - Restart conversation\n• /help - Show this help\n• /settings - Change preferences\n• /language - Change language",
-    "contact": "For support, contact us at support@astrobot.com"
-  },
-  "subscription": {
-    "free": {
-      "name": "Free",
-      "description": "Basic features with limited usage"
-    },
-    "essential": {
-      "name": "Essential",
-      "description": "Daily horoscopes and basic compatibility"
-    },
-    "premium": {
-      "name": "Premium",
-      "description": "Unlimited AI questions and priority support"
-    },
-    "vip": {
-      "name": "VIP",
-      "description": "Dedicated astrologer and exclusive features"
-    },
-    "upgrade": "Upgrade to {plan} for {price} {currency}/month",
-    "renewal": "Your subscription renews on {date}",
-    "expired": "Your subscription has expired. Renew now to continue enjoying premium features."
-  },
-  "payment": {
-    "processing": "Processing payment...",
-    "success": "Payment successful! Welcome to {plan}.",
-    "failed": "Payment failed. Please try again.",
-    "cancelled": "Payment cancelled.",
-    "refund": "Refund processed successfully."
-  },
-  "_metadata": {
-    "language": "zh",
-    "name": "Chinese",
-    "status": "placeholder",
-    "note": "[PLACEHOLDER - Full translation needed]",
-    "last_updated": "2025-10-28T06:19:50.531Z"
+  "buttons": {
+    "core_readings": "核心解读",
+    "divination": "卜筮",
+    "traditions": "古代传统",
+    "language": "🌐 语言",
+    "back_main": "⬅️ 返回主页",
+    "back_divination": "⬅️ 返回卜筮",
+    "back_traditions": "⬅️ 返回传统",
+    "update_profile": "📝 更新资料",
+    "get_daily_horoscope": "🌟 每日星座运势",
+    "show_birth_chart": "📊 出生图",
+    "get_synastry_analysis": "💕 相容性",
+    "get_tarot_reading": "🃏 塔罗牌解读",
+    "get_iching_reading": "🪙 易经神谕",
+    "get_palmistry_analysis": "✋ 手相术",
+    "show_nadi_flow": "🔮 Nadi 流",
+    "get_kabbalistic_analysis": "✡️ 卡巴拉分析",
+    "get_mayan_analysis": "🗿 玛雅占星术",
+    "get_celtic_analysis": "🌿 凯尔特占星术",
+    "get_horary_reading": "⏰ 择时解读",
+    "show_chinese_flow": "🐉 中国流",
+    "get_numerology_analysis": "🔢 命理分析",
+    "get_astrocartography_analysis": "🗺️ 占星地图学",
+    "show_subscription_plans": "💎 订阅计划",
+    "show_help_support": "🆘 帮助与支持",
+    "show_user_profile": "👤 用户资料",
+    "show_recent_readings": "📋 近期解读",
+    "show_favorite_services": "⭐ 最爱服务",
+    "get_current_transits": "⭐ 当前过境",
+    "get_hindu_astrology_analysis": "🕉️ 印度教占星术",
+    "start_profile_flow": "📝 创建资料",
+    "choose_service": "Choose Service"
   }
 }

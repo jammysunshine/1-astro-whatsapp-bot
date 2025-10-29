@@ -1,27 +1,185 @@
 {
   "messages": {
+    "errors": {
+      "generic_error": "An error occurred. Please try again.",
+      "main_menu_error": "Main menu is not available.",
+      "button_error": "Button not found.",
+      "flow_error": "Flow error occurred.",
+      "clarification_error": "Wait, I need more information.",
+      "menu_action_error": "Could not execute menu action.",
+      "subscription_error": "Subscription error.",
+      "layer_error": "An error occurred.",
+      "generic": "Something went wrong."
+    },
     "daily_horoscope": {
-      "title": "🌟 Daily Horoscope for {sunSign}",
-      "general": "{general}",
-      "lucky_color": "🎨 Lucky Color: {color}",
-      "lucky_number": "🔢 Lucky Number: {number}",
-      "love": "💕 Love: {advice}",
-      "career": "💼 Career: {advice}",
-      "finance": "💰 Finance: {advice}",
-      "health": "🏥 Health: {advice}",
-      "next": "\n✨ Tomorrow's Outlook: Stay positive and trust your intuition!"
+      "title": "*{sunSign} Daily Horoscope* - {date}",
+      "general": "General: {general}",
+      "lucky_color": "Lucky Color: {color}",
+      "lucky_number": "Lucky Number: {number}",
+      "love": "Love: {advice}",
+      "career": "Career: {advice}",
+      "finance": "Finance: {advice}",
+      "health": "Health: {advice}",
+      "next": "\n_Source: Vedic Astrology_",
+      "error": "Error generating daily horoscope."
     },
     "birth_chart": {
-      "incomplete_profile": "I need your birth details to create your birth chart. Please provide:\n• Birth date (DDMMYY or DDMMYYYY format)\n• Birth time (HHMM format)\n• Birth place (City, Country)\n\nExample: 150690 or 15061990, 1430, Mumbai, India"
+      "incomplete_profile": "I need your birth details to create your birth chart. Provide:\n• Birth date (DDMMYY or DDMMYYYY format)\n• Birth time (HHMM format)\n• Birth place (city, country)\n\nExample: 150690 or 15061990, 1430, Mumbai, India",
+      "error": "Error generating birth chart."
     },
-    "welcome": {
-      "greeting": "🌟 Welcome to Your Cosmic Journey!\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars."
+    "subscription_plans": {
+      "title": "*Choose Your Subscription Plan*",
+      "essential": "Essential Plan - $5/month",
+      "premium": "Premium Plan - $10/month"
+    },
+    "menu": {
+      "body": "Welcome to your Personal Cosmic Coach. Choose an option:",
+      "button": "Choose Option"
+    },
+    "buttons": {
+      "main_menu": "🏠 Main Menu",
+      "back_main": "🏠 Main Menu",
+      "another_reading": "🔄 Another Reading",
+      "update_profile": "📝 Update Profile",
+      "get_birth_chart": "📊 Get Birth Chart",
+      "try_again": "🔄 Try Again",
+      "detailed_reading": "📖 Detailed Reading",
+      "another_reading": "🔄 Another Reading",
+      "cast_hexagram": "🪙 Cast Hexagram",
+      "learn_more": "📚 Learn More",
+      "ask_question": "❓ Ask Question",
+      "see_examples": "📝 See Examples",
+      "get_electional": "📅 Get Electional",
+      "day_sign": "👑 Day Sign",
+      "calendar": "📅 Calendar",
+      "birth_chart": "📊 Birth Chart",
+      "tree_of_life": "🌳 Tree of Life",
+      "get_panchang": "📅 Get Panchang",
+      "daily_horoscope": "🌟 Daily Horoscope",
+      "tr_main": "🌟 Daily Reading",
+      "tr_tarot": "🃏 Tarot",
+      "tr_birthchart": "📊 Birth Chart",
+      "tr_compatibility": "💕 Compatibility",
+      "tr_settings": "⚙️ Settings"
+    },
+    "compatibility": {
+      "analysis_prompt": "Share your partner's birth details (DDMMYY, HHMM, city, country):",
+      "incomplete_profile": "Complete your profile first for compatibility analysis.",
+      "partner_prompt": "Share your partner's birth details (DDMMYY or format)",
+      "error": "Error in compatibility analysis."
+    },
+    "astrology_services": {
+      "hindu_astrology": {
+        "error": "Error generating Hindu astrology."
+      },
+      "prashna_astrology": {
+        "description": "*Prashna Astrology*\nDivine guidance through the stars!"
+      },
+      "ashtakavarga": {
+        "incomplete_profile": "Complete your profile for Ashtakavarga.",
+        "description": "Analysis of 8-fold power system."
+      },
+      "kaal_sarp": {
+        "incomplete_profile": "Complete your profile for Kaal Sarp Dosha.",
+        "description": "Analysis of Kaal Sarp Dosha."
+      },
+      "sade_sati": {
+        "incomplete_profile": "Complete your profile for Sade Sati.",
+        "description": "Analysis of Sade Sati."
+      },
+      "vedic_remedies": {
+        "description": "Vedic remedies for planetary problems."
+      },
+      "islamic_astrology": {
+        "description": "Perspectives of Islamic astrology."
+      },
+      "vimshottari_dasha": {
+        "incomplete_profile": "Complete your profile for Vimshottari Dasha.",
+        "description": "Analysis of 120-year planetary period."
+      },
+      "jaimini_astrology": {
+        "incomplete_profile": "Complete your profile for Jaimini astrology.",
+        "description": "Analysis of Jaimini astrology."
+      },
+      "hindu_festivals": {
+        "description": "Calendar of Hindu festivals."
+      },
+      "muhurta": {
+        "description": "Selection of auspicious timing."
+      },
+      "panchang": {
+        "description": "Daily Vedic calendar."
+      }
+    },
+    "numerology_report": {
+      "title": "*Numerology Analysis*",
+      "life_path": "Life Path Number {number}: {interpretation}",
+      "expression": "Expression Number {number}: {interpretation}",
+      "soul_urge": "Soul Urge Number {number}: {interpretation}"
     },
     "language": {
       "selection": "🌐 Choose Your Language / اختر لغتك / Choose Your Language",
-      "prompt": "Select your preferred language for astrology readings:",
+      "prompt": "Choose your preferred language for astrology readings:",
       "set_english": "✅ Language set to English! 🇺🇸",
-      "set_hindi": "✅ भाषा हिंदी में सेट की गई! 🇮🇳"
+      "set_hindi": "✅ Language set to Hindi! 🇮🇳",
+      "set_spanish": "✅ Language set to Spanish! 🇪🇸",
+      "set_tamil": "✅ Language set to Tamil! 🇮🇳",
+      "set_arabic": "✅ Language set to Arabic! 🇸🇦",
+      "set_french": "✅ Language set to French! 🇫🇷",
+      "set_german": "✅ Language set to German! 🇩🇪"
+    },
+    "subscription": {
+      "plans": {
+        "prompt": "Choose a subscription plan.",
+        "welcome_message": "Welcome to {plan}!",
+        "limit_reached": "You've reached your limit ({used}/{limit})."
+      }
+    },
+    "palmistry": {
+      "introduction": "Palmistry reveals the story of your life's journey through analyzing the lines and mounts on your palm."
+    },
+    "iching": {
+      "introduction": "The ancient I Ching offers deep wisdom through hexagram readings."
+    },
+    "horary": {
+      "introduction": "Horary astrology answers specific questions by analyzing the exact moment they are asked."
+    },
+    "kabbalistic": {
+      "introduction": "Kabbalah integrates astrology with the mystical teachings of the Tree of Life."
+    },
+    "mayan": {
+      "introduction": "Mayan astrology uses sacred calendars and glyphs for spiritual guidance."
+    },
+    "celtic": {
+      "introduction": "Celtic astrology connects with nature and the spiritual wisdom of ancestors."
+    },
+    "settings": {
+      "menu": "Settings Menu",
+      "profile": "Profile Settings",
+      "language": "Language Settings",
+      "notifications": "Notifications",
+      "privacy": "Privacy"
+    },
+    "welcome": {
+      "greeting": "🌟 Welcome to Your Cosmic Journey!\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.",
+      "greeting_extended": "🌟 Welcome to Your Cosmic Journey!\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\nChoose your preferred astrology tradition:"
+    },
+    "menu": {
+      "astrology_traditions": "🌟 Astrology Traditions"
+    },
+    "services": {
+      "western_astrology": "Western Astrology",
+      "western_description": "Birth charts transits horoscopes predictive analysis",
+      "vedic_astrology": "Vedic Astrology",
+      "vedic_description": "Kundli dasha remedies festivals numerology",
+      "divination_mystic": "Divination & Mystic",
+      "divination_description": "Tarot I Ching palmistry ancient wisdom traditions",
+      "relationships": "Relationships & Groups",
+      "relationships_description": "Compatibility family business partnerships",
+      "numerology": "Numerology & Special Readings",
+      "numerology_description": "Life path numbers name analysis special insights",
+      "settings": "Settings & Profile",
+      "settings_description": "Update profile language preferences"
     }
   },
   "buttons": {
@@ -29,10 +187,32 @@
     "divination": "Divination",
     "traditions": "Ancient Traditions",
     "language": "🌐 Language",
-    "back_main": "Back to Main",
-    "back_divination": "Back to Divination",
-    "back_traditions": "Back to Traditions",
+    "choose_service": "Choose Service",
+    "back_main": "⬅️ Back to Main",
+    "back_divination": "⬅️ Back to Divination",
+    "back_traditions": "⬅️ Back to Traditions",
     "update_profile": "📝 Update Profile",
-    "another_reading": "🔄 Another Reading"
+    "get_daily_horoscope": "🌟 Daily Horoscope",
+    "show_birth_chart": "📊 Birth Chart",
+    "get_synastry_analysis": "💕 Compatibility",
+    "get_tarot_reading": "🃏 Tarot Reading",
+    "get_iching_reading": "🪙 I Ching Oracle",
+    "get_palmistry_analysis": "✋ Palmistry",
+    "show_nadi_flow": "🔮 Nadi Flow",
+    "get_kabbalistic_analysis": "✡️ Kabbalistic Analysis",
+    "get_mayan_analysis": "🗿 Mayan Astrology",
+    "get_celtic_analysis": "🌿 Celtic Astrology",
+    "get_horary_reading": "⏰ Horary Reading",
+    "show_chinese_flow": "🐉 Chinese Flow",
+    "get_numerology_analysis": "🔢 Numerology Analysis",
+    "get_astrocartography_analysis": "🗺️ Astrocartography",
+    "show_subscription_plans": "💎 Subscription Plans",
+    "show_help_support": "🆘 Help & Support",
+    "show_user_profile": "👤 User Profile",
+    "show_recent_readings": "📋 Recent Readings",
+    "show_favorite_services": "⭐ Favorite Services",
+    "get_current_transits": "⭐ Current Transits",
+    "get_hindu_astrology_analysis": "🕉️ Hindu Astrology",
+    "start_profile_flow": "📝 Create Profile"
   }
 }

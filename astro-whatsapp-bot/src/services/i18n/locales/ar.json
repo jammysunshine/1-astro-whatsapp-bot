@@ -1,5 +1,16 @@
 {
   "messages": {
+    "errors": {
+      "generic_error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "main_menu_error": "القائمة الرئيسية غير متاحة.",
+      "button_error": "لم يتم العثور على الزر.",
+      "flow_error": "حدث خطأ في التدفق.",
+      "clarification_error": "انتظار، أحتاج إلى مزيد من المعلومات.",
+      "menu_action_error": "تعذر تنفيذ إجراء القائمة.",
+      "subscription_error": "خطأ في الاشتراك.",
+      "layer_error": "حدث خطأ.",
+      "generic": "حدث خطأ ما."
+    },
     "daily_horoscope": {
       "title": "🌟 التنبؤ اليومي لـ {sunSign}",
       "general": "{general}",
@@ -9,20 +20,162 @@
       "career": "💼 المهنة: {advice}",
       "finance": "💰 المال: {advice}",
       "health": "🏥 الصحة: {advice}",
-      "next": "\n✨ توقعات الغد: كن إيجابياً وثق بغريزتك!"
+      "next": "\n✨ توقعات الغد: كن إيجابياً وثق بغريزتك!",
+      "error": "خطأ في إنشاء التنبؤ اليومي."
     },
     "birth_chart": {
-      "incomplete_profile": "أحتاج إلى تفاصيل ميلادك لإنشاء مخطط ميلادك. يرجى تقديم:\n• تاريخ الميلاد (تنسيق DDMMYY أو DDMMYYYY)\n• وقت الميلاد (تنسيق HHMM)\n• مكان الميلاد (المدينة، البلد)\n\nمثال: 150690 أو 15061990, 1430, القاهرة, مصر"
+      "incomplete_profile": "أحتاج إلى تفاصيل ميلادك لإنشاء مخطط ميلادك. يرجى تقديم:\n• تاريخ الميلاد (تنسيق DDMMYY أو DDMMYYYY)\n• وقت الميلاد (تنسيق HHMM)\n• مكان الميلاد (المدينة، البلد)\n\nمثال: 150690 أو 15061990, 1430, القاهرة, مصر",
+      "error": "خطأ في إنشاء مخطط الميلاد."
     },
-    "welcome": {
-      "greeting": "🌟 مرحباً برحلتك الكونية!\n\nأنا مدربك الكوني الشخصي، جاهز لإرشادك من خلال أسرار النجوم."
+    "subscription_plans": {
+      "title": "*اختر خطة اشتراكك*",
+      "essential": "الخطة الأساسية - $5/شهر",
+      "premium": "الخطة المميزة - $10/شهر"
+    },
+    "menu": {
+      "body": "مرحباً بك في مدربك الكوني الشخصي! اختر خياراً:",
+      "button": "اختر الخيار",
+      "astrology_traditions": "🌟 Astrology Traditions"
+    },
+    "buttons": {
+      "main_menu": "🏠 القائمة الرئيسية",
+      "back_main": "🏠 القائمة الرئيسية",
+      "another_reading": "🔄 قراءة أخرى",
+      "update_profile": "📝 تحديث الملف الشخصي",
+      "get_birth_chart": "📊 احصل على مخطط الميلاد",
+      "try_again": "🔄 حاول مرة أخرى",
+      "detailed_reading": "📖 قراءة تفصيلية",
+      "cast_hexagram": "🪙 ارسم الهكسغرام",
+      "learn_more": "📚 تعرف أكثر",
+      "ask_question": "❓ اسأل سؤالاً",
+      "see_examples": "📝 انظر الأمثلة",
+      "get_electional": "📅 احصل على الانتخابي",
+      "day_sign": "👑 علامة اليوم",
+      "calendar": "📅 التقويم",
+      "birth_chart": "📊 مخطط الميلاد",
+      "tree_of_life": "🌳 شجرة الحياة",
+      "get_panchang": "📅 احصل على البنشاج",
+      "daily_horoscope": "🌟 التنبؤ اليومي",
+      "tr_main": "🌟 القراءة اليومية",
+      "tr_tarot": "🃏 الطاروت",
+      "tr_birthchart": "📊 مخطط الميلاد",
+      "tr_compatibility": "💕 التوافق",
+      "tr_settings": "⚙️ الإعدادات"
+    },
+    "compatibility": {
+      "analysis_prompt": "شارك تفاصيل ميلاد شريكك (DDMMYY، HHMM، المدينة، البلد):",
+      "incomplete_profile": "أكمل ملفك الشخصي أولاً لتحليل التوافق.",
+      "partner_prompt": "شارك تفاصيل ميلاد شريكك (DDMMYY أو التنسيق)",
+      "error": "خطأ في تحليل التوافق."
+    },
+    "astrology_services": {
+      "hindu_astrology": {
+        "error": "خطأ في إنشاء علم الفلك الهندي."
+      },
+      "prashna_astrology": {
+        "description": "*فلك البراشنا*\nإرشاد إلهي من خلال النجوم!"
+      },
+      "ashtakavarga": {
+        "incomplete_profile": "أكمل ملفك الشخصي لـ Ashtakavarga.",
+        "description": "تحليل Ashtakavarga."
+      },
+      "kaal_sarp": {
+        "incomplete_profile": "أكمل ملفك الشخصي لـ Kaal Sarp Dosha.",
+        "description": "تحليل Kaal Sarp Dosha."
+      },
+      "sade_sati": {
+        "incomplete_profile": "أكمل ملفك الشخصي لـ Sade Sati.",
+        "description": "تحليل Sade Sati."
+      },
+      "vedic_remedies": {
+        "description": "علاجات فيدا للمشاكل الكواكبية."
+      },
+      "islamic_astrology": {
+        "description": "رؤى علم الفلك الإسلامي."
+      },
+      "vimshottari_dasha": {
+        "incomplete_profile": "أكمل ملفك الشخصي لـ Vimshottari Dasha.",
+        "description": "تحليل Vimshottari Dasha."
+      },
+      "jaimini_astrology": {
+        "incomplete_profile": "أكمل ملفك الشخصي لفلك Jaimini.",
+        "description": "تحليل فلك Jaimini."
+      },
+      "hindu_festivals": {
+        "description": "تقويم المهرجانات الهندية."
+      },
+      "muhurta": {
+        "description": "حساب التوقيت المؤاتي."
+      },
+      "panchang": {
+        "description": "الأرشيف الهندي."
+      }
+    },
+    "numerology_report": {
+      "title": "*تحليل الرقميات*",
+      "life_path": "رقم مسار الحياة {number}: {interpretation}",
+      "expression": "رقم التعبير {number}: {interpretation}",
+      "soul_urge": "رقم رغبة النفس {number}: {interpretation}"
     },
     "language": {
       "selection": "🌐 اختر لغتك / Choose Your Language / اختر لغتك",
       "prompt": "اختر لغتك المفضلة لقراءات التنجيم:",
       "set_english": "✅ Language set to English! 🇺🇸",
-      "set_hindi": "✅ भाषा हिंदी में सेट की गई! 🇮🇳",
-      "set_arabic": "✅ تم تعيين اللغة إلى العربية! 🇸🇦"
+      "set_hindi": "✅ تم تعيين اللغة إلى الهندية! 🇮🇳",
+      "set_arabic": "✅ تم تعيين اللغة إلى العربية! 🇸🇦",
+      "set_tamil": "✅ تم تعيين اللغة إلى التاميل! 🇮🇳",
+      "set_spanish": "✅ تم تعيين اللغة إلى الإسبانية! 🇪🇸",
+      "set_french": "✅ تم تعيين اللغة إلى الفرنسية! 🇫🇷"
+    },
+    "subscription": {
+      "plans": {
+        "prompt": "اختر خطة اشتراك.",
+        "welcome_message": "مرحباً بك في {plan}!",
+        "limit_reached": "لقد وصلت إلى حدك ({used}/{limit})."
+      }
+    },
+    "palmistry": {
+      "introduction": "الكف يروي قصة مسار حياتك من خلال تحليل الخطوط والتلال على راحتيك."
+    },
+    "iching": {
+      "introduction": "كتاب التغييرات القديم يقدم حكمة عميقة من خلال قراءات الهكسغرام."
+    },
+    "horary": {
+      "introduction": "الفلك التوقيتي يجيب على أسئلة محددة بتحليل اللحظة الدقيقة المطروحة فيها."
+    },
+    "kabbalistic": {
+      "introduction": "إن الكابالا تندمج علم الفلك مع تعاليم شجرة الحياة الغامضة."
+    },
+    "mayan": {
+      "introduction": "علم الفلك المايا يستخدم التقاويم والرموز المقدسة للإرشاد الروحي."
+    },
+    "celtic": {
+      "introduction": "علم الفلك الكلتي يربط الطبيعة والحكم الروحي للأجداد."
+    },
+    "settings": {
+      "menu": "قائمة الإعدادات",
+      "profile": "إعدادات الملف الشخصي",
+      "language": "إعدادات اللغة",
+      "notifications": "الإشعارات",
+      "privacy": "الخصوصية"
+    },
+    "welcome": {
+      "greeting": "🌟 مرحباً برحلتك الكونية!\n\nأنا مدربك الكوني الشخصي، جاهز لإرشادك من خلال أسرار النجوم.",
+      "greeting_extended": "🌟 Welcome to Your Cosmic Journey!\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\nChoose your preferred astrology tradition:"
+    },
+    "services": {
+      "western_astrology": "Western Astrology",
+      "western_description": "Birth charts transits horoscopes predictive analysis",
+      "vedic_astrology": "Vedic Astrology",
+      "vedic_description": "Kundli dasha remedies festivals numerology",
+      "divination_mystic": "Divination & Mystic",
+      "divination_description": "Tarot I Ching palmistry ancient wisdom traditions",
+      "relationships": "Relationships & Groups",
+      "relationships_description": "Compatibility family business partnerships",
+      "numerology": "Numerology & Special Readings",
+      "numerology_description": "Life path numbers name analysis special insights",
+      "settings": "Settings & Profile",
+      "settings_description": "Update profile language preferences"
     }
   },
   "buttons": {
@@ -33,6 +186,29 @@
     "back_main": "العودة للرئيسية",
     "back_divination": "العودة للتنجيم",
     "back_traditions": "العودة للتقاليد",
-    "update_profile": "📝 تحديث الملف الشخصي"
+    "update_profile": "📝 تحديث الملف الشخصي",
+    "get_daily_horoscope": "🌟 التنبؤ اليومي",
+    "show_birth_chart": "📊 مخطط الميلاد",
+    "get_synastry_analysis": "💕 التوافق",
+    "get_tarot_reading": "🃏 قراءة الطاروت",
+    "get_iching_reading": "🪙 قراءة I Ching",
+    "get_palmistry_analysis": "✋ تحليل الكف",
+    "show_nadi_flow": "🔮 التدفق الناضي",
+    "get_kabbalistic_analysis": "✡️ التحليل الكابالي",
+    "get_mayan_analysis": "🗿 التحليل المايا",
+    "get_celtic_analysis": "🌿 التحليل الكلتي",
+    "get_horary_reading": "⏰ القراءة التوقيتية",
+    "show_chinese_flow": "🐉 التدفق الصيني",
+    "get_numerology_analysis": "🔢 التحليل العددي",
+    "get_astrocartography_analysis": "🗺️ علم الخرائط النجمي",
+    "show_subscription_plans": "💎 خطط الاشتراك",
+    "show_help_support": "🆘 المساعدة والدعم",
+    "show_user_profile": "👤 الملف الشخصي",
+    "show_recent_readings": "📋 القراءات الأخيرة",
+    "show_favorite_services": "⭐ الخدمات المفضلة",
+    "get_current_transits": "⭐ العبورات الحالية",
+    "get_hindu_astrology_analysis": "🕉️ الفلك الهندي",
+    "start_profile_flow": "📝 إنشاء الملف الشخصي",
+    "choose_service": "Choose Service"
   }
 }

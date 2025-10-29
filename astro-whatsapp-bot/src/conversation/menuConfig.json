@@ -1,42 +1,42 @@
 {
-    "main_menu": {
-      "type": "list",
-     "button": "Choose Service",
-     "body": "🌟 *Welcome to Your Cosmic Journey!*\n\nI'm your Personal Cosmic Coach, ready to guide you through the mysteries of the stars.\n\nChoose your preferred astrology tradition:",
+   "main_menu": {
+     "type": "list",
+     "button": "translation:buttons.choose_service",
+     "body": "translation:messages.welcome.greeting_extended",
      "sections": [
        {
-         "title": "🌟 Astrology Traditions",
+         "title": "translation:messages.menu.astrology_traditions",
          "rows": [
-            {
-              "id": "show_western_astrology_menu",
-              "title": "🌍 Western Astrology",
-              "description": "Birth charts transits horoscopes predictive analysis"
-            },
-            {
-              "id": "show_vedic_astrology_menu",
-              "title": "🕉️ Vedic Astrology",
-              "description": "Kundli dasha remedies festivals numerology"
-            },
-            {
-              "id": "show_divination_mystic_menu",
-              "title": "🔮 Divination & Mystic",
-              "description": "Tarot I Ching palmistry ancient wisdom traditions"
-            },
-            {
-              "id": "show_relationships_groups_menu",
-              "title": "👥 Relationships & Groups",
-              "description": "Compatibility family business partnerships"
-            },
-            {
-              "id": "show_numerology_special_menu",
-              "title": "🔢 Numerology & Special Readings",
-              "description": "Life path numbers name analysis special insights"
-            },
-            {
-              "id": "show_settings_profile_menu",
-              "title": "⚙️ Settings & Profile",
-              "description": "Update profile language preferences"
-            }
+           {
+             "id": "show_western_astrology_menu",
+             "title": "🌍 translation:messages.services.western_astrology",
+             "description": "translation:messages.services.western_description"
+           },
+           {
+             "id": "show_vedic_astrology_menu",
+             "title": "🕉️ translation:messages.services.vedic_astrology",
+             "description": "translation:messages.services.vedic_description"
+           },
+           {
+             "id": "show_divination_mystic_menu",
+             "title": "🔮 translation:messages.services.divination_mystic",
+             "description": "translation:messages.services.divination_description"
+           },
+           {
+             "id": "show_relationships_groups_menu",
+             "title": "👥 translation:messages.services.relationships",
+             "description": "translation:messages.services.relationships_description"
+           },
+           {
+             "id": "show_numerology_special_menu",
+             "title": "🔢 translation:messages.services.numerology",
+             "description": "translation:messages.services.numerology_description"
+           },
+           {
+             "id": "show_settings_profile_menu",
+             "title": "⚙️ translation:messages.services.settings",
+             "description": "translation:messages.services.settings_description"
+           }
          ]
        }
      ]

@@ -388,10 +388,5 @@ module.exports = {
   handleJaiminiAstrology,
   handleHinduFestivals,
   handleVedicNumerology,
-  handleAyurvedicAstrology,
-  handleFixedStars,
-  handleMedicalAstrology,
-  handleFinancialAstrology,
-  handleHarmonicAstrology,
-  handleCareerAstrology
+  handleAyurvedicAstrology
 };

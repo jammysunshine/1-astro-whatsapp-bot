@@ -22,6 +22,8 @@ const mayanReader = require('../astrology/mayanReader');
 const celticReader = require('../astrology/celticReader');
 const ichingReader = require('../astrology/ichingReader');
 const { generateAstrocartography } = require('../astrology/astrocartographyReader');
+const HellenisticAstrologyClass = require('../astrology/hellenisticAstrology');
+const HellenisticAstrologyReader = new HellenisticAstrologyClass();
 const AgeHarmonicAstrologyReader = require('../astrology/ageHarmonicAstrology');
 const numerologyService = require('../astrology/numerologyService');
 const { VedicNumerology } = require('../astrology/vedicNumerology');
@@ -2540,7 +2542,11 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       return null;
     }
     try {
-      const celticAnalysis = celticReader.generateCelticReading(user);
+      const celticAnalysis = celticReader.generateCelticChart({
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        name: user.name
+      });
       if (celticAnalysis.error) {
         const userLanguage = getUserLanguage(user, phoneNumber);
         await sendMessage(
@@ -2555,15 +2561,15 @@ const executeMenuAction = async(phoneNumber, user, action) => {
 
       // Format Celtic reading response
       let response = '🍀 *Celtic Astrology Reading*\n\n';
-      response += `*Tree Sign:* ${celticAnalysis.treeSign || 'Unknown'}\n`;
-      response += `*Meaning:* ${celticAnalysis.meaning || 'Not available'}\n\n`;
+      response += `*Tree Sign:* ${celticAnalysis.treeSign?.name || 'Unknown'}\n`;
+      response += `*Meaning:* ${celticAnalysis.treeSign?.meaning || 'Not available'}\n\n`;
       
-      if (celticAnalysis.personality) {
-        response += `*Personality:* ${celticAnalysis.personality}\n\n`;
+      if (celticAnalysis.personalityTraits) {
+        response += `*Personality:* ${celticAnalysis.personalityTraits.coreTraits?.slice(0, 3).join(', ') || 'Not available'}\n\n`;
       }
       
-      if (celticAnalysis.guidance) {
-        response += `*Life Guidance:* ${celticAnalysis.guidance}\n\n`;
+      if (celticAnalysis.druidicWisdom) {
+        response += `*Life Guidance:* ${celticAnalysis.druidicWisdom.affirmation || 'Connect with nature for guidance'}\n\n`;
       }
 
       const buttons = [
@@ -2615,17 +2621,18 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       return null;
     }
     try {
-      const hellenisticAnalysis = await HellenisticAstrologyReader.generateHellenisticReading({
+      const hellenisticAnalysis = await HellenisticAstrologyReader.generateHellenisticAnalysis({
         birthDate: user.birthDate,
         birthTime: user.birthTime || '12:00',
-        birthPlace: user.birthPlace || 'Delhi'
+        birthPlace: user.birthPlace || 'Delhi',
+        name: user.name
       });
 
       if (hellenisticAnalysis.error) {
         const userLanguage = getUserLanguage(user, phoneNumber);
         await sendMessage(
           phoneNumber,
-          `I encountered an issue generating your Hellenistic reading: ${hellenisticAnalysis.error}`,
+          `I encountered an issue generating your Hellenistic analysis: ${hellenisticAnalysis.error}`,
           'text',
           {},
           userLanguage
@@ -2633,28 +2640,41 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         return null;
       }
 
-      // Format Hellenistic reading response
-      let response = '🏛️ *Hellenistic Astrology Reading*\n\n';
-      response += `*Ancient Method: ${hellenisticAnalysis.method || 'Classical Techniques'}*\n\n`;
+      // Format Hellenistic analysis response
+      let response = '🏛️ *Hellenistic Astrology Analysis*\n\n';
+      response += `*Sect: ${hellenisticAnalysis.sect || 'Unknown'}*\n\n`;
       
-      if (hellenisticAnalysis.lots) {
-        response += `*Lot Analysis:*\n`;
-        Object.entries(hellenisticAnalysis.lots).slice(0, 3).forEach(([lot, details]) => {
-          response += `• ${lot}: ${details.position}\n`;
+      if (hellenisticAnalysis.arabicParts) {
+        response += `*Key Arabic Parts:*\n`;
+        Object.entries(hellenisticAnalysis.arabicParts).slice(0, 3).forEach(([key, part]) => {
+          if (part.name) {
+            response += `• ${part.name}: ${part.sign} in House ${part.house}\n`;
+          }
         });
         response += `\n`;
       }
       
-      if (hellenisticAnalysis.terms) {
-        response += `*Planetary Terms:*\n`;
-        hellenisticAnalysis.terms.slice(0, 3).forEach(term => {
-          response += `• ${term.planet}: ${term.position}\n`;
-        });
+      if (hellenisticAnalysis.essentialDignities) {
+        const { strongPlanets, weakPlanets } = hellenisticAnalysis.essentialDignities;
+        if (strongPlanets.length > 0) {
+          response += `*Strong Planets:* `;
+          strongPlanets.forEach(planet => {
+            response += `${planet.planet} (${planet.dignity}) `;
+          });
+          response += `\n`;
+        }
+        if (weakPlanets.length > 0) {
+          response += `*Weak Planets:* `;
+          weakPlanets.forEach(planet => {
+            response += `${planet.planet} (${planet.dignity}) `;
+          });
+          response += `\n`;
+        }
         response += `\n`;
       }
 
-      if (hellenisticAnalysis.timing) {
-        response += `*Timing Period:*\n${hellenisticAnalysis.timing}\n\n`;
+      if (hellenisticAnalysis.interpretation) {
+        response += `*Interpretation:*\n${hellenisticAnalysis.interpretation}\n\n`;
       }
 
       const buttons = [

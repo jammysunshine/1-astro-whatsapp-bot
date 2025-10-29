@@ -1,0 +1,61 @@
+const BaseAction = require('../BaseAction');
+
+/**
+ * PrashnaAstrologyAction - Provides Prashna astrology (Horary) analysis.
+ * Reuses the existing implementation from the legacy messageProcessor.
+ */
+class PrashnaAstrologyAction extends BaseAction {
+  /**
+   * Unique action identifier
+   */
+  static get actionId() {
+    return 'get_prashna_astrology';
+  }
+
+  /**
+   * Execute the prashna astrology action
+   * @returns {Promise<Object|null>} Action result
+   */
+  async execute() {
+    try {
+      this.logExecution('start', 'Generating prashna astrology analysis');
+
+      // Import the legacy executeMenuAction function
+      const { executeMenuAction } = require('../../../__LEGACY__messageProcessor.js.ARCHIVED');
+
+      // Call the legacy implementation
+      return await executeMenuAction(this.phoneNumber, this.user, 'get_prashna_astrology_analysis');
+
+    } catch (error) {
+      this.logger.error('Error in PrashnaAstrologyAction:', error);
+      await this.handleExecutionError(error);
+      return { success: false, reason: 'execution_error', error: error.message };
+    }
+  }
+
+  /**
+   * Handle execution errors
+   * @param {Error} error - Execution error
+   */
+  async handleExecutionError(error) {
+    const { sendMessage } = require('../../messageSender');
+    await sendMessage(this.phoneNumber, 'I encountered an error generating your Prashna astrology analysis. Please try again.', 'text');
+  }
+
+  /**
+   * Get action metadata for registration
+   * @returns {Object} Action metadata
+   */
+  static getMetadata() {
+    return {
+      id: this.actionId,
+      description: 'Provide Horary/Prashna astrology analysis answering specific questions',
+      keywords: ['prashna', 'horary', 'question', 'answer'],
+      category: 'astrology',
+      subscriptionRequired: true,
+      cooldown: 7200000 // 2 hours cooldown
+    };
+  }
+}
+
+module.exports = PrashnaAstrologyAction;

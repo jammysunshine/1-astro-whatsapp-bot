@@ -11,6 +11,9 @@ const WesternAstrologyMenuAction = require('./actions/menu/WesternAstrologyMenuA
 const VedicAstrologyMenuAction = require('./actions/menu/VedicAstrologyMenuAction');
 
 // Key Astrology Actions
+const VedicKundliAction = require('./actions/astrology/VedicKundliAction');
+const KaalSarpAnalysisAction = require('./actions/astrology/KaalSarpAnalysisAction');
+const PrashnaAstrologyAction = require('./actions/astrology/PrashnaAstrologyAction');
 const MuhurtaAction = require('./actions/astrology/MuhurtaAction');
 const PanchangAnalysisAction = require('./actions/astrology/PanchangAnalysisAction');
 const HoroscopeAnalysisAction = require('./actions/astrology/HoroscopeAnalysisAction');
@@ -104,6 +107,9 @@ class ActionRegistryInitializer {
     this.registry.registerAction(VedicAstrologyMenuAction.actionId, VedicAstrologyMenuAction);
 
     // Key Astrology Actions (using legacy implementations)
+    this.registry.registerAction(VedicKundliAction.actionId, VedicKundliAction);
+    this.registry.registerAction(KaalSarpAnalysisAction.actionId, KaalSarpAnalysisAction);
+    this.registry.registerAction(PrashnaAstrologyAction.actionId, PrashnaAstrologyAction);
     this.registry.registerAction(MuhurtaAction.actionId, MuhurtaAction);
     this.registry.registerAction(PanchangAnalysisAction.actionId, PanchangAnalysisAction);
     this.registry.registerAction(HoroscopeAnalysisAction.actionId, HoroscopeAnalysisAction);
@@ -156,6 +162,7 @@ class ActionRegistryInitializer {
 
     // Astrology commands
     this.registry.registerKeyword('horoscope', DailyHoroscopeAction.actionId);
+    this.registry.registerKeyword('horoscope analysis', HoroscopeAnalysisAction.actionId);
     this.registry.registerKeyword('daily horoscope', DailyHoroscopeAction.actionId);
     this.registry.registerKeyword('chart', BirthChartAction.actionId);
     this.registry.registerKeyword('birth chart', BirthChartAction.actionId);
@@ -189,6 +196,10 @@ class ActionRegistryInitializer {
     this.registry.registerKeyword('vedic', VedicAstrologyAction.actionId);
     this.registry.registerKeyword('vedic astrology', VedicAstrologyAction.actionId);
     this.registry.registerKeyword('jyotish', VedicAstrologyAction.actionId);
+    this.registry.registerKeyword('kundli', VedicKundliAction.actionId);
+    this.registry.registerKeyword('kaal sarp', KaalSarpAnalysisAction.actionId);
+    this.registry.registerKeyword('prashan', PrashnaAstrologyAction.actionId);
+    this.registry.registerKeyword('prashna', PrashnaAstrologyAction.actionId);
     this.registry.registerKeyword('iching', IChingAction.actionId);
     this.registry.registerKeyword('palmistry', PalmistryAction.actionId);
     this.registry.registerKeyword('palm reading', PalmistryAction.actionId);

@@ -32,6 +32,10 @@ const MantraRecommendationAction = require('./actions/utilities/MantraRecommenda
 const ColorTherapyAction = require('./actions/utilities/ColorTherapyAction');
 const DashaAnalysisAction = require('./actions/astrology/DashaAnalysisAction');
 const PanchangAnalysisAction = require('./actions/astrology/PanchangAnalysisAction');
+const FixedStarsAction = require('./actions/astrology/FixedStarsAction');
+const LunarNodesAction = require('./actions/astrology/LunarNodesAction');
+const TraditionalHoraryAction = require('./actions/astrology/TraditionalHoraryAction');
+const RemedialMeasuresAction = require('./actions/astrology/RemedialMeasuresAction');
 
 /**
  * ActionRegistryInitializer - Sets up and initializes the ActionRegistry with all available actions.
@@ -118,6 +122,10 @@ class ActionRegistryInitializer {
     this.registry.registerAction(ColorTherapyAction.actionId, ColorTherapyAction);
     this.registry.registerAction(DashaAnalysisAction.actionId, DashaAnalysisAction);
     this.registry.registerAction(PanchangAnalysisAction.actionId, PanchangAnalysisAction);
+    this.registry.registerAction(FixedStarsAction.actionId, FixedStarsAction);
+    this.registry.registerAction(LunarNodesAction.actionId, LunarNodesAction);
+    this.registry.registerAction(TraditionalHoraryAction.actionId, TraditionalHoraryAction);
+    this.registry.registerAction(RemedialMeasuresAction.actionId, RemedialMeasuresAction);
 
     console.info('📝 Registered action classes with registry');
   }
@@ -191,6 +199,15 @@ class ActionRegistryInitializer {
     this.registry.registerKeyword('dasha', DashaAnalysisAction.actionId);
     this.registry.registerKeyword('panchang', PanchangAnalysisAction.actionId);
     this.registry.registerKeyword('calendar', PanchangAnalysisAction.actionId);
+    this.registry.registerKeyword('fixed stars', FixedStarsAction.actionId);
+    this.registry.registerKeyword('stellar', FixedStarsAction.actionId);
+    this.registry.registerKeyword('lunar nodes', LunarNodesAction.actionId);
+    this.registry.registerKeyword('rahu ketu', LunarNodesAction.actionId);
+    this.registry.registerKeyword('horary', TraditionalHoraryAction.actionId);
+    this.registry.registerKeyword('questions', TraditionalHoraryAction.actionId);
+    this.registry.registerKeyword('remedial', RemedialMeasuresAction.actionId);
+    this.registry.registerKeyword('remedies', RemedialMeasuresAction.actionId);
+    this.registry.registerKeyword('healing', RemedialMeasuresAction.actionId);
 
     console.info('🔤 Registered keyword mappings');
   }

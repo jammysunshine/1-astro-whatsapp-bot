@@ -145,7 +145,7 @@ const sendInteractiveButtons = async(
     // Prepare interactive message payload
     const messagePayload = {
       messaging_product: 'whatsapp',
-      to: phoneNumber,
+      to: phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`,
       type: 'interactive',
       interactive: {
         type: 'button',
@@ -258,7 +258,7 @@ const sendListMessage = async(
     // Prepare list message payload
     const messagePayload = {
       messaging_product: 'whatsapp',
-      to: phoneNumber,
+      to: phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`,
       type: 'interactive',
       interactive: {
         type: 'list',

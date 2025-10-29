@@ -1,255 +1,118 @@
 {
   "main_menu": {
-    "type": "list",
-    "button": "Choose Service",
-    "body": "Welcome to Astro Wisdom! Discover insights about yourself through astrology, numerology, and divination.\n\nChoose a service to explore:",
-    "sections": [
-      {
-        "title": "Astrology Traditions",
-        "rows": [
-          {
-            "id": "show_western_astrology_menu",
-            "title": "🌍 Western Astrology",
-            "description": "Birth charts and horoscopes based on tropical zodiac"
-          },
-          {
-            "id": "show_vedic_astrology_menu",
-            "title": "🕉️ Vedic Astrology",
-            "description": "Ancient Indian Vedic birth chart and Kundli analysis"
-          },
-          {
-            "id": "show_divination_mystic_menu",
-            "title": "🔮 Divination & Mystics",
-            "description": "Tarot, palmistry, I Ching, and mystical traditions"
-          },
-          {
-            "id": "show_relationships_groups_menu",
-            "title": "👥 Relationships",
-            "description": "Compatibility, family synergy, and group dynamics"
-          },
-          {
-            "id": "show_settings_profile_menu",
-            "title": "⚙️ Settings & Profile",
-            "description": "Manage your profile and app preferences"
-          }
-        ]
-      }
-    ]
-  },
-  "personal_astrology_menu": {
     "type": "button",
-    "body": "👤 *Personal Astrology*\n\nChoose your preferred astrological tradition:\n\n🌍 *Western Astrology*\n• Birth charts & horoscopes\n• Transits & progressions\n• Career & financial timing\n\n🕉️ *Vedic Astrology*\n• Kundli & birth charts\n• Marriage matching\n• Dasha & remedies",
+    "body": "🌟 *Astro Wisdom Portal*\n\nDiscover cosmic insights through astrology, numerology, and divination traditions.\n\nChoose your preferred service:",
     "buttons": [
       {
-        "id": "btn_western_astrology",
-        "title": "🌍 Western Astrology",
-        "action": "show_western_astrology_menu"
+        "id": "show_western_astrology_menu",
+        "title": "🌍 Western Astrology"
       },
       {
-        "id": "btn_vedic_astrology",
-        "title": "🕉️ Vedic Astrology",
-        "action": "show_vedic_astrology_menu"
+        "id": "show_vedic_astrology_menu",
+        "title": "🕉️ Vedic Astrology"
       },
       {
-        "id": "btn_back_main",
-        "title": "⬅️ Back to Main",
-        "action": "show_main_menu"
+        "id": "show_divination_mystic_menu",
+        "title": "🔮 Divination & Mystics"
+      },
+      {
+        "id": "show_relationships_groups_menu",
+        "title": "👥 Relationships"
+      },
+      {
+        "id": "show_settings_profile_menu",
+        "title": "⚙️ Settings"
+      },
+      {
+        "id": "show_numerology_special_menu",
+        "title": "🔢 Numerology & Special"
       }
     ]
   },
+}
   "relationships_groups_menu": {
-    "type": "list",
-    "button": "Choose Relationship Service",
+    "type": "button",
     "body": "👥 *Relationships & Groups*\n\nDiscover cosmic connections in your relationships:",
-    "sections": [
+    "buttons": [
       {
-        "title": "💕 Romantic",
-        "rows": [
-          {
-            "id": "start_couple_compatibility_flow",
-            "title": "💕 Couple Compatibility",
-            "description": "Synastry and composite chart analysis"
-          },
-          {
-            "id": "get_synastry_analysis",
-            "title": "🌟 Relationship Synastry",
-            "description": "Detailed compatibility analysis"
-          }
-        ]
+        "id": "start_couple_compatibility_flow",
+        "title": "💕 Couple Compatibility"
       },
       {
-        "title": "👪 Family Dynamics",
-        "rows": [
-          {
-            "id": "start_family_astrology_flow",
-            "title": "👪 Family Astrology",
-            "description": "Family composite and individual roles"
-          },
-          {
-            "id": "get_group_astrology_analysis",
-            "title": "🏠 Family Group Analysis",
-            "description": "Multi-person relationship dynamics"
-          }
-        ]
+        "id": "get_synastry_analysis",
+        "title": "🌟 Relationship Synastry"
       },
       {
-        "title": "🤝 Professional",
-        "rows": [
-          {
-            "id": "start_business_partnership_flow",
-            "title": "🤝 Business Partnership",
-            "description": "Professional relationship compatibility"
-          },
-          {
-            "id": "get_group_astrology_analysis",
-            "title": "👥 Team Dynamics",
-            "description": "Group energy and collaboration"
-          }
-        ]
+        "id": "start_family_astrology_flow",
+        "title": "👪 Family Astrology"
       },
       {
-        "title": "⏰ Timing & Events",
-        "rows": [
-          {
-            "id": "start_group_timing_flow",
-            "title": "⏰ Group Event Timing",
-            "description": "Auspicious dates for group activities"
-          },
-          {
-            "id": "get_muhurta_analysis",
-            "title": "📅 Wedding Muhurta",
-            "description": "Auspicious marriage timing"
-          }
-        ]
+        "id": "start_business_partnership_flow",
+        "title": "🤝 Business Partnership"
       },
       {
-        "title": "⬅️ Navigation",
-        "rows": [
-          {
-            "id": "show_main_menu",
-            "title": "🏠 Back to Main Menu",
-            "description": "Return to main service categories"
-          }
-        ]
+        "id": "start_group_timing_flow",
+        "title": "⏰ Group Event Timing"
+      },
+      {
+        "id": "show_main_menu",
+        "title": "🏠 Main Menu"
       }
     ]
   },
   "numerology_special_menu": {
-    "type": "list",
-    "button": "Choose Special Service",
-    "body": "🔢 *Numerology & Special Readings*\n\nDiscover hidden meanings through numbers and unique insights:",
-    "sections": [
+    "type": "button",
+    "body": "🔢 *Numerology & Special Readings*\n\nDiscover hidden meanings through numbers and unique cosmic insights:",
+    "buttons": [
       {
-        "title": "🔢 Numerology Analysis",
-        "rows": [
-          {
-            "id": "get_numerology_analysis",
-            "title": "🔢 Life Path Numerology",
-            "description": "Calculate your life path number and meaning"
-          },
-          {
-            "id": "get_numerology_report",
-            "title": "📊 Numerology Report",
-            "description": "Life path, expression, and soul urge numbers"
-          },
-          {
-            "id": "get_vedic_numerology_analysis",
-            "title": "🕉️ Vedic Numerology",
-            "description": "Sacred number analysis from Vedic tradition"
-          }
-        ]
+        "id": "get_numerology_analysis",
+        "title": "🔢 Life Path Numerology"
       },
       {
-        "title": "🔮 Special Readings",
-        "rows": [
-          {
-            "id": "get_lunar_return",
-            "title": "🌙 Lunar Return",
-            "description": "Monthly lunar cycle analysis"
-          },
-          {
-            "id": "get_future_self_analysis",
-            "title": "🔮 Future Self Analysis",
-            "description": "Explore your potential future"
-          },
-          {
-            "id": "get_age_harmonic_analysis",
-            "title": "⏳ Age Harmonic Astrology",
-            "description": "Life stage analysis through harmonics"
-          }
-        ]
+        "id": "get_numerology_report",
+        "title": "📊 Numerology Report"
       },
       {
-        "title": "🌍 Specialized Astrology",
-        "rows": [
-          {
-            "id": "get_electional_astrology",
-            "title": "📅 Electional Astrology",
-            "description": "Choose auspicious timing for events"
-          },
-          {
-            "id": "get_mundane_astrology_analysis",
-            "title": "🌍 Mundane Astrology",
-            "description": "World events and collective influences"
-          },
-          {
-            "id": "get_event_astrology_analysis",
-            "title": "🎯 Event Astrology",
-            "description": "Timing analysis for specific events"
-          }
-        ]
+        "id": "get_lunar_return",
+        "title": "🌙 Lunar Return"
       },
       {
-        "title": "⬅️ Navigation",
-        "rows": [
-          {
-            "id": "show_main_menu",
-            "title": "🏠 Back to Main Menu",
-            "description": "Return to main service categories"
-          }
-        ]
+        "id": "get_future_self_analysis",
+        "title": "🔮 Future Self Analysis"
+      },
+      {
+        "id": "get_electional_astrology",
+        "title": "📅 Electional Astrology"
+      },
+      {
+        "id": "get_mundane_astrology_analysis",
+        "title": "🌍 Mundane Astrology"
+      },
+      {
+        "id": "show_main_menu",
+        "title": "🏠 Main Menu"
       }
     ]
   },
   "settings_profile_menu": {
-    "type": "list",
-    "button": "Choose Setting",
+    "type": "button",
     "body": "⚙️ *Settings & Profile*\n\nManage your account and preferences:",
-    "sections": [
+    "buttons": [
       {
-        "title": "👤 Profile Management",
-        "rows": [
-          {
-            "id": "btn_update_profile",
-            "title": "📝 Update Profile",
-            "description": "Edit birth details and information"
-          },
-          {
-            "id": "btn_view_profile",
-            "title": "👀 View Profile",
-            "description": "See your current profile settings"
-          }
-        ]
+        "id": "btn_update_profile",
+        "title": "📝 Update Profile"
       },
       {
-        "title": "🌐 Language Settings",
-        "rows": [
-          {
-            "id": "show_language_menu",
-            "title": "🌐 Change Language",
-            "description": "Select your preferred language"
-          }
-        ]
+        "id": "btn_view_profile",
+        "title": "👀 View Profile"
       },
       {
-        "title": "⬅️ Navigation",
-        "rows": [
-          {
-            "id": "show_main_menu",
-            "title": "🏠 Back to Main Menu",
-            "description": "Return to main service categories"
-          }
-        ]
+        "id": "show_language_menu",
+        "title": "🌐 Change Language"
+      },
+      {
+        "id": "show_main_menu",
+        "title": "🏠 Main Menu"
       }
     ]
   },
@@ -345,79 +208,7 @@
       }
     ]
   },
-  "western_basic_menu": {
-    "type": "button",
-    "body": "⭐ *Western Astrology - Basic Readings*\n\nEssential astrological insights:",
-    "buttons": [
-      {
-        "id": "btn_daily_horoscope",
-        "title": "🌟 Daily Horoscope",
-        "action": "get_daily_horoscope"
-      },
-      {
-        "id": "btn_birth_chart",
-        "title": "📊 Birth Chart",
-        "action": "show_birth_chart"
-      },
-      {
-        "id": "btn_back_western",
-        "title": "⬅️ Back to Categories",
-        "action": "show_western_astrology_menu"
-      }
-    ]
-  },
-  "western_advanced_menu": {
-    "type": "button",
-    "body": "🔬 *Western Astrology - Advanced Analysis*\n\nDeep astrological techniques:",
-    "buttons": [
-      {
-        "id": "btn_transits",
-        "title": "🌌 Current Transits",
-        "action": "get_current_transits"
-      },
-      {
-        "id": "btn_progressions",
-        "title": "⏳ Progressions",
-        "action": "get_secondary_progressions"
-      },
-      {
-        "id": "btn_solar_arc",
-        "title": "☀️ Solar Arc Directions",
-        "action": "get_solar_arc_directions"
-      },
-      {
-        "id": "btn_back_western",
-        "title": "⬅️ Back to Categories",
-        "action": "show_western_astrology_menu"
-      }
-    ]
-  },
-  "western_predictive_menu": {
-    "type": "button",
-    "body": "🔮 *Western Astrology - Predictive*\n\nFuture insights and timing:",
-    "buttons": [
-      {
-        "id": "btn_solar_return",
-        "title": "🎂 Solar Return",
-        "action": "get_solar_return_analysis"
-      },
-      {
-        "id": "btn_career_astrology",
-        "title": "💼 Career Guidance",
-        "action": "get_career_astrology_analysis"
-      },
-      {
-        "id": "btn_financial_astrology",
-        "title": "💰 Financial Timing",
-        "action": "get_financial_astrology_analysis"
-      },
-      {
-        "id": "btn_back_western",
-        "title": "⬅️ Back to Categories",
-        "action": "show_western_astrology_menu"
-      }
-    ]
-  },
+
   "vedic_astrology_menu": {
     "type": "list",
     "button": "Choose Vedic Service",
@@ -515,84 +306,7 @@
       }
     ]
   },
-  "vedic_basic_menu": {
-    "type": "button",
-    "body": "⭐ *Vedic Astrology - Basic Readings*\n\nEssential Vedic insights:",
-    "buttons": [
-      {
-        "id": "btn_vedic_birth_chart",
-        "title": "📊 Vedic Birth Chart",
-        "action": "get_hindu_astrology_analysis"
-      },
-      {
-        "id": "btn_marriage_matching",
-        "title": "💍 Marriage Matching",
-        "action": "get_synastry_analysis"
-      },
-      {
-        "id": "btn_nadi",
-        "title": "📜 Nadi Astrology",
-        "action": "show_nadi_flow"
-      },
-      {
-        "id": "btn_back_vedic",
-        "title": "⬅️ Back to Categories",
-        "action": "show_vedic_astrology_menu"
-      }
-    ]
-  },
-  "vedic_advanced_menu": {
-    "type": "button",
-    "body": "🔬 *Vedic Astrology - Advanced Analysis*\n\nDeep Vedic techniques:",
-    "buttons": [
-      {
-        "id": "btn_vimshottari_dasha",
-        "title": "⏳ Vimshottari Dasha",
-        "action": "get_vimshottari_dasha_analysis"
-      },
-      {
-        "id": "btn_hindu_festivals",
-        "title": "🎉 Hindu Festivals",
-        "action": "get_hindu_festivals_info"
-      },
-      {
-        "id": "btn_vedic_numerology",
-        "title": "🔢 Vedic Numerology",
-        "action": "get_vedic_numerology_analysis"
-      },
-      {
-        "id": "btn_back_vedic",
-        "title": "⬅️ Back to Categories",
-        "action": "show_vedic_astrology_menu"
-      }
-    ]
-  },
-  "vedic_predictive_menu": {
-    "type": "button",
-    "body": "🔮 *Vedic Astrology - Predictive & Remedies*\n\nFuture insights and solutions:",
-    "buttons": [
-      {
-        "id": "btn_vedic_remedies",
-        "title": "🕉️ Vedic Remedies",
-        "action": "get_vedic_remedies_info"
-      },
-      {
-        "id": "btn_ayurvedic_astrology",
-        "title": "🌿 Ayurvedic Astrology",
-        "action": "get_ayurvedic_astrology_analysis"
-      },
-      {
-        "id": "btn_prashna_astrology",
-        "title": "❓ Prashna Astrology",
-        "action": "get_prashna_astrology_analysis"
-      },
-      {
-        "id": "btn_back_vedic",
-        "title": "⬅️ Back to Categories",
-        "action": "show_vedic_astrology_menu"
-      }
-    ]
-  },
+
   "divination_mystic_menu": {
     "type": "list",
     "button": "Choose Mystic Service",
@@ -685,74 +399,7 @@
       }
     ]
   },
-  "card_symbol_menu": {
-    "type": "button",
-    "body": "🔮 *Cards & Symbol Divination*\n\nAncient systems of symbolic wisdom:",
-    "buttons": [
-      {
-        "id": "btn_tarot",
-        "title": "🔮 Tarot Reading",
-        "action": "get_tarot_reading"
-      },
-      {
-        "id": "btn_iching",
-        "title": "🪙 I Ching Oracle",
-        "action": "get_iching_reading"
-      },
-      {
-        "id": "btn_back_divination",
-        "title": "⬅️ Back to Divination",
-        "action": "show_divination_wisdom_menu"
-      }
-    ]
-  },
-  "physical_divination_menu": {
-    "type": "button",
-    "body": "✋ *Physical Divination*\n\nReading the body's wisdom:",
-    "buttons": [
-      {
-        "id": "btn_palmistry",
-        "title": "✋ Palmistry",
-        "action": "get_palmistry_analysis"
-      },
-      {
-        "id": "btn_chinese_bazi",
-        "title": "🏮 Chinese Bazi",
-        "action": "show_chinese_flow"
-      },
-      {
-        "id": "btn_back_divination",
-        "title": "⬅️ Back to Divination",
-        "action": "show_divination_wisdom_menu"
-      }
-    ]
-  },
-  "ancient_wisdom_menu": {
-    "type": "button",
-    "body": "🌏 *Ancient Wisdom Traditions*\n\nTimeless astrological systems:",
-    "buttons": [
-      {
-        "id": "btn_mayan",
-        "title": "🗿 Mayan Astrology",
-        "action": "get_mayan_analysis"
-      },
-      {
-        "id": "btn_celtic",
-        "title": "🍀 Celtic Astrology",
-        "action": "get_celtic_analysis"
-      },
-      {
-        "id": "btn_kabbalistic",
-        "title": "✡️ Kabbalistic Astrology",
-        "action": "get_kabbalistic_analysis"
-      },
-      {
-        "id": "btn_back_divination",
-        "title": "⬅️ Back to Divination",
-        "action": "show_divination_wisdom_menu"
-      }
-    ]
-  },
+}
   "language_menu": {
     "type": "list",
     "button": "translation:buttons.choose_language",
@@ -940,25 +587,4 @@
       }
     ]
   },
-  "more_options_menu": {
-    "type": "button",
-    "body": "🔮 *Divination & Ancient Wisdom*\n\nExplore mystical arts and ancient traditions:",
-    "buttons": [
-      {
-        "id": "btn_tarot",
-        "title": "🔮 Tarot Reading",
-        "action": "get_tarot_reading"
-      },
-      {
-        "id": "btn_palmistry",
-        "title": "✋ Palmistry",
-        "action": "get_palmistry_analysis"
-      },
-      {
-        "id": "btn_back_main",
-        "title": "🏠 Main Menu",
-        "action": "show_main_menu"
-      }
-    ]
-  }
 }

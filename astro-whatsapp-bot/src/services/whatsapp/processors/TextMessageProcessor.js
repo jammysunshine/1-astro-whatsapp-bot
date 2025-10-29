@@ -148,15 +148,117 @@ class TextMessageProcessor extends BaseMessageProcessor {
   }
 
   /**
-   * Get numbered menu action from legacy system
+   * Get numbered menu action from fallback system
    * @param {string} phoneNumber - Phone number
    * @param {string} messageText - Message text
    * @returns {string|null} Action identifier or null
    */
   getNumberedMenuAction(phoneNumber, messageText) {
-    // This would interface with the legacy numbered menu system
-    // For now, return null to use new system
-    return null;
+    try {
+      // Check if message is a number (for numbered menu selections)
+      const numberMatch = messageText.match(/^\s*(\d+)\s*$/);
+      if (!numberMatch) {
+        return null;
+      }
+
+      const selectionNumber = parseInt(numberMatch[1]);
+      this.logger.info(`🔢 Processing numbered menu selection ${selectionNumber} for ${phoneNumber}`);
+
+      // Get user's last menu from session
+      const session = await this.getUserSession(phoneNumber);
+      if (!session?.lastMenu) {
+        return null;
+      }
+
+      // Map numbered selection to action based on menu type
+      const actionId = this.mapNumberedSelectionToAction(session.lastMenu, selectionNumber);
+      if (actionId) {
+        this.logger.info(`🔗 Mapped number ${selectionNumber} to action ${actionId} for menu ${session.lastMenu}`);
+        return actionId;
+      }
+
+      return null;
+    } catch (error) {
+      this.logger.error('Error processing numbered menu action:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Map numbered selection to action based on menu type
+   * @param {string} menuType - Type of menu that was displayed
+   * @param {number} selectionNumber - Number entered by user
+   * @returns {string|null} Action ID or null
+   */
+  mapNumberedSelectionToAction(menuType, selectionNumber) {
+    // Define numbered mappings for each menu type
+    const numberedMappings = {
+      western_astrology_menu: {
+        1: 'get_daily_horoscope',
+        2: 'show_birth_chart',
+        3: 'get_current_transits',
+        4: 'get_secondary_progressions',
+        5: 'get_solar_arc_directions',
+        6: 'get_asteroid_analysis',
+        7: 'get_fixed_stars_analysis',
+        8: 'get_solar_return_analysis',
+        9: 'get_career_astrology_analysis',
+        10: 'get_financial_astrology_analysis',
+        11: 'get_medical_astrology_analysis',
+        12: 'get_event_astrology_analysis',
+        13: 'show_main_menu'
+      },
+      vedic_astrology_menu: {
+        1: 'get_hindu_astrology_analysis',
+        2: 'get_synastry_analysis',
+        3: 'show_nadi_flow',
+        4: 'get_vimshottari_dasha_analysis',
+        5: 'get_hindu_festivals_info',
+        6: 'get_vedic_numerology_analysis',
+        7: 'get_ashtakavarga_analysis',
+        8: 'get_varga_charts_analysis',
+        9: 'get_vedic_remedies_info',
+        10: 'get_ayurvedic_astrology_analysis',
+        11: 'get_prashna_astrology_analysis',
+        12: 'get_muhurta_analysis',
+        13: 'get_panchang_analysis',
+        14: 'show_main_menu'
+      },
+      relationships_groups_menu: {
+        1: 'start_couple_compatibility_flow',
+        2: 'get_synastry_analysis',
+        3: 'start_family_astrology_flow',
+        4: 'start_business_partnership_flow',
+        5: 'start_group_timing_flow',
+        6: 'show_main_menu'
+      },
+      numerology_special_menu: {
+        1: 'get_numerology_analysis',
+        2: 'get_numerology_report',
+        3: 'get_lunar_return',
+        4: 'get_future_self_analysis',
+        5: 'get_electional_astrology',
+        6: 'get_mundane_astrology_analysis',
+        7: 'show_main_menu'
+      },
+      divination_mystic_menu: {
+        1: 'get_tarot_reading',
+        2: 'get_iching_reading',
+        3: 'get_palmistry_analysis',
+        4: 'show_chinese_flow',
+        5: 'get_mayan_analysis',
+        6: 'get_celtic_analysis',
+        7: 'get_kabbalistic_analysis',
+        8: 'get_hellenistic_astrology_analysis',
+        9: 'get_islamic_astrology_info',
+        10: 'get_horary_reading',
+        11: 'get_astrocartography_analysis',
+        12: 'show_main_menu'
+      }
+    };
+
+    const mapping = numberedMappings[menuType];
+    return mapping ? mapping[selectionNumber] : null;
   }
 
   /**

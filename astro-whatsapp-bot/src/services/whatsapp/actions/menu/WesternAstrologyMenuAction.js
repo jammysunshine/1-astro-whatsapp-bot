@@ -67,6 +67,9 @@ class WesternAstrologyMenuAction extends BaseAction {
    */
   async sendWesternAstrologyMenu(menuData) {
     try {
+      // Update user session with current menu for numbered fallbacks
+      await this.updateUserSessionMenu('western_astrology_menu');
+
       // Use ResponseBuilder to send interactive list message
       const message = ResponseBuilder.buildInteractiveMessage(
         this.phoneNumber,
@@ -80,11 +83,54 @@ class WesternAstrologyMenuAction extends BaseAction {
       );
 
       await this.sendMessage(message, 'interactive');
+
+      // Also send numbered fallback instructions
+      const fallbackText = '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-13 to select services.';
+      await this.sendMessage(fallbackText, 'text');
+
     } catch (error) {
       this.logger.error('Error sending western astrology menu:', error);
-      // Fallback to simple text message
-      await this.sendMessage(menuData.body, 'text');
+      // Fallback to numbered text menu
+      const numberedMenuText = this.generateNumberedMenuText(menuData);
+      await this.sendMessage(numberedMenuText, 'text');
     }
+  }
+
+  /**
+   * Update user's session with current menu type
+   * @param {string} menuType - Type of menu being displayed
+   */
+  async updateUserSessionMenu(menuType) {
+    try {
+      const { updateUserProfile } = require('../../../../models/userModel');
+      await updateUserProfile(this.phoneNumber, { lastMenu: menuType });
+    } catch (error) {
+      this.logger.error('Error updating user session menu:', error);
+    }
+  }
+
+  /**
+   * Generate numbered menu text fallback
+   * @param {Object} menuData - Menu configuration
+   * @returns {string} Numbered text menu
+   */
+  generateNumberedMenuText(menuData) {
+    let menuText = `🌍 *Western Astrology Services*\n\nChoose by replying with a number:\n\n`;
+
+    let itemCount = 1;
+    if (menuData.sections) {
+      menuData.sections.forEach(section => {
+        if (section.rows) {
+          section.rows.forEach(row => {
+            menuText += `${itemCount}. ${row.title} - ${row.description}\n`;
+            itemCount++;
+          });
+        }
+      });
+    }
+
+    menuText += `\n\nJust reply with the number of your choice! 🔢`;
+    return menuText;
   }
 
   /**

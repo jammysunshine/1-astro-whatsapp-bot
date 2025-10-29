@@ -45,8 +45,7 @@ const MantraRecommendationAction = require('./actions/utilities/MantraRecommenda
 const ColorTherapyAction = require('./actions/utilities/ColorTherapyAction');
 const FixedStarsAction = require('./actions/astrology/FixedStarsAction');
 const LunarNodesAction = require('./actions/astrology/LunarNodesAction');
-// Temporarily disabled due to syntax issues
-// const TraditionalHoraryAction = require('./actions/astrology/TraditionalHoraryAction');
+const TraditionalHoraryAction = require('./actions/astrology/TraditionalHoraryAction');
 const RemedialMeasuresAction = require('./actions/astrology/RemedialMeasuresAction');
 const VargaChartsAction = require('./actions/astrology/VargaChartsAction');
 
@@ -155,13 +154,13 @@ class ActionRegistryInitializer {
     this.registry.registerAction(PanchangAnalysisAction.actionId, PanchangAnalysisAction);
     this.registry.registerAction(FixedStarsAction.actionId, FixedStarsAction);
     this.registry.registerAction(LunarNodesAction.actionId, LunarNodesAction);
-    // Temporarily disable TraditionalHoraryAction due to import issues
-    // this.registry.registerAction(TraditionalHoraryAction.actionId, TraditionalHoraryAction);
+    this.registry.registerAction(TraditionalHoraryAction.actionId, TraditionalHoraryAction);
     this.registry.registerAction(RemedialMeasuresAction.actionId, RemedialMeasuresAction);
     this.registry.registerAction(VargaChartsAction.actionId, VargaChartsAction);
 
     // Language and Settings Actions
     this.registry.registerAction(LanguageMenuAction.actionId, LanguageMenuAction);
+    this.registry.registerAction(SetLanguageAction.actionId, SetLanguageAction);
     this.registry.registerAction(ViewProfileAction.actionId, ViewProfileAction);
     this.registry.registerAction(UpdateProfileAction.actionId, UpdateProfileAction);
     // Note: SetLanguageAction handles all individual language settings via dynamic languageCode
@@ -251,9 +250,9 @@ class ActionRegistryInitializer {
     this.registry.registerKeyword('stellar', FixedStarsAction.actionId);
     this.registry.registerKeyword('lunar nodes', LunarNodesAction.actionId);
     this.registry.registerKeyword('rahu ketu', LunarNodesAction.actionId);
-    // Temporarily disabled due to import issues
-    // this.registry.registerKeyword('horary', TraditionalHoraryAction.actionId);
-    // this.registry.registerKeyword('questions', TraditionalHoraryAction.actionId);
+    this.registry.registerKeyword('horary', TraditionalHoraryAction.actionId);
+    this.registry.registerKeyword('traditional horary', TraditionalHoraryAction.actionId);
+    this.registry.registerKeyword('questions', TraditionalHoraryAction.actionId);
     this.registry.registerKeyword('remedial', RemedialMeasuresAction.actionId);
     this.registry.registerKeyword('remedies', RemedialMeasuresAction.actionId);
     this.registry.registerKeyword('healing', RemedialMeasuresAction.actionId);

@@ -51,18 +51,53 @@ const handleIChing = async (message, user) => {
   }
 };
 
+// Connected to actual service implementations - QUICK WINS
+const { PrashnaAstrology } = require('../prashnaAstrology');
+
 /**
- * Handle Palmistry requests
+ * Handle Prashna Astrology requests
  * @param {string} message - User message
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
  */
-const handlePalmistry = async (message, user) => {
-  if (!message.includes('palm') && !message.includes('palmistry') && !message.includes('hand')) {
+const handlePrashna = async (message, user) => {
+  if (!message.includes('prashna') && !message.includes('question') && !message.includes('answer') && !message.includes('consult') && !message.includes('horary')) {
     return null;
   }
 
-  return `✋ *Palmistry Analysis*\n\nHand reading reveals character, destiny, and life patterns through the unique map of your palm lines. This specialized area requires in-person consultation with a qualified palmist.\n\nKey palmistry elements include:\n• Life Line - vitality and life span\n• Heart Line - emotions and relationships\n• Head Line - intellect and communication\n• Fate Line - career and destiny\n\n💫 *Note:* Palmistry complements astrology and requires a professional reading for accurate interpretation.`;
+  // Extract the actual question from the message
+  const question = message.replace(/prashna|question|answer|consult|horary/gi, '').replace(/^\s+|\s+$/g, '');
+  if (!question || question.length < 5) {
+    return '❓ *Prashna Astrology - Question-Based Divination*\n\nPlease ask a specific question for accurate horary analysis.\n\nExamples:\n• "Will I get the job?"\n• "When will my relationship improve?"\n• "Should I invest in property now?"';
+  }
+
+  try {
+    const prashnaService = new PrashnaAstrology();
+    const currentTime = new Date();
+
+    const prashnaData = {
+      question,
+      questionTime: `${currentTime.getHours()}:${currentTime.getMinutes()}`,
+      questionDate: `${currentTime.getDate()}/${currentTime.getMonth() + 1}/${currentTime.getFullYear()}`,
+      questionLocation: {
+        latitude: user.latitude || 28.6139, // Default Delhi
+        longitude: user.longitude || 77.2090,
+        timezone: user.timezone || 5.5
+      },
+      user
+    };
+
+    const prashnaReading = await prashnaService.generatePrashnaAnalysis(prashnaData);
+
+    if (prashnaReading.error) {
+      return '❌ Unable to generate prashna reading. Please ensure your birth details are complete.';
+    }
+
+    return prashnaReading.summary;
+  } catch (error) {
+    console.error('Prashna reading error:', error);
+    return '❌ Error generating prashna analysis. Please try again.';
+  }
 };
 
 /**
@@ -165,5 +200,6 @@ module.exports = {
   handleMayan,
   handleCeltic,
   handleIChing,
+  handlePrashna,
   handleAstrocartography
 };

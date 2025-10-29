@@ -7,7 +7,13 @@ jest.mock('axios', () => ({
   get: jest.fn()
 }));
 
+jest.mock('../../../../src/services/i18n/TranslationService', () => ({
+  translate: jest.fn(),
+  detectLanguage: jest.fn()
+}));
+
 const axios = require('axios');
+const mockTranslationService = require('../../../../src/services/i18n/TranslationService');
 const {
   sendTextMessage,
   sendInteractiveButtons,
@@ -654,6 +660,173 @@ describe('WhatsApp Message Sender', () => {
         expect.any(Object)
       );
       expect(result).toEqual(response.data);
+    });
+
+
+
+    it('should send list message via main wrapper', async() => {
+      const messageData = {
+        type: 'list',
+        body: 'Choose from list:',
+        button: 'Select',
+        sections: [{
+          title: 'Options',
+          rows: [
+            { id: 'item1', title: 'Item 1', description: 'First item' }
+          ]
+        }]
+      };
+      const response = {
+        data: {
+          messages: [{ id: 'msg-list-wrapper-123' }]
+        }
+      };
+
+      axios.post.mockResolvedValue(response);
+
+      const result = await sendMessage(phoneNumber, messageData, 'interactive');
+
+      expect(axios.post).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          to: "+" + phoneNumber, // Interactive messages DO get + prefix
+          type: 'interactive',
+          interactive: expect.objectContaining({
+            type: 'list',
+            body: { text: 'Choose from list:' },
+            action: expect.objectContaining({
+              button: 'Select',
+              sections: expect.any(Array)
+            })
+          })
+        }),
+        expect.any(Object)
+      );
+      expect(result).toEqual(response.data);
+    });
+
+    it('should send template message via main wrapper', async() => {
+      const templateData = {
+        templateName: 'test_template',
+        languageCode: 'en',
+        components: []
+      };
+      const response = {
+        data: {
+          messages: [{ id: 'msg-template-wrapper-123' }]
+        }
+      };
+
+      axios.post.mockResolvedValue(response);
+
+      const result = await sendMessage(phoneNumber, templateData, 'template');
+
+      expect(axios.post).toHaveBeenCalledWith(
+        `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
+        {
+          messaging_product: 'whatsapp',
+          to: "+" + phoneNumber, // Template messages DO get + prefix
+          type: 'template',
+          template: {
+            name: 'test_template',
+            language: { code: 'en' },
+            components: []
+          }
+        },
+        expect.any(Object)
+      );
+      expect(result).toEqual(response.data);
+    });
+
+
+
+    it('should handle input validation errors', async() => {
+      // Test null message
+      await expect(sendMessage(phoneNumber, null, 'text')).rejects.toThrow(
+        'Message content cannot be null or undefined'
+      );
+
+      // Test empty string message
+      await expect(sendMessage(phoneNumber, '', 'text')).rejects.toThrow(
+        'Message content cannot be empty string'
+      );
+    });
+
+    it('should truncate long text messages', async() => {
+      const longMessage = 'A'.repeat(5000);
+      const response = {
+        data: {
+          messages: [{ id: 'msg-truncated-123' }]
+        }
+      };
+
+      axios.post.mockResolvedValue(response);
+
+      await sendMessage(phoneNumber, longMessage, 'text');
+
+      const callArgs = axios.post.mock.calls[0][1];
+      expect(callArgs.text.body.length).toBeLessThanOrEqual(4096);
+      expect(callArgs.text.body.endsWith('A')).toBe(true); // Should be truncated but end with the repeated character
+    });
+
+    it('should integrate with translation service for resource keys', async() => {
+      const resourceKey = 'welcome.message';
+      const response = {
+        data: {
+          messages: [{ id: 'msg-resource-123' }]
+        }
+      };
+
+      mockTranslationService.translate.mockResolvedValue('Translated welcome message');
+      axios.post.mockResolvedValue(response);
+
+      await sendMessage(phoneNumber, resourceKey, 'text', {}, 'en');
+
+      expect(mockTranslationService.translate).toHaveBeenCalledWith(resourceKey, 'en', {});
+    });
+  });
+
+  // Tests for numbered menu fallback system
+  describe('Numbered Menu Fallback System', () => {
+    let originalMap;
+    beforeEach(() => {
+      // Mock the global numberedMenuMappings
+      originalMap = global.numberedMenuMappings;
+      global.numberedMenuMappings = new Map();
+    });
+
+    afterEach(() => {
+      global.numberedMenuMappings = originalMap;
+    });
+
+    it('should create numbered menu fallback from list data', () => {
+      const menuData = {
+        sections: [
+          {
+            title: 'Services',
+            rows: [
+              { id: 'reading', title: 'Daily Reading', description: 'Get your daily horoscope' },
+              { id: 'chart', title: 'Birth Chart', description: 'View your birth chart' }
+            ]
+          }
+        ]
+      };
+
+      const result = createNumberedMenuFallback(menuData, phoneNumber);
+
+      expect(result).toContain('📋 *Menu Options:*');
+      expect(result).toContain('_Services_');
+      expect(result).toContain('1. Daily Reading');
+      expect(result).toContain('Get your daily horoscope');
+      expect(result).toContain('2. Birth Chart');
+      expect(result).toContain('💡 *How to use:*');
+      expect(result).toContain('Type a number (1, 2, 3, etc.)');
+    });
+
+
+
+    it('should return null for non-existent user mappings', () => {
+      expect(getNumberedMenuAction('non-existent-user', '1')).toBeNull();
     });
   });
 

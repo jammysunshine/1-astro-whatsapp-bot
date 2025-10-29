@@ -1014,8 +1014,8 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const userLanguage = getUserLanguage(user, phoneNumber);
       const body = translationService.translate('messages.astrology_services.ashtakavarga.incomplete_profile', userLanguage);
       const buttons = [
-        { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: 'reply', reply: { id: 'start_profile_flow', title: getButtonTitle('update_profile', userLanguage, '📝 Update Profile') } },
+        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back to Traditions') } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1027,9 +1027,9 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const userLanguage = getUserLanguage(user, phoneNumber);
     const body = translationService.translate('messages.astrology_services.ashtakavarga.description', userLanguage);
     const buttons = [
-      { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
+      { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle('get_birth_chart', userLanguage, '📊 Get Birth Chart') } },
+      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back to Traditions') } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: getButtonTitle('main_menu', userLanguage, '🏠 Main Menu') } }
     ];
     await sendMessage(
       phoneNumber,
@@ -1044,7 +1044,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.kaal_sarp.incomplete_profile', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back to Traditions') } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1056,9 +1056,9 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const userLanguage = getUserLanguage(user, phoneNumber);
     const body = translationService.translate('messages.astrology_services.kaal_sarp.description', userLanguage);
     const buttons = [
-      { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
+      { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle('get_birth_chart', userLanguage, '📊 Get Birth Chart') } },
+      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle('back_traditions', userLanguage, '🌳 Back to Traditions') } },
+      { type: 'reply', reply: { id: 'show_main_menu', title: getButtonTitle('main_menu', userLanguage, '🏠 Main Menu') } }
     ];
     await sendMessage(
       phoneNumber,
@@ -1073,7 +1073,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.sade_sati.incomplete_profile', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1086,7 +1086,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const body = translationService.translate('messages.astrology_services.sade_sati.description', userLanguage);
     const buttons = [
       { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+      { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
     ];
     await sendMessage(
@@ -1101,7 +1101,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const body = translationService.translate('messages.astrology_services.vedic_remedies.description', userLanguage);
     const buttons = [
       { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+      { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
     ];
     await sendMessage(
@@ -1132,7 +1132,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.vimshottari_dasha.incomplete_profile', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1145,7 +1145,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const body = translationService.translate('messages.astrology_services.vimshottari_dasha.description', userLanguage);
     const buttons = [
       { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+      { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
     ];
     await sendMessage(
@@ -1161,7 +1161,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.jaimini_astrology.incomplete_profile', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1174,7 +1174,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const body = translationService.translate('messages.astrology_services.jaimini_astrology.description', userLanguage);
     const buttons = [
       { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+      { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
     ];
     await sendMessage(
@@ -1189,7 +1189,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const body = translationService.translate('messages.astrology_services.hindu_festivals.description', userLanguage);
     const buttons = [
       { type: 'reply', reply: { id: 'get_panchang_analysis', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+      { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
     ];
     await sendMessage(
@@ -1205,7 +1205,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.vedic_numerology.incomplete_profile', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1221,7 +1221,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         const body = vedicAnalysis.error;
         const buttons = [
           { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-          { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+          { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
         ];
         await sendMessage(
           phoneNumber,
@@ -1232,7 +1232,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         const body = vedicAnalysis.summary;
         const buttons = [
           { type: 'reply', reply: { id: 'get_numerology_report', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-          { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+          { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
           { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
         ];
         await sendMessage(
@@ -1247,7 +1247,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.vedic_numerology.error', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'get_vedic_numerology_analysis', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1263,7 +1263,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.ayurvedic_astrology.incomplete_profile', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1283,7 +1283,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         const body = ayurvedicAnalysis.error;
         const buttons = [
           { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-          { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+          { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
         ];
         await sendMessage(
           phoneNumber,
@@ -1294,7 +1294,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
         const body = ayurvedicAnalysis.summary;
         const buttons = [
           { type: 'reply', reply: { id: 'get_medical_astrology_analysis', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-          { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+          { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
           { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
         ];
         await sendMessage(
@@ -1309,7 +1309,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.ayurvedic_astrology.error', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'get_ayurvedic_astrology_analysis', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1325,7 +1325,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.varga_charts.incomplete_profile', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1338,7 +1338,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const body = translationService.translate('messages.astrology_services.varga_charts.description', userLanguage);
     const buttons = [
       { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+      { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
     ];
     await sendMessage(
@@ -1354,7 +1354,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       const body = translationService.translate('messages.astrology_services.shadbala.incomplete_profile', userLanguage);
       const buttons = [
         { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } },
-        { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+        { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       ];
       await sendMessage(
         phoneNumber,
@@ -1367,7 +1367,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const body = translationService.translate('messages.astrology_services.shadbala.description', userLanguage);
     const buttons = [
       { type: 'reply', reply: { id: 'show_birth_chart', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+      { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
     ];
     await sendMessage(
@@ -1381,7 +1381,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const body = translationService.translate('messages.astrology_services.muhurta.description', userLanguage);
     const buttons = [
       { type: 'reply', reply: { id: 'get_electional_astrology', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+      { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
     ];
     await sendMessage(
@@ -1396,7 +1396,7 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     const body = translationService.translate('messages.astrology_services.panchang.description', userLanguage);
     const buttons = [
       { type: 'reply', reply: { id: 'get_daily_horoscope', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
-      { type: 'reply', reply: { id: 'show_traditions_menu', title: getButtonTitle("FIX_THIS", userLanguage, "⚠️ Button Title")
+      { type: .reply., reply: { id: .show_traditions_menu., title: getButtonTitle(.back_traditions., userLanguage, .🌳 Back to Traditions.) } }
       { type: 'reply', reply: { id: 'FIXED_BUTTON', title: getButtonTitle('button_title', userLanguage, 'BUTTON TITLE') } }
     ];
     await sendMessage(

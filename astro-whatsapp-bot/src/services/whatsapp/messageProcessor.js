@@ -15,7 +15,7 @@ const {
   incrementCompatibilityChecks
 } = require('../../models/userModel');
 const { getFlow } = require('../../conversation/flowLoader');
-const { generateTarotReading } = require('../astrology/tarotReader');
+const tarotReader = require('../astrology/tarotReader');
 const { generatePalmistryAnalysis } = require('../astrology/palmistryReader');
 const kabbalisticReader = require('../astrology/kabbalisticReader');
 const mayanReader = require('../astrology/mayanReader');
@@ -2143,7 +2143,8 @@ const executeMenuAction = async(phoneNumber, user, action) => {
       }
     }
   case 'show_main_menu':
-    const mainMenu = await getTranslatedMenu('main_menu', userLanguage);
+    const mainMenuUserLanguage = getUserLanguage(user, phoneNumber);
+    const mainMenu = await getTranslatedMenu('main_menu', mainMenuUserLanguage);
     if (mainMenu) {
       await sendMessage(
         phoneNumber,
@@ -2603,11 +2604,11 @@ const processListReply = async(
   if (action) {
     await executeMenuAction(phoneNumber, user, action);
   } else {
-    // Fallback response
+    // Fallback response - use a valid error key
     const userLanguage = getUserLanguage(user, phoneNumber);
     await sendMessage(
       phoneNumber,
-      'messages.errors.list_reply',
+      'messages.errors.generic',
       'text',
       { title, description },
       userLanguage

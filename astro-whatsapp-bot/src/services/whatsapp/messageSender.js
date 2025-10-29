@@ -138,6 +138,7 @@ const sendInteractiveButtons = async(
       to: phoneNumber,
       type: 'interactive',
       interactive: {
+        type: 'button',
         body: {
           text: body
         },

@@ -157,16 +157,18 @@ class ActionRegistry {
    * @returns {Promise<Object|null>} Execution result
    */
   async executeAction(actionName, user, phoneNumber, data = {}) {
-    const action = this.getAction(actionName);
-    if (!action) {
+    const ActionClass = this.getAction(actionName);
+    if (!ActionClass) {
       logger.warn(`⚠️ Cannot execute unknown action: ${actionName}`);
       return null;
     }
 
     try {
       logger.info(`🚀 Executing action: ${actionName} for ${phoneNumber}`);
-      const result = await action.execute();
-      action.logExecution(result);
+      // Instantiate the action class with required parameters
+      const actionInstance = new ActionClass(user, phoneNumber, data);
+      const result = await actionInstance.execute();
+      actionInstance.logExecution(result);
       return result;
     } catch (error) {
       logger.error(`❌ Error executing action ${actionName}:`, error);
@@ -224,9 +226,9 @@ class ActionRegistry {
     }
 
     // Check for actions with missing properites
-    for (const [actionName, actionInstance] of this.actions) {
-      if (!actionInstance || typeof actionInstance.execute !== 'function') {
-        result.errors.push(`Action '${actionName}' is missing execute method`);
+    for (const [actionName, ActionClass] of this.actions) {
+      if (!ActionClass || typeof ActionClass !== 'function') {
+        result.errors.push(`Action '${actionName}' is not a valid class`);
         result.isValid = false;
       }
     }

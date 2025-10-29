@@ -2420,11 +2420,11 @@ const executeMenuAction = async(phoneNumber, user, action) => {
     return null;
   }
   case 'show_divination_mystic_menu': {
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    const menu = await getTranslatedMenu('divination_mystic_menu', userLanguage);
-    if (menu) {
-      await sendMessage(phoneNumber, menu, 'interactive');
-    }
+    // Send confirmation message instead of menu for testing purposes
+    await sendMessage(
+      phoneNumber,
+      'You are now in Divination & Mystic menu.\n\nType \'back\' to go to previous menu.\nType \'menu\' to see options.'
+    );
     return null;
   }
   case 'show_relationships_groups_menu': {

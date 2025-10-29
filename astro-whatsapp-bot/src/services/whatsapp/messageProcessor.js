@@ -741,57 +741,20 @@ const processButtonReply = async(phoneNumber, buttonId, title, user) => {
     // Process as flow button reply
     await processFlowButtonReply(phoneNumber, buttonId, user, session);
   } else {
-    // Process as main menu button reply
-    const userLanguage = getUserLanguage(user, phoneNumber);
-    const mainMenu = await getTranslatedMenu('main_menu', userLanguage);
-    if (mainMenu) {
-      const button = mainMenu.buttons.find(btn => btn.id === buttonId);
-      if (button && button.action) {
-        logger.info(
-          `🎯 Executing main menu action: ${button.action} for button ${buttonId}`
-        );
-        try {
-          await executeMenuAction(phoneNumber, user, button.action);
-          logger.info(
-            `✅ Main menu action ${button.action} completed successfully`
-          );
-        } catch (error) {
-          logger.error(
-            `❌ Error executing main menu action ${button.action}:`,
-            error
-          );
-          const userLanguage = getUserLanguage(user, phoneNumber);
-          await sendMessage(
-            phoneNumber,
-            'messages.errors.menu_action_error',
-            'text',
-            {},
-            userLanguage
-          );
-        }
-      } else {
-        logger.warn(
-          `⚠️ No action defined for button ID: ${buttonId} in main menu`
-        );
-        const userLanguage = getUserLanguage(user, phoneNumber);
-        await sendMessage(
-          phoneNumber,
-          'messages.errors.main_menu_error',
-          'text',
-          { title },
-          userLanguage
-        );
-      }
-    } else {
-      logger.warn(
-        '⚠️ Main menu configuration not found when processing button reply.'
+    // Process as main menu button reply - try list actions first
+    try {
+      await executeMenuAction(phoneNumber, user, buttonId);
+    } catch (error) {
+      logger.error(
+        `❌ Error executing main menu action ${buttonId}:`,
+        error
       );
       const userLanguage = getUserLanguage(user, phoneNumber);
       await sendMessage(
         phoneNumber,
-        'messages.errors.button_error',
+        'messages.errors.menu_action_error',
         'text',
-        { title },
+        {},
         userLanguage
       );
     }
@@ -905,7 +868,14 @@ const processFlowButtonReply = async(phoneNumber, buttonId, user, session) => {
  */
 const executeMenuAction = async(phoneNumber, user, action) => {
   let response = null;
-  const userLanguage = getUserLanguage(user, phoneNumber);
+  let userLanguage;
+
+  try {
+    userLanguage = getUserLanguage(user, phoneNumber);
+  } catch (error) {
+    logger.warn(`⚠️ Failed to get user language for ${phoneNumber}, defaulting to 'en'`);
+    userLanguage = 'en';
+  }
 
   switch (action) {
   case 'get_daily_horoscope':

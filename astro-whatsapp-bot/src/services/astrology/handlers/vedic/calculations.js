@@ -1072,4 +1072,79 @@ const getPlanetHealthInterpretation = (planet, house, longitude) => {
     },
     Moon: {
       6: 'Moon in 6th house connects emotional well-being to daily habits. Digestive health benefits from stable routines.',
-      8: 'Moon in 8
+      8: 'Moon in 8th house affects emotional security and unconscious motivations. Pay attention to emotional health and family relationships.',
+      12: 'Moon in 12th house suggests emotional health recovery through solitude and spiritual practices.',
+      default: 'Moon influences emotional health, digestion, and sensitivity to environment.'
+    },
+    Mars: {
+      6: 'Mars in 6th house indicates active daily routines and physical energy directed toward work and health.',
+      8: 'Mars in 8th house suggests energetic transformation and recovery from intense conditions.',
+      12: 'Mars in 12th house indicates healing through rest and managing underlying anger or frustration.',
+      default: 'Mars represents physical energy, immunity, and ability to fight infections.'
+    },
+    Mercury: {
+      6: 'Mercury in 6th house emphasizes mental health through work and daily routines.',
+      8: 'Mercury in 8th house suggests deep psychological patterns affecting communication and learning.',
+      12: 'Mercury in 12th house indicates mental health benefits from introspection and spiritual studies.',
+      default: 'Mercury affects nervous system, communication, and mental processes.'
+    },
+    Jupiter: {
+      6: 'Jupiter in 6th house suggests health benefits from philosophy and optimism.',
+      8: 'Jupiter in 8th house indicates emotional and spiritual transformation for wisdom.',
+      12: 'Jupiter in 12th house supports health through spiritual growth and foreign travel.',
+      default: 'Jupiter represents expansion, optimism, and ability to heal through faith.'
+    },
+    Saturn: {
+      6: 'Saturn in 6th house indicates long-term health procedures and disciplined health routines.',
+      8: 'Saturn in 8th house suggests gradual transformation through chronic conditions.',
+      12: 'Saturn in 12th house indicates health improvements through spiritual discipline and solitude.',
+      default: 'Saturn affects skeletal system, teeth, and chronic conditions.'
+    }
+  };
+
+  return interpretations[planet]?.[house] || interpretations[planet]?.default || `${planet} represents health influences in the ${sign} sign.`;
+};
+
+// Add missing helper functions
+const getFixedStarInterpretation = (starName, planetName, orb) => {
+  // Mock implementation for fixed star meanings
+  return `${starName} conjunct ${planetName} (${orb}° orb) brings ${starName}'s qualities with ${planetName}'s influence.`;
+};
+
+const analyzeMidheaven = (midheavenLongitude, planets) => {
+  const mcSign = longitudeToSign(midheavenLongitude);
+  return `Midheaven in ${mcSign}: Professional expression and public achievements.`;
+};
+
+const analyzeTenthHousePlanets = (planets, cusps) => {
+  // Mock implementation
+  return [{ planet: 'Sun', influence: 'Leadership and authority in career' }];
+};
+
+const analyzeCareerPlanets = (planets, cusps) => {
+  // Mock implementation
+  return [{ planet: 'Jupiter', careerImpact: 'Expansion and opportunities in profession' }];
+};
+
+const analyzeCareerTiming = (currentAge, planets, cusps) => {
+  // Mock implementation
+  return [{ event: 'Saturn Return', description: 'Career maturity and established position' }];
+};
+
+const determineCareerDirection = (midheavenAnalysis, tenthHousePlanets, careerPlanets) => {
+  return 'Career path focuses on leadership and professional growth';
+};
+
+const assessSuccessPotential = (midheavenAnalysis, tenthHousePlanets, careerPlanets) => {
+  return 'High potential for professional success and recognition';
+};
+
+module.exports = {
+  calculateJaiminiKarakaAnalysis,
+  calculateFinancialAstrologyAnalysis,
+  calculateMedicalAstrologyAnalysis,
+  calculateCareerAstrologyAnalysis,
+  calculateAshtakavarga,
+  calculateFixedStarsAnalysis,
+  AgeHarmonicAstrologyReader
+};

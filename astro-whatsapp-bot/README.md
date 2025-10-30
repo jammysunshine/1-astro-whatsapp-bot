@@ -330,43 +330,70 @@ The bot includes a comprehensive WhatsApp testing suite for validating API integ
 
 This project follows a modular and organized structure to facilitate development, testing, and maintenance. Below is an overview of the main directories:
 
-*   **`src/`**: Contains the core application source code.
-    *   **`src/config/`**: Environment-specific configurations (e.g., database.js).
-    *   **`src/controllers/`**: Handles incoming requests and orchestrates responses (e.g., whatsappController.js).
-    *   **`src/conversation/`**: Houses the modular conversation engine, flow configurations, and menu definitions (e.g., conversationEngine.js, flowConfig.json).
-    *   **`src/models/`**: Defines data models and interacts with the database (e.g., User.js, Session.js).
-    *   **`src/services/`**: Contains business logic and integrations with external services (e.g., astrology engine, payment service, WhatsApp service).
-        *   **`src/services/astrology/`**: Astrology-related logic and calculations (e.g., vedicCalculator.js, astrologyEngine.js).
-        *   **`src/services/payment/`**: Manages payment processing and subscription logic (e.g., paymentService.js).
-        *   **`src/services/whatsapp/`**: WhatsApp API integrations (e.g., whatsappService.js, messageProcessor.js).
-    *   **`src/utils/`**: Provides utility functions (e.g., logger.js, errorHandler.js, inputValidator.js).
-    *   **`server.js`**: The main entry point for the Express.js application.
+### Root Directory
+- **`README.md`**: Project overview and documentation
+- **`package.json`**: Project dependencies and scripts
+- **`package-lock.json`**: Locked dependency versions
+- **`.env.example`**: Example environment variables configuration
+- **`.gitignore`**: Files and directories to be ignored by Git
+- **`.prettierrc`**: Prettier configuration for code formatting
+- **`Dockerfile`**: Docker configuration for containerization
+- **`docker-compose.yml`**: Docker Compose configuration for multi-container setup
+- **`babel.config.js`**: Babel configuration for JavaScript transpilation
+- **`jest.e2e.config.js`**: Jest configuration for end-to-end tests
+- **`start.sh`**: Startup script for the application
+- **`railway.json`**, **`railway-cron.json`**, **`railway.toml`**: Railway deployment configuration
+- **`render-env-vars.txt`**: Render environment variables configuration
+- **`sonar-project.properties`**: SonarQube analysis configuration
+- **`newepics.txt`**: Feature epics roadmap
+- **`RAILWAY_DEPLOYMENT_STATUS.md`**: Deployment status documentation
 
-*   **`tests/`**: Contains all automated tests for the application.
-    *   **`tests/unit/`**: Unit tests for individual functions and modules.
-    *   **`tests/integration/`**: Integration tests for interactions between different services.
-    *   **`tests/e2e/`**: End-to-End tests for critical user flows.
-    *   **`tests/performance/`**: Performance tests and benchmarks.
-    *   **`tests/security/`**: Security tests and vulnerability assessments.
-    *   **`tests/helpers/`**: Helper functions and setup for tests.
-    *   **`tests/reports/`**: Generated test reports (coverage, HTML, JUnit).
+### Source Directory (`src/`)
+The core application source code organized in a modular structure:
+- **`src/server.js`**: The main entry point for the Express.js application
+- **`src/config/`**: Environment-specific configurations (e.g., database.js, environment.js)
+- **`src/controllers/`**: Handles incoming requests and orchestrates responses (e.g., whatsappController.js, userController.js)
+- **`src/conversation/`**: Houses the modular conversation engine, flow configurations, and menu definitions (e.g., conversationEngine.js, flowConfig.json)
+- **`src/models/`**: Defines data models and interacts with the database (e.g., User.js, Session.js)
+- **`src/services/`**: Contains business logic and integrations with external services:
+  - **`src/services/astrology/`**: Astrology-related logic and calculations (e.g., vedicCalculator.js, astrologyEngine.js)
+  - **`src/services/payment/`**: Manages payment processing and subscription logic (e.g., paymentService.js)
+  - **`src/services/whatsapp/`**: WhatsApp API integrations (e.g., whatsappService.js, messageProcessor.js)
+- **`src/utils/`**: Provides utility functions (e.g., logger.js, errorHandler.js, inputValidator.js)
 
-*   **`docs/`**: Comprehensive project documentation.
-    *   **`docs/epics-and-stories/`**: High-level epics and detailed user stories outlining major features and architectural components.
-    *   **`docs/architecture/`**: Architectural decision records (ADRs), diagrams, and design documents.
-    *   **`docs/plans/`**: Development plans, roadmaps, and project management documents.
-    *   **`docs/testing/`**: Testing strategies, plans, and guidelines.
-    *   **`docs/validation/`**: Validation summaries and reports.
-    *   **`docs/prd/`**: Product Requirements Documents.
+### Testing Directory (`tests/`)
+Contains all automated tests for the application:
+- **`tests/unit/`**: Unit tests for individual functions and modules
+- **`tests/integration/`**: Integration tests for interactions between different services
+- **`tests/e2e/`**: End-to-End tests for critical user flows
+- **`tests/performance/`**: Performance tests and benchmarks
+- **`tests/security/`**: Security tests and vulnerability assessments
+- **`tests/helpers/`**: Helper functions and setup for tests
+- **`tests/reports/`**: Generated test reports (coverage, HTML, JUnit)
 
-*   **`.github/workflows/`**: GitHub Actions CI/CD pipeline definitions.
-*   **`artillery/`**: Performance testing scripts and configurations.
-*   **`kubernetes/`**: Kubernetes deployment configurations.
-*   **`owasp-zap/`**: OWASP ZAP security scanning configurations.
-*   **`prometheus/`**: Prometheus monitoring configurations.
-*   **`scripts/`**: Utility scripts (e.g., deployment, setup, testing).
+### Documentation Directory (`docs/`)
+Comprehensive project documentation:
+- **`docs/README-ARCHIVED.md`**: Previously archived project documentation
+- **`docs/epics-and-stories/`**: High-level epics and detailed user stories outlining major features and architectural components
+- **`docs/prd/`**: Product Requirements Documents
+- **`docs/ASTROLOGY_ENHANCEMENT_ROADMAP.md`**: Roadmap for astrology feature enhancements
+- **`docs/PROJECT_MANDATES.md`**: Critical project requirements and mandates
+- **`docs/MENU_REFERENCE.md`**: WhatsApp menu configuration reference
+- **`docs/REDIS_IMPLEMENTATION_PLAN.md`**: Redis implementation planning document
+- **`docs/TEST_REFACTORING_PLAN.md`**: Test refactoring planning document
+- **`docs/ACTION_CLASSES_DUPLICATION_REFACTORING_PLAN.md`**: Action classes refactoring plan
 
-This structure ensures that all aspects of the project are well-documented and easily navigable.
+### GitHub Directory (`.github/`)
+- **`.github/workflows/`**: GitHub Actions CI/CD pipeline definitions
+
+### Other Key Directories
+- **`artillery/`**: Performance testing scripts and configurations
+- **`ephe/`**: Ephemeris data for astronomical calculations
+- **`logs/`**: Application logs storage
+- **`node_modules/`**: NPM dependencies
+- **`owasp-zap/`**: OWASP ZAP security scanning configurations
+- **`prometheus/`**: Prometheus monitoring configurations
+- **`scripts/`**: Utility scripts (e.g., deployment, setup, testing, monitoring)
 
 ## 📋 WhatsApp Development Standards
 
@@ -411,4 +438,4 @@ For support, please open an issue on our [GitHub Issues](https://github.com/your
 
 ---
 
-*Built with ❤️ using BMAD Methodology and AI Agents*# Test redeploy
+*Built with ❤️ using BMAD Methodology and AI Agents*

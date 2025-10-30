@@ -12,7 +12,7 @@ class CompatibilityAction extends AstrologyAction {
    * Unique action identifier
    */
   static get actionId() {
-    return 'initiate_compatibility_flow';
+    return 'start_couple_compatibility_flow';
   }
 
   /**

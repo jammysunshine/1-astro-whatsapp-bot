@@ -169,6 +169,17 @@ const ASTROLOGY_CONFIG = {
       incomplete: 'Solar return analysis requires complete birth information.',
       limitReached: 'You have reached your annual chart analysis limit.'
     }
+  },
+
+  get_traditional_horary: {
+    displayName: 'Traditional Horary Astrology',
+    requiredProfileFields: [],
+    subscriptionFeature: 'horary_traditional',
+    cooldown: 1800000, // 30 minutes
+    errorMessages: {
+      incomplete: 'Horary charts are cast at the precise moment you ask your question.',
+      limitReached: 'Each genuine question deserves careful timing. Try again later.'
+    }
   }
 };
 

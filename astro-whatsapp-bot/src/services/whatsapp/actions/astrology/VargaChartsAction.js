@@ -12,7 +12,7 @@ class VargaChartsAction extends AstrologyAction {
    * Unique action identifier
    */
   static get actionId() {
-    return 'show_varga_charts';
+    return 'get_varga_charts_analysis';
   }
 
   /**

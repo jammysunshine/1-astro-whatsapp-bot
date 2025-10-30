@@ -50,22 +50,52 @@ An advanced, comprehensive multi-channel astrology service platform that starts 
 
 ### Railway Deployment
 
-The bot is optimized for Railway deployment with the following fixes implemented:
+The bot is currently deployed on Railway with the following project configuration:
 
-#### Recent Fixes (v1.0.1)
+#### Current Railway Project Information
+- **Project Name**: `w1`
+- **Service Name**: `w1`
+- **Environment**: `production`
+- **Project ID**: `3f657984-40ed-4aeb-b74b-384fd8afa7a8`
+- **Service ID**: `bab4b523-2de5-4213-8607-4a67d51286fa`
+- **Public Domain**: `https://w1-production-a9c7.up.railway.app`
+- **Private Domain**: `w1.railway.internal`
+
+#### Quick Railway Commands
+```bash
+# Link to existing project (already done)
+railway link --project w1
+
+# Deploy latest changes
+railway up
+
+# View logs
+railway logs
+
+# Check environment variables
+railway variables
+```
+
+#### Recent Fixes (v1.0.1 & Code Refactoring)
+- ✅ **Architecture Refactoring**: Complete action classes code duplication elimination (1,338+ lines removed)
 - ✅ **Container Stability**: Fixed memory leaks and restart issues
 - ✅ **Health Monitoring**: Added `/health` and `/ready` endpoints
 - ✅ **Memory Optimization**: Lazy-loaded astrology libraries, automatic cleanup
-- ✅ **Error Recovery**: Retry logic for failed message processing
-- ✅ **Environment Validation**: Proper environment variable checking
+- ✅ **Clean Direct Infrastructure**: Zero facade patterns, direct API calls only
+- ✅ **Enterprise Validation**: Unified error handling and profile validation
+- ✅ **Template-Based Development**: New actions created in minutes vs hours
 
 #### Environment Variables for Railway
+All environment variables are configured in Railway dashboard including:
 ```bash
-WHATSAPP_ACCESS_TOKEN=your_whatsapp_access_token
-WHATSAPP_PHONE_NUMBER_ID=your_phone_number_id
-WHATSAPP_APP_SECRET=your_app_secret
-W1_SKIP_WEBHOOK_SIGNATURE=true  # For development
+WHATSAPP_ACCESS_TOKEN=EAA...
+WHATSAPP_PHONE_NUMBER_ID=883508911504885
+WHATSAPP_APP_SECRET=fcc...
+W1_SKIP_WEBHOOK_SIGNATURE=true
 NODE_ENV=production
+MONGODB_URI=mongodb+srv://...
+OPENAI_API_KEY=sk-...
+# + all other configured variables
 ```
 
 #### Monitoring Deployment

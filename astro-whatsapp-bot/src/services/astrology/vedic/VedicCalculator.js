@@ -118,6 +118,47 @@ class VedicCalculator {
   async generateTransitPreview(birthData, days = 3) {
     return this.transitCalculator.generateTransitPreview(birthData, days);
   }
+
+  /**
+   * Generate complete Vedic birth chart (kundli)
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Complete Vedic kundli
+   */
+  async generateVedicKundli(birthData) {
+    // TODO: Extract this into specialized BirthChartGenerator calculator
+    // For now, delegate to old monolithic calculator
+    const { VedicCalculator: OldCalculator } = require('../vedicCalculator');
+    const oldCalculator = new OldCalculator(this.astrologer, this.geocodingService, this.vedicCore);
+    return oldCalculator.generateVedicKundli(birthData);
+  }
+
+  /**
+   * Generate Western birth chart
+   * @param {Object} birthData - Birth data object
+   * @param {string} houseSystem - House system to use
+   * @returns {Object} Western birth chart
+   */
+  async generateWesternBirthChart(birthData, houseSystem = 'P') {
+    // TODO: Extract this into specialized BirthChartGenerator calculator
+    // For now, delegate to old monolithic calculator
+    const { VedicCalculator: OldCalculator } = require('../vedicCalculator');
+    const oldCalculator = new OldCalculator(this.astrologer, this.geocodingService, this.vedicCore);
+    return oldCalculator.generateWesternBirthChart(birthData, houseSystem);
+  }
+
+  /**
+   * Check compatibility between two people
+   * @param {Object} person1 - First person's birth data
+   * @param {Object} person2 - Second person's birth data
+   * @returns {Object} Compatibility analysis
+   */
+  async checkCompatibility(person1, person2) {
+    // TODO: Extract this into specialized CompatibilityCalculator
+    // For now, delegate to old monolithic calculator
+    const { VedicCalculator: OldCalculator } = require('../vedicCalculator');
+    const oldCalculator = new OldCalculator(this.astrologer, this.geocodingService, this.vedicCore);
+    return oldCalculator.checkCompatibility(person1, person2);
+  }
 }
 
 module.exports = VedicCalculator;

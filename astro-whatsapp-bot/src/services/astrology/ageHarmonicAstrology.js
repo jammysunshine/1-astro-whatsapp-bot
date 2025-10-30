@@ -259,7 +259,7 @@ class AgeHarmonicAstrologyReader {
    */
   async getPlanetaryPositions(birthDate, birthTime, birthPlace) {
     try {
-      const vedicCalc = require('./vedicCalculator');
+      const vedicCalc = require('./vedic/VedicCalculator');
       return await vedicCalc.calculatePlanetaryPositions(birthDate, birthTime, birthPlace);
     } catch (error) {
       logger.error('Error getting planetary positions:', error);

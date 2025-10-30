@@ -1,6 +1,6 @@
 // Connected to actual service implementations - QUICK WINS
 const tarorReader = require('../tarotReader');
-const iChingReader = require('../ichingReader');
+const { IChingService } = require('../iching');
 const astrocartographyReader = require('../astrocartographyReader');
 
 /**
@@ -39,7 +39,8 @@ const handleIChing = async(message, user) => {
   }
 
   try {
-    const reading = iChingReader.generateIChingReading();
+    const ichingService = new IChingService();
+    const reading = ichingService.generateIChingReading();
     if (reading.error) {
       return '❌ Unable to consult the I Ching oracle at this time.';
     }

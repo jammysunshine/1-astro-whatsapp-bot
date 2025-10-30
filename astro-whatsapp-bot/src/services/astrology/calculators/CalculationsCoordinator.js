@@ -1,4 +1,4 @@
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 const { AdvancedCalculator } = require('./AdvancedCalculator');
 const { AstrologicalCalculators } = require('./AstrologicalCalculators');
 

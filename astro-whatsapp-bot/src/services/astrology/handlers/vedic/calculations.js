@@ -12,7 +12,7 @@
 const logger = require('../../../../utils/logger');
 
 // Import the new modular CalculationsCoordinator
-const { createCalculationsCoordinator } = require('../../../calculators/CalculationsCoordinator');
+const { createCalculationsCoordinator } = require('../../calculators/CalculationsCoordinator');
 
 let coordinatorInstance = null;
 

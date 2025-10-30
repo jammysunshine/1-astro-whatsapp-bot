@@ -9,6 +9,11 @@ const BirthChartAction = require('./actions/astrology/BirthChartAction');
 const ShowMainMenuAction = require('./actions/menu/ShowMainMenuAction');
 const WesternAstrologyMenuAction = require('./actions/menu/WesternAstrologyMenuAction');
 const VedicAstrologyMenuAction = require('./actions/menu/VedicAstrologyMenuAction');
+const DivinationMysticMenuAction = require('./actions/menu/DivinationMysticMenuAction');
+const NumerologySpecialMenuAction = require('./actions/menu/NumerologySpecialMenuAction');
+const RelationshipsGroupsMenuAction = require('./actions/menu/RelationshipsGroupsMenuAction');
+const SettingsProfileMenuAction = require('./actions/menu/SettingsProfileMenuAction');
+const LanguageMenuAction = require('./actions/menu/LanguageMenuAction');
 
 // Key Astrology Actions
 const VedicKundliAction = require('./actions/astrology/VedicKundliAction');
@@ -113,6 +118,11 @@ class ActionRegistryInitializer {
     this.registry.registerAction(ShowMainMenuAction.actionId, ShowMainMenuAction);
     this.registry.registerAction(WesternAstrologyMenuAction.actionId, WesternAstrologyMenuAction);
     this.registry.registerAction(VedicAstrologyMenuAction.actionId, VedicAstrologyMenuAction);
+    this.registry.registerAction(DivinationMysticMenuAction.actionId, DivinationMysticMenuAction);
+    this.registry.registerAction(NumerologySpecialMenuAction.actionId, NumerologySpecialMenuAction);
+    this.registry.registerAction(RelationshipsGroupsMenuAction.actionId, RelationshipsGroupsMenuAction);
+    this.registry.registerAction(SettingsProfileMenuAction.actionId, SettingsProfileMenuAction);
+    this.registry.registerAction(LanguageMenuAction.actionId, LanguageMenuAction);
 
     // Key Astrology Actions (using legacy implementations)
     this.registry.registerAction(VedicKundliAction.actionId, VedicKundliAction);

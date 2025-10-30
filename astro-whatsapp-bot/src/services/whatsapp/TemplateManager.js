@@ -73,7 +73,8 @@ class TemplateManager {
 
     try {
       const response = await this.whatsappAPI.makeRequest('/messages', payload);
-      this.logger.info(`📋 List message sent successfully to ${phoneNumber}: ${response.messages[0].id}`);
+      const messageId = response?.messages?.[0]?.id;
+      this.logger.info(`📋 List message sent successfully to ${phoneNumber}: ${messageId || 'unknown'}`);
       return response;
     } catch (error) {
       this.logger.error(`❌ Error sending list message to ${phoneNumber}:`, error.message);

@@ -1,5 +1,5 @@
 const AstrologyAction = require('../base/AstrologyAction');
-const numerologyService = require('../../../../../services/astrology/numerologyService');
+const numerologyService = require('../../../services/astrology/numerologyService');
 const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
 
 /**

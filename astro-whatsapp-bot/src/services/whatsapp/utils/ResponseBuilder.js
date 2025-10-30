@@ -1,4 +1,5 @@
 const translationService = require('../../i18n/TranslationService');
+const logger = require('../../../utils/logger');
 
 /**
  * Centralized utilities for building consistent WhatsApp responses.

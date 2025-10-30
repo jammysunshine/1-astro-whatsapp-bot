@@ -1,6 +1,6 @@
 const BaseAction = require('../BaseAction');
 const { sendMessage } = require('../../messageSender');
-const { getUserByPhone, addBirthDetails, updateUserProfile } = require('../../../../models/userModel');
+const { getUserByPhone, addBirthDetails, updateUserProfile } = require('../../../models/userModel');
 const translationService = require('../../../services/i18n/TranslationService');
 
 /**

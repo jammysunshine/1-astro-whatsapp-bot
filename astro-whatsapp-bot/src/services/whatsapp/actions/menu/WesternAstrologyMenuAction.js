@@ -1,5 +1,5 @@
 const BaseAction = require('../BaseAction');
-const { getTranslatedMenu } = require('../../../../conversation/menuLoader');
+const { getTranslatedMenu } = require('../../../conversation/menuLoader');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 
 /**
@@ -100,7 +100,7 @@ class WesternAstrologyMenuAction extends BaseAction {
    */
   async updateUserSessionMenu(menuType) {
     try {
-      const { updateUserProfile } = require('../../../../models/userModel');
+      const { updateUserProfile } = require('../../../models/userModel');
       await updateUserProfile(this.phoneNumber, { lastMenu: menuType });
     } catch (error) {
       this.logger.error('Error updating user session menu:', error);

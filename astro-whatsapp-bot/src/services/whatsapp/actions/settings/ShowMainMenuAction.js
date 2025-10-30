@@ -1,7 +1,7 @@
 const BaseAction = require('../BaseAction');
-const { ResponseBuilder } = require('../../../../utils/ResponseBuilder');
+const { ResponseBuilder } = require('../../../utils/ResponseBuilder');
 const { sendMessage } = require('../../../messageSender');
-const { getTranslatedMenu } = require('../../../../conversation/menuLoader');
+const { getTranslatedMenu } = require('../../../conversation/menuLoader');
 
 /**
  * ShowMainMenuAction - Displays the main menu with astrology services.

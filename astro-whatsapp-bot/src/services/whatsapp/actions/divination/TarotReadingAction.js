@@ -68,7 +68,7 @@ class TarotReadingAction extends BaseAction {
   async performTarotReading() {
     try {
       try {
-        const tarotReader = require('../../../../services/astrology/tarotReader');
+        const tarotReader = require('../../../services/astrology/tarotReader');
         const spreadType = 'single';
         return await tarotReader.generateTarotReading(this.user, spreadType);
       } catch (moduleError) {

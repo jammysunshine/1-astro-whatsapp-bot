@@ -1,14 +1,23 @@
 /**
- * Nadi Astrology - Authentic Ancient Tamil Palm Leaf Astrology System
- * Based on actual ancient palm leaf manuscripts with real nakshatra-based calculations
+ * Nadi Astrology - Legacy Module - DEPRECATED
+ * This file is maintained for backward compatibility during transition.
+ * All Nadi Astrology functionality has been moved to the modular architecture.
  */
 
-const logger = require('../../utils/logger');
-const sweph = require('sweph');
+// *** TRANSITION NOTICE ***
+// Important: This legacy file is deprecated and will be removed in a future version.
+// All new developments should use: src/services/astrology/nadi/index.js
+// This file remains temporarily to prevent breaking changes during migration.
 
+const logger = require('../../utils/logger');
+
+// Import the new modular NadiAstrology system
+const { createNadiAstrology } = require('./nadi/index.js');
+
+// Backward-compatible class wrapper
 class NadiAstrology {
   constructor() {
-    logger.info('Module: NadiAstrology loaded with authentic palm leaf calculations.');
+    logger.warn('DEPRECATED: NadiAstrology legacy class is deprecated. Use modular system instead.');
     this.initializeNadiSystem();
   }
 
@@ -279,54 +288,18 @@ class NadiAstrology {
   }
 
   /**
-   * Perform authentic Nadi Astrology reading using Swiss Ephemeris calculations
+   * Perform authentic Nadi Astrology reading - DELEGATED TO MODULAR SYSTEM
    * @param {Object} birthData - Birth date, time, place
    * @returns {Object} Authentic Nadi reading
    */
   async performNadiReading(birthData) {
     try {
-      const { birthDate, birthTime, birthPlace, name } = birthData;
-
-      // Parse birth data
-      const [day, month, year] = birthDate.split('/').map(Number);
-      const [hour, minute] = birthTime.split(':').map(Number);
-
-      // Calculate Julian Day
-      const jd = this._dateToJulianDay(year, month, day, hour + minute / 60);
-
-      // Calculate precise Moon position using Swiss Ephemeris
-      const moonPosition = await this._getMoonPosition(jd);
-
-      // Determine authentic Nadi classification based on Moon nakshatra
-      const nadiClassification = this._calculateAuthenticNadi(moonPosition.longitude);
-
-      // Calculate planetary influences using Swiss Ephemeris
-      const planetaryAnalysis = await this._calculateAuthenticPlanetaryInfluences(jd, moonPosition.longitude);
-
-      // Generate predictions based on authentic palm leaf patterns
-      const predictions = this._generateAuthenticNadiPredictions(nadiClassification, planetaryAnalysis);
-
-      // Calculate authentic Nadi matching factors
-      const compatibility = this._calculateAuthenticNadiCompatibility(moonPosition.longitude);
-
-      // Calculate specific Nadi patterns for palm leaf matching
-      const nadiPattern = this._calculateNadiPattern(moonPosition.longitude);
-
-      return {
-        name,
-        moon_longitude: moonPosition.longitude,
-        moon_nakshatra: this._getNakshatraFromLongitude(moonPosition.longitude),
-        nadi_classification: nadiClassification,
-        planetary_analysis: planetaryAnalysis,
-        predictions,
-        compatibility,
-        nadi_pattern: nadiPattern,
-        palm_leaf_correlation: this._generatePalmLeafCorrelation(moonPosition.longitude, planetaryAnalysis),
-        remedial_suggestions: this._generateAuthenticRemedies(nadiClassification, compatibility),
-        summary: this._generateAuthenticNadiSummary(name, nadiClassification, predictions, compatibility)
-      };
+      logger.warn('DEPRECATED: Using legacy method - please use modular NadiAstrology system');
+      // Get the modular instance (this creates it if not exists)
+      const modularNadiAstrology = await createNadiAstrology();
+      return await modularNadiAstrology.performNadiReading(birthData);
     } catch (error) {
-      logger.error('Error performing authentic Nadi reading:', error);
+      logger.error('Error performing authentic Nadi reading through legacy adapter:', error);
       return {
         error: `Unable to perform authentic Nadi reading - ${error.message}`
       };

@@ -30,12 +30,54 @@ class VedicCalculator {
     this.transitCalculator = new TransitCalculator();
 
     // Set services for calculators that need them
-    this.ashtakavargaCalculator.setServices(this);
-    this.dashaCalculator.setServices(this);
-    this.remedyCalculator.setServices(this);
-    this.vargaChartCalculator.setServices(this);
-    this.lunarReturnCalculator.setServices(this);
-    this.transitCalculator.setServices(this);
+    this._initializeCalculatorServices();
+  }
+
+  /**
+   * Initialize services for all calculators
+   * @private
+   */
+  _initializeCalculatorServices() {
+    try {
+      // Validate required services before setting them
+      if (!this.geocodingService) {
+        logger.warn('⚠️ Geocoding service not available - some calculations may be limited');
+      }
+
+      // Set services for calculators that need them
+      const calculatorsWithServices = [
+        this.ashtakavargaCalculator,
+        this.dashaCalculator,
+        this.remedyCalculator,
+        this.vargaChartCalculator,
+        this.lunarReturnCalculator,
+        this.transitCalculator
+      ];
+
+      calculatorsWithServices.forEach(calculator => {
+        if (calculator && typeof calculator.setServices === 'function') {
+          calculator.setServices(this);
+        }
+      });
+
+      logger.info('✅ Calculator services initialized successfully');
+    } catch (error) {
+      logger.error('❌ Error initializing calculator services:', error);
+      throw new Error(`Failed to initialize calculator services: ${error.message}`);
+    }
+  }
+
+  /**
+   * Validate that required services are available
+   * @private
+   * @throws {Error} If required services are missing
+   */
+  _validateRequiredServices() {
+    if (!this.geocodingService) {
+      throw new Error('Geocoding service is required for Vedic calculations');
+    }
+    
+    // Add other service validations as needed
   }
 
   /**
@@ -44,7 +86,13 @@ class VedicCalculator {
    * @returns {Object} Complete Ashtakavarga analysis
    */
   async calculateAshtakavarga(birthData) {
-    return this.ashtakavargaCalculator.calculateAshtakavarga(birthData);
+    try {
+      this._validateRequiredServices();
+      return await this.ashtakavargaCalculator.calculateAshtakavarga(birthData);
+    } catch (error) {
+      logger.error('❌ Error in Ashtakavarga calculation:', error);
+      throw new Error(`Ashtakavarga calculation failed: ${error.message}`);
+    }
   }
 
   /**
@@ -53,7 +101,13 @@ class VedicCalculator {
    * @returns {Object} Dasha analysis
    */
   async calculateVimshottariDasha(birthData) {
-    return this.dashaCalculator.calculateVimshottariDasha(birthData);
+    try {
+      this._validateRequiredServices();
+      return await this.dashaCalculator.calculateVimshottariDasha(birthData);
+    } catch (error) {
+      logger.error('❌ Error in Vimshottari Dasha calculation:', error);
+      throw new Error(`Vimshottari Dasha calculation failed: ${error.message}`);
+    }
   }
 
   /**
@@ -63,12 +117,14 @@ class VedicCalculator {
    * @returns {Object} Remedial measures analysis
    */
   async calculateRemedialMeasures(birthData, planetaryPositions) {
-    return this.remedyCalculator.calculateRemedialMeasures(birthData, planetaryPositions);
+    try {
+      this._validateRequiredServices();
+      return await this.remedyCalculator.calculateRemedialMeasures(birthData, planetaryPositions);
+    } catch (error) {
+      logger.error('❌ Error in remedial measures calculation:', error);
+      throw new Error(`Remedial measures calculation failed: ${error.message}`);
+    }
   }
-
-
-
-
 
   /**
    * Calculate Varga (Divisional) Charts - Vedic system of harmonic charts
@@ -77,7 +133,13 @@ class VedicCalculator {
    * @returns {Object} Varga chart analysis
    */
   async calculateVargaChart(birthData, varga = 'D9') {
-    return this.vargaChartCalculator.calculateVargaChart(birthData, varga);
+    try {
+      this._validateRequiredServices();
+      return await this.vargaChartCalculator.calculateVargaChart(birthData, varga);
+    } catch (error) {
+      logger.error('❌ Error in Varga chart calculation:', error);
+      throw new Error(`Varga chart calculation failed: ${error.message}`);
+    }
   }
 
   /**
@@ -106,7 +168,13 @@ class VedicCalculator {
    * @returns {Object} Lunar return analysis
    */
   async calculateLunarReturn(birthData, targetDate = null) {
-    return this.lunarReturnCalculator.calculateLunarReturn(birthData, targetDate);
+    try {
+      this._validateRequiredServices();
+      return await this.lunarReturnCalculator.calculateLunarReturn(birthData, targetDate);
+    } catch (error) {
+      logger.error('❌ Error in Lunar Return calculation:', error);
+      throw new Error(`Lunar Return calculation failed: ${error.message}`);
+    }
   }
 
   /**
@@ -116,7 +184,13 @@ class VedicCalculator {
    * @returns {Object} Transit preview
    */
   async generateTransitPreview(birthData, days = 3) {
-    return this.transitCalculator.generateTransitPreview(birthData, days);
+    try {
+      this._validateRequiredServices();
+      return await this.transitCalculator.generateTransitPreview(birthData, days);
+    } catch (error) {
+      logger.error('❌ Error in transit preview generation:', error);
+      throw new Error(`Transit preview generation failed: ${error.message}`);
+    }
   }
 
   /**

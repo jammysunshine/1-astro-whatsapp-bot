@@ -8,6 +8,9 @@ class AshtakavargaCalculator {
 
   async calculateAshtakavarga(birthData) {
     try {
+      // Validate required services before proceeding
+      this._validateServices();
+      
       const { birthDate, birthTime, birthPlace } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
@@ -56,9 +59,24 @@ class AshtakavargaCalculator {
     }
   }
 
+  /**
+   * Set required services for this calculator
+   * @param {Object} vedicCalculator - Parent VedicCalculator instance
+   */
   setServices(vedicCalculator) {
     this.vedicCalculator = vedicCalculator;
     this.geocodingService = vedicCalculator.geocodingService;
+  }
+
+  /**
+   * Validate that required services are available
+   * @private
+   * @throws {Error} If required services are missing
+   */
+  _validateServices() {
+    if (!this.geocodingService) {
+      throw new Error('Geocoding service is required for Ashtakavarga calculations');
+    }
   }
 
   /**

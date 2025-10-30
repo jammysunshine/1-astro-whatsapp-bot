@@ -3,13 +3,13 @@ const { getMessageCoordinator } = require('../../../src/services/whatsapp/Messag
 const { getMenu } = require('../../../src/conversation/menuLoader');
 
 // Mock external services for safe menu testing
-jest.mock('../../../src/services/whatsapp/messageSender', () => ({
+jest.mock('services/whatsapp/messageSender', () => ({
   sendMessage: jest.fn(),
   sendListMessage: jest.fn(),
   sendButtonMessage: jest.fn()
 }));
 
-const messageSender = require('../../../src/services/whatsapp/messageSender');
+const messageSender = require('services/whatsapp/messageSender');
 
 describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Scenarios)', () => {
   let dbManager;

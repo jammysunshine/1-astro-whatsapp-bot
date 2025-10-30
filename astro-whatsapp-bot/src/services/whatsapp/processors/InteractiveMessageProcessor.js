@@ -289,18 +289,29 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
    */
   async executeAction(actionId, user, phoneNumber) {
     try {
+      let actualActionId = actionId;
+      const actionData = {};
+
+      // Handle special case for language buttons - extract language code from button ID
+      if (actionId.startsWith('set_language_')) {
+        const languageCode = actionId.replace('set_language_', '');
+        actualActionId = 'set_language';  // Use the base action ID
+        actionData.languageCode = languageCode;
+        this.logger.info(`🌐 Extracting language code ${languageCode} from button ID ${actionId}`);
+      }
+
       if (this.actionRegistry) {
-        const action = this.actionRegistry.getAction(actionId) ||
-                      this.actionRegistry.getActionForButton(actionId);
+        const action = this.actionRegistry.getAction(actualActionId) ||
+                      this.actionRegistry.getActionForButton(actualActionId);
 
         if (action) {
-          await this.actionRegistry.executeAction(actionId, user, phoneNumber);
+          await this.actionRegistry.executeAction(actualActionId, user, phoneNumber, actionData);
         } else {
-          this.logger.warn(`⚠️ No action found for ${actionId}, trying legacy menu action`);
-          await this.executeLegacyMenuAction(actionId, user, phoneNumber);
+          this.logger.warn(`⚠️ No action found for ${actualActionId}, trying legacy menu action`);
+          await this.executeLegacyMenuAction(actualActionId, user, phoneNumber);
         }
       } else {
-        await this.executeLegacyMenuAction(actionId, user, phoneNumber);
+        await this.executeLegacyMenuAction(actualActionId, user, phoneNumber);
       }
     } catch (error) {
       this.logger.error(`❌ Error executing action ${actionId}:`, error);

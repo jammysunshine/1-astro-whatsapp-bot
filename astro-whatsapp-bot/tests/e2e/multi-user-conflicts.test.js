@@ -917,5 +917,27 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
           expectedIndex: 'region_profile_idx'
         },
         {
-          name: 'sign_age_range',
-          query: { sunSign: 'Cancer', age: { $gte: 30
+          name: 'complex_query',
+          query: { profile: 'free', sunSign: 'Cancer', readingCount: { $lt: 10 } },
+          description: 'New Cancer users with low reading count'
+        }
+      ];
+
+      // Test composite index effectiveness
+      for (const queryDef of compositeQueries) {
+        const startTime = Date.now();
+        const results = await compositeIndexCollection.find(queryDef.query).limit(100).toArray();
+        const endTime = Date.now();
+
+        expect(endTime - startTime).toBeLessThan(1000); // Fast response with composite index
+        expect(results).toBeDefined();
+        expect(Array.isArray(results)).toBe(true);
+
+        console.log(`${queryDef.description}: ${results.length} results in ${endTime - startTime}ms`);
+      }
+
+      // Cleanup
+      await db.dropCollection('composite_index_test');
+    });
+  });
+});

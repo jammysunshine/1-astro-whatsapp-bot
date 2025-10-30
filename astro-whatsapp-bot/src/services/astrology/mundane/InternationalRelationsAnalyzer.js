@@ -1,84 +1,54 @@
-const logger = require('../../../utils/logger');
-
-/**
- * InternationalRelationsAnalyzer - Analyzes diplomatic and international relations
- * Examines alliances, conflicts, trade relations, and diplomatic dynamics between nations
- */
 class InternationalRelationsAnalyzer {
-  constructor() {
-    logger.info('Module: InternationalRelationsAnalyzer loaded for geopolitical analysis');
-  }
-
   /**
-   * Assess international dynamics and relations
-   * @param {Object} chartData - Chart data
+   * Assess international relations potential
+   * @param {Object} chart - Astrological chart
+   * @param {Object} rulership - Country rulership
+   * @param {string} country - Country name
    * @returns {Object} International relations assessment
    */
-  assessInternationalDynamics(chartData) {
-    const dynamics = {
-      regionalTensions: this.identifyRegionalTensions(chartData),
-      alliancePatterns: this.analyzeAlliancePatterns(chartData),
-      tradeRelations: this.assessTradeRelations(chartData),
-      borderDisputes: this.identifyBorderConflicts(chartData),
-      diplomaticStrategy: this.recommendDiplomaticApproaches(chartData),
-      peacekeeping: this.assessPeacekeepingNeeds(chartData)
+  assessInternationalRelations(chart, rulership, country) {
+    const assessment = {
+      relationshipStrength: 'Neutral',
+      alliances: [],
+      conflicts: [],
+      diplomaticOpportunities: [],
+      internationalRole: 'Moderate'
     };
 
-    return dynamics;
-  }
+    // Venus for diplomacy
+    const { venus } = chart.planetaryPositions;
+    if (venus) {
+      if (venus.house === 7) {
+        assessment.relationshipStrength = 'Strong diplomatic capability';
+        assessment.diplomaticOpportunities.push('Favorable international partnerships possible');
+      } else if (venus.house === 6) {
+        assessment.conflicts.push('Diplomatic tensions with foreign powers');
+      }
+    }
 
-  /**
-   * Identify regional tensions
-   * @param {Object} chartData - Chart data
-   * @returns {Array} Regional tensions
-   */
-  identifyRegionalTensions(chartData) {
-    return ['Monitor Venus-Saturn aspects for diplomatic tensions'];
-  }
+    // Mars for conflicts
+    const { mars } = chart.planetaryPositions;
+    if (mars) {
+      if (mars.house === 7) {
+        assessment.conflicts.push('Potential conflicts with international partners');
+        assessment.relationshipStrength = 'Challenging - assertive foreign policy';
+      } else if ([8, 12].includes(mars.house)) {
+        assessment.conflicts.push('Deep-seated international conflicts or secret enmities');
+      }
+    }
 
-  /**
-   * Analyze alliance patterns
-   * @param {Object} chartData - Chart data
-   * @returns {Array} Alliance patterns
-   */
-  analyzeAlliancePatterns(chartData) {
-    return ['Jupiter in diplomatic houses suggests cooperation'];
-  }
+    // Jupiter for expansion/international role
+    const { jupiter } = chart.planetaryPositions;
+    if (jupiter) {
+      if (jupiter.house === 9) {
+        assessment.internationalRole = 'Educational and philosophical leadership';
+        assessment.alliances.push('Strong international cooperation on educational and justice matters');
+      } else if (jupiter.house === 7) {
+        assessment.alliances.push('Beneficial international trade and legal partnerships');
+      }
+    }
 
-  /**
-   * Assess trade relations
-   * @param {Object} chartData - Chart data
-   * @returns {Array} Trade relations assessment
-   */
-  assessTradeRelations(chartData) {
-    return ['Mercury-Venus aspects support commercial harmony'];
-  }
-
-  /**
-   * Identify border conflicts
-   * @param {Object} chartData - Chart data
-   * @returns {Array} Border conflicts
-   */
-  identifyBorderConflicts(chartData) {
-    return ['Mars in 7th suggests international disputes'];
-  }
-
-  /**
-   * Recommend diplomatic approaches
-   * @param {Object} chartData - Chart data
-   * @returns {Array} Diplomatic approaches
-   */
-  recommendDiplomaticApproaches(chartData) {
-    return ['Consider negotiation during favorable Venus periods'];
-  }
-
-  /**
-   * Assess peacekeeping needs
-   * @param {Object} chartData - Chart data
-   * @returns {Array} Peacekeeping needs
-   */
-  assessPeacekeepingNeeds(chartData) {
-    return ['Monitor Mars-Saturn alignments for conflict resolution'];
+    return assessment;
   }
 }
 

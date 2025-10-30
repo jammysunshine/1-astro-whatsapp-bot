@@ -14,8 +14,8 @@ const handleNadi = async (message, user) => {
   }
 
   try {
-    const { NadiAstrology } = require('../../nadiAstrology');
-    const nadiService = new NadiAstrology();
+    const { NadiService } = require('../../nadi');
+    const nadiService = NadiService.createNadiService();
     const birthData = {
       birthDate: user.birthDate,
       birthTime: user.birthTime || '12:00',

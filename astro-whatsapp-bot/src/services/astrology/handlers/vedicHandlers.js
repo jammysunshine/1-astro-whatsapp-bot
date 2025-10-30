@@ -36,7 +36,7 @@ const {
   calculateCareerAstrologyAnalysis,
   calculateAshtakavarga,
   calculateFixedStarsAnalysis
-} = require('./vedic/calculations');
+} = require('./vedic/calculations.js');
 
 /**
  * Vedic Astrology Handlers Interface

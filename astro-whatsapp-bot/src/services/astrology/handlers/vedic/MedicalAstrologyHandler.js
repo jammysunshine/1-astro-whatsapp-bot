@@ -3,7 +3,7 @@
  * Handles health and medical astrology requests
  */
 const logger = require('../../../../utils/logger');
-const MundaneAstrologyReader = require('../../mundaneAstrology');
+const { createMundaneService } = require('../../mundane');
 
 const handleMedicalAstrology = async (message, user) => {
   if (!message.includes('medical') && !message.includes('health') && !message.includes('disease') && !message.includes('illness') && !message.includes('health analysis')) {
@@ -15,14 +15,14 @@ const handleMedicalAstrology = async (message, user) => {
   }
 
   try {
-    const mundaneReader = new MundaneAstrologyReader();
+    const mundaneService = await createMundaneService();
     const chartData = {
       planets: {},
       houses: {},
       aspects: []
     };
 
-    const healthAnalysis = await mundaneReader.generateMundaneAnalysis(chartData, 'health');
+    const healthAnalysis = await mundaneService.performMundaneAnalysis(chartData, 'health');
 
     if (healthAnalysis.error) {
       return '❌ Unable to generate mundane astrology analysis for health.';

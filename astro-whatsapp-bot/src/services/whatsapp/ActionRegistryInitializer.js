@@ -55,7 +55,6 @@ const RemedialMeasuresAction = require('./actions/astrology/RemedialMeasuresActi
 const VargaChartsAction = require('./actions/astrology/VargaChartsAction');
 
 // Language and Settings Actions
-const LanguageMenuAction = require('./actions/menu/LanguageMenuAction');
 const SetLanguageAction = require('./actions/settings/SetLanguageAction');
 const ViewProfileAction = require('./actions/settings/ViewProfileAction');
 const UpdateProfileAction = require('./actions/settings/UpdateProfileAction');
@@ -283,6 +282,15 @@ class ActionRegistryInitializer {
     // Menu buttons
     this.registry.registerButton('show_main_menu', 'show_main_menu');
     this.registry.registerButton('horoscope_menu', 'show_main_menu');
+
+    // Submenu buttons
+    this.registry.registerButton('show_western_astrology_menu', WesternAstrologyMenuAction.actionId);
+    this.registry.registerButton('show_vedic_astrology_menu', VedicAstrologyMenuAction.actionId);
+    this.registry.registerButton('show_divination_mystic_menu', DivinationMysticMenuAction.actionId);
+    this.registry.registerButton('show_numerology_special_menu', NumerologySpecialMenuAction.actionId);
+    this.registry.registerButton('show_relationships_groups_menu', RelationshipsGroupsMenuAction.actionId);
+    this.registry.registerButton('show_settings_profile_menu', SettingsProfileMenuAction.actionId);
+    this.registry.registerButton('show_language_menu', LanguageMenuAction.actionId);
 
     // Action-specific buttons (match actual actionId properties)
     this.registry.registerButton('get_daily_horoscope', DailyHoroscopeAction.actionId);

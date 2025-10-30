@@ -3,7 +3,7 @@
  * Handles Vedic 64-point strength analysis requests
  */
 const logger = require('../../../../utils/logger');
-const { calculateAshtakavarga } = require('./calculations');
+const { AshtakavargaCalculator } = require('../vedic/calculators/AshtakavargaCalculator');
 
 const handleAshtakavarga = async (message, user) => {
   if (!message.includes('ashtakavarga') && !message.includes('64-point') && !message.includes('benefic') && !message.includes('strength analysis')) {
@@ -15,8 +15,26 @@ const handleAshtakavarga = async (message, user) => {
   }
 
   try {
-    const analysis = await calculateAshtakavarga(user);
-    return `🔢 *Ashtakavarga - Vedic 64-Point Strength Analysis*\n\n${analysis.overview}\n\n💫 *Planetary Strengths:*\n${analysis.planetaryStrengths.map(p => p.strength).join('\n')}\n\n🏔️ *Peak Houses (10+ points):*\n${analysis.peakHouses.join(', ')}\n\n🌟 *Interpretation:*\n${analysis.interpretation}\n\n🕉️ *Ancient Vedic wisdom uses 64 mathematical combinations to reveal planetary harmony at birth.*`;
+    const calculator = new AshtakavargaCalculator();
+    // Set services if available
+    if (global.vedicCore?.geocodingService) {
+      calculator.setServices({ geocodingService: global.vedicCore.geocodingService });
+    }
+
+    const birthData = {
+      birthDate: user.birthDate || '15/06/1991',
+      birthTime: user.birthTime || '14:30',
+      birthPlace: user.birthPlace || 'Delhi, India'
+    };
+
+    const analysis = await calculator.calculateAshtakavarga(birthData);
+
+    if (analysis.error) {
+      return '❌ Error calculating Ashtakavarga. This requires precise ephemeris calculations. Please try again.';
+    }
+
+    const summary = calculator._generateAshtakavargaSummary(analysis.analysis);
+    return `${summary}\n\n🕉️ *Ancient Vedic wisdom uses 64 mathematical combinations to reveal planetary harmony at birth.*`;
   } catch (error) {
     logger.error('Ashtakavarga calculation error:', error);
     return '❌ Error calculating Ashtakavarga. This requires precise ephemeris calculations. Please try again.';

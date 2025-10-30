@@ -458,9 +458,9 @@ class HinduFestivals {
       1: '4:30 PM - 6:00 PM', // Monday
       2: '12:00 PM - 1:30 PM', // Tuesday
       3: '10:30 AM - 12:00 PM', // Wednesday
-      4: '9:00 AM - 10:30 PM', // Thursday
-      5: '7:30 AM - 9:00 AM', // Friday
-      6: '1:30 PM - 3:00 PM'  // Saturday
+      4: '1:30 PM - 3:00 PM', // Thursday
+      5: '10:30 AM - 12:00 PM', // Friday
+      6: '9:00 AM - 10:30 AM'  // Saturday
     };
 
     return yamagandamTimings[dayOfWeek];

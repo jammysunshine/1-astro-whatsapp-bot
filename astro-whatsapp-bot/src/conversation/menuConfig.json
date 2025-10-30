@@ -47,88 +47,158 @@
     ]
   },
   "relationships_groups_menu": {
-    "type": "button",
+    "type": "list",
+    "button": "Choose Relationship Service",
     "body": "👥 *Relationships & Groups*\n\nDiscover cosmic connections in your relationships:",
-    "buttons": [
+    "sections": [
       {
-        "id": "start_couple_compatibility_flow",
-        "title": "💕 Couple Compatibility"
+        "title": "💑 Couples & Partners",
+        "rows": [
+          {
+            "id": "start_couple_compatibility_flow",
+            "title": "💕 Couple Compatibility",
+            "description": "Romantic relationship compatibility analysis"
+          },
+          {
+            "id": "get_synastry_analysis",
+            "title": "🌟 Relationship Synastry",
+            "description": "Detailed chart comparison for relationships"
+          }
+        ]
       },
       {
-        "id": "get_synastry_analysis",
-        "title": "🌟 Relationship Synastry"
+        "title": "👨‍👩‍👧‍👦 Family & Groups",
+        "rows": [
+          {
+            "id": "start_family_astrology_flow",
+            "title": "👪 Family Astrology",
+            "description": "Family dynamics and relationships"
+          },
+          {
+            "id": "start_business_partnership_flow",
+            "title": "🤝 Business Partnership",
+            "description": "Professional partnership analysis"
+          },
+          {
+            "id": "start_group_timing_flow",
+            "title": "⏰ Group Event Timing",
+            "description": "Best timing for group activities"
+          }
+        ]
       },
       {
-        "id": "start_family_astrology_flow",
-        "title": "👪 Family Astrology"
-      },
-      {
-        "id": "start_business_partnership_flow",
-        "title": "🤝 Business Partnership"
-      },
-      {
-        "id": "start_group_timing_flow",
-        "title": "⏰ Group Event Timing"
-      },
-      {
-        "id": "show_main_menu",
-        "title": "🏠 Main Menu"
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "show_main_menu",
+            "title": "🏠 Main Menu",
+            "description": "Return to service categories"
+          }
+        ]
       }
     ]
   },
   "numerology_special_menu": {
-    "type": "button",
+    "type": "list",
+    "button": "Choose Numerology Service",
     "body": "🔢 *Numerology & Special Readings*\n\nDiscover hidden meanings through numbers and unique cosmic insights:",
-    "buttons": [
+    "sections": [
       {
-        "id": "get_numerology_analysis",
-        "title": "🔢 Life Path Numerology"
+        "title": "🔢 Core Numerology",
+        "rows": [
+          {
+            "id": "get_numerology_analysis",
+            "title": "🔢 Life Path Numerology",
+            "description": "Calculate your life path and destiny numbers"
+          },
+          {
+            "id": "get_numerology_report",
+            "title": "📊 Complete Numerology Report",
+            "description": "Detailed analysis of all your numbers"
+          }
+        ]
       },
       {
-        "id": "get_numerology_report",
-        "title": "📊 Numerology Report"
+        "title": "🌙 Cycles & Timing",
+        "rows": [
+          {
+            "id": "get_lunar_return",
+            "title": "🌙 Lunar Return",
+            "description": "Monthly personality and life themes"
+          },
+          {
+            "id": "get_future_self_analysis",
+            "title": "🔮 Future Self Analysis",
+            "description": "Your potential and future possibilities"
+          }
+        ]
       },
       {
-        "id": "get_lunar_return",
-        "title": "🌙 Lunar Return"
+        "title": "🌍 Timing & Electional",
+        "rows": [
+          {
+            "id": "get_electional_astrology",
+            "title": "📅 Electional Astrology",
+            "description": "Choose the best time for important events"
+          },
+          {
+            "id": "get_mundane_astrology_analysis",
+            "title": "🌍 Mundane Astrology",
+            "description": "World events and collective timing"
+          }
+        ]
       },
       {
-        "id": "get_future_self_analysis",
-        "title": "🔮 Future Self Analysis"
-      },
-      {
-        "id": "get_electional_astrology",
-        "title": "📅 Electional Astrology"
-      },
-      {
-        "id": "get_mundane_astrology_analysis",
-        "title": "🌍 Mundane Astrology"
-      },
-      {
-        "id": "show_main_menu",
-        "title": "🏠 Main Menu"
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "show_main_menu",
+            "title": "🏠 Main Menu",
+            "description": "Return to service categories"
+          }
+        ]
       }
     ]
   },
   "settings_profile_menu": {
-    "type": "button",
+    "type": "list",
+    "button": "Choose Setting",
     "body": "⚙️ *Settings & Profile*\n\nManage your account and preferences:",
-    "buttons": [
+    "sections": [
       {
-        "id": "btn_update_profile",
-        "title": "📝 Update Profile"
+        "title": "👤 Profile Management",
+        "rows": [
+          {
+            "id": "btn_update_profile",
+            "title": "📝 Update Profile",
+            "description": "Edit your birth details and preferences"
+          },
+          {
+            "id": "btn_view_profile",
+            "title": "👀 View Profile",
+            "description": "See your current profile information"
+          }
+        ]
       },
       {
-        "id": "btn_view_profile",
-        "title": "👀 View Profile"
+        "title": "🌐 Language & Interface",
+        "rows": [
+          {
+            "id": "show_language_menu",
+            "title": "🌐 Change Language",
+            "description": "Select your preferred language (28 available)"
+          }
+        ]
       },
       {
-        "id": "show_language_menu",
-        "title": "🌐 Change Language"
-      },
-      {
-        "id": "show_main_menu",
-        "title": "🏠 Main Menu"
+        "title": "⬅️ Navigation",
+        "rows": [
+          {
+            "id": "show_main_menu",
+            "title": "🏠 Main Menu",
+            "description": "Return to main service categories"
+          }
+        ]
       }
     ]
   },

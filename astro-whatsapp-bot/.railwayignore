@@ -23,42 +23,80 @@ node_modules/.cache/
 .DS_Store
 Thumbs.db
 
-# Satellite ephemeris files (not needed for astrology)
-ephe/sat/
+# Documentation (reduce deployment size)
+docs/
+*.md
+!README.md
 
-# Git and version control
-.git/
-.gitignore
-
-# Environment files
-.env*
-
-# Development tools
-.prettierrc
-.snyk
-sonar-project.properties
-
-# Test files
+# Test files and development tools
 calculate-sun-signs.js
 test-*.js
 *-test.js
 *test*.js
+.prettierrc
+.snyk
+sonar-project.properties
 
 # Docker files (Railway uses its own)
 docker-compose.yml
 Dockerfile
 
-# Railway specific
+# Git and version control
+.git/
+.gitignore
+
+# Railway specific config files
 railway.toml
 RAILWAY.md
 
-# Ephemeris files - needed for accurate astronomical calculations
-ephe/ (excluding unnecessary files to reduce size)
-!ephe/seplm80.se1
-!ephe/seplm120.se1
-!ephe/semom80.se1
-!ephe/semom120.se1
-!ephe/seasm80.se1
+# Environment files and sensitive data
+.env*
+
+# ── CRITICAL: Swiss-Ephemeris Diet for Railway Deployment ──
+# Essential files (keep minimal needed for standard astrology)
+!ephe/seas_00.se1
+!ephe/seas_06.se1
+!ephe/seas_12.se1
+!ephe/seas_24.se1
+!ephe/seas_30.se1
+!ephe/seas_36.se1
+
+# Exclude EVERYTHING ELSE in ephe/ to reduce from 310MB → ~5MB
+ephe/
+ephe/seas_42.se1
+ephe/seas_48.se1
+ephe/seas_54.se1
+ephe/seas_60.se1
+ephe/seas_66.se1
+ephe/seas_72.se1
+ephe/seas_78.se1
+ephe/seas_84.se1
+ephe/seas_90.se1
+ephe/seas_96.se1
+ephe/seas_102.se1
+ephe/seas_108.se1
+ephe/seas_114.se1
+ephe/seas_120.se1
+ephe/seas_126.se1
+ephe/seas_132.se1
+ephe/seas_138.se1
+ephe/seas_144.se1
+ephe/seas_150.se1
+ephe/seas_156.se1
+ephe/seas_162.se1
+ephe/sat/
+ephe/ephe/
+ephe/list.zip
+ephe/*.bsp
+ephe/*.bin
+ephe/astlistn.md
+ephe/Available
+ephe/Your
+ephe/seasnam.txt
+ephe/sefstars.txt
+ephe/seasm*.se1
+ephe/semom*.se1
+ephe/seplm*.se1
 
 # Temporary files
 *.log

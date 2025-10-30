@@ -198,7 +198,7 @@ const getNumerologyInsights = (lifePath, nameNum) => {
 };
 
 /**
- * Handle solar return requests (stub for now)
+ * Handle solar return requests
  * @param {string} message - User message
  * @param {Object} user - User object
  * @returns {string|null} Response or null if not handled
@@ -208,7 +208,119 @@ const handleSolarReturn = (message, user) => {
     return null;
   }
 
-  return '☀️ Solar Return Analysis\n\nYour solar return chart reveals the themes and opportunities for the year ahead.\n\nThis advanced analysis requires your complete birth details. Please ensure your profile is updated.';
+  if (!user.birthDate) {
+    return '☀️ Solar Return Analysis\n\n👤 I need your complete birth details for this analysis.\n\nSend format: DDMMYY or DDMMYYYY, HHMM, City, Country\nExample: 150691, 1430, Delhi, India';
+  }
+
+  const analysis = generateSolarReturnAnalysis(user);
+  return `☀️ *Solar Return Analysis*\n\n${analysis.introduction}\n\n🎯 *Key Life Areas:*\n${analysis.lifeAreas}\n\n📊 *Chart Overview:*\n${analysis.chartOverview}\n\n🎉 *Timing Highlights:*\n${analysis.timingHighlights}\n\n🌟 *Opportunities:*\n${analysis.opportunities}`;
+};
+
+/**
+ * Generate solar return analysis
+ * @param {Object} user - User object
+ * @returns {Object} Analysis components
+ */
+const generateSolarReturnAnalysis = user => {
+  const sunSign = getSunSign(user.birthDate);
+  const age = new Date().getFullYear() - new Date(`20${user.birthDate.substring(4)}`).getFullYear();
+
+  const insights = {
+    Aries: {
+      intro: `${age}-year solar return emphasizes new beginnings and bold action.`,
+      areas: '🎯 Career breakthroughs, new relationships, fresh starts',
+      chart: 'Mars influences bring energy and determination',
+      timing: 'Q1 shows strongest initiative, Q4 consolidates gains',
+      opportunities: 'Entrepreneurial ventures, bold decisions, leadership roles'
+    },
+    Taurus: {
+      intro: `${age}-year solar return focuses on stability and material security.`,
+      areas: '💰 Financial stability, home improvements, relationship commitment',
+      chart: 'Venus position brings comfort and relationship growth',
+      timing: 'Q2 and Q3 favor building foundations',
+      opportunities: 'Property investments, career stability, deepened relationships'
+    },
+    Gemini: {
+      intro: `${age}-year solar return brings communication and learning opportunities.`,
+      areas: '🧠 Education, travel, social connections, communication',
+      chart: 'Mercury placement enhances learning and networking',
+      timing: 'Gemini period (May-June) maximizes communication',
+      opportunities: 'Skills development, international opportunities, media work'
+    },
+    Cancer: {
+      intro: `${age}-year solar return emphasizes emotional security and family.`,
+      areas: '🏠 Family, home, emotional healing, nurturing relationships',
+      chart: 'Moon position influences emotional and family matters',
+      timing: 'Cancer season brings emotional insights',
+      opportunities: 'Family bonding, home changes, career in care fields'
+    },
+    Leo: {
+      intro: `${age}-year solar return highlights self-expression and leadership.`,
+      areas: '🌟 Personal power, creativity, leadership, self-confidence',
+      chart: 'Sun position amplifies your natural radiance',
+      timing: 'Leo season showcases your strengths',
+      opportunities: 'Creative projects, leadership roles, public attention'
+    },
+    Virgo: {
+      intro: `${age}-year solar return focuses on service and practical improvements.`,
+      areas: '🔧 Health routines, work efficiency, practical skills',
+      chart: 'Mercury position favors detail-oriented activities',
+      timing: 'Q3 provides focus for improvement projects',
+      opportunities: 'Career advancement, health improvements, organizational success'
+    },
+    Libra: {
+      intro: `${age}-year solar return emphasizes harmony and relationships.`,
+      areas: '❤️ Partnerships, beauty, justice, diplomatic endeavors',
+      chart: 'Venus influence enhances relationship matters',
+      timing: 'Libra season (Sept-Oct) optimizes partnerships',
+      opportunities: 'Marriage/commitment, business partnerships, artistic pursuits'
+    },
+    Scorpio: {
+      intro: `${age}-year solar return brings transformation and deep insights.`,
+      areas: '🔮 Personal transformation, intimate relationships, research',
+      chart: 'Pluto/Mars influences deepen emotional connections',
+      timing: 'Scorpio season reveals life-changing opportunities',
+      opportunities: 'Therapy/healing work, research, intimate partnerships'
+    },
+    Sagittarius: {
+      intro: `${age}-year solar return expands horizons and brings adventure.`,
+      areas: '🌍 Travel, philosophy, teaching, expanded perspective',
+      chart: 'Jupiter position encourages growth and exploration',
+      timing: 'Sagittarius season offers adventurous possibilities',
+      opportunities: 'Travel, education, teaching, international connections'
+    },
+    Capricorn: {
+      intro: `${age}-year solar return focuses on achievement and legacy.`,
+      areas: '🏔️ Career advancement, reputation, long-term goals',
+      chart: 'Saturn position demands serious commitment',
+      timing: 'Q1 sets foundation for year\'s achievements',
+      opportunities: 'Career promotions, leadership positions, legacy building'
+    },
+    Aquarius: {
+      intro: `${age}-year solar return brings innovation and community focus.`,
+      areas: '🤝 Community involvement, innovation, humanitarian efforts',
+      chart: 'Uranus/Saturn influences encourage progressive thinking',
+      timing: 'Aquarius season maximizes innovation',
+      opportunities: 'Technology/communication, group work, social causes'
+    },
+    Pisces: {
+      intro: `${age}-year solar return emphasizes spiritual and creative growth.`,
+      areas: '🎨 Creative expression, spiritual development, compassion',
+      chart: 'Neptune/Pisces influences deepen spiritual awareness',
+      timing: 'Pisces season enhances creative and intuitive abilities',
+      opportunities: 'Artistic pursuits, spiritual practices, healing professions'
+    }
+  };
+
+  const signData = insights[sunSign] || insights['Aries']; // fallback
+
+  return {
+    introduction: signData.intro,
+    lifeAreas: signData.areas,
+    chartOverview: signData.chart,
+    timingHighlights: signData.timing,
+    opportunities: signData.opportunities
+  };
 };
 
 /**

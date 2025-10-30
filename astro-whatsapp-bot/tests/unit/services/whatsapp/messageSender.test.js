@@ -215,7 +215,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber, // Interactive messages DO get + prefix
+          to: `+${phoneNumber}`, // Interactive messages DO get + prefix
           type: 'interactive',
           interactive: {
             type: 'button',
@@ -261,7 +261,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber, // Interactive messages DO get + prefix
+          to: `+${phoneNumber}`, // Interactive messages DO get + prefix
           type: 'interactive',
           interactive: {
             type: 'button',
@@ -314,7 +314,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber, // List messages DO get + prefix
+          to: `+${phoneNumber}`, // List messages DO get + prefix
           type: 'interactive',
           interactive: {
             type: 'list',
@@ -361,7 +361,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber, // List messages DO get + prefix
+          to: `+${phoneNumber}`, // List messages DO get + prefix
           type: 'interactive',
           interactive: {
             type: 'list',
@@ -448,7 +448,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber, // Template messages DO get + prefix
+          to: `+${phoneNumber}`, // Template messages DO get + prefix
           type: 'template',
           template: {
             name: templateName,
@@ -499,7 +499,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber, // Template messages DO get + prefix
+          to: `+${phoneNumber}`, // Template messages DO get + prefix
           type: 'template',
           template: {
             name: templateName,
@@ -536,7 +536,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber, // Media messages DO get + prefix
+          to: `+${phoneNumber}`, // Media messages DO get + prefix
           type: mediaType,
           [mediaType]: {
             id: mediaId,
@@ -577,7 +577,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber, // Media messages DO get + prefix
+          to: `+${phoneNumber}`, // Media messages DO get + prefix
           type: mediaType,
           [mediaType]: {
             id: mediaId,
@@ -663,7 +663,6 @@ describe('WhatsApp Message Sender', () => {
     });
 
 
-
     it('should send list message via main wrapper', async() => {
       const messageData = {
         type: 'list',
@@ -689,7 +688,7 @@ describe('WhatsApp Message Sender', () => {
       expect(axios.post).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({
-          to: "+" + phoneNumber, // Interactive messages DO get + prefix
+          to: `+${phoneNumber}`, // Interactive messages DO get + prefix
           type: 'interactive',
           interactive: expect.objectContaining({
             type: 'list',
@@ -725,7 +724,7 @@ describe('WhatsApp Message Sender', () => {
         `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
         {
           messaging_product: 'whatsapp',
-          to: "+" + phoneNumber, // Template messages DO get + prefix
+          to: `+${phoneNumber}`, // Template messages DO get + prefix
           type: 'template',
           template: {
             name: 'test_template',
@@ -737,7 +736,6 @@ describe('WhatsApp Message Sender', () => {
       );
       expect(result).toEqual(response.data);
     });
-
 
 
     it('should handle input validation errors', async() => {
@@ -824,7 +822,6 @@ describe('WhatsApp Message Sender', () => {
     });
 
 
-
     it('should return null for non-existent user mappings', () => {
       expect(getNumberedMenuAction('non-existent-user', '1')).toBeNull();
     });
@@ -850,7 +847,7 @@ describe('WhatsApp Message Sender', () => {
       expect(axios.post).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({
-          to: "+" + phoneNumber // Interactive messages DO get + prefix
+          to: `+${phoneNumber}` // Interactive messages DO get + prefix
         }),
         expect.any(Object)
       );
@@ -901,7 +898,7 @@ describe('WhatsApp Message Sender', () => {
           `https://graph.facebook.com/v24.0/${phoneNumberId}/messages`,
           {
             messaging_product: 'whatsapp',
-            to: "+" + phoneNumber, // Media messages DO get + prefix
+            to: `+${phoneNumber}`, // Media messages DO get + prefix
             type: mediaType,
             [mediaType]: {
               id: mediaId,

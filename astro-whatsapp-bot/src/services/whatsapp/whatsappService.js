@@ -2,7 +2,7 @@
 // WhatsApp service for handling message processing and astrology responses
 
 const logger = require('../../utils/logger');
-const { processIncomingMessage } = require('./messageProcessor');
+const { processIncomingMessage } = require('./MessageCoordinator');
 
 /**
  * Handle incoming WhatsApp webhook events

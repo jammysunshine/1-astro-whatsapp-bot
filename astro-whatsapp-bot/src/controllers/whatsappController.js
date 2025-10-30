@@ -1,11 +1,23 @@
 const logger = require('../utils/logger');
-const {
-  processIncomingMessage
-} = require('../services/whatsapp/messageProcessor');
+const { getMessageCoordinator } = require('../services/whatsapp/MessageCoordinator');
 const {
   validateWebhookSignature,
   verifyWebhookChallenge
 } = require('../services/whatsapp/webhookValidator');
+
+// Cache the initialized coordinator
+let coordinatorInstance = null;
+
+/**
+ * Get the initialized MessageCoordinator instance
+ * @returns {Promise<Object>} Initialized MessageCoordinator
+ */
+const getCoordinatorInstance = async () => {
+  if (!coordinatorInstance) {
+    coordinatorInstance = await getMessageCoordinator();
+  }
+  return coordinatorInstance;
+};
 
 /**
  * Process a message with retry logic
@@ -18,7 +30,8 @@ const processMessageWithRetry = async(message, value, maxRetries = 3) => {
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      await processIncomingMessage(message, value);
+      const coordinator = await getCoordinatorInstance();
+      await coordinator.processIncomingMessage(message, value);
       return; // Success, exit retry loop
     } catch (error) {
       lastError = error;

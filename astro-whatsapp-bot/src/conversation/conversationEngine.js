@@ -8,7 +8,7 @@ const {
 } = require('../models/userModel');
 const { sendMessage } = require('../services/whatsapp/messageSender');
 const logger = require('../utils/logger');
-const vedicCalculator = require('../services/astrology/vedicCalculator');
+const vedicCalculator = require('../services/astrology/vedic/VedicCalculator');
 const numerologyService = require('../services/astrology/numerologyService');
 const { getMenu } = require('./menuLoader');
 const { sendListMessage } = require('../services/whatsapp/messageSender');

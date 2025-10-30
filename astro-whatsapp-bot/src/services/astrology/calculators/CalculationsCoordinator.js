@@ -151,7 +151,6 @@ class CalculationsCoordinator {
     // Return a new instance for backward compatibility
     return new class AgeHarmonicAstrologyReader {
       constructor() {
-        logger.warn('DEPRECATED: AgeHarmonicAstrologyReader - Use specialized calculators instead');
       }
 
       async generateAgeHarmonicAnalysis(birthData) {

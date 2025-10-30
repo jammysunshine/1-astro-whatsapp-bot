@@ -21,7 +21,6 @@ let westernServiceInstance = null;
 function createPlaceholderWesternService() {
   return {
     generateWesternBirthChart: async (user, houseSystem = 'P') => {
-      logger.warn('Using placeholder Western astrology service - full implementation pending');
       
       return {
         name: user.name,
@@ -79,7 +78,6 @@ const WesternCalculator = class {
     this.astrologer = astrologer;
     this.geocodingService = geocodingService;  
     this.vedicCore = vedicCore;
-    logger.warn('DEPRECATED: WesternCalculator class - Using modular Western astrology system');
   }
 
   async generateWesternBirthChart(user, houseSystem = 'P') {

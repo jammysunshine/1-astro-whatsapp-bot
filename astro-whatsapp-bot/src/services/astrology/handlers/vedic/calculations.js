@@ -89,13 +89,13 @@ class AgeHarmonicAstrologyReader {
 }
 
 // Legacy Utility Functions (delegated to coordinator)
-const longitudeToSign = (longitude) => {
-  const coordinator = getCoordinator();
+const longitudeToSign = async (longitude) => {
+  const coordinator = await getCoordinator();
   return coordinator.getSignFromLongitude(longitude);
 };
 
-const longitudeToHouse = (longitude, ascendant) => {
-  const coordinator = getCoordinator();
+const longitudeToHouse = async (longitude, ascendant) => {
+  const coordinator = await getCoordinator();
   return coordinator.getHouseNumberFromLongitude(longitude, ascendant);
 };
 

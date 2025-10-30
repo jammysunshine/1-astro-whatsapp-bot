@@ -195,43 +195,34 @@ class VedicCalculator {
 
   /**
    * Generate complete Vedic birth chart (kundli)
+   * NOTE: This method requires a dedicated BirthChartGenerator calculator to be implemented
    * @param {Object} birthData - Birth data object
    * @returns {Object} Complete Vedic kundli
    */
   async generateVedicKundli(birthData) {
-    // TODO: Extract this into specialized BirthChartGenerator calculator
-    // For now, delegate to old monolithic calculator
-    const { VedicCalculator: OldCalculator } = require('../vedicCalculator');
-    const oldCalculator = new OldCalculator(this.astrologer, this.geocodingService, this.vedicCore);
-    return oldCalculator.generateVedicKundli(birthData);
+    throw new Error('generateVedicKundli not yet implemented in modular system. Use individual calculator methods instead.');
   }
 
   /**
    * Generate Western birth chart
+   * NOTE: This method requires a dedicated BirthChartGenerator calculator to be implemented
    * @param {Object} birthData - Birth data object
    * @param {string} houseSystem - House system to use
    * @returns {Object} Western birth chart
    */
   async generateWesternBirthChart(birthData, houseSystem = 'P') {
-    // TODO: Extract this into specialized BirthChartGenerator calculator
-    // For now, delegate to old monolithic calculator
-    const { VedicCalculator: OldCalculator } = require('../vedicCalculator');
-    const oldCalculator = new OldCalculator(this.astrologer, this.geocodingService, this.vedicCore);
-    return oldCalculator.generateWesternBirthChart(birthData, houseSystem);
+    throw new Error('generateWesternBirthChart not yet implemented in modular system. Use individual calculator methods instead.');
   }
 
   /**
    * Check compatibility between two people
+   * NOTE: This method requires a dedicated CompatibilityCalculator to be implemented
    * @param {Object} person1 - First person's birth data
    * @param {Object} person2 - Second person's birth data
    * @returns {Object} Compatibility analysis
    */
   async checkCompatibility(person1, person2) {
-    // TODO: Extract this into specialized CompatibilityCalculator
-    // For now, delegate to old monolithic calculator
-    const { VedicCalculator: OldCalculator } = require('../vedicCalculator');
-    const oldCalculator = new OldCalculator(this.astrologer, this.geocodingService, this.vedicCore);
-    return oldCalculator.checkCompatibility(person1, person2);
+    throw new Error('checkCompatibility not yet implemented in modular system. Use individual calculator methods instead.');
   }
 }
 

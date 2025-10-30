@@ -293,7 +293,8 @@ class ActionRegistryInitializer {
     try { this.registry.registerButton('contact_support', 'show_help_support'); } catch (e) {}
     try { this.registry.registerButton('show_commands_list', 'show_help_support'); } catch (e) {}
 
-    // Language buttons - all 28 supported languages
+    // Language buttons - all 28 supported languages mapped to single set_language action
+    // The InteractiveMessageProcessor will extract the language code from the button ID
     this.registry.registerButton('set_language_en', SetLanguageAction.actionId);
     this.registry.registerButton('set_language_hi', SetLanguageAction.actionId);
     this.registry.registerButton('set_language_ar', SetLanguageAction.actionId);

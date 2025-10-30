@@ -18,7 +18,7 @@ class ResponseBuilder {
       const translated = translationService.translate(key, language);
       return translated && typeof translated === 'string' ? translated : fallback;
     } catch (error) {
-      console.warn(`⚠️ Translation failed for key: ${key}`, error.message);
+      logger.warn(`⚠️ Translation failed for key: ${key}`, error.message);
       return fallback;
     }
   }
@@ -35,7 +35,7 @@ class ResponseBuilder {
       const translated = translationService.translate(key, language);
       return translated && typeof translated === 'string' ? translated : fallback;
     } catch (error) {
-      console.warn(`⚠️ Translation failed for key: ${key}`, error.message);
+      logger.warn(`⚠️ Translation failed for key: ${key}`, error.message);
       return fallback;
     }
   }
@@ -128,7 +128,7 @@ class ResponseBuilder {
                           'An unexpected error occurred. Please try again later.';
       return this.buildTextMessage(phoneNumber, errorMessage);
     } catch (error) {
-      console.warn(`⚠️ Error building error message: ${error.message}`);
+      logger.warn(`⚠️ Error building error message: ${error.message}`);
       return this.buildTextMessage(phoneNumber,
         `An error occurred: ${params.details || 'Unknown error'}. Please try again.`);
     }

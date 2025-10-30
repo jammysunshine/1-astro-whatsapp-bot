@@ -1,3 +1,5 @@
+const logger = require('../../utils/logger');
+
 /**
  * Traditional Horary Astrology Service
  * Casts horary charts at the exact moment of a question for divine guidance
@@ -46,7 +48,7 @@ class TraditionalHorary {
         confidence: analysis.confidence
       };
     } catch (error) {
-      console.error('Error casting horary chart:', error);
+      logger.error('Error casting horary chart:', error);
       return {
         error: error.message,
         summary: 'Unable to cast horary chart at this time. Please try again.'

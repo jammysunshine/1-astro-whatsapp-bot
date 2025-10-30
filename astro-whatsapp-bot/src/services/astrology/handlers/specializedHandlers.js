@@ -2,6 +2,7 @@
 const tarorReader = require('../tarotReader');
 const { IChingService } = require('../iching');
 const astrocartographyReader = require('../astrocartographyReader');
+const logger = require('../../../utils/logger');
 
 /**
  * Handle Tarot reading requests
@@ -22,7 +23,7 @@ const handleTarot = async(message, user) => {
 
     return `🔮 *Tarot Reading*\n\n${reading.interpretation}\n\n🎴 *Cards Drawn:* ${reading.cards.length} cards\n💫 *Personal Guidance:* ${reading.advice}`;
   } catch (error) {
-    console.error('Tarot reading error:', error);
+    logger.error('Tarot reading error:', error);
     return '❌ Error generating tarot reading. Please try again.';
   }
 };
@@ -47,7 +48,7 @@ const handleIChing = async(message, user) => {
 
     return reading.ichingDescription;
   } catch (error) {
-    console.error('I Ching reading error:', error);
+    logger.error('I Ching reading error:', error);
     return '❌ Error consulting the I Ching oracle. Please try again.';
   }
 };
@@ -96,7 +97,7 @@ const handlePrashna = async(message, user) => {
 
     return prashnaReading.summary;
   } catch (error) {
-    console.error('Prashna reading error:', error);
+    logger.error('Prashna reading error:', error);
     return '❌ Error generating prashna analysis. Please try again.';
   }
 };
@@ -188,7 +189,7 @@ const handleAstrocartography = async(message, user) => {
 
     return reading.astrocartographyDescription;
   } catch (error) {
-    console.error('Astrocartography reading error:', error);
+    logger.error('Astrocartography reading error:', error);
     return '❌ Error generating astrocartography reading. Please try again.';
   }
 };
@@ -244,7 +245,7 @@ const handleVargaCharts = async(message, user) => {
 
     return response;
   } catch (error) {
-    console.error('Varga charts error:', error);
+    logger.error('Varga charts error:', error);
     return '❌ Error analyzing varga charts. Please try again.';
   }
 };

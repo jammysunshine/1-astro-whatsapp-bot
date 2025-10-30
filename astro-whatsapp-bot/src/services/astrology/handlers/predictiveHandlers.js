@@ -330,7 +330,7 @@ const handleElectional = async(message, user) => {
 
     return muhurtaAnalysis.summary;
   } catch (error) {
-    console.error('Electional astrology error:', error);
+    logger.error('Electional astrology error:', error);
     return '📅 *Electional Astrology - Auspicious Timing*\n\nClassical art of choosing optimal moments for important beginnings through celestial alignment.\n\n🎯 *Electional Foundations:*\n• Moon void of course timing\n• Ascendant placement preference\n• Benefic planet configuration\n• Planetary hour alignment\n• Day and hour lord harmony\n\nPlease specify event type: wedding, business, house, travel, medical, spiritual';
   }
 };
@@ -350,7 +350,7 @@ const handleHorary = async(message, user) => {
     const horaryReading = await horaryReader.generateHoraryReading(message, user);
     return `⏰ *Horary Astrology Reading*\n\n${horaryReading.interpretation}\n\n🔔 *Chart Ruler:* ${horaryReading.ruler}\n📍 *Question House:* ${horaryReading.house}\n🎯 *Answer:* ${horaryReading.answer}\n⏳ *Timing:* ${horaryReading.timing}`;
   } catch (error) {
-    console.error('Horary reading error:', error);
+    logger.error('Horary reading error:', error);
     return '❌ Error generating horary reading. Please try again.';
   }
 };

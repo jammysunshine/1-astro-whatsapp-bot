@@ -1,4 +1,5 @@
 const ActionRegistry = require('./ActionRegistry');
+const logger = require('../utils/logger');
 
 // Import all action classes
 // Phase 1 Actions
@@ -87,17 +88,17 @@ class ActionRegistryInitializer {
     try {
       const validation = this.registry.validate();
       if (!validation.isValid) {
-        console.warn('⚠️ ActionRegistry validation warnings:', validation.errorMessage);
-        console.warn('📋 Continuing with graceful degradation - some features may be unavailable');
+        logger.warn('⚠️ ActionRegistry validation warnings:', validation.errorMessage);
+        logger.warn('📋 Continuing with graceful degradation - some features may be unavailable');
       } else {
-        console.info('✅ ActionRegistry validation passed');
+        logger.info('✅ ActionRegistry validation passed');
       }
     } catch (error) {
-      console.warn('⚠️ ActionRegistry validation failed, continuing:', error.message);
+      logger.warn('⚠️ ActionRegistry validation failed, continuing:', error.message);
     }
 
-    console.info('✅ ActionRegistry initialized successfully');
-    console.info('📊 Registry stats:', this.registry.getStats());
+    logger.info('✅ ActionRegistry initialized successfully');
+    logger.info('📊 Registry stats:', this.registry.getStats());
 
     return this.registry;
   }
@@ -136,7 +137,7 @@ class ActionRegistryInitializer {
     try {
       this.registry.registerAction(TarotReadingAction.actionId, TarotReadingAction);
     } catch (error) {
-      console.warn('⚠️ TarotReadingAction temporarily disabled - tarotReader module needed');
+      logger.warn('⚠️ TarotReadingAction temporarily disabled - tarotReader module needed');
     }
     this.registry.registerAction(HelpAction.actionId, HelpAction);
 
@@ -174,7 +175,7 @@ class ActionRegistryInitializer {
     this.registry.registerAction(UpdateProfileAction.actionId, UpdateProfileAction);
     // Note: SetLanguageAction handles all individual language settings via dynamic languageCode
 
-    console.info('📝 Registered action classes with registry');
+    logger.info('📝 Registered action classes with registry');
   }
 
   /**
@@ -272,7 +273,7 @@ class ActionRegistryInitializer {
     this.registry.registerKeyword('settings', 'show_main_menu'); // Will need to add settings menu
     this.registry.registerKeyword('language menu', LanguageMenuAction.actionId);
 
-    console.info('🔤 Registered keyword mappings');
+    logger.info('🔤 Registered keyword mappings');
   }
 
   /**
@@ -346,7 +347,7 @@ class ActionRegistryInitializer {
     this.registry.registerButton('btn_update_profile', UpdateProfileAction.actionId);
     this.registry.registerButton('btn_view_profile', ViewProfileAction.actionId);
 
-    console.info('🔘 Registered button ID mappings');
+    logger.info('🔘 Registered button ID mappings');
   }
 
   /**

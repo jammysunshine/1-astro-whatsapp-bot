@@ -179,7 +179,7 @@ app.get('/ready', (req, res) => {
   // For Railway deployment, be more lenient - don't fail if env vars are missing
   // The bot can still start and handle errors gracefully
   if (missingVars.length > 0) {
-    console.warn('⚠️ Missing environment variables:', missingVars);
+    logger.warn('⚠️ Missing environment variables:', missingVars);
     // Still return ready status to prevent Railway from killing the container
     return res.status(200).json({
       status: 'ready (with warnings)',

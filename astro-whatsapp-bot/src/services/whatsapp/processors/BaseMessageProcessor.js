@@ -1,3 +1,5 @@
+const logger = require('../../utils/logger');
+
 class BaseMessageProcessor {
   /**
    * Processes an incoming WhatsApp message.
@@ -19,7 +21,7 @@ class BaseMessageProcessor {
    * @returns {Promise<void>}
    */
   async processButtonMessage(message, user, phoneNumber) {
-    console.warn(`${this.constructor.name}: processButtonMessage not implemented`);
+    logger.warn(`${this.constructor.name}: processButtonMessage not implemented`);
   }
 }
 

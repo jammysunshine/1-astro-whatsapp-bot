@@ -1,14 +1,13 @@
-const BaseAction = require('../BaseAction');
+const AstrologyAction = require('../base/AstrologyAction');
 const numerologyService = require('../../../../services/astrology/numerologyService');
-const { ResponseBuilder } = require('../../utils/ResponseBuilder');
-const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
+const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
 
 /**
- * NumerologyReportAction - Generates comprehensive numerology reports based on birth data.
- * Calculates life path, expression, soul urge, and personality numbers with interpretations.
+ * NumerologyReportAction - Generates comprehensive numerology reports.
+ * Uses AstrologyAction base class for unified validation, error handling, and response building.
+ * No facade patterns - direct infrastructure usage.
  */
-class NumerologyReportAction extends BaseAction {
+class NumerologyReportAction extends AstrologyAction {
   /**
    * Unique action identifier
    */
@@ -17,26 +16,30 @@ class NumerologyReportAction extends BaseAction {
   }
 
   /**
-   * Execute the numerology report action
+   * Execute the numerology report action using base class unified methods
    * @returns {Promise<Object|null>} Action result
    */
   async execute() {
     try {
-      this.logExecution('start', 'Generating numerology report');
+      this.logAstrologyExecution('start', 'Generating numerology report');
 
-      // Validate user profile
-      if (!(await this.validateUserProfile('Numerology Analysis'))) {
-        await this.sendIncompleteProfileMessage();
-        return { success: false, reason: 'incomplete_profile' };
+      // Unified profile validation from base class
+      const validation = await this.validateProfileAndLimits('Numerology Analysis', 'numerology_analysis');
+      if (!validation.success) {
+        return validation;
       }
 
-      // Generate numerology report
+      // Generate numerology data
       const numerologyData = await this.generateNumerologyReport();
+      if (!numerologyData) {
+        throw new Error('Failed to generate numerology data');
+      }
 
-      // Send formatted report
-      await this.sendNumerologyReport(numerologyData);
+      // Format and send using centralized factory and base class methods
+      const formattedContent = AstrologyFormatterFactory.formatNumerology(numerologyData);
+      await this.buildAstrologyResponse(formattedContent, this.getNumerologyButtons());
 
-      this.logExecution('complete', 'Numerology report sent');
+      this.logAstrologyExecution('complete', 'Numerology report delivered successfully');
       return {
         success: true,
         type: 'numerology_report',
@@ -278,102 +281,27 @@ class NumerologyReportAction extends BaseAction {
   }
 
   /**
-   * Send formatted numerology report
-   * @param {Object} numerologyData - Numerology calculations and interpretations
+   * Get action buttons for numerology report response
+   * @returns {Array} Button configuration array
    */
-  async sendNumerologyReport(numerologyData) {
-    try {
-      const formattedReport = this.formatNumerologyReport(numerologyData);
-      const userLanguage = this.getUserLanguage();
-
-      const buttons = [
-        {
-          id: 'get_numerology_timeline',
-          titleKey: 'buttons.timeline',
-          title: '⏰ Life Timeline'
-        },
-        {
-          id: 'get_name_analysis',
-          titleKey: 'buttons.name_analysis',
-          title: '📝 Name Analysis'
-        },
-        {
-          id: 'show_main_menu',
-          titleKey: 'buttons.main_menu',
-          title: '🏠 Main Menu'
-        }
-      ];
-
-      const message = ResponseBuilder.buildInteractiveButtonMessage(
-        this.phoneNumber,
-        formattedReport,
-        buttons,
-        userLanguage
-      );
-
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
-    } catch (error) {
-      this.logger.error('Error sending numerology report:', error);
-      await this.handleExecutionError(error);
-    }
-  }
-
-  /**
-   * Format numerology data into comprehensive report
-   * @param {Object} data - Numerology data
-   * @returns {string} Formatted report
-   */
-  formatNumerologyReport(data) {
-    let report = `🔢 *Complete Numerology Report*\n*For ${this.user.name}*\n\n`;
-
-    if (data.lifePath) {
-      report += `*🎯 Life Path Number:* ${data.lifePath.number}\n`;
-      report += `${data.lifePath.interpretation}\n\n`;
-    }
-
-    if (data.expression) {
-      report += `*🎭 Expression Number:* ${data.expression.number}\n`;
-      report += `${data.expression.interpretation}\n\n`;
-    }
-
-    if (data.soulUrge) {
-      report += `*❤️ Soul Urge Number:* ${data.soulUrge.number}\n`;
-      report += `${data.soulUrge.interpretation}\n\n`;
-    }
-
-    if (data.personality) {
-      report += `*🧑 Personality Number:* ${data.personality.number}\n`;
-      report += `${data.personality.interpretation}\n\n`;
-    }
-
-    if (data.isFallback) {
-      report += '*⚠️ Note:* This is a basic calculation. For detailed analysis, complete numerology charts are recommended.\n\n';
-    }
-
-    report += '*🔍 Your numerology reveals the patterns of your soul\'s journey. Numbers are the universal language through which the cosmos communicates with us.*';
-
-    return report;
-  }
-
-  /**
-   * Send message for incomplete profile
-   */
-  async sendIncompleteProfileMessage() {
-    const message = '👤 *Profile Required for Numerology*\n\nNumerology analysis requires both your birth date and full name.\n\n📝 Please complete your profile to unlock your cosmic blueprint!';
-    await sendMessage(this.phoneNumber, message, 'text');
-  }
-
-  /**
-   * Handle execution errors
-   * @param {Error} error - Execution error
-   */
-  async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, there was an error calculating your numerology. The cosmic vibrations might be temporarily misaligned. Please try again.';
-    await sendMessage(this.phoneNumber, errorMessage, 'text');
+  getNumerologyButtons() {
+    return [
+      {
+        id: 'get_numerology_timeline',
+        titleKey: 'buttons.timeline',
+        title: '⏰ Life Timeline'
+      },
+      {
+        id: 'get_name_analysis',
+        titleKey: 'buttons.name_analysis',
+        title: '📝 Name Analysis'
+      },
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
   }
 
   /**

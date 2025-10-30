@@ -1,18 +1,12 @@
-const BaseAction = require('../BaseAction');
+const AstrologyAction = require('../base/AstrologyAction');
 const { VargaCharts } = require('../../../astrology/vargaCharts');
-const { ResponseBuilder } = require('../../utils/ResponseBuilder');
-const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
+const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
 
 /**
  * VargaChartsAction - Provides Vedic divisional chart analysis
  * Shows how Rashi (D-1) divides into specialized charts for different life areas
  */
-class VargaChartsAction extends BaseAction {
-  constructor(user, phoneNumber, data = {}) {
-    super(user, phoneNumber, data);
-    this.vargaService = new VargaCharts();
-  }
+class VargaChartsAction extends AstrologyAction {
 
   /**
    * Unique action identifier
@@ -22,33 +16,32 @@ class VargaChartsAction extends BaseAction {
   }
 
   /**
-   * Execute the varga charts analysis action
+   * Execute the varga charts analysis using clean infrastructure
    * @returns {Promise<Object|null>} Action result
    */
   async execute() {
     try {
-      this.logExecution('start', 'Analyzing Varga Charts');
+      this.logAstrologyExecution('start', 'Analyzing Varga Charts');
 
-      // Validate user profile
-      if (!(await this.validateUserProfile('Varga Charts'))) {
-        this.sendIncompleteProfileNotification();
-        return { success: false, reason: 'incomplete_profile' };
-      }
-
-      // Check subscription limits
-      const limitsCheck = this.checkSubscriptionLimits('varga_charts');
-      if (!limitsCheck.isAllowed) {
-        await this.sendUpgradePrompt(limitsCheck);
-        return { success: false, reason: 'subscription_limit' };
+      // Unified profile and limits validation from base class
+      const validation = await this.validateProfileAndLimits('Varga Charts', 'varga_charts');
+      if (!validation.success) {
+        return validation;
       }
 
       // Calculate varga charts
       const vargaData = await this.calculateVargaAnalysis();
+      if (!vargaData) {
+        throw new Error('Failed to calculate varga analysis');
+      }
 
-      // Send formatted varga analysis
-      await this.sendVargaChartsResponse(vargaData);
+      // Format varga-specific analysis (complex business logic kept here)
+      const formattedContent = this.formatVargaAnalysis(vargaData);
 
-      this.logExecution('complete', 'Varga charts analysis sent successfully');
+      // Build astrology response using base class methods
+      await this.buildAstrologyResponse(formattedContent, this.getVargaActionButtons());
+
+      this.logAstrologyExecution('complete', 'Varga charts analysis delivered successfully');
       return {
         success: true,
         type: 'varga_charts',
@@ -87,41 +80,7 @@ class VargaChartsAction extends BaseAction {
     }
   }
 
-  /**
-   * Format and send varga charts response
-   * @param {Object} vargaData - Varga analysis data
-   */
-  async sendVargaChartsResponse(vargaData) {
-    try {
-      if (vargaData.error) {
-        const errorMessage = `🌟 Vedic Varga Charts Analysis\n\n${vargaData.fallbackMessage}\n\nBasic charts show life areas through divisions:\n• Navamsa (D-9): Marriage & spirituality\n• Dashamsa (D-10): Career & profession\n• Hora (D-2): Wealth & material gains\n• Drekkana (D-3): Siblings & courage\n\nConsult a traditional Vedic astrologer for detailed analysis.`;
-        await sendMessage(this.phoneNumber, errorMessage, 'text');
-        return;
-      }
 
-      const formattedAnalysis = this.formatVargaAnalysis(vargaData);
-      const userLanguage = this.getUserLanguage();
-
-      // Build interactive message with analysis actions
-      const message = ResponseBuilder.buildInteractiveButtonMessage(
-        this.phoneNumber,
-        formattedAnalysis,
-        this.getVargaActionButtons(),
-        userLanguage
-      );
-
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
-    } catch (error) {
-      this.logger.error('Error sending varga response:', error);
-      // Fallback to simple text message
-      const simpleAnalysis = this.formatSimpleVargaAnalysis(vargaData);
-      await sendMessage(this.phoneNumber, simpleAnalysis, 'text');
-    }
-  }
 
   /**
    * Format detailed varga analysis with insights
@@ -310,32 +269,6 @@ class VargaChartsAction extends BaseAction {
   }
 
   /**
-   * Format simple varga analysis for fallback
-   * @param {Object} vargaData - Varga data
-   * @returns {string} Simple analysis text
-   */
-  formatSimpleVargaAnalysis(vargaData) {
-    const name = this.sanitizeName(this.user.name || 'User');
-    let response = `🕉️ Varga Charts for ${name}\n\n`;
-
-    if (vargaData.vargaCharts) {
-      response += 'Divisional Charts Analyzed:\n';
-
-      Object.keys(vargaData.vargaCharts).forEach(varga => {
-        const chart = vargaData.vargaCharts[varga];
-        response += `• ${varga}: Ascendant in ${chart.ascendantSign}\n`;
-      });
-    }
-
-    response += '\nVarga charts provide specialized insights into:\n';
-    response += '• Marriage (Navamsa)\n• Career (Dashamsa)\n• Wealth (Hora)\n';
-    response += '• Siblings (Drekkana)\n• And many more life areas\n\n';
-    response += 'Detailed analysis available through menu options.';
-
-    return response;
-  }
-
-  /**
    * Get action buttons for varga charts response
    * @returns {Array} Button configuration array
    */
@@ -357,32 +290,6 @@ class VargaChartsAction extends BaseAction {
         title: '🏠 Main Menu'
       }
     ];
-  }
-
-  /**
-   * Send notification for incomplete profile
-   */
-  async sendIncompleteProfileNotification() {
-    const profilePrompt = '🕉️ *Varga Charts Require Complete Profile*\n\nTo analyze divisional charts, please complete your profile with:\n• Birth date (DDMMYY format)\n• Birth time (HHMM format)\n• Birth place\n\nUse the Settings menu to update your information.\n\nVarga charts divide your birth chart into specialized areas like marriage, career, wealth, etc.';
-    await sendMessage(this.phoneNumber, profilePrompt, 'text');
-  }
-
-  /**
-   * Send subscription upgrade prompt
-   * @param {Object} limitsCheck - Subscription limits check result
-   */
-  async sendUpgradePrompt(limitsCheck) {
-    const upgradeMessage = `⭐ *Premium Varga Analysis Available*\n\nYou've reached the limit for detailed divisional chart analysis in the ${limitsCheck.plan} plan.\n\nUpgrade to Premium for:\n• Complete varga chart analysis\n• Specialized life area insights\n• Traditional Vedic calculations\n• Personalized recommendations\n\nVarga charts reveal hidden strengths in specific life areas!`;
-    await sendMessage(this.phoneNumber, upgradeMessage, 'text');
-  }
-
-  /**
-   * Handle execution errors
-   * @param {Error} error - Execution error
-   */
-  async handleExecutionError(error) {
-    const errorMessage = 'Sorry, I encountered an issue analyzing your varga charts. This detailed Vedic analysis requires careful calculations. Please try again, or contact support if the problem persists.';
-    await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
   /**

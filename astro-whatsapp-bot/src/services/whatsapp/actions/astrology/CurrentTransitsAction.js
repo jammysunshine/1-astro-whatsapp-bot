@@ -1,13 +1,12 @@
-const BaseAction = require('../BaseAction');
-const { ResponseBuilder } = require('../../utils/ResponseBuilder');
-const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
+const AstrologyAction = require('../base/AstrologyAction');
+const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
 
 /**
  * CurrentTransitsAction - Shows current planetary transits and their influences.
- * Analyzes how current planetary positions affect the user's natal chart.
+ * Uses AstrologyAction base class for unified validation and response handling.
+ * Direct infrastructure usage with no facade patterns.
  */
-class CurrentTransitsAction extends BaseAction {
+class CurrentTransitsAction extends AstrologyAction {
   /**
    * Unique action identifier
    */
@@ -16,30 +15,40 @@ class CurrentTransitsAction extends BaseAction {
   }
 
   /**
-   * Execute the current transits action
+   * Execute the current transits action using base class unified methods
    * @returns {Promise<Object|null>} Action result
    */
   async execute() {
     try {
-      this.logExecution('start', 'Analyzing current planetary transits');
+      this.logAstrologyExecution('start', 'Analyzing current planetary transits');
 
-      // Validate user profile
-      if (!(await this.validateUserProfile('Current Transits'))) {
-        await this.sendIncompleteProfileMessage();
-        return { success: false, reason: 'incomplete_profile' };
+      // Unified validation using base class
+      const validation = await this.validateProfileAndLimits('Current Transits', 'transits_current');
+      if (!validation.success) {
+        return validation;
       }
 
       // Calculate current transits
-      const transits = await this.calculateCurrentTransits();
+      const transitData = await this.calculateCurrentTransits();
+      if (!transitData) {
+        throw new Error('Failed to calculate transit data');
+      }
 
-      // Format and send transit analysis
-      await this.sendTransitAnalysis(transits);
+      // Format and send using centralized factory and base class methods
+      const formattedContent = AstrologyFormatterFactory.formatTransits({
+        name: this.user?.name,
+        currentDate: new Date().toISOString(),
+        majorTransits: transitData,
+        personalImpact: this.getPersonalImpact(transitData),
+        generalInfluence: this.getGeneralInfluence(transitData)
+      });
+      await this.buildAstrologyResponse(formattedContent, this.getTransitButtons());
 
-      this.logExecution('complete', 'Current transits analysis sent');
+      this.logAstrologyExecution('complete', 'Current transits analysis delivered successfully');
       return {
         success: true,
         type: 'current_transits',
-        planetsAnalyzed: transits.length
+        planetsAnalyzed: transitData.length
       };
     } catch (error) {
       this.logger.error('Error in CurrentTransitsAction:', error);
@@ -97,6 +106,11 @@ class CurrentTransitsAction extends BaseAction {
     const transit = transitPhases[planet];
     if (!transit) { return null; }
 
+    const durations = {
+      Sun: '2-3 days', Moon: '2-3 days', Mercury: '3-4 weeks',
+      Venus: '3-4 weeks', Mars: '6-8 weeks', Jupiter: '12-13 months', Saturn: '2.5-3 years'
+    };
+
     return {
       planet,
       transitSign: transit.sign,
@@ -104,19 +118,19 @@ class CurrentTransitsAction extends BaseAction {
       aspects: transit.aspects,
       significance: Math.floor(Math.random() * 10) + 1, // Simplified scoring
       influence: this.getTransitMeaning(planet, transit),
-      duration: this.getTransitDuration(planet)
+      duration: durations[planet] || 'Variable'
     };
   }
 
   /**
-   * Get meaning of transit based on planet and position
+   * Get transit meaning for a specific planet and transit position
    * @param {string} planet - Planet name
-   * @param {Object} transit - Transit data
+   * @param {Object} transit - Transit position data
    * @returns {string} Transit interpretation
    */
   getTransitMeaning(planet, transit) {
     const meanings = {
-      Sun: `Solar influence in ${transit.sign} brings focus on identity, leadership, and life purpose. In house ${transit.natalHouse}, this enhances self-expression.`,
+      Sun: `Solar influence in ${transit.sign} brings focus on identity, leadership, and life purpose. In house ${transit.house}, this enhances self-expression.`,
       Moon: `Lunar transits affect emotions and intuition. In ${transit.sign}, emotional patterns may emerge, influencing home and family matters.`,
       Mercury: 'Mercury transits affect communication and thinking. Current position suggests changes in how you process information and express ideas.',
       Venus: 'Venus transits influence relationships and values. This period brings opportunities for harmony and creative expression.',
@@ -128,122 +142,62 @@ class CurrentTransitsAction extends BaseAction {
     return meanings[planet] || 'Planetary influence bringing important changes and opportunities for growth.';
   }
 
-  /**
-   * Get approximate duration of transit
-   * @param {string} planet - Planet name
-   * @returns {string} Duration description
-   */
-  getTransitDuration(planet) {
-    const durations = {
-      Sun: '2-3 days',
-      Moon: '2-3 days',
-      Mercury: '3-4 weeks',
-      Venus: '3-4 weeks',
-      Mars: '6-8 weeks',
-      Jupiter: '12-13 months',
-      Saturn: '2.5-3 years'
-    };
 
-    return durations[planet] || 'Variable';
-  }
 
   /**
-   * Send formatted transit analysis
-   * @param {Array} transits - Array of transit data
-   */
-  async sendTransitAnalysis(transits) {
-    try {
-      const formattedAnalysis = this.formatTransitAnalysis(transits);
-      const userLanguage = this.getUserLanguage();
-
-      const buttons = [
-        {
-          id: 'get_transit_predictions',
-          titleKey: 'buttons.predictions',
-          title: '🔮 Predictions'
-        },
-        {
-          id: 'get_birth_chart',
-          titleKey: 'buttons.birth_chart',
-          title: '📊 Chart'
-        },
-        {
-          id: 'show_main_menu',
-          titleKey: 'buttons.main_menu',
-          title: '🏠 Main Menu'
-        }
-      ];
-
-      const message = ResponseBuilder.buildInteractiveButtonMessage(
-        this.phoneNumber,
-        formattedAnalysis,
-        buttons,
-        userLanguage
-      );
-
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
-    } catch (error) {
-      this.logger.error('Error sending transit analysis:', error);
-      await this.handleExecutionError(error);
-    }
-  }
-
-  /**
-   * Format transit data into readable analysis
+   * Get personal impact interpretation based on transit data
    * @param {Array} transits - Transit data array
-   * @returns {string} Formatted analysis
+   * @returns {string} Personal impact description
    */
-  formatTransitAnalysis(transits) {
-    let analysis = `🌌 *Current Planetary Transits*\n*For ${this.user.name || 'You'}*\n\n`;
-
-    if (transits.length === 0) {
-      analysis += 'No significant planetary transits detected at this time. This is a period of relative cosmic stability.\n\n';
-    } else {
-      analysis += '*Major Influences This Month:*\n\n';
-      transits.slice(0, 5).forEach((transit, index) => {
-        analysis += `${index + 1}. *${transit.planet}* in ${transit.transitSign}\n`;
-        analysis += `   ${transit.influence}\n`;
-        analysis += `   Duration: ~${transit.duration}\n\n`;
-      });
+  getPersonalImpact(transits) {
+    if (!transits || transits.length === 0) {
+      return '♌ Quiet cosmic period - focus on inner peace and preparation for future changes.';
     }
 
-    // Add general advice
-    analysis += '*💫 Current Cosmic Climate:*\n';
-    if (transits.length > 3) {
-      analysis += '• High activity period - many changes and opportunities\n';
-    } else if (transits.length > 1) {
-      analysis += '• Moderate activity - focus on important relationships\n';
-    } else {
-      analysis += '• Quiet period - ideal for reflection and preparation\n';
+    const majorTransits = transits.filter(t => t.significance > 7);
+    if (majorTransits.length > 0) {
+      return '♌ High cosmic activity - pay attention to intuition and be open to significant changes in your life.';
     }
 
-    analysis += '• Pay attention to dreams and intuition\n';
-    analysis += '• Be open to sudden opportunities\n\n';
-
-    analysis += '*Transits show cosmic timing. Use this awareness to align your actions with the universe\'s flow.*';
-
-    return analysis;
+    return '♌ Moderate cosmic activity - focus on relationships and important life decisions.';
   }
 
   /**
-   * Send message for incomplete profile
+   * Get general influence interpretation based on transit data
+   * @param {Array} transits - Transit data array
+   * @returns {string} General influence description
    */
-  async sendIncompleteProfileMessage() {
-    const message = '👤 *Profile Required for Transits*\n\nCurrent planetary transits need your birth chart to show personalized influences.\n\n📅 Please complete your birth profile first.';
-    await sendMessage(this.phoneNumber, message, 'text');
+  getGeneralInfluence(transits) {
+    if (!transits || transits.length === 0) {
+      return '🌍 Period of cosmic stability and equilibrium. Use this time for reflection and planning.';
+    }
+
+    const climateDescription = transits.length > 3 ? 'High activity' : transits.length > 1 ? 'Moderate activity' : 'Low activity';
+    return `🌍 ${climateDescription} cosmic climate. The planets are aligning to bring important messages and opportunities for growth.`;
   }
 
   /**
-   * Handle execution errors
-   * @param {Error} error - Execution error
+   * Get action buttons for transit analysis response
+   * @returns {Array} Button configuration array
    */
-  async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, there was an error analyzing current transits. The cosmic energies may be temporarily obscured. Please try again later.';
-    await sendMessage(this.phoneNumber, errorMessage, 'text');
+  getTransitButtons() {
+    return [
+      {
+        id: 'get_transit_predictions',
+        titleKey: 'buttons.predictions',
+        title: '🔮 Predictions'
+      },
+      {
+        id: 'get_birth_chart',
+        titleKey: 'buttons.birth_chart',
+        title: '📊 Chart'
+      },
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
   }
 
   /**

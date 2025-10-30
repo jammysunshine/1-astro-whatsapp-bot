@@ -1,14 +1,12 @@
-const BaseAction = require('../BaseAction');
+const AstrologyAction = require('../base/AstrologyAction');
 const generateAstrologyResponse = require('../../../../services/astrology/astrologyEngine');
-const { ResponseBuilder } = require('../../utils/ResponseBuilder');
-const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
+const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
 
 /**
  * DailyHoroscopeAction - Generates and sends daily horoscope readings.
- * Demonstrates the atomic action pattern in the new architecture.
+ * Uses AstrologyAction base class for unified validation, error handling, and response building.
  */
-class DailyHoroscopeAction extends BaseAction {
+class DailyHoroscopeAction extends AstrologyAction {
   /**
    * Unique action identifier
    */
@@ -17,37 +15,34 @@ class DailyHoroscopeAction extends BaseAction {
   }
 
   /**
-   * Execute the daily horoscope action
+   * Execute the daily horoscope action using base class unified methods
    * @returns {Promise<Object|null>} Action result
    */
   async execute() {
     try {
-      this.logExecution('start', 'Generating daily horoscope');
+      this.logAstrologyExecution('start', 'Generating daily horoscope');
 
-      // Validate user profile
-      if (!(await this.validateUserProfile('Daily Horoscope'))) {
-        this.sendIncompleteProfileNotification();
-        return { success: false, reason: 'incomplete_profile' };
+      // Unified profile and limits validation from base class
+      const validation = await this.validateProfileAndLimits('Daily Horoscope', 'horoscope_daily');
+      if (!validation.success) {
+        return validation;
       }
 
-      // Check subscription limits
-      const limitsCheck = this.checkSubscriptionLimits('horoscope_daily');
-      if (!limitsCheck.isAllowed) {
-        await this.sendUpgradePrompt(limitsCheck);
-        return { success: false, reason: 'subscription_limit' };
+      // Generate horoscope content
+      const horoscopeData = await this.generateHoroscope();
+      if (!horoscopeData) {
+        throw new Error('Failed to generate horoscope data');
       }
 
-      // Generate horoscope using AI/astrology engine
-      const horoscopeResponse = await this.generateHoroscope();
+      // Format and send using centralized factory and base class methods
+      const formattedContent = AstrologyFormatterFactory.formatHoroscope(horoscopeData);
+      await this.buildAstrologyResponse(formattedContent, this.getHoroscopeActionButtons());
 
-      // Send the horoscope response
-      await this.sendHoroscopeResponse(horoscopeResponse);
-
-      this.logExecution('complete', 'Daily horoscope sent successfully');
+      this.logAstrologyExecution('complete', 'Daily horoscope delivered successfully');
       return {
         success: true,
         type: 'horoscope',
-        responseLength: horoscopeResponse.length
+        contentLength: formattedContent.length
       };
     } catch (error) {
       this.logger.error('Error in DailyHoroscopeAction:', error);
@@ -57,8 +52,8 @@ class DailyHoroscopeAction extends BaseAction {
   }
 
   /**
-   * Generate personalized horoscope content
-   * @returns {Promise<string>} Horoscope text
+   * Generate personalized horoscope content using astrology engine
+   * @returns {Promise<Object>} Horoscope data object for formatting
    */
   async generateHoroscope() {
     try {
@@ -66,46 +61,46 @@ class DailyHoroscopeAction extends BaseAction {
       const rawResponse = await generateAstrologyResponse('daily horoscope', this.user);
 
       if (typeof rawResponse === 'string' && rawResponse.length > 0) {
-        return this.formatHoroscopeResponse(rawResponse);
+        return this.buildHoroscopeData(rawResponse);
       }
 
       // Fallback if astrology engine fails
-      return this.generateFallbackHoroscope();
+      return this.generateFallbackData();
     } catch (error) {
       this.logger.warn('Astrology engine failed, using fallback:', error.message);
-      return this.generateFallbackHoroscope();
+      return this.generateFallbackData();
     }
   }
 
   /**
-   * Format the horoscope response with proper structure and emojis
-   * @param {string} rawResponse - Raw astrology response
-   * @returns {string} Formatted response
+   * Build horoscope data object for formatter
+   * @param {string} content - Raw horoscope content
+   * @returns {Object} Structured horoscope data
    */
-  formatHoroscopeResponse(rawResponse) {
-    const userLanguage = this.getUserLanguage();
-
-    // Add astrology-themed formatting
-    let formattedResponse = `☀️ *Daily Horoscope for ${this.user.name || 'You'}*\n`;
-    formattedResponse += `📅 ${new Date().toLocaleDateString(userLanguage, {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })}\n\n`;
-
-    // Process and enhance the raw response
-    formattedResponse += this.enhanceHoroscopeText(rawResponse);
-
-    // Add daily guidance section
-    formattedResponse += '\n\n🌟 *Daily Guidance:*\n';
-    formattedResponse += this.generateDailyGuidance();
-
-    return formattedResponse;
+  buildHoroscopeData(content) {
+    return {
+      name: this.user?.name,
+      date: new Date().toISOString(),
+      content: this.enhanceHoroscopeText(content),
+      guidance: this.generateRandomGuidance()
+    };
   }
 
   /**
-   * Enhance horoscope text with better formatting
+   * Generate fallback horoscope data
+   * @returns {Object} Fallback horoscope data
+   */
+  generateFallbackData() {
+    return {
+      name: this.user?.name,
+      date: new Date().toISOString(),
+      content: 'Today brings opportunities for growth and new experiences. Trust your instincts and stay open to the possibilities around you.',
+      guidance: 'Trust your intuition today and embrace change as growth.'
+    };
+  }
+
+  /**
+   * Enhance horoscope text with formatting (moved from formatter for customization)
    * @param {string} text - Raw horoscope text
    * @returns {string} Enhanced text
    */
@@ -113,22 +108,27 @@ class DailyHoroscopeAction extends BaseAction {
     // Add relevant emojis based on content
     let enhanced = text;
 
-    // Common enhancements
-    enhanced = enhanced.replace(/\b(lucky|fortunate|blessed)\b/gi, '🍀 $&');
-    enhanced = enhanced.replace(/\b(challenges?|difficulties?)\b/gi, '⚠️ $&');
-    enhanced = enhanced.replace(/\b(love|romance|relationship)\b/gi, '💕 $&');
-    enhanced = enhanced.replace(/\b(career|work|job)\b/gi, '💼 $&');
-    enhanced = enhanced.replace(/\b(money|wealth|finance)\b/gi, '💰 $&');
-    enhanced = enhanced.replace(/\b(health|wellness)\b/gi, '🏥 $&');
+    const emojiMap = {
+      'lucky': '🍀', 'fortunate': '🍀', 'blessed': '🍀',
+      'challenges': '⚠️', 'difficulties': '⚠️',
+      'love': '💕', 'romance': '💕', 'relationship': '💕',
+      'career': '💼', 'work': '💼', 'job': '💼',
+      'money': '💰', 'wealth': '💰', 'finance': '💰',
+      'health': '🏥', 'wellness': '🏥'
+    };
+
+    Object.entries(emojiMap).forEach(([keyword, emoji]) => {
+      enhanced = enhanced.replace(new RegExp(`\\b${keyword}\\b`, 'gi'), `${emoji} $&`);
+    });
 
     return enhanced;
   }
 
   /**
-   * Generate daily guidance section
+   * Generate random daily guidance
    * @returns {string} Daily guidance text
    */
-  generateDailyGuidance() {
+  generateRandomGuidance() {
     const guidance = [
       'Trust your intuition today',
       'Stay open to unexpected opportunities',
@@ -138,51 +138,7 @@ class DailyHoroscopeAction extends BaseAction {
       'Express gratitude for what you have',
       'Embrace change as growth'
     ];
-
-    const randomGuidance = guidance[Math.floor(Math.random() * guidance.length)];
-    return `• ${randomGuidance}\n• Find balance between action and rest\n• Remember: every day brings new possibilities`;
-  }
-
-  /**
-   * Generate fallback horoscope when main engine fails
-   * @returns {string} Fallback horoscope text
-   */
-  generateFallbackHoroscope() {
-    const userLanguage = this.getUserLanguage();
-    const fallbackMessage = translationService.translate(
-      'messages.horoscope.fallback',
-      userLanguage
-    ) || 'Today brings opportunities for growth and new experiences. Trust your instincts and stay open to the possibilities around you.';
-
-    return `☀️ *Daily Horoscope*\n\n${fallbackMessage}\n\n🌟 *Daily Wisdom:* "The stars align for those willing to embrace change."`;
-  }
-
-  /**
-   * Send the horoscope response to the user
-   * @param {string} horoscopeText - Formatted horoscope text
-   */
-  async sendHoroscopeResponse(horoscopeText) {
-    try {
-      const userLanguage = this.getUserLanguage();
-
-      // Build interactive message with navigation buttons
-      const message = ResponseBuilder.buildInteractiveButtonMessage(
-        this.phoneNumber,
-        horoscopeText,
-        this.getHoroscopeActionButtons(),
-        userLanguage
-      );
-
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
-    } catch (error) {
-      this.logger.error('Error sending horoscope response:', error);
-      // Fallback to simple text message
-      await sendMessage(this.phoneNumber, horoscopeText, 'text');
-    }
+    return guidance[Math.floor(Math.random() * guidance.length)];
   }
 
   /**
@@ -207,41 +163,6 @@ class DailyHoroscopeAction extends BaseAction {
         title: '🏠 Main Menu'
       }
     ];
-  }
-
-  /**
-   * Send notification for incomplete profile
-   */
-  async sendIncompleteProfileNotification() {
-    const profilePrompt = '👤 *Complete Your Profile First*\n\nTo receive personalized daily horoscopes, please complete your birth profile with date, time, and place.';
-    await sendMessage(this.phoneNumber, profilePrompt, 'text');
-  }
-
-  /**
-   * Send subscription upgrade prompt
-   * @param {Object} limitsCheck - Subscription limits check result
-   */
-  async sendUpgradePrompt(limitsCheck) {
-    const userLanguage = this.getUserLanguage();
-    const upgradeMessage = translationService.translate(
-      'messages.subscription.upgrade_prompt',
-      userLanguage,
-      {
-        feature: 'Daily Horoscopes',
-        current: limitsCheck.plan
-      }
-    ) || `You've reached your daily horoscope limit for the ${limitsCheck.plan} plan.\n\nUpgrade to Premium for unlimited astrological insights!`;
-
-    await sendMessage(this.phoneNumber, upgradeMessage, 'text');
-  }
-
-  /**
-   * Handle execution errors
-   * @param {Error} error - Execution error
-   */
-  async handleExecutionError(error) {
-    const errorMessage = 'Sorry, I encountered an issue generating your daily horoscope. Please try again in a moment.';
-    await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
   /**

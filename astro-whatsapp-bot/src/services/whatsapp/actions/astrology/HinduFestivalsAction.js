@@ -1,14 +1,28 @@
-const BaseAction = require('../BaseAction');
-// const { HinduFestivals } = require('../../../services/astrology/hinduFestivals');
+const AstrologyAction = require('../base/AstrologyAction');
+const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
 
-const MockHinduFestivals = class { constructor() {} getFestivalsForDate() { return { festivals: [], error: null, summary: 'Mock festivals data' }; } };
+const MockHinduFestivals = class {
+  constructor() {}
+  getFestivalsForDate() {
+    return {
+      festivals: [],
+      error: null,
+      summary: 'Mock festivals data',
+      auspicious_timings: {
+        abhijit_muhurta: { time: '12:00-12:48', significance: 'Most auspicious' },
+        brahma_muhurta: { time: '04:24-06:00', significance: 'Spiritual activities' },
+        rahu_kalam: { time: '10:46-13:15', significance: 'Avoid important work' }
+      }
+    };
+  }
+};
 
 /**
  * HinduFestivalsAction - Comprehensive action for Hindu festivals information.
  * Can be activated by keywords, buttons, or list selections.
  * Directly calls the HinduFestivals service implementation.
  */
-class HinduFestivalsAction extends BaseAction {
+class HinduFestivalsAction extends AstrologyAction {
   /**
    * Unique action identifier
    */
@@ -16,93 +30,76 @@ class HinduFestivalsAction extends BaseAction {
     return 'get_hindu_festivals_info';
   }
 
-  /**
-   * Execute the hindu festivals action (main entry point)
-   * @returns {Promise<Object|null>} Action result
-   */
   async execute() {
     try {
-      this.logExecution('start', 'Generating Hindu festivals info');
+      this.logAstrologyExecution('start', 'Retrieving Hindu festivals information');
 
-      const festivalsService = new MockHinduFestivals();
-      const today = new Date().toISOString().split('T')[0];
+      // Unified profile and limits validation from base class
+      const validation = await this.validateProfileAndLimits('Hindu Festivals', 'festivals_hindu');
+      if (!validation.success) {
+        return validation;
+      }
 
-      // Get main festival data
-      const festivalData = festivalsService.getFestivalsForDate(today);
-
+      // Get festival data using business logic
+      const festivalData = await this.getFestivalData();
       if (festivalData.error) {
-        await this.sendMessage(`❌ ${festivalData.error}`, 'text');
+        await this.sendDirectMessage(`❌ ${festivalData.error}`);
         return { success: false, reason: 'service_error' };
       }
 
-      // Send main festival summary
-      await this.sendFestivalsOverview(festivalData);
+      // Format comprehensive festival response
+      const formattedContent = this.formatComprehensiveFestivals(festivalData);
 
-      // Send detailed festival information if there are festivals
-      if (festivalData.festivals && festivalData.festivals.length > 0) {
-        await this.sendDetailedFestivals(festivalData.festivals.slice(0, 2)); // Limit to 2 main festivals
-      }
+      // Build single astrology response using base class methods
+      await this.buildAstrologyResponse(formattedContent, this.getFestivalButtons());
 
-      // Send auspicious timings
-      await this.sendAuspiciousTimings(festivalData.auspicious_timings);
-
-      this.logExecution('complete', `Sent ${festivalData.festivals.length} festival details`);
+      this.logAstrologyExecution('complete', `Delivered ${festivalData.festivals.length} festival details`);
       return {
         success: true,
         festivalsCount: festivalData.festivals.length,
-        dateChecked: festivalData.date
+        dateChecked: new Date().toISOString().split('T')[0]
       };
     } catch (error) {
       this.logger.error('Error in HinduFestivalsAction:', error);
-      await this.sendMessage('❌ I encountered an error retrieving festival information. Please try again.', 'text');
+      await this.handleExecutionError(error);
       return { success: false, reason: 'execution_error', error: error.message };
     }
   }
 
-  /**
-   * Send festival overview message
-   * @param {Object} festivalData - Festival data from service
-   */
-  async sendFestivalsOverview(festivalData) {
-    const message = `🕉️ *Hindu Festivals & Auspicious Timings*\n\n${festivalData.summary}`;
-    await this.sendMessage(message, 'text');
+  async getFestivalData() {
+    const festivalsService = new MockHinduFestivals();
+    const today = new Date().toISOString().split('T')[0];
+    return festivalsService.getFestivalsForDate(today);
   }
 
-  /**
-   * Send detailed festival information
-   * @param {Array} festivals - Festival array
-   */
-  async sendDetailedFestivals(festivals) {
-    for (const festival of festivals.slice(0, 2)) { // Limit to first 2 for brevity
-      let detailMsg = `🎊 *${festival.name}*\n`;
-      detailMsg += `📅 Estimated: ${festival.estimated_date}\n`;
-      detailMsg += `🕉️ Significance: ${festival.significance}\n`;
-      detailMsg += `🙏 Deities: ${festival.deities}\n\n`;
+  formatComprehensiveFestivals(festivalData) {
+    let response = `🕉️ *Hindu Festivals & Auspicious Timings*\n\n${festivalData.summary}`;
 
-      // Limit description length for mobile
-      detailMsg += `📝 Key Rituals:\n${festival.rituals.slice(0, 3).join('\n')}...`;
-
-      await this.sendMessage(detailMsg, 'text');
-    }
-  }
-
-  /**
-   * Send auspicious timings information
-   * @param {Object} timingsData - Auspicious timings data
-   */
-  async sendAuspiciousTimings(timingsData) {
-    if (!timingsData) { return; }
-
-    let timingsMsg = '⏰ *Today\'s Auspicious Timings*\n\n';
-    timingsMsg += `🌅 Abhijit Muhurta: ${timingsData.abhijit_muhurta?.time} (*${timingsData.abhijit_muhurta?.significance}*)\n\n`;
-    timingsMsg += `🌙 Brahma Muhurta: ${timingsData.brahma_muhurta?.time} (*${timingsData.brahma_muhurta?.significance}*)\n\n`;
-
-    if (timingsData.rahu_kalam) {
-      timingsMsg += `🌑 Rahu Kalam: ${timingsData.rahu_kalam.time} (*${timingsData.rahu_kalam.significance}*)\n\n`;
+    if (festivalData.auspicious_timings) {
+      const timings = festivalData.auspicious_timings;
+      response += '\n\n⏰ *Today\'s Auspicious Timings*\n';
+      if (timings.abhijit_muhurta) {
+        response += `🌅 Abhijit Muhurta: ${timings.abhijit_muhurta.time} (${timings.abhijit_muhurta.significance})\n`;
+      }
+      response += '\n*Traditional knowledge for spiritual observances.* ✨';
     }
 
-    await this.sendMessage(timingsMsg, 'text');
+    return response;
   }
+
+  async sendDirectMessage(content) {
+    const { sendMessage } = require('../../messageSender');
+    await sendMessage(this.phoneNumber, content, 'text');
+  }
+
+  getFestivalButtons() {
+    return [
+      { id: 'get_current_transits', title: '🌌 Transits' },
+      { id: 'show_main_menu', title: '🏠 Main Menu' }
+    ];
+  }
+
+
 
   /**
    * Get action metadata for registration

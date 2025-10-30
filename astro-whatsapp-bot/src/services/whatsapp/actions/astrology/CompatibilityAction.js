@@ -1,14 +1,13 @@
-const BaseAction = require('../BaseAction');
+const AstrologyAction = require('../base/AstrologyAction');
 const vedicCalculator = require('../../../../services/astrology/vedic/VedicCalculator');
-const { ResponseBuilder } = require('../../utils/ResponseBuilder');
-const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
+const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
 
 /**
  * CompatibilityAction - Analyzes synastry between two people for relationship compatibility.
- * Provides insights into romantic, business, or friendship compatibility.
+ * Uses AstrologyAction base class for unified validation and response handling.
+ * Direct infrastructure usage with no facade patterns.
  */
-class CompatibilityAction extends BaseAction {
+class CompatibilityAction extends AstrologyAction {
   /**
    * Unique action identifier
    */
@@ -17,30 +16,24 @@ class CompatibilityAction extends BaseAction {
   }
 
   /**
-   * Execute the compatibility action
+   * Execute the compatibility action using clean infrastructure
    * @returns {Promise<Object|null>} Action result
    */
   async execute() {
     try {
-      this.logExecution('start', 'Initiating compatibility flow');
+      this.logAstrologyExecution('start', 'Initiating compatibility flow');
 
-      // Validate user profile
-      if (!(await this.validateUserProfile('Compatibility Analysis'))) {
-        await this.sendIncompleteProfileMessage();
-        return { success: false, reason: 'incomplete_profile' };
+      // Unified profile validation from base class
+      const validation = await this.validateProfileAndLimits('Compatibility Analysis', 'compatibility_couple');
+      if (!validation.success) {
+        return validation;
       }
 
-      // Check subscription limits for compatibility analysis
-      const limitsCheck = this.checkSubscriptionLimits('compatibility');
-      if (!limitsCheck.isAllowed && this.user.compatibilityChecks >= limitsCheck.remaining) {
-        await this.sendUpgradeMessage(limitsCheck);
-        return { success: false, reason: 'subscription_limit_reached' };
-      }
+      // Send initial compatibility prompt using base class messaging
+      const promptContent = this.getCompatibilityPromptMessage();
+      await this.sendDirectMessage(promptContent);
 
-      // Send initial compatibility prompt
-      await this.sendCompatibilityPrompt();
-
-      this.logExecution('complete', 'Compatibility flow initiated');
+      this.logAstrologyExecution('complete', 'Compatibility flow initiated successfully');
       return {
         success: true,
         type: 'compatibility_flow_start',
@@ -54,162 +47,20 @@ class CompatibilityAction extends BaseAction {
   }
 
   /**
-   * Send initial compatibility analysis prompt
+   * Get compatibility prompt message
+   * @returns {string} Formatted prompt message
    */
-  async sendCompatibilityPrompt() {
-    const userLanguage = this.getUserLanguage();
-    const promptMessage = translationService.translate('messages.compatibility.prompt', userLanguage) ||
-      '🤝 *Synastry Compatibility Analysis*\n\nTo analyze compatibility between you and another person, I need their birth details:\n\n📅 *Birth Date* (DDMMYY format)\n🕐 *Birth Time* (HHMM 24hr format)\n📍 *Birth Place* (City, Country)\n\n*Examples:*\n150690\n1430\nMumbai, India\n\nSend their birth details to analyze your relationship compatibility!';
-
-    await sendMessage(this.phoneNumber, promptMessage, 'text');
+  getCompatibilityPromptMessage() {
+    return '🤝 *Synastry Compatibility Analysis*\n\nTo analyze compatibility between you and another person, I need their birth details:\n\n📅 *Birth Date* (DDMMYY format)\n🕐 *Birth Time* (HHMM 24hr format)\n📍 *Birth Place* (City, Country)\n\n*Examples:*\n150690\n1430\nMumbai, India\n\nSend their birth details to analyze your relationship compatibility!';
   }
 
   /**
-   * Calculate compatibility between two charts
-   * @param {Object} partnerData - Partner's birth data
-   * @returns {Promise<Object>} Compatibility analysis result
+   * Send direct message using base class
+   * @param {string} content - Message content
    */
-  async calculateCompatibility(partnerData) {
-    try {
-      // Validate partner data
-      if (!this.validatePartnerData(partnerData)) {
-        throw new Error('Invalid partner birth data provided');
-      }
-
-      const compatibility = await vedicCalculator.checkCompatibility(
-        // User's data
-        {
-          birthDate: this.user.birthDate,
-          birthTime: this.user.birthTime,
-          birthPlace: this.user.birthPlace
-        },
-        // Partner's data
-        partnerData
-      );
-
-      return compatibility;
-    } catch (error) {
-      this.logger.error('Error calculating compatibility:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Send formatted compatibility analysis
-   * @param {Object} compatibilityResult - Analysis result
-   * @param {Object} partnerInfo - Partner information
-   */
-  async sendCompatibilityResult(compatibilityResult, partnerInfo) {
-    try {
-      const formattedAnalysis = this.formatCompatibilityAnalysis(compatibilityResult, partnerInfo);
-      const userLanguage = this.getUserLanguage();
-
-      // Create interactive continuation buttons
-      const buttons = [
-        {
-          id: 'get_more_compatibility_details',
-          titleKey: 'buttons.more_details',
-          title: '📊 More Details'
-        },
-        {
-          id: 'get_relationship_advice',
-          titleKey: 'buttons.advice',
-          title: '💡 Advice'
-        },
-        {
-          id: 'show_main_menu',
-          titleKey: 'buttons.main_menu',
-          title: '🏠 Main Menu'
-        }
-      ];
-
-      const message = ResponseBuilder.buildInteractiveButtonMessage(
-        this.phoneNumber,
-        formattedAnalysis,
-        buttons,
-        userLanguage
-      );
-
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
-
-      // Update compatibility counter
-      await this.incrementCompatibilityCount();
-    } catch (error) {
-      this.logger.error('Error sending compatibility result:', error);
-      await this.handleExecutionError(error);
-    }
-  }
-
-  /**
-   * Format compatibility analysis into readable text
-   * @param {Object} compatibility - Raw compatibility data
-   * @param {Object} partnerInfo - Partner information
-   * @returns {string} Formatted analysis
-   */
-  formatCompatibilityAnalysis(compatibility, partnerInfo) {
-    let analysis = `💕 *Synastry Analysis: ${this.user.name} & ${partnerInfo.name || 'Partner'}*\n\n`;
-
-    // Overall compatibility score
-    const score = compatibility.overallScore || compatibility.compatibility || 'Unknown';
-    analysis += `🎯 *Overall Compatibility:* ${score}\n\n`;
-
-    // Key aspects
-    if (compatibility.keyAspects && compatibility.keyAspects.length > 0) {
-      analysis += '*Key Aspects:*\n';
-      compatibility.keyAspects.slice(0, 5).forEach(aspect => {
-        analysis += `• ${aspect.description}\n`;
-      });
-      analysis += '\n';
-    }
-
-    // Strengths
-    if (compatibility.strengths && compatibility.strengths.length > 0) {
-      analysis += '*💪 Strengths:*\n';
-      compatibility.strengths.slice(0, 3).forEach(strength => {
-        analysis += `• ${strength}\n`;
-      });
-      analysis += '\n';
-    }
-
-    // Challenges
-    if (compatibility.challenges && compatibility.challenges.length > 0) {
-      analysis += '*⚠️ Areas for Growth:*\n';
-      compatibility.challenges.slice(0, 2).forEach(challenge => {
-        analysis += `• ${challenge}\n`;
-      });
-      analysis += '\n';
-    }
-
-    // Advice
-    if (compatibility.advice) {
-      analysis += `*💫 Relationship Wisdom:*\n${compatibility.advice}\n\n`;
-    }
-
-    analysis += '*Synastry reveals the cosmic dance between souls. Remember, all relationships bring opportunities for growth and learning.*';
-
-    return analysis;
-  }
-
-  /**
-   * Send message for incomplete profile
-   */
-  async sendIncompleteProfileMessage() {
-    const message = '👤 *Profile Required for Compatibility*\n\nTo use compatibility analysis, you need a complete birth profile.\n\n📝 Use "Settings" from the main menu to update your profile, or send your birth details in this format:\n\nBirth Date (DDMMYY): 150690\nBirth Time (HHMM): 1430\nBirth Place: Mumbai, India';
-
-    await sendMessage(this.phoneNumber, message, 'text');
-  }
-
-  /**
-   * Send subscription upgrade message
-   * @param {Object} limitsCheck - Subscription limits info
-   */
-  async sendUpgradeMessage(limitsCheck) {
-    const upgradeMessage = `⭐ *Premium Compatibility Analysis*\n\nYou've used ${limitsCheck.used || 0} of your monthly ${limitsCheck.plan} limit.\n\nUpgrade to Premium for unlimited synastry analysis and detailed relationship insights!`;
-    await sendMessage(this.phoneNumber, upgradeMessage, 'text');
+  async sendDirectMessage(content) {
+    const { sendMessage } = require('../../messageSender');
+    await sendMessage(this.phoneNumber, content, 'text');
   }
 
   /**
@@ -225,26 +76,30 @@ class CompatibilityAction extends BaseAction {
   }
 
   /**
-   * Increment the compatibility check counter for user
+   * Calculate compatibility between two charts
+   * @param {Object} partnerData - Partner's birth data
+   * @returns {Promise<Object>} Compatibility analysis result
    */
-  async incrementCompatibilityCount() {
+  async calculateCompatibility(partnerData) {
     try {
-      // This would update the user's compatibilityChecks counter
-      // Implementation depends on user model structure
-      this.logger.info(`Compatibility check recorded for user ${this.phoneNumber}`);
-    } catch (error) {
-      this.logger.error('Error updating compatibility counter:', error);
-      // Non-critical error, don't throw
-    }
-  }
+      if (!this.validatePartnerData(partnerData)) {
+        throw new Error('Invalid partner birth data provided');
+      }
 
-  /**
-   * Handle execution errors
-   * @param {Error} error - Execution error
-   */
-  async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, there was an error processing your compatibility analysis. Please try again or contact support if the problem persists.';
-    await sendMessage(this.phoneNumber, errorMessage, 'text');
+      const compatibility = await vedicCalculator.checkCompatibility(
+        {
+          birthDate: this.user.birthDate,
+          birthTime: this.user.birthTime,
+          birthPlace: this.user.birthPlace
+        },
+        partnerData
+      );
+
+      return compatibility;
+    } catch (error) {
+      this.logger.error('Error calculating compatibility:', error);
+      throw error;
+    }
   }
 
   /**

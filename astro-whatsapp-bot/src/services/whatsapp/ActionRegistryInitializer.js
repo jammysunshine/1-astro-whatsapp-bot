@@ -1,5 +1,5 @@
 const ActionRegistry = require('./ActionRegistry');
-const logger = require('../utils/logger');
+const logger = require('../../utils/logger');
 
 // Import all action classes
 // Phase 1 Actions

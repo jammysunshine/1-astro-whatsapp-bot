@@ -65,9 +65,7 @@ describe('PaymentService', () => {
       phoneNumber: '+1234567890'
     });
   });
-};+++++++ REPLACE
 
-describe('PaymentService', () => {
   describe('getPlan', () => {
     it('should return plan details for valid plan', () => {
       const plan = paymentService.getPlan('premium', 'india');

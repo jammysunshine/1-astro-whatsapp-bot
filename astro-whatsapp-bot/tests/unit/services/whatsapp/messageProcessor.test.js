@@ -24,10 +24,11 @@ jest.mock('conversation/conversationEngine', () => ({
 jest.mock('conversation/menuLoader', () => ({
   getMenu: jest.fn()
 }));
-jest.mock('services/astrology/vedicCalculator', () => ({
-  calculateSunSign: jest.fn(),
-  checkCompatibility: jest.fn()
-}));
+// jest.mock('../../../src/services/whatsapp/messageSender', () => ({
+//   sendMessage: jest.fn(),
+//   sendTextMessage: jest.fn()
+// }));
+// Note: Removing vedic calculator mock as it's not used in current messageProcessor
 jest.mock('services/payment/paymentService', () => ({
   getSubscriptionStatus: jest.fn(),
   getSubscriptionBenefits: jest.fn(),

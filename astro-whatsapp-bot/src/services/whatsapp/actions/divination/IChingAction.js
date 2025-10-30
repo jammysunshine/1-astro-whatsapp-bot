@@ -54,18 +54,11 @@ class IChingAction extends BaseAction {
    */
   async generateIChingReading() {
     try {
-      // For now, generate a simple hexagram pattern
-      // In a full implementation, this would use traditional yarrow stalk or coin methods
-      const hexagramNumber = Math.floor(Math.random() * 64) + 1;
-      const changingLines = this.generateChangingLines();
-
-      return {
-        hexagramNumber,
-        changingLines,
-        interpretation: this.getHexagramMeaning(hexagramNumber),
-        advice: this.getHexagramAdvice(hexagramNumber),
-        timestamp: new Date().toISOString()
-      };
+      // Use the proper I Ching service for generating readings
+      const ichingService = await createIChingService();
+      const reading = await ichingService.performIChingReading('What guidance does the I Ching offer?');
+      
+      return reading;
     } catch (error) {
       this.logger.error('Error generating I Ching reading:', error);
       return null;

@@ -62,6 +62,15 @@ class VargaChartsAction extends AstrologyAction {
    */
   async calculateVargaAnalysis() {
     try {
+      // Validate that user has birth data
+      if (!this.user) {
+        throw new Error('User data not available for varga analysis');
+      }
+      
+      if (!this.user.birthDate || !this.user.birthTime || !this.user.birthPlace) {
+        throw new Error('User must complete birth profile with date, time, and place for varga analysis');
+      }
+
       // Use key vargas for analysis
       const keyVargas = ['RASHI', 'NAVAMSA', 'DASHAMSA', 'HORA', 'DREKKANA'];
 

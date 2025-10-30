@@ -79,6 +79,15 @@ class BirthChartAction extends AstrologyAction {
    */
   async generateVedicChart() {
     try {
+      // Validate that user has birth data
+      if (!this.user) {
+        throw new Error('User data not available for birth chart generation');
+      }
+      
+      if (!this.user.birthDate || !this.user.birthTime || !this.user.birthPlace) {
+        throw new Error('User must complete birth profile with date, time, and place for birth chart generation');
+      }
+
       return await vedicCalculator.generateVedicKundli({
         birthDate: this.user.birthDate,
         birthTime: this.user.birthTime,
@@ -97,6 +106,15 @@ class BirthChartAction extends AstrologyAction {
    */
   async generateWesternChart() {
     try {
+      // Validate that user has birth data
+      if (!this.user) {
+        throw new Error('User data not available for western chart generation');
+      }
+      
+      if (!this.user.birthDate || !this.user.birthTime || !this.user.birthPlace) {
+        throw new Error('User must complete birth profile with date, time, and place for western chart generation');
+      }
+
       return await vedicCalculator.generateWesternBirthChart({
         birthDate: this.user.birthDate,
         birthTime: this.user.birthTime,

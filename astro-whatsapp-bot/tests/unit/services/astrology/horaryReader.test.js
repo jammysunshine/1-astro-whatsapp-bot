@@ -1,7 +1,7 @@
 // tests/unit/services/astrology/horaryReader.test.js
 // Unit tests for Horary Reader
 
-const horaryReader = require('../../../../src/services/astrology/horaryReader');
+const horaryReader = require('../../../../src/services/astrology/horary/index.js');
 
 // Mock dependencies
 const logger = require('../../../../src/utils/logger');

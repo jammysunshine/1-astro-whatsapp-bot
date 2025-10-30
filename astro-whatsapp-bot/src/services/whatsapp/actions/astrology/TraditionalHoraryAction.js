@@ -69,6 +69,11 @@ class TraditionalHoraryAction extends AstrologyAction {
    */
   async castHoraryChart(question) {
     try {
+      // Validate user exists
+      if (!this.user) {
+        throw new Error('User data not available for horary analysis');
+      }
+
       const questionData = {
         question,
         questionTime: new Date().toISOString(),

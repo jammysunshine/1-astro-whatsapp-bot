@@ -1,5 +1,5 @@
 const { TestDatabaseManager, getWhatsAppIntegration } = require('../../utils/testSetup');
-const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
+const { getMessageCoordinator } = require('../../../src/services/whatsapp/MessageCoordinator');
 const { getMenu } = require('../../../src/conversation/menuLoader');
 
 // Mock external services for safe menu testing
@@ -14,6 +14,7 @@ const messageSender = require('../../../src/services/whatsapp/messageSender');
 describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Scenarios)', () => {
   let dbManager;
   let whatsAppIntegration;
+  let coordinator;
   const testUser = '+menu_test_user';
   const testUser2 = '+menu_test_user_2';
   let testUserData;
@@ -22,6 +23,9 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
     dbManager = new TestDatabaseManager();
     await dbManager.setup();
     whatsAppIntegration = getWhatsAppIntegration();
+
+    // Initialize the message coordinator
+    coordinator = await getMessageCoordinator();
 
     testUserData = {
       name: 'Menu Test User',
@@ -77,7 +81,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
           type: 'interactive'
         };
 
-        await processIncomingMessage(invalidRequest, {});
+        await coordinator.processIncomingMessage(invalidRequest, {});
         expect(messageSender.sendMessage).toHaveBeenCalled();
 
         // Should provide helpful error message and fallback options
@@ -113,7 +117,7 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
           type: 'interactive'
         };
 
-        await processIncomingMessage(outOfBoundsRequest, {});
+        await coordinator.processIncomingMessage(outOfBoundsRequest, {});
         expect(messageSender.sendMessage).toHaveBeenCalled();
 
         // Should handle gracefully and redirect to valid menu

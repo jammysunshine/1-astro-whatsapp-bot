@@ -152,6 +152,7 @@ const handleWhatsAppWebhook = async(req, res) => {
 
       // Process messages with retry logic
       if (value.messages) {
+        const { processIncomingMessage } = require('../services/whatsapp/messageProcessor');
         for (const message of value.messages) {
           await processMessageWithRetry(message, value);
         }

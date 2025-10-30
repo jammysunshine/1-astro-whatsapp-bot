@@ -9,7 +9,7 @@ jest.mock('sweph');
 const calculator = require('../../../../src/services/astrology/vedicCalculator');
 
 // Mock the module itself
-jest.mock('../../../../src/services/astrology/vedicCalculator', () => ({
+jest.mock('../../../../src/services/astrology/vedic/VedicCalculator', () => ({
   calculateBirthChart: jest.fn().mockImplementation(birthData => {
     if (birthData.date === 'invalid') {
       throw new Error('Invalid birth data');

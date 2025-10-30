@@ -1,7 +1,7 @@
 const BaseAction = require('../BaseAction');
 const { sendMessage } = require('../../messageSender');
 const { getUserByPhone, addBirthDetails, updateUserProfile } = require('../../../../models/userModel');
-const translationService = require('../../../../services/i18n/TranslationService');
+const translationService = require('../../../services/i18n/TranslationService');
 
 /**
  * UpdateProfileAction - Interactive profile update system

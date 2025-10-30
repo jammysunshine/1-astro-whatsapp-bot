@@ -1,8 +1,8 @@
 const BaseAction = require('../BaseAction');
-const vedicCalculator = require('../../../../services/astrology/vedic/VedicCalculator');
+const vedicCalculator = require('../../../services/astrology/vedic/VedicCalculator');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
+const translationService = require('../../../services/i18n/TranslationService');
 
 /**
  * WesternAstrologyAction - Provides overview and navigation for Western astrology features.

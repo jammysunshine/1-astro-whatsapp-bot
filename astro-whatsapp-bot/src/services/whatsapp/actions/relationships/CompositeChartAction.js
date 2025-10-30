@@ -1,8 +1,8 @@
 const BaseAction = require('../BaseAction');
-const vedicCalculator = require('../../../../services/astrology/vedic/VedicCalculator');
+const vedicCalculator = require('../../../services/astrology/vedic/VedicCalculator');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
+const translationService = require('../../../services/i18n/TranslationService');
 
 /**
  * CompositeChartAction - Creates composite charts that show the relationship as a single entity.

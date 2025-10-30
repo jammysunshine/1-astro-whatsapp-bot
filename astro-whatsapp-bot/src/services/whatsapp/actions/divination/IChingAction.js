@@ -1,8 +1,8 @@
 const BaseAction = require('../BaseAction');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
-const { IChingService } = require('../../../../services/astrology/iching');
+const translationService = require('../../../services/i18n/TranslationService');
+const { IChingService } = require('../../../services/astrology/iching');
 
 /**
  * IChingAction - Provides I Ching (Book of Changes) readings using ancient Chinese wisdom.

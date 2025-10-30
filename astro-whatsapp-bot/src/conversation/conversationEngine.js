@@ -3,15 +3,10 @@ const {
   getUserSession,
   setUserSession,
   deleteUserSession,
-  addBirthDetails,
   updateUserProfile
 } = require('../models/userModel');
 const { sendMessage } = require('../services/whatsapp/messageSender');
 const logger = require('../utils/logger');
-const vedicCalculator = require('../services/astrology/vedic/VedicCalculator');
-const numerologyService = require('../services/astrology/numerologyService');
-const { getMenu } = require('./menuLoader');
-const { sendListMessage } = require('../services/whatsapp/messageSender');
 
 /**
  * Validates user input for a conversation step
@@ -218,19 +213,19 @@ const processFlowMessage = async(message, user, flowId) => {
 
     let session;
     if (!existingSession) {
-      // Initialize new session
-      const flow = getFlow(flowId);
-      if (!flow) {
-        await sendMessage(user.phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
-        await deleteUserSession(user.phoneNumber);
-        return false;
-      }
+    // Initialize new session
+    const flow = getFlow(flowId);
+    if (!flow) {
+      await sendMessage(user.phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
+      await deleteUserSession(user.phoneNumber);
+      return false;
+    }
 
-      session = {
-        currentFlow: flowId,
-        currentStep: flow.start_step,
-        flowData: {}
-      };
+    session = {
+      currentFlow: flowId,
+      currentStep: flow.start_step || 'start', // Provide fallback for start_step
+      flowData: {}
+    };
       await setUserSession(user.phoneNumber, session);
     } else {
       session = existingSession;

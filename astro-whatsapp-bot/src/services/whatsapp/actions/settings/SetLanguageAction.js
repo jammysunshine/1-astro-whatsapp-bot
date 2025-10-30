@@ -1,7 +1,7 @@
 const BaseAction = require('../BaseAction');
 const { sendMessage } = require('../../messageSender');
 const { updateUserProfile } = require('../../../../models/userModel');
-const translationService = require('../../../../services/i18n/TranslationService');
+const translationService = require('../../../services/i18n/TranslationService');
 
 /**
  * SetLanguageAction - Handles setting user language preferences

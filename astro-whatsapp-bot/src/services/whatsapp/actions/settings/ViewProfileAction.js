@@ -1,7 +1,7 @@
 const BaseAction = require('../BaseAction');
 const { sendMessage } = require('../../messageSender');
 const { getUserByPhone, hasActiveSubscription, getSubscriptionBenefits } = require('../../../../models/userModel');
-const translationService = require('../../../../services/i18n/TranslationService');
+const translationService = require('../../../services/i18n/TranslationService');
 
 /**
  * ViewProfileAction - Displays current user profile information

@@ -11,10 +11,23 @@ const {
 
 // Import all action classes
 const BirthChartAction = require('../whatsapp/actions/astrology/BirthChartAction');
-// Add other actions as they exist/ are restored
-// const CompatibilityAction = require('../whatsapp/actions/astrology/CompatibilityAction');
-// const DailyHoroscopeAction = require('../whatsapp/actions/astrology/DailyHoroscopeAction');
-// etc.
+
+// Stub actions for features not yet fully implemented
+class DailyHoroscopeStubAction {
+  static get actionId() { return 'get_daily_horoscope'; }
+  async execute() {
+    await sendMessage(this.phoneNumber, '☀️ *Daily Horoscope*\n\nYour personalized daily horoscope is coming soon! Stay tuned for astrological insights tailored just for you.', 'text');
+    return { success: true, type: 'coming_soon' };
+  }
+}
+
+class CompatibilityStubAction {
+  static get actionId() { return 'initiate_compatibility_flow'; }
+  async execute() {
+    await sendMessage(this.phoneNumber, '👥 *Compatibility Analysis*\n\nRelationship compatibility analysis is being enhanced! This powerful feature will help you understand astrological harmony between partners.', 'text');
+    return { success: true, type: 'coming_soon' };
+  }
+}
 
 /**
  * Message Router - Routes incoming messages to appropriate action handlers
@@ -31,8 +44,8 @@ class MessageRouter {
   buildActionMap() {
     return {
       show_birth_chart: BirthChartAction,
-      get_daily_horoscope: null, // TODO: Add when action exists
-      initiate_compatibility_flow: null // TODO: Add when action exists
+      get_daily_horoscope: DailyHoroscopeStubAction,
+      initiate_compatibility_flow: CompatibilityStubAction
       // Add more mappings as actions are restored
     };
   }
@@ -235,8 +248,13 @@ const processIncomingMessage = async(message, value) => {
     }
 
     // Update user's last interaction timestamp
-    user.lastInteraction = new Date();
-    await user.save();
+    try {
+      user.lastInteraction = new Date();
+      await user.save();
+    } catch (error) {
+      logger.warn(`Failed to update last interaction for user ${phoneNumber}:`, error.message);
+      // Non-critical error, continue processing
+    }
   } catch (error) {
     const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
     logger.error(`❌ Error processing message from ${phoneNumber}: ${errorMsg}`);

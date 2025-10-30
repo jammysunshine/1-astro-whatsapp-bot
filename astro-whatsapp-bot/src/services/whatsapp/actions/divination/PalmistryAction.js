@@ -1,8 +1,8 @@
 const BaseAction = require('../BaseAction');
-const palmistryReader = require('../../../../services/astrology/palmistryReader');
+const palmistryReader = require('../../../services/astrology/palmistryReader');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
+const translationService = require('../../../services/i18n/TranslationService');
 
 /**
  * PalmistryAction - Analyzes palm lines and mounts for personality and life insights.

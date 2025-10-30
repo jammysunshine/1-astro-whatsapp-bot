@@ -1,7 +1,7 @@
 const BaseAction = require('../BaseAction');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../../services/i18n/TranslationService');
+const translationService = require('../../../services/i18n/TranslationService');
 
 /**
  * VedicAstrologyAction - Provides overview and navigation for Vedic (Jyotish) astrology features.

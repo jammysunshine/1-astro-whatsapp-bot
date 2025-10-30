@@ -1,5 +1,5 @@
 const AstrologyAction = require('../base/AstrologyAction');
-const vedicCalculator = require('../../../../services/astrology/vedic/VedicCalculator');
+const vedicCalculator = require('../../../services/astrology/vedic/VedicCalculator');
 const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
 
 /**

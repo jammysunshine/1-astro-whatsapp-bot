@@ -1,7 +1,7 @@
 const BaseAction = require('../../whatsapp/actions/BaseAction');
 const { ResponseBuilder } = require('../../whatsapp/utils/ResponseBuilder');
 const { sendMessage } = require('../../whatsapp/messageSender');
-const translationService = require('../../i18n/TranslationService');
+const translationService = require('../i18n/TranslationService');
 const { incrementCompatibilityChecks } = require('../../models/userModel');
 
 // Swiss Ephemeris for precise synastry calculations

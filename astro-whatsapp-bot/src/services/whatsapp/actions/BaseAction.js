@@ -1,4 +1,4 @@
-const logger = require('../../utils/logger');
+const logger = require('../../../utils/logger');
 const translationService = require('../../i18n/TranslationService');
 const paymentService = require('../../payment/paymentService');
 

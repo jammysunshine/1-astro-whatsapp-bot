@@ -2,6 +2,21 @@
 
 This file contains generic development workflow guidelines that apply across ALL projects in this organization. These principles, practices, and mandates are designed to ensure consistent development quality, security, and collaboration standards ACROSS ALL PROJECTS.
 
+## 🔥 CRITICAL CODE COMPLEXITY MANDATE: MAXIMUM 250 LINES PER FILE
+
+**🚨 URGENT: ENFORCEMENT REQUIRED** 🚨
+
+**ANY FILE EXCEEDING 250 LINES OF CODE MUST BE IMMEDIATELY FLAGGED FOR REFACTORING. NO EXCEPTIONS. NO DELAYS.**
+
+1. **IMMEDIATE IDENTIFICATION** - Any file exceeding 250 lines must be flagged within 10 minutes of discovery
+2. **MANDATORY REFACTORING** - Split the file into smaller, focused modules following single responsibility principle
+3. **DIRECT REFERENCES** - New modules must refer directly to actual files and modules, NOT wrappers or facades
+4. **CLEAN ARCHITECTURE** - Ensure all refactored code maintains clean, manageable, and simple structure
+
+**VIOLATION OF THE 250-LINE MANDATE WILL RESULT IN TECHNICAL DEBT ACCUMULATION AND MAINTAINABILITY BREAKDOWN**
+
+---
+
 ## ⚠️ CRITICAL MANDATE: PROJECT MANDATES COMPLIANCE
 
 **🚨 URGENT: READ PROJECT_MANDATES.md FIRST** 🚨
@@ -15,6 +30,24 @@ This file contains generic development workflow guidelines that apply across ALL
 **VIOLATION OF PROJECT_MANDATES.md WILL RESULT IN IMMEDIATE PROJECT FAILURE**
 
 ---
+
+## 🚀 REFACTORING MANDATES: DIRECT MODULAR REFERENCES ONLY
+
+**🚨 ABSOLUTE MANDATE FOR ALL REFACTORED CODE** 🚨
+
+**WHEN REFACTORING FILES THAT EXCEED 250 LINES:**
+
+1. **NO WRAPPERS** - Directly reference new files and modules, eliminate all wrapper layers
+2. **NO FACADE PATTERNS** - Build clean, direct connections to actual implementations
+3. **MAXIMUM SIMPLICITY** - Ensure code remains clean, manageable, and simple
+4. **PROPER SEPARATION** - Each module must have single, clear responsibility
+5. **DIRECT IMPORTS** - Reference actual functionality, not abstraction layers
+
+**ANY USE OF WRAPPERS, FACADES, OR UNNECESSARY ABSTRACTION LAYERS DURING REFACTORING IS STRICTLY FORBIDDEN AND WILL RESULT IN IMMEDIATE REWORK REQUIREMENT.**
+
+**THE PURPOSE: MAINTAINABILITY, DEBUGGABILITY, AND CODE COMPREHENSION.**
+
+**THE RULE: DIRECT, CLEAN, AND MANAGEABLE CODE ARCHITECTURE ONLY.**
 
 ## ⚠️ IMPORTANT MANDATE: GENERIC NATURE OF THIS FILE
 

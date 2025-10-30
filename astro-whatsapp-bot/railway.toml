@@ -7,6 +7,7 @@
 [build]
 builder = "NIXPACKS"
 buildCommand = "npm install"
+sourceDirectory = "astro-whatsapp-bot"
 
 [deploy]
 healthcheckPath = "/health"

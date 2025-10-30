@@ -4,7 +4,7 @@
  */
 const logger = require('../../../../utils/logger');
 
-const handleHinduFestivals = async (message, user) => {
+const handleHinduFestivals = async(message, user) => {
   if (!message.includes('hindu') && !message.includes('festival') && !message.includes('festivals')) {
     return null;
   }

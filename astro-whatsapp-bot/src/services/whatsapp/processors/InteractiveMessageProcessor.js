@@ -1,9 +1,9 @@
 const BaseMessageProcessor = require('./BaseMessageProcessor');
-const logger = require('../../../../src/utils/logger');
+const logger = require('../../../utils/logger');
 const ActionRegistry = require('../ActionRegistry');
 const { ValidationService } = require('../utils/ValidationService');
-const { processFlowMessage } = require('../../../../src/conversation/conversationEngine');
-const { getUserSession, updateUserProfile } = require('../../../../src/models/userModel');
+const { processFlowMessage } = require('../../../conversation/conversationEngine');
+const { getUserSession, updateUserProfile } = require('../../../models/userModel');
 
 /**
  * Specialized processor for handling interactive messages in the astrology bot.

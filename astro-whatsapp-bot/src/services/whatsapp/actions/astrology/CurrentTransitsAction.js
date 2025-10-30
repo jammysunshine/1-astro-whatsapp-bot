@@ -143,7 +143,6 @@ class CurrentTransitsAction extends AstrologyAction {
   }
 
 
-
   /**
    * Get personal impact interpretation based on transit data
    * @param {Array} transits - Transit data array

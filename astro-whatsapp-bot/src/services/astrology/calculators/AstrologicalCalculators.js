@@ -34,7 +34,7 @@ class AstrologicalCalculators {
       const riskAssessment = this._assessFinancialRisks(planetaryPositions, houses);
       const prosperityOpportunities = this._identifyProsperityOpportunities(planetaryPositions, houses);
 
-      const introduction = `Your birth chart reveals your financial potential, wealth-building patterns, and optimal timing for prosperity. Planets influence income, expenses, investments, and financial security.`;
+      const introduction = 'Your birth chart reveals your financial potential, wealth-building patterns, and optimal timing for prosperity. Planets influence income, expenses, investments, and financial security.';
 
       const strategy = this._determineWealthBuildingStrategy(wealthPlanets, riskAssessment);
 
@@ -47,7 +47,6 @@ class AstrologicalCalculators {
         prosperityOpportunities,
         strategy
       };
-
     } catch (error) {
       logger.error('Financial Astrology calculation error:', error);
       throw new Error('Failed to calculate financial astrology analysis');
@@ -68,7 +67,7 @@ class AstrologicalCalculators {
       const focusAreas = this._identifyHealthFocusAreas(planetaryPositions, houses);
       const recommendations = this._generateHealthRecommendations(focusAreas);
 
-      const introduction = `Your birth chart reveals innate health patterns and potential challenges. Medical astrology helps understand how planetary influences affect your physical well-being and vitality.`;
+      const introduction = 'Your birth chart reveals innate health patterns and potential challenges. Medical astrology helps understand how planetary influences affect your physical well-being and vitality.';
 
       return {
         introduction,
@@ -77,7 +76,6 @@ class AstrologicalCalculators {
         focusAreas,
         recommendations
       };
-
     } catch (error) {
       logger.error('Medical Astrology calculation error:', error);
       throw new Error('Failed to calculate medical astrology analysis');
@@ -103,7 +101,7 @@ class AstrologicalCalculators {
       const careerDirection = this._determineCareerDirection(midheavenAnalysis, tenthHousePlanets, careerPlanets);
       const successPotential = this._assessSuccessPotential(midheavenAnalysis, tenthHousePlanets, careerPlanets);
 
-      const introduction = `Your birth chart reveals your professional calling, career strengths, and optimal timing for success. The Midheaven (MC) represents your public face and career direction.`;
+      const introduction = 'Your birth chart reveals your professional calling, career strengths, and optimal timing for success. The Midheaven (MC) represents your public face and career direction.';
 
       return {
         introduction,
@@ -114,7 +112,6 @@ class AstrologicalCalculators {
         careerDirection,
         successPotential
       };
-
     } catch (error) {
       logger.error('Career Astrology calculation error:', error);
       throw new Error('Failed to calculate career astrology analysis');
@@ -135,7 +132,7 @@ class AstrologicalCalculators {
 
     const planets = {};
     const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
-                           sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
+      sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
     const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
 
     planetEphemIds.forEach((ephemId, index) => {

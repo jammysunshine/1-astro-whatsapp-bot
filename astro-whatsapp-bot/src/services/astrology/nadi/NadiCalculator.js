@@ -130,9 +130,9 @@ class NadiCalculator {
     // For simplicity, we'll use the position-based approach
     const positionRatio = positionInNakshatra / (360 / 27); // Normalize to 0-1 within nakshatra
 
-    if (positionRatio <= 1/3) {
+    if (positionRatio <= 1 / 3) {
       return 'adi';
-    } else if (positionRatio <= 2/3) {
+    } else if (positionRatio <= 2 / 3) {
       return 'madhya';
     } else {
       return 'antya';

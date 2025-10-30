@@ -151,31 +151,31 @@ class MediaSender {
     }
 
     switch (messageType) {
-      case 'text':
-        if (typeof message === 'string' && message.trim().length === 0) {
-          this.logger.error(`❌ Message content is empty for ${phoneNumber}`);
-          throw new Error('Message content cannot be empty');
-        }
-        return this.sendTextMessage(phoneNumber, message, options);
+    case 'text':
+      if (typeof message === 'string' && message.trim().length === 0) {
+        this.logger.error(`❌ Message content is empty for ${phoneNumber}`);
+        throw new Error('Message content cannot be empty');
+      }
+      return this.sendTextMessage(phoneNumber, message, options);
 
-      case 'media':
-        return this.sendMediaMessage(
-          phoneNumber,
-          message.mediaType,
-          message.mediaId,
-          message.caption || '',
-          options
-        );
+    case 'media':
+      return this.sendMediaMessage(
+        phoneNumber,
+        message.mediaType,
+        message.mediaId,
+        message.caption || '',
+        options
+      );
 
-      default:
-        // Translate message if it's a resource key
-        let messageText = message;
-        if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
-          // Would need access to translation service
-          messageText = message; // Placeholder for now
-        }
+    default:
+      // Translate message if it's a resource key
+      let messageText = message;
+      if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
+        // Would need access to translation service
+        messageText = message; // Placeholder for now
+      }
 
-        return this.sendTextMessage(phoneNumber, messageText, options);
+      return this.sendTextMessage(phoneNumber, messageText, options);
     }
   }
 

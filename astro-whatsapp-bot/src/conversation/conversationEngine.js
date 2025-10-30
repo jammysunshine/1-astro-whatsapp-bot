@@ -29,7 +29,7 @@ const validateStepInput = async(input, step) => {
     }
     return { isValid: true, cleanedValue: input.trim() };
 
-  case 'date':
+  case 'date': {
     // Only accept DDMMYY or DDMMYYYY formats
     let day;
     let month;
@@ -115,6 +115,7 @@ const validateStepInput = async(input, step) => {
     }
 
     return { isValid: false, errorMessage: 'Please provide date in DDMMYY (150690), DDMMYYYY (15061990) or YYYY-MM-DD (1990-06-15) format only, and ensure it is not a future date.' };
+  }
 
   case 'time_or_skip':
     if (trimmedInput === 'skip') {

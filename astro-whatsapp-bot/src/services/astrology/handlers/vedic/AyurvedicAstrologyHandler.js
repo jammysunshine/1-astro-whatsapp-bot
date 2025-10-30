@@ -5,7 +5,7 @@
 const logger = require('../../../../utils/logger');
 const ayurvedicAstrology = require('../../ayurvedicAstrology');
 
-const handleAyurvedicAstrology = async (message, user) => {
+const handleAyurvedicAstrology = async(message, user) => {
   if (!message.includes('ayurvedic') && !message.includes('ayurveda') && !message.includes('constitution')) {
     return null;
   }

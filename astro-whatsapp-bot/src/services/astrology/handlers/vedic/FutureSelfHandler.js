@@ -5,7 +5,7 @@
 const logger = require('../../../../utils/logger');
 const { DashaAnalysisCalculator } = require('../../vedic/calculators/DashaAnalysisCalculator');
 
-const handleFutureSelf = async (message, user) => {
+const handleFutureSelf = async(message, user) => {
   if (!message.includes('future') && !message.includes('self') && !message.includes('potential') && !message.includes('evolution')) {
     return null;
   }

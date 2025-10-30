@@ -508,7 +508,7 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
     return `${planetName.charAt(0).toUpperCase() + planetName.slice(1)} influences: ${influences[planetName]?.join(', ')}`;
   }
 
-  generateRemedialMeasures(ashtakavargaTables, natalChart) {
+  generateRemedialMeasures(ashtakavargaTables, natalChart, planetTotals = {}) {
     const measures = [];
 
     // Check weak rashis (<3 average points)

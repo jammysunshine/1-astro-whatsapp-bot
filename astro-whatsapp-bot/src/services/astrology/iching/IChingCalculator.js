@@ -283,11 +283,11 @@ class IChingCalculator {
    */
   getLineStrength(lineValue) {
     switch (lineValue) {
-      case 6: return 'Old Yin - Changing (soft → hard)';
-      case 7: return 'Young Yang - Strong (hard)';
-      case 8: return 'Young Yin - Weak (soft)';
-      case 9: return 'Old Yang - Changing (hard → soft)';
-      default: return 'Unknown';
+    case 6: return 'Old Yin - Changing (soft → hard)';
+    case 7: return 'Young Yang - Strong (hard)';
+    case 8: return 'Young Yin - Weak (soft)';
+    case 9: return 'Old Yang - Changing (hard → soft)';
+    default: return 'Unknown';
     }
   }
 

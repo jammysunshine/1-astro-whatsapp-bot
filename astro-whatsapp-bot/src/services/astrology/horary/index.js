@@ -289,7 +289,7 @@ class HoraryService {
     // Angular houses generally indicate positive outcomes
     if ([1, 4, 7, 10].includes(judgeHouse)) {
       return judge.planet === 'mars' ? 'No (Mars denies in angular house)' :
-             judge.planet === 'saturn' ? 'Delayed, but eventually yes' : 'Yes';
+        judge.planet === 'saturn' ? 'Delayed, but eventually yes' : 'Yes';
     }
 
     // Cadent houses may indicate no or delay
@@ -429,20 +429,20 @@ class HoraryService {
     description += `🌙 *Planetary Hour:* ${chart.planetaryHour.toLowerCase()}\n\n`;
 
     // Judge information
-    description += `👑 *Judge (Primary Significator):*\n`;
+    description += '👑 *Judge (Primary Significator):*\n';
     description += `• Planet: ${judge.name} ${judge.symbol}\n`;
     description += `• Dignity: ${judge.dignity}\n`;
     description += `• Strength: ${judge.strength}\n`;
     description += `• Questions: ${judge.questions}\n\n`;
 
     // Answer
-    description += `❓ *Horary Answer:*\n`;
+    description += '❓ *Horary Answer:*\n';
     description += `• Yes/No: ${answer.yesNo}\n`;
     description += `• Confidence: ${answer.confidence}\n`;
     description += `• Timing: ${answer.timing}\n\n`;
 
     // Planetary positions
-    description += `🪐 *Key Planetary Positions:*\n`;
+    description += '🪐 *Key Planetary Positions:*\n';
     const keyPlanets = ['sun', 'moon', 'judge.planet'];
     keyPlanets.forEach(planetKey => {
       if (chart.planetaryPositions[planetKey]) {

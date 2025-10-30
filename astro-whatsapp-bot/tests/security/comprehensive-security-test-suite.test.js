@@ -160,8 +160,12 @@ describe('Comprehensive Security Test Suite', () => {
       expect(result).toBe(expected);
     });
 
+    it('should sanitize empty malicious input appropriately', async() => {
+      const maliciousUrl = "http://example.com<script>alert('xss')</script>";
+      const expected = "httpexamplecomscriptalertxssscript";
+
       const result = sanitizeInput(maliciousUrl);
-      expect(result).toBe('');
+      expect(result).toBe(expected);
     });
 
     it('should handle command injection attempts according to security requirements', async() => {

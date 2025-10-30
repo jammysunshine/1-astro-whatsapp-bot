@@ -5,7 +5,7 @@
 const logger = require('../../../../utils/logger');
 // Jaimini functionality placeholder - full implementation planned for future expansion
 
-const handleJaiminiAstrology = async (message, user) => {
+const handleJaiminiAstrology = async(message, user) => {
   if (!message.includes('jaimini') && !message.includes('sphuta') && !message.includes('karaka') && !message.includes('jaimini astrology')) {
     return null;
   }

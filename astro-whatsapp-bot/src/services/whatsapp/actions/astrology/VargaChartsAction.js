@@ -7,7 +7,6 @@ const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFa
  * Shows how Rashi (D-1) divides into specialized charts for different life areas
  */
 class VargaChartsAction extends AstrologyAction {
-
   /**
    * Unique action identifier
    */
@@ -79,7 +78,6 @@ class VargaChartsAction extends AstrologyAction {
       };
     }
   }
-
 
 
   /**

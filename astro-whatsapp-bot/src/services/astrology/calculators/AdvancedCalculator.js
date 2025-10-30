@@ -26,7 +26,7 @@ class AdvancedCalculator {
       // Jaimini karaka system - calculate significators based on distance from Moon
       const karakas = this._calculateJaiminiKarakas(planetaryPositions, moonLongitude);
 
-      const introduction = `Jaimini astrology uses karakas (significators) as controllers of life aspects. Unlike Western ruling planets, Jaimini karakas are determined by each planet's distance from the Moon, measuring from 0° to 360°.`;
+      const introduction = 'Jaimini astrology uses karakas (significators) as controllers of life aspects. Unlike Western ruling planets, Jaimini karakas are determined by each planet\'s distance from the Moon, measuring from 0° to 360°.';
 
       const primaryKaraka = karakas.find(k => k.significator === 'Atmākāraka (Primary Karaka)');
       const secondaryKaraka = karakas.find(k => k.significator === 'Amātyakāraka (Career Karaka)');
@@ -34,7 +34,7 @@ class AdvancedCalculator {
       // Generate insights based on karakas
       const insights = this._generateJaiminiInsights(karakas);
 
-      const guidance = `In Jaimini system, the Atmākāraka shows your soul's expression, while Amātyakāraka reveals career fulfillment. Consider your strongest karakas when making important life decisions. 🕉️`;
+      const guidance = 'In Jaimini system, the Atmākāraka shows your soul\'s expression, while Amātyakāraka reveals career fulfillment. Consider your strongest karakas when making important life decisions. 🕉️';
 
       return {
         introduction,
@@ -44,7 +44,6 @@ class AdvancedCalculator {
         insights,
         guidance
       };
-
     } catch (error) {
       logger.error('Jaimini Karaka calculation error:', error);
       throw new Error('Failed to calculate Jaimini astrology analysis');
@@ -62,7 +61,7 @@ class AdvancedCalculator {
       const peakHouses = [];
 
       const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
-      let house = 1;
+      const house = 1;
 
       planetNames.forEach((name, index) => {
         const ephemKey = planetNames[index];
@@ -98,7 +97,6 @@ class AdvancedCalculator {
         peakHouses: peakHouses.length > 0 ? peakHouses : ['Mixed distribution'],
         interpretation
       };
-
     } catch (error) {
       logger.error('Ashtakavarga calculation error:', error);
       throw new Error('Failed to calculate Ashtakavarga');
@@ -141,7 +139,7 @@ class AdvancedCalculator {
                 star: star.name,
                 planet: planetName,
                 orb: minDiff.toFixed(2),
-                interpretation: interpretation
+                interpretation
               });
             }
           }
@@ -161,7 +159,6 @@ class AdvancedCalculator {
         conjunctions,
         majorStars
       };
-
     } catch (error) {
       logger.error('Fixed Stars calculation error:', error);
       throw new Error('Failed to calculate Fixed Stars analysis');
@@ -182,7 +179,7 @@ class AdvancedCalculator {
 
     const planets = {};
     const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
-                           sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
+      sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
     const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
 
     planetEphemIds.forEach((ephemId, index) => {
@@ -209,12 +206,12 @@ class AdvancedCalculator {
     for (const [planetName, planetData] of Object.entries(planets)) {
       if (planetData.longitude !== undefined && planetName !== 'Moon') {
         let distance = planetData.longitude - moonLongitude;
-        if (distance < 0) distance += 360;
-        if (distance >= 360) distance -= 360;
+        if (distance < 0) { distance += 360; }
+        if (distance >= 360) { distance -= 360; }
 
         karakaRanges.push({
           planet: planetName,
-          distance: distance,
+          distance,
           longitude: planetData.longitude,
           karaka: this._getKarakaFromDistance(distance)
         });
@@ -254,13 +251,13 @@ class AdvancedCalculator {
    * @private
    */
   _getKarakaFromDistance(distance) {
-    if (distance < 30) return 'Atmākāraka (Primary Karaka)';
-    if (distance < 60) return 'Amātyakāraka (Career Karaka)';
-    if (distance < 90) return 'Bhrātṛkāraka (Siblings Karaka)';
-    if (distance < 120) return 'Mātṛkāraka (Mother Karaka)';
-    if (distance < 150) return 'Pitr̥kāraka (Father Karaka)';
-    if (distance < 180) return 'Putrakāraka (Children Karaka)';
-    if (distance < 210) return 'Gnātikāraka (Relatives Karaka)';
+    if (distance < 30) { return 'Atmākāraka (Primary Karaka)'; }
+    if (distance < 60) { return 'Amātyakāraka (Career Karaka)'; }
+    if (distance < 90) { return 'Bhrātṛkāraka (Siblings Karaka)'; }
+    if (distance < 120) { return 'Mātṛkāraka (Mother Karaka)'; }
+    if (distance < 150) { return 'Pitr̥kāraka (Father Karaka)'; }
+    if (distance < 180) { return 'Putrakāraka (Children Karaka)'; }
+    if (distance < 210) { return 'Gnātikāraka (Relatives Karaka)'; }
     return 'Additional Significator';
   }
 
@@ -354,13 +351,13 @@ class AdvancedCalculator {
   _getFixedStarInterpretation(starName, planetName, orb) {
     // Mock implementation for fixed star meanings - in production would use extensive database
     const interpretations = {
-      'Regulus': 'Power and authority, potentially destructive if misused',
-      'Aldebaran': 'Material success with potential for conflicts',
-      'Antares': 'Transformation through intense experiences',
-      'Fomalhaut': 'Mystical wisdom and spiritual service',
-      'Spica': 'Helpful success and beneficial achievements',
-      'Sirius': 'Heavenly favor and honor',
-      'Vega': 'Success in arts and creative excellence'
+      Regulus: 'Power and authority, potentially destructive if misused',
+      Aldebaran: 'Material success with potential for conflicts',
+      Antares: 'Transformation through intense experiences',
+      Fomalhaut: 'Mystical wisdom and spiritual service',
+      Spica: 'Helpful success and beneficial achievements',
+      Sirius: 'Heavenly favor and honor',
+      Vega: 'Success in arts and creative excellence'
     };
 
     const starInfluence = interpretations[starName] || `${starName}'s qualities`;

@@ -5,7 +5,7 @@
 const logger = require('../../../../utils/logger');
 const { createMundaneService } = require('../../mundane');
 
-const handleMedicalAstrology = async (message, user) => {
+const handleMedicalAstrology = async(message, user) => {
   if (!message.includes('medical') && !message.includes('health') && !message.includes('disease') && !message.includes('illness') && !message.includes('health analysis')) {
     return null;
   }
@@ -28,7 +28,7 @@ const handleMedicalAstrology = async (message, user) => {
       return '❌ Unable to generate mundane astrology analysis for health.';
     }
 
-    const healthResult = `🏥 *Medical Astrology Analysis*\n\n${healthAnalysis.focusArea ? healthAnalysis.focusArea.toUpperCase() + ' ' : ''}Health Analysis:\n${healthAnalysis.disclaimer || ''}\n\n`;
+    const healthResult = `🏥 *Medical Astrology Analysis*\n\n${healthAnalysis.focusArea ? `${healthAnalysis.focusArea.toUpperCase()} ` : ''}Health Analysis:\n${healthAnalysis.disclaimer || ''}\n\n`;
 
     if (healthAnalysis.worldEvents && healthAnalysis.worldEvents.length > 0) {
       healthResult += `🩺 *Health Events:*\n${healthAnalysis.worldEvents.map(event => `• ${event.prediction}`).join('\n')}\n\n`;

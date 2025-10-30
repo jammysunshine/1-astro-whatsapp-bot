@@ -100,7 +100,6 @@ class HinduFestivalsAction extends AstrologyAction {
   }
 
 
-
   /**
    * Get action metadata for registration
    * @returns {Object} Action metadata

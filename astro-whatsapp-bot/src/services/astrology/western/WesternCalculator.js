@@ -2,7 +2,7 @@ const logger = require('../../../utils/logger');
 
 // PLACEHOLDER: Import from modular system when complete
 // const { WesternHouses } = require('./WesternHouses');
-// const { WesternAspects } = require('./WesternAspects'); 
+// const { WesternAspects } = require('./WesternAspects');
 
 let westernServiceInstance = null;
 
@@ -20,40 +20,37 @@ let westernServiceInstance = null;
 // Create placeholder service for backward compatibility
 function createPlaceholderWesternService() {
   return {
-    generateWesternBirthChart: async (user, houseSystem = 'P') => {
-      
-      return {
-        name: user.name,
-        birthDate: user.birthDate,
-        birthTime: user.birthTime,
-        birthPlace: user.birthPlace,
-        houseSystem: 'Placidus',
-        ascendant: { 
-          sign: 'Cancer', 
-          longitude: 112.5, 
-          symbol: '♋' 
-        },
-        planets: {
-          sun: { name: 'Sun', longitude: 85.3, sign: 'Gemini', house: 1 },
-          moon: { name: 'Moon', longitude: 245.7, sign: 'Sagittarius', house: 5 },
-          mercury: { name: 'Mercury', longitude: 78.2, sign: 'Gemini', house: 1 },
-          venus: { name: 'Venus', longitude: 112.8, sign: 'Cancer', house: 2 },
-          mars: { name: 'Mars', longitude: 298.1, sign: 'Capricorn', house: 6 },
-          jupiter: { name: 'Jupiter', longitude: 152.4, sign: 'Leo', house: 3 },
-          saturn: { name: 'Saturn', longitude: 287.9, sign: 'Capricorn', house: 6 }
-        },
-        houses: [
-          112.5, 145.2, 178.9, 202.3, 235.6, 268.9, 
-          292.3, 325.6, 358.9, 25.2, 58.9, 112.5
-        ],
-        aspects: [
-          { planets: 'Sun-Mercury', aspect: 'Conjunction', orb: 7.1 },
-          { planets: 'Moon-Jupiter', aspect: 'Trine', orb: 8.3 }
-        ],
-        disclaimer: '⚠️ *Western Astrology Placeholder:* Professional calculations from Swiss Ephemeris pending. Current version provides structural compatibility while authentic astronomical precision is being implemented.'
-      };
-    },
-    
+    generateWesternBirthChart: async(user, houseSystem = 'P') => ({
+      name: user.name,
+      birthDate: user.birthDate,
+      birthTime: user.birthTime,
+      birthPlace: user.birthPlace,
+      houseSystem: 'Placidus',
+      ascendant: {
+        sign: 'Cancer',
+        longitude: 112.5,
+        symbol: '♋'
+      },
+      planets: {
+        sun: { name: 'Sun', longitude: 85.3, sign: 'Gemini', house: 1 },
+        moon: { name: 'Moon', longitude: 245.7, sign: 'Sagittarius', house: 5 },
+        mercury: { name: 'Mercury', longitude: 78.2, sign: 'Gemini', house: 1 },
+        venus: { name: 'Venus', longitude: 112.8, sign: 'Cancer', house: 2 },
+        mars: { name: 'Mars', longitude: 298.1, sign: 'Capricorn', house: 6 },
+        jupiter: { name: 'Jupiter', longitude: 152.4, sign: 'Leo', house: 3 },
+        saturn: { name: 'Saturn', longitude: 287.9, sign: 'Capricorn', house: 6 }
+      },
+      houses: [
+        112.5, 145.2, 178.9, 202.3, 235.6, 268.9,
+        292.3, 325.6, 358.9, 25.2, 58.9, 112.5
+      ],
+      aspects: [
+        { planets: 'Sun-Mercury', aspect: 'Conjunction', orb: 7.1 },
+        { planets: 'Moon-Jupiter', aspect: 'Trine', orb: 8.3 }
+      ],
+      disclaimer: '⚠️ *Western Astrology Placeholder:* Professional calculations from Swiss Ephemeris pending. Current version provides structural compatibility while authentic astronomical precision is being implemented.'
+    }),
+
     healthCheck: () => ({
       healthy: true,
       placeholder: true,
@@ -67,7 +64,7 @@ function createPlaceholderWesternService() {
 /**
  * DELEGATED FUNCTIONS - Forward all calls to modular system
  */
-const generateWesternBirthChart = async (user, houseSystem = 'P') => {
+const generateWesternBirthChart = async(user, houseSystem = 'P') => {
   const service = await getWesternService();
   return await service.generateWesternBirthChart(user, houseSystem);
 };
@@ -76,7 +73,7 @@ const generateWesternBirthChart = async (user, houseSystem = 'P') => {
 const WesternCalculator = class {
   constructor(astrologer, geocodingService, vedicCore) {
     this.astrologer = astrologer;
-    this.geocodingService = geocodingService;  
+    this.geocodingService = geocodingService;
     this.vedicCore = vedicCore;
   }
 

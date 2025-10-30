@@ -49,7 +49,7 @@ class NadiPredictor {
       ardra: 'Past life involved intense spiritual transformation',
       punarvasu: 'Past life involved healing and spiritual learning'
     };
-    return pastLifeIndicators[nakshatra] || `Past life connected to experiences`;
+    return pastLifeIndicators[nakshatra] || 'Past life connected to experiences';
   }
 
   /**

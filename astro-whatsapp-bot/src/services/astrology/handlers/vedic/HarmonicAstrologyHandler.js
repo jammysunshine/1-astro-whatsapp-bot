@@ -4,7 +4,7 @@
  */
 const logger = require('../../../../utils/logger');
 
-const handleHarmonicAstrology = async (message, user) => {
+const handleHarmonicAstrology = async(message, user) => {
   if (!message.includes('harmonic') && !message.includes('cycle') && !message.includes('rhythm') && !message.includes('pattern')) {
     return null;
   }

@@ -62,7 +62,7 @@ class BirthChartAction extends AstrologyAction {
     try {
       // Try Vedic chart first (more detailed)
       const vedicChart = await this.generateVedicChart();
-      if (vedicChart && !vedicChart.error) return vedicChart;
+      if (vedicChart && !vedicChart.error) { return vedicChart; }
 
       // Fallback to Western chart if Vedic fails
       this.logger.warn('Vedic chart generation failed, using Western fallback');

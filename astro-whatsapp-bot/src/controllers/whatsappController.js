@@ -12,7 +12,7 @@ let coordinatorInstance = null;
  * Get the initialized MessageCoordinator instance
  * @returns {Promise<Object>} Initialized MessageCoordinator
  */
-const getCoordinatorInstance = async () => {
+const getCoordinatorInstance = async() => {
   if (!coordinatorInstance) {
     coordinatorInstance = await getMessageCoordinator();
   }

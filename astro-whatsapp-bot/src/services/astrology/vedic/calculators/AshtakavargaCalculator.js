@@ -10,7 +10,7 @@ class AshtakavargaCalculator {
     try {
       // Validate required services before proceeding
       this._validateServices();
-      
+
       const { birthDate, birthTime, birthPlace } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {

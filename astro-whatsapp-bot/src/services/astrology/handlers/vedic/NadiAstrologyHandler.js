@@ -4,7 +4,7 @@
  */
 const logger = require('../../../../utils/logger');
 
-const handleNadi = async (message, user) => {
+const handleNadi = async(message, user) => {
   if (!message.includes('nadi') && !message.includes('palm leaf') && !message.includes('scripture')) {
     return null;
   }

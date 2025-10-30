@@ -174,31 +174,31 @@ class TemplateManager {
     const warnings = [];
 
     switch (type) {
-      case 'interactive':
-        if (!message.type) {
-          errors.push('Interactive message missing type');
-        }
+    case 'interactive':
+      if (!message.type) {
+        errors.push('Interactive message missing type');
+      }
 
-        if (type === 'button' && (!message.buttons || message.buttons.length > 3)) {
-          errors.push('Button messages must have 1-3 buttons');
-        }
+      if (type === 'button' && (!message.buttons || message.buttons.length > 3)) {
+        errors.push('Button messages must have 1-3 buttons');
+      }
 
-        if (type === 'list' && (!message.sections || message.sections.length === 0)) {
-          errors.push('List messages must have at least one section');
-        }
-        break;
+      if (type === 'list' && (!message.sections || message.sections.length === 0)) {
+        errors.push('List messages must have at least one section');
+      }
+      break;
 
-      case 'template':
-        if (!message.templateName) {
-          errors.push('Template message missing template name');
-        }
-        break;
+    case 'template':
+      if (!message.templateName) {
+        errors.push('Template message missing template name');
+      }
+      break;
 
-      case 'media':
-        if (!message.mediaType || !message.mediaId) {
-          errors.push('Media message missing type or ID');
-        }
-        break;
+    case 'media':
+      if (!message.mediaType || !message.mediaId) {
+        errors.push('Media message missing type or ID');
+      }
+      break;
     }
 
     return { valid: errors.length === 0, errors, warnings };
@@ -216,7 +216,7 @@ class TemplateManager {
     }
 
     // Remove or replace problematic characters
-    let sanitized = text
+    const sanitized = text
       .replace(/\r\n/g, '\n') // Normalize line endings
       .replace(/\r/g, '\n')
       .substring(0, maxLength);

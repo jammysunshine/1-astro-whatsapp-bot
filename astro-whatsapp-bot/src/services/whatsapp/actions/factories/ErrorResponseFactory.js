@@ -13,7 +13,7 @@ class ErrorResponseFactory {
    */
   static createProfileError(serviceName, config = {}) {
     const customMessage = config?.errorMessages?.incomplete;
-    if (customMessage) return customMessage;
+    if (customMessage) { return customMessage; }
 
     return `👤 *Complete Your Profile First*\n\nTo access ${serviceName}, please complete your birth profile with date, time, and place.\n\nUse the Settings menu to update your information.`;
   }
@@ -26,7 +26,7 @@ class ErrorResponseFactory {
    */
   static createSubscriptionError(limitsCheck = {}, config = {}) {
     const customMessage = config?.errorMessages?.limitReached;
-    if (customMessage) return customMessage;
+    if (customMessage) { return customMessage; }
 
     const plan = limitsCheck.plan || 'current';
     const feature = config?.subscriptionFeature || 'this feature';
@@ -77,9 +77,9 @@ class ErrorResponseFactory {
    * @returns {string} Formatted error message
    */
   static createValidationError(validationErrors = []) {
-    const errorText = validationErrors.length > 0
-      ? validationErrors.join('\n• ')
-      : 'Please check your input and try again.';
+    const errorText = validationErrors.length > 0 ?
+      validationErrors.join('\n• ') :
+      'Please check your input and try again.';
 
     return `❌ *Validation Error*\n\n• ${errorText}\n\nPlease correct these issues and try again.`;
   }
@@ -144,7 +144,7 @@ class ErrorResponseFactory {
    * @returns {string} Formatted error message
    */
   static createDatabaseError() {
-    return `💾 *Database Connection Issue*\n\nWe're experiencing temporary database connectivity issues. Your request has been queued and will be processed once the connection is restored.\n\nPlease try again in a few minutes.`;
+    return '💾 *Database Connection Issue*\n\nWe\'re experiencing temporary database connectivity issues. Your request has been queued and will be processed once the connection is restored.\n\nPlease try again in a few minutes.';
   }
 
   /**
@@ -164,7 +164,7 @@ class ErrorResponseFactory {
    * @returns {string} Formatted error message
    */
   static createSessionExpiredError() {
-    return `⏰ *Session Expired*\n\nYour session has expired for security reasons. Please restart your conversation by sending "hello" or using the main menu.`;
+    return '⏰ *Session Expired*\n\nYour session has expired for security reasons. Please restart your conversation by sending "hello" or using the main menu.';
   }
 
   /**

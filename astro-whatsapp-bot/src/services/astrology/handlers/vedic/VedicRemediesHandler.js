@@ -5,7 +5,7 @@
 const logger = require('../../../../utils/logger');
 const VedicRemedies = require('../../vedicRemedies');
 
-const handleVedicRemedies = async (message, user) => {
+const handleVedicRemedies = async(message, user) => {
   if (!message.includes('remedy') && !message.includes('remedies') && !message.includes('gem') && !message.includes('gemstone')) {
     return null;
   }
@@ -26,7 +26,7 @@ const handleVedicRemedies = async (message, user) => {
   }
 };
 
-const extractPlanetFromMessage = (message) => {
+const extractPlanetFromMessage = message => {
   const planets = {
     sun: ['sun', 'surya', 'ravi'],
     moon: ['moon', 'chandra', 'soma'],

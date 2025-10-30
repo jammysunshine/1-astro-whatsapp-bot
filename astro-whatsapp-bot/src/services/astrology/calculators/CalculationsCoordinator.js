@@ -160,7 +160,7 @@ class CalculationsCoordinator {
 
         return {
           interpretation: `Age ${age}: ${currentHarmonics[0]?.themes.join(', ') || 'development and growth'}.`,
-          currentHarmonics: currentHarmonics,
+          currentHarmonics,
           techniques: ['Meditation', 'Journaling', 'Creative expression', 'Nature immersion'],
           nextHarmonic: { name: `Harmonic ${currentHarmonics[0]?.harmonic + 1 || 8}`, ageRange: `${age + 2}-${age + 4}`, themes: ['Integration', 'Mastery'] },
           error: false
@@ -173,8 +173,8 @@ class CalculationsCoordinator {
 
       getHarmonicsForAge(age) {
         return [{
-          name: `Harmonic ${Math.floor(age/4) + 1}`,
-          harmonic: Math.floor(age/4) + 1,
+          name: `Harmonic ${Math.floor(age / 4) + 1}`,
+          harmonic: Math.floor(age / 4) + 1,
           themes: ['Growth', 'Learning', 'Transformation']
         }];
       }

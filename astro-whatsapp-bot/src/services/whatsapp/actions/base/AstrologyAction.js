@@ -141,7 +141,7 @@ class AstrologyAction extends BaseAction {
    * @returns {string} Sanitized name safe for display
    */
   sanitizeName(name) {
-    if (!name) return 'Unknown';
+    if (!name) { return 'Unknown'; }
     // Remove potentially harmful characters
     return name.replace(/[<>'"&]/g, '').substring(0, 50);
   }

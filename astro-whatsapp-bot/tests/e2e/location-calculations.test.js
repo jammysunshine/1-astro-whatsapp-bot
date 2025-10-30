@@ -649,7 +649,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
         { mode: 'Motorcycle', path: [[35.6762, 139.6503], [34.0522, -118.2437]], birthTime: 0.4, estimatedLocation: [34.8643, -138.4438] },
         { mode: 'Bicycle', path: [[55.7558, 37.6173], [48.8566, 2.3522]], birthTime: 0.3, estimatedLocation: [52.3061, 19.9199] },
         { mode: 'Camel/Middle East', path: [[30.0444, 31.2357], [32.0853, 34.7818]], birthTime: 0.5, estimatedLocation: [31.0648, 33.0085] },
-        { mode: 'Rickshaw/Asia', path: [35.6762, 139.6503], [34.6937, 135.5022], birthTime: 0.4, estimatedLocation: [35.1900, 137.5762] }
+        { mode: 'Rickshaw/Asia', path: [[35.6762, 139.6503], [34.6937, 135.5022]], birthTime: 0.4, estimatedLocation: [35.1900, 137.5762] }
       ];
 
       for (const travelBirth of travelBirths) {
@@ -670,24 +670,3 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
     });
   });
 });
-
-</final_file_content>
-
-IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your search and replace operations on this initial content to ensure accuracy.
-
-<environment_details>
-# Cline CLI Visible Files
-(No visible files)
-
-# Cline CLI Open Tabs
-(No visible files)
-
-# Current Time
-10/28/2025, 8:37:47 PM (Asia/Dubai, UTC+4:00)
-
-# Context Window Usage
-236,402 / 256K tokens used (92%)
-
-# Current Mode
-ACT MODE
-</environment_details>

@@ -69,7 +69,7 @@ class PoliticalAstrology {
     if (rulership && rulership.planets) {
       rulership.planets.forEach(planet => {
         if (chart.planetaryPositions[planet]) {
-          const house = chart.planetaryPositions[planet].house;
+          const { house } = chart.planetaryPositions[planet];
           if ([1, 4, 7, 10].includes(house)) {
             // Angular houses - strong leadership position
             stabilityScore += 10;
@@ -130,7 +130,7 @@ class PoliticalAstrology {
    */
   analyzeSaturnFactors(chart, factors) {
     const saturnPosition = chart.planetaryPositions.saturn;
-    if (!saturnPosition) return { scoreAdjustment: 0 };
+    if (!saturnPosition) { return { scoreAdjustment: 0 }; }
 
     let scoreAdjustment = 0;
 
@@ -157,7 +157,7 @@ class PoliticalAstrology {
    */
   analyzeUranusFactors(chart, factors) {
     const uranusPosition = chart.planetaryPositions.uranus;
-    if (!uranusPosition) return { scoreAdjustment: 0 };
+    if (!uranusPosition) { return { scoreAdjustment: 0 }; }
 
     let scoreAdjustment = 0;
 
@@ -200,8 +200,8 @@ class PoliticalAstrology {
    * @returns {Object} Current leadership assessment
    */
   assessCurrentLeadership(chart, rulership) {
-    const sun = chart.planetaryPositions.sun;
-    const moon = chart.planetaryPositions.moon;
+    const { sun } = chart.planetaryPositions;
+    const { moon } = chart.planetaryPositions;
 
     const assessment = {
       sunPosition: sun ? `Sun in ${sun.sign} (house ${sun.house})` : 'Sun position unknown',
@@ -230,8 +230,8 @@ class PoliticalAstrology {
    * @returns {string} Strength rating
    */
   calculateLeaderStrength(chart, rulership) {
-    const sun = chart.planetaryPositions.sun;
-    if (!sun) return 'Unknown';
+    const { sun } = chart.planetaryPositions;
+    if (!sun) { return 'Unknown'; }
 
     const sunHouse = sun.house;
     const isExalted = this.isPlanetExalted('sun', sun.sign);
@@ -276,8 +276,8 @@ class PoliticalAstrology {
     const transitions = [];
 
     // Check for Uranus/Saturn aspects indicating leadership changes
-    const uranus = chart.planetaryPositions.uranus;
-    const saturn = chart.planetaryPositions.saturn;
+    const { uranus } = chart.planetaryPositions;
+    const { saturn } = chart.planetaryPositions;
 
     if (uranus && saturn) {
       const separation = Math.abs(uranus.longitude - saturn.longitude);
@@ -290,7 +290,7 @@ class PoliticalAstrology {
     }
 
     // Check Mars/Saturn aspects indicating conflicts or challenges
-    const mars = chart.planetaryPositions.mars;
+    const { mars } = chart.planetaryPositions;
     if (mars && saturn) {
       const separation = Math.abs(mars.longitude - saturn.longitude);
       if (Math.abs(separation - 120) <= 8) {
@@ -311,10 +311,10 @@ class PoliticalAstrology {
     const influences = [];
 
     // Sun and Saturn positions are primary political tellers
-    const sun = chart.planetaryPositions.sun;
-    const saturn = chart.planetaryPositions.saturn;
-    const mars = chart.planetaryPositions.mars;
-    const jupiter = chart.planetaryPositions.jupiter;
+    const { sun } = chart.planetaryPositions;
+    const { saturn } = chart.planetaryPositions;
+    const { mars } = chart.planetaryPositions;
+    const { jupiter } = chart.planetaryPositions;
 
     if (sun) {
       if (sun.house === 10) {
@@ -420,7 +420,7 @@ class PoliticalAstrology {
     };
 
     // Venus for diplomacy
-    const venus = chart.planetaryPositions.venus;
+    const { venus } = chart.planetaryPositions;
     if (venus) {
       if (venus.house === 7) {
         assessment.relationshipStrength = 'Strong diplomatic capability';
@@ -431,7 +431,7 @@ class PoliticalAstrology {
     }
 
     // Mars for conflicts
-    const mars = chart.planetaryPositions.mars;
+    const { mars } = chart.planetaryPositions;
     if (mars) {
       if (mars.house === 7) {
         assessment.conflicts.push('Potential conflicts with international partners');
@@ -442,7 +442,7 @@ class PoliticalAstrology {
     }
 
     // Jupiter for expansion/international role
-    const jupiter = chart.planetaryPositions.jupiter;
+    const { jupiter } = chart.planetaryPositions;
     if (jupiter) {
       if (jupiter.house === 9) {
         assessment.internationalRole = 'Educational and philosophical leadership';
@@ -592,9 +592,9 @@ class PoliticalAstrology {
    */
   checkSaturnAspects(chart) {
     const aspects = [];
-    const saturn = chart.planetaryPositions.saturn;
+    const { saturn } = chart.planetaryPositions;
 
-    if (!saturn) return aspects;
+    if (!saturn) { return aspects; }
 
     // Saturn in challenging aspects to other planets
     Object.entries(chart.planetaryPositions).forEach(([planet, data]) => {
@@ -622,13 +622,13 @@ class PoliticalAstrology {
    */
   checkUranusAspects(chart) {
     const aspects = [];
-    const uranus = chart.planetaryPositions.uranus;
+    const { uranus } = chart.planetaryPositions;
 
-    if (!uranus) return aspects;
+    if (!uranus) { return aspects; }
 
     // Uranus conjunct or opposing Mars/other disruptive planets
     Object.entries(chart.planetaryPositions).forEach(([planet, data]) => {
-      if (planet === 'mars' || planet === 'uranus') return;
+      if (planet === 'mars' || planet === 'uranus') { return; }
 
       const separation = Math.abs(uranus.longitude - data.longitude);
       if (separation <= 8) {
@@ -671,7 +671,7 @@ class PoliticalAstrology {
     const qualities = [];
 
     // Sun qualities
-    const sun = chart.planetaryPositions.sun;
+    const { sun } = chart.planetaryPositions;
     if (sun) {
       if (sun.sign === 'Leo') {
         qualities.push('Natural leadership aptitude and charismatic authority');
@@ -682,7 +682,7 @@ class PoliticalAstrology {
     }
 
     // Saturn qualities
-    const saturn = chart.planetaryPositions.saturn;
+    const { saturn } = chart.planetaryPositions;
     if (saturn) {
       if ([4, 7, 10].includes(saturn.house)) {
         qualities.push('Structured leadership with institutional knowledge');
@@ -690,7 +690,7 @@ class PoliticalAstrology {
     }
 
     // Jupiter qualities
-    const jupiter = chart.planetaryPositions.jupiter;
+    const { jupiter } = chart.planetaryPositions;
     if (jupiter) {
       if ([9, 11].includes(jupiter.house)) {
         qualities.push('Expansive vision and benevolent leadership style');
@@ -709,13 +709,13 @@ class PoliticalAstrology {
     const challenges = [];
 
     // Moon challenges (emotional stability)
-    const moon = chart.planetaryPositions.moon;
+    const { moon } = chart.planetaryPositions;
     if (moon && [6, 8, 12].includes(moon.house)) {
       challenges.push('Emotional leadership challenges and public unpopularity');
     }
 
     // Mercury challenges (communication issues)
-    const mercury = chart.planetaryPositions.mercury;
+    const { mercury } = chart.planetaryPositions;
     if (mercury && mercury.house === 12) {
       challenges.push('Communication difficulties with hidden opposition');
     }
@@ -744,21 +744,21 @@ class PoliticalAstrology {
     // Analyze planetary positions for successor indicators
 
     // Venus opposition (balanced, diplomatic successor)
-    const venus = chart.planetaryPositions.venus;
+    const { venus } = chart.planetaryPositions;
     if (venus && venus.house === 7) {
       analysis.potentialSuccessors.push('Diplomatic and balanced successor likely');
       analysis.opportunities.push('Smooth political transition possible');
     }
 
     // Mars opposition (confrontational successor)
-    const mars = chart.planetaryPositions.mars;
+    const { mars } = chart.planetaryPositions;
     if (mars && mars.house === 7) {
       analysis.potentialSuccessors.push('Assertive and competitive successor');
       analysis.challenges.push('Potential for contentious transition period');
     }
 
     // Uranus opposition (unexpected/developments successor)
-    const uranus = chart.planetaryPositions.uranus;
+    const { uranus } = chart.planetaryPositions;
     if (uranus && uranus.house === 7) {
       analysis.potentialSuccessors.push('Unexpected or unconventional successor');
       analysis.opportunities.push('Progressive leadership changes');
@@ -786,7 +786,7 @@ class PoliticalAstrology {
 
     // Leadership-specific recommendations
     if (analysis.leadershipAnalysis.leadershipQualities.length > 0) {
-      recommendations.push('Emphasize leadership strengths: ' + analysis.leadershipAnalysis.leadershipQualities[0]);
+      recommendations.push(`Emphasize leadership strengths: ${analysis.leadershipAnalysis.leadershipQualities[0]}`);
     }
 
     // International relations guidance

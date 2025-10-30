@@ -118,45 +118,44 @@ class MessageSender {
       }
 
       switch (messageType) {
-        case 'interactive':
-          if (processedMessage.type === 'button') {
-            const buttons = processedMessage.buttons?.map(btn => ({
-              type: 'reply',
-              reply: { id: btn.id, title: btn.title }
-            }));
-            return await this.sendInteractiveButtons(phoneNumber, processedMessage.body?.text || processedMessage.body, buttons, options);
-          } else if (processedMessage.type === 'list') {
-            // Try sending list message, fallback to numbered menu if it fails
-            try {
-              return await this._sendListWithFallback(phoneNumber, processedMessage, options, language);
-            } catch (error) {
-              this.logger.warn(`⚠️ List message failed for ${phoneNumber}, using fallback menu`);
-              const fallbackMessage = this.menuHandler.createNumberedMenuFallback(processedMessage, phoneNumber);
-              return this.sendTextMessage(phoneNumber, fallbackMessage, options);
-            }
+      case 'interactive':
+        if (processedMessage.type === 'button') {
+          const buttons = processedMessage.buttons?.map(btn => ({
+            type: 'reply',
+            reply: { id: btn.id, title: btn.title }
+          }));
+          return await this.sendInteractiveButtons(phoneNumber, processedMessage.body?.text || processedMessage.body, buttons, options);
+        } else if (processedMessage.type === 'list') {
+          // Try sending list message, fallback to numbered menu if it fails
+          try {
+            return await this._sendListWithFallback(phoneNumber, processedMessage, options, language);
+          } catch (error) {
+            this.logger.warn(`⚠️ List message failed for ${phoneNumber}, using fallback menu`);
+            const fallbackMessage = this.menuHandler.createNumberedMenuFallback(processedMessage, phoneNumber);
+            return this.sendTextMessage(phoneNumber, fallbackMessage, options);
           }
-          break;
+        }
+        break;
 
-        case 'media':
-          if (processedMessage.mediaType && processedMessage.mediaId) {
-            return this.sendMediaMessage(phoneNumber, processedMessage.mediaType, processedMessage.mediaId, processedMessage.caption);
-          }
-          break;
+      case 'media':
+        if (processedMessage.mediaType && processedMessage.mediaId) {
+          return this.sendMediaMessage(phoneNumber, processedMessage.mediaType, processedMessage.mediaId, processedMessage.caption);
+        }
+        break;
 
-        case 'template':
-          if (processedMessage.templateName) {
-            return this.sendTemplateMessage(phoneNumber, processedMessage.templateName, processedMessage.languageCode, processedMessage.components);
-          }
-          break;
+      case 'template':
+        if (processedMessage.templateName) {
+          return this.sendTemplateMessage(phoneNumber, processedMessage.templateName, processedMessage.languageCode, processedMessage.components);
+        }
+        break;
 
-        default:
-          // Default to text message
-          return this.sendTextMessage(phoneNumber, processedMessage, options);
+      default:
+        // Default to text message
+        return this.sendTextMessage(phoneNumber, processedMessage, options);
       }
 
       // Fallback for unhandled types
       return this.sendTextMessage(phoneNumber, processedMessage, options);
-
     } catch (error) {
       this.logger.error(`❌ Error in universal sendMessage for ${phoneNumber}:`, error.message);
       throw error;
@@ -270,11 +269,11 @@ module.exports = {
   sendListMessage: (phoneNumber, body, buttonText, sections, options) => messageSender.sendListMessage(phoneNumber, body, buttonText, sections, options),
   sendTemplateMessage: (phoneNumber, templateName, languageCode, components) => messageSender.sendTemplateMessage(phoneNumber, templateName, languageCode, components),
   sendMediaMessage: (phoneNumber, mediaType, mediaId, caption, options) => messageSender.sendMediaMessage(phoneNumber, mediaType, mediaId, caption, options),
-  markMessageAsRead: (messageId) => messageSender.markMessageAsRead(messageId),
+  markMessageAsRead: messageId => messageSender.markMessageAsRead(messageId),
   sendMessage: (phoneNumber, message, messageType, options, language) => messageSender.sendMessage(phoneNumber, message, messageType, options, language),
   createNumberedMenuFallback: (message, phoneNumber) => messageSender.createNumberedMenuFallback(message, phoneNumber),
   getNumberedMenuAction: (phoneNumber, userInput) => messageSender.getNumberedMenuAction(phoneNumber, userInput),
-  clearNumberedMenuMappings: (phoneNumber) => messageSender.clearNumberedMenuMappings(phoneNumber),
+  clearNumberedMenuMappings: phoneNumber => messageSender.clearNumberedMenuMappings(phoneNumber),
   buildInteractiveButtonMessage: (phoneNumber, message, buttons, language) => messageSender.buildInteractiveButtonMessage(phoneNumber, message, buttons, language)
 };
 

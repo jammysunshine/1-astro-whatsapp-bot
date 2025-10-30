@@ -1,6 +1,6 @@
-const logger = require('../../../../src/utils/logger');
-const translationService = require('../../../../src/services/i18n/TranslationService');
-const paymentService = require('../../../../src/services/payment/paymentService');
+const logger = require('../../utils/logger');
+const translationService = require('../../i18n/TranslationService');
+const paymentService = require('../../payment/paymentService');
 
 /**
  * Base class for all menu actions in the astrology bot.

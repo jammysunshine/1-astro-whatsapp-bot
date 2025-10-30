@@ -1,5 +1,5 @@
 const BaseAction = require('../BaseAction');
-const { getTranslatedMenu } = require('../../../conversation/menuLoader');
+const { getTranslatedMenu } = require('../../../../conversation/menuLoader');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 
 /**
@@ -47,7 +47,6 @@ class GenericSubmenuAction extends BaseAction {
         type: 'submenu_display',
         menu: this.constructor.actionId
       };
-
     } catch (error) {
       this.logger.error(`Error in ${this.constructor.actionId}:`, error);
       await this.handleExecutionError(error);

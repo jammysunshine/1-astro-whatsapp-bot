@@ -21,7 +21,7 @@ class MessageCoordinator {
    * Initialize the coordinator with registry and processors
    */
   async initialize() {
-    if (this.initialized) return this;
+    if (this.initialized) { return this; }
 
     try {
       // Import and initialize registry asynchronously

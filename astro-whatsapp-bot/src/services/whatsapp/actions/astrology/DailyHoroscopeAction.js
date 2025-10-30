@@ -109,12 +109,12 @@ class DailyHoroscopeAction extends AstrologyAction {
     let enhanced = text;
 
     const emojiMap = {
-      'lucky': '🍀', 'fortunate': '🍀', 'blessed': '🍀',
-      'challenges': '⚠️', 'difficulties': '⚠️',
-      'love': '💕', 'romance': '💕', 'relationship': '💕',
-      'career': '💼', 'work': '💼', 'job': '💼',
-      'money': '💰', 'wealth': '💰', 'finance': '💰',
-      'health': '🏥', 'wellness': '🏥'
+      lucky: '🍀', fortunate: '🍀', blessed: '🍀',
+      challenges: '⚠️', difficulties: '⚠️',
+      love: '💕', romance: '💕', relationship: '💕',
+      career: '💼', work: '💼', job: '💼',
+      money: '💰', wealth: '💰', finance: '💰',
+      health: '🏥', wellness: '🏥'
     };
 
     Object.entries(emojiMap).forEach(([keyword, emoji]) => {

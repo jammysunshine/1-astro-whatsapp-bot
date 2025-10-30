@@ -32,8 +32,6 @@ jest.mock('winston', () => {
   };
 });
 
-const logger = require('../../../src/utils/logger');
-
 describe('Logger', () => {
   beforeEach(() => {
     // Clear all mocks

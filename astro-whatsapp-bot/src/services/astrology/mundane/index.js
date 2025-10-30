@@ -42,30 +42,30 @@ class MundaneService {
 
       // Perform specific analyses based on focus area
       switch (focusArea.toLowerCase()) {
-        case 'political':
-        case 'politics':
-        case 'government':
-          analysis.politicalAnalysis = await this.performPoliticalAnalysis(chartData);
-          break;
+      case 'political':
+      case 'politics':
+      case 'government':
+        analysis.politicalAnalysis = await this.performPoliticalAnalysis(chartData);
+        break;
 
-        case 'economic':
-        case 'economy':
-        case 'markets':
-          analysis.economicAnalysis = await this.performEconomicAnalysis(chartData);
-          break;
+      case 'economic':
+      case 'economy':
+      case 'markets':
+        analysis.economicAnalysis = await this.performEconomicAnalysis(chartData);
+        break;
 
-        case 'natural':
-        case 'weather':
-        case 'disasters':
-          analysis.naturalEvents = await this.performNaturalEventsAnalysis(chartData);
-          break;
+      case 'natural':
+      case 'weather':
+      case 'disasters':
+        analysis.naturalEvents = await this.performNaturalEventsAnalysis(chartData);
+        break;
 
-        default:
-          // General analysis - include all areas
-          analysis.politicalAnalysis = await this.performPoliticalAnalysis(chartData);
-          analysis.economicAnalysis = await this.performEconomicAnalysis(chartData);
-          analysis.naturalEvents = await this.performNaturalEventsAnalysis(chartData);
-          break;
+      default:
+        // General analysis - include all areas
+        analysis.politicalAnalysis = await this.performPoliticalAnalysis(chartData);
+        analysis.economicAnalysis = await this.performEconomicAnalysis(chartData);
+        analysis.naturalEvents = await this.performNaturalEventsAnalysis(chartData);
+        break;
       }
 
       // Generate recommendations based on analysis
@@ -108,7 +108,7 @@ class MundaneService {
   async performPoliticalAnalysis(chartData) {
     // Analyze key world powers
     const keyCountries = ['United States', 'Russia', 'China', 'United Kingdom', 'Germany',
-                         'France', 'India', 'Japan', 'Brazil', 'Australia'];
+      'France', 'India', 'Japan', 'Brazil', 'Australia'];
     const politicalResults = {};
 
     for (const country of keyCountries) {
@@ -259,9 +259,9 @@ class MundaneService {
    */
   identifyDominantThemes(chartData) {
     const themes = [];
-    const sun = chartData.planetaryPositions.sun;
-    const saturn = chartData.planetaryPositions.saturn;
-    const uranus = chartData.planetaryPositions.uranus;
+    const { sun } = chartData.planetaryPositions;
+    const { saturn } = chartData.planetaryPositions;
+    const { uranus } = chartData.planetaryPositions;
 
     if (sun) {
       themes.push('Leadership and authority patterns');
@@ -287,19 +287,19 @@ class MundaneService {
    * @returns {string} Global mood assessment
    */
   assessGlobalMood(chartData) {
-    const moon = chartData.planetaryPositions.moon;
+    const { moon } = chartData.planetaryPositions;
 
-    if (!moon) return 'Unknown collective mood';
+    if (!moon) { return 'Unknown collective mood'; }
 
     // Moon in different houses affects global emotional state
     switch (moon.house) {
-      case 1: return 'Bold and initiative-driven global mood';
-      case 4: return 'Protective and homeland-focused consciousness';
-      case 7: return 'Relationship and partnership-oriented awareness';
-      case 10: return 'Authority and leadership-conscious collective energy';
-      case 11: return 'Community and humanitarian focused global mood';
-      case 12: return 'Spiritual and introspective international consciousness';
-      default: return 'Mixed emotional currents in global consciousness';
+    case 1: return 'Bold and initiative-driven global mood';
+    case 4: return 'Protective and homeland-focused consciousness';
+    case 7: return 'Relationship and partnership-oriented awareness';
+    case 10: return 'Authority and leadership-conscious collective energy';
+    case 11: return 'Community and humanitarian focused global mood';
+    case 12: return 'Spiritual and introspective international consciousness';
+    default: return 'Mixed emotional currents in global consciousness';
     }
   }
 
@@ -399,9 +399,9 @@ class MundaneService {
     const total = stable + unstable;
     const stabilityPercentage = (stable / total) * 100;
 
-    if (stabilityPercentage >= 70) return 'High';
-    if (stabilityPercentage >= 50) return 'Moderate';
-    if (stabilityPercentage >= 30) return 'Low-Moderate';
+    if (stabilityPercentage >= 70) { return 'High'; }
+    if (stabilityPercentage >= 50) { return 'Moderate'; }
+    if (stabilityPercentage >= 30) { return 'Low-Moderate'; }
     return 'Low';
   }
 
@@ -475,13 +475,13 @@ class MundaneService {
     const potentials = [];
 
     // Mars in 8th house suggests transformation/catastrophe
-    const mars = chartData.planetaryPositions.mars;
+    const { mars } = chartData.planetaryPositions;
     if (mars && mars.house === 8) {
       potentials.push('Transformative events and crisis situations indicated');
     }
 
     // Neptune in challenging aspects
-    const neptune = chartData.planetaryPositions.neptune;
+    const { neptune } = chartData.planetaryPositions;
     if (neptune && [6, 8, 12].includes(neptune.house)) {
       potentials.push('Uncertain situations and boundary dissolution');
     }
@@ -501,8 +501,8 @@ class MundaneService {
     const indicators = [];
 
     // Mars and Uranus in challenging aspects may indicate seismic activity
-    const mars = chartData.planetaryPositions.mars;
-    const uranus = chartData.planetaryPositions.uranus;
+    const { mars } = chartData.planetaryPositions;
+    const { uranus } = chartData.planetaryPositions;
 
     if (mars && uranus) {
       const separation = Math.abs(mars.longitude - uranus.longitude);
@@ -561,29 +561,29 @@ class MundaneService {
   }
 
   checkMarsSaturnAspects(chartData) {
-    const mars = chartData.planetaryPositions.mars;
-    const saturn = chartData.planetaryPositions.saturn;
+    const { mars } = chartData.planetaryPositions;
+    const { saturn } = chartData.planetaryPositions;
 
-    if (!mars || !saturn) return 0;
+    if (!mars || !saturn) { return 0; }
 
     const separation = Math.abs(mars.longitude - saturn.longitude);
     const aspects = [60, 90, 120, 150, 180]; // List of major aspects
 
     for (const aspect of aspects) {
-      if (Math.abs(separation - aspect) <= 8) return 1;
+      if (Math.abs(separation - aspect) <= 8) { return 1; }
     }
 
     return 0;
   }
 
   checkVenusJupiterTransits(chartData) {
-    const venus = chartData.planetaryPositions.venus;
-    const jupiter = chartData.planetaryPositions.jupiter;
+    const { venus } = chartData.planetaryPositions;
+    const { jupiter } = chartData.planetaryPositions;
 
-    if (!venus || !jupiter) return 0;
+    if (!venus || !jupiter) { return 0; }
 
     const separation = Math.abs(venus.longitude - jupiter.longitude);
-    if (separation <= 15) return 1; // Conjunct or close aspects
+    if (separation <= 15) { return 1; } // Conjunct or close aspects
 
     return 0;
   }

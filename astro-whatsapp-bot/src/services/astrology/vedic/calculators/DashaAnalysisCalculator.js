@@ -52,7 +52,7 @@ class DashaAnalysisCalculator {
       );
 
       // Analyze current Mahadasha
-      const currentMahadasha = currentPeriods.currentMahadasha;
+      const { currentMahadasha } = currentPeriods;
       const mahadashaAnalysis = this._analyzeMahadasha(currentMahadasha.planet);
 
       return {
@@ -164,7 +164,7 @@ class DashaAnalysisCalculator {
     let remainingYears = elapsedYears;
     let currentMahadasha = null;
     let nextMahadasha = null;
-    let dashaIndex = 0;
+    const dashaIndex = 0;
 
     // Find the starting Dasha planet in the sequence
     const startIndex = this.dashaOrder.indexOf(startingDasha);
@@ -326,7 +326,7 @@ class DashaAnalysisCalculator {
       summary += `• ${item}\n`;
     });
 
-    summary += '\n*Key Areas:* ' + analysis.areas.join(', ');
+    summary += `\n*Key Areas:* ${analysis.areas.join(', ')}`;
 
     return summary;
   }

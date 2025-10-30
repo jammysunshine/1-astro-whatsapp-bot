@@ -76,7 +76,7 @@ class VedicCalculator {
     if (!this.geocodingService) {
       throw new Error('Geocoding service is required for Vedic calculations');
     }
-    
+
     // Add other service validations as needed
   }
 

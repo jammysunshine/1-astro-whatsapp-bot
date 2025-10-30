@@ -1,4 +1,4 @@
-const translationService = require('../../../../src/services/i18n/TranslationService');
+const translationService = require('../../i18n/TranslationService');
 
 /**
  * Centralized utilities for building consistent WhatsApp responses.

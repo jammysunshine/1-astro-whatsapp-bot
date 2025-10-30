@@ -1,7 +1,7 @@
 const BaseMessageProcessor = require('./BaseMessageProcessor');
-const logger = require('../../../../src/utils/logger');
+const logger = require('../../../utils/logger');
 const { ValidationService } = require('../utils/ValidationService');
-const translationService = require('../../../../src/services/i18n/TranslationService');
+const translationService = require('../../../services/i18n/TranslationService');
 
 /**
  * Specialized processor for handling media messages in the astrology bot.

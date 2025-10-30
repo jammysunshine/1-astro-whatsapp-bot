@@ -97,7 +97,7 @@ class AstrologyFormatterFactory {
       return 'Compatibility analysis unavailable.';
     }
 
-    let response = `*💕 Relationship Compatibility Analysis*\n\n`;
+    let response = '*💕 Relationship Compatibility Analysis*\n\n';
 
     if (compatibilityData.partner1 && compatibilityData.partner2) {
       response += `👫 ${compatibilityData.partner1.name} & ${compatibilityData.partner2.name}\n\n`;
@@ -109,7 +109,7 @@ class AstrologyFormatterFactory {
     }
 
     if (compatibilityData.strengths && Array.isArray(compatibilityData.strengths)) {
-      response += `*💪 Strengths:*\n`;
+      response += '*💪 Strengths:*\n';
       compatibilityData.strengths.slice(0, 3).forEach(strength => {
         response += `• ${strength}\n`;
       });
@@ -117,7 +117,7 @@ class AstrologyFormatterFactory {
     }
 
     if (compatibilityData.challenges && Array.isArray(compatibilityData.challenges)) {
-      response += `*⚠️ Areas for Growth:*\n`;
+      response += '*⚠️ Areas for Growth:*\n';
       compatibilityData.challenges.slice(0, 3).forEach(challenge => {
         response += `• ${challenge}\n`;
       });
@@ -184,14 +184,14 @@ class AstrologyFormatterFactory {
       return 'Transit analysis unavailable.';
     }
 
-    let response = `*🌌 Current Planetary Transits*\n\n`;
+    let response = '*🌌 Current Planetary Transits*\n\n';
 
     if (transitData.currentDate) {
       response += `📅 Analysis for: ${transitData.currentDate}\n\n`;
     }
 
     if (transitData.majorTransits && Array.isArray(transitData.majorTransits)) {
-      response += `*Key Transits This Week:*\n`;
+      response += '*Key Transits This Week:*\n';
       transitData.majorTransits.slice(0, 5).forEach(transit => {
         response += `• ${transit.planet} in ${transit.sign}: ${transit.aspect}\n`;
       });
@@ -219,7 +219,7 @@ class AstrologyFormatterFactory {
       return 'Dasha analysis unavailable.';
     }
 
-    let response = `*⏳ Vimshottari Dasha Analysis*\n\n`;
+    let response = '*⏳ Vimshottari Dasha Analysis*\n\n';
 
     if (dashaData.currentDasha) {
       const current = dashaData.currentDasha;
@@ -251,7 +251,7 @@ class AstrologyFormatterFactory {
    * @returns {string} Sanitized name
    */
   static sanitizeName(name) {
-    if (!name) return 'Unknown';
+    if (!name) { return 'Unknown'; }
     return name.replace(/[<>'"&]/g, '').substring(0, 50);
   }
 
@@ -266,11 +266,11 @@ class AstrologyFormatterFactory {
     if (chartData.birthDetails) {
       const { date, time, place } = chartData.birthDetails;
       info += `📅 ${date || 'Unknown'}`;
-      if (time) info += ` ${time}`;
-      if (place) info += `\n📍 ${place}`;
+      if (time) { info += ` ${time}`; }
+      if (place) { info += `\n📍 ${place}`; }
     }
 
-    return info + '\n';
+    return `${info}\n`;
   }
 
   /**
@@ -300,7 +300,7 @@ class AstrologyFormatterFactory {
       }
     });
 
-    return response + '\n';
+    return `${response}\n`;
   }
 
   /**
@@ -320,7 +320,7 @@ class AstrologyFormatterFactory {
       }
     });
 
-    return response + '\n';
+    return `${response}\n`;
   }
 
   /**
@@ -332,9 +332,9 @@ class AstrologyFormatterFactory {
     let response = '💫 *Chart Insights:*\n';
 
     if (chartData.kundliSummary) {
-      const summary = chartData.kundliSummary.length > 300
-        ? `${chartData.kundliSummary.substring(0, 300)}...`
-        : chartData.kundliSummary;
+      const summary = chartData.kundliSummary.length > 300 ?
+        `${chartData.kundliSummary.substring(0, 300)}...` :
+        chartData.kundliSummary;
       response += `${summary}\n\n`;
     }
 
@@ -376,12 +376,12 @@ class AstrologyFormatterFactory {
     let enhanced = text;
 
     const emojiMap = {
-      'lucky': '🍀', 'fortunate': '🍀', 'blessed': '🍀',
-      'challenges': '⚠️', 'difficulties': '⚠️',
-      'love': '💕', 'romance': '💕', 'relationship': '💕',
-      'career': '💼', 'work': '💼', 'job': '💼',
-      'money': '💰', 'wealth': '💰', 'finance': '💰',
-      'health': '🏥', 'wellness': '🏥'
+      lucky: '🍀', fortunate: '🍀', blessed: '🍀',
+      challenges: '⚠️', difficulties: '⚠️',
+      love: '💕', romance: '💕', relationship: '💕',
+      career: '💼', work: '💼', job: '💼',
+      money: '💰', wealth: '💰', finance: '💰',
+      health: '🏥', wellness: '🏥'
     };
 
     Object.entries(emojiMap).forEach(([keyword, emoji]) => {

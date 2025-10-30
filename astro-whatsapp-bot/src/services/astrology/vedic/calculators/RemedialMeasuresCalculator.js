@@ -357,7 +357,7 @@ class RemedialMeasuresCalculator {
       const gemInfo = this.gemstoneRemedies[planet];
       if (gemInfo) {
         recommendations.push({
-          planet: planet,
+          planet,
           gemstone: gemInfo.primary,
           importance: 'High',
           purpose: `Strengthens ${planet} and mitigates its weaknesses`
@@ -392,7 +392,7 @@ class RemedialMeasuresCalculator {
       const mantraInfo = this.mantraRemedies[planet];
       if (mantraInfo) {
         recommendations.push({
-          planet: planet,
+          planet,
           mantra: mantraInfo.beej,
           count: mantraInfo.count,
           benefits: mantraInfo.benefits,
@@ -418,7 +418,7 @@ class RemedialMeasuresCalculator {
       const yantraInfo = this.yantraRemedies[planet];
       if (yantraInfo) {
         recommendations.push({
-          planet: planet,
+          planet,
           yantra: yantraInfo,
           importance: 'High',
           installation: 'In puja room facing East'
@@ -443,7 +443,7 @@ class RemedialMeasuresCalculator {
       const pujaInfo = this.pujaRemedies[planet];
       if (pujaInfo) {
         recommendations.push({
-          planet: planet,
+          planet,
           puja: pujaInfo,
           priest: 'Consult qualified priest',
           frequency: 'Monthly or as needed'

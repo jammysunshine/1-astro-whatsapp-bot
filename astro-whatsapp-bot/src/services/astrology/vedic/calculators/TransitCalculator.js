@@ -311,10 +311,10 @@ class TransitCalculator {
 
     // Check each transit planet against each natal planet
     Object.entries(transitChart.locations).forEach(([transitPlanet, transitData]) => {
-      if (!transitData.longitude) return;
+      if (!transitData.longitude) { return; }
 
       Object.entries(natalChart.planets).forEach(([natalPlanet, natalData]) => {
-        if (!natalData.longitude) return;
+        if (!natalData.longitude) { return; }
 
         // Calculate angular separation
         const angle = Math.abs(transitData.longitude - natalData.longitude);
@@ -385,10 +385,10 @@ class TransitCalculator {
 
     // Aspect importance
     const aspectStrength = {
-      'Conjunction': 3,
-      'Opposition': 2,
-      'Square': 2,
-      'Trine': 1
+      Conjunction: 3,
+      Opposition: 2,
+      Square: 2,
+      Trine: 1
     };
     strength += aspectStrength[aspect] || 0;
 

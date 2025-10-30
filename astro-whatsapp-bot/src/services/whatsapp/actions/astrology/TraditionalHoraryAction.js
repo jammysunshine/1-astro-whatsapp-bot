@@ -42,7 +42,7 @@ class TraditionalHoraryAction extends AstrologyAction {
       return {
         success: true,
         type: 'traditional_horary',
-        question: question.length > 100 ? question.substring(0, 100) + '...' : question,
+        question: question.length > 100 ? `${question.substring(0, 100)}...` : question,
         chartCast: true
       };
     } catch (error) {
@@ -152,7 +152,6 @@ class TraditionalHoraryAction extends AstrologyAction {
 
     return `${response}\n*Cast at moment of question using traditional horary astrology.*`;
   }
-
 
 
   static getMetadata() {

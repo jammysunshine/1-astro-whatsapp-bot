@@ -154,7 +154,7 @@ class MenuHandler {
 
     for (const [phoneNumber, mappings] of numberedMenuMappings.entries()) {
       activeMenus[phoneNumber] = {
-        mappings: mappings,
+        mappings,
         count: Object.keys(mappings).length
       };
     }
@@ -194,7 +194,7 @@ class MenuHandler {
    * @returns {string} Sanitized title
    */
   _sanitizeTitle(title) {
-    if (!title) return 'Option';
+    if (!title) { return 'Option'; }
 
     // Remove emoji for cleaner text (keep numbers/symbols)
     return title.replace(/([^\w\s\d\-])/g, '').trim() || title;
@@ -208,7 +208,7 @@ class MenuHandler {
    * @returns {boolean} True if words match
    */
   _matchWords(input, key) {
-    if (!input || !key) return false;
+    if (!input || !key) { return false; }
 
     // Split into words and check if input words are contained in key
     const inputWords = input.toLowerCase().split(/\s+/).filter(w => w.length > 0);

@@ -285,7 +285,7 @@ class HoraryCalculator {
       return 'Unknown position';
     }
 
-    const house = chart.planetaryPositions[judge].house;
+    const { house } = chart.planetaryPositions[judge];
 
     // Angular houses (1, 4, 7, 10)
     if ([1, 4, 7, 10].includes(house)) {

@@ -204,7 +204,6 @@ const ValidationMixin = {
           }
         }
       }
-
     } catch (error) {
       this.logger.error('Error in input validation:', error);
       errors.push('Input validation encountered an error');
@@ -268,12 +267,11 @@ const ValidationMixin = {
       );
 
       // Collect all errors
-      if (!results.profile.isValid) results.overall.errors.push('Profile incomplete');
-      if (!results.subscription.isAllowed) results.overall.errors.push(results.subscription.message || 'Subscription limit reached');
-      if (!results.cooldown.canProceed) results.overall.errors.push(results.cooldown.message || 'Cooldown active');
-      if (!results.dailyLimits.canProceed) results.overall.errors.push(results.dailyLimits.message || 'Daily limit reached');
-      if (!results.input.isValid) results.overall.errors.push(results.input.errorMessage || 'Input validation failed');
-
+      if (!results.profile.isValid) { results.overall.errors.push('Profile incomplete'); }
+      if (!results.subscription.isAllowed) { results.overall.errors.push(results.subscription.message || 'Subscription limit reached'); }
+      if (!results.cooldown.canProceed) { results.overall.errors.push(results.cooldown.message || 'Cooldown active'); }
+      if (!results.dailyLimits.canProceed) { results.overall.errors.push(results.dailyLimits.message || 'Daily limit reached'); }
+      if (!results.input.isValid) { results.overall.errors.push(results.input.errorMessage || 'Input validation failed'); }
     } catch (error) {
       this.logger.error('Error in comprehensive validation:', error);
       results.overall.canProceed = false;
@@ -354,7 +352,7 @@ const ValidationMixin = {
   async generateSubscriptionError(displayName) {
     const config = this.getActionConfig();
     return config?.errorMessages?.limitReached ||
-      `⭐ *Premium Astrology Available*\n\nYou've reached your limit for astrology insights.\n\nUpgrade to Premium for unlimited personalized readings!`;
+      '⭐ *Premium Astrology Available*\n\nYou\'ve reached your limit for astrology insights.\n\nUpgrade to Premium for unlimited personalized readings!';
   },
 
   // Placeholder methods for future implementation

@@ -1,12 +1,12 @@
 const BaseMessageProcessor = require('./BaseMessageProcessor');
-const logger = require('../../../../src/utils/logger');
+const logger = require('../../../utils/logger');
 const KeywordMapper = require('../KeywordMapper');
 const { ValidationService } = require('../utils/ValidationService');
-const generateAstrologyResponse = require('../../../../src/services/astrology/astrologyEngine');
-const translationService = require('../../../../src/services/i18n/TranslationService');
-const paymentService = require('../../../../src/services/payment/paymentService');
-const { getFlow } = require('../../../../src/conversation/flowLoader');
-const { processFlowMessage } = require('../../../../src/conversation/conversationEngine');
+const generateAstrologyResponse = require('../../../services/astrology/astrologyEngine');
+const translationService = require('../../../services/i18n/TranslationService');
+const paymentService = require('../../../services/payment/paymentService');
+const { getFlow } = require('../../../conversation/flowLoader');
+const { processFlowMessage } = require('../../../conversation/conversationEngine');
 
 /**
  * Specialized processor for handling text messages in the astrology bot.
@@ -413,10 +413,10 @@ class TextMessageProcessor extends BaseMessageProcessor {
       // Check if menuLoader exists in different possible locations
       let menuLoader;
       try {
-        menuLoader = require('../../../../src/conversation/menuLoader');
+        menuLoader = require('../../../conversation/menuLoader');
       } catch (e) {
         try {
-          menuLoader = require('../../../../conversation/menuLoader');
+          menuLoader = require('../../../conversation/menuLoader');
         } catch (e2) {
           this.logger.error('Menu loader not found:', e2.message);
           return null;
@@ -437,7 +437,7 @@ class TextMessageProcessor extends BaseMessageProcessor {
    */
   async getUserSession(phoneNumber) {
     try {
-      const { getUserSession } = require('../../../../src/models/userModel');
+      const { getUserSession } = require('../../../models/userModel');
       return await getUserSession(phoneNumber);
     } catch (error) {
       this.logger.error('Error getting user session:', error);

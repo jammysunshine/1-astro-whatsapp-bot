@@ -7,7 +7,7 @@ const logger = require('../../../../utils/logger');
 const sweph = require('sweph');
 
 // Utility function to get zodiac sign from longitude
-const longitudeToSign = (longitude) => {
+const longitudeToSign = longitude => {
   const signs = [
     'Aries', 'Taurus', 'Gemini', 'Cancer',
     'Leo', 'Virgo', 'Libra', 'Scorpio',
@@ -39,7 +39,7 @@ class AgeHarmonicAstrologyReader {
 
       return {
         interpretation: `Age ${age}: ${currentHarmonics[0]?.themes.join(', ') || 'development and growth'}.`,
-        currentHarmonics: currentHarmonics,
+        currentHarmonics,
         techniques: ['Meditation', 'Journaling', 'Creative expression', 'Nature immersion'],
         nextHarmonic: { name: `Harmonic ${currentHarmonics[0]?.harmonic + 1 || 8}`, ageRange: `${age + 2}-${age + 4}`, themes: ['Integration', 'Mastery'] },
         error: false
@@ -82,7 +82,7 @@ class AgeHarmonicAstrologyReader {
  * @param {Object} user - User object with birth data
  * @returns {Object} Jaimini Karaka analysis
  */
-const calculateJaiminiKarakaAnalysis = async (user) => {
+const calculateJaiminiKarakaAnalysis = async user => {
   try {
     if (!user.birthDate) {
       return { error: 'Birth date required for Jaimini Karaka analysis' };
@@ -117,7 +117,7 @@ const calculateJaiminiKarakaAnalysis = async (user) => {
  * @param {Object} user - User object with birth data
  * @returns {Object} Financial astrology analysis
  */
-const calculateFinancialAstrologyAnalysis = async (user) => {
+const calculateFinancialAstrologyAnalysis = async user => {
   try {
     if (!user.birthDate) {
       return { error: 'Birth date required for Financial Astrology analysis' };
@@ -148,7 +148,7 @@ const calculateFinancialAstrologyAnalysis = async (user) => {
  * @param {Object} user - User object with birth data
  * @returns {Object} Medical astrology analysis
  */
-const calculateMedicalAstrologyAnalysis = async (user) => {
+const calculateMedicalAstrologyAnalysis = async user => {
   try {
     if (!user.birthDate) {
       return { error: 'Birth date required for Medical Astrology analysis' };
@@ -179,7 +179,7 @@ const calculateMedicalAstrologyAnalysis = async (user) => {
  * @param {Object} user - User object with birth data
  * @returns {Object} Career astrology analysis
  */
-const calculateCareerAstrologyAnalysis = async (user) => {
+const calculateCareerAstrologyAnalysis = async user => {
   try {
     if (!user.birthDate) {
       return { error: 'Birth date required for Career Astrology analysis' };
@@ -210,7 +210,7 @@ const calculateCareerAstrologyAnalysis = async (user) => {
  * @param {Object} user - User object with birth data
  * @returns {Object} Ashtakavarga analysis
  */
-const calculateAshtakavarga = async (user) => {
+const calculateAshtakavarga = async user => {
   try {
     if (!user.birthDate) {
       return { error: 'Birth date required for Ashtakavarga analysis' };
@@ -247,7 +247,7 @@ const calculateAshtakavarga = async (user) => {
  * @param {Object} user - User object with birth data
  * @returns {Object} Fixed Stars analysis
  */
-const calculateFixedStarsAnalysis = async (user) => {
+const calculateFixedStarsAnalysis = async user => {
   try {
     if (!user.birthDate) {
       return { error: 'Birth date required for Fixed Stars analysis' };
@@ -280,9 +280,9 @@ const calculateFixedStarsAnalysis = async (user) => {
  * @param {number} moonLongitude - Moon longitude
  * @returns {Array} Jaimini Karakas
  */
-const calculateJaiminiKarakas = (planets, moonLongitude) => {
+const calculateJaiminiKarakas = (planets, moonLongitude) =>
   // Mock implementation
-  return [
+  [
     { karaka: 'Atmakaraka', planet: 'Jupiter', description: 'Soul purpose and spiritual development' },
     { karaka: 'Amatyakaraka', planet: 'Mercury', description: 'Career and professional success' },
     { karaka: 'Bhratrukaraka', planet: 'Saturn', description: 'Siblings and extended family' },
@@ -291,17 +291,17 @@ const calculateJaiminiKarakas = (planets, moonLongitude) => {
     { karaka: 'Gnatikaraka', planet: 'Mars', description: 'Close friends and acquaintances' },
     { karaka: 'Darakaraka', planet: 'Venus', description: 'Spouse and romantic partnerships' },
     { karaka: 'Ayarogyakaraka', planet: 'Moon', description: 'Health and wellbeing' }
-  ];
-};
+  ]
+;
 
 /**
  * Calculate Sphuta Positions
  * @param {Object} planets - Planetary positions
  * @returns {Object} Sphuta positions
  */
-const calculateSphutaPositions = (planets) => {
+const calculateSphutaPositions = planets =>
   // Mock implementation
-  return {
+  ({
     sunSphuta: 'Leo 15°',
     moonSphuta: 'Cancer 22°',
     marsSphuta: 'Aries 8°',
@@ -309,31 +309,31 @@ const calculateSphutaPositions = (planets) => {
     jupiterSphuta: 'Sagittarius 25°',
     venusSphuta: 'Libra 12°',
     saturnSphuta: 'Capricorn 4°'
-  };
-};
+  })
+;
 
 /**
  * Generate Jaimini Insights
  * @param {Array} karakas - Jaimini Karakas
  * @returns {Array} Insights
  */
-const generateJaiminiInsights = (karakas) => {
+const generateJaiminiInsights = karakas =>
   // Mock implementation
-  return [
+  [
     { insight: 'Atmakaraka in angular house indicates strong spiritual calling' },
     { insight: 'Amatyakaraka in trine shows career expansion potential' },
     { insight: 'Darakaraka in dusthana suggests relationship challenges' }
-  ];
-};
+  ]
+;
 
 /**
  * Get Karaka from Distance
  * @param {number} distance - Angular distance
  * @returns {string} Karaka name
  */
-const getKarakaFromDistance = (distance) => {
-  const karakas = ['Atmakaraka', 'Amatyakaraka', 'Bhratrukaraka', 'Matrukaraka', 
-                  'Putrakaraka', 'Gnatikaraka', 'Darakaraka', 'Ayarogyakaraka'];
+const getKarakaFromDistance = distance => {
+  const karakas = ['Atmakaraka', 'Amatyakaraka', 'Bhratrukaraka', 'Matrukaraka',
+    'Putrakaraka', 'Gnatikaraka', 'Darakaraka', 'Ayarogyakaraka'];
   const index = Math.floor(distance / 45); // 360° / 8 karakas = 45° each
   return karakas[index % 8];
 };
@@ -343,7 +343,7 @@ const getKarakaFromDistance = (distance) => {
  * @param {string} karaka - Karaka name
  * @returns {string} Description
  */
-const getKarakaDescription = (karaka) => {
+const getKarakaDescription = karaka => {
   const descriptions = {
     Atmakaraka: 'Soul purpose and spiritual development',
     Amatyakaraka: 'Career and professional success',
@@ -362,7 +362,7 @@ const getKarakaDescription = (karaka) => {
  * @param {string} planet - Planet name
  * @returns {string} Qualities
  */
-const getPlanetQualities = (planet) => {
+const getPlanetQualities = planet => {
   const qualities = {
     Sun: 'Leadership, authority, vitality',
     Moon: 'Emotions, intuition, nurturing',
@@ -380,7 +380,7 @@ const getPlanetQualities = (planet) => {
  * @param {string} planet - Planet name
  * @returns {string} Career qualities
  */
-const getCareerQualities = (planet) => {
+const getCareerQualities = planet => {
   const qualities = {
     Sun: 'Leadership roles, government, executive positions',
     Moon: 'Emotional intelligence, counseling, healthcare',
@@ -399,13 +399,13 @@ const getCareerQualities = (planet) => {
  * @param {Object} cusps - House cusps
  * @returns {Array} Wealth analysis
  */
-const analyzeWealthPlanets = (planets, cusps) => {
+const analyzeWealthPlanets = (planets, cusps) =>
   // Mock implementation
-  return [
+  [
     { planet: 'Jupiter', house: 2, influence: 'Natural wealth indicator in 2nd house' },
     { planet: 'Venus', house: 11, influence: 'Income from relationships and luxury' }
-  ];
-};
+  ]
+;
 
 /**
  * Analyze Financial Timing
@@ -414,13 +414,13 @@ const analyzeWealthPlanets = (planets, cusps) => {
  * @param {Object} cusps - House cusps
  * @returns {Array} Timing analysis
  */
-const analyzeFinancialTiming = (currentAge, planets, cusps) => {
+const analyzeFinancialTiming = (currentAge, planets, cusps) =>
   // Mock implementation
-  return [
+  [
     { period: 'Jupiter Return', description: 'Major wealth expansion opportunity', timing: 'Every 12 years' },
     { period: 'Saturn Return', description: 'Financial maturity and stability', timing: 'Around age 29-30' }
-  ];
-};
+  ]
+;
 
 // Export all calculation functions
 module.exports = {
@@ -431,7 +431,7 @@ module.exports = {
   calculateAshtakavarga,
   calculateFixedStarsAnalysis,
   AgeHarmonicAstrologyReader,
-  
+
   // Internal helper functions
   calculateJaiminiKarakas,
   calculateSphutaPositions,
@@ -442,7 +442,7 @@ module.exports = {
   getCareerQualities,
   analyzeWealthPlanets,
   analyzeFinancialTiming,
-  
+
   // Utility functions
   longitudeToSign,
   longitudeToHouse

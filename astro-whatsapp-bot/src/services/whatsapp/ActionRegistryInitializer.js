@@ -6,7 +6,7 @@ const DailyHoroscopeAction = require('./actions/astrology/DailyHoroscopeAction')
 const BirthChartAction = require('./actions/astrology/BirthChartAction');
 
 // Menu Actions
-const ShowMainMenuAction = require('./actions/menu/ShowMainMenuAction');
+const ShowMainMenuAction = require('./actions/settings/ShowMainMenuAction');
 const WesternAstrologyMenuAction = require('./actions/menu/WesternAstrologyMenuAction');
 const VedicAstrologyMenuAction = require('./actions/menu/VedicAstrologyMenuAction');
 const DivinationMysticMenuAction = require('./actions/menu/DivinationMysticMenuAction');

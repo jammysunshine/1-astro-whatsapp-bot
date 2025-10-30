@@ -1,8 +1,10 @@
 const BaseAction = require('../BaseAction');
+const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const vedicCalculator = require('../../../services/astrology/vedic/VedicCalculator');
 
 /**
  * KaalSarpAnalysisAction - Provides Kaal Sarp Dosh analysis in Vedic astrology.
- * Reuses the existing implementation from the legacy messageProcessor.
+ * Analyzes planetary positions between Rahu and Ketu for potential dosha effects.
  */
 class KaalSarpAnalysisAction extends BaseAction {
   /**
@@ -20,16 +22,31 @@ class KaalSarpAnalysisAction extends BaseAction {
     try {
       this.logExecution('start', 'Generating kaal sarp dosh analysis');
 
-      // Get the actual kaal sarp analysis implementation
-      // This should be implemented within this action rather than calling legacy function
-      // For now, returning a placeholder to indicate this needs proper implementation
-      const { sendMessage } = require('../../../messageSender');
-      await sendMessage(this.phoneNumber, 'Kaal Sarp analysis is being prepared...', 'text');
-      
-      return { 
-        success: true, 
-        type: 'kaal_sarp_analysis', 
-        message: 'Kaal Sarp analysis prepared' 
+      // Unified validation using base class
+      const validation = await this.validateProfileAndLimits('Kaal Sarp Analysis', 'kaal_sarp_analysis');
+      if (!validation.success) {
+        return validation;
+      }
+
+      // Generate kaal sarp analysis data
+      const analysisData = await this.generateKaalSarpAnalysis();
+      if (!analysisData) {
+        throw new Error('Failed to generate kaal sarp analysis data');
+      }
+
+      // Format and send response using centralized methods
+      const formattedContent = AstrologyFormatterFactory.formatKaalSarpAnalysis(analysisData);
+      await this.buildAstrologyResponse(formattedContent, this.getKaalSarpActionButtons());
+
+      this.logExecution('complete', 'Kaal sarp analysis sent successfully');
+      return {
+        success: true,
+        type: 'kaal_sarp_analysis',
+        analysis: {
+          hasDosha: analysisData.hasDosha,
+          severity: analysisData.severity,
+          planetsInvolved: analysisData.planetsInvolved.length
+        }
       };
     } catch (error) {
       this.logger.error('Error in KaalSarpAnalysisAction:', error);
@@ -39,12 +56,81 @@ class KaalSarpAnalysisAction extends BaseAction {
   }
 
   /**
+   * Generate kaal sarp dosh analysis data
+   * @returns {Promise<Object>} Kaal sarp analysis data
+   */
+  async generateKaalSarpAnalysis() {
+    try {
+      // Validate that user has birth data
+      if (!this.user) {
+        throw new Error('User data not available for kaal sarp analysis');
+      }
+      
+      if (!this.user.birthDate || !this.user.birthTime || !this.user.birthPlace) {
+        throw new Error('User must complete birth profile with date, time, and place for kaal sarp analysis');
+      }
+
+      // Calculate kaal sarp dosha using Vedic calculator
+      const kaalSarpResult = await vedicCalculator.analyzeKaalSarpDosha(
+        this.user.birthDate,
+        this.user.birthTime,
+        this.user.birthPlace
+      );
+
+      return kaalSarpResult;
+    } catch (error) {
+      this.logger.error('Kaal sarp analysis calculation error:', error);
+      // Return basic fallback analysis
+      return this.generateFallbackKaalSarpAnalysis();
+    }
+  }
+
+  /**
+   * Generate basic fallback kaal sarp analysis
+   * @returns {Object} Basic kaal sarp analysis data
+   */
+  generateFallbackKaalSarpAnalysis() {
+    return {
+      hasDosha: false,
+      severity: 'unknown',
+      planetsInvolved: [],
+      description: 'Unable to determine Kaal Sarp Dosha status at this time.',
+      recommendations: ['Complete your birth profile for accurate analysis'],
+      isFallback: true
+    };
+  }
+
+  /**
+   * Get action buttons for kaal sarp analysis response
+   * @returns {Array} Button configuration array
+   */
+  getKaalSarpActionButtons() {
+    return [
+      {
+        id: 'get_vedic_remedies',
+        titleKey: 'buttons.vedic_remedies',
+        title: '🕉️ Vedic Remedies'
+      },
+      {
+        id: 'show_vedic_astrology_menu',
+        titleKey: 'buttons.vedic_menu',
+        title: '📚 Vedic Astrology'
+      },
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
+  }
+
+  /**
    * Handle execution errors
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const { sendMessage } = require('../../messageSender');
-    await sendMessage(this.phoneNumber, 'I encountered an error generating your Kaal Sarp Dosh analysis. Please try again.', 'text');
+    const message = 'I encountered an error generating your Kaal Sarp Dosh analysis. Please try again.';
+    await this.sendMessage(message, 'text');
   }
 
   /**

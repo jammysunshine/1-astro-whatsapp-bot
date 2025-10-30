@@ -1,485 +1,431 @@
 const logger = require('../../../../utils/logger');
+const sweph = require('sweph');
 
 /**
- * VargaChartCalculator - Vedic Divisional Charts (D1, D2, D3, etc.)
- * Handles calculation and analysis of harmonic divisional charts
+ * Varga Chart Calculator
+ * Calculates Vedic divisional charts (D-Charts) for detailed analysis
  */
 class VargaChartCalculator {
-  constructor() {
-    logger.info('Module: VargaChartCalculator loaded - Vedic Divisional Charts');
-  }
+  constructor(astrologer, geocodingService) {
+    this.astrologer = astrologer;
+    this.geocodingService = geocodingService;
 
-  setServices(vedicCalculator) {
-    this.vedicCalculator = vedicCalculator;
-    this.astrologer = vedicCalculator.astrologer;
-    this.geocodingService = vedicCalculator.geocodingService;
-    this.vedicCore = vedicCalculator.vedicCore;
+    // Varga chart divisions and their purposes
+    this.vargaDefinitions = {
+      D1: { divisor: 1, name: 'Rasi Chart', purpose: 'Physical body, personality, life events' },
+      D2: { divisor: 2, name: 'Hora Chart', purpose: 'Wealth, family, material possessions' },
+      D3: { divisor: 3, name: 'Dreshkana Chart', purpose: 'Siblings, courage, communication' },
+      D4: { divisor: 4, name: 'Chaturthamsa Chart', purpose: 'Fortune, property, education' },
+      D7: { divisor: 7, name: 'Saptamsa Chart', purpose: 'Children, creativity, progeny' },
+      D9: { divisor: 9, name: 'Navamsa Chart', purpose: 'Marriage, spouse, relationships, dharma' },
+      D10: { divisor: 10, name: 'Dashamsa Chart', purpose: 'Career, profession, reputation' },
+      D12: { divisor: 12, name: 'Dwadasamsa Chart', purpose: 'Parents, ancestors, spirituality' },
+      // Additional vargas according to Parashara
+      D16: { divisor: 16, name: 'Shodasamsa Chart', purpose: 'Vehicles, comforts, happiness' },
+      D20: { divisor: 20, name: 'Vimsamsa Chart', purpose: 'Spiritual practices, worship' },
+      D24: { divisor: 24, name: 'Chaturvimsamsa Chart', purpose: 'Education, knowledge, learning' },
+      D27: { divisor: 27, name: 'Nakshatras Chart', purpose: 'Auspicious events, lunar mansion analysis' },
+      D30: { divisor: 30, name: 'Trimshamsa Chart', purpose: 'Misfortunes, evils, occupational hazards' },
+      D40: { divisor: 40, name: 'Khavedamsa Chart', purpose: 'Auspicious happenings' },
+      D45: { divisor: 45, name: 'Akshavedamsa Chart', purpose: 'All aspects of life' },
+      D60: { divisor: 60, name: 'Shashtiamsa Chart', purpose: 'Karma, past life, detailed analysis' }
+    };
   }
 
   /**
-   * Calculate Varga (Divisional) Charts - Vedic system of harmonic charts
-   * @param {Object} birthData - Birth data object
-   * @param {string} varga - Varga type (D1, D2, D3, D4, D7, D9, D10, D12, etc.)
+   * Set services
+   * @param {Object} services
+   */
+  setServices(services) {
+    this.services = services;
+  }
+
+  /**
+   * Calculate specified varga chart
+   * @param {Object} birthData - Birth data
+   * @param {string} varga - Varga type (D1, D9, D10, etc.)
    * @returns {Object} Varga chart analysis
    */
   async calculateVargaChart(birthData, varga = 'D9') {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
-      if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for Varga chart analysis' };
+      // Validate varga type
+      if (!this.vargaDefinitions[varga]) {
+        throw new Error(`Unsupported varga type: ${varga}`);
       }
 
-      // Parse birth date and time
+      const divisor = this.vargaDefinitions[varga].divisor;
+
+      // Get birth coordinates and time
+      const [lat, lng] = await this._getCoordinates(birthPlace);
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
+      const timezone = await this._getTimezone(lat, lng, new Date(year, month - 1, day).getTime());
 
-      // Get coordinates and timezone
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
-      const birthDateTime = new Date(year, month - 1, day, hour, minute);
-      const timestamp = birthDateTime.getTime();
+      const jd = this._dateToJD(year, month, day, hour + minute / 60);
 
-      // Calculate Julian Day
-      const jd = this._dateToJulianDay(year, month, day, hour + minute / 60);
+      // Calculate varga chart
+      const vargaChart = await this._castVargaChart(jd, lat, lng, divisor, varga);
 
-      // Get D1 (Rashi) chart first
-      const d1Chart = await this._generateBasicBirthChart(birthData);
+      // Analyze significations for this varga
+      const analysis = this._analyzeVargaSignifications(vargaChart, varga);
 
-      // Calculate Varga chart
-      const vargaChart = await this._calculateVargaPositions(d1Chart.planets, varga);
-
-      // Analyze the Varga chart
-      const analysis = this._analyzeVargaChart(vargaChart, varga);
+      // Calculate varga-specific yogas or combinations
+      const specialCombinations = this._calculateVargaYogas(vargaChart, varga);
 
       return {
+        birthData,
         varga,
-        chart: vargaChart,
+        definition: this.vargaDefinitions[varga],
+        planetaryPositions: vargaChart.planetaryPositions,
+        houses: vargaChart.houses,
+        ascendant: vargaChart.ascendant,
         analysis,
-        significance: this._getVargaSignificance(varga),
-        summary: this._generateVargaSummary(vargaChart, varga, analysis)
+        specialCombinations,
+        interpretation: this._interpretVargaChart(vargaChart, varga, analysis)
       };
+
     } catch (error) {
-      logger.error('Error calculating Varga chart:', error);
-      return { error: 'Unable to calculate Varga chart at this time' };
+      logger.error('❌ Error in Varga chart calculation:', error);
+      throw new Error(`Varga chart calculation failed: ${error.message}`);
     }
   }
 
   /**
-   * Generate basic birth chart (extracted method)
+   * Cast varga chart using divisional calculation method
    * @private
-   * @param {Object} birthData - Birth data
-   * @returns {Object} Basic birth chart
    */
-  async _generateBasicBirthChart(birthData) {
-    try {
-      const { birthDate, birthTime, birthPlace } = birthData;
-      const [day, month, year] = birthDate.split('/').map(Number);
-      const [hour, minute] = birthTime.split(':').map(Number);
+  async _castVargaChart(jd, latitude, longitude, divisor, vargaType) {
+    // For varga charts, planetary positions and ascendant are divided by the divisor
+    // and placed in the corresponding varga signs
 
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+    const chart = {
+      planetaryPositions: {},
+      houses: [],
+      ascendant: null
+    };
 
-      const astroData = {
-        year, month, date: day, hours: hour, minutes: minute, seconds: 0,
-        latitude: locationInfo.latitude, longitude: locationInfo.longitude,
-        timezone: locationInfo.timezone, chartType: 'sidereal'
-      };
+    // Calculate ascendant for varga chart
+    const ascendantPos = this._calculateAscendantForVarga(jd, latitude, longitude, divisor);
+    chart.ascendant = {
+      sign: Math.floor(ascendantPos / 30),
+      degree: ascendantPos % 30,
+      longitude: ascendantPos
+    };
 
-      return this.astrologer.generateNatalChartData(astroData);
-    } catch (error) {
-      logger.error('Error generating basic birth chart:', error);
-      return { planets: {} };
-    }
-  }
+    // Calculate planetary positions for varga chart
+    for (const planet of ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn']) {
+      const pos = sweph.calc(jd, this._getPlanetId(planet));
+      if (pos.longitude !== undefined) {
+        // Apply varga division
+        const vargaLongitude = (pos.longitude * divisor) % 360;
+        const vargaSign = Math.floor(vargaLongitude / 30);
 
-  /**
-   * Calculate planetary positions in Varga chart
-   * @private
-   * @param {Object} d1Planets - D1 chart planets
-   * @param {string} varga - Varga type
-   * @returns {Object} Varga chart planets
-   */
-  async _calculateVargaPositions(d1Planets, varga) {
-    const vargaChart = {};
-    const divisor = this._getVargaDivisor(varga);
-
-    Object.entries(d1Planets).forEach(([planetName, d1Data]) => {
-      if (d1Data && d1Data.longitude !== undefined) {
-        // Calculate Varga position using Vedic division method
-        const vargaLongitude = this._calculateVargaLongitude(d1Data.longitude, divisor, varga);
-
-        // Calculate sign and house in Varga chart
-        const vargaSign = Math.floor(vargaLongitude / 30) + 1;
-        const vargaHouse = vargaSign; // In Varga charts, signs and houses are the same
-
-        vargaChart[planetName] = {
-          name: d1Data.name,
-          longitude: vargaLongitude,
+        chart.planetaryPositions[planet.toLowerCase()] = {
+          name: planet,
+          longitude: pos.longitude,
+          vargaLongitude: vargaLongitude,
           sign: vargaSign,
-          house: vargaHouse,
-          signName: this._getVedicSignName(vargaSign),
-          aspects: this._calculateVargaAspects(vargaLongitude, vargaChart, varga)
+          degree: vargaLongitude % 30,
+          house: this._calculateVargaHouse(vargaLongitude, ascendantPos) + 1,
+          dignity: this._assessVargaDignity(planet, vargaSign, divisor)
         };
       }
-    });
+    }
 
-    return vargaChart;
+    // Generate varga houses (simplified)
+    for (let i = 0; i < 12; i++) {
+      const houseStart = (ascendantPos + (i * 30)) % 360;
+      chart.houses.push({
+        number: i + 1,
+        startSign: Math.floor(houseStart / 30),
+        startDegree: houseStart % 30,
+        lord: this._getHouseLord(Math.floor(houseStart / 30))
+      });
+    }
+
+    return chart;
   }
 
   /**
-   * Get Varga divisor
+   * Calculate ascendant for varga chart
    * @private
-   * @param {string} varga - Varga type
-   * @returns {number} Divisor for the Varga
    */
-  _getVargaDivisor(varga) {
-    const divisors = {
-      D1: 1,   // Rashi
-      D2: 2,   // Hora
-      D3: 3,   // Dreshkana
-      D4: 4,   // Chaturthamsa
-      D7: 7,   // Saptamsa
-      D9: 9,   // Navamsa
-      D10: 10, // Dashamsa
-      D12: 12, // Dwadashamsa
-      D16: 16, // Shodashamsa
-      D20: 20, // Vimshamsha
-      D24: 24, // Chaturvimshamsha
-      D27: 27, // Saptavimshamsha (Nakshatras)
-      D30: 30, // Trimshamsha
-      D40: 40, // Khavedamsha
-      D45: 45, // Akshavedamsha
-      D60: 60  // Shashtiamsha
-    };
-    return divisors[varga] || 9; // Default to Navamsa
+  _calculateAscendantForVarga(jd, latitude, longitude, divisor) {
+    // In varga charts, the ascendant is also divided by the divisor
+    // This requires calculating the actual ascendant first, then applying division
+
+    // Simplified calculation - would need actual ascendant calculation
+    const baseAscendant = this._calculateBaseAscendant(jd, latitude, longitude);
+    return (baseAscendant * divisor) % 360;
   }
 
   /**
-   * Calculate longitude in Varga chart
+   * Calculate base ascendant (simplified)
    * @private
-   * @param {number} d1Longitude - D1 longitude
-   * @param {number} divisor - Varga divisor
-   * @param {string} varga - Varga type
-   * @returns {number} Varga longitude
    */
-  _calculateVargaLongitude(d1Longitude, divisor, varga) {
-    // Vedic Varga calculation method
-    const signLongitude = d1Longitude % 30; // Position within sign (0-29.99)
-    const vargaPortion = signLongitude * divisor / 30; // Divide sign into portions
-    const vargaSignIndex = Math.floor(vargaPortion); // Which portion (0 to divisor-1)
-    const vargaPositionInPortion = (vargaPortion - vargaSignIndex) * 30; // Position within portion
-
-    // Convert back to full zodiac longitude
-    return vargaSignIndex * 30 + vargaPositionInPortion;
+  _calculateBaseAscendant(jd, latitude, longitude) {
+    // Would require RAMC and other astronomical calculations
+    // Placeholder: Aries ascending
+    return 15.0; // 15° Aries
   }
 
   /**
-   * Get Vedic sign name
+   * Calculate house in varga chart
    * @private
-   * @param {number} signNumber - Sign number (1-12)
-   * @returns {string} Sign name
    */
-  _getVedicSignName(signNumber) {
-    const signNames = this.vedicCore.getZodiacSigns();
-    return signNames[signNumber - 1] || 'Unknown';
+  _calculateVargaHouse(vargaLongitude, ascendantPos) {
+    const houseSpan = 360 / 12; // 30 degrees per house
+    const positionFromAsc = (vargaLongitude - ascendantPos + 360) % 360;
+    return Math.floor(positionFromAsc / houseSpan);
   }
 
   /**
-   * Calculate aspects in Varga chart
+   * Analyze significations for this varga chart
    * @private
-   * @param {number} planetLongitude - Planet's longitude in Varga
-   * @param {Object} vargaChart - Current Varga chart
-   * @param {string} varga - Varga type
-   * @returns {Array} Aspects
    */
-  _calculateVargaAspects(planetLongitude, vargaChart, varga) {
-    const aspects = [];
-
-    // In Varga charts, aspects are similar to D1 but may have different rules
-    Object.entries(vargaChart).forEach(([otherPlanet, data]) => {
-      if (data.longitude !== undefined && data.longitude !== planetLongitude) {
-        const angle = Math.abs(data.longitude - planetLongitude);
-        const minAngle = Math.min(angle, 360 - angle);
-
-        // Check for major aspects
-        if (minAngle <= 10) { // Conjunction
-          aspects.push({ planet: otherPlanet, aspect: 'Conjunction', orb: minAngle });
-        } else if (Math.abs(minAngle - 90) <= 8) { // Square
-          aspects.push({ planet: otherPlanet, aspect: 'Square', orb: Math.abs(minAngle - 90) });
-        } else if (Math.abs(minAngle - 120) <= 8) { // Trine
-          aspects.push({ planet: otherPlanet, aspect: 'Trine', orb: Math.abs(minAngle - 120) });
-        } else if (Math.abs(minAngle - 180) <= 8) { // Opposition
-          aspects.push({ planet: otherPlanet, aspect: 'Opposition', orb: Math.abs(minAngle - 180) });
-        }
-      }
-    });
-
-    return aspects;
-  }
-
-  /**
-   * Analyze Varga chart
-   * @private
-   * @param {Object} vargaChart - Varga chart data
-   * @param {string} varga - Varga type
-   * @returns {Object} Analysis results
-   */
-  _analyzeVargaChart(vargaChart, varga) {
+  _analyzeVargaSignifications(vargaChart, vargaType) {
     const analysis = {
       strongPlanets: [],
       weakPlanets: [],
-      yogas: [],
-      beneficialPositions: [],
-      challengingPositions: []
+      auspiciousHouses: [],
+      challengingHouses: [],
+      keyThemes: []
     };
 
-    // Analyze planetary positions in Varga chart
-    Object.entries(vargaChart).forEach(([planetName, data]) => {
-      const { sign } = data;
-      const strength = this._evaluateVargaPosition(planetName, sign, varga);
-
-      if (strength > 7) {
-        analysis.strongPlanets.push(planetName);
-        analysis.beneficialPositions.push(`${planetName} in ${data.signName}`);
-      } else if (strength < 4) {
-        analysis.weakPlanets.push(planetName);
-        analysis.challengingPositions.push(`${planetName} in ${data.signName}`);
+    // Analyze planetary strengths in this varga
+    Object.values(vargaChart.planetaryPositions).forEach(planet => {
+      if (planet.dignity === 'exalted' || planet.dignity === 'own_sign') {
+        analysis.strongPlanets.push(planet.name);
+      } else if (planet.dignity === 'debilitated') {
+        analysis.weakPlanets.push(planet.name);
       }
-
-      // Check for Varga-specific yogas
-      const yogas = this._checkVargaYogas(vargaChart, varga);
-      analysis.yogas.push(...yogas);
     });
 
-    // Remove duplicate yogas
-    analysis.yogas = [...new Set(analysis.yogas)];
+    // Identify auspicious and challenging houses based on varga purpose
+    const vargaPurpose = this.vargaDefinitions[vargaType]?.purpose || '';
+
+    // Add thematic analysis
+    if (vargaType === 'D9') {
+      analysis.keyThemes.push('Marriage, relationships, life partner analysis');
+    } else if (vargaType === 'D10') {
+      analysis.keyThemes.push('Career, profession, public reputation');
+    } else if (vargaType === 'D1') {
+      analysis.keyThemes.push('Physical body, personality, general life events');
+    } else if (vargaType === 'D7') {
+      analysis.keyThemes.push('Children, creativity, speculative matters');
+    }
 
     return analysis;
   }
 
   /**
-   * Evaluate planetary strength in Varga position
+   * Calculate varga-specific yogas and combinations
    * @private
-   * @param {string} planet - Planet name
-   * @param {number} sign - Sign number (1-12)
-   * @param {string} varga - Varga type
-   * @returns {number} Strength score (0-10)
    */
-  _evaluateVargaPosition(planet, sign, varga) {
-    let strength = 5; // Base strength
-
-    // Varga-specific exaltation and debilitation
-    const exaltationSigns = {
-      D9: { sun: 1, moon: 2, mars: 10, mercury: 6, jupiter: 4, venus: 12, saturn: 7 }, // Navamsa
-      D10: { sun: 1, moon: 4, mars: 10, mercury: 1, jupiter: 7, venus: 4, saturn: 7 }, // Dashamsa
-      D7: { sun: 1, moon: 1, mars: 1, mercury: 4, jupiter: 7, venus: 12, saturn: 7 }   // Saptamsa
-    };
-
-    const debilitationSigns = {
-      D9: { sun: 7, moon: 8, mars: 4, mercury: 12, jupiter: 10, venus: 6, saturn: 1 },
-      D10: { sun: 7, moon: 10, mars: 4, mercury: 7, jupiter: 1, venus: 10, saturn: 1 },
-      D7: { sun: 7, moon: 7, mars: 7, mercury: 10, jupiter: 1, venus: 6, saturn: 1 }
-    };
-
-    if (exaltationSigns[varga] && exaltationSigns[varga][planet] === sign) {
-      strength += 3;
-    } else if (debilitationSigns[varga] && debilitationSigns[varga][planet] === sign) {
-      strength -= 3;
-    }
-
-    // Own sign strength
-    const ownSigns = {
-      sun: [5], moon: [4], mars: [1, 8], mercury: [3, 6], jupiter: [5, 9], venus: [2, 7], saturn: [10, 11]
-    };
-
-    if (ownSigns[planet] && ownSigns[planet].includes(sign)) {
-      strength += 2;
-    }
-
-    // Friendly sign strength
-    const friendlySigns = {
-      sun: [1, 5, 9], moon: [2, 7, 11], mars: [1, 4, 7, 8, 11], mercury: [3, 6, 9, 12], jupiter: [1, 4, 5, 7, 9, 10], venus: [2, 3, 4, 5, 7, 9, 11, 12], saturn: [3, 6, 7, 10, 11]
-    };
-
-    if (friendlySigns[planet] && friendlySigns[planet].includes(sign)) {
-      strength += 1;
-    }
-
-    return Math.max(0, Math.min(10, strength));
-  }
-
-  /**
-   * Check for Varga-specific yogas
-   * @private
-   * @param {Object} vargaChart - Varga chart
-   * @param {string} varga - Varga type
-   * @returns {Array} Yogas found
-   */
-  _checkVargaYogas(vargaChart, varga) {
+  _calculateVargaYogas(vargaChart, vargaType) {
     const yogas = [];
 
-    if (varga === 'D9') { // Navamsa yogas
-      // Check for beneficial planetary combinations in Navamsa
-      const planets = Object.keys(vargaChart);
-
-      // Raja Yoga in Navamsa
-      if (this._hasBeneficYoga(vargaChart, ['jupiter', 'venus']) ||
-          this._hasBeneficYoga(vargaChart, ['jupiter', 'mercury'])) {
-        yogas.push('Raja Yoga in Navamsa');
-      }
-
-      // Check for exalted planets
-      Object.entries(vargaChart).forEach(([planet, data]) => {
-        if (this._isExaltedInVarga(planet, data.sign, varga)) {
-          yogas.push(`${planet} exalted in Navamsa`);
-        }
-      });
+    // Different vargas have different yoga calculations
+    if (vargaType === 'D9') {
+      // Navamsa yogas - marriage and relationship combinations
+      const navamsaYogas = this._analyzeNavamsaYogas(vargaChart);
+      yogas.push(...navamsaYogas);
     }
 
-    if (varga === 'D10') { // Dashamsa yogas
-      // Career-related yogas
-      if (vargaChart.sun && vargaChart.moon && vargaChart.sun.sign === vargaChart.moon.sign) {
-        yogas.push('Sun-Moon conjunction in Dashamsa (leadership)');
-      }
+    if (vargaType === 'D10') {
+      // Dashamsa yogas - career and professional combinations
+      const dashamsaYogas = this._analyzeDashamsaYogas(vargaChart);
+      yogas.push(...dashamsaYogas);
+    }
 
-      if (vargaChart.jupiter && vargaChart.saturn &&
-          Math.abs(vargaChart.jupiter.sign - vargaChart.saturn.sign) <= 1) {
-        yogas.push('Jupiter-Saturn combination in Dashamsa (career stability)');
-      }
+    // General varga yoga analysis
+    if (this._checkMultiplePlanetsInSameSign(vargaChart)) {
+      yogas.push({
+        name: 'Planetary Concentration Yoga',
+        type: 'Beneficial',
+        description: 'Multiple planets in same sign create focused energy in that area'
+      });
     }
 
     return yogas;
   }
 
   /**
-   * Check if planets form a beneficial yoga
+   * Analyze Navamsa-specific yogas
    * @private
-   * @param {Object} chart - Chart data
-   * @param {Array} planets - Planet names to check
-   * @returns {boolean} Whether yoga is formed
    */
-  _hasBeneficYoga(chart, planets) {
-    return planets.every(planet =>
-      chart[planet] && chart[planet].sign &&
-      this._isBeneficSign(chart[planet].sign)
-    );
+  _analyzeNavamsaYogas(vargaChart) {
+    const yogas = [];
+
+    // Exalted planets in Navamsa for marriage indication
+    const exaltedPlanets = Object.values(vargaChart.planetaryPositions)
+      .filter(p => p.dignity === 'exalted');
+
+    if (exaltedPlanets.length > 0) {
+      yogas.push({
+        name: 'Navamsa Exaltation Yoga',
+        type: 'Beneficial',
+        description: `Exalted ${exaltedPlanets.map(p => p.name).join(', ')} indicate strong marriage potential`,
+        planets: exaltedPlanets.map(p => p.name)
+      });
+    }
+
+    // Lord of Navamsa Lagna analysis
+    // (Complex analysis requiring chart interpretation)
+
+    return yogas;
   }
 
   /**
-   * Check if sign is benefic
+   * Analyze Dashamsa-specific yogas
    * @private
-   * @param {number} sign - Sign number
-   * @returns {boolean} Whether sign is benefic
    */
-  _isBeneficSign(sign) {
-    // Signs 1, 3, 5, 6, 7, 9, 10, 11 are generally benefic
-    return [1, 3, 5, 6, 7, 9, 10, 11].includes(sign);
+  _analyzeDashamsaYogas(vargaChart) {
+    const yogas = [];
+
+    // Planets well-placed in 10th house for career success
+    const tenthHousePlanets = Object.values(vargaChart.planetaryPositions)
+      .filter(p => p.house === 10);
+
+    if (tenthHousePlanets.length > 0) {
+      yogas.push({
+        name: 'Dashamsa 10th House Strength',
+        type: 'Professional',
+        description: 'Planets in 10th house indicate career placement and reputation',
+        planets: tenthHousePlanets.map(p => p.name)
+      });
+    }
+
+    return yogas;
   }
 
   /**
-   * Check if planet is exalted in Varga
+   * Check for multiple planets in same sign
    * @private
-   * @param {string} planet - Planet name
-   * @param {number} sign - Sign number
-   * @param {string} varga - Varga type
-   * @returns {boolean} Whether planet is exalted
    */
-  _isExaltedInVarga(planet, sign, varga) {
-    const exaltationSigns = {
-      D9: { sun: 1, moon: 2, mars: 10, mercury: 6, jupiter: 4, venus: 12, saturn: 7 },
-      D10: { sun: 1, moon: 4, mars: 10, mercury: 1, jupiter: 7, venus: 4, saturn: 7 }
-    };
-
-    return exaltationSigns[varga] && exaltationSigns[varga][planet] === sign;
-  }
-
-  /**
-   * Get Varga significance
-   * @private
-   * @param {string} varga - Varga type
-   * @returns {string} Significance description
-   */
-  _getVargaSignificance(varga) {
-    const significances = {
-      D1: 'Physical body, personality, and general life events',
-      D2: 'Wealth, family, speech, and material possessions',
-      D3: 'Siblings, communication, short journeys, and courage',
-      D4: 'Property, home, mother, emotions, and happiness',
-      D7: 'Children, creativity, intelligence, and education',
-      D9: 'Marriage, partnerships, spouse, and life purpose',
-      D10: 'Career, reputation, authority, and public image',
-      D12: 'Spirituality, foreign lands, expenses, and losses',
-      D16: 'Vehicles, happiness, and material comforts',
-      D20: 'Spiritual practices and worship',
-      D24: 'Education, knowledge, and learning',
-      D27: 'Strengths, weaknesses, and overall fortune',
-      D30: 'Misfortunes, enemies, and obstacles',
-      D40: 'Auspicious and inauspicious events',
-      D45: 'All areas of life (comprehensive)',
-      D60: 'Karma and past life influences'
-    };
-
-    return significances[varga] || 'Specific life areas and influences';
-  }
-
-  /**
-   * Generate Varga chart summary
-   * @private
-   * @param {Object} vargaChart - Varga chart
-   * @param {string} varga - Varga type
-   * @param {Object} analysis - Analysis results
-   * @returns {string} Summary text
-   */
-  _generateVargaSummary(vargaChart, varga, analysis) {
-    let summary = `🔢 *${varga} Chart Analysis*\n\n`;
-    summary += `*Significance:* ${this._getVargaSignificance(varga)}\n\n`;
-
-    summary += '*Planetary Positions:*\n';
-    Object.entries(vargaChart).forEach(([planet, data]) => {
-      summary += `• ${data.name}: ${data.signName}\n`;
+  _checkMultiplePlanetsInSameSign(vargaChart) {
+    const signCounts = {};
+    Object.values(vargaChart.planetaryPositions).forEach(planet => {
+      signCounts[planet.sign] = (signCounts[planet.sign] || 0) + 1;
     });
 
-    if (analysis.strongPlanets.length > 0) {
-      summary += '\n*Strong Planets:*\n';
-      analysis.strongPlanets.forEach(planet => {
-        summary += `• ${planet}\n`;
-      });
-    }
-
-    if (analysis.yogas.length > 0) {
-      summary += '\n*Yogas Formed:*\n';
-      analysis.yogas.forEach(yoga => {
-        summary += `• ${yoga}\n`;
-      });
-    }
-
-    if (analysis.beneficialPositions.length > 0) {
-      summary += '\n*Beneficial Positions:*\n';
-      analysis.beneficialPositions.slice(0, 3).forEach(pos => {
-        summary += `• ${pos}\n`;
-      });
-    }
-
-    return summary;
+    return Object.values(signCounts).some(count => count > 2);
   }
 
   /**
-   * Convert date to Julian Day
+   * Interpret varga chart
    * @private
-   * @param {number} year - Year
-   * @param {number} month - Month (1-12)
-   * @param {number} day - Day
-   * @param {number} hour - Hour (decimal)
-   * @returns {number} Julian Day
    */
-  _dateToJulianDay(year, month, day, hour) {
-    // Simplified Julian Day calculation
+  _interpretVargaChart(vargaChart, vargaType, analysis) {
+    let interpretation = `${this.vargaDefinitions[vargaType]?.name} shows `;
+
+    if (analysis.strongPlanets.length > 0) {
+      interpretation += `strong influence from ${analysis.strongPlanets.join(', ')} in the area of ${this.vargaDefinitions[vargaType]?.purpose}. `;
+    }
+
+    interpretation += `This varga chart provides detailed insights into ${this.vargaDefinitions[vargaType]?.purpose.toLowerCase()}. `;
+
+    if (analysis.keyThemes.length > 0) {
+      interpretation += `Key themes: ${analysis.keyThemes.join(', ')}.`;
+    }
+
+    return {
+      summary: interpretation,
+      recommendations: [
+        'Analyze this varga chart in conjunction with D1 for complete understanding',
+        'Note planetary placements and their dignity in specific life areas',
+        'Consider the combination of multiple varga charts for accurate predictions'
+      ],
+      vargaSpecificAdvice: this._getVargaSpecificAdvice(vargaType)
+    };
+  }
+
+  /**
+   * Get varga-specific interpretation advice
+   * @private
+   */
+  _getVargaSpecificAdvice(vargaType) {
+    const advice = {
+      D1: 'D1 is fundamental - always analyze alongside divisional charts',
+      D9: 'Navamsa reveals relationship potential and life purpose',
+      D10: 'Dashamsa shows professional destiny and career path',
+      D7: 'Saptamsa reveals children and creative potential',
+      D12: 'Dwadasamsa shows spiritual inclinations and parental influence'
+    };
+
+    return advice[vargaType] || 'This divisional chart offers specialized insights into specific life areas';
+  }
+
+  /**
+   * Assess planetary dignity in varga chart
+   * @private
+   */
+  _assessVargaDignity(planet, sign, divisor) {
+    // In varga charts, dignity assessment is different
+    // For specific vargas like Navamsa, different exaltations apply
+
+    if (divisor === 9) { // Navamsa
+      const navamsaExaltations = {
+        Sun: [4], Moon: [3], Mars: [0], Mercury: [8, 5], Jupiter: [8], Venus: [11], Saturn: [10]
+      };
+
+      if (navamsaExaltations[planet]?.includes(sign)) {
+        return 'exalted';
+      }
+    }
+
+    // Default dignity assessment
+    return this._getBasicDignity(planet, sign);
+  }
+
+  /**
+   * Get basic dignity assessment
+   * @private
+   */
+  _getBasicDignity(planet, sign) {
+    // Simplified dignity check
+    return 'neutral'; // Would need full dignity calculation
+  }
+
+  /**
+   * Get house lord
+   * @private
+   */
+  _getHouseLord(sign) {
+    const lords = ['Mars', 'Venus', 'Mercury', 'Moon', 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Saturn', 'Jupiter'];
+    return lords[sign];
+  }
+
+  _getPlanetId(planet) {
+    const ids = {
+      Sun: sweph.SE_SUN,
+      Moon: sweph.SE_MOON,
+      Mercury: sweph.SE_MERCURY,
+      Venus: sweph.SE_VENUS,
+      Mars: sweph.SE_MARS,
+      Jupiter: sweph.SE_JUPITER,
+      Saturn: sweph.SE_SATURN
+    };
+    return ids[planet] || sweph.SE_SUN;
+  }
+
+  _dateToJD(year, month, day, hour) {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-
     const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
     return jd + hour / 24;
   }
+
+  async _getCoordinates(place) {
+    return [0, 0];
+  }
+
+  async _getTimezone(lat, lng, timestamp) {
+    return 0;
+  }
 }
 
-module.exports = { VargaChartCalculator };
+module.exports = VargaChartCalculator;

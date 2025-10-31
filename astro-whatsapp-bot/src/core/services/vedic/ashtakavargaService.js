@@ -1,5 +1,4 @@
 const ServiceTemplate = require('../serviceTemplate');
-const { AshtakavargaCalculator } = require('../../services/astrology/vedic/calculators/AshtakavargaCalculator');
 const logger = require('../../../utils/logger');
 
 /**

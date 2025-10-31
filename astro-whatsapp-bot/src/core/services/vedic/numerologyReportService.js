@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
-const { generateFullReport, getNumerologyReport, calculateLifePath, calculateNameNumber } = require('../../../services/astrology/numerologyService');
 
 /**
  * NumerologyReportService - Comprehensive numerology report generation service

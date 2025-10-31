@@ -1,0 +1,230 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure
+const { FinancialAstrologyCalculator } = require('../../../services/astrology/calculators/FinancialAstrologyCalculator');
+
+/**
+ * FinancialAstrologyService - Wealth, investments, and financial analysis service
+ *
+ * Provides financial astrology calculations including wealth planets, cycles, 
+ * and strategies using specialized calculator for wealth, investments, and financial analysis.
+ */
+class FinancialAstrologyService extends ServiceTemplate {
+  constructor(services) {
+    super('ufinancialAstrologyService'));
+    
+    // Initialize calculator with services if provided
+    if (services) {
+      this.calculator.setServices(services.calendricalService, services.geocodingService);
+    }
+    
+    this.serviceName = 'FinancialAstrologyService';
+    logger.info('FinancialAstrologyService initialized');
+  }
+
+  async processCalculation(birthData) {
+    try {
+      // Validate inputs with model
+      this._validateInput(birthData);
+
+      // Get financial astrology analysis from calculator
+      const financialAnalysis = await this.calculator.calculateFinancialAstrologyAnalysis(birthData);
+
+      // Add service metadata
+      financialAnalysis.serviceMetadata = {
+        serviceName: this.serviceName,
+        calculationType: 'Financial Astrology Analysis',
+        timestamp: new Date().toISOString(),
+        method: 'Wealth and Investment Astrology',
+        wealthPlanets: financialAnalysis.wealthPlanets.length,
+        financialCycles: financialAnalysis.financialCycles.length,
+        wealthHouses: 3 // Always 3 wealth houses analyzed
+      };
+
+      return financialAnalysis;
+    } catch (error) {
+      logger.error('FinancialAstrologyService calculation error:', error);
+      throw new Error(`Financial astrology analysis failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Format result for service consumption
+   * @param {Object} result - Raw calculator result
+   * @returns {Object} Formatted result
+   */
+  formatResult(result) {
+    if (result.error) {
+      return {
+        success: false,
+        error: result.error,
+        message: 'Financial astrology analysis failed'
+      };
+    }
+
+    return {
+      success: true,
+      data: result,
+      summary: this._generateFinancialSummary(result),
+      metadata: {
+        system: 'Financial Astrology',
+        calculationMethod: 'Wealth planets, cycles, and strategies analysis',
+        elements: ['Wealth Planets', 'Financial Cycles', 'Wealth Houses', 'Risk Assessment', 'Prosperity Opportunities'],
+        tradition: 'Vedic financial astrology with planetary wealth analysis'
+      }
+    };
+  }
+
+  /**
+   * Generate financial summary from analysis
+   * @private
+   * @param {Object} result - Financial analysis result
+   * @returns {string} Summary
+   */
+  _generateFinancialSummary(result) {
+    let summary = '💰 *Financial Astrology Analysis*\n\n';
+
+    summary += `*Wealth Planets:*\n`;
+    result.wealthPlanets.forEach(planet => {
+      summary += `• ${planet.planet}: ${planet.interpretation}\n`;
+    });
+
+    summary += `\n*Financial Cycles:*\n`;
+    result.financialCycles.forEach(cycle => {
+      summary += `• ${cycle.cycle}: ${cycle.description}\n`;
+    });
+
+    summary += `\n*Wealth Houses:*\n`;
+    result.wealthHouses.forEach(house => {
+      summary += `• ${house.house}: ${house.interpretation}\n`;
+    });
+
+    summary += `\n*Financial Strategy:*\n${result.strategy}\n\n`;
+
+    return summary;
+  }
+
+  /**
+   * Validate input parameters
+   * @param {Object} input - Input data to validate
+   * @private
+   */
+  _validateInput(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required for financial astrology analysis');
+    }
+
+    if (!birthData.birthDate) {
+      throw new Error('Birth date is required for financial astrology analysis');
+    }
+
+    if (!birthData.birthTime) {
+      throw new Error('Birth time is required for financial astrology analysis');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthData.birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthData.birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+  }
+
+  /**
+   * Get service metadata
+   * @returns {Object} Service information
+   */
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'processCalculation', 'formatResult'],
+      dependencies: ['FinancialAstrologyCalculator']
+    };
+  }
+
+  /**
+   * Get service-specific help
+   * @returns {string} Help information
+   */
+  getHelp() {
+    return `
+💰 **Financial Astrology Service**
+
+**Purpose:** Provides financial astrology calculations including wealth planets, cycles, and strategies for wealth building and investment timing
+
+**Required Inputs:**
+• Birth date (DD/MM/YYYY)
+• Birth time (HH:MM)
+• Birth place (optional, defaults to calculation location)
+
+**Analysis Includes:**
+
+**💰 Wealth Planets:**
+• Jupiter - Expansion, prosperity, and abundance
+• Venus - Luxury, luxury investments, values
+• Moon - Emotional security and financial relationship
+• Other planetary influences on wealth
+
+**📊 Financial Cycles:**
+• Jupiter returns and expansion cycles
+• Saturn returns and financial maturity
+• Venus cycles for income flow
+• 12-year Jupiter transits for wealth
+
+**🏛️ Wealth Houses:**
+• 2nd House - Personal wealth and values
+• 8th House - Shared/transformative wealth
+• 11th House - Gains and life goals
+• Planetary influences in each house
+
+**⚠️ Risk Assessment:**
+• Investment risk levels
+• Financial security concerns
+• Potential challenges and mitigations
+
+**🎯 Prosperity Opportunities:**
+• Abundance expansion timing
+• Income opportunities
+• Wealth building strategies
+
+**Example Usage:**
+"Financial astrology for 15/06/1990 at 06:45"
+"Wealth analysis for birth date 22/03/1985, time 14:30"
+"Investment timing based on birth chart"
+"Money astrology for New Delhi"
+
+**Output Format:**
+Comprehensive financial astrology report with wealth planets, cycles, houses, risk assessment, and prosperity strategy
+    `.trim();
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+}
+
+module.exports = FinancialAstrologyService;

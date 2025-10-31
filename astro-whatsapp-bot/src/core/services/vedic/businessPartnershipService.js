@@ -2,9 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculators from legacy structure (for now)
-const { GroupAstrologyCalculator } = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
-const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
-const { FinancialAstrologyCalculator } = require('../../../services/astrology/calculators/FinancialAstrologyCalculator');
 
 /**
  * Business Partnership Service

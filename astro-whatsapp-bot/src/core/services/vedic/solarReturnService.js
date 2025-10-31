@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure (for now)
-const { SolarReturnCalculator } = require('../../../services/astrology/vedic/calculators/SolarReturnCalculator');
 
 /**
  * SolarReturnService - Service for solar return chart analysis

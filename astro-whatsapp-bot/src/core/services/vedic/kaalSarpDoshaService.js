@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
-const { KaalSarpDoshaCalculator } = require('../../../services/astrology/vedic/calculators/KaalSarpDoshaCalculator');
 
 /**
  * KaalSarpDoshaService - Specialized service for analyzing Kaal Sarp Dosha

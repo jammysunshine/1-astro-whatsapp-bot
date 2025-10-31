@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
-const { MuhurtaCalculator } = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
 
 /**
  * RahukalamService - Specialized service for calculating Rahukalam timing

@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure (for now)
-const { PrashnaCalculator } = require('../../../services/astrology/vedic/calculators/PrashnaCalculator');
 
 /**
  * PrashnaAstrologyService - Service for horary astrology (Prashna) analysis

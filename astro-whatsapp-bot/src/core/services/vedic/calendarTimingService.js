@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure (for now)
-const { MuhurtaCalculator } = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
 
 /**
  * CalendarTimingService - Vedic calendar timing and auspicious period analysis service
@@ -123,7 +122,6 @@ class CalendarTimingService extends ServiceTemplate {
   async _getPanchangTiming(date, location) {
     try {
       // Import PanchangCalculator for additional timing context
-      const { PanchangCalculator } = require('../../../services/astrology/vedic/calculators/PanchangCalculator');
       const panchangCalc = new PanchangCalculator();
 
       const panchangData = await panchangCalc.calculatePanchang(date, location);

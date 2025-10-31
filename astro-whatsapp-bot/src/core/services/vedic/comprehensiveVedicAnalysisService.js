@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
-const { ComprehensiveAnalysisCalculator } = require('../../../services/astrology/vedic/calculators/ComprehensiveAnalysisCalculator');
 
 /**
  * ComprehensiveVedicAnalysisService - Comprehensive multi-level Vedic analysis service

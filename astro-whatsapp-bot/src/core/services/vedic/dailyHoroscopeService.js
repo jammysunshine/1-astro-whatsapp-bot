@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure (for now)
-const { DailyHoroscopeCalculator } = require('../../../services/astrology/vedic/calculators/DailyHoroscopeCalculator');
 
 /**
  * DailyHoroscopeService - Vedic daily horoscope prediction service

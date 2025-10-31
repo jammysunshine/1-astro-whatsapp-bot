@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
-const { FutureSelfSimulatorCalculator } = require('../../../services/astrology/vedic/calculators/FutureSelfSimulatorCalculator');
 
 /**
  * FutureSelfSimulatorService - Advanced life transit simulation service

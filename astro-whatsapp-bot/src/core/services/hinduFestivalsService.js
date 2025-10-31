@@ -2,7 +2,6 @@ const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
-const { hinduFestivals } = require('../../services/astrology/hinduFestivals');
 
 class HinduFestivalsService extends ServiceTemplate {
   constructor() {

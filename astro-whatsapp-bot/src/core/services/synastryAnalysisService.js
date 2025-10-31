@@ -2,7 +2,6 @@ const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
-const { SynastryEngine } = require('../../services/astrology/compatibility/SynastryEngine');
 
 class SynastryAnalysisService extends ServiceTemplate {
   constructor() {

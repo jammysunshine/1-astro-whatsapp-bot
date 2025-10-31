@@ -1,4 +1,3 @@
-const { GroupAstrologyCalculator } = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
 const logger = require('../../../utils/logger');
 
 /**

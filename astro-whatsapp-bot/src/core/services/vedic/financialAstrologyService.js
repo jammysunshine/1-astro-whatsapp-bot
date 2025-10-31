@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
-const { FinancialAstrologyCalculator } = require('../../../services/astrology/calculators/FinancialAstrologyCalculator');
 
 /**
  * FinancialAstrologyService - Wealth, investments, and financial analysis service

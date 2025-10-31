@@ -1,5 +1,4 @@
 const ServiceTemplate = require('../ServiceTemplate');
-const tarotReader = require('../../../services/astrology/tarotReader');
 
 /**
  * TarotReadingService - Core service for tarot card readings

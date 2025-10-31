@@ -3,7 +3,6 @@ const logger = require('../../utils/logger');
 const { BirthData } = require('../../models');
 
 // Import calculator from legacy structure (for now)
-const { WesternSolarReturnCalculator } = require('../../../services/astrology/western/calculators/WesternSolarReturnCalculator');
 
 /**
  * WesternSolarReturnService - Service for Western solar return calculations

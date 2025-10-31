@@ -2,10 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculators from legacy structure (for now)
-const { AshtakavargaCalculator } = require('../../../services/astrology/calculators/AshtakavargaCalculator');
-const { VargaChartCalculator } = require('../../../services/astrology/vedic/calculators/VargaChartCalculator');
-const { VedicYogasCalculator } = require('../../../services/astrology/vedic/calculators/VedicYogasCalculator');
-const { ShadbalaCalculator } = require('../../../services/astrology/vedic/calculators/ShadbalaCalculator');
 
 /**
  * SpecializedAnalysisService - Advanced Vedic astrological analysis service

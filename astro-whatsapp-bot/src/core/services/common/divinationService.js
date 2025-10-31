@@ -2,8 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import divination calculators from legacy structure (for now)
-const TarotReader = require('../../../services/astrology/tarotReader');
-const IChingReader = require('../../../services/astrology/ichingReader');
 
 /**
  * DivinationService - Service for various divination methods

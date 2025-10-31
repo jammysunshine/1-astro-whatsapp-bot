@@ -3,7 +3,6 @@ const logger = require('../../utils/logger');
 const { BirthData } = require('../../models');
 
 // Import calculator from legacy structure (for now)
-const { CompatibilityCalculator } = require('../../../services/astrology/vedic/calculators/CompatibilityCalculator');
 
 /**
  * DavisonChartService - Service for Davison chart calculations

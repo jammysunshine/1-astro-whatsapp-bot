@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure (for now)
-const { MuhurtaCalculator } = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
 
 /**
  * EventAstrologyService - Service for event astrology and auspicious timing analysis

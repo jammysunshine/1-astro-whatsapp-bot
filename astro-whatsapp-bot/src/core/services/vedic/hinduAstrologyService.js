@@ -1,4 +1,3 @@
-const { ChartGenerator } = require('../../../services/astrology/vedic/calculators/ChartGenerator');
 const logger = require('../../../utils/logger');
 
 /**

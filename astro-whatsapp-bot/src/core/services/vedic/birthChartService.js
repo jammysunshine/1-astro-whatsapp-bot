@@ -3,7 +3,6 @@ const logger = require('../../utils/logger');
 const { BirthData } = require('../../models');
 
 // Import calculator from legacy structure (for now)
-const { ChartGenerator } = require('../../../services/astrology/vedic/calculators/ChartGenerator');
 
 class BirthChartService extends ServiceTemplate {
   constructor() {

@@ -2,7 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure (for now)
-const { SecondaryProgressionsCalculator } = require('../../../services/astrology/vedic/calculators/SecondaryProgressionsCalculator');
 
 /**
  * SecondaryProgressionsService - Service for secondary progressions analysis

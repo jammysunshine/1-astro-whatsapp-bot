@@ -2,9 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculators from legacy structure (for now)
-const CompatibilityAction = require('../../../services/astrology/CompatibilityAction');
-const SynastryEngine = require('../../../services/astrology/compatibility/SynastryEngine');
-const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
 
 /**
  * CompatibilityService - Vedic relationship compatibility analysis service

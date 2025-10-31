@@ -1,5 +1,4 @@
 const ServiceTemplate = require('../serviceTemplate');
-const { HoraryCalculator } = require('../../services/astrology/horary/HoraryCalculator');
 const logger = require('../../../utils/logger');
 
 /**

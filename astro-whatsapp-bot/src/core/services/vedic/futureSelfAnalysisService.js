@@ -1,5 +1,4 @@
 const ServiceTemplate = require('../serviceTemplate');
-const { FutureSelfSimulatorCalculator } = require('../../services/astrology/vedic/calculators/FutureSelfSimulatorCalculator');
 const logger = require('../../../utils/logger');
 
 /**

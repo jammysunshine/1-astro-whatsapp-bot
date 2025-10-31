@@ -1,4 +1,3 @@
-const { SynastryEngine } = require('../../services/astrology/compatibility/SynastryEngine');
 const logger = require('../../../utils/logger');
 
 /**

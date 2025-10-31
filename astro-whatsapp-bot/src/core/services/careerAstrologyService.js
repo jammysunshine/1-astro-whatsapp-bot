@@ -1,77 +1,68 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-/**
- * CareerAstrologyService - Analyzes career potential and professional guidance
- * Extends ServiceTemplate for consistent architecture and error handling
- */
+// Import calculator from legacy structure
+const { CareerAstrologyCalculator } = require('../../services/astrology/calculators/CareerAstrologyCalculator');
+
 class CareerAstrologyService extends ServiceTemplate {
   constructor() {
-    super('CareerAstrologyService');
-    this.calculatorPath = '../../../services/astrology/calculators/CareerAstrologyCalculator';
+    super(new CareerAstrologyCalculator());
+    this.serviceName = 'CareerAstrologyService';
+    logger.info('CareerAstrologyService initialized');
   }
 
-  async initialize() {
+  async processCalculation(birthData) {
     try {
-      await super.initialize();
-      logger.info('✅ CareerAstrologyService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize CareerAstrologyService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(birthData);
 
-  /**
-   * Analyze career astrology
-   * @param {Object} params - Analysis parameters
-   * @param {Object} params.birthData - Birth data information
-   * @param {Object} params.options - Analysis options
-   * @returns {Object} Career astrology analysis result
-   */
-  async analyzeCareerAstrology(params) {
-    try {
-      this.validateParams(params, ['birthData']);
-      
-      const { birthData, options = {} } = params;
-      
       // Perform career astrology analysis
       const careerAnalysis = await this.calculator.calculateCareerAstrologyAnalysis(birthData);
-      
+
       // Generate detailed career insights
       const careerInsights = this.generateCareerInsights(careerAnalysis);
-      
+
       // Identify suitable professions
       const suitableProfessions = this.identifySuitableProfessions(careerAnalysis);
-      
+
       // Create career development plan
       const developmentPlan = this.createCareerDevelopmentPlan(careerAnalysis);
-      
+
       return {
-        success: true,
-        data: {
-          careerAnalysis,
-          careerInsights,
-          suitableProfessions,
-          developmentPlan,
-          summary: this.generateCareerSummary(careerAnalysis)
-        },
-        metadata: {
-          calculationType: 'career_astrology',
-          timestamp: new Date().toISOString(),
-          analysisDepth: options.deepAnalysis ? 'comprehensive' : 'standard'
-        }
+        careerAnalysis,
+        careerInsights,
+        suitableProfessions,
+        developmentPlan,
+        summary: this.generateCareerSummary(careerAnalysis)
       };
     } catch (error) {
-      logger.error('❌ Error in analyzeCareerAstrology:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'career_astrology',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('CareerAstrologyService calculation error:', error);
+      throw new Error(`Career astrology analysis failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
+    }
+
+    const required = ['birthDate', 'birthTime', 'birthPlace'];
+    for (const field of required) {
+      if (!birthData[field]) {
+        throw new Error(`${field} is required for career astrology analysis`);
+      }
+    }
+
+    return true;
   }
 
   /**
@@ -783,36 +774,14 @@ class CareerAstrologyService extends ServiceTemplate {
     return skills[planet] || ['Professional skills'];
   }
 
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      const calculatorHealth = this.calculator.healthCheck();
-      
-      return {
-        ...baseHealth,
-        features: {
-          careerAnalysis: true,
-          careerTiming: true,
-          careerChangeAnalysis: true,
-          professionMatching: true,
-          developmentPlanning: true
-        },
-        calculatorHealth,
-        supportedAnalyses: [
-          'career_astrology_analysis',
-          'career_timing',
-          'career_change_analysis',
-          'profession_matching',
-          'development_planning'
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['analyzeCareerAstrology', 'getCareerTiming', 'analyzeCareerChange'],
+      dependencies: ['CareerAstrologyCalculator']
+    };
   }
 }
 

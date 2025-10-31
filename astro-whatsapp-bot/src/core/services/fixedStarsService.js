@@ -1,76 +1,43 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-/**
- * FixedStarsService - Analyzes fixed star influences in birth charts
- * Extends ServiceTemplate for consistent architecture and error handling
- */
+// Import calculator from legacy structure
+const { FixedStarsCalculator } = require('../../services/astrology/calculators/FixedStarsCalculator');
+
 class FixedStarsService extends ServiceTemplate {
   constructor() {
-    super('FixedStarsService');
-    this.calculatorPath = '../../../services/astrology/calculators/FixedStarsCalculator';
+    super(new FixedStarsCalculator());
+    this.serviceName = 'FixedStarsService';
+    logger.info('FixedStarsService initialized');
   }
 
-  async initialize() {
+  async processCalculation(birthData) {
     try {
-      await super.initialize();
-      logger.info('✅ FixedStarsService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize FixedStarsService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(birthData);
 
-  /**
-   * Analyze fixed stars in birth chart
-   * @param {Object} params - Analysis parameters
-   * @param {Object} params.birthData - Birth data information
-   * @param {Object} params.options - Analysis options
-   * @returns {Object} Fixed stars analysis result
-   */
-  async analyzeFixedStars(params) {
-    try {
-      this.validateParams(params, ['birthData']);
-      
-      const { birthData, options = {} } = params;
-      
       // Perform fixed stars analysis
       const fixedStarsAnalysis = await this.calculator.calculateFixedStarsAnalysis(birthData);
-      
+
       // Generate detailed interpretations
       const detailedInterpretations = this.generateDetailedInterpretations(fixedStarsAnalysis);
-      
+
       // Assess star influences
       const starInfluences = this.assessStarInfluences(fixedStarsAnalysis);
-      
+
       // Generate life themes
       const lifeThemes = this.identifyLifeThemes(fixedStarsAnalysis);
-      
+
       return {
-        success: true,
-        data: {
-          fixedStarsAnalysis,
-          detailedInterpretations,
-          starInfluences,
-          lifeThemes,
-          summary: this.generateFixedStarsSummary(fixedStarsAnalysis)
-        },
-        metadata: {
-          calculationType: 'fixed_stars_analysis',
-          timestamp: new Date().toISOString(),
-          analysisDepth: options.deepAnalysis ? 'comprehensive' : 'standard'
-        }
+        fixedStarsAnalysis,
+        detailedInterpretations,
+        starInfluences,
+        lifeThemes,
+        summary: this.generateFixedStarsSummary(fixedStarsAnalysis)
       };
     } catch (error) {
-      logger.error('❌ Error in analyzeFixedStars:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'fixed_stars_analysis',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('FixedStarsService calculation error:', error);
+      throw new Error(`Fixed stars analysis failed: ${error.message}`);
     }
   }
 
@@ -536,36 +503,38 @@ class FixedStarsService extends ServiceTemplate {
     return significance[starName] || 'stellar influence';
   }
 
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      const calculatorHealth = this.calculator.healthCheck();
-      
-      return {
-        ...baseHealth,
-        features: {
-          fixedStarsAnalysis: true,
-          starInterpretation: true,
-          paranatellontaAnalysis: true,
-          conjunctionAnalysis: true,
-          influenceAssessment: true
-        },
-        calculatorHealth,
-        supportedAnalyses: [
-          'fixed_stars_analysis',
-          'star_interpretation',
-          'paranatellonta_analysis',
-          'conjunction_analysis',
-          'influence_assessment'
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
     }
+
+    const required = ['birthDate', 'birthTime', 'birthPlace'];
+    for (const field of required) {
+      if (!birthData[field]) {
+        throw new Error(`${field} is required for fixed stars analysis`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['analyzeFixedStars', 'getStarInterpretation', 'analyzeParanatellonta'],
+      dependencies: ['FixedStarsCalculator']
+    };
   }
 }
 

@@ -1,73 +1,42 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-/**
- * MundaneAstrologyService - Analyzes world events and political astrology
- * Extends ServiceTemplate for consistent architecture and error handling
- */
+// Import calculator from legacy structure
+const { PoliticalAstrology } = require('../../services/astrology/mundane/PoliticalAstrology');
+
 class MundaneAstrologyService extends ServiceTemplate {
   constructor() {
-    super('MundaneAstrologyService');
-    this.calculatorPath = '../../../services/astrology/mundane/PoliticalAstrology';
+    super(new PoliticalAstrology());
+    this.serviceName = 'MundaneAstrologyService';
+    logger.info('MundaneAstrologyService initialized');
   }
 
-  async initialize() {
+  async processCalculation(chartData) {
     try {
-      await super.initialize();
-      logger.info('✅ MundaneAstrologyService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize MundaneAstrologyService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(chartData);
 
-  /**
-   * Analyze political climate for a country or region
-   * @param {Object} params - Analysis parameters
-   * @param {string} params.country - Country name
-   * @param {Object} params.chart - Astrological chart data
-   * @param {Object} params.options - Analysis options
-   * @returns {Object} Political analysis result
-   */
-  async analyzePoliticalClimate(params) {
-    try {
-      this.validateParams(params, ['country', 'chart']);
-      
-      const { country, chart, options = {} } = params;
-      
       // Perform political climate analysis
-      const politicalAnalysis = await this.calculator.analyzePoliticalClimate(country, chart);
-      
+      const politicalAnalysis = await this.calculator.analyzePoliticalClimate(
+        chartData.country || 'Unknown',
+        chartData
+      );
+
       // Generate additional insights
       const insights = this.generatePoliticalInsights(politicalAnalysis);
-      
+
       // Create recommendations
       const recommendations = this.generatePoliticalRecommendations(politicalAnalysis);
-      
+
       return {
-        success: true,
-        data: {
-          politicalAnalysis,
-          insights,
-          recommendations,
-          summary: this.generatePoliticalSummary(politicalAnalysis)
-        },
-        metadata: {
-          calculationType: 'mundane_astrology',
-          timestamp: new Date().toISOString(),
-          analysisDepth: options.deepAnalysis ? 'comprehensive' : 'standard'
-        }
+        politicalAnalysis,
+        insights,
+        recommendations,
+        summary: this.generatePoliticalSummary(politicalAnalysis)
       };
     } catch (error) {
-      logger.error('❌ Error in analyzePoliticalClimate:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'mundane_astrology',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('MundaneAstrologyService calculation error:', error);
+      throw new Error(`Mundane astrology analysis failed: ${error.message}`);
     }
   }
 
@@ -495,36 +464,36 @@ class MundaneAstrologyService extends ServiceTemplate {
     return recommendations;
   }
 
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      const calculatorHealth = this.calculator.healthCheck();
-      
-      return {
-        ...baseHealth,
-        features: {
-          politicalClimateAnalysis: true,
-          globalTrendsAnalysis: true,
-          politicalEventPrediction: true,
-          stabilityAssessment: true,
-          leadershipAnalysis: true
-        },
-        calculatorHealth,
-        supportedAnalyses: [
-          'political_climate_analysis',
-          'global_trends_analysis',
-          'political_event_prediction',
-          'stability_assessment',
-          'leadership_analysis'
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(chartData) {
+    if (!chartData) {
+      throw new Error('Chart data is required');
     }
+
+    // Mundane astrology may not require birth data, but needs some chart information
+    if (!chartData.country && !chartData.chart) {
+      throw new Error('Country name or chart data is required for mundane astrology analysis');
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'mundane',
+      methods: ['analyzePoliticalClimate', 'analyzeGlobalTrends', 'predictPoliticalEvents'],
+      dependencies: ['PoliticalAstrology']
+    };
   }
 }
 

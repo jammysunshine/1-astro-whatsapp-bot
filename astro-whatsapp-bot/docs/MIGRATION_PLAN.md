@@ -53,14 +53,14 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for performing synastry analysis using astrologer library.
 
 9.  `calculateCompositeChart`
-     *   **Source:** Needs to be identified. Potentially in `src/services/astrology/charts/ChartGenerator.js` or `src/services/astrology/compatibility/SynastryEngine.js`.
+     *   **Source:** `src/services/astrology/compatibility/CompatibilityWorkflowManager.js` - function calculateCompositeChart() at line 389.
      *   **Target File:** `core/services/compositeChartService.js`
-     *   **Notes:** Dedicated service for composite chart calculations.
+     *   **Notes:** Calculates composite chart by finding midpoints between planetary positions of two charts.
 
 10. `calculateDavisonChart`
-     *   **Source:** Needs to be identified. Similar to `calculateCompositeChart`.
+     *   **Source:** `src/services/astrology/vedicCalculator.js.backup` - function calculateDavisonChart() at line 17208.
      *   **Target File:** `core/services/davisonChartService.js`
-     *   **Notes:** Dedicated service for Davison chart calculations.
+     *   **Notes:** Calculates Davison relationship chart using midpoint date/time and location between two persons.
 
 11. `generateGroupAstrology`
      *   **Source:** `src/services/astrology/vedic/calculators/GroupAstrologyCalculator.js`.
@@ -273,9 +273,9 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for cosmic events tracking.
 
 53. `generateEphemerisTable`
-     *   **Source:** Needs to be identified. Might be a utility or part of a calculator.
+     *   **Source:** `src/services/astrology/vedicCalculator.js.backup` - function generateEphemerisTable() at line 18925.
      *   **Target File:** `core/services/ephemerisService.js`
-     *   **Notes:** Dedicated service for ephemeris table generation.
+     *   **Notes:** Generates comprehensive ephemeris table with planetary positions for specified date range.
 
 54. `calculateUpcomingSeasonalEvents`
      *   **Source:** `src/services/astrology/vedic/calculators/CosmicEventsCalculator.js` (likely a function within).
@@ -343,24 +343,24 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for career astrology using Swiss Ephemeris.
 
 67. `get_financial_astrology_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/calculators/FinancialAstrologyCalculator.js`
      *   **Target File:** `core/services/financialAstrologyService.js`
-     *   **Notes:** Dedicated service for financial astrology analysis.
+     *   **Notes:** Financial astrology analysis with wealth planets, cycles, and strategies.
 
 68. `get_medical_astrology_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/calculators/MedicalAstrologyCalculator.js`
      *   **Target File:** `core/services/medicalAstrologyService.js`
-     *   **Notes:** Dedicated service for medical astrology analysis.
+     *   **Notes:** Medical astrology analysis with health indicators and house analysis.
 
 69. `get_event_astrology_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/handlers/predictiveHandlers.js` - function generateEventAstrologyAnalysis() and related handlers.
      *   **Target File:** `core/services/eventAstrologyService.js`
-     *   **Notes:** Dedicated service for event astrology analysis.
+     *   **Notes:** Event astrology analysis for timing important occasions.
 
 70. `get_astrocartography_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/astrocartographyReader.js`
      *   **Target File:** `core/services/astrocartographyService.js`
-     *   **Notes:** Dedicated service for astrocartography analysis.
+     *   **Notes:** Astrocartography analysis mapping planetary influences across geographic locations.
 
 71. `get_tarot_reading`
      *   **Source:** `src/services/astrology/tarotReader.js`
@@ -368,9 +368,9 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Comprehensive tarot reading system with multiple spreads.
 
 72. `get_iching_reading`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/ichingReader.js` and `src/services/astrology/iching/` directory.
      *   **Target File:** `core/services/ichingReadingService.js`
-     *   **Notes:** Dedicated service for I Ching readings.
+     *   **Notes:** I Ching (Yijing) oracle reading with hexagram interpretations.
 
 73. `get_palmistry_analysis`
      *   **Source:** `src/services/astrology/palmistryReader.js`
@@ -383,29 +383,29 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Chinese astrology calculations and analysis.
 
 75. `get_mayan_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/mayanReader.js` and related files in `src/services/astrology/` directory.
      *   **Target File:** `core/services/mayanAstrologyService.js`
-     *   **Notes:** Dedicated service for Mayan astrology analysis.
+     *   **Notes:** Mayan calendar and astrology analysis with Tzolk'in and Haab calculations.
 
 76. `get_celtic_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/celticReader.js` and related files.
      *   **Target File:** `core/services/celticAstrologyService.js`
-     *   **Notes:** Dedicated service for Celtic astrology analysis.
+     *   **Notes:** Celtic astrology analysis with tree sign system.
 
 77. `get_kabbalistic_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/kabbalisticReader.js`
      *   **Target File:** `core/services/kabbalisticAstrologyService.js`
-     *   **Notes:** Dedicated service for Kabbalistic astrology analysis.
+     *   **Notes:** Kabbalistic astrology with Tree of Life Sephiroth interpretations.
 
 78. `get_hellenistic_astrology_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/hellenisticAstrology.js`
      *   **Target File:** `core/services/hellenisticAstrologyService.js`
-     *   **Notes:** Dedicated service for Hellenistic astrology analysis.
+     *   **Notes:** Hellenistic astrology with ancient Greek techniques and Arabic parts.
 
 79. `get_islamic_astrology_info`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/islamicAstrology.js`
      *   **Target File:** `core/services/islamicAstrologyService.js`
-     *   **Notes:** Dedicated service for Islamic astrology information.
+     *   **Notes:** Islamic astrology system with numerology and destiny analysis.
 
 80. `get_horary_reading`
      *   **Source:** `src/services/astrology/horary/HoraryCalculator.js` (✅ BEST: uses Swiss Ephemeris for precise horary calculations).
@@ -460,7 +460,7 @@ Each entry below represents a microservice. We will identify its source in the e
 90. `get_numerology_analysis`
      *   **Source:** `src/services/astrology/numerologyService.js` (duplicate of #81)
      *   **Target File:** `core/services/numerologyAnalysisService.js`
-     *   **Notes:** Numerology analysis service (duplicate entry).
+     *   **Notes:** Numerology analysis service (duplicate entry - same as Service #81).
 
 
 
@@ -513,3 +513,30 @@ Each entry below represents a microservice. We will identify its source in the e
 - **Clear separation:** No cross-contamination between different astrology systems
 - **Test after each:** Validate functionality before moving to next service
 - **Gradual migration:** Update action classes to use new services incrementally
+
+## Key Findings Summary
+
+✅ **All services identified:** Successfully located sources for all 13 remaining services that were marked as "Needs to be identified"
+
+✅ **No duplicate sources:** Confirmed that `get_numerology_analysis` (Service #90) is indeed a duplicate of Service #81, as properly documented
+
+✅ **Complete 100% coverage:** All 90 services in the migration plan now have identified source files
+
+✅ **Target files remain unique:** Each service maps to a distinct target file in the new architecture with no conflicts
+
+### Source File Locations Summary
+
+The remaining services were found in these source files:
+
+1. `src/services/astrology/compatibility/CompatibilityWorkflowManager.js` - For Composite Chart calculation
+2. `src/services/astrology/vedicCalculator.js.backup` - For Davison Chart and Ephemeris Table generation
+3. `src/services/astrology/calculators/FinancialAstrologyCalculator.js` - For Financial Astrology analysis
+4. `src/services/astrology/calculators/MedicalAstrologyCalculator.js` - For Medical Astrology analysis
+5. `src/services/astrology/handlers/predictiveHandlers.js` - For Event Astrology analysis
+6. `src/services/astrology/astrocartographyReader.js` - For Astrocartography analysis
+7. `src/services/astrology/ichingReader.js` - For I Ching readings
+8. `src/services/astrology/mayanReader.js` - For Mayan astrology analysis
+9. `src/services/astrology/celticReader.js` - For Celtic astrology analysis
+10. `src/services/astrology/kabbalisticReader.js` - For Kabbalistic astrology analysis
+11. `src/services/astrology/hellenisticAstrology.js` - For Hellenistic astrology analysis
+12. `src/services/astrology/islamicAstrology.js` - For Islamic astrology information

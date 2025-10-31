@@ -14,292 +14,292 @@ Each entry below represents a microservice. We will identify its source in the e
 
 1.  `start_couple_compatibility_flow`
      *   **Source:** `src/services/astrology/CompatibilityAction.js`, `src/services/astrology/compatibility/CompatibilityWorkflowManager.js`
-     *   **Target File:** `core/services/vedic/coupleCompatibilityService.js`
+     *   **Target File:** `core/services/coupleCompatibilityService.js`
      *   **Notes:** Dedicated service for couple compatibility flows and orchestrations.
 
 2.  `get_synastry_analysis`
      *   **Source:** `src/services/astrology/compatibility/CompatibilityChecker.js` (✅ BEST: uses astrologer library for synastry calculations, comprehensive aspect analysis).
-     *   **Target File:** `core/services/vedic/synastryAnalysisService.js`
+     *   **Target File:** `core/services/synastryAnalysisService.js`
      *   **Notes:** Dedicated service for synastry analysis using astrologer library.
 
 3.  `start_family_astrology_flow`
      *   **Source:** Likely involves `generateGroupAstrology` (from `MICROSERVICES_LIST.md`) and `src/services/astrology/compatibility/CompatibilityWorkflowManager.js`.
-     *   **Target File:** `core/services/vedic/familyAstrologyService.js`
+     *   **Target File:** `core/services/familyAstrologyService.js`
      *   **Notes:** Dedicated service for family astrology flows.
 
 4.  `start_business_partnership_flow`
      *   **Source:** Likely involves `generateGroupAstrology` and `src/services/astrology/compatibility/CompatibilityWorkflowManager.js`.
-     *   **Target File:** `core/services/vedic/businessPartnershipService.js`
+     *   **Target File:** `core/services/businessPartnershipService.js`
      *   **Notes:** Dedicated service for business partnership astrology.
 
 5.  `start_group_timing_flow`
      *   **Source:** Needs further investigation. Potentially related to `src/services/astrology/mundane/` or `src/services/astrology/vedic/calculators/MuhurtaCalculator.js`.
-     *   **Target File:** `core/services/vedic/groupTimingService.js`
+     *   **Target File:** `core/services/groupTimingService.js`
      *   **Notes:** Dedicated service for group timing analysis.
 
 6.  `calculateNakshatraPorutham`
      *   **Source:** `src/services/astrology/nadi/NadiCompatibility.js`
-     *   **Target File:** `core/services/vedic/nakshatraPoruthamService.js`
+     *   **Target File:** `core/services/nakshatraPoruthamService.js`
      *   **Notes:** Contains Nakshatra compatibility analysis with proper matching algorithms.
 
 7.  `calculateCompatibilityScore`
      *   **Source:** `src/services/astrology/compatibility/CompatibilityScorer.js` (✅ BEST: contains core scoring algorithms with astrologer library integration).
-     *   **Target File:** `core/services/vedic/compatibilityScoreService.js`
+     *   **Target File:** `core/services/compatibilityScoreService.js`
      *   **Notes:** Dedicated service for compatibility scoring using astrologer library.
 
 8.  `performSynastryAnalysis`
      *   **Source:** `src/services/astrology/compatibility/SynastryEngine.js` (✅ BEST: contains core synastry algorithms with astrologer library integration).
-     *   **Target File:** `core/services/vedic/performSynastryAnalysisService.js`
+     *   **Target File:** `core/services/performSynastryAnalysisService.js`
      *   **Notes:** Dedicated service for performing synastry analysis using astrologer library.
 
 9.  `calculateCompositeChart`
      *   **Source:** Needs to be identified. Potentially in `src/services/astrology/charts/ChartGenerator.js` or `src/services/astrology/compatibility/SynastryEngine.js`.
-     *   **Target File:** `core/services/vedic/compositeChartService.js`
+     *   **Target File:** `core/services/compositeChartService.js`
      *   **Notes:** Dedicated service for composite chart calculations.
 
 10. `calculateDavisonChart`
      *   **Source:** Needs to be identified. Similar to `calculateCompositeChart`.
-     *   **Target File:** `core/services/vedic/davisonChartService.js`
+     *   **Target File:** `core/services/davisonChartService.js`
      *   **Notes:** Dedicated service for Davison chart calculations.
 
 11. `generateGroupAstrology`
      *   **Source:** `src/services/astrology/vedic/calculators/GroupAstrologyCalculator.js`.
-     *   **Target File:** `core/services/vedic/generateGroupAstrologyService.js`
+     *   **Target File:** `core/services/generateGroupAstrologyService.js`
      *   **Notes:** Dedicated service for comprehensive group astrology analysis.
 
 12. `get_hindu_astrology_analysis`
      *   **Source:** `src/services/astrology/charts/VedicChartGenerator.js`, `src/services/astrology/vedic/calculators/ChartGenerator.js`.
-     *   **Target File:** `core/services/vedic/hinduAstrologyService.js`
+     *   **Target File:** `core/services/hinduAstrologyService.js`
      *   **Notes:** Dedicated service for Hindu astrology analysis.
 
 13. `generateDetailedChartAnalysis`
      *   **Source:** `src/services/astrology/vedic/calculators/DetailedChartAnalysisCalculator.js`.
-     *   **Target File:** `core/services/vedic/detailedChartAnalysisService.js`
+     *   **Target File:** `core/services/detailedChartAnalysisService.js`
      *   **Notes:** Dedicated service for detailed chart analysis.
 
 14. `generateBasicBirthChart`
      *   **Source:** `src/services/astrology/charts/ChartGenerator.js`, `src/services/astrology/vedic/calculators/DetailedChartCalculator.js`.
-     *   **Target File:** `core/services/vedic/basicBirthChartService.js`
+     *   **Target File:** `core/services/basicBirthChartService.js`
      *   **Notes:** Dedicated service for basic birth chart generation.
 
 15. `calculateSunSign`
      *   **Source:** `src/services/astrology/calculations/SignCalculations.js` (✅ BEST: uses astrologer library for accurate calculations).
-     *   **Target File:** `core/services/vedic/sunSignService.js`
+     *   **Target File:** `core/services/sunSignService.js`
      *   **Notes:** Dedicated service for sun sign calculations using astrologer library.
 
 16. `calculateMoonSign`
      *   **Source:** `src/services/astrology/calculations/SignCalculations.js` (✅ BEST: uses astrologer library for accurate calculations).
-     *   **Target File:** `core/services/vedic/moonSignService.js`
+     *   **Target File:** `core/services/moonSignService.js`
      *   **Notes:** Dedicated service for moon sign calculations using astrologer library.
 
 17. `calculateRisingSign`
      *   **Source:** `src/services/astrology/calculations/SignCalculations.js` (✅ BEST: uses astrologer library for accurate calculations).
-     *   **Target File:** `core/services/vedic/risingSignService.js`
+     *   **Target File:** `core/services/risingSignService.js`
      *   **Notes:** Dedicated service for rising sign calculations using astrologer library.
 
 18. `calculateNakshatra`
      *   **Source:** `src/services/astrology/calculations/SignCalculations.js` (✅ BEST: uses astrologer library with Swiss Ephemeris integration).
-     *   **Target File:** `core/services/vedic/calculateNakshatraService.js`
+     *   **Target File:** `core/services/calculateNakshatraService.js`
      *   **Notes:** Dedicated service for Nakshatra calculations using enhanced Swiss Ephemeris.
 
 19. `get_vimshottari_dasha_analysis`
      *   **Source:** `src/services/astrology/vimshottariDasha.js` (✅ BEST: uses Swiss Ephemeris for precise Moon position calculations, authentic nakshatra-based system).
-     *   **Target File:** `core/services/vedic/vimshottariDashaService.js`
+     *   **Target File:** `core/services/vimshottariDashaService.js`
      *   **Notes:** Dedicated service for Vimshottari Dasha analysis using Swiss Ephemeris.
 
 20. `calculateCurrentDasha`
      *   **Source:** `src/services/astrology/vedic/calculators/DashaAnalysisCalculator.js`.
-     *   **Target File:** `core/services/vedic/currentDashaService.js`
+     *   **Target File:** `core/services/currentDashaService.js`
      *   **Notes:** Dedicated service for current Dasha calculations.
 
 21. `calculateUpcomingDashas`
      *   **Source:** `src/services/astrology/vedic/calculators/DashaAnalysisCalculator.js`.
-     *   **Target File:** `core/services/vedic/upcomingDashasService.js`
+     *   **Target File:** `core/services/upcomingDashasService.js`
      *   **Notes:** Dedicated service for upcoming Dasha calculations.
 
 22. `calculateAntardasha`
      *   **Source:** `src/services/astrology/vedic/calculators/DashaAnalysisCalculator.js`.
-     *   **Target File:** `core/services/vedic/antardashaService.js`
+     *   **Target File:** `core/services/antardashaService.js`
      *   **Notes:** Dedicated service for Antardasha calculations.
 
 23. `calculateJaiminiAstrology`
      *   **Source:** `src/services/astrology/jaiminiAstrology.js` (✅ BEST: uses Swiss Ephemeris for accurate planetary positions, authentic Jaimini Karakas system).
-     *   **Target File:** `core/services/vedic/jaiminiAstrologyService.js`
+     *   **Target File:** `core/services/jaiminiAstrologyService.js`
      *   **Notes:** Dedicated service for Jaimini astrology using Swiss Ephemeris.
 
 24. `calculateJaiminiDashas`
      *   **Source:** `src/services/astrology/vedic/calculators/JaiminiAstrologyCalculator.js`, `src/services/astrology/calculators/JaiminiKarakaCalculator.js`.
-     *   **Target File:** `core/services/vedic/jaiminiDashasService.js`
+     *   **Target File:** `core/services/jaiminiDashasService.js`
      *   **Notes:** Dedicated service for Jaimini Dasha calculations.
 
 25. `calculateGochar`
      *   **Source:** `src/services/astrology/vedic/calculators/GocharCalculator.js`.
-     *   **Target File:** `core/services/vedic/gocharService.js`
+     *   **Target File:** `core/services/gocharService.js`
      *   **Notes:** Dedicated service for Gochar (transit) analysis.
 
 26. `calculateSolarReturn`
      *   **Source:** `src/services/astrology/vedic/calculators/SolarReturnCalculator.js`.
-     *   **Target File:** `core/services/vedic/solarReturnService.js`
+     *   **Target File:** `core/services/solarReturnService.js`
      *   **Notes:** Dedicated service for solar return calculations.
 
 27. `calculateLunarReturn`
      *   **Source:** `src/services/astrology/vedic/calculators/LunarReturnCalculator.js`.
-     *   **Target File:** `core/services/vedic/lunarReturnService.js`
+     *   **Target File:** `core/services/lunarReturnService.js`
      *   **Notes:** Dedicated service for lunar return calculations.
 
 28. `calculateVarshaphal`
      *   **Source:** `src/services/astrology/vedic/calculators/VarshaphalCalculator.js`.
-     *   **Target File:** `core/services/vedic/varshaphalService.js`
+     *   **Target File:** `core/services/varshaphalService.js`
      *   **Notes:** Dedicated service for Varshaphal calculations.
 
 29. `calculateSecondaryProgressions`
      *   **Source:** `src/services/astrology/vedic/calculators/SecondaryProgressionsCalculator.js`.
-     *   **Target File:** `core/services/vedic/secondaryProgressionsService.js`
+     *   **Target File:** `core/services/secondaryProgressionsService.js`
      *   **Notes:** Dedicated service for secondary progressions.
 
 30. `calculateSolarArcDirections`
      *   **Source:** `src/services/astrology/vedic/calculators/SolarArcDirectionsCalculator.js`.
-     *   **Target File:** `core/services/vedic/solarArcDirectionsService.js`
+     *   **Target File:** `core/services/solarArcDirectionsService.js`
      *   **Notes:** Dedicated service for solar arc directions.
 
 31. `calculateEnhancedSecondaryProgressions`
      *   **Source:** `src/services/astrology/vedic/calculators/SecondaryProgressionsCalculator.js` (likely an enhanced version within).
-     *   **Target File:** `core/services/vedic/enhancedSecondaryProgressionsService.js`
+     *   **Target File:** `core/services/enhancedSecondaryProgressionsService.js`
      *   **Notes:** Dedicated service for enhanced secondary progressions.
 
 32. `calculateEnhancedSolarArcDirections`
      *   **Source:** `src/services/astrology/vedic/calculators/SolarArcDirectionsCalculator.js` (likely an enhanced version within).
-     *   **Target File:** `core/services/vedic/enhancedSolarArcDirectionsService.js`
+     *   **Target File:** `core/services/enhancedSolarArcDirectionsService.js`
      *   **Notes:** Dedicated service for enhanced solar arc directions.
 
 33. `calculateNextSignificantTransits`
      *   **Source:** `src/services/astrology/vedic/calculators/SignificantTransitsCalculator.js`.
-     *   **Target File:** `core/services/vedic/significantTransitsService.js`
+     *   **Target File:** `core/services/significantTransitsService.js`
      *   **Notes:** Dedicated service for significant transits.
 
 34. `calculateAdvancedTransits`
      *   **Source:** `src/services/astrology/vedic/calculators/TransitCalculator.js`, `src/services/astrology/vedic/calculators/GocharCalculator.js`.
-     *   **Target File:** `core/services/vedic/advancedTransitsService.js`
+     *   **Target File:** `core/services/advancedTransitsService.js`
      *   **Notes:** Dedicated service for advanced transit calculations.
 
 35. `identifyMajorTransits`
      *   **Source:** `src/services/astrology/vedic/calculators/SignificantTransitsCalculator.js`.
-     *   **Target File:** `core/services/vedic/majorTransitsService.js`
+     *   **Target File:** `core/services/majorTransitsService.js`
      *   **Notes:** Dedicated service for identifying major transits.
 
 36. `generateTransitPreview`
      *   **Source:** `src/services/astrology/vedic/calculators/TransitCalculator.js`, `src/services/astrology/vedic/calculators/GocharCalculator.js`.
-     *   **Target File:** `core/services/vedic/transitPreviewService.js`
+     *   **Target File:** `core/services/transitPreviewService.js`
      *   **Notes:** Dedicated service for transit preview generation.
 
 37. `get_ashtakavarga_analysis`
      *   **Source:** `src/services/astrology/ashtakavarga.js` (✅ BEST: uses Swiss Ephemeris for precise planetary calculations, complete 64-point beneficial analysis system).
-     *   **Target File:** `core/services/vedic/ashtakavargaService.js`
+     *   **Target File:** `core/services/ashtakavargaService.js`
      *   **Notes:** Dedicated service for Ashtakavarga analysis using Swiss Ephemeris.
 
 38. `generateShadbala`
      *   **Source:** `src/services/astrology/vedic/calculators/ShadbalaCalculator.js`.
-     *   **Target File:** `core/services/vedic/shadbalaService.js`
+     *   **Target File:** `core/services/shadbalaService.js`
      *   **Notes:** Dedicated service for Shadbala calculations.
 
 39. `get_varga_charts_analysis`
      *   **Source:** `src/services/astrology/vargaCharts.js`, `src/services/astrology/vedic/calculators/VargaChartCalculator.js`.
-     *   **Target File:** `core/services/vedic/vargaChartsService.js`
+     *   **Target File:** `core/services/vargaChartsService.js`
      *   **Notes:** Dedicated service for Varga Charts analysis.
 
 40. `get_prashna_astrology_analysis`
      *   **Source:** `src/services/astrology/prashnaAstrology.js`, `src/services/astrology/vedic/calculators/PrashnaCalculator.js`.
-     *   **Target File:** `core/services/vedic/prashnaAstrologyService.js`
+     *   **Target File:** `core/services/prashnaAstrologyService.js`
      *   **Notes:** Dedicated service for Prashna Astrology analysis.
 
 41. `calculateVedicYogas`
      *   **Source:** `src/services/astrology/vedic/calculators/VedicYogasCalculator.js`.
-     *   **Target File:** `core/services/vedic/vedicYogasService.js`
+     *   **Target File:** `core/services/vedicYogasService.js`
      *   **Notes:** Dedicated service for Vedic Yogas calculations.
 
 42. `calculateAsteroids`
      *   **Source:** `src/services/astrology/vedic/calculators/AsteroidCalculator.js`.
-     *   **Target File:** `core/services/vedic/asteroidsService.js`
+     *   **Target File:** `core/services/asteroidsService.js`
      *   **Notes:** Dedicated service for asteroid calculations.
 
 43. `generateComprehensiveVedicAnalysis`
      *   **Source:** `src/services/astrology/vedic/calculators/ComprehensiveAnalysisCalculator.js`.
-     *   **Target File:** `core/services/vedic/comprehensiveVedicAnalysisService.js`
+     *   **Target File:** `core/services/comprehensiveVedicAnalysisService.js`
      *   **Notes:** Dedicated service for comprehensive Vedic analysis.
 
 44. `generateFutureSelfSimulator`
      *   **Source:** `src/services/astrology/vedic/calculators/FutureSelfSimulatorCalculator.js`.
-     *   **Target File:** `core/services/vedic/futureSelfSimulatorService.js`
+     *   **Target File:** `core/services/futureSelfSimulatorService.js`
      *   **Notes:** Dedicated service for future self simulation.
 
 45. `get_ayurvedic_astrology_analysis`
      *   **Source:** `src/services/astrology/ayurvedicAstrology.js`.
-     *   **Target File:** `core/services/vedic/ayurvedicAstrologyService.js`
+     *   **Target File:** `core/services/ayurvedicAstrologyService.js`
      *   **Notes:** Dedicated service for Ayurvedic astrology analysis.
 
 46. `generateLifePatterns`
      *   **Source:** `src/services/astrology/vedicCalculator.js.backup` - function generateLifePatterns(sunSign) starting at line 2226.
-     *   **Target File:** `core/services/vedic/lifePatternsService.js`
+     *   **Target File:** `core/services/lifePatternsService.js`
      *   **Notes:** Generates life pattern analysis based on sun sign with detailed characteristics.
 
 47. `get_panchang_analysis`
      *   **Source:** `src/services/astrology/panchang.js`, `src/services/astrology/vedic/calculators/PanchangCalculator.js`.
-     *   **Target File:** `core/services/vedic/panchangService.js`
+     *   **Target File:** `core/services/panchangService.js`
      *   **Notes:** Dedicated service for Panchang analysis.
 
 48. `get_muhurta_analysis`
      *   **Source:** `src/services/astrology/muhurta.js`, `src/services/astrology/vedic/calculators/MuhurtaCalculator.js`.
-     *   **Target File:** `core/services/vedic/muhurtaService.js`
+     *   **Target File:** `core/services/muhurtaService.js`
      *   **Notes:** Dedicated service for Muhurta analysis.
 
 49. `calculateAbhijitMuhurta`
      *   **Source:** `src/services/astrology/vedic/calculators/MuhurtaCalculator.js` (likely a function within).
-     *   **Target File:** `core/services/vedic/abhijitMuhurtaService.js`
+     *   **Target File:** `core/services/abhijitMuhurtaService.js`
      *   **Notes:** Dedicated service for Abhijit Muhurta calculations.
 
 50. `calculateRahukalam`
      *   **Source:** `src/services/astrology/vedic/calculators/MuhurtaCalculator.js` (likely a function within).
-     *   **Target File:** `core/services/vedic/rahukalamService.js`
+     *   **Target File:** `core/services/rahukalamService.js`
      *   **Notes:** Dedicated service for Rahukalam calculations.
 
 51. `calculateGulikakalam`
      *   **Source:** `src/services/astrology/vedic/calculators/MuhurtaCalculator.js` (likely a function within).
-     *   **Target File:** `core/services/vedic/gulikakalamService.js`
+     *   **Target File:** `core/services/gulikakalamService.js`
      *   **Notes:** Dedicated service for Gulikakalam calculations.
 
 52. `calculateCosmicEvents`
      *   **Source:** `src/services/astrology/vedic/calculators/CosmicEventsCalculator.js`.
-     *   **Target File:** `core/services/vedic/cosmicEventsService.js`
+     *   **Target File:** `core/services/cosmicEventsService.js`
      *   **Notes:** Dedicated service for cosmic events tracking.
 
 53. `generateEphemerisTable`
      *   **Source:** Needs to be identified. Might be a utility or part of a calculator.
-     *   **Target File:** `core/services/vedic/ephemerisService.js`
+     *   **Target File:** `core/services/ephemerisService.js`
      *   **Notes:** Dedicated service for ephemeris table generation.
 
 54. `calculateUpcomingSeasonalEvents`
      *   **Source:** `src/services/astrology/vedic/calculators/CosmicEventsCalculator.js` (likely a function within).
-     *   **Target File:** `core/services/vedic/seasonalEventsService.js`
+     *   **Target File:** `core/services/seasonalEventsService.js`
      *   **Notes:** Dedicated service for seasonal events calculations.
 
 55. `calculateUpcomingPlanetaryEvents`
      *   **Source:** `src/services/astrology/vedic/calculators/CosmicEventsCalculator.js` (likely a function within).
-     *   **Target File:** `core/services/vedic/planetaryEventsService.js`
+     *   **Target File:** `core/services/planetaryEventsService.js`
      *   **Notes:** Dedicated service for planetary events calculations.
 
 56. `get_vedic_remedies_info`
      *   **Source:** `src/services/astrology/vedicRemedies.js`, `src/services/astrology/vedic/calculators/RemedialMeasuresCalculator.js`.
-     *   **Target File:** `core/services/vedic/vedicRemediesService.js`
+     *   **Target File:** `core/services/vedicRemediesService.js`
      *   **Notes:** Dedicated service for Vedic remedies information.
 
 57. `generateKaalSarpDosha`
      *   **Source:** `src/services/astrology/vedic/calculators/KaalSarpDoshaCalculator.js`.
-     *   **Target File:** `core/services/vedic/kaalSarpDoshaService.js`
+     *   **Target File:** `core/services/kaalSarpDoshaService.js`
      *   **Notes:** Dedicated service for Kaal Sarp Dosha analysis.
 
 58. `generateSadeSatiAnalysis`
      *   **Source:** `src/services/astrology/vedic/calculators/SadeSatiCalculator.js`.
-     *   **Target File:** `core/services/vedic/sadeSatiService.js`
+     *   **Target File:** `core/services/sadeSatiService.js`
      *   **Notes:** Dedicated service for Sade Sati analysis.
 
 59. `generateWesternBirthChart`

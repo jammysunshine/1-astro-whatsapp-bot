@@ -131,21 +131,37 @@ astro-whatsapp-bot/
 
 ## 6. Microservices Readiness
 
-This architecture lays a solid foundation for a microservices transition:
+This architecture lays a solid foundation for a gradual microservices transition. The initial strategy will be to implement a **Modular Monolith**:
 
-1.  **Service Granularity:** The `core/services/` modules are already defined as distinct, cohesive units.
-2.  **Interface-Driven:** The `interfaces/` layer provides the necessary contracts for services to communicate, whether locally or over a network.
-3.  **Adapter Flexibility:** The `adapters/` can be easily modified to call external microservices (e.g., via HTTP/REST, gRPC) instead of local function calls.
+*   **Modular Monolith as Initial Deployment:** All ~90 unique astrological services (listed in [MICROSERVICES_LIST.md](MICROSERVICES_LIST.md)) will initially reside within a single deployable application. This provides the internal modularity and benefits of microservice-like structuring without the immediate operational overhead of a fully distributed system.
+*   **Granular Internal Structure:** Each unique astrological service, as identified in the menu, is implemented as a distinct, cohesive unit within the `core/services/` directory. This internal granularity is key.
 
-When transitioning, each `core/service` would become a separate microservice, exposing its API (defined by `interfaces/`). The `adapters/` would then be updated to consume these external microservices.
+This approach allows us to deploy and test a more manageable unit initially, proving functionality and user value with reduced operational complexity. When specific services require independent scaling, deployment, or development, they can be progressively "strangled" out of the modular monolith and deployed as standalone microservices.
 
-## 7. Implementation Steps (High-Level)
+1.  **Service Granularity:** Each unique astrological service (totaling ~90) is designed as a distinct, cohesive unit, representing a potential microservice boundary.
+2.  **Interface-Driven:** The `interfaces/` layer provides the necessary contracts for these services to communicate, whether locally within the monolith or eventually over a network.
+3.  **Adapter Flexibility:** The `adapters/` can be easily modified to call external microservices (e.g., via HTTP/REST, gRPC) once services are extracted, instead of local function calls.
+
+When transitioning, each of these ~90 services would become a separate microservice, exposing its API (defined by `interfaces/`). The `adapters/` would then be updated to consume these external microservices.
+
+## 7. Refactoring Guidelines
+
+To ensure a safe and iterative transition to this new architecture, the following refactoring guidelines will be strictly adhered to:
+
+1.  **Copy-First Approach:** Files will *never* be directly moved in the initial refactoring phase. Instead, relevant code (either entire files or specific functions/classes) will be **copied** from their original locations (e.g., `src/services/astrology/`) to their new, appropriate destinations within the `src/core/` structure.
+2.  **Refactor Copied Code:** The copied code will then be refactored to be pure, decoupled, and adhere to the principles of the `core/` layer (i.e., no dependencies on UI, adapters, or external systems). This includes creating necessary `interfaces/` definitions.
+3.  **Original Files Remain:** The original files will remain in their current locations and will continue to be used by the existing application logic. This ensures the application remains functional during the refactoring process.
+4.  **Iterative Integration:** Once a new `core/` service (or a set of related services) is fully refactored, thoroughly tested, and its corresponding `interfaces/` are defined, the `adapters/whatsapp/` layer will be updated to consume this new service via its `interfaces/`.
+5.  **Deprecation/Removal:** Only *after* a new `core/` service is fully integrated, tested, and confirmed to be working correctly in production (or a robust staging environment), will the original, corresponding file(s) in `src/services/astrology/` be marked for deprecation or safely removed. This minimizes risk and allows for a gradual transition.
+6.  **Focus on Small, Testable Increments:** Each refactoring step should be small, testable, and verifiable to ensure continuous functionality.
+
+## 8. Implementation Steps (High-Level)
 
 1.  Create the new directory structure within `src/`.
-2.  Carefully migrate existing astrological calculation logic into the appropriate `core/services/` files.
-3.  Identify and move all shared helper functions into `core/utils/`.
+2.  Carefully **copy** existing astrological calculation logic into the appropriate `core/services/` files and refactor them.
+3.  Identify and **copy** all shared helper functions into `core/utils/` and refactor them.
 4.  Define the necessary interfaces in `interfaces/`.
-5.  Refactor existing WhatsApp interaction code into `adapters/whatsapp/`, ensuring it uses the `interfaces/` layer.
+5.  Refactor existing WhatsApp interaction code into `adapters/whatsapp/`, ensuring it uses the new `interfaces/` layer.
 6.  Update the main `app.js` to initialize and connect these new layers.
 7.  Thoroughly test each layer and the integrated system.
 

@@ -1,44 +1,26 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-/**
- * SynastryAnalysisService - Performs detailed synastry analysis between two birth charts
- * Extends ServiceTemplate for consistent architecture and error handling
- * Uses SynastryEngine with Swiss Ephemeris for precise calculations
- */
+// Import calculator from legacy structure
+const { SynastryEngine } = require('../../services/astrology/compatibility/SynastryEngine');
+
 class SynastryAnalysisService extends ServiceTemplate {
   constructor() {
-    super('SynastryAnalysisService');
-    this.calculatorPath = '../../../services/astrology/compatibility/SynastryEngine';
+    super(new SynastryEngine());
+    this.serviceName = 'SynastryAnalysisService';
+    logger.info('SynastryAnalysisService initialized');
   }
 
-  async initialize() {
+  async processCalculation(chartData) {
     try {
-      await super.initialize();
-      logger.info('✅ SynastryAnalysisService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize SynastryAnalysisService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(chartData);
 
-  /**
-   * Perform complete synastry analysis between two charts
-   * @param {Object} params - Analysis parameters
-   * @param {Object} params.chart1 - First person's birth chart
-   * @param {Object} params.chart2 - Second person's birth chart
-   * @param {Object} params.options - Analysis options
-   * @returns {Object} Complete synastry analysis result
-   */
-  async performSynastryAnalysis(params) {
-    try {
-      this.validateParams(params, ['chart1', 'chart2']);
-      
-      const { chart1, chart2, options = {} } = params;
-      
+      const { chart1, chart2 } = chartData;
+
       // Use SynastryEngine for complete analysis
       const synastryResult = await this.calculator.performSynastryAnalysis(chart1, chart2);
-      
+
       // Add additional analysis layers
       const enhancedAnalysis = {
         ...synastryResult,
@@ -47,27 +29,11 @@ class SynastryAnalysisService extends ServiceTemplate {
         timingInsights: this.generateTimingInsights(synastryResult),
         recommendations: this.generateRelationshipRecommendations(synastryResult)
       };
-      
-      return {
-        success: true,
-        data: enhancedAnalysis,
-        metadata: {
-          calculationType: 'synastry_analysis',
-          timestamp: new Date().toISOString(),
-          analysisDepth: options.deepAnalysis ? 'comprehensive' : 'standard',
-          swissEphemeris: true
-        }
-      };
+
+      return enhancedAnalysis;
     } catch (error) {
-      logger.error('❌ Error in performSynastryAnalysis:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'synastry_analysis',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('SynastryAnalysisService calculation error:', error);
+      throw new Error(`Synastry analysis failed: ${error.message}`);
     }
   }
 
@@ -646,38 +612,38 @@ class SynastryAnalysisService extends ServiceTemplate {
     return summary;
   }
 
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          synastryAnalysis: true,
-          compatibilityFactors: true,
-          relationshipThemes: true,
-          timingInsights: true,
-          quickOverview: true
-        },
-        supportedAnalyses: [
-          'complete_synastry_analysis',
-          'compatibility_factors_analysis',
-          'relationship_themes_identification',
-          'timing_insights_generation',
-          'quick_synastry_overview'
-        ],
-        calculatorIntegration: {
-          engine: 'SynastryEngine',
-          swissEphemeris: true,
-          precision: 'high'
-        }
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(chartData) {
+    if (!chartData) {
+      throw new Error('Chart data is required');
     }
+
+    const required = ['chart1', 'chart2'];
+    for (const field of required) {
+      if (!chartData[field]) {
+        throw new Error(`${field} is required for synastry analysis`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['performSynastryAnalysis', 'getQuickSynastryOverview'],
+      dependencies: ['SynastryEngine']
+    };
   }
 }
 

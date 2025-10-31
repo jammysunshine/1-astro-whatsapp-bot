@@ -1,42 +1,26 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-/**
- * HinduFestivalsService - Provides comprehensive Hindu festival information and timing
- * Extends ServiceTemplate for consistent architecture and error handling
- * Uses HinduFestivals database with complete festival information
- */
+// Import calculator from legacy structure
+const { hinduFestivals } = require('../../services/astrology/hinduFestivals');
+
 class HinduFestivalsService extends ServiceTemplate {
   constructor() {
-    super('HinduFestivalsService');
-    this.calculatorPath = '../../../services/astrology/hinduFestivals';
+    super(new hinduFestivals());
+    this.serviceName = 'HinduFestivalsService';
+    logger.info('HinduFestivalsService initialized');
   }
 
-  async initialize() {
+  async processCalculation(festivalParams) {
     try {
-      await super.initialize();
-      logger.info('✅ HinduFestivalsService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize HinduFestivalsService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(festivalParams);
 
-  /**
-   * Get comprehensive Hindu festivals information
-   * @param {Object} params - Query parameters
-   * @param {string} params.timeframe - Timeframe for festivals (year, month, upcoming)
-   * @param {string} params.region - Regional preference (optional)
-   * @param {Array} params.festivals - Specific festivals to query (optional)
-   * @returns {Object} Festival information
-   */
-  async getHinduFestivalsInfo(params) {
-    try {
-      const { timeframe = 'upcoming', region, festivals } = params;
-      
+      const { timeframe = 'upcoming', region } = festivalParams;
+
       // Get festival data from HinduFestivals calculator
       const festivalData = this.calculator.getFestivals(timeframe, region);
-      
+
       // Enhance with additional analysis
       const enhancedData = {
         festivals: this.enhanceFestivalData(festivalData.festivals || festivalData),
@@ -45,28 +29,11 @@ class HinduFestivalsService extends ServiceTemplate {
         astrologicalSignificance: this.analyzeAstrologicalSignificance(festivalData),
         recommendations: this.generateFestivalRecommendations(festivalData)
       };
-      
-      return {
-        success: true,
-        data: enhancedData,
-        metadata: {
-          calculationType: 'hindu_festivals_info',
-          timestamp: new Date().toISOString(),
-          timeframe,
-          region: region || 'general',
-          festivalCount: enhancedData.festivals.length
-        }
-      };
+
+      return enhancedData;
     } catch (error) {
-      logger.error('❌ Error in getHinduFestivalsInfo:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'hindu_festivals_info',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('HinduFestivalsService calculation error:', error);
+      throw new Error(`Festival information retrieval failed: ${error.message}`);
     }
   }
 
@@ -638,39 +605,32 @@ class HinduFestivalsService extends ServiceTemplate {
   generateRegionalComparison(variations) { return { similarities: [], differences: [] }; }
   getRegionalRecommendations(variations) { return ['Respect local customs', 'Learn regional variations']; }
 
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          festivalInfo: true,
-          specificFestivalDetails: true,
-          upcomingFestivals: true,
-          festivalCalendar: true,
-          regionalVariations: true
-        },
-        supportedQueries: [
-          'comprehensive_festival_information',
-          'specific_festival_details',
-          'upcoming_festivals_timing',
-          'monthly_festival_calendar',
-          'regional_festival_variations'
-        ],
-        databaseStatus: {
-          totalFestivals: '50+ major festivals',
-          regionalCoverage: 'Pan-India with international variations',
-          updateFrequency: 'Annual with periodic updates',
-          accuracy: 'High - based on traditional panchang'
-        }
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(festivalParams) {
+    if (!festivalParams) {
+      throw new Error('Festival parameters are required');
     }
+
+    // Basic validation - timeframe is optional with default
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['getHinduFestivalsInfo', 'getSpecificFestivalDetails', 'getUpcomingFestivals'],
+      dependencies: ['hinduFestivals']
+    };
   }
 }
 

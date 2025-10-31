@@ -1,73 +1,41 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-/**
- * CoupleCompatibilityService - Analyzes compatibility between couples using synastry techniques
- * Extends ServiceTemplate for consistent architecture and error handling
- */
+// Import calculator from legacy structure
+const { SynastryEngine } = require('../../services/astrology/compatibility/SynastryEngine');
+
 class CoupleCompatibilityService extends ServiceTemplate {
   constructor() {
-    super('CoupleCompatibilityService');
-    this.calculatorPath = '../../../services/astrology/compatibility/SynastryEngine';
+    super(new SynastryEngine());
+    this.serviceName = 'CoupleCompatibilityService';
+    logger.info('CoupleCompatibilityService initialized');
   }
 
-  async initialize() {
+  async processCalculation(chartData) {
     try {
-      await super.initialize();
-      logger.info('✅ CoupleCompatibilityService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize CoupleCompatibilityService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(chartData);
 
-  /**
-   * Analyze compatibility between two partners
-   * @param {Object} params - Analysis parameters
-   * @param {Object} params.userChart - First person's birth chart
-   * @param {Object} params.partnerChart - Second person's birth chart
-   * @param {Object} params.options - Analysis options
-   * @returns {Object} Compatibility analysis result
-   */
-  async analyzeCoupleCompatibility(params) {
-    try {
-      this.validateParams(params, ['userChart', 'partnerChart']);
-      
-      const { userChart, partnerChart, options = {} } = params;
-      
+      const { userChart, partnerChart } = chartData;
+
       // Perform complete synastry analysis
       const synastryResult = await this.calculator.performSynastryAnalysis(userChart, partnerChart);
-      
+
       // Calculate overall compatibility score
       const compatibilityScore = this.calculateCompatibilityScore(synastryResult);
-      
+
       // Generate relationship insights
       const insights = this.generateRelationshipInsights(synastryResult, compatibilityScore);
-      
+
       return {
-        success: true,
-        data: {
-          synastryAnalysis: synastryResult,
-          compatibilityScore,
-          insights,
-          recommendations: this.generateRecommendations(synastryResult, compatibilityScore)
-        },
-        metadata: {
-          calculationType: 'couple_compatibility',
-          timestamp: new Date().toISOString(),
-          analysisDepth: options.deepAnalysis ? 'comprehensive' : 'standard'
-        }
+        synastryAnalysis: synastryResult,
+        compatibilityScore,
+        insights,
+        recommendations: this.generateRecommendations(synastryResult, compatibilityScore)
       };
     } catch (error) {
-      logger.error('❌ Error in analyzeCoupleCompatibility:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'couple_compatibility',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('CoupleCompatibilityService calculation error:', error);
+      throw new Error(`Couple compatibility analysis failed: ${error.message}`);
     }
   }
 
@@ -357,33 +325,38 @@ class CoupleCompatibilityService extends ServiceTemplate {
     return summary;
   }
 
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          coupleCompatibility: true,
-          synastryAnalysis: true,
-          compatibilityScoring: true,
-          quickAssessment: true,
-          relationshipInsights: true
-        },
-        supportedAnalyses: [
-          'full_compatibility_analysis',
-          'quick_compatibility_assessment',
-          'synastry_aspect_analysis',
-          'house_overlay_analysis',
-          'composite_chart_analysis'
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(chartData) {
+    if (!chartData) {
+      throw new Error('Chart data is required');
     }
+
+    const required = ['userChart', 'partnerChart'];
+    for (const field of required) {
+      if (!chartData[field]) {
+        throw new Error(`${field} is required for couple compatibility analysis`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['analyzeCoupleCompatibility', 'getQuickCompatibility'],
+      dependencies: ['SynastryEngine']
+    };
   }
 }
 

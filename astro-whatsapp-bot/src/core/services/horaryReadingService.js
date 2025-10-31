@@ -1,45 +1,26 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-/**
- * HoraryReadingService - Provides horary astrology readings for specific questions
- * Extends ServiceTemplate for consistent architecture and error handling
- * Uses HoraryCalculator with Swiss Ephemeris for precise chart casting
- */
+// Import calculator from legacy structure
+const { HoraryCalculator } = require('../../services/astrology/horary/HoraryCalculator');
+
 class HoraryReadingService extends ServiceTemplate {
   constructor() {
-    super('HoraryReadingService');
-    this.calculatorPath = '../../../services/astrology/horary/HoraryCalculator';
+    super(new HoraryCalculator());
+    this.serviceName = 'HoraryReadingService';
+    logger.info('HoraryReadingService initialized');
   }
 
-  async initialize() {
+  async processCalculation(questionData) {
     try {
-      await super.initialize();
-      logger.info('✅ HoraryReadingService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize HoraryReadingService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(questionData);
 
-  /**
-   * Perform horary reading for a specific question
-   * @param {Object} params - Reading parameters
-   * @param {string} params.question - The question being asked
-   * @param {string} params.questionTime - Time when question was asked (DD/MM/YYYY HH:MM format)
-   * @param {Object} params.location - Location where question was asked
-   * @param {Object} params.options - Reading options
-   * @returns {Object} Complete horary reading
-   */
-  async getHoraryReading(params) {
-    try {
-      this.validateParams(params, ['question', 'questionTime']);
-      
-      const { question, questionTime, location = {}, options = {} } = params;
-      
+      const { question, questionTime, location = {} } = questionData;
+
       // Cast horary chart using calculator
       const horaryChart = await this.calculator.castHoraryChart(questionTime, location);
-      
+
       // Analyze the question and chart
       const readingAnalysis = {
         question: {
@@ -56,29 +37,11 @@ class HoraryReadingService extends ServiceTemplate {
         recommendations: this.generateRecommendations(horaryChart, question),
         followUpQuestions: this.generateFollowUpQuestions(horaryChart, question)
       };
-      
-      return {
-        success: true,
-        data: readingAnalysis,
-        metadata: {
-          calculationType: 'horary_reading',
-          timestamp: new Date().toISOString(),
-          questionTime,
-          location: location.city || 'Unknown',
-          questionCategory: readingAnalysis.question.category,
-          swissEphemeris: true
-        }
-      };
+
+      return readingAnalysis;
     } catch (error) {
-      logger.error('❌ Error in getHoraryReading:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'horary_reading',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('HoraryReadingService calculation error:', error);
+      throw new Error(`Horary reading failed: ${error.message}`);
     }
   }
 
@@ -790,41 +753,38 @@ class HoraryReadingService extends ServiceTemplate {
   evaluateChartRadicality(horaryChart) { return 'radical'; }
   generateValidationRecommendations(validation) { return ['Recommendation 1']; }
 
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          horaryReading: true,
-          quickAnswer: true,
-          relationshipAnalysis: true,
-          careerAnalysis: true,
-          financialAnalysis: true,
-          chartValidation: true
-        },
-        supportedAnalyses: [
-          'complete_horary_reading',
-          'quick_horary_answer',
-          'relationship_horary_analysis',
-          'career_horary_analysis',
-          'financial_horary_analysis',
-          'horary_chart_validation'
-        ],
-        calculationMethods: {
-          swissEphemeris: true,
-          houseSystems: ['Placidus', 'Koch', 'Equal'],
-          aspects: ['major', 'minor', 'antiscia'],
-          timing: ['planetary_hours', 'lunar_mansions', 'planetary_periods']
-        }
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(questionData) {
+    if (!questionData) {
+      throw new Error('Question data is required');
     }
+
+    const required = ['question', 'questionTime'];
+    for (const field of required) {
+      if (!questionData[field]) {
+        throw new Error(`${field} is required for horary reading`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['getHoraryReading', 'getQuickHoraryAnswer', 'getRelationshipHoraryAnalysis'],
+      dependencies: ['HoraryCalculator']
+    };
   }
 }
 

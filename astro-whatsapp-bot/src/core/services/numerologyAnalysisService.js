@@ -1,44 +1,26 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-/**
- * NumerologyAnalysisService - Provides comprehensive numerology analysis and reports
- * Extends ServiceTemplate for consistent architecture and error handling
- * Uses numerologyService calculator with complete numerology system
- */
+// Import calculator from legacy structure
+const { numerologyService } = require('../../services/astrology/numerologyService');
+
 class NumerologyAnalysisService extends ServiceTemplate {
   constructor() {
-    super('NumerologyAnalysisService');
-    this.calculatorPath = '../../../services/astrology/numerologyService';
+    super(new numerologyService());
+    this.serviceName = 'NumerologyAnalysisService';
+    logger.info('NumerologyAnalysisService initialized');
   }
 
-  async initialize() {
+  async processCalculation(personData) {
     try {
-      await super.initialize();
-      logger.info('✅ NumerologyAnalysisService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize NumerologyAnalysisService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(personData);
 
-  /**
-   * Perform comprehensive numerology analysis
-   * @param {Object} params - Analysis parameters
-   * @param {string} params.fullName - Full name for analysis
-   * @param {string} params.birthDate - Birth date (DD/MM/YYYY format)
-   * @param {Object} params.options - Analysis options
-   * @returns {Object} Complete numerology analysis
-   */
-  async getNumerologyAnalysis(params) {
-    try {
-      this.validateParams(params, ['fullName', 'birthDate']);
-      
-      const { fullName, birthDate, options = {} } = params;
-      
+      const { fullName, birthDate } = personData;
+
       // Use numerologyService calculator for comprehensive analysis
       const numerologyData = await this.calculator.calculateNumerology(fullName, birthDate);
-      
+
       // Enhance with additional analysis layers
       const enhancedAnalysis = {
         ...numerologyData,
@@ -53,28 +35,11 @@ class NumerologyAnalysisService extends ServiceTemplate {
         challenges: this.identifyChallenges(numerologyData),
         recommendations: this.generateRecommendations(numerologyData)
       };
-      
-      return {
-        success: true,
-        data: enhancedAnalysis,
-        metadata: {
-          calculationType: 'numerology_analysis',
-          timestamp: new Date().toISOString(),
-          analysisDepth: options.deepAnalysis ? 'comprehensive' : 'standard',
-          nameLength: fullName.length,
-          birthDate: birthDate
-        }
-      };
+
+      return enhancedAnalysis;
     } catch (error) {
-      logger.error('❌ Error in getNumerologyAnalysis:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'numerology_analysis',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('NumerologyAnalysisService calculation error:', error);
+      throw new Error(`Numerology analysis failed: ${error.message}`);
     }
   }
 
@@ -665,42 +630,38 @@ class NumerologyAnalysisService extends ServiceTemplate {
   analyzeNameChanges(fullName, nameData) { return 'Name change analysis'; }
   analyzeNameCompatibility(nameData) { return 'Good name compatibility'; }
 
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          numerologyAnalysis: true,
-          lifePathAnalysis: true,
-          nameAnalysis: true,
-          compatibilityAnalysis: true,
-          yearlyPredictions: true,
-          masterNumberAnalysis: true
-        },
-        supportedCalculations: [
-          'comprehensive_numerology_analysis',
-          'life_path_number_analysis',
-          'name_numerology_analysis',
-          'numerology_compatibility',
-          'yearly_predictions',
-          'master_number_analysis'
-        ],
-        calculationMethods: {
-          pythagoreanSystem: true,
-          chaldeanSystem: false,
-          masterNumbers: true,
-          karmicDebts: true,
-          personalYears: true
-        }
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(personData) {
+    if (!personData) {
+      throw new Error('Person data is required');
     }
+
+    const required = ['fullName', 'birthDate'];
+    for (const field of required) {
+      if (!personData[field]) {
+        throw new Error(`${field} is required for numerology analysis`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['getNumerologyAnalysis', 'getLifePathAnalysis', 'getNameAnalysis'],
+      dependencies: ['numerologyService']
+    };
   }
 }
 

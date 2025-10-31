@@ -13,7 +13,7 @@ const { MuhurtaCalculator } = require('../../../services/astrology/vedic/calcula
  */
 class CalendarTimingService extends ServiceTemplate {
   constructor() {
-    super(new MuhurtaCalculator());
+    super('ucalendarTimingService'));
     this.serviceName = 'CalendarTimingService';
     logger.info('CalendarTimingService initialized');
   }
@@ -277,6 +277,26 @@ class CalendarTimingService extends ServiceTemplate {
       methods: ['execute', 'getCalendarTimingAnalysis'],
       dependencies: ['MuhurtaCalculator', 'PanchangCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

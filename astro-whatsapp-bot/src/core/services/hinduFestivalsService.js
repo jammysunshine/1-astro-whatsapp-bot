@@ -6,7 +6,7 @@ const { hinduFestivals } = require('../../services/astrology/hinduFestivals');
 
 class HinduFestivalsService extends ServiceTemplate {
   constructor() {
-    super(new hinduFestivals());
+    super('uhinduFestivalsService'));
     this.serviceName = 'HinduFestivalsService';
     logger.info('HinduFestivalsService initialized');
   }
@@ -631,6 +631,26 @@ class HinduFestivalsService extends ServiceTemplate {
       methods: ['getHinduFestivalsInfo', 'getSpecificFestivalDetails', 'getUpcomingFestivals'],
       dependencies: ['hinduFestivals']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

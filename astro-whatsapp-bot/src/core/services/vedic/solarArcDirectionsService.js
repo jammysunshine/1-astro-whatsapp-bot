@@ -11,7 +11,7 @@ const { SolarArcDirectionsCalculator } = require('../../../services/astrology/ve
  */
 class SolarArcDirectionsService extends ServiceTemplate {
   constructor() {
-    super(new SolarArcDirectionsCalculator());
+    super('usolarArcDirectionsService'));
     this.serviceName = 'SolarArcDirectionsService';
     logger.info('SolarArcDirectionsService initialized');
   }
@@ -483,6 +483,26 @@ class SolarArcDirectionsService extends ServiceTemplate {
       Sextile: 'Medium - Support available'
     };
     return significance[aspect.aspect] || 'Moderate significance';
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

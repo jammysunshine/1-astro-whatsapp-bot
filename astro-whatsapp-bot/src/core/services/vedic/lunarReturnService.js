@@ -12,7 +12,7 @@ const { LunarReturnCalculator } = require('../../../services/astrology/vedic/cal
  */
 class LunarReturnService extends ServiceTemplate {
   constructor() {
-    super(new LunarReturnCalculator());
+    super('ulunarReturnService'));
     this.serviceName = 'LunarReturnService';
     logger.info('LunarReturnService initialized');
   }
@@ -483,6 +483,26 @@ class LunarReturnService extends ServiceTemplate {
       12: 'Spiritual development and inner work'
     };
     return focuses[house] || 'Personal development';
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

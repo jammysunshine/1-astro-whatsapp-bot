@@ -6,7 +6,7 @@ const { SynastryEngine } = require('../../services/astrology/compatibility/Synas
 
 class SynastryAnalysisService extends ServiceTemplate {
   constructor() {
-    super(new SynastryEngine());
+    super('usynastryAnalysisService'));
     this.serviceName = 'SynastryAnalysisService';
     logger.info('SynastryAnalysisService initialized');
   }
@@ -644,6 +644,26 @@ class SynastryAnalysisService extends ServiceTemplate {
       methods: ['performSynastryAnalysis', 'getQuickSynastryOverview'],
       dependencies: ['SynastryEngine']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

@@ -11,7 +11,7 @@ const { CompatibilityCalculator } = require('../../../services/astrology/vedic/c
  */
 class DavisonChartService extends ServiceTemplate {
   constructor() {
-    super(new CompatibilityCalculator());
+    super('udavisonChartService'));
     this.serviceName = 'DavisonChartService';
     logger.info('DavisonChartService initialized');
   }
@@ -735,6 +735,26 @@ class DavisonChartService extends ServiceTemplate {
   }
 
 
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = DavisonChartService;

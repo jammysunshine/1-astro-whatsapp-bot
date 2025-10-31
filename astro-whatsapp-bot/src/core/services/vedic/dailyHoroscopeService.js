@@ -12,7 +12,7 @@ const { DailyHoroscopeCalculator } = require('../../../services/astrology/vedic/
  */
 class DailyHoroscopeService extends ServiceTemplate {
   constructor() {
-    super(new DailyHoroscopeCalculator());
+    super('udailyHoroscopeService'));
     this.serviceName = 'DailyHoroscopeService';
     logger.info('DailyHoroscopeService initialized');
   }
@@ -286,6 +286,26 @@ class DailyHoroscopeService extends ServiceTemplate {
       methods: ['execute', 'getHoroscopeForDate', 'getTodaysHoroscope', 'getWeeklyHoroscope'],
       dependencies: ['DailyHoroscopeCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

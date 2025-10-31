@@ -11,7 +11,7 @@ const { WesternProgressionCalculator } = require('../../../services/astrology/we
  */
 class WesternProgressionsService extends ServiceTemplate {
   constructor() {
-    super(new WesternProgressionCalculator());
+    super('uwesternProgressionsService'));
     this.serviceName = 'WesternProgressionsService';
     logger.info('WesternProgressionsService initialized');
   }
@@ -95,6 +95,26 @@ class WesternProgressionsService extends ServiceTemplate {
       supportedProgressions: ['secondary', 'solar_arc'],
       status: 'active'
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

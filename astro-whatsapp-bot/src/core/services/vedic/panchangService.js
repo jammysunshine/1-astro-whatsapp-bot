@@ -12,7 +12,7 @@ const { Panchang } = require('../../../services/astrology/panchang');
  */
 class PanchangService extends ServiceTemplate {
   constructor() {
-    super(new Panchang());
+    super('upanchangService'));
     this.serviceName = 'PanchangService';
     logger.info('PanchangService initialized');
   }
@@ -165,6 +165,26 @@ class PanchangService extends ServiceTemplate {
       methods: ['execute', 'getTodaysPanchang', 'getPanchangForDate'],
       dependencies: ['Panchang']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

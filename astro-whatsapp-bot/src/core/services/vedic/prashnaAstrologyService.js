@@ -11,7 +11,7 @@ const { PrashnaCalculator } = require('../../../services/astrology/vedic/calcula
  */
 class PrashnaAstrologyService extends ServiceTemplate {
   constructor() {
-    super(new PrashnaCalculator());
+    super('uprashnaAstrologyService'));
     this.serviceName = 'PrashnaAstrologyService';
     logger.info('PrashnaAstrologyService initialized');
   }
@@ -738,6 +738,26 @@ class PrashnaAstrologyService extends ServiceTemplate {
       methods: ['execute', 'findQuestionTiming', 'analyzeQuestionCategory', 'getDetailedInterpretation', 'compareQuestions', 'getDecisionGuidance'],
       dependencies: ['PrashnaCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

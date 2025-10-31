@@ -6,7 +6,7 @@ const { PoliticalAstrology } = require('../../services/astrology/mundane/Politic
 
 class MundaneAstrologyService extends ServiceTemplate {
   constructor() {
-    super(new PoliticalAstrology());
+    super('umundaneAstrologyService'));
     this.serviceName = 'MundaneAstrologyService';
     logger.info('MundaneAstrologyService initialized');
   }
@@ -494,6 +494,26 @@ class MundaneAstrologyService extends ServiceTemplate {
       methods: ['analyzePoliticalClimate', 'analyzeGlobalTrends', 'predictPoliticalEvents'],
       dependencies: ['PoliticalAstrology']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

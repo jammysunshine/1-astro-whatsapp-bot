@@ -11,7 +11,7 @@ const { SolarReturnCalculator } = require('../../../services/astrology/vedic/cal
  */
 class SolarReturnService extends ServiceTemplate {
   constructor() {
-    super(new SolarReturnCalculator());
+    super('usolarReturnService'));
     this.serviceName = 'SolarReturnService';
     logger.info('SolarReturnService initialized');
   }
@@ -415,6 +415,26 @@ class SolarReturnService extends ServiceTemplate {
   _predictFinance(solarReturn) { return 'Financial stability with potential for growth'; }
   _predictHealth(solarReturn) { return 'Focus on well-being and healthy lifestyle choices'; }
   _predictPersonal(solarReturn) { return 'Personal growth and self-discovery'; }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = SolarReturnService;

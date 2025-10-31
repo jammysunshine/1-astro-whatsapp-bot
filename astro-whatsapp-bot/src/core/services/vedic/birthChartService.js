@@ -7,7 +7,7 @@ const { ChartGenerator } = require('../../../services/astrology/vedic/calculator
 
 class BirthChartService extends ServiceTemplate {
   constructor() {
-    super(new ChartGenerator());
+    super('ubirthChartService'));
     this.serviceName = 'BirthChartService';
     logger.info('BirthChartService initialized');
   }
@@ -65,6 +65,26 @@ class BirthChartService extends ServiceTemplate {
       methods: ['generateVedicKundli'],
       dependencies: ['ChartGenerator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

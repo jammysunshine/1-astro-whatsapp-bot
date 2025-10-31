@@ -6,7 +6,7 @@ const { numerologyService } = require('../../services/astrology/numerologyServic
 
 class NumerologyAnalysisService extends ServiceTemplate {
   constructor() {
-    super(new numerologyService());
+    super('unumerologyAnalysisService'));
     this.serviceName = 'NumerologyAnalysisService';
     logger.info('NumerologyAnalysisService initialized');
   }
@@ -662,6 +662,26 @@ class NumerologyAnalysisService extends ServiceTemplate {
       methods: ['getNumerologyAnalysis', 'getLifePathAnalysis', 'getNameAnalysis'],
       dependencies: ['numerologyService']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

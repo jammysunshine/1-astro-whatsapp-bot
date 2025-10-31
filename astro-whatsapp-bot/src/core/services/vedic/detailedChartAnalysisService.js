@@ -12,7 +12,7 @@ const { DetailedChartAnalysisCalculator } = require('../../../services/astrology
  */
 class DetailedChartAnalysisService extends ServiceTemplate {
   constructor() {
-    super(new DetailedChartAnalysisCalculator());
+    super('udetailedChartAnalysisService'));
     this.serviceName = 'DetailedChartAnalysisService';
     logger.info('DetailedChartAnalysisService initialized');
   }
@@ -358,6 +358,26 @@ class DetailedChartAnalysisService extends ServiceTemplate {
       methods: ['execute', 'generateDetailedChartAnalysis'],
       dependencies: ['DetailedChartAnalysisCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

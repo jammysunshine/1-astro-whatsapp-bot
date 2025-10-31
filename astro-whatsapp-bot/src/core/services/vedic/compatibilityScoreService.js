@@ -12,7 +12,7 @@ const { CompatibilityScorer } = require('../../../services/astrology/compatibili
  */
 class CompatibilityScoreService extends ServiceTemplate {
   constructor() {
-    super(new CompatibilityScorer());
+    super('ucompatibilityScoreService'));
     this.serviceName = 'CompatibilityScoreService';
     logger.info('CompatibilityScoreService initialized');
   }
@@ -304,6 +304,26 @@ class CompatibilityScoreService extends ServiceTemplate {
       methods: ['execute', 'calculateCompatibilityScore'],
       dependencies: ['CompatibilityScorer']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

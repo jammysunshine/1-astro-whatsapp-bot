@@ -11,7 +11,7 @@ const { WesternSolarReturnCalculator } = require('../../../services/astrology/we
  */
 class WesternSolarReturnService extends ServiceTemplate {
   constructor() {
-    super(new WesternSolarReturnCalculator());
+    super('uwesternSolarReturnService'));
     this.serviceName = 'WesternSolarReturnService';
     logger.info('WesternSolarReturnService initialized');
   }
@@ -93,6 +93,26 @@ class WesternSolarReturnService extends ServiceTemplate {
       zodiacType: 'tropical',
       status: 'active'
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

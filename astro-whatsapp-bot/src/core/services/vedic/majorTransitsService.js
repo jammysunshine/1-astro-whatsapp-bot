@@ -6,7 +6,7 @@ const { SignificantTransitsCalculator } = require('../../../services/astrology/v
 
 class MajorTransitsService extends ServiceTemplate {
   constructor() {
-    super(new SignificantTransitsCalculator());
+    super('umajorTransitsService'));
     this.serviceName = 'MajorTransitsService';
     logger.info('MajorTransitsService initialized');
   }
@@ -245,6 +245,26 @@ class MajorTransitsService extends ServiceTemplate {
       methods: ['identifyMajorTransits', 'getCurrentMajorTransits', 'getUpcomingMajorTransits'],
       dependencies: ['SignificantTransitsCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

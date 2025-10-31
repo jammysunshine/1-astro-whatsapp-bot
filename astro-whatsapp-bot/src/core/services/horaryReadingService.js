@@ -6,7 +6,7 @@ const { HoraryCalculator } = require('../../services/astrology/horary/HoraryCalc
 
 class HoraryReadingService extends ServiceTemplate {
   constructor() {
-    super(new HoraryCalculator());
+    super('uhoraryReadingService'));
     this.serviceName = 'HoraryReadingService';
     logger.info('HoraryReadingService initialized');
   }
@@ -785,6 +785,26 @@ class HoraryReadingService extends ServiceTemplate {
       methods: ['getHoraryReading', 'getQuickHoraryAnswer', 'getRelationshipHoraryAnalysis'],
       dependencies: ['HoraryCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

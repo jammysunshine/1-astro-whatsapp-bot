@@ -6,7 +6,7 @@ const { AsteroidCalculator } = require('../../../services/astrology/vedic/calcul
 
 class AsteroidsService extends ServiceTemplate {
   constructor() {
-    super(new AsteroidCalculator());
+    super('uasteroidsService'));
     this.serviceName = 'AsteroidsService';
     logger.info('AsteroidsService initialized');
   }
@@ -314,6 +314,26 @@ class AsteroidsService extends ServiceTemplate {
       methods: ['calculateAsteroidPositions', 'analyzeAsteroidAspects', 'calculateAsteroidTransits'],
       dependencies: ['AsteroidCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

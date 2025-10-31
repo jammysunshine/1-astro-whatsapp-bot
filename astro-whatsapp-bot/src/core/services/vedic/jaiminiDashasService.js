@@ -6,7 +6,7 @@ const { JaiminiCalculator } = require('../../../services/astrology/vedic/calcula
 
 class JaiminiDashasService extends ServiceTemplate {
   constructor() {
-    super(new JaiminiCalculator());
+    super('ujaiminiDashasService'));
     this.serviceName = 'JaiminiDashasService';
     logger.info('JaiminiDashasService initialized');
   }
@@ -201,6 +201,26 @@ class JaiminiDashasService extends ServiceTemplate {
       methods: ['calculateJaiminiDashas', 'getCurrentJaiminiDasha', 'getUpcomingJaiminiDashas'],
       dependencies: ['JaiminiCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

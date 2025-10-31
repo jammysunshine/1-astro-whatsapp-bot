@@ -11,7 +11,7 @@ const { WesternTransitCalculator } = require('../../../services/astrology/wester
  */
 class WesternTransitsService extends ServiceTemplate {
   constructor() {
-    super(new WesternTransitCalculator());
+    super('uwesternTransitsService'));
     this.serviceName = 'WesternTransitsService';
     logger.info('WesternTransitsService initialized');
   }
@@ -93,6 +93,26 @@ class WesternTransitsService extends ServiceTemplate {
       zodiacType: 'tropical',
       status: 'active'
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

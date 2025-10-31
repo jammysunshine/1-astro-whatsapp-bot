@@ -6,7 +6,7 @@ const { TransitCalculator } = require('../../../services/astrology/vedic/calcula
 
 class AdvancedTransitsService extends ServiceTemplate {
   constructor() {
-    super(new TransitCalculator());
+    super('uadvancedTransitsService'));
     this.serviceName = 'AdvancedTransitsService';
     logger.info('AdvancedTransitsService initialized');
   }
@@ -249,6 +249,26 @@ class AdvancedTransitsService extends ServiceTemplate {
       methods: ['calculateAdvancedTransits', 'calculateTransitAspects', 'calculateTransitReturns'],
       dependencies: ['TransitCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

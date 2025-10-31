@@ -13,7 +13,7 @@ const { DashaAnalysisCalculator } = require('../../../services/astrology/vedic/c
  */
 class DashaPredictiveService extends ServiceTemplate {
   constructor() {
-    super(new DashaAnalysisCalculator());
+    super('udashaPredictiveService'));
     this.serviceName = 'DashaPredictiveService';
     logger.info('DashaPredictiveService initialized');
   }
@@ -807,6 +807,26 @@ class DashaPredictiveService extends ServiceTemplate {
       methods: ['execute', 'getDashaPredictiveAnalysis'],
       dependencies: ['DashaAnalysisCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

@@ -49,6 +49,14 @@ const SynastryAnalysisService = require('../synastryAnalysisService');
 const HinduFestivalsService = require('../hinduFestivalsService');
 const NumerologyAnalysisService = require('../numerologyAnalysisService');
 const HoraryReadingService = require('../horaryReadingService');
+// New service implementation
+const ComprehensiveVedicAnalysisService = require('./comprehensiveVedicAnalysisService');
+const FutureSelfSimulatorService = require('./futureSelfSimulatorService');
+const LifePatternsService = require('./lifePatternsService');
+const FinancialAstrologyService = require('./financialAstrologyService');
+const NumerologyReportService = require('./numerologyReportService');
+const FixedStarsService = require('./fixedStarsService');
+const CareerAstrologyService = require('./careerAstrologyService');
 // Add exports for all other Vedic services as they are implemented
 
 module.exports = {
@@ -103,5 +111,13 @@ module.exports = {
   HinduFestivalsService,
   NumerologyAnalysisService,
   HoraryReadingService,
+  // New service implementation
+  ComprehensiveVedicAnalysisService,
+  FutureSelfSimulatorService,
+  LifePatternsService,
+  FinancialAstrologyService,
+  NumerologyReportService,
+  FixedStarsService,
+  CareerAstrologyService,
   // Add all other Vedic services here
 };

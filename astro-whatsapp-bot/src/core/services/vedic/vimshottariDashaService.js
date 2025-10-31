@@ -7,7 +7,7 @@ const { DashaAnalysisCalculator } = require('../../../services/astrology/vedic/c
 
 class VimshottariDashaService extends ServiceTemplate {
   constructor() {
-    super(new DashaAnalysisCalculator());
+    super('uvimshottariDashaService'));
     this.serviceName = 'VimshottariDashaService';
     logger.info('VimshottariDashaService initialized');
   }
@@ -65,6 +65,26 @@ class VimshottariDashaService extends ServiceTemplate {
       methods: ['getCurrentDasha', 'getDashaPredictions'],
       dependencies: ['DashaAnalysisCalculator']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

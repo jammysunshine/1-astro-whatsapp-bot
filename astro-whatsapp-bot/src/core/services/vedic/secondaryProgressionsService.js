@@ -11,7 +11,7 @@ const { SecondaryProgressionsCalculator } = require('../../../services/astrology
  */
 class SecondaryProgressionsService extends ServiceTemplate {
   constructor() {
-    super(new SecondaryProgressionsCalculator());
+    super('usecondaryProgressionsService'));
     this.serviceName = 'SecondaryProgressionsService';
     logger.info('SecondaryProgressionsService initialized');
   }
@@ -493,6 +493,26 @@ class SecondaryProgressionsService extends ServiceTemplate {
       Pluto: 'Transformation and power change'
     };
     return significances[ingress.planet] || 'Life area change';
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

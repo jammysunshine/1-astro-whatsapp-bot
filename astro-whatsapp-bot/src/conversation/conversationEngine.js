@@ -214,18 +214,18 @@ const processFlowMessage = async(message, user, flowId) => {
     let session;
     if (!existingSession) {
     // Initialize new session
-    const flow = getFlow(flowId);
-    if (!flow) {
-      await sendMessage(user.phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
-      await deleteUserSession(user.phoneNumber);
-      return false;
-    }
+      const flow = getFlow(flowId);
+      if (!flow) {
+        await sendMessage(user.phoneNumber, 'I\'m sorry, I encountered an internal error. Please try again later.');
+        await deleteUserSession(user.phoneNumber);
+        return false;
+      }
 
-    session = {
-      currentFlow: flowId,
-      currentStep: flow.start_step || 'start', // Provide fallback for start_step
-      flowData: {}
-    };
+      session = {
+        currentFlow: flowId,
+        currentStep: flow.start_step || 'start', // Provide fallback for start_step
+        flowData: {}
+      };
       await setUserSession(user.phoneNumber, session);
     } else {
       session = existingSession;

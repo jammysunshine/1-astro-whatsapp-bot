@@ -171,12 +171,10 @@ class RelationshipInsightsGenerator {
       return strengths.some(s => s.includes('emotional') || s.includes('communication')) ?
         'Your relationship has excellent foundations. Focus on nurturing your natural emotional and communicative connections while gently addressing areas needing attention.' :
         'Your relationship enjoys natural harmony. Continue building on your planetary supports while navigating challenges with patience.';
-
     } else if (challengeCount > 0) {
       return strengths.length > 0 ?
         'This relationship offers powerful growth opportunities. Approach challenges with commitment while nurturing your points of natural connection.' :
         'This connection provides significant learning opportunities. Professional astrological guidance can help navigate the transformative journey ahead.';
-
     } else {
       return 'Your planetary connections suggest complementary energies that create a balanced partnership. Continue building mutual understanding and support.';
     }

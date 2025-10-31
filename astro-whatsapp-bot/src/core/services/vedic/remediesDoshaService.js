@@ -7,7 +7,7 @@
  */
 
 const vedicRemedies = require('../../../services/astrology/vedicRemedies');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class RemediesDoshaService {
   constructor() {
@@ -30,7 +30,6 @@ class RemediesDoshaService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('RemediesDoshaService error:', error);
       throw new Error(`Remedies and dosha analysis failed: ${error.message}`);
@@ -99,7 +98,7 @@ class RemediesDoshaService {
 
       planets.forEach(planetKey => {
         const planet = birthData[planetKey];
-        if (!planet) return;
+        if (!planet) { return; }
 
         const planetName = planetKey.charAt(0).toUpperCase() + planetKey.slice(1);
         const analysis = this._analyzePlanetAffliction(planet, planetName, birthData);
@@ -125,7 +124,7 @@ class RemediesDoshaService {
       const totalAfflictions = afflictions.weakPlanets.length + afflictions.afflictedPlanets.length +
                               afflictions.combustPlanets.length;
       afflictions.severity = totalAfflictions > 5 ? 'High' :
-                           totalAfflictions > 2 ? 'Medium' : 'Low';
+        totalAfflictions > 2 ? 'Medium' : 'Low';
 
       return afflictions;
     } catch (error) {
@@ -216,7 +215,7 @@ class RemediesDoshaService {
         dosha && typeof dosha === 'object' && dosha.isPresent
       );
       doshaAnalysis.overallSeverity = activeDoshas.length > 2 ? 'High' :
-                                    activeDoshas.length > 0 ? 'Medium' : 'Low';
+        activeDoshas.length > 0 ? 'Medium' : 'Low';
 
       return doshaAnalysis;
     } catch (error) {
@@ -242,7 +241,7 @@ class RemediesDoshaService {
       planets.forEach(planet => {
         const planetLong = birthData[planet]?.longitude || 0;
         const isBetween = this._isBetweenRahuKetu(planetLong, rahuLong, ketuLong);
-        if (!isBetween) allBetween = false;
+        if (!isBetween) { allBetween = false; }
       });
 
       return {
@@ -521,8 +520,8 @@ class RemediesDoshaService {
 
   _isDebilitated(planet, sign) {
     const debilitation = {
-      'Sun': 'Libra', 'Moon': 'Scorpio', 'Mars': 'Cancer',
-      'Mercury': 'Pisces', 'Jupiter': 'Capricorn', 'Venus': 'Virgo', 'Saturn': 'Aries'
+      Sun: 'Libra', Moon: 'Scorpio', Mars: 'Cancer',
+      Mercury: 'Pisces', Jupiter: 'Capricorn', Venus: 'Virgo', Saturn: 'Aries'
     };
     return debilitation[planet] === sign;
   }
@@ -533,7 +532,7 @@ class RemediesDoshaService {
   }
 
   _isCombust(planet, sun) {
-    if (!sun || !planet.longitude) return false;
+    if (!sun || !planet.longitude) { return false; }
     const distance = Math.abs(planet.longitude - sun.longitude);
     return distance <= 8.5; // Within 8.5 degrees of Sun
   }
@@ -546,13 +545,13 @@ class RemediesDoshaService {
   _getBasicPlanetRemedies(planet, reasons) {
     // Basic remedy mapping
     const remedies = {
-      'Sun': ['Wear ruby', 'Chant Aditya Hridayam'],
-      'Moon': ['Wear pearl', 'Chant Chandra mantra'],
-      'Mars': ['Wear coral', 'Chant Hanuman Chalisa'],
-      'Mercury': ['Wear emerald', 'Chant Vishnu Sahasranama'],
-      'Jupiter': ['Wear yellow sapphire', 'Chant Guru Beej mantra'],
-      'Venus': ['Wear diamond', 'Chant Lakshmi mantra'],
-      'Saturn': ['Wear blue sapphire', 'Chant Shani mantra']
+      Sun: ['Wear ruby', 'Chant Aditya Hridayam'],
+      Moon: ['Wear pearl', 'Chant Chandra mantra'],
+      Mars: ['Wear coral', 'Chant Hanuman Chalisa'],
+      Mercury: ['Wear emerald', 'Chant Vishnu Sahasranama'],
+      Jupiter: ['Wear yellow sapphire', 'Chant Guru Beej mantra'],
+      Venus: ['Wear diamond', 'Chant Lakshmi mantra'],
+      Saturn: ['Wear blue sapphire', 'Chant Shani mantra']
     };
     return remedies[planet] || [];
   }
@@ -655,39 +654,39 @@ class RemediesDoshaService {
 
   _getPlanetGemstones(planet) {
     const gemstones = {
-      'Sun': ['Ruby'],
-      'Moon': ['Pearl', 'Moonstone'],
-      'Mars': ['Coral'],
-      'Mercury': ['Emerald'],
-      'Jupiter': ['Yellow Sapphire'],
-      'Venus': ['Diamond'],
-      'Saturn': ['Blue Sapphire']
+      Sun: ['Ruby'],
+      Moon: ['Pearl', 'Moonstone'],
+      Mars: ['Coral'],
+      Mercury: ['Emerald'],
+      Jupiter: ['Yellow Sapphire'],
+      Venus: ['Diamond'],
+      Saturn: ['Blue Sapphire']
     };
     return gemstones[planet] || [];
   }
 
   _getPlanetMantras(planet) {
     const mantras = {
-      'Sun': ['Om Suryaya Namaha', 'Aditya Hridayam'],
-      'Moon': ['Om Chandraya Namaha', 'Chandra Beej Mantra'],
-      'Mars': ['Om Angarakaya Namaha', 'Hanuman Chalisa'],
-      'Mercury': ['Om Buddhaya Namaha', 'Vishnu Sahasranama'],
-      'Jupiter': ['Om Gurave Namaha', 'Guru Beej Mantra'],
-      'Venus': ['Om Shukraya Namaha', 'Lakshmi Mantra'],
-      'Saturn': ['Om Shanaischaraya Namaha', 'Shani Chalisa']
+      Sun: ['Om Suryaya Namaha', 'Aditya Hridayam'],
+      Moon: ['Om Chandraya Namaha', 'Chandra Beej Mantra'],
+      Mars: ['Om Angarakaya Namaha', 'Hanuman Chalisa'],
+      Mercury: ['Om Buddhaya Namaha', 'Vishnu Sahasranama'],
+      Jupiter: ['Om Gurave Namaha', 'Guru Beej Mantra'],
+      Venus: ['Om Shukraya Namaha', 'Lakshmi Mantra'],
+      Saturn: ['Om Shanaischaraya Namaha', 'Shani Chalisa']
     };
     return mantras[planet] || [];
   }
 
   _getPlanetCharities(planet) {
     const charities = {
-      'Sun': ['Donate wheat', 'Feed Brahmins'],
-      'Moon': ['Donate milk', 'Help mothers'],
-      'Mars': ['Donate blood', 'Help warriors'],
-      'Mercury': ['Donate books', 'Help students'],
-      'Jupiter': ['Donate turmeric', 'Help teachers'],
-      'Venus': ['Donate clothes', 'Help artists'],
-      'Saturn': ['Donate iron', 'Help elderly']
+      Sun: ['Donate wheat', 'Feed Brahmins'],
+      Moon: ['Donate milk', 'Help mothers'],
+      Mars: ['Donate blood', 'Help warriors'],
+      Mercury: ['Donate books', 'Help students'],
+      Jupiter: ['Donate turmeric', 'Help teachers'],
+      Venus: ['Donate clothes', 'Help artists'],
+      Saturn: ['Donate iron', 'Help elderly']
     };
     return charities[planet] || [];
   }
@@ -707,19 +706,19 @@ class RemediesDoshaService {
 
   _getConcernSpecificRemedies(concern) {
     const concernRemedies = {
-      'health': [
+      health: [
         { type: 'mantra', item: 'Mahamrityunjaya Mantra', frequency: 'daily' },
         { type: 'puja', item: 'Ayurvedic treatments', frequency: 'ongoing' }
       ],
-      'wealth': [
+      wealth: [
         { type: 'mantra', item: 'Lakshmi Mantra', frequency: 'daily' },
         { type: 'puja', item: 'Lakshmi Puja', frequency: 'monthly' }
       ],
-      'relationships': [
+      relationships: [
         { type: 'mantra', item: 'Radha Krishna Mantra', frequency: 'daily' },
         { type: 'charity', item: 'Feed couples', frequency: 'weekly' }
       ],
-      'career': [
+      career: [
         { type: 'mantra', item: 'Ganesh Mantra', frequency: 'daily' },
         { type: 'puja', item: 'Saraswati Puja', frequency: 'weekly' }
       ]
@@ -729,7 +728,7 @@ class RemediesDoshaService {
 
   _filterRemediesByPreferences(remedies, preferences) {
     // Filter remedies based on user preferences (e.g., vegetarian, no animal products)
-    let filtered = { ...remedies };
+    const filtered = { ...remedies };
 
     if (preferences.vegetarianOnly) {
       // Remove non-vegetarian charities
@@ -759,7 +758,7 @@ class RemediesDoshaService {
 
   _getSignNumber(sign) {
     const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     return signs.indexOf(sign);
   }
 
@@ -785,7 +784,7 @@ class RemediesDoshaService {
       throw new Error('Birth data is required for remedies analysis');
     }
 
-    const birthData = input.birthData;
+    const { birthData } = input;
 
     if (!birthData.birthDate) {
       throw new Error('Birth date is required');

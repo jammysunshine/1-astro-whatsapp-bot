@@ -83,7 +83,6 @@ class AsteroidCalculator {
         asteroids: results,
         interpretation: this._interpretAsteroids(results)
       };
-
     } catch (error) {
       logger.error('❌ Error in asteroid calculation:', error);
       throw new Error(`Asteroid calculation failed: ${error.message}`);
@@ -156,7 +155,7 @@ class AsteroidCalculator {
       Aries: 'Independent nurturing style, quick to act for others',
       Taurus: 'Practical caretaking, physical comfort important',
       Gemini: 'Communicative care, expressing nurturing through words',
-      Cancer: 'Deep emotional nurturing, intuitive caregiving',
+      Cancer: 'Deep emotional nurturing, intuitive caregiving'
       // ... etc
     };
     return interpretations[sign] || 'General nurturing qualities';
@@ -172,7 +171,7 @@ class AsteroidCalculator {
       Aries: 'Strategic warrior, direct problem-solving approach',
       Taurus: 'Practical wisdom, patient strategic thinking',
       Gemini: 'Intellectual strategist, communicative problem-solving',
-      Cancer: 'Intuitive wisdom, emotional intelligence in strategy',
+      Cancer: 'Intuitive wisdom, emotional intelligence in strategy'
       // ... etc
     };
     return interpretations[sign] || 'Strategic thinking abilities';
@@ -186,7 +185,7 @@ class AsteroidCalculator {
   _getJunoInterpretation(sign) {
     const interpretations = {
       Libra: 'Harmony in partnerships, diplomatic approach to relationships',
-      Scorpio: 'Intense commitment, deep emotional bonds',
+      Scorpio: 'Intense commitment, deep emotional bonds'
       // ... etc
     };
     return interpretations[sign] || 'Partnership and commitment qualities';
@@ -200,7 +199,7 @@ class AsteroidCalculator {
   _getVestaInterpretation(sign) {
     const interpretations = {
       Virgo: 'Service-oriented dedication, practical focus',
-      Sagittarius: 'Philosophical focus, higher purpose dedication',
+      Sagittarius: 'Philosophical focus, higher purpose dedication'
       // ... etc
     };
     return interpretations[sign] || 'Focus and dedication qualities';

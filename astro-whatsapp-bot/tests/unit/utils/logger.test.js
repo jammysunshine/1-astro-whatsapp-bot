@@ -41,19 +41,19 @@ describe('Logger', () => {
   describe('Logging Methods', () => {
     it('should log info message', () => {
       logger.info('Test info message');
-      
+
       expect(logger.info).toHaveBeenCalledWith('Test info message');
     });
 
     it('should log error message', () => {
       logger.error('Test error message');
-      
+
       expect(logger.error).toHaveBeenCalledWith('Test error message');
     });
 
     it('should log warn message', () => {
       logger.warn('Test warn message');
-      
+
       expect(logger.warn).toHaveBeenCalledWith('Test warn message');
     });
 
@@ -61,11 +61,11 @@ describe('Logger', () => {
       // Set debug level for this test
       const originalLevel = process.env.LOG_LEVEL;
       process.env.LOG_LEVEL = 'debug';
-      
+
       // Reinitialize logger with debug level
       jest.resetModules();
       const debugLogger = require('../../../src/utils/logger');
-      
+
       debugLogger.debug('Test debug message');
 
       expect(debugLogger.debug).toHaveBeenCalledWith('Test debug message');

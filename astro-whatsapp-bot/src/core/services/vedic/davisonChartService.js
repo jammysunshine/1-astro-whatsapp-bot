@@ -555,7 +555,7 @@ class DavisonChartService {
     let interpretation = 'The Davison chart represents the relationship as a separate entity with its own birth chart, calculated from the midpoint of both partners\' birth data. ';
 
     if (davisonChart.relationshipPurpose) {
-      interpretation += davisonChart.relationshipPurpose + ' ';
+      interpretation += `${davisonChart.relationshipPurpose} `;
     }
 
     interpretation += 'This chart reveals the soul purpose and developmental path of the partnership, showing how the relationship evolves and grows over time. ';

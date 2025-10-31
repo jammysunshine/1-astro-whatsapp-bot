@@ -25,11 +25,11 @@ class VedicKundliAction extends BaseAction {
       // For now, returning a placeholder to indicate this needs proper implementation
       const { sendMessage } = require('../../../messageSender');
       await sendMessage(this.phoneNumber, 'Vedic kundli (birth chart) analysis is being prepared...', 'text');
-      
-      return { 
-        success: true, 
-        type: 'vedic_kundli_analysis', 
-        message: 'Vedic kundli analysis prepared' 
+
+      return {
+        success: true,
+        type: 'vedic_kundli_analysis',
+        message: 'Vedic kundli analysis prepared'
       };
     } catch (error) {
       this.logger.error('Error in VedicKundliAction:', error);

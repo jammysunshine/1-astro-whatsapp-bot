@@ -168,21 +168,21 @@ class ChartInterpreter {
    * @returns {string} Life purpose
    */
   deriveLifePurpose(basicChart) {
-    const sunSign = basicChart.sunSign;
+    const { sunSign } = basicChart;
 
     const purposes = {
-      'Aries': 'To pioneer new paths and lead with courage',
-      'Taurus': 'To build lasting foundations and appreciate beauty',
-      'Gemini': 'To communicate and share knowledge',
-      'Cancer': 'To nurture and create emotional security',
-      'Leo': 'To inspire and express creativity',
-      'Virgo': 'To serve and perfect processes',
-      'Libra': 'To harmonize relationships and promote justice',
-      'Scorpio': 'To transform and uncover deep truths',
-      'Sagittarius': 'To explore and expand philosophical understanding',
-      'Capricorn': 'To achieve mastery and assume responsibility',
-      'Aquarius': 'To innovate and work for collective benefit',
-      'Pisces': 'To heal and connect to universal consciousness'
+      Aries: 'To pioneer new paths and lead with courage',
+      Taurus: 'To build lasting foundations and appreciate beauty',
+      Gemini: 'To communicate and share knowledge',
+      Cancer: 'To nurture and create emotional security',
+      Leo: 'To inspire and express creativity',
+      Virgo: 'To serve and perfect processes',
+      Libra: 'To harmonize relationships and promote justice',
+      Scorpio: 'To transform and uncover deep truths',
+      Sagittarius: 'To explore and expand philosophical understanding',
+      Capricorn: 'To achieve mastery and assume responsibility',
+      Aquarius: 'To innovate and work for collective benefit',
+      Pisces: 'To heal and connect to universal consciousness'
     };
 
     return purposes[sunSign] || 'To discover and fulfill your unique potential';

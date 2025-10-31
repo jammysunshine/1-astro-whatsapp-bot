@@ -94,49 +94,49 @@ class NakshatraPoruthamService {
     };
 
     switch (compatibilityScore.level) {
-      case 'excellent':
-        assessment.summary = 'Exceptional cosmic harmony indicates a blessed union with strong potential for lasting happiness and mutual fulfillment.';
-        assessment.recommendations = [
-          'This is a highly auspicious match with excellent compatibility',
-          'Focus on nurturing the natural harmony between your energies',
-          'Celebrate the complementary qualities that make this partnership special'
-        ];
-        break;
+    case 'excellent':
+      assessment.summary = 'Exceptional cosmic harmony indicates a blessed union with strong potential for lasting happiness and mutual fulfillment.';
+      assessment.recommendations = [
+        'This is a highly auspicious match with excellent compatibility',
+        'Focus on nurturing the natural harmony between your energies',
+        'Celebrate the complementary qualities that make this partnership special'
+      ];
+      break;
 
-      case 'good':
-        assessment.summary = 'Strong supportive connection suggests a stable and harmonious relationship with good potential for growth together.';
-        assessment.recommendations = [
-          'Build upon the natural compatibility foundation',
-          'Communicate openly about individual needs and expectations',
-          'Work together to strengthen areas of mutual understanding'
-        ];
-        break;
+    case 'good':
+      assessment.summary = 'Strong supportive connection suggests a stable and harmonious relationship with good potential for growth together.';
+      assessment.recommendations = [
+        'Build upon the natural compatibility foundation',
+        'Communicate openly about individual needs and expectations',
+        'Work together to strengthen areas of mutual understanding'
+      ];
+      break;
 
-      case 'neutral':
-        assessment.summary = 'Balanced complementary energies indicate potential for a workable partnership through conscious effort and understanding.';
-        assessment.recommendations = [
-          'Focus on building mutual respect and understanding',
-          'Learn from each other\'s different approaches to life',
-          'Develop patience and acceptance of complementary qualities'
-        ];
-        break;
+    case 'neutral':
+      assessment.summary = 'Balanced complementary energies indicate potential for a workable partnership through conscious effort and understanding.';
+      assessment.recommendations = [
+        'Focus on building mutual respect and understanding',
+        'Learn from each other\'s different approaches to life',
+        'Develop patience and acceptance of complementary qualities'
+      ];
+      break;
 
-      case 'challenging':
-        assessment.summary = 'Growth through understanding is needed for this combination, requiring conscious effort to harmonize different energies.';
-        assessment.recommendations = [
-          'Seek professional astrological guidance for relationship challenges',
-          'Focus on personal growth and understanding of different energies',
-          'Develop strong communication and conflict resolution skills'
-        ];
-        break;
+    case 'challenging':
+      assessment.summary = 'Growth through understanding is needed for this combination, requiring conscious effort to harmonize different energies.';
+      assessment.recommendations = [
+        'Seek professional astrological guidance for relationship challenges',
+        'Focus on personal growth and understanding of different energies',
+        'Develop strong communication and conflict resolution skills'
+      ];
+      break;
 
-      default:
-        assessment.summary = 'Professional astrological consultation recommended to understand the unique dynamics of this combination.';
-        assessment.recommendations = [
-          'Consult with experienced astrologers for detailed analysis',
-          'Focus on building strong foundations of trust and respect',
-          'Consider individual spiritual growth alongside relationship development'
-        ];
+    default:
+      assessment.summary = 'Professional astrological consultation recommended to understand the unique dynamics of this combination.';
+      assessment.recommendations = [
+        'Consult with experienced astrologers for detailed analysis',
+        'Focus on building strong foundations of trust and respect',
+        'Consider individual spiritual growth alongside relationship development'
+      ];
     }
 
     return assessment;

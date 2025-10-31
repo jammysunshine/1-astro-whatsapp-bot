@@ -103,8 +103,7 @@ class CompatibilityScorer {
 
     // Bonus for multiple harmonious aspects
     const harmoniousCount = aspects.filter(a => a.aspect <= 60).length;
-    if (harmoniousCount >= 5) score += 5;
-    else if (harmoniousCount >= 3) score += 3;
+    if (harmoniousCount >= 5) { score += 5; } else if (harmoniousCount >= 3) { score += 3; }
 
     return Math.round(score);
   }
@@ -254,7 +253,7 @@ class CompatibilityScorer {
       score: Math.min(harmonyScore, 10),
       harmony: harmonyScore >= 4 ? 'very_high' : harmonyScore >= 2 ? 'moderate' : 'developing',
       description: harmonyScore >= 4 ? 'Deep mutual understanding' :
-                   harmonyScore >= 2 ? 'Balanced give-and-take' : 'Learning balance together'
+        harmonyScore >= 2 ? 'Balanced give-and-take' : 'Learning balance together'
     };
   }
 
@@ -264,13 +263,13 @@ class CompatibilityScorer {
    * @returns {string} Compatibility level
    */
   determineCompatibilityLevel(score) {
-    if (score >= 85) return 'exceptional';
-    if (score >= 80) return 'excellent';
-    if (score >= 70) return 'very_good';
-    if (score >= 60) return 'good';
-    if (score >= 50) return 'fair';
-    if (score >= 40) return 'moderate';
-    if (score >= 30) return 'challenging';
+    if (score >= 85) { return 'exceptional'; }
+    if (score >= 80) { return 'excellent'; }
+    if (score >= 70) { return 'very_good'; }
+    if (score >= 60) { return 'good'; }
+    if (score >= 50) { return 'fair'; }
+    if (score >= 40) { return 'moderate'; }
+    if (score >= 30) { return 'challenging'; }
     return 'difficult';
   }
 

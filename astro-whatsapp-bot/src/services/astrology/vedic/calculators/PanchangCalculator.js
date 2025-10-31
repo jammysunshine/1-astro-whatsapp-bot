@@ -76,7 +76,6 @@ class PanchangCalculator {
       };
 
       return panchang;
-
     } catch (error) {
       logger.error('❌ Error in Panchang generation:', error);
       throw new Error(`Panchang generation failed: ${error.message}`);

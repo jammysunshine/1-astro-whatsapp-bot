@@ -246,7 +246,7 @@ class SadeSatiCalculator {
         inSadeSati: false,
         nextPhase: nextPeriod ? nextPeriod.phase : null,
         nextPhaseDate: nextPeriod ? nextPeriod.startDate : null,
-        daysUntilNext: daysUntilNext,
+        daysUntilNext,
         relief: {
           currentStatus: 'In relief period',
           durationRemaining: daysUntilNext,
@@ -462,7 +462,7 @@ class SadeSatiCalculator {
       summary += `*Remaining: ${currentStatus.remainingDays} days*\n\n`;
       summary += `*Effects: ${currentStatus.phaseEffects}*\n\n`;
     } else {
-      summary += `Currently in *relief period*\n`;
+      summary += 'Currently in *relief period*\n';
       if (currentStatus.daysUntilNext) {
         summary += `Next Sade Sati starts in ${currentStatus.daysUntilNext} days\n\n`;
       }
@@ -493,7 +493,7 @@ class SadeSatiCalculator {
 
   _getSignName(sign) {
     const signs = ['', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     return signs[sign] || 'Unknown';
   }
 
@@ -518,14 +518,14 @@ class SadeSatiCalculator {
       }
     }
 
-    if (current) merged.push(current);
+    if (current) { merged.push(current); }
     return merged;
   }
 
   // Additional helper methods...
   _parseBirthDate(birthDate) {
     const cleanDate = birthDate.toString().replace(/\D/g, '');
-    let day, month, year;
+    let day; let month; let year;
 
     if (cleanDate.length === 6) {
       day = parseInt(cleanDate.substring(0, 2));

@@ -78,7 +78,6 @@ class MarriageTimingCalculator {
 
       logger.info('✅ Marriage timing analysis completed successfully');
       return analysis;
-
     } catch (error) {
       logger.error('❌ Error in marriage timing analysis:', error);
       return { error: `Analysis failed: ${error.message}` };
@@ -91,7 +90,7 @@ class MarriageTimingCalculator {
   async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
     try {
       // Convert to Julian Day
-      const jd = this._calculateJulianDay(year, month, day, hour + minute/60 - timezone);
+      const jd = this._calculateJulianDay(year, month, day, hour + minute / 60 - timezone);
 
       logger.info(`🪐 Calculating natal chart for ${year}-${month}-${day}`);
 
@@ -152,7 +151,6 @@ class MarriageTimingCalculator {
         jd,
         ayanamsa: this._calculateAyanamsa(jd)
       };
-
     } catch (error) {
       logger.error('Error calculating natal chart:', error);
       throw new Error(`Natal chart calculation failed: ${error.message}`);
@@ -262,7 +260,7 @@ class MarriageTimingCalculator {
       concerningFactors: []
     };
 
-    const planets = natalChart.planets;
+    const { planets } = natalChart;
 
     // Venus analysis (primary marriage significator)
     if (planets.venus) {
@@ -328,7 +326,7 @@ class MarriageTimingCalculator {
 
     // 7th house analysis
     const seventhHousePlanets = Object.values(planets).filter(p =>
-      p.house === 7 && !['ascendant', 'midheaven'].includes(Object.keys({planets})[Object.values(planets).indexOf(p)])
+      p.house === 7 && !['ascendant', 'midheaven'].includes(Object.keys({ planets })[Object.values(planets).indexOf(p)])
     );
 
     if (seventhHousePlanets.length > 0) {
@@ -352,7 +350,7 @@ class MarriageTimingCalculator {
       delayedMarriage: { range: '43+', likelihood: 10, factors: [] }
     };
 
-    const planets = natalChart.planets;
+    const { planets } = natalChart;
 
     if (planets.venus) {
       const venusSign = planets.venus.sign;
@@ -418,7 +416,7 @@ class MarriageTimingCalculator {
 
     // Find most promising window
     const mostPromising = Object.keys(windows).reduce((a, b) =>
-      windows[a].likelihood > windows[b].likelihood ? a : b
+      (windows[a].likelihood > windows[b].likelihood ? a : b)
     );
 
     return {
@@ -543,7 +541,7 @@ class MarriageTimingCalculator {
       recommendations: []
     };
 
-    const planets = natalChart.planets;
+    const { planets } = natalChart;
 
     // Saturn in 7th house
     if (planets.saturn?.house === 7) {
@@ -625,7 +623,7 @@ class MarriageTimingCalculator {
       eighthHouse: {}
     };
 
-    const planets = natalChart.planets;
+    const { planets } = natalChart;
 
     // 7th house - Marriage house
     analysis.seventhHouse = {
@@ -672,7 +670,7 @@ class MarriageTimingCalculator {
       functionalMalefics: {}
     };
 
-    const planets = natalChart.planets;
+    const { planets } = natalChart;
 
     // Primary marriage significators
     analysis.marriageSignificators = {
@@ -709,22 +707,22 @@ class MarriageTimingCalculator {
       generalIndicators: {}
     };
 
-    const planets = natalChart.planets;
+    const { planets } = natalChart;
 
     // Calculate overall score based on key factors
     if (planets.venus) {
-      if ([2, 7, 12].includes(planets.venus.sign)) strength.overallScore += 15;
-      if ([7, 2].includes(planets.venus.house)) strength.overallScore += 10;
+      if ([2, 7, 12].includes(planets.venus.sign)) { strength.overallScore += 15; }
+      if ([7, 2].includes(planets.venus.house)) { strength.overallScore += 10; }
       strength.strengthAreas.push('Venus strength');
     }
 
     if (planets.jupiter) {
-      if ([1, 4, 5, 7, 9, 10].includes(planets.jupiter.house)) strength.overallScore += 15;
+      if ([1, 4, 5, 7, 9, 10].includes(planets.jupiter.house)) { strength.overallScore += 15; }
       strength.strengthAreas.push('Jupiter blessings');
     }
 
     if (planets.mars) {
-      if (planets.mars.house === 7) strength.overallScore += 10;
+      if (planets.mars.house === 7) { strength.overallScore += 10; }
       if ([1, 2, 4, 7, 8, 12].includes(planets.mars.house)) {
         strength.weaknessAreas.push('Manglik considerations');
         strength.overallScore -= 10;
@@ -742,10 +740,10 @@ class MarriageTimingCalculator {
 
     strength.generalIndicators = {
       forecast: strength.overallScore >= 75 ? 'Very promising' :
-                strength.overallScore >= 60 ? 'Promising' :
-                strength.overallScore >= 40 ? 'Moderate potential' : 'Requires effort',
+        strength.overallScore >= 60 ? 'Promising' :
+          strength.overallScore >= 40 ? 'Moderate potential' : 'Requires effort',
       timeRange: strength.overallScore >= 70 ? '18-30 years' :
-                 strength.overallScore >= 50 ? '21-35 years' : '25-45+ years'
+        strength.overallScore >= 50 ? '21-35 years' : '25-45+ years'
     };
 
     return strength;
@@ -762,7 +760,7 @@ class MarriageTimingCalculator {
       remedial: []
     };
 
-    const planets = natalChart.planets;
+    const { planets } = natalChart;
 
     // Immediate recommendations
     if (planets.venus && planets.venus.house !== 7) {
@@ -806,7 +804,7 @@ class MarriageTimingCalculator {
     };
 
     const currentYear = new Date().getFullYear();
-    const planets = natalChart.planets;
+    const { planets } = natalChart;
 
     // Favorable years (Jupiter/Venus periods)
     const jupiterYears = [6, 12, 18, 24, 30, 42, 48, 54];
@@ -879,7 +877,6 @@ class MarriageTimingCalculator {
           nature: 'Maturity and commitment'
         });
       }
-
     } catch (error) {
       logger.warn('Transit analysis error:', error);
       transits.currentInfluences.push({
@@ -907,9 +904,9 @@ class MarriageTimingCalculator {
   _assessVenusMarriagePower(venus) {
     let power = 50;
 
-    if ([2, 7, 12].includes(venus.sign)) power += 25;
-    if ([7, 2, 5, 9].includes(venus.house)) power += 20;
-    if ([6, 8, 12].includes(venus.house)) power -= 15;
+    if ([2, 7, 12].includes(venus.sign)) { power += 25; }
+    if ([7, 2, 5, 9].includes(venus.house)) { power += 20; }
+    if ([6, 8, 12].includes(venus.house)) { power -= 15; }
 
     return Math.max(0, Math.min(100, power));
   }
@@ -917,8 +914,8 @@ class MarriageTimingCalculator {
   _assessJupiterMarriageBlessing(jupiter) {
     let blessing = 50;
 
-    if ([1, 4, 5, 7, 9, 10].includes(jupiter.house)) blessing += 25;
-    if ([5, 9].includes(jupiter.sign) || jupiter.sign === 4) blessing += 20;
+    if ([1, 4, 5, 7, 9, 10].includes(jupiter.house)) { blessing += 25; }
+    if ([5, 9].includes(jupiter.sign) || jupiter.sign === 4) { blessing += 20; }
 
     return Math.max(0, Math.min(100, blessing));
   }
@@ -926,10 +923,10 @@ class MarriageTimingCalculator {
   _assessMarsMarriageImpact(mars) {
     let impact = 50;
 
-    if (mars.house === 7) impact += 20;
-    if ([1, 8, 12].includes(mars.house)) impact += 15;
+    if (mars.house === 7) { impact += 20; }
+    if ([1, 8, 12].includes(mars.house)) { impact += 15; }
     const dangerousHouses = [1, 2, 4, 7, 8, 12];
-    if (dangerousHouses.includes(mars.house)) impact -= 10;
+    if (dangerousHouses.includes(mars.house)) { impact -= 10; }
 
     return Math.max(0, Math.min(100, impact));
   }
@@ -937,8 +934,8 @@ class MarriageTimingCalculator {
   _assessMoonMarriageComfort(moon) {
     let comfort = 50;
 
-    if ([4, 7, 10].includes(moon.house)) comfort += 20;
-    if (moon.sign === 4) comfort += 15; // Cancer Moon
+    if ([4, 7, 10].includes(moon.house)) { comfort += 20; }
+    if (moon.sign === 4) { comfort += 15; } // Cancer Moon
 
     return Math.max(0, Math.min(100, comfort));
   }
@@ -950,7 +947,7 @@ class MarriageTimingCalculator {
       'jupiter', 'saturn', 'saturn', 'jupiter'
     ];
 
-    let targetSign = (((ascendantSign - 1 + house - 1) % 12) + 1);
+    const targetSign = (((ascendantSign - 1 + house - 1) % 12) + 1);
     return signs[targetSign - 1] || 'unknown';
   }
 
@@ -998,15 +995,15 @@ class MarriageTimingCalculator {
     let strength = 50;
 
     // House strength
-    if ([1, 4, 5, 7, 9, 10].includes(planet.house)) strength += 20;
-    if ([3, 6, 8, 12].includes(planet.house)) strength -= 15;
+    if ([1, 4, 5, 7, 9, 10].includes(planet.house)) { strength += 20; }
+    if ([3, 6, 8, 12].includes(planet.house)) { strength -= 15; }
 
     // Sign strength (own/exalted vs debilitated)
     const favorableSigns = [2, 7, 4, 9, 1, 8, 5, 9]; // Venus, Venus, Moon, Jupiter, Sun, Mars, Mercury, Jupiter
     const unfavorableSigns = [8, 1, 12, 12, 11, 4, 8, 6]; // Venus deb, Mars deb, Moon deb, etc.
 
-    if (favorableSigns.includes(planet.sign)) strength += 15;
-    if (unfavorableSigns.includes(planet.sign)) strength -= 10;
+    if (favorableSigns.includes(planet.sign)) { strength += 15; }
+    if (unfavorableSigns.includes(planet.sign)) { strength -= 10; }
 
     return Math.max(0, Math.min(100, strength));
   }

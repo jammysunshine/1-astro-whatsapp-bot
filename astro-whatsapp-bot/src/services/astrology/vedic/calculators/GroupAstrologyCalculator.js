@@ -39,20 +39,20 @@ class GroupAstrologyCalculator {
       let comparativeAnalysis = {};
 
       switch (analysisType) {
-        case 'compatibility':
-          comparativeAnalysis = await this._generateCompatibilityAnalysis(individualCharts, relationshipType);
-          break;
-        case 'business_partnership':
-          comparativeAnalysis = await this._generateBusinessPartnershipAnalysis(individualCharts);
-          break;
-        case 'family_dynamics':
-          comparativeAnalysis = await this._generateFamilyDynamicsAnalysis(individualCharts);
-          break;
-        case 'synastry':
-          comparativeAnalysis = await this._generateSynastryAnalysis(individualCharts);
-          break;
-        default:
-          comparativeAnalysis = await this._generateGeneralComparativeAnalysis(individualCharts);
+      case 'compatibility':
+        comparativeAnalysis = await this._generateCompatibilityAnalysis(individualCharts, relationshipType);
+        break;
+      case 'business_partnership':
+        comparativeAnalysis = await this._generateBusinessPartnershipAnalysis(individualCharts);
+        break;
+      case 'family_dynamics':
+        comparativeAnalysis = await this._generateFamilyDynamicsAnalysis(individualCharts);
+        break;
+      case 'synastry':
+        comparativeAnalysis = await this._generateSynastryAnalysis(individualCharts);
+        break;
+      default:
+        comparativeAnalysis = await this._generateGeneralComparativeAnalysis(individualCharts);
       }
 
       // Generate recommendations
@@ -107,7 +107,6 @@ class GroupAstrologyCalculator {
 
         // Add relationship factors
         charts[personKey].relationshipFactors = this._calculateRelationshipFactors(charts[personKey]);
-
       } catch (error) {
         logger.warn(`Error calculating chart for ${person.name}:`, error.message);
         charts[personKey] = { error: `Failed to calculate chart for ${person.name}` };
@@ -122,8 +121,8 @@ class GroupAstrologyCalculator {
    */
   async _generateCompatibilityAnalysis(charts, relationshipType) {
     if (charts.person1 && charts.person2) {
-      const person1 = charts.person1;
-      const person2 = charts.person2;
+      const { person1 } = charts;
+      const { person2 } = charts;
 
       const compatibility = {
         overallScore: 0,
@@ -359,8 +358,8 @@ class GroupAstrologyCalculator {
     return {
       score,
       compatibility: score >= 70 ? 'Excellent lunar harmony' :
-                    score >= 50 ? 'Good emotional compatibility' :
-                    score >= 30 ? 'Moderate emotional understanding' : 'Challenging emotional connection',
+        score >= 50 ? 'Good emotional compatibility' :
+          score >= 30 ? 'Moderate emotional understanding' : 'Challenging emotional connection',
       moonSigns: { person1: moon1.sign, person2: moon2.sign },
       emotionalSynergy: this._getLunarElementSynergy(element1, element2)
     };
@@ -408,8 +407,8 @@ class GroupAstrologyCalculator {
     return {
       score,
       compatibility: score >= 70 ? 'Excellent value and love compatibility' :
-                    score >= 55 ? 'Good romantic understanding' :
-                    score >= 40 ? 'Moderate value compatibility' : 'Challenging romantic styles',
+        score >= 55 ? 'Good romantic understanding' :
+          score >= 40 ? 'Moderate value compatibility' : 'Challenging romantic styles',
       venusSigns: { person1: venus1.sign, person2: venus2.sign },
       relationshipStyles: this._getVenusRelationshipStyles(element1, element2)
     };
@@ -455,8 +454,8 @@ class GroupAstrologyCalculator {
     return {
       score,
       compatibility: score >= 70 ? 'Excellent first impression harmony' :
-                    score >= 60 ? 'Good interpersonal compatibility' :
-                    score >= 45 ? 'Moderate social understanding' : 'Different social approaches',
+        score >= 60 ? 'Good interpersonal compatibility' :
+          score >= 45 ? 'Moderate social understanding' : 'Different social approaches',
       ascendantSigns: { person1: asc1Sign, person2: asc2Sign },
       interactionStyle: isComplementary ? 'Complementary social dynamics' : 'Different but adaptable interaction styles'
     };
@@ -476,18 +475,18 @@ class GroupAstrologyCalculator {
 
     // Type-specific recommendations
     switch (analysisType) {
-      case 'compatibility':
-        recommendations = this._generateCompatibilityRecommendations(comparativeAnalysis.compatibility);
-        break;
-      case 'business_partnership':
-        recommendations = this._generateBusinessRecommendations(comparativeAnalysis.partnership);
-        break;
-      case 'family_dynamics':
-        recommendations = this._generateFamilyRecommendations(comparativeAnalysis.family);
-        break;
-      default:
-        recommendations.general.push('Maintain open communication and mutual understanding');
-        recommendations.general.push('Focus on complementary qualities rather than differences');
+    case 'compatibility':
+      recommendations = this._generateCompatibilityRecommendations(comparativeAnalysis.compatibility);
+      break;
+    case 'business_partnership':
+      recommendations = this._generateBusinessRecommendations(comparativeAnalysis.partnership);
+      break;
+    case 'family_dynamics':
+      recommendations = this._generateFamilyRecommendations(comparativeAnalysis.family);
+      break;
+    default:
+      recommendations.general.push('Maintain open communication and mutual understanding');
+      recommendations.general.push('Focus on complementary qualities rather than differences');
     }
 
     return recommendations;
@@ -510,7 +509,6 @@ class GroupAstrologyCalculator {
       Object.entries(compat.compatibilityBreakdown).forEach(([factor, data]) => {
         summary += `• ${factor.charAt(0).toUpperCase() + factor.slice(1)}: ${data.score}/100\n`;
       });
-
     } else if (comparativeAnalysis.partnership) {
       const partner = comparativeAnalysis.partnership;
       summary += `*Business Synergy:* ${partner.businessSynergy}/100\n\n`;
@@ -519,7 +517,6 @@ class GroupAstrologyCalculator {
       partner.complementarySkills.forEach(skill => {
         summary += `• Person ${skill.partner}: ${skill.strengths.join(', ')}\n`;
       });
-
     } else if (comparativeAnalysis.family) {
       summary += '*Family Dynamics:*\n';
       summary += `• Emotional Bonds: ${comparativeAnalysis.family.emotionalBonds}\n`;
@@ -666,7 +663,7 @@ class GroupAstrologyCalculator {
     });
 
     return Object.keys(elementCount).reduce((a, b) =>
-      elementCount[a] > elementCount[b] ? a : b
+      (elementCount[a] > elementCount[b] ? a : b)
     );
   }
 

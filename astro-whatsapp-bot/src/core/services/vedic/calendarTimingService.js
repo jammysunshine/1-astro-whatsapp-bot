@@ -7,7 +7,7 @@
  */
 
 const MuhurtaCalculator = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class CalendarTimingService {
   constructor() {
@@ -30,7 +30,6 @@ class CalendarTimingService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('CalendarTimingService error:', error);
       throw new Error(`Calendar timing analysis failed: ${error.message}`);

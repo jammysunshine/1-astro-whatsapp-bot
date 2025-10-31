@@ -270,12 +270,12 @@ class CalculationsCoordinator {
   getCalculationStats() {
     return {
       calculator_modules: {
-        'JaiminiKarakaCalculator': ['Jaimini Karaka Analysis'],
-        'AshtakavargaCalculator': ['Ashtakavarga Analysis'],
-        'FixedStarsCalculator': ['Fixed Stars Analysis'],
-        'FinancialAstrologyCalculator': ['Financial Astrology Analysis'],
-        'MedicalAstrologyCalculator': ['Medical Astrology Analysis'],
-        'CareerAstrologyCalculator': ['Career Astrology Analysis']
+        JaiminiKarakaCalculator: ['Jaimini Karaka Analysis'],
+        AshtakavargaCalculator: ['Ashtakavarga Analysis'],
+        FixedStarsCalculator: ['Fixed Stars Analysis'],
+        FinancialAstrologyCalculator: ['Financial Astrology Analysis'],
+        MedicalAstrologyCalculator: ['Medical Astrology Analysis'],
+        CareerAstrologyCalculator: ['Career Astrology Analysis']
       },
       utility_functions: [
         'Age Harmonic Astrology',

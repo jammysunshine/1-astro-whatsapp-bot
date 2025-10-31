@@ -101,8 +101,8 @@ class CompatibilityCalculator {
       },
 
       // Analysis and recommendations
-      analysis: analysis,
-      recommendations: recommendations,
+      analysis,
+      recommendations,
 
       // Vedic compatibility factors
       vedic_factors: {
@@ -136,8 +136,8 @@ class CompatibilityCalculator {
     return {
       score,
       description: score >= 8 ? 'Excellent core personality harmony' :
-                  score >= 6 ? 'Good personality compatibility' :
-                  score >= 4 ? 'Neutral personality connection' : 'Challenging personality dynamics'
+        score >= 6 ? 'Good personality compatibility' :
+          score >= 4 ? 'Neutral personality connection' : 'Challenging personality dynamics'
     };
   }
 
@@ -161,8 +161,8 @@ class CompatibilityCalculator {
     return {
       score,
       description: score >= 8 ? 'Harmonious emotional connection' :
-                  score >= 6 ? 'Compatible emotional styles' :
-                  score >= 4 ? 'Balanced emotional understanding' : 'Different emotional approaches'
+        score >= 6 ? 'Compatible emotional styles' :
+          score >= 4 ? 'Balanced emotional understanding' : 'Different emotional approaches'
     };
   }
 
@@ -193,8 +193,8 @@ class CompatibilityCalculator {
     return {
       score,
       description: score >= 8 ? 'Romantically aligned with shared values' :
-                  score >= 6 ? 'Romantically compatible' :
-                  score >= 4 ? 'Romantically balanced' : 'Romantically challenging'
+        score >= 6 ? 'Romantically compatible' :
+          score >= 4 ? 'Romantically balanced' : 'Romantically challenging'
     };
   }
 
@@ -218,8 +218,8 @@ class CompatibilityCalculator {
     return {
       score,
       description: score >= 8 ? 'Energetically aligned' :
-                  score >= 6 ? 'Energetically compatible' :
-                  score >= 4 ? 'Energetically balanced' : 'Energetically challenging'
+        score >= 6 ? 'Energetically compatible' :
+          score >= 4 ? 'Energetically balanced' : 'Energetically challenging'
     };
   }
 
@@ -243,8 +243,8 @@ class CompatibilityCalculator {
     return {
       score,
       description: score >= 8 ? 'Personally harmonious' :
-                  score >= 6 ? 'Personally compatible' :
-                  score >= 4 ? 'Personally balanced' : 'Personally challenging'
+        score >= 6 ? 'Personally compatible' :
+          score >= 4 ? 'Personally balanced' : 'Personally challenging'
     };
   }
 
@@ -259,7 +259,7 @@ class CompatibilityCalculator {
     if (!sign1 || !sign2) { return 5; }
 
     const signOrder = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                       'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     const sign1Index = signOrder.indexOf(sign1);
     const sign2Index = signOrder.indexOf(sign2);
 
@@ -392,10 +392,10 @@ class CompatibilityCalculator {
    * @returns {string} Rating text
    */
   _getCompatibilityRating(score) {
-    if (score >= 80) return 'Excellent';
-    if (score >= 65) return 'Very Good';
-    if (score >= 50) return 'Good';
-    if (score >= 35) return 'Fair';
+    if (score >= 80) { return 'Excellent'; }
+    if (score >= 65) { return 'Very Good'; }
+    if (score >= 50) { return 'Good'; }
+    if (score >= 35) { return 'Fair'; }
     return 'Challenging';
   }
 
@@ -533,21 +533,21 @@ class CompatibilityCalculator {
 
   // Helper methods for Vedic compatibility calculations
   _getNadiFromMoon(moon) {
-    if (!moon) return null;
+    if (!moon) { return null; }
     const nakshatra = Math.floor(moon.longitude / 13.333); // 27 nakshatras * 13.333 degrees
     // Simplified: 1-9: Adya, 10-18: Madhya, 19-27: Antya
     return nakshatra <= 8 ? 'adya' : nakshatra <= 17 ? 'madhya' : 'antya';
   }
 
   _getGanaFromMoon(moon) {
-    if (!moon) return null;
+    if (!moon) { return null; }
     const nakshatra = Math.floor(moon.longitude / 13.333);
     const ganas = ['dev', 'manushya', 'rakshasa'];
     return ganas[nakshatra % 3];
   }
 
   _getYoniFromMoon(moon) {
-    if (!moon) return null;
+    if (!moon) { return null; }
     const nakshatra = Math.floor(moon.longitude / 13.333);
     const yonis = ['horse', 'elephant', 'sheep', 'serpent', 'dog', 'cat', 'rat', 'cow', 'buffalo', 'tiger', 'hare', 'monkey', 'lion', 'mongoose'];
     return yonis[nakshatra % yonis.length];
@@ -559,7 +559,7 @@ class CompatibilityCalculator {
   }
 
   _getVarnaFromMoon(moon) {
-    if (!moon) return null;
+    if (!moon) { return null; }
     const nakshatra = Math.floor(moon.longitude / 13.333);
     const varnas = ['brahmin', 'kshatriya', 'vaishya', 'shudra'];
     return varnas[nakshatra % varnas.length];

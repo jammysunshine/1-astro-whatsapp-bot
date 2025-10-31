@@ -103,10 +103,10 @@ class VarshaphalCalculator {
 
     // Calculate Julian Days
     const birthJD = this._dateToJulianDay(parsedBirth.year, parsedBirth.month, parsedBirth.day,
-                                        parsedTime.hour + parsedTime.minute / 60);
+      parsedTime.hour + parsedTime.minute / 60);
 
     const targetJD = this._dateToJulianDay(year, parsedBirth.month, parsedBirth.day,
-                                         parsedTime.hour + parsedTime.minute / 60);
+      parsedTime.hour + parsedTime.minute / 60);
 
     // Calculate solar return date (Sun's return to birth position)
     const sunReturnData = sweph.calc(targetJD, sweph.SE_SUN, sweph.SEFLG_SIDEREAL);
@@ -141,7 +141,7 @@ class VarshaphalCalculator {
     };
 
     Object.entries(planetIds).forEach(([planet, planetId]) => {
-      if (!planetId) return; // Skip Ketu for now
+      if (!planetId) { return; } // Skip Ketu for now
 
       try {
         const position = sweph.calc(jd, planetId, sweph.SEFLG_SIDEREAL);
@@ -451,7 +451,7 @@ class VarshaphalCalculator {
 
   _parseBirthDate(birthDate) {
     const cleanDate = birthDate.toString().replace(/\D/g, '');
-    let day, month, year;
+    let day; let month; let year;
 
     if (cleanDate.length === 6) {
       day = parseInt(cleanDate.substring(0, 2));
@@ -525,7 +525,7 @@ class VarshaphalCalculator {
 
   _getSignFromLongitude(longitude) {
     const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     return signs[Math.floor(longitude / 30) % 12];
   }
 

@@ -6,7 +6,7 @@
  */
 
 const { AshtakavargaCalculator } = require('../../../services/astrology/calculators/AshtakavargaCalculator');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class AshtakavargaService {
   constructor() {
@@ -33,7 +33,6 @@ class AshtakavargaService {
 
       // Format result for service consumption
       return this._formatResult(analysis);
-
     } catch (error) {
       logger.error('AshtakavargaService error:', error);
       throw new Error(`Ashtakavarga analysis failed: ${error.message}`);
@@ -63,10 +62,9 @@ class AshtakavargaService {
 
       return {
         analysis: analysis.analysis,
-        summary: summary,
+        summary,
         error: false
       };
-
     } catch (error) {
       logger.error('AshtakavargaService getAnalysis error:', error);
       return {

@@ -6,7 +6,7 @@
  */
 
 const { AyurvedicAstrology } = require('../../../services/astrology/ayurvedicAstrology');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class AyurvedicAstrologyService {
   constructor() {
@@ -28,7 +28,6 @@ class AyurvedicAstrologyService {
 
       // Format result for service consumption
       return this._formatResult(analysis);
-
     } catch (error) {
       logger.error('AyurvedicAstrologyService error:', error);
       throw new Error(`Ayurvedic constitution analysis failed: ${error.message}`);
@@ -55,7 +54,6 @@ class AyurvedicAstrologyService {
         doshaBreakdown: this._formatDoshaBreakdown(analysis.constitutions),
         error: false
       };
-
     } catch (error) {
       logger.error('AyurvedicAstrologyService getConstitution error:', error);
       return {
@@ -88,7 +86,6 @@ class AyurvedicAstrologyService {
         lifestyle: recommendations.lifestyle.join('\n• '),
         error: false
       };
-
     } catch (error) {
       logger.error('AyurvedicAstrologyService getRecommendations error:', error);
       return {

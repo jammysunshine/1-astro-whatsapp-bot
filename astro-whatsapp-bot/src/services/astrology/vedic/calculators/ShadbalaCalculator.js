@@ -117,9 +117,9 @@ class ShadbalaCalculator {
     const maxSthana = 60; // Full strength
 
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') return;
+      if (planetName === 'ascendant') { return; }
 
-      const sign = planet.sign;
+      const { sign } = planet;
       let strength = 0;
 
       // Exalted signs
@@ -183,7 +183,7 @@ class ShadbalaCalculator {
     };
 
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') return;
+      if (planetName === 'ascendant') { return; }
 
       let strength = 0;
 
@@ -219,7 +219,7 @@ class ShadbalaCalculator {
 
     // Kala Bala components
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') return;
+      if (planetName === 'ascendant') { return; }
 
       let strength = 0;
 
@@ -255,7 +255,7 @@ class ShadbalaCalculator {
     const chestaBala = {};
 
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') return;
+      if (planetName === 'ascendant') { return; }
 
       const speed = Math.abs(planet.speed);
       let strength = 60; // Base strength
@@ -324,13 +324,13 @@ class ShadbalaCalculator {
     const aspects = [7, 9, 4, 10, 5, 11, 3, 12];
 
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') return;
+      if (planetName === 'ascendant') { return; }
 
       let strength = 0;
 
       // Check aspects from other planets
       Object.entries(natalChart.planets).forEach(([otherPlanet, otherData]) => {
-        if (otherPlanet === planetName || otherPlanet === 'ascendant') return;
+        if (otherPlanet === planetName || otherPlanet === 'ascendant') { return; }
 
         const signDifference = Math.abs(planet.sign - otherData.sign);
         const normalizedDifference = Math.min(signDifference, 12 - signDifference);
@@ -436,7 +436,7 @@ class ShadbalaCalculator {
 
     // Sort planets by total bala
     const sortedPlanets = Object.entries(shadbalaResults)
-      .sort(([,a], [,b]) => b.totalBala - a.totalBala)
+      .sort(([, a], [, b]) => b.totalBala - a.totalBala)
       .map(([planet]) => planet);
 
     // Identify strongest and weakest planets
@@ -481,10 +481,10 @@ class ShadbalaCalculator {
   _evaluateShadbalaStrength(totalBala) {
     const rupas = totalBala / 60; // Convert to rupas
 
-    if (rupas >= 8) return 'Very Strong';
-    if (rupas >= 6) return 'Strong';
-    if (rupas >= 5) return 'Moderate';
-    if (rupas >= 3) return 'Weak';
+    if (rupas >= 8) { return 'Very Strong'; }
+    if (rupas >= 6) { return 'Strong'; }
+    if (rupas >= 5) { return 'Moderate'; }
+    if (rupas >= 3) { return 'Weak'; }
     return 'Very Weak';
   }
 
@@ -495,11 +495,11 @@ class ShadbalaCalculator {
   _evaluateChartStrength(shadbalaResults) {
     const totalRupas = Object.values(shadbalaResults).reduce((sum, planet) => sum + planet.totalRP, 0);
 
-    if (totalRupas >= 400) return 'Exceptionally Strong';
-    if (totalRupas >= 350) return 'Very Strong';
-    if (totalRupas >= 300) return 'Strong';
-    if (totalRupas >= 250) return 'Moderate';
-    if (totalRupas >= 200) return 'Weak';
+    if (totalRupas >= 400) { return 'Exceptionally Strong'; }
+    if (totalRupas >= 350) { return 'Very Strong'; }
+    if (totalRupas >= 300) { return 'Strong'; }
+    if (totalRupas >= 250) { return 'Moderate'; }
+    if (totalRupas >= 200) { return 'Weak'; }
     return 'Very Weak';
   }
 

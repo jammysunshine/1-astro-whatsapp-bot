@@ -307,7 +307,7 @@ class MoonSignService {
    * @returns {Object} Emotional nature analysis
    */
   _analyzeEmotionalNature(moonSignData) {
-    const sign = moonSignData.sign;
+    const { sign } = moonSignData;
     const traits = this._getMoonSignTraits(sign);
 
     return {

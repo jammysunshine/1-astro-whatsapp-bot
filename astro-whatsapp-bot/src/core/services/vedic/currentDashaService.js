@@ -130,8 +130,8 @@ class CurrentDashaService {
    * @returns {Object} Remaining time analysis
    */
   _calculateRemainingTime(currentDasha) {
-    const mahadasha = currentDasha.mahadasha;
-    const antardasha = currentDasha.antardasha;
+    const { mahadasha } = currentDasha;
+    const { antardasha } = currentDasha;
 
     return {
       mahadashaRemaining: {
@@ -272,7 +272,7 @@ class CurrentDashaService {
    * @returns {string} Combination analysis
    */
   _analyzeDashaCombination(mahadasha, antardasha) {
-    if (!mahadasha || !antardasha) return 'balanced planetary combination';
+    if (!mahadasha || !antardasha) { return 'balanced planetary combination'; }
 
     const combinations = {
       'sun-moon': 'emotional self-expression and leadership',
@@ -358,7 +358,7 @@ class CurrentDashaService {
     const sequence = ['Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury'];
     const currentIndex = sequence.findIndex(lord => lord.toLowerCase() === currentLord.toLowerCase());
 
-    if (currentIndex === -1) return 'Unknown';
+    if (currentIndex === -1) { return 'Unknown'; }
 
     const nextIndex = (currentIndex + 1) % sequence.length;
     return sequence[nextIndex];

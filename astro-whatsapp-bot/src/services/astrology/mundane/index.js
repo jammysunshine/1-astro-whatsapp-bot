@@ -104,7 +104,7 @@ class MundaneService {
 // Singleton
 let instance = null;
 function createMundaneService() {
-  if (!instance) instance = new MundaneService();
+  if (!instance) { instance = new MundaneService(); }
   return instance;
 }
 

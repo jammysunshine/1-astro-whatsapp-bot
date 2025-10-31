@@ -45,7 +45,7 @@ class NadiCompatibility {
     const strengths = [];
 
     // Base strength on nakshatra nature and ruling planet
-    const nature = nakshatra.nature;
+    const { nature } = nakshatra;
     const planet = nakshatra.rulingPlanet;
 
     if (nature === 'Light') {

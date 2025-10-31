@@ -9,7 +9,7 @@
 const GroupAstrologyCalculator = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
 const MuhurtaCalculator = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
 const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class GroupTimingService {
   constructor() {
@@ -34,7 +34,6 @@ class GroupTimingService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('GroupTimingService error:', error);
       throw new Error(`Group timing analysis failed: ${error.message}`);
@@ -161,15 +160,15 @@ class GroupTimingService {
       compatibility.interpersonalDynamics = pairwiseScores.map(pair => ({
         members: pair.pair,
         compatibility: pair.score > 70 ? 'Harmonious' :
-                      pair.score > 50 ? 'Compatible' : 'Challenging',
+          pair.score > 50 ? 'Compatible' : 'Challenging',
         dynamic: this._assessPairDynamic(pair.roles, pair.score)
       }));
 
       // Determine group energy
       compatibility.groupEnergy = avgScore > 75 ? 'Highly cohesive and energetic' :
-                                 avgScore > 60 ? 'Generally harmonious with good energy' :
-                                 avgScore > 45 ? 'Mixed energies requiring attention' :
-                                 'Challenging group dynamics';
+        avgScore > 60 ? 'Generally harmonious with good energy' :
+          avgScore > 45 ? 'Mixed energies requiring attention' :
+            'Challenging group dynamics';
 
       // Identify potential challenges
       compatibility.potentialChallenges = pairwiseScores
@@ -264,54 +263,54 @@ class GroupTimingService {
 
       // Event-specific considerations
       switch (eventType.toLowerCase()) {
-        case 'wedding':
-          eventTiming.specificConsiderations = [
-            'Check for auspicious tithi and nakshatra',
-            'Consider moon sign compatibility',
-            'Avoid eclipse periods'
-          ];
-          eventTiming.planetaryInfluences = ['Venus', 'Jupiter', 'Moon'];
-          eventTiming.durationRecommendations = 'Full day ceremony preferred';
-          break;
+      case 'wedding':
+        eventTiming.specificConsiderations = [
+          'Check for auspicious tithi and nakshatra',
+          'Consider moon sign compatibility',
+          'Avoid eclipse periods'
+        ];
+        eventTiming.planetaryInfluences = ['Venus', 'Jupiter', 'Moon'];
+        eventTiming.durationRecommendations = 'Full day ceremony preferred';
+        break;
 
-        case 'business meeting':
-          eventTiming.specificConsiderations = [
-            'Mercury and Jupiter favorable periods',
-            'Avoid Mars periods for negotiations',
-            'Consider weekday timing'
-          ];
-          eventTiming.planetaryInfluences = ['Mercury', 'Jupiter', 'Sun'];
-          eventTiming.durationRecommendations = '2-4 hours optimal';
-          break;
+      case 'business meeting':
+        eventTiming.specificConsiderations = [
+          'Mercury and Jupiter favorable periods',
+          'Avoid Mars periods for negotiations',
+          'Consider weekday timing'
+        ];
+        eventTiming.planetaryInfluences = ['Mercury', 'Jupiter', 'Sun'];
+        eventTiming.durationRecommendations = '2-4 hours optimal';
+        break;
 
-        case 'family gathering':
-          eventTiming.specificConsiderations = [
-            'Moon favorable periods',
-            'Family tradition considerations',
-            'Weather and seasonal factors'
-          ];
-          eventTiming.planetaryInfluences = ['Moon', 'Venus', 'Jupiter'];
-          eventTiming.durationRecommendations = 'Half day to full day';
-          break;
+      case 'family gathering':
+        eventTiming.specificConsiderations = [
+          'Moon favorable periods',
+          'Family tradition considerations',
+          'Weather and seasonal factors'
+        ];
+        eventTiming.planetaryInfluences = ['Moon', 'Venus', 'Jupiter'];
+        eventTiming.durationRecommendations = 'Half day to full day';
+        break;
 
-        case 'spiritual ceremony':
-          eventTiming.specificConsiderations = [
-            'Jupiter and spiritual planet periods',
-            'Sacred timing (brahma muhurta)',
-            'Lunar phase considerations'
-          ];
-          eventTiming.planetaryInfluences = ['Jupiter', 'Saturn', 'Ketu'];
-          eventTiming.durationRecommendations = '2-6 hours depending on ceremony';
-          break;
+      case 'spiritual ceremony':
+        eventTiming.specificConsiderations = [
+          'Jupiter and spiritual planet periods',
+          'Sacred timing (brahma muhurta)',
+          'Lunar phase considerations'
+        ];
+        eventTiming.planetaryInfluences = ['Jupiter', 'Saturn', 'Ketu'];
+        eventTiming.durationRecommendations = '2-6 hours depending on ceremony';
+        break;
 
-        default:
-          eventTiming.specificConsiderations = [
-            'General auspicious timing',
-            'Group harmony considerations',
-            'Practical scheduling factors'
-          ];
-          eventTiming.planetaryInfluences = ['Jupiter', 'Venus'];
-          eventTiming.durationRecommendations = 'Flexible based on event needs';
+      default:
+        eventTiming.specificConsiderations = [
+          'General auspicious timing',
+          'Group harmony considerations',
+          'Practical scheduling factors'
+        ];
+        eventTiming.planetaryInfluences = ['Jupiter', 'Venus'];
+        eventTiming.durationRecommendations = 'Flexible based on event needs';
       }
 
       // Group size considerations
@@ -420,13 +419,13 @@ class GroupTimingService {
     potential.overallRating = Math.min(100, (timingScore + compatibilityScore + eventScore) / 3);
 
     // Identify success factors
-    if (timingScore > 70) potential.successFactors.push('Favorable astrological timing');
-    if (compatibilityScore > 70) potential.successFactors.push('High group harmony');
-    if (eventTiming.specificConsiderations.length > 2) potential.successFactors.push('Well-considered event timing');
+    if (timingScore > 70) { potential.successFactors.push('Favorable astrological timing'); }
+    if (compatibilityScore > 70) { potential.successFactors.push('High group harmony'); }
+    if (eventTiming.specificConsiderations.length > 2) { potential.successFactors.push('Well-considered event timing'); }
 
     // Identify risk factors
-    if (timingScore < 50) potential.riskFactors.push('Suboptimal astrological timing');
-    if (compatibilityScore < 50) potential.riskFactors.push('Group compatibility challenges');
+    if (timingScore < 50) { potential.riskFactors.push('Suboptimal astrological timing'); }
+    if (compatibilityScore < 50) { potential.riskFactors.push('Group compatibility challenges'); }
     if (groupCompatibility.potentialChallenges.length > 0) {
       potential.riskFactors.push('Interpersonal dynamics to monitor');
     }
@@ -458,16 +457,16 @@ class GroupTimingService {
   _assessPersonalTiming(member) {
     // Simplified personal timing assessment
     const dasha = member.currentDasha;
-    if (['Jupiter', 'Venus', 'Mercury'].includes(dasha)) return 'Favorable';
-    if (['Saturn', 'Mars', 'Rahu'].includes(dasha)) return 'Challenging';
+    if (['Jupiter', 'Venus', 'Mercury'].includes(dasha)) { return 'Favorable'; }
+    if (['Saturn', 'Mars', 'Rahu'].includes(dasha)) { return 'Challenging'; }
     return 'Neutral';
   }
 
   _assessPersonalEnergy(member) {
     // Simplified energy assessment
     const moonSign = member.moon?.sign;
-    if (['Cancer', 'Taurus', 'Pisces'].includes(moonSign)) return 'High';
-    if (['Capricorn', 'Aquarius', 'Virgo'].includes(moonSign)) return 'Moderate';
+    if (['Cancer', 'Taurus', 'Pisces'].includes(moonSign)) { return 'High'; }
+    if (['Capricorn', 'Aquarius', 'Virgo'].includes(moonSign)) { return 'Moderate'; }
     return 'Balanced';
   }
 
@@ -482,8 +481,8 @@ class GroupTimingService {
   // Helper methods for compatibility
 
   _assessPairDynamic(roles, score) {
-    if (score > 70) return 'Strong supportive dynamic';
-    if (score > 50) return 'Cooperative working relationship';
+    if (score > 70) { return 'Strong supportive dynamic'; }
+    if (score > 50) { return 'Cooperative working relationship'; }
     return 'May require extra effort to harmonize';
   }
 
@@ -498,9 +497,9 @@ class GroupTimingService {
     const leaders = roles.filter(r => r.includes('Leader') || r.includes('Host')).length;
     const participants = roles.length - leaders;
 
-    if (leaders === 1 && participants > 0) return 'Good balance with clear leadership';
-    if (leaders === 0) return 'Peer group dynamic';
-    if (leaders > 1) return 'Multiple leaders - coordination needed';
+    if (leaders === 1 && participants > 0) { return 'Good balance with clear leadership'; }
+    if (leaders === 0) { return 'Peer group dynamic'; }
+    if (leaders > 1) { return 'Multiple leaders - coordination needed'; }
     return 'Unbalanced role distribution';
   }
 
@@ -509,8 +508,8 @@ class GroupTimingService {
     const highEnergy = energies.filter(e => e === 'High').length;
     const balanced = energies.filter(e => e === 'Balanced').length;
 
-    if (highEnergy > balanced) return 'High energy group';
-    if (balanced > highEnergy) return 'Balanced energy group';
+    if (highEnergy > balanced) { return 'High energy group'; }
+    if (balanced > highEnergy) { return 'Balanced energy group'; }
     return 'Mixed energy levels';
   }
 
@@ -535,7 +534,7 @@ class GroupTimingService {
         const muhurta = await this.muhurtaCalculator.calculateMuhurta(dateStr, eventLocation, eventType);
         if (muhurta.isFavorable) {
           alternatives.push(dateStr);
-          if (alternatives.length >= 3) break;
+          if (alternatives.length >= 3) { break; }
         }
       } catch (error) {
         // Skip invalid dates

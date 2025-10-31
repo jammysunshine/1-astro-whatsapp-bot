@@ -63,7 +63,6 @@ class VedicYogasCalculator {
         overallInfluence: this._calculateOverallYogaInfluence(yogas),
         interpretation: this._interpretYogas(yogas)
       };
-
     } catch (error) {
       logger.error('❌ Error in Vedic Yogas calculation:', error);
       throw new Error(`Vedic Yogas calculation failed: ${error.message}`);
@@ -107,10 +106,10 @@ class VedicYogasCalculator {
    * @private
    */
   _analyzeNbhayaYoga(planets) {
-    const sun = planets.sun;
-    const moon = planets.moon;
+    const { sun } = planets;
+    const { moon } = planets;
 
-    if (!sun || !moon) return { present: false };
+    if (!sun || !moon) { return { present: false }; }
 
     const sunMoonAngle = Math.abs(this._normalizeAngle(moon.longitude - sun.longitude));
 
@@ -133,7 +132,7 @@ class VedicYogasCalculator {
     const yogas = {};
 
     // Ruchaka Yoga: Mars in own sign, exalted, or friend's sign and in Kendra
-    const mars = planets.mars;
+    const { mars } = planets;
     if (mars) {
       const marsSign = mars.sign;
       const exaltedSigns = ['Capricorn'];
@@ -193,9 +192,9 @@ class VedicYogasCalculator {
    * @private
    */
   _analyzeDhanYoga(planets) {
-    const venus = planets.venus;
-    const jupiter = planets.jupiter;
-    const moon = planets.moon;
+    const { venus } = planets;
+    const { jupiter } = planets;
+    const { moon } = planets;
 
     // Dhan Yoga when Venus, Jupiter, Moon are well-placed
     const present = (venus && this._isPlanetStrong(venus)) ||
@@ -215,10 +214,10 @@ class VedicYogasCalculator {
    * @private
    */
   _analyzeGajaKeshariYoga(planets) {
-    const moon = planets.moon;
-    const jupiter = planets.jupiter;
+    const { moon } = planets;
+    const { jupiter } = planets;
 
-    if (!moon || !jupiter) return { present: false };
+    if (!moon || !jupiter) { return { present: false }; }
 
     const angle = Math.abs(this._normalizeAngle(jupiter.longitude - moon.longitude));
 
@@ -239,17 +238,17 @@ class VedicYogasCalculator {
    * @private
    */
   _analyzeKemadrumaYoga(planets) {
-    const moon = planets.moon;
+    const { moon } = planets;
 
-    if (!moon) return { present: false };
+    if (!moon) { return { present: false }; }
 
     // Kemadruma Yoga occurs when Moon has no planets in 2nd and 12th houses from it
     // This is a complex analysis requiring full chart interpretation
     // Simplified as not having Jupiter/Mercury in adjacent signs
 
     const moonSignIndex = moon.signIndex;
-    const jupiter = planets.jupiter;
-    const mercury = planets.mercury;
+    const { jupiter } = planets;
+    const { mercury } = planets;
 
     const hasBeneficsNearby = (jupiter && Math.abs(jupiter.signIndex - moonSignIndex) <= 1) ||
                              (mercury && Math.abs(mercury.signIndex - moonSignIndex) <= 1);
@@ -339,8 +338,8 @@ class VedicYogasCalculator {
       averageStrength,
       yogaCount,
       overallRating: averageStrength > 7 ? 'Very Auspicious' :
-                    averageStrength > 5 ? 'Favorable' :
-                    averageStrength > 3 ? 'Mixed' : 'Challenging'
+        averageStrength > 5 ? 'Favorable' :
+          averageStrength > 3 ? 'Mixed' : 'Challenging'
     };
   }
 
@@ -383,7 +382,7 @@ class VedicYogasCalculator {
   }
 
   _normalizeAngle(angle) {
-    angle = angle % 360;
+    angle %= 360;
     return angle < 0 ? angle + 360 : angle;
   }
 

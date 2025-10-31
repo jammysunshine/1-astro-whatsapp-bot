@@ -114,28 +114,28 @@ class GenerateGroupAstrologyService {
     const recommendations = [];
 
     switch (analysisType) {
-      case 'compatibility':
-        recommendations.push('Focus on building trust and open communication');
-        recommendations.push('Celebrate individual strengths while working toward common goals');
-        recommendations.push('Establish clear boundaries and respect personal space');
-        break;
+    case 'compatibility':
+      recommendations.push('Focus on building trust and open communication');
+      recommendations.push('Celebrate individual strengths while working toward common goals');
+      recommendations.push('Establish clear boundaries and respect personal space');
+      break;
 
-      case 'business_partnership':
-        recommendations.push('Define clear roles and responsibilities for each partner');
-        recommendations.push('Establish regular communication rhythms and decision-making processes');
-        recommendations.push('Create shared vision and long-term business goals');
-        break;
+    case 'business_partnership':
+      recommendations.push('Define clear roles and responsibilities for each partner');
+      recommendations.push('Establish regular communication rhythms and decision-making processes');
+      recommendations.push('Create shared vision and long-term business goals');
+      break;
 
-      case 'family_dynamics':
-        recommendations.push('Honor individual family member needs while maintaining family unity');
-        recommendations.push('Establish family traditions and regular quality time together');
-        recommendations.push('Create open channels for expressing feelings and concerns');
-        break;
+    case 'family_dynamics':
+      recommendations.push('Honor individual family member needs while maintaining family unity');
+      recommendations.push('Establish family traditions and regular quality time together');
+      recommendations.push('Create open channels for expressing feelings and concerns');
+      break;
 
-      default:
-        recommendations.push('Foster open communication and mutual understanding');
-        recommendations.push('Recognize and utilize individual strengths');
-        recommendations.push('Work together toward shared goals and purposes');
+    default:
+      recommendations.push('Foster open communication and mutual understanding');
+      recommendations.push('Recognize and utilize individual strengths');
+      recommendations.push('Work together toward shared goals and purposes');
     }
 
     // Add analysis-specific recommendations
@@ -317,20 +317,20 @@ class GenerateGroupAstrologyService {
     let summary = '';
 
     switch (analysisType) {
-      case 'compatibility':
-        summary = 'This group compatibility analysis reveals the astrological dynamics between individuals, showing how their energies interact and complement each other. ';
-        break;
+    case 'compatibility':
+      summary = 'This group compatibility analysis reveals the astrological dynamics between individuals, showing how their energies interact and complement each other. ';
+      break;
 
-      case 'business_partnership':
-        summary = 'The business partnership analysis examines how individual charts combine to create a powerful business entity with unique strengths and challenges. ';
-        break;
+    case 'business_partnership':
+      summary = 'The business partnership analysis examines how individual charts combine to create a powerful business entity with unique strengths and challenges. ';
+      break;
 
-      case 'family_dynamics':
-        summary = 'Family dynamics analysis shows how family members\' charts interweave to create the family\'s collective energy and life path. ';
-        break;
+    case 'family_dynamics':
+      summary = 'Family dynamics analysis shows how family members\' charts interweave to create the family\'s collective energy and life path. ';
+      break;
 
-      default:
-        summary = 'This group astrology analysis provides insights into collective energies and interpersonal dynamics. ';
+    default:
+      summary = 'This group astrology analysis provides insights into collective energies and interpersonal dynamics. ';
     }
 
     if (groupAnalysis.keyInsights) {

@@ -6,7 +6,7 @@
  */
 
 const { VargaCharts } = require('../../../services/astrology/vargaCharts');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class VargaChartsService {
   constructor() {
@@ -33,7 +33,6 @@ class VargaChartsService {
 
       // Format result for service consumption
       return this._formatResult(analysis);
-
     } catch (error) {
       logger.error('VargaChartsService error:', error);
       throw new Error(`Varga charts analysis failed: ${error.message}`);
@@ -69,7 +68,6 @@ class VargaChartsService {
         significances: this._getVargaSignificances(vargaName),
         error: false
       };
-
     } catch (error) {
       logger.error('VargaChartsService getVargaChart error:', error);
       return {

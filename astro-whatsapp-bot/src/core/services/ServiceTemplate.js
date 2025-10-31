@@ -36,7 +36,6 @@ class ServiceNameService {
         message: 'ServiceNameService executed successfully',
         data: birthData
       };
-
     } catch (error) {
       logger.error('ServiceNameService error:', error);
       throw new Error(`Service execution failed: ${error.message}`);

@@ -325,7 +325,7 @@ Type "settings" to explore more astrology services!`;
     // Calculate aspects between each pair of planets
     for (const planet1 of planets) {
       for (const planet2 of planets) {
-        if (!chart1.planets[planet1] || !chart2.planets[planet2]) continue;
+        if (!chart1.planets[planet1] || !chart2.planets[planet2]) { continue; }
 
         const pos1 = chart1.planets[planet1].longitude;
         const pos2 = chart2.planets[planet2].longitude;
@@ -399,9 +399,8 @@ Type "settings" to explore more astrology services!`;
         // Calculate midpoint
         let midpoint = (pos1 + pos2) / 2;
         if (Math.abs(pos1 - pos2) > 180) {
-          if (pos1 < pos2) midpoint = ((pos1 + 360) + pos2) / 2;
-          else midpoint = (pos1 + (pos2 + 360)) / 2;
-          if (midpoint >= 360) midpoint -= 360;
+          if (pos1 < pos2) { midpoint = ((pos1 + 360) + pos2) / 2; } else { midpoint = (pos1 + (pos2 + 360)) / 2; }
+          if (midpoint >= 360) { midpoint -= 360; }
         }
 
         composite.planets[planet] = {
@@ -440,9 +439,9 @@ Type "settings" to explore more astrology services!`;
     const description = planetPairs[key] || planetPairs[`${planet2}${planet1}`] || `${planet1}-${planet2} planetary connection`;
 
     return aspect === 120 ? `Easy flowing harmony in ${description.toLowerCase()}` :
-           aspect === 60 ? `Supportive energy fostering ${description.toLowerCase()}` :
-           aspect === 180 ? `Polarity balance in ${description.toLowerCase()}` :
-           `${description.toLowerCase()}`;
+      aspect === 60 ? `Supportive energy fostering ${description.toLowerCase()}` :
+        aspect === 180 ? `Polarity balance in ${description.toLowerCase()}` :
+          `${description.toLowerCase()}`;
   }
 
   analyzeHouseOverlaySignificance(house, planet) {

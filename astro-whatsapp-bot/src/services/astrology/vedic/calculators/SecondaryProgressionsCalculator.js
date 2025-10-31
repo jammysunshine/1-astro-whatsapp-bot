@@ -174,7 +174,7 @@ class SecondaryProgressionsCalculator {
 
     // Progress each planet at its appropriate rate
     for (const [planetName, natalData] of Object.entries(natalChart.planets)) {
-      if (planetName === 'ascendant') continue;
+      if (planetName === 'ascendant') { continue; }
 
       // Different progression rates for different planets
       const progressionRates = {
@@ -244,11 +244,11 @@ class SecondaryProgressionsCalculator {
         const angularDiff = Math.abs(long1 - long2);
         const minDiff = Math.min(angularDiff, 360 - angularDiff);
 
-        if (minDiff <= 12) aspects.conjunctions.push({ planet1, planet2, orb: minDiff });
-        if (Math.abs(minDiff - 60) <= 10) aspects.sextiles.push({ planet1, planet2, orb: Math.abs(minDiff - 60) });
-        if (Math.abs(minDiff - 90) <= 12) aspects.squares.push({ planet1, planet2, orb: Math.abs(minDiff - 90) });
-        if (Math.abs(minDiff - 120) <= 12) aspects.trines.push({ planet1, planet2, orb: Math.abs(minDiff - 120) });
-        if (Math.abs(minDiff - 180) <= 12) aspects.oppositions.push({ planet1, planet2, orb: Math.abs(minDiff - 180) });
+        if (minDiff <= 12) { aspects.conjunctions.push({ planet1, planet2, orb: minDiff }); }
+        if (Math.abs(minDiff - 60) <= 10) { aspects.sextiles.push({ planet1, planet2, orb: Math.abs(minDiff - 60) }); }
+        if (Math.abs(minDiff - 90) <= 12) { aspects.squares.push({ planet1, planet2, orb: Math.abs(minDiff - 90) }); }
+        if (Math.abs(minDiff - 120) <= 12) { aspects.trines.push({ planet1, planet2, orb: Math.abs(minDiff - 120) }); }
+        if (Math.abs(minDiff - 180) <= 12) { aspects.oppositions.push({ planet1, planet2, orb: Math.abs(minDiff - 180) }); }
       }
     }
 
@@ -393,29 +393,29 @@ class SecondaryProgressionsCalculator {
 
   // Key helper methods for Secondary Progressions
   _getCurrentLifePhase(age) {
-    if (age <= 12) return 'Early Development (Childhood)';
-    if (age <= 20) return 'Adolescence';
-    if (age <= 30) return 'Young Adulthood';
-    if (age <= 45) return 'Established Life';
-    if (age <= 60) return 'Peak Achievement';
+    if (age <= 12) { return 'Early Development (Childhood)'; }
+    if (age <= 20) { return 'Adolescence'; }
+    if (age <= 30) { return 'Young Adulthood'; }
+    if (age <= 45) { return 'Established Life'; }
+    if (age <= 60) { return 'Peak Achievement'; }
     return 'Wisdom Phase';
   }
 
   _getPhaseCharacteristics(age) {
-    if (age <= 12) return 'Foundation building, basic learning, family influences';
-    if (age <= 20) return 'Identity formation, independence, career exploration';
-    if (age <= 30) return 'Career establishment, relationships, independence';
-    if (age <= 45) return 'Career stability, family responsibilities, social recognition';
-    if (age <= 60) return 'Career peak, wisdom sharing, legacy building';
+    if (age <= 12) { return 'Foundation building, basic learning, family influences'; }
+    if (age <= 20) { return 'Identity formation, independence, career exploration'; }
+    if (age <= 30) { return 'Career establishment, relationships, independence'; }
+    if (age <= 45) { return 'Career stability, family responsibilities, social recognition'; }
+    if (age <= 60) { return 'Career peak, wisdom sharing, legacy building'; }
     return 'Reflection, spiritual growth, life review';
   }
 
   _getDevelopmentalFocus(age) {
-    if (age <= 12) return 'Education, family relationships, basic personality development';
-    if (age <= 20) return 'Self-discovery, education completion, early career beginnings';
-    if (age <= 30) return 'Professional growth, marriage/partnerships, financial independence';
-    if (age <= 45) return 'Leadership, family building, financial security, community involvement';
-    if (age <= 60) return 'Professional fulfillment, mentoring, creative contributions';
+    if (age <= 12) { return 'Education, family relationships, basic personality development'; }
+    if (age <= 20) { return 'Self-discovery, education completion, early career beginnings'; }
+    if (age <= 30) { return 'Professional growth, marriage/partnerships, financial independence'; }
+    if (age <= 45) { return 'Leadership, family building, financial security, community involvement'; }
+    if (age <= 60) { return 'Professional fulfillment, mentoring, creative contributions'; }
     return 'Inner peace, family continuity, spiritual realization';
   }
 
@@ -496,7 +496,7 @@ class SecondaryProgressionsCalculator {
 
   _getZodiacSign(longitude) {
     const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     return signs[Math.floor(longitude / 30)];
   }
 

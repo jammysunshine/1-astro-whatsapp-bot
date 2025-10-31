@@ -72,4 +72,4 @@ class NadiReader {
 
 // Export singleton instance for legacy compatibility
 module.exports = new NadiReader();
-module.exports.generateNadiReading = (user) => module.exports.generateNadiReading(user);
+module.exports.generateNadiReading = user => module.exports.generateNadiReading(user);

@@ -8,7 +8,7 @@
 
 const GroupAstrologyCalculator = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
 const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class FamilyAstrologyService {
   constructor() {
@@ -32,7 +32,6 @@ class FamilyAstrologyService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('FamilyAstrologyService error:', error);
       throw new Error(`Family astrology analysis failed: ${error.message}`);
@@ -137,7 +136,7 @@ class FamilyAstrologyService {
             roles: [member1.role, member2.role],
             score: compatibility.overall || 0,
             harmony: compatibility.overall > 70 ? 'High' :
-                    compatibility.overall > 50 ? 'Moderate' : 'Challenging',
+              compatibility.overall > 50 ? 'Moderate' : 'Challenging',
             keyFactors: this._extractCompatibilityFactors(compatibility)
           };
         }
@@ -360,18 +359,18 @@ class FamilyAstrologyService {
   _identifyDominantTraits(member) {
     // Identify dominant personality traits based on key planets
     const traits = [];
-    if (member.sun?.sign) traits.push(this._getSunSignTrait(member.sun.sign));
-    if (member.moon?.sign) traits.push(this._getMoonSignTrait(member.moon.sign));
-    if (member.mars?.sign) traits.push(this._getMarsSignTrait(member.mars.sign));
+    if (member.sun?.sign) { traits.push(this._getSunSignTrait(member.sun.sign)); }
+    if (member.moon?.sign) { traits.push(this._getMoonSignTrait(member.moon.sign)); }
+    if (member.mars?.sign) { traits.push(this._getMarsSignTrait(member.mars.sign)); }
     return [...new Set(traits)]; // Remove duplicates
   }
 
   _identifyLifeThemes(member) {
     // Identify life themes based on planetary placements
     const themes = [];
-    if (member.jupiter?.house === 9) themes.push('Spirituality and higher learning');
-    if (member.saturn?.house === 10) themes.push('Career and responsibility');
-    if (member.venus?.house === 7) themes.push('Relationships and harmony');
+    if (member.jupiter?.house === 9) { themes.push('Spirituality and higher learning'); }
+    if (member.saturn?.house === 10) { themes.push('Career and responsibility'); }
+    if (member.venus?.house === 7) { themes.push('Relationships and harmony'); }
     return themes;
   }
 
@@ -386,9 +385,9 @@ class FamilyAstrologyService {
   _extractCompatibilityFactors(compatibility) {
     // Extract key compatibility factors
     const factors = [];
-    if (compatibility.emotional > 70) factors.push('Strong emotional connection');
-    if (compatibility.intellectual > 70) factors.push('Good intellectual synergy');
-    if (compatibility.physical > 70) factors.push('Physical harmony');
+    if (compatibility.emotional > 70) { factors.push('Strong emotional connection'); }
+    if (compatibility.intellectual > 70) { factors.push('Good intellectual synergy'); }
+    if (compatibility.physical > 70) { factors.push('Physical harmony'); }
     return factors;
   }
 
@@ -493,93 +492,93 @@ class FamilyAstrologyService {
 
   _isOwnSign(planet, sign) {
     const ownSigns = {
-      'sun': ['Leo'],
-      'moon': ['Cancer'],
-      'mars': ['Aries', 'Scorpio'],
-      'mercury': ['Gemini', 'Virgo'],
-      'jupiter': ['Sagittarius', 'Pisces'],
-      'venus': ['Taurus', 'Libra'],
-      'saturn': ['Capricorn', 'Aquarius']
+      sun: ['Leo'],
+      moon: ['Cancer'],
+      mars: ['Aries', 'Scorpio'],
+      mercury: ['Gemini', 'Virgo'],
+      jupiter: ['Sagittarius', 'Pisces'],
+      venus: ['Taurus', 'Libra'],
+      saturn: ['Capricorn', 'Aquarius']
     };
     return ownSigns[planet]?.includes(sign) || false;
   }
 
   _isExalted(planet, sign) {
     const exaltation = {
-      'sun': 'Aries',
-      'moon': 'Taurus',
-      'mars': 'Capricorn',
-      'mercury': 'Virgo',
-      'jupiter': 'Cancer',
-      'venus': 'Pisces',
-      'saturn': 'Libra'
+      sun: 'Aries',
+      moon: 'Taurus',
+      mars: 'Capricorn',
+      mercury: 'Virgo',
+      jupiter: 'Cancer',
+      venus: 'Pisces',
+      saturn: 'Libra'
     };
     return exaltation[planet] === sign;
   }
 
   _isDebilitated(planet, sign) {
     const debilitation = {
-      'sun': 'Libra',
-      'moon': 'Scorpio',
-      'mars': 'Cancer',
-      'mercury': 'Pisces',
-      'jupiter': 'Capricorn',
-      'venus': 'Virgo',
-      'saturn': 'Aries'
+      sun: 'Libra',
+      moon: 'Scorpio',
+      mars: 'Cancer',
+      mercury: 'Pisces',
+      jupiter: 'Capricorn',
+      venus: 'Virgo',
+      saturn: 'Aries'
     };
     return debilitation[planet] === sign;
   }
 
   _getSunSignTrait(sign) {
     const traits = {
-      'Aries': 'Leadership',
-      'Taurus': 'Stability',
-      'Gemini': 'Communication',
-      'Cancer': 'Nurturing',
-      'Leo': 'Creativity',
-      'Virgo': 'Service',
-      'Libra': 'Harmony',
-      'Scorpio': 'Intensity',
-      'Sagittarius': 'Adventure',
-      'Capricorn': 'Ambition',
-      'Aquarius': 'Innovation',
-      'Pisces': 'Compassion'
+      Aries: 'Leadership',
+      Taurus: 'Stability',
+      Gemini: 'Communication',
+      Cancer: 'Nurturing',
+      Leo: 'Creativity',
+      Virgo: 'Service',
+      Libra: 'Harmony',
+      Scorpio: 'Intensity',
+      Sagittarius: 'Adventure',
+      Capricorn: 'Ambition',
+      Aquarius: 'Innovation',
+      Pisces: 'Compassion'
     };
     return traits[sign] || 'Balanced';
   }
 
   _getMoonSignTrait(sign) {
     const traits = {
-      'Aries': 'Emotional courage',
-      'Taurus': 'Emotional stability',
-      'Gemini': 'Emotional adaptability',
-      'Cancer': 'Deep emotional sensitivity',
-      'Leo': 'Emotional warmth',
-      'Virgo': 'Emotional care',
-      'Libra': 'Emotional harmony',
-      'Scorpio': 'Emotional depth',
-      'Sagittarius': 'Emotional freedom',
-      'Capricorn': 'Emotional responsibility',
-      'Aquarius': 'Emotional detachment',
-      'Pisces': 'Emotional compassion'
+      Aries: 'Emotional courage',
+      Taurus: 'Emotional stability',
+      Gemini: 'Emotional adaptability',
+      Cancer: 'Deep emotional sensitivity',
+      Leo: 'Emotional warmth',
+      Virgo: 'Emotional care',
+      Libra: 'Emotional harmony',
+      Scorpio: 'Emotional depth',
+      Sagittarius: 'Emotional freedom',
+      Capricorn: 'Emotional responsibility',
+      Aquarius: 'Emotional detachment',
+      Pisces: 'Emotional compassion'
     };
     return traits[sign] || 'Emotional balance';
   }
 
   _getMarsSignTrait(sign) {
     const traits = {
-      'Aries': 'Direct action',
-      'Taurus': 'Persistent effort',
-      'Gemini': 'Versatile energy',
-      'Cancer': 'Protective drive',
-      'Leo': 'Creative power',
-      'Virgo': 'Detailed work',
-      'Libra': 'Balanced action',
-      'Scorpio': 'Intense focus',
-      'Sagittarius': 'Adventurous spirit',
-      'Capricorn': 'Ambitious drive',
-      'Aquarius': 'Innovative action',
-      'Pisces': 'Compassionate service'
+      Aries: 'Direct action',
+      Taurus: 'Persistent effort',
+      Gemini: 'Versatile energy',
+      Cancer: 'Protective drive',
+      Leo: 'Creative power',
+      Virgo: 'Detailed work',
+      Libra: 'Balanced action',
+      Scorpio: 'Intense focus',
+      Sagittarius: 'Adventurous spirit',
+      Capricorn: 'Ambitious drive',
+      Aquarius: 'Innovative action',
+      Pisces: 'Compassionate service'
     };
     return traits[sign] || 'Purposeful action';
   }
@@ -626,8 +625,8 @@ class FamilyAstrologyService {
     return {
       score: Math.min(100, overallStrength),
       level: overallStrength > 75 ? 'Very Strong' :
-             overallStrength > 60 ? 'Strong' :
-             overallStrength > 45 ? 'Moderate' : 'Needs Attention',
+        overallStrength > 60 ? 'Strong' :
+          overallStrength > 45 ? 'Moderate' : 'Needs Attention',
       factors: {
         compatibility: avgCompatibility,
         generationalHarmony: generationalStrength

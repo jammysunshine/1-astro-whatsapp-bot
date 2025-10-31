@@ -243,7 +243,7 @@ class BasicBirthChartService {
    * @returns {string} Ascendant interpretation
    */
   _interpretAscendant(ascendant, chartType) {
-    const sign = ascendant.sign;
+    const { sign } = ascendant;
     const interpretations = {
       Aries: 'Bold and pioneering approach to life',
       Taurus: 'Practical and reliable life foundation',
@@ -269,10 +269,10 @@ class BasicBirthChartService {
    * @returns {string} Sun sign interpretation
    */
   _interpretSunSign(sun, chartType) {
-    if (!sun) return 'Sun placement analysis unavailable';
+    if (!sun) { return 'Sun placement analysis unavailable'; }
 
-    const sign = sun.sign;
-    const house = sun.house;
+    const { sign } = sun;
+    const { house } = sun;
 
     return `Sun in ${sign} in the ${house}th house represents core identity and life purpose`;
   }
@@ -284,10 +284,10 @@ class BasicBirthChartService {
    * @returns {string} Moon sign interpretation
    */
   _interpretMoonSign(moon, chartType) {
-    if (!moon) return 'Moon placement analysis unavailable';
+    if (!moon) { return 'Moon placement analysis unavailable'; }
 
-    const sign = moon.sign;
-    const house = moon.house;
+    const { sign } = moon;
+    const { house } = moon;
 
     return `Moon in ${sign} in the ${house}th house indicates emotional nature and inner security needs`;
   }
@@ -507,9 +507,9 @@ class BasicBirthChartService {
    * @returns {string} Communication style
    */
   _getCommunicationStyle(mercury) {
-    if (!mercury) return 'Clear and effective communication';
+    if (!mercury) { return 'Clear and effective communication'; }
 
-    const sign = mercury.sign;
+    const { sign } = mercury;
     const styles = {
       Gemini: 'Versatile and quick-thinking communication',
       Virgo: 'Precise and analytical expression',
@@ -527,9 +527,9 @@ class BasicBirthChartService {
    * @returns {string} Life approach
    */
   _getLifeApproach(mars) {
-    if (!mars) return 'Balanced and determined life approach';
+    if (!mars) { return 'Balanced and determined life approach'; }
 
-    const sign = mars.sign;
+    const { sign } = mars;
     const approaches = {
       Aries: 'Direct and pioneering approach',
       Taurus: 'Steady and persistent effort',
@@ -554,9 +554,9 @@ class BasicBirthChartService {
    * @returns {string} Motivation description
    */
   _getMotivation(venus) {
-    if (!venus) return 'Harmonious and loving motivation';
+    if (!venus) { return 'Harmonious and loving motivation'; }
 
-    const sign = venus.sign;
+    const { sign } = venus;
     const motivations = {
       Taurus: 'Security and sensual pleasure',
       Cancer: 'Emotional connection and nurturing',

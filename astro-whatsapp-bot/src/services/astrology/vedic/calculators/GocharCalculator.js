@@ -62,7 +62,6 @@ class GocharCalculator {
         transitEffects,
         interpretation: this._interpretGochar(transitAspects, transitEffects)
       };
-
     } catch (error) {
       logger.error('❌ Error in Gochar calculation:', error);
       throw new Error(`Gochar calculation failed: ${error.message}`);
@@ -117,7 +116,7 @@ class GocharCalculator {
                 if (Math.abs(interAngle - aspect.angle) <= aspect.orb) {
                   aspects.push({
                     transitingPlanet: planet,
-                    natalPlanet: natalPlanet,
+                    natalPlanet,
                     aspect: aspect.name,
                     orb: Math.abs(interAngle - aspect.angle),
                     strength: this._calculateAspectStrength(interAngle, aspect.orb),
@@ -344,7 +343,7 @@ class GocharCalculator {
       return acc;
     }, {});
 
-    const mostActivePlanet = Object.keys(planetCount).reduce((a, b) => planetCount[a] > planetCount[b] ? a : b, '');
+    const mostActivePlanet = Object.keys(planetCount).reduce((a, b) => (planetCount[a] > planetCount[b] ? a : b), '');
 
     if (mostActivePlanet) {
       themes.push(`${mostActivePlanet} is most active in current transits`);
@@ -393,7 +392,7 @@ class GocharCalculator {
   }
 
   _normalizeAngle(angle) {
-    angle = angle % 360;
+    angle %= 360;
     return angle < 0 ? angle + 360 : angle;
   }
 

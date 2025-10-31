@@ -210,18 +210,11 @@ class SignificantTransitsCalculator {
       // Check each transiting planet
       for (const transitingPlanet of transitingPlanets) {
         let planetId;
-        if (transitingPlanet === 'sun') planetId = sweph.SE_SUN;
-        else if (transitingPlanet === 'moon') planetId = sweph.SE_MOON;
-        else if (transitingPlanet === 'mercury') planetId = sweph.SE_MERCURY;
-        else if (transitingPlanet === 'venus') planetId = sweph.SE_VENUS;
-        else if (transitingPlanet === 'mars') planetId = sweph.SE_MARS;
-        else if (transitingPlanet === 'jupiter') planetId = sweph.SE_JUPITER;
-        else if (transitingPlanet === 'saturn') planetId = sweph.SE_SATURN;
-        else if (transitingPlanet === 'rahu') planetId = sweph.SE_TRUE_NODE;
+        if (transitingPlanet === 'sun') { planetId = sweph.SE_SUN; } else if (transitingPlanet === 'moon') { planetId = sweph.SE_MOON; } else if (transitingPlanet === 'mercury') { planetId = sweph.SE_MERCURY; } else if (transitingPlanet === 'venus') { planetId = sweph.SE_VENUS; } else if (transitingPlanet === 'mars') { planetId = sweph.SE_MARS; } else if (transitingPlanet === 'jupiter') { planetId = sweph.SE_JUPITER; } else if (transitingPlanet === 'saturn') { planetId = sweph.SE_SATURN; } else if (transitingPlanet === 'rahu') { planetId = sweph.SE_TRUE_NODE; }
 
         // Check aspects to all significant natal points
         for (const [pointType, points] of Object.entries(significantNatalPoints)) {
-          if (pointType === 'importantPositions') continue;
+          if (pointType === 'importantPositions') { continue; }
 
           for (const [pointName, pointData] of Object.entries(points)) {
             try {
@@ -234,7 +227,7 @@ class SignificantTransitsCalculator {
               if (transitDate) {
                 transits.push({
                   date: transitDate,
-                  transitingPlanet: transitingPlanet,
+                  transitingPlanet,
                   natalPoint: {
                     name: pointName,
                     type: pointType,
@@ -406,7 +399,7 @@ class SignificantTransitsCalculator {
     const totalScore = beneficialScore + challengingScore;
     const netBalance = beneficialScore - challengingScore;
 
-    let influence, rating;
+    let influence; let rating;
 
     if (netBalance > 50) {
       influence = 'Very favorable period for favorable planets';
@@ -427,7 +420,7 @@ class SignificantTransitsCalculator {
 
     return {
       overallInfluence: influence,
-      rating: rating,
+      rating,
       beneficialScore,
       challengingScore,
       netBalance,
@@ -483,7 +476,7 @@ class SignificantTransitsCalculator {
         sensitive.push({
           type: 'sensitive_degree',
           longitude: data.longitude,
-          planet: planet,
+          planet,
           reason: `Planet in sensitive house ${data.house}`
         });
       }

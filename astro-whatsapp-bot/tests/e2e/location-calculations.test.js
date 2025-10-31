@@ -18,10 +18,10 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   const Δφ = (lat2 - lat1) * Math.PI / 180;
   const Δλ = (lon2 - lon1) * Math.PI / 180;
 
-  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
             Math.cos(φ1) * Math.cos(φ2) *
-            Math.sin(Δλ/2) * Math.sin(Δλ/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   return R * c;
 }
@@ -33,18 +33,18 @@ function calculateTimezoneOffset(longitude) {
 
 describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite (20 Scenarios)', () => {
   let dbManager;
-  let testUser = '+location_test_user';
+  const testUser = '+location_test_user';
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     dbManager = new TestDatabaseManager();
     await dbManager.setup();
   }, 60000);
 
-  afterAll(async () => {
+  afterAll(async() => {
     await dbManager.teardown();
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     messageSender.sendMessage.mockClear();
     messageSender.sendListMessage.mockClear();
     messageSender.sendButtonMessage.mockClear();
@@ -52,8 +52,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
   });
 
   describe('GEOGRAPHIC COORDINATE VARIATIONS (6/6 Scenarios)', () => {
-
-    test('LOCATION_001: Decimal degree coordinate accuracy → Precise astronomical calculations', async () => {
+    test('LOCATION_001: Decimal degree coordinate accuracy → Precise astronomical calculations', async() => {
       // Test high-precision decimal coordinate handling
 
       const preciseCoordinates = [
@@ -82,7 +81,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_002: Degrees minutes seconds format conversion → Astrological house accuracy', async () => {
+    test('LOCATION_002: Degrees minutes seconds format conversion → Astrological house accuracy', async() => {
       // Test conversion from DMS to decimal and vice versa
 
       const dmsCoordinates = [
@@ -111,7 +110,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_003: UTM and grid coordinate systems → Military and mapping coordinate support', async () => {
+    test('LOCATION_003: UTM and grid coordinate systems → Military and mapping coordinate support', async() => {
       // Test UTM (Universal Transverse Mercator) and other grid systems
 
       const gridCoordinates = [
@@ -139,7 +138,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_004: Geographic coordinate validation → Boundary and range checking', async () => {
+    test('LOCATION_004: Geographic coordinate validation → Boundary and range checking', async() => {
       // Test coordinate validation for geographical accuracy
 
       const coordinateValidations = [
@@ -172,7 +171,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_005: Coordinate precision and rounding effects → Astrological calculation sensitivity', async () => {
+    test('LOCATION_005: Coordinate precision and rounding effects → Astrological calculation sensitivity', async() => {
       // Test how coordinate precision affects astrological calculations
 
       const precisionTests = [
@@ -201,7 +200,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_006: Multiple coordinate systems support → Geographic database compatibility', async () => {
+    test('LOCATION_006: Multiple coordinate systems support → Geographic database compatibility', async() => {
       // Test support for multiple coordinate reference systems
 
       const coordinateSystems = [
@@ -233,8 +232,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
   });
 
   describe('TIME ZONE & GEOGRAPHIC TIME CALCULATIONS (6/6 Scenarios)', () => {
-
-    test('LOCATION_007: Time zone offset calculation accuracy → Solar time corrections', async () => {
+    test('LOCATION_007: Time zone offset calculation accuracy → Solar time corrections', async() => {
       // Test accurate time zone offset calculations for astrological timing
 
       const timezoneCalculations = [
@@ -265,7 +263,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_008: Daylight saving time boundary handling → Ascendant accuracy during DST transitions', async () => {
+    test('LOCATION_008: Daylight saving time boundary handling → Ascendant accuracy during DST transitions', async() => {
       // Test DST transitions and their effects on astrological calculations
 
       const dstTransitions = [
@@ -284,7 +282,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
           from: testUser,
           type: 'text',
           text: { body: `DST transition: ${dstTransition.location} ${dstTransition.date}` },
-          dstTransition: dstTransition
+          dstTransition
         };
 
         await processIncomingMessage(dstRequest, {});
@@ -294,7 +292,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_009: Historical time zone changes → Retroactive calculation accuracy', async () => {
+    test('LOCATION_009: Historical time zone changes → Retroactive calculation accuracy', async() => {
       // Test handling of historical timezone changes and territorial adjustments
 
       const historicalChanges = [
@@ -325,7 +323,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_010: Longitude-based time correction → Solar time vs clock time calculations', async () => {
+    test('LOCATION_010: Longitude-based time correction → Solar time vs clock time calculations', async() => {
       // Test correction between civil time and solar time based on longitude
 
       const longitudeCorrections = [
@@ -356,7 +354,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_011: Time zone database currentness → Accuracy of timezone rules', async () => {
+    test('LOCATION_011: Time zone database currentness → Accuracy of timezone rules', async() => {
       // Test timezone database accuracy and currentness
 
       const tzDatabaseTests = [
@@ -387,7 +385,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_012: Geographic solar time calculations → True solar birth time derivation', async () => {
+    test('LOCATION_012: Geographic solar time calculations → True solar birth time derivation', async() => {
       // Test calculation of true solar time based on geographic location
 
       const solarTimeCalculations = [
@@ -420,8 +418,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
   });
 
   describe('LOCATION-BASED ASTROLOGICAL COMPUTATIONS (8/8 Scenarios)', () => {
-
-    test('LOCATION_013: Geographical house system variations → Altitude and latitude effects on houses', async () => {
+    test('LOCATION_013: Geographical house system variations → Altitude and latitude effects on houses', async() => {
       // Test how geographic location affects astrological house calculations
 
       const geographicHouses = [
@@ -452,7 +449,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_014: Magnetic declination correction → True north vs magnetic north adjustments', async () => {
+    test('LOCATION_014: Magnetic declination correction → True north vs magnetic north adjustments', async() => {
       // Test magnetic declination corrections for accurate directional calculations
 
       const magneticDeclinations = [
@@ -483,7 +480,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_015: Altitude and elevation effects → Atmospheric correction for planets', async () => {
+    test('LOCATION_015: Altitude and elevation effects → Atmospheric correction for planets', async() => {
       // Test how altitude affects astrological calculations
 
       const altitudeEffects = [
@@ -514,7 +511,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_016: Geographic cultural aspects → Country and regional astrological traditions', async () => {
+    test('LOCATION_016: Geographic cultural aspects → Country and regional astrological traditions', async() => {
       // Test cultural variations in astrological calculations based on location
 
       const culturalAspects = [
@@ -545,7 +542,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_017: Political boundary changes impact → Historical location accuracy', async () => {
+    test('LOCATION_017: Political boundary changes impact → Historical location accuracy', async() => {
       // Test how political changes affect location-based calculations
 
       const politicalBoundaries = [
@@ -576,7 +573,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_018: Urban vs rural environmental factors → City energy vs nature energy', async () => {
+    test('LOCATION_018: Urban vs rural environmental factors → City energy vs nature energy', async() => {
       // Test environmental differences between urban and rural locations
 
       const environmentalFactors = [
@@ -607,7 +604,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_019: Location-based electional astrology → Geographic optimal timing', async () => {
+    test('LOCATION_019: Location-based electional astrology → Geographic optimal timing', async() => {
       // Test electional astrology calculations optimized for specific locations
 
       const electionalLocations = [
@@ -638,7 +635,7 @@ describe('LOCATION-BASED CALCULATIONS: Comprehensive Geographic Astrology Suite 
       }
     });
 
-    test('LOCATION_020: Real-time location tracking for travelling events → Birth during travel', async () => {
+    test('LOCATION_020: Real-time location tracking for travelling events → Birth during travel', async() => {
       // Test calculations for births occurring during travel between locations
 
       const travelBirths = [

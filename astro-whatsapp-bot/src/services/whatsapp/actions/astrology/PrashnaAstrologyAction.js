@@ -25,11 +25,11 @@ class PrashnaAstrologyAction extends BaseAction {
       // For now, returning a placeholder to indicate this needs proper implementation
       const { sendMessage } = require('../../../messageSender');
       await sendMessage(this.phoneNumber, 'Prashna (question-based) astrology analysis is being prepared...', 'text');
-      
-      return { 
-        success: true, 
-        type: 'prashna_analysis', 
-        message: 'Prashna analysis prepared' 
+
+      return {
+        success: true,
+        type: 'prashna_analysis',
+        message: 'Prashna analysis prepared'
       };
     } catch (error) {
       this.logger.error('Error in PrashnaAstrologyAction:', error);

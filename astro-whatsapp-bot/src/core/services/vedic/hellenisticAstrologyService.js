@@ -1,4 +1,4 @@
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 const hellenisticAstrologyReader = require('../../../services/astrology/hellenisticAstrology');
 
 class HellenisticAstrologyService {
@@ -22,7 +22,6 @@ class HellenisticAstrologyService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('HellenisticAstrologyService error:', error);
       throw new Error(`Hellenistic astrology analysis failed: ${error.message}`);

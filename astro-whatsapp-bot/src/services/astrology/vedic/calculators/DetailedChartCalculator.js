@@ -177,8 +177,8 @@ class DetailedChartCalculator {
 
     return {
       planets: natalPlanets,
-      houses: houses,
-      ascendant: ascendant
+      houses,
+      ascendant
     };
   }
 
@@ -213,19 +213,19 @@ class DetailedChartCalculator {
 
         // Western aspects with 8° orb
         if (minDiff <= 8) {
-          if (minDiff <= 8) aspects.conjunctions.push({ planet1, planet2, separation: minDiff });
+          if (minDiff <= 8) { aspects.conjunctions.push({ planet1, planet2, separation: minDiff }); }
 
-          if (Math.abs(minDiff - 60) <= 6) aspects.sextiles.push({ planet1, planet2, separation: minDiff });
-          if (Math.abs(minDiff - 90) <= 6) aspects.squares.push({ planet1, planet2, separation: minDiff });
-          if (Math.abs(minDiff - 120) <= 6) aspects.trines.push({ planet1, planet2, separation: minDiff });
-          if (Math.abs(minDiff - 180) <= 8) aspects.oppositions.push({ planet1, planet2, separation: minDiff });
+          if (Math.abs(minDiff - 60) <= 6) { aspects.sextiles.push({ planet1, planet2, separation: minDiff }); }
+          if (Math.abs(minDiff - 90) <= 6) { aspects.squares.push({ planet1, planet2, separation: minDiff }); }
+          if (Math.abs(minDiff - 120) <= 6) { aspects.trines.push({ planet1, planet2, separation: minDiff }); }
+          if (Math.abs(minDiff - 180) <= 8) { aspects.oppositions.push({ planet1, planet2, separation: minDiff }); }
         }
       }
     }
 
     // Calculate Vedic aspects (Rashis Drishti)
     planetList.forEach(planet => {
-      const sign = planets[planet].sign;
+      const { sign } = planets[planet];
       const vedicAspectsFrom = this._getVedicAspectsForPlanet(planet);
 
       vedicAspectsFrom.forEach(aspectSign => {
@@ -237,8 +237,8 @@ class DetailedChartCalculator {
         planetsInSign.forEach(aspectedPlanet => {
           if (aspectedPlanet !== planet) {
             aspects.vedicAspects.push({
-              planet: planet,
-              aspectedPlanet: aspectedPlanet,
+              planet,
+              aspectedPlanet,
               rashis: aspectSign,
               aspectStrength: this._getVedicAspectStrength(planet, aspectedPlanet, aspectSign)
             });
@@ -294,7 +294,7 @@ class DetailedChartCalculator {
       if (planets[planet] && (planets[planet].house === 2 || planets[planet].house === 11)) {
         yogas.dhanyoga.push({
           type: 'Dhan Yoga',
-          planet: planet,
+          planet,
           house: planets[planet].house,
           effects: 'Financial success and wealth'
         });
@@ -312,7 +312,7 @@ class DetailedChartCalculator {
         if (isInOwnSign && isInKendra) {
           yogas.panchamahapurusha.push({
             name: `${planet.charAt(0).toUpperCase() + planet.slice(1)} Mahapurusha Yoga`,
-            planet: planet,
+            planet,
             sign: planets[planet].sign,
             house: planets[planet].house,
             qualities: this._getMahapurushaQualities(planet)
@@ -632,9 +632,9 @@ class DetailedChartCalculator {
   _getVedicAspectStrength(aspecting, aspected, rashis) {
     // Aspect strength based on planet relationships
     const strongAspects = {
-      'sun_jupiter': true,
-      'moon_sun': true,
-      'mars_mercury': true
+      sun_jupiter: true,
+      moon_sun: true,
+      mars_mercury: true
     };
 
     if (strongAspects[`${aspecting}_${aspected}`]) {
@@ -714,21 +714,21 @@ class DetailedChartCalculator {
     };
 
     // Simplified - in practice would have complete tables
-    if (friendships[planet1]?.friends.includes(planet2)) return 'friend';
-    if (friendships[planet1]?.enemies.includes(planet2)) return 'enemy';
+    if (friendships[planet1]?.friends.includes(planet2)) { return 'friend'; }
+    if (friendships[planet1]?.enemies.includes(planet2)) { return 'enemy'; }
     return 'neutral';
   }
 
   _calculateDhuma(natalChart) {
     // Dhuma calculation: Ascendant + 133°20'
-    const ascendant = natalChart.ascendant;
+    const { ascendant } = natalChart;
     const dhumaLong = (ascendant + 133.333) % 360;
     return { longitude: dhumaLong, sign: Math.floor(dhumaLong / 30) + 1 };
   }
 
   _calculateVyatipata(natalChart) {
     // Vyatipata calculation: Ascendant - 133°20'
-    const ascendant = natalChart.ascendant;
+    const { ascendant } = natalChart;
     const vyatipataLong = (ascendant - 133.333 + 360) % 360;
     return { longitude: vyatipataLong, sign: Math.floor(vyatipataLong / 30) + 1 };
   }
@@ -749,7 +749,7 @@ class DetailedChartCalculator {
 
   _calculateUpaketu(natalChart) {
     // Upaketu calculation: 144°45' from Ascendant
-    const ascendant = natalChart.ascendant;
+    const { ascendant } = natalChart;
     const upaketuLong = (ascendant + 144.75) % 360;
     return { longitude: upaketuLong, sign: Math.floor(upaketuLong / 30) + 1 };
   }
@@ -757,7 +757,7 @@ class DetailedChartCalculator {
   _calculateHouseStrength(planetsInHouse, lord, natalChart) {
     let strength = 0;
 
-    if (planetsInHouse.includes(lord)) strength += 50; // Lord present
+    if (planetsInHouse.includes(lord)) { strength += 50; } // Lord present
     strength += planetsInHouse.length * 15; // Planets present
 
     return Math.min(strength, 100);
@@ -807,9 +807,7 @@ class DetailedChartCalculator {
 
     // Planetary strength based on dignity
     Object.values(natalChart.planets).forEach(planet => {
-      if (planet.dignity === 'exalted') strengths.planetary += 15;
-      else if (planet.dignity === 'own_sign') strengths.planetary += 10;
-      else if (planet.dignity === 'friendly') strengths.planetary += 5;
+      if (planet.dignity === 'exalted') { strengths.planetary += 15; } else if (planet.dignity === 'own_sign') { strengths.planetary += 10; } else if (planet.dignity === 'friendly') { strengths.planetary += 5; }
     });
 
     return strengths;

@@ -446,7 +446,7 @@ class SunSignService {
    */
   _getPlanetaryRuler(sunSign) {
     const traits = this._getSunSignTraits(sunSign);
-    const rulingPlanet = traits.rulingPlanet;
+    const { rulingPlanet } = traits;
 
     const planetInfo = {
       Mars: {

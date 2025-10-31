@@ -21,7 +21,7 @@ class CompatibilityFormatter {
       let result = '';
 
       // Header
-      result += `💕 *Synastry Analysis*\n`;
+      result += '💕 *Synastry Analysis*\n';
       result += `🌟 ${insights.user?.name || 'You'} & ${partnerInfo?.name || 'Partner'}\n\n`;
 
       // Overall Score
@@ -64,7 +64,7 @@ class CompatibilityFormatter {
    * @returns {string} Formatted score section
    */
   formatScoreSection(scores) {
-    if (!scores) return '🎯 *Compatibility Score:* Unable to calculate';
+    if (!scores) { return '🎯 *Compatibility Score:* Unable to calculate'; }
     const level = scores.level?.replace('_', ' ').toUpperCase() || 'UNKNOWN';
     return `🎯 *Compatibility Score:* ${scores.overall || 0}/100 (${level})`;
   }
@@ -75,7 +75,7 @@ class CompatibilityFormatter {
    * @returns {string} Formatted aspects string
    */
   formatKeyAspects(aspects) {
-    if (!aspects || aspects.length === 0) return '*🔮 Planetary Aspects:* Analysis in progress';
+    if (!aspects || aspects.length === 0) { return '*🔮 Planetary Aspects:* Analysis in progress'; }
 
     let result = '*🔮 Key Planetary Connections:*\n';
     const topAspects = aspects.slice(0, 3);
@@ -114,7 +114,7 @@ class CompatibilityFormatter {
    * @returns {string} Formatted strengths string
    */
   formatStrengths(strengths) {
-    if (!strengths || strengths.length === 0) return '*💪 Strengths:* Analysis in progress';
+    if (!strengths || strengths.length === 0) { return '*💪 Strengths:* Analysis in progress'; }
 
     let result = '*💪 Relationship Strengths:*\n';
     strengths.forEach(strength => {
@@ -130,7 +130,7 @@ class CompatibilityFormatter {
    * @returns {string} Formatted challenges string
    */
   formatChallenges(challenges) {
-    if (!challenges || challenges.length === 0) return '*⚠️ Growth Areas:* None identified';
+    if (!challenges || challenges.length === 0) { return '*⚠️ Growth Areas:* None identified'; }
 
     let result = '*⚠️ Growth Areas:*\n';
     challenges.forEach(challenge => {
@@ -163,7 +163,7 @@ class CompatibilityFormatter {
    * @returns {string} Detailed aspects format
    */
   formatDetailedAspects(aspects) {
-    if (!aspects || aspects.length === 0) return 'No aspect data available';
+    if (!aspects || aspects.length === 0) { return 'No aspect data available'; }
 
     let result = '*🔍 Detailed Planetary Aspects:*\n\n';
     aspects.slice(0, 10).forEach((aspect, index) => {
@@ -227,9 +227,9 @@ class CompatibilityFormatter {
 
     return `💕 *Quick Synastry Summary:*\n\nYou & ${partner}: ${score}/100 compatibility\n\n${
       score >= 80 ? '🌟 Excellent cosmic harmony!' :
-      score >= 70 ? '💫 Strong supportive connection.' :
-      score >= 60 ? '✅ Positive potential with effort.' :
-      '🔄 Growth opportunity through challenges.'}`;
+        score >= 70 ? '💫 Strong supportive connection.' :
+          score >= 60 ? '✅ Positive potential with effort.' :
+            '🔄 Growth opportunity through challenges.'}`;
   }
 }
 

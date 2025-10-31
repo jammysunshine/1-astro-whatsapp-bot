@@ -6,7 +6,7 @@
  */
 
 const { VedicNumerology } = require('../../../services/astrology/vedicNumerology');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class VedicNumerologyService {
   constructor() {
@@ -28,7 +28,6 @@ class VedicNumerologyService {
 
       // Format result for service consumption
       return this._formatResult(analysis);
-
     } catch (error) {
       logger.error('VedicNumerologyService error:', error);
       throw new Error(`Vedic numerology analysis failed: ${error.message}`);
@@ -57,7 +56,6 @@ class VedicNumerologyService {
         karmicPath: interpretation.strengths || 'Personal growth and self-discovery',
         error: false
       };
-
     } catch (error) {
       logger.error('VedicNumerologyService calculateNameNumber error:', error);
       return {
@@ -79,11 +77,10 @@ class VedicNumerologyService {
       const analysis = this.calculator.getVedicNumerologyAnalysis(data.birthDate, data.name);
 
       return {
-        analysis: analysis,
+        analysis,
         summary: this._generateSummary(analysis),
         error: false
       };
-
     } catch (error) {
       logger.error('VedicNumerologyService getAnalysis error:', error);
       return {

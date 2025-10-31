@@ -187,7 +187,7 @@ class VimshottariDashaService {
    * @returns {string} Combination analysis
    */
   _analyzeDashaCombination(mahadasha, antardasha) {
-    if (!mahadasha || !antardasha) return 'General planetary combination';
+    if (!mahadasha || !antardasha) { return 'General planetary combination'; }
 
     const combinations = {
       'sun-moon': 'Emotional self-expression and leadership',

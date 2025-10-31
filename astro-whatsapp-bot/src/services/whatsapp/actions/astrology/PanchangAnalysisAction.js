@@ -25,11 +25,11 @@ class PanchangAnalysisAction extends BaseAction {
       // For now, returning a placeholder to indicate this needs proper implementation
       const { sendMessage } = require('../../../messageSender');
       await sendMessage(this.phoneNumber, 'Panchang (daily calendar) analysis is being prepared...', 'text');
-      
-      return { 
-        success: true, 
-        type: 'panchang_analysis', 
-        message: 'Panchang analysis prepared' 
+
+      return {
+        success: true,
+        type: 'panchang_analysis',
+        message: 'Panchang analysis prepared'
       };
     } catch (error) {
       this.logger.error('Error in PanchangAnalysisAction:', error);

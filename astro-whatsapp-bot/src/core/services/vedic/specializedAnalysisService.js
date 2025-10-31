@@ -10,7 +10,7 @@ const AshtakavargaCalculator = require('../../../services/astrology/calculators/
 const VargaChartCalculator = require('../../../services/astrology/vedic/calculators/VargaChartCalculator');
 const VedicYogasCalculator = require('../../../services/astrology/vedic/calculators/VedicYogasCalculator');
 const ShadbalaCalculator = require('../../../services/astrology/vedic/calculators/ShadbalaCalculator');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class SpecializedAnalysisService {
   constructor() {
@@ -36,7 +36,6 @@ class SpecializedAnalysisService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('SpecializedAnalysisService error:', error);
       throw new Error(`Specialized analysis failed: ${error.message}`);
@@ -365,10 +364,10 @@ class SpecializedAnalysisService {
 
   _interpretAshtakavarga(ashtakavarga) {
     const score = ashtakavarga.totalPoints || 0;
-    if (score > 300) return 'Exceptionally favorable planetary influences';
-    if (score > 250) return 'Very good planetary support';
-    if (score > 200) return 'Good planetary harmony';
-    if (score > 150) return 'Moderate planetary influences';
+    if (score > 300) { return 'Exceptionally favorable planetary influences'; }
+    if (score > 250) { return 'Very good planetary support'; }
+    if (score > 200) { return 'Good planetary harmony'; }
+    if (score > 150) { return 'Moderate planetary influences'; }
     return 'Challenging planetary configuration requiring attention';
   }
 
@@ -399,20 +398,20 @@ class SpecializedAnalysisService {
     };
 
     switch (chartName) {
-      case 'D-9':
-        insights.interpretation = 'Navamsa shows marriage, spirituality, and life partner';
-        break;
-      case 'D-10':
-        insights.interpretation = 'Dashamsa reveals career and public life';
-        break;
-      case 'D-7':
-        insights.interpretation = 'Saptamsa indicates children and creativity';
-        break;
-      case 'D-12':
-        insights.interpretation = 'Dwadasamsa shows parents and ancestry';
-        break;
-      default:
-        insights.interpretation = `${chartName} analysis available`;
+    case 'D-9':
+      insights.interpretation = 'Navamsa shows marriage, spirituality, and life partner';
+      break;
+    case 'D-10':
+      insights.interpretation = 'Dashamsa reveals career and public life';
+      break;
+    case 'D-7':
+      insights.interpretation = 'Saptamsa indicates children and creativity';
+      break;
+    case 'D-12':
+      insights.interpretation = 'Dwadasamsa shows parents and ancestry';
+      break;
+    default:
+      insights.interpretation = `${chartName} analysis available`;
     }
 
     return insights;
@@ -433,14 +432,14 @@ class SpecializedAnalysisService {
     const categories = {};
     yogas.forEach(yoga => {
       const type = yoga.type || 'General';
-      if (!categories[type]) categories[type] = [];
+      if (!categories[type]) { categories[type] = []; }
       categories[type].push(yoga);
     });
     return categories;
   }
 
   _interpretYogas(yogas) {
-    if (yogas.length === 0) return 'No significant yogas identified';
+    if (yogas.length === 0) { return 'No significant yogas identified'; }
 
     const rajaYogas = yogas.filter(y => y.type === 'Raja Yoga').length;
     const dhanaYogas = yogas.filter(y => y.type === 'Dhana Yoga').length;
@@ -506,10 +505,10 @@ class SpecializedAnalysisService {
 
   _interpretShadbala(shadbala) {
     const strength = shadbala.totalStrength || 0;
-    if (strength > 80) return 'Exceptionally strong planetary powers';
-    if (strength > 70) return 'Very strong planetary influences';
-    if (strength > 60) return 'Good planetary strength';
-    if (strength > 50) return 'Moderate planetary power';
+    if (strength > 80) { return 'Exceptionally strong planetary powers'; }
+    if (strength > 70) { return 'Very strong planetary influences'; }
+    if (strength > 60) { return 'Good planetary strength'; }
+    if (strength > 50) { return 'Moderate planetary power'; }
     return 'Planetary strength needs enhancement';
   }
 
@@ -533,20 +532,20 @@ class SpecializedAnalysisService {
 
   _generateInsightForArea(area, analyses) {
     switch (area) {
-      case 'lifePurpose':
-        return this._generateLifePurposeInsight(analyses);
-      case 'careerPotential':
-        return this._generateCareerInsight(analyses);
-      case 'spiritualPath':
-        return this._generateSpiritualInsight(analyses);
-      case 'relationshipDynamics':
-        return this._generateRelationshipInsight(analyses);
-      case 'healthIndicators':
-        return this._generateHealthInsight(analyses);
-      case 'wealthPotential':
-        return this._generateWealthInsight(analyses);
-      default:
-        return 'Specialized analysis available for this life area';
+    case 'lifePurpose':
+      return this._generateLifePurposeInsight(analyses);
+    case 'careerPotential':
+      return this._generateCareerInsight(analyses);
+    case 'spiritualPath':
+      return this._generateSpiritualInsight(analyses);
+    case 'relationshipDynamics':
+      return this._generateRelationshipInsight(analyses);
+    case 'healthIndicators':
+      return this._generateHealthInsight(analyses);
+    case 'wealthPotential':
+      return this._generateWealthInsight(analyses);
+    default:
+      return 'Specialized analysis available for this life area';
     }
   }
 
@@ -647,7 +646,7 @@ class SpecializedAnalysisService {
       throw new Error('Birth data is required for specialized analysis');
     }
 
-    const birthData = input.birthData;
+    const { birthData } = input;
 
     if (!birthData.birthDate) {
       throw new Error('Birth date is required');
@@ -734,11 +733,11 @@ class SpecializedAnalysisService {
 
     const overallScore = (ashtakavargaPercent + shadbalaPercent + yogaBonus) / 3;
 
-    if (overallScore > 0.8) return 'Exceptional';
-    if (overallScore > 0.7) return 'Very Strong';
-    if (overallScore > 0.6) return 'Strong';
-    if (overallScore > 0.5) return 'Moderate';
-    if (overallScore > 0.4) return 'Fair';
+    if (overallScore > 0.8) { return 'Exceptional'; }
+    if (overallScore > 0.7) { return 'Very Strong'; }
+    if (overallScore > 0.6) { return 'Strong'; }
+    if (overallScore > 0.5) { return 'Moderate'; }
+    if (overallScore > 0.4) { return 'Fair'; }
     return 'Needs Attention';
   }
 

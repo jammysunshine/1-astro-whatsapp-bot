@@ -90,7 +90,7 @@ class PerformSynastryAnalysisService {
    * @returns {string} Interpretation
    */
   _interpretHarmoniousAspects(aspects) {
-    if (aspects.length === 0) return 'Limited harmonious connections suggest areas requiring conscious effort';
+    if (aspects.length === 0) { return 'Limited harmonious connections suggest areas requiring conscious effort'; }
 
     const aspectCount = aspects.length;
     const planets = [...new Set(aspects.flatMap(a => [a.planet1, a.planet2]))];
@@ -110,7 +110,7 @@ class PerformSynastryAnalysisService {
    * @returns {string} Interpretation
    */
   _interpretChallengingAspects(aspects) {
-    if (aspects.length === 0) return 'No significant challenging aspects indicate smooth relational dynamics';
+    if (aspects.length === 0) { return 'No significant challenging aspects indicate smooth relational dynamics'; }
 
     const aspectCount = aspects.length;
     const planets = [...new Set(aspects.flatMap(a => [a.planet1, a.planet2]))];
@@ -128,7 +128,7 @@ class PerformSynastryAnalysisService {
    * @returns {string} Interpretation
    */
   _interpretSignificantAspects(aspects) {
-    if (aspects.length === 0) return 'No extremely tight aspects suggest balanced, less intense dynamics';
+    if (aspects.length === 0) { return 'No extremely tight aspects suggest balanced, less intense dynamics'; }
 
     const planets = [...new Set(aspects.flatMap(a => [a.planet1, a.planet2]))];
     return `Very tight connections between ${planets.join(' and ')} indicate powerful, transformative energies`;
@@ -148,7 +148,7 @@ class PerformSynastryAnalysisService {
     const overlayCount = Object.values(houseOverlays.userInPartnerHouses || {})
       .filter(data => relationshipHouses.includes(data.house)).length +
       Object.values(houseOverlays.partnerInUserHouses || {})
-      .filter(data => relationshipHouses.includes(data.house)).length;
+        .filter(data => relationshipHouses.includes(data.house)).length;
 
     if (overlayCount >= 3) {
       themes.push('Deep emotional and relational commitment');
@@ -265,9 +265,9 @@ class PerformSynastryAnalysisService {
       .filter(data => [5, 7, 8].includes(data.house)).length;
 
     if (relationshipOverlays >= 2) {
-      summary += `Strong house overlays in relationship sectors indicate deep emotional commitment and shared experiences.`;
+      summary += 'Strong house overlays in relationship sectors indicate deep emotional commitment and shared experiences.';
     } else {
-      summary += `House placements suggest opportunities for developing deeper relational understanding.`;
+      summary += 'House placements suggest opportunities for developing deeper relational understanding.';
     }
 
     return summary;

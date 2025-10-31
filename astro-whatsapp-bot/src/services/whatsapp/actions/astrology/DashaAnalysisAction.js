@@ -25,11 +25,11 @@ class DashaAnalysisAction extends BaseAction {
       // For now, returning a placeholder to indicate this needs proper implementation
       const { sendMessage } = require('../../../messageSender');
       await sendMessage(this.phoneNumber, 'Vimshottari Dasha analysis is being prepared...', 'text');
-      
-      return { 
-        success: true, 
-        type: 'dasha_analysis', 
-        message: 'Vimshottari Dasha analysis prepared' 
+
+      return {
+        success: true,
+        type: 'dasha_analysis',
+        message: 'Vimshottari Dasha analysis prepared'
       };
     } catch (error) {
       this.logger.error('Error in DashaAnalysisAction:', error);

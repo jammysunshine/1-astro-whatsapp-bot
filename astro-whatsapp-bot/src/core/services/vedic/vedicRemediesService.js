@@ -6,7 +6,7 @@
  */
 
 const { VedicRemedies } = require('../../../services/astrology/vedicRemedies');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class VedicRemediesService {
   constructor() {
@@ -25,7 +25,7 @@ class VedicRemediesService {
 
       // Determine planet or dosha from request
       const planet = data.planet || this._extractPlanetFromData(data);
-      const dosha = data.dosha;
+      const { dosha } = data;
 
       let remedies;
       if (dosha) {
@@ -36,7 +36,6 @@ class VedicRemediesService {
 
       // Format result for service consumption
       return this._formatResult(remedies, planet, dosha);
-
     } catch (error) {
       logger.error('VedicRemediesService error:', error);
       throw new Error(`Vedic remedies analysis failed: ${error.message}`);
@@ -72,7 +71,6 @@ class VedicRemediesService {
         yantra: remedies.yantra,
         error: false
       };
-
     } catch (error) {
       logger.error('VedicRemediesService getPlanetRemedies error:', error);
       return {
@@ -96,11 +94,10 @@ class VedicRemediesService {
       const remedies = this.calculator.generateDoshaRemedies(doshaType);
 
       return {
-        remedies: remedies,
+        remedies,
         summary: this._generateDoshaSummary(remedies, doshaType),
         error: false
       };
-
     } catch (error) {
       logger.error('VedicRemediesService getDoshaRemedies error:', error);
       return {
@@ -145,7 +142,7 @@ class VedicRemediesService {
 
     return {
       success: true,
-      remedies: remedies,
+      remedies,
       target: planet || dosha,
       type: planet ? 'planetary' : 'dosha',
       metadata: {

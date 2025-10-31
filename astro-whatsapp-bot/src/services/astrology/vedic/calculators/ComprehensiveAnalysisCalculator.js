@@ -305,11 +305,11 @@ class ComprehensiveAnalysisCalculator {
     let potential = 0;
 
     // Add points based on various factors
-    if (yogasAnalysis.rajaYogas?.length > 0) potential += 25;
-    if (yogasAnalysis.dhanYogas?.length > 0) potential += 20;
-    if (analysisLevels.rasi?.strengths?.length > analysisLevels.rasi?.weaknesses?.length) potential += 15;
-    if (dashaAnalysis.currentPeriod !== 'Error') potential += 20;
-    if (!transitAnalysis.error) potential += 20;
+    if (yogasAnalysis.rajaYogas?.length > 0) { potential += 25; }
+    if (yogasAnalysis.dhanYogas?.length > 0) { potential += 20; }
+    if (analysisLevels.rasi?.strengths?.length > analysisLevels.rasi?.weaknesses?.length) { potential += 15; }
+    if (dashaAnalysis.currentPeriod !== 'Error') { potential += 20; }
+    if (!transitAnalysis.error) { potential += 20; }
 
     holistic.overallLifePotential = Math.min(potential, 100);
 
@@ -489,18 +489,18 @@ class ComprehensiveAnalysisCalculator {
   // Helper methods
   _getDivisionalPurpose(chart) {
     const purposes = {
-      'D2': 'Wealth and family',
-      'D3': 'Siblings and courage',
-      'D4': 'Fortune and property',
-      'D7': 'Children and creativity',
-      'D16': 'Vehicles and comforts',
-      'D20': 'Spiritual practices',
-      'D24': 'Education and knowledge',
-      'D27': 'Auspicious events',
-      'D30': 'Obstacles and challenges',
-      'D40': 'Auspicious ceremonies',
-      'D45': 'All aspects of life',
-      'D60': 'Subtle karma analysis'
+      D2: 'Wealth and family',
+      D3: 'Siblings and courage',
+      D4: 'Fortune and property',
+      D7: 'Children and creativity',
+      D16: 'Vehicles and comforts',
+      D20: 'Spiritual practices',
+      D24: 'Education and knowledge',
+      D27: 'Auspicious events',
+      D30: 'Obstacles and challenges',
+      D40: 'Auspicious ceremonies',
+      D45: 'All aspects of life',
+      D60: 'Subtle karma analysis'
     };
     return purposes[chart] || 'Specialized analysis';
   }

@@ -58,7 +58,6 @@ class ChartGenerator {
       } catch (ayanamsaError) {
         logger.warn('Could not set ayanamsa:', ayanamsaError.message);
       }
-
     } catch (error) {
       logger.error('❌ Critical error initializing Swiss Ephemeris in ChartGenerator:', error);
     }
@@ -167,7 +166,7 @@ class ChartGenerator {
    */
   _parseBirthDate(birthDate) {
     const cleanDate = birthDate.toString().replace(/\D/g, '');
-    let day, month, year;
+    let day; let month; let year;
 
     if (cleanDate.length === 6) {
       day = parseInt(cleanDate.substring(0, 2));
@@ -239,10 +238,10 @@ class ChartGenerator {
    */
   _getHouseLord(sign) {
     const lords = {
-      'Aries': 'Mars', 'Taurus': 'Venus', 'Gemini': 'Mercury',
-      'Cancer': 'Moon', 'Leo': 'Sun', 'Virgo': 'Mercury',
-      'Libra': 'Venus', 'Scorpio': 'Mars', 'Sagittarius': 'Jupiter',
-      'Capricorn': 'Saturn', 'Aquarius': 'Saturn', 'Pisces': 'Jupiter'
+      Aries: 'Mars', Taurus: 'Venus', Gemini: 'Mercury',
+      Cancer: 'Moon', Leo: 'Sun', Virgo: 'Mercury',
+      Libra: 'Venus', Scorpio: 'Mars', Sagittarius: 'Jupiter',
+      Capricorn: 'Saturn', Aquarius: 'Saturn', Pisces: 'Jupiter'
     };
     return lords[sign] || 'Unknown';
   }
@@ -265,13 +264,13 @@ class ChartGenerator {
       vedicPositions[planet] = {
         name: data.name,
         sign: data.sign,
-        house: house,
+        house,
         longitude: data.longitude,
         degrees: data.position.degrees,
         minutes: data.position.minutes,
         seconds: data.position.seconds,
         retrograde: data.retrograde,
-        dignity: dignity,
+        dignity,
         shadbala: 0, // Would calculate with Shadbala calculator
         ashtakavarga: 0 // Would calculate with Ashtakavarga calculator
       };
@@ -634,7 +633,7 @@ class ChartGenerator {
    */
   _getSignFromLongitude(longitude) {
     const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     return signs[Math.floor(longitude / 30) % 12];
   }
 
@@ -692,7 +691,7 @@ class ChartGenerator {
    * @returns {number} Normalized angle
    */
   _normalizeAngle(angle) {
-    let normalized = Math.abs(angle) % 360;
+    const normalized = Math.abs(angle) % 360;
     return normalized > 180 ? 360 - normalized : normalized;
   }
 

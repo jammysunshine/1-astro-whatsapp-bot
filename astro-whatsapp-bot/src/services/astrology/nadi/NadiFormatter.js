@@ -29,7 +29,6 @@ class NadiFormatter {
         interpretation: this.generateInterpretationString(reading),
         compatibility: reading.compatibility
       };
-
     } catch (error) {
       this.logger.error('Nadi formatting error:', error);
       return this.formatErrorResponse('Unable to format Nadi reading');
@@ -81,7 +80,7 @@ class NadiFormatter {
     }
 
     return remedies.slice(0, 8).map(remedy =>
-      typeof remedy === 'string' ? remedy : remedy.remedy || remedy
+      (typeof remedy === 'string' ? remedy : remedy.remedy || remedy)
     );
   }
 

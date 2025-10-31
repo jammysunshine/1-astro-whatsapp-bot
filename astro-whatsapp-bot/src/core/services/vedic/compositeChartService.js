@@ -102,7 +102,7 @@ class CompositeChartService {
     }
 
     const dominantElement = Object.keys(elements).reduce((a, b) =>
-      elements[a] > elements[b] ? a : b
+      (elements[a] > elements[b] ? a : b)
     );
 
     return {
@@ -133,7 +133,7 @@ class CompositeChartService {
     }
 
     const dominantQuality = Object.keys(qualities).reduce((a, b) =>
-      qualities[a] > qualities[b] ? a : b
+      (qualities[a] > qualities[b] ? a : b)
     );
 
     return {
@@ -245,8 +245,8 @@ class CompositeChartService {
     const min = Math.min(...values);
     const range = max - min;
 
-    if (range <= 1) return 'Well balanced across all elements';
-    if (range <= 2) return 'Moderately balanced with some emphasis';
+    if (range <= 1) { return 'Well balanced across all elements'; }
+    if (range <= 2) { return 'Moderately balanced with some emphasis'; }
     return 'Strong emphasis on certain elements';
   }
 
@@ -272,10 +272,10 @@ class CompositeChartService {
   _determineHemisphereEmphasis(hemispheres) {
     const { eastern, western, northern, southern } = hemispheres;
 
-    if (eastern > western) return 'Focus on personal identity and self-expression';
-    if (western > eastern) return 'Emphasis on relationships and partnerships';
-    if (northern > southern) return 'Career and public life orientation';
-    if (southern > northern) return 'Home and family focus';
+    if (eastern > western) { return 'Focus on personal identity and self-expression'; }
+    if (western > eastern) { return 'Emphasis on relationships and partnerships'; }
+    if (northern > southern) { return 'Career and public life orientation'; }
+    if (southern > northern) { return 'Home and family focus'; }
     return 'Balanced distribution across life areas';
   }
 
@@ -355,7 +355,7 @@ class CompositeChartService {
       interpretation += `A stellium in ${analysis.stellium.sign} indicates concentrated focus on specific life themes. `;
     }
 
-    interpretation += analysis.hemisphereEmphasis.emphasis + '. ';
+    interpretation += `${analysis.hemisphereEmphasis.emphasis}. `;
 
     return interpretation;
   }

@@ -9,7 +9,7 @@
 const GroupAstrologyCalculator = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
 const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
 const FinancialAstrologyCalculator = require('../../../services/astrology/vedic/calculators/FinancialAstrologyCalculator');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class BusinessPartnershipService {
   constructor() {
@@ -34,7 +34,6 @@ class BusinessPartnershipService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('BusinessPartnershipService error:', error);
       throw new Error(`Business partnership analysis failed: ${error.message}`);
@@ -160,8 +159,8 @@ class BusinessPartnershipService {
 
       // Assess synergy level
       compatibility.synergyLevel = avgScore > 75 ? 'Excellent' :
-                                  avgScore > 60 ? 'Good' :
-                                  avgScore > 45 ? 'Moderate' : 'Challenging';
+        avgScore > 60 ? 'Good' :
+          avgScore > 45 ? 'Moderate' : 'Challenging';
 
       // Identify complementary skills and potential conflicts
       compatibility.complementarySkills = this._identifyComplementarySkills(partners);
@@ -214,9 +213,9 @@ class BusinessPartnershipService {
 
       // Determine wealth generation potential
       synergy.wealthGeneration = avgFinancialStrength > 75 ? 'Excellent wealth generation potential' :
-                                avgFinancialStrength > 60 ? 'Good financial prospects' :
-                                avgFinancialStrength > 45 ? 'Moderate financial potential' :
-                                'Financial challenges may need careful management';
+        avgFinancialStrength > 60 ? 'Good financial prospects' :
+          avgFinancialStrength > 45 ? 'Moderate financial potential' :
+            'Financial challenges may need careful management';
 
       // Assess financial decision making approach
       synergy.financialDecisionMaking = this._assessFinancialDecisionMaking(partners);
@@ -311,8 +310,8 @@ class BusinessPartnershipService {
 
       // Assess growth potential
       dynamics.growthPotential = compatibility.overallScore > 70 ? 'High growth potential with strong synergy' :
-                                compatibility.overallScore > 50 ? 'Moderate growth potential with some challenges' :
-                                'Growth may be challenging, focus on stability first';
+        compatibility.overallScore > 50 ? 'Moderate growth potential with some challenges' :
+          'Growth may be challenging, focus on stability first';
 
       // Assess sustainability
       dynamics.sustainability = this._assessPartnershipSustainability(compatibility, partnerAnalyses);
@@ -375,35 +374,35 @@ class BusinessPartnershipService {
 
   _assessBusinessStrengths(partner) {
     const strengths = [];
-    if (partner.mars?.house === 10) strengths.push('Strong leadership and executive ability');
-    if (partner.jupiter?.house === 11) strengths.push('Good networking and gain potential');
-    if (partner.mercury?.house === 3 || partner.mercury?.house === 11) strengths.push('Strong communication and business skills');
-    if (partner.saturn?.house === 10) strengths.push('Disciplined work ethic and long-term planning');
+    if (partner.mars?.house === 10) { strengths.push('Strong leadership and executive ability'); }
+    if (partner.jupiter?.house === 11) { strengths.push('Good networking and gain potential'); }
+    if (partner.mercury?.house === 3 || partner.mercury?.house === 11) { strengths.push('Strong communication and business skills'); }
+    if (partner.saturn?.house === 10) { strengths.push('Disciplined work ethic and long-term planning'); }
     return strengths.length > 0 ? strengths : ['General business aptitude'];
   }
 
   _determineLeadershipStyle(partner) {
-    if (partner.sun?.house === 10 || partner.sun?.sign === 'Leo') return 'Authoritative and visionary';
-    if (partner.mars?.house === 1) return 'Direct and action-oriented';
-    if (partner.jupiter?.house === 1) return 'Mentoring and wisdom-based';
+    if (partner.sun?.house === 10 || partner.sun?.sign === 'Leo') { return 'Authoritative and visionary'; }
+    if (partner.mars?.house === 1) { return 'Direct and action-oriented'; }
+    if (partner.jupiter?.house === 1) { return 'Mentoring and wisdom-based'; }
     return 'Collaborative and team-focused';
   }
 
   _assessRiskTolerance(partner) {
-    if (partner.mars?.sign === 'Aries' || partner.mars?.sign === 'Sagittarius') return 'High risk tolerance';
-    if (partner.saturn?.sign === 'Capricorn' || partner.saturn?.sign === 'Virgo') return 'Low risk tolerance';
+    if (partner.mars?.sign === 'Aries' || partner.mars?.sign === 'Sagittarius') { return 'High risk tolerance'; }
+    if (partner.saturn?.sign === 'Capricorn' || partner.saturn?.sign === 'Virgo') { return 'Low risk tolerance'; }
     return 'Moderate risk tolerance';
   }
 
   _assessDecisionMaking(partner) {
-    if (partner.mercury?.sign === 'Virgo' || partner.mercury?.sign === 'Capricorn') return 'Analytical and detail-oriented';
-    if (partner.moon?.sign === 'Cancer') return 'Intuitive and emotion-based';
+    if (partner.mercury?.sign === 'Virgo' || partner.mercury?.sign === 'Capricorn') { return 'Analytical and detail-oriented'; }
+    if (partner.moon?.sign === 'Cancer') { return 'Intuitive and emotion-based'; }
     return 'Balanced decision-making approach';
   }
 
   _assessWorkEthic(partner) {
-    if (partner.saturn?.house === 10 || partner.saturn?.house === 6) return 'Strong work ethic and discipline';
-    if (partner.venus?.house === 6) return 'Harmonious and balanced approach to work';
+    if (partner.saturn?.house === 10 || partner.saturn?.house === 6) { return 'Strong work ethic and discipline'; }
+    if (partner.venus?.house === 6) { return 'Harmonious and balanced approach to work'; }
     return 'Dedicated work approach';
   }
 
@@ -449,10 +448,10 @@ class BusinessPartnershipService {
 
   _getBusinessSkills(partner) {
     const skills = [];
-    if (partner.mercury?.house === 3 || partner.mercury?.house === 10) skills.push('communication');
-    if (partner.mars?.house === 10) skills.push('leadership');
-    if (partner.jupiter?.house === 9 || partner.jupiter?.house === 11) skills.push('strategy');
-    if (partner.venus?.house === 11) skills.push('networking');
+    if (partner.mercury?.house === 3 || partner.mercury?.house === 10) { skills.push('communication'); }
+    if (partner.mars?.house === 10) { skills.push('leadership'); }
+    if (partner.jupiter?.house === 9 || partner.jupiter?.house === 11) { skills.push('strategy'); }
+    if (partner.venus?.house === 11) { skills.push('networking'); }
     return skills;
   }
 
@@ -509,8 +508,8 @@ class BusinessPartnershipService {
     const conservative = approaches.filter(a => a === 'Conservative').length;
     const aggressive = approaches.filter(a => a === 'Aggressive').length;
 
-    if (conservative > aggressive) return 'Conservative financial approach';
-    if (aggressive > conservative) return 'Progressive financial approach';
+    if (conservative > aggressive) { return 'Conservative financial approach'; }
+    if (aggressive > conservative) { return 'Progressive financial approach'; }
     return 'Balanced financial decision making';
   }
 
@@ -519,8 +518,8 @@ class BusinessPartnershipService {
     const highRisk = riskLevels.filter(r => r === 'High risk tolerance').length;
     const lowRisk = riskLevels.filter(r => r === 'Low risk tolerance').length;
 
-    if (highRisk > lowRisk) return 'Adventurous risk approach';
-    if (lowRisk > highRisk) return 'Conservative risk approach';
+    if (highRisk > lowRisk) { return 'Adventurous risk approach'; }
+    if (lowRisk > highRisk) { return 'Conservative risk approach'; }
     return 'Balanced risk management';
   }
 
@@ -529,8 +528,8 @@ class BusinessPartnershipService {
     const speculative = partners.filter(p => p.jupiter?.house === 5 || p.venus?.house === 5).length;
     const stable = partners.filter(p => p.saturn?.house === 2 || p.saturn?.house === 11).length;
 
-    if (speculative > stable) return 'Speculative investment style';
-    if (stable > speculative) return 'Stable investment style';
+    if (speculative > stable) { return 'Speculative investment style'; }
+    if (stable > speculative) { return 'Stable investment style'; }
     return 'Balanced investment approach';
   }
 
@@ -557,8 +556,8 @@ class BusinessPartnershipService {
     const favorable = ['Jupiter', 'Venus', 'Mercury'];
     const challenging = ['Saturn', 'Mars', 'Rahu', 'Ketu'];
 
-    if (favorable.includes(dasha)) return 'Favorable for business';
-    if (challenging.includes(dasha)) return 'Challenging for business';
+    if (favorable.includes(dasha)) { return 'Favorable for business'; }
+    if (challenging.includes(dasha)) { return 'Challenging for business'; }
     return 'Neutral for business';
   }
 
@@ -617,21 +616,21 @@ class BusinessPartnershipService {
     const leaders = partnerAnalyses.filter(p => p.leadershipStyle.includes('Authoritative'));
     const collaborators = partnerAnalyses.filter(p => p.leadershipStyle.includes('Collaborative'));
 
-    if (leaders.length === 1) return 'Clear primary leader with supportive partners';
-    if (leaders.length > 1) return 'Multiple leaders - establish clear decision hierarchy';
-    if (collaborators.length > 0) return 'Collaborative leadership structure';
+    if (leaders.length === 1) { return 'Clear primary leader with supportive partners'; }
+    if (leaders.length > 1) { return 'Multiple leaders - establish clear decision hierarchy'; }
+    if (collaborators.length > 0) { return 'Collaborative leadership structure'; }
     return 'Evolving leadership structure';
   }
 
   _assessDecisionProcess(compatibility) {
-    if (compatibility > 70) return 'Efficient decision-making process';
-    if (compatibility > 50) return 'Structured decision-making with some discussion needed';
+    if (compatibility > 70) { return 'Efficient decision-making process'; }
+    if (compatibility > 50) { return 'Structured decision-making with some discussion needed'; }
     return 'Decision-making may require facilitation and clear processes';
   }
 
   _assessConflictResolution(compatibility) {
-    if (compatibility.overallScore > 70) return 'Natural conflict resolution through mutual understanding';
-    if (compatibility.overallScore > 50) return 'Conflicts resolved through discussion and compromise';
+    if (compatibility.overallScore > 70) { return 'Natural conflict resolution through mutual understanding'; }
+    if (compatibility.overallScore > 50) { return 'Conflicts resolved through discussion and compromise'; }
     return 'May need external mediation for conflict resolution';
   }
 
@@ -654,8 +653,8 @@ class BusinessPartnershipService {
     return {
       score: Math.min(100, overallScore),
       level: overallScore > 75 ? 'Very Strong' :
-             overallScore > 60 ? 'Strong' :
-             overallScore > 45 ? 'Moderate' : 'Needs Attention',
+        overallScore > 60 ? 'Strong' :
+          overallScore > 45 ? 'Moderate' : 'Needs Attention',
       factors: {
         compatibility: compatibility.overallScore,
         financialSynergy: financialSynergy.overallSynergy

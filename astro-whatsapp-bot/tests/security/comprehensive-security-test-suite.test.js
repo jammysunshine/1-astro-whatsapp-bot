@@ -137,40 +137,40 @@ describe('Comprehensive Security Test Suite', () => {
 
   describe('Input Validation and Sanitization', () => {
     it('should sanitize malicious input according to gemini.md security mandates', async() => {
-      const maliciousInput = "alert(\"xss\")";
-      const sanitizedInput = "alertxss";
+      const maliciousInput = 'alert("xss")';
+      const sanitizedInput = 'alertxss';
 
       const result = sanitizeInput(maliciousInput);
       expect(result).toBe(sanitizedInput);
     });
 
     it('should handle SQL injection attempts according to security requirements', async() => {
-      const sqlInjectionAttempt = "'; DROP TABLE users; --";
-      const expected = "";
+      const sqlInjectionAttempt = '\'; DROP TABLE users; --';
+      const expected = '';
 
       const result = sanitizeInput(sqlInjectionAttempt);
       expect(result).toBe(expected);
     });
 
     it('should handle malicious URLs according to security best practices', async() => {
-      const maliciousUrl = "http://example.com<script>alert('xss')</script>";
-      const expected = "httpexamplecomscriptalertxssscript";
+      const maliciousUrl = 'http://example.com<script>alert(\'xss\')</script>';
+      const expected = 'httpexamplecomscriptalertxssscript';
 
       const result = sanitizeInput(maliciousUrl);
       expect(result).toBe(expected);
     });
 
     it('should sanitize empty malicious input appropriately', async() => {
-      const maliciousUrl = "http://example.com<script>alert('xss')</script>";
-      const expected = "httpexamplecomscriptalertxssscript";
+      const maliciousUrl = 'http://example.com<script>alert(\'xss\')</script>';
+      const expected = 'httpexamplecomscriptalertxssscript';
 
       const result = sanitizeInput(maliciousUrl);
       expect(result).toBe(expected);
     });
 
     it('should handle command injection attempts according to security requirements', async() => {
-      const commandInjection = "rm -rf /";
-      const expected = " rm -rf ";
+      const commandInjection = 'rm -rf /';
+      const expected = ' rm -rf ';
 
       const result = sanitizeInput(commandInjection);
       expect(result).toBe(expected);

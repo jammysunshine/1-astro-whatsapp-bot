@@ -72,7 +72,6 @@ class SolarReturnCalculator {
         comparisons: this._compareCharts(natalPlanets, planets, natalHouses, houses),
         interpretation: this._interpretSolarReturn(planets, aspects)
       };
-
     } catch (error) {
       logger.error('❌ Error in solar return calculation:', error);
       throw new Error(`Solar return calculation failed: ${error.message}`);
@@ -107,7 +106,7 @@ class SolarReturnCalculator {
 
       const diff = (sunPos.longitude - birthSunPos.longitude + 180) % 360 - 180; // Normalize difference
 
-      if (Math.abs(diff) < 0.0001) break; // Close enough
+      if (Math.abs(diff) < 0.0001) { break; } // Close enough
 
       // Adjust JD based on difference (1 degree ≈ 1 day for Sun)
       currentJD += diff / 360; // Degrees to days adjustment
@@ -372,7 +371,7 @@ class SolarReturnCalculator {
   }
 
   _normalizeAngle(angle) {
-    angle = angle % 360;
+    angle %= 360;
     return angle < 0 ? angle + 360 : angle;
   }
 

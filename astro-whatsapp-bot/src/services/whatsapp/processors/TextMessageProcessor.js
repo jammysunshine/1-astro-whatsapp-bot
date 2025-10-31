@@ -15,14 +15,14 @@ class TextMessageProcessor extends BaseMessageProcessor {
   async process(message, user, phoneNumber) {
     try {
       const messageText = message.text?.body || '';
-      if (!ValidationService.validateMessage(message, phoneNumber)) return;
+      if (!ValidationService.validateMessage(message, phoneNumber)) { return; }
 
       const session = await this.session(phoneNumber);
-      if (this.inFlow(session)) return await processFlowMessage(message, user, session.currentFlow);
+      if (this.inFlow(session)) { return await processFlowMessage(message, user, session.currentFlow); }
 
-      user.profileComplete
-        ? await this.processComplete(messageText, user, phoneNumber)
-        : await processFlowMessage(message, user, 'onboarding');
+      user.profileComplete ?
+        await this.processComplete(messageText, user, phoneNumber) :
+        await processFlowMessage(message, user, 'onboarding');
     } catch (error) {
       await this.responseHandler.handleProcessingError(phoneNumber, error);
     }
@@ -30,13 +30,12 @@ class TextMessageProcessor extends BaseMessageProcessor {
 
   async processComplete(messageText, user, phoneNumber) {
     const routed = await this.messageRouter.routeCompleteUserMessage(messageText, user, phoneNumber, this);
-    if (!routed) await this.responseHandler.handleFallbackResponse(messageText, user, phoneNumber);
+    if (!routed) { await this.responseHandler.handleFallbackResponse(messageText, user, phoneNumber); }
   }
 
   async executeAction(actionId, user, phoneNumber) {
     try {
-      if (this.actionRegistry) await this.actionRegistry.executeAction(actionId, user, phoneNumber);
-      else await this.legacy(actionId, phoneNumber);
+      if (this.actionRegistry) { await this.actionRegistry.executeAction(actionId, user, phoneNumber); } else { await this.legacy(actionId, phoneNumber); }
     } catch (error) {
       await this.responseHandler.sendErrorResponse(phoneNumber, 'action_execution_error', user.preferredLanguage || 'en');
     }

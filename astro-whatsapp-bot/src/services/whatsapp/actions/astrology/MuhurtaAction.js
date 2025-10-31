@@ -25,11 +25,11 @@ class MuhurtaAction extends BaseAction {
       // For now, returning a placeholder to indicate this needs proper implementation
       const { sendMessage } = require('../../../messageSender');
       await sendMessage(this.phoneNumber, 'Muhurta (auspicious timing) analysis is being prepared...', 'text');
-      
-      return { 
-        success: true, 
-        type: 'muhurta_analysis', 
-        message: 'Muhurta analysis prepared' 
+
+      return {
+        success: true,
+        type: 'muhurta_analysis',
+        message: 'Muhurta analysis prepared'
       };
     } catch (error) {
       this.logger.error('Error in MuhurtaAction:', error);

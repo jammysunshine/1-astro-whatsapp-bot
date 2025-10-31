@@ -9,7 +9,7 @@
 const CompatibilityAction = require('../../../services/astrology/CompatibilityAction');
 const SynastryEngine = require('../../../services/astrology/compatibility/SynastryEngine');
 const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class CompatibilityService {
   constructor() {
@@ -34,7 +34,6 @@ class CompatibilityService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('CompatibilityService error:', error);
       throw new Error(`Compatibility analysis failed: ${error.message}`);
@@ -110,7 +109,7 @@ class CompatibilityService {
           if (Math.abs(pos1 - pos2) > 180) {
             // Handle 0/360 degree crossover
             midpoint = (pos1 + pos2 + 360) / 2;
-            if (midpoint >= 360) midpoint -= 360;
+            if (midpoint >= 360) { midpoint -= 360; }
           }
 
           compositePositions[planet] = {
@@ -147,7 +146,7 @@ class CompatibilityService {
     let compositeAsc = (asc1 + asc2) / 2;
     if (Math.abs(asc1 - asc2) > 180) {
       compositeAsc = (asc1 + asc2 + 360) / 2;
-      if (compositeAsc >= 360) compositeAsc -= 360;
+      if (compositeAsc >= 360) { compositeAsc -= 360; }
     }
 
     return {
@@ -203,7 +202,7 @@ class CompatibilityService {
       score,
       factors: moonAspects,
       interpretation: score > 70 ? 'Strong emotional connection' :
-                     score > 50 ? 'Moderate emotional harmony' : 'Emotional challenges to work through'
+        score > 50 ? 'Moderate emotional harmony' : 'Emotional challenges to work through'
     };
   }
 
@@ -228,7 +227,7 @@ class CompatibilityService {
       score,
       factors: mercuryAspects,
       interpretation: score > 70 ? 'Excellent intellectual synergy' :
-                     score > 50 ? 'Good communication and shared interests' : 'Different thinking styles to bridge'
+        score > 50 ? 'Good communication and shared interests' : 'Different thinking styles to bridge'
     };
   }
 
@@ -254,7 +253,7 @@ class CompatibilityService {
       score,
       factors: physicalAspects,
       interpretation: score > 70 ? 'Strong physical attraction and harmony' :
-                     score > 50 ? 'Good physical chemistry' : 'Physical connection may need nurturing'
+        score > 50 ? 'Good physical chemistry' : 'Physical connection may need nurturing'
     };
   }
 
@@ -280,7 +279,7 @@ class CompatibilityService {
       score,
       factors: spiritualAspects,
       interpretation: score > 70 ? 'Deep spiritual connection and shared values' :
-                     score > 50 ? 'Compatible life philosophies' : 'Different spiritual paths to respect'
+        score > 50 ? 'Compatible life philosophies' : 'Different spiritual paths to respect'
     };
   }
 
@@ -399,7 +398,7 @@ class CompatibilityService {
     return {
       sunSign: person.sun?.sign,
       moonSign: person.moon?.sign,
-      risingSign: person.ascendant?.sign,
+      risingSign: person.ascendant?.sign
       // Include other non-sensitive birth info as needed
     };
   }
@@ -429,7 +428,7 @@ class CompatibilityService {
    */
   _getHouseFromLongitude(longitude, ascendant) {
     let relativePosition = longitude - ascendant;
-    if (relativePosition < 0) relativePosition += 360;
+    if (relativePosition < 0) { relativePosition += 360; }
     return Math.floor(relativePosition / 30) + 1;
   }
 
@@ -527,7 +526,7 @@ class CompatibilityService {
       couple: `${result.person1.name} & ${result.person2.name}`,
       overallScore: result.compatibilityScore.overall || 0,
       compatibility: result.compatibilityScore.overall >= 70 ? 'High' :
-                    result.compatibilityScore.overall >= 50 ? 'Moderate' : 'Challenging',
+        result.compatibilityScore.overall >= 50 ? 'Moderate' : 'Challenging',
       keyStrengths: result.recommendations.strengths.slice(0, 2),
       keyChallenges: result.recommendations.challenges.slice(0, 2),
       overallAdvice: result.recommendations.overall

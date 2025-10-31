@@ -240,15 +240,15 @@ class SynastryEngine {
    */
   analyzeAspectSignificance(planet1, planet2, aspect) {
     const planetPairs = {
-      "SunMoon": "Conscious and unconscious unity",
-      "SunVenus": "Romantic and affectionate bond",
-      "MoonVenus": "Emotional intimacy and nurturing love",
-      "SunMars": "Passionate drive and vital energy exchange",
-      "VenusMars": "Sexual chemistry and romantic harmony",
-      "MoonMars": "Emotional responses to partner's actions",
-      "SunMercury": "Clear communication and mental connection",
-      "SunSaturn": "Commitment and long-term stability",
-      "VenusSaturn": "Devoted love and lasting security"
+      SunMoon: 'Conscious and unconscious unity',
+      SunVenus: 'Romantic and affectionate bond',
+      MoonVenus: 'Emotional intimacy and nurturing love',
+      SunMars: 'Passionate drive and vital energy exchange',
+      VenusMars: 'Sexual chemistry and romantic harmony',
+      MoonMars: 'Emotional responses to partner\'s actions',
+      SunMercury: 'Clear communication and mental connection',
+      SunSaturn: 'Commitment and long-term stability',
+      VenusSaturn: 'Devoted love and lasting security'
     };
 
     const key = `${planet1}${planet2}`;

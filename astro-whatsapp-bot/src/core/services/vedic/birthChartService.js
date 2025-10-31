@@ -40,7 +40,6 @@ class BirthChartService {
 
       logger.info('✅ Vedic kundli generated successfully');
       return chartData;
-
     } catch (error) {
       logger.error('❌ Error generating Vedic kundli:', error);
       throw new Error(`Failed to generate Vedic birth chart: ${error.message}`);
@@ -64,7 +63,6 @@ class BirthChartService {
         analysis: detailedAnalysis,
         type: 'detailed_vedic'
       };
-
     } catch (error) {
       logger.error('❌ Error generating detailed chart analysis:', error);
       throw new Error(`Failed to generate detailed chart analysis: ${error.message}`);
@@ -93,7 +91,6 @@ class BirthChartService {
         type: 'basic_vedic',
         generatedAt: fullChart.generatedAt
       };
-
     } catch (error) {
       logger.error('❌ Error generating basic birth chart:', error);
       throw new Error(`Failed to generate basic birth chart: ${error.message}`);
@@ -116,7 +113,6 @@ class BirthChartService {
         modality: this._getSignModality(sunSign),
         rulingPlanet: this._getSignRuler(sunSign)
       };
-
     } catch (error) {
       logger.error('❌ Error calculating sun sign:', error);
       throw new Error(`Failed to calculate sun sign: ${error.message}`);
@@ -139,7 +135,6 @@ class BirthChartService {
         modality: this._getSignModality(moonSign),
         rulingPlanet: this._getSignRuler(moonSign)
       };
-
     } catch (error) {
       logger.error('❌ Error calculating moon sign:', error);
       throw new Error(`Failed to calculate moon sign: ${error.message}`);
@@ -166,7 +161,6 @@ class BirthChartService {
         modality: this._getSignModality(risingSign),
         rulingPlanet: this._getSignRuler(risingSign)
       };
-
     } catch (error) {
       logger.error('❌ Error calculating rising sign:', error);
       throw new Error(`Failed to calculate rising sign: ${error.message}`);
@@ -196,7 +190,6 @@ class BirthChartService {
         symbol: nakshatra.symbol,
         deity: nakshatra.deity
       };
-
     } catch (error) {
       logger.error('❌ Error calculating Nakshatra:', error);
       throw new Error(`Failed to calculate Nakshatra: ${error.message}`);
@@ -324,7 +317,7 @@ class BirthChartService {
    * @returns {string} Sign name
    */
   _getPlanetSign(planet) {
-    if (!planet || !planet.longitude) return 'Unknown';
+    if (!planet || !planet.longitude) { return 'Unknown'; }
     return this._getSignFromLongitude(planet.longitude);
   }
 
@@ -351,10 +344,10 @@ class BirthChartService {
    */
   _getSignElement(sign) {
     const elements = {
-      'Aries': 'Fire', 'Leo': 'Fire', 'Sagittarius': 'Fire',
-      'Taurus': 'Earth', 'Virgo': 'Earth', 'Capricorn': 'Earth',
-      'Gemini': 'Air', 'Libra': 'Air', 'Aquarius': 'Air',
-      'Cancer': 'Water', 'Scorpio': 'Water', 'Pisces': 'Water'
+      Aries: 'Fire', Leo: 'Fire', Sagittarius: 'Fire',
+      Taurus: 'Earth', Virgo: 'Earth', Capricorn: 'Earth',
+      Gemini: 'Air', Libra: 'Air', Aquarius: 'Air',
+      Cancer: 'Water', Scorpio: 'Water', Pisces: 'Water'
     };
     return elements[sign] || 'Unknown';
   }
@@ -367,9 +360,9 @@ class BirthChartService {
    */
   _getSignModality(sign) {
     const modalities = {
-      'Aries': 'Cardinal', 'Cancer': 'Cardinal', 'Libra': 'Cardinal', 'Capricorn': 'Cardinal',
-      'Taurus': 'Fixed', 'Leo': 'Fixed', 'Scorpio': 'Fixed', 'Aquarius': 'Fixed',
-      'Gemini': 'Mutable', 'Virgo': 'Mutable', 'Sagittarius': 'Mutable', 'Pisces': 'Mutable'
+      Aries: 'Cardinal', Cancer: 'Cardinal', Libra: 'Cardinal', Capricorn: 'Cardinal',
+      Taurus: 'Fixed', Leo: 'Fixed', Scorpio: 'Fixed', Aquarius: 'Fixed',
+      Gemini: 'Mutable', Virgo: 'Mutable', Sagittarius: 'Mutable', Pisces: 'Mutable'
     };
     return modalities[sign] || 'Unknown';
   }
@@ -382,9 +375,9 @@ class BirthChartService {
    */
   _getSignRuler(sign) {
     const rulers = {
-      'Aries': 'Mars', 'Taurus': 'Venus', 'Gemini': 'Mercury', 'Cancer': 'Moon',
-      'Leo': 'Sun', 'Virgo': 'Mercury', 'Libra': 'Venus', 'Scorpio': 'Mars',
-      'Sagittarius': 'Jupiter', 'Capricorn': 'Saturn', 'Aquarius': 'Saturn', 'Pisces': 'Jupiter'
+      Aries: 'Mars', Taurus: 'Venus', Gemini: 'Mercury', Cancer: 'Moon',
+      Leo: 'Sun', Virgo: 'Mercury', Libra: 'Venus', Scorpio: 'Mars',
+      Sagittarius: 'Jupiter', Capricorn: 'Saturn', Aquarius: 'Saturn', Pisces: 'Jupiter'
     };
     return rulers[sign] || 'Unknown';
   }
@@ -401,7 +394,7 @@ class BirthChartService {
     const nakshatras = [
       { name: 'Ashwini', lord: 'Ketu', symbol: 'Horse', deity: 'Ashwini Kumaras' },
       { name: 'Bharani', lord: 'Venus', symbol: 'Yoni', deity: 'Yama' },
-      { name: 'Krittika', lord: 'Sun', symbol: 'Knife', deity: 'Agni' },
+      { name: 'Krittika', lord: 'Sun', symbol: 'Knife', deity: 'Agni' }
       // ... more nakshatras would be defined
     ];
 

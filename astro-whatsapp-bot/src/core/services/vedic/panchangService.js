@@ -6,7 +6,7 @@
  */
 
 const { Panchang } = require('../../../services/astrology/panchang');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class PanchangService {
   constructor() {
@@ -28,7 +28,6 @@ class PanchangService {
 
       // Format result for service consumption
       return this._formatResult(panchang);
-
     } catch (error) {
       logger.error('PanchangService error:', error);
       throw new Error(`Panchang calculation failed: ${error.message}`);
@@ -61,11 +60,10 @@ class PanchangService {
       }
 
       return {
-        panchang: panchang,
+        panchang,
         summary: panchang.summary,
         error: false
       };
-
     } catch (error) {
       logger.error('PanchangService getTodaysPanchang error:', error);
       return {
@@ -88,7 +86,7 @@ class PanchangService {
       }
 
       const dateData = {
-        date: date,
+        date,
         time: '12:00', // Noon for general calculations
         latitude: locationData.latitude || 28.6139,
         longitude: locationData.longitude || 77.2090,
@@ -98,10 +96,9 @@ class PanchangService {
       const panchang = await this.calculator.generatePanchang(dateData);
 
       return {
-        panchang: panchang,
+        panchang,
         error: panchang.error || false
       };
-
     } catch (error) {
       logger.error('PanchangService getPanchangForDate error:', error);
       return {

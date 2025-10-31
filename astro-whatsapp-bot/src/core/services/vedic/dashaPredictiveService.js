@@ -7,7 +7,7 @@
  */
 
 const DashaAnalysisCalculator = require('../../../services/astrology/vedic/calculators/DashaAnalysisCalculator');
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 
 class DashaPredictiveService {
   constructor() {
@@ -30,7 +30,6 @@ class DashaPredictiveService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('DashaPredictiveService error:', error);
       throw new Error(`Dasha predictive analysis failed: ${error.message}`);
@@ -293,15 +292,15 @@ class DashaPredictiveService {
    */
   _getPlanetGeneralInfluence(planet) {
     const influences = {
-      'Sun': 'Self-expression, leadership, vitality, authority',
-      'Moon': 'Emotions, mind, mother, home, intuition',
-      'Mars': 'Energy, action, courage, conflict, passion',
-      'Mercury': 'Communication, intellect, learning, adaptability',
-      'Jupiter': 'Wisdom, expansion, spirituality, prosperity',
-      'Venus': 'Love, beauty, harmony, relationships, luxury',
-      'Saturn': 'Discipline, responsibility, karma, structure',
-      'Rahu': 'Ambition, innovation, foreign influences, materialism',
-      'Ketu': 'Spirituality, detachment, past life karma, liberation'
+      Sun: 'Self-expression, leadership, vitality, authority',
+      Moon: 'Emotions, mind, mother, home, intuition',
+      Mars: 'Energy, action, courage, conflict, passion',
+      Mercury: 'Communication, intellect, learning, adaptability',
+      Jupiter: 'Wisdom, expansion, spirituality, prosperity',
+      Venus: 'Love, beauty, harmony, relationships, luxury',
+      Saturn: 'Discipline, responsibility, karma, structure',
+      Rahu: 'Ambition, innovation, foreign influences, materialism',
+      Ketu: 'Spirituality, detachment, past life karma, liberation'
     };
     return influences[planet] || 'General planetary influence';
   }
@@ -314,15 +313,15 @@ class DashaPredictiveService {
    */
   _getPlanetLifeAreas(planet) {
     const areas = {
-      'Sun': ['Career', 'Leadership', 'Health', 'Father'],
-      'Moon': ['Emotions', 'Home', 'Mother', 'Mind'],
-      'Mars': ['Energy', 'Conflict', 'Siblings', 'Property'],
-      'Mercury': ['Communication', 'Education', 'Business', 'Travel'],
-      'Jupiter': ['Wisdom', 'Wealth', 'Children', 'Spirituality'],
-      'Venus': ['Relationships', 'Art', 'Luxury', 'Marriage'],
-      'Saturn': ['Career', 'Discipline', 'Elders', 'Karma'],
-      'Rahu': ['Ambition', 'Foreign', 'Technology', 'Unconventional'],
-      'Ketu': ['Spirituality', 'Detachment', 'Past Life', 'Mysticism']
+      Sun: ['Career', 'Leadership', 'Health', 'Father'],
+      Moon: ['Emotions', 'Home', 'Mother', 'Mind'],
+      Mars: ['Energy', 'Conflict', 'Siblings', 'Property'],
+      Mercury: ['Communication', 'Education', 'Business', 'Travel'],
+      Jupiter: ['Wisdom', 'Wealth', 'Children', 'Spirituality'],
+      Venus: ['Relationships', 'Art', 'Luxury', 'Marriage'],
+      Saturn: ['Career', 'Discipline', 'Elders', 'Karma'],
+      Rahu: ['Ambition', 'Foreign', 'Technology', 'Unconventional'],
+      Ketu: ['Spirituality', 'Detachment', 'Past Life', 'Mysticism']
     };
     return areas[planet] || [];
   }
@@ -339,7 +338,7 @@ class DashaPredictiveService {
     const combinations = {
       'Sun-Mercury': 'Intellectual leadership and communication skills',
       'Moon-Venus': 'Emotional harmony and loving relationships',
-      'Mars-Jupiter': 'Courageous expansion and spiritual growth',
+      'Mars-Jupiter': 'Courageous expansion and spiritual growth'
       // Add more combinations as needed
     };
 
@@ -357,16 +356,16 @@ class DashaPredictiveService {
   _calculatePlanetStrength(planet, birthData) {
     // Simplified strength calculation
     const planetData = birthData[planet.toLowerCase()];
-    if (!planetData) return 'Unknown';
+    if (!planetData) { return 'Unknown'; }
 
     // Check if planet is in own sign, exalted, etc.
-    const sign = planetData.sign;
+    const { sign } = planetData;
     const strengthFactors = [];
 
     // Basic strength assessment
-    if (this._isOwnSign(planet, sign)) strengthFactors.push('Own Sign');
-    if (this._isExalted(planet, sign)) strengthFactors.push('Exalted');
-    if (this._isDebilitated(planet, sign)) strengthFactors.push('Debilitated');
+    if (this._isOwnSign(planet, sign)) { strengthFactors.push('Own Sign'); }
+    if (this._isExalted(planet, sign)) { strengthFactors.push('Exalted'); }
+    if (this._isDebilitated(planet, sign)) { strengthFactors.push('Debilitated'); }
 
     if (strengthFactors.length > 0) {
       return strengthFactors.join(', ');
@@ -383,15 +382,15 @@ class DashaPredictiveService {
    */
   _getPlanetCharacteristics(planet) {
     const characteristics = {
-      'Sun': { element: 'Fire', nature: 'Masculine', caste: 'Kshatriya' },
-      'Moon': { element: 'Water', nature: 'Feminine', caste: 'Brahmin' },
-      'Mars': { element: 'Fire', nature: 'Masculine', caste: 'Kshatriya' },
-      'Mercury': { element: 'Earth', nature: 'Neutral', caste: 'Vaishya' },
-      'Jupiter': { element: 'Ether', nature: 'Masculine', caste: 'Brahmin' },
-      'Venus': { element: 'Water', nature: 'Feminine', caste: 'Vaishya' },
-      'Saturn': { element: 'Air', nature: 'Neutral', caste: 'Shudra' },
-      'Rahu': { element: 'Air', nature: 'Masculine', caste: 'Outcaste' },
-      'Ketu': { element: 'Fire', nature: 'Feminine', caste: 'Outcaste' }
+      Sun: { element: 'Fire', nature: 'Masculine', caste: 'Kshatriya' },
+      Moon: { element: 'Water', nature: 'Feminine', caste: 'Brahmin' },
+      Mars: { element: 'Fire', nature: 'Masculine', caste: 'Kshatriya' },
+      Mercury: { element: 'Earth', nature: 'Neutral', caste: 'Vaishya' },
+      Jupiter: { element: 'Ether', nature: 'Masculine', caste: 'Brahmin' },
+      Venus: { element: 'Water', nature: 'Feminine', caste: 'Vaishya' },
+      Saturn: { element: 'Air', nature: 'Neutral', caste: 'Shudra' },
+      Rahu: { element: 'Air', nature: 'Masculine', caste: 'Outcaste' },
+      Ketu: { element: 'Fire', nature: 'Feminine', caste: 'Outcaste' }
     };
     return characteristics[planet] || {};
   }
@@ -413,13 +412,13 @@ class DashaPredictiveService {
 
     // Basic planetary friendships (simplified)
     const friends = {
-      'Sun': ['Moon', 'Mars', 'Jupiter'],
-      'Moon': ['Sun', 'Mercury'],
-      'Mars': ['Sun', 'Moon', 'Jupiter'],
-      'Mercury': ['Sun', 'Venus'],
-      'Jupiter': ['Sun', 'Moon', 'Mars'],
-      'Venus': ['Mercury', 'Saturn'],
-      'Saturn': ['Mercury', 'Venus']
+      Sun: ['Moon', 'Mars', 'Jupiter'],
+      Moon: ['Sun', 'Mercury'],
+      Mars: ['Sun', 'Moon', 'Jupiter'],
+      Mercury: ['Sun', 'Venus'],
+      Jupiter: ['Sun', 'Moon', 'Mars'],
+      Venus: ['Mercury', 'Saturn'],
+      Saturn: ['Mercury', 'Venus']
     };
 
     const planetFriends = friends[planet] || [];
@@ -455,13 +454,13 @@ class DashaPredictiveService {
    */
   _getPlanetEnemies(planet) {
     const enemies = {
-      'Sun': ['Saturn', 'Venus'],
-      'Moon': ['Rahu', 'Ketu'],
-      'Mars': ['Mercury'],
-      'Mercury': ['Moon'],
-      'Jupiter': ['Mercury', 'Venus'],
-      'Venus': ['Sun', 'Moon'],
-      'Saturn': ['Sun', 'Moon', 'Mars']
+      Sun: ['Saturn', 'Venus'],
+      Moon: ['Rahu', 'Ketu'],
+      Mars: ['Mercury'],
+      Mercury: ['Moon'],
+      Jupiter: ['Mercury', 'Venus'],
+      Venus: ['Sun', 'Moon'],
+      Saturn: ['Sun', 'Moon', 'Mars']
     };
     return enemies[planet] || [];
   }
@@ -475,13 +474,13 @@ class DashaPredictiveService {
    */
   _isOwnSign(planet, sign) {
     const ownSigns = {
-      'Sun': ['Leo'],
-      'Moon': ['Cancer'],
-      'Mars': ['Aries', 'Scorpio'],
-      'Mercury': ['Gemini', 'Virgo'],
-      'Jupiter': ['Sagittarius', 'Pisces'],
-      'Venus': ['Taurus', 'Libra'],
-      'Saturn': ['Capricorn', 'Aquarius']
+      Sun: ['Leo'],
+      Moon: ['Cancer'],
+      Mars: ['Aries', 'Scorpio'],
+      Mercury: ['Gemini', 'Virgo'],
+      Jupiter: ['Sagittarius', 'Pisces'],
+      Venus: ['Taurus', 'Libra'],
+      Saturn: ['Capricorn', 'Aquarius']
     };
     return ownSigns[planet]?.includes(sign) || false;
   }
@@ -495,13 +494,13 @@ class DashaPredictiveService {
    */
   _isExalted(planet, sign) {
     const exaltation = {
-      'Sun': 'Aries',
-      'Moon': 'Taurus',
-      'Mars': 'Capricorn',
-      'Mercury': 'Virgo',
-      'Jupiter': 'Cancer',
-      'Venus': 'Pisces',
-      'Saturn': 'Libra'
+      Sun: 'Aries',
+      Moon: 'Taurus',
+      Mars: 'Capricorn',
+      Mercury: 'Virgo',
+      Jupiter: 'Cancer',
+      Venus: 'Pisces',
+      Saturn: 'Libra'
     };
     return exaltation[planet] === sign;
   }
@@ -515,13 +514,13 @@ class DashaPredictiveService {
    */
   _isDebilitated(planet, sign) {
     const debilitation = {
-      'Sun': 'Libra',
-      'Moon': 'Scorpio',
-      'Mars': 'Cancer',
-      'Mercury': 'Pisces',
-      'Jupiter': 'Capricorn',
-      'Venus': 'Virgo',
-      'Saturn': 'Aries'
+      Sun: 'Libra',
+      Moon: 'Scorpio',
+      Mars: 'Cancer',
+      Mercury: 'Pisces',
+      Jupiter: 'Capricorn',
+      Venus: 'Virgo',
+      Saturn: 'Aries'
     };
     return debilitation[planet] === sign;
   }
@@ -534,15 +533,15 @@ class DashaPredictiveService {
    */
   _getPeriodSignificance(planet) {
     const significances = {
-      'Jupiter': 'Expansion, wisdom, and spiritual growth',
-      'Saturn': 'Discipline, responsibility, and life lessons',
-      'Mars': 'Action, energy, and overcoming obstacles',
-      'Venus': 'Love, harmony, and material comforts',
-      'Mercury': 'Communication, learning, and adaptability',
-      'Sun': 'Self-expression and leadership',
-      'Moon': 'Emotional development and intuition',
-      'Rahu': 'Ambition and unconventional experiences',
-      'Ketu': 'Spirituality and detachment'
+      Jupiter: 'Expansion, wisdom, and spiritual growth',
+      Saturn: 'Discipline, responsibility, and life lessons',
+      Mars: 'Action, energy, and overcoming obstacles',
+      Venus: 'Love, harmony, and material comforts',
+      Mercury: 'Communication, learning, and adaptability',
+      Sun: 'Self-expression and leadership',
+      Moon: 'Emotional development and intuition',
+      Rahu: 'Ambition and unconventional experiences',
+      Ketu: 'Spirituality and detachment'
     };
     return significances[planet] || 'General planetary influence';
   }
@@ -555,15 +554,15 @@ class DashaPredictiveService {
    */
   _getPreparationAdvice(planet) {
     const advice = {
-      'Jupiter': 'Focus on learning, teaching, and spiritual practices',
-      'Saturn': 'Build discipline, patience, and long-term planning',
-      'Mars': 'Channel energy into productive activities and exercise',
-      'Venus': 'Nurture relationships and creative pursuits',
-      'Mercury': 'Enhance communication and learning skills',
-      'Sun': 'Develop leadership and self-confidence',
-      'Moon': 'Work on emotional balance and intuition',
-      'Rahu': 'Embrace change and new experiences',
-      'Ketu': 'Focus on spiritual growth and detachment'
+      Jupiter: 'Focus on learning, teaching, and spiritual practices',
+      Saturn: 'Build discipline, patience, and long-term planning',
+      Mars: 'Channel energy into productive activities and exercise',
+      Venus: 'Nurture relationships and creative pursuits',
+      Mercury: 'Enhance communication and learning skills',
+      Sun: 'Develop leadership and self-confidence',
+      Moon: 'Work on emotional balance and intuition',
+      Rahu: 'Embrace change and new experiences',
+      Ketu: 'Focus on spiritual growth and detachment'
     };
     return advice[planet] || 'Prepare mindfully for the coming influences';
   }
@@ -576,9 +575,9 @@ class DashaPredictiveService {
    */
   _getBeneficFocus(planet) {
     const focuses = {
-      'Jupiter': 'Education, travel, and spiritual development',
-      'Venus': 'Relationships, art, and material comforts',
-      'Mercury': 'Communication, business, and learning'
+      Jupiter: 'Education, travel, and spiritual development',
+      Venus: 'Relationships, art, and material comforts',
+      Mercury: 'Communication, business, and learning'
     };
     return focuses[planet] || 'Positive growth and opportunities';
   }
@@ -591,10 +590,10 @@ class DashaPredictiveService {
    */
   _getMaleficLessons(planet) {
     const lessons = {
-      'Saturn': 'Patience, responsibility, and karmic balance',
-      'Mars': 'Self-control, courage, and right action',
-      'Rahu': 'Discernment and spiritual awareness',
-      'Ketu': 'Detachment and inner wisdom'
+      Saturn: 'Patience, responsibility, and karmic balance',
+      Mars: 'Self-control, courage, and right action',
+      Rahu: 'Discernment and spiritual awareness',
+      Ketu: 'Detachment and inner wisdom'
     };
     return lessons[planet] || 'Personal growth through challenges';
   }
@@ -659,7 +658,7 @@ class DashaPredictiveService {
    * @private
    */
   _generateLongTermOutlook(upcomingDashas) {
-    if (upcomingDashas.length < 3) return 'Insufficient data for long-term outlook';
+    if (upcomingDashas.length < 3) { return 'Insufficient data for long-term outlook'; }
 
     const nextThree = upcomingDashas.slice(0, 3);
     const dominantEnergy = this._analyzeDominantEnergy(nextThree);
@@ -680,7 +679,7 @@ class DashaPredictiveService {
       return acc;
     }, {});
 
-    const dominant = Object.entries(energyCount).sort(([,a], [,b]) => b - a)[0][0];
+    const dominant = Object.entries(energyCount).sort(([, a], [, b]) => b - a)[0][0];
     return dominant;
   }
 
@@ -692,15 +691,15 @@ class DashaPredictiveService {
    */
   _getEnergyType(planet) {
     const energies = {
-      'Sun': 'leadership and self-expression',
-      'Moon': 'emotional and nurturing',
-      'Mars': 'action and courage',
-      'Mercury': 'intellectual and communicative',
-      'Jupiter': 'expansive and wise',
-      'Venus': 'harmonious and creative',
-      'Saturn': 'disciplined and responsible',
-      'Rahu': 'ambitious and innovative',
-      'Ketu': 'spiritual and detached'
+      Sun: 'leadership and self-expression',
+      Moon: 'emotional and nurturing',
+      Mars: 'action and courage',
+      Mercury: 'intellectual and communicative',
+      Jupiter: 'expansive and wise',
+      Venus: 'harmonious and creative',
+      Saturn: 'disciplined and responsible',
+      Rahu: 'ambitious and innovative',
+      Ketu: 'spiritual and detached'
     };
     return energies[planet] || 'balanced';
   }
@@ -730,7 +729,7 @@ class DashaPredictiveService {
       place: birthData.birthPlace,
       // Include calculated positions if available
       sunSign: birthData.sun?.sign,
-      moonSign: birthData.moon?.sign,
+      moonSign: birthData.moon?.sign
       // Add other relevant info
     };
   }
@@ -749,7 +748,7 @@ class DashaPredictiveService {
       throw new Error('Birth data is required for dasha analysis');
     }
 
-    const birthData = input.birthData;
+    const { birthData } = input;
 
     if (!birthData.birthDate) {
       throw new Error('Birth date is required');

@@ -54,7 +54,6 @@ class JaiminiCalculator {
         sphutas,
         interpretation: this._interpretJaiminiSystem(karakas, aspects, arudhaPadas)
       };
-
     } catch (error) {
       logger.error('❌ Error in Jaimini astrology calculation:', error);
       throw new Error(`Jaimini astrology calculation failed: ${error.message}`);

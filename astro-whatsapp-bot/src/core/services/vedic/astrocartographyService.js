@@ -1,4 +1,4 @@
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 const astrocartographyReader = require('../../../services/astrology/astrocartographyReader');
 
 class AstrocartographyService {
@@ -22,7 +22,6 @@ class AstrocartographyService {
 
       // Format and return result
       return this._formatResult(result);
-
     } catch (error) {
       logger.error('AstrocartographyService error:', error);
       throw new Error(`Astrocartography analysis failed: ${error.message}`);

@@ -220,7 +220,7 @@ class SolarArcDirectionsCalculator {
         directedChart[planet] = {
           ...data,
           natalLongitude: data.longitude,
-          directedLongitude: directedLongitude,
+          directedLongitude,
           directedSign: Math.floor(directedLongitude / 30) + 1,
           directedDegree: directedLongitude % 30,
           arcMovement: solarArc.arc,
@@ -563,7 +563,7 @@ class SolarArcDirectionsCalculator {
     const predictions = [];
 
     // Mars represents energy, health, and conflict
-    predictions.push(`Physical energy and willpower develop new patterns`);
+    predictions.push('Physical energy and willpower develop new patterns');
 
     // Health crises or energy changes
     if (directedMars.signChange) {

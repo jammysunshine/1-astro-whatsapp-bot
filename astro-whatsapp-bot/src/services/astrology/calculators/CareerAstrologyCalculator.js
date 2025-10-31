@@ -253,16 +253,16 @@ class CareerAstrologyCalculator {
     // Analyze MC sign
     const mcSign = midheavenAnalysis.includes('Aries') ? 'leadership' :
       midheavenAnalysis.includes('Taurus') ? 'practical achievements' :
-      midheavenAnalysis.includes('Gemini') ? 'communication' :
-      midheavenAnalysis.includes('Cancer') ? 'service oriented roles' :
-      midheavenAnalysis.includes('Leo') ? 'creative leadership' :
-      midheavenAnalysis.includes('Virgo') ? 'technical expertise' :
-      midheavenAnalysis.includes('Libra') ? 'relationship-focused careers' :
-      midheavenAnalysis.includes('Scorpio') ? 'transformative professions' :
-      midheavenAnalysis.includes('Sagittarius') ? 'teaching and exploration' :
-      midheavenAnalysis.includes('Capricorn') ? 'authoritative positions' :
-      midheavenAnalysis.includes('Aquarius') ? 'innovative fields' :
-      'humanitarian pursuits';
+        midheavenAnalysis.includes('Gemini') ? 'communication' :
+          midheavenAnalysis.includes('Cancer') ? 'service oriented roles' :
+            midheavenAnalysis.includes('Leo') ? 'creative leadership' :
+              midheavenAnalysis.includes('Virgo') ? 'technical expertise' :
+                midheavenAnalysis.includes('Libra') ? 'relationship-focused careers' :
+                  midheavenAnalysis.includes('Scorpio') ? 'transformative professions' :
+                    midheavenAnalysis.includes('Sagittarius') ? 'teaching and exploration' :
+                      midheavenAnalysis.includes('Capricorn') ? 'authoritative positions' :
+                        midheavenAnalysis.includes('Aquarius') ? 'innovative fields' :
+                          'humanitarian pursuits';
 
     direction += `${mcSign}`;
 

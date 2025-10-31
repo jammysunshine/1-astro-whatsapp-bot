@@ -100,7 +100,7 @@ class HinduAstrologyService {
     for (const [planet, data] of Object.entries(vedicChart.planetaryPositions || {})) {
       if (dignityRules[planet] && data.sign) {
         const rules = dignityRules[planet];
-        const sign = data.sign;
+        const { sign } = data;
 
         if (sign === rules.exalted) {
           dignities.exalted.push({ planet, sign, strength: 'Very Strong' });
@@ -354,7 +354,7 @@ class HinduAstrologyService {
     // Add yoga insights
     const beneficialYogas = yogas.filter(yoga => yoga.type.includes('Beneficial'));
     if (beneficialYogas.length > 0) {
-      interpretation += `Several beneficial yogas are present, suggesting success, prosperity, and spiritual growth potential. `;
+      interpretation += 'Several beneficial yogas are present, suggesting success, prosperity, and spiritual growth potential. ';
     }
 
     // Add general Vedic wisdom

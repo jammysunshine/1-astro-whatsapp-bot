@@ -57,7 +57,7 @@ class IChingAction extends BaseAction {
       // Use the proper I Ching service for generating readings
       const ichingService = await createIChingService();
       const reading = await ichingService.performIChingReading('What guidance does the I Ching offer?');
-      
+
       return reading;
     } catch (error) {
       this.logger.error('Error generating I Ching reading:', error);

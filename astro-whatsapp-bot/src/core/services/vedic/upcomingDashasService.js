@@ -1,4 +1,4 @@
-const { DashaAnalysisCalculator } = require('../../services/astrology/vedic/calculators/DashaAnalysisCalculator');
+const { DashaAnalysisCalculator } = require('../../../services/astrology/vedic/calculators/DashaAnalysisCalculator');
 const logger = require('../../../utils/logger');
 
 /**

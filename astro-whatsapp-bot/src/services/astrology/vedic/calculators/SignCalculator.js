@@ -245,13 +245,4 @@ class SignCalculator {
   }
 }
 
-module.exports = SignCalculator;</path>
-<task_progress>
-- [x] List all non-private async methods in backup file
-- [x] Check which are missing from current modular code
-- [x] Identify methods to implement as separate calculators
-- [x] Create new calculator files for missing methods
-- [ ] Update VedicCalculator to use new calculators
-- [ ] Test the implementation
-</task_progress>
-</write_to_file>
+module.exports = SignCalculator;

@@ -8,7 +8,7 @@
 
 const GroupAstrologyCalculator = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
 const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
-const FinancialAstrologyCalculator = require('../../../services/astrology/vedic/calculators/FinancialAstrologyCalculator');
+const FinancialAstrologyCalculator = require('../../../services/astrology/calculators/FinancialAstrologyCalculator');
 const logger = require('../../../utils/logger');
 
 class BusinessPartnershipService {

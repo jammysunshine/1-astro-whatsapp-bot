@@ -670,4 +670,40 @@ class MuhurtaCalculator {
 
   _calculateYoga(jd) {
     const sunPos = sweph.calc(jd, sweph.SE_SUN, sweph.SEFLG_SIDEREAL);
-    const moonPos = sweph.calc(jd, sweph.SE_MO
+    const moonPos = sweph.calc(jd, sweph.SE_MOON, sweph.SEFLG_SIDEREAL);
+
+    if (sunPos.error || moonPos.error) {
+      return { error: 'Failed to calculate planetary positions for Yoga' };
+    }
+
+    const sunLongitude = sunPos.longitude;
+    const moonLongitude = moonPos.longitude;
+
+    // Calculate Yoga (sum of Sun and Moon longitudes divided by 13°20')
+    const totalDegrees = (sunLongitude + moonLongitude) % 360;
+    const yogaNumber = Math.floor(totalDegrees / 13.333) + 1;
+    const yogaName = this._getYogaName(yogaNumber);
+
+    return {
+      number: yogaNumber,
+      name: yogaName,
+      sunLongitude: sunLongitude,
+      moonLongitude: moonLongitude,
+      totalDegrees: totalDegrees
+    };
+  }
+
+  _getYogaName(yogaNumber) {
+    const yogaNames = [
+      'Vishkambha', 'Priti', 'Ayushman', 'Saubhagya', 'Shobhana',
+      'Atiganda', 'Sukarma', 'Dhriti', 'Shula', 'Ganda', 'Vriddhi',
+      'Dhruva', 'Vyaghata', 'Harshana', 'Vajra', 'Siddhi', 'Vyatipata',
+      'Variyan', 'Parigha', 'Shiva', 'Siddha', 'Sadhya', 'Shubha', 'Shukla',
+      'Brahma', 'Indra', 'Vaidhriti'
+    ];
+
+    return yogaNames[yogaNumber - 1] || 'Unknown';
+  }
+}
+
+module.exports = MuhurtaCalculator;

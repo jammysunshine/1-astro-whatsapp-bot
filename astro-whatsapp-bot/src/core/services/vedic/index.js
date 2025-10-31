@@ -10,6 +10,8 @@ const CompatibilityService = require('./compatibilityService');
 const CompatibilityScoreService = require('./compatibilityScoreService');
 const CompositeChartService = require('./compositeChartService');
 const CurrentDashaService = require('./currentDashaService');
+const CurrentTransitsService = require('./currentTransitsService');
+const DailyHoroscopeService = require('./dailyHoroscopeService');
 const DashaPredictiveService = require('./dashaPredictiveService');
 const DavisonChartService = require('./davisonChartService');
 const DetailedChartAnalysisService = require('./detailedChartAnalysisService');
@@ -18,12 +20,16 @@ const GenerateGroupAstrologyService = require('./generateGroupAstrologyService')
 const GroupTimingService = require('./groupTimingService');
 const HellenisticAstrologyService = require('./hellenisticAstrologyService');
 const HinduAstrologyService = require('./hinduAstrologyService');
+const LunarReturnService = require('./lunarReturnService');
 const MoonSignService = require('./moonSignService');
 const NakshatraPoruthamService = require('./nakshatraPoruthamService');
 const PanchangService = require('./panchangService');
 const PerformSynastryAnalysisService = require('./performSynastryAnalysisService');
 const RemediesDoshaService = require('./remediesDoshaService');
 const RisingSignService = require('./risingSignService');
+const SecondaryProgressionsService = require('./secondaryProgressionsService');
+const SolarArcDirectionsService = require('./solarArcDirectionsService');
+const SolarReturnService = require('./solarReturnService');
 const SpecializedAnalysisService = require('./specializedAnalysisService');
 const SunSignService = require('./sunSignService');
 const UpcomingDashasService = require('./upcomingDashasService');
@@ -45,6 +51,8 @@ module.exports = {
   CompatibilityScoreService,
   CompositeChartService,
   CurrentDashaService,
+  CurrentTransitsService,
+  DailyHoroscopeService,
   DashaPredictiveService,
   DavisonChartService,
   DetailedChartAnalysisService,
@@ -53,12 +61,16 @@ module.exports = {
   GroupTimingService,
   HellenisticAstrologyService,
   HinduAstrologyService,
+  LunarReturnService,
   MoonSignService,
   NakshatraPoruthamService,
   PanchangService,
   PerformSynastryAnalysisService,
   RemediesDoshaService,
   RisingSignService,
+  SecondaryProgressionsService,
+  SolarArcDirectionsService,
+  SolarReturnService,
   SpecializedAnalysisService,
   SunSignService,
   UpcomingDashasService,

@@ -1,4 +1,4 @@
-const { DetailedChartAnalysisCalculator } = require('../../services/astrology/vedic/calculators/DetailedChartAnalysisCalculator');
+const { DetailedChartAnalysisCalculator } = require('../../../services/astrology/vedic/calculators/DetailedChartAnalysisCalculator');
 const logger = require('../../../utils/logger');
 
 /**

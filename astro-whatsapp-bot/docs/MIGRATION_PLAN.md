@@ -70,9 +70,10 @@ Each entry below represents a microservice. We will identify its source in the e
       *   **Status:** Partially implemented - needs handler connection
 
 5.  `start_group_timing_flow` 🔄
-      *   **Source:** `src/services/astrology/vedic/calculators/MuhurtaCalculator.js`
+      *   **Source:** `src/services/astrology/vedic/calculators/GroupAstrologyCalculator.js` (primary) and `src/services/astrology/vedic/calculators/MuhurtaCalculator.js` (timing)
       *   **Target File:** `core/services/groupTimingService.js`
       *   **Status:** Partially implemented - needs handler connection
+      *   **Notes:** Dedicated service for group timing analysis combining multi-person chart analysis with auspicious timing selection.
 
 6.  `calculateNakshatraPorutham` 🔄
       *   **Source:** `src/services/astrology/nadi/NadiCompatibility.js`

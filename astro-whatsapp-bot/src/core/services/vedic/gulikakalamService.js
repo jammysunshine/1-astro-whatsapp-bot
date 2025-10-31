@@ -23,7 +23,7 @@ class GulikakalamService extends ServiceTemplate {
     logger.info('GulikakalamService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lgulikakalamCalculation(birthData) {
     try {
       // Validate input
       this._validateInput(birthData);
@@ -395,7 +395,7 @@ class GulikakalamService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult'],
+      methods: ['execute', 'lgulikakalamCalculation', 'formatResult'],
       dependencies: ['MuhurtaCalculator']
     };
   }

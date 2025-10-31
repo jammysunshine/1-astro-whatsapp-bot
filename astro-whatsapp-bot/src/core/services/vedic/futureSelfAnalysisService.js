@@ -46,7 +46,7 @@ class FutureSelfAnalysisService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Future Self Analysis
    */
-  async processCalculation(params) {
+  async lfutureSelfAnalysisCalculation(params) {
     const { futureData, options = {} } = params;
     
     try {

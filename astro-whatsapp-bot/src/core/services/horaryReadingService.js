@@ -10,7 +10,7 @@ class HoraryReadingService extends ServiceTemplate {
     logger.info('HoraryReadingService initialized');
   }
 
-  async processCalculation(questionData) {
+  async lhoraryReadingCalculation(questionData) {
     try {
       // Validate input
       this.validate(questionData);

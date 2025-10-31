@@ -11,7 +11,7 @@ class VimshottariDashaService extends ServiceTemplate {
     logger.info('VimshottariDashaService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lvimshottariDashaCalculation(birthData) {
     try {
       // Validate input with model
       const validatedData = new BirthData(birthData);

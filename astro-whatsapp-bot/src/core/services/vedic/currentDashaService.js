@@ -16,7 +16,7 @@ class CurrentDashaService extends ServiceTemplate {
     logger.info('CurrentDashaService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lcurrentDashaCalculation(birthData) {
     try {
       // Calculate current Dasha
       const result = await this.calculateCurrentDasha(birthData);

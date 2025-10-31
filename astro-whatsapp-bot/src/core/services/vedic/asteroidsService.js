@@ -10,7 +10,7 @@ class AsteroidsService extends ServiceTemplate {
     logger.info('AsteroidsService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lasteroidsCalculation(birthData) {
     try {
       // Validate input
       this.validate(birthData);

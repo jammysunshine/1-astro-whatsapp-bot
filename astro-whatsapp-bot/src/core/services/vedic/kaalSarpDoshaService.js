@@ -23,7 +23,7 @@ class KaalSarpDoshaService extends ServiceTemplate {
     logger.info('KaalSarpDoshaService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lkaalSarpDoshaCalculation(birthData) {
     try {
       // Validate input
       this._validateInput(birthData);
@@ -118,7 +118,7 @@ class KaalSarpDoshaService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult'],
+      methods: ['execute', 'lkaalSarpDoshaCalculation', 'formatResult'],
       dependencies: ['KaalSarpDoshaCalculator']
     };
   }

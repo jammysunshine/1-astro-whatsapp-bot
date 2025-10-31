@@ -10,7 +10,7 @@ class HinduFestivalsService extends ServiceTemplate {
     logger.info('HinduFestivalsService initialized');
   }
 
-  async processCalculation(festivalParams) {
+  async lhinduFestivalsCalculation(festivalParams) {
     try {
       // Validate input
       this.validate(festivalParams);

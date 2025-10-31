@@ -39,7 +39,7 @@ class ShadbalaService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Shadbala analysis
    */
-  async processCalculation(params) {
+  async lshadbalaCalculation(params) {
     const { birthData, options = {} } = params;
     
     try {

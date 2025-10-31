@@ -23,7 +23,7 @@ class AbhijitMuhurtaService extends ServiceTemplate {
     logger.info('AbhijitMuhurtaService initialized');
   }
 
-  async processCalculation(birthData) {
+  async labhijitMuhurtaCalculation(birthData) {
     try {
       // Validate input
       this._validateInput(birthData);
@@ -356,7 +356,7 @@ class AbhijitMuhurtaService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult'],
+      methods: ['execute', 'labhijitMuhurtaCalculation', 'formatResult'],
       dependencies: ['MuhurtaCalculator']
     };
   }

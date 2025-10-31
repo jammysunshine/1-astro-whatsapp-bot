@@ -22,7 +22,7 @@ class FinancialAstrologyService extends ServiceTemplate {
     logger.info('FinancialAstrologyService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lfinancialAstrologyCalculation(birthData) {
     try {
       // Validate inputs with model
       this._validateInput(birthData);
@@ -144,7 +144,7 @@ class FinancialAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult'],
+      methods: ['execute', 'lfinancialAstrologyCalculation', 'formatResult'],
       dependencies: ['FinancialAstrologyCalculator']
     };
   }

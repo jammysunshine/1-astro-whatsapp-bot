@@ -31,7 +31,7 @@ class TarotReadingService extends ServiceTemplate {
    * @param {Object} data - Input data with user and spread type
    * @returns {Promise<Object>} Raw tarot reading result
    */
-  async processCalculation(data) {
+  async ltarotReadingCalculation(data) {
     const { user, spreadType = 'single' } = data;
     
     // Use the tarotReader calculator to generate reading

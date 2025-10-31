@@ -17,7 +17,7 @@ class CalendarTimingService extends ServiceTemplate {
     logger.info('CalendarTimingService initialized');
   }
 
-  async processCalculation(timingData) {
+  async lcalendarTimingCalculation(timingData) {
     try {
       // Get comprehensive timing analysis
       const result = await this.getCalendarTimingAnalysis(timingData);

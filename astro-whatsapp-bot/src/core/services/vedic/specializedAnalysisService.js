@@ -22,7 +22,7 @@ class SpecializedAnalysisService extends ServiceTemplate {
     logger.info('SpecializedAnalysisService initialized');
   }
 
-  async processCalculation(analysisData) {
+  async lspecializedAnalysisCalculation(analysisData) {
     try {
       // Get comprehensive specialized analysis
       const result = await this.getSpecializedAnalysis(analysisData);

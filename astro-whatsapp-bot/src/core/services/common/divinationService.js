@@ -47,7 +47,7 @@ class DivinationService extends ServiceTemplate {
    * @param {Object} data - Input data with method and question/focus
    * @returns {Promise<Object>} Raw divination result
    */
-  async processCalculation(data) {
+  async ldivinationCalculation(data) {
     const { method, question, focus, spread = 'general' } = data;
     
     let result;

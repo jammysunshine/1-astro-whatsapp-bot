@@ -41,7 +41,7 @@ class LunarReturnService extends ServiceTemplate {
    * @param {Object} data - Input data with birthData and optional targetDate
    * @returns {Promise<Object>} Raw lunar return result
    */
-  async processCalculation(data) {
+  async llunarReturnCalculation(data) {
     const { birthData, targetDate = null } = data;
     
     // Get lunar return data from calculator

@@ -15,7 +15,7 @@ class SolarArcDirectionsService extends ServiceTemplate {
     logger.info('SolarArcDirectionsService initialized');
   }
 
-  async processCalculation(data) {
+  async lsolarArcDirectionsCalculation(data) {
     try {
       const { birthData, targetDate } = data;
       // Calculate solar arc directions using calculator

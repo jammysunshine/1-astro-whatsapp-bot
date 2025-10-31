@@ -16,7 +16,7 @@ class PanchangService extends ServiceTemplate {
     logger.info('PanchangService initialized');
   }
 
-  async processCalculation(dateData) {
+  async lpanchangCalculation(dateData) {
     try {
       // Get comprehensive panchang analysis
       const panchang = await this.calculator.generatePanchang(dateData);

@@ -16,7 +16,7 @@ class DailyHoroscopeService extends ServiceTemplate {
     logger.info('DailyHoroscopeService initialized');
   }
 
-  async processCalculation(birthData) {
+  async ldailyHoroscopeCalculation(birthData) {
     try {
       // Generate daily horoscope
       const result = await this.calculator.generateDailyHoroscope(birthData);

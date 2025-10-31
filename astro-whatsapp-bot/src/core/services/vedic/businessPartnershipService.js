@@ -21,7 +21,7 @@ class BusinessPartnershipService extends ServiceTemplate {
     logger.info('BusinessPartnershipService initialized');
   }
 
-  async processCalculation(partnershipData) {
+  async lbusinessPartnershipCalculation(partnershipData) {
     try {
       // Get comprehensive partnership analysis using calculators
       const result = await this.getBusinessPartnershipAnalysis(partnershipData);

@@ -15,7 +15,7 @@ class PrashnaAstrologyService extends ServiceTemplate {
     logger.info('PrashnaAstrologyService initialized');
   }
 
-  async processCalculation(questionData) {
+  async lprashnaAstrologyCalculation(questionData) {
     try {
       // Analyze horary question using calculator
       const result = await this.calculator.analyzeHoraryQuestion(questionData);

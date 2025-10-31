@@ -15,7 +15,7 @@ class SecondaryProgressionsService extends ServiceTemplate {
     logger.info('SecondaryProgressionsService initialized');
   }
 
-  async processCalculation(data) {
+  async lsecondaryProgressionsCalculation(data) {
     try {
       const { birthData } = data;
       // Calculate secondary progressions using calculator

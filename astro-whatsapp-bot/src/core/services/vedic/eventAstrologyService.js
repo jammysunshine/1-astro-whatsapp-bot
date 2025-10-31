@@ -15,7 +15,7 @@ class EventAstrologyService extends ServiceTemplate {
     logger.info('EventAstrologyService initialized');
   }
 
-  async processCalculation(eventData) {
+  async leventAstrologyCalculation(eventData) {
     try {
       // Generate comprehensive event analysis using calculator
       const analysis = await this._generateEventAnalysis(eventData);

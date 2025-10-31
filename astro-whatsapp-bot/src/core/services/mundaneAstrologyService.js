@@ -10,7 +10,7 @@ class MundaneAstrologyService extends ServiceTemplate {
     logger.info('MundaneAstrologyService initialized');
   }
 
-  async processCalculation(chartData) {
+  async lmundaneAstrologyCalculation(chartData) {
     try {
       // Validate input
       this.validate(chartData);

@@ -24,7 +24,7 @@ class FutureSelfSimulatorService extends ServiceTemplate {
     logger.info('FutureSelfSimulatorService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lfutureSelfSimulatorCalculation(birthData) {
     try {
       // Get simulation parameters - default to 5 years if not specified
       const yearsAhead = birthData.yearsAhead || 5;
@@ -184,7 +184,7 @@ class FutureSelfSimulatorService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult', 'simulateLifeAspect'],
+      methods: ['execute', 'lfutureSelfSimulatorCalculation', 'formatResult', 'simulateLifeAspect'],
       dependencies: ['FutureSelfSimulatorCalculator']
     };
   }

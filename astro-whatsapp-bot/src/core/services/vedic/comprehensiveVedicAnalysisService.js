@@ -26,7 +26,7 @@ class ComprehensiveVedicAnalysisService extends ServiceTemplate {
     logger.info('ComprehensiveVedicAnalysisService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lcomprehensiveVedicAnalysisCalculation(birthData) {
     try {
       // Get comprehensive analysis using calculator
       const result = await this.calculator.generateComprehensiveVedicAnalysis(birthData);
@@ -114,7 +114,7 @@ class ComprehensiveVedicAnalysisService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult'],
+      methods: ['execute', 'lcomprehensiveVedicAnalysisCalculation', 'formatResult'],
       dependencies: ['ComprehensiveAnalysisCalculator']
     };
   }

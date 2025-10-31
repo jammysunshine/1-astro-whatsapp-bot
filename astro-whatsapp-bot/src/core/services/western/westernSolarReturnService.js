@@ -40,7 +40,7 @@ class WesternSolarReturnService extends ServiceTemplate {
    * @param {Object} data - Input data with birthData and optional targetDate
    * @returns {Promise<Object>} Raw Western solar return result
    */
-  async processCalculation(data) {
+  async lwesternSolarReturnCalculation(data) {
     const { birthData, targetDate = null } = data;
     
     // Get Western solar return data from calculator

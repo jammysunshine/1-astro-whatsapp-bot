@@ -10,7 +10,7 @@ class FixedStarsService extends ServiceTemplate {
     logger.info('FixedStarsService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lfixedStarsCalculation(birthData) {
     try {
       // Validate input
       this.validate(birthData);

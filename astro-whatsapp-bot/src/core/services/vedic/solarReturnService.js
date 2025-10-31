@@ -15,7 +15,7 @@ class SolarReturnService extends ServiceTemplate {
     logger.info('SolarReturnService initialized');
   }
 
-  async processCalculation(data) {
+  async lsolarReturnCalculation(data) {
     try {
       const { birthData, targetYear, location } = data;
 

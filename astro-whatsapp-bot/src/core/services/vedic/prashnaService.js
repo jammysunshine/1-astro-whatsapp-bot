@@ -43,7 +43,7 @@ class PrashnaService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Prashna analysis
    */
-  async processCalculation(params) {
+  async lprashnaCalculation(params) {
     const { questionData, options = {} } = params;
     
     try {

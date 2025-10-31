@@ -17,7 +17,7 @@ class DashaPredictiveService extends ServiceTemplate {
     logger.info('DashaPredictiveService initialized');
   }
 
-  async processCalculation(dashaData) {
+  async ldashaPredictiveCalculation(dashaData) {
     try {
       // Get comprehensive dasha analysis
       const result = await this.getDashaPredictiveAnalysis(dashaData);

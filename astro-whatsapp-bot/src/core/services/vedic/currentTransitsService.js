@@ -16,7 +16,7 @@ class CurrentTransitsService extends ServiceTemplate {
     logger.info('CurrentTransitsService initialized');
   }
 
-  async processCalculation(birthData, targetDate = null) {
+  async lcurrentTransitsCalculation(birthData, targetDate = null) {
     try {
       // Analyze transits to natal chart
       const result = await this.calculator.analyzeTransitsToNatal(birthData, targetDate);

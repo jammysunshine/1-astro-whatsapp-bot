@@ -40,7 +40,7 @@ class WesternTransitsService extends ServiceTemplate {
    * @param {Object} data - Input data with birthData and optional targetDate
    * @returns {Promise<Object>} Raw Western transit result
    */
-  async processCalculation(data) {
+  async lwesternTransitsCalculation(data) {
     const { birthData, targetDate = null } = data;
     
     // Get Western transit data from calculator

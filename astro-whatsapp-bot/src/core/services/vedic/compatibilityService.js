@@ -21,7 +21,7 @@ class CompatibilityService extends ServiceTemplate {
     logger.info('CompatibilityService initialized');
   }
 
-  async processCalculation(compatibilityData) {
+  async lcompatibilityCalculation(compatibilityData) {
     try {
       // Get comprehensive compatibility analysis
       const result = await this.getCompatibilityAnalysis(compatibilityData);

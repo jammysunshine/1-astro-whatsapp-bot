@@ -10,7 +10,7 @@ class MajorTransitsService extends ServiceTemplate {
     logger.info('MajorTransitsService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lmajorTransitsCalculation(birthData) {
     try {
       // Validate input
       this.validate(birthData);

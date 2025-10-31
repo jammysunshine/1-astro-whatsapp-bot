@@ -50,7 +50,7 @@ class NumerologyService extends ServiceTemplate {
    * @param {Object} data - Input data with name and/or birthData
    * @returns {Promise<Object>} Raw numerology result
    */
-  async processCalculation(data) {
+  async lnumerologyCalculation(data) {
     const { name, birthData, calculationType = 'comprehensive' } = data;
     
     // Get numerology analysis from module functions

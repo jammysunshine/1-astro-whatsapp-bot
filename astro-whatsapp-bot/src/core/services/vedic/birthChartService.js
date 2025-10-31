@@ -11,7 +11,7 @@ class BirthChartService extends ServiceTemplate {
     logger.info('BirthChartService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lbirthChartCalculation(birthData) {
     try {
       // Validate input with model
       const validatedData = new BirthData(birthData);

@@ -10,7 +10,7 @@ class AdvancedTransitsService extends ServiceTemplate {
     logger.info('AdvancedTransitsService initialized');
   }
 
-  async processCalculation(birthData) {
+  async ladvancedTransitsCalculation(birthData) {
     try {
       // Validate input
       this.validate(birthData);

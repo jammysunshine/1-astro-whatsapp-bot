@@ -39,7 +39,7 @@ class AshtakavargaService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Ashtakavarga analysis
    */
-  async processCalculation(params) {
+  async lashtakavargaCalculation(params) {
     const { birthData, options = {} } = params;
     
     try {

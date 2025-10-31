@@ -43,7 +43,7 @@ class DavisonChartService extends ServiceTemplate {
    * @param {Object} data - Input data with person1 and person2 birth data
    * @returns {Promise<Object>} Raw Davison chart result
    */
-  async processCalculation(data) {
+  async ldavisonChartCalculation(data) {
     const { person1, person2 } = data;
     
     // Get compatibility analysis from calculator (as Davison chart alternative)

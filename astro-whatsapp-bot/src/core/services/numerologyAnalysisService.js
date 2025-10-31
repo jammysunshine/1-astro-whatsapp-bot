@@ -10,7 +10,7 @@ class NumerologyAnalysisService extends ServiceTemplate {
     logger.info('NumerologyAnalysisService initialized');
   }
 
-  async processCalculation(personData) {
+  async lnumerologyAnalysisCalculation(personData) {
     try {
       // Validate input
       this.validate(personData);

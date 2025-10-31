@@ -16,7 +16,7 @@ class DetailedChartAnalysisService extends ServiceTemplate {
     logger.info('DetailedChartAnalysisService initialized');
   }
 
-  async processCalculation(birthData) {
+  async ldetailedChartAnalysisCalculation(birthData) {
     try {
       // Generate detailed chart analysis
       const result = await this.generateDetailedChartAnalysis(birthData);

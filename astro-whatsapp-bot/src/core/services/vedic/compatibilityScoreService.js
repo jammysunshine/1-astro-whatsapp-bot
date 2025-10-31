@@ -16,7 +16,7 @@ class CompatibilityScoreService extends ServiceTemplate {
     logger.info('CompatibilityScoreService initialized');
   }
 
-  async processCalculation(compatibilityData) {
+  async lcompatibilityScoreCalculation(compatibilityData) {
     try {
       // Calculate compatibility score
       const result = await this.calculateCompatibilityScore(compatibilityData);

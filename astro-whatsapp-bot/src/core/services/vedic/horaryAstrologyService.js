@@ -45,7 +45,7 @@ class HoraryAstrologyService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Horary Astrology analysis
    */
-  async processCalculation(params) {
+  async lhoraryAstrologyCalculation(params) {
     const { horaryData, options = {} } = params;
     
     try {

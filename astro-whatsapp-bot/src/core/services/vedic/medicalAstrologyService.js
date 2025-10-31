@@ -24,7 +24,7 @@ class MedicalAstrologyService extends ServiceTemplate {
     logger.info('MedicalAstrologyService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lmedicalAstrologyCalculation(birthData) {
     try {
       // Validate input
       this._validateInput(birthData);
@@ -119,7 +119,7 @@ class MedicalAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult'],
+      methods: ['execute', 'lmedicalAstrologyCalculation', 'formatResult'],
       dependencies: ['MedicalAstrologyCalculator']
     };
   }

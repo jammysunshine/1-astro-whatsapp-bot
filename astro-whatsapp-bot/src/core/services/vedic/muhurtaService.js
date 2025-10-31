@@ -44,7 +44,7 @@ class MuhurtaService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Muhurta analysis
    */
-  async processCalculation(params) {
+  async lmuhurtaCalculation(params) {
     const { muhurtaData, options = {} } = params;
     
     try {

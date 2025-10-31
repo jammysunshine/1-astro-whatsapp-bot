@@ -44,7 +44,7 @@ class EnhancedPanchangService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Panchang analysis
    */
-  async processCalculation(params) {
+  async lenhancedPanchangCalculation(params) {
     const { date, time, place, options = {} } = params;
     
     try {

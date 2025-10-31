@@ -40,7 +40,7 @@ class WesternProgressionsService extends ServiceTemplate {
    * @param {Object} data - Input data with birthData and optional targetDate
    * @returns {Promise<Object>} Raw Western progression result
    */
-  async processCalculation(data) {
+  async lwesternProgressionsCalculation(data) {
     const { birthData, targetDate = null, progressionType = 'secondary' } = data;
     
     // Get Western progression data from calculator

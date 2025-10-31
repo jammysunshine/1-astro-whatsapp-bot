@@ -10,7 +10,7 @@ class TransitPreviewService extends ServiceTemplate {
     logger.info('TransitPreviewService initialized');
   }
 
-  async processCalculation(birthData) {
+  async ltransitPreviewCalculation(birthData) {
     try {
       // Validate input
       this.validate(birthData);

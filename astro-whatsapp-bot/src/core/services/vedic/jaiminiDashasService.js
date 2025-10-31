@@ -10,7 +10,7 @@ class JaiminiDashasService extends ServiceTemplate {
     logger.info('JaiminiDashasService initialized');
   }
 
-  async processCalculation(birthData) {
+  async ljaiminiDashasCalculation(birthData) {
     try {
       // Validate input
       this.validate(birthData);

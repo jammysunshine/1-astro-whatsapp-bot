@@ -48,7 +48,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Electional Astrology analysis
    */
-  async processCalculation(params) {
+  async lelectionalAstrologyCalculation(params) {
     const { electionalData, options = {} } = params;
     
     try {

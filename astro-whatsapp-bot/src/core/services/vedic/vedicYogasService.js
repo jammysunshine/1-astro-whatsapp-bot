@@ -40,7 +40,7 @@ class VedicYogasService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Vedic Yogas analysis
    */
-  async processCalculation(params) {
+  async lvedicYogasCalculation(params) {
     const { birthData, options = {} } = params;
     
     try {

@@ -252,7 +252,7 @@ class LifePatternsService extends ServiceTemplate {
     logger.info('LifePatternsService initialized');
   }
 
-  async processCalculation(birthData) {
+  async llifePatternsCalculation(birthData) {
     try {
       // Validate input
       this._validateInput(birthData);
@@ -335,7 +335,7 @@ class LifePatternsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult', 'getLifePatterns'],
+      methods: ['execute', 'llifePatternsCalculation', 'formatResult', 'getLifePatterns'],
       dependencies: ['LifePatternsCalculator']
     };
   }

@@ -10,7 +10,7 @@ class SynastryAnalysisService extends ServiceTemplate {
     logger.info('SynastryAnalysisService initialized');
   }
 
-  async processCalculation(chartData) {
+  async lsynastryAnalysisCalculation(chartData) {
     try {
       // Validate input
       this.validate(chartData);

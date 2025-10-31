@@ -18,7 +18,7 @@ class NadiAstrologyService extends ServiceTemplate {
     logger.info('NadiAstrologyService initialized');
   }
 
-  async processCalculation(birthData) {
+  async lnadiAstrologyCalculation(birthData) {
     try {
       // Validate input
       this._validateInput(birthData);
@@ -151,7 +151,7 @@ class NadiAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult'],
+      methods: ['execute', 'lnadiAstrologyCalculation', 'formatResult'],
       dependencies: ['NadiCalculator']
     };
   }

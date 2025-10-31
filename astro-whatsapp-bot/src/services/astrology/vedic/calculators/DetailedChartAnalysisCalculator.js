@@ -676,4 +676,18 @@ class DetailedChartAnalysisCalculator {
       moon: { own: [4], exalted: 2, exaltedDegree: 3, debilitated: 8 },
       mars: { own: [1, 8], exalted: 10, exaltedDegree: 28, debilitated: 4 },
       mercury: { own: [3, 6], exalted: 6, exaltedDegree: 15, debilitated: 12 },
-      jupiter: { own: [9, 12], exalted: 4, exaltedDegree: 5
+      jupiter: { own: [9, 12], exalted: 4, exaltedDegree: 5, debilitated: 10 },
+      venus: { own: [2, 7], exalted: 12, exaltedDegree: 27, debilitated: 6 },
+      saturn: { own: [10, 11], exalted: 7, exaltedDegree: 20, debilitated: 1 },
+      rahu: { own: [], exalted: 3, exaltedDegree: null, debilitated: 9 },
+      ketu: { own: [], exalted: 9, exaltedDegree: null, debilitated: 3 }
+    };
+
+    return dignityRules;
+  }
+
+  // ... rest of the method implementation
+
+}
+
+module.exports = { DetailedChartAnalysisCalculator };

@@ -1,4 +1,4 @@
-const BaseAction = require('../../whatsapp/actions/BaseAction');
+const BaseAction = require('../whatsapp/actions/BaseAction');
 const { incrementCompatibilityChecks } = require('../../models/userModel');
 const { SwissEphemerisCalculator } = require('./compatibility/SwissEphemerisCalculator');
 const { SynastryEngine } = require('./compatibility/SynastryEngine');

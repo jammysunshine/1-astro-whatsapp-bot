@@ -1,38 +1,29 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
 const { DetailedChartAnalysisCalculator } = require('../../../services/astrology/vedic/calculators/DetailedChartAnalysisCalculator');
-const logger = require('../../../utils/logger');
 
 /**
- * DetailedChartAnalysisService - Service for comprehensive Vedic chart interpretation
- * Provides deep insights into all planetary positions, aspects, conjunctions, and their significance in multiple life areas
+ * DetailedChartAnalysisService - Comprehensive Vedic chart interpretation service
+ *
+ * Provides deep insights into all planetary positions, aspects, conjunctions, and their significance
+ * in multiple life areas using Swiss Ephemeris and traditional Vedic astrology principles.
  */
-class DetailedChartAnalysisService {
+class DetailedChartAnalysisService extends ServiceTemplate {
   constructor() {
-    this.calculator = new DetailedChartAnalysisCalculator();
+    super(new DetailedChartAnalysisCalculator());
+    this.serviceName = 'DetailedChartAnalysisService';
     logger.info('DetailedChartAnalysisService initialized');
   }
 
-  /**
-   * Execute detailed chart analysis
-   * @param {Object} birthData - Birth data for analysis
-   * @param {string} birthData.birthDate - Birth date (DD/MM/YYYY)
-   * @param {string} birthData.birthTime - Birth time (HH:MM)
-   * @param {string} birthData.birthPlace - Birth place
-   * @param {string} birthData.name - Person's name
-   * @param {Object} options - Analysis options
-   * @returns {Object} Detailed chart analysis result
-   */
-  async execute(birthData, options = {}) {
+  async processCalculation(birthData) {
     try {
-      // Input validation
-      this._validateInput(birthData);
-
       // Generate detailed chart analysis
-      const result = await this.generateDetailedChartAnalysis(birthData, options);
-
-      // Format and return result
-      return this._formatResult(result);
+      const result = await this.generateDetailedChartAnalysis(birthData);
+      return result;
     } catch (error) {
-      logger.error('DetailedChartAnalysisService error:', error);
+      logger.error('DetailedChartAnalysisService calculation error:', error);
       throw new Error(`Detailed chart analysis failed: ${error.message}`);
     }
   }
@@ -306,11 +297,7 @@ class DetailedChartAnalysisService {
     return summary;
   }
 
-  /**
-   * Validate input data
-   * @param {Object} input - Input data to validate
-   */
-  _validateInput(input) {
+  validate(birthData) {
     if (!input) {
       throw new Error('Birth data is required');
     }
@@ -347,7 +334,7 @@ class DetailedChartAnalysisService {
    * @param {Object} result - Raw detailed analysis result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Detailed Chart Analysis',
       timestamp: new Date().toISOString(),
@@ -360,6 +347,16 @@ class DetailedChartAnalysisService {
       },
       summary: result.summary,
       disclaimer: 'This detailed chart analysis provides comprehensive astrological insights. Astrology offers guidance and self-understanding but should not replace professional advice in medical, legal, or psychological matters. Consult qualified professionals for important life decisions.'
+    };
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'generateDetailedChartAnalysis'],
+      dependencies: ['DetailedChartAnalysisCalculator']
     };
   }
 }

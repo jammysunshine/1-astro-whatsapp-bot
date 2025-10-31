@@ -14,6 +14,9 @@ const CurrentDashaService = require('./currentDashaService');
 const CurrentTransitsService = require('./currentTransitsService');
 const DailyHoroscopeService = require('./dailyHoroscopeService');
 const CompatibilityService = require('./compatibilityService');
+const DetailedChartAnalysisService = require('./detailedChartAnalysisService');
+const CompatibilityScoreService = require('./compatibilityScoreService');
+const PanchangService = require('./panchangService');
 // Add exports for all other Vedic services as they are implemented
 
 module.exports = {
@@ -33,5 +36,8 @@ module.exports = {
   CurrentTransitsService,
   DailyHoroscopeService,
   CompatibilityService,
+  DetailedChartAnalysisService,
+  CompatibilityScoreService,
+  PanchangService,
   // Add all other Vedic services here
 };

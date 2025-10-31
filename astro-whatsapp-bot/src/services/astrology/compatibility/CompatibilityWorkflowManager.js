@@ -1,6 +1,6 @@
 const logger = require('../../../utils/logger');
 const { sendMessage } = require('../../whatsapp/messageSender');
-const translationService = require('../i18n/TranslationService');
+const translationService = require('../../i18n/TranslationService');
 
 /**
  * CompatibilityWorkflowManager - Manages compatibility analysis workflow

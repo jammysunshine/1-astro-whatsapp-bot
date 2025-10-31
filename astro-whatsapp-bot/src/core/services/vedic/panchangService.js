@@ -1,35 +1,29 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
+const { Panchang } = require('../../../services/astrology/panchang');
+
 /**
- * Panchang Service
+ * PanchangService - Vedic daily calendar service
  *
  * Provides Hindu daily calendar (Panchang) calculations including tithi, nakshatra, yoga, karana,
  * and auspicious timing with Swiss Ephemeris integration for astronomical precision.
  */
-
-const { Panchang } = require('../../../services/astrology/panchang');
-const logger = require('../../../utils/logger');
-
-class PanchangService {
+class PanchangService extends ServiceTemplate {
   constructor() {
-    this.calculator = new Panchang();
+    super(new Panchang());
+    this.serviceName = 'PanchangService';
     logger.info('PanchangService initialized');
   }
 
-  /**
-   * Execute complete Panchang calculation for a date
-   * @param {Object} dateData - Date and location data
-   * @returns {Promise<Object>} Complete panchang analysis
-   */
-  async execute(dateData) {
+  async processCalculation(dateData) {
     try {
-      this._validateInput(dateData);
-
       // Get comprehensive panchang analysis
       const panchang = await this.calculator.generatePanchang(dateData);
-
-      // Format result for service consumption
-      return this._formatResult(panchang);
+      return panchang;
     } catch (error) {
-      logger.error('PanchangService error:', error);
+      logger.error('PanchangService calculation error:', error);
       throw new Error(`Panchang calculation failed: ${error.message}`);
     }
   }
@@ -113,7 +107,7 @@ class PanchangService {
    * @param {Object} input - Input data to validate
    * @private
    */
-  _validateInput(input) {
+  validate(dateData) {
     if (!input) {
       throw new Error('Date data is required');
     }
@@ -138,7 +132,7 @@ class PanchangService {
    * @returns {Object} Formatted result
    * @private
    */
-  _formatResult(result) {
+  formatResult(result) {
     if (result.error) {
       return {
         success: false,
@@ -165,12 +159,11 @@ class PanchangService {
    */
   getMetadata() {
     return {
-      name: 'PanchangService',
-      description: 'Hindu daily calendar calculations with Swiss Ephemeris precision',
+      name: this.serviceName,
       version: '1.0.0',
-      dependencies: ['Panchang'],
       category: 'vedic',
-      methods: ['execute', 'getTodaysPanchang', 'getPanchangForDate']
+      methods: ['execute', 'getTodaysPanchang', 'getPanchangForDate'],
+      dependencies: ['Panchang']
     };
   }
 }

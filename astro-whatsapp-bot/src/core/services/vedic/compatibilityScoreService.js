@@ -1,35 +1,29 @@
-const { CompatibilityScorer } = require('../../services/astrology/compatibility/CompatibilityScorer');
-const logger = require('../../../utils/logger');
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
+const { CompatibilityScorer } = require('../../../services/astrology/compatibility/CompatibilityScorer');
 
 /**
- * CompatibilityScoreService - Service for calculating standardized compatibility scores
- * Generates numerical compatibility scores based on planetary positions, interchart aspects, and house overlays
+ * CompatibilityScoreService - Vedic compatibility scoring service
+ *
+ * Generates standardized numerical compatibility scores based on planetary positions,
+ * interchart aspects, and house overlays using traditional Vedic astrology principles.
  */
-class CompatibilityScoreService {
+class CompatibilityScoreService extends ServiceTemplate {
   constructor() {
-    this.calculator = new CompatibilityScorer();
+    super(new CompatibilityScorer());
+    this.serviceName = 'CompatibilityScoreService';
     logger.info('CompatibilityScoreService initialized');
   }
 
-  /**
-   * Execute compatibility score calculation
-   * @param {Object} compatibilityData - Compatibility analysis data
-   * @param {Array} compatibilityData.aspects - Interchart aspects
-   * @param {Object} compatibilityData.overlays - House overlays
-   * @returns {Object} Compatibility score result
-   */
-  async execute(compatibilityData) {
+  async processCalculation(compatibilityData) {
     try {
-      // Input validation
-      this._validateInput(compatibilityData);
-
       // Calculate compatibility score
       const result = await this.calculateCompatibilityScore(compatibilityData);
-
-      // Format and return result
-      return this._formatResult(result);
+      return result;
     } catch (error) {
-      logger.error('CompatibilityScoreService error:', error);
+      logger.error('CompatibilityScoreService calculation error:', error);
       throw new Error(`Compatibility score calculation failed: ${error.message}`);
     }
   }
@@ -249,7 +243,7 @@ class CompatibilityScoreService {
    * Validate input data
    * @param {Object} input - Input data to validate
    */
-  _validateInput(input) {
+  validate(compatibilityData) {
     if (!input) {
       throw new Error('Compatibility data is required');
     }
@@ -282,7 +276,7 @@ class CompatibilityScoreService {
    * @param {Object} result - Raw scoring result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Compatibility Score Analysis',
       timestamp: new Date().toISOString(),
@@ -299,6 +293,16 @@ class CompatibilityScoreService {
         interpretation: result.interpretation
       },
       disclaimer: 'Compatibility scores are interpretive tools. Real relationships involve many factors beyond astrological analysis. Professional counseling is recommended for important relationship decisions.'
+    };
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'calculateCompatibilityScore'],
+      dependencies: ['CompatibilityScorer']
     };
   }
 }

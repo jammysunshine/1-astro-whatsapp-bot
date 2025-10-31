@@ -1029,4 +1029,4 @@ class MarriageTimingCalculator {
   }
 }
 
-module.exports = MarriageTimingCalculator;
+module.exports = { MarriageTimingCalculator };

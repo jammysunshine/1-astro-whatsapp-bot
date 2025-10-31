@@ -472,3 +472,26 @@ class DashaAnalysisCalculator {
       mercury: 'Intelligence, business, communication, skills',
       jupiter: 'Wisdom, spirituality, wealth, children, education',
       venus: 'Love, marriage, beauty, luxuries, arts',
+      saturn: 'Discipline, hard work, longevity, spirituality',
+      rahu: 'Ambition, foreign lands, unconventional paths',
+      ketu: 'Spirituality, detachment, past life karma'
+    };
+    return significances[lord] || 'General life experiences and learning';
+  }
+
+  /**
+   * Health check for DashaAnalysisCalculator
+   * @returns {Object} Health status
+   */
+  healthCheck() {
+    return {
+      healthy: true,
+      version: '1.0.0',
+      name: 'DashaAnalysisCalculator',
+      calculations: ['Vimshottari Dasha', 'Current Influences', 'Favorable Periods'],
+      status: 'Operational'
+    };
+  }
+}
+
+module.exports = { DashaAnalysisCalculator };

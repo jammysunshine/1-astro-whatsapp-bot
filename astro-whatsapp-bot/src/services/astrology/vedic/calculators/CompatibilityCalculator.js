@@ -602,4 +602,4 @@ class CompatibilityCalculator {
   }
 }
 
-module.exports = CompatibilityCalculator;
+module.exports = { CompatibilityCalculator };

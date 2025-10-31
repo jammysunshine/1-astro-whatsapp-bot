@@ -851,4 +851,4 @@ class DetailedChartCalculator {
   }
 }
 
-module.exports = DetailedChartCalculator;
+module.exports = { DetailedChartCalculator };

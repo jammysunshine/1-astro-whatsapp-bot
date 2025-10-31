@@ -885,4 +885,4 @@ class JaiminiAstrologyCalculator {
   _dateToJulianDay = this._calculateDateToJulianDay; // Alias for consistency
 }
 
-module.exports = JaiminiAstrologyCalculator;
+module.exports = { JaiminiAstrologyCalculator };

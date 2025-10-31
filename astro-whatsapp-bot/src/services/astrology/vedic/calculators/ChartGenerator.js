@@ -833,4 +833,4 @@ class ChartGenerator {
   }
 }
 
-module.exports = ChartGenerator;
+module.exports = { ChartGenerator };

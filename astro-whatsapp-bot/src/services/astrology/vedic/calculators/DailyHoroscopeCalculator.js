@@ -476,7 +476,7 @@ class DailyHoroscopeCalculator {
   }
 }
 
-module.exports = DailyHoroscopeCalculator;</path>
+module.exports = { DailyHoroscopeCalculator };</path>
 <task_progress>
 - [x] List all non-private async methods in backup file
 - [x] Check which are missing from current modular code

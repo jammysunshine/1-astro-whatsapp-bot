@@ -151,4 +151,4 @@ class PanchangCalculator {
   }
 }
 
-module.exports = PanchangCalculator;
+module.exports = { PanchangCalculator };

@@ -1,45 +1,83 @@
-const SolarReturnCalculator = require('../../../services/astrology/vedic/calculators/SolarReturnCalculator');
-const logger = require('../../../utils/logger');
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
+const { SolarReturnCalculator } = require('../../../services/astrology/vedic/calculators/SolarReturnCalculator');
 
 /**
  * SolarReturnService - Service for solar return chart analysis
  * Provides annual birthday astrology analysis showing themes and influences for the coming year
  * using Swiss Ephemeris integration for precise solar return calculations.
  */
-class SolarReturnService {
-  constructor(astrologer, geocodingService) {
-    this.calculator = new SolarReturnCalculator(astrologer, geocodingService);
+class SolarReturnService extends ServiceTemplate {
+  constructor() {
+    super(new SolarReturnCalculator());
+    this.serviceName = 'SolarReturnService';
     logger.info('SolarReturnService initialized');
   }
 
-  /**
-   * Execute solar return analysis
-   * @param {Object} birthData - Birth data for solar return calculation
-   * @param {string} birthData.birthDate - Birth date (DD/MM/YYYY)
-   * @param {string} birthData.birthTime - Birth time (HH:MM)
-   * @param {string} birthData.birthPlace - Birth place
-   * @param {string} birthData.name - Person's name (optional)
-   * @param {number} targetYear - Year for solar return analysis (optional, defaults to current year)
-   * @param {string} location - Location for solar return calculation (optional)
-   * @returns {Promise<Object>} Solar return analysis result
-   */
-  async execute(birthData, targetYear = null, location = null) {
+  async processCalculation(data) {
     try {
-      // Input validation
-      this._validateInput(birthData);
+      const { birthData, targetYear, location } = data;
 
       // Use current year if not specified
       const year = targetYear || new Date().getFullYear();
 
-      // Calculate solar return
+      // Calculate solar return using calculator
       const result = await this.calculator.calculateSolarReturn(birthData, year, location);
-
-      // Format and return result
-      return this._formatResult(result, year);
+      return { ...result, year };
     } catch (error) {
-      logger.error('SolarReturnService error:', error);
+      logger.error('SolarReturnService calculation error:', error);
       throw new Error(`Solar return analysis failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    const { year, ...analysisData } = result;
+    return {
+      success: true,
+      service: 'Solar Return Analysis',
+      timestamp: new Date().toISOString(),
+      data: {
+        ...analysisData,
+        analysisYear: year
+      },
+      disclaimer: 'Solar return charts show the astrological influences for the year ahead from birthday to birthday. The solar return Sun represents the individual\'s life direction for that year. Results should be considered alongside other astrological techniques.'
+    };
+  }
+
+  validate(data) {
+    if (!data || !data.birthData) {
+      throw new Error('Birth data is required');
+    }
+
+    const { birthDate, birthTime, birthPlace } = data.birthData;
+
+    if (!birthDate || typeof birthDate !== 'string') {
+      throw new Error('Valid birth date is required');
+    }
+
+    if (!birthTime || typeof birthTime !== 'string') {
+      throw new Error('Valid birth time is required');
+    }
+
+    if (!birthPlace || typeof birthPlace !== 'string') {
+      throw new Error('Valid birth place is required');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+
+    return true;
   }
 
   /**
@@ -179,30 +217,13 @@ class SolarReturnService {
     }
   }
 
-  /**
-   * Format result for service consumption
-   * @param {Object} result - Raw calculator result
-   * @param {number} year - Year of solar return
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result, year) {
+  getMetadata() {
     return {
-      service: 'Solar Return Analysis',
-      timestamp: new Date().toISOString(),
-      solarReturn: {
-        year,
-        date: result.date || 'Unknown',
-        time: result.time || 'Unknown',
-        location: result.location || 'Unknown',
-        planetaryPositions: result.planetaryPositions || {},
-        houses: result.houses || {},
-        aspects: result.aspects || [],
-        analysis: result.analysis || {},
-        themes: result.themes || [],
-        predictions: result.predictions || []
-      },
-      disclaimer: 'Solar return analysis shows the astrological influences for your birthday year. The solar return chart indicates themes and opportunities for the coming year based on planetary positions when the Sun returns to its natal position.'
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'getCurrentYearSolarReturn', 'getSolarReturnForYear', 'compareSolarReturns'],
+      dependencies: ['SolarReturnCalculator']
     };
   }
 

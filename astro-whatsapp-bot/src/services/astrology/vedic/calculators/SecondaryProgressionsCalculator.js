@@ -587,4 +587,4 @@ class SecondaryProgressionsCalculator {
   }
 }
 
-module.exports = SecondaryProgressionsCalculator;
+module.exports = { SecondaryProgressionsCalculator };

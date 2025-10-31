@@ -349,4 +349,4 @@ class JaiminiCalculator {
   }
 }
 
-module.exports = JaiminiCalculator;
+module.exports = { JaiminiCalculator };

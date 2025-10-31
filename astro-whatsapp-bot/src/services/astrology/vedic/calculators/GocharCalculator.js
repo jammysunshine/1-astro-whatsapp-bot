@@ -413,4 +413,4 @@ class GocharCalculator {
   }
 }
 
-module.exports = GocharCalculator;
+module.exports = { GocharCalculator };

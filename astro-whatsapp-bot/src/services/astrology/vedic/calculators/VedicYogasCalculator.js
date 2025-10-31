@@ -403,4 +403,4 @@ class VedicYogasCalculator {
   }
 }
 
-module.exports = VedicYogasCalculator;
+module.exports = { VedicYogasCalculator };

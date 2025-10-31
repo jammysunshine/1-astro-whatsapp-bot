@@ -645,7 +645,7 @@ class PrashnaCalculator {
     Object.entries(horaryChart.planets).forEach(([planet, data]) => {
       // Skip the ruler planet itself when analyzing aspects
       if (planet === questionRuler) return;
-      if (planet === Object.keys(rulerData).find(key => rulerData[key] === rulerData)) continue;
+      if (planet === Object.keys(rulerData).find(key => rulerData[key] === rulerData)) return;
 
       const angle = Math.abs(rulerData.longitude - data.longitude);
       const minAngle = Math.min(angle, 360 - angle);
@@ -897,4 +897,4 @@ class PrashnaCalculator {
   }
 }
 
-module.exports = PrashnaCalculator;
+module.exports = { PrashnaCalculator };

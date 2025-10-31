@@ -1,39 +1,75 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
 const { DashaAnalysisCalculator } = require('../../../services/astrology/vedic/calculators/DashaAnalysisCalculator');
-const logger = require('../../../utils/logger');
 
 /**
- * CurrentDashaService - Service for determining current planetary period
- * Calculates the current major planetary period (Mahadasha) and sub-period (Antardasha) a person is experiencing, including duration, remaining time, and planetary influences
+ * CurrentDashaService - Vedic current dasha analysis service
+ *
+ * Calculates the current major planetary period (Mahadasha) and sub-period (Antardasha) a person is experiencing,
+ * including duration, remaining time, and planetary influences using authentic Vimshottari Dasha calculations.
  */
-class CurrentDashaService {
+class CurrentDashaService extends ServiceTemplate {
   constructor() {
-    this.calculator = new DashaAnalysisCalculator();
+    super(new DashaAnalysisCalculator());
+    this.serviceName = 'CurrentDashaService';
     logger.info('CurrentDashaService initialized');
   }
 
-  /**
-   * Execute current Dasha calculation
-   * @param {Object} birthData - Birth data for Dasha calculation
-   * @param {string} birthData.birthDate - Birth date (DD/MM/YYYY)
-   * @param {string} birthData.birthTime - Birth time (HH:MM)
-   * @param {string} birthData.birthPlace - Birth place
-   * @param {string} birthData.name - Person's name (optional)
-   * @returns {Object} Current Dasha analysis result
-   */
-  async execute(birthData) {
+  async processCalculation(birthData) {
     try {
-      // Input validation
-      this._validateInput(birthData);
-
       // Calculate current Dasha
       const result = await this.calculateCurrentDasha(birthData);
-
-      // Format and return result
-      return this._formatResult(result);
+      return result;
     } catch (error) {
-      logger.error('CurrentDashaService error:', error);
+      logger.error('CurrentDashaService calculation error:', error);
       throw new Error(`Current Dasha calculation failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      service: 'Vedic Current Dasha Analysis',
+      timestamp: new Date().toISOString(),
+      data: result,
+      disclaimer: 'Current Dasha analysis shows your present planetary period influences. Dasha periods indicate when certain planetary energies are most active. Complete astrological analysis considers the entire birth chart for comprehensive understanding.'
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
+    }
+
+    const { birthDate, birthTime, birthPlace } = birthData;
+
+    if (!birthDate || typeof birthDate !== 'string') {
+      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
+    }
+
+    if (!birthTime || typeof birthTime !== 'string') {
+      throw new Error('Valid birth time (HH:MM format) is required');
+    }
+
+    if (!birthPlace || typeof birthPlace !== 'string') {
+      throw new Error('Valid birth place is required');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+
+    return true;
   }
 
   /**
@@ -508,62 +544,17 @@ class CurrentDashaService {
     return interpretation;
   }
 
-  /**
-   * Validate input data
-   * @param {Object} input - Input data to validate
-   */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Birth data is required');
-    }
-
-    const { birthDate, birthTime, birthPlace } = input;
-
-    if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
-    }
-
-    if (!birthTime || typeof birthTime !== 'string') {
-      throw new Error('Valid birth time (HH:MM format) is required');
-    }
-
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-  }
-
-  /**
-   * Format result for presentation
-   * @param {Object} result - Raw current Dasha result
-   * @returns {Object} Formatted result
-   */
-  _formatResult(result) {
+  getMetadata() {
     return {
-      service: 'Current Dasha Analysis',
-      timestamp: new Date().toISOString(),
-      currentDasha: {
-        dasha: result.currentDasha,
-        influence: result.dashaInfluence,
-        remainingTime: result.remainingTime,
-        lifeImpact: result.lifeImpact,
-        recommendations: result.recommendations
-      },
-      interpretation: result.interpretation,
-      disclaimer: 'Current Dasha analysis shows your present planetary period influences. Dasha periods indicate when certain planetary energies are most active. Complete astrological analysis considers the entire birth chart for comprehensive understanding.'
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'calculateCurrentDasha'],
+      dependencies: ['DashaAnalysisCalculator']
     };
   }
+
+
 }
 
 module.exports = CurrentDashaService;

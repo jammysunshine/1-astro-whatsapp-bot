@@ -804,4 +804,4 @@ class VargaChartCalculator {
   }
 }
 
-module.exports = VargaChartCalculator;
+module.exports = { VargaChartCalculator };

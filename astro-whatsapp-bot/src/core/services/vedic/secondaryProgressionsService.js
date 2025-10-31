@@ -1,41 +1,75 @@
-const SecondaryProgressionsCalculator = require('../../../services/astrology/vedic/calculators/SecondaryProgressionsCalculator');
-const logger = require('../../../utils/logger');
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
+const { SecondaryProgressionsCalculator } = require('../../../services/astrology/vedic/calculators/SecondaryProgressionsCalculator');
 
 /**
  * SecondaryProgressionsService - Service for secondary progressions analysis
  * Provides age-based planetary progression analysis showing life themes and timing
  * using Swiss Ephemeris integration for precise secondary progression calculations.
  */
-class SecondaryProgressionsService {
-  constructor(astrologer, geocodingService) {
-    this.calculator = new SecondaryProgressionsCalculator(astrologer, geocodingService);
+class SecondaryProgressionsService extends ServiceTemplate {
+  constructor() {
+    super(new SecondaryProgressionsCalculator());
+    this.serviceName = 'SecondaryProgressionsService';
     logger.info('SecondaryProgressionsService initialized');
   }
 
-  /**
-   * Execute secondary progressions analysis
-   * @param {Object} birthData - Birth data for progression calculation
-   * @param {string} birthData.birthDate - Birth date (DD/MM/YYYY)
-   * @param {string} birthData.birthTime - Birth time (HH:MM)
-   * @param {string} birthData.birthPlace - Birth place
-   * @param {string} birthData.name - Person's name (optional)
-   * @param {string} progressionDate - Specific date for progression analysis (optional, defaults to current date)
-   * @returns {Promise<Object>} Secondary progressions analysis result
-   */
-  async execute(birthData, progressionDate = null) {
+  async processCalculation(data) {
     try {
-      // Input validation
-      this._validateInput(birthData);
-
-      // Calculate secondary progressions
+      const { birthData } = data;
+      // Calculate secondary progressions using calculator
       const result = await this.calculator.calculateEnhancedSecondaryProgressions(birthData);
-
-      // Format and return result
-      return this._formatResult(result, progressionDate);
+      return result;
     } catch (error) {
-      logger.error('SecondaryProgressionsService error:', error);
+      logger.error('SecondaryProgressionsService calculation error:', error);
       throw new Error(`Secondary progressions analysis failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      service: 'Secondary Progressions Analysis',
+      timestamp: new Date().toISOString(),
+      data: result,
+      disclaimer: 'Secondary progressions show day-for-year life progression. Each day after birth represents one year of life, revealing developmental themes and timing. Results should be considered alongside other astrological techniques.'
+    };
+  }
+
+  validate(data) {
+    if (!data || !data.birthData) {
+      throw new Error('Birth data is required');
+    }
+
+    const { birthDate, birthTime, birthPlace } = data.birthData;
+
+    if (!birthDate || typeof birthDate !== 'string') {
+      throw new Error('Valid birth date is required');
+    }
+
+    if (!birthTime || typeof birthTime !== 'string') {
+      throw new Error('Valid birth time is required');
+    }
+
+    if (!birthPlace || typeof birthPlace !== 'string') {
+      throw new Error('Valid birth place is required');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+
+    return true;
   }
 
   /**
@@ -201,36 +235,13 @@ class SecondaryProgressionsService {
     }
   }
 
-  /**
-   * Format result for service consumption
-   * @param {Object} result - Raw calculator result
-   * @param {string} progressionDate - Progression date
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result, progressionDate) {
-    if (result.error) {
-      return {
-        success: false,
-        error: result.error,
-        message: 'Secondary progressions calculation failed'
-      };
-    }
-
+  getMetadata() {
     return {
-      service: 'Secondary Progressions Analysis',
-      timestamp: new Date().toISOString(),
-      progressions: {
-        currentAge: result.currentAge || 'Unknown',
-        progressionDate: progressionDate || 'Current',
-        progressedPlanets: result.progressedPlanets || {},
-        aspects: result.aspects || [],
-        lifeThemes: result.lifeThemes || [],
-        timing: result.timing || {},
-        analysis: result.analysis || {},
-        predictions: result.predictions || []
-      },
-      disclaimer: 'Secondary progressions show day-for-year life themes and timing. Each day after birth represents one year of life, revealing developmental patterns and important life periods. Complete astrological analysis considers the entire progressed chart.'
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'getCurrentAgeProgressions', 'getProgressionTimeline', 'compareProgressionAges'],
+      dependencies: ['SecondaryProgressionsCalculator']
     };
   }
 

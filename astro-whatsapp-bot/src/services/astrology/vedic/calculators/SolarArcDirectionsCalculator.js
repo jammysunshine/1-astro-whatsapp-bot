@@ -627,4 +627,4 @@ class SolarArcDirectionsCalculator {
   }
 }
 
-module.exports = SolarArcDirectionsCalculator;
+module.exports = { SolarArcDirectionsCalculator };

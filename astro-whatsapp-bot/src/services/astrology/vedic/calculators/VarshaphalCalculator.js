@@ -580,4 +580,4 @@ class VarshaphalCalculator {
   }
 }
 
-module.exports = VarshaphalCalculator;
+module.exports = { VarshaphalCalculator };

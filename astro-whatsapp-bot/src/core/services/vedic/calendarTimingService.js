@@ -1,39 +1,69 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
+const { MuhurtaCalculator } = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
+
 /**
- * Calendar Timing Service
+ * CalendarTimingService - Vedic calendar timing and auspicious period analysis service
  *
  * Provides comprehensive calendar timing analysis including Muhurta (auspicious timing),
  * Abhijit Muhurta, Rahukalam, Gulikakalam, and other Vedic timing calculations
  * for optimal activity scheduling.
  */
-
-const MuhurtaCalculator = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
-const logger = require('../../../utils/logger');
-
-class CalendarTimingService {
+class CalendarTimingService extends ServiceTemplate {
   constructor() {
-    this.muhurtaCalculator = new MuhurtaCalculator();
+    super(new MuhurtaCalculator());
+    this.serviceName = 'CalendarTimingService';
     logger.info('CalendarTimingService initialized');
   }
 
-  /**
-   * Execute comprehensive calendar timing analysis
-   * @param {Object} timingData - Timing request data
-   * @returns {Promise<Object>} Complete timing analysis
-   */
-  async execute(timingData) {
+  async processCalculation(timingData) {
     try {
-      // Input validation
-      this._validateInput(timingData);
-
       // Get comprehensive timing analysis
       const result = await this.getCalendarTimingAnalysis(timingData);
-
-      // Format and return result
-      return this._formatResult(result);
+      return result;
     } catch (error) {
-      logger.error('CalendarTimingService error:', error);
+      logger.error('CalendarTimingService calculation error:', error);
       throw new Error(`Calendar timing analysis failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      service: 'Vedic Calendar Timing Analysis',
+      timestamp: new Date().toISOString(),
+      data: result,
+      disclaimer: '⚠️ *Timing Disclaimer:* This analysis provides general auspicious timing guidance based on Vedic principles. Final decisions should consider personal birth chart, current planetary transits, and professional consultation.'
+    };
+  }
+
+  validate(timingData) {
+    if (!timingData) {
+      throw new Error('Timing data is required');
+    }
+
+    if (!timingData.date) {
+      throw new Error('Date is required for calendar timing analysis');
+    }
+
+    if (!timingData.location) {
+      throw new Error('Location is required for calendar timing analysis');
+    }
+
+    // Validate date format (DD/MM/YYYY)
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(timingData.date)) {
+      throw new Error('Date must be in DD/MM/YYYY format');
+    }
+
+    // Validate location has coordinates
+    if (!timingData.location.latitude || !timingData.location.longitude) {
+      throw new Error('Location must include latitude and longitude coordinates');
+    }
+
+    return true;
   }
 
   /**
@@ -46,16 +76,16 @@ class CalendarTimingService {
       const { date, location, activityType, birthData } = timingData;
 
       // Calculate Muhurta (auspicious timing)
-      const muhurtaAnalysis = await this.muhurtaCalculator.calculateMuhurta(date, location, activityType);
+      const muhurtaAnalysis = await this.calculator.calculateMuhurta(date, location, activityType);
 
       // Calculate Abhijit Muhurta (most auspicious 48-minute period)
-      const abhijitMuhurta = await this.muhurtaCalculator.calculateAbhijitMuhurta(date, location);
+      const abhijitMuhurta = await this.calculator.calculateAbhijitMuhurta(date, location);
 
       // Calculate Rahukalam (inauspicious period)
-      const rahukalam = await this.muhurtaCalculator.calculateRahukalam(date, location);
+      const rahukalam = await this.calculator.calculateRahukalam(date, location);
 
       // Calculate Gulikakalam (another inauspicious period)
-      const gulikakalam = await this.muhurtaCalculator.calculateGulikakalam(date, location);
+      const gulikakalam = await this.calculator.calculateGulikakalam(date, location);
 
       // Get daily Panchang for additional timing context
       const panchangData = await this._getPanchangTiming(date, location);
@@ -93,7 +123,7 @@ class CalendarTimingService {
   async _getPanchangTiming(date, location) {
     try {
       // Import PanchangCalculator for additional timing context
-      const PanchangCalculator = require('../../../services/astrology/vedic/calculators/PanchangCalculator');
+      const { PanchangCalculator } = require('../../../services/astrology/vedic/calculators/PanchangCalculator');
       const panchangCalc = new PanchangCalculator();
 
       const panchangData = await panchangCalc.calculatePanchang(date, location);
@@ -217,61 +247,9 @@ class CalendarTimingService {
     return activityAdvice[activityType] || activityAdvice.general;
   }
 
-  /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Input data is required');
-    }
 
-    if (!input.date) {
-      throw new Error('Date is required for calendar timing analysis');
-    }
 
-    if (!input.location) {
-      throw new Error('Location is required for calendar timing analysis');
-    }
 
-    // Validate date format (DD/MM/YYYY)
-    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (!dateRegex.test(input.date)) {
-      throw new Error('Date must be in DD/MM/YYYY format');
-    }
-
-    // Validate location has coordinates
-    if (!input.location.latitude || !input.location.longitude) {
-      throw new Error('Location must include latitude and longitude coordinates');
-    }
-  }
-
-  /**
-   * Format result for presentation
-   * @param {Object} result - Raw timing analysis result
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result) {
-    if (!result) {
-      return {
-        success: false,
-        error: 'Unable to generate calendar timing analysis',
-        message: 'Calendar timing analysis failed'
-      };
-    }
-
-    return {
-      success: true,
-      message: 'Calendar timing analysis completed successfully',
-      data: {
-        analysis: result,
-        summary: this._createTimingSummary(result),
-        disclaimer: '⚠️ *Timing Disclaimer:* This analysis provides general auspicious timing guidance based on Vedic principles. Final decisions should consider personal birth chart, current planetary transits, and professional consultation.'
-      }
-    };
-  }
 
   /**
    * Create timing summary for quick reference
@@ -291,17 +269,13 @@ class CalendarTimingService {
     };
   }
 
-  /**
-   * Get service metadata
-   * @returns {Object} Service information
-   */
   getMetadata() {
     return {
-      name: 'CalendarTimingService',
-      description: 'Comprehensive Vedic calendar timing analysis including Muhurta, Abhijit Muhurta, Rahukalam, and Gulikakalam calculations for optimal activity scheduling',
+      name: this.serviceName,
       version: '1.0.0',
-      dependencies: ['MuhurtaCalculator', 'PanchangCalculator'],
-      category: 'vedic'
+      category: 'vedic',
+      methods: ['execute', 'getCalendarTimingAnalysis'],
+      dependencies: ['MuhurtaCalculator', 'PanchangCalculator']
     };
   }
 }

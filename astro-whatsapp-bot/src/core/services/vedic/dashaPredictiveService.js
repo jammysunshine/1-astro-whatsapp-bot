@@ -1,39 +1,80 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
+const { DashaAnalysisCalculator } = require('../../../services/astrology/vedic/calculators/DashaAnalysisCalculator');
+
 /**
- * Dasha Predictive Service
+ * DashaPredictiveService - Vedic dasha timing and predictive analysis service
  *
  * Provides comprehensive Vedic dasha analysis including Vimshottari Dasha periods,
  * planetary influences, timing predictions, and life event forecasting using
  * authentic nakshatra-based calculations with Swiss Ephemeris integration.
  */
-
-const DashaAnalysisCalculator = require('../../../services/astrology/vedic/calculators/DashaAnalysisCalculator');
-const logger = require('../../../utils/logger');
-
-class DashaPredictiveService {
+class DashaPredictiveService extends ServiceTemplate {
   constructor() {
-    this.dashaCalculator = new DashaAnalysisCalculator();
+    super(new DashaAnalysisCalculator());
+    this.serviceName = 'DashaPredictiveService';
     logger.info('DashaPredictiveService initialized');
   }
 
-  /**
-   * Execute comprehensive dasha predictive analysis
-   * @param {Object} dashaData - Dasha analysis request data
-   * @returns {Promise<Object>} Complete dasha analysis
-   */
-  async execute(dashaData) {
+  async processCalculation(dashaData) {
     try {
-      // Input validation
-      this._validateInput(dashaData);
-
       // Get comprehensive dasha analysis
       const result = await this.getDashaPredictiveAnalysis(dashaData);
-
-      // Format and return result
-      return this._formatResult(result);
+      return result;
     } catch (error) {
-      logger.error('DashaPredictiveService error:', error);
+      logger.error('DashaPredictiveService calculation error:', error);
       throw new Error(`Dasha predictive analysis failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      service: 'Vedic Dasha Predictive Analysis',
+      timestamp: new Date().toISOString(),
+      data: result,
+      disclaimer: '⚠️ *Dasha Disclaimer:* This analysis provides astrological timing insights based on Vedic principles. Life events are influenced by multiple factors. Use this guidance alongside practical planning and professional advice.'
+    };
+  }
+
+  validate(dashaData) {
+    if (!dashaData) {
+      throw new Error('Dasha data is required');
+    }
+
+    if (!dashaData.birthData) {
+      throw new Error('Birth data is required for dasha analysis');
+    }
+
+    const { birthData } = dashaData;
+
+    if (!birthData.birthDate) {
+      throw new Error('Birth date is required');
+    }
+
+    if (!birthData.birthTime) {
+      throw new Error('Birth time is required');
+    }
+
+    if (!birthData.birthPlace) {
+      throw new Error('Birth place is required');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthData.birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthData.birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+
+    return true;
   }
 
   /**
@@ -46,13 +87,13 @@ class DashaPredictiveService {
       const { birthData, analysisType, currentDate } = dashaData;
 
       // Calculate current dasha period
-      const currentDasha = await this.dashaCalculator.calculateCurrentDasha(birthData);
+      const currentDasha = await this.calculator.calculateCurrentDasha(birthData);
 
       // Calculate upcoming dasha periods
-      const upcomingDashas = await this.dashaCalculator.calculateUpcomingDashas(birthData, 5); // Next 5 major periods
+      const upcomingDashas = await this.calculator.calculateUpcomingDashas(birthData, 5); // Next 5 major periods
 
       // Calculate antardasha (sub-periods) for current mahadasha
-      const antardashas = await this.dashaCalculator.calculateAntardasha(currentDasha.mahadasha, birthData);
+      const antardashas = await this.calculator.calculateAntardasha(currentDasha.mahadasha, birthData);
 
       // Get dasha predictions and influences
       const predictions = await this._getDashaPredictions(currentDasha, upcomingDashas, antardashas);
@@ -734,72 +775,9 @@ class DashaPredictiveService {
     };
   }
 
-  /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Input data is required');
-    }
 
-    if (!input.birthData) {
-      throw new Error('Birth data is required for dasha analysis');
-    }
 
-    const { birthData } = input;
 
-    if (!birthData.birthDate) {
-      throw new Error('Birth date is required');
-    }
-
-    if (!birthData.birthTime) {
-      throw new Error('Birth time is required');
-    }
-
-    if (!birthData.birthPlace) {
-      throw new Error('Birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (!dateRegex.test(birthData.birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{2}:\d{2}$/;
-    if (!timeRegex.test(birthData.birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-  }
-
-  /**
-   * Format result for presentation
-   * @param {Object} result - Raw dasha analysis result
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result) {
-    if (!result) {
-      return {
-        success: false,
-        error: 'Unable to generate dasha predictive analysis',
-        message: 'Dasha analysis failed'
-      };
-    }
-
-    return {
-      success: true,
-      message: 'Dasha predictive analysis completed successfully',
-      data: {
-        analysis: result,
-        summary: this._createDashaSummary(result),
-        disclaimer: '⚠️ *Dasha Disclaimer:* This analysis provides astrological timing insights based on Vedic principles. Life events are influenced by multiple factors. Use this guidance alongside practical planning and professional advice.'
-      }
-    };
-  }
 
   /**
    * Create dasha summary for quick reference
@@ -821,17 +799,13 @@ class DashaPredictiveService {
     };
   }
 
-  /**
-   * Get service metadata
-   * @returns {Object} Service information
-   */
   getMetadata() {
     return {
-      name: 'DashaPredictiveService',
-      description: 'Comprehensive Vedic dasha analysis including Vimshottari periods, planetary influences, and life event timing predictions using authentic nakshatra-based calculations',
+      name: this.serviceName,
       version: '1.0.0',
-      dependencies: ['DashaAnalysisCalculator'],
-      category: 'vedic'
+      category: 'vedic',
+      methods: ['execute', 'getDashaPredictiveAnalysis'],
+      dependencies: ['DashaAnalysisCalculator']
     };
   }
 }

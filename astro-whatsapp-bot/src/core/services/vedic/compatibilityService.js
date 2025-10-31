@@ -1,43 +1,66 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculators from legacy structure (for now)
+const CompatibilityAction = require('../../../services/astrology/CompatibilityAction');
+const SynastryEngine = require('../../../services/astrology/compatibility/SynastryEngine');
+const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
+
 /**
- * Compatibility Service
+ * CompatibilityService - Vedic relationship compatibility analysis service
  *
  * Provides comprehensive Vedic compatibility analysis including couple compatibility,
  * synastry analysis, composite charts, and relationship astrology insights
  * using Swiss Ephemeris and astrologer library integration.
  */
-
-const CompatibilityAction = require('../../../services/astrology/CompatibilityAction');
-const SynastryEngine = require('../../../services/astrology/compatibility/SynastryEngine');
-const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
-const logger = require('../../../utils/logger');
-
-class CompatibilityService {
+class CompatibilityService extends ServiceTemplate {
   constructor() {
-    this.compatibilityAction = new CompatibilityAction();
-    this.synastryEngine = new SynastryEngine();
-    this.compatibilityScorer = new CompatibilityScorer();
+    super({
+      compatibilityAction: new CompatibilityAction(),
+      synastryEngine: new SynastryEngine(),
+      compatibilityScorer: new CompatibilityScorer()
+    });
+    this.serviceName = 'CompatibilityService';
     logger.info('CompatibilityService initialized');
   }
 
-  /**
-   * Execute comprehensive compatibility analysis
-   * @param {Object} compatibilityData - Compatibility request data
-   * @returns {Promise<Object>} Complete compatibility analysis
-   */
-  async execute(compatibilityData) {
+  async processCalculation(compatibilityData) {
     try {
-      // Input validation
-      this._validateInput(compatibilityData);
-
       // Get comprehensive compatibility analysis
       const result = await this.getCompatibilityAnalysis(compatibilityData);
-
-      // Format and return result
-      return this._formatResult(result);
+      return result;
     } catch (error) {
-      logger.error('CompatibilityService error:', error);
+      logger.error('CompatibilityService calculation error:', error);
       throw new Error(`Compatibility analysis failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      service: 'Vedic Compatibility Analysis',
+      timestamp: new Date().toISOString(),
+      data: result,
+      disclaimer: '⚠️ *Compatibility Disclaimer:* This analysis provides astrological insights into relationship dynamics. Real relationships involve many factors beyond astrology. Professional counseling is recommended for serious relationship decisions.'
+    };
+  }
+
+  validate(compatibilityData) {
+    if (!compatibilityData) {
+      throw new Error('Compatibility data is required');
+    }
+
+    if (!compatibilityData.person1 || !compatibilityData.person2) {
+      throw new Error('Birth data for both persons is required');
+    }
+
+    // Validate person1 data
+    this._validatePersonData(compatibilityData.person1, 'person1');
+
+    // Validate person2 data
+    this._validatePersonData(compatibilityData.person2, 'person2');
+
+    return true;
   }
 
   /**
@@ -50,10 +73,10 @@ class CompatibilityService {
       const { person1, person2, analysisType } = compatibilityData;
 
       // Perform synastry analysis (interchart aspects)
-      const synastryAnalysis = await this.synastryEngine.performSynastryAnalysis(person1, person2);
+      const synastryAnalysis = await this.calculator.synastryEngine.performSynastryAnalysis(person1, person2);
 
       // Calculate compatibility score
-      const compatibilityScore = await this.compatibilityScorer.calculateCompatibilityScore(person1, person2);
+      const compatibilityScore = await this.calculator.compatibilityScorer.calculateCompatibilityScore(person1, person2);
 
       // Generate composite chart if requested
       let compositeChart = null;
@@ -432,26 +455,7 @@ class CompatibilityService {
     return Math.floor(relativePosition / 30) + 1;
   }
 
-  /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Input data is required');
-    }
 
-    if (!input.person1 || !input.person2) {
-      throw new Error('Birth data for both persons is required');
-    }
-
-    // Validate person1 data
-    this._validatePersonData(input.person1, 'person1');
-
-    // Validate person2 data
-    this._validatePersonData(input.person2, 'person2');
-  }
 
   /**
    * Validate individual person data
@@ -489,31 +493,7 @@ class CompatibilityService {
     }
   }
 
-  /**
-   * Format result for presentation
-   * @param {Object} result - Raw compatibility analysis result
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result) {
-    if (!result) {
-      return {
-        success: false,
-        error: 'Unable to generate compatibility analysis',
-        message: 'Compatibility analysis failed'
-      };
-    }
 
-    return {
-      success: true,
-      message: 'Compatibility analysis completed successfully',
-      data: {
-        analysis: result,
-        summary: this._createCompatibilitySummary(result),
-        disclaimer: '⚠️ *Compatibility Disclaimer:* This analysis provides astrological insights into relationship dynamics. Real relationships involve many factors beyond astrology. Professional counseling is recommended for serious relationship decisions.'
-      }
-    };
-  }
 
   /**
    * Create compatibility summary for quick reference
@@ -533,17 +513,13 @@ class CompatibilityService {
     };
   }
 
-  /**
-   * Get service metadata
-   * @returns {Object} Service information
-   */
   getMetadata() {
     return {
-      name: 'CompatibilityService',
-      description: 'Comprehensive Vedic compatibility analysis including synastry, composite charts, and relationship astrology insights using Swiss Ephemeris integration',
+      name: this.serviceName,
       version: '1.0.0',
-      dependencies: ['CompatibilityAction', 'SynastryEngine', 'CompatibilityScorer'],
-      category: 'vedic'
+      category: 'vedic',
+      methods: ['execute', 'getCompatibilityAnalysis'],
+      dependencies: ['CompatibilityAction', 'SynastryEngine', 'CompatibilityScorer']
     };
   }
 }

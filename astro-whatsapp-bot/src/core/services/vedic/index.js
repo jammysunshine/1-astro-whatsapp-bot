@@ -1,81 +1,37 @@
-const AshtakavargaService = require('./ashtakavargaService');
-const AstrocartographyService = require('./astrocartographyService');
-const AyurvedicAstrologyService = require('./ayurvedicAstrologyService');
-const BasicBirthChartService = require('./basicBirthChartService');
 const BirthChartService = require('./birthChartService');
+const VimshottariDashaService = require('./vimshottariDashaService');
+const PrashnaAstrologyService = require('./prashnaAstrologyService');
+const EventAstrologyService = require('./eventAstrologyService');
+const MuhurtaService = require('./muhurtaService');
+const SolarArcDirectionsService = require('./solarArcDirectionsService');
+const SecondaryProgressionsService = require('./secondaryProgressionsService');
+const SolarReturnService = require('./solarReturnService');
 const BusinessPartnershipService = require('./businessPartnershipService');
-const CalculateNakshatraService = require('./calculateNakshatraService');
+const SpecializedAnalysisService = require('./specializedAnalysisService');
+const DashaPredictiveService = require('./dashaPredictiveService');
 const CalendarTimingService = require('./calendarTimingService');
-const CompatibilityService = require('./compatibilityService');
-const CompatibilityScoreService = require('./compatibilityScoreService');
-const CompositeChartService = require('./compositeChartService');
 const CurrentDashaService = require('./currentDashaService');
 const CurrentTransitsService = require('./currentTransitsService');
 const DailyHoroscopeService = require('./dailyHoroscopeService');
-const DashaPredictiveService = require('./dashaPredictiveService');
-const DavisonChartService = require('./davisonChartService');
-const DetailedChartAnalysisService = require('./detailedChartAnalysisService');
-const FamilyAstrologyService = require('./familyAstrologyService');
-const GenerateGroupAstrologyService = require('./generateGroupAstrologyService');
-const GroupTimingService = require('./groupTimingService');
-const HellenisticAstrologyService = require('./hellenisticAstrologyService');
-const HinduAstrologyService = require('./hinduAstrologyService');
-const LunarReturnService = require('./lunarReturnService');
-const MoonSignService = require('./moonSignService');
-const NakshatraPoruthamService = require('./nakshatraPoruthamService');
-const PanchangService = require('./panchangService');
-const PerformSynastryAnalysisService = require('./performSynastryAnalysisService');
-const RemediesDoshaService = require('./remediesDoshaService');
-const RisingSignService = require('./risingSignService');
-const SecondaryProgressionsService = require('./secondaryProgressionsService');
-const SolarArcDirectionsService = require('./solarArcDirectionsService');
-const SolarReturnService = require('./solarReturnService');
-const SpecializedAnalysisService = require('./specializedAnalysisService');
-const SunSignService = require('./sunSignService');
-const UpcomingDashasService = require('./upcomingDashasService');
-const VargaChartsService = require('./vargaChartsService');
-const VedicNumerologyService = require('./vedicNumerologyService');
-const VedicRemediesService = require('./vedicRemediesService');
-const VimshottariDashaService = require('./vimshottariDashaService');
+const CompatibilityService = require('./compatibilityService');
+// Add exports for all other Vedic services as they are implemented
 
 module.exports = {
-  AshtakavargaService,
-  AstrocartographyService,
-  AyurvedicAstrologyService,
-  BasicBirthChartService,
   BirthChartService,
+  VimshottariDashaService,
+  PrashnaAstrologyService,
+  EventAstrologyService,
+  MuhurtaService,
+  SolarArcDirectionsService,
+  SecondaryProgressionsService,
+  SolarReturnService,
   BusinessPartnershipService,
-  CalculateNakshatraService,
+  SpecializedAnalysisService,
+  DashaPredictiveService,
   CalendarTimingService,
-  CompatibilityService,
-  CompatibilityScoreService,
-  CompositeChartService,
   CurrentDashaService,
   CurrentTransitsService,
   DailyHoroscopeService,
-  DashaPredictiveService,
-  DavisonChartService,
-  DetailedChartAnalysisService,
-  FamilyAstrologyService,
-  GenerateGroupAstrologyService,
-  GroupTimingService,
-  HellenisticAstrologyService,
-  HinduAstrologyService,
-  LunarReturnService,
-  MoonSignService,
-  NakshatraPoruthamService,
-  PanchangService,
-  PerformSynastryAnalysisService,
-  RemediesDoshaService,
-  RisingSignService,
-  SecondaryProgressionsService,
-  SolarArcDirectionsService,
-  SolarReturnService,
-  SpecializedAnalysisService,
-  SunSignService,
-  UpcomingDashasService,
-  VargaChartsService,
-  VedicNumerologyService,
-  VedicRemediesService,
-  VimshottariDashaService
+  CompatibilityService,
+  // Add all other Vedic services here
 };

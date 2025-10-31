@@ -786,4 +786,4 @@ class GroupAstrologyCalculator {
   }
 }
 
-module.exports = GroupAstrologyCalculator;
+module.exports = { GroupAstrologyCalculator };

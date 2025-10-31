@@ -574,4 +574,4 @@ class SignificantTransitsCalculator {
   }
 }
 
-module.exports = SignificantTransitsCalculator;
+module.exports = { SignificantTransitsCalculator };

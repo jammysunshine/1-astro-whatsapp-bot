@@ -673,4 +673,4 @@ class ShadbalaCalculator {
   }
 }
 
-module.exports = ShadbalaCalculator;
+module.exports = { ShadbalaCalculator };

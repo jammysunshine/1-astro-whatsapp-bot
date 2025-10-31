@@ -6,7 +6,7 @@
  * Vedic astrological principles and Swiss Ephemeris calculations.
  */
 
-const GroupAstrologyCalculator = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
+const { GroupAstrologyCalculator } = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
 const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
 const logger = require('../../../utils/logger');
 

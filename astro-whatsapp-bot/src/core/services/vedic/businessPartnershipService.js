@@ -1,3 +1,11 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculators from legacy structure (for now)
+const { GroupAstrologyCalculator } = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
+const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
+const { FinancialAstrologyCalculator } = require('../../../services/astrology/calculators/FinancialAstrologyCalculator');
+
 /**
  * Business Partnership Service
  *
@@ -5,39 +13,75 @@
  * between business partners, partnership timing, financial synergy, and business
  * relationship dynamics using Vedic astrological principles and Swiss Ephemeris calculations.
  */
-
-const GroupAstrologyCalculator = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
-const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
-const FinancialAstrologyCalculator = require('../../../services/astrology/calculators/FinancialAstrologyCalculator');
-const logger = require('../../../utils/logger');
-
-class BusinessPartnershipService {
+class BusinessPartnershipService extends ServiceTemplate {
   constructor() {
-    this.groupCalculator = new GroupAstrologyCalculator();
-    this.compatibilityScorer = new CompatibilityScorer();
-    this.financialCalculator = new FinancialAstrologyCalculator();
+    super({
+      groupCalculator: new GroupAstrologyCalculator(),
+      compatibilityScorer: new CompatibilityScorer(),
+      financialCalculator: new FinancialAstrologyCalculator()
+    });
+    this.serviceName = 'BusinessPartnershipService';
     logger.info('BusinessPartnershipService initialized');
   }
 
-  /**
-   * Execute comprehensive business partnership analysis
-   * @param {Object} partnershipData - Partnership analysis request data
-   * @returns {Promise<Object>} Complete partnership analysis
-   */
-  async execute(partnershipData) {
+  async processCalculation(partnershipData) {
     try {
-      // Input validation
-      this._validateInput(partnershipData);
-
-      // Get comprehensive partnership analysis
+      // Get comprehensive partnership analysis using calculators
       const result = await this.getBusinessPartnershipAnalysis(partnershipData);
-
-      // Format and return result
-      return this._formatResult(result);
+      return result;
     } catch (error) {
-      logger.error('BusinessPartnershipService error:', error);
+      logger.error('BusinessPartnershipService calculation error:', error);
       throw new Error(`Business partnership analysis failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      service: 'Business Partnership Analysis',
+      timestamp: new Date().toISOString(),
+      data: result,
+      disclaimer: 'Business partnership analysis provides astrological insights for business relationships. Consider legal, financial, and professional advice alongside astrological guidance for business decisions.'
+    };
+  }
+
+  validate(partnershipData) {
+    if (!partnershipData) {
+      throw new Error('Partnership data is required');
+    }
+
+    const { partners } = partnershipData;
+
+    if (!partners || !Array.isArray(partners) || partners.length < 2) {
+      throw new Error('At least 2 business partners are required for analysis');
+    }
+
+    // Validate each partner has required birth data
+    partners.forEach((partner, index) => {
+      if (!partner.birthData) {
+        throw new Error(`Partner ${index + 1} birth data is required`);
+      }
+
+      const { birthDate, birthTime, birthPlace } = partner.birthData;
+
+      if (!birthDate || !birthTime || !birthPlace) {
+        throw new Error(`Partner ${index + 1} requires complete birth data (date, time, place)`);
+      }
+
+      // Validate date format
+      const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+      if (!dateRegex.test(birthDate)) {
+        throw new Error(`Partner ${index + 1} birth date must be in DD/MM/YYYY format`);
+      }
+
+      // Validate time format
+      const timeRegex = /^\d{1,2}:\d{1,2}$/;
+      if (!timeRegex.test(birthTime)) {
+        throw new Error(`Partner ${index + 1} birth time must be in HH:MM format`);
+      }
+    });
+
+    return true;
   }
 
   /**
@@ -720,69 +764,13 @@ class BusinessPartnershipService {
     });
   }
 
-  /**
-   * Format result for presentation
-   * @param {Object} result - Raw partnership analysis result
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result) {
-    if (!result) {
-      return {
-        success: false,
-        error: 'Unable to generate business partnership analysis',
-        message: 'Partnership analysis failed'
-      };
-    }
-
-    return {
-      success: true,
-      message: 'Business partnership analysis completed successfully',
-      data: {
-        analysis: result,
-        summary: this._createPartnershipSummary(result),
-        disclaimer: '⚠️ *Business Partnership Disclaimer:* This analysis examines astrological influences on business relationships. Business success depends on many factors including market conditions, management, and economic factors. Professional business advice is recommended.'
-      }
-    };
-  }
-
-  /**
-   * Create partnership analysis summary for quick reference
-   * @param {Object} result - Full partnership analysis
-   * @returns {Object} Summary
-   * @private
-   */
-  _createPartnershipSummary(result) {
-    return {
-      partnershipSize: result.partners.length,
-      businessType: result.businessType,
-      overallStrength: result.partnershipStrength.level,
-      strengthScore: result.partnershipStrength.score,
-      keyInsights: {
-        compatibilityLevel: result.partnershipCompatibility.synergyLevel,
-        financialSynergy: result.financialSynergy.overallSynergy > 60 ? 'Strong' : 'Needs Attention',
-        optimalTiming: result.timingAnalysis.optimalStartPeriod.includes('favorable') ? 'Yes' : 'Mixed',
-        leadershipStructure: result.relationshipDynamics.leadershipStructure
-      },
-      topRecommendations: [
-        ...(result.recommendations.immediate || []).slice(0, 1),
-        ...(result.recommendations.structural || []).slice(0, 1),
-        ...(result.recommendations.strategic || []).slice(0, 1)
-      ]
-    };
-  }
-
-  /**
-   * Get service metadata
-   * @returns {Object} Service information
-   */
   getMetadata() {
     return {
-      name: 'BusinessPartnershipService',
-      description: 'Comprehensive business partnership astrology analysis including partner compatibility, financial synergy, optimal timing, and business relationship dynamics',
+      name: this.serviceName,
       version: '1.0.0',
-      dependencies: ['GroupAstrologyCalculator', 'CompatibilityScorer', 'FinancialAstrologyCalculator'],
-      category: 'vedic'
+      category: 'vedic',
+      methods: ['execute', 'getBusinessPartnershipAnalysis'],
+      dependencies: ['GroupAstrologyCalculator', 'CompatibilityScorer', 'FinancialAstrologyCalculator']
     };
   }
 }

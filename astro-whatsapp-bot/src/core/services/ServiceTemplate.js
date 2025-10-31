@@ -1,88 +1,59 @@
-/**
- * Standard Service Implementation Template
- *
- * All core services should follow this template for consistency.
- * Replace placeholders with service-specific implementations.
- */
+const AstroServiceInterface = require('../interfaces/astroServiceInterface');
+const logger = require('../utils/logger');
 
-const logger = require('../../../utils/logger');
-
-class ServiceNameService {
-  constructor() {
-    // Initialize calculator dependencies
-    // this.calculator = new CalculatorClass();
-    logger.info('ServiceNameService initialized');
+class ServiceTemplate extends AstroServiceInterface {
+  constructor(calculatorService) {
+    super();
+    this.calculator = calculatorService;
+    logger.info(`Service ${this.constructor.name} initialized`);
   }
 
-  /**
-   * Main service execution method
-   * @param {Object} birthData - User birth data and parameters
-   * @returns {Promise<Object>} Service result
-   */
-  async execute(birthData) {
+  async execute(data) {
     try {
-      // Input validation
-      this._validateInput(birthData);
+      logger.info(`${this.constructor.name} execution started`, data);
 
-      // Call calculator method(s)
-      // const result = await this.calculator.calculateMethod(birthData);
+      // Validate input data
+      this.validate(data);
+
+      // Process the request using calculator
+      const result = await this.processCalculation(data);
 
       // Format and return result
-      // return this._formatResult(result);
+      const formattedResult = this.formatResult(result);
 
-      // Placeholder return - replace with actual implementation
-      return {
-        success: true,
-        message: 'ServiceNameService executed successfully',
-        data: birthData
-      };
+      logger.info(`${this.constructor.name} execution completed`);
+      return formattedResult;
+
     } catch (error) {
-      logger.error('ServiceNameService error:', error);
-      throw new Error(`Service execution failed: ${error.message}`);
+      logger.error(`${this.constructor.name} execution failed:`, error);
+      throw error;
     }
   }
 
-  /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(input) {
-    if (!input) {
+  validate(data) {
+    if (!data) {
       throw new Error('Input data is required');
     }
-
-    // Add service-specific validation logic here
-    // Example validations:
-    // if (!input.birthDate) throw new Error('Birth date is required');
-    // if (!input.birthPlace) throw new Error('Birth place is required');
+    return true;
   }
 
-  /**
-   * Format result for presentation
-   * @param {Object} result - Raw calculator result
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result) {
-    // Add result formatting logic here
-    // Transform calculator output into user-friendly format
+  async processCalculation(data) {
+    // To be implemented by specific service
+    throw new Error('processCalculation must be implemented');
+  }
+
+  formatResult(result) {
     return result;
   }
 
-  /**
-   * Get service metadata
-   * @returns {Object} Service information
-   */
   getMetadata() {
     return {
-      name: 'ServiceNameService',
-      description: 'Description of what this service does',
+      name: this.constructor.name,
       version: '1.0.0',
-      dependencies: ['CalculatorClass'],
-      category: 'vedic|western|common|divination|compatibility'
+      category: 'astrology',
+      status: 'active'
     };
   }
 }
 
-module.exports = ServiceNameService;
+module.exports = ServiceTemplate;

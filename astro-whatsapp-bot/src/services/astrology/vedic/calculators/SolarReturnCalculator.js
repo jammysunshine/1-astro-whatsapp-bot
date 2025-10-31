@@ -392,4 +392,4 @@ class SolarReturnCalculator {
   }
 }
 
-module.exports = SolarReturnCalculator;
+module.exports = { SolarReturnCalculator };

@@ -226,4 +226,4 @@ class AsteroidCalculator {
   }
 }
 
-module.exports = AsteroidCalculator;
+module.exports = { AsteroidCalculator };

@@ -1,40 +1,75 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
 const { DailyHoroscopeCalculator } = require('../../../services/astrology/vedic/calculators/DailyHoroscopeCalculator');
-const logger = require('../../../utils/logger');
 
 /**
- * DailyHoroscopeService - Service for generating daily horoscope predictions
+ * DailyHoroscopeService - Vedic daily horoscope prediction service
+ *
  * Provides daily astrological insights based on current transits and natal chart analysis
  * using Swiss Ephemeris integration for precise planetary calculations.
  */
-class DailyHoroscopeService {
-  constructor(astrologer, geocodingService) {
-    this.calculator = new DailyHoroscopeCalculator(astrologer, geocodingService);
+class DailyHoroscopeService extends ServiceTemplate {
+  constructor() {
+    super(new DailyHoroscopeCalculator());
+    this.serviceName = 'DailyHoroscopeService';
     logger.info('DailyHoroscopeService initialized');
   }
 
-  /**
-   * Execute daily horoscope generation
-   * @param {Object} birthData - Birth data for horoscope calculation
-   * @param {string} birthData.birthDate - Birth date (DD/MM/YYYY)
-   * @param {string} birthData.birthTime - Birth time (HH:MM)
-   * @param {string} birthData.birthPlace - Birth place
-   * @param {string} birthData.name - Person's name (optional)
-   * @returns {Promise<Object>} Daily horoscope analysis result
-   */
-  async execute(birthData) {
+  async processCalculation(birthData) {
     try {
-      // Input validation
-      this._validateInput(birthData);
-
       // Generate daily horoscope
       const result = await this.calculator.generateDailyHoroscope(birthData);
-
-      // Format and return result
-      return this._formatResult(result);
+      return result;
     } catch (error) {
-      logger.error('DailyHoroscopeService error:', error);
+      logger.error('DailyHoroscopeService calculation error:', error);
       throw new Error(`Daily horoscope generation failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      service: 'Vedic Daily Horoscope',
+      timestamp: new Date().toISOString(),
+      data: result,
+      disclaimer: 'Daily horoscopes provide general astrological guidance based on planetary positions. Individual results may vary based on complete birth chart analysis.'
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
+    }
+
+    const { birthDate, birthTime, birthPlace } = birthData;
+
+    if (!birthDate || typeof birthDate !== 'string') {
+      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
+    }
+
+    if (!birthTime || typeof birthTime !== 'string') {
+      throw new Error('Valid birth time (HH:MM format) is required');
+    }
+
+    if (!birthPlace || typeof birthPlace !== 'string') {
+      throw new Error('Valid birth place is required');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+
+    return true;
   }
 
   /**
@@ -135,71 +170,7 @@ class DailyHoroscopeService {
     }
   }
 
-  /**
-   * Validate input data
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Birth data is required');
-    }
 
-    const { birthDate, birthTime, birthPlace } = input;
-
-    if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
-    }
-
-    if (!birthTime || typeof birthTime !== 'string') {
-      throw new Error('Valid birth time (HH:MM format) is required');
-    }
-
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-  }
-
-  /**
-   * Format result for service consumption
-   * @param {Object} result - Raw calculator result
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result) {
-    return {
-      service: 'Daily Horoscope Analysis',
-      timestamp: new Date().toISOString(),
-      horoscope: {
-        predictions: result.predictions || [],
-        planetaryInfluences: result.planetaryInfluences || {},
-        moonSign: result.moonSign || 'Unknown',
-        sunSign: result.sunSign || 'Unknown',
-        nakshatra: result.nakshatra || 'Unknown',
-        favorableActivities: result.favorableActivities || [],
-        challengingAreas: result.challengingAreas || [],
-        luckyNumbers: result.luckyNumbers || [],
-        luckyColors: result.luckyColors || [],
-        health: result.health || 'General health focus',
-        career: result.career || 'Career development',
-        relationships: result.relationships || 'Relationship harmony',
-        finance: result.finance || 'Financial stability'
-      },
-      disclaimer: 'Daily horoscopes provide general astrological guidance based on planetary positions. Individual results may vary based on complete birth chart analysis.'
-    };
-  }
 
   /**
    * Generate weekly summary from daily horoscopes
@@ -305,6 +276,16 @@ class DailyHoroscopeService {
     });
 
     return challengingDay || weeklyHoroscopes[0]?.date || 'Unknown';
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'getHoroscopeForDate', 'getTodaysHoroscope', 'getWeeklyHoroscope'],
+      dependencies: ['DailyHoroscopeCalculator']
+    };
   }
 }
 

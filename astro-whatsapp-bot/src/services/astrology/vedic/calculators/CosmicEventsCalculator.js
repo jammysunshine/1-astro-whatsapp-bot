@@ -339,4 +339,4 @@ class CosmicEventsCalculator {
   }
 }
 
-module.exports = CosmicEventsCalculator;
+module.exports = { CosmicEventsCalculator };

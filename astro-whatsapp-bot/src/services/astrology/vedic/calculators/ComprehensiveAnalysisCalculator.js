@@ -629,4 +629,4 @@ class ComprehensiveAnalysisCalculator {
   }
 }
 
-module.exports = ComprehensiveAnalysisCalculator;
+module.exports = { ComprehensiveAnalysisCalculator };

@@ -1,45 +1,88 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculators from legacy structure (for now)
+const { AshtakavargaCalculator } = require('../../../services/astrology/calculators/AshtakavargaCalculator');
+const { VargaChartCalculator } = require('../../../services/astrology/vedic/calculators/VargaChartCalculator');
+const { VedicYogasCalculator } = require('../../../services/astrology/vedic/calculators/VedicYogasCalculator');
+const { ShadbalaCalculator } = require('../../../services/astrology/vedic/calculators/ShadbalaCalculator');
+
 /**
- * Specialized Analysis Service
+ * SpecializedAnalysisService - Advanced Vedic astrological analysis service
  *
- * Provides advanced Vedic astrological analysis including Ashtakavarga analysis,
+ * Provides comprehensive specialized analysis including Ashtakavarga analysis,
  * Varga (divisional) charts, yogas, shadbala, and other specialized techniques
  * for deep insights into life patterns and spiritual development.
  */
-
-const AshtakavargaCalculator = require('../../../services/astrology/calculators/AshtakavargaCalculator');
-const VargaChartCalculator = require('../../../services/astrology/vedic/calculators/VargaChartCalculator');
-const VedicYogasCalculator = require('../../../services/astrology/vedic/calculators/VedicYogasCalculator');
-const ShadbalaCalculator = require('../../../services/astrology/vedic/calculators/ShadbalaCalculator');
-const logger = require('../../../utils/logger');
-
-class SpecializedAnalysisService {
+class SpecializedAnalysisService extends ServiceTemplate {
   constructor() {
-    this.ashtakavargaCalc = new AshtakavargaCalculator();
-    this.vargaCalc = new VargaChartCalculator();
-    this.yogasCalc = new VedicYogasCalculator();
-    this.shadbalaCalc = new ShadbalaCalculator();
+    super({
+      ashtakavargaCalc: new AshtakavargaCalculator(),
+      vargaCalc: new VargaChartCalculator(),
+      yogasCalc: new VedicYogasCalculator(),
+      shadbalaCalc: new ShadbalaCalculator()
+    });
+    this.serviceName = 'SpecializedAnalysisService';
     logger.info('SpecializedAnalysisService initialized');
   }
 
-  /**
-   * Execute comprehensive specialized analysis
-   * @param {Object} analysisData - Analysis request data
-   * @returns {Promise<Object>} Complete specialized analysis
-   */
-  async execute(analysisData) {
+  async processCalculation(analysisData) {
     try {
-      // Input validation
-      this._validateInput(analysisData);
-
       // Get comprehensive specialized analysis
       const result = await this.getSpecializedAnalysis(analysisData);
-
-      // Format and return result
-      return this._formatResult(result);
+      return result;
     } catch (error) {
-      logger.error('SpecializedAnalysisService error:', error);
+      logger.error('SpecializedAnalysisService calculation error:', error);
       throw new Error(`Specialized analysis failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      service: 'Specialized Vedic Analysis',
+      timestamp: new Date().toISOString(),
+      data: result,
+      disclaimer: '⚠️ *Specialized Analysis Disclaimer:* This advanced Vedic analysis requires deep astrological knowledge to interpret correctly. Results should be discussed with qualified Vedic astrologers for proper understanding and application.'
+    };
+  }
+
+  validate(analysisData) {
+    if (!analysisData) {
+      throw new Error('Analysis data is required');
+    }
+
+    if (!analysisData.birthData) {
+      throw new Error('Birth data is required for specialized analysis');
+    }
+
+    const { birthData } = analysisData;
+
+    if (!birthData.birthDate) {
+      throw new Error('Birth date is required');
+    }
+
+    if (!birthData.birthTime) {
+      throw new Error('Birth time is required');
+    }
+
+    if (!birthData.birthPlace) {
+      throw new Error('Birth place is required');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthData.birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthData.birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+
+    return true;
   }
 
   /**
@@ -111,7 +154,7 @@ class SpecializedAnalysisService {
    */
   async _performAshtakavargaAnalysis(birthData) {
     try {
-      const ashtakavarga = await this.ashtakavargaCalc.calculateAshtakavarga(birthData);
+      const ashtakavarga = await this.calculator.ashtakavargaCalc.calculateAshtakavarga(birthData);
 
       return {
         overallScore: ashtakavarga.totalPoints || 0,
@@ -135,7 +178,7 @@ class SpecializedAnalysisService {
    */
   async _performVargaAnalysis(birthData) {
     try {
-      const vargaCharts = await this.vargaCalc.calculateVargaCharts(birthData);
+      const vargaCharts = await this.calculator.vargaCalc.calculateVargaCharts(birthData);
 
       const analysis = {
         availableCharts: Object.keys(vargaCharts),
@@ -170,7 +213,7 @@ class SpecializedAnalysisService {
    */
   async _performYogasAnalysis(birthData) {
     try {
-      const yogas = await this.yogasCalc.calculateYogas(birthData);
+      const yogas = await this.calculator.yogasCalc.calculateYogas(birthData);
 
       return {
         totalYogas: yogas.length,
@@ -195,7 +238,7 @@ class SpecializedAnalysisService {
    */
   async _performShadbalaAnalysis(birthData) {
     try {
-      const shadbala = await this.shadbalaCalc.calculateShadbala(birthData);
+      const shadbala = await this.calculator.shadbalaCalc.calculateShadbala(birthData);
 
       return {
         overallStrength: shadbala.totalStrength || 0,
@@ -632,72 +675,9 @@ class SpecializedAnalysisService {
     };
   }
 
-  /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Input data is required');
-    }
 
-    if (!input.birthData) {
-      throw new Error('Birth data is required for specialized analysis');
-    }
 
-    const { birthData } = input;
 
-    if (!birthData.birthDate) {
-      throw new Error('Birth date is required');
-    }
-
-    if (!birthData.birthTime) {
-      throw new Error('Birth time is required');
-    }
-
-    if (!birthData.birthPlace) {
-      throw new Error('Birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (!dateRegex.test(birthData.birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{2}:\d{2}$/;
-    if (!timeRegex.test(birthData.birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-  }
-
-  /**
-   * Format result for presentation
-   * @param {Object} result - Raw specialized analysis result
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result) {
-    if (!result) {
-      return {
-        success: false,
-        error: 'Unable to generate specialized analysis',
-        message: 'Specialized analysis failed'
-      };
-    }
-
-    return {
-      success: true,
-      message: 'Specialized analysis completed successfully',
-      data: {
-        analysis: result,
-        summary: this._createSpecializedSummary(result),
-        disclaimer: '⚠️ *Specialized Analysis Disclaimer:* This advanced Vedic analysis requires deep astrological knowledge to interpret correctly. Results should be discussed with qualified Vedic astrologers for proper understanding and application.'
-      }
-    };
-  }
 
   /**
    * Create specialized analysis summary for quick reference
@@ -773,17 +753,13 @@ class SpecializedAnalysisService {
     return themes.length > 0 ? themes : ['Balanced Development'];
   }
 
-  /**
-   * Get service metadata
-   * @returns {Object} Service information
-   */
   getMetadata() {
     return {
-      name: 'SpecializedAnalysisService',
-      description: 'Advanced Vedic astrological analysis including Ashtakavarga, Varga charts, yogas, and Shadbala for deep insights into life patterns and spiritual development',
+      name: this.serviceName,
       version: '1.0.0',
-      dependencies: ['AshtakavargaCalculator', 'VargaChartCalculator', 'VedicYogasCalculator', 'ShadbalaCalculator'],
-      category: 'vedic'
+      category: 'vedic',
+      methods: ['execute', 'getSpecializedAnalysis'],
+      dependencies: ['AshtakavargaCalculator', 'VargaChartCalculator', 'VedicYogasCalculator', 'ShadbalaCalculator']
     };
   }
 }

@@ -706,4 +706,4 @@ class MuhurtaCalculator {
   }
 }
 
-module.exports = MuhurtaCalculator;
+module.exports = { MuhurtaCalculator };

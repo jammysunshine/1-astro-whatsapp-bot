@@ -245,4 +245,4 @@ class SignCalculator {
   }
 }
 
-module.exports = SignCalculator;
+module.exports = { SignCalculator };

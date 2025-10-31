@@ -728,4 +728,35 @@ class RemedialMeasuresCalculator {
         }
 
         // Check own sign
-        if (this._isInOwnSign(planet, data.sign))
+        if (this._isInOwnSign(planet, data.sign)) {
+          strongPoints.push('own sign');
+        }
+
+        // Check friendly sign
+        if (this._isInFriendlySign(planet, data.sign)) {
+          strongPoints.push('friendly sign');
+        }
+
+        strengths[planet] = strongPoints;
+      }
+    });
+
+    return strengths;
+  }
+
+  /**
+   * Health check for RemedialMeasuresCalculator
+   * @returns {Object} Health status
+   */
+  healthCheck() {
+    return {
+      healthy: true,
+      version: '1.0.0',
+      name: 'RemedialMeasuresCalculator',
+      calculations: ['Remedial Measures', 'Problem Assessment', 'Strength Analysis'],
+      status: 'Operational'
+    };
+  }
+}
+
+module.exports = { RemedialMeasuresCalculator };

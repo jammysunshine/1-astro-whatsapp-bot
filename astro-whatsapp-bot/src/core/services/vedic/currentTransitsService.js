@@ -1,44 +1,75 @@
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../utils/logger');
+
+// Import calculator from legacy structure (for now)
 const { TransitCalculator } = require('../../../services/astrology/vedic/calculators/TransitCalculator');
-const logger = require('../../../utils/logger');
 
 /**
- * CurrentTransitsService - Service for analyzing current planetary transits
+ * CurrentTransitsService - Vedic current planetary transits analysis service
+ *
  * Provides analysis of current planetary positions and their influences on natal charts
  * using Swiss Ephemeris integration for precise astronomical calculations.
  */
-class CurrentTransitsService {
-  constructor(vedicCalculator) {
-    this.calculator = new TransitCalculator();
-    if (vedicCalculator) {
-      this.calculator.setServices(vedicCalculator);
-    }
+class CurrentTransitsService extends ServiceTemplate {
+  constructor() {
+    super(new TransitCalculator());
+    this.serviceName = 'CurrentTransitsService';
     logger.info('CurrentTransitsService initialized');
   }
 
-  /**
-   * Execute current transits analysis
-   * @param {Object} birthData - Birth data for transit analysis
-   * @param {string} birthData.birthDate - Birth date (DD/MM/YYYY)
-   * @param {string} birthData.birthTime - Birth time (HH:MM)
-   * @param {string} birthData.birthPlace - Birth place
-   * @param {string} birthData.name - Person's name (optional)
-   * @param {string} targetDate - Specific date for transit analysis (optional, defaults to today)
-   * @returns {Promise<Object>} Current transits analysis result
-   */
-  async execute(birthData, targetDate = null) {
+  async processCalculation(birthData, targetDate = null) {
     try {
-      // Input validation
-      this._validateInput(birthData);
-
       // Analyze transits to natal chart
       const result = await this.calculator.analyzeTransitsToNatal(birthData, targetDate);
-
-      // Format and return result
-      return this._formatResult(result);
+      return result;
     } catch (error) {
-      logger.error('CurrentTransitsService error:', error);
+      logger.error('CurrentTransitsService calculation error:', error);
       throw new Error(`Current transits analysis failed: ${error.message}`);
     }
+  }
+
+  formatResult(result) {
+    return {
+      success: true,
+      service: 'Vedic Current Transits Analysis',
+      timestamp: new Date().toISOString(),
+      data: result,
+      disclaimer: 'Transit analysis shows current planetary influences on your natal chart. Transits indicate timing of opportunities and challenges. Complete astrological analysis considers the entire birth chart.'
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
+    }
+
+    const { birthDate, birthTime, birthPlace } = birthData;
+
+    if (!birthDate || typeof birthDate !== 'string') {
+      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
+    }
+
+    if (!birthTime || typeof birthTime !== 'string') {
+      throw new Error('Valid birth time (HH:MM format) is required');
+    }
+
+    if (!birthPlace || typeof birthPlace !== 'string') {
+      throw new Error('Valid birth place is required');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+
+    return true;
   }
 
   /**
@@ -141,64 +172,7 @@ class CurrentTransitsService {
     }
   }
 
-  /**
-   * Validate input data
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Birth data is required');
-    }
 
-    const { birthDate, birthTime, birthPlace } = input;
-
-    if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
-    }
-
-    if (!birthTime || typeof birthTime !== 'string') {
-      throw new Error('Valid birth time (HH:MM format) is required');
-    }
-
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-  }
-
-  /**
-   * Format result for service consumption
-   * @param {Object} result - Raw calculator result
-   * @returns {Object} Formatted result
-   * @private
-   */
-  _formatResult(result) {
-    return {
-      service: 'Current Transits Analysis',
-      timestamp: new Date().toISOString(),
-      transits: {
-        planetaryPositions: result.planetaryPositions || {},
-        aspects: result.aspects || [],
-        influences: result.influences || {},
-        summary: result.summary || 'Current transit analysis completed',
-        intensity: result.intensity || 'moderate',
-        recommendations: result.recommendations || []
-      },
-      disclaimer: 'Transit analysis shows current planetary influences on your natal chart. Transits indicate timing of opportunities and challenges. Complete astrological analysis considers the entire birth chart.'
-    };
-  }
 
   /**
    * Analyze career-related transits
@@ -402,6 +376,16 @@ class CurrentTransitsService {
   _getHealthInfluence(aspect) { return 'Health focus and vitality changes'; }
   _getSpiritualInfluence(aspect) { return 'Spiritual growth and inner development'; }
   _getAspectSignificance(aspect) { return 'Significant astrological influence'; }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'getCurrentTransits', 'getTransitInfluences', 'getUpcomingSignificantTransits'],
+      dependencies: ['TransitCalculator']
+    };
+  }
 }
 
 module.exports = CurrentTransitsService;

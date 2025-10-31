@@ -6,8 +6,8 @@
  * Combines individual birth charts with auspicious timing calculations using Vedic principles.
  */
 
-const GroupAstrologyCalculator = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
-const MuhurtaCalculator = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
+const { GroupAstrologyCalculator } = require('../../../services/astrology/vedic/calculators/GroupAstrologyCalculator');
+const { MuhurtaCalculator } = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
 const CompatibilityScorer = require('../../../services/astrology/compatibility/CompatibilityScorer');
 const logger = require('../../../utils/logger');
 

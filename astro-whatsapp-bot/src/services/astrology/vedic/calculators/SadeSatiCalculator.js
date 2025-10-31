@@ -640,4 +640,4 @@ class SadeSatiCalculator {
   }
 }
 
-module.exports = SadeSatiCalculator;
+module.exports = { SadeSatiCalculator };

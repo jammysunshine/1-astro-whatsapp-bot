@@ -1,21 +1,63 @@
 const logger = require('../../../utils/logger');
-const sweph = require('sweph');
 
-// Import specialized calculators
+// Import all specialized calculator modules
 const {
+  // Chart & Analysis Calculators
+  ChartGenerator,
+  DetailedChartCalculator,
+  ComprehensiveAnalysisCalculator,
+  CompatibilityCalculator,
+
+  // Specialty Vedic Calculators
   AshtakavargaCalculator,
   DashaAnalysisCalculator,
-  RemedialMeasuresCalculator,
   VargaChartCalculator,
+  ShadbalaCalculator,
+  KaalSarpDoshaCalculator,
+  SadeSatiCalculator,
+  VarshaphalCalculator,
+
+  // Predictive Calculators
+  SolarArcDirectionsCalculator,
+  SecondaryProgressionsCalculator,
+  SignificantTransitsCalculator,
+  FutureSelfSimulatorCalculator,
+
+  // Timing & Auspicious Calculators
+  MuhurtaCalculator,
+  PanchangCalculator,
+  CosmicEventsCalculator,
   LunarReturnCalculator,
+
+  // Compatibility & Relationship
+  GroupAstrologyCalculator,
+
+  // Sign & Basic Calculators
+  SignCalculator,
+
+  // Specialized Analysis
+  KarmicLessonsCalculator,
+  JaiminiAstrologyCalculator,
+  JaiminiCalculator,
+  MarriageTimingCalculator,
+
+  // Modern & Advanced
+  PrashnaCalculator,
+  AsteroidCalculator,
+  DailyHoroscopeCalculator,
+  GocharCalculator,
+
+  // Remedies & Spiritual
+  RemedialMeasuresCalculator,
+  VedicYogasCalculator,
+
   TransitCalculator
 } = require('./calculators');
 
-const ChartGenerator = require('./calculators/ChartGenerator');
-
 /**
  * Vedic Astrology Calculator
- * Main orchestrator that composes specialized calculators for Vedic astrology
+ * Pure orchestrator that coordinates specialized calculator modules
+ * No calculation logic - only delegation and service management
  */
 class VedicCalculator {
   constructor(astrologer, geocodingService, vedicCore) {
@@ -23,52 +65,123 @@ class VedicCalculator {
     this.geocodingService = geocodingService;
     this.vedicCore = vedicCore;
 
-    // Initialize specialized calculators
-    this.ashtakavargaCalculator = new AshtakavargaCalculator();
-    this.dashaCalculator = new DashaAnalysisCalculator();
-    this.remedyCalculator = new RemedialMeasuresCalculator();
-    this.vargaChartCalculator = new VargaChartCalculator();
-    this.lunarReturnCalculator = new LunarReturnCalculator();
-    this.transitCalculator = new TransitCalculator();
-    this.chartGenerator = new ChartGenerator(this.vedicCore, this.geocodingService);
+    // Initialize all calculator modules
+    this._initializeCalculators();
 
-    // Set services for calculators that need them
-    this._initializeCalculatorServices();
+    // Initialize services
+    this._initializeServices();
+
+    logger.info('✅ VedicCalculator orchestrator initialized with all calculator modules');
   }
 
   /**
-   * Initialize services for all calculators
+   * Initialize all calculator module instances
    * @private
    */
-  _initializeCalculatorServices() {
-    try {
-      // Validate required services before setting them
-      if (!this.geocodingService) {
-        logger.warn('⚠️ Geocoding service not available - some calculations may be limited');
+  _initializeCalculators() {
+    // Chart & Analysis Calculators
+    this.chartGenerator = new ChartGenerator(this.vedicCore, this.geocodingService);
+    this.detailedChartCalculator = new DetailedChartCalculator();
+    this.comprehensiveAnalysisCalculator = new ComprehensiveAnalysisCalculator();
+    this.compatibilityCalculator = new CompatibilityCalculator(this.astrologer, this.geocodingService);
+
+    // Specialty Vedic Calculators
+    this.ashtakavargaCalculator = new AshtakavargaCalculator();
+    this.dashaCalculator = new DashaAnalysisCalculator();
+    this.vargaChartCalculator = new VargaChartCalculator();
+    this.shadbalaCalculator = new ShadbalaCalculator();
+    this.kaalSarpCalculator = new KaalSarpDoshaCalculator();
+
+    // Predictive Calculators
+    this.solarArcCalculator = new SolarArcDirectionsCalculator();
+    this.secondaryProgressionsCalculator = new SecondaryProgressionsCalculator();
+    this.significantTransitsCalculator = new SignificantTransitsCalculator();
+    this.futureSelfSimulator = new FutureSelfSimulatorCalculator();
+    this.varshaphalCalculator = new VarshaphalCalculator();
+
+    // Timing & Auspicious Calculators
+    this.muhurtaCalculator = new MuhurtaCalculator();
+    this.panchangCalculator = new PanchangCalculator();
+    this.cosmicEventsCalculator = new CosmicEventsCalculator();
+    this.lunarReturnCalculator = new LunarReturnCalculator();
+
+    // Compatibility & Relationship
+    this.groupAstrologyCalculator = new GroupAstrologyCalculator();
+
+    // Sign & Basic Calculators
+    this.signCalculator = new SignCalculator();
+
+    // Specialized Analysis
+    this.karmicLessonsCalculator = new KarmicLessonsCalculator();
+    this.jaiminiCalculator = new JaiminiCalculator();
+    this.sadeSatiCalculator = new SadeSatiCalculator();
+    this.marriageTimingCalculator = new MarriageTimingCalculator();
+
+    // Modern & Advanced
+    this.prashnaCalculator = new PrashnaCalculator();
+    this.asteroidCalculator = new AsteroidCalculator();
+    this.dailyHoroscopeCalculator = new DailyHoroscopeCalculator();
+    this.gocharCalculator = new GocharCalculator();
+
+    // Remedies & Spiritual
+    this.remedyCalculator = new RemedialMeasuresCalculator();
+    this.vedicYogasCalculator = new VedicYogasCalculator();
+
+    // Transit Calculator
+    this.transitCalculator = new TransitCalculator();
+  }
+
+  /**
+   * Initialize services for all calculator modules
+   * @private
+   */
+  _initializeServices() {
+    const calculatorsWithServices = [
+      // List all calculator instances that need services
+      this.chartGenerator,
+      this.detailedChartCalculator,
+      this.comprehensiveAnalysisCalculator,
+      this.ashtakavargaCalculator,
+      this.dashaCalculator,
+      this.vargaChartCalculator,
+      this.shadbalaCalculator,
+      this.kaalSarpCalculator,
+      this.solarArcCalculator,
+      this.secondaryProgressionsCalculator,
+      this.significantTransitsCalculator,
+      this.futureSelfSimulator,
+      this.varshaphalCalculator,
+      this.muhurtaCalculator,
+      this.panchangCalculator,
+      this.cosmicEventsCalculator,
+      this.lunarReturnCalculator,
+      this.groupAstrologyCalculator,
+      this.signCalculator,
+      this.karmicLessonsCalculator,
+      this.jaiminiCalculator,
+      this.sadeSatiCalculator,
+      this.marriageTimingCalculator,
+      this.prashnaCalculator,
+      this.asteroidCalculator,
+      this.dailyHoroscopeCalculator,
+      this.gocharCalculator,
+      this.remedyCalculator,
+      this.vedicYogasCalculator,
+      this.transitCalculator
+    ];
+
+    calculatorsWithServices.forEach(calculator => {
+      if (calculator && typeof calculator.setServices === 'function') {
+        calculator.setServices({
+          astrologer: this.astrologer,
+          geocodingService: this.geocodingService,
+          vedicCore: this.vedicCore,
+          vedicCalculator: this
+        });
       }
+    });
 
-      // Set services for calculators that need them
-      const calculatorsWithServices = [
-        this.ashtakavargaCalculator,
-        this.dashaCalculator,
-        this.remedyCalculator,
-        this.vargaChartCalculator,
-        this.lunarReturnCalculator,
-        this.transitCalculator,
-        this.chartGenerator
-      ];
-
-      calculatorsWithServices.forEach(calculator => {
-        if (calculator && typeof calculator.setServices === 'function') {
-          calculator.setServices(this);
-        }
-      });
-
-      logger.info('✅ Calculator services initialized successfully');
-    } catch (error) {
-      logger.error('❌ Error initializing calculator services:', error);
-      throw new Error(`Failed to initialize calculator services: ${error.message}`);
-    }
+    logger.info('✅ Calculator services initialized successfully');
   }
 
   /**
@@ -77,125 +190,52 @@ class VedicCalculator {
    * @throws {Error} If required services are missing
    */
   _validateRequiredServices() {
-    if (!this.geocodingService) {
-      throw new Error('Geocoding service is required for Vedic calculations');
-    }
+    const requiredServices = [
+      { name: 'geocodingService', service: this.geocodingService },
+      { name: 'vedicCore', service: this.vedicCore },
+      { name: 'astrologer', service: this.astrologer }
+    ];
 
-    // Add other service validations as needed
-  }
+    const missingServices = requiredServices
+      .filter(({ service }) => !service)
+      .map(({ name }) => name);
 
-  /**
-   * Calculate Ashtakavarga - Vedic predictive system using bindus (points)
-   * @param {Object} birthData - Birth data object
-   * @returns {Object} Complete Ashtakavarga analysis
-   */
-  async calculateAshtakavarga(birthData) {
-    try {
-      this._validateRequiredServices();
-      return await this.ashtakavargaCalculator.calculateAshtakavarga(birthData);
-    } catch (error) {
-      logger.error('❌ Error in Ashtakavarga calculation:', error);
-      throw new Error(`Ashtakavarga calculation failed: ${error.message}`);
+    if (missingServices.length > 0) {
+      throw new Error(`Missing required services: ${missingServices.join(', ')}`);
     }
   }
 
   /**
-   * Calculate Vimshottari Dasha (planetary periods)
-   * @param {Object} birthData - Birth data object
-   * @returns {Object} Dasha analysis
-   */
-  async calculateVimshottariDasha(birthData) {
-    try {
-      this._validateRequiredServices();
-      return await this.dashaCalculator.calculateVimshottariDasha(birthData);
-    } catch (error) {
-      logger.error('❌ Error in Vimshottari Dasha calculation:', error);
-      throw new Error(`Vimshottari Dasha calculation failed: ${error.message}`);
-    }
-  }
-
-  /**
-   * Calculate remedial measures (gemstones, mantras, yantras, pujas)
-   * @param {Object} birthData - Birth data object
-   * @param {Object} planetaryPositions - Planetary positions from natal chart
-   * @returns {Object} Remedial measures analysis
-   */
-  async calculateRemedialMeasures(birthData, planetaryPositions) {
-    try {
-      this._validateRequiredServices();
-      return await this.remedyCalculator.calculateRemedialMeasures(birthData, planetaryPositions);
-    } catch (error) {
-      logger.error('❌ Error in remedial measures calculation:', error);
-      throw new Error(`Remedial measures calculation failed: ${error.message}`);
-    }
-  }
-
-  /**
-   * Calculate Varga (Divisional) Charts - Vedic system of harmonic charts
-   * @param {Object} birthData - Birth data object
-   * @param {string} varga - Varga type (D1, D2, D3, D4, D7, D9, D10, D12, etc.)
-   * @returns {Object} Varga chart analysis
-   */
-  async calculateVargaChart(birthData, varga = 'D9') {
-    try {
-      this._validateRequiredServices();
-      return await this.vargaChartCalculator.calculateVargaChart(birthData, varga);
-    } catch (error) {
-      logger.error('❌ Error in Varga chart calculation:', error);
-      throw new Error(`Varga chart calculation failed: ${error.message}`);
-    }
-  }
-
-  /**
-   * Convert date to Julian Day
+   * Delegate method call to appropriate calculator
    * @private
-   * @param {number} year - Year
-   * @param {number} month - Month (1-12)
-   * @param {number} day - Day
-   * @param {number} hour - Hour (decimal)
-   * @returns {number} Julian Day
+   * @param {string} calculatorName - Name of calculator property
+   * @param {string} methodName - Method to call
+   * @param {Array} args - Arguments to pass
+   * @returns {*} Result from calculator method
    */
-  _dateToJulianDay(year, month, day, hour) {
-    // Simplified Julian Day calculation
-    const a = Math.floor((14 - month) / 12);
-    const y = year + 4800 - a;
-    const m = month + 12 * a - 3;
-
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
-    return jd + hour / 24;
-  }
-
-  /**
-   * Calculate Lunar Return analysis for monthly themes
-   * @param {Object} birthData - Birth data object with birthDate, birthTime, birthPlace
-   * @param {Date} targetDate - Date for lunar return (defaults to next lunar return)
-   * @returns {Object} Lunar return analysis
-   */
-  async calculateLunarReturn(birthData, targetDate = null) {
+  async _delegateToCalculator(calculatorName, methodName, ...args) {
     try {
       this._validateRequiredServices();
-      return await this.lunarReturnCalculator.calculateLunarReturn(birthData, targetDate);
+
+      const calculator = this[calculatorName];
+      if (!calculator) {
+        throw new Error(`Calculator '${calculatorName}' not found`);
+      }
+
+      if (!calculator[methodName]) {
+        throw new Error(`Method '${methodName}' not found on calculator '${calculatorName}'`);
+      }
+
+      return await calculator[methodName](...args);
     } catch (error) {
-      logger.error('❌ Error in Lunar Return calculation:', error);
-      throw new Error(`Lunar Return calculation failed: ${error.message}`);
+      logger.error(`❌ Error delegating to ${calculatorName}.${methodName}:`, error);
+      throw error;
     }
   }
 
-  /**
-   * Generate 3-day transit preview with real astrological calculations
-   * @param {Object} birthData - Birth data
-   * @param {number} days - Number of days
-   * @returns {Object} Transit preview
-   */
-  async generateTransitPreview(birthData, days = 3) {
-    try {
-      this._validateRequiredServices();
-      return await this.transitCalculator.generateTransitPreview(birthData, days);
-    } catch (error) {
-      logger.error('❌ Error in transit preview generation:', error);
-      throw new Error(`Transit preview generation failed: ${error.message}`);
-    }
-  }
+  // ============================================================================
+  // CHART GENERATION METHODS
+  // ============================================================================
 
   /**
    * Generate complete Vedic birth chart (kundli)
@@ -203,13 +243,7 @@ class VedicCalculator {
    * @returns {Object} Complete Vedic kundli
    */
   async generateVedicKundli(birthData) {
-    try {
-      this._validateRequiredServices();
-      return await this.chartGenerator.generateVedicKundli(birthData);
-    } catch (error) {
-      logger.error('❌ Error in Vedic kundli generation:', error);
-      throw new Error(`Vedic kundli generation failed: ${error.message}`);
-    }
+    return this._delegateToCalculator('chartGenerator', 'generateVedicKundli', birthData);
   }
 
   /**
@@ -219,323 +253,338 @@ class VedicCalculator {
    * @returns {Object} Western birth chart
    */
   async generateWesternBirthChart(birthData, houseSystem = 'P') {
-    try {
-      this._validateRequiredServices();
-      return await this.chartGenerator.generateWesternBirthChart(birthData, houseSystem);
-    } catch (error) {
-      logger.error('❌ Error in Western birth chart generation:', error);
-      throw new Error(`Western birth chart generation failed: ${error.message}`);
-    }
+    return this._delegateToCalculator('chartGenerator', 'generateWesternBirthChart', birthData, houseSystem);
   }
 
   /**
-   * Check compatibility between two people
-   * Basic implementation to prevent deployment errors
-   * @param {Object} person1 - First person's birth data
-   * @param {Object} person2 - Second person's birth data
-   * @returns {Object} Basic compatibility analysis
+   * Generate detailed Vedic chart analysis
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Detailed chart analysis
    */
-  async checkCompatibility(person1, person2) {
-    try {
-      return {
-        type: 'compatibility',
-        compatibility_score: 75,
-        overall_rating: 'Good',
-        person1_name: person1.name || 'Person 1',
-        person2_name: person2.name || 'Person 2',
-        disclaimer: 'Detailed compatibility analysis temporarily unavailable. Showing basic assessment.',
-        sun_sign_compatibility: 'harmonious',
-        moon_sign_compatibility: 'challenging',
-        venus_sign_compatibility: 'balanced',
-        mars_sign_compatibility: 'passionate',
-        recommendations: [
-          'Communication is key to their relationship',
-          'Both partners value honesty and loyalty',
-          'Learning to compromise will strengthen their bond'
-        ]
-      };
-    } catch (error) {
-      logger.error('❌ Error in compatibility check:', error);
-      throw new Error(`Compatibility check failed: ${error.message}`);
-    }
+  async generateDetailedChart(birthData) {
+    return this._delegateToCalculator('detailedChartCalculator', 'generateDetailedChart', birthData);
+  }
+
+  // ============================================================================
+  // SPECIALTY VEDIC CALCULATIONS
+  // ============================================================================
+
+  /**
+   * Calculate Ashtakavarga (8-point strength system)
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Ashtakavarga analysis
+   */
+  async calculateAshtakavarga(birthData) {
+    return this._delegateToCalculator('ashtakavargaCalculator', 'calculateAshtakavarga', birthData);
   }
 
   /**
-   * Analyze Kaal Sarp Dosh in Vedic astrology charts
-   * Determines if all planets are positioned between Rahu and Ketu
-   * @param {string} birthDate - Birth date in DDMMYY or DDMMYYYY format
-   * @param {string} birthTime - Birth time in HHMM format
-   * @param {string} birthPlace - Birth place (city, country)
-   * @returns {Promise<Object>} Kaal Sarp Dosh analysis
+   * Calculate Vimshottari Dasha (planetary periods)
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Dasha analysis
+   */
+  async calculateVimshottariDasha(birthData) {
+    return this._delegateToCalculator('dashaCalculator', 'calculateVimshottariDasha', birthData);
+  }
+
+  /**
+   * Calculate Varga charts (divisional charts)
+   * @param {Object} birthData - Birth data object
+   * @param {string} varga - Varga type (D1, D9, D10, etc.)
+   * @returns {Object} Varga chart analysis
+   */
+  async calculateVargaChart(birthData, varga = 'D9') {
+    return this._delegateToCalculator('vargaChartCalculator', 'calculateVargaChart', birthData, varga);
+  }
+
+  /**
+   * Calculate Shadbala (6-fold strength)
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Shadbala analysis
+   */
+  async generateShadbala(birthData) {
+    return this._delegateToCalculator('shadbalaCalculator', 'generateShadbala', birthData);
+  }
+
+  /**
+   * Analyze Kaal Sarp Dosha
+   * @param {string} birthDate - Birth date
+   * @param {string} birthTime - Birth time
+   * @param {string} birthPlace - Birth place
+   * @returns {Object} Kaal Sarp Dosha analysis
    */
   async analyzeKaalSarpDosha(birthDate, birthTime, birthPlace) {
-    try {
-      logger.info('🔮 Initiating Kaal Sarp Dosh analysis', {
-        birthDate, birthTime, birthPlace
-      });
+    return this._delegateToCalculator('kaalSarpCalculator', 'analyzeKaalSarpDosha', birthDate, birthTime, birthPlace);
+  }
 
-      // Validate input parameters
-      if (!birthDate || !birthTime || !birthPlace) {
-        throw new Error('Missing birth data for Kaal Sarp Dosh analysis');
-      }
+  // ============================================================================
+  // PREDICTIVE METHODS
+  // ============================================================================
 
-      // Parse birth date and time
-      const parsedDate = this._parseBirthDate(birthDate);
-      const parsedTime = this._parseBirthTime(birthTime);
-      
-      // Get birth place coordinates
-      const coordinates = await this.geocodingService.getCoordinates(birthPlace);
-      
-      // Generate birth chart with planetary positions
-      const chartData = await this.chartGenerator.generateBirthChart({
-        birthDate: parsedDate,
-        birthTime: parsedTime,
-        birthPlace: coordinates
-      });
-
-      if (!chartData || !chartData.planets) {
-        throw new Error('Unable to generate birth chart for Kaal Sarp analysis');
-      }
-
-      // Check for Kaal Sarp Dosh
-      const kaalSarpResult = this._checkKaalSarpDosha(chartData.planets);
-      
-      // Generate detailed analysis
-      const analysis = this._generateKaalSarpAnalysis(kaalSarpResult, chartData);
-      
-      logger.info('✅ Kaal Sarp Dosh analysis completed', {
-        hasDosha: analysis.hasDosha,
-        severity: analysis.severity
-      });
-
-      return analysis;
-    } catch (error) {
-      logger.error('❌ Error in Kaal Sarp Dosh analysis:', error);
-      throw new Error(`Kaal Sarp Dosh analysis failed: ${error.message}`);
-    }
+  /**
+   * Calculate Solar Arc Directions
+   * @param {Object} birthData - Birth data object
+   * @param {Date} targetDate - Target date for directions
+   * @returns {Object} Solar arc analysis
+   */
+  async calculateSolarArcDirections(birthData, targetDate) {
+    return this._delegateToCalculator('solarArcCalculator', 'calculateSolarArcDirections', birthData, targetDate);
   }
 
   /**
-   * Check if Kaal Sarp Dosh is present in planetary positions
-   * @param {Object} planets - Planetary positions
-   * @returns {Object} Kaal Sarp check result
+   * Calculate Secondary Progressions
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Secondary progression analysis
    */
-  _checkKaalSarpDosha(planets) {
-    try {
-      // Get Rahu and Ketu positions (they're always opposite each other)
-      const rahuLong = planets.Rahu?.longitude || 0;
-      const ketuLong = planets.Ketu?.longitude || 0;
-      
-      // Normalize positions to 0-360 degrees
-      const normalize = (deg) => ((deg % 360) + 360) % 360;
-      const rahuPos = normalize(rahuLong);
-      const ketuPos = normalize(ketuLong);
-      
-      // Determine the arc between Rahu and Ketu (going counter-clockwise)
-      let startArc = rahuPos;
-      let endArc = ketuPos;
-      
-      // If Ketu is before Rahu, we need to adjust
-      if (ketuPos < rahuPos) {
-        endArc = ketuPos + 360; // Add 360 to make it wrap around
-      }
-      
-      // Check if all planets are within this arc
-      const planetsInArc = [];
-      const planetsOutsideArc = [];
-      
-      // List of planets to check (excluding Rahu and Ketu)
-      const checkPlanets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
-      
-      for (const planet of checkPlanets) {
-        const planetLong = planets[planet]?.longitude;
-        if (planetLong !== undefined) {
-          const normalizedLong = normalize(planetLong);
-          
-          // Adjust planet position if needed for comparison
-          let compareLong = normalizedLong;
-          if (normalizedLong < startArc && endArc >= 360) {
-            compareLong = normalizedLong + 360;
-          }
-          
-          if (compareLong >= startArc && compareLong <= endArc) {
-            planetsInArc.push({
-              name: planet,
-              longitude: planetLong,
-              position: this._getZodiacPosition(planetLong)
-            });
-          } else {
-            planetsOutsideArc.push({
-              name: planet,
-              longitude: planetLong,
-              position: this._getZodiacPosition(planetLong)
-            });
-          }
-        }
-      }
-      
-      // Determine if Kaal Sarp Dosh exists
-      const hasDosha = planetsInArc.length === checkPlanets.length;
-      const severity = hasDosha ? 
-        (planetsInArc.length >= 6 ? 'severe' : 'moderate') : 
-        (planetsInArc.length >= 4 ? 'mild' : 'none');
-      
-      return {
-        hasDosha,
-        severity,
-        planetsInArc,
-        planetsOutsideArc,
-        rahuPosition: {
-          longitude: rahuLong,
-          position: this._getZodiacPosition(rahuLong)
-        },
-        ketuPosition: {
-          longitude: ketuLong,
-          position: this._getZodiacPosition(ketuLong)
-        }
-      };
-    } catch (error) {
-      logger.error('Error checking Kaal Sarp Dosh:', error);
-      return {
-        hasDosha: false,
-        severity: 'unknown',
-        planetsInArc: [],
-        planetsOutsideArc: [],
-        error: error.message
-      };
-    }
+  async calculateSecondaryProgressions(birthData) {
+    return this._delegateToCalculator('secondaryProgressionsCalculator', 'calculateSecondaryProgressions', birthData);
   }
 
   /**
-   * Generate detailed Kaal Sarp Dosh analysis
-   * @param {Object} kaalSarpResult - Kaal Sarp check result
-   * @param {Object} chartData - Birth chart data
-   * @returns {Object} Detailed analysis
+   * Calculate significant transits
+   * @param {Object} birthData - Birth data
+   * @param {number} monthsAhead - Months to look ahead
+   * @returns {Object} Significant transits analysis
    */
-  _generateKaalSarpAnalysis(kaalSarpResult, chartData) {
-    const { hasDosha, severity, planetsInArc, planetsOutsideArc, rahuPosition, ketuPosition } = kaalSarpResult;
-    
-    // Generate description based on severity
-    let description = '';
-    let recommendations = [];
-    
-    if (hasDosha) {
-      switch (severity) {
-        case 'severe':
-          description = '.SEVERE Kaal Sarp Dosh detected. All major planets are positioned between Rahu and Ketu, indicating significant karmic challenges that require dedicated remedial measures.';
-          recommendations = [
-            'Perform regular Rudrabhishekam or Mahamrityunjaya Jaap',
-            'Donate black items (clothes, sesame seeds, oil) on Saturdays',
-            'Visit Shiva temples regularly for prayers',
-            'Practice meditation and spiritual disciplines',
-            'Seek guidance from a qualified Vedic astrologer'
-          ];
-          break;
-        case 'moderate':
-          description = 'Moderate Kaal Sarp Dosh detected. Most planets are positioned between Rahu and Ketu, suggesting periodic karmic obstacles that can be mitigated with appropriate remedies.';
-          recommendations = [
-            'Chant "Om Namah Shivaya" 108 times daily',
-            'Offer water to Peepal tree on Sundays',
-            'Perform charitable acts, especially helping the needy',
-            'Maintain regular spiritual practices',
-            'Wear protective gemstones after astrological consultation'
-          ];
-          break;
-        default:
-          description = 'Mild Kaal Sarp influence detected. Some planets are positioned between Rahu and Ketu, indicating minor karmic patterns that may cause occasional delays or obstacles.';
-          recommendations = [
-            'Recite Hanuman Chalisa regularly',
-            'Offer milk to Shiva lingam on Mondays',
-            'Practice gratitude and positive thinking',
-            'Engage in selfless service (Seva)',
-            'Maintain a balanced lifestyle with spiritual awareness'
-          ];
-      }
-    } else {
-      description = 'No significant Kaal Sarp Dosh detected. Your planetary configuration shows good distribution with planets both within and outside the Rahu-Ketu axis, indicating balanced karmic influences.';
-      recommendations = [
-        'Continue your spiritual practices for overall well-being',
-        'Maintain positive karma through virtuous actions',
-        'Stay connected with your spiritual community',
-        'Practice regular meditation for mental clarity',
-        'Express gratitude for your balanced astrological chart'
-      ];
-    }
-    
-    return {
-      hasDosha,
-      severity,
-      description,
-      recommendations,
-      planetaryAnalysis: {
-        planetsInDosha: planetsInArc.map(p => `${p.name} in ${p.position}`),
-        planetsOutsideDosha: planetsOutsideArc.map(p => `${p.name} in ${p.position}`),
-        rahuPosition: `${rahuPosition.longitude.toFixed(2)}° ${rahuPosition.sign}`,
-        ketuPosition: `${ketuPosition.longitude.toFixed(2)}° ${ketuPosition.sign}`
-      },
-      remedialMeasures: recommendations,
-      isFallback: false
-    };
+  async calculateNextSignificantTransits(birthData, monthsAhead = 12) {
+    return this._delegateToCalculator('significantTransitsCalculator', 'calculateNextSignificantTransits', birthData, monthsAhead);
   }
 
   /**
-   * Get zodiac position from longitude
-   * @param {number} longitude - Planetary longitude
-   * @returns {Object} Zodiac position details
+   * Generate future self simulation
+   * @param {Object} birthData - Birth data object
+   * @param {number} yearsAhead - Years to simulate
+   * @returns {Object} Future self analysis
    */
-  _getZodiacPosition(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-    const signIndex = Math.floor(longitude / 30) % 12;
-    const degree = longitude % 30;
-    return {
-      sign: signs[signIndex],
-      degree: degree,
-      longitude: longitude
-    };
+  async generateFutureSelfSimulator(birthData, yearsAhead = 10) {
+    return this._delegateToCalculator('futureSelfSimulator', 'generateFutureSelfSimulator', birthData, yearsAhead);
   }
 
   /**
-   * Parse birth date string
-   * @param {string} birthDate - Birth date in DDMMYY or DDMMYYYY format
-   * @returns {Object} Parsed date object
+   * Calculate Varshaphal (solar return)
+   * @param {Object} birthData - Birth data object
+   * @param {number} year - Year for calculation
+   * @returns {Object} Varshaphal analysis
    */
-  _parseBirthDate(birthDate) {
-    const cleanDate = birthDate.replace(/\D/g, '');
-    let day, month, year;
-    
-    if (cleanDate.length === 6) {
-      day = parseInt(cleanDate.substring(0, 2));
-      month = parseInt(cleanDate.substring(2, 4));
-      year = parseInt(cleanDate.substring(4));
-      // Assume 20xx for years 00-30, 19xx for years 31-99
-      year = year <= 30 ? 2000 + year : 1900 + year;
-    } else if (cleanDate.length === 8) {
-      day = parseInt(cleanDate.substring(0, 2));
-      month = parseInt(cleanDate.substring(2, 4));
-      year = parseInt(cleanDate.substring(4));
-    } else {
-      throw new Error('Invalid birth date format');
-    }
-    
-    return { day, month, year };
+  async calculateVarshaphal(birthData, year) {
+    return this._delegateToCalculator('varshaphalCalculator', 'calculateVarshaphal', birthData, year);
+  }
+
+  // ============================================================================
+  // TIMING & AUSPICIOUS CALCULATIONS
+  // ============================================================================
+
+  /**
+   * Calculate Muhurta (auspicious timing)
+   * @param {Object} requestData - Request parameters
+   * @returns {Object} Muhurta recommendations
+   */
+  async generateMuhurta(requestData) {
+    return this._delegateToCalculator('muhurtaCalculator', 'generateMuhurta', requestData);
   }
 
   /**
-   * Parse birth time string
-   * @param {string} birthTime - Birth time in HHMM format
-   * @returns {Object} Parsed time object
+   * Generate Panchang (Hindu calendar)
+   * @param {Object} dateData - Date for panchang
+   * @returns {Object} Panchang details
    */
-  _parseBirthTime(birthTime) {
-    const cleanTime = birthTime.replace(/\D/g, '').padStart(4, '0');
-    const hour = parseInt(cleanTime.substring(0, 2));
-    const minute = parseInt(cleanTime.substring(2, 4));
-    
-    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
-      throw new Error('Invalid birth time format');
-    }
-    
-    return { hour, minute };
+  async generatePanchang(dateData) {
+    return this._delegateToCalculator('panchangCalculator', 'generatePanchang', dateData);
+  }
+
+  /**
+   * Calculate cosmic events
+   * @param {Object} timeRange - Time range for events
+   * @returns {Object} Cosmic events analysis
+   */
+  async calculateCosmicEvents(timeRange) {
+    return this._delegateToCalculator('cosmicEventsCalculator', 'calculateCosmicEvents', timeRange);
+  }
+
+  /**
+   * Calculate lunar return
+   * @param {Object} birthData - Birth data object
+   * @param {Date} targetDate - Target date
+   * @returns {Object} Lunar return analysis
+   */
+  async calculateLunarReturn(birthData, targetDate) {
+    return this._delegateToCalculator('lunarReturnCalculator', 'calculateLunarReturn', birthData, targetDate);
+  }
+
+  // ============================================================================
+  // COMPATIBILITY ANALYSIS
+  // ============================================================================
+
+  /**
+   * Check compatibility between two people using Vedic astrology
+   * @param {Object} person1 - First person's birth data
+   * @param {Object} person2 - Second person's birth data
+   * @returns {Object} Comprehensive compatibility analysis
+   */
+  async checkCompatibility(person1, person2) {
+    return this._delegateToCalculator('compatibilityCalculator', 'checkCompatibility', person1, person2);
+  }
+
+  /**
+   * Analyze group astrology
+   * @param {Object} groupData - Group data object
+   * @returns {Object} Group astrology analysis
+   */
+  async generateGroupAstrology(groupData) {
+    return this._delegateToCalculator('groupAstrologyCalculator', 'generateGroupAstrology', groupData);
+  }
+
+  // ============================================================================
+  // SIGN & BASIC CALCULATIONS
+  // ============================================================================
+
+  /**
+   * Calculate sun sign
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Sun sign analysis
+   */
+  async calculateSunSign(birthData) {
+    return this._delegateToCalculator('signCalculator', 'calculateSunSign', birthData);
+  }
+
+  /**
+   * Calculate moon sign
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Moon sign analysis
+   */
+  async calculateMoonSign(birthData) {
+    return this._delegateToCalculator('signCalculator', 'calculateMoonSign', birthData);
+  }
+
+  // ============================================================================
+  // SPECIALIZED ANALYSIS
+  // ============================================================================
+
+  /**
+   * Analyze karmic lessons
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Karmic lessons analysis
+   */
+  async analyzeKarmicLessons(birthData) {
+    return this._delegateToCalculator('karmicLessonsCalculator', 'analyzeKarmicLessons', birthData);
+  }
+
+  /**
+   * Calculate Jaimini astrology
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Jaimini analysis
+   */
+  async calculateJaiminiAstrology(birthData) {
+    return this._delegateToCalculator('jaiminiCalculator', 'calculateJaiminiAstrology', birthData);
+  }
+
+  /**
+   * Generate Sade Sati analysis
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Sade Sati analysis
+   */
+  async generateSadeSatiAnalysis(birthData) {
+    return this._delegateToCalculator('sadeSatiCalculator', 'generateSadeSatiAnalysis', birthData);
+  }
+
+  /**
+   * Calculate marriage timing
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Marriage timing analysis
+   */
+  async calculateMarriageTiming(birthData) {
+    return this._delegateToCalculator('marriageTimingCalculator', 'calculateMarriageTiming', birthData);
+  }
+
+  // ============================================================================
+  // MODERN & ADVANCED METHODS
+  // ============================================================================
+
+  /**
+   * Calculate Prashna (horary astrology)
+   * @param {Object} questionData - Question data object
+   * @returns {Object} Prashna analysis
+   */
+  async calculatePrashna(questionData) {
+    return this._delegateToCalculator('prashnaCalculator', 'calculatePrashna', questionData);
+  }
+
+  /**
+   * Calculate asteroids
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Asteroid analysis
+   */
+  async calculateAsteroids(birthData) {
+    return this._delegateToCalculator('asteroidCalculator', 'calculateAsteroids', birthData);
+  }
+
+  /**
+   * Generate daily horoscope
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Daily horoscope
+   */
+  async generateDailyHoroscope(birthData) {
+    return this._delegateToCalculator('dailyHoroscopeCalculator', 'generateDailyHoroscope', birthData);
+  }
+
+  /**
+   * Calculate Gochar (transits)
+   * @param {Object} birthData - Birth data object
+   * @param {Date} targetDate - Target date
+   * @returns {Object} Gochar analysis
+   */
+  async calculateGochar(birthData, targetDate) {
+    return this._delegateToCalculator('gocharCalculator', 'calculateGochar', birthData, targetDate);
+  }
+
+  // ============================================================================
+  // REMEDIES & SPIRITUAL ANALYSIS
+  // ============================================================================
+
+  /**
+   * Calculate remedial measures
+   * @param {Object} birthData - Birth data object
+   * @param {Object} planetaryPositions - Current planetary positions
+   * @returns {Object} Remedial measures
+   */
+  async calculateRemedialMeasures(birthData, planetaryPositions) {
+    return this._delegateToCalculator('remedyCalculator', 'calculateRemedialMeasures', birthData, planetaryPositions);
+  }
+
+  /**
+   * Analyze Vedic yogas
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Vedic yogas analysis
+   */
+  async analyzeVedicYogas(birthData) {
+    return this._delegateToCalculator('vedicYogasCalculator', 'analyzeVedicYogas', birthData);
+  }
+
+  // ============================================================================
+  // COMPREHENSIVE ANALYSIS
+  // ============================================================================
+
+  /**
+   * Generate comprehensive Vedic analysis
+   * @param {Object} birthData - Birth data object
+   * @returns {Object} Comprehensive analysis
+   */
+  async generateComprehensiveVedicAnalysis(birthData) {
+    return this._delegateToCalculator('comprehensiveAnalysisCalculator', 'generateComprehensiveVedicAnalysis', birthData);
+  }
+
+  // ============================================================================
+  // TRANSIT ANALYSIS
+  // ============================================================================
+
+  /**
+   * Generate transit preview
+   * @param {Object} birthData - Birth data
+   * @param {number} days - Number of days
+   * @returns {Object} Transit preview
+   */
+  async generateTransitPreview(birthData, days = 3) {
+    return this._delegateToCalculator('transitCalculator', 'generateTransitPreview', birthData, days);
   }
 }
 

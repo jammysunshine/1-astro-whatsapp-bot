@@ -1,4 +1,4 @@
-const { BirthChartService, VimshottariDashaService, PrashnaAstrologyService, EventAstrologyService, MuhurtaService, SolarArcDirectionsService, SecondaryProgressionsService, SolarReturnService, BusinessPartnershipService, SpecializedAnalysisService, DashaPredictiveService, CalendarTimingService, CurrentDashaService, CurrentTransitsService, DailyHoroscopeService, CompatibilityService, DetailedChartAnalysisService, CompatibilityScoreService, PanchangService, AshtakavargaService, DavisonChartService, LunarReturnService, AdvancedCompatibilityService, EnhancedPanchangService, PrashnaService, JaiminiAstrologyService, GocharService, VarshaphalService, JaiminiDashasService, AdvancedTransitsService, MajorTransitsService, TransitPreviewService, AsteroidsService } = require('./vedic');
+const { BirthChartService, VimshottariDashaService, PrashnaAstrologyService, EventAstrologyService, MuhurtaService, SolarArcDirectionsService, SecondaryProgressionsService, SolarReturnService, BusinessPartnershipService, SpecializedAnalysisService, DashaPredictiveService, CalendarTimingService, CurrentDashaService, CurrentTransitsService, DailyHoroscopeService, CompatibilityService, DetailedChartAnalysisService, CompatibilityScoreService, PanchangService, AshtakavargaService, DavisonChartService, LunarReturnService, AdvancedCompatibilityService, EnhancedPanchangService, PrashnaService, JaiminiAstrologyService, GocharService, VarshaphalService, JaiminiDashasService, AdvancedTransitsService, MajorTransitsService, TransitPreviewService, AsteroidsService, CoupleCompatibilityService, SynastryAnalysisService, HinduFestivalsService, NumerologyAnalysisService, HoraryReadingService } = require('./vedic');
 const { WesternAstrologyService } = require('./western');
 const { DivinationService, NumerologyService, TarotReadingService } = require('./common');
 
@@ -36,6 +36,12 @@ module.exports = {
   MajorTransitsService,
   TransitPreviewService,
   AsteroidsService,
+  // HIGH PRIORITY - Newly implemented core services
+  CoupleCompatibilityService,
+  SynastryAnalysisService,
+  HinduFestivalsService,
+  NumerologyAnalysisService,
+  HoraryReadingService,
   WesternAstrologyService,
   DivinationService,
   NumerologyService,

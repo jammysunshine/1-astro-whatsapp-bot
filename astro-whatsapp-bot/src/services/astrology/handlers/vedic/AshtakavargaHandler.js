@@ -3,7 +3,7 @@
  * Handles Vedic 64-point strength analysis requests
  */
 const logger = require('../../../../utils/logger');
-const { AshtakavargaCalculator } = require('../../vedic/calculators/AshtakavargaCalculator');
+const { AshtakavargaCalculator } = require('../../calculators/AshtakavargaCalculator');
 
 const handleAshtakavarga = async(message, user) => {
   if (!message.includes('ashtakavarga') && !message.includes('64-point') && !message.includes('benefic') && !message.includes('strength analysis')) {

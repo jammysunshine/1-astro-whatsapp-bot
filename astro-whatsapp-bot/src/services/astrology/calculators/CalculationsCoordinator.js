@@ -1,6 +1,10 @@
 const logger = require('../../../utils/logger');
-const { AdvancedCalculator } = require('./AdvancedCalculator');
-const { AstrologicalCalculators } = require('./AstrologicalCalculators');
+const { JaiminiKarakaCalculator } = require('./JaiminiKarakaCalculator');
+const { AshtakavargaCalculator } = require('./AshtakavargaCalculator');
+const { FixedStarsCalculator } = require('./FixedStarsCalculator');
+const { FinancialAstrologyCalculator } = require('./FinancialAstrologyCalculator');
+const { MedicalAstrologyCalculator } = require('./MedicalAstrologyCalculator');
+const { CareerAstrologyCalculator } = require('./CareerAstrologyCalculator');
 
 /**
  * CalculationsCoordinator - Main orchestrator for all Vedic calculation modules
@@ -12,23 +16,31 @@ class CalculationsCoordinator {
     logger.info('Module: CalculationsCoordinator loaded - Modular calculation orchestration');
 
     // Initialize specialized calculator modules
-    this.advancedCalculator = new AdvancedCalculator();
-    this.astrologicalCalculators = new AstrologicalCalculators();
+    this.jaiminiKarakaCalculator = new JaiminiKarakaCalculator();
+    this.ashtakavargaCalculator = new AshtakavargaCalculator();
+    this.fixedStarsCalculator = new FixedStarsCalculator();
+    this.financialAstrologyCalculator = new FinancialAstrologyCalculator();
+    this.medicalAstrologyCalculator = new MedicalAstrologyCalculator();
+    this.careerAstrologyCalculator = new CareerAstrologyCalculator();
   }
 
   setServices(calendricalService, geocodingService) {
     // Pass services down to specialized calculators
-    this.advancedCalculator.setServices(calendricalService, geocodingService);
-    this.astrologicalCalculators.setServices(calendricalService, geocodingService);
+    this.jaiminiKarakaCalculator.setServices(calendricalService, geocodingService);
+    this.ashtakavargaCalculator.setServices(calendricalService, geocodingService);
+    this.fixedStarsCalculator.setServices(calendricalService, geocodingService);
+    this.financialAstrologyCalculator.setServices(calendricalService, geocodingService);
+    this.medicalAstrologyCalculator.setServices(calendricalService, geocodingService);
+    this.careerAstrologyCalculator.setServices(calendricalService, geocodingService);
   }
 
   /**
-   * Calculate Jaimini Karaka analysis - delegated to AdvancedCalculator
+   * Calculate Jaimini Karaka analysis - delegated to JaiminiKarakaCalculator
    * @param {Object} user - Birth data and user info
    * @returns {Object} Jaimini Karaka analysis
    */
   async calculateJaiminiKarakaAnalysis(user) {
-    logger.info('Delegating Jaimini Karaka calculation to AdvancedCalculator');
+    logger.info('Delegating Jaimini Karaka calculation to JaiminiKarakaCalculator');
 
     // Convert user data to birthData format
     const birthData = {
@@ -39,16 +51,16 @@ class CalculationsCoordinator {
       name: user.name
     };
 
-    return await this.advancedCalculator.calculateJaiminiKarakaAnalysis(birthData);
+    return await this.jaiminiKarakaCalculator.calculateJaiminiKarakaAnalysis(birthData);
   }
 
   /**
-   * Calculate Ashtakavarga - delegated to AdvancedCalculator
+   * Calculate Ashtakavarga - delegated to AshtakavargaCalculator
    * @param {Object} user - Birth data and user info
    * @returns {Object} Ashtakavarga analysis
    */
   async calculateAshtakavarga(user) {
-    logger.info('Delegating Ashtakavarga calculation to AdvancedCalculator');
+    logger.info('Delegating Ashtakavarga calculation to AshtakavargaCalculator');
 
     const birthData = {
       birthDate: user.birthDate,
@@ -58,16 +70,16 @@ class CalculationsCoordinator {
       name: user.name
     };
 
-    return await this.advancedCalculator.calculateAshtakavarga(birthData);
+    return await this.ashtakavargaCalculator.calculateAshtakavarga(birthData);
   }
 
   /**
-   * Calculate Fixed Stars analysis - delegated to AdvancedCalculator
+   * Calculate Fixed Stars analysis - delegated to FixedStarsCalculator
    * @param {Object} user - Birth data and user info
    * @returns {Object} Fixed Stars analysis
    */
   async calculateFixedStarsAnalysis(user) {
-    logger.info('Delegating Fixed Stars calculation to AdvancedCalculator');
+    logger.info('Delegating Fixed Stars calculation to FixedStarsCalculator');
 
     const birthData = {
       birthDate: user.birthDate,
@@ -77,16 +89,16 @@ class CalculationsCoordinator {
       name: user.name
     };
 
-    return await this.advancedCalculator.calculateFixedStarsAnalysis(birthData);
+    return await this.fixedStarsCalculator.calculateFixedStarsAnalysis(birthData);
   }
 
   /**
-   * Calculate financial astrology analysis - delegated to AstrologicalCalculators
+   * Calculate financial astrology analysis - delegated to FinancialAstrologyCalculator
    * @param {Object} user - Birth data and user info
    * @returns {Object} Financial astrology analysis
    */
   async calculateFinancialAstrologyAnalysis(user) {
-    logger.info('Delegating Financial Astrology calculation to AstrologicalCalculators');
+    logger.info('Delegating Financial Astrology calculation to FinancialAstrologyCalculator');
 
     const birthData = {
       birthDate: user.birthDate,
@@ -98,16 +110,16 @@ class CalculationsCoordinator {
       longitude: user.longitude
     };
 
-    return await this.astrologicalCalculators.calculateFinancialAstrologyAnalysis(birthData);
+    return await this.financialAstrologyCalculator.calculateFinancialAstrologyAnalysis(birthData);
   }
 
   /**
-   * Calculate medical astrology analysis - delegated to AstrologicalCalculators
+   * Calculate medical astrology analysis - delegated to MedicalAstrologyCalculator
    * @param {Object} user - Birth data and user info
    * @returns {Object} Medical astrology analysis
    */
   async calculateMedicalAstrologyAnalysis(user) {
-    logger.info('Delegating Medical Astrology calculation to AstrologicalCalculators');
+    logger.info('Delegating Medical Astrology calculation to MedicalAstrologyCalculator');
 
     const birthData = {
       birthDate: user.birthDate,
@@ -119,16 +131,16 @@ class CalculationsCoordinator {
       longitude: user.longitude
     };
 
-    return await this.astrologicalCalculators.calculateMedicalAstrologyAnalysis(birthData);
+    return await this.medicalAstrologyCalculator.calculateMedicalAstrologyAnalysis(birthData);
   }
 
   /**
-   * Calculate career astrology analysis - delegated to AstrologicalCalculators
+   * Calculate career astrology analysis - delegated to CareerAstrologyCalculator
    * @param {Object} user - Birth data and user info
    * @returns {Object} Career astrology analysis
    */
   async calculateCareerAstrologyAnalysis(user) {
-    logger.info('Delegating Career Astrology calculation to AstrologicalCalculators');
+    logger.info('Delegating Career Astrology calculation to CareerAstrologyCalculator');
 
     const birthData = {
       birthDate: user.birthDate,
@@ -140,7 +152,7 @@ class CalculationsCoordinator {
       longitude: user.longitude
     };
 
-    return await this.astrologicalCalculators.calculateCareerAstrologyAnalysis(birthData);
+    return await this.careerAstrologyCalculator.calculateCareerAstrologyAnalysis(birthData);
   }
 
   /**
@@ -214,19 +226,30 @@ class CalculationsCoordinator {
    */
   healthCheck() {
     try {
-      const advancedHealth = this.advancedCalculator.healthCheck();
-      const astrologicalHealth = this.astrologicalCalculators.healthCheck();
+      const jaiminiHealth = this.jaiminiKarakaCalculator.healthCheck();
+      const ashtakavargaHealth = this.ashtakavargaCalculator.healthCheck();
+      const fixedStarsHealth = this.fixedStarsCalculator.healthCheck();
+      const financialHealth = this.financialAstrologyCalculator.healthCheck();
+      const medicalHealth = this.medicalAstrologyCalculator.healthCheck();
+      const careerHealth = this.careerAstrologyCalculator.healthCheck();
 
       return {
         coordinator: {
           healthy: true,
-          version: '1.0.0',
-          modules: 2
+          version: '2.0.0',
+          modules: 6
         },
-        advancedCalculator: advancedHealth,
-        astrologicalCalculators: astrologicalHealth,
+        calculators: {
+          jaiminiKarakaCalculator: jaiminiHealth,
+          ashtakavargaCalculator: ashtakavargaHealth,
+          fixedStarsCalculator: fixedStarsHealth,
+          financialAstrologyCalculator: financialHealth,
+          medicalAstrologyCalculator: medicalHealth,
+          careerAstrologyCalculator: careerHealth
+        },
         overall: {
-          healthy: advancedHealth.healthy && astrologicalHealth.healthy,
+          healthy: jaiminiHealth.healthy && ashtakavargaHealth.healthy && fixedStarsHealth.healthy &&
+                  financialHealth.healthy && medicalHealth.healthy && careerHealth.healthy,
           timestamp: new Date().toISOString()
         }
       };
@@ -246,23 +269,22 @@ class CalculationsCoordinator {
    */
   getCalculationStats() {
     return {
-      advanced_calculations: [
-        'Jaimini Karaka Analysis',
-        'Ashtakavarga',
-        'Fixed Stars Analysis'
-      ],
-      astrological_calculations: [
-        'Financial Astrology',
-        'Medical Astrology',
-        'Career Astrology'
-      ],
+      calculator_modules: {
+        'JaiminiKarakaCalculator': ['Jaimini Karaka Analysis'],
+        'AshtakavargaCalculator': ['Ashtakavarga Analysis'],
+        'FixedStarsCalculator': ['Fixed Stars Analysis'],
+        'FinancialAstrologyCalculator': ['Financial Astrology Analysis'],
+        'MedicalAstrologyCalculator': ['Medical Astrology Analysis'],
+        'CareerAstrologyCalculator': ['Career Astrology Analysis']
+      },
       utility_functions: [
         'Age Harmonic Astrology',
         'Sign/Longitude Conversions'
       ],
-      total_calculations: 7 + 3, // Main + utility
-      modules: 3, // Coordinator + 2 specialized
-      architecture: 'Modular with delegation pattern'
+      total_modules: 6,
+      total_calculations: 6 + 2, // Calculators + utility
+      coordinator: 'CalculationsCoordinator (v2.0.0)',
+      architecture: 'Single Calculator Per File (SCPF) - Modular Architecture'
     };
   }
 }

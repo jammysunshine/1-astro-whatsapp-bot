@@ -8,7 +8,7 @@ This document provides the **verified working structure** of the Astro WhatsApp 
 
 ### **System Stats:**
 - ✅ **Total Menus**: 8 (4 buttons + 4 lists)
-- ✅ **Total Navigation Options**: 79 (23 buttons + 56 list items)
+- ✅ **Total Navigation Options**: 122 (23 buttons + 99 list items)
 - ✅ **Menu Types**: WhatsApp Interactive Buttons + WhatsApp Interactive Lists
 - ✅ **Language Support**: 16 languages with translation keys (no hardcoding)
 - ✅ **WhatsApp API Compliant**: Button limits observed, list formatting correct
@@ -127,29 +127,79 @@ Discover hidden meanings through numbers and unique cosmic insights:
 
 ## 🕉️ **Vedic Astrology Menu (WhatsApp Interactive List)**
 
-**Type:** WhatsApp Interactive List (4 sections, 14 services)
+**Type:** WhatsApp Interactive List (7 sections, 57 services)
 **Body:** "🕉️ *Vedic Astrology Services*\n\nChoose your preferred Vedic astrological reading:"
 
-### ⭐ **Basic Readings Section** (3 options)
+### ⭐ **Core Readings & Charts Section**
 - 📊 **Vedic Birth Chart** → `get_hindu_astrology_analysis` (*Complete Kundli with planetary positions*)
-- 💍 **Marriage Matching** → `get_synastry_analysis` (*Kundli Milan for compatibility*)
 - 📜 **Nadi Astrology** → `show_nadi_flow` (*Ancient leaf astrology readings*)
+- 📈 **Detailed Chart Analysis** → `generateDetailedChartAnalysis` (*In-depth analysis of chart with planetary strengths, yogas, dashas*)
+- 🌍 **Basic Birth Chart** → `generateBasicBirthChart` (*Simplified chart for quick reference*)
+- 🌐 **Western Birth Chart** → `generateWesternBirthChart` (*Tropical zodiac chart with Western house systems*)
+- ☀️ **Sun Sign Analysis** → `calculateSunSign` (*Precise Sun sign using astronomical ephemeris*)
+- 🌙 **Moon Sign Analysis** → `calculateMoonSign` (*Precise Moon sign with lunar position accuracy*)
+- ⬆️ **Rising Sign (Lagna)** → `calculateRisingSign` (*Ascendant (Lagna) with precise astronomical accuracy*)
+- 🌌 **Nakshatra Analysis** → `calculateNakshatra` (*Lunar constellation (Nakshatra) with traditional accuracy*)
 
-### 🔬 **Advanced Analysis Section** (5 options)
+### ⏳ **Dasha & Predictive Systems Section**
 - ⏳ **Vimshottari Dasha** → `get_vimshottari_dasha_analysis` (*120-year planetary period analysis*)
-- 🎉 **Hindu Festivals** → `get_hindu_festivals_info` (*Festival timings and significance*)
-- 🔢 **Vedic Numerology** → `get_vedic_numerology_analysis` (*Sacred number analysis*)
-- 📈 **Ashtakavarga** → `get_ashtakavarga_analysis` (*8-fold strength analysis system*)
-- 📊 **Varga Charts** → `get_varga_charts_analysis` (*Divisional chart analysis*)
+- ⏰ **Current Dasha Analysis** → `calculateCurrentDasha` (*Currently active Dasha period with exact timing*)
+- 🔮 **Upcoming Dashas** → `calculateUpcomingDashas` (*Future Dasha sequences and timelines*)
+- 🔄 **Antardasha Breakdown** → `calculateAntardasha` (*Detailed sub-period breakdown*)
+- 🌟 **Jaimini Astrology** → `calculateJaiminiAstrology` (*Alternative Jaimini karaka system analysis*)
+- 🗓️ **Jaimini Dashas** → `calculateJaiminiDashas` (*Jaimini Dasha periods based on karaka positions*)
+- 🌌 **Gochar (Transits)** → `calculateGochar` (*Current planetary transits and their impact*)
+- ☀️ **Solar Return Analysis** → `calculateSolarReturn` (*Annual solar return (birthday) charts*)
+- 🌙 **Lunar Return Analysis** → `calculateLunarReturn` (*Monthly lunar return charts*)
+- 📅 **Varshaphal (Annual)** → `calculateVarshaphal` (*Annual solar progression analysis*)
+- 📈 **Secondary Progressions** → `calculateSecondaryProgressions` (*Day-for-a-year progression system analysis*)
+- 🎯 **Solar Arc Directions** → `calculateSolarArcDirections` (*Solar arc direction technique for predictive analysis*)
+- ✨ **Enhanced Secondary Progressions** → `calculateEnhancedSecondaryProgressions` (*Enhanced progression analysis with additional techniques*)
+- 💫 **Enhanced Solar Arc Directions** → `calculateEnhancedSolarArcDirections` (*Enhanced solar arc analysis with multiple directing techniques*)
+- 🔭 **Next Significant Transits** → `calculateNextSignificantTransits` (*Calculate next significant transit aspects to natal planets*)
+- 📊 **Advanced Transits** → `calculateAdvancedTransits` (*Advanced multi-transit analysis with forecasting*)
+- 🔍 **Identify Major Transits** → `identifyMajorTransits` (*Identify major transiting aspects within timeframe*)
+- 🗓️ **Transit Preview** → `generateTransitPreview` (*Generate transit preview for upcoming period*)
 
-### 🔮 **Predictive & Remedies Section** (5 options)
-- 🕉️ **Vedic Remedies** → `get_vedic_remedies_info` (*Mantras, gems, and rituals*)
-- 🌿 **Ayurvedic Astrology** → `get_ayurvedic_astrology_analysis` (*Health and constitution analysis*)
+### ⚖️ **Compatibility & Relationships Section**
+- 💍 **Marriage Matching** → `get_synastry_analysis` (*Kundli Milan for compatibility*)
+- 💕 **Nakshatra Matching** → `calculateNakshatraPorutham` (*Nakshatra-matching compatibility analysis*)
+- 💖 **Overall Compatibility Score** → `calculateCompatibilityScore` (*Overall compatibility score using multiple techniques*)
+- 🤝 **Synastry Analysis** → `performSynastryAnalysis` (*Complete synastry chart analysis between two people*)
+- 🌐 **Composite Chart** → `calculateCompositeChart` (*Generate relationship composite chart*)
+- 🕰️ **Davison Chart** → `calculateDavisonChart` (*Calculate Davison relationship chart*)
+- 👪 **Group Astrology** → `generateGroupAstrology` (*Generate family or group astrology analysis*)
+    *Note: Granular compatibility factors (e.g., Bhakut, Gana, Nadi, etc.) are calculated internally by comprehensive reports and are not exposed as separate menu items to maintain UX clarity.*
+
+### 🛠️ **Specialized Analysis & Reports Section**
+- 📊 **Ashtakavarga Analysis** → `get_ashtakavarga_analysis` (*Complete Ashtakavarga analysis with interpretations*)
+- 📈 **Shadbala (Planetary Strength)** → `generateShadbala` (*Complete 6-fold planetary strength analysis*)
+- 🪐 **Varga Charts Analysis** → `get_varga_charts_analysis` (*Analysis for multiple important divisional charts*)
 - ❓ **Prashna Astrology** → `get_prashna_astrology_analysis` (*Question-based chart analysis*)
-- 📅 **Muhurta** → `get_muhurta_analysis` (*Auspicious timing selection*)
-- 📆 **Panchang** → `get_panchang_analysis` (*Daily Vedic calendar*)
+- 🌟 **Vedic Yogas** → `calculateVedicYogas` (*Identify and analyze traditional planetary yogas*)
+- ☄️ **Asteroid Analysis** → `calculateAsteroids` (*Positions and meanings of key asteroids*)
+- 📝 **Comprehensive Vedic Analysis** → `generateComprehensiveVedicAnalysis` (*Complete integrated Vedic astrology analysis*)
+- 🔮 **Future Self Simulator** → `generateFutureSelfSimulator` (*Future life simulation based on current chart patterns*)
+- 🏥 **Ayurvedic Astrology** → `get_ayurvedic_astrology_analysis` (*Health and constitution analysis*)
+- 📈 **Life Patterns Analysis** → `generateLifePatterns` (*Generate life pattern analysis and future projections*)
 
-### ⬅️ **Navigation Section** (1 option)
+### 🗓️ **Vedic Calendar & Timings Section**
+- 📆 **Panchang (Hindu Calendar)** → `get_panchang_analysis` (*Generate complete Hindu calendar for any date*)
+- 🎯 **Muhurta (Auspicious Timing)** → `get_muhurta_analysis` (*Calculate auspicious timing for important events*)
+- ☀️ **Abhijit Muhurta** → `calculateAbhijitMuhurta` (*Most auspicious period of the day*)
+- 🌑 **Rahukalam** → `calculateRahukalam` (*Inauspicious period ruled by Rahu*)
+- 💀 **Gulikakalam** → `calculateGulikakalam` (*Inauspicious period ruled by Gulika*)
+- 🌌 **Cosmic Events** → `calculateCosmicEvents` (*Track upcoming cosmic events and eclipses*)
+- 🗓️ **Ephemeris Table** → `generateEphemerisTable` (*Generate planetary position tables for specified period*)
+- 🍂 **Upcoming Seasonal Events** → `calculateUpcomingSeasonalEvents` (*Astrological significance of solstices, equinoxes, and seasonal changes*)
+- 🪐 **Upcoming Planetary Events** → `calculateUpcomingPlanetaryEvents` (*Track major planetary ingresses, retrogrades, and stations*)
+
+### ⚕️ **Remedies & Dosha Analysis Section**
+- 🕉️ **Vedic Remedies** → `get_vedic_remedies_info` (*Comprehensive remedial recommendations*)
+- 🐍 **Kaal Sarp Dosha** → `generateKaalSarpDosha` (*Kaal Sarpa Dosha analysis with remedial prescriptions*)
+- 🪐 **Sade Sati Analysis** → `generateSadeSatiAnalysis` (*Complete Sade Sati (Saturn) analysis and remedies*)
+
+### ⬅️ **Navigation Section**
 - 🏠 **Back to Main Menu** → `show_main_menu`
 
 ---
@@ -267,7 +317,7 @@ Discover hidden meanings through numbers and unique cosmic insights:
 | ⚙️ **Settings** | Buttons | N/A | 4 | ✅ Active |
 | 🔢 **Numerology** | Buttons | N/A | 7 | ✅ Active |
 | 🌍 **Western Astrology** | Lists | 4 | 16 | ✅ Active |
-| 🕉️ **Vedic Astrology** | Lists | 4 | 14 | ✅ Active |
+| 🕉️ **Vedic Astrology** | Lists | 8 | 79 | ✅ Active |
 | 🔮 **Divination & Mystic** | Lists | 5 | 12 | ✅ Active |
 | 🌐 **Language Selection** | Lists | 5 | 16 | ✅ Active |
 

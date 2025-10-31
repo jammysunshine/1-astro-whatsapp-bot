@@ -302,168 +302,164 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Target File:** `core/services/vedic/sadeSatiService.js`
      *   **Notes:** Dedicated service for Sade Sati analysis.
 
-### Western Astrology Services
-
 59. `generateWesternBirthChart`
      *   **Source:** `src/services/astrology/western/WesternCalculator.js` (✅ BEST: implements Western house systems and aspects).
-     *   **Target File:** `core/services/western/westernBirthChartService.js`
+     *   **Target File:** `core/services/westernBirthChartService.js`
      *   **Notes:** Dedicated Western astrology service for birth chart generation.
 
 60. `get_current_transits`
      *   **Source:** `src/services/astrology/vedic/calculators/TransitCalculator.js`, `src/services/astrology/vedic/calculators/GocharCalculator.js`.
-     *   **Target File:** `core/services/western/currentTransitsService.js`
+     *   **Target File:** `core/services/currentTransitsService.js`
      *   **Notes:** Dedicated service for current planetary transits.
 
 61. `get_secondary_progressions`
      *   **Source:** `src/services/astrology/vedic/calculators/SecondaryProgressionsCalculator.js`.
-     *   **Target File:** `core/services/western/secondaryProgressionsService.js`
+     *   **Target File:** `core/services/secondaryProgressionsService.js`
      *   **Notes:** Dedicated service for secondary progressions.
 
 62. `get_solar_arc_directions`
      *   **Source:** `src/services/astrology/vedic/calculators/SolarArcDirectionsCalculator.js`.
-     *   **Target File:** `core/services/western/solarArcDirectionsService.js`
+     *   **Target File:** `core/services/solarArcDirectionsService.js`
      *   **Notes:** Dedicated service for solar arc directions.
 
 63. `get_asteroid_analysis`
      *   **Source:** `src/services/astrology/vedic/calculators/AsteroidCalculator.js`.
-     *   **Target File:** `core/services/western/asteroidAnalysisService.js`
+     *   **Target File:** `core/services/asteroidAnalysisService.js`
      *   **Notes:** Dedicated service for asteroid analysis.
 
 64. `get_fixed_stars_analysis`
      *   **Source:** `src/services/astrology/calculators/FixedStarsCalculator.js` (✅ BEST: uses Swiss Ephemeris for precise fixed star calculations).
-     *   **Target File:** `core/services/western/fixedStarsService.js`
+     *   **Target File:** `core/services/fixedStarsService.js`
      *   **Notes:** Dedicated service for fixed stars analysis using Swiss Ephemeris.
 
 65. `get_solar_return_analysis`
      *   **Source:** `src/services/astrology/vedic/calculators/SolarReturnCalculator.js`.
-     *   **Target File:** `core/services/western/solarReturnService.js`
+     *   **Target File:** `core/services/solarReturnAnalysisService.js`
      *   **Notes:** Dedicated service for solar return analysis.
 
 66. `get_career_astrology_analysis`
      *   **Source:** `src/services/astrology/calculators/CareerAstrologyCalculator.js` (✅ BEST: uses Swiss Ephemeris for career timing analysis).
-     *   **Target File:** `core/services/divination/careerAstrologyService.js`
+     *   **Target File:** `core/services/careerAstrologyService.js`
      *   **Notes:** Dedicated service for career astrology using Swiss Ephemeris.
 
 67. `get_financial_astrology_analysis`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/western/financialAstrologyService.js`
+     *   **Target File:** `core/services/financialAstrologyService.js`
      *   **Notes:** Dedicated service for financial astrology analysis.
 
 68. `get_medical_astrology_analysis`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/western/medicalAstrologyService.js`
+     *   **Target File:** `core/services/medicalAstrologyService.js`
      *   **Notes:** Dedicated service for medical astrology analysis.
 
 69. `get_event_astrology_analysis`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/western/eventAstrologyService.js`
+     *   **Target File:** `core/services/eventAstrologyService.js`
      *   **Notes:** Dedicated service for event astrology analysis.
 
 70. `get_astrocartography_analysis`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/western/astrocartographyService.js`
+     *   **Target File:** `core/services/astrocartographyService.js`
      *   **Notes:** Dedicated service for astrocartography analysis.
-
-### Divination & Alternative Systems Services
 
 71. `get_tarot_reading`
      *   **Source:** `src/services/astrology/tarotReader.js`
-     *   **Target File:** `core/services/divination/tarotReadingService.js`
+     *   **Target File:** `core/services/tarotReadingService.js`
      *   **Notes:** Comprehensive tarot reading system with multiple spreads.
 
 72. `get_iching_reading`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/divination/ichingReadingService.js`
+     *   **Target File:** `core/services/ichingReadingService.js`
      *   **Notes:** Dedicated service for I Ching readings.
 
 73. `get_palmistry_analysis`
      *   **Source:** `src/services/astrology/palmistryReader.js`
-     *   **Target File:** `core/services/divination/palmistryService.js`
+     *   **Target File:** `core/services/palmistryService.js`
      *   **Notes:** Palmistry analysis service with line interpretations.
 
 74. `show_chinese_flow`
      *   **Source:** `src/services/astrology/chineseCalculator.js`
-     *   **Target File:** `core/services/divination/chineseAstrologyService.js`
+     *   **Target File:** `core/services/chineseAstrologyService.js`
      *   **Notes:** Chinese astrology calculations and analysis.
 
 75. `get_mayan_analysis`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/divination/mayanAstrologyService.js`
+     *   **Target File:** `core/services/mayanAstrologyService.js`
      *   **Notes:** Dedicated service for Mayan astrology analysis.
 
 76. `get_celtic_analysis`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/divination/celticAstrologyService.js`
+     *   **Target File:** `core/services/celticAstrologyService.js`
      *   **Notes:** Dedicated service for Celtic astrology analysis.
 
 77. `get_kabbalistic_analysis`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/divination/kabbalisticAstrologyService.js`
+     *   **Target File:** `core/services/kabbalisticAstrologyService.js`
      *   **Notes:** Dedicated service for Kabbalistic astrology analysis.
 
 78. `get_hellenistic_astrology_analysis`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/divination/hellenisticAstrologyService.js`
+     *   **Target File:** `core/services/hellenisticAstrologyService.js`
      *   **Notes:** Dedicated service for Hellenistic astrology analysis.
 
 79. `get_islamic_astrology_info`
      *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/divination/islamicAstrologyService.js`
+     *   **Target File:** `core/services/islamicAstrologyService.js`
      *   **Notes:** Dedicated service for Islamic astrology information.
 
 80. `get_horary_reading`
      *   **Source:** `src/services/astrology/horary/HoraryCalculator.js` (✅ BEST: uses Swiss Ephemeris for precise horary calculations).
-     *   **Target File:** `core/services/divination/horaryAstrologyService.js`
+     *   **Target File:** `core/services/horaryAstrologyService.js`
      *   **Notes:** Dedicated service for horary astrology using Swiss Ephemeris.
 
 81. `get_numerology_analysis`
      *   **Source:** `src/services/astrology/numerologyService.js`
-     *   **Target File:** `core/services/divination/numerologyAnalysisService.js`
+     *   **Target File:** `core/services/numerologyAnalysisService.js`
      *   **Notes:** Numerology analysis service.
 
 82. `get_numerology_report`
      *   **Source:** `src/services/astrology/numerologyService.js`
-     *   **Target File:** `core/services/divination/numerologyReportService.js`
+     *   **Target File:** `core/services/numerologyReportService.js`
      *   **Notes:** Detailed numerology report generation.
 
 83. `get_lunar_return`
      *   **Source:** `src/services/astrology/vedic/calculators/LunarReturnCalculator.js`.
-     *   **Target File:** `core/services/divination/lunarReturnService.js`
+     *   **Target File:** `core/services/lunarReturnService.js`
      *   **Notes:** Dedicated service for lunar return calculations.
 
 84. `get_future_self_analysis`
      *   **Source:** `src/services/astrology/vedic/calculators/FutureSelfSimulatorCalculator.js`.
-     *   **Target File:** `core/services/divination/futureSelfAnalysisService.js`
+     *   **Target File:** `core/services/futureSelfAnalysisService.js`
      *   **Notes:** Dedicated service for future self analysis.
 
 85. `get_electional_astrology`
      *   **Source:** `src/services/astrology/mundane/PoliticalAstrology.js` and related mundane astrology files.
-     *   **Target File:** `core/services/divination/electionalAstrologyService.js`
+     *   **Target File:** `core/services/electionalAstrologyService.js`
      *   **Notes:** Electional astrology for timing important events.
 
 86. `get_mundane_astrology_analysis`
      *   **Source:** `src/services/astrology/mundane/PoliticalAstrology.js` and related mundane astrology files.
-     *   **Target File:** `core/services/divination/mundaneAstrologyService.js`
+     *   **Target File:** `core/services/mundaneAstrologyService.js`
      *   **Notes:** Mundane astrology for world events and political analysis.
 
 87. `get_daily_horoscope`
      *   **Source:** `src/services/astrology/vedic/calculators/DailyHoroscopeCalculator.js`.
-     *   **Target File:** `core/services/divination/dailyHoroscopeService.js`
+     *   **Target File:** `core/services/dailyHoroscopeService.js`
      *   **Notes:** Dedicated service for daily horoscope generation.
 
 88. `show_nadi_flow`
      *   **Source:** `src/services/astrology/nadiReader.js`
-     *   **Target File:** `core/services/divination/nadiAstrologyService.js`
+     *   **Target File:** `core/services/nadiAstrologyService.js`
      *   **Notes:** Nadi astrology flow and analysis.
 
 89. `get_hindu_festivals_info`
      *   **Source:** `src/services/astrology/hinduFestivals.js`
-     *   **Target File:** `core/services/divination/hinduFestivalsService.js`
+     *   **Target File:** `core/services/hinduFestivalsService.js`
      *   **Notes:** Hindu festivals information and timing.
 
 90. `get_numerology_analysis`
      *   **Source:** `src/services/astrology/numerologyService.js` (duplicate of #81)
-     *   **Target File:** `core/services/divination/numerologyAnalysisService.js`
+     *   **Target File:** `core/services/numerologyAnalysisService.js`
      *   **Notes:** Numerology analysis service (duplicate entry).
 
 
@@ -495,7 +491,7 @@ Each entry below represents a microservice. We will identify its source in the e
 12. **currentTransitsService.js** - Current planetary transits
 13. **secondaryProgressionsService.js** - Secondary progressions
 14. **solarArcDirectionsService.js** - Solar arc directions
-15. **solarReturnService.js** - Solar return analysis
+15. **solarReturnAnalysisService.js** - Solar return analysis
 
 ### Phase 4: Divination Services (Priority 4)
 **Focus:** Alternative divination systems.

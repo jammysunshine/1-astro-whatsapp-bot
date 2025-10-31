@@ -1,8 +1,9 @@
 const BaseAction = require('../BaseAction');
+const { EnhancedPanchangService } = require('../../../core/services');
 
 /**
  * PanchangAnalysisAction - Provides Hindu calendar and panchang analysis.
- * Reuses the existing implementation from the legacy messageProcessor.
+ * Uses EnhancedPanchangService for comprehensive daily almanac calculations.
  */
 class PanchangAnalysisAction extends BaseAction {
   /**
@@ -10,6 +11,59 @@ class PanchangAnalysisAction extends BaseAction {
    */
   static get actionId() {
     return 'get_panchang_analysis';
+  }
+
+  /**
+   * Execute panchang analysis action
+   * @returns {Promise<Object|null>} Action result
+   */
+  async execute() {
+    try {
+      this.logExecution('start', 'Generating panchang analysis');
+
+      // Initialize Enhanced Panchang Service
+      const services = this.getServices();
+      const panchangService = new EnhancedPanchangService(services);
+
+      // Get user profile for location
+      const userProfile = await this.getUserProfile();
+      
+      // Prepare panchang data
+      const panchangData = {
+        date: new Date().toISOString().split('T')[0], // Today's date
+        location: userProfile?.birthPlace || 'Delhi, India',
+        birthData: userProfile ? {
+          birthDate: userProfile.birthDate,
+          birthTime: userProfile.birthTime,
+          birthPlace: userProfile.birthPlace
+        } : null,
+        options: {
+          includeFestivals: true,
+          includeMuhurta: true,
+          includePersonalized: true
+        }
+      };
+
+      // Calculate panchang using service
+      const panchangResult = await panchangService.processCalculation({ panchangData });
+
+      // Format result for WhatsApp
+      const formattedResult = panchangService.formatResult(panchangResult);
+
+      // Send result to user
+      await this.sendDirectMessage(formattedResult);
+
+      this.logExecution('complete', 'Panchang analysis generated successfully');
+      return {
+        success: true,
+        type: 'panchang_analysis',
+        data: panchangResult
+      };
+    } catch (error) {
+      this.logger.error('Error in PanchangAnalysisAction:', error);
+      await this.handleExecutionError(error);
+      return { success: false, reason: 'execution_error', error: error.message };
+    }
   }
 
   /**
@@ -43,8 +97,7 @@ class PanchangAnalysisAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const { sendMessage } = require('../../messageSender');
-    await sendMessage(this.phoneNumber, 'I encountered an error generating your panchang analysis. Please try again.', 'text');
+    await this.sendDirectMessage('❌ *Panchang Analysis Error*\n\nI encountered an error generating your panchang analysis. Please try again later.');
   }
 
   /**

@@ -1,5 +1,6 @@
 const BaseAction = require('../BaseAction');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
+const { TarotReadingService } = require('../../../../core/services');
 
 /**
  * TarotReadingAction - Performs tarot card readings with professional interpretations.
@@ -62,22 +63,24 @@ class TarotReadingAction extends BaseAction {
   }
 
   /**
-   * Perform the actual tarot reading
+   * Perform the actual tarot reading using core service
    * @returns {Promise<Object|null>} Reading result or null on failure
    */
   async performTarotReading() {
     try {
-      try {
-        const tarotReader = require('../../../services/astrology/tarotReader');
-        const spreadType = 'single';
-        return await tarotReader.generateTarotReading(this.user, spreadType);
-      } catch (moduleError) {
-        this.logger.warn('tarotReader module not found, using fallback:', moduleError.message);
+      const tarotService = new TarotReadingService();
+      const spreadType = 'single';
+      const result = await tarotService.execute({ 
+        user: this.user, 
+        spreadType 
+      });
+      
+      if (result.success) {
+        return result;
+      } else {
+        this.logger.warn('Tarot service returned error:', result.error);
         return null; // This will trigger generic tarot reading
       }
-
-      // For now, always return null to trigger generic reading
-      return null; // Triggers sendGenericTarotReading() instead
     } catch (error) {
       this.logger.error('Error generating tarot reading:', error);
       return null;

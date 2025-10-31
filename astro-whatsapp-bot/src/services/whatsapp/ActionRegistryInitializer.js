@@ -55,6 +55,11 @@ const TraditionalHoraryAction = require('./actions/astrology/TraditionalHoraryAc
 const RemedialMeasuresAction = require('./actions/astrology/RemedialMeasuresAction');
 const VargaChartsAction = require('./actions/astrology/VargaChartsAction');
 
+// New medium-priority services
+const JaiminiAstrologyAction = require('./actions/astrology/JaiminiAstrologyAction');
+const GocharAction = require('./actions/astrology/GocharAction');
+const VarshaphalAction = require('./actions/astrology/VarshaphalAction');
+
 // Language and Settings Actions
 const SetLanguageAction = require('./actions/settings/SetLanguageAction');
 const ViewProfileAction = require('./actions/settings/ViewProfileAction');
@@ -168,6 +173,11 @@ class ActionRegistryInitializer {
     this.registry.registerAction(RemedialMeasuresAction.actionId, RemedialMeasuresAction);
     this.registry.registerAction(VargaChartsAction.actionId, VargaChartsAction);
 
+    // New medium-priority services
+    this.registry.registerAction(JaiminiAstrologyAction.actionId, JaiminiAstrologyAction);
+    this.registry.registerAction(GocharAction.actionId, GocharAction);
+    this.registry.registerAction(VarshaphalAction.actionId, VarshaphalAction);
+
     // Language and Settings Actions
     this.registry.registerAction(LanguageMenuAction.actionId, LanguageMenuAction);
     this.registry.registerAction(SetLanguageAction.actionId, SetLanguageAction);
@@ -266,6 +276,17 @@ class ActionRegistryInitializer {
     this.registry.registerKeyword('remedial', RemedialMeasuresAction.actionId);
     this.registry.registerKeyword('remedies', RemedialMeasuresAction.actionId);
     this.registry.registerKeyword('healing', RemedialMeasuresAction.actionId);
+
+    // New medium-priority service keywords
+    this.registry.registerKeyword('jaimini', JaiminiAstrologyAction.actionId);
+    this.registry.registerKeyword('jaimini astrology', JaiminiAstrologyAction.actionId);
+    this.registry.registerKeyword('chara karakas', JaiminiAstrologyAction.actionId);
+    this.registry.registerKeyword('gochar', GocharAction.actionId);
+    this.registry.registerKeyword('transit analysis', GocharAction.actionId);
+    this.registry.registerKeyword('planetary transits', GocharAction.actionId);
+    this.registry.registerKeyword('varshaphal', VarshaphalAction.actionId);
+    this.registry.registerKeyword('annual horoscope', VarshaphalAction.actionId);
+    this.registry.registerKeyword('yearly predictions', VarshaphalAction.actionId);
 
     // Language and Settings keywords
     this.registry.registerKeyword('language', LanguageMenuAction.actionId);

@@ -1,6 +1,5 @@
 const AstrologyAction = require('../base/AstrologyAction');
-const vedicCalculator = require('../../../services/astrology/vedic/VedicCalculator');
-const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const { AdvancedCompatibilityService } = require('../../../core/services');
 
 /**
  * CompatibilityAction - Analyzes synastry between two people for relationship compatibility.
@@ -95,14 +94,28 @@ class CompatibilityAction extends AstrologyAction {
         throw new Error('Invalid partner birth data provided');
       }
 
-      const compatibility = await vedicCalculator.checkCompatibility(
-        {
+      // Initialize Advanced Compatibility Service
+      const services = this.getServices();
+      const compatibilityService = new AdvancedCompatibilityService(services);
+
+      // Prepare compatibility data
+      const compatibilityData = {
+        birthData1: {
           birthDate: this.user.birthDate,
           birthTime: this.user.birthTime,
           birthPlace: this.user.birthPlace
         },
-        partnerData
-      );
+        birthData2: partnerData,
+        options: {
+          analysisType: 'comprehensive',
+          includeAshtakavarga: true,
+          includeKuta: true,
+          includeWestern: true
+        }
+      };
+
+      // Calculate compatibility using new service
+      const compatibility = await compatibilityService.processCalculation({ compatibilityData });
 
       return compatibility;
     } catch (error) {

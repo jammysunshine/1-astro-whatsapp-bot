@@ -3,15 +3,15 @@ const { MuhurtaCalculator } = require('../../services/astrology/vedic/calculator
 const logger = require('../../../utils/logger');
 
 /**
- * Muhurta Service (Electional Astrology)
- * Provides auspicious timing calculations for important activities using Vedic electional astrology
+ * Electional Astrology Service
+ * Provides comprehensive electional astrology calculations for finding auspicious timing
  * Extends ServiceTemplate for standardized service architecture
  */
-class MuhurtaService extends ServiceTemplate {
+class ElectionalAstrologyService extends ServiceTemplate {
   constructor(services) {
-    super('MuhurtaService', services);
+    super('ElectionalAstrologyService', services);
     
-    // Initialize Muhurta Calculator with required dependencies
+    // Initialize Muhurta Calculator for electional calculations
     this.calculator = new MuhurtaCalculator();
     
     // Set services in calculator
@@ -19,102 +19,112 @@ class MuhurtaService extends ServiceTemplate {
     
     // Service-specific configuration
     this.serviceConfig = {
-      supportedInputs: ['muhurtaData', 'birthData'],
-      requiredInputs: ['muhurtaData'],
-      outputFormats: ['detailed', 'summary', 'best-muhurta'],
-      activityCategories: {
-        marriage: 'Wedding, engagement, marriage commitment',
-        business: 'Business opening, contract signing, investment',
-        spiritual: 'Yagya, puja, mantra initiation, temple visit',
-        education: 'School admission, exam, course starting',
-        health: 'Surgery, medical treatment, therapy',
-        travel: 'Long journey, house shifting, migration',
-        housewarming: 'Home entry, property purchase, construction'
+      supportedInputs: ['electionalData', 'birthData'],
+      requiredInputs: ['electionalData'],
+      outputFormats: ['detailed', 'summary', 'best-timing'],
+      electionalCategories: {
+        marriage: 'Wedding ceremonies and marriage commitments',
+        business: 'Business ventures and contracts',
+        spiritual: 'Religious ceremonies and spiritual practices',
+        education: 'Educational pursuits and examinations',
+        health: 'Medical procedures and health treatments',
+        travel: 'Journeys and relocations',
+        property: 'Real estate and construction',
+        legal: 'Legal proceedings and court appearances',
+        financial: 'Investments and financial decisions'
       },
-      ratingThresholds: {
-        excellent: 85,
-        good: 70,
-        fair: 55,
-        poor: 40
+      timingFactors: {
+        planetary: 'Planetary positions and aspects',
+        lunar: 'Tithi and Nakshatra considerations',
+        weekday: 'Planetary weekday rulers',
+        hora: 'Planetary hours analysis',
+        yoga: 'Auspicious and inauspicious yogas',
+        karana: 'Half-lunar period influences'
       }
     };
   }
 
   /**
-   * Process Muhurta calculation using ServiceTemplate pattern
+   * Process Electional Astrology calculation using ServiceTemplate pattern
    * @param {Object} params - Calculation parameters
-   * @returns {Promise<Object>} Formatted Muhurta analysis
+   * @returns {Promise<Object>} Formatted Electional Astrology analysis
    */
   async processCalculation(params) {
-    const { muhurtaData, options = {} } = params;
+    const { electionalData, options = {} } = params;
     
     try {
       // Validate inputs
-      this._validateInputs(muhurtaData);
+      this._validateInputs(electionalData);
       
-      // Generate Muhurta using calculator
-      const muhurtaResult = await this.calculator.generateMuhurta(muhurtaData);
+      // Generate electional analysis using calculator
+      const electionalResult = await this.calculator.generateMuhurta(electionalData);
       
       // Add service metadata
-      muhurtaResult.serviceMetadata = {
+      electionalResult.serviceMetadata = {
         serviceName: this.serviceName,
-        calculationType: 'Muhurta (Electional Astrology)',
+        calculationType: 'Electional Astrology',
         timestamp: new Date().toISOString(),
-        method: 'Vedic auspicious timing calculation',
-        activityType: muhurtaData.activity,
-        calculationApproach: 'Traditional Muhurta principles'
+        method: 'Vedic electional astrology with comprehensive timing analysis',
+        activityType: electionalData.activity,
+        calculationApproach: 'Traditional Muhurta principles with modern enhancements'
       };
       
       // Add enhanced analysis
-      muhurtaResult.enhancedAnalysis = this._performEnhancedMuhurtaAnalysis(muhurtaResult, muhurtaData);
+      electionalResult.enhancedAnalysis = this._performEnhancedElectionalAnalysis(electionalResult, electionalData);
       
-      return muhurtaResult;
+      return electionalResult;
       
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
-      throw new Error(`Muhurta calculation failed: ${error.message}`);
+      throw new Error(`Electional Astrology calculation failed: ${error.message}`);
     }
   }
 
   /**
-   * Format Muhurta result for WhatsApp output
+   * Format Electional Astrology result for WhatsApp output
    * @param {Object} result - Calculation result
    * @returns {string} Formatted WhatsApp message
    */
   formatResult(result) {
     if (!result || !result.recommendations) {
-      return '❌ *Muhurta Analysis Error*\n\nUnable to generate Muhurta analysis. Please check your activity details and try again.';
+      return '❌ *Electional Astrology Analysis Error*\n\nUnable to generate electional astrology analysis. Please check your activity details and try again.';
     }
 
-    let formatted = `⏰ *Muhurta (Auspicious Timing) Analysis*\n\n`;
+    let formatted = `⏰ *Electional Astrology Analysis*\n\n`;
     
     // Add activity details
     formatted += `*Activity:* ${result.activity}\n`;
     formatted += `*Preferred Date:* ${result.preferredDate}\n`;
     formatted += `*Location:* ${result.location}\n\n`;
     
-    // Add daily analysis
+    // Add daily auspiciousness
     if (result.dailyAnalysis) {
       formatted += '*📅 Daily Auspiciousness:*\n';
       formatted += `• **Overall Rating:** ${result.dailyAnalysis.overallRating}\n`;
       formatted += `• **Tithi:** ${result.dailyAnalysis.tithi || 'N/A'}\n`;
       formatted += `• **Nakshatra:** ${result.dailyAnalysis.nakshatra || 'N/A'}\n`;
       formatted += `• **Yoga:** ${result.dailyAnalysis.yoga || 'N/A'}\n`;
-      formatted += `• **Karana:** ${result.dailyAnalysis.karana || 'N/A'}\n\n`;
+      formatted += `• **Weekday:** ${result.weekdaySuitability?.weekday || 'N/A'} (${result.weekdaySuitability?.lord || 'N/A'})\n\n`;
     }
     
-    // Add weekday suitability
-    if (result.weekdaySuitability) {
-      formatted += '*📆 Weekday Analysis:*\n';
-      formatted += `• **Day:** ${result.weekdaySuitability.weekday}\n`;
-      formatted += `• **Lord:** ${result.weekdaySuitability.lord}\n`;
-      formatted += `• **Suitability:** ${result.weekdaySuitability.suitability}\n`;
-      formatted += `• **Reason:** ${result.weekdaySuitability.reason}\n\n`;
+    // Add best timing recommendations
+    if (result.recommendations) {
+      formatted += '*🎯 Best Timing Recommendations:*\n';
+      if (result.recommendations.overall) {
+        formatted += `• **Overall:** ${result.recommendations.overall}\n`;
+      }
+      if (result.recommendations.bestTime) {
+        formatted += `• **Best Time:** ${result.recommendations.bestTime}\n`;
+      }
+      if (result.recommendations.precautions) {
+        formatted += `• **Precautions:** ${result.recommendations.precautions}\n`;
+      }
+      formatted += '\n';
     }
     
-    // Add best time slots
+    // Add time slots analysis
     if (result.timeSlotsAnalysis) {
-      formatted += '*🕐 Best Time Slots:*\n';
+      formatted += '*🕐 Auspicious Time Slots:*\n';
       const timeSlots = Object.entries(result.timeSlotsAnalysis)
         .filter(([time, data]) => data.suitability.rating !== 'Poor')
         .sort((a, b) => b[1].suitability.score - a[1].suitability.score)
@@ -128,12 +138,12 @@ class MuhurtaService extends ServiceTemplate {
           }
         });
       } else {
-        formatted += '• No highly suitable time slots found\n';
+        formatted += '• No highly suitable time slots found on this date\n';
       }
       formatted += '\n';
     }
     
-    // Add planetary strengths
+    // Add planetary support
     if (result.planetaryStrengths) {
       formatted += '*🌟 Planetary Support:*\n';
       if (result.planetaryStrengths.favorable && result.planetaryStrengths.favorable.length > 0) {
@@ -148,24 +158,9 @@ class MuhurtaService extends ServiceTemplate {
       formatted += '\n';
     }
     
-    // Add main recommendations
-    if (result.recommendations) {
-      formatted += '*💡 Main Recommendations:*\n';
-      if (result.recommendations.overall) {
-        formatted += `• **Overall:** ${result.recommendations.overall}\n`;
-      }
-      if (result.recommendations.bestTime) {
-        formatted += `• **Best Time:** ${result.recommendations.bestTime}\n`;
-      }
-      if (result.recommendations.precautions) {
-        formatted += `• **Precautions:** ${result.recommendations.precautions}\n`;
-      }
-      formatted += '\n';
-    }
-    
     // Add enhanced analysis if available
     if (result.enhancedAnalysis) {
-      formatted += '*🎯 Enhanced Analysis:*\n';
+      formatted += '*🎭 Enhanced Electional Analysis:*\n';
       
       if (result.enhancedAnalysis.overallAssessment) {
         formatted += `• **Assessment:** ${result.enhancedAnalysis.overallAssessment}\n`;
@@ -179,8 +174,8 @@ class MuhurtaService extends ServiceTemplate {
         formatted += `• **Actionable Advice:** ${result.enhancedAnalysis.actionableAdvice}\n`;
       }
       
-      if (result.enhancedAnalysis.alternativeSuggestion) {
-        formatted += `• **Alternative:** ${result.enhancedAnalysis.alternativeSuggestion}\n`;
+      if (result.enhancedAnalysis.electionalStrength) {
+        formatted += `• **Electional Strength:** ${result.enhancedAnalysis.electionalStrength}\n`;
       }
       
       formatted += '\n';
@@ -201,70 +196,74 @@ class MuhurtaService extends ServiceTemplate {
     }
     
     // Add service footer
-    formatted += '---\n*Muhurta - Vedic Auspicious Timing for Important Activities*';
+    formatted += '---\n*Electional Astrology - Finding Auspicious Timing for Important Activities*';
     
     return formatted;
   }
 
   /**
-   * Validate input parameters for Muhurta calculation
-   * @param {Object} muhurtaData - Muhurta data object
+   * Validate input parameters for Electional Astrology calculation
+   * @param {Object} electionalData - Electional data object
    * @private
    */
-  _validateInputs(muhurtaData) {
-    if (!muhurtaData) {
-      throw new Error('Muhurta data is required for auspicious timing analysis');
+  _validateInputs(electionalData) {
+    if (!electionalData) {
+      throw new Error('Electional data is required for auspicious timing analysis');
     }
     
-    if (!muhurtaData.activity || muhurtaData.activity.trim().length === 0) {
-      throw new Error('Activity type is required for Muhurta calculation');
+    if (!electionalData.activity || electionalData.activity.trim().length === 0) {
+      throw new Error('Activity type is required for electional astrology analysis');
     }
     
-    if (!muhurtaData.preferredDate) {
-      throw new Error('Preferred date is required for Muhurta analysis');
+    if (!electionalData.preferredDate) {
+      throw new Error('Preferred date is required for electional astrology analysis');
     }
     
-    if (!muhurtaData.location) {
-      throw new Error('Location is required for accurate Muhurta calculation');
+    if (!electionalData.location) {
+      throw new Error('Location is required for accurate electional astrology calculation');
     }
   }
 
   /**
-   * Perform enhanced analysis on Muhurta results
-   * @param {Object} result - Muhurta calculation result
-   * @param {Object} muhurtaData - Original request data
+   * Perform enhanced analysis on Electional Astrology results
+   * @param {Object} result - Electional calculation result
+   * @param {Object} electionalData - Original request data
    * @returns {Object} Enhanced analysis
    * @private
    */
-  _performEnhancedMuhurtaAnalysis(result, muhurtaData) {
+  _performEnhancedElectionalAnalysis(result, electionalData) {
     const analysis = {
       overallAssessment: '',
       timingQuality: '',
       actionableAdvice: '',
-      alternativeSuggestion: '',
-      confidenceLevel: '',
-      riskFactors: []
+      electionalStrength: '',
+      riskFactors: [],
+      confidenceLevel: ''
     };
     
     // Determine overall assessment
     if (result.dailyAnalysis?.overallRating) {
       const rating = result.dailyAnalysis.overallRating;
       if (rating === 'Excellent') {
-        analysis.overallAssessment = 'Highly auspicious day with excellent planetary support';
-        analysis.timingQuality = 'Premium timing - proceed with confidence';
-        analysis.actionableAdvice = 'This is an ideal time for your activity - take full advantage';
+        analysis.overallAssessment = 'Highly auspicious timing with excellent planetary support';
+        analysis.timingQuality = 'Premium electional timing - proceed with confidence';
+        analysis.actionableAdvice = 'This is an ideal time for your activity - take full advantage of auspicious conditions';
+        analysis.electionalStrength = 'Very Strong - Multiple favorable factors aligned';
       } else if (rating === 'Good') {
-        analysis.overallAssessment = 'Favorable day with good planetary alignments';
-        analysis.timingQuality = 'Good timing - favorable conditions present';
-        analysis.actionableAdvice = 'Proceed with your activity during recommended time slots';
+        analysis.overallAssessment = 'Favorable timing with good planetary alignments';
+        analysis.timingQuality = 'Good electional timing - favorable conditions present';
+        analysis.actionableAdvice = 'Proceed with your activity during recommended time slots for best results';
+        analysis.electionalStrength = 'Strong - Several favorable factors present';
       } else if (rating === 'Fair') {
-        analysis.overallAssessment = 'Moderate day with mixed planetary influences';
-        analysis.timingQuality = 'Acceptable timing - some precautions needed';
-        analysis.actionableAdvice = 'Proceed during best time slots with appropriate preparations';
+        analysis.overallAssessment = 'Moderate timing with mixed planetary influences';
+        analysis.timingQuality = 'Acceptable electional timing - some precautions needed';
+        analysis.actionableAdvice = 'Proceed during best time slots with appropriate preparations and remedies';
+        analysis.electionalStrength = 'Moderate - Balanced favorable and challenging factors';
       } else {
-        analysis.overallAssessment = 'Challenging day with difficult planetary conditions';
-        analysis.timingQuality = 'Difficult timing - consider alternatives';
+        analysis.overallAssessment = 'Challenging timing with difficult planetary conditions';
+        analysis.timingQuality = 'Difficult electional timing - consider alternatives';
         analysis.actionableAdvice = 'Postpone activity or choose alternative date if possible';
+        analysis.electionalStrength = 'Weak - Challenging factors predominant';
       }
     }
     
@@ -291,29 +290,35 @@ class MuhurtaService extends ServiceTemplate {
     }
     
     if (result.dailyAnalysis?.overallRating === 'Poor') {
-      analysis.riskFactors.push('Overall day rated as poor for activities');
+      analysis.riskFactors.push('Overall day rated as poor for electional activities');
     }
     
     if (result.weekdaySuitability?.suitability === 'Poor') {
-      analysis.riskFactors.push('Weekday not suitable for this activity');
+      analysis.riskFactors.push('Weekday not suitable for this activity type');
     }
     
-    // Suggest alternatives if needed
-    if (result.alternatives && result.alternatives.length > 0) {
-      const bestAlternative = result.alternatives[0];
-      analysis.alternativeSuggestion = `Consider ${bestAlternative.date} (${bestAlternative.rating})`;
+    // Add activity-specific considerations
+    if (electionalData.activity) {
+      const activity = electionalData.activity.toLowerCase();
+      if (activity.includes('marriage') || activity.includes('wedding')) {
+        analysis.actionableAdvice += '\n• Consider Venus and Jupiter periods for enhanced marital harmony';
+      } else if (activity.includes('business') || activity.includes('contract')) {
+        analysis.actionableAdvice += '\n• Mercury and Jupiter periods support business success';
+      } else if (activity.includes('health') || activity.includes('medical')) {
+        analysis.actionableAdvice += '\n• Avoid malefic planetary hours for health procedures';
+      }
     }
     
     return analysis;
   }
 
   /**
-   * Calculate confidence score for Muhurta analysis
+   * Calculate confidence score for Electional Astrology analysis
    * @param {Object} result - Calculation result
    * @returns {number} Confidence score (0-100)
    */
   calculateConfidence(result) {
-    let confidence = 75; // Base confidence for Muhurta
+    let confidence = 75; // Base confidence for Electional Astrology
     
     // Adjust based on daily analysis rating
     if (result.dailyAnalysis?.overallRating) {
@@ -373,9 +378,9 @@ class MuhurtaService extends ServiceTemplate {
    */
   getHelp() {
     return `
- ⏰ **Muhurta Service - Auspicious Timing for Important Activities**
+ ⏰ **Electional Astrology Service - Auspicious Timing for Important Activities**
 
-**Purpose:** Calculates the most favorable timing (Muhurta) for important activities using Vedic electional astrology
+**Purpose:** Calculates the most favorable timing (Muhurta) for important activities using Vedic electional astrology principles
 
 **Required Inputs:**
 • Activity type (what you want to do)
@@ -395,8 +400,8 @@ class MuhurtaService extends ServiceTemplate {
 • Business opening/launch
 • Contract signing
 • Investment decisions
-• New job joining
 • Important meetings
+• Career changes
 
 **🙏 Spiritual & Religious:**
 • Yagya and homa ceremonies
@@ -429,20 +434,27 @@ class MuhurtaService extends ServiceTemplate {
 • Construction start
 • Home entry
 
-**How Muhurta Calculation Works:**
+**⚖️ Legal & Financial:**
+• Legal proceedings
+• Court appearances
+• Investment decisions
+• Financial transactions
+
+**How Electional Astrology Works:**
 
 **📅 Panchanga Factors:**
-• **Tithi:** Lunar day influences
-• **Nakshatra:** Stellar constellations
-• **Yoga:** Planetary combinations
-• **Karana:** Half-lunar periods
-• **Vaara:** Weekday considerations
+• **Tithi:** Lunar day influences on activities
+• **Nakshatra:** Stellar constellation energies
+• **Yoga:** Planetary combinations (auspicious/inauspicious)
+• **Karana:** Half-lunar period influences
+• **Vaara:** Weekday planetary rulers
 
 **🌟 Planetary Analysis:**
 • Planetary positions and strengths
 • Favorable and challenging influences
 • Planetary hours and timing
 • Aspect relationships
+• Retrograde considerations
 
 **🕐 Time Slot Analysis:**
 • Hour-by-hour assessment
@@ -466,27 +478,28 @@ class MuhurtaService extends ServiceTemplate {
 • Precautions and considerations
 
 **Best Practices:**
-• Plan important activities in advance
+• Plan important activities well in advance
 • Consider multiple date options
 • Follow recommended time slots precisely
 • Prepare adequately for the activity
-• Consider personal birth chart compatibility
+• Consider personal chart compatibility
+• Perform appropriate remedies if needed
 
 **Example Usage:**
-"Muhurta for marriage on 15/06/2024 in Delhi"
-"Best time for business opening next week"
+"Electional astrology for marriage on 15/06/2024 in Delhi"
+"Best timing for business opening next week"
 "Auspicious timing for housewarming ceremony"
-"Muhurta for surgery in Mumbai this month"
+"Electional analysis for surgery in Mumbai this month"
 
 **Important Notes:**
-• Muhurta provides optimal timing, not guarantees
+• Electional astrology provides optimal timing, not guarantees
 • Personal effort and preparation remain crucial
 • Consider local customs and traditions
 • For critical activities, consult professional astrologers
 • Weather and practical factors should also be considered
 
 **Timing Precision:**
-• Muhurta calculations are location-specific
+• Electional calculations are location-specific
 • Time zones affect planetary positions
 • Seasonal variations influence auspiciousness
 • Planetary movements change daily patterns
@@ -496,8 +509,18 @@ class MuhurtaService extends ServiceTemplate {
 • Multiple time slots may be available on good days
 • Some activities have flexible timing requirements
 • Consider personal schedule constraints
+• Electional strength varies by activity type
+
+**Electional Strength Factors:**
+• Planetary dignity and placement
+• Lunar phase and tithi
+• Nakshatra compatibility
+• Weekday rulership
+• Planetary hour considerations
+• Yoga and karana combinations
+• Personal chart alignment
     `.trim();
   }
 }
 
-module.exports = MuhurtaService;
+module.exports = ElectionalAstrologyService;

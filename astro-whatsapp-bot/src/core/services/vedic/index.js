@@ -17,6 +17,26 @@ const CompatibilityService = require('./compatibilityService');
 const DetailedChartAnalysisService = require('./detailedChartAnalysisService');
 const CompatibilityScoreService = require('./compatibilityScoreService');
 const PanchangService = require('./panchangService');
+const AshtakavargaService = require('./ashtakavargaService');
+const DavisonChartService = require('./davisonChartService');
+const LunarReturnService = require('./lunarReturnService');
+// High-priority services
+const ElectionalAstrologyService = require('./electionalAstrologyService');
+const HoraryAstrologyService = require('./horaryAstrologyService');
+const FutureSelfAnalysisService = require('./futureSelfAnalysisService');
+const JaiminiAstrologyService = require('./jaiminiAstrologyService');
+const GocharService = require('./gocharService');
+const VarshaphalService = require('./varshaphalService');
+// Medium-priority services
+const EnhancedSecondaryProgressionsService = require('./enhancedSecondaryProgressionsService');
+const EnhancedSolarArcDirectionsService = require('./enhancedSolarArcDirectionsService');
+const SignificantTransitsService = require('./significantTransitsService');
+const ShadbalaService = require('./shadbalaService');
+const VedicYogasService = require('./vedicYogasService');
+// Newly implemented services
+const AdvancedCompatibilityService = require('./advancedCompatibilityService');
+const EnhancedPanchangService = require('./enhancedPanchangService');
+const PrashnaService = require('./prashnaService');
 // Add exports for all other Vedic services as they are implemented
 
 module.exports = {
@@ -39,5 +59,25 @@ module.exports = {
   DetailedChartAnalysisService,
   CompatibilityScoreService,
   PanchangService,
+  AshtakavargaService,
+  DavisonChartService,
+  LunarReturnService,
+  // High-priority services
+  ElectionalAstrologyService,
+  HoraryAstrologyService,
+  FutureSelfAnalysisService,
+  JaiminiAstrologyService,
+  GocharService,
+  VarshaphalService,
+  // Medium-priority services
+  EnhancedSecondaryProgressionsService,
+  EnhancedSolarArcDirectionsService,
+  SignificantTransitsService,
+  ShadbalaService,
+  VedicYogasService,
+  // Newly implemented services
+  AdvancedCompatibilityService,
+  EnhancedPanchangService,
+  PrashnaService,
   // Add all other Vedic services here
 };

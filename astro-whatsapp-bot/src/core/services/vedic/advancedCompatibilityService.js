@@ -340,6 +340,26 @@ class AdvancedCompatibilityService extends ServiceTemplate {
 Comprehensive compatibility report with scores, analysis, and recommendations
     `.trim();
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = AdvancedCompatibilityService;

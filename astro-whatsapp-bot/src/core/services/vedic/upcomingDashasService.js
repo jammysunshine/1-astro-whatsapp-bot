@@ -551,6 +551,26 @@ class UpcomingDashasService {
       disclaimer: 'Upcoming Dashas analysis forecasts future planetary period influences. Dasha periods indicate timing of life experiences and karmic influences. Actual experiences depend on individual karma, free will, and complete birth chart analysis.'
     };
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = UpcomingDashasService;

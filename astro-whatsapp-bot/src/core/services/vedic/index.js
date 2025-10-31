@@ -57,6 +57,13 @@ const FinancialAstrologyService = require('./financialAstrologyService');
 const NumerologyReportService = require('./numerologyReportService');
 const FixedStarsService = require('./fixedStarsService');
 const CareerAstrologyService = require('./careerAstrologyService');
+const AbhijitMuhurtaService = require('./abhijitMuhurtaService');
+const RahukalamService = require('./rahukalamService');
+const GulikakalamService = require('./gulikakalamService');
+const KaalSarpDoshaService = require('./kaalSarpDoshaService');
+const SadeSatiService = require('./sadeSatiService');
+const MedicalAstrologyService = require('./medicalAstrologyService');
+const NadiAstrologyService = require('./nadiAstrologyService');
 // Add exports for all other Vedic services as they are implemented
 
 module.exports = {
@@ -119,5 +126,12 @@ module.exports = {
   NumerologyReportService,
   FixedStarsService,
   CareerAstrologyService,
+  AbhijitMuhurtaService,
+  RahukalamService,
+  GulikakalamService,
+  KaalSarpDoshaService,
+  SadeSatiService,
+  MedicalAstrologyService,
+  NadiAstrologyService,
   // Add all other Vedic services here
 };

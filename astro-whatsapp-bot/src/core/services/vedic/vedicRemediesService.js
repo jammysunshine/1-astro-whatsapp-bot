@@ -5,7 +5,6 @@
  * for planetary appeasement and astrological corrections.
  */
 
-const { VedicRemedies } = require('../../../services/astrology/vedicRemedies');
 const logger = require('../../../utils/logger');
 
 class VedicRemediesService {
@@ -213,6 +212,26 @@ class VedicRemediesService {
       category: 'vedic',
       methods: ['execute', 'getPlanetRemedies', 'getDoshaRemedies']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

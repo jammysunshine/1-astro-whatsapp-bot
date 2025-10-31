@@ -341,6 +341,26 @@ class PerformSynastryAnalysisService {
       disclaimer: 'Synastry analysis examines astrological compatibility between two individuals. Real relationships involve many factors beyond planetary positions. Professional counseling is recommended for important relationship decisions.'
     };
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = PerformSynastryAnalysisService;

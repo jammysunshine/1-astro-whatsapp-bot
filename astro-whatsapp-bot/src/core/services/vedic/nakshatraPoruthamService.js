@@ -1,4 +1,3 @@
-const { NadiCompatibility } = require('../../services/astrology/nadi/NadiCompatibility');
 const logger = require('../../../utils/logger');
 
 /**
@@ -209,6 +208,26 @@ class NakshatraPoruthamService {
       },
       disclaimer: 'This analysis is for informational purposes only. Marriage and relationship decisions should consider multiple factors beyond astrological compatibility.'
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

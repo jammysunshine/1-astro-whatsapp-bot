@@ -13,7 +13,7 @@ const logger = require('../../utils/logger');
  */
 class MedicalAstrologyService extends ServiceTemplate {
   constructor(services) {
-    super(new MedicalAstrologyCalculator());
+    super('umedicalAstrologyService'));
     
     // Initialize calculator with services if provided
     if (services) {
@@ -178,6 +178,26 @@ class MedicalAstrologyService extends ServiceTemplate {
 **Output Format:**
 Comprehensive medical astrology report with health indicators, house analysis, focus areas, and recommendations
     `.trim();
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

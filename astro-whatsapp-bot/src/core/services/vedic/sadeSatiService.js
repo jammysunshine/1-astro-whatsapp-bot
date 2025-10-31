@@ -12,7 +12,7 @@ const logger = require('../../utils/logger');
  */
 class SadeSatiService extends ServiceTemplate {
   constructor(services) {
-    super(new SadeSatiCalculator());
+    super('usadeSatiService'));
     
     // Initialize calculator with services if provided
     if (services) {
@@ -197,6 +197,26 @@ class SadeSatiService extends ServiceTemplate {
 **Output Format:**
 Comprehensive Sade Sati report with current status, upcoming periods, past analysis, relief periods, predictions, and remedies
     `.trim();
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

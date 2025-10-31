@@ -647,6 +647,26 @@ class BasicBirthChartService {
       disclaimer: 'This basic birth chart provides essential astrological information for general understanding. For comprehensive analysis, consult a qualified astrologer. Astrology is a tool for self-awareness and should not replace professional advice.'
     };
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = BasicBirthChartService;

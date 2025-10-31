@@ -426,6 +426,26 @@ class CompositeChartService {
       disclaimer: 'Composite charts represent the relationship as a separate entity. This analysis provides insights into the partnership\'s potential and purpose. Professional counseling is recommended for relationship guidance.'
     };
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = CompositeChartService;

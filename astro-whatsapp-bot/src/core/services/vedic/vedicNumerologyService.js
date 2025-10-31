@@ -5,7 +5,6 @@
  * based on Sanskrit alphabet and Vedic principles for name and birth number calculations.
  */
 
-const { VedicNumerology } = require('../../../services/astrology/vedicNumerology');
 const logger = require('../../../utils/logger');
 
 class VedicNumerologyService {
@@ -166,6 +165,26 @@ class VedicNumerologyService {
       category: 'vedic',
       methods: ['execute', 'calculateNameNumber', 'getAnalysis']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

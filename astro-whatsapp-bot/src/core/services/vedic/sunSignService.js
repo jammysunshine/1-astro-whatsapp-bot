@@ -684,6 +684,26 @@ class SunSignService {
       disclaimer: 'Sun sign analysis provides general personality insights based on birth date. Individual charts are unique and comprehensive astrological analysis considers all planetary positions. Astrology offers guidance for self-understanding.'
     };
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = SunSignService;

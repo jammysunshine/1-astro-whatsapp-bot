@@ -694,6 +694,26 @@ class MoonSignService {
       disclaimer: 'Moon sign analysis reveals emotional patterns and psychological tendencies. Individual emotional experiences are influenced by the entire birth chart. Astrology provides insights for self-understanding and emotional growth.'
     };
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = MoonSignService;

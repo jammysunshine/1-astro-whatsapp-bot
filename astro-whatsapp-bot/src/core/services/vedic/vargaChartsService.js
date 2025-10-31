@@ -5,7 +5,6 @@
  * with Swiss Ephemeris integration for precise chart calculations.
  */
 
-const { VargaCharts } = require('../../../services/astrology/vargaCharts');
 const logger = require('../../../utils/logger');
 
 class VargaChartsService {
@@ -154,6 +153,26 @@ class VargaChartsService {
       category: 'vedic',
       methods: ['execute', 'getVargaChart']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

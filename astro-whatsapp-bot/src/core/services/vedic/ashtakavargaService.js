@@ -375,6 +375,26 @@ class AshtakavargaService extends ServiceTemplate {
 Comprehensive Ashtakavarga report with planetary strengths, house analysis, and life guidance
     `.trim();
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = AshtakavargaService;

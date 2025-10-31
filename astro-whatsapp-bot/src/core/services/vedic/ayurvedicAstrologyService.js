@@ -5,7 +5,6 @@
  * Determines dominant doshas (Vata/Pitta/Kapha) and provides personalized health guidance.
  */
 
-const { AyurvedicAstrology } = require('../../../services/astrology/ayurvedicAstrology');
 const logger = require('../../../utils/logger');
 
 class AyurvedicAstrologyService {
@@ -169,6 +168,26 @@ class AyurvedicAstrologyService {
       category: 'vedic',
       methods: ['execute', 'getConstitution', 'getRecommendations']
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

@@ -430,6 +430,26 @@ class HinduAstrologyService {
       disclaimer: 'This Hindu astrology analysis follows traditional Vedic principles. Astrology is a tool for self-understanding and should not replace professional medical, legal, or psychological advice. Consult qualified practitioners for important life decisions.'
     };
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = HinduAstrologyService;

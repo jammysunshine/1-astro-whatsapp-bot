@@ -430,6 +430,26 @@ class GenerateGroupAstrologyService {
       disclaimer: 'Group astrology analysis examines collective energies and interpersonal dynamics. Individual charts retain their unique influences while contributing to group patterns. Professional counseling is recommended for important group decisions.'
     };
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = GenerateGroupAstrologyService;

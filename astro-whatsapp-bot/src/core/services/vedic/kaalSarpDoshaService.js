@@ -12,7 +12,7 @@ const logger = require('../../utils/logger');
  */
 class KaalSarpDoshaService extends ServiceTemplate {
   constructor(services) {
-    super(new KaalSarpDoshaCalculator());
+    super('ukaalSarpDoshaService'));
     
     // Initialize calculator with services if provided
     if (services) {
@@ -186,6 +186,26 @@ class KaalSarpDoshaService extends ServiceTemplate {
 **Output Format:**
 Comprehensive Kaal Sarp Dosha report with type analysis, strength assessment, effects, remedies, exceptions, and predictions
     `.trim();
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

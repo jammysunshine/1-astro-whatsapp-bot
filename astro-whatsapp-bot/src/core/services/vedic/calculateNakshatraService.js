@@ -847,6 +847,26 @@ class CalculateNakshatraService {
       disclaimer: 'Nakshatra analysis reveals lunar mansion influences on personality and life path. Nakshatras are lunar constellations that shape emotional nature and soul purpose. Complete astrological analysis considers the entire birth chart for comprehensive understanding.'
     };
   }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
 
 module.exports = CalculateNakshatraService;

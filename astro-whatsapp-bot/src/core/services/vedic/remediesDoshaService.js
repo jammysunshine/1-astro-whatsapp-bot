@@ -6,7 +6,6 @@
  * mantras, charities, pujas, and yantras based on birth chart analysis.
  */
 
-const vedicRemedies = require('../../../services/astrology/vedicRemedies');
 const logger = require('../../../utils/logger');
 
 class RemediesDoshaService {
@@ -891,6 +890,26 @@ class RemediesDoshaService {
       dependencies: ['vedicRemedies'],
       category: 'vedic'
     };
+  }
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

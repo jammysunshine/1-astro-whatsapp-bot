@@ -38,9 +38,9 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for group timing analysis.
 
 6.  `calculateNakshatraPorutham`
-     *   **Source:** Likely within `src/services/astrology/compatibility/CompatibilityChecker.js`, `src/services/astrology/compatibility/SynastryEngine.js`, or `src/services/astrology/nadi/NadiCompatibility.js`.
+     *   **Source:** `src/services/astrology/nadi/NadiCompatibility.js`
      *   **Target File:** `core/services/vedic/nakshatraPoruthamService.js`
-     *   **Notes:** Dedicated service for Nakshatra compatibility calculations.
+     *   **Notes:** Contains Nakshatra compatibility analysis with proper matching algorithms.
 
 7.  `calculateCompatibilityScore`
      *   **Source:** `src/services/astrology/compatibility/CompatibilityScorer.js` (✅ BEST: contains core scoring algorithms with astrologer library integration).
@@ -238,9 +238,9 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for Ayurvedic astrology analysis.
 
 46. `generateLifePatterns`
-     *   **Source:** Needs to be identified. Might be a general utility or part of a comprehensive analysis.
+     *   **Source:** `src/services/astrology/vedicCalculator.js.backup` - function generateLifePatterns(sunSign) starting at line 2226.
      *   **Target File:** `core/services/vedic/lifePatternsService.js`
-     *   **Notes:** Dedicated service for life pattern analysis.
+     *   **Notes:** Generates life pattern analysis based on sun sign with detailed characteristics.
 
 47. `get_panchang_analysis`
      *   **Source:** `src/services/astrology/panchang.js`, `src/services/astrology/vedic/calculators/PanchangCalculator.js`.
@@ -330,9 +330,9 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for asteroid analysis.
 
 64. `get_fixed_stars_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/calculators/FixedStarsCalculator.js` (✅ BEST: uses Swiss Ephemeris for precise fixed star calculations).
      *   **Target File:** `core/services/western/fixedStarsService.js`
-     *   **Notes:** Dedicated service for fixed stars analysis.
+     *   **Notes:** Dedicated service for fixed stars analysis using Swiss Ephemeris.
 
 65. `get_solar_return_analysis`
      *   **Source:** `src/services/astrology/vedic/calculators/SolarReturnCalculator.js`.
@@ -340,9 +340,9 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for solar return analysis.
 
 66. `get_career_astrology_analysis`
-     *   **Source:** Needs to be identified.
-     *   **Target File:** `core/services/western/careerAstrologyService.js`
-     *   **Notes:** Dedicated service for career astrology analysis.
+     *   **Source:** `src/services/astrology/calculators/CareerAstrologyCalculator.js` (✅ BEST: uses Swiss Ephemeris for career timing analysis).
+     *   **Target File:** `core/services/divination/careerAstrologyService.js`
+     *   **Notes:** Dedicated service for career astrology using Swiss Ephemeris.
 
 67. `get_financial_astrology_analysis`
      *   **Source:** Needs to be identified.
@@ -367,9 +367,9 @@ Each entry below represents a microservice. We will identify its source in the e
 ### Divination & Alternative Systems Services
 
 71. `get_tarot_reading`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/tarotReader.js`
      *   **Target File:** `core/services/divination/tarotReadingService.js`
-     *   **Notes:** Dedicated service for tarot readings.
+     *   **Notes:** Comprehensive tarot reading system with multiple spreads.
 
 72. `get_iching_reading`
      *   **Source:** Needs to be identified.
@@ -377,14 +377,14 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for I Ching readings.
 
 73. `get_palmistry_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/palmistryReader.js`
      *   **Target File:** `core/services/divination/palmistryService.js`
-     *   **Notes:** Dedicated service for palmistry analysis.
+     *   **Notes:** Palmistry analysis service with line interpretations.
 
 74. `show_chinese_flow`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/chineseCalculator.js`
      *   **Target File:** `core/services/divination/chineseAstrologyService.js`
-     *   **Notes:** Dedicated service for Chinese astrology.
+     *   **Notes:** Chinese astrology calculations and analysis.
 
 75. `get_mayan_analysis`
      *   **Source:** Needs to be identified.
@@ -412,19 +412,19 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for Islamic astrology information.
 
 80. `get_horary_reading`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/horary/HoraryCalculator.js` (✅ BEST: uses Swiss Ephemeris for precise horary calculations).
      *   **Target File:** `core/services/divination/horaryAstrologyService.js`
-     *   **Notes:** Dedicated service for horary astrology readings.
+     *   **Notes:** Dedicated service for horary astrology using Swiss Ephemeris.
 
 81. `get_numerology_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/numerologyService.js`
      *   **Target File:** `core/services/divination/numerologyAnalysisService.js`
-     *   **Notes:** Dedicated service for numerology analysis.
+     *   **Notes:** Numerology analysis service.
 
 82. `get_numerology_report`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/numerologyService.js`
      *   **Target File:** `core/services/divination/numerologyReportService.js`
-     *   **Notes:** Dedicated service for numerology reports.
+     *   **Notes:** Detailed numerology report generation.
 
 83. `get_lunar_return`
      *   **Source:** `src/services/astrology/vedic/calculators/LunarReturnCalculator.js`.
@@ -437,14 +437,14 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for future self analysis.
 
 85. `get_electional_astrology`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/mundane/PoliticalAstrology.js` and related mundane astrology files.
      *   **Target File:** `core/services/divination/electionalAstrologyService.js`
-     *   **Notes:** Dedicated service for electional astrology.
+     *   **Notes:** Electional astrology for timing important events.
 
 86. `get_mundane_astrology_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/mundane/PoliticalAstrology.js` and related mundane astrology files.
      *   **Target File:** `core/services/divination/mundaneAstrologyService.js`
-     *   **Notes:** Dedicated service for mundane astrology analysis.
+     *   **Notes:** Mundane astrology for world events and political analysis.
 
 87. `get_daily_horoscope`
      *   **Source:** `src/services/astrology/vedic/calculators/DailyHoroscopeCalculator.js`.
@@ -452,19 +452,19 @@ Each entry below represents a microservice. We will identify its source in the e
      *   **Notes:** Dedicated service for daily horoscope generation.
 
 88. `show_nadi_flow`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/nadiReader.js`
      *   **Target File:** `core/services/divination/nadiAstrologyService.js`
-     *   **Notes:** Dedicated service for Nadi astrology flow.
+     *   **Notes:** Nadi astrology flow and analysis.
 
 89. `get_hindu_festivals_info`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/hinduFestivals.js`
      *   **Target File:** `core/services/divination/hinduFestivalsService.js`
-     *   **Notes:** Dedicated service for Hindu festivals information.
+     *   **Notes:** Hindu festivals information and timing.
 
 90. `get_numerology_analysis`
-     *   **Source:** Needs to be identified.
+     *   **Source:** `src/services/astrology/numerologyService.js` (duplicate of #81)
      *   **Target File:** `core/services/divination/numerologyAnalysisService.js`
-     *   **Notes:** Dedicated service for numerology analysis.
+     *   **Notes:** Numerology analysis service (duplicate entry).
 
 
 

@@ -1,63 +1,32 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
 
-/**
- * Major Transits Service
- * Implements major planetary transit identification using Swiss Ephemeris
- */
+// Import calculator from legacy structure
+const { SignificantTransitsCalculator } = require('../../../services/astrology/vedic/calculators/SignificantTransitsCalculator');
+
 class MajorTransitsService extends ServiceTemplate {
   constructor() {
-    super('MajorTransitsService');
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/SignificantTransitsCalculator';
+    super(new SignificantTransitsCalculator());
+    this.serviceName = 'MajorTransitsService';
+    logger.info('MajorTransitsService initialized');
   }
 
-  /**
-   * Initialize the Major Transits service
-   */
-  async initialize() {
+  async processCalculation(birthData) {
     try {
-      await super.initialize();
-      logger.info('✅ MajorTransitsService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize MajorTransitsService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(birthData);
 
-  /**
-   * Identify major transits
-   * @param {Object} params - Calculation parameters
-   * @returns {Object} Major transits analysis
-   */
-  async identifyMajorTransits(params) {
-    try {
-      this.validateParams(params, ['birthData']);
-      
-      const { birthData, startDate, endDate, options = {} } = params;
-      
-      // Use significant transits calculator for major transit identification
-      const result = await this.calculator.identifyMajorTransits(birthData, startDate, endDate, options);
-      
-      return {
-        success: true,
-        data: result,
-        metadata: {
-          calculationType: 'major_transits',
-          period: { startDate, endDate },
-          timestamp: new Date().toISOString(),
-          options
-        }
-      };
+      // Identify major transits for next year by default
+      const startDate = new Date();
+      const endDate = new Date();
+      endDate.setFullYear(endDate.getFullYear() + 1);
+
+      const result = await this.calculator.identifyMajorTransits(birthData, startDate, endDate, {});
+
+      return result;
     } catch (error) {
-      logger.error('❌ Error identifying major transits:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'major_transits',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('MajorTransitsService calculation error:', error);
+      throw new Error(`Major transits calculation failed: ${error.message}`);
     }
   }
 
@@ -244,32 +213,38 @@ class MajorTransitsService extends ServiceTemplate {
     }
   }
 
-  /**
-   * Get service health status
-   * @returns {Object} Health status
-   */
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      
-      return {
-        ...baseHealth,
-        features: {
-          majorTransits: true,
-          currentMajorTransits: true,
-          upcomingMajorTransits: true,
-          saturnReturns: true,
-          jupiterReturns: true,
-          outerPlanetTransits: true
-        }
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
     }
+
+    const required = ['birthDate', 'birthTime', 'birthPlace'];
+    for (const field of required) {
+      if (!birthData[field]) {
+        throw new Error(`${field} is required for major transits analysis`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['identifyMajorTransits', 'getCurrentMajorTransits', 'getUpcomingMajorTransits'],
+      dependencies: ['SignificantTransitsCalculator']
+    };
   }
 }
 

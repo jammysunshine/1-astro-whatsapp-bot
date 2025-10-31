@@ -1,63 +1,29 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
 
-/**
- * Asteroids Service
- * Implements asteroid analysis and interpretations using Swiss Ephemeris
- */
+// Import calculator from legacy structure
+const { AsteroidCalculator } = require('../../../services/astrology/vedic/calculators/AsteroidCalculator');
+
 class AsteroidsService extends ServiceTemplate {
   constructor() {
-    super('AsteroidsService');
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/AsteroidCalculator';
+    super(new AsteroidCalculator());
+    this.serviceName = 'AsteroidsService';
+    logger.info('AsteroidsService initialized');
   }
 
-  /**
-   * Initialize the Asteroids service
-   */
-  async initialize() {
+  async processCalculation(birthData) {
     try {
-      await super.initialize();
-      logger.info('✅ AsteroidsService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize AsteroidsService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(birthData);
 
-  /**
-   * Calculate asteroid positions
-   * @param {Object} params - Calculation parameters
-   * @returns {Object} Asteroid positions analysis
-   */
-  async calculateAsteroidPositions(params) {
-    try {
-      this.validateParams(params, ['birthData']);
-      
-      const { birthData, asteroids = ['Ceres', 'Pallas', 'Juno', 'Vesta'], options = {} } = params;
-      
-      // Calculate asteroid positions
-      const result = await this.calculator.calculateAsteroidPositions(birthData, asteroids, options);
-      
-      return {
-        success: true,
-        data: result,
-        metadata: {
-          calculationType: 'asteroid_positions',
-          asteroids,
-          timestamp: new Date().toISOString(),
-          options
-        }
-      };
+      // Calculate asteroid positions for default asteroids
+      const asteroids = ['Ceres', 'Pallas', 'Juno', 'Vesta'];
+      const result = await this.calculator.calculateAsteroidPositions(birthData, asteroids, {});
+
+      return result;
     } catch (error) {
-      logger.error('❌ Error calculating asteroid positions:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'asteroid_positions',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('AsteroidsService calculation error:', error);
+      throw new Error(`Asteroid calculation failed: ${error.message}`);
     }
   }
 
@@ -316,34 +282,38 @@ class AsteroidsService extends ServiceTemplate {
     }
   }
 
-  /**
-   * Get service health status
-   * @returns {Object} Health status
-   */
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      
-      return {
-        ...baseHealth,
-        features: {
-          asteroidPositions: true,
-          asteroidAspects: true,
-          asteroidTransits: true,
-          ceresAnalysis: true,
-          pallasAnalysis: true,
-          junoAnalysis: true,
-          vestaAnalysis: true,
-          chironAnalysis: true
-        }
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
     }
+
+    const required = ['birthDate', 'birthTime', 'birthPlace'];
+    for (const field of required) {
+      if (!birthData[field]) {
+        throw new Error(`${field} is required for asteroid analysis`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['calculateAsteroidPositions', 'analyzeAsteroidAspects', 'calculateAsteroidTransits'],
+      dependencies: ['AsteroidCalculator']
+    };
   }
 }
 

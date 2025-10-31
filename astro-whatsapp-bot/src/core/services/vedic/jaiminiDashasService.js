@@ -1,62 +1,28 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
 
-/**
- * Jaimini Dashas Service
- * Implements Jaimini Dasha system calculations using Swiss Ephemeris
- */
+// Import calculator from legacy structure
+const { JaiminiCalculator } = require('../../../services/astrology/vedic/calculators/JaiminiCalculator');
+
 class JaiminiDashasService extends ServiceTemplate {
   constructor() {
-    super('JaiminiDashasService');
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/JaiminiCalculator';
+    super(new JaiminiCalculator());
+    this.serviceName = 'JaiminiDashasService';
+    logger.info('JaiminiDashasService initialized');
   }
 
-  /**
-   * Initialize the Jaimini Dashas service
-   */
-  async initialize() {
+  async processCalculation(birthData) {
     try {
-      await super.initialize();
-      logger.info('✅ JaiminiDashasService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize JaiminiDashasService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(birthData);
 
-  /**
-   * Calculate Jaimini Dashas
-   * @param {Object} params - Calculation parameters
-   * @returns {Object} Jaimini Dasha analysis
-   */
-  async calculateJaiminiDashas(params) {
-    try {
-      this.validateParams(params, ['birthData']);
-      
-      const { birthData, options = {} } = params;
-      
       // Use Jaimini calculator for dasha calculations
-      const result = await this.calculator.calculateJaiminiDashas(birthData, options);
-      
-      return {
-        success: true,
-        data: result,
-        metadata: {
-          calculationType: 'jaimini_dashas',
-          timestamp: new Date().toISOString(),
-          options
-        }
-      };
+      const result = await this.calculator.calculateJaiminiDashas(birthData, {});
+
+      return result;
     } catch (error) {
-      logger.error('❌ Error calculating Jaimini Dashas:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'jaimini_dashas',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('JaiminiDashasService calculation error:', error);
+      throw new Error(`Jaimini Dashas calculation failed: ${error.message}`);
     }
   }
 
@@ -203,31 +169,38 @@ class JaiminiDashasService extends ServiceTemplate {
     }
   }
 
-  /**
-   * Get service health status
-   * @returns {Object} Health status
-   */
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      
-      return {
-        ...baseHealth,
-        features: {
-          jaiminiDashas: true,
-          charaDasha: true,
-          sthiraDasha: true,
-          currentDasha: true,
-          upcomingDashas: true
-        }
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
     }
+
+    const required = ['birthDate', 'birthTime', 'birthPlace'];
+    for (const field of required) {
+      if (!birthData[field]) {
+        throw new Error(`${field} is required for Jaimini Dashas calculation`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['calculateJaiminiDashas', 'getCurrentJaiminiDasha', 'getUpcomingJaiminiDashas'],
+      dependencies: ['JaiminiCalculator']
+    };
   }
 }
 

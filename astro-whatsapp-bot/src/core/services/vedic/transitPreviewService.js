@@ -1,63 +1,32 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
 
-/**
- * Transit Preview Service
- * Implements transit preview and forecasting using Swiss Ephemeris
- */
+// Import calculator from legacy structure
+const { TransitCalculator } = require('../../../services/astrology/vedic/calculators/TransitCalculator');
+
 class TransitPreviewService extends ServiceTemplate {
   constructor() {
-    super('TransitPreviewService');
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/TransitCalculator';
+    super(new TransitCalculator());
+    this.serviceName = 'TransitPreviewService';
+    logger.info('TransitPreviewService initialized');
   }
 
-  /**
-   * Initialize the Transit Preview service
-   */
-  async initialize() {
+  async processCalculation(birthData) {
     try {
-      await super.initialize();
-      logger.info('✅ TransitPreviewService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize TransitPreviewService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(birthData);
 
-  /**
-   * Generate transit preview
-   * @param {Object} params - Calculation parameters
-   * @returns {Object} Transit preview
-   */
-  async generateTransitPreview(params) {
-    try {
-      this.validateParams(params, ['birthData']);
-      
-      const { birthData, startDate, endDate, options = {} } = params;
-      
-      // Generate transit preview
-      const result = await this.calculator.generateTransitPreview(birthData, startDate, endDate, options);
-      
-      return {
-        success: true,
-        data: result,
-        metadata: {
-          calculationType: 'transit_preview',
-          period: { startDate, endDate },
-          timestamp: new Date().toISOString(),
-          options
-        }
-      };
+      // Generate transit preview for next 30 days by default
+      const startDate = new Date();
+      const endDate = new Date();
+      endDate.setDate(endDate.getDate() + 30);
+
+      const result = await this.calculator.generateTransitPreview(birthData, startDate, endDate, {});
+
+      return result;
     } catch (error) {
-      logger.error('❌ Error generating transit preview:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'transit_preview',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('TransitPreviewService calculation error:', error);
+      throw new Error(`Transit preview calculation failed: ${error.message}`);
     }
   }
 
@@ -247,32 +216,38 @@ class TransitPreviewService extends ServiceTemplate {
     }
   }
 
-  /**
-   * Get service health status
-   * @returns {Object} Health status
-   */
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      
-      return {
-        ...baseHealth,
-        features: {
-          transitPreview: true,
-          monthlyForecast: true,
-          yearlyForecast: true,
-          weeklyPreview: true,
-          dailyHighlights: true,
-          criticalDates: true
-        }
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
     }
+
+    const required = ['birthDate', 'birthTime', 'birthPlace'];
+    for (const field of required) {
+      if (!birthData[field]) {
+        throw new Error(`${field} is required for transit preview calculation`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['generateTransitPreview', 'getMonthlyTransitForecast', 'getYearlyTransitForecast'],
+      dependencies: ['TransitCalculator']
+    };
   }
 }
 

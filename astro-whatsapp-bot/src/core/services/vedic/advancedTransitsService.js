@@ -1,63 +1,32 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
 
-/**
- * Advanced Transits Service
- * Implements advanced transit analysis techniques using Swiss Ephemeris
- */
+// Import calculator from legacy structure
+const { TransitCalculator } = require('../../../services/astrology/vedic/calculators/TransitCalculator');
+
 class AdvancedTransitsService extends ServiceTemplate {
   constructor() {
-    super('AdvancedTransitsService');
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/TransitCalculator';
+    super(new TransitCalculator());
+    this.serviceName = 'AdvancedTransitsService';
+    logger.info('AdvancedTransitsService initialized');
   }
 
-  /**
-   * Initialize the Advanced Transits service
-   */
-  async initialize() {
+  async processCalculation(birthData) {
     try {
-      await super.initialize();
-      logger.info('✅ AdvancedTransitsService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize AdvancedTransitsService:', error);
-      throw error;
-    }
-  }
+      // Validate input
+      this.validate(birthData);
 
-  /**
-   * Calculate advanced transits analysis
-   * @param {Object} params - Calculation parameters
-   * @returns {Object} Advanced transits analysis
-   */
-  async calculateAdvancedTransits(params) {
-    try {
-      this.validateParams(params, ['birthData']);
-      
-      const { birthData, startDate, endDate, options = {} } = params;
-      
-      // Use transit calculator for advanced analysis
-      const result = await this.calculator.calculateAdvancedTransits(birthData, startDate, endDate, options);
-      
-      return {
-        success: true,
-        data: result,
-        metadata: {
-          calculationType: 'advanced_transits',
-          period: { startDate, endDate },
-          timestamp: new Date().toISOString(),
-          options
-        }
-      };
+      // Calculate advanced transits for next 6 months by default
+      const startDate = new Date();
+      const endDate = new Date();
+      endDate.setMonth(endDate.getMonth() + 6);
+
+      const result = await this.calculator.calculateAdvancedTransits(birthData, startDate, endDate, {});
+
+      return result;
     } catch (error) {
-      logger.error('❌ Error calculating advanced transits:', error);
-      return {
-        success: false,
-        error: error.message,
-        metadata: {
-          calculationType: 'advanced_transits',
-          timestamp: new Date().toISOString()
-        }
-      };
+      logger.error('AdvancedTransitsService calculation error:', error);
+      throw new Error(`Advanced transits calculation failed: ${error.message}`);
     }
   }
 
@@ -248,32 +217,38 @@ class AdvancedTransitsService extends ServiceTemplate {
     }
   }
 
-  /**
-   * Get service health status
-   * @returns {Object} Health status
-   */
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      
-      return {
-        ...baseHealth,
-        features: {
-          advancedTransits: true,
-          transitAspects: true,
-          transitReturns: true,
-          planetaryStations: true,
-          eclipseTransits: true,
-          compositeTransits: true
-        }
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+      service: this.serviceName
+    };
+  }
+
+  validate(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required');
     }
+
+    const required = ['birthDate', 'birthTime', 'birthPlace'];
+    for (const field of required) {
+      if (!birthData[field]) {
+        throw new Error(`${field} is required for advanced transits analysis`);
+      }
+    }
+
+    return true;
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['calculateAdvancedTransits', 'calculateTransitAspects', 'calculateTransitReturns'],
+      dependencies: ['TransitCalculator']
+    };
   }
 }
 

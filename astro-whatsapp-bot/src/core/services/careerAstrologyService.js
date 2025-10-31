@@ -1,20 +1,27 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-// Import calculator from legacy structure
-const { CareerAstrologyCalculator } = require('../../services/astrology/calculators/CareerAstrologyCalculator');
-
 class CareerAstrologyService extends ServiceTemplate {
   constructor() {
-    super(new CareerAstrologyCalculator());
-    this.serviceName = 'CareerAstrologyService';
-    logger.info('CareerAstrologyService initialized');
+    super('CareerAstrologyService');
+    this.calculatorPath = '../../../services/astrology/calculators/CareerAstrologyCalculator';
   }
 
-  async processCalculation(birthData) {
+  async initialize() {
     try {
-      // Validate input
-      this.validate(birthData);
+      await super.initialize();
+      logger.info('✅ CareerAstrologyService initialized successfully');
+    } catch (error) {
+      logger.error('❌ Failed to initialize CareerAstrologyService:', error);
+      throw error;
+    }
+  }
+
+  async analyzeCareerAstrology(params) {
+    try {
+      this.validateParams(params, ['birthData']);
+
+      const { birthData, options = {} } = params;
 
       // Perform career astrology analysis
       const careerAnalysis = await this.calculator.calculateCareerAstrologyAnalysis(birthData);
@@ -29,160 +36,58 @@ class CareerAstrologyService extends ServiceTemplate {
       const developmentPlan = this.createCareerDevelopmentPlan(careerAnalysis);
 
       return {
-        careerAnalysis,
-        careerInsights,
-        suitableProfessions,
-        developmentPlan,
-        summary: this.generateCareerSummary(careerAnalysis)
-      };
-    } catch (error) {
-      logger.error('CareerAstrologyService calculation error:', error);
-      throw new Error(`Career astrology analysis failed: ${error.message}`);
-    }
-  }
-
-  formatResult(result) {
-    return {
-      success: true,
-      data: result,
-      timestamp: new Date().toISOString(),
-      service: this.serviceName
-    };
-  }
-
-  validate(birthData) {
-    if (!birthData) {
-      throw new Error('Birth data is required');
-    }
-
-    const required = ['birthDate', 'birthTime', 'birthPlace'];
-    for (const field of required) {
-      if (!birthData[field]) {
-        throw new Error(`${field} is required for career astrology analysis`);
-      }
-    }
-
-    return true;
-  }
-
-  /**
-   * Get career timing analysis
-   * @param {Object} params - Timing analysis parameters
-   * @param {Object} params.birthData - Birth data
-   * @param {number} params.timeframe - Timeframe in months
-   * @returns {Object} Career timing result
-   */
-  async getCareerTiming(params) {
-    try {
-      this.validateParams(params, ['birthData', 'timeframe']);
-      
-      const { birthData, timeframe, options = {} } = params;
-      
-      // Get career analysis
-      const careerAnalysis = await this.calculator.calculateCareerAstrologyAnalysis(birthData);
-      
-      // Analyze timing opportunities
-      const timingOpportunities = this.analyzeTimingOpportunities(
-        careerAnalysis.careerTiming, 
-        timeframe
-      );
-      
-      // Identify favorable periods
-      const favorablePeriods = this.identifyFavorablePeriods(
-        careerAnalysis, 
-        timeframe
-      );
-      
-      // Generate timing recommendations
-      const timingRecommendations = this.generateTimingRecommendations(
-        timingOpportunities, 
-        favorablePeriods
-      );
-      
-      return {
         success: true,
         data: {
-          timeframe,
-          timingOpportunities,
-          favorablePeriods,
-          timingRecommendations,
-          currentPhase: this.assessCurrentCareerPhase(careerAnalysis)
+          careerAnalysis,
+          careerInsights,
+          suitableProfessions,
+          developmentPlan,
+          summary: this.generateCareerSummary(careerAnalysis)
         },
         metadata: {
-          calculationType: 'career_timing',
-          timestamp: new Date().toISOString()
+          calculationType: 'career_astrology',
+          timestamp: new Date().toISOString(),
+          analysisDepth: options.deepAnalysis ? 'comprehensive' : 'standard'
         }
       };
     } catch (error) {
-      logger.error('❌ Error in getCareerTiming:', error);
+      logger.error('❌ Error in analyzeCareerAstrology:', error);
       return {
         success: false,
         error: error.message,
         metadata: {
-          calculationType: 'career_timing',
+          calculationType: 'career_astrology',
           timestamp: new Date().toISOString()
         }
       };
     }
   }
 
-  /**
-   * Analyze career change potential
-   * @param {Object} params - Career change analysis parameters
-   * @param {Object} params.birthData - Birth data
-   * @param {Object} params.currentCareer - Current career information
-   * @returns {Object} Career change analysis
-   */
-  async analyzeCareerChange(params) {
+  async getHealthStatus() {
     try {
-      this.validateParams(params, ['birthData', 'currentCareer']);
-      
-      const { birthData, currentCareer, options = {} } = params;
-      
-      // Get career analysis
-      const careerAnalysis = await this.calculator.calculateCareerAstrologyAnalysis(birthData);
-      
-      // Assess current career alignment
-      const alignmentAssessment = this.assessCareerAlignment(
-        careerAnalysis, 
-        currentCareer
-      );
-      
-      // Identify change opportunities
-      const changeOpportunities = this.identifyChangeOpportunities(
-        careerAnalysis, 
-        alignmentAssessment
-      );
-      
-      // Generate transition plan
-      const transitionPlan = this.generateTransitionPlan(
-        careerAnalysis, 
-        changeOpportunities
-      );
-      
+      const baseHealth = await super.getHealthStatus();
       return {
-        success: true,
-        data: {
-          currentCareer,
-          alignmentAssessment,
-          changeOpportunities,
-          transitionPlan,
-          recommendations: this.generateChangeRecommendations(alignmentAssessment)
+        ...baseHealth,
+        features: {
+          careerAnalysis: true,
+          careerTiming: true,
+          careerChangeAnalysis: true,
+          professionMatching: true,
+          developmentPlanning: true
         },
-        metadata: {
-          calculationType: 'career_change_analysis',
-          timestamp: new Date().toISOString()
-        }
+        supportedAnalyses: [
+          'career_astrology_analysis',
+          'career_timing',
+          'career_change_analysis',
+          'profession_matching',
+          'development_planning'
+        ]
       };
     } catch (error) {
-      logger.error('❌ Error in analyzeCareerChange:', error);
       return {
-        success: false,
+        status: 'unhealthy',
         error: error.message,
-        metadata: {
-          calculationType: 'career_change_analysis',
-          timestamp: new Date().toISOString()
-        }
+        timestamp: new Date().toISOString()
       };
     }
   }
@@ -774,14 +679,30 @@ class CareerAstrologyService extends ServiceTemplate {
     return skills[planet] || ['Professional skills'];
   }
 
-  getMetadata() {
-    return {
-      name: this.serviceName,
-      version: '1.0.0',
-      category: 'vedic',
-      methods: ['analyzeCareerAstrology', 'getCareerTiming', 'analyzeCareerChange'],
-      dependencies: ['CareerAstrologyCalculator']
-    };
+  // Main service methods with consistent error handling
+  async mainMethod(params) {
+    try {
+      this.validateParams(params, ['birthData']);
+      const result = await this.calculator.calculateCareerAstrologyAnalysis(params);
+      return {
+        success: true,
+        data: result,
+        metadata: {
+          calculationType: 'career_astrology',
+          timestamp: new Date().toISOString()
+        }
+      };
+    } catch (error) {
+      logger.error('❌ Error in mainMethod:', error);
+      return {
+        success: false,
+        error: error.message,
+        metadata: {
+          calculationType: 'career_astrology',
+          timestamp: new Date().toISOString()
+        }
+      };
+    }
   }
 }
 

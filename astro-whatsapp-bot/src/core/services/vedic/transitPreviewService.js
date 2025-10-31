@@ -5,7 +5,7 @@ const logger = require('../../../utils/logger');
 
 class TransitPreviewService extends ServiceTemplate {
   constructor() {
-    super('utransitPreviewService'));
+    super('transitPreviewService');
     this.serviceName = 'TransitPreviewService';
     logger.info('TransitPreviewService initialized');
   }

@@ -12,7 +12,7 @@ const logger = require('../../utils/logger');
  */
 class CalendarTimingService extends ServiceTemplate {
   constructor() {
-    super('ucalendarTimingService'));
+    super('calendarTimingService');
     this.serviceName = 'CalendarTimingService';
     logger.info('CalendarTimingService initialized');
   }

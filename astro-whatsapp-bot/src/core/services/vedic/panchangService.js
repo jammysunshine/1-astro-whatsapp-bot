@@ -11,7 +11,7 @@ const logger = require('../../utils/logger');
  */
 class PanchangService extends ServiceTemplate {
   constructor() {
-    super('upanchangService'));
+    super('panchangService');
     this.serviceName = 'PanchangService';
     logger.info('PanchangService initialized');
   }

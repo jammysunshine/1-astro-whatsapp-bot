@@ -11,7 +11,7 @@ const logger = require('../../utils/logger');
  */
 class DailyHoroscopeService extends ServiceTemplate {
   constructor() {
-    super('udailyHoroscopeService'));
+    super('dailyHoroscopeService');
     this.serviceName = 'DailyHoroscopeService';
     logger.info('DailyHoroscopeService initialized');
   }

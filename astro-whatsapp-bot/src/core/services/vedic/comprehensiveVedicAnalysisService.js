@@ -15,7 +15,7 @@ const logger = require('../../utils/logger');
  */
 class ComprehensiveVedicAnalysisService extends ServiceTemplate {
   constructor(services) {
-    super('ucomprehensiveVedicAnalysisService'));
+    super('comprehensiveVedicAnalysisService');
     
     // Initialize calculator with services if provided
     if (services) {

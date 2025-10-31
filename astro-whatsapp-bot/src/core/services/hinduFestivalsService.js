@@ -5,7 +5,7 @@ const logger = require('../../utils/logger');
 
 class HinduFestivalsService extends ServiceTemplate {
   constructor() {
-    super('uhinduFestivalsService'));
+    super('hinduFestivalsService');
     this.serviceName = 'HinduFestivalsService';
     logger.info('HinduFestivalsService initialized');
   }

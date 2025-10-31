@@ -10,7 +10,7 @@ const logger = require('../../utils/logger');
  */
 class PrashnaAstrologyService extends ServiceTemplate {
   constructor() {
-    super('uprashnaAstrologyService'));
+    super('prashnaAstrologyService');
     this.serviceName = 'PrashnaAstrologyService';
     logger.info('PrashnaAstrologyService initialized');
   }

@@ -11,7 +11,7 @@ const { BirthData } = require('../../models');
  */
 class LunarReturnService extends ServiceTemplate {
   constructor() {
-    super('ulunarReturnService'));
+    super('lunarReturnService');
     this.serviceName = 'LunarReturnService';
     logger.info('LunarReturnService initialized');
   }

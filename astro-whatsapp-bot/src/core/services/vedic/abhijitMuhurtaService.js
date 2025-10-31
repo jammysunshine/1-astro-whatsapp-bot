@@ -12,7 +12,7 @@ const logger = require('../../utils/logger');
  */
 class AbhijitMuhurtaService extends ServiceTemplate {
   constructor(services) {
-    super('uabhijitMuhurtaService'));
+    super('abhijitMuhurtaService');
     
     // Initialize calculator with services if provided
     if (services) {

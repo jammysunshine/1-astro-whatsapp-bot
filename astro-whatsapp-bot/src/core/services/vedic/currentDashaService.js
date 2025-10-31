@@ -11,7 +11,7 @@ const logger = require('../../utils/logger');
  */
 class CurrentDashaService extends ServiceTemplate {
   constructor() {
-    super('ucurrentDashaService'));
+    super('currentDashaService');
     this.serviceName = 'CurrentDashaService';
     logger.info('CurrentDashaService initialized');
   }

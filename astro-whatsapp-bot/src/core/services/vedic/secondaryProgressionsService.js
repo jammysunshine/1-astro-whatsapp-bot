@@ -10,7 +10,7 @@ const logger = require('../../utils/logger');
  */
 class SecondaryProgressionsService extends ServiceTemplate {
   constructor() {
-    super('usecondaryProgressionsService'));
+    super('secondaryProgressionsService');
     this.serviceName = 'SecondaryProgressionsService';
     logger.info('SecondaryProgressionsService initialized');
   }

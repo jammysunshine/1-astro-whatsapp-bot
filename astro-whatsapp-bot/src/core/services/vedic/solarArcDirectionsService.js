@@ -10,7 +10,7 @@ const logger = require('../../utils/logger');
  */
 class SolarArcDirectionsService extends ServiceTemplate {
   constructor() {
-    super('usolarArcDirectionsService'));
+    super('solarArcDirectionsService');
     this.serviceName = 'SolarArcDirectionsService';
     logger.info('SolarArcDirectionsService initialized');
   }

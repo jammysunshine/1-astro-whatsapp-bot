@@ -6,7 +6,7 @@ const { BirthData } = require('../../models');
 
 class BirthChartService extends ServiceTemplate {
   constructor() {
-    super('ubirthChartService'));
+    super('BirthChartService');
     this.serviceName = 'BirthChartService';
     logger.info('BirthChartService initialized');
   }

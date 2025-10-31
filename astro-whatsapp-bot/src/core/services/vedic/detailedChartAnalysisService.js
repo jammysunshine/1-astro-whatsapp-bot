@@ -11,7 +11,7 @@ const logger = require('../../utils/logger');
  */
 class DetailedChartAnalysisService extends ServiceTemplate {
   constructor() {
-    super('udetailedChartAnalysisService'));
+    super('detailedChartAnalysisService');
     this.serviceName = 'DetailedChartAnalysisService';
     logger.info('DetailedChartAnalysisService initialized');
   }

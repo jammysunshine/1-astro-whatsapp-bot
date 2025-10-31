@@ -13,7 +13,7 @@ const logger = require('../../utils/logger');
  */
 class MedicalAstrologyService extends ServiceTemplate {
   constructor(services) {
-    super('umedicalAstrologyService'));
+    super('medicalAstrologyService');
     
     // Initialize calculator with services if provided
     if (services) {

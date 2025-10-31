@@ -12,7 +12,7 @@ const logger = require('../../utils/logger');
  */
 class SadeSatiService extends ServiceTemplate {
   constructor(services) {
-    super('usadeSatiService'));
+    super('sadeSatiService');
     
     // Initialize calculator with services if provided
     if (services) {

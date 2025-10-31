@@ -3,7 +3,7 @@
  * Identifies and analyzes major planetary transits and their impacts
  */
 
-const ServiceTemplate = require('../serviceTemplate');
+const ServiceTemplate = require('../ServiceTemplate');
 const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
 const { formatDegree, formatTime } = require('../../../utils/formatters');
 
@@ -349,10 +349,10 @@ class SignificantTransitsService extends ServiceTemplate {
   }
 
   /**
-   * Calculate planet return
-   */
-  calculatePlanetReturn(planet, birthDatetime, birthLatitude, birthLongitude, startDate, endDate) {
-    const birthChart = await VedicCalculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
+    * Calculate planet return
+    */
+  async calculatePlanetReturn(planet, birthDatetime, birthLatitude, birthLongitude, startDate, endDate) {
+    const birthChart = await this.calculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
     const birthPosition = birthChart[planet.toLowerCase()];
     
     // Simplified return calculation

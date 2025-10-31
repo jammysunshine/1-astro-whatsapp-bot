@@ -11,7 +11,7 @@ const logger = require('../../utils/logger');
  */
 class CurrentTransitsService extends ServiceTemplate {
   constructor() {
-    super('ucurrentTransitsService'));
+    super('currentTransitsService');
     this.serviceName = 'CurrentTransitsService';
     logger.info('CurrentTransitsService initialized');
   }

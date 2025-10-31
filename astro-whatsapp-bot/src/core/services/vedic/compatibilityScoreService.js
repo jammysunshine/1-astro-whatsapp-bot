@@ -11,7 +11,7 @@ const logger = require('../../utils/logger');
  */
 class CompatibilityScoreService extends ServiceTemplate {
   constructor() {
-    super('ucompatibilityScoreService'));
+    super('compatibilityScoreService');
     this.serviceName = 'CompatibilityScoreService';
     logger.info('CompatibilityScoreService initialized');
   }

@@ -5,7 +5,7 @@ const logger = require('../../utils/logger');
 
 class MundaneAstrologyService extends ServiceTemplate {
   constructor() {
-    super('umundaneAstrologyService'));
+    super('mundaneAstrologyService');
     this.serviceName = 'MundaneAstrologyService';
     logger.info('MundaneAstrologyService initialized');
   }

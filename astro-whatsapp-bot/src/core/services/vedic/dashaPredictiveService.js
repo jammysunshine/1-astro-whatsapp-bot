@@ -12,7 +12,7 @@ const logger = require('../../utils/logger');
  */
 class DashaPredictiveService extends ServiceTemplate {
   constructor() {
-    super('udashaPredictiveService'));
+    super('dashaPredictiveService');
     this.serviceName = 'DashaPredictiveService';
     logger.info('DashaPredictiveService initialized');
   }

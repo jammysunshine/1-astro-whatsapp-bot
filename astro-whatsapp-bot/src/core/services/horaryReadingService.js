@@ -5,7 +5,7 @@ const logger = require('../../utils/logger');
 
 class HoraryReadingService extends ServiceTemplate {
   constructor() {
-    super('uhoraryReadingService'));
+    super('horaryReadingService');
     this.serviceName = 'HoraryReadingService';
     logger.info('HoraryReadingService initialized');
   }

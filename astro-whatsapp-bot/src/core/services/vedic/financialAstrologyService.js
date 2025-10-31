@@ -11,7 +11,7 @@ const logger = require('../../utils/logger');
  */
 class FinancialAstrologyService extends ServiceTemplate {
   constructor(services) {
-    super('ufinancialAstrologyService'));
+    super('financialAstrologyService');
     
     // Initialize calculator with services if provided
     if (services) {

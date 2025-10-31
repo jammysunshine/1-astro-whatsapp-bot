@@ -10,7 +10,7 @@ const { BirthData } = require('../../models');
  */
 class DavisonChartService extends ServiceTemplate {
   constructor() {
-    super('udavisonChartService'));
+    super('davisonChartService');
     this.serviceName = 'DavisonChartService';
     logger.info('DavisonChartService initialized');
   }

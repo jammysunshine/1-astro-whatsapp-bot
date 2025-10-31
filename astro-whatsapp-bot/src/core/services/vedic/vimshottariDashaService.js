@@ -6,7 +6,7 @@ const { BirthData } = require('../../models');
 
 class VimshottariDashaService extends ServiceTemplate {
   constructor() {
-    super('uvimshottariDashaService'));
+    super('vimshottariDashaService');
     this.serviceName = 'VimshottariDashaService';
     logger.info('VimshottariDashaService initialized');
   }

@@ -13,7 +13,7 @@ const logger = require('../../utils/logger');
  */
 class FutureSelfSimulatorService extends ServiceTemplate {
   constructor(services) {
-    super('ufutureSelfSimulatorService'));
+    super('futureSelfSimulatorService');
     
     // Initialize calculator with services if provided
     if (services) {

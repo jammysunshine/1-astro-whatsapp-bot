@@ -10,7 +10,7 @@ const { BirthData } = require('../../models');
  */
 class WesternProgressionsService extends ServiceTemplate {
   constructor() {
-    super('uwesternProgressionsService'));
+    super('westernProgressionsService');
     this.serviceName = 'WesternProgressionsService';
     logger.info('WesternProgressionsService initialized');
   }

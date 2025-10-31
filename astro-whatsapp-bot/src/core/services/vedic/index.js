@@ -37,6 +37,12 @@ const VedicYogasService = require('./vedicYogasService');
 const AdvancedCompatibilityService = require('./advancedCompatibilityService');
 const EnhancedPanchangService = require('./enhancedPanchangService');
 const PrashnaService = require('./prashnaService');
+// Additional medium-priority services
+const JaiminiDashasService = require('./jaiminiDashasService');
+const AdvancedTransitsService = require('./advancedTransitsService');
+const MajorTransitsService = require('./majorTransitsService');
+const TransitPreviewService = require('./transitPreviewService');
+const AsteroidsService = require('./asteroidsService');
 // Add exports for all other Vedic services as they are implemented
 
 module.exports = {
@@ -79,5 +85,11 @@ module.exports = {
   AdvancedCompatibilityService,
   EnhancedPanchangService,
   PrashnaService,
+  // Additional medium-priority services
+  JaiminiDashasService,
+  AdvancedTransitsService,
+  MajorTransitsService,
+  TransitPreviewService,
+  AsteroidsService,
   // Add all other Vedic services here
 };

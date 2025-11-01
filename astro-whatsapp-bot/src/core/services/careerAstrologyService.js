@@ -66,6 +66,10 @@ class CareerAstrologyService extends ServiceTemplate {
     }
   }
 
+  async processCalculation(data) {
+    return await this.mainMethod(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

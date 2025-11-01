@@ -284,6 +284,11 @@ class AdvancedTransitsService extends ServiceTemplate {
       dependencies: ['TransitCalculator']
     };
   }
+
+  async processCalculation(data) {
+    return await this.ladvancedTransitsCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

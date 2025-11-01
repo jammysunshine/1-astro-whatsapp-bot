@@ -39,9 +39,11 @@ const connectDB = async() => {
       }
     } else {
       // Check if already connected
-      if (mongoose.connection.readyState > 0) {
-        logger.info('🗄️ DB already connected');
-        return;
+      {
+        if (mongoose.connection.readyState > 0) {
+          logger.info('🗄️ DB already connected');
+          return;
+        }
       }
     }
 

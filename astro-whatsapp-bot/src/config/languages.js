@@ -415,7 +415,7 @@ const getNativeLanguageName = code => {
  */
 const getLanguagesByRegion = region =>
   Object.entries(languages)
-    .filter(([_, config]) => config.regions && config.regions.includes(region))
+    .filter(([, config]) => config.regions && config.regions.includes(region))
     .map(([code, config]) => ({ code, ...config }));
 
 /**
@@ -424,7 +424,7 @@ const getLanguagesByRegion = region =>
  */
 const getRTLLanguages = () =>
   Object.entries(languages)
-    .filter(([_, config]) => config.rtl)
+    .filter(([, config]) => config.rtl)
     .map(([code, config]) => ({ code, ...config }));
 
 /**
@@ -433,7 +433,7 @@ const getRTLLanguages = () =>
  */
 const getCompleteLanguages = () =>
   Object.entries(languages)
-    .filter(([_, config]) => config.complete)
+    .filter(([, config]) => config.complete)
     .map(([code, config]) => ({ code, ...config }));
 
 /**
@@ -442,7 +442,7 @@ const getCompleteLanguages = () =>
  */
 const getPlaceholderLanguages = () =>
   Object.entries(languages)
-    .filter(([_, config]) => !config.complete)
+    .filter(([, config]) => !config.complete)
     .map(([code, config]) => ({ code, ...config }));
 
 module.exports = {

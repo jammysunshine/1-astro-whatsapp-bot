@@ -5,8 +5,8 @@ const logger = require('../../utils/logger');
 
 class MundaneAstrologyService extends ServiceTemplate {
   constructor() {
-    super('PoliticalAstrology');
-    this.serviceName = 'MundaneAstrologyService';
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'MundaneAstrologyService';
     this.calculatorPath = '../../../services/astrology/mundane/PoliticalAstrology';
     logger.info('MundaneAstrologyService initialized');
   }

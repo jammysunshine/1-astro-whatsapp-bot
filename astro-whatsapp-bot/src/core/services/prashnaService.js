@@ -8,7 +8,7 @@ const logger = require('../../../utils/logger');
  */
 class PrashnaService extends ServiceTemplate {
   constructor(services) {
-    super('PrashnaService', services);
+    super('PrashnaCalculator');
 
     // Initialize Prashna Calculator with required dependencies
     this.calculator = new PrashnaCalculator();
@@ -43,7 +43,7 @@ class PrashnaService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Prashna analysis
    */
-  async lprashnaCalculation(params) {
+  async processCalculation(params) {
     const { questionData, options = {} } = params;
 
     try {

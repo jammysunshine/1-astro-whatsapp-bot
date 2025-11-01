@@ -509,4 +509,130 @@ class KaalSarpDoshaCalculator {
         break;
 
       case 'Strong':
-        predictions.overall = 'Moderate Kaal Sarp influences require conscious
+        predictions.overall = 'Moderate Kaal Sarp influences require conscious effort to balance and harmonize the influences';
+        predictions.career.push('Career progression may be slower and require extra effort');
+        predictions.marriage.push('Marriage timing may vary; patience needed in relationships');
+        predictions.health.push('Health generally good but requires preventive care');
+        predictions.finances.push('Financial stability achievable through discipline and planning');
+        break;
+
+      case 'Moderate':
+        predictions.overall = 'Mild Kaal Sarp Dosha - balanced with conscious effort and positive lifestyle choices';
+        predictions.career.push('Career develops steadily with focus and determination');
+        predictions.marriage.push('Marriage blessed; relationships generally harmonious');
+        predictions.health.push('Health issues minimal; maintain healthy lifestyle');
+        predictions.finances.push('Financial stability through wise planning and savings');
+        break;
+
+      case 'Mild':
+        predictions.overall = 'Very mild Kaal Sarp influences - more of an opportunity for growth than a hindrance';
+        predictions.career.push('Career opportunities available with moderate effort');
+        predictions.marriage.push('Positive marriage prospects with some initial adjustments');
+        predictions.health.push('Good health foundation with basic preventive care');
+        predictions.finances.push('Financial stability through responsible habits');
+        break;
+
+      case 'Weak':
+        predictions.overall = 'Minimal Kaal Sarp Dosha impact - life flows relatively smoothly';
+        predictions.career.push('Career opportunities available with moderate effort');
+        predictions.marriage.push('Harmonious marriage relationships with good potential');
+        predictions.health.push('Good health foundation with basic preventive care');
+        predictions.finances.push('Financial stability through responsible planning');
+        break;
+
+      default:
+        predictions.overall = 'Kaal Sarp Dosha requires individual analysis for accurate predictions';
+    }
+
+    // Add timing predictions for all levels
+    predictions.timing = [
+      'Effects most pronounced during early life and major transitions',
+      'Mid-life (30s-50s): Peak period for major life lessons and achievement',
+      'Later years: Rewards for perseverance and wisdom accumulated',
+      'Planetary returns create additional opportunities and challenges'
+    ];
+
+    return predictions;
+  }
+
+  /**
+   * Generate Kaal Sarp summary
+   * @private
+   */
+  _generateKaalSarpSummary(kaalSarpAnalysis, strength, exceptions) {
+    const summary = {
+      presence: kaalSarpAnalysis.hasDosha ? 'Present' : 'Absent',
+      type: kaalSarpAnalysis.kaalSarpType || 'None',
+      strength: strength.level,
+      status: exceptions.cancelled ? 'Cancelled' : 'Active',
+      keyInsight: this._getKeyInsight(kaalSarpAnalysis, strength, exceptions)
+    };
+
+    return summary;
+  }
+
+  /**
+   * Get key insight for the analysis
+   * @private
+   */
+  _getKeyInsight(kaalSarpAnalysis, strength, exceptions) {
+    if (!kaalSarpAnalysis.hasDosha) {
+      return 'No Kaal Sarp Dosha present - natural life flow with fewer obstacles';
+    }
+
+    if (exceptions.cancelled) {
+      return 'Kaal Sarp Dosha cancelled by favorable planetary positions - effects neutralized';
+    }
+
+    if (strength.level === 'Very Strong') {
+      return 'Strong Kaal Sarp requires diligent spiritual practices and remedial measures';
+    } else if (strength.level === 'Strong') {
+      return 'Moderate Kaal Sarp - challenges can be overcome through consistent positive action';
+    } else {
+      return 'Mild Kaal Sarp - growth opportunities through mindful living and spiritual practice';
+    }
+  }
+
+  /**
+   * Calculate natal chart for given parameters
+   * @private
+   */
+  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+    // Placeholder - this should integrate with Swiss Ephemeris or similar
+    return {
+      planets: {
+        sun: { longitude: 0, sign: 1, degree: 0, house: 1 },
+        moon: { longitude: 30, sign: 2, degree: 0, house: 2 },
+        mars: { longitude: 60, sign: 3, degree: 0, house: 3 },
+        mercury: { longitude: 90, sign: 4, degree: 0, house: 4 },
+        jupiter: { longitude: 120, sign: 5, degree: 0, house: 5 },
+        venus: { longitude: 150, sign: 6, degree: 0, house: 6 },
+        saturn: { longitude: 180, sign: 7, degree: 0, house: 7 },
+        rahu: { longitude: 210, sign: 8, degree: 0, house: 8 },
+        ketu: { longitude: 330, sign: 11, degree: 0, house: 11 },
+        ascendant: { longitude: 0, sign: 1, degree: 0 }
+      },
+      houses: [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330]
+    };
+  }
+
+  /**
+   * Get coordinates for a place name
+   * @private
+   */
+  async _getCoordinatesForPlace(place) {
+    // Placeholder - integrate with geocoding service
+    return [28.6139, 77.2090]; // Delhi coordinates as default
+  }
+
+  /**
+   * Get timezone for coordinates and timestamp
+   * @private
+   */
+  async _getTimezoneForPlace(lat, lon, timestamp) {
+    // Placeholder - should integrate with timezone API
+    return 5.5; // IST as default
+  }
+}
+
+module.exports = { KaalSarpDoshaCalculator };

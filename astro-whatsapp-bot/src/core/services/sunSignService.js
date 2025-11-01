@@ -4,9 +4,11 @@ const logger = require('../../../utils/logger');
  * SunSignService - Service for Sun sign calculation and interpretation
  * Calculates and interprets the Sun sign based on birth date, including Sun's position in nakshatra, planetary ruler, and basic characteristics
  */
-class SunSignService {
+class SunSignService extends ServiceTemplate {
   constructor() {
-    this.calculator = new SignCalculator();
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'SunSignService';
+    this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
     logger.info('SunSignService initialized');
   }
 
@@ -19,7 +21,7 @@ class SunSignService {
    * @param {string} options - Calculation options (sidereal/tropical)
    * @returns {Object} Sun sign analysis result
    */
-  async execute(birthData, options = {}) {
+  async processCalculation(birthData, options = {}) {
     try {
       // Input validation
       this._validateInput(birthData);
@@ -630,7 +632,7 @@ class SunSignService {
    * Validate input data
    * @param {Object} input - Input data to validate
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Birth data is required');
     }
@@ -667,7 +669,7 @@ class SunSignService {
    * @param {Object} result - Raw Sun sign result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Sun Sign Analysis',
       timestamp: new Date().toISOString(),

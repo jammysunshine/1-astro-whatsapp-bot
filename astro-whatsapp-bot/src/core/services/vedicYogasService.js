@@ -8,7 +8,7 @@ const logger = require('../../../utils/logger');
  */
 class VedicYogasService extends ServiceTemplate {
   constructor(services) {
-    super('VedicYogasService', services);
+    super('VedicYogasCalculator');
 
     // Initialize Vedic Yogas Calculator with required dependencies
     this.calculator = new VedicYogasCalculator(
@@ -40,7 +40,7 @@ class VedicYogasService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Vedic Yogas analysis
    */
-  async lvedicYogasCalculation(params) {
+  async processCalculation(params) {
     const { birthData, options = {} } = params;
 
     try {

@@ -247,7 +247,7 @@ class LifePatternsCalculator {
  */
 class LifePatternsService extends ServiceTemplate {
   constructor() {
-    super('lifePatternsService');
+    super('ComprehensiveAnalysisCalculator');
     this.serviceName = 'LifePatternsService';
     logger.info('LifePatternsService initialized');
   }

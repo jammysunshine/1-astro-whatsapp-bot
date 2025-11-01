@@ -11,8 +11,8 @@ const logger = require('../../utils/logger');
  */
 class CurrentTransitsService extends ServiceTemplate {
   constructor() {
-    super('currentTransitsService');
-    this.serviceName = 'CurrentTransitsService';
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CurrentTransitsService';
     logger.info('CurrentTransitsService initialized');
   }
 

@@ -4,9 +4,11 @@ const logger = require('../../../utils/logger');
  * CalculateNakshatraService - Service for nakshatra calculation and interpretation
  * Identifies the lunar mansion (nakshatra) based on Moon's precise position, including nakshatra lord, pada (quarter), and traditional interpretations
  */
-class CalculateNakshatraService {
+class CalculateNakshatraService extends ServiceTemplate {
   constructor() {
-    this.calculator = new SignCalculator();
+    super('SignCalculator');
+    this.serviceName = 'CalculateNakshatraService';
+    this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
     logger.info('CalculateNakshatraService initialized');
   }
 
@@ -19,7 +21,7 @@ class CalculateNakshatraService {
    * @param {string} options - Calculation options
    * @returns {Object} Nakshatra analysis result
    */
-  async execute(birthData, options = {}) {
+  async processCalculation(birthData, options = {}) {
     try {
       // Input validation
       this._validateInput(birthData);
@@ -793,7 +795,7 @@ class CalculateNakshatraService {
    * Validate input data
    * @param {Object} input - Input data to validate
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Birth data is required');
     }
@@ -830,7 +832,7 @@ class CalculateNakshatraService {
    * @param {Object} result - Raw nakshatra result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Nakshatra Calculation Analysis',
       timestamp: new Date().toISOString(),

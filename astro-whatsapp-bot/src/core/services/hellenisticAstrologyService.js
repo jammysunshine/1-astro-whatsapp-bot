@@ -1,8 +1,10 @@
 const logger = require('../../../utils/logger');
 
-class HellenisticAstrologyService {
+class HellenisticAstrologyService extends ServiceTemplate {
   constructor() {
-    this.reader = hellenisticAstrologyReader;
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HellenisticAstrologyService';
+    this.calculatorPath = '../calculators/hellenisticAstrologyReader'; // Assuming this path for the main calculator
     logger.info('HellenisticAstrologyService initialized');
   }
 
@@ -11,7 +13,7 @@ class HellenisticAstrologyService {
    * @param {Object} birthData - User birth data and parameters
    * @returns {Promise<Object>} Service result
    */
-  async execute(birthData) {
+  async processCalculation(birthData) {
     try {
       // Input validation
       this._validateInput(birthData);
@@ -46,7 +48,7 @@ class HellenisticAstrologyService {
    * @param {Object} input - Input data to validate
    * @private
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Input data is required');
     }
@@ -82,7 +84,7 @@ class HellenisticAstrologyService {
    * @returns {Object} Formatted result
    * @private
    */
-  _formatResult(result) {
+  formatResult(result) {
     if (result.error) {
       return {
         success: false,

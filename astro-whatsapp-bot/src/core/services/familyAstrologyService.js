@@ -7,8 +7,9 @@
  */
 
 const logger = require('../../../utils/logger');
-class FamilyAstrologyService {
+class FamilyAstrologyService extends ServiceTemplate {
   constructor() {
+    // No super() call with calculatorName as it manages multiple calculators directly
     this.groupCalculator = new GroupAstrologyCalculator();
     this.compatibilityCalculator = new CompatibilityCalculator();
     logger.info('FamilyAstrologyService initialized');
@@ -19,7 +20,7 @@ class FamilyAstrologyService {
    * @param {Object} familyData - Family analysis request data
    * @returns {Promise<Object>} Complete family analysis
    */
-  async execute(familyData) {
+  async processCalculation(familyData) {
     try {
       // Input validation
       this._validateInput(familyData);
@@ -636,7 +637,7 @@ class FamilyAstrologyService {
    * @param {Object} input - Input data to validate
    * @private
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Input data is required');
     }
@@ -695,7 +696,7 @@ class FamilyAstrologyService {
    * @returns {Object} Formatted result
    * @private
    */
-  _formatResult(result) {
+  formatResult(result) {
     if (!result) {
       return {
         success: false,

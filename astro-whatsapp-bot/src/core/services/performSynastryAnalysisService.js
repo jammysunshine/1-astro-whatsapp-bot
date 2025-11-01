@@ -4,9 +4,11 @@ const logger = require('../../../utils/logger');
  * PerformSynastryAnalysisService - Service for detailed interchart analysis
  * Examines how one person's planets aspect the other's houses and planets
  */
-class PerformSynastryAnalysisService {
+class PerformSynastryAnalysisService extends ServiceTemplate {
   constructor() {
-    this.calculator = new SynastryEngine();
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'PerformSynastryAnalysisService';
+    this.calculatorPath = '../calculators/SynastryEngine'; // Assuming this path for the main calculator
     logger.info('PerformSynastryAnalysisService initialized');
   }
 
@@ -17,7 +19,7 @@ class PerformSynastryAnalysisService {
    * @param {Object} synastryData.chart2 - Second person's birth chart
    * @returns {Object} Synastry analysis result
    */
-  async execute(synastryData) {
+  async processCalculation(synastryData) {
     try {
       // Input validation
       this._validateInput(synastryData);
@@ -276,7 +278,7 @@ class PerformSynastryAnalysisService {
    * Validate input data
    * @param {Object} input - Input data to validate
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Synastry data is required');
     }
@@ -321,7 +323,7 @@ class PerformSynastryAnalysisService {
    * @param {Object} result - Raw synastry result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Synastry Analysis',
       timestamp: new Date().toISOString(),

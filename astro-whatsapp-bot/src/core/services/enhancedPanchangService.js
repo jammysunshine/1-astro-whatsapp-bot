@@ -8,8 +8,8 @@ const logger = require('../../../utils/logger');
  */
 class EnhancedPanchangService extends ServiceTemplate {
   constructor(services) {
-    super('EnhancedPanchangService', services);
-
+    super('PanchangCalculator');
+    this.calculatorPath = '../calculators/PanchangCalculator';
     // Initialize Panchang Calculator with required dependencies
     this.calculator = new PanchangCalculator(
       services.astrologer,
@@ -44,7 +44,7 @@ class EnhancedPanchangService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Panchang analysis
    */
-  async lenhancedPanchangCalculation(params) {
+  async processCalculation(params) {
     const { date, time, place, options = {} } = params;
 
     try {

@@ -4,9 +4,11 @@ const logger = require('../../../utils/logger');
  * MoonSignService - Service for Moon sign calculation and interpretation
  * Determines the Moon's sign at birth, including emotional nature, mind patterns, and psychological disposition based on lunar position and nakshatra
  */
-class MoonSignService {
+class MoonSignService extends ServiceTemplate {
   constructor() {
-    this.calculator = new SignCalculator();
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'MoonSignService';
+    this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
     logger.info('MoonSignService initialized');
   }
 
@@ -19,7 +21,7 @@ class MoonSignService {
    * @param {string} options - Calculation options (sidereal/tropical)
    * @returns {Object} Moon sign analysis result
    */
-  async execute(birthData, options = {}) {
+  async processCalculation(birthData, options = {}) {
     try {
       // Input validation
       this._validateInput(birthData);
@@ -640,7 +642,7 @@ class MoonSignService {
    * Validate input data
    * @param {Object} input - Input data to validate
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Birth data is required');
     }
@@ -677,7 +679,7 @@ class MoonSignService {
    * @param {Object} result - Raw Moon sign result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Moon Sign Analysis',
       timestamp: new Date().toISOString(),

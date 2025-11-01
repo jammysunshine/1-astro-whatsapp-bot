@@ -8,8 +8,8 @@ const logger = require('../../../utils/logger');
  */
 class FutureSelfAnalysisService extends ServiceTemplate {
   constructor(services) {
-    super('FutureSelfAnalysisService', services);
-
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';
     // Initialize Future Self Simulator Calculator
     this.calculator = new FutureSelfSimulatorCalculator();
 
@@ -46,7 +46,7 @@ class FutureSelfAnalysisService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Future Self Analysis
    */
-  async lfutureSelfAnalysisCalculation(params) {
+  async processCalculation(params) {
     const { futureData, options = {} } = params;
 
     try {

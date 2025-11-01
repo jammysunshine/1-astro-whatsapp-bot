@@ -10,8 +10,8 @@ const { validateCoordinates, validateDateTime } = require('../../../utils/valida
  */
 class RisingSignService extends ServiceTemplate {
   constructor() {
-    super('SignCalculator'); // Primary calculator for this service
-    this.serviceName = 'RisingSignService';
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'RisingSignService';
     this.calculatorPath = '../../../services/astrology/vedic/calculators/SignCalculator';
     logger.info('RisingSignService initialized');
   }

@@ -4,9 +4,11 @@ const logger = require('../../../utils/logger');
  * CompositeChartService - Service for composite chart calculations
  * Computes composite charts (midpoint charts) between two people, representing the relationship as a third entity
  */
-class CompositeChartService {
+class CompositeChartService extends ServiceTemplate {
   constructor() {
-    this.calculator = new SynastryEngine();
+    super('SynastryEngine');
+    this.serviceName = 'CompositeChartService';
+    this.calculatorPath = '../calculators/SynastryEngine'; // Assuming this path for the main calculator
     logger.info('CompositeChartService initialized');
   }
 
@@ -17,7 +19,7 @@ class CompositeChartService {
    * @param {Object} chartData.chart2 - Second person's birth chart
    * @returns {Object} Composite chart result
    */
-  async execute(chartData) {
+  async processCalculation(chartData) {
     try {
       // Input validation
       this._validateInput(chartData);
@@ -378,7 +380,7 @@ class CompositeChartService {
    * Validate input data
    * @param {Object} input - Input data to validate
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Chart data is required');
     }
@@ -412,7 +414,7 @@ class CompositeChartService {
    * @param {Object} result - Raw composite chart result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Composite Chart Analysis',
       timestamp: new Date().toISOString(),

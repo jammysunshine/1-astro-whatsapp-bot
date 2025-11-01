@@ -10,8 +10,8 @@ const logger = require('../../utils/logger');
  */
 class PlanetaryEventsService extends ServiceTemplate {
   constructor() {
-    super('PlanetaryEventsCalculator'); // Primary calculator for this service
-    this.serviceName = 'PlanetaryEventsService';
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'PlanetaryEventsService';
     this.calculatorPath = '../calculators/PlanetaryEventsCalculator';
     logger.info('PlanetaryEventsService initialized');
   }

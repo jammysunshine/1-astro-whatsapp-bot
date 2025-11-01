@@ -7,9 +7,11 @@
 
 const logger = require('../../../utils/logger');
 
-class AyurvedicAstrologyService {
+class AyurvedicAstrologyService extends ServiceTemplate {
   constructor() {
-    this.calculator = new AyurvedicAstrology();
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'AyurvedicAstrologyService';
+    this.calculatorPath = '../calculators/AyurvedicAstrology'; // Assuming this path for the main calculator
     logger.info('AyurvedicAstrologyService initialized');
   }
 
@@ -18,7 +20,7 @@ class AyurvedicAstrologyService {
    * @param {Object} birthData - User birth data
    * @returns {Promise<Object>} Complete Ayurvedic analysis
    */
-  async execute(birthData) {
+  async processCalculation(birthData) {
     try {
       this._validateInput(birthData);
 
@@ -99,7 +101,7 @@ class AyurvedicAstrologyService {
    * @param {Object} input - Input data to validate
    * @private
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Birth data is required');
     }
@@ -123,7 +125,7 @@ class AyurvedicAstrologyService {
    * @returns {Object} Formatted result
    * @private
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       success: true,
       analysis: result,

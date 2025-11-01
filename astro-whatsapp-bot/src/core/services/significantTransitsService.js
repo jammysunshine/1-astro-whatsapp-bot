@@ -10,8 +10,8 @@ const { validateCoordinates, validateDateTime } = require('../../../utils/valida
  */
 class GocharService extends ServiceTemplate {
   constructor() {
-    super('VedicCalculator'); // Primary calculator for this service
-    this.serviceName = 'GocharService';
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'GocharService';
     this.calculatorPath = '../../../services/astrology/vedic/calculators/VedicCalculator';
     logger.info('GocharService initialized');
   }

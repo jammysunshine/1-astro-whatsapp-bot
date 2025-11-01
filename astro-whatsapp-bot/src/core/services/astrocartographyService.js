@@ -1,8 +1,10 @@
 const logger = require('../../../utils/logger');
 
-class AstrocartographyService {
+class AstrocartographyService extends ServiceTemplate {
   constructor() {
-    this.reader = astrocartographyReader;
+    super('astrocartographyReader');
+    this.serviceName = 'AstrocartographyService';
+    this.calculatorPath = '../calculators/astrocartographyReader'; // Assuming this path for the main calculator
     logger.info('AstrocartographyService initialized');
   }
 
@@ -11,7 +13,7 @@ class AstrocartographyService {
    * @param {Object} birthData - User birth data and parameters
    * @returns {Promise<Object>} Service result
    */
-  async execute(birthData) {
+  async processCalculation(birthData) {
     try {
       // Input validation
       this._validateInput(birthData);
@@ -46,7 +48,7 @@ class AstrocartographyService {
    * @param {Object} input - Input data to validate
    * @private
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Input data is required');
     }
@@ -82,7 +84,7 @@ class AstrocartographyService {
    * @returns {Object} Formatted result
    * @private
    */
-  _formatResult(result) {
+  formatResult(result) {
     if (result.error) {
       return {
         success: false,

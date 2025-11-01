@@ -4,9 +4,11 @@ const logger = require('../../../utils/logger');
  * GenerateGroupAstrologyService - Service for multi-person chart analysis
  * Handles multiple birth charts simultaneously, analyzing group dynamics, optimal group timing, and collective planetary influences
  */
-class GenerateGroupAstrologyService {
+class GenerateGroupAstrologyService extends ServiceTemplate {
   constructor() {
-    this.calculator = new GroupAstrologyCalculator();
+    super('GroupAstrologyCalculator');
+    this.serviceName = 'GenerateGroupAstrologyService';
+    this.calculatorPath = '../calculators/GroupAstrologyCalculator'; // Assuming this path for the main calculator
     logger.info('GenerateGroupAstrologyService initialized');
   }
 
@@ -18,7 +20,7 @@ class GenerateGroupAstrologyService {
    * @param {string} groupData.relationshipType - Specific relationship context
    * @returns {Object} Group astrology analysis result
    */
-  async execute(groupData) {
+  async processCalculation(groupData) {
     try {
       // Input validation
       this._validateInput(groupData);
@@ -345,7 +347,7 @@ class GenerateGroupAstrologyService {
    * Validate input data
    * @param {Object} input - Input data to validate
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Group data is required');
     }
@@ -415,7 +417,7 @@ class GenerateGroupAstrologyService {
    * @param {Object} result - Raw group analysis result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Group Astrology Analysis',
       timestamp: new Date().toISOString(),

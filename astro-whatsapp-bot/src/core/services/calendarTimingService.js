@@ -12,8 +12,8 @@ const logger = require('../../utils/logger');
  */
 class CalendarTimingService extends ServiceTemplate {
   constructor() {
-    super('calendarTimingService');
-    this.serviceName = 'CalendarTimingService';
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CalendarTimingService';
     logger.info('CalendarTimingService initialized');
   }
 

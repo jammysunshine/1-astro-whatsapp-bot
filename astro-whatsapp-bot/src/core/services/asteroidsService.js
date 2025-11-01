@@ -5,8 +5,9 @@ const logger = require('../../../utils/logger');
 
 class AsteroidsService extends ServiceTemplate {
   constructor() {
-    super('CompatibilityCalculator');
+    super('AsteroidCalculator');
     this.serviceName = 'AsteroidsService';
+    this.calculatorPath = '../calculators/AsteroidCalculator';
     logger.info('AsteroidsService initialized');
   }
 

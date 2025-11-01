@@ -521,6 +521,22 @@ class FutureSelfSimulatorCalculator {
     ];
   }
 
+  /**
+   * Get calculation metadata
+   * @returns {Object} Calculator metadata
+   */
+  getMetadata() {
+    return {
+      name: 'FutureSelfSimulatorCalculator',
+      version: '1.0.0',
+      description: 'Projects future life scenarios based on current planetary influences',
+      type: 'predictive'
+    };
+  }
+}
+
+module.exports = { FutureSelfSimulatorCalculator };
+
   _extractSecondaryThemes(aspects) {
     return [
       'Communication improves through understanding different perspectives',
@@ -582,34 +598,5 @@ class FutureSelfSimulatorCalculator {
     return [
       'Achieving significant personal and professional growth',
       'Developing deep, meaningful relationships',
-      'Contributing meaningfully to community and society',
-      'Finding sustainable fulfillment and happiness'
-    ];
-  }
-
-  _generateRealisticOutcomes(mediumFactors) {
-    return [
-      'Gradual improvement in life circumstances',
-      'Learning through both successes and challenges',
-      'Building stable foundations for future security',
-      'Developing stronger personal capabilities'
-    ];
-  }
-
-  _generateChallengingOutcomes(lowFactors) {
-    return [
-      'Navigating significant life lessons and tests',
-      'Learning patience through delayed gratification',
-      'Rebuilding foundations after disruption',
-      'Transforming difficult situations into learning experiences'
-    ];
-  }
-
-  _identifyTransformativeOutcomes(successFactors) {
-    return [
-      'Personal wisdom and maturity development',
-      'Expanded perspective on life and relationships',
-      'Stronger foundation in authentic self-expression',
-      'Increased ability to influence positive change'
-    ];
-  }
+}
+module.exports = { FutureSelfSimulatorCalculator };

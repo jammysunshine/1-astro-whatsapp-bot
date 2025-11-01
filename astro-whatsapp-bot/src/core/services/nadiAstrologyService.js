@@ -12,7 +12,7 @@ const logger = require('../../utils/logger');
  */
 class NadiAstrologyService extends ServiceTemplate {
   constructor(services) {
-    super('nadiAstrologyService');
+    super('NadiCalculator');
 
     this.serviceName = 'NadiAstrologyService';
     logger.info('NadiAstrologyService initialized');

@@ -11,8 +11,8 @@ const logger = require('../../utils/logger');
  */
 class CurrentDashaService extends ServiceTemplate {
   constructor() {
-    super('currentDashaService');
-    this.serviceName = 'CurrentDashaService';
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CurrentDashaService';
     logger.info('CurrentDashaService initialized');
   }
 

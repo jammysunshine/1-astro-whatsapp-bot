@@ -4,9 +4,11 @@ const logger = require('../../../utils/logger');
  * BasicBirthChartService - Service for simplified birth chart generation
  * Generates simplified birth charts with essential planetary positions, signs, houses, and basic interpretations for quick reference
  */
-class BasicBirthChartService {
+class BasicBirthChartService extends ServiceTemplate {
   constructor() {
-    this.calculator = new ChartGenerator();
+    super('ChartGenerator');
+    this.serviceName = 'BasicBirthChartService';
+    this.calculatorPath = '../calculators/ChartGenerator'; // Assuming this path for the main calculator
     logger.info('BasicBirthChartService initialized');
   }
 
@@ -20,7 +22,7 @@ class BasicBirthChartService {
    * @param {string} options - Chart type options (vedic/western)
    * @returns {Object} Basic birth chart result
    */
-  async execute(birthData, options = {}) {
+  async processCalculation(birthData, options = {}) {
     try {
       // Input validation
       this._validateInput(birthData);
@@ -595,7 +597,7 @@ class BasicBirthChartService {
    * Validate input data
    * @param {Object} input - Input data to validate
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Birth data is required');
     }
@@ -632,7 +634,7 @@ class BasicBirthChartService {
    * @param {Object} result - Raw basic chart result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Basic Birth Chart',
       timestamp: new Date().toISOString(),

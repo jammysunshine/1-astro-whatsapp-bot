@@ -8,7 +8,7 @@
 
 const logger = require('../../../utils/logger');
 
-class GroupTimingService {
+class GroupTimingService extends ServiceTemplate {
   constructor() {
     this.groupCalculator = new GroupAstrologyCalculator();
     this.muhurtaCalculator = new MuhurtaCalculator();
@@ -21,7 +21,7 @@ class GroupTimingService {
    * @param {Object} groupData - Group timing request data
    * @returns {Promise<Object>} Complete group timing analysis
    */
-  async execute(groupData) {
+  async processCalculation(groupData) {
     try {
       // Input validation
       this._validateInput(groupData);
@@ -570,7 +570,7 @@ class GroupTimingService {
    * @param {Object} input - Input data to validate
    * @private
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Input data is required');
     }

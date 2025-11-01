@@ -11,8 +11,8 @@ const logger = require('../../utils/logger');
  */
 class GulikakalamService extends ServiceTemplate {
   constructor() {
-    super('MuhurtaCalculator');
-    this.serviceName = 'GulikakalamService';
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'GulikakalamService';
     this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
     logger.info('GulikakalamService initialized');
   }

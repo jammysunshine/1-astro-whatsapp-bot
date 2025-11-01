@@ -9,8 +9,8 @@ const logger = require('../../../utils/logger');
  */
 class HoraryReadingService extends ServiceTemplate {
   constructor() {
-    super('HoraryCalculator'); // Primary calculator for this service
-    this.serviceName = 'HoraryReadingService';
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HoraryReadingService';
     this.calculatorPath = '../../../services/astrology/horary/HoraryCalculator';
     logger.info('HoraryReadingService initialized');
   }

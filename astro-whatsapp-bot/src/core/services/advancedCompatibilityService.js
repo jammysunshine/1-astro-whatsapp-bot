@@ -39,7 +39,7 @@ class AdvancedCompatibilityService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted compatibility analysis
    */
-  async ladvancedCompatibilityCalculation(params) {
+  async processCalculation(params) {
     const { person1, person2, options = {} } = params;
 
     try {

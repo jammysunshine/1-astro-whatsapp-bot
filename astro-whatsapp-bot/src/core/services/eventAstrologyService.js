@@ -10,8 +10,8 @@ const logger = require('../../utils/logger');
  */
 class EventAstrologyService extends ServiceTemplate {
   constructor() {
-    super('eventAstrologyService');
-    this.serviceName = 'EventAstrologyService';
+    super('CosmicEventsCalculator');
+    this.calculatorPath = '../calculators/CosmicEventsCalculator';    this.serviceName = 'EventAstrologyService';
     logger.info('EventAstrologyService initialized');
   }
 

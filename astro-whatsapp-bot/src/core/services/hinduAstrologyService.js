@@ -4,9 +4,11 @@ const logger = require('../../../utils/logger');
  * HinduAstrologyService - Service for traditional Vedic analysis
  * Provides traditional Vedic analysis following Hindu astrological principles, including planetary dignities, divisional charts, and Vedic interpretation methods
  */
-class HinduAstrologyService {
+class HinduAstrologyService extends ServiceTemplate {
   constructor() {
-    this.calculator = new ChartGenerator();
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HinduAstrologyService';
+    this.calculatorPath = '../calculators/ChartGenerator'; // Assuming this path for the main calculator
     logger.info('HinduAstrologyService initialized');
   }
 
@@ -22,7 +24,7 @@ class HinduAstrologyService {
    * @param {number} birthData.longitude - Birth longitude
    * @returns {Object} Hindu astrology analysis result
    */
-  async execute(birthData) {
+  async processCalculation(birthData) {
     try {
       // Input validation
       this._validateInput(birthData);
@@ -366,7 +368,7 @@ class HinduAstrologyService {
    * Validate input data
    * @param {Object} input - Input data to validate
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Birth data is required');
     }
@@ -414,7 +416,7 @@ class HinduAstrologyService {
    * @param {Object} result - Raw Hindu astrology result
    * @returns {Object} Formatted result
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       service: 'Hindu Astrology Analysis',
       timestamp: new Date().toISOString(),

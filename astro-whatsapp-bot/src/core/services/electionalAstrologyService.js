@@ -8,8 +8,8 @@ const logger = require('../../../utils/logger');
  */
 class ElectionalAstrologyService extends ServiceTemplate {
   constructor(services) {
-    super('ElectionalAstrologyService', services);
-
+    super('MuhurtaCalculator');
+    this.calculatorPath = '../calculators/MuhurtaCalculator';
     // Initialize Muhurta Calculator for electional calculations
     this.calculator = new MuhurtaCalculator();
 
@@ -48,7 +48,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Electional Astrology analysis
    */
-  async lelectionalAstrologyCalculation(params) {
+  async processCalculation(params) {
     const { electionalData, options = {} } = params;
 
     try {

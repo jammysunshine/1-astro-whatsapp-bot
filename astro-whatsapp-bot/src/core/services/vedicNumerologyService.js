@@ -7,9 +7,11 @@
 
 const logger = require('../../../utils/logger');
 
-class VedicNumerologyService {
+class VedicNumerologyService extends ServiceTemplate {
   constructor() {
-    this.calculator = new VedicNumerology();
+    super('VedicNumerology');
+    this.serviceName = 'VedicNumerologyService';
+    this.calculatorPath = '../calculators/VedicNumerology'; // Assuming this path for the main calculator
     logger.info('VedicNumerologyService initialized');
   }
 
@@ -18,7 +20,7 @@ class VedicNumerologyService {
    * @param {Object} data - Name and birth data
    * @returns {Promise<Object>} Complete numerology analysis
    */
-  async execute(data) {
+  async processCalculation(data) {
     try {
       this._validateInput(data);
 
@@ -94,7 +96,7 @@ class VedicNumerologyService {
    * @param {Object} input - Input data to validate
    * @private
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Input data is required');
     }
@@ -110,7 +112,7 @@ class VedicNumerologyService {
    * @returns {Object} Formatted result
    * @private
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       success: true,
       analysis: result,

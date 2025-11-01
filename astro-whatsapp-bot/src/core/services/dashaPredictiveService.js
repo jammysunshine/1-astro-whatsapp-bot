@@ -12,8 +12,8 @@ const logger = require('../../utils/logger');
  */
 class DashaPredictiveService extends ServiceTemplate {
   constructor() {
-    super('dashaPredictiveService');
-    this.serviceName = 'DashaPredictiveService';
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'DashaPredictiveService';
     logger.info('DashaPredictiveService initialized');
   }
 

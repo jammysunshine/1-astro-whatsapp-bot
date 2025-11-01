@@ -8,8 +8,8 @@ const logger = require('../../../utils/logger');
  */
 class HoraryAstrologyService extends ServiceTemplate {
   constructor(services) {
-    super('HoraryAstrologyService', services);
-
+    super('PrashnaCalculator');
+    this.calculatorPath = '../calculators/PrashnaCalculator';
     // Initialize Horary Calculator
     this.calculator = new PrashnaCalculator();
 
@@ -45,7 +45,7 @@ class HoraryAstrologyService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Horary Astrology analysis
    */
-  async lhoraryAstrologyCalculation(params) {
+  async processCalculation(params) {
     const { horaryData, options = {} } = params;
 
     try {

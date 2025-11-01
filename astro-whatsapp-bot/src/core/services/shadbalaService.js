@@ -8,8 +8,8 @@ const logger = require('../../../utils/logger');
  */
 class ShadbalaService extends ServiceTemplate {
   constructor(services) {
-    super('ShadbalaService', services);
-
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';
     // Initialize Shadbala Calculator with required dependencies
     this.calculator = new ShadbalaCalculator(
       services.astrologer,
@@ -39,7 +39,7 @@ class ShadbalaService extends ServiceTemplate {
    * @param {Object} params - Calculation parameters
    * @returns {Promise<Object>} Formatted Shadbala analysis
    */
-  async lshadbalaCalculation(params) {
+  async processCalculation(params) {
     const { birthData, options = {} } = params;
 
     try {

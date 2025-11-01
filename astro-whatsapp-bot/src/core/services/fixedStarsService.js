@@ -603,6 +603,11 @@ class FixedStarsService extends ServiceTemplate {
       dependencies: ['FixedStarsCalculator']
     };
   }
+
+  async processCalculation(data) {
+    return await this.lfixedStarsCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

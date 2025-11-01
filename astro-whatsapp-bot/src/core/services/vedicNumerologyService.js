@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const { VedicNumerology } = require('./calculators/VedicNumerology');
+const VedicNumerology = require('./calculators/VedicNumerology');
 
 /**
  * Vedic Numerology Service
@@ -25,7 +25,13 @@ class VedicNumerologyService extends ServiceTemplate {
    */
   async processCalculation(data) {
     try {
-      this._validateInput(data);
+      // Validate input
+      if (!data) {
+        throw new Error('Input data is required');
+      }
+      if (!data.name || !data.birthDate) {
+        throw new Error('Name and birth date are required');
+      }
 
       // Get comprehensive numerology analysis using VedicNumerology calculator
       const analysis = this.calculator.getVedicNumerologyAnalysis(

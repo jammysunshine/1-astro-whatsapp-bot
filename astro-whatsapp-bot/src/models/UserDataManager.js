@@ -84,10 +84,16 @@ class UserDataManager {
         updateData
       );
 
+      // CRITICAL: Sanitize updateData to prevent NoSQL injection
+      // MongoDB operators starting with '$' can be dangerously injected
+      const sanitizedData = this._sanitizeUpdateData(updateData);
+
+      this.logger.debug(`Sanitized update data for ${phoneNumber}:`, sanitizedData);
+
       const user = await User.findOneAndUpdate(
         { phoneNumber },
         {
-          ...updateData,
+          ...sanitizedData,
           lastInteraction: new Date(),
           updatedAt: new Date()
         },
@@ -109,6 +115,52 @@ class UserDataManager {
       this.logger.error(`❌ Error updating user ${phoneNumber}:`, error);
       throw error;
     }
+  }
+
+  /**
+   * Sanitize update data to prevent NoSQL injection attacks
+   * @private
+   * @param {Object} updateData - Raw update data from user input
+   * @returns {Object} Sanitized update data
+   */
+  _sanitizeUpdateData(updateData) {
+    if (!updateData || typeof updateData !== 'object') {
+      return updateData;
+    }
+
+    // List of MongoDB operators that should NEVER be allowed from user input
+    const forbiddenOperators = [
+      '$set', '$unset', '$inc', '$mul', '$rename', '$setOnInsert',
+      '$pop', '$pull', '$push', '$pushAll', '$addToSet', '$each', '$slice', '$sort',
+      '$position', '$isolated', '$atomic', '$and', '$or', '$nor', '$not',
+      '$where', '$match', '$group', '$project', '$lookup', '$unionWith',
+      '$facet', '$search', '$regex', '$text', '$searchMeta',
+      '$gt', '$gte', '$lt', '$lte', '$ne', '$eq', '$in', '$nin', '$all',
+      '$elemMatch', '$size', '$exists', '$type', '$mod', '$expr', '$jsonSchema'
+    ];
+
+    // Deep clone and sanitize the data
+    const sanitized = {};
+
+    for (const [key, value] of Object.entries(updateData)) {
+      // Check if key is a MongoDB operator
+      if (key.startsWith('$')) {
+        if (forbiddenOperators.includes(key)) {
+          this.logger.warn(`🚨 BLOCKED NoSQL Injection attempt - Forbidden operator: ${key}`);
+          throw new Error(`Security violation: Forbidden MongoDB operator '${key}' in update data`);
+        }
+      }
+
+      // Recursively sanitize nested objects
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        sanitized[key] = this._sanitizeUpdateData(value);
+      } else {
+        // Allow primitive values and arrays as they pose lower risk
+        sanitized[key] = value;
+      }
+    }
+
+    return sanitized;
   }
 
   /**
@@ -197,6 +249,50 @@ class UserDataManager {
       return deleted;
     } catch (error) {
       this.logger.error(`❌ Error deleting user ${phoneNumber}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update user profile with MongoDB operators (trusted internal use only)
+   * WARNING: This method bypasses NoSQL injection protection for trusted operations
+   * @param {string} phoneNumber - User's WhatsApp phone number
+   * @param {Object} updateData - Data to update (may include MongoDB operators)
+   * @returns {Promise<Object>} Updated user object
+   */
+  async updateUserProfileWithOperators(phoneNumber, updateData) {
+    try {
+      this.logger.warn(
+        `⚠️ Trusted MongoDB operator update for ${phoneNumber} - bypassing sanitization`
+      );
+      this.logger.debug(
+        `Operator update data for ${phoneNumber}:`,
+        updateData
+      );
+
+      const user = await User.findOneAndUpdate(
+        { phoneNumber },
+        {
+          ...updateData,
+          lastInteraction: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          new: true,
+          runValidators: true
+        }
+      );
+
+      if (!user) {
+        throw new Error(`User not found: ${phoneNumber}`);
+      }
+
+      this.logger.info(
+        `🔄 Updated user profile with operators: ${phoneNumber}`
+      );
+      return user.toObject();
+    } catch (error) {
+      this.logger.error(`❌ Error updating user ${phoneNumber} with operators:`, error);
       throw error;
     }
   }

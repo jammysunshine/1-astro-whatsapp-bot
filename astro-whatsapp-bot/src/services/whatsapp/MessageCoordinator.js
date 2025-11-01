@@ -296,7 +296,6 @@ async function getMessageCoordinator() {
     const TextMessageProcessor = require('./processors/TextMessageProcessor');
     const InteractiveMessageProcessor = require('./processors/InteractiveMessageProcessor');
     const MediaMessageProcessor = require('./processors/MediaMessageProcessor');
-    const { ValidationService } = require('./utils/ValidationService');
     const userModel = require('../../models/userModel'); // Import entire module
     const conversationEngine = require('../../conversation/conversationEngine'); // Import entire module
     const messageSender = require('./messageSender'); // Import entire module
@@ -327,6 +326,11 @@ async function getMessageCoordinator() {
 module.exports = {
   MessageCoordinator,
   getMessageCoordinator,
+  // For convenience, export a direct process function
+  processIncomingMessage: async (message, value) => {
+    const coordinator = await getMessageCoordinator();
+    return coordinator.processIncomingMessage(message, value);
+  },
   // For backwards compatibility, export a promise that resolves to the singleton
   initialize: getMessageCoordinator
 };

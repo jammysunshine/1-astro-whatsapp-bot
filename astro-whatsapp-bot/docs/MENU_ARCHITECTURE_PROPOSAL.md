@@ -20,6 +20,7 @@ Before diving into the proposed architecture, it's crucial to understand the exi
 *   **Existing `menuLoader.js`:** A rudimentary `menuLoader.js` already exists, which includes some form of translation caching. The new `MenuLoader` will build upon or replace this, ensuring that existing caching mechanisms are either integrated or superseded by a more robust i18n-aware caching strategy.
 *   **`BaseAction.js` Inheritance Patterns:** The current system utilizes a `BaseAction.js` from which many action-specific classes inherit. This inheritance pattern is valuable for standardizing action execution. The proposed architecture will maintain this pattern, with action classes becoming lean wrappers around the new `WhatsAppMenuAdapter` (and other frontend adapters) or directly invoking the `ActionMapper`.
 *   **`ResponseBuilder.js` Patterns:** The `ResponseBuilder.js` is currently responsible for constructing platform-specific messages (e.g., WhatsApp interactive messages). The new `Frontend-Specific Adapters/Renderers` will take over this responsibility, effectively replacing or refactoring `ResponseBuilder.js` to work with the generic menu object and i18n-translated strings. This ensures that message construction is handled by the platform-specific layer, aligning with the principle of clear separation of concerns.
+*   **`MessageCoordinator.js` Tight Coupling:** The existing `MessageCoordinator.js` exhibits tight coupling due to direct `require` statements and internal instantiation of numerous dependencies (processors, models, conversation engine, message senders). This makes the `MessageCoordinator` difficult to test in isolation and reduces its modularity. The proposed solution involves refactoring `MessageCoordinator.js` to utilize **Dependency Injection (DI)**, where all collaborators are passed into its constructor. This significantly improves testability, flexibility, and adherence to the Dependency Inversion Principle.
 
 Understanding these existing components is vital for planning a smooth transition to the new architecture.
 
@@ -88,6 +89,8 @@ By following this strategy, `ActionConfig.js` will transform from a sprawling, d
 The proposed architecture is built upon the following principles:
 
 *   **Modularity & Decoupling:** Separate menu definitions from rendering logic and action handling.
+*   **Single Responsibility Principle (SRP):** Each module, class, or function should have one, and only one, reason to change. This prevents components from becoming overly large or complex and improves maintainability.
+*   **Dependency Inversion Principle (DIP):** High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions. This is crucial for achieving loose coupling and making components easily testable and interchangeable.
 *   **Data-Driven Configuration:** Define menu structures using external, human-readable data files (e.g., JSON/YAML).
 *   **Frontend Agnostic Menu Definitions:** The core menu structure should be independent of any specific frontend platform.
 *   **Clear Separation of Concerns:** Distinct layers for menu definition, frontend rendering, action mapping, and backend service invocation.
@@ -315,7 +318,29 @@ Effective management of user context is critical for providing personalized and 
     *   **Session Management:** For platforms that are inherently stateless (like many messaging apps), a session management mechanism (e.g., using Redis or a database) will be necessary to persist user state (like the current menu context, previous menu for 'back' functionality, or ongoing multi-step interactions) between requests.
     *   **Platform-Specific Identifiers:** Frontend adapters are responsible for extracting platform-specific user identifiers from incoming messages and mapping them to a canonical user ID within the system.
 
-### 3.8. Recommended Directory Structure
+### 3.8. Architectural Enforcement Mechanisms
+
+To actively prevent the recurrence of issues like tight coupling, monolithic files, and complex, difficult-to-maintain components, the architecture incorporates the following enforcement mechanisms and guidelines:
+
+*   **Strict Adherence to Single Responsibility Principle (SRP):**
+    *   **Guideline:** Each class, module, or function must have one, and only one, clearly defined responsibility. If a component starts accumulating multiple responsibilities, it must be refactored.
+    *   **Example:** The `MenuLoader`'s sole responsibility is to load and parse menu definitions and i18n strings. It does not render menus or execute actions. Frontend adapters are responsible for platform-specific rendering, not for core menu logic.
+*   **Dependency Inversion Principle (DIP) through Dependency Injection (DI):**
+    *   **Guideline:** High-level modules (like `MessageCoordinator`) should not depend on low-level modules (like specific processors or models). Instead, both should depend on abstractions. Dependencies should be injected (e.g., via constructor injection) rather than directly `require`d or instantiated within a module.
+    *   **Benefit:** This promotes loose coupling, making components easier to test in isolation, swap out implementations, and prevents a single change in a low-level module from rippling through high-level modules.
+*   **Clear Module Boundaries and API Contracts:**
+    *   **Guideline:** Each module (e.g., `src/core/menu`, `src/frontend/whatsapp`) must have a well-defined public interface (API). Internal implementation details should be encapsulated and not exposed.
+    *   **Benefit:** This limits the surface area for dependencies, making it harder for components to become tightly coupled and easier to understand individual parts of the system.
+*   **Configuration over Code for Volatile Aspects:**
+    *   **Guideline:** Aspects of the system that are expected to change frequently (e.g., menu structures, user-facing text) must be externalized into configuration files (JSON/YAML) rather than hardcoded in logic.
+    *   **Benefit:** This reduces the need for code deployments for simple content updates, minimizing risk and increasing agility.
+*   **Automated Tooling and Code Reviews:**
+    *   **Guideline:** Implement static analysis tools (linters, complexity analyzers) and enforce rigorous code review processes to identify and flag violations of these architectural principles (e.g., overly large files, high cyclomatic complexity, direct instantiation of dependencies where injection is preferred).
+    *   **Benefit:** Provides an automated and human-driven safety net to maintain architectural integrity over time.
+
+These mechanisms, combined with the recommended directory structure, are designed to guide developers towards building a maintainable, scalable, and extensible system, actively preventing the accumulation of technical debt.
+
+### 3.9. Recommended Directory Structure
 
 To support modularity, extensibility, and clear separation of concerns across multiple frontends and backend services, the following directory structure is recommended:
 
@@ -351,6 +376,8 @@ This structure promotes:
 *   **Decoupling:** Enforces a strong separation between platform-specific UI/interaction logic and the core business logic.
 
 ## 4. Detailed Implementation Instructions
+
+This section outlines the step-by-step process for implementing the proposed menu architecture. Each step is designed to adhere to the core architectural principles, particularly the **Single Responsibility Principle (SRP)** and the **Dependency Inversion Principle (DIP)**, to ensure that the resulting codebase is modular, loosely coupled, testable, and maintainable. By following these instructions, we actively prevent the creation of large, complex, and tightly coupled files, ensuring a robust and future-proof system.
 
 ### Step 1: Externalize Menu Definitions into JSON/YAML Files
 
@@ -522,9 +549,11 @@ module.exports = MenuLoader;
 
 ### Step 3: Refactor `ActionConfig.js`
 
-`ActionConfig.js` should now exclusively contain metadata for the *backend services* (the 100 astro services), not menu display logic. Menu display names will be read from the menu definition files via `i18nKey`.
+`ActionConfig.js` should now exclusively contain metadata for the *backend services* (the 100 astro services), not menu display logic. Menu display names will be read from the menu definition files via `i18nKey`. This refactoring is a direct application of the **Single Responsibility Principle (SRP)**, ensuring `ActionConfig.js` has only one reason to change: updates to service metadata.
 
 *(This will involve a manual process of going through `ActionConfig.js` and removing `displayName` from `ASTROLOGY_CONFIG`, `NUMEROLOGY_CONFIG`, `DIVINATION_CONFIG`, `PROFILE_CONFIG` if these display names refer to menu items. Only retain `displayName` if it's used for internal logging or non-menu display purposes for the backend service itself. If a service requires a user-facing name for internal messages (e.g., in an error log that is shown to the user), consider replacing `displayName` with an `i18nKey` that can be translated. The `MENU_CONFIG` object can be significantly streamlined or removed entirely if menu actions are handled by the `MenuLoader`.)*
+
+**Applying Dependency Inversion Principle (DIP):** The `ActionMapper` (a high-level module) will depend on an abstraction (e.g., a `getActionConfig` function or an interface) to retrieve service configuration, rather than directly on the concrete `ActionConfig.js` file. This ensures that changes to the internal structure of `ActionConfig.js` do not directly impact the `ActionMapper`.
 
 ```javascript
 // src/core/services/actions/config/ActionConfig.js
@@ -638,7 +667,7 @@ module.exports = GenericMenuRenderer;
 
 ### Step 5: Develop WhatsApp Menu Adapter
 
-The WhatsApp-specific adapter (e.g., `src/frontend/whatsapp/whatsappMenuAdapter.js`) will now fetch menu definitions and render them.
+The WhatsApp-specific adapter (e.g., `src/frontend/whatsapp/whatsappMenuAdapter.js`) will now fetch menu definitions and render them. This adapter adheres to the **Single Responsibility Principle (SRP)** by focusing solely on translating the generic menu object into WhatsApp's native interactive message formats. It demonstrates the **Dependency Inversion Principle (DIP)** by depending on the abstractions provided by `MenuLoader` and `GenericMenuRenderer`, rather than their concrete implementations.
 
 ```javascript
 // src/frontend/whatsapp/whatsappMenuAdapter.js
@@ -742,7 +771,7 @@ module.exports = WhatsAppMenuAdapter;
 
 ### Step 6: Refactor Existing Menu Action Files
 
-These files will now become lean wrappers around the `WhatsAppMenuAdapter`.
+These files will now become lean wrappers around the `WhatsAppMenuAdapter`. This is a direct application of the **Single Responsibility Principle (SRP)**, as each action file's sole responsibility is to trigger a specific menu display via the adapter. They demonstrate the **Dependency Inversion Principle (DIP)** by depending on the `WhatsAppMenuAdapter` abstraction, not its internal implementation details.
 
 **Example: `src/frontend/whatsapp/actions/menu/ShowMainMenuAction.js`**
 
@@ -769,7 +798,7 @@ module.exports = ShowMainMenuAction;
 
 ### Step 7: Update `MessageRouter` and `InteractiveMessageProcessor`
 
-These modules will now interact with the new `ActionMapper` (which will call the adapters and services).
+These modules will now interact with the new `ActionMapper` (which will call the adapters and services). This demonstrates the **Dependency Inversion Principle (DIP)**, as these high-level modules depend on the `ActionMapper` abstraction (its public `executeAction` method) rather than directly on the concrete implementations of individual actions or services. Their primary responsibility is routing, adhering to **SRP**.
 
 **Example: `src/frontend/whatsapp/processors/InteractiveMessageProcessor.js`**
 
@@ -825,7 +854,7 @@ class MessageRouter {
 
 ### Step 8: Create an Action Mapper
 
-This module will bridge the frontend action IDs to the backend service calls or menu navigation. It is designed to abstract the underlying service implementation, allowing for a seamless transition from monolithic services to microservices.
+This module will bridge the frontend action IDs to the backend service calls or menu navigation. It is designed to abstract the underlying service implementation, allowing for a seamless transition from monolithic services to microservices. The `ActionMapper` adheres to the **Single Responsibility Principle (SRP)** by focusing solely on mapping and executing actions. It demonstrates the **Dependency Inversion Principle (DIP)** by depending on abstractions like the `serviceRegistry` and the interfaces of the frontend adapters (e.g., `WhatsAppMenuAdapter.sendMenu`), rather than their concrete implementations.
 
 ```javascript
 // src/core/menu/ActionMapper.js
@@ -901,7 +930,7 @@ module.exports = ActionMapper;
 
 ### Step 9: Implement an i18n Utility
 
-Create a dedicated utility module (e.g., `src/core/utils/i18n.js`) for managing and retrieving translated strings. This module will load language-specific JSON files from the `config/i18n_keys/` directory.
+Create a dedicated utility module (e.g., `src/core/utils/i18n.js`) for managing and retrieving translated strings. This module adheres to the **Single Responsibility Principle (SRP)** by focusing solely on internationalization concerns, such as loading language files and providing a translation function. It does not concern itself with how these translations are used in menus or other parts of the application.
 
 ```javascript
 // src/core/utils/i18n.js
@@ -963,12 +992,12 @@ module.exports = I18n;
 
 ## 5. Benefits of this Architecture
 
-*   **Enhanced Modularity & Decoupling:** Achieves a high degree of separation between concerns, making individual components easier to develop, test, and maintain independently.
+*   **Enhanced Modularity & Decoupling:** Achieves a high degree of separation between concerns, making individual components easier to develop, test, and maintain independently. **Active enforcement of SRP and DIP, coupled with clear module boundaries, directly prevents files from becoming overly large, complex, or tightly coupled.**
 *   **True Frontend Agnosticism:** The core menu logic and definitions are entirely independent of any specific frontend platform. This means the same menu structure can power WhatsApp, Web (PWA), Telegram, and native mobile applications with minimal platform-specific code.
 *   **Simplified Menu Management:** Modifying menu labels, adding/removing items, or reordering sections *only* involves editing JSON/YAML configuration files. No code changes are needed for menu structure updates, significantly reducing deployment cycles and risk.
 *   **Scalability & Extensibility:** The architecture is designed to easily accommodate new frontend platforms or additional backend services. Adding a new frontend simply requires implementing a new adapter that conforms to the generic menu representation.
 *   **Clear API Contracts:** Well-defined interfaces between layers (e.g., Generic Menu Renderer and Frontend Adapters) ensure predictable interactions and facilitate parallel development by different teams.
-*   **Improved Maintainability:** Reduced code complexity, a logical directory structure, and clear separation of concerns make the codebase easier to understand, onboard new developers, and minimize the risk of errors during updates.
+*   **Improved Maintainability:** Reduced code complexity, a logical directory structure, and clear separation of concerns make the codebase easier to understand, onboard new developers, and minimize the risk of errors during updates. **The architectural enforcement mechanisms actively combat technical debt and ensure long-term maintainability.**
 *   **Future-Proofing & Phased Evolution:** The architecture is explicitly designed to support a phased evolution. The `ActionMapper` and `serviceRegistry` abstract the underlying service implementation, allowing for a seamless transition from invoking internal monolithic functions (today) to calling external microservice APIs (tomorrow) without requiring changes to frontend logic or menu definitions. This significantly reduces the risk and complexity of future refactoring.
 *   **Redundancy Support:** Menu definitions can easily include the same `actionId` in multiple places, allowing for redundant access paths to popular services without duplicating configuration.
 *   **Internationalization Built-In:** All user-facing text is managed centrally through i18n keys, making it straightforward to add new languages and ensuring a consistent multilingual experience across all platforms.
@@ -984,5 +1013,6 @@ module.exports = I18n;
 *   **Platform-Specific Message Senders:** Ensure robust message sender utilities (e.g., `WhatsAppMessageSender`, `TelegramMessageSender`, `WebPushNotificationSender`) are implemented for each platform, handling all message types (text, interactive, media, etc.) and platform-specific error handling.
 *   **Cross-Layer Error Handling Strategy:** Define a consistent strategy for error handling, logging, and user notification across all layers. This includes how errors are caught, transformed (e.g., to be i18n-ready messages), and presented to the user via frontend adapters, and how critical errors are logged for system monitoring.
 *   **Monolith to Microservices Breakdown Strategy:** Develop a detailed plan for incrementally breaking down the monolithic service into individual microservices. This should include identifying service boundaries, defining clear APIs for each new microservice, and establishing a robust communication mechanism (e.g., message queues, gRPC) between them. Consider strategies like the Strangler Fig pattern for a safe and gradual transition.
+*   **Automated Architectural Enforcement:** Implement static analysis tools (e.g., ESLint with custom rules, SonarQube, dependency-graph analyzers) and integrate them into the CI/CD pipeline. These tools should automatically flag violations of architectural principles, such as excessive file size, high cyclomatic complexity, direct instantiation of dependencies where DI is expected, or unauthorized cross-layer dependencies. This provides an objective and continuous mechanism to maintain architectural integrity.
 
 This architecture provides a solid, future-proof foundation for a scalable, maintainable, and flexible bot experience across multiple platforms.

@@ -332,4 +332,29 @@ class DetailedChartAnalysisService extends ServiceTemplate {
 • **Predictive Indicators:** Identification of major life changes, peak periods, and challenging times.
 • **Comprehensive Summary:** An overall interpretation of the chart's potential and challenges.
 
-**Example Usage:**
+**Example Usage:**    `;
+  }
+
+  async getHealthStatus() {
+    try {
+      const baseHealth = await super.getHealthStatus();
+      return {
+        ...baseHealth,
+        features: {
+          // Add service-specific features here
+        },
+        supportedAnalyses: [
+          // Add supported analyses here
+        ]
+      };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+}
+
+module.exports = new DetailedChartAnalysisService();

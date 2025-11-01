@@ -121,11 +121,11 @@ class HoraryReadingService extends ServiceTemplate {
    */
   _categorizeQuestion(question) {
     const lowerQuestion = question.toLowerCase();
-    if (lowerQuestion.includes('love') || lowerQuestion.includes('relationship') || lowerQuestion.includes('marriage')) return 'relationship';
-    if (lowerQuestion.includes('job') || lowerQuestion.includes('career') || lowerQuestion.includes('work')) return 'career';
-    if (lowerQuestion.includes('money') || lowerQuestion.includes('financial') || lowerQuestion.includes('investment')) return 'financial';
-    if (lowerQuestion.includes('health') || lowerQuestion.includes('illness') || lowerQuestion.includes('medical')) return 'health';
-    if (lowerQuestion.includes('move') || lowerQuestion.includes('relocate') || lowerQuestion.includes('travel')) return 'relocation';
+    if (lowerQuestion.includes('love') || lowerQuestion.includes('relationship') || lowerQuestion.includes('marriage')) { return 'relationship'; }
+    if (lowerQuestion.includes('job') || lowerQuestion.includes('career') || lowerQuestion.includes('work')) { return 'career'; }
+    if (lowerQuestion.includes('money') || lowerQuestion.includes('financial') || lowerQuestion.includes('investment')) { return 'financial'; }
+    if (lowerQuestion.includes('health') || lowerQuestion.includes('illness') || lowerQuestion.includes('medical')) { return 'health'; }
+    if (lowerQuestion.includes('move') || lowerQuestion.includes('relocate') || lowerQuestion.includes('travel')) { return 'relocation'; }
     return 'general';
   }
 
@@ -279,9 +279,9 @@ class HoraryReadingService extends ServiceTemplate {
    */
   _calculateAnswerConfidence(horaryChart, question) {
     let confidence = 50;
-    if (this._hasStrongSignificators(horaryChart, question)) confidence += 20;
-    if (this._hasClearAspects(horaryChart)) confidence += 15;
-    if (this._hasFavorableMoonPosition(horaryChart)) confidence += 10;
+    if (this._hasStrongSignificators(horaryChart, question)) { confidence += 20; }
+    if (this._hasClearAspects(horaryChart)) { confidence += 15; }
+    if (this._hasFavorableMoonPosition(horaryChart)) { confidence += 10; }
     return Math.min(100, Math.max(0, confidence));
   }
 

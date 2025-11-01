@@ -1,25 +1,34 @@
-/**
- * Vedic Remedies Service
- *
- * Provides comprehensive Vedic remedies including gemstones, mantras, charities, pujas, and yantras
- * for planetary appeasement and astrological corrections.
- */
-
+const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
+const { BirthData } = require('../../models');
 
-class VedicRemediesService {
+/**
+ * VedicRemediesService - Service for comprehensive Vedic remedial measures
+ *
+ * Provides comprehensive Vedic remedial measures for planetary afflictions,
+ * dosha corrections, and spiritual healing practices including gemstones,
+ * mantras, charities, pujas, and yantras based on birth chart analysis.
+ */
+class VedicRemediesService extends ServiceTemplate {
   constructor() {
-    this.calculator = new VedicRemedies();
+    super('VedicRemedies'); // Primary calculator for this service
+    this.serviceName = 'VedicRemediesService';
+    this.calculatorPath = '../../../services/astrology/vedicRemedies';
     logger.info('VedicRemediesService initialized');
   }
 
   /**
-   * Execute complete Vedic remedies analysis
-   * @param {Object} data - Birth data and specific remedy request
-   * @returns {Promise<Object>} Complete remedies analysis
+   * Main calculation method for Vedic Remedies analysis.
+   * @param {Object} data - Birth data and specific remedy request.
+   * @returns {Promise<Object>} Complete remedies analysis.
    */
-  async execute(data) {
+  async processCalculation(data) {
     try {
+      // Ensure calculator is loaded
+      if (!this.calculator) {
+        await this.initialize();
+      }
+
       this._validateInput(data);
 
       // Determine planet or dosha from request
@@ -36,139 +45,74 @@ class VedicRemediesService {
       // Format result for service consumption
       return this._formatResult(remedies, planet, dosha);
     } catch (error) {
-      logger.error('VedicRemediesService error:', error);
+      logger.error('VedicRemediesService processCalculation error:', error);
       throw new Error(`Vedic remedies analysis failed: ${error.message}`);
     }
   }
 
   /**
-   * Get planetary remedies (for handler compatibility)
-   * @param {string} planet - Planet name
-   * @returns {Promise<Object>} Planetary remedies
-   */
-  async getPlanetRemedies(planet) {
-    try {
-      if (!planet) {
-        throw new Error('Planet is required');
-      }
-
-      const remedies = this.calculator.generatePlanetRemedies(planet);
-
-      if (remedies.error) {
-        return {
-          error: true,
-          message: remedies.error
-        };
-      }
-
-      return {
-        summary: remedies.summary,
-        mantra: remedies.mantra,
-        gemstone: remedies.gemstone,
-        charity: remedies.charity,
-        puja: remedies.puja,
-        yantra: remedies.yantra,
-        error: false
-      };
-    } catch (error) {
-      logger.error('VedicRemediesService getPlanetRemedies error:', error);
-      return {
-        error: true,
-        message: 'Unable to generate planetary remedies'
-      };
-    }
-  }
-
-  /**
-   * Get dosha remedies
-   * @param {string} doshaType - Type of dosha (kaal_sarp, manglik, etc.)
-   * @returns {Promise<Object>} Dosha remedies
-   */
-  async getDoshaRemedies(doshaType) {
-    try {
-      if (!doshaType) {
-        throw new Error('Dosha type is required');
-      }
-
-      const remedies = this.calculator.generateDoshaRemedies(doshaType);
-
-      return {
-        remedies,
-        summary: this._generateDoshaSummary(remedies, doshaType),
-        error: false
-      };
-    } catch (error) {
-      logger.error('VedicRemediesService getDoshaRemedies error:', error);
-      return {
-        error: true,
-        message: 'Unable to generate dosha remedies'
-      };
-    }
-  }
-
-  /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
+   * Validates input data for remedies analysis.
+   * @param {Object} input - Input data to validate.
    * @private
    */
   _validateInput(input) {
     if (!input) {
-      throw new Error('Input data is required');
+      throw new Error('Input data is required for Vedic Remedies analysis.');
     }
 
     // At least planet or dosha should be specified
     if (!input.planet && !input.dosha) {
-      throw new Error('Either planet or dosha type is required');
+      throw new Error('Either planet or dosha type is required for Vedic Remedies analysis.');
     }
   }
 
   /**
-   * Format result for service consumption
-   * @param {Object} remedies - Raw remedies data
-   * @param {string} planet - Planet name
-   * @param {string} dosha - Dosha type
-   * @returns {Object} Formatted result
-   * @private
+   * Formats the remedies analysis result for consistent output.
+   * @param {Object} remedies - Raw remedies data.
+   * @param {string} planet - Planet name.
+   * @param {string} dosha - Dosha type.
+   * @returns {Object} Formatted result.
    */
-  _formatResult(remedies, planet, dosha) {
+  formatResult(remedies, planet, dosha) {
     if (remedies.error) {
       return {
         success: false,
         error: remedies.error,
-        message: 'Remedies generation failed'
+        message: 'Remedies generation failed',
+        service: this.serviceName
       };
     }
 
     return {
       success: true,
-      remedies,
-      target: planet || dosha,
-      type: planet ? 'planetary' : 'dosha',
+      data: remedies,
+      summary: remedies.summary || 'Remedies analysis completed',
       metadata: {
+        serviceName: this.serviceName,
         system: 'Vedic Remedies',
         calculationMethod: 'Traditional Vedic remedial measures for planetary appeasement',
         categories: ['Gemstones', 'Mantras', 'Charities', 'Pujas', 'Yantras'],
-        tradition: 'Ancient Indian astrological remedial practices'
+        tradition: 'Ancient Indian astrological remedial practices',
+        timestamp: new Date().toISOString()
       }
     };
   }
 
   /**
-   * Extract planet from input data
-   * @param {Object} data - Input data
-   * @returns {string} Planet name
+   * Extracts planet from input data.
+   * @param {Object} data - Input data.
+   * @returns {string} Planet name.
    * @private
    */
   _extractPlanetFromData(data) {
-    // Default to sun if no planet specified
-    return data.planet || 'sun';
+    return data.planet || 'sun'; // Default to sun if no planet specified
   }
 
   /**
-   * Generate dosha remedies summary
-   * @param {Object} remedies - Remedies data
-   * @param {string} doshaType - Dosha type
-   * @returns {string} Formatted summary
+   * Generates dosha remedies summary.
+   * @param {Object} remedies - Remedies data.
+   * @param {string} doshaType - Dosha type.
+   * @returns {string} Formatted summary.
    * @private
    */
   _generateDoshaSummary(remedies, doshaType) {
@@ -200,38 +144,49 @@ class VedicRemediesService {
   }
 
   /**
-   * Get service metadata
-   * @returns {Object} Service information
+   * Returns metadata for the service.
+   * @returns {Object} Service metadata.
    */
   getMetadata() {
     return {
-      name: 'VedicRemediesService',
-      description: 'Comprehensive Vedic remedies including gemstones, mantras, charities, pujas, and yantras',
+      name: this.serviceName,
       version: '1.0.0',
-      dependencies: ['VedicRemedies'],
       category: 'vedic',
-      methods: ['execute', 'getPlanetRemedies', 'getDoshaRemedies']
+      methods: ['processCalculation', 'getPlanetRemedies', 'getDoshaRemedies'],
+      dependencies: [], // Managed by ServiceTemplate
+      description: 'Comprehensive Vedic remedial measures for planetary afflictions and dosha corrections.'
     };
   }
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          // Add service-specific features here
-        },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
+
+  /**
+   * Returns help information for the service.
+   * @returns {string} Help text.
+   */
+  getHelp() {
+    return `
+🕉️ **Vedic Remedies Service - Astrological Corrections & Healing**
+
+**Purpose:** Provides comprehensive Vedic remedial measures for planetary afflictions, dosha corrections, and spiritual healing practices including gemstones, mantras, charities, pujas, and yantras based on birth chart analysis.
+
+**Required Inputs:**
+• Either 'planet' (string, e.g., 'Mars') or 'dosha' (string, e.g., 'kaal_sarp')
+
+**Analysis Includes:**
+• **Gemstone Recommendations:** Specific gemstones to strengthen beneficial planetary influences.
+• **Mantra Recitations:** Powerful Vedic mantras for planetary appeasement and spiritual upliftment.
+• **Charitable Acts:** Prescribed donations and acts of service to mitigate negative karmic effects.
+• **Pujas & Rituals:** Recommendations for specific ceremonies and rituals for planetary harmony.
+• **Yantras:** Sacred geometric diagrams for meditation and protection.
+• **Dosha-Specific Remedies:** Targeted remedies for astrological afflictions like Kaal Sarp Dosha, Manglik Dosha, Pitra Dosha, and Sade Sati.
+
+**Example Usage:**
+"What are the remedies for Mars?"
+"Provide remedies for Kaal Sarp Dosha."
+"Suggest remedies for Saturn's influence."
+
+**Output Format:**
+Detailed report with recommended remedies categorized by type, along with their purpose and instructions.
+    `.trim();
   }
 }
 

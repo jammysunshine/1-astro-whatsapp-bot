@@ -1,22 +1,35 @@
 const ServiceTemplate = require('../ServiceTemplate');
-const logger = require('../../utils/logger');
-
-// Import calculator from legacy structure (for now)
+const logger = require('../../../utils/logger');
+const { BirthData } = require('../../models');
 
 /**
  * SolarReturnService - Service for solar return chart analysis
+ *
  * Provides annual birthday astrology analysis showing themes and influences for the coming year
  * using Swiss Ephemeris integration for precise solar return calculations.
  */
 class SolarReturnService extends ServiceTemplate {
   constructor() {
-    super('solarReturnService');
+    super('SolarReturnCalculator'); // Primary calculator for this service
     this.serviceName = 'SolarReturnService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/SolarReturnCalculator';
     logger.info('SolarReturnService initialized');
   }
 
-  async lsolarReturnCalculation(data) {
+  /**
+   * Main calculation method for Solar Return analysis.
+   * @param {Object} data - Input data containing birthData, targetYear, and location.
+   * @returns {Promise<Object>} Raw solar return result.
+   */
+  async processCalculation(data) {
     try {
+      // Ensure calculator is loaded
+      if (!this.calculator) {
+        await this.initialize();
+      }
+
+      this._validateInput(data);
+
       const { birthData, targetYear, location } = data;
 
       // Use current year if not specified
@@ -26,69 +39,55 @@ class SolarReturnService extends ServiceTemplate {
       const result = await this.calculator.calculateSolarReturn(birthData, year, location);
       return { ...result, year };
     } catch (error) {
-      logger.error('SolarReturnService calculation error:', error);
+      logger.error('SolarReturnService processCalculation error:', error);
       throw new Error(`Solar return analysis failed: ${error.message}`);
     }
   }
 
+  /**
+   * Formats the solar return result for consistent output.
+   * @param {Object} result - Raw calculator result.
+   * @returns {Object} Formatted solar return result.
+   */
   formatResult(result) {
     const { year, ...analysisData } = result;
     return {
       success: true,
-      service: 'Solar Return Analysis',
-      timestamp: new Date().toISOString(),
-      data: {
-        ...analysisData,
+      data: analysisData,
+      summary: analysisData.summary || 'Solar return analysis completed',
+      metadata: {
+        serviceName: this.serviceName,
+        calculationType: 'Solar Return Analysis',
+        timestamp: new Date().toISOString(),
         analysisYear: year
       },
       disclaimer: 'Solar return charts show the astrological influences for the year ahead from birthday to birthday. The solar return Sun represents the individual\'s life direction for that year. Results should be considered alongside other astrological techniques.'
     };
   }
 
-  validate(data) {
-    if (!data || !data.birthData) {
-      throw new Error('Birth data is required');
+  /**
+   * Validates input data for solar return calculation.
+   * @param {Object} input - Input data to validate.
+   * @private
+   */
+  _validateInput(input) {
+    if (!input || !input.birthData) {
+      throw new Error('Birth data is required for Solar Return analysis.');
     }
-
-    const { birthDate, birthTime, birthPlace } = data.birthData;
-
-    if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Valid birth date is required');
-    }
-
-    if (!birthTime || typeof birthTime !== 'string') {
-      throw new Error('Valid birth time is required');
-    }
-
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-
-    return true;
+    const validatedData = new BirthData(input.birthData);
+    validatedData.validate();
   }
 
   /**
-   * Get current year solar return (convenience method)
-   * @param {Object} birthData - Birth data
-   * @param {string} location - Location for calculation (optional)
-   * @returns {Promise<Object>} Current year solar return
+   * Gets current year solar return (convenience method).
+   * @param {Object} birthData - Birth data.
+   * @param {string} location - Location for calculation (optional).
+   * @returns {Promise<Object>} Current year solar return.
    */
   async getCurrentYearSolarReturn(birthData, location = null) {
     try {
       const currentYear = new Date().getFullYear();
-      return await this.execute(birthData, currentYear, location);
+      return await this.execute({ birthData, targetYear: currentYear, location });
     } catch (error) {
       logger.error('SolarReturnService getCurrentYearSolarReturn error:', error);
       return {
@@ -99,15 +98,15 @@ class SolarReturnService extends ServiceTemplate {
   }
 
   /**
-   * Get next year solar return (preview)
-   * @param {Object} birthData - Birth data
-   * @param {string} location - Location for calculation (optional)
-   * @returns {Promise<Object>} Next year solar return preview
+   * Gets next year solar return (preview).
+   * @param {Object} birthData - Birth data.
+   * @param {string} location - Location for calculation (optional).
+   * @returns {Promise<Object>} Next year solar return preview.
    */
   async getNextYearSolarReturn(birthData, location = null) {
     try {
       const nextYear = new Date().getFullYear() + 1;
-      return await this.execute(birthData, nextYear, location);
+      return await this.execute({ birthData, targetYear: nextYear, location });
     } catch (error) {
       logger.error('SolarReturnService getNextYearSolarReturn error:', error);
       return {
@@ -118,21 +117,26 @@ class SolarReturnService extends ServiceTemplate {
   }
 
   /**
-   * Compare solar returns between years
-   * @param {Object} birthData - Birth data
-   * @param {number} year1 - First year
-   * @param {number} year2 - Second year
-   * @param {string} location - Location for calculation (optional)
-   * @returns {Promise<Object>} Solar return comparison
+   * Compares solar returns between years.
+   * @param {Object} birthData - Birth data.
+   * @param {number} year1 - First year.
+   * @param {number} year2 - Second year.
+   * @param {string} location - Location for calculation (optional).
+   * @returns {Promise<Object>} Solar return comparison.
    */
   async compareSolarReturns(birthData, year1, year2, location = null) {
     try {
-      this._validateInput(birthData);
+      this._validateInput({ birthData });
 
       const return1 = await this.calculator.calculateSolarReturn(birthData, year1, location);
       const return2 = await this.calculator.calculateSolarReturn(birthData, year2, location);
 
-      const comparison = this._compareSolarReturnCharts(return1, return2, year1, year2);
+      const comparison = this._compareSolarReturnCharts(
+        return1,
+        return2,
+        year1,
+        year2
+      );
 
       return {
         comparison,
@@ -150,11 +154,11 @@ class SolarReturnService extends ServiceTemplate {
   }
 
   /**
-   * Get solar return themes and predictions
-   * @param {Object} birthData - Birth data
-   * @param {number} targetYear - Year for analysis
-   * @param {string} location - Location for calculation (optional)
-   * @returns {Promise<Object>} Solar return themes and predictions
+   * Gets solar return themes and predictions.
+   * @param {Object} birthData - Birth data.
+   * @param {number} targetYear - Year for analysis.
+   * @param {string} location - Location for calculation (optional).
+   * @returns {Promise<Object>} Solar return themes and predictions.
    */
   async getSolarReturnThemes(birthData, targetYear = null, location = null) {
     try {
@@ -180,59 +184,12 @@ class SolarReturnService extends ServiceTemplate {
   }
 
   /**
-   * Validate input data
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Birth data is required');
-    }
-
-    const { birthDate, birthTime, birthPlace } = input;
-
-    if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
-    }
-
-    if (!birthTime || typeof birthTime !== 'string') {
-      throw new Error('Valid birth time (HH:MM format) is required');
-    }
-
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-  }
-
-  getMetadata() {
-    return {
-      name: this.serviceName,
-      version: '1.0.0',
-      category: 'vedic',
-      methods: ['execute', 'getCurrentYearSolarReturn', 'getSolarReturnForYear', 'compareSolarReturns'],
-      dependencies: ['SolarReturnCalculator']
-    };
-  }
-
-  /**
-   * Compare two solar return charts
-   * @param {Object} return1 - First solar return
-   * @param {Object} return2 - Second solar return
-   * @param {number} year1 - Year of first return
-   * @param {number} year2 - Year of second return
-   * @returns {Object} Comparison analysis
+   * Compares two solar return charts.
+   * @param {Object} return1 - First solar return.
+   * @param {Object} return2 - Second solar return.
+   * @param {number} year1 - Year of first return.
+   * @param {number} year2 - Year of second return.
+   * @returns {Object} Comparison analysis.
    * @private
    */
   _compareSolarReturnCharts(return1, return2, year1, year2) {
@@ -243,7 +200,6 @@ class SolarReturnService extends ServiceTemplate {
       themeEvolution: []
     };
 
-    // Compare planetary positions
     if (return1.planetaryPositions && return2.planetaryPositions) {
       Object.keys(return1.planetaryPositions).forEach(planet => {
         const pos1 = return1.planetaryPositions[planet];
@@ -259,7 +215,6 @@ class SolarReturnService extends ServiceTemplate {
       });
     }
 
-    // Compare house cusps
     if (return1.houses && return2.houses) {
       for (let i = 1; i <= 12; i++) {
         const house1 = return1.houses[i];
@@ -274,20 +229,18 @@ class SolarReturnService extends ServiceTemplate {
         }
       }
     }
-
     return comparison;
   }
 
   /**
-   * Extract themes from solar return chart
-   * @param {Object} solarReturn - Solar return analysis
-   * @returns {Array} Key themes
+   * Extracts themes from solar return chart.
+   * @param {Object} solarReturn - Solar return analysis.
+   * @returns {Array} Key themes.
    * @private
    */
   _extractThemes(solarReturn) {
     const themes = [];
 
-    // Analyze planetary placements
     if (solarReturn.planetaryPositions) {
       Object.entries(solarReturn.planetaryPositions).forEach(([planet, position]) => {
         if (position && position.house) {
@@ -301,7 +254,6 @@ class SolarReturnService extends ServiceTemplate {
       });
     }
 
-    // Analyze angular planets (1st, 4th, 7th, 10th houses)
     const angularHouses = [1, 4, 7, 10];
     const angularPlanets = themes.filter(t => angularHouses.includes(t.house));
 
@@ -312,15 +264,14 @@ class SolarReturnService extends ServiceTemplate {
         theme: 'Major life focus and external circumstances'
       });
     }
-
-    return themes.slice(0, 8); // Limit to most significant themes
+    return themes.slice(0, 8);
   }
 
   /**
-   * Generate predictions from solar return
-   * @param {Object} solarReturn - Solar return analysis
-   * @param {number} year - Year of solar return
-   * @returns {Object} Predictions by life area
+   * Generates predictions from solar return.
+   * @param {Object} solarReturn - Solar return analysis.
+   * @param {number} year - Year of solar return.
+   * @returns {Object} Predictions by life area.
    * @private
    */
   _generatePredictions(solarReturn, year) {
@@ -338,63 +289,41 @@ class SolarReturnService extends ServiceTemplate {
   // Helper methods
   _getHouseSignificance(house) {
     const significances = {
-      1: 'Personal identity and self-presentation',
-      2: 'Financial resources and self-worth',
-      4: 'Home and family foundations',
-      5: 'Creativity and children',
-      6: 'Health and daily routines',
-      7: 'Partnerships and relationships',
-      8: 'Transformation and shared resources',
-      9: 'Higher learning and travel',
-      10: 'Career and public reputation',
-      11: 'Friends and community',
-      12: 'Spirituality and inner life'
+      1: 'Personal identity and self-presentation', 2: 'Financial resources and self-worth', 4: 'Home and family foundations',
+      5: 'Creativity and children', 6: 'Health and daily routines', 7: 'Partnerships and relationships',
+      8: 'Transformation and shared resources', 9: 'Higher learning and travel',
+      10: 'Career and public reputation', 11: 'Friends and community', 12: 'Spirituality and inner life'
     };
     return significances[house] || 'General life area';
   }
 
   _getHouseTheme(house) {
     const themes = {
-      1: 'Personal growth and new beginnings',
-      2: 'Financial stability and material security',
-      4: 'Family matters and home life',
-      5: 'Creativity and self-expression',
-      6: 'Health and service to others',
-      7: 'Partnerships and relationships',
-      8: 'Transformation and deep change',
-      9: 'Learning and expansion',
-      10: 'Career and achievement',
-      11: 'Community and friendships',
-      12: 'Spirituality and inner work'
+      1: 'Personal growth and new beginnings', 2: 'Financial stability and material security', 4: 'Family matters and home life',
+      5: 'Creativity and self-expression', 6: 'Health and service to others', 7: 'Partnerships and relationships',
+      8: 'Transformation and deep change', 9: 'Learning and expansion',
+      10: 'Career and achievement', 11: 'Community and friendships', 12: 'Spirituality and inner work'
     };
     return themes[house] || 'General development';
   }
 
   _getPlanetaryEmphasis(planet) {
     const emphases = {
-      Sun: 'Identity and life force',
-      Moon: 'Emotions and nurturing',
-      Mars: 'Action and energy',
-      Mercury: 'Communication and learning',
-      Jupiter: 'Growth and opportunity',
-      Venus: 'Love and harmony',
-      Saturn: 'Structure and responsibility',
-      Uranus: 'Innovation and change',
-      Neptune: 'Spirituality and dreams',
+      Sun: 'Identity and life force', Moon: 'Emotions and nurturing', Mars: 'Action and energy',
+      Mercury: 'Communication and learning', Jupiter: 'Growth and opportunity', Venus: 'Love and harmony',
+      Saturn: 'Structure and responsibility', Uranus: 'Innovation and change', Neptune: 'Spirituality and dreams',
       Pluto: 'Transformation and power'
     };
     return emphases[planet] || 'General influence';
   }
 
   _getOverallTone(solarReturn) {
-    // Simple heuristic based on planetary placements
     const planetCount = Object.keys(solarReturn.planetaryPositions || {}).length;
     if (planetCount > 5) { return 'active and dynamic'; }
     return 'stable and developmental';
   }
 
   _getMainFocus(solarReturn) {
-    // Determine main focus based on house emphasis
     const houseCounts = {};
     if (solarReturn.planetaryPositions) {
       Object.values(solarReturn.planetaryPositions).forEach(pos => {
@@ -403,36 +332,61 @@ class SolarReturnService extends ServiceTemplate {
         }
       });
     }
-
     const maxHouse = Object.entries(houseCounts).sort((a, b) => b[1] - a[1])[0];
     return maxHouse ? this._getHouseTheme(parseInt(maxHouse[0])) : 'personal development';
   }
 
-  // Prediction methods
   _predictCareer(solarReturn) { return 'Career development with opportunities for advancement and recognition'; }
   _predictRelationships(solarReturn) { return 'Relationship growth and meaningful connections'; }
   _predictFinance(solarReturn) { return 'Financial stability with potential for growth'; }
   _predictHealth(solarReturn) { return 'Focus on well-being and healthy lifestyle choices'; }
   _predictPersonal(solarReturn) { return 'Personal growth and self-discovery'; }
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          // Add service-specific features here
-        },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
+
+  /**
+   * Returns metadata for the service.
+   * @returns {Object} Service metadata.
+   */
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['processCalculation', 'getCurrentYearSolarReturn', 'getNextYearSolarReturn', 'compareSolarReturns', 'getSolarReturnThemes'],
+      dependencies: [], // Managed by ServiceTemplate
+      description: 'Service for solar return chart analysis and yearly predictions.'
+    };
+  }
+
+  /**
+   * Returns help information for the service.
+   * @returns {string} Help text.
+   */
+  getHelp() {
+    return `
+☀️ **Solar Return Service - Your Annual Astrological Forecast**
+
+**Purpose:** Provides annual birthday astrology analysis showing themes and influences for the coming year, using Swiss Ephemeris integration for precise solar return calculations.
+
+**Required Inputs:**
+• Birth data (Object with birthDate, birthTime, birthPlace)
+• Optional: Target year (number, defaults to current year)
+• Optional: Location (Object with latitude, longitude, timezone, for relocation analysis)
+
+**Analysis Includes:**
+• **Solar Return Chart:** A chart cast for the exact moment the Sun returns to its natal position each year.
+• **Yearly Themes:** Insights into the dominant energies and focus areas for the year ahead.
+• **Planetary Influences:** How planets in the Solar Return chart impact different life areas.
+• **Predictions:** Forecasts for career, relationships, finance, health, and personal growth.
+• **Comparison:** Ability to compare Solar Returns between different years.
+
+**Example Usage:**
+"Get my Solar Return analysis for the current year."
+"What are the themes for my next year's Solar Return?"
+"Compare my Solar Returns for 2024 and 2025."
+
+**Output Format:**
+Comprehensive report with Solar Return chart details, yearly themes, predictions, and guidance.
+    `.trim();
   }
 }
 

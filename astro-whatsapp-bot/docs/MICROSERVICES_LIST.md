@@ -3,7 +3,7 @@
 This document lists the 90 unique astrological services identified from the `MENU_REFERENCE.md` that are intended to become individual microservices as part of the new architectural design.
 
 ## Astrological Microservices
-**Note:** All services are fully implemented with their file locations in the `src/core/services/` directory and its subdirectories (`vedic`, `western`, `common`).
+**Note:** Not all services are fully implemented. Some service files are missing from the `src/core/services/` directory and its subdirectories (`vedic`, `western`, `common`). The list below indicates the intended file locations, but actual implementation status may vary.
 
 1.  `start_couple_compatibility_flow` - `src/core/services/coupleCompatibilityService.js` (uses: `src/services/astrology/CompatibilityAction.js`)
 2.  `get_synastry_analysis` - `src/core/services/synastryAnalysisService.js` (uses: `src/services/astrology/compatibility/SynastryEngine.js`)
@@ -94,3 +94,5 @@ This document lists the 90 unique astrological services identified from the `MEN
 87. `get_horary_reading` - `src/core/services/vedic/horaryAstrologyService.js` (uses: `src/services/astrology/horary/HoraryCalculator.js`)
 88. `get_astrocartography_analysis` - `src/core/services/vedic/astrocartographyService.js` (uses: `src/services/astrology/astrocartographyReader.js`)
 89. `get_hindu_festivals_info` - `src/core/services/hinduFestivalsService.js` (uses: `src/services/astrology/hinduFestivals.js`)
+90. `get_islamic_astrology_info` - `src/core/services/islamicAstrologyService.js` (uses: `src/services/astrology/islamicAstrology.js`)
+90. `get_islamic_astrology_info` - `src/core/services/vedic/islamicAstrologyService.js` (uses: `src/services/astrology/islamicAstrology.js`)

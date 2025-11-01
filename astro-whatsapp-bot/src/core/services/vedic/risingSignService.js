@@ -268,7 +268,7 @@ class RisingSignService extends ServiceTemplate {
       category: 'vedic',
       methods: ['processCalculation', 'getRisingSignTraits'],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Calculates and interprets the Rising sign (Ascendant).',
+      description: 'Calculates and interprets the Rising sign (Ascendant).'
     };
   }
 

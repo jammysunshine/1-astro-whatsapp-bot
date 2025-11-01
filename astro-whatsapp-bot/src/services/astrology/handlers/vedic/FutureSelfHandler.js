@@ -5,7 +5,7 @@
 const logger = require('../../../../utils/logger');
 const {
   DashaAnalysisCalculator
-} = require('../../vedic/calculators/DashaAnalysisCalculator');
+} = require('../../../core/services/calculators/DashaAnalysisCalculator');
 
 const handleFutureSelf = async(message, user) => {
   if (

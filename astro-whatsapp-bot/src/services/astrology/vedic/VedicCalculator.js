@@ -20,12 +20,12 @@ class VedicCalculator {
 
     try {
       // Import specialized calculators dynamically to avoid circular dependencies
-      this.birthChart = require('./calculators/ChartGenerator');
-      this.dasha = require('./calculators/DashaAnalysisCalculator');
-      this.transits = require('./calculators/TransitCalculator');
-      this.yogas = require('./calculators/VedicYogasCalculator');
-      this.retrogrades = require('./calculators/RetrogradeCalculator') || {};
-      this.cosmic = require('./calculators/CosmicEventsCalculator');
+      this.birthChart = require('../../../core/services/calculators/ChartGenerator');
+      this.dasha = require('../../../core/services/calculators/DashaAnalysisCalculator');
+      this.transits = require('../../../core/services/calculators/TransitCalculator');
+      this.yogas = require('../../../core/services/calculators/VedicYogasCalculator');
+      this.retrogrades = require('../../../core/services/calculators/RetrogradeCalculator') || {};
+      this.cosmic = require('../../../core/services/calculators/CosmicEventsCalculator');
 
       this.initialized = true;
       logger.info('VedicCalculator modules loaded successfully');

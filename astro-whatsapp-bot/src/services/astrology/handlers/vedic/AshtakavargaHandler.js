@@ -5,7 +5,7 @@
 const logger = require('../../../../utils/logger');
 const {
   AshtakavargaCalculator
-} = require('../../calculators/AshtakavargaCalculator');
+} = require('../../../core/services/calculators/AshtakavargaCalculator');
 
 const handleAshtakavarga = async(message, user) => {
   if (

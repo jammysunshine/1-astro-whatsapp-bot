@@ -158,7 +158,7 @@ class AntardashaCalculator {
         name: antardashaName,
         startDate: startDate.toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0],
-        years: years
+        years
       });
 
       startDate = new Date(endDate);
@@ -279,9 +279,9 @@ class AntardashaCalculator {
     const days = Math.floor((diffDays % 365.25) % 30.44);
 
     let remaining = '';
-    if (years > 0) remaining += `${years} year${years > 1 ? 's' : ''} `;
-    if (months > 0) remaining += `${months} month${months > 1 ? 's' : ''} `;
-    if (days > 0) remaining += `${days} day${days > 1 ? 's' : ''}`;
+    if (years > 0) { remaining += `${years} year${years > 1 ? 's' : ''} `; }
+    if (months > 0) { remaining += `${months} month${months > 1 ? 's' : ''} `; }
+    if (days > 0) { remaining += `${days} day${days > 1 ? 's' : ''}`; }
 
     return remaining.trim();
   }

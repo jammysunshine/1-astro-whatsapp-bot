@@ -106,7 +106,7 @@ class VedicCalculator {
         currentDate: currentDate.toISOString(),
         planetaryPositions: currentTransits,
         aspects: transitAspects,
-        houseTransits: houseTransits,
+        houseTransits,
         analysis: this._analyzeTransits(currentTransits, transitAspects, houseTransits)
       };
     } catch (error) {

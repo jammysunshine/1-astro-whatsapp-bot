@@ -85,6 +85,10 @@ class BusinessPartnershipService extends ServiceTemplate {
     return true;
   }
 
+  async processCalculation(data) {
+    return await this.lbusinessPartnershipCalculation(data);
+  }
+
   /**
    * Get comprehensive business partnership analysis
    * @param {Object} partnershipData - Partnership data including business partners

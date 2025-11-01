@@ -113,7 +113,8 @@ graph TD
         WhatsAppFrontend[WhatsApp Frontend]
         WebFrontend[Web Frontend (PWA)]
         TelegramFrontend[Telegram Frontend]
-        MobileAppFrontend[Mobile App (Android/iOS)]
+        AndroidAppFrontend[Android App]
+        iOSAppFrontend[iOS App]
     end
 
     subgraph Core Menu Logic
@@ -137,12 +138,14 @@ graph TD
     WhatsAppFrontend --> WhatsAppAdapter[WhatsApp Menu Adapter]
     WebFrontend --> WebAdapter[Web Menu Adapter]
     TelegramFrontend --> TelegramAdapter[Telegram Menu Adapter]
-    MobileAppFrontend --> MobileAppAdapter[Mobile App Menu Adapter]
+    AndroidAppFrontend --> AndroidAdapter[Android App Menu Adapter]
+    iOSAppFrontend --> iOSAdapter[iOS App Menu Adapter]
 
     WhatsAppAdapter --> MenuRenderer
     WebAdapter --> MenuRenderer
     TelegramAdapter --> MenuRenderer
-    MobileAppAdapter --> MenuRenderer
+    AndroidAdapter --> MenuRenderer
+    iOSAdapter --> MenuRenderer
 
     MenuRenderer --> MenuLoader
     MenuLoader --> MenuDefinitions
@@ -151,7 +154,8 @@ graph TD
     WhatsAppAdapter --> ActionMapper
     WebAdapter --> ActionMapper
     TelegramAdapter --> ActionMapper
-    MobileAppAdapter --> ActionMapper
+    AndroidAdapter --> ActionMapper
+    iOSAdapter --> ActionMapper
 
     ActionMapper --> BackendServiceGateway
 
@@ -178,6 +182,10 @@ This layer defines the entire menu tree structure, including menu types, actions
         *   `descriptionI18nKey`: (Optional) A key for a short description for list items, also retrieved from i18n files.
     *   **Menu Structure:**
         *   `menuId`: Unique ID.
+        *   `version`: (Optional) Semantic version of the menu definition (e.g., "1.0.0").
+        *   `lastModified`: (Optional) Timestamp of the last modification (e.g., "2025-11-01").
+        *   `supportedPlatforms`: (Optional) Array of platforms this menu is designed for (e.g., `["whatsapp", "web"]`).
+        *   `compatibility`: (Optional) Object defining compatibility rules (e.g., `minFrontendVersion`, `deprecatedFields`).
         *   `type`: `buttons` or `list`.
         *   `bodyI18nKey`: A mandatory key for the main text/header for the menu, retrieved from i18n files.
         *   `sections`: (For lists) Array of sections, each with a `titleI18nKey` (mandatory) and `rows` (array of menu items).
@@ -271,7 +279,7 @@ Platform-specific implementations that translate the generic menu representation
         );
         // ... send Telegram message with inline keyboard ...
         ```
-    *   **Mobile App Adapters (Android/iOS):** Renders the generic menu object using native UI components (e.g., Jetpack Compose for Android, SwiftUI for iOS). These adapters would integrate with the app's navigation stack and UI toolkit.
+    *   **Android App Menu Adapter:** Renders the generic menu object using native Android UI components (e.g., Jetpack Compose or XML layouts). This adapter integrates with Android's navigation system and handles platform-specific UI/UX guidelines.
         ```kotlin
         // Example: Android (Compose) adapter translating a generic 'list' menu
         // fun MenuScreen(genericMenu: GenericMenu, onAction: (String) -> Unit) {
@@ -281,6 +289,23 @@ Platform-specific implementations that translate the generic menu representation
         //       Text(section.title, style = MaterialTheme.typography.h6)
         //       section.rows.forEach { row ->
         //         Button(onClick = { onAction(row.id) }) { Text(row.title) }
+        //       }
+        //     }
+        //   }
+        // }
+        ```
+    *   **iOS App Menu Adapter:** Renders the generic menu object using native iOS UI components (e.g., SwiftUI or UIKit). This adapter integrates with iOS's navigation system and handles platform-specific UI/UX guidelines.
+        ```swift
+        // Example: iOS (SwiftUI) adapter translating a generic 'buttons' menu
+        // struct MenuScreen: View {
+        //   let genericMenu: GenericMenu
+        //   var body: some View {
+        //     VStack {
+        //       Text(genericMenu.body)
+        //       ForEach(genericMenu.buttons, id: \.id) { button in
+        //         Button(button.title) {
+        //           // handleAction(button.id)
+        //         }
         //       }
         //     }
         //   }
@@ -358,7 +383,8 @@ To support modularity, extensibility, and clear separation of concerns across mu
 │   │   ├── /whatsapp           # WhatsApp-specific adapters, message senders, processors, actions
 │   │   ├── /telegram           # Telegram-specific adapters, message senders, processors, actions
 │   │   ├── /web                # Web/PWA-specific adapters, UI components, routing
-│   │   └── /mobile             # Mobile app (Android/iOS) specific adapters, UI components
+│   │   ├── /android            # Android app specific adapters, UI components
+│   │   └── /ios                # iOS app specific adapters, UI components
 │   ├── /backend                # (Optional) Backend API implementations, if co-located in this repository
 │   │   └── /api                # Specific API endpoints and business logic
 │   └── /models                 # Shared data models/schemas (used by frontend, backend, and core)
@@ -993,7 +1019,7 @@ module.exports = I18n;
 ## 5. Benefits of this Architecture
 
 *   **Enhanced Modularity & Decoupling:** Achieves a high degree of separation between concerns, making individual components easier to develop, test, and maintain independently. **Active enforcement of SRP and DIP, coupled with clear module boundaries, directly prevents files from becoming overly large, complex, or tightly coupled.**
-*   **True Frontend Agnosticism:** The core menu logic and definitions are entirely independent of any specific frontend platform. This means the same menu structure can power WhatsApp, Web (PWA), Telegram, and native mobile applications with minimal platform-specific code.
+*   **True Frontend Agnosticism:** The core menu logic and definitions are entirely independent of any specific frontend platform. This means the same menu structure can power WhatsApp, Web (PWA), Telegram, **distinct Android native applications, and distinct iOS native applications** with minimal platform-specific code.
 *   **Simplified Menu Management:** Modifying menu labels, adding/removing items, or reordering sections *only* involves editing JSON/YAML configuration files. No code changes are needed for menu structure updates, significantly reducing deployment cycles and risk.
 *   **Scalability & Extensibility:** The architecture is designed to easily accommodate new frontend platforms or additional backend services. Adding a new frontend simply requires implementing a new adapter that conforms to the generic menu representation.
 *   **Clear API Contracts:** Well-defined interfaces between layers (e.g., Generic Menu Renderer and Frontend Adapters) ensure predictable interactions and facilitate parallel development by different teams.
@@ -1005,14 +1031,73 @@ module.exports = I18n;
 ## 6. Considerations / Future Work
 
 *   **i18n_keys Directory:** Populate the `config/i18n_keys/` directory with language-specific JSON files (e.g., `en.json`, `es.json`) containing all user-facing strings referenced by `i18nKey` in the menu definitions.
-*   **API Versioning for Menu Definitions:** As the menu structure evolves, consider implementing a versioning strategy for menu definition files to ensure backward compatibility for older frontend adapters.
-*   **Schema Validation for Configuration Files:** Implement JSON Schema validation for `menu_definitions` and `i18n_keys` files to ensure their structural integrity and prevent runtime errors due to malformed configurations.
+*   **API Versioning for Menu Definitions:** As the menu structure evolves, implementing a versioning strategy for menu definition files is crucial to ensure backward compatibility for older frontend adapters and to manage changes effectively. The `MenuLoader` can use the `version`, `supportedPlatforms`, and `compatibility` fields (as introduced in Section 3.1) to load the correct menu definition for a given frontend version and platform, or to provide graceful degradation/error messages if a menu is incompatible. This allows for independent evolution of menu content and frontend clients.
+*   **Schema Validation for Configuration Files:** Implement JSON Schema validation for `menu_definitions` and `i18n_keys` files to ensure their structural integrity and prevent runtime errors due to malformed configurations. The `MenuLoader` should utilize these schemas during menu loading.
+    ```json
+    // config/menu_definitions/schema.json (Example)
+    {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "required": ["menuId", "type", "bodyI18nKey"],
+      "properties": {
+        "menuId": { "type": "string", "pattern": "^[a-z_]+$" },
+        "type": { "enum": ["buttons", "list"] },
+        "bodyI18nKey": { "type": "string" }
+      }
+    }
+    ```
 *   **CLI Tool for Menu Management:** For very large menu trees, consider building a command-line interface (CLI) tool to assist with creating, validating, translating, and visualizing menu definition files.
 *   **Dynamic Menu Generation:** For highly personalized menus (e.g., showing different options based on user's subscription or location), the `MenuLoader` could incorporate logic to dynamically filter or construct menu definitions.
 *   **Service Registry:** A robust `serviceRegistry` implementation is needed to abstract away how backend services are located and invoked (whether internal functions in a monolith or external microservice calls).
-*   **Platform-Specific Message Senders:** Ensure robust message sender utilities (e.g., `WhatsAppMessageSender`, `TelegramMessageSender`, `WebPushNotificationSender`) are implemented for each platform, handling all message types (text, interactive, media, etc.) and platform-specific error handling.
-*   **Cross-Layer Error Handling Strategy:** Define a consistent strategy for error handling, logging, and user notification across all layers. This includes how errors are caught, transformed (e.g., to be i18n-ready messages), and presented to the user via frontend adapters, and how critical errors are logged for system monitoring.
+*   **Platform-Specific Message Senders:** Ensure robust message sender utilities (e.g., `WhatsAppMessageSender`, `TelegramMessageSender`, `WebPushNotificationSender`, `AndroidNotificationSender`, `iOSNotificationSender`) are implemented for each platform, handling all message types (text, interactive, media, etc.) and platform-specific error handling.
+*   **Cross-Layer Error Handling Strategy:** Define a consistent strategy for error handling, logging, and user notification across all layers. This includes how errors are caught, transformed (e.g., to be i18n-ready messages), and presented to the user via frontend adapters, and how critical errors are logged for system monitoring. Implement a custom error hierarchy for better error classification and handling.
+    ```javascript
+    // Proposed error handling hierarchy
+    class MenuError extends Error {
+      constructor(code, message, details = {}) {
+        super(message);
+        this.name = 'MenuError';
+        this.code = code; // e.g., 'MENU_NOT_FOUND', 'I18N_MISSING'
+        this.details = details;
+      }
+    }
+
+    // Error codes for different failure scenarios
+    const ERROR_CODES = {
+      MENU_NOT_FOUND: 'MENU_NOT_FOUND',
+      I18N_MISSING: 'I18N_MISSING',
+      PLATFORM_UNSUPPORTED: 'PLATFORM_UNSUPPORTED',
+      SERVICE_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
+      INVALID_MENU_DEFINITION: 'INVALID_MENU_DEFINITION'
+    };
+    ```
+    These custom errors should be thrown by core components (like `MenuLoader`, `ActionMapper`) and caught by frontend adapters, which then translate them into user-friendly, i18n-localized messages.
 *   **Monolith to Microservices Breakdown Strategy:** Develop a detailed plan for incrementally breaking down the monolithic service into individual microservices. This should include identifying service boundaries, defining clear APIs for each new microservice, and establishing a robust communication mechanism (e.g., message queues, gRPC) between them. Consider strategies like the Strangler Fig pattern for a safe and gradual transition.
 *   **Automated Architectural Enforcement:** Implement static analysis tools (e.g., ESLint with custom rules, SonarQube, dependency-graph analyzers) and integrate them into the CI/CD pipeline. These tools should automatically flag violations of architectural principles, such as excessive file size, high cyclomatic complexity, direct instantiation of dependencies where DI is expected, or unauthorized cross-layer dependencies. This provides an objective and continuous mechanism to maintain architectural integrity.
+*   **Monitoring & Observability:** Implement comprehensive monitoring and observability for the menu system to track its performance, reliability, and user experience. This includes collecting metrics, logs, and traces across all layers.
+    ```javascript
+    // Proposed metrics to track
+    const MENU_METRICS = {
+      menuLoadTime: 'histogram', // Time taken to load a menu definition
+      menuRenderSuccess: 'counter', // Count of successful menu renders
+      menuRenderErrors: 'counter', // Count of failed menu renders
+      actionExecutionTime: 'histogram', // Time taken for an action to execute
+      i18nCacheHitRate: 'gauge', // Cache hit rate for i18n translations
+      menuDefinitionValidationErrors: 'counter' // Errors during schema validation
+    };
+    ```
+    These metrics will provide insights into system health, identify bottlenecks, and help in proactive issue resolution.
+*   **Security Considerations:**
+    To ensure the integrity and security of the menu system, the following considerations are crucial:
+    *   **Input Validation for Menu Definitions:** Beyond schema validation, implement strict content validation for menu definition files to prevent injection attacks (e.g., malicious scripts in labels) or unintended behavior. This should be part of the `MenuLoader`'s validation process.
+    *   **Access Control for Menu Configuration:** Implement robust access control mechanisms for managing menu definition files and i18n strings. Only authorized personnel or automated processes should have write access to these critical configuration assets.
+    *   **Audit Logging for Menu Changes:** Maintain comprehensive audit logs for all changes made to menu definitions and i18n files, including who made the change, when, and what was changed. This is essential for accountability and troubleshooting.
+*   **Testing Strategy:**
+    A comprehensive testing strategy is vital to ensure the reliability, correctness, and performance of the menu architecture:
+    *   **Unit Testing:** Implement thorough unit tests for each individual component (e.g., `MenuLoader`, `GenericMenuRenderer`, `ActionMapper`, `i18n` utility, individual frontend adapters). These tests should cover all logic paths, edge cases, and error conditions, adhering to the SRP.
+    *   **Integration Testing:** Conduct integration tests to verify the correct interaction between interconnected components (e.g., `MenuLoader` with `GenericMenuRenderer`, `ActionMapper` with `serviceRegistry`, frontend adapters with the generic menu object). This ensures that the API contracts between layers are correctly implemented.
+    *   **End-to-End (E2E) Testing:** Develop E2E tests that simulate complete user flows across different frontend platforms. These tests should validate the entire menu interaction, from user input to backend service invocation and the final response, ensuring a seamless user experience.
+    *   **Performance Testing:** Establish performance testing guidelines to measure and optimize key metrics such as menu load times, response times for action execution, and overall system throughput. This is crucial for identifying bottlenecks and ensuring the system scales effectively.
+    *   **Contract Testing:** For the transition to microservices, implement contract testing between the `ActionMapper` and the microservices to ensure that the API contracts are maintained as services evolve independently.
 
 This architecture provides a solid, future-proof foundation for a scalable, maintainable, and flexible bot experience across multiple platforms.

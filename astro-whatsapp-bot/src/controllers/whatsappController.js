@@ -173,7 +173,7 @@ const handleWhatsAppWebhook = async(req, res) => {
             logger.warn('⚠️ Skipping invalid message format:', message.id);
             continue;
           }
-          
+
           await processMessageWithRetry(message, value);
         }
       }

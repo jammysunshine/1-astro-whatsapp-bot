@@ -251,10 +251,10 @@ class SignCalculator {
    */
   async _getTimezoneForPlace(lat, lng) {
     // Simplified timezone calculation
-    if (lng >= -30 && lng <= 30) return 0; // GMT
-    if (lng > 30 && lng <= 90) return 3; // IST
-    if (lng > 90) return 5.5; // IST
-    if (lng < -30) return -5; // EST
+    if (lng >= -30 && lng <= 30) { return 0; } // GMT
+    if (lng > 30 && lng <= 90) { return 3; } // IST
+    if (lng > 90) { return 5.5; } // IST
+    if (lng < -30) { return -5; } // EST
     return 0;
   }
 

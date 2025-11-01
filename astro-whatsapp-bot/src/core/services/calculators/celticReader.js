@@ -209,9 +209,9 @@ class CelticReader {
    */
   _getCelticSeason(sunLongitude) {
     // Celtic wheel of the year
-    if (sunLongitude >= 315 || sunLongitude < 45) return 'Winter';
-    if (sunLongitude >= 45 && sunLongitude < 135) return 'Spring';
-    if (sunLongitude >= 135 && sunLongitude < 225) return 'Summer';
+    if (sunLongitude >= 315 || sunLongitude < 45) { return 'Winter'; }
+    if (sunLongitude >= 45 && sunLongitude < 135) { return 'Spring'; }
+    if (sunLongitude >= 135 && sunLongitude < 225) { return 'Summer'; }
     return 'Autumn';
   }
 
@@ -239,13 +239,13 @@ class CelticReader {
    * @private
    */
   _getMoonPhaseName(angle) {
-    if (angle < 45) return 'New Moon';
-    if (angle < 90) return 'Waxing Crescent';
-    if (angle < 135) return 'First Quarter';
-    if (angle < 180) return 'Waxing Gibbous';
-    if (angle < 225) return 'Full Moon';
-    if (angle < 270) return 'Waning Gibbous';
-    if (angle < 315) return 'Last Quarter';
+    if (angle < 45) { return 'New Moon'; }
+    if (angle < 90) { return 'Waxing Crescent'; }
+    if (angle < 135) { return 'First Quarter'; }
+    if (angle < 180) { return 'Waxing Gibbous'; }
+    if (angle < 225) { return 'Full Moon'; }
+    if (angle < 270) { return 'Waning Gibbous'; }
+    if (angle < 315) { return 'Last Quarter'; }
     return 'Waning Crescent';
   }
 
@@ -255,11 +255,11 @@ class CelticReader {
    */
   _getPlanetId(planetName) {
     const planetMap = {
-      'Mars': sweph.SE_MARS,
-      'Venus': sweph.SE_VENUS,
-      'Mercury': sweph.SE_MERCURY,
-      'Jupiter': sweph.SE_JUPITER,
-      'Saturn': sweph.SE_SATURN
+      Mars: sweph.SE_MARS,
+      Venus: sweph.SE_VENUS,
+      Mercury: sweph.SE_MERCURY,
+      Jupiter: sweph.SE_JUPITER,
+      Saturn: sweph.SE_SATURN
     };
     return planetMap[planetName];
   }
@@ -282,8 +282,8 @@ class CelticReader {
    * @private
    */
   _getTimezoneForPlace(lat, lng) {
-    if (lng >= -30 && lng <= 30) return 0; // GMT
-    if (lng > 30) return 1; // CET
+    if (lng >= -30 && lng <= 30) { return 0; } // GMT
+    if (lng > 30) { return 1; } // CET
     return -5; // EST
   }
 
@@ -340,13 +340,13 @@ class CelticReader {
    */
   _getPlanetaryHourCelticGuidance(planet) {
     const guidance = {
-      'Sun': 'Leadership and vitality',
-      'Moon': 'Intuition and emotions',
-      'Mars': 'Action and courage',
-      'Mercury': 'Communication and learning',
-      'Jupiter': 'Expansion and wisdom',
-      'Venus': 'Love and harmony',
-      'Saturn': 'Discipline and structure'
+      Sun: 'Leadership and vitality',
+      Moon: 'Intuition and emotions',
+      Mars: 'Action and courage',
+      Mercury: 'Communication and learning',
+      Jupiter: 'Expansion and wisdom',
+      Venus: 'Love and harmony',
+      Saturn: 'Discipline and structure'
     };
     return guidance[planet] || 'Connect with planetary energies';
   }
@@ -357,10 +357,10 @@ class CelticReader {
    */
   _getSeasonalCelticRitual(season) {
     const rituals = {
-      'Spring': 'Planting and renewal ceremonies',
-      'Summer': 'Celebration and abundance rituals',
-      'Autumn': 'Harvest and gratitude practices',
-      'Winter': 'Reflection and divination'
+      Spring: 'Planting and renewal ceremonies',
+      Summer: 'Celebration and abundance rituals',
+      Autumn: 'Harvest and gratitude practices',
+      Winter: 'Reflection and divination'
     };
     return rituals[season] || 'Nature connection practices';
   }
@@ -397,9 +397,9 @@ class CelticReader {
    */
   _calculateSeasonalInfluence(birthDate) {
     const [day, month] = birthDate.split('/').map(Number);
-    if (month >= 3 && month <= 5) return 'Spring Awakening';
-    if (month >= 6 && month <= 8) return 'Summer Abundance';
-    if (month >= 9 && month <= 11) return 'Autumn Harvest';
+    if (month >= 3 && month <= 5) { return 'Spring Awakening'; }
+    if (month >= 6 && month <= 8) { return 'Summer Abundance'; }
+    if (month >= 9 && month <= 11) { return 'Autumn Harvest'; }
     return 'Winter Reflection';
   }
 
@@ -470,7 +470,7 @@ class CelticReader {
    * @private
    */
   _enhanceAffirmationWithAstronomy(affirmation, astronomicalData) {
-    if (!astronomicalData.moonPhase) return affirmation;
+    if (!astronomicalData.moonPhase) { return affirmation; }
 
     return `${affirmation} during this ${astronomicalData.moonPhase} phase`;
   }

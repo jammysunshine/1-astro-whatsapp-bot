@@ -100,23 +100,23 @@ class ServiceTemplate extends AstroServiceInterface {
     if (!data) {
       throw new Error('Input data is required');
     }
-    
+
     // Allow services to define their own validation schema
     if (this.inputSchema) {
       const { error, value } = this.inputSchema.validate(data, {
         abortEarly: false,
         stripUnknown: true
       });
-      
+
       if (error) {
         const errors = error.details.map(detail => detail.message);
         throw new Error(`Validation errors: ${errors.join(', ')}`);
       }
-      
+
       // Update data with sanitized/validated values
       return value;
     }
-    
+
     return data;
   }
 

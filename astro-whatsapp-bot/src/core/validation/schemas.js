@@ -256,7 +256,7 @@ const razorpayWebhookSchema = Joi.object({
   event: Joi.string()
     .valid(
       'payment.captured',
-      'payment.authorized', 
+      'payment.authorized',
       'payment.failed',
       'order.created',
       'refund.created'

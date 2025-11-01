@@ -452,29 +452,29 @@ class HinduFestivals {
 
       // Use precise astronomical calculations for lunar festivals
       switch (festivalKey) {
-        case 'diwali':
-          return this._isDiwaliDate(targetDate);
-        case 'holi':
-          return this._isHoliDate(targetDate);
-        case 'durga_puja':
-          return this._isDurgaPujaDate(targetDate);
-        case 'maha_shivaratri':
-          return this._isMahaShivaratriDate(targetDate);
-        case 'raksha_bandhan':
-          return this._isRakshaBandhanDate(targetDate);
-        case 'ganesh_chaturthi':
-          return this._isGaneshChaturthiDate(targetDate);
-        case 'navaratri':
-          return this._isNavaratriDate(targetDate);
-        case 'krishna_janmashtami':
-          return this._isKrishnaJanmashtamiDate(targetDate);
-        case 'ram_navami':
-          return this._isRamNavamiDate(targetDate);
-        case 'hanuman_jayanti':
-          return this._isHanumanJayantiDate(targetDate);
-        default:
-          // Fallback to approximate dates for other festivals
-          return this._isApproximateFestivalDate(festival, targetDate);
+      case 'diwali':
+        return this._isDiwaliDate(targetDate);
+      case 'holi':
+        return this._isHoliDate(targetDate);
+      case 'durga_puja':
+        return this._isDurgaPujaDate(targetDate);
+      case 'maha_shivaratri':
+        return this._isMahaShivaratriDate(targetDate);
+      case 'raksha_bandhan':
+        return this._isRakshaBandhanDate(targetDate);
+      case 'ganesh_chaturthi':
+        return this._isGaneshChaturthiDate(targetDate);
+      case 'navaratri':
+        return this._isNavaratriDate(targetDate);
+      case 'krishna_janmashtami':
+        return this._isKrishnaJanmashtamiDate(targetDate);
+      case 'ram_navami':
+        return this._isRamNavamiDate(targetDate);
+      case 'hanuman_jayanti':
+        return this._isHanumanJayantiDate(targetDate);
+      default:
+        // Fallback to approximate dates for other festivals
+        return this._isApproximateFestivalDate(festival, targetDate);
       }
     } catch (error) {
       logger.warn(`Error checking festival date for ${festival.name}:`, error.message);
@@ -750,13 +750,13 @@ class HinduFestivals {
    * @private
    */
   _getLunarPhaseName(angle) {
-    if (angle < 45) return 'New Moon';
-    if (angle < 90) return 'Waxing Crescent';
-    if (angle < 135) return 'First Quarter';
-    if (angle < 180) return 'Waxing Gibbous';
-    if (angle < 225) return 'Full Moon';
-    if (angle < 270) return 'Waning Gibbous';
-    if (angle < 315) return 'Last Quarter';
+    if (angle < 45) { return 'New Moon'; }
+    if (angle < 90) { return 'Waxing Crescent'; }
+    if (angle < 135) { return 'First Quarter'; }
+    if (angle < 180) { return 'Waxing Gibbous'; }
+    if (angle < 225) { return 'Full Moon'; }
+    if (angle < 270) { return 'Waning Gibbous'; }
+    if (angle < 315) { return 'Last Quarter'; }
     return 'Waning Crescent';
   }
 

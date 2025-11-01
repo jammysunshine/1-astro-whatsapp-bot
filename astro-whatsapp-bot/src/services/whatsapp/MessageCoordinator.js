@@ -2,6 +2,7 @@
  * Main MessageCoordinator - Clean entry point for all WhatsApp message processing.
  * Uses Strategy pattern to delegate to specialized processors based on message type.
  * This replaces the monolithic messageProcessor.js with a maintainable architecture.
+ * Now uses UserManagementService for proper separation of concerns.
  */
 class MessageCoordinator {
   constructor({
@@ -9,7 +10,7 @@ class MessageCoordinator {
     textProcessor,
     interactiveProcessor,
     mediaProcessor,
-    userModel,
+    userManagementService,
     conversationEngine,
     messageSender,
     registry
@@ -18,7 +19,7 @@ class MessageCoordinator {
     this.textProcessor = textProcessor;
     this.interactiveProcessor = interactiveProcessor;
     this.mediaProcessor = mediaProcessor;
-    this.userModel = userModel;
+    this.userManagementService = userManagementService;
     this.conversationEngine = conversationEngine;
     this.messageSender = messageSender;
     this.registry = registry; // ActionRegistry is now injected
@@ -55,11 +56,7 @@ class MessageCoordinator {
       }
 
       // 2. Get or create user
-      let user = await this.userModel.getUserByPhone(phoneNumber);
-      if (!user) {
-        this.logger.info(`🆕 New user detected: ${phoneNumber}`);
-        user = await this.userModel.createUser(phoneNumber);
-      }
+      let user = await this.userManagementService.getOrCreateUser(phoneNumber);
 
       // 3. Check if user needs onboarding
       if (!(await this.handleUserOnboarding(message, user, phoneNumber))) {
@@ -117,10 +114,10 @@ class MessageCoordinator {
    * @returns {Promise<boolean>} True if should continue processing, false if onboarding handled
    */
   async handleUserOnboarding(message, user, phoneNumber) {
-    // New users: always start onboarding
-    if (user.isNew || !user.profileComplete) {
+    // Check if user needs onboarding using business logic service
+    if (this.userManagementService.needsOnboarding(user)) {
       this.logger.info(
-        `🆕 Starting onboarding for ${phoneNumber} (New: ${user.isNew}, Complete: ${user.profileComplete})`
+        `🆕 Starting onboarding for ${phoneNumber}`
       );
       await this.conversationEngine.processFlowMessage(message, user, 'onboarding');
       return false; // Stop further processing, onboarding handles everything
@@ -176,10 +173,7 @@ class MessageCoordinator {
    */
   async updateUserInteraction(user, phoneNumber) {
     try {
-      user.lastInteraction = new Date();
-      await this.userModel.updateUserProfile(phoneNumber, {
-        lastInteraction: user.lastInteraction
-      });
+      await this.userManagementService.updateUserInteraction(phoneNumber);
     } catch (error) {
       this.logger.error(
         `Error updating interaction timestamp for ${phoneNumber}:`,
@@ -301,6 +295,13 @@ async function getMessageCoordinator() {
     const messageSender = require('./messageSender'); // Import entire module
     const createInitializedRegistry = require('./ActionRegistryInitializer'); // Dynamic require
 
+    // Create repository and service layers for proper separation of concerns
+    const { UserRepositoryImpl } = require('../../core/repositories');
+    const { UserManagementService } = require('../../core/services/user');
+    
+    const userRepository = new UserRepositoryImpl(userModel);
+    const userManagementService = new UserManagementService(userRepository);
+
     const registry = await createInitializedRegistry();
 
     const textProcessor = new TextMessageProcessor(registry);
@@ -312,7 +313,7 @@ async function getMessageCoordinator() {
       textProcessor,
       interactiveProcessor,
       mediaProcessor,
-      userModel,
+      userManagementService,  // Replaced userModel with userManagementService
       conversationEngine,
       messageSender,
       registry
@@ -327,7 +328,7 @@ module.exports = {
   MessageCoordinator,
   getMessageCoordinator,
   // For convenience, export a direct process function
-  processIncomingMessage: async (message, value) => {
+  processIncomingMessage: async(message, value) => {
     const coordinator = await getMessageCoordinator();
     return coordinator.processIncomingMessage(message, value);
   },

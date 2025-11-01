@@ -471,11 +471,11 @@ class ChineseCalculator {
   _getCurrentPlanetaryPositions(julianDay) {
     const planets = {};
     const planetIds = {
-      'Jupiter': sweph.SE_JUPITER,
-      'Mars': sweph.SE_MARS,
-      'Saturn': sweph.SE_SATURN,
-      'Venus': sweph.SE_VENUS,
-      'Mercury': sweph.SE_MERCURY
+      Jupiter: sweph.SE_JUPITER,
+      Mars: sweph.SE_MARS,
+      Saturn: sweph.SE_SATURN,
+      Venus: sweph.SE_VENUS,
+      Mercury: sweph.SE_MERCURY
     };
 
     try {
@@ -501,7 +501,7 @@ class ChineseCalculator {
    */
   _getZodiacSign(longitude) {
     const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     return signs[Math.floor(longitude / 30)];
   }
 
@@ -529,13 +529,13 @@ class ChineseCalculator {
    * @private
    */
   _getLunarPhaseName(angle) {
-    if (angle < 45) return 'New Moon';
-    if (angle < 90) return 'Waxing Crescent';
-    if (angle < 135) return 'First Quarter';
-    if (angle < 180) return 'Waxing Gibbous';
-    if (angle < 225) return 'Full Moon';
-    if (angle < 270) return 'Waning Gibbous';
-    if (angle < 315) return 'Last Quarter';
+    if (angle < 45) { return 'New Moon'; }
+    if (angle < 90) { return 'Waxing Crescent'; }
+    if (angle < 135) { return 'First Quarter'; }
+    if (angle < 180) { return 'Waxing Gibbous'; }
+    if (angle < 225) { return 'Full Moon'; }
+    if (angle < 270) { return 'Waning Gibbous'; }
+    if (angle < 315) { return 'Last Quarter'; }
     return 'Waning Crescent';
   }
 
@@ -564,18 +564,18 @@ class ChineseCalculator {
   _calculateZodiacCompatibility(animal, planets) {
     // Simplified compatibility based on traditional Chinese astrology
     const compatibility = {
-      'Rat': ['Dragon', 'Monkey'],
-      'Ox': ['Snake', 'Rooster'],
-      'Tiger': ['Horse', 'Dog'],
-      'Rabbit': ['Goat', 'Pig'],
-      'Dragon': ['Rat', 'Monkey', 'Rooster'],
-      'Snake': ['Ox', 'Rooster'],
-      'Horse': ['Tiger', 'Dog', 'Goat'],
-      'Goat': ['Rabbit', 'Horse', 'Pig'],
-      'Monkey': ['Rat', 'Dragon'],
-      'Rooster': ['Ox', 'Snake', 'Dragon'],
-      'Dog': ['Tiger', 'Horse'],
-      'Pig': ['Rabbit', 'Goat']
+      Rat: ['Dragon', 'Monkey'],
+      Ox: ['Snake', 'Rooster'],
+      Tiger: ['Horse', 'Dog'],
+      Rabbit: ['Goat', 'Pig'],
+      Dragon: ['Rat', 'Monkey', 'Rooster'],
+      Snake: ['Ox', 'Rooster'],
+      Horse: ['Tiger', 'Dog', 'Goat'],
+      Goat: ['Rabbit', 'Horse', 'Pig'],
+      Monkey: ['Rat', 'Dragon'],
+      Rooster: ['Ox', 'Snake', 'Dragon'],
+      Dog: ['Tiger', 'Horse'],
+      Pig: ['Rabbit', 'Goat']
     };
 
     return compatibility[animal] || [];
@@ -617,11 +617,11 @@ class ChineseCalculator {
   _assessElementStrength(element, julianDay) {
     // Simplified element strength calculation
     const elementPlanets = {
-      'Wood': ['Jupiter'],
-      'Fire': ['Mars'],
-      'Earth': ['Saturn'],
-      'Metal': ['Venus'],
-      'Water': ['Mercury']
+      Wood: ['Jupiter'],
+      Fire: ['Mars'],
+      Earth: ['Saturn'],
+      Metal: ['Venus'],
+      Water: ['Mercury']
     };
 
     const relevantPlanets = elementPlanets[element] || [];
@@ -676,13 +676,13 @@ class ChineseCalculator {
    */
   _getPlanetId(planetName) {
     const planetMap = {
-      'Sun': sweph.SE_SUN,
-      'Moon': sweph.SE_MOON,
-      'Mars': sweph.SE_MARS,
-      'Venus': sweph.SE_VENUS,
-      'Mercury': sweph.SE_MERCURY,
-      'Jupiter': sweph.SE_JUPITER,
-      'Saturn': sweph.SE_SATURN
+      Sun: sweph.SE_SUN,
+      Moon: sweph.SE_MOON,
+      Mars: sweph.SE_MARS,
+      Venus: sweph.SE_VENUS,
+      Mercury: sweph.SE_MERCURY,
+      Jupiter: sweph.SE_JUPITER,
+      Saturn: sweph.SE_SATURN
     };
     return planetMap[planetName];
   }

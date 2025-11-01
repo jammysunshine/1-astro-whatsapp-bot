@@ -19,7 +19,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
   let db;
   let testUsers;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     dbManager = new TestDatabaseManager();
     await dbManager.setup();
     whatsAppIntegration = getWhatsAppIntegration();
@@ -46,7 +46,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
     }
   }, 120000);
 
-  afterAll(async () => {
+  afterAll(async() => {
     // Clean up all test users
     for (const user of testUsers) {
       await dbManager.cleanupUser(user.phoneNumber);
@@ -58,7 +58,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
     await dbManager.teardown();
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     messageSender.sendMessage.mockClear();
     messageSender.sendListMessage.mockClear();
     messageSender.sendButtonMessage.mockClear();
@@ -73,10 +73,9 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
   });
 
   describe('SIMULTANEOUS USER OPERATIONS (4/4 Scenarios)', () => {
-
-    test('MULTI_USER_001: Simultaneous user registrations → Unique identifier collision prevention', async () => {
+    test('MULTI_USER_001: Simultaneous user registrations → Unique identifier collision prevention', async() => {
       // Test concurrent user registration without ID collisions
-      const concurrentRegistrations = Array(20).fill().map(async (_, i) => {
+      const concurrentRegistrations = Array(20).fill().map(async(_, i) => {
         const phoneNumber = `+concurrent_user_${i}_${Date.now()}`;
         const userData = {
           ...testUsers[0], // Use first test user data as template
@@ -111,17 +110,15 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       }
     });
 
-    test('MULTI_USER_002: Concurrent profile updates → Data integrity maintenance', async () => {
+    test('MULTI_USER_002: Concurrent profile updates → Data integrity maintenance', async() => {
       // Test simultaneous profile updates without data corruption
       const targetPhone = testUsers[0].phoneNumber;
 
-      const concurrentUpdates = Array(15).fill().map(async (_, i) => {
-        return await updateUserProfile(targetPhone, {
-          [`update_${i}`]: `value_${i}`,
-          lastModified: new Date(),
-          updateCount: i
-        });
-      });
+      const concurrentUpdates = Array(15).fill().map(async(_, i) => await updateUserProfile(targetPhone, {
+        [`update_${i}`]: `value_${i}`,
+        lastModified: new Date(),
+        updateCount: i
+      }));
 
       try {
         await Promise.all(concurrentUpdates);
@@ -141,7 +138,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       expect(hasUpdateFields).toBe(true);
     });
 
-    test('MULTI_USER_003: Shared resource access conflicts → Locking mechanism validation', async () => {
+    test('MULTI_USER_003: Shared resource access conflicts → Locking mechanism validation', async() => {
       // Test concurrent access to shared astrology calculation resources
       const sharedResourceCollection = db.collection('shared_astrology_resources');
 
@@ -154,7 +151,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       });
 
       // Simulate concurrent access to shared resource
-      const concurrentAccess = Array(25).fill().map(async (_, i) => {
+      const concurrentAccess = Array(25).fill().map(async(_, i) => {
         const userPhone = testUsers[i % testUsers.length].phoneNumber;
 
         // Atomic update to ensure serialization
@@ -193,7 +190,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await db.dropCollection('shared_astrology_resources');
     });
 
-    test('MULTI_USER_004: Session state synchronization → Multi-device consistency', async () => {
+    test('MULTI_USER_004: Session state synchronization → Multi-device consistency', async() => {
       // Test session synchronization across multiple devices/user sessions
       const sessionCollection = db.collection('multi_device_sessions');
 
@@ -214,7 +211,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       });
 
       // Simulate concurrent device sign-ins and state updates
-      const deviceSessions = devices.map(async (device, i) => {
+      const deviceSessions = devices.map(async(device, i) => {
         // Device sign-in
         await sessionCollection.updateOne(
           { userPhone },
@@ -261,7 +258,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await db.dropCollection('multi_device_sessions');
     });
 
-    test('MULTI_USER_005: Bulk user import stress → Database performance limits', async () => {
+    test('MULTI_USER_005: Bulk user import stress → Database performance limits', async() => {
       // Test bulk import performance and limits
       const bulkImportCollection = db.collection('bulk_import_stress_test');
 
@@ -273,7 +270,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
         birthData: {
           date: '15/06/1990',
           time: '14:30',
-          place: `Bulk City ${i % 100}`, // Some location variation
+          place: `Bulk City ${i % 100}` // Some location variation
         },
         astrologyProfile: {
           sunSign: ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo'][i % 5],
@@ -329,12 +326,12 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await db.dropCollection('bulk_import_stress_test');
     });
 
-    test('MULTI_USER_006: High-volume reading generation → Calculation throughput testing', async () => {
+    test('MULTI_USER_006: High-volume reading generation → Calculation throughput testing', async() => {
       // Test concurrent astrology reading generation
       const readingCollection = db.collection('high_volume_readings');
 
       // Simulate high-volume reading requests
-      const readingRequests = Array(100).fill().map(async (_, i) => {
+      const readingRequests = Array(100).fill().map(async(_, i) => {
         const user = testUsers[i % testUsers.length];
         const readingTimestamp = new Date();
 
@@ -393,7 +390,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await db.dropCollection('high_volume_readings');
     });
 
-    test('MULTI_USER_007: Large user base queries → Index optimization verification', async () => {
+    test('MULTI_USER_007: Large user base queries → Index optimization verification', async() => {
       // Test query performance with large user base
       const largeUserCollection = db.collection('large_user_base');
 
@@ -477,8 +474,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
   });
 
   describe('DATA MANAGEMENT CONFLICTS (7/7 Scenarios)', () => {
-
-    test('MULTI_USER_008: Archival data management → Historical data integrity', async () => {
+    test('MULTI_USER_008: Archival data management → Historical data integrity', async() => {
       // Test archiving and historical data integrity
       const archivalCollection = db.collection('archival_data_test');
 
@@ -486,7 +482,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       const historicalData = [];
       for (let year = 2020; year <= 2025; year++) {
         for (let month = 1; month <= 12; month++) {
-          if (year === 2025 && month > new Date().getMonth() + 1) break;
+          if (year === 2025 && month > new Date().getMonth() + 1) { break; }
 
           historicalData.push({
             dataId: `archive_${year}_${month.toString().padStart(2, '0')}`,
@@ -543,7 +539,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await db.dropCollection('archival_data_test');
     });
 
-    test('MULTI_USER_009: Database connection pooling → Resource management', async () => {
+    test('MULTI_USER_009: Database connection pooling → Resource management', async() => {
       // Test connection pool behavior under high concurrent load
       const poolTestCollection = db.collection('pool_resource_test');
 
@@ -557,7 +553,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       for (const pattern of loadPatterns) {
         console.log(`Testing ${pattern.name} load pattern...`);
 
-        const operations = Array(pattern.concurrent).fill().map(async (_, i) => {
+        const operations = Array(pattern.concurrent).fill().map(async(_, i) => {
           const operationStart = Date.now();
 
           // Perform database operation
@@ -594,7 +590,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await db.dropCollection('pool_resource_test');
     });
 
-    test('MULTI_USER_010: Transaction rollback scenarios → Data consistency', async () => {
+    test('MULTI_USER_010: Transaction rollback scenarios → Data consistency', async() => {
       // Test transaction rollback behavior and data consistency
       const transactionCollection = db.collection('transaction_rollback_test');
 
@@ -627,7 +623,6 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
 
             // Simulate failure (throw error)
             throw new Error('Simulated partial operation failure');
-
           } else if (testScenario.scenario === 'constraint_violation') {
             // Try duplicate key constraint violation
             await transactionCollection.insertOne({
@@ -639,7 +634,6 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
               scenario: testScenario.scenario,
               uniqueKey: 'duplicate_value' // This should fail
             });
-
           } else if (testScenario.scenario === 'timeout_rollback') {
             // Simulate timeout scenario
             await transactionCollection.insertOne({
@@ -654,7 +648,6 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
 
             throw new Error('Operation timeout');
           }
-
         } catch (error) {
           console.log(`${testScenario.scenario} rollback triggered: ${error.message}`);
 
@@ -680,7 +673,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await db.dropCollection('transaction_rollback_test');
     });
 
-    test('MULTI_USER_011: Deadlock prevention → Query optimization', async () => {
+    test('MULTI_USER_011: Deadlock prevention → Query optimization', async() => {
       // Test deadlock prevention and query optimization
       const deadlockTestCollection = db.collection('deadlock_prevention_test');
 
@@ -698,7 +691,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await deadlockTestCollection.insertMany(testEntities);
 
       // Simulate concurrent operations that could cause deadlocks
-      const concurrentOperations = testEntities.map(async (entity, i) => {
+      const concurrentOperations = testEntities.map(async(entity, i) => {
         const entityDoc = await deadlockTestCollection.findOne({ entityId: entity.entityId });
 
         // Alternate locking order based on access pattern to test deadlock prevention
@@ -761,7 +754,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await db.dropCollection('deadlock_prevention_test');
     });
 
-    test('MULTI_USER_012: Index performance validation → Query execution plans', async () => {
+    test('MULTI_USER_012: Index performance validation → Query execution plans', async() => {
       // Test index usage and query execution plan optimization
       const indexValidationCollection = db.collection('index_validation_test');
 
@@ -862,7 +855,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
       await db.dropCollection('index_validation_test');
     });
 
-    test('MULTI_USER_013: Composite index usage → Multi-field query performance', async () => {
+    test('MULTI_USER_013: Composite index usage → Multi-field query performance', async() => {
       // Test specifically composite index usage and multi-field query performance
       const compositeIndexCollection = db.collection('composite_index_test');
 

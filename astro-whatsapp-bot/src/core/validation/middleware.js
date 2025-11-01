@@ -7,42 +7,40 @@ const logger = require('../utils/logger');
  * @param {string} property - Property to validate ('body', 'params', 'query', 'headers')
  * @returns {Function} Express middleware
  */
-const validate = (schema, property = 'body') => {
-  return (req, res, next) => {
-    try {
-      const { error, value } = schema.validate(req[property], {
-        abortEarly: false, // Return all validation errors
-        stripUnknown: true // Remove unknown fields
+const validate = (schema, property = 'body') => (req, res, next) => {
+  try {
+    const { error, value } = schema.validate(req[property], {
+      abortEarly: false, // Return all validation errors
+      stripUnknown: true // Remove unknown fields
+    });
+
+    if (error) {
+      const errors = error.details.map(detail => ({
+        field: detail.path.join('.'),
+        message: detail.message
+      }));
+
+      logger.warn('❌ Input validation failed:', {
+        errors,
+        property,
+        value: req[property]
       });
 
-      if (error) {
-        const errors = error.details.map(detail => ({
-          field: detail.path.join('.'),
-          message: detail.message
-        }));
-
-        logger.warn('❌ Input validation failed:', {
-          errors,
-          property,
-          value: req[property]
-        });
-
-        return res.status(400).json({
-          error: 'Validation failed',
-          details: errors
-        });
-      }
-
-      // Update the request property with the validated and sanitized value
-      req[property] = value;
-      next();
-    } catch (validationError) {
-      logger.error('❌ Validation middleware error:', validationError);
-      return res.status(500).json({
-        error: 'Internal server error during validation'
+      return res.status(400).json({
+        error: 'Validation failed',
+        details: errors
       });
     }
-  };
+
+    // Update the request property with the validated and sanitized value
+    req[property] = value;
+    next();
+  } catch (validationError) {
+    logger.error('❌ Validation middleware error:', validationError);
+    return res.status(500).json({
+      error: 'Internal server error during validation'
+    });
+  }
 };
 
 /**
@@ -85,7 +83,7 @@ const validateUserInput = validate(require('./schemas').userInputSchema, 'body')
  */
 const validateServiceParams = (req, res, next) => {
   const { service } = req.params;
-  
+
   // Validate service name parameter - should match expected service names format
   if (!service || typeof service !== 'string' || !/^[a-zA-Z][a-zA-Z0-9_]*Service$/.test(service)) {
     logger.warn('❌ Invalid service parameter:', { service });
@@ -94,11 +92,11 @@ const validateServiceParams = (req, res, next) => {
       message: 'Service name must follow the format: [ServiceName]Service'
     });
   }
-  
+
   // Sanitize the service parameter to prevent directory traversal
   const sanitizedService = service.replace(/[^a-zA-Z0-9_]/g, '');
   req.params.service = sanitizedService;
-  
+
   next();
 };
 

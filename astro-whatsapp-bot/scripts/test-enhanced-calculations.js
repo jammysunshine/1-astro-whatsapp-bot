@@ -1,4 +1,4 @@
-const VedicCalculator = require('./src/services/astrology/vedicCalculator');
+const VedicCalculator = require('./src/core/services/calculators/VedicCalculator');
 const sweph = require('sweph');
 
 /**

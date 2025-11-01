@@ -4,7 +4,7 @@ This document lists the astrological services identified from the `MENU_REFERENC
 
 ## Astrological Microservices
 
-**Note:** All services are implemented in the `/src/core/services/` directory. All calculators are located in `/src/core/services/calculators/`. Total: services implemented with calculators.
+**Note:** All services are implemented in the `/src/core/services/` directory. All calculators are located in `/src/core/services/calculators/`. Total: 105 services implemented with calculators.
 
 1.  `start_couple_compatibility_flow` - `src/core/services/coupleCompatibilityService.js` (uses: `src/core/services/calculators/SynastryEngine.js`)
 2.  `get_synastry_analysis` - `src/core/services/synastryAnalysisService.js` (uses: `src/core/services/calculators/SynastryEngine.js`)
@@ -106,3 +106,8 @@ This document lists the astrological services identified from the `MENU_REFERENC
 98. `get_calendar_timing_analysis` - `src/core/services/calendarTimingService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
 99. `get_specialized_analysis` - `src/core/services/specializedAnalysisService.js` (uses: multiple calculators)
 100.  `get_dasha_predictive_analysis` - `src/core/services/dashaPredictiveService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+101. `get_age_harmonic_astrology_analysis` - `src/core/services/ageHarmonicAstrologyService.js` (uses: `src/core/services/calculators/AgeHarmonicAstrologyCalculator.js`)
+102. `get_mundane_astrology_reader` - `src/core/services/mundaneAstrologyService.js` (uses: `src/core/services/calculators/mundaneAstrologyReader.js`)
+103. `get_astrological_themes_analysis` - `src/core/services/astrologicalThemesAnalysisService.js` (uses: `src/core/services/calculators/AstrologicalThemesAnalyzer.js`)
+104. `get_political_timing_analysis` - `src/core/services/politicalTimingAnalysisService.js` (uses: `src/core/services/calculators/PoliticalTimingAnalyzer.js`)
+105. `get_global_stability_analysis` - `src/core/services/globalStabilityAnalysisService.js` (uses: `src/core/services/calculators/GlobalStabilityAnalyzer.js`)

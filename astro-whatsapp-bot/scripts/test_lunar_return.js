@@ -1,5 +1,5 @@
 // Simple test script for lunar return functionality
-const vedicCalculator = require('./src/services/astrology/vedicCalculator');
+const vedicCalculator = require('./src/core/services/calculators/VedicCalculator');
 
 async function testLunarReturn() {
   try {

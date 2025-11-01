@@ -164,7 +164,7 @@ class PaymentService {
         const expiryDate = this.calculateSubscriptionExpiry(planId);
 
         // Update user subscription
-        await updateSubscription(phoneNumber, planId, expiryDate);
+        await updateSubscription(phoneNumber, planId, expiryDate.toISOString());
 
         // Add loyalty points for subscription
         await addLoyaltyPoints(phoneNumber, 50);
@@ -492,7 +492,7 @@ class PaymentService {
           // Process subscription payment
           const expiryDate = this.calculateSubscriptionExpiry(notes.planId);
 
-          await updateSubscription(notes.phoneNumber, notes.planId, expiryDate);
+          await updateSubscription(notes.phoneNumber, notes.planId, expiryDate.toISOString());
           await addLoyaltyPoints(notes.phoneNumber, 50);
 
           logger.info(
@@ -536,7 +536,7 @@ class PaymentService {
           await updateSubscription(
             metadata.phoneNumber,
             metadata.planId,
-            expiryDate
+            expiryDate.toISOString()
           );
           await addLoyaltyPoints(metadata.phoneNumber, 50);
 

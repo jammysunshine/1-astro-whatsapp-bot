@@ -56,7 +56,10 @@ class MessageCoordinator {
       }
 
       // 2. Get or create user
-      let user = await this.userManagementService.getOrCreateUser(phoneNumber);
+      let user = await this.userManagementService.getUserByPhone(phoneNumber);
+      if (!user) {
+        user = await this.userManagementService.createUser(phoneNumber);
+      }
 
       // 3. Check if user needs onboarding
       if (!(await this.handleUserOnboarding(message, user, phoneNumber))) {
@@ -115,12 +118,23 @@ class MessageCoordinator {
    */
   async handleUserOnboarding(message, user, phoneNumber) {
     // Check if user needs onboarding using business logic service
-    if (this.userManagementService.needsOnboarding(user)) {
-      this.logger.info(
-        `🆕 Starting onboarding for ${phoneNumber}`
-      );
-      await this.conversationEngine.processFlowMessage(message, user, 'onboarding');
-      return false; // Stop further processing, onboarding handles everything
+    if (this.userManagementService.needsOnboarding) {
+      if (this.userManagementService.needsOnboarding(user)) {
+        this.logger.info(
+          `🆕 Starting onboarding for ${phoneNumber}`
+        );
+        await this.conversationEngine.processFlowMessage(message, user, 'onboarding');
+        return false; // Stop further processing, onboarding handles everything
+      }
+    } else {
+      // Fallback for userModel - check profile completion
+      if (!user.profileComplete) {
+        this.logger.info(
+          `🆕 Starting onboarding for ${phoneNumber}`
+        );
+        await this.conversationEngine.processFlowMessage(message, user, 'onboarding');
+        return false; // Stop further processing, onboarding handles everything
+      }
     }
 
     return true; // Continue with normal message processing
@@ -173,7 +187,12 @@ class MessageCoordinator {
    */
   async updateUserInteraction(user, phoneNumber) {
     try {
-      await this.userManagementService.updateUserInteraction(phoneNumber);
+      if (this.userManagementService.updateUserInteraction) {
+        await this.userManagementService.updateUserInteraction(phoneNumber);
+      } else {
+        // Fallback for userModel - update lastInteraction
+        await this.userManagementService.updateUserProfile(phoneNumber, {});
+      }
     } catch (error) {
       this.logger.error(
         `Error updating interaction timestamp for ${phoneNumber}:`,
@@ -286,7 +305,7 @@ let coordinatorInstance = null;
 async function getMessageCoordinator() {
   if (!coordinatorInstance) {
     // Assemble dependencies here
-    const logger = require('../../core/utils/logger'); // Updated path
+    const logger = require('../../utils/logger'); // Updated path
     const TextMessageProcessor = require('./processors/TextMessageProcessor');
     const InteractiveMessageProcessor = require('./processors/InteractiveMessageProcessor');
     const MediaMessageProcessor = require('./processors/MediaMessageProcessor');
@@ -296,11 +315,12 @@ async function getMessageCoordinator() {
     const createInitializedRegistry = require('./ActionRegistryInitializer'); // Dynamic require
 
     // Create repository and service layers for proper separation of concerns
-    const { UserRepositoryImpl } = require('../../core/repositories');
-    const { UserManagementService } = require('../../core/services/user');
-    
-    const userRepository = new UserRepositoryImpl(userModel);
-    const userManagementService = new UserManagementService(userRepository);
+    // const { UserRepositoryImpl } = require('../../core/repositories');
+    // const { UserManagementService } = require('../../core/services/user');
+
+    // const userRepository = new UserRepositoryImpl(userModel);
+    // const userManagementService = new UserManagementService(userRepository);
+    const userManagementService = userModel; // Use userModel directly for now
 
     const registry = await createInitializedRegistry();
 

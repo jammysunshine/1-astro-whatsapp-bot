@@ -1,5 +1,5 @@
 const BaseAction = require('../BaseAction');
-const { ResponseBuilder } = require('../../../utils/ResponseBuilder');
+const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../../messageSender');
 const { getTranslatedMenu } = require('../../../conversation/menuLoader');
 

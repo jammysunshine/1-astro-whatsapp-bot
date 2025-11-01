@@ -64,11 +64,11 @@ describe('Real Astrology Calculations Integration Tests', () => {
     test('should load Western astrology services successfully', () => {
       // Test that Western astrology services can be imported
       expect(() => {
-        require('../../src/services/astrology/western/WesternCalculator');
+        require('../../src/core/services/westernBirthChartService');
       }).not.toThrow();
 
       expect(() => {
-        require('../../src/services/astrology/astrologyEngine');
+        require('../../src/core/services/calculators/CalculationsCoordinator');
       }).not.toThrow();
 
       logger.info('✅ Western astrology services loaded successfully');

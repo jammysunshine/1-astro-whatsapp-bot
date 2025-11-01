@@ -27,8 +27,8 @@ jest.mock('../../src/services/payment/paymentService');
 const paymentService = require('../../src/services/payment/paymentService');
 
 // Mock numerologyService to avoid actual numerology calculations
-jest.mock('../../src/services/astrology/numerologyService');
-const numerologyService = require('../../src/services/astrology/numerologyService');
+jest.mock('../../src/core/services/numerologyService');
+const numerologyService = require('../../src/core/services/numerologyService');
 
 // Mock translationService to avoid i18n issues
 jest.mock('../../src/services/i18n/TranslationService');

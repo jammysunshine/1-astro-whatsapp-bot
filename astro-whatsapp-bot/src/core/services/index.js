@@ -8,6 +8,7 @@ const AstrocartographyService = require('./astrocartographyService');
 const AyurvedicAstrologyService = require('./ayurvedicAstrologyService');
 const BasicBirthChartService = require('./basicBirthChartService');
 const BirthChartService = require('./birthChartService');
+const AgeHarmonicAstrologyService1 = require('./ageHarmonicAstrologyService');
 const BusinessPartnershipService = require('./businessPartnershipService');
 const CalculateNakshatraService = require('./calculateNakshatraService');
 const CalendarTimingService = require('./calendarTimingService');
@@ -94,6 +95,10 @@ const VedicNumerologyService = require('./vedicNumerologyService');
 const VedicRemediesService = require('./vedicRemediesService');
 const VedicYogasService = require('./vedicYogasService');
 const VimshottariDashaService = require('./vimshottariDashaService');
+const AgeHarmonicAstrologyService = require('./ageHarmonicAstrologyService');
+const AstrologicalThemesAnalysisService = require('./astrologicalThemesAnalysisService');
+const PoliticalTimingAnalysisService = require('./politicalTimingAnalysisService');
+const GlobalStabilityAnalysisService = require('./globalStabilityAnalysisService');
 
 // New service layers for proper separation of concerns
 const { UserManagementService } = require('./user');
@@ -196,6 +201,10 @@ module.exports = {
   VedicRemediesService,
   VedicYogasService,
   VimshottariDashaService,
+  AgeHarmonicAstrologyService,
+  AstrologicalThemesAnalysisService,
+  PoliticalTimingAnalysisService,
+  GlobalStabilityAnalysisService,
   
   // New service layers for proper separation of concerns
   UserManagementService,

@@ -1,13 +1,30 @@
-// tests/unit/services/astrology/astrologyEngine.test.js
+// tests/unit/services/core/services/astrologyEngine.test.js
 // Unit tests for Astrology Engine
 
 const AstrologyEngine = require('../../../../src/core/services/astrologyEngine');
+const logger = require('../../../../src/utils/logger');
+
+// Mock logger to prevent console output during tests
+beforeEach(() => {
+  jest.spyOn(logger, 'info').mockImplementation(() => {});
+  jest.spyOn(logger, 'error').mockImplementation(() => {});
+  jest.spyOn(logger, 'warn').mockImplementation(() => {});
+  jest.spyOn(logger, 'debug').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  jest.restoreAllMocks(); // Restore all mocks after each test
+});
 
 describe('AstrologyEngine', () => {
   let engine;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     engine = new AstrologyEngine();
+    // If the service has an initialize method, call it here
+    if (engine.initialize) {
+      await engine.initialize();
+    }
   });
 
   describe('generateAstrologyResponse', () => {

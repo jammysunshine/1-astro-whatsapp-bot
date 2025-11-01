@@ -5,9 +5,9 @@ const {
 const {
   validateWebhookSignature,
   verifyWebhookChallenge,
-  validateMessageFormat,
-  validateWebhookPayload
+  validateMessageFormat
 } = require('../services/whatsapp/webhookValidator');
+const { validateWebhookPayload } = require('../services/whatsapp/utils/ValidationService');
 
 // Cache the initialized coordinator
 let coordinatorInstance = null;

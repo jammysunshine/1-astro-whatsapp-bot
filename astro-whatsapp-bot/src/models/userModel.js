@@ -37,7 +37,7 @@ module.exports = {
       userDataManager,
       phoneNumber,
       tier,
-      expiryDate
+      typeof expiryDate === 'string' ? new Date(expiryDate) : expiryDate
     ),
   incrementCompatibilityChecks: phoneNumber =>
     subscriptionManager.incrementUsage(

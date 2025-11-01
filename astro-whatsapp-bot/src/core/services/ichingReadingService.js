@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const { IChingReader } = require('./calculators/ichingReader');
+const { createIChingService } = require('../../core/services/calculators/ichingReader');
 
 /**
  * IChingReadingService - Specialized service for providing I Ching readings
@@ -9,18 +9,18 @@ const { IChingReader } = require('./calculators/ichingReader');
  * interpretation, and guidance based on the ancient Chinese divination system.
  */
 class IChingReadingService extends ServiceTemplate {
-  constructor(ichingReader = require('./calculators/ichingReader')) {
-    super('IChingReader');
+  constructor() {
+    super('IChingReadingService');
     this.serviceName = 'IChingReadingService';
-    this.calculatorPath = './calculators/ichingReader';
-    this.calculator = new ichingReader();
-    logger.info('IChingReadingService initialized with IChingReader');
+    this.ichingService = null; // Will be initialized in initialize()
+    logger.info('IChingReadingService initialized');
   }
 
   async initialize() {
     try {
       await super.initialize();
-      logger.info('✅ IChingReadingService initialized successfully');
+      this.ichingService = await createIChingService();
+      logger.info('✅ IChingReadingService initialized successfully with core IChingService');
     } catch (error) {
       logger.error('❌ Failed to initialize IChingReadingService:', error);
       throw error;
@@ -43,8 +43,7 @@ class IChingReadingService extends ServiceTemplate {
 
       const { question, focus = 'general' } = readingParams;
 
-      // Generate reading using the calculator
-      const reading = await this.calculator.generateIChingReading(question);
+      const reading = await this.ichingService.performIChingReading(question);
 
       // Add service-specific metadata
       const result = {
@@ -90,7 +89,7 @@ class IChingReadingService extends ServiceTemplate {
       const { focus = 'daily wisdom' } = params || {};
 
       // Use the same method as general reading
-      const guidance = await this.calculator.generateIChingReading(focus);
+      const guidance = await this.ichingService.getDailyGuidance(focus);
 
       return {
         success: true,
@@ -132,20 +131,22 @@ class IChingReadingService extends ServiceTemplate {
         throw new Error('Hexagram number must be between 1 and 64');
       }
 
-      // Stub implementation since calculator method doesn't exist
+      const hexagramData = this.ichingService.getHexagramData(hexagramNumber);
+
       return {
         success: true,
         data: {
           number: hexagramNumber,
-          name: `Hexagram ${hexagramNumber}`,
-          judgment: 'Traditional I Ching judgment',
-          image: 'Traditional I Ching imagery',
-          characteristics: ['Change', 'Transformation', 'Wisdom'],
-          qualities: ['Balance', 'Harmony', 'Insight'],
-          elements: ['Yin', 'Yang', 'Transformation'],
+          name: hexagramData.name,
+          judgment: hexagramData.judgment,
+          image: hexagramData.image,
+          // Add other relevant data from hexagramData if available
+          characteristics: hexagramData.characteristics || [],
+          qualities: hexagramData.qualities || [],
+          elements: hexagramData.elements || [],
           trigrams: {
-            upper: 'Upper trigram information',
-            lower: 'Lower trigram information'
+            upper: hexagramData.upperTrigram || 'Upper trigram information',
+            lower: hexagramData.lowerTrigram || 'Lower trigram information'
           }
         },
         metadata: {
@@ -205,7 +206,7 @@ class IChingReadingService extends ServiceTemplate {
 
       const { question } = params;
 
-      const reading = await this.calculator.generateIChingReading(question);
+      const reading = await this.ichingService.performIChingReading(question);
 
       const quickSummary = {
         hexagram: `${reading.hexagram || 'Unknown'}`,
@@ -270,16 +271,17 @@ class IChingReadingService extends ServiceTemplate {
         throw new Error('Trigram number must be between 0 and 7');
       }
 
-      // Stub implementation since method doesn't exist
+      const trigramData = this.ichingService.getTrigramData(trigramNumber);
+
       return {
         success: true,
         data: {
           trigramNumber,
-          name: `Trigram ${trigramNumber}`,
-          meaning: 'Ancient Chinese trigram meaning',
-          element: 'Element associated',
-          direction: 'Directional association',
-          season: 'Seasonal association'
+          name: trigramData.name,
+          meaning: trigramData.meaning,
+          element: trigramData.element,
+          direction: trigramData.direction,
+          season: trigramData.season
         },
         metadata: {
           calculationType: 'trigram_info',
@@ -309,7 +311,7 @@ class IChingReadingService extends ServiceTemplate {
 
       // Test the I Ching functionality
       try {
-        const testReading = await this.calculator.generateIChingReading('test');
+        const testReading = await this.ichingService.performIChingReading('test');
         const hasValidReading = testReading && testReading.hexagram;
       } catch (e) {
         // If test fails, continue with status check

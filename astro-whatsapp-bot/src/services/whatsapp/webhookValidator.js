@@ -216,16 +216,22 @@ const validateWebhookPayload = payload => {
           logger.warn('⚠️ Invalid value: messages is not an array');
           return false;
         }
-
+    
         // Validate contacts array if present
         if (value.contacts && !Array.isArray(value.contacts)) {
           logger.warn('⚠️ Invalid value: contacts is not an array');
           return false;
         }
-
+    
         // Validate statuses array if present
         if (value.statuses && !Array.isArray(value.statuses)) {
           logger.warn('⚠️ Invalid value: statuses is not an array');
+          return false;
+        }
+    
+        // Validate metadata if present
+        if (value.metadata && typeof value.metadata !== 'object') {
+          logger.warn('⚠️ Invalid value: metadata is not an object');
           return false;
         }
       }

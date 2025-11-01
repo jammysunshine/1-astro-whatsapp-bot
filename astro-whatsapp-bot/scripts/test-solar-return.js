@@ -1,5 +1,5 @@
-const vedicCalculator = require('./src/services/astrology/vedicCalculator');
-const { generateAstrologyResponse } = require('./src/services/astrology/astrologyEngine');
+const vedicCalculator = require('./src/core/services/calculators/VedicCalculator');
+const { generateAstrologyResponse } = require('./src/core/services/calculators/CalculationsCoordinator');
 
 async function testSolarReturn() {
   console.log('🧪 Testing Solar Return Implementation\n');

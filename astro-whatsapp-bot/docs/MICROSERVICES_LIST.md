@@ -3,7 +3,7 @@
 This document lists the 90 unique astrological services identified from the `MENU_REFERENCE.md` that are intended to become individual microservices as part of the new architectural design.
 
 ## Astrological Microservices
-**Note:** All services are fully implemented with their file locations in the `src/core/services/` directory.
+**Note:** All services are fully implemented with their file locations in the `src/core/services/` directory and its subdirectories (`vedic`, `western`, `common`).
 
 1.  `start_couple_compatibility_flow` - `src/core/services/coupleCompatibilityService.js` (uses: `src/services/astrology/CompatibilityAction.js`)
 2.  `get_synastry_analysis` - `src/core/services/synastryAnalysisService.js` (uses: `src/services/astrology/compatibility/SynastryEngine.js`)
@@ -16,18 +16,18 @@ This document lists the 90 unique astrological services identified from the `MEN
 9.  `get_future_self_analysis` - `src/core/services/vedic/futureSelfAnalysisService.js` (uses: `src/services/astrology/vedic/calculators/FutureSelfSimulatorCalculator.js`)
 10. `get_electional_astrology` - `src/core/services/vedic/electionalAstrologyService.js` (uses: `src/services/astrology/mundane/PoliticalAstrology.js`)
 11. `get_mundane_astrology_analysis` - `src/core/services/mundaneAstrologyService.js` (uses: `src/services/astrology/mundane/PoliticalAstrology.js`)
-12. `get_daily_horoscope` - `src/core/services/dailyHoroscopeService.js` (uses: `src/services/astrology/vedic/calculators/DailyHoroscopeCalculator.js`)
+12. `get_daily_horoscope` - `src/core/services/vedic/dailyHoroscopeService.js` (uses: `src/services/astrology/vedic/calculators/DailyHoroscopeCalculator.js`)
 13. `show_birth_chart` - `src/core/services/vedic/birthChartService.js` (uses: `src/services/astrology/vedic/calculators/ChartGenerator.js`)
-14. `get_current_transits` - `src/core/services/currentTransitsService.js` (uses: `src/services/astrology/vedic/calculators/TransitCalculator.js`)
-15. `get_secondary_progressions` - `src/core/services/secondaryProgressionsService.js` (uses: `src/services/astrology/vedic/calculators/SecondaryProgressionsCalculator.js`)
-16. `get_solar_arc_directions` - `src/core/services/solarArcDirectionsService.js` (uses: `src/services/astrology/vedic/calculators/SolarArcDirectionsCalculator.js`)
+14. `get_current_transits` - `src/core/services/vedic/currentTransitsService.js` (uses: `src/services/astrology/vedic/calculators/TransitCalculator.js`)
+15. `get_secondary_progressions` - `src/core/services/vedic/secondaryProgressionsService.js` (uses: `src/services/astrology/vedic/calculators/SecondaryProgressionsCalculator.js`)
+16. `get_solar_arc_directions` - `src/core/services/vedic/solarArcDirectionsService.js` (uses: `src/services/astrology/vedic/calculators/SolarArcDirectionsCalculator.js`)
 17. `get_asteroid_analysis` - `src/core/services/vedic/asteroidAnalysisService.js` (uses: `src/services/astrology/vedic/calculators/AsteroidCalculator.js`)
-18. `get_fixed_stars_analysis` - `src/core/services/fixedStarsService.js` (uses: `src/services/astrology/vedic/calculators/FixedStarsCalculator.js`)
+18. `get_fixed_stars_analysis` - `src/core/services/vedic/fixedStarsService.js` (uses: `src/services/astrology/vedic/calculators/FixedStarsCalculator.js`)
 19. `get_solar_return_analysis` - `src/core/services/vedic/solarReturnAnalysisService.js` (uses: `src/services/astrology/vedic/calculators/SolarReturnCalculator.js`)
-20. `get_career_astrology_analysis` - `src/core/services/careerAstrologyService.js` (uses: `src/services/astrology/vedic/calculators/CareerAstrologyCalculator.js`)
+20. `get_career_astrology_analysis` - `src/core/services/vedic/careerAstrologyService.js` (uses: `src/services/astrology/vedic/calculators/CareerAstrologyCalculator.js`)
 21. `get_financial_astrology_analysis` - `src/core/services/vedic/financialAstrologyService.js`
 22. `get_medical_astrology_analysis` - `src/core/services/vedic/medicalAstrologyService.js`
-23. `get_event_astrology_analysis` - `src/core/services/eventAstrologyService.js`
+23. `get_event_astrology_analysis` - `src/core/services/vedic/eventAstrologyService.js`
 24. `get_hindu_astrology_analysis` - `src/core/services/vedic/hinduAstrologyService.js`
 25. `show_nadi_flow` - `src/core/services/vedic/nadiAstrologyService.js`
 26. `generateDetailedChartAnalysis` - `src/core/services/vedic/detailedChartAnalysisService.js`
@@ -49,15 +49,15 @@ This document lists the 90 unique astrological services identified from the `MEN
 42. `calculateVarshaphal` - `src/core/services/vedic/varshaphalService.js`
 43. `calculateSecondaryProgressions` - `src/core/services/vedic/secondaryProgressionsService.js`
 44. `calculateSolarArcDirections` - `src/core/services/vedic/solarArcDirectionsService.js`
-45. `calculateEnhancedSecondaryProgressions` - `src/core/services/enhancedSecondaryProgressionsService.js`
-46. `calculateEnhancedSolarArcDirections` - `src/core/services/enhancedSolarArcDirectionsService.js`
+45. `calculateEnhancedSecondaryProgressions` - `src/core/services/vedic/enhancedSecondaryProgressionsService.js`
+46. `calculateEnhancedSolarArcDirections` - `src/core/services/vedic/enhancedSolarArcDirectionsService.js`
 47. `calculateNextSignificantTransits` - `src/core/services/vedic/significantTransitsService.js`
 48. `calculateAdvancedTransits` - `src/core/services/vedic/advancedTransitsService.js`
 49. `identifyMajorTransits` - `src/core/services/vedic/majorTransitsService.js`
 50. `generateTransitPreview` - `src/core/services/vedic/transitPreviewService.js`
 51. `calculateNakshatraPorutham` - `src/core/services/vedic/nakshatraPoruthamService.js`
-52. `calculateCompatibilityScore` - `src/core/services/compatibilityScoreService.js`
-53. `performSynastryAnalysis` - `src/core/services/performSynastryAnalysisService.js`
+52. `calculateCompatibilityScore` - `src/core/services/vedic/compatibilityScoreService.js`
+53. `performSynastryAnalysis` - `src/core/services/vedic/performSynastryAnalysisService.js`
 54. `calculateCompositeChart` - `src/core/services/compositeChartService.js`
 55. `calculateDavisonChart` - `src/core/services/vedic/davisonChartService.js`
 56. `generateGroupAstrology` - `src/core/services/vedic/generateGroupAstrologyService.js`
@@ -69,10 +69,10 @@ This document lists the 90 unique astrological services identified from the `MEN
 62. `calculateAsteroids` - `src/core/services/vedic/asteroidsService.js`
 63. `generateComprehensiveVedicAnalysis` - `src/core/services/vedic/comprehensiveVedicAnalysisService.js`
 64. `generateFutureSelfSimulator` - `src/core/services/vedic/futureSelfSimulatorService.js`
-65. `get_ayurvedic_astrology_analysis` - `src/core/services/ayurvedicAstrologyService.js`
+65. `get_ayurvedic_astrology_analysis` - `src/core/services/vedic/ayurvedicAstrologyService.js`
 66. `generateLifePatterns` - `src/core/services/vedic/lifePatternsService.js`
-67. `get_panchang_analysis` - `src/core/services/panchangService.js`
-68. `get_muhurta_analysis` - `src/core/services/muhurtaService.js`
+67. `get_panchang_analysis` - `src/core/services/vedic/panchangService.js`
+68. `get_muhurta_analysis` - `src/core/services/vedic/muhurtaService.js`
 69. `calculateAbhijitMuhurta` - `src/core/services/vedic/abhijitMuhurtaService.js`
 70. `calculateRahukalam` - `src/core/services/vedic/rahukalamService.js`
 71. `calculateGulikakalam` - `src/core/services/vedic/gulikakalamService.js`

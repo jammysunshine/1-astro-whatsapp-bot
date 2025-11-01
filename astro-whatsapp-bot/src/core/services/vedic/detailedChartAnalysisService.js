@@ -1,7 +1,6 @@
 const ServiceTemplate = require('../ServiceTemplate');
-const logger = require('../../utils/logger');
-
-// Import calculator from legacy structure (for now)
+const logger = require('../../../utils/logger');
+const { BirthData } = require('../../models');
 
 /**
  * DetailedChartAnalysisService - Comprehensive Vedic chart interpretation service
@@ -11,30 +10,27 @@ const logger = require('../../utils/logger');
  */
 class DetailedChartAnalysisService extends ServiceTemplate {
   constructor() {
-    super('detailedChartAnalysisService');
+    super('DetailedChartAnalysisCalculator'); // Primary calculator for this service
     this.serviceName = 'DetailedChartAnalysisService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/DetailedChartAnalysisCalculator';
     logger.info('DetailedChartAnalysisService initialized');
   }
 
-  async ldetailedChartAnalysisCalculation(birthData) {
-    try {
-      // Generate detailed chart analysis
-      const result = await this.generateDetailedChartAnalysis(birthData);
-      return result;
-    } catch (error) {
-      logger.error('DetailedChartAnalysisService calculation error:', error);
-      throw new Error(`Detailed chart analysis failed: ${error.message}`);
-    }
-  }
-
   /**
-   * Generate comprehensive Vedic chart analysis
-   * @param {Object} birthData - Birth data
-   * @param {Object} options - Analysis options
-   * @returns {Object} Detailed analysis
+   * Main calculation method for Detailed Chart Analysis.
+   * @param {Object} birthData - User's birth data.
+   * @param {Object} [options] - Analysis options.
+   * @returns {Promise<Object>} Comprehensive detailed chart analysis.
    */
-  async generateDetailedChartAnalysis(birthData, options = {}) {
+  async processCalculation(birthData, options = {}) {
     try {
+      // Ensure calculator is loaded
+      if (!this.calculator) {
+        await this.initialize();
+      }
+
+      this._validateInput(birthData);
+
       // Get detailed analysis from calculator
       const detailedAnalysis = await this.calculator.generateDetailedChartAnalysis(birthData, options);
 
@@ -53,18 +49,51 @@ class DetailedChartAnalysisService extends ServiceTemplate {
         summary: this._createComprehensiveSummary(detailedAnalysis, lifeAreaAnalysis)
       };
     } catch (error) {
-      logger.error('Detailed chart analysis error:', error);
-      throw error;
+      logger.error('DetailedChartAnalysisService processCalculation error:', error);
+      throw new Error(`Detailed chart analysis failed: ${error.message}`);
     }
   }
 
   /**
-   * Analyze different life areas based on chart
-   * @param {Object} detailedAnalysis - Detailed analysis result
-   * @returns {Object} Life area analysis
+   * Validates input data for detailed chart analysis.
+   * @param {Object} birthData - Birth data to validate.
+   * @private
+   */
+  _validateInput(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required for detailed chart analysis.');
+    }
+    const validatedData = new BirthData(birthData);
+    validatedData.validate();
+  }
+
+  /**
+   * Formats the detailed chart analysis result for consistent output.
+   * @param {Object} result - Raw detailed analysis result.
+   * @returns {Object} Formatted result.
+   */
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      summary: result.summary || 'Detailed chart analysis completed',
+      metadata: {
+        serviceName: this.serviceName,
+        calculationType: 'Detailed Chart Analysis',
+        timestamp: new Date().toISOString()
+      },
+      disclaimer: 'This detailed chart analysis provides comprehensive astrological insights. Astrology offers guidance and self-understanding but should not replace professional advice in medical, legal, or psychological matters. Consult qualified professionals for important life decisions.'
+    };
+  }
+
+  /**
+   * Analyzes different life areas based on the chart.
+   * @param {Object} detailedAnalysis - Detailed analysis result.
+   * @returns {Object} Life area analysis.
+   * @private
    */
   _analyzeLifeAreas(detailedAnalysis) {
-    const lifeAreas = {
+    return {
       personality: this._analyzePersonality(detailedAnalysis),
       career: this._analyzeCareer(detailedAnalysis),
       relationships: this._analyzeRelationships(detailedAnalysis),
@@ -74,94 +103,60 @@ class DetailedChartAnalysisService extends ServiceTemplate {
       family: this._analyzeFamily(detailedAnalysis),
       education: this._analyzeEducation(detailedAnalysis)
     };
-
-    return lifeAreas;
   }
 
   /**
-   * Assess planetary strengths and weaknesses
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Planetary strengths assessment
+   * Assesses planetary strengths and weaknesses.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Planetary strengths assessment.
+   * @private
    */
   _assessPlanetaryStrengths(detailedAnalysis) {
-    const strengths = {
-      strongPlanets: [],
-      weakPlanets: [],
-      balancedPlanets: [],
-      overallStrength: 'Balanced planetary configuration'
-    };
-
-    // Basic strength assessment based on available data
-    // In a real implementation, this would analyze dignities, aspects, etc.
-
+    const strengths = { strongPlanets: [], weakPlanets: [], balancedPlanets: [], overallStrength: 'Balanced planetary configuration' };
     if (detailedAnalysis.rajDhanYogas) {
       strengths.strongPlanets.push('Planets forming beneficial yogas show enhanced strength');
     }
-
     if (detailedAnalysis.challengingCombinations) {
       strengths.weakPlanets.push('Planets in challenging combinations may need strengthening');
     }
-
     strengths.balancedPlanets.push('Most planets show balanced influences');
-
     return strengths;
   }
 
   /**
-   * Provide karmic insights from the chart
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Array} Karmic insights
+   * Provides karmic insights from the chart.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Array} Karmic insights.
+   * @private
    */
   _provideKarmicInsights(detailedAnalysis) {
-    const insights = [];
-
-    insights.push({
-      area: 'Life Purpose',
-      insight: 'The chart indicates karmic lessons related to personal growth and self-realization',
-      significance: 'Understanding these lessons leads to greater life fulfillment'
-    });
-
-    insights.push({
-      area: 'Past Life Influences',
-      insight: 'Planetary positions suggest karmic patterns from previous incarnations',
-      significance: 'Recognizing these patterns helps resolve recurring challenges'
-    });
-
-    insights.push({
-      area: 'Soul Evolution',
-      insight: 'The chart shows opportunities for spiritual growth and soul development',
-      significance: 'Embracing these opportunities accelerates personal evolution'
-    });
-
-    return insights;
+    return [
+      { area: 'Life Purpose', insight: 'The chart indicates karmic lessons related to personal growth and self-realization', significance: 'Understanding these lessons leads to greater life fulfillment' },
+      { area: 'Past Life Influences', insight: 'Planetary positions suggest karmic patterns from previous incarnations', significance: 'Recognizing these patterns helps resolve recurring challenges' },
+      { area: 'Soul Evolution', insight: 'The chart shows opportunities for spiritual growth and soul development', significance: 'Embracing these opportunities accelerates personal evolution' }
+    ];
   }
 
   /**
-   * Identify predictive indicators in the chart
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Predictive indicators
+   * Identifies predictive indicators in the chart.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Predictive indicators.
+   * @private
    */
   _identifyPredictiveIndicators(detailedAnalysis) {
-    const indicators = {
-      majorLifeChanges: [],
-      peakPeriods: [],
-      challengingTimes: [],
-      opportunities: []
+    return {
+      majorLifeChanges: ['Saturn returns and major planetary cycles'],
+      peakPeriods: ['Jupiter transits and beneficial planetary alignments'],
+      challengingTimes: ['Saturn transits and challenging planetary aspects'],
+      opportunities: ['Beneficial planetary periods and yogas activation']
     };
-
-    // Basic predictive indicators based on chart analysis
-    indicators.majorLifeChanges.push('Saturn returns and major planetary cycles');
-    indicators.peakPeriods.push('Jupiter transits and beneficial planetary alignments');
-    indicators.challengingTimes.push('Saturn transits and challenging planetary aspects');
-    indicators.opportunities.push('Beneficial planetary periods and yogas activation');
-
-    return indicators;
   }
 
   /**
-   * Analyze personality traits
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Personality analysis
+   * Analyzes personality traits.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Personality analysis.
+   * @private
    */
   _analyzePersonality(detailedAnalysis) {
     return {
@@ -173,9 +168,10 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   }
 
   /**
-   * Analyze career potential
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Career analysis
+   * Analyzes career potential.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Career analysis.
+   * @private
    */
   _analyzeCareer(detailedAnalysis) {
     return {
@@ -187,9 +183,10 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   }
 
   /**
-   * Analyze relationship patterns
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Relationship analysis
+   * Analyzes relationship patterns.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Relationship analysis.
+   * @private
    */
   _analyzeRelationships(detailedAnalysis) {
     return {
@@ -202,9 +199,10 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   }
 
   /**
-   * Analyze health indicators
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Health analysis
+   * Analyzes health indicators.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Health analysis.
+   * @private
    */
   _analyzeHealth(detailedAnalysis) {
     return {
@@ -217,9 +215,10 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   }
 
   /**
-   * Analyze wealth and financial patterns
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Wealth analysis
+   * Analyzes wealth and financial patterns.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Wealth analysis.
+   * @private
    */
   _analyzeWealth(detailedAnalysis) {
     return {
@@ -232,9 +231,10 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   }
 
   /**
-   * Analyze spiritual development
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Spirituality analysis
+   * Analyzes spiritual development.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Spirituality analysis.
+   * @private
    */
   _analyzeSpirituality(detailedAnalysis) {
     return {
@@ -247,9 +247,10 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   }
 
   /**
-   * Analyze family dynamics
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Family analysis
+   * Analyzes family dynamics.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Family analysis.
+   * @private
    */
   _analyzeFamily(detailedAnalysis) {
     return {
@@ -262,9 +263,10 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   }
 
   /**
-   * Analyze educational potential
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @returns {Object} Education analysis
+   * Analyzes educational potential.
+   * @param {Object} detailedAnalysis - Detailed analysis.
+   * @returns {Object} Education analysis.
+   * @private
    */
   _analyzeEducation(detailedAnalysis) {
     return {
@@ -277,107 +279,57 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   }
 
   /**
-   * Create comprehensive analysis summary
-   * @param {Object} detailedAnalysis - Detailed analysis
-   * @param {Object} lifeAreaAnalysis - Life area analysis
-   * @returns {string} Comprehensive summary
+   * Creates a comprehensive summary of the analysis.
+   * @param {Object} detailedAnalysis - Detailed analysis result.
+   * @param {Object} lifeAreaAnalysis - Life area analysis.
+   * @returns {string} Comprehensive summary text.
+   * @private
    */
   _createComprehensiveSummary(detailedAnalysis, lifeAreaAnalysis) {
     let summary = 'This detailed Vedic chart analysis provides comprehensive insights into all aspects of life, from personality traits to spiritual development. ';
-
     if (detailedAnalysis.rajDhanYogas) {
       summary += 'The presence of beneficial yogas indicates strong potential for success and prosperity. ';
     }
-
     summary += 'The analysis covers eight major life areas, revealing both strengths and areas for growth. ';
-
     summary += 'Understanding these planetary influences helps navigate life\'s opportunities and challenges with greater awareness and wisdom.';
-
     return summary;
   }
 
-  validate(birthData) {
-    if (!input) {
-      throw new Error('Birth data is required');
-    }
-
-    const { birthDate, birthTime, birthPlace } = input;
-
-    if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
-    }
-
-    if (!birthTime || typeof birthTime !== 'string') {
-      throw new Error('Valid birth time (HH:MM format) is required');
-    }
-
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-  }
-
   /**
-   * Format result for presentation
-   * @param {Object} result - Raw detailed analysis result
-   * @returns {Object} Formatted result
+   * Returns metadata for the service.
+   * @returns {Object} Service metadata.
    */
-  formatResult(result) {
-    return {
-      service: 'Detailed Chart Analysis',
-      timestamp: new Date().toISOString(),
-      analysis: {
-        detailed: result.detailedAnalysis,
-        lifeAreas: result.lifeAreaAnalysis,
-        planetaryStrengths: result.planetaryStrengths,
-        karmicInsights: result.karmicInsights,
-        predictiveIndicators: result.predictiveIndicators
-      },
-      summary: result.summary,
-      disclaimer: 'This detailed chart analysis provides comprehensive astrological insights. Astrology offers guidance and self-understanding but should not replace professional advice in medical, legal, or psychological matters. Consult qualified professionals for important life decisions.'
-    };
-  }
-
   getMetadata() {
     return {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'generateDetailedChartAnalysis'],
-      dependencies: ['DetailedChartAnalysisCalculator']
+      methods: ['processCalculation', '_analyzeLifeAreas', '_assessPlanetaryStrengths', '_provideKarmicInsights', '_identifyPredictiveIndicators'],
+      dependencies: [], // Managed by ServiceTemplate
+      description: 'Comprehensive Vedic chart interpretation service.'
     };
   }
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          // Add service-specific features here
-        },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
-  }
-}
 
-module.exports = DetailedChartAnalysisService;
+  /**
+   * Returns help information for the service.
+   * @returns {string} Help text.
+   */
+  getHelp() {
+    return `
+🔮 **Detailed Chart Analysis Service - Comprehensive Vedic Interpretation**
+
+**Purpose:** Provides deep insights into all planetary positions, aspects, conjunctions, and their significance in multiple life areas using Swiss Ephemeris and traditional Vedic astrology principles.
+
+**Required Inputs:**
+• Birth data (Object with birthDate, birthTime, birthPlace)
+
+**Analysis Includes:**
+• **Planetary Positions:** Detailed analysis of all planets in signs and houses.
+• **Aspects & Conjunctions:** Interpretations of planetary relationships.
+• **Life Area Analysis:** Insights into personality, career, relationships, health, wealth, spirituality, family, and education.
+• **Planetary Strengths:** Assessment of planetary dignities and influences.
+• **Karmic Insights:** Understanding past life patterns and soul evolution.
+• **Predictive Indicators:** Identification of major life changes, peak periods, and challenging times.
+• **Comprehensive Summary:** An overall interpretation of the chart's potential and challenges.
+
+**Example Usage:**

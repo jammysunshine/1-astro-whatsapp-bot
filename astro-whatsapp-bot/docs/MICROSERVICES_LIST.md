@@ -1,6 +1,6 @@
 # List of Proposed Microservices
 
-This document lists the 90 unique astrological services identified from the `MENU_REFERENCE.md` that are intended to become individual microservices as part of the new architectural design.
+This document lists the 88 unique astrological services identified from the `MENU_REFERENCE.md` that are intended to become individual microservices as part of the new architectural design.
 
 ## Astrological Microservices
 **Note:** All services are implemented in the `/src/core/services/` directory (root level, no subdirectories). All calculators are located in `/src/core/services/calculators/`. Total: 86 services implemented with 55 calculators.
@@ -21,9 +21,7 @@ This document lists the 90 unique astrological services identified from the `MEN
 14. `get_current_transits` - `src/core/services/currentTransitsService.js` (uses: `src/core/services/calculators/TransitCalculator.js`)
 15. `get_secondary_progressions` - `src/core/services/secondaryProgressionsService.js` (uses: `src/core/services/calculators/SecondaryProgressionsCalculator.js`)
 16. `get_solar_arc_directions` - `src/core/services/solarArcDirectionsService.js` (uses: `src/core/services/calculators/SolarArcDirectionsCalculator.js`)
-17. `get_asteroid_analysis` - `src/core/services/asteroidAnalysisService.js` (uses: `src/core/services/calculators/AsteroidCalculator.js`)
-18. `get_fixed_stars_analysis` - `src/core/services/fixedStarsService.js` (uses: `src/core/services/calculators/FixedStarsCalculator.js`)
-19. `get_solar_return_analysis` - `src/core/services/solarReturnAnalysisService.js` (uses: `src/core/services/calculators/SolarReturnCalculator.js`)
+17. `get_fixed_stars_analysis` - `src/core/services/fixedStarsService.js` (uses: `src/core/services/calculators/FixedStarsCalculator.js`)
 20. `get_career_astrology_analysis` - `src/core/services/careerAstrologyService.js` (uses: `src/core/services/calculators/CareerAstrologyCalculator.js`)
 21. `get_financial_astrology_analysis` - `src/core/services/financialAstrologyService.js`
 22. `get_medical_astrology_analysis` - `src/core/services/medicalAstrologyService.js`

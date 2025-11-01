@@ -1,234 +1,242 @@
-const logger = require('../../../utils/logger');
-const { NadiCompatibility } = require('../calculators/NadiCompatibility');
+const ServiceTemplate = require('./ServiceTemplate');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models');
 
 /**
- * NakshatraPoruthamService - Service for traditional Indian marriage compatibility
- * Calculates compatibility between partners based on lunar mansion (nakshatra) matching
+ * NakshatraPoruthamService - Service for Nakshatra compatibility analysis
+ *
+ * Provides detailed compatibility analysis between two individuals based on their birth Nakshatras
+ * (lunar mansions) using traditional Vedic astrology principles.
  */
-class NakshatraPoruthamService {
+class NakshatraPoruthamService extends ServiceTemplate {
   constructor() {
-    this.calculator = new NadiCompatibility();
+    super('NadiCompatibility'); // Primary calculator for this service
+    this.serviceName = 'NakshatraPoruthamService';
+    this.calculatorPath = '../../../services/calculators/NadiCompatibility';
     logger.info('NakshatraPoruthamService initialized');
   }
 
   /**
-   * Execute nakshatra porutham analysis for two partners
-   * @param {Object} partnerData - Partner birth data
-   * @param {string} partnerData.partner1Nakshatra - First partner's nakshatra
-   * @param {string} partnerData.partner2Nakshatra - Second partner's nakshatra
-   * @returns {Object} Compatibility analysis result
+   * Main calculation method for Nakshatra Porutham analysis.
+   * @param {Object} person1BirthData - Birth data for the first person.
+   * @param {Object} person2BirthData - Birth data for the second person.
+   * @returns {Promise<Object>} Comprehensive Nakshatra Porutham analysis.
    */
-  async execute(partnerData) {
+  async processCalculation(person1BirthData, person2BirthData) {
     try {
-      // Input validation
-      this._validateInput(partnerData);
+      // Ensure calculator is loaded
+      if (!this.calculator) {
+        await this.initialize();
+      }
 
-      // Calculate compatibility analysis
-      const result = await this.getNakshatraPoruthamAnalysis(partnerData);
+      this._validateInput(person1BirthData, person2BirthData);
 
-      // Format and return result
-      return this._formatResult(result);
-    } catch (error) {
-      logger.error('NakshatraPoruthamService error:', error);
-      throw new Error(`Nakshatra porutham analysis failed: ${error.message}`);
-    }
-  }
+      // Perform Nakshatra Porutham calculation using the dynamically loaded calculator
+      const poruthamResult = await this.calculator.calculatePorutham(person1BirthData, person2BirthData);
 
-  /**
-   * Get comprehensive nakshatra porutham analysis
-   * @param {Object} partnerData - Partner nakshatra data
-   * @returns {Object} Detailed compatibility analysis
-   */
-  async getNakshatraPoruthamAnalysis(partnerData) {
-    try {
-      const { partner1Nakshatra, partner2Nakshatra } = partnerData;
-
-      // Get compatibility analysis
-      const compatibilityAnalysis = this.calculator.analyzeNakshatraCompatibility(
-        partner1Nakshatra,
-        partner2Nakshatra
-      );
-
-      // Get compatibility score
-      const compatibilityScore = this.calculator.generateCompatibilityScore(
-        partner1Nakshatra,
-        partner2Nakshatra
-      );
-
-      // Get relationship dynamics
-      const relationshipDynamics = this.calculator.generateRelationshipDynamics(
-        partner1Nakshatra,
-        partner2Nakshatra
-      );
-
-      // Get matching suggestions for both partners
-      const partner1Suggestions = this.calculator.getMatchingSuggestions(partner1Nakshatra);
-      const partner2Suggestions = this.calculator.getMatchingSuggestions(partner2Nakshatra);
+      // Generate additional insights
+      const compatibilityScore = this._calculateOverallCompatibilityScore(poruthamResult);
+      const strengths = this._identifyStrengths(poruthamResult);
+      const challenges = this._identifyChallenges(poruthamResult);
+      const recommendations = this._generateRecommendations(poruthamResult);
 
       return {
-        compatibilityAnalysis,
+        poruthamResult,
         compatibilityScore,
-        relationshipDynamics,
-        partner1Suggestions,
-        partner2Suggestions,
-        overallAssessment: this._generateOverallAssessment(compatibilityAnalysis, compatibilityScore)
+        strengths,
+        challenges,
+        recommendations,
+        summary: this._createComprehensiveSummary(poruthamResult, compatibilityScore)
       };
     } catch (error) {
-      logger.error('Nakshatra porutham analysis error:', error);
-      throw error;
+      logger.error('NakshatraPoruthamService processCalculation error:', error);
+      throw new Error(`Nakshatra Porutham calculation failed: ${error.message}`);
     }
   }
 
   /**
-   * Generate overall assessment of the compatibility
-   * @param {Object} compatibilityAnalysis - Compatibility analysis result
-   * @param {Object} compatibilityScore - Compatibility score result
-   * @returns {Object} Overall assessment
+   * Validates input data for Nakshatra Porutham analysis.
+   * @param {Object} person1BirthData - Birth data for the first person.
+   * @param {Object} person2BirthData - Birth data for the second person.
+   * @private
    */
-  _generateOverallAssessment(compatibilityAnalysis, compatibilityScore) {
-    const assessment = {
-      level: compatibilityScore.level,
-      score: compatibilityScore.score,
-      summary: '',
-      recommendations: []
+  _validateInput(person1BirthData, person2BirthData) {
+    if (!person1BirthData || !person2BirthData) {
+      throw new Error('Both person1BirthData and person2BirthData are required for Nakshatra Porutham analysis.');
+    }
+    const validatedData1 = new BirthData(person1BirthData);
+    validatedData1.validate();
+
+    const validatedData2 = new BirthData(person2BirthData);
+    validatedData2.validate();
+  }
+
+  /**
+   * Formats the Nakshatra Porutham result for consistent output.
+   * @param {Object} result - Raw porutham result.
+   * @returns {Object} Formatted result.
+   */
+  formatResult(result) {
+    if (result.error) {
+      return {
+        success: false,
+        error: result.error,
+        message: 'Nakshatra Porutham analysis failed',
+        service: this.serviceName
+      };
+    }
+
+    return {
+      success: true,
+      data: result,
+      summary: result.summary || 'Nakshatra Porutham analysis completed',
+      metadata: {
+        serviceName: this.serviceName,
+        calculationType: 'Nakshatra Porutham Analysis',
+        timestamp: new Date().toISOString()
+      },
+      disclaimer: 'Nakshatra Porutham provides insights into marital compatibility based on Vedic astrology. It is one of many factors to consider in a relationship and should be used as a guide for understanding, not as a definitive predictor of success or failure.'
     };
-
-    switch (compatibilityScore.level) {
-    case 'excellent':
-      assessment.summary = 'Exceptional cosmic harmony indicates a blessed union with strong potential for lasting happiness and mutual fulfillment.';
-      assessment.recommendations = [
-        'This is a highly auspicious match with excellent compatibility',
-        'Focus on nurturing the natural harmony between your energies',
-        'Celebrate the complementary qualities that make this partnership special'
-      ];
-      break;
-
-    case 'good':
-      assessment.summary = 'Strong supportive connection suggests a stable and harmonious relationship with good potential for growth together.';
-      assessment.recommendations = [
-        'Build upon the natural compatibility foundation',
-        'Communicate openly about individual needs and expectations',
-        'Work together to strengthen areas of mutual understanding'
-      ];
-      break;
-
-    case 'neutral':
-      assessment.summary = 'Balanced complementary energies indicate potential for a workable partnership through conscious effort and understanding.';
-      assessment.recommendations = [
-        'Focus on building mutual respect and understanding',
-        'Learn from each other\'s different approaches to life',
-        'Develop patience and acceptance of complementary qualities'
-      ];
-      break;
-
-    case 'challenging':
-      assessment.summary = 'Growth through understanding is needed for this combination, requiring conscious effort to harmonize different energies.';
-      assessment.recommendations = [
-        'Seek professional astrological guidance for relationship challenges',
-        'Focus on personal growth and understanding of different energies',
-        'Develop strong communication and conflict resolution skills'
-      ];
-      break;
-
-    default:
-      assessment.summary = 'Professional astrological consultation recommended to understand the unique dynamics of this combination.';
-      assessment.recommendations = [
-        'Consult with experienced astrologers for detailed analysis',
-        'Focus on building strong foundations of trust and respect',
-        'Consider individual spiritual growth alongside relationship development'
-      ];
-    }
-
-    return assessment;
   }
 
   /**
-   * Validate input data
-   * @param {Object} input - Input data to validate
+   * Calculates the overall compatibility score.
+   * @param {Object} poruthamResult - Raw porutham result.
+   * @returns {number} Overall compatibility score (out of 36).
+   * @private
    */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Partner data is required');
+  _calculateOverallCompatibilityScore(poruthamResult) {
+    if (!poruthamResult || !poruthamResult.kutas) return 0;
+    return poruthamResult.kutas.reduce((sum, kuta) => sum + (kuta.score || 0), 0);
+  }
+
+  /**
+   * Identifies strengths in the compatibility.
+   * @param {Object} poruthamResult - Raw porutham result.
+   * @returns {Array} List of strengths.
+   * @private
+   */
+  _identifyStrengths(poruthamResult) {
+    const strengths = [];
+    if (poruthamResult.kutas) {
+      poruthamResult.kutas.forEach(kuta => {
+        if (kuta.score > 2) {
+          strengths.push(`${kuta.name} (Score: ${kuta.score}) - ${kuta.interpretation}`);
+        }
+      });
     }
+    if (strengths.length === 0) strengths.push('General harmony and understanding');
+    return strengths;
+  }
 
-    const { partner1Nakshatra, partner2Nakshatra } = input;
-
-    if (!partner1Nakshatra || typeof partner1Nakshatra !== 'string') {
-      throw new Error('Valid partner1 nakshatra name is required');
+  /**
+   * Identifies challenges in the compatibility.
+   * @param {Object} poruthamResult - Raw porutham result.
+   * @returns {Array} List of challenges.
+   * @private
+   */
+  _identifyChallenges(poruthamResult) {
+    const challenges = [];
+    if (poruthamResult.kutas) {
+      poruthamResult.kutas.forEach(kuta => {
+        if (kuta.score <= 1) {
+          challenges.push(`${kuta.name} (Score: ${kuta.score}) - ${kuta.interpretation}`);
+        }
+      });
     }
+    if (challenges.length === 0) challenges.push('Minor adjustments may be needed');
+    return challenges;
+  }
 
-    if (!partner2Nakshatra || typeof partner2Nakshatra !== 'string') {
-      throw new Error('Valid partner2 nakshatra name is required');
-    }
-
-    // Basic validation for nakshatra names (should be proper names)
-    const validNakshatras = [
-      'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
-      'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
-      'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
-      'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhisha',
-      'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+  /**
+   * Generates recommendations for the couple.
+   * @param {Object} poruthamResult - Raw porutham result.
+   * @returns {Array} List of recommendations.
+   * @private
+   */
+  _generateRecommendations(poruthamResult) {
+    const recommendations = [
+      'Focus on open communication and mutual respect.',
+      'Engage in shared activities to strengthen your bond.',
+      'Practice patience and understanding in challenging areas.'
     ];
 
-    if (!validNakshatras.includes(partner1Nakshatra)) {
-      throw new Error(`Invalid nakshatra name: ${partner1Nakshatra}`);
+    if (poruthamResult.kutas) {
+      poruthamResult.kutas.forEach(kuta => {
+        if (kuta.score <= 1 && kuta.remedy) {
+          recommendations.push(`For ${kuta.name}: ${kuta.remedy}`);
+        }
+      });
     }
-
-    if (!validNakshatras.includes(partner2Nakshatra)) {
-      throw new Error(`Invalid nakshatra name: ${partner2Nakshatra}`);
-    }
+    return recommendations;
   }
 
   /**
-   * Format result for presentation
-   * @param {Object} result - Raw analysis result
-   * @returns {Object} Formatted result
+   * Creates a comprehensive summary of the Nakshatra Porutham analysis.
+   * @param {Object} poruthamResult - Raw porutham result.
+   * @param {number} compatibilityScore - Overall compatibility score.
+   * @returns {string} Comprehensive summary text.
+   * @private
    */
-  _formatResult(result) {
+  _createComprehensiveSummary(poruthamResult, compatibilityScore) {
+    let summary = `This Nakshatra Porutham analysis provides insights into the compatibility between two individuals based on Vedic astrology. `;
+    summary += `The overall compatibility score is ${compatibilityScore} out of 36. `;
+
+    if (compatibilityScore >= 25) {
+      summary += 'This indicates excellent compatibility, suggesting a harmonious and fulfilling relationship. ';
+    } else if (compatibilityScore >= 18) {
+      summary += 'This indicates good compatibility, with a strong foundation for a successful relationship. ';
+    } else {
+      summary += 'This indicates moderate compatibility, suggesting areas that may require more effort and understanding. ';
+    }
+
+    summary += 'The analysis of individual Kutas (compatibility factors) highlights specific strengths and potential challenges, offering guidance for a stronger bond.';
+    return summary;
+  }
+
+  /**
+   * Returns metadata for the service.
+   * @returns {Object} Service metadata.
+   */
+  getMetadata() {
     return {
-      service: 'Nakshatra Porutham Analysis',
-      timestamp: new Date().toISOString(),
-      analysis: {
-        compatibility: {
-          level: result.compatibilityAnalysis.compatibility,
-          message: result.compatibilityAnalysis.message,
-          strengths: result.compatibilityAnalysis.strengths,
-          challenges: result.compatibilityAnalysis.challenges
-        },
-        score: {
-          value: result.compatibilityScore.score,
-          level: result.compatibilityScore.level,
-          description: result.compatibilityScore.description
-        },
-        relationshipDynamics: result.relationshipDynamics,
-        suggestions: {
-          partner1: result.partner1Suggestions,
-          partner2: result.partner2Suggestions
-        },
-        overallAssessment: result.overallAssessment
-      },
-      disclaimer: 'This analysis is for informational purposes only. Marriage and relationship decisions should consider multiple factors beyond astrological compatibility.'
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['processCalculation', 'calculatePorutham', 'getCompatibilityScore', 'getStrengthsAndChallenges'],
+      dependencies: [], // Managed by ServiceTemplate
+      description: 'Service for Nakshatra compatibility analysis.'
     };
   }
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          // Add service-specific features here
-        },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
+
+  /**
+   * Returns help information for the service.
+   * @returns {string} Help text.
+   */
+  getHelp() {
+    return `
+💖 **Nakshatra Porutham Service - Vedic Compatibility Analysis**
+
+**Purpose:** Provides detailed compatibility analysis between two individuals based on their birth Nakshatras (lunar mansions) using traditional Vedic astrology principles.
+
+**Required Inputs:**
+• Person 1: Birth data (Object with birthDate, birthTime, birthPlace)
+• Person 2: Birth data (Object with birthDate, birthTime, birthPlace)
+
+**Analysis Includes:**
+• **Nakshatra Matching:** Comparison of birth Nakshatras for compatibility.
+• **Kuta Analysis:** Evaluation of 10-12 traditional compatibility factors (Kutas).
+• **Overall Compatibility Score:** A numerical score indicating the degree of compatibility (out of 36).
+• **Strengths & Challenges:** Identification of harmonious areas and potential points of friction.
+• **Recommendations:** Guidance and remedies to enhance relationship harmony.
+
+**Example Usage:**
+"Analyze Nakshatra Porutham for John (born 1990-06-15T06:45:00.000Z in New Delhi) and Jane (born 1992-03-22T10:30:00.000Z in Mumbai)."
+"What is the Nakshatra compatibility score for us?"
+
+**Output Format:**
+Comprehensive report with Kuta scores, interpretations, overall compatibility, and recommendations.
+    `.trim();
   }
 }
 

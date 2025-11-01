@@ -217,7 +217,7 @@ class DailyHoroscopeService extends ServiceTemplate {
    * @private
    */
   _findCommonTheme(predictions) {
-    if (!predictions || predictions.length === 0) return 'General developments';
+    if (!predictions || predictions.length === 0) { return 'General developments'; }
     const words = predictions.join(' ').toLowerCase().split(/\s+/);
     const wordCount = {};
     words.forEach(word => {

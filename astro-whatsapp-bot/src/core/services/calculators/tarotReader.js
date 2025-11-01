@@ -1,65 +1,81 @@
-const logger = require('../../utils/logger');
-
 /**
- * Comprehensive Tarot Reading System
- * Provides traditional Tarot card readings with multiple spreads and interpretations
+ * Tarot Reader Class
+ * Handles tarot card readings and interpretations
  */
 
 class TarotReader {
   constructor() {
-    logger.info('Module: TarotReader loaded.');
-    // Major Arcana cards (simplified for brevity)
-    this.majorArcana = [
-      { name: 'The Fool', number: 0, upright: 'New beginnings', reversed: 'Recklessness' },
-      { name: 'The Magician', number: 1, upright: 'Manifestation', reversed: 'Manipulation' }
-      // Add more major arcana cards...
-    ];
-
-    // Minor Arcana - Wands, Cups, Swords, Pentacles arrays...
-
-    // Tarot spreads
-    this.spreads = {
-      single: {
-        name: 'Single Card',
-        positions: ['Current Situation'],
-        description: 'A simple one-card reading for quick insight'
-      },
-      three: {
-        name: 'Three Card Spread',
-        positions: ['Past', 'Present', 'Future'],
-        description: 'Classic three-card spread'
-      }
-      // Add more spreads...
-    };
+    this.cards = this._initializeTarotCards();
   }
 
   /**
-   * Shuffle and draw cards from a deck
+   * Initialize the complete tarot deck
+   * @returns {Array} Major and Minor Arcana cards
    */
-  drawCards(count, includeReversed = true) {
-    // Simplified deck for testing - normally would include full deck
-    const deck = [
-      ...this.majorArcana,
-      { name: 'Ace of Wands', upright: 'Inspiration', reversed: 'Lack of energy' }
-      // Add more cards...
+  _initializeTarotCards() {
+    const majorArcana = [
+      'The Fool', 'The Magician', 'The High Priestess', 'The Empress', 'The Emperor',
+      'The Hierophant', 'The Lovers', 'The Chariot', 'Strength', 'The Hermit',
+      'Wheel of Fortune', 'Justice', 'The Hanged Man', 'Death', 'Temperance',
+      'The Devil', 'The Tower', 'The Star', 'The Moon', 'The Sun', 'Judgement',
+      'The World'
     ];
 
-    // Shuffle deck
-    for (let i = deck.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [deck[i], deck[j]] = [deck[j], deck[i]];
+    const suits = ['Wands', 'Cups', 'Swords', 'Pentacles'];
+    const minorArcana = [];
+
+    for (const suit of suits) {
+      for (let i = 1; i <= 10; i++) {
+        minorArcana.push(`${i} of ${suit}`);
+      }
+      minorArcana.push(`Page of ${suit}`);
+      minorArcana.push(`Knight of ${suit}`);
+      minorArcana.push(`Queen of ${suit}`);
+      minorArcana.push(`King of ${suit}`);
     }
 
+    return [...majorArcana, ...minorArcana];
+  }
+
+  /**
+   * Perform tarot reading
+   * @param {string} question - Question or focus for reading
+   * @param {string} spread - Type of spread
+   * @returns {Promise<Object>} Tarot reading result
+   */
+  async readTarot(question, spread = 'general') {
+    try {
+      const cards = this._drawCards(spread);
+      const interpretation = this._interpretTarot(cards, question, spread);
+
+      return {
+        cards,
+        interpretation,
+        spread,
+        question,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      throw new Error(`Tarot reading failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Draw cards based on spread type
+   * @param {string} spread - Spread type
+   * @returns {Array} Drawn cards
+   */
+  _drawCards(spread) {
+    const cardCount = this._getSpreadCardCount(spread);
     const drawnCards = [];
-    for (let i = 0; i < count; i++) {
-      const card = { ...deck[i] };
-      if (includeReversed && Math.random() < 0.5) {
-        card.reversed = true;
-        card.interpretation = card.reversed;
-      } else {
-        card.reversed = false;
-        card.interpretation = card.upright;
-      }
+
+    for (let i = 0; i < cardCount; i++) {
+      const cardIndex = Math.floor(Math.random() * this.cards.length);
+      const card = {
+        name: this.cards[cardIndex],
+        position: this._getCardPosition(spread, i),
+        orientation: Math.random() > 0.5 ? 'upright' : 'reversed'
+      };
       drawnCards.push(card);
     }
 
@@ -67,105 +83,91 @@ class TarotReader {
   }
 
   /**
-   * Perform a single card reading
+   * Get number of cards for spread
+   * @param {string} spread - Spread type
+   * @returns {number} Card count
    */
-  singleCardReading(question = '') {
-    try {
-      const cards = this.drawCards(1);
-      const card = cards[0];
-
-      return {
-        spread: 'single',
-        question: question || 'General guidance',
-        cards: [{ position: 'Current Situation', card, interpretation: card.interpretation }],
-        summary: `The ${card.name} provides guidance for your situation.`
-      };
-    } catch (error) {
-      logger.error('Error in single card reading:', error);
-      return { error: 'Unable to perform reading at this time' };
-    }
+  _getSpreadCardCount(spread) {
+    const spreadCounts = {
+      'single': 1,
+      'three': 3,
+      'celtic-cross': 10,
+      'general': 3
+    };
+    return spreadCounts[spread] || 3;
   }
 
   /**
-   * Perform a three-card spread reading
+   * Get card position meaning
+   * @param {string} spread - Spread type
+   * @param {number} index - Card index
+   * @returns {string} Position meaning
    */
-  threeCardReading(question = '') {
-    try {
-      const cards = this.drawCards(3);
+  _getCardPosition(spread, index) {
+    const positions = {
+      'general': ['Past', 'Present', 'Future'],
+      'three': ['Past', 'Present', 'Future'],
+      'single': ['Answer'],
+      'celtic-cross': [
+        'Present Situation',
+        'Challenge',
+        'Distant Past',
+        'Possible Outcome',
+        'Recent Past',
+        'Future',
+        'Approach/Attitude',
+        'Environment',
+        'Hopes/Fears',
+        'Final Outcome'
+      ]
+    };
 
-      const reading = {
-        spread: 'three',
-        question: question || 'General guidance',
-        cards: cards.map((card, index) => ({
-          position: this.spreads.three.positions[index],
-          card,
-          interpretation: card.interpretation
-        })),
-        summary: 'Your past experiences are shaping your present, leading to future potential.'
-      };
-
-      return reading;
-    } catch (error) {
-      logger.error('Error in three card reading:', error);
-      return { error: 'Unable to perform reading at this time' };
-    }
+    return positions[spread]?.[index] || `Position ${index + 1}`;
   }
 
   /**
-   * Generate a summary interpretation for the reading
+   * Interpret the tarot cards
+   * @param {Array} cards - Drawn cards
+   * @param {string} question - Question/focus
+   * @param {string} spread - Card spread
+   * @returns {Object} Interpretation
    */
-  generateReadingSummary(cards, spreadType, question) {
-    try {
-      return `This ${spreadType} spread contains ${cards.length} cards with wisdom for your path ahead.`;
-    } catch (error) {
-      logger.error('Error generating reading summary:', error);
-      return 'The cards offer guidance for your journey ahead.';
-    }
-  }
+  _interpretTarot(cards, question, spread) {
+    const interpretation = {
+      summary: '',
+      advice: '',
+      outlook: '',
+      warnings: '',
+      recommendations: []
+    };
 
-  /**
-   * Generate a tarot reading based on user data and spread type
-   */
-  generateTarotReading(user, spreadType = 'single') {
-    try {
-      let reading;
-
-      switch (spreadType) {
+    // Generate basic interpretation based on spread type
+    switch (spread) {
       case 'single':
-        reading = this.singleCardReading();
+        interpretation.summary = `Card reveals: ${cards[0].name} (${cards[0].orientation})`;
+        interpretation.advice = 'Trust your intuition regarding this matter';
         break;
+
       case 'three':
-      case 'three-card':
-        reading = this.threeCardReading();
+        interpretation.summary = `Timeline: ${cards[0].name} (${cards[0].orientation}) → ${cards[1].name} (${cards[1].orientation}) → ${cards[2].name} (${cards[2].orientation})`;
+        interpretation.outlook = 'Focus on transitioning from past patterns to future potential';
         break;
+
       default:
-        reading = this.singleCardReading();
-      }
-
-      // Add user personalization
-      if (user && user.birthDate) {
-        reading.personalized = true;
-        reading.userSign = user.sunSign || 'Unknown';
-      }
-
-      return {
-        type: spreadType,
-        cards: reading.cards,
-        interpretation: reading.summary,
-        advice: `Based on your ${reading.spread} spread: ${reading.summary}`,
-        personalized: reading.personalized || false
-      };
-    } catch (error) {
-      logger.error('Error generating tarot reading:', error);
-      return {
-        error: 'Unable to generate tarot reading',
-        type: spreadType,
-        cards: [],
-        interpretation: 'Please try again later',
-        advice: 'Tarot readings require focus and clarity'
-      };
+        const cardSummary = cards.map(card => `${card.name} (${card.orientation})`).join(', ');
+        interpretation.summary = `Reading reveals: ${cardSummary}`;
+        interpretation.advice = 'Take time to reflect on the guidance offered by these cards';
     }
+
+    interpretation.recommendations = [
+      'Meditate on the imagery and symbolism of your cards',
+      'Keep a tarot journal to track your intuitions',
+      'Trust your inner wisdom in decision making',
+      'Return for clarification readings if needed'
+    ];
+
+    return interpretation;
   }
 }
 
-module.exports = new TarotReader();
+module.exports = TarotReader;

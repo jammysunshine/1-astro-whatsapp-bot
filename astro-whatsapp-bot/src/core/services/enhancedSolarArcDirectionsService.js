@@ -4,7 +4,7 @@
  */
 
 const ServiceTemplate = require('./ServiceTemplate');
-const VedicCalculator = require('../vedic/VedicCalculator'); const {
+const VedicCalculator = require('../calculators/VedicCalculator'); const {
   validateCoordinates,
   validateDateTime
 } = require('../../../utils/validation');

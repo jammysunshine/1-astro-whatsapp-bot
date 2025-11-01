@@ -365,6 +365,11 @@ class CompatibilityScoreService extends ServiceTemplate {
       dependencies: ['CompatibilityScorer']
     };
   }
+
+  async processCalculation(data) {
+    return await this.lcompatibilityScoreCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

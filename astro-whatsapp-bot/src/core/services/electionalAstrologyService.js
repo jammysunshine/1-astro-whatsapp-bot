@@ -7,14 +7,11 @@ const logger = require('../../../utils/logger');
  * Extends ServiceTemplate for standardized service architecture
  */
 class ElectionalAstrologyService extends ServiceTemplate {
-  constructor(services) {
+  constructor() {
     super('MuhurtaCalculator');
+    this.serviceName = 'ElectionalAstrologyService';
     this.calculatorPath = '../calculators/MuhurtaCalculator';
-    // Initialize Muhurta Calculator for electional calculations
-    this.calculator = new MuhurtaCalculator();
-
-    // Set services in calculator
-    this.calculator.setServices(services);
+    logger.info('ElectionalAstrologyService initialized');
 
     // Service-specific configuration
     this.serviceConfig = {

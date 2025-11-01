@@ -16,7 +16,7 @@ class SolarArcDirectionsService extends ServiceTemplate {
     logger.info('SolarArcDirectionsService initialized');
   }
 
-  async lsolarArcDirectionsCalculation(data) {
+  async processCalculation(data) {
     try {
       const { birthData, targetDate } = data;
       // Calculate solar arc directions using calculator
@@ -46,34 +46,9 @@ class SolarArcDirectionsService extends ServiceTemplate {
     if (!data || !data.birthData) {
       throw new Error('Birth data is required');
     }
-
-    const { birthDate, birthTime, birthPlace } = data.birthData;
-
-    if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Valid birth date is required');
-    }
-
-    if (!birthTime || typeof birthTime !== 'string') {
-      throw new Error('Valid birth time is required');
-    }
-
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-
-    return true;
+    const { BirthData } = require('../../models');
+    const validatedData = new BirthData(data.birthData);
+    validatedData.validate();
   }
 
   /**

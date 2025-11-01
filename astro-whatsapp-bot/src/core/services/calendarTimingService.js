@@ -2,6 +2,7 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure (for now)
+const { PanchangCalculator } = require('../calculators/PanchangCalculator');
 
 /**
  * CalendarTimingService - Vedic calendar timing and auspicious period analysis service

@@ -2,6 +2,9 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculators from legacy structure (for now)
+const { CompatibilityAction } = require('../calculators/CompatibilityAction');
+const { SynastryEngine } = require('../calculators/SynastryEngine');
+const { CompatibilityCalculator } = require('../calculators/CompatibilityCalculator');
 
 /**
  * CompatibilityService - Vedic relationship compatibility analysis service
@@ -12,13 +15,15 @@ const logger = require('../../utils/logger');
  */
 class CompatibilityService extends ServiceTemplate {
   constructor() {
-    super({
-      compatibilityAction: new CompatibilityAction(),
-      synastryEngine: new SynastryEngine(),
-      compatibilityScorer: new CompatibilityCalculator()
-    });
+    super('CompatibilityCalculator'); // Use the primary calculator
     this.serviceName = 'CompatibilityService';
+    this.calculatorPath = '../calculators/CompatibilityCalculator';
     logger.info('CompatibilityService initialized');
+
+    // Load additional calculators for multi-calculator functionality
+    this.compatibilityAction = new CompatibilityAction();
+    this.synastryEngine = new SynastryEngine();
+    this.compatibilityScorer = new CompatibilityCalculator();
   }
 
   async lcompatibilityCalculation(compatibilityData) {

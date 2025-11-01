@@ -18,7 +18,7 @@ class NadiAstrologyService extends ServiceTemplate {
     logger.info('NadiAstrologyService initialized');
   }
 
-  async lnadiAstrologyCalculation(birthData) {
+  async processCalculation(birthData) {
     try {
       // Validate input
       this._validateInput(birthData);
@@ -128,26 +128,9 @@ class NadiAstrologyService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for Nadi astrology reading');
     }
-
-    if (!birthData.birthDate) {
-      throw new Error('Birth date is required for Nadi astrology reading');
-    }
-
-    if (!birthData.birthTime) {
-      throw new Error('Birth time is required for Nadi astrology reading');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthData.birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthData.birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
+    const { BirthData } = require('../../models');
+    const validatedData = new BirthData(birthData);
+    validatedData.validate();
   }
 
   /**

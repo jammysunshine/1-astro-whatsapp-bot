@@ -11,13 +11,13 @@ const logger = require('../../utils/logger');
  */
 class CurrentTransitsService extends ServiceTemplate {
   constructor() {
-    super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    super('TransitCalculator');
     this.serviceName = 'CurrentTransitsService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/TransitCalculator';
     logger.info('CurrentTransitsService initialized');
   }
 
-  async lcurrentTransitsCalculation(birthData, targetDate = null) {
+  async processCalculation(birthData, targetDate = null) {
     try {
       // Analyze transits to natal chart
       const result = await this.calculator.analyzeTransitsToNatal(
@@ -46,34 +46,9 @@ class CurrentTransitsService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required');
     }
-
-    const { birthDate, birthTime, birthPlace } = birthData;
-
-    if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
-    }
-
-    if (!birthTime || typeof birthTime !== 'string') {
-      throw new Error('Valid birth time (HH:MM format) is required');
-    }
-
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-
-    return true;
+    const { BirthData } = require('../../models');
+    const validatedData = new BirthData(birthData);
+    validatedData.validate();
   }
 
   /**

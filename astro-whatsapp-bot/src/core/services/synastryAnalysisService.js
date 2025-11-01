@@ -5,7 +5,7 @@ const logger = require('../../utils/logger');
 
 class SynastryAnalysisService extends ServiceTemplate {
   constructor() {
-    super('synastryAnalysisService');
+    super('CompatibilityCalculator');
     this.serviceName = 'SynastryAnalysisService';
     logger.info('SynastryAnalysisService initialized');
   }

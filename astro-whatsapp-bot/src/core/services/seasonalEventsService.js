@@ -1,122 +1,201 @@
-const ServiceTemplate = require('../ServiceTemplate');
+const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
 /**
- * Seasonal Events Service
- * Provides analysis of seasonal astronomical events and their astrological significance
- * Extends ServiceTemplate for standardized service architecture
+ * SeasonalEventsService - Service for tracking and analyzing seasonal astrological events
+ *
+ * Provides information and interpretations for major seasonal astrological events such as
+ * solstices, equinoxes, and cross-quarter days, highlighting their spiritual significance
+ * and potential impact on personal and collective energies.
  */
 class SeasonalEventsService extends ServiceTemplate {
   constructor() {
-    super('SeasonalEventsCalculator');
+    super('SeasonalEventsCalculator'); // Primary calculator for this service
     this.serviceName = 'SeasonalEventsService';
-    this.calculatorPath = '../services/astrology/vedic/calculators/SeasonalEventsCalculator';
+    this.calculatorPath = '../calculators/SeasonalEventsCalculator';
     logger.info('SeasonalEventsService initialized');
   }
 
-  async initialize() {
-    try {
-      await super.initialize();
-      logger.info('✅ SeasonalEventsService initialized successfully');
-    } catch (error) {
-      logger.error('❌ Failed to initialize SeasonalEventsService:', error);
-      throw error;
-    }
-  }
-
   /**
-   * Process seasonal events calculation
-   * @param {Object} params - Calculation parameters
-   * @returns {Object} Seasonal events analysis
+   * Main calculation method for Seasonal Events analysis.
+   * @param {number} year - The year for which to retrieve seasonal events.
+   * @returns {Promise<Object>} Comprehensive seasonal events analysis.
    */
-  async processCalculation(params) {
+  async processCalculation(year) {
     try {
-      this.validateParams(params, ['dateRange']);
+      // Ensure calculator is loaded
+      if (!this.calculator) {
+        await this.initialize();
+      }
 
-      const { dateRange, options = {} } = params;
+      this._validateInput(year);
 
-      // Get seasonal events analysis from calculator
-      const seasonalEventsData = await this.calculator.getSeasonalEventsAnalysis(dateRange, options);
+      // Perform seasonal events analysis using the dynamically loaded calculator
+      const events = await this.calculator.getSeasonalEvents(year);
 
-      // Add metadata
-      seasonalEventsData.type = 'seasonal_events';
-      seasonalEventsData.generatedAt = new Date().toISOString();
-      seasonalEventsData.service = this.serviceName;
+      // Generate additional insights
+      const eventSummary = this._createEventSummary(events);
+      const keyThemes = this._identifyKeyThemes(events);
+      const spiritualGuidance = this._getSpiritualGuidance(events);
 
-      return seasonalEventsData;
+      return {
+        events,
+        eventSummary,
+        keyThemes,
+        spiritualGuidance,
+        summary: this._createComprehensiveSummary(events, eventSummary)
+      };
     } catch (error) {
-      logger.error('SeasonalEventsService calculation error:', error);
+      logger.error('SeasonalEventsService processCalculation error:', error);
       throw new Error(`Seasonal events analysis failed: ${error.message}`);
     }
   }
 
   /**
-   * Format result for service consumption
-   * @param {Object} result - Raw calculator result
-   * @returns {Object} Formatted result
+   * Validates input data for seasonal events analysis.
+   * @param {number} year - Year to validate.
+   * @private
+   */
+  _validateInput(year) {
+    if (typeof year !== 'number' || year < 1900 || year > 2100) {
+      throw new Error('A valid year (between 1900 and 2100) is required for seasonal events analysis.');
+    }
+  }
+
+  /**
+   * Formats the seasonal events analysis result for consistent output.
+   * @param {Object} result - Raw seasonal events analysis result.
+   * @returns {Object} Formatted result.
    */
   formatResult(result) {
+    if (result.error) {
+      return {
+        success: false,
+        error: result.error,
+        message: 'Seasonal events analysis failed',
+        service: this.serviceName
+      };
+    }
+
     return {
       success: true,
       data: result,
-      timestamp: new Date().toISOString(),
-      service: this.serviceName
+      summary: result.summary || 'Seasonal events analysis completed',
+      metadata: {
+        serviceName: this.serviceName,
+        calculationType: 'Seasonal Events Analysis',
+        timestamp: new Date().toISOString()
+      },
+      disclaimer: 'Seasonal events analysis provides insights into the energetic shifts of the year. This information is for spiritual guidance and personal reflection, not definitive prediction. Individual experiences may vary.'
     };
   }
 
   /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
+   * Creates a summary of the seasonal events.
+   * @param {Array} events - List of seasonal events.
+   * @returns {Object} Event summary.
+   * @private
    */
-  validate(input) {
-    if (!input) {
-      throw new Error('Input data is required');
-    }
-
-    if (!input.dateRange) {
-      throw new Error('Date range is required for seasonal events analysis');
-    }
-
-    return true;
+  _createEventSummary(events) {
+    const summary = {
+      totalEvents: events.length,
+      solstices: events.filter(e => e.type === 'solstice').length,
+      equinoxes: events.filter(e => e.type === 'equinox').length,
+      crossQuarterDays: events.filter(e => e.type === 'cross-quarter').length,
+      majorEvents: events.filter(e => e.significance === 'high').length
+    };
+    return summary;
   }
 
   /**
-   * Get service metadata
-   * @returns {Object} Service information
+   * Identifies key themes associated with seasonal events.
+   * @param {Array} events - List of seasonal events.
+   * @returns {Array} Key themes.
+   * @private
+   */
+  _identifyKeyThemes(events) {
+    const themes = [];
+    events.forEach(event => {
+      if (event.theme) {
+        themes.push(event.theme);
+      }
+    });
+    return [...new Set(themes)].slice(0, 5); // Unique themes
+  }
+
+  /**
+   * Provides spiritual guidance for seasonal events.
+   * @param {Array} events - List of seasonal events.
+   * @returns {Array} Spiritual guidance.
+   * @private
+   */
+  _getSpiritualGuidance(events) {
+    const guidance = [];
+    events.forEach(event => {
+      if (event.guidance) {
+        guidance.push(event.guidance);
+      }
+    });
+    return guidance.slice(0, 5);
+  }
+
+  /**
+   * Creates a comprehensive summary of the seasonal events analysis.
+   * @param {Array} events - List of seasonal events.
+   * @param {Object} eventSummary - Summary of events.
+   * @returns {string} Comprehensive summary text.
+   * @private
+   */
+  _createComprehensiveSummary(events, eventSummary) {
+    let summary = `This analysis covers ${eventSummary.totalEvents} major seasonal astrological events for the year ${events[0]?.year || 'N/A'}. `;
+    summary += `Key events include ${eventSummary.solstices} solstices, ${eventSummary.equinoxes} equinoxes, and ${eventSummary.crossQuarterDays} cross-quarter days. `;
+    summary += 'These events mark significant energetic shifts throughout the year, influencing natural cycles and offering opportunities for spiritual alignment and personal growth. Understanding these rhythms can enhance your connection to nature and your inner self.';
+    return summary;
+  }
+
+  /**
+   * Returns metadata for the service.
+   * @returns {Object} Service metadata.
    */
   getMetadata() {
     return {
       name: this.serviceName,
       version: '1.0.0',
-      category: 'vedic',
-      methods: ['getSeasonalEventsAnalysis'],
-      dependencies: ['SeasonalEventsCalculator']
+      category: 'astronomy',
+      methods: ['processCalculation', 'getSeasonalEvents', 'getSolstices', 'getEquinoxes', 'getCrossQuarterDays'],
+      dependencies: [], // Managed by ServiceTemplate
+      description: 'Service for tracking and analyzing seasonal astrological events.'
     };
   }
 
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          seasonalEventsAnalysis: true,
-          astronomicalEvents: true,
-          seasonalTransitions: true
-        },
-        supportedAnalyses: [
-          'seasonal_events_analysis',
-          'astronomical_events',
-          'seasonal_transitions'
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
+  /**
+   * Returns help information for the service.
+   * @returns {string} Help text.
+   */
+  getHelp() {
+    return `
+🌿 **Seasonal Events Service - Astrological Rhythms of the Year**
+
+**Purpose:** Provides information and interpretations for major seasonal astrological events such as solstices, equinoxes, and cross-quarter days, highlighting their spiritual significance and potential impact on personal and collective energies.
+
+**Required Inputs:**
+• Year (number, e.g., 2025)
+
+**Analysis Includes:**
+• **Solstices:** Summer and Winter Solstices, marking peaks of light and darkness.
+• **Equinoxes:** Spring and Autumn Equinoxes, representing balance and transition.
+• **Cross-Quarter Days:** Midpoints between solstices and equinoxes, significant in ancient traditions.
+• **Event Summary:** Overview of event types and their spiritual significance.
+• **Key Themes:** Dominant energies and focus areas for each seasonal period.
+• **Spiritual Guidance:** Recommendations for aligning with the natural rhythms of the year.
+
+**Example Usage:**
+"List all seasonal astrological events for 2025."
+"What is the spiritual significance of the upcoming Summer Solstice?"
+
+**Output Format:**
+Detailed report with a chronological list of seasonal events, their interpretations, and guidance for spiritual alignment.
+    `.trim();
   }
 }
 

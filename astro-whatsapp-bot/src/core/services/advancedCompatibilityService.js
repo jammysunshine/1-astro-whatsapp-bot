@@ -7,17 +7,11 @@ const logger = require('../../../utils/logger');
  * Extends ServiceTemplate for standardized service architecture
  */
 class AdvancedCompatibilityService extends ServiceTemplate {
-  constructor(services) {
-    super('AdvancedCompatibilityService', services);
-
-    // Initialize Compatibility Calculator with required dependencies
-    this.calculator = new CompatibilityCalculator(
-      services.astrologer,
-      services.geocodingService
-    );
-
-    // Set services in calculator
-    this.calculator.setServices(services);
+  constructor() {
+    super('CompatibilityCalculator');
+    this.serviceName = 'AdvancedCompatibilityService';
+    this.calculatorPath = '../calculators/CompatibilityCalculator';
+    logger.info('AdvancedCompatibilityService initialized');
 
     // Service-specific configuration
     this.serviceConfig = {

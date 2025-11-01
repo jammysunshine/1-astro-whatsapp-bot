@@ -7,17 +7,11 @@ const logger = require('../../../utils/logger');
  * Extends ServiceTemplate for standardized service architecture
  */
 class AshtakavargaService extends ServiceTemplate {
-  constructor(services) {
-    super('AshtakavargaService', services);
-
-    // Initialize Ashtakavarga Calculator with required dependencies
-    this.calculator = new AshtakavargaCalculator();
-
-    // Set services in calculator
-    this.calculator.setServices(
-      services.calendricalService,
-      services.geocodingService
-    );
+  constructor() {
+    super('AshtakavargaCalculator');
+    this.serviceName = 'AshtakavargaService';
+    this.calculatorPath = '../calculators/AshtakavargaCalculator';
+    logger.info('AshtakavargaService initialized');
 
     // Service-specific configuration
     this.serviceConfig = {

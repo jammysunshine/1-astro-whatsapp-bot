@@ -12,7 +12,7 @@ class MayanAstrologyService extends ServiceTemplate {
   constructor() {
     super('MayanCalculator'); // Primary calculator for this service
     this.serviceName = 'MayanAstrologyService';
-    this.calculatorPath = '../../../services/astrology/mayan/MayanCalculator';
+    this.calculatorPath = '../calculators/MayanCalculator';
     logger.info('MayanAstrologyService initialized');
   }
 

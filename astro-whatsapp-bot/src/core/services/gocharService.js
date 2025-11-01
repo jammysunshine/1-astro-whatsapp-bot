@@ -308,7 +308,7 @@ class GocharService extends ServiceTemplate {
         Moon: 'Emotional creativity, romantic feelings',
         Mars: 'Creative energy, romantic passion, competitive activities',
         Mercury: 'Creative communication, intellectual pursuits',
-        Jupiter: 'Creative expansion, romance, children's growth',
+        Jupiter: 'Creative expansion, romance, childrens growth',
         Venus: 'Romance, artistic expression, pleasure',
         Saturn: 'Creative discipline, romantic challenges',
         Rahu: 'Unusual romance, unconventional creativity',

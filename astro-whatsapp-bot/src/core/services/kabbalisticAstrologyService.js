@@ -13,7 +13,7 @@ class KabbalisticAstrologyService extends ServiceTemplate {
   constructor() {
     super('KabbalisticAstrologyCalculator'); // Primary calculator for this service
     this.serviceName = 'KabbalisticAstrologyService';
-    this.calculatorPath = '../../../services/astrology/kabbalistic/KabbalisticAstrologyCalculator';
+    this.calculatorPath = '../calculators/KabbalisticAstrologyCalculator';
     logger.info('KabbalisticAstrologyService initialized');
   }
 
@@ -169,9 +169,9 @@ class KabbalisticAstrologyService extends ServiceTemplate {
    * @private
    */
   _createComprehensiveSummary(kabbalisticAnalysis, soulCorrection, lifePurpose) {
-    let summary = 'This Kabbalistic Astrology analysis delves into your spiritual blueprint, revealing profound insights into your soul's journey. ';
-    summary += `Your primary soul correction (Tikkun) is focused on ${soulCorrection.primaryTikkun.toLowerCase()}, guiding you towards spiritual growth. `;
-    summary += `Your life purpose is to ${lifePurpose.corePurpose.toLowerCase()}, utilizing your unique talents to fulfill your mission. `;
+    let summary = 'This Kabbalistic Astrology analysis delves into your spiritual blueprint, revealing profound insights into your soul\'s journey. ';
+    summary += 'Your primary soul correction (Tikkun) is focused on ' + soulCorrection.primaryTikkun.toLowerCase() + ', guiding you towards spiritual growth. ';
+    summary += 'Your life purpose is to ' + lifePurpose.corePurpose.toLowerCase() + ', utilizing your unique talents to fulfill your mission. ';
     summary += 'Understanding these aspects can illuminate your path, helping you navigate challenges and embrace your spiritual gifts.';
     return summary;
   }

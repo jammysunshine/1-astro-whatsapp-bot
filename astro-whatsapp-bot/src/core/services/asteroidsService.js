@@ -5,7 +5,7 @@ const logger = require('../../../utils/logger');
 
 class AsteroidsService extends ServiceTemplate {
   constructor() {
-    super('asteroidsService');
+    super('CompatibilityCalculator');
     this.serviceName = 'AsteroidsService';
     logger.info('AsteroidsService initialized');
   }

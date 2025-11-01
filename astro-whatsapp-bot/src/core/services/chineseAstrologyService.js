@@ -12,7 +12,7 @@ class ChineseAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChineseCalculator'); // Primary calculator for this service
     this.serviceName = 'ChineseAstrologyService';
-    this.calculatorPath = '../../../services/astrology/chinese/ChineseCalculator';
+    this.calculatorPath = '../calculators/ChineseCalculator';
     logger.info('ChineseAstrologyService initialized');
   }
 

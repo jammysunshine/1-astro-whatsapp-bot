@@ -8,7 +8,7 @@ class HinduFestivalsService extends ServiceTemplate {
     super('ChartGenerator');
     this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'HinduFestivalsService';
-    this.calculatorPath = '../../../services/astrology/hinduFestivals';
+    this.calculatorPath = './calculators/hinduFestivals';
     logger.info('HinduFestivalsService initialized');
   }
 

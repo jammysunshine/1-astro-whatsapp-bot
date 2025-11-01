@@ -1,4 +1,3 @@
-/**
 const ServiceTemplate = require('./ServiceTemplate');
  * Varga Charts Service
  *

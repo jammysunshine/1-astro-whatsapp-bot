@@ -1,4 +1,3 @@
-/**
 const ServiceTemplate = require('./ServiceTemplate');
  * Remedies Dosha Service
  *

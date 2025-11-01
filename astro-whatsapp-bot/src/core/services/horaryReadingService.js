@@ -12,7 +12,7 @@ class HoraryReadingService extends ServiceTemplate {
     super('ChartGenerator'); // Primary calculator for this service
     this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'HoraryReadingService';
-    this.calculatorPath = '../../../services/astrology/horary/HoraryCalculator';
+    this.calculatorPath = './calculators/HoraryCalculator';
     logger.info('HoraryReadingService initialized');
   }
 

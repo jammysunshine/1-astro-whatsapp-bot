@@ -8,8 +8,7 @@ class MundaneAstrologyService extends ServiceTemplate {
     super('ChartGenerator');
     this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'MundaneAstrologyService';
-    this.calculatorPath =
-      '../../../services/astrology/mundane/PoliticalAstrology';
+    this.calculatorPath = './calculators/PoliticalAstrology';
     logger.info('MundaneAstrologyService initialized');
   }
 

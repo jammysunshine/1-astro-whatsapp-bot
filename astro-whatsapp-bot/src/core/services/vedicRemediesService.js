@@ -13,7 +13,7 @@ class VedicRemediesService extends ServiceTemplate {
   constructor() {
     super('VedicRemedies'); // Primary calculator for this service
     this.serviceName = 'VedicRemediesService';
-    this.calculatorPath = '../../../services/astrology/vedicRemedies';
+    this.calculatorPath = './calculators/RemedialMeasuresCalculator';
     logger.info('VedicRemediesService initialized');
   }
 

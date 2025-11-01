@@ -10,7 +10,6 @@ class HinduAstrologyService extends ServiceTemplate {
     super('ChartGenerator');
     this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'HinduAstrologyService';
-    this.calculatorPath = './calculators/ChartGenerator'; // Assuming this path for the main calculator
     logger.info('HinduAstrologyService initialized');
   }
 

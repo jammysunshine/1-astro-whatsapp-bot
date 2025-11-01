@@ -14,7 +14,7 @@ class NumerologyReportService extends ServiceTemplate {
   constructor() {
     super('NumerologyCalculator'); // Primary calculator for this service
     this.serviceName = 'NumerologyReportService';
-    this.calculatorPath = '../../../services/astrology/numerologyService';
+    this.calculatorPath = './calculators/numerologyService';
     logger.info('NumerologyReportService initialized');
   }
 

@@ -8,7 +8,7 @@ class TarotReadingService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
     this.calculatorPath = './calculators/ChartGenerator';
-    this.calculatorPath = '../../../services/astrology/tarotReader';
+    this.calculatorPath = './calculators/tarotReader';
   }
 
   /**

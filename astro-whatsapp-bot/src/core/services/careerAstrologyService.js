@@ -3,7 +3,7 @@ const logger = require('../../utils/logger');
 
 class CareerAstrologyService extends ServiceTemplate {
   constructor() {
-    super('CareerAstrologyService');
+    super('CareerAstrologyCalculator');
     this.calculatorPath =
       './calculators/CareerAstrologyCalculator';
   }

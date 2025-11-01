@@ -13,7 +13,6 @@ class AyurvedicAstrologyService extends ServiceTemplate {
     super('ChartGenerator');
     this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'AyurvedicAstrologyService';
-    this.calculatorPath = './calculators/AyurvedicAstrology'; // Assuming this path for the main calculator
     logger.info('AyurvedicAstrologyService initialized');
   }
 

@@ -12,8 +12,7 @@ class DailyHoroscopeService extends ServiceTemplate {
   constructor() {
     super('DailyHoroscopeCalculator'); // Primary calculator for this service
     this.serviceName = 'DailyHoroscopeService';
-    this.calculatorPath =
-      ../calculators/DailyHoroscopeCalculator';
+    this.calculatorPath = './calculators/DailyHoroscopeCalculator';
     logger.info('DailyHoroscopeService initialized');
   }
 

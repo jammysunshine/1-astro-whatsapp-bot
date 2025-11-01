@@ -11,7 +11,7 @@ class IslamicAstrologyService extends ServiceTemplate {
     super('ChartGenerator');
     this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'IslamicAstrologyService';
-    this.calculatorPath = '../../../services/astrology/islamicAstrology';
+    this.calculatorPath = './calculators/ChartGenerator';
     logger.info('IslamicAstrologyService initialized');
   }
 

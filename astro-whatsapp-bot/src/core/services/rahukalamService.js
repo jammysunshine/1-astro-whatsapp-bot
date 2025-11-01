@@ -11,8 +11,7 @@ const logger = require('../../utils/logger');
  */
 class RahukalamService extends ServiceTemplate {
   constructor() {
-    super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'RahukalamService';
+    this.serviceName = 'RahukalamService';
     this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
     logger.info('RahukalamService initialized');
   }
@@ -77,30 +76,9 @@ class RahukalamService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for Rahukalam analysis');
     }
-
-    if (!birthData.birthDate) {
-      throw new Error('Birth date is required for Rahukalam analysis');
-    }
-
-    if (!birthData.birthTime) {
-      throw new Error('Birth time is required for Rahukalam analysis');
-    }
-
-    if (!birthData.birthPlace) {
-      throw new Error('Birth place is required for Rahukalam analysis');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthData.birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthData.birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
+    const { BirthData } = require('../../models');
+    const validatedData = new BirthData(birthData);
+    validatedData.validate();
   }
 
   /**

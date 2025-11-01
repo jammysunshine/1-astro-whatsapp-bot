@@ -6,13 +6,13 @@ const { BirthData } = require('../../models');
 
 class VimshottariDashaService extends ServiceTemplate {
   constructor() {
-    super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'VimshottariDashaService';
+    super('DashaAnalysisCalculator');
+    this.serviceName = 'VimshottariDashaService';
     this.calculatorPath = '../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
     logger.info('VimshottariDashaService initialized');
   }
 
-  async lvimshottariDashaCalculation(birthData) {
+  async processCalculation(birthData) {
     try {
       // Validate input with model
       const validatedData = new BirthData(birthData);

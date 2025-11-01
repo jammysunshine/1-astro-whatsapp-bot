@@ -5,12 +5,13 @@ const logger = require('../../utils/logger');
 
 class SynastryAnalysisService extends ServiceTemplate {
   constructor() {
-    super('CompatibilityCalculator');
-    this.calculatorPath = '../calculators/CompatibilityCalculator';    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'SynastryAnalysisService';
+    super('SynastryEngine');
+    this.serviceName = 'SynastryAnalysisService';
+    this.calculatorPath = '../calculators/SynastryEngine';
     logger.info('SynastryAnalysisService initialized');
   }
 
-  async lsynastryAnalysisCalculation(chartData) {
+  async performSynastryAnalysis(chartData) {
     try {
       // Validate input
       this.validate(chartData);

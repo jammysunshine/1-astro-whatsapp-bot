@@ -6,7 +6,7 @@ const logger = require('../../../utils/logger');
 class MajorTransitsService extends ServiceTemplate {
   constructor() {
     super('SignificantTransitsCalculator');
-    this.serviceName = 'MajorTransitsService';
+    this.calculatorPath = '../calculators/SignificantTransitsCalculator';    this.serviceName = 'MajorTransitsService';
     logger.info('MajorTransitsService initialized');
   }
 

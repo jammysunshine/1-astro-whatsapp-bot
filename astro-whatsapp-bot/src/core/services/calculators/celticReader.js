@@ -86,4 +86,4 @@ class CelticReader {
   }
 }
 
-module.exports = new CelticReader();
+module.exports = CelticReader;

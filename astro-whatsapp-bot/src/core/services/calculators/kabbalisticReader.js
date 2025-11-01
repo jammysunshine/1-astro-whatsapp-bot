@@ -623,4 +623,4 @@ class KabbalisticReader {
   }
 }
 
-module.exports = new KabbalisticReader();
+module.exports = KabbalisticReader;

@@ -6,7 +6,7 @@ const logger = require('../../../utils/logger');
 class JaiminiDashasService extends ServiceTemplate {
   constructor() {
     super('JaiminiCalculator');
-    this.serviceName = 'JaiminiDashasService';
+    this.calculatorPath = '../calculators/JaiminiCalculator';    this.serviceName = 'JaiminiDashasService';
     logger.info('JaiminiDashasService initialized');
   }
 

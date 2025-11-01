@@ -11,7 +11,7 @@ const { BirthData } = require('../../models');
 class UpcomingDashasService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'UpcomingDashasService';
+    this.serviceName = 'UpcomingDashasService';
     this.calculatorPath = '../../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
     logger.info('UpcomingDashasService initialized');
   }
@@ -24,11 +24,6 @@ class UpcomingDashasService extends ServiceTemplate {
    */
   async processCalculation(birthData, options = {}) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(birthData);
 
       const periodsToShow = options.periods || 5;

@@ -757,4 +757,4 @@ class AstrocartographyReader {
   }
 }
 
-module.exports = new AstrocartographyReader();
+module.exports = AstrocartographyReader;

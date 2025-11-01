@@ -2,19 +2,20 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 const { BirthData } = require('../../models');
 
-// Import calculator from legacy structure (for now)
-
+/**
+ * BirthChartService - Service for generating Vedic astrology birth charts
+ * Implements the standard ServiceTemplate pattern with proper dependency injection
+ */
 class BirthChartService extends ServiceTemplate {
-  constructor() {
+  constructor(chartCalculator = require('../calculators/ChartGenerator')) {
     super('ChartGenerator');
-    this.serviceName = 'BirthChartService';
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = '../calculators/ChartGenerator';    this.calculator = new chartCalculator();
     logger.info('BirthChartService initialized');
   }
 
-  async lbirthChartCalculation(birthData) {
+  async calculateBirthChart(birthData) {
     try {
-      // Validate input with model
+      // Validate input with BirthData model (handles all validation)
       const validatedData = new BirthData(birthData);
       validatedData.validate();
 
@@ -33,28 +34,26 @@ class BirthChartService extends ServiceTemplate {
     }
   }
 
+  /**
+   * Format the birth chart result for consistent output
+   * @param {Object} result - Raw calculator result
+   * @returns {Object} Formatted result
+   */
   formatResult(result) {
+    if (result.error) {
+      return {
+        success: false,
+        error: result.error,
+        service: this.serviceName
+      };
+    }
+
     return {
       success: true,
       data: result,
       timestamp: new Date().toISOString(),
       service: this.serviceName
     };
-  }
-
-  validate(birthData) {
-    if (!birthData) {
-      throw new Error('Birth data is required');
-    }
-
-    const required = ['birthDate', 'birthTime', 'birthPlace'];
-    for (const field of required) {
-      if (!birthData[field]) {
-        throw new Error(`${field} is required for birth chart generation`);
-      }
-    }
-
-    return true;
   }
 
   getMetadata() {

@@ -24,11 +24,6 @@ class DetailedChartAnalysisService extends ServiceTemplate {
    */
   async processCalculation(birthData, options = {}) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(birthData);
 
       // Get detailed analysis from calculator

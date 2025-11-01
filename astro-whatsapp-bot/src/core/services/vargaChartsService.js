@@ -7,9 +7,11 @@
 
 const logger = require('../../../utils/logger');
 
-class VargaChartsService {
+class VargaChartsService extends ServiceTemplate {
   constructor() {
-    this.calculator = new VargaCharts();
+    super('VargaCharts');
+    this.serviceName = 'VargaChartsService';
+    this.calculatorPath = '../calculators/VargaCharts'; // Assuming this path for the main calculator
     logger.info('VargaChartsService initialized');
   }
 
@@ -19,7 +21,7 @@ class VargaChartsService {
    * @param {Array} vargas - Specific vargas to calculate (optional)
    * @returns {Promise<Object>} Complete divisional charts analysis
    */
-  async execute(birthData, vargas = null) {
+  async processCalculation(birthData, vargas = null) {
     try {
       this._validateInput(birthData);
 
@@ -81,7 +83,7 @@ class VargaChartsService {
    * @param {Object} input - Input data to validate
    * @private
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Birth data is required');
     }
@@ -105,7 +107,7 @@ class VargaChartsService {
    * @returns {Object} Formatted result
    * @private
    */
-  _formatResult(result) {
+  formatResult(result) {
     return {
       success: true,
       charts: result.charts,

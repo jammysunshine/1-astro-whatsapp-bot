@@ -9,7 +9,7 @@ const logger = require('../../../utils/logger');
 class PrashnaService extends ServiceTemplate {
   constructor(services) {
     super('PrashnaCalculator');
-
+    this.calculatorPath = '../calculators/PrashnaCalculator';
     // Initialize Prashna Calculator with required dependencies
     this.calculator = new PrashnaCalculator();
 

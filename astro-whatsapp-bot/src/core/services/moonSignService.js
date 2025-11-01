@@ -6,9 +6,9 @@ const logger = require('../../../utils/logger');
  */
 class MoonSignService extends ServiceTemplate {
   constructor() {
-    super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'MoonSignService';
-    this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
+    super('SignCalculator');
+    this.serviceName = 'MoonSignService';
+    this.calculatorPath = '../calculators/SignCalculator';
     logger.info('MoonSignService initialized');
   }
 

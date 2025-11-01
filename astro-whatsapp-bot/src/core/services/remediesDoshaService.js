@@ -8,9 +8,11 @@
 
 const logger = require('../../../utils/logger');
 
-class RemediesDoshaService {
+class RemediesDoshaService extends ServiceTemplate {
   constructor() {
-    this.remediesModule = vedicRemedies;
+    super('vedicRemedies');
+    this.serviceName = 'RemediesDoshaService';
+    this.calculatorPath = '../calculators/vedicRemedies'; // Assuming this path for the main calculator
     logger.info('RemediesDoshaService initialized');
   }
 
@@ -19,7 +21,7 @@ class RemediesDoshaService {
    * @param {Object} remediesData - Remedies request data
    * @returns {Promise<Object>} Complete remedies analysis
    */
-  async execute(remediesData) {
+  async processCalculation(remediesData) {
     try {
       // Input validation
       this._validateInput(remediesData);
@@ -774,7 +776,7 @@ class RemediesDoshaService {
    * @param {Object} input - Input data to validate
    * @private
    */
-  _validateInput(input) {
+  validate(input) {
     if (!input) {
       throw new Error('Input data is required');
     }
@@ -816,7 +818,7 @@ class RemediesDoshaService {
    * @returns {Object} Formatted result
    * @private
    */
-  _formatResult(result) {
+  formatResult(result) {
     if (!result) {
       return {
         success: false,

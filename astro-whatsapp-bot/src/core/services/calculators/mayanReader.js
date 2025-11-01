@@ -59,4 +59,4 @@ class MayanReader {
   }
 }
 
-module.exports = new MayanReader();
+module.exports = MayanReader;

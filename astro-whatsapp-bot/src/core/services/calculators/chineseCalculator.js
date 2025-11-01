@@ -398,4 +398,4 @@ class ChineseCalculator {
   }
 }
 
-module.exports = new ChineseCalculator();
+module.exports = ChineseCalculator;

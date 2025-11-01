@@ -11,7 +11,7 @@ const { BirthData } = require('../../models');
 class TransitPreviewService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'TransitPreviewService';
+    this.serviceName = 'TransitPreviewService';
     this.calculatorPath = '../../../services/astrology/vedic/calculators/TransitCalculator';
     logger.info('TransitPreviewService initialized');
   }
@@ -23,11 +23,6 @@ class TransitPreviewService extends ServiceTemplate {
    */
   async processCalculation(birthData) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(birthData);
 
       // Generate transit preview for next 30 days by default
@@ -82,11 +77,6 @@ class TransitPreviewService extends ServiceTemplate {
    */
   async getMonthlyTransitForecast(params) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(params.birthData);
 
       const { birthData, year, month, options = {} } = params;
@@ -124,11 +114,6 @@ class TransitPreviewService extends ServiceTemplate {
    */
   async getYearlyTransitForecast(params) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(params.birthData);
 
       const { birthData, year, options = {} } = params;
@@ -165,11 +150,6 @@ class TransitPreviewService extends ServiceTemplate {
    */
   async getWeeklyTransitPreview(params) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(params.birthData);
 
       const { birthData, startDate, options = {} } = params;
@@ -206,11 +186,6 @@ class TransitPreviewService extends ServiceTemplate {
    */
   async getDailyTransitHighlights(params) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(params.birthData);
 
       const { birthData, date, options = {} } = params;
@@ -247,11 +222,6 @@ class TransitPreviewService extends ServiceTemplate {
    */
   async getCriticalTransitDates(params) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(params.birthData);
 
       const { birthData, startDate, endDate, options = {} } = params;

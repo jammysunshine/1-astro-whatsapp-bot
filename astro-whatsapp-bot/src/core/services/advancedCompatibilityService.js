@@ -174,15 +174,17 @@ class AdvancedCompatibilityService extends ServiceTemplate {
       throw new Error('Both persons\' birth data are required for compatibility analysis');
     }
 
+    const { BirthData } = require('../../models');
+
     // Validate person1
-    if (!person1.birthDate || !person1.birthTime || !person1.birthPlace) {
-      throw new Error('Complete birth details (date, time, place) are required for person 1');
-    }
+    const validatedPerson1 = new BirthData(person1);
+    validatedPerson1.validate();
 
     // Validate person2
-    if (!person2.birthDate || !person2.birthTime || !person2.birthPlace) {
-      throw new Error('Complete birth details (date, time, place) are required for person 2');
-    }
+    const validatedPerson2 = new BirthData(person2);
+    validatedPerson2.validate();
+
+    return true;
   }
 
   /**

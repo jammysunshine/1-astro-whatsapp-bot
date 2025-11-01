@@ -795,4 +795,4 @@ class PalmistryReader {
   }
 }
 
-module.exports = new PalmistryReader();
+module.exports = PalmistryReader;

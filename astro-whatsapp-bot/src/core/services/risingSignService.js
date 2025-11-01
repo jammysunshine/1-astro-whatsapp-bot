@@ -11,7 +11,7 @@ const { validateCoordinates, validateDateTime } = require('../../../utils/valida
 class RisingSignService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'RisingSignService';
+    this.serviceName = 'RisingSignService';
     this.calculatorPath = '../../../services/astrology/vedic/calculators/SignCalculator';
     logger.info('RisingSignService initialized');
   }
@@ -24,11 +24,6 @@ class RisingSignService extends ServiceTemplate {
    */
   async processCalculation(birthData, options = {}) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(birthData);
 
       const { birthDate, birthTime, birthPlace } = birthData;
@@ -225,17 +220,9 @@ class RisingSignService extends ServiceTemplate {
     if (!input) {
       throw new Error('Birth data is required for Rising Sign analysis.');
     }
-    const { birthDate, birthTime, birthPlace } = input;
-
-    if (!birthDate || typeof birthDate !== 'string' || !birthDate.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
-      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
-    }
-    if (!birthTime || typeof birthTime !== 'string' || !birthTime.match(/^\d{1,2}:\d{1,2}$/)) {
-      throw new Error('Valid birth time (HH:MM format) is required');
-    }
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
+    const { BirthData } = require('../../models');
+    const validatedData = new BirthData(input);
+    validatedData.validate();
   }
 
   /**

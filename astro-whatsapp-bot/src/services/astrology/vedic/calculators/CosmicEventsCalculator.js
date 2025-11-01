@@ -169,7 +169,7 @@ class CosmicEventsCalculator {
 
               if (angle <= 6) { // Within orb
                 conjunctions.push({
-                  date: date.toISOString().split('T'[0],
+                  date: date.toISOString().split('T')[0],
                   planets: [p1, p2],
                   angle,
                   orb: angle,

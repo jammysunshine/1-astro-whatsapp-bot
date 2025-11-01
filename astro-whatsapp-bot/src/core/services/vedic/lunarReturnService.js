@@ -1,24 +1,24 @@
 const ServiceTemplate = require('../ServiceTemplate');
-const logger = require('../../utils/logger');
+const logger = require('../../../utils/logger');
 const { BirthData } = require('../../models');
-
-// Import calculator from legacy structure (for now)
 
 /**
  * LunarReturnService - Service for lunar return chart analysis
+ *
  * Provides monthly astrological themes and emotional cycles based on lunar return charts
  * using Swiss Ephemeris integration for precise lunar return calculations.
  */
 class LunarReturnService extends ServiceTemplate {
   constructor() {
-    super('lunarReturnService');
+    super('LunarReturnCalculator'); // Primary calculator for this service
     this.serviceName = 'LunarReturnService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/LunarReturnCalculator';
     logger.info('LunarReturnService initialized');
   }
 
   /**
-   * Validate input data for lunar return calculation
-   * @param {Object} data - Input data containing birthData and optional targetDate
+   * Validates input data for lunar return calculation.
+   * @param {Object} data - Input data containing birthData and optional targetDate.
    */
   validate(data) {
     if (!data) {
@@ -37,28 +37,40 @@ class LunarReturnService extends ServiceTemplate {
   }
 
   /**
-   * Process lunar return calculation using the calculator
-   * @param {Object} data - Input data with birthData and optional targetDate
-   * @returns {Promise<Object>} Raw lunar return result
+   * Main calculation method for Lunar Return.
+   * @param {Object} data - Input data with birthData and optional targetDate.
+   * @returns {Promise<Object>} Raw lunar return result.
    */
-  async llunarReturnCalculation(data) {
-    const { birthData, targetDate = null } = data;
+  async processCalculation(data) {
+    try {
+      // Ensure calculator is loaded
+      if (!this.calculator) {
+        await this.initialize();
+      }
 
-    // Get lunar return data from calculator
-    const result = await this.calculator.calculateLunarReturn(birthData, targetDate);
+      this.validate(data);
 
-    // Add metadata
-    result.type = 'lunar_return';
-    result.generatedAt = new Date().toISOString();
-    result.service = this.serviceName;
+      const { birthData, targetDate = null } = data;
 
-    return result;
+      // Get lunar return data from calculator
+      const result = await this.calculator.calculateLunarReturn(birthData, targetDate);
+
+      // Add metadata
+      result.type = 'lunar_return';
+      result.generatedAt = new Date().toISOString();
+      result.service = this.serviceName;
+
+      return result;
+    } catch (error) {
+      logger.error('LunarReturnService processCalculation error:', error);
+      throw new Error(`Lunar return calculation failed: ${error.message}`);
+    }
   }
 
   /**
-   * Format the lunar return result for consistent output
-   * @param {Object} result - Raw calculator result
-   * @returns {Object} Formatted lunar return result
+   * Formats the lunar return result for consistent output.
+   * @param {Object} result - Raw calculator result.
+   * @returns {Object} Formatted lunar return result.
    */
   formatResult(result) {
     if (result.error) {
@@ -73,15 +85,19 @@ class LunarReturnService extends ServiceTemplate {
     return {
       success: true,
       data: result,
-      timestamp: new Date().toISOString(),
-      service: this.serviceName
+      summary: result.summary || 'Lunar return analysis completed',
+      metadata: {
+        serviceName: this.serviceName,
+        calculationType: 'Lunar Return',
+        timestamp: new Date().toISOString()
+      }
     };
   }
 
   /**
-   * Get next lunar return (convenience method)
-   * @param {Object} birthData - Birth data
-   * @returns {Promise<Object>} Next lunar return analysis
+   * Gets the next lunar return (convenience method).
+   * @param {Object} birthData - Birth data.
+   * @returns {Promise<Object>} Next lunar return analysis.
    */
   async getNextLunarReturn(birthData) {
     try {
@@ -96,13 +112,12 @@ class LunarReturnService extends ServiceTemplate {
   }
 
   /**
-   * Get current month lunar return
-   * @param {Object} birthData - Birth data
-   * @returns {Promise<Object>} Current month lunar return
+   * Gets current month lunar return.
+   * @param {Object} birthData - Birth data.
+   * @returns {Promise<Object>} Current month lunar return.
    */
   async getCurrentMonthLunarReturn(birthData) {
     try {
-      // Calculate lunar return for the current month
       const now = new Date();
       return await this.execute({ birthData, targetDate: now });
     } catch (error) {
@@ -115,19 +130,17 @@ class LunarReturnService extends ServiceTemplate {
   }
 
   /**
-   * Get lunar return for specific month
-   * @param {Object} birthData - Birth data
-   * @param {number} year - Year
-   * @param {number} month - Month (1-12)
-   * @returns {Promise<Object>} Lunar return for specific month
+   * Gets lunar return for specific month.
+   * @param {Object} birthData - Birth data.
+   * @param {number} year - Year.
+   * @param {number} month - Month (1-12).
+   * @returns {Promise<Object>} Lunar return for specific month.
    */
   async getLunarReturnForMonth(birthData, year, month) {
     try {
       if (!year || !month || month < 1 || month > 12) {
         throw new Error('Valid year and month (1-12) are required');
       }
-
-      // Create date for the specified month
       const targetDate = new Date(year, month - 1, 15); // Mid-month for calculation
       return await this.execute({ birthData, targetDate });
     } catch (error) {
@@ -140,19 +153,17 @@ class LunarReturnService extends ServiceTemplate {
   }
 
   /**
-   * Get lunar cycle themes and emotional patterns
-   * @param {Object} birthData - Birth data
-   * @param {Date|string} targetDate - Target date
-   * @returns {Promise<Object>} Lunar cycle themes and patterns
+   * Gets lunar cycle themes and emotional patterns.
+   * @param {Object} birthData - Birth data.
+   * @param {Date|string} targetDate - Target date.
+   * @returns {Promise<Object>} Lunar cycle themes and patterns.
    */
   async getLunarCycleThemes(birthData, targetDate = null) {
     try {
       const result = await this.execute({ birthData, targetDate });
-
       if (!result.success) {
         return result;
       }
-
       const lunarReturn = result.data;
       const themes = this._extractLunarThemes(lunarReturn);
       const emotionalPatterns = this._analyzeEmotionalPatterns(lunarReturn);
@@ -176,187 +187,12 @@ class LunarReturnService extends ServiceTemplate {
   }
 
   /**
-   * Compare lunar returns between months
-   * @param {Object} birthData - Birth data
-   * @param {Date} date1 - First date
-   * @param {Date} date2 - Second date
-   * @returns {Promise<Object>} Lunar return comparison
-   */
-  async compareLunarReturns(birthData, date1, date2) {
-    try {
-      const result1 = await this.execute({ birthData, targetDate: date1 });
-      const result2 = await this.execute({ birthData, targetDate: date2 });
-
-      if (!result1.success || !result2.success) {
-        return {
-          success: false,
-          error: 'Failed to calculate one or both lunar returns'
-        };
-      }
-
-      const comparison = this._compareLunarReturns(result1.data, result2.data, date1, date2);
-
-      return {
-        success: true,
-        comparison,
-        lunarReturn1: { date: date1, analysis: result1.data },
-        lunarReturn2: { date: date2, analysis: result2.data }
-      };
-    } catch (error) {
-      logger.error('LunarReturnService compareLunarReturns error:', error);
-      return {
-        success: false,
-        error: 'Error comparing lunar returns'
-      };
-    }
-  }
-
-  /**
-   * Get service metadata
-   * @returns {Object} Service metadata
-   */
-  getMetadata() {
-    return {
-      ...super.getMetadata(),
-      name: 'LunarReturnService',
-      category: 'vedic',
-      description: 'Service for lunar return chart analysis and monthly emotional cycles',
-      version: '1.0.0',
-      status: 'active'
-    };
-  }
-
-  /**
-   * Extract lunar themes from lunar return
-   * @param {Object} lunarReturn - Lunar return analysis
-   * @returns {Array} Key lunar themes
-   * @private
-   */
-  _extractLunarThemes(lunarReturn) {
-    const themes = [];
-
-    // Analyze moon phase and sign
-    if (lunarReturn.lunarPhase) {
-      themes.push({
-        type: 'lunar_phase',
-        phase: lunarReturn.lunarPhase,
-        theme: this._getLunarPhaseTheme(lunarReturn.lunarPhase)
-      });
-    }
-
-    // Analyze planetary placements
-    if (lunarReturn.planetaryPositions) {
-      Object.entries(lunarReturn.planetaryPositions).forEach(([planet, position]) => {
-        if (planet === 'Moon' && position) {
-          themes.push({
-            type: 'moon_sign',
-            sign: position.sign,
-            theme: this._getMoonSignTheme(position.sign)
-          });
-        }
-      });
-    }
-
-    // Analyze house placements
-    if (lunarReturn.planetaryPositions) {
-      Object.entries(lunarReturn.planetaryPositions).forEach(([planet, position]) => {
-        if (position && position.house) {
-          themes.push({
-            type: 'planetary_house',
-            planet,
-            house: position.house,
-            theme: `${planet} in ${this._getHouseArea(position.house)}`
-          });
-        }
-      });
-    }
-
-    return themes.slice(0, 6); // Limit to most significant themes
-  }
-
-  /**
-   * Analyze emotional patterns
-   * @param {Object} lunarReturn - Lunar return analysis
-   * @returns {Object} Emotional patterns
-   * @private
-   */
-  _analyzeEmotionalPatterns(lunarReturn) {
-    const patterns = {
-      emotionalTone: 'Balanced',
-      sensitivity: 'Moderate',
-      intuition: 'Present',
-      mood: 'Stable',
-      relationships: 'Harmonious'
-    };
-
-    // Analyze based on moon sign and aspects
-    if (lunarReturn.planetaryPositions?.Moon?.sign) {
-      const moonSign = lunarReturn.planetaryPositions.Moon.sign;
-      patterns.emotionalTone = this._getEmotionalTone(moonSign);
-      patterns.sensitivity = this._getSensitivityLevel(moonSign);
-    }
-
-    // Analyze aspects to moon
-    if (lunarReturn.aspects) {
-      const moonAspects = lunarReturn.aspects.filter(aspect =>
-        aspect.transitingPlanet === 'Moon' || aspect.natalPlanet === 'Moon'
-      );
-
-      if (moonAspects.length > 0) {
-        patterns.intuition = 'Heightened';
-        patterns.mood = 'Dynamic';
-      }
-    }
-
-    return patterns;
-  }
-
-  /**
-   * Determine monthly focus
-   * @param {Object} lunarReturn - Lunar return analysis
-   * @returns {Object} Monthly focus areas
-   * @private
-   */
-  _determineMonthlyFocus(lunarReturn) {
-    const focus = {
-      primary: 'Personal growth',
-      secondary: 'Relationships',
-      areas: []
-    };
-
-    // Determine based on house emphasis
-    const houseCounts = {};
-    if (lunarReturn.planetaryPositions) {
-      Object.values(lunarReturn.planetaryPositions).forEach(pos => {
-        if (pos && pos.house) {
-          houseCounts[pos.house] = (houseCounts[pos.house] || 0) + 1;
-        }
-      });
-    }
-
-    const maxHouse = Object.entries(houseCounts).sort((a, b) => b[1] - a[1])[0];
-    if (maxHouse) {
-      focus.primary = this._getHouseFocus(parseInt(maxHouse[0]));
-      focus.areas.push(focus.primary);
-    }
-
-    // Add secondary focus
-    const secondMaxHouse = Object.entries(houseCounts).sort((a, b) => b[1] - a[1])[1];
-    if (secondMaxHouse) {
-      focus.secondary = this._getHouseFocus(parseInt(secondMaxHouse[0]));
-      focus.areas.push(focus.secondary);
-    }
-
-    return focus;
-  }
-
-  /**
-   * Compare two lunar returns
-   * @param {Object} return1 - First lunar return
-   * @param {Object} return2 - Second lunar return
-   * @param {Date} date1 - Date of first return
-   * @param {Date} date2 - Date of second return
-   * @returns {Object} Comparison analysis
+   * Compares two lunar returns.
+   * @param {Object} return1 - First lunar return.
+   * @param {Object} return2 - Second lunar return.
+   * @param {Date} date1 - Date of first return.
+   * @param {Date} date2 - Date of second return.
+   * @returns {Object} Comparison analysis.
    * @private
    */
   _compareLunarReturns(return1, return2, date1, date2) {
@@ -366,16 +202,12 @@ class LunarReturnService extends ServiceTemplate {
       planetaryChanges: {},
       themeEvolution: []
     };
-
-    // Compare moon signs
     const moon1 = return1.planetaryPositions?.Moon?.sign;
     const moon2 = return2.planetaryPositions?.Moon?.sign;
 
     if (moon1 && moon2 && moon1 !== moon2) {
       comparison.emotionalShift = `From ${this._getEmotionalTone(moon1)} to ${this._getEmotionalTone(moon2)}`;
     }
-
-    // Compare house placements
     const houseChanges = {};
     if (return1.planetaryPositions && return2.planetaryPositions) {
       Object.keys(return1.planetaryPositions).forEach(planet => {
@@ -391,13 +223,11 @@ class LunarReturnService extends ServiceTemplate {
         }
       });
     }
-
     comparison.planetaryChanges = houseChanges;
-
     return comparison;
   }
 
-  // Helper methods
+  // Helper methods for interpretations
   _getLunarPhaseTheme(phase) {
     const themes = {
       'New Moon': 'New beginnings and setting intentions',
@@ -432,17 +262,9 @@ class LunarReturnService extends ServiceTemplate {
 
   _getHouseArea(house) {
     const areas = {
-      1: 'personal identity',
-      2: 'financial security',
-      4: 'home and family',
-      5: 'creativity and children',
-      6: 'health and service',
-      7: 'partnerships',
-      8: 'transformation',
-      9: 'learning and travel',
-      10: 'career and reputation',
-      11: 'community and friends',
-      12: 'spirituality and inner life'
+      1: 'personal identity', 2: 'financial security', 4: 'home and family', 5: 'creativity and children',
+      6: 'health and service', 7: 'partnerships', 8: 'transformation', 9: 'learning and travel',
+      10: 'career and reputation', 11: 'community and friends', 12: 'spirituality and inner life'
     };
     return areas[house] || 'general life area';
   }
@@ -469,39 +291,58 @@ class LunarReturnService extends ServiceTemplate {
 
   _getHouseFocus(house) {
     const focuses = {
-      1: 'Self-development and personal goals',
-      2: 'Financial planning and material security',
-      4: 'Family and home life',
-      5: 'Creativity and self-expression',
-      6: 'Health and daily routines',
-      7: 'Relationships and partnerships',
-      8: 'Personal transformation and growth',
-      9: 'Learning and expansion',
-      10: 'Career and professional life',
-      11: 'Community and social connections',
-      12: 'Spiritual development and inner work'
+      1: 'Self-development and personal goals', 2: 'Financial planning and material security',
+      4: 'Family and home life', 5: 'Creativity and self-expression', 6: 'Health and daily routines',
+      7: 'Relationships and partnerships', 8: 'Personal transformation and growth', 9: 'Learning and expansion',
+      10: 'Career and professional life', 11: 'Community and social connections', 12: 'Spiritual development and inner work'
     };
     return focuses[house] || 'Personal development';
   }
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          // Add service-specific features here
-        },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
+
+  /**
+   * Returns metadata for the service.
+   * @returns {Object} Service metadata.
+   */
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['processCalculation', 'getNextLunarReturn', 'getCurrentMonthLunarReturn', 'getLunarReturnForMonth', 'getLunarCycleThemes', 'compareLunarReturns'],
+      dependencies: [], // Managed by ServiceTemplate
+      description: 'Service for lunar return chart analysis and monthly emotional cycles.'
+    };
+  }
+
+  /**
+   * Returns help information for the service.
+   * @returns {string} Help text.
+   */
+  getHelp() {
+    return `
+🌙 **Lunar Return Service - Monthly Astrological Themes**
+
+**Purpose:** Provides monthly astrological themes and emotional cycles based on lunar return charts, using Swiss Ephemeris for precise calculations.
+
+**Required Inputs:**
+• Birth data (Object with birthDate, birthTime, birthPlace)
+• Optional: Target date (Date object or ISO string, defaults to current month for some methods)
+
+**Analysis Includes:**
+• **Lunar Return Chart:** A chart cast for the moment the Moon returns to its natal position each month.
+• **Emotional Themes:** Insights into your emotional state, needs, and patterns for the month.
+• **Life Focus Areas:** Identification of key areas of life that will be emphasized.
+• **Planetary Influences:** How other planets interact with the lunar return chart.
+• **Recommendations:** Guidance for navigating the month's emotional and energetic landscape.
+
+**Example Usage:**
+"Get my next lunar return analysis."
+"What are the lunar cycle themes for this month based on my birth data?"
+"Compare my lunar returns for January and February."
+
+**Output Format:**
+Comprehensive report with lunar return chart details, emotional analysis, and monthly guidance.
+    `.trim();
   }
 }
 

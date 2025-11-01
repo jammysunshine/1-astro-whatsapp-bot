@@ -1,7 +1,9 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
-// Import divination calculators from legacy structure (for now)
+// Import divination calculators from legacy structure
+const TarotReader = require('../../../services/astrology/tarotReader');
+const { IChingReader } = require('../../../services/astrology/ichingReader');
 
 /**
  * DivinationService - Service for various divination methods
@@ -13,7 +15,7 @@ class DivinationService extends ServiceTemplate {
     super(); // No single calculator for divination service
     this.serviceName = 'DivinationService';
     this.tarotReader = TarotReader; // Already instantiated
-    this.ichingReader = IChingReader.IChingReader; // Get the class from export
+    this.ichingReader = new IChingReader(); // Instantiate the class
     logger.info('DivinationService initialized');
   }
 

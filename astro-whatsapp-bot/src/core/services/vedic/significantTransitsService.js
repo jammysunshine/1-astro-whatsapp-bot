@@ -3,30 +3,30 @@ const logger = require('../../../utils/logger');
 const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
 
 /**
- * SignificantTransitsService - Service for identifying and analyzing major planetary transits
+ * GocharService - Service for planetary transit analysis (Gochar)
  *
- * Provides analysis of major planetary transits, retrograde effects, planetary returns,
- * and eclipse transits, offering insights into their impacts and timing.
+ * Implements planetary transit analysis for predictive astrology, examining current planetary
+ * positions relative to natal charts and their effects on different life areas.
  */
-class SignificantTransitsService extends ServiceTemplate {
+class GocharService extends ServiceTemplate {
   constructor() {
     super('VedicCalculator'); // Primary calculator for this service
-    this.serviceName = 'SignificantTransitsService';
+    this.serviceName = 'GocharService';
     this.calculatorPath = '../../../services/astrology/vedic/calculators/VedicCalculator';
-    logger.info('SignificantTransitsService initialized');
+    logger.info('GocharService initialized');
   }
 
   /**
-   * Main calculation method for Significant Transits.
-   * Orchestrates the calculation of various transit-related analyses.
-   * @param {Object} userData - User's birth data and analysis parameters.
-   * @param {string} userData.datetime - Birth datetime (ISO string).
-   * @param {number} userData.latitude - Birth latitude.
-   * @param {number} userData.longitude - Birth longitude.
-   * @param {string} [userData.startDate] - Start date for transit analysis (ISO string, defaults to now).
-   * @param {string} [userData.endDate] - End date for transit analysis (ISO string, defaults to 1 year from startDate).
+   * Main calculation method for Gochar (planetary transit) analysis.
+   * @param {Object} userData - User's birth data and current transit parameters.
+   * @param {string} userData.datetime - Current datetime for transit chart (ISO string).
+   * @param {number} userData.latitude - Current latitude.
+   * @param {number} userData.longitude - Current longitude.
+   * @param {string} userData.birthDatetime - User's birth datetime (ISO string).
+   * @param {number} userData.birthLatitude - User's birth latitude.
+   * @param {number} userData.birthLongitude - User's birth longitude.
    * @param {Object} [options] - Additional options for calculation.
-   * @returns {Promise<Object>} Comprehensive transit analysis.
+   * @returns {Promise<Object>} Comprehensive Gochar analysis.
    */
   async processCalculation(userData, options = {}) {
     try {
@@ -37,168 +37,114 @@ class SignificantTransitsService extends ServiceTemplate {
 
       this._validateInput(userData);
 
-      let {
-        datetime,
-        latitude,
-        longitude,
-        startDate,
-        endDate
-      } = userData;
+      const { datetime, latitude, longitude, birthDatetime, birthLatitude, birthLongitude } = userData;
 
-      if (!startDate) {
-        startDate = new Date().toISOString();
-      }
-      if (!endDate) {
-        const end = new Date(startDate);
-        end.setMonth(end.getMonth() + 12); // Default 1 year
-        endDate = end.toISOString();
-      }
+      const transitChart = await this._getCurrentTransits(datetime, latitude, longitude);
+      const natalChart = await this._getNatalChart(birthDatetime, birthLatitude, birthLongitude);
 
-      const significantTransits = await this._calculateSignificantTransits(
-        datetime,
-        latitude,
-        longitude,
-        startDate,
-        endDate
-      );
-
-      const retrogradeEffects = this._calculateRetrogradeEffects(
-        startDate,
-        endDate,
-        latitude,
-        longitude
-      );
-
-      const planetaryReturns = await this._calculatePlanetaryReturns(
-        datetime,
-        latitude,
-        longitude,
-        startDate,
-        endDate
-      );
-
-      const eclipseTransits = this._calculateEclipseTransits(
-        startDate,
-        endDate,
-        latitude,
-        longitude
-      );
+      const transitAspects = this._calculateTransitAspects(transitChart, natalChart);
+      const houseTransits = this._calculateHouseTransits(transitChart, natalChart);
+      const retrogradeEffects = this._calculateRetrogradeEffects(transitChart);
+      const majorPeriods = this._calculateMajorTransitPeriods(transitChart, natalChart);
 
       const analysis = {
-        startDate,
-        endDate,
-        significantTransits,
+        transitAspects,
+        houseTransits,
         retrogradeEffects,
-        planetaryReturns,
-        eclipseTransits,
+        majorPeriods,
         interpretations: this._generateInterpretations({
-          significantTransits,
+          transitAspects,
+          houseTransits,
           retrogradeEffects,
-          planetaryReturns,
-          eclipseTransits
+          majorPeriods
         })
       };
 
       return analysis;
 
     } catch (error) {
-      logger.error('SignificantTransitsService processCalculation error:', error);
-      throw new Error(`Significant transits calculation failed: ${error.message}`);
+      logger.error('GocharService processCalculation error:', error);
+      throw new Error(`Gochar calculation failed: ${error.message}`);
     }
   }
 
   /**
-   * Validates input data for transit analysis.
+   * Validates input data for Gochar analysis.
    * @param {Object} userData - User data to validate.
    * @private
    */
   _validateInput(userData) {
     if (!userData) {
-      throw new Error('User data is required for Significant Transits analysis.');
+      throw new Error('User data is required for Gochar analysis.');
     }
-    const { datetime, latitude, longitude } = userData;
+    const { datetime, latitude, longitude, birthDatetime, birthLatitude, birthLongitude } = userData;
     validateDateTime(datetime);
     validateCoordinates(latitude, longitude);
+    validateDateTime(birthDatetime);
+    validateCoordinates(birthLatitude, birthLongitude);
   }
 
   /**
-   * Calculates significant transits for a given date range.
-   * @param {string} birthDatetime - User's birth datetime.
-   * @param {number} birthLatitude - User's birth latitude.
-   * @param {number} birthLongitude - User's birth longitude.
-   * @param {string} startDate - Start date for analysis.
-   * @param {string} endDate - End date for analysis.
-   * @returns {Promise<Object>} Object containing birth chart and transits.
+   * Calculates current planetary positions.
+   * @param {string} datetime - Current datetime.
+   * @param {number} latitude - Current latitude.
+   * @param {number} longitude - Current longitude.
+   * @returns {Promise<Object>} Current transit chart.
    * @private
    */
-  async _calculateSignificantTransits(birthDatetime, birthLatitude, birthLongitude, startDate, endDate) {
-    const birthChart = await this.calculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
-
-    const transits = [];
-    const currentDate = new Date(startDate);
-    const end = new Date(endDate);
-
-    while (currentDate <= end) {
-      const currentChart = await this.calculator.calculateChart(
-        currentDate.toISOString(),
-        birthLatitude,
-        birthLongitude
-      );
-
-      const dayTransits = this._calculateDailyTransits(currentChart, birthChart, currentDate);
-      transits.push(...dayTransits);
-
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-
-    return {
-      birthChart,
-      transits: this._filterSignificantTransits(transits),
-      startDate,
-      endDate
-    };
+  async _getCurrentTransits(datetime, latitude, longitude) {
+    return await this.calculator.calculateChart(datetime, latitude, longitude);
   }
 
   /**
-   * Calculates daily transits between current and natal charts.
-   * @param {Object} currentChart - Chart for the current date.
-   * @param {Object} birthChart - User's natal chart.
-   * @param {Date} date - Current date.
-   * @returns {Array<Object>} List of daily transits.
+   * Calculates natal chart positions.
+   * @param {string} birthDatetime - Birth datetime.
+   * @param {number} birthLatitude - Birth latitude.
+   * @param {number} birthLongitude - Birth longitude.
+   * @returns {Promise<Object>} Natal chart.
    * @private
    */
-  _calculateDailyTransits(currentChart, birthChart, date) {
-    const transits = [];
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+  async _getNatalChart(birthDatetime, birthLatitude, birthLongitude) {
+    return await this.calculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
+  }
+
+  /**
+   * Calculates transit aspects to natal positions.
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Array<Object>} List of transit aspects.
+   * @private
+   */
+  _calculateTransitAspects(transitChart, natalChart) {
+    const aspects = [];
+    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
 
     for (const transitPlanet of planets) {
-      const transitLong = currentChart[transitPlanet.toLowerCase()];
+      const transitLong = transitChart[transitPlanet.toLowerCase()];
 
       for (const natalPlanet of planets) {
-        const natalLong = birthChart[natalPlanet.toLowerCase()];
+        const natalLong = natalChart[natalPlanet.toLowerCase()];
         const aspect = this._calculateAspect(transitLong, natalLong);
 
-        if (aspect.aspect !== 'none' && aspect.orb <= 3) {
-          transits.push({
-            date: date.toISOString(),
+        if (aspect.aspect !== 'none') {
+          aspects.push({
             transitPlanet,
             natalPlanet,
             aspect: aspect.aspect,
             orb: aspect.orb,
             strength: aspect.strength,
-            type: this._getTransitType(transitPlanet, natalPlanet, aspect.aspect),
-            significance: this._calculateTransitSignificance(transitPlanet, natalPlanet, aspect)
+            type: this._getAspectType(transitPlanet, natalPlanet, aspect.aspect)
           });
         }
       }
     }
-    return transits;
+    return aspects;
   }
 
   /**
-   * Calculates the aspect between two longitudes.
-   * @param {number} long1 - Longitude of the first planet.
-   * @param {number} long2 - Longitude of the second planet.
+   * Calculates aspect between two longitudes.
+   * @param {number} long1 - Longitude of first planet.
+   * @param {number} long2 - Longitude of second planet.
    * @returns {Object} Aspect details.
    * @private
    */
@@ -207,11 +153,11 @@ class SignificantTransitsService extends ServiceTemplate {
     const normalizedDiff = diff > 180 ? 360 - diff : diff;
 
     const aspects = [
-      { type: 'conjunction', angle: 0, orb: 3 },
-      { type: 'opposition', angle: 180, orb: 3 },
-      { type: 'trine', angle: 120, orb: 3 },
-      { type: 'square', angle: 90, orb: 3 },
-      { type: 'sextile', angle: 60, orb: 2 }
+      { type: 'conjunction', angle: 0, orb: 8 },
+      { type: 'opposition', angle: 180, orb: 8 },
+      { type: 'trine', angle: 120, orb: 8 },
+      { type: 'square', angle: 90, orb: 8 },
+      { type: 'sextile', angle: 60, orb: 6 }
     ];
 
     for (const aspect of aspects) {
@@ -228,366 +174,340 @@ class SignificantTransitsService extends ServiceTemplate {
   }
 
   /**
-   * Determines the type of transit (e.g., opportunity, challenge).
-   * @param {string} transitPlanet - Name of the transiting planet.
-   * @param {string} natalPlanet - Name of the natal planet.
-   * @param {string} aspect - Type of aspect.
-   * @returns {string} Transit type.
+   * Gets aspect type interpretation.
+   * @param {string} transitPlanet - Transiting planet.
+   * @param {string} natalPlanet - Natal planet.
+   * @param {string} aspect - Aspect type.
+   * @returns {string} Interpretation.
    * @private
    */
-  _getTransitType(transitPlanet, natalPlanet, aspect) {
+  _getAspectType(transitPlanet, natalPlanet, aspect) {
     const benefic = ['Jupiter', 'Venus', 'Mercury'];
-    const malefic = ['Mars', 'Saturn', 'Rahu', 'Ketu'];
+    // const malefic = ['Mars', 'Saturn', 'Rahu', 'Ketu']; // Not used in current logic
 
     const isTransitBenefic = benefic.includes(transitPlanet);
     // const isNatalBenefic = benefic.includes(natalPlanet); // Not used in current logic
 
     const aspectTypes = {
-      conjunction: isTransitBenefic ? 'opportunity' : 'challenge',
-      trine: 'support',
-      sextile: 'assistance',
-      square: 'activation',
-      opposition: 'awareness'
+      conjunction: isTransitBenefic ? 'benefic' : 'malefic',
+      trine: 'benefic',
+      sextile: 'benefic',
+      square: 'malefic',
+      opposition: 'challenging'
     };
     return aspectTypes[aspect] || 'neutral';
   }
 
   /**
-   * Calculates the significance of a transit.
-   * @param {string} transitPlanet - Name of the transiting planet.
-   * @param {string} natalPlanet - Name of the natal planet.
-   * @param {Object} aspect - Aspect details.
-   * @returns {number} Significance score.
+   * Calculates house transits.
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Array<Object>} List of house transits.
    * @private
    */
-  _calculateTransitSignificance(transitPlanet, natalPlanet, aspect) {
-    let significance = 0;
+  _calculateHouseTransits(transitChart, natalChart) {
+    const houseTransits = [];
+    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+    const natalAscendant = natalChart.ascendant;
 
-    const planetWeights = {
-      Sun: 10, Moon: 9, Mars: 8, Mercury: 7, Jupiter: 10, Venus: 8, Saturn: 10
-    };
-    const aspectWeights = {
-      conjunction: 10, opposition: 9, trine: 7, square: 8, sextile: 5
-    };
+    for (const planet of planets) {
+      const transitLong = transitChart[planet.toLowerCase()];
+      const transitHouse = this._getLongitudeHouse(transitLong, natalAscendant);
 
-    significance = (planetWeights[transitPlanet] || 5) +
-                   (planetWeights[natalPlanet] || 5) +
-                   (aspectWeights[aspect.aspect] || 3);
-
-    if (['Jupiter', 'Saturn'].includes(transitPlanet)) {
-      significance += 5;
+      houseTransits.push({
+        planet,
+        house: transitHouse,
+        sign: this._getLongitudeSign(transitLong),
+        effects: this._getHouseTransitEffects(planet, transitHouse)
+      });
     }
-    if (['Sun', 'Moon', 'Mercury', 'Venus', 'Mars'].includes(transitPlanet) &&
-        ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars'].includes(natalPlanet)) {
-      significance += 3;
-    }
-    return significance;
+    return houseTransits;
   }
 
   /**
-   * Filters and groups significant transits.
-   * @param {Array<Object>} transits - List of raw transits.
-   * @returns {Array<Object>} Filtered and grouped transits.
+   * Gets house from longitude based on natal ascendant.
+   * @param {number} longitude - Planet longitude.
+   * @param {number} ascendant - Natal ascendant longitude.
+   * @returns {number} House number.
    * @private
    */
-  _filterSignificantTransits(transits) {
-    const sortedTransits = transits.sort((a, b) => {
-      if (b.significance !== a.significance) {
-        return b.significance - a.significance;
+  _getLongitudeHouse(longitude, ascendant) {
+    const normalizedLong = longitude >= ascendant ? longitude - ascendant : longitude + 360 - ascendant;
+    return Math.floor(normalizedLong / 30) + 1;
+  }
+
+  /**
+   * Gets sign from longitude.
+   * @param {number} longitude - Planet longitude.
+   * @returns {string} Zodiac sign.
+   * @private
+   */
+  _getLongitudeSign(longitude) {
+    const signs = [
+      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+    ];
+    return signs[Math.floor(longitude / 30) % 12];
+  }
+
+  /**
+   * Gets house transit effects.
+   * @param {string} planet - Planet name.
+   * @param {number} house - House number.
+   * @returns {string} Effects description.
+   * @private
+   */
+  _getHouseTransitEffects(planet, house) {
+    const effects = {
+      1: {
+        Sun: 'New beginnings, self-focus, leadership opportunities',
+        Moon: 'Emotional changes, domestic focus, intuition heightened',
+        Mars: 'Energy boost, initiative, potential conflicts',
+        Mercury: 'Communication focus, learning, mental activity',
+        Jupiter: 'Growth opportunities, optimism, expansion',
+        Venus: 'Pleasure, relationships, aesthetic enjoyment',
+        Saturn: 'Responsibilities, discipline, life lessons',
+        Rahu: 'Unconventional approaches, desires, obsession',
+        Ketu: 'Spiritual focus, detachment, past connections'
+      },
+      2: {
+        Sun: 'Financial focus, values clarification, self-worth',
+        Moon: 'Emotional security, family finances, comfort needs',
+        Mars: 'Financial action, impulsive spending, conflicts over values',
+        Mercury: 'Financial planning, communication about money',
+        Jupiter: 'Financial growth, opportunities, abundance',
+        Venus: 'Financial pleasure, luxury acquisition, relationship values',
+        Saturn: 'Financial discipline, long-term planning, restrictions',
+        Rahu: 'Unusual financial opportunities, speculation',
+        Ketu: 'Financial detachment, spiritual values, loss and gain'
+      },
+      3: {
+        Sun: 'Communication focus, learning, sibling interactions',
+        Moon: 'Emotional communication, short trips, mental activity',
+        Mars: 'Assertive communication, debates, travel',
+        Mercury: 'Mental stimulation, writing, teaching',
+        Jupiter: 'Learning expansion, optimistic communication',
+        Venus: 'Harmonious communication, social connections',
+        Saturn: 'Serious communication, learning challenges',
+        Rahu: 'Unusual communication, technology, networking',
+        Ketu: 'Spiritual communication, intuitive insights'
+      },
+      4: {
+        Sun: 'Home focus, family matters, property',
+        Moon: 'Emotional security, domestic harmony, nurturing',
+        Mars: 'Home renovations, family conflicts, energy at home',
+        Mercury: 'Home communication, property matters',
+        Jupiter: 'Home expansion, family growth, property opportunities',
+        Venus: 'Home beautification, family harmony',
+        Saturn: 'Home responsibilities, property restrictions',
+        Rahu: 'Unusual home situations, relocation',
+        Ketu: 'Spiritual home life, ancestral connections'
+      },
+      5: {
+        Sun: 'Creative expression, romance, children',
+        Moon: 'Emotional creativity, romantic feelings',
+        Mars: 'Creative energy, romantic passion, competitive activities',
+        Mercury: 'Creative communication, intellectual pursuits',
+        Jupiter: 'Creative expansion, romance, children's growth',
+        Venus: 'Romance, artistic expression, pleasure',
+        Saturn: 'Creative discipline, romantic challenges',
+        Rahu: 'Unusual romance, unconventional creativity',
+        Ketu: 'Spiritual creativity, detachment from romance'
+      },
+      6: {
+        Sun: 'Health focus, work routines, service',
+        Moon: 'Emotional health, daily routines, service to others',
+        Mars: 'Physical energy, work conflicts, health issues',
+        Mercury: 'Work communication, health analysis',
+        Jupiter: 'Work expansion, health improvement, service opportunities',
+        Venus: 'Work harmony, pleasant routines',
+        Saturn: 'Work discipline, health challenges, responsibility',
+        Rahu: 'Unusual work situations, health concerns',
+        Ketu: 'Spiritual service, health detachment'
+      },
+      7: {
+        Sun: 'Relationship focus, partnerships, public interactions',
+        Moon: 'Emotional relationships, partnership harmony',
+        Mars: 'Relationship conflicts, assertiveness in partnerships',
+        Mercury: 'Partnership communication, negotiations',
+        Jupiter: 'Relationship growth, partnership opportunities',
+        Venus: 'Harmonious relationships, partnership pleasure',
+        Saturn: 'Relationship responsibilities, commitment challenges',
+        Rahu: 'Unusual relationships, partnership obsession',
+        Ketu: 'Spiritual partnerships, relationship detachment'
+      },
+      8: {
+        Sun: 'Transformation, shared resources, intimacy',
+        Moon: 'Emotional transformation, deep connections',
+        Mars: 'Intense transformation, conflicts over resources',
+        Mercury: 'Deep communication, research, investigation',
+        Jupiter: 'Resource expansion, transformation opportunities',
+        Venus: 'Pleasurable intimacy, shared resources',
+        Saturn: 'Transformation challenges, resource restrictions',
+        Rahu: 'Intense transformation, obsession',
+        Ketu: 'Spiritual transformation, detachment'
+      },
+      9: {
+        Sun: 'Higher learning, philosophy, travel',
+        Moon: 'Emotional growth, spiritual seeking',
+        Mars: 'Assertive beliefs, adventurous travel',
+        Mercury: 'Higher education, philosophical communication',
+        Jupiter: 'Wisdom expansion, long-distance travel',
+        Venus: 'Pleasurable travel, aesthetic philosophy',
+        Saturn: 'Disciplined learning, travel restrictions',
+        Rahu: 'Unusual beliefs, foreign connections',
+        Ketu: 'Spiritual wisdom, philosophical detachment'
+      },
+      10: {
+        Sun: 'Career focus, public image, achievement',
+        Moon: 'Emotional career needs, public recognition',
+        Mars: 'Career action, professional conflicts',
+        Mercury: 'Career communication, professional networking',
+        Jupiter: 'Career growth, professional opportunities',
+        Venus: 'Career harmony, professional relationships',
+        Saturn: 'Career responsibility, professional challenges',
+        Rahu: 'Unusual career path, public recognition',
+        Ketu: 'Spiritual career, professional detachment'
+      },
+      11: {
+        Sun: 'Social focus, friendships, goals',
+        Moon: 'Emotional friendships, social harmony',
+        Mars: 'Social action, friendship conflicts',
+        Mercury: 'Social communication, networking',
+        Jupiter: 'Social expansion, friendship growth',
+        Venus: 'Harmonious friendships, social pleasure',
+        Saturn: 'Social responsibility, friendship challenges',
+        Rahu: 'Unusual friendships, social networking',
+        Ketu: 'Spiritual friendships, social detachment'
+      },
+      12: {
+        Sun: 'Spiritual focus, solitude, endings',
+        Moon: 'Emotional solitude, spiritual seeking',
+        Mars: 'Spiritual action, hidden conflicts',
+        Mercury: 'Spiritual communication, subconscious analysis',
+        Jupiter: 'Spiritual growth, expansion of consciousness',
+        Venus: 'Spiritual relationships and hidden pleasures',
+        Saturn: 'Spiritual discipline, isolation, endings',
+        Rahu: 'Spiritual obsession, hidden matters',
+        Ketu: 'Spiritual liberation, detachment, enlightenment'
       }
-      return new Date(a.date) - new Date(b.date);
-    });
-
-    const significantTransits = sortedTransits.filter(t => t.significance >= 15);
-    return this._groupSimilarTransits(significantTransits);
+    };
+    return effects[house]?.[planet] || 'Transit influence in this house';
   }
 
   /**
-   * Groups similar transits together.
-   * @param {Array<Object>} transits - List of significant transits.
-   * @returns {Array<Object>} Grouped transits.
+   * Calculates retrograde effects.
+   * @param {Object} transitChart - Current transit chart.
+   * @returns {Array<Object>} List of retrograde planets and their effects.
    * @private
    */
-  _groupSimilarTransits(transits) {
-    const groups = {};
-    transits.forEach(transit => {
-      const key = `${transit.transitPlanet}-${transit.natalPlanet}-${transit.aspect}`;
-      if (!groups[key]) {
-        groups[key] = {
-          ...transit,
-          startDate: transit.date,
-          endDate: transit.date,
-          peakDate: transit.date,
-          maxStrength: transit.strength,
-          occurrences: 1
-        };
-      } else {
-        const group = groups[key];
-        group.endDate = transit.date;
-        group.occurrences++;
-        if (transit.strength > group.maxStrength) {
-          group.maxStrength = transit.strength;
-          group.peakDate = transit.date;
-        }
-      }
-    });
-    return Object.values(groups);
-  }
-
-  /**
-   * Calculates retrograde effects for a period.
-   * @param {string} startDate - Start date.
-   * @param {string} endDate - End date.
-   * @param {number} latitude - Latitude.
-   * @param {number} longitude - Longitude.
-   * @returns {Array<Object>} List of retrograde periods.
-   * @private
-   */
-  _calculateRetrogradeEffects(startDate, endDate, latitude, longitude) {
-    const retrogradePeriods = [];
+  _calculateRetrogradeEffects(transitChart) {
+    const retrogradePlanets = [];
     const planets = ['Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
 
     for (const planet of planets) {
-      const retrogradeInfo = this._calculatePlanetRetrograde(
-        planet,
-        startDate,
-        endDate,
-        latitude,
-        longitude
-      );
-      if (retrogradeInfo) {
-        retrogradePeriods.push(retrogradeInfo);
+      // This would need actual retrograde calculation from ephemeris
+      // For now, using placeholder logic
+      const isRetrograde = this._isPlanetRetrograde(planet, transitChart);
+
+      if (isRetrograde) {
+        retrogradePlanets.push({
+          planet,
+          effects: this._getRetrogradeEffects(planet)
+        });
       }
     }
-    return retrogradePeriods;
+    return retrogradePlanets;
   }
 
   /**
-   * Calculates retrograde periods for a single planet.
+   * Checks if a planet is retrograde (simplified).
    * @param {string} planet - Planet name.
-   * @param {string} startDate - Start date.
-   * @param {string} endDate - End date.
-   * @param {number} latitude - Latitude.
-   * @param {number} longitude - Longitude.
-   * @returns {Object|null} Retrograde info or null.
+   * @param {Object} chart - Chart data.
+   * @returns {boolean} True if retrograde (simplified).
    * @private
    */
-  _calculatePlanetRetrograde(planet, startDate, endDate, latitude, longitude) {
-    // Simplified retrograde calculation - in production, would use ephemeris data
-    const retrogradePeriods = {
-      Mercury: { frequency: '3-4 times per year', duration: '3 weeks' },
-      Venus: { frequency: 'every 18 months', duration: '6 weeks' },
-      Mars: { frequency: 'every 26 months', duration: '2-3 months' },
-      Jupiter: { frequency: 'every 13 months', duration: '4 months' },
-      Saturn: { frequency: 'every 12.5 months', duration: '4.5 months' }
-    };
-    const info = retrogradePeriods[planet];
-    if (!info) return null;
-
-    return {
-      planet,
-      frequency: info.frequency,
-      duration: info.duration,
-      effects: this._getRetrogradeEffects(planet),
-      currentStatus: this._checkCurrentRetrogradeStatus(planet)
-    };
-  }
-
-  /**
-   * Gets the effects of a planet being retrograde.
-   * @param {string} planet - Planet name.
-   * @returns {string} Retrograde effects description.
-   * @private
-   */
-  _getRetrogradeEffects(planet) {
-    const effects = {
-      Mercury: 'Communication delays, technology issues, reconsideration of decisions',
-      Venus: 'Relationship reassessment, financial reconsideration, aesthetic reevaluation',
-      Mars: 'Energy redirection, action delays, conflict reconsideration',
-      Jupiter: 'Growth reconsideration, belief system review, opportunity reassessment',
-      Saturn: 'Responsibility review, discipline reevaluation, structure reconsideration'
-    };
-    return effects[planet] || 'Retrograde influence requiring reflection';
-  }
-
-  /**
-   * Checks the current retrograde status of a planet.
-   * @param {string} planet - Planet name.
-   * @returns {boolean} True if currently retrograde (simplified).
-   * @private
-   */
-  _checkCurrentRetrogradeStatus(planet) {
-    // Simplified - would use actual ephemeris
+  _isPlanetRetrograde(planet, chart) {
+    // This would need actual ephemeris data
+    // Placeholder implementation
     const retrogradePlanets = ['Mercury']; // Example
     return retrogradePlanets.includes(planet);
   }
 
   /**
-   * Calculates planetary returns for a period.
-   * @param {string} birthDatetime - User's birth datetime.
-   * @param {number} birthLatitude - User's birth latitude.
-   * @param {number} birthLongitude - User's birth longitude.
-   * @param {string} startDate - Start date.
-   * @param {string} endDate - End date.
-   * @returns {Array<Object>} List of planetary returns.
+   * Calculates major transit periods (e.g., Saturn/Jupiter returns).
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Array<Object>} List of major transit periods.
    * @private
    */
-  async _calculatePlanetaryReturns(birthDatetime, birthLatitude, birthLongitude, startDate, endDate) {
-    const returns = [];
-    const planets = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
+  _calculateMajorTransitPeriods(transitChart, natalChart) {
+    const periods = [];
 
-    for (const planet of planets) {
-      const returnInfo = await this._calculatePlanetReturn(
-        planet,
-        birthDatetime,
-        birthLatitude,
-        birthLongitude,
-        startDate,
-        endDate
-      );
-      if (returnInfo) {
-        returns.push(returnInfo);
-      }
+    const saturnReturn = this._calculateSaturnReturn(transitChart, natalChart);
+    if (saturnReturn.approaching) {
+      periods.push(saturnReturn);
     }
-    return returns;
+
+    const jupiterReturn = this._calculateJupiterReturn(transitChart, natalChart);
+    if (jupiterReturn.approaching) {
+      periods.push(jupiterReturn);
+    }
+    return periods;
   }
 
   /**
-   * Calculates the return of a single planet.
-   * @param {string} planet - Planet name.
-   * @param {string} birthDatetime - User's birth datetime.
-   * @param {number} birthLatitude - User's birth latitude.
-   * @param {number} birthLongitude - User's birth longitude.
-   * @param {string} startDate - Start date.
-   * @param {string} endDate - End date.
-   * @returns {Promise<Object|null>} Planet return info or null.
+   * Calculates Saturn return status.
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Object} Saturn return status.
    * @private
    */
-  async _calculatePlanetReturn(planet, birthDatetime, birthLatitude, birthLongitude, startDate, endDate) {
-    const birthChart = await this.calculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
-    const birthPosition = birthChart[planet.toLowerCase()];
+  _calculateSaturnReturn(transitChart, natalChart) {
+    const natalSaturn = natalChart.saturn;
+    const transitSaturn = transitChart.saturn;
+    const diff = Math.abs(transitSaturn - natalSaturn);
 
-    // Simplified return calculation - in production, would use ephemeris to find exact return dates
-    const returnPeriods = {
-      Sun: { frequency: 'annually', significance: 'Solar Return - Personal New Year' },
-      Moon: { frequency: 'monthly', significance: 'Lunar Return - Emotional Reset' },
-      Mercury: { frequency: '4 times per year', significance: 'Mercury Return - Communication Cycle' },
-      Venus: { frequency: 'annually', significance: 'Venus Return - Relationship Cycle' },
-      Mars: { frequency: 'every 2 years', significance: 'Mars Return - Energy Cycle' },
-      Jupiter: { frequency: 'every 12 years', significance: 'Jupiter Return - Growth Cycle' },
-      Saturn: { frequency: 'every 29 years', significance: 'Saturn Return - Life Cycle' }
-    };
-    const info = returnPeriods[planet];
-    if (!info) return null;
+    const approaching = diff < 15 || diff > 345;
 
     return {
-      planet,
-      frequency: info.frequency,
-      significance: info.significance,
-      nextReturn: this._estimateNextReturn(planet, birthDatetime, startDate),
-      interpretation: this._getReturnInterpretation(planet)
+      type: 'Saturn Return',
+      approaching,
+      orb: diff < 180 ? diff : 360 - diff,
+      significance: 'Major life restructuring, responsibility, maturity'
     };
   }
 
   /**
-   * Estimates the next return date for a planet.
-   * @param {string} planet - Planet name.
-   * @param {string} birthDatetime - User's birth datetime.
-   * @param {string} startDate - Start date for estimation.
-   * @returns {string} Estimated next return date (ISO string).
+   * Calculates Jupiter return status.
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Object} Jupiter return status.
    * @private
    */
-  _estimateNextReturn(planet, birthDatetime, startDate) {
-    const birthDate = new Date(birthDatetime);
-    const start = new Date(startDate);
+  _calculateJupiterReturn(transitChart, natalChart) {
+    const natalJupiter = natalChart.jupiter;
+    const transitJupiter = transitChart.jupiter;
+    const diff = Math.abs(transitJupiter - natalJupiter);
 
-    const returnPeriods = {
-      Sun: 365.25, Moon: 27.32, Mercury: 88, Venus: 224.7, Mars: 687, Jupiter: 4333, Saturn: 10759
+    const approaching = diff < 15 || diff > 345;
+
+    return {
+      type: 'Jupiter Return',
+      approaching,
+      orb: diff < 180 ? diff : 360 - diff,
+      significance: 'Growth opportunities, expansion, wisdom'
     };
-    const period = returnPeriods[planet];
-    if (!period) return null;
-
-    const ageInDays = (start - birthDate) / (1000 * 60 * 60 * 24);
-    const cyclesCompleted = Math.floor(ageInDays / period);
-    const nextReturnInDays = (cyclesCompleted + 1) * period - ageInDays;
-
-    const nextReturnDate = new Date(start);
-    nextReturnDate.setDate(nextReturnDate.getDate() + Math.floor(nextReturnInDays));
-    return nextReturnDate.toISOString();
   }
 
   /**
-   * Gets the interpretation for a planet's return.
-   * @param {string} planet - Planet name.
-   * @returns {string} Interpretation.
-   * @private
-   */
-  _getReturnInterpretation(planet) {
-    const interpretations = {
-      Sun: 'Personal renewal, new beginnings, birthday themes',
-      Moon: 'Emotional reset, intuitive insights, domestic focus',
-      Mercury: 'Communication cycle, learning phase, mental reset',
-      Venus: 'Relationship cycle, values reassessment, pleasure focus',
-      Mars: 'Energy cycle, initiative phase, action reset',
-      Jupiter: 'Growth cycle, opportunity phase, expansion reset',
-      Saturn: 'Life cycle, responsibility phase, structure reset'
-    };
-    return interpretations[planet] || 'Planetary cycle influence';
-  }
-
-  /**
-   * Calculates eclipse transits for a period.
-   * @param {string} startDate - Start date.
-   * @param {string} endDate - End date.
-   * @param {number} latitude - Latitude.
-   * @param {number} longitude - Longitude.
-   * @returns {Array<Object>} List of eclipse transits.
-   * @private
-   */
-  _calculateEclipseTransits(startDate, endDate, latitude, longitude) {
-    const eclipses = [];
-    // Simplified eclipse calculation - in production, would use ephemeris for exact eclipse data
-    const eclipseTypes = [
-      { type: 'Solar Eclipse', frequency: '2-5 times per year', effect: 'New beginnings, major life changes' },
-      { type: 'Lunar Eclipse', frequency: '2-5 times per year', effect: 'Emotional culmination, relationship changes' }
-    ];
-    eclipseTypes.forEach(eclipse => {
-      eclipses.push({
-        type: eclipse.type,
-        frequency: eclipse.frequency,
-        effect: eclipse.effect,
-        nextEclipse: this._estimateNextEclipse(eclipse.type, startDate)
-      });
-    });
-    return eclipses;
-  }
-
-  /**
-   * Estimates the next eclipse date.
-   * @param {string} eclipseType - Type of eclipse.
-   * @param {string} startDate - Start date for estimation.
-   * @returns {string} Estimated next eclipse date (ISO string).
-   * @private
-   */
-  _estimateNextEclipse(eclipseType, startDate) {
-    const start = new Date(startDate);
-    const nextEclipse = new Date(start);
-    if (eclipseType === 'Solar Eclipse') {
-      nextEclipse.setMonth(nextEclipse.getMonth() + 2);
-    } else {
-      nextEclipse.setMonth(nextEclipse.getMonth() + 1);
-    }
-    return nextEclipse.toISOString();
-  }
-
-  /**
-   * Generates interpretations based on all calculated transit data.
+   * Generates interpretations based on all calculated data.
    * @param {Object} data - All transit data.
    * @returns {Object} Interpretations.
    * @private
    */
   _generateInterpretations(data) {
-    const { significantTransits, retrogradeEffects, planetaryReturns, eclipseTransits } = data;
+    const { significantTransits, retrogradeEffects, planetaryReturns } = data;
 
     const interpretations = {
       majorInfluences: this._identifyMajorInfluences(data),
@@ -869,7 +789,7 @@ class SignificantTransitsService extends ServiceTemplate {
 • Birth latitude (number, e.g., 28.6139)
 • Birth longitude (number, e.g., 77.2090)
 • Optional: Start date for analysis (ISO string, defaults to now)
-• Optional: End date for analysis (ISO string, defaults to 1 year from start date)
+• Optional: End date for analysis (ISO string, defaults to 1 year from startDate)
 
 **Analysis Includes:**
 • **Significant Transits:** Key planetary aspects to your natal chart.

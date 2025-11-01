@@ -1,53 +1,121 @@
-/**
- * Gochar Service
- * Implements planetary transit analysis for predictive astrology
- */
-
-const ServiceTemplate = require('../serviceTemplate');
+const ServiceTemplate = require('../ServiceTemplate');
+const logger = require('../../../utils/logger');
 const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
-const { formatDegree, formatTime } = require('../../../utils/formatters');
 
+/**
+ * GocharService - Service for planetary transit analysis (Gochar)
+ *
+ * Implements planetary transit analysis for predictive astrology, examining current planetary
+ * positions relative to natal charts and their effects on different life areas.
+ */
 class GocharService extends ServiceTemplate {
   constructor() {
-    super('Gochar', {
-      description: 'Planetary transit analysis for predictive timing and events',
-      version: '1.0.0',
-      author: 'Vedic Astrology System',
-      category: 'vedic',
-      requiresLocation: true,
-      requiresDateTime: true,
-      supportedLanguages: ['en', 'hi', 'sa'],
-      features: [
-        'planetary_transits',
-        'natal_transit_aspects',
-        'dasa_transit_analysis',
-        'house_transit_effects',
-        'retrograde_analysis',
-        'eclipse_transits',
-        'major_transit_periods',
-        'transit_recommendations'
-      ]
-    });
+    super('VedicCalculator'); // Primary calculator for this service
+    this.serviceName = 'GocharService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/VedicCalculator';
+    logger.info('GocharService initialized');
   }
 
   /**
-   * Calculate current planetary positions
+   * Main calculation method for Gochar (planetary transit) analysis.
+   * @param {Object} userData - User's birth data and current transit parameters.
+   * @param {string} userData.datetime - Current datetime for transit chart (ISO string).
+   * @param {number} userData.latitude - Current latitude.
+   * @param {number} userData.longitude - Current longitude.
+   * @param {string} userData.birthDatetime - User's birth datetime (ISO string).
+   * @param {number} userData.birthLatitude - User's birth latitude.
+   * @param {number} userData.birthLongitude - User's birth longitude.
+   * @param {Object} [options] - Additional options for calculation.
+   * @returns {Promise<Object>} Comprehensive Gochar analysis.
    */
-  async getCurrentTransits(datetime, latitude, longitude) {
-    return await VedicCalculator.calculateChart(datetime, latitude, longitude);
+  async processCalculation(userData, options = {}) {
+    try {
+      // Ensure calculator is loaded
+      if (!this.calculator) {
+        await this.initialize();
+      }
+
+      this._validateInput(userData);
+
+      const { datetime, latitude, longitude, birthDatetime, birthLatitude, birthLongitude } = userData;
+
+      const transitChart = await this._getCurrentTransits(datetime, latitude, longitude);
+      const natalChart = await this._getNatalChart(birthDatetime, birthLatitude, birthLongitude);
+
+      const transitAspects = this._calculateTransitAspects(transitChart, natalChart);
+      const houseTransits = this._calculateHouseTransits(transitChart, natalChart);
+      const retrogradeEffects = this._calculateRetrogradeEffects(transitChart);
+      const majorPeriods = this._calculateMajorTransitPeriods(transitChart, natalChart);
+
+      const analysis = {
+        transitAspects,
+        houseTransits,
+        retrogradeEffects,
+        majorPeriods,
+        interpretations: this._generateInterpretations({
+          transitAspects,
+          houseTransits,
+          retrogradeEffects,
+          majorPeriods
+        })
+      };
+
+      return analysis;
+
+    } catch (error) {
+      logger.error('GocharService processCalculation error:', error);
+      throw new Error(`Gochar calculation failed: ${error.message}`);
+    }
   }
 
   /**
-   * Calculate natal chart positions
+   * Validates input data for Gochar analysis.
+   * @param {Object} userData - User data to validate.
+   * @private
    */
-  async getNatalChart(birthDatetime, birthLatitude, birthLongitude) {
-    return await VedicCalculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
+  _validateInput(userData) {
+    if (!userData) {
+      throw new Error('User data is required for Gochar analysis.');
+    }
+    const { datetime, latitude, longitude, birthDatetime, birthLatitude, birthLongitude } = userData;
+    validateDateTime(datetime);
+    validateCoordinates(latitude, longitude);
+    validateDateTime(birthDatetime);
+    validateCoordinates(birthLatitude, birthLongitude);
   }
 
   /**
-   * Calculate transit aspects to natal positions
+   * Calculates current planetary positions.
+   * @param {string} datetime - Current datetime.
+   * @param {number} latitude - Current latitude.
+   * @param {number} longitude - Current longitude.
+   * @returns {Promise<Object>} Current transit chart.
+   * @private
    */
-  calculateTransitAspects(transitChart, natalChart) {
+  async _getCurrentTransits(datetime, latitude, longitude) {
+    return await this.calculator.calculateChart(datetime, latitude, longitude);
+  }
+
+  /**
+   * Calculates natal chart positions.
+   * @param {string} birthDatetime - Birth datetime.
+   * @param {number} birthLatitude - Birth latitude.
+   * @param {number} birthLongitude - Birth longitude.
+   * @returns {Promise<Object>} Natal chart.
+   * @private
+   */
+  async _getNatalChart(birthDatetime, birthLatitude, birthLongitude) {
+    return await this.calculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
+  }
+
+  /**
+   * Calculates transit aspects to natal positions.
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Array<Object>} List of transit aspects.
+   * @private
+   */
+  _calculateTransitAspects(transitChart, natalChart) {
     const aspects = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
 
@@ -56,7 +124,7 @@ class GocharService extends ServiceTemplate {
 
       for (const natalPlanet of planets) {
         const natalLong = natalChart[natalPlanet.toLowerCase()];
-        const aspect = this.calculateAspect(transitLong, natalLong);
+        const aspect = this._calculateAspect(transitLong, natalLong);
 
         if (aspect.aspect !== 'none') {
           aspects.push({
@@ -65,19 +133,22 @@ class GocharService extends ServiceTemplate {
             aspect: aspect.aspect,
             orb: aspect.orb,
             strength: aspect.strength,
-            type: this.getAspectType(transitPlanet, natalPlanet, aspect.aspect)
+            type: this._getAspectType(transitPlanet, natalPlanet, aspect.aspect)
           });
         }
       }
     }
-
     return aspects;
   }
 
   /**
-   * Calculate aspect between two longitudes
+   * Calculates aspect between two longitudes.
+   * @param {number} long1 - Longitude of first planet.
+   * @param {number} long2 - Longitude of second planet.
+   * @returns {Object} Aspect details.
+   * @private
    */
-  calculateAspect(long1, long2) {
+  _calculateAspect(long1, long2) {
     const diff = Math.abs(long1 - long2);
     const normalizedDiff = diff > 180 ? 360 - diff : diff;
 
@@ -99,19 +170,23 @@ class GocharService extends ServiceTemplate {
         };
       }
     }
-
     return { aspect: 'none', orb: 0, strength: 0 };
   }
 
   /**
-   * Get aspect type interpretation
+   * Gets aspect type interpretation.
+   * @param {string} transitPlanet - Transiting planet.
+   * @param {string} natalPlanet - Natal planet.
+   * @param {string} aspect - Aspect type.
+   * @returns {string} Interpretation.
+   * @private
    */
-  getAspectType(transitPlanet, natalPlanet, aspect) {
+  _getAspectType(transitPlanet, natalPlanet, aspect) {
     const benefic = ['Jupiter', 'Venus', 'Mercury'];
-    const malefic = ['Mars', 'Saturn', 'Rahu', 'Ketu'];
+    // const malefic = ['Mars', 'Saturn', 'Rahu', 'Ketu']; // Not used in current logic
 
     const isTransitBenefic = benefic.includes(transitPlanet);
-    const isNatalBenefic = benefic.includes(natalPlanet);
+    // const isNatalBenefic = benefic.includes(natalPlanet); // Not used in current logic
 
     const aspectTypes = {
       conjunction: isTransitBenefic ? 'benefic' : 'malefic',
@@ -120,45 +195,54 @@ class GocharService extends ServiceTemplate {
       square: 'malefic',
       opposition: 'challenging'
     };
-
     return aspectTypes[aspect] || 'neutral';
   }
 
   /**
-   * Calculate house transits
+   * Calculates house transits.
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Array<Object>} List of house transits.
+   * @private
    */
-  calculateHouseTransits(transitChart, natalChart) {
+  _calculateHouseTransits(transitChart, natalChart) {
     const houseTransits = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
     const natalAscendant = natalChart.ascendant;
 
     for (const planet of planets) {
       const transitLong = transitChart[planet.toLowerCase()];
-      const transitHouse = this.getLongitudeHouse(transitLong, natalAscendant);
+      const transitHouse = this._getLongitudeHouse(transitLong, natalAscendant);
 
       houseTransits.push({
         planet,
         house: transitHouse,
-        sign: this.getLongitudeSign(transitLong),
-        effects: this.getHouseTransitEffects(planet, transitHouse)
+        sign: this._getLongitudeSign(transitLong),
+        effects: this._getHouseTransitEffects(planet, transitHouse)
       });
     }
-
     return houseTransits;
   }
 
   /**
-   * Get house from longitude based on natal ascendant
+   * Gets house from longitude based on natal ascendant.
+   * @param {number} longitude - Planet longitude.
+   * @param {number} ascendant - Natal ascendant longitude.
+   * @returns {number} House number.
+   * @private
    */
-  getLongitudeHouse(longitude, ascendant) {
+  _getLongitudeHouse(longitude, ascendant) {
     const normalizedLong = longitude >= ascendant ? longitude - ascendant : longitude + 360 - ascendant;
     return Math.floor(normalizedLong / 30) + 1;
   }
 
   /**
-   * Get sign from longitude
+   * Gets sign from longitude.
+   * @param {number} longitude - Planet longitude.
+   * @returns {string} Zodiac sign.
+   * @private
    */
-  getLongitudeSign(longitude) {
+  _getLongitudeSign(longitude) {
     const signs = [
       'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
       'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
@@ -167,9 +251,13 @@ class GocharService extends ServiceTemplate {
   }
 
   /**
-   * Get house transit effects
+   * Gets house transit effects.
+   * @param {string} planet - Planet name.
+   * @param {number} house - House number.
+   * @returns {string} Effects description.
+   * @private
    */
-  getHouseTransitEffects(planet, house) {
+  _getHouseTransitEffects(planet, house) {
     const effects = {
       1: {
         Sun: 'New beginnings, self-focus, leadership opportunities',
@@ -220,7 +308,7 @@ class GocharService extends ServiceTemplate {
         Moon: 'Emotional creativity, romantic feelings',
         Mars: 'Creative energy, romantic passion, competitive activities',
         Mercury: 'Creative communication, intellectual pursuits',
-        Jupiter: 'Creative expansion, romance, children\'s growth',
+        Jupiter: 'Creative expansion, romance, children's growth',
         Venus: 'Romance, artistic expression, pleasure',
         Saturn: 'Creative discipline, romantic challenges',
         Rahu: 'Unusual romance, unconventional creativity',
@@ -298,52 +386,61 @@ class GocharService extends ServiceTemplate {
         Mars: 'Spiritual action, hidden conflicts',
         Mercury: 'Spiritual communication, subconscious analysis',
         Jupiter: 'Spiritual growth, expansion of consciousness',
-        Venus: 'Spiritual pleasure, hidden relationships',
+        Venus: 'Spiritual relationships and hidden pleasures',
         Saturn: 'Spiritual discipline, isolation, endings',
         Rahu: 'Spiritual obsession, hidden matters',
         Ketu: 'Spiritual liberation, detachment, enlightenment'
       }
     };
-
     return effects[house]?.[planet] || 'Transit influence in this house';
   }
 
   /**
-   * Calculate retrograde effects
+   * Calculates retrograde effects.
+   * @param {Object} transitChart - Current transit chart.
+   * @returns {Array<Object>} List of retrograde planets and their effects.
+   * @private
    */
-  calculateRetrogradeEffects(transitChart) {
+  _calculateRetrogradeEffects(transitChart) {
     const retrogradePlanets = [];
     const planets = ['Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
 
     for (const planet of planets) {
       // This would need actual retrograde calculation from ephemeris
       // For now, using placeholder logic
-      const isRetrograde = this.isPlanetRetrograde(planet, transitChart);
+      const isRetrograde = this._isPlanetRetrograde(planet, transitChart);
 
       if (isRetrograde) {
         retrogradePlanets.push({
           planet,
-          effects: this.getRetrogradeEffects(planet)
+          effects: this._getRetrogradeEffects(planet)
         });
       }
     }
-
     return retrogradePlanets;
   }
 
   /**
-   * Check if planet is retrograde (simplified)
+   * Checks if a planet is retrograde (simplified).
+   * @param {string} planet - Planet name.
+   * @param {Object} chart - Chart data.
+   * @returns {boolean} True if retrograde (simplified).
+   * @private
    */
-  isPlanetRetrograde(planet, chart) {
+  _isPlanetRetrograde(planet, chart) {
     // This would need actual ephemeris data
     // Placeholder implementation
-    return false;
+    const retrogradePlanets = ['Mercury']; // Example
+    return retrogradePlanets.includes(planet);
   }
 
   /**
-   * Get retrograde effects
+   * Gets retrograde effects.
+   * @param {string} planet - Planet name.
+   * @returns {string} Effects description.
+   * @private
    */
-  getRetrogradeEffects(planet) {
+  _getRetrogradeEffects(planet) {
     const effects = {
       Mercury: 'Communication delays, technology issues, reconsideration of decisions',
       Venus: 'Relationship reassessment, financial reconsideration, aesthetic reevaluation',
@@ -351,35 +448,39 @@ class GocharService extends ServiceTemplate {
       Jupiter: 'Growth reconsideration, belief system review, opportunity reassessment',
       Saturn: 'Responsibility review, discipline reevaluation, structure reconsideration'
     };
-
     return effects[planet] || 'Retrograde influence requiring reflection';
   }
 
   /**
-   * Calculate major transit periods
+   * Calculates major transit periods (e.g., Saturn/Jupiter returns).
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Array<Object>} List of major transit periods.
+   * @private
    */
-  calculateMajorTransitPeriods(transitChart, natalChart) {
+  _calculateMajorTransitPeriods(transitChart, natalChart) {
     const periods = [];
 
-    // Saturn return
-    const saturnReturn = this.calculateSaturnReturn(transitChart, natalChart);
+    const saturnReturn = this._calculateSaturnReturn(transitChart, natalChart);
     if (saturnReturn.approaching) {
       periods.push(saturnReturn);
     }
 
-    // Jupiter return
-    const jupiterReturn = this.calculateJupiterReturn(transitChart, natalChart);
+    const jupiterReturn = this._calculateJupiterReturn(transitChart, natalChart);
     if (jupiterReturn.approaching) {
       periods.push(jupiterReturn);
     }
-
     return periods;
   }
 
   /**
-   * Calculate Saturn return
+   * Calculates Saturn return status.
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Object} Saturn return status.
+   * @private
    */
-  calculateSaturnReturn(transitChart, natalChart) {
+  _calculateSaturnReturn(transitChart, natalChart) {
     const natalSaturn = natalChart.saturn;
     const transitSaturn = transitChart.saturn;
     const diff = Math.abs(transitSaturn - natalSaturn);
@@ -395,9 +496,13 @@ class GocharService extends ServiceTemplate {
   }
 
   /**
-   * Calculate Jupiter return
+   * Calculates Jupiter return status.
+   * @param {Object} transitChart - Current transit chart.
+   * @param {Object} natalChart - Natal chart.
+   * @returns {Object} Jupiter return status.
+   * @private
    */
-  calculateJupiterReturn(transitChart, natalChart) {
+  _calculateJupiterReturn(transitChart, natalChart) {
     const natalJupiter = natalChart.jupiter;
     const transitJupiter = transitChart.jupiter;
     const diff = Math.abs(transitJupiter - natalJupiter);
@@ -413,86 +518,51 @@ class GocharService extends ServiceTemplate {
   }
 
   /**
-   * Main calculation method
+   * Generates interpretations based on all calculated data.
+   * @param {Object} data - All transit data.
+   * @returns {Object} Interpretations.
+   * @private
    */
-  async calculate(userData, options = {}) {
-    try {
-      this.validateInput(userData);
-
-      const { datetime, latitude, longitude, birthDatetime, birthLatitude, birthLongitude } = userData;
-
-      if (!birthDatetime || !birthLatitude || !birthLongitude) {
-        throw new Error('Birth data required for transit analysis');
-      }
-
-      const transitChart = await this.getCurrentTransits(datetime, latitude, longitude);
-      const natalChart = await this.getNatalChart(birthDatetime, birthLatitude, birthLongitude);
-
-      const transitAspects = this.calculateTransitAspects(transitChart, natalChart);
-      const houseTransits = this.calculateHouseTransits(transitChart, natalChart);
-      const retrogradeEffects = this.calculateRetrogradeEffects(transitChart);
-      const majorPeriods = this.calculateMajorTransitPeriods(transitChart, natalChart);
-
-      const analysis = {
-        transitAspects,
-        houseTransits,
-        retrogradeEffects,
-        majorPeriods,
-        interpretations: this.generateInterpretations({
-          transitAspects,
-          houseTransits,
-          retrogradeEffects,
-          majorPeriods
-        })
-      };
-
-      return this.formatOutput(analysis, options.language || 'en');
-    } catch (error) {
-      throw new Error(`Gochar calculation failed: ${error.message}`);
-    }
-  }
-
-  /**
-   * Generate interpretations
-   */
-  generateInterpretations(data) {
+  _generateInterpretations(data) {
     const { transitAspects, houseTransits, retrogradeEffects, majorPeriods } = data;
 
     const interpretations = {
-      majorInfluences: this.identifyMajorInfluences(data),
-      timing: this.analyzeTiming(data),
-      recommendations: this.generateRecommendations(data),
-      overall: this.generateOverallAnalysis(data)
+      majorInfluences: this._identifyMajorInfluences(data),
+      timing: this._analyzeTiming(data),
+      recommendations: this._generateRecommendations(data),
+      overall: this._generateOverallAnalysis(data)
     };
-
     return interpretations;
   }
 
   /**
-   * Identify major influences
+   * Identifies major influences from transit data.
+   * @param {Object} data - All transit data.
+   * @returns {Array<string>} List of major influences.
+   * @private
    */
-  identifyMajorInfluences(data) {
+  _identifyMajorInfluences(data) {
     const influences = [];
     const { transitAspects, majorPeriods } = data;
 
-    // Strong aspects
     const strongAspects = transitAspects.filter(a => a.strength > 70);
     strongAspects.forEach(aspect => {
       influences.push(`${aspect.transitPlanet} ${aspect.aspect} ${aspect.natalPlanet} (${aspect.strength.toFixed(0)}% strength)`);
     });
 
-    // Major periods
     majorPeriods.forEach(period => {
       influences.push(`${period.type} approaching (${period.significance})`);
     });
-
     return influences;
   }
 
   /**
-   * Analyze timing
+   * Analyzes timing aspects from transit data.
+   * @param {Object} data - All transit data.
+   * @returns {Object} Timing analysis.
+   * @private
    */
-  analyzeTiming(data) {
+  _analyzeTiming(data) {
     const { transitAspects, houseTransits } = data;
 
     const beneficAspects = transitAspects.filter(a => a.type === 'benefic');
@@ -502,24 +572,25 @@ class GocharService extends ServiceTemplate {
       favorable: beneficAspects.length > maleficAspects.length,
       challenges: maleficAspects.length > beneficAspects.length,
       balance: beneficAspects.length === maleficAspects.length,
-      focus: this.identifyFocusAreas(data)
+      focus: this._identifyFocusAreas(data)
     };
   }
 
   /**
-   * Identify focus areas
+   * Identifies focus areas from transit data.
+   * @param {Object} data - All transit data.
+   * @returns {Array<string>} List of focus areas.
+   * @private
    */
-  identifyFocusAreas(data) {
+  _identifyFocusAreas(data) {
     const { houseTransits } = data;
     const focusAreas = [];
 
-    // Count planets in each house
     const houseCounts = {};
     houseTransits.forEach(transit => {
       houseCounts[transit.house] = (houseCounts[transit.house] || 0) + 1;
     });
 
-    // Identify houses with most planets
     const sortedHouses = Object.entries(houseCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 3);
@@ -527,94 +598,101 @@ class GocharService extends ServiceTemplate {
     sortedHouses.forEach(([house, count]) => {
       focusAreas.push(`House ${house} (${count} planets)`);
     });
-
     return focusAreas;
   }
 
   /**
-   * Generate recommendations
+   * Generates recommendations based on transit data.
+   * @param {Object} data - All transit data.
+   * @returns {Array<string>} List of recommendations.
+   * @private
    */
-  generateRecommendations(data) {
+  _generateRecommendations(data) {
     const recommendations = [];
     const { transitAspects, retrogradeEffects, houseTransits } = data;
 
-    // Based on aspects
     const challengingAspects = transitAspects.filter(a => a.type === 'malefic' && a.strength > 60);
     if (challengingAspects.length > 0) {
       recommendations.push('Exercise patience with current challenges - this period requires careful navigation');
     }
 
-    // Based on retrogrades
     if (retrogradeEffects.length > 0) {
       recommendations.push('Review and reconsider decisions before taking action');
     }
 
-    // Based on house transits
     const firstHouseTransits = houseTransits.filter(t => t.house === 1);
     if (firstHouseTransits.length > 0) {
       recommendations.push('Focus on personal development and new beginnings');
     }
-
     return recommendations;
   }
 
   /**
-   * Generate overall analysis
+   * Generates an overall analysis summary.
+   * @param {Object} data - All transit data.
+   * @returns {Object} Overall analysis.
+   * @private
    */
-  generateOverallAnalysis(data) {
+  _generateOverallAnalysis(data) {
     const { transitAspects, houseTransits } = data;
 
     return {
       summary: `Current transit period shows ${transitAspects.length} active aspects with focus on key life areas.`,
-      intensity: this.calculateIntensity(data),
+      intensity: this._calculateIntensity(data),
       duration: 'Current transits are active and will evolve over the coming weeks',
-      keyThemes: this.identifyKeyThemes(data)
+      keyThemes: this._identifyKeyThemes(data)
     };
   }
 
   /**
-   * Calculate transit intensity
+   * Calculates the intensity of transits.
+   * @param {Object} data - All transit data.
+   * @returns {string} Intensity level.
+   * @private
    */
-  calculateIntensity(data) {
+  _calculateIntensity(data) {
     const { transitAspects } = data;
     const totalStrength = transitAspects.reduce((sum, aspect) => sum + aspect.strength, 0);
     const averageStrength = transitAspects.length > 0 ? totalStrength / transitAspects.length : 0;
 
-    if (averageStrength > 70) { return 'High'; }
-    if (averageStrength > 40) { return 'Medium'; }
+    if (averageStrength > 70) return 'High';
+    if (averageStrength > 40) return 'Medium';
     return 'Low';
   }
 
   /**
-   * Identify key themes
+   * Identifies key themes from transit data.
+   * @param {Object} data - All transit data.
+   * @returns {Array<string>} List of key themes.
+   * @private
    */
-  identifyKeyThemes(data) {
+  _identifyKeyThemes(data) {
     const themes = [];
     const { houseTransits } = data;
 
-    // Analyze house emphasis
     const houseEmphasis = houseTransits.map(t => t.house);
     const uniqueHouses = [...new Set(houseEmphasis)];
 
     if (uniqueHouses.includes(1) || uniqueHouses.includes(10)) {
       themes.push('Career and personal identity');
     }
-
     if (uniqueHouses.includes(2) || uniqueHouses.includes(8)) {
       themes.push('Financial transformation');
     }
-
     if (uniqueHouses.includes(5) || uniqueHouses.includes(7)) {
       themes.push('Relationships and creativity');
     }
-
     return themes;
   }
 
   /**
-   * Format output for display
+   * Formats the output for display.
+   * @param {Object} analysis - The complete Gochar analysis.
+   * @param {string} [language='en'] - The language for output.
+   * @returns {Object} Formatted output.
+   * @private
    */
-  formatOutput(analysis, language = 'en') {
+  formatResult(analysis, language = 'en') {
     const translations = {
       en: {
         title: 'Planetary Transit Analysis (Gochar)',
@@ -645,39 +723,66 @@ class GocharService extends ServiceTemplate {
     const t = translations[language] || translations.en;
 
     return {
-      metadata: this.getMetadata(),
-      analysis: {
-        title: t.title,
-        sections: {
-          [t.transitAspects]: analysis.transitAspects,
-          [t.houseTransits]: analysis.houseTransits,
-          [t.retrogradeEffects]: analysis.retrogradeEffects,
-          [t.majorPeriods]: analysis.majorPeriods,
-          [t.interpretations]: analysis.interpretations
-        }
+      success: true,
+      data: analysis,
+      summary: analysis.interpretations.overall.summary,
+      metadata: {
+        serviceName: this.serviceName,
+        calculationType: 'Gochar',
+        timestamp: new Date().toISOString(),
+        language: language
       }
     };
   }
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          // Add service-specific features here
-        },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
+
+  /**
+   * Returns metadata for the service.
+   * @returns {Object} Service metadata.
+   */
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['processCalculation', '_getCurrentTransits', '_getNatalChart', '_calculateTransitAspects', '_calculateHouseTransits', '_calculateRetrogradeEffects', '_calculateMajorTransitPeriods'],
+      dependencies: [], // Managed by ServiceTemplate
+      description: 'Implements planetary transit analysis for predictive astrology.'
+    };
+  }
+
+  /**
+   * Returns help information for the service.
+   * @returns {string} Help text.
+   */
+  getHelp() {
+    return `
+🪐 **Gochar Service - Planetary Transit Analysis**
+
+**Purpose:** Provides analysis of current planetary transits (Gochar) relative to your natal chart, offering insights into predictive timing and potential life events.
+
+**Required Inputs:**
+• Current datetime (ISO string, e.g., '2025-11-01T12:00:00.000Z')
+• Current latitude (number, e.g., 28.6139)
+• Current longitude (number, e.g., 77.2090)
+• Birth datetime (ISO string, e.g., '1990-06-15T06:45:00.000Z')
+• Birth latitude (number, e.g., 28.6139)
+• Birth longitude (number, e.g., 77.2090)
+
+**Analysis Includes:**
+• **Transit Aspects:** How transiting planets interact with your natal planets.
+• **House Transits:** Which houses transiting planets are currently influencing.
+• **Retrograde Effects:** Impact of planets in retrograde motion.
+• **Major Transit Periods:** Identification of significant periods like Saturn or Jupiter returns.
+• **Interpretations:** Detailed insights into major influences, timing, challenges, and opportunities.
+
+**Example Usage:**
+"Analyze Gochar for my birth data and current location."
+"What are the current planetary transits affecting my natal chart?"
+
+**Output Format:**
+Comprehensive report with detailed transit data, interpretations, and recommendations.
+    `.trim();
   }
 }
 
-module.exports = new GocharService();
+module.exports = GocharService;

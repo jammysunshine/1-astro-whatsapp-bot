@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const { NadiCompatibility } = require('../../../services/astrology/nadi/NadiCompatibility');
 
 /**
  * NakshatraPoruthamService - Service for traditional Indian marriage compatibility

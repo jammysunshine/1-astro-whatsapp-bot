@@ -21,7 +21,7 @@ class BirthChartService extends ServiceTemplate {
       validatedData.validate();
 
       // Get chart data from calculator
-      const chartData = await this.calculator.generateChart(birthData);
+      const chartData = await this.calculator.generateChart(validatedData);
 
       // Add metadata
       chartData.type = 'vedic';

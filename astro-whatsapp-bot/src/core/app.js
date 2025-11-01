@@ -1,10 +1,14 @@
 const express = require('express');
 const { errorHandler } = require('./middleware');
 const logger = require('./utils/logger');
+const {
+  validateServiceExecution,
+  validateServiceParams
+} = require('./validation/middleware');
 
 // Import all service classes
-const BirthChartService = require('./services/vedic/birthChartService');
-const VimshottariDashaService = require('./services/vedic/vimshottariDashaService');
+const BirthChartService = require('./services/birthChartService');
+const VimshottariDashaService = require('./services/vimshottariDashaService');
 // Add imports for all 90 services (will be added gradually)
 
 class ServiceManager {
@@ -59,8 +63,8 @@ class CoreApp {
       });
     });
 
-    // Service execution endpoint
-    this.app.post('/execute/:service', async(req, res) => {
+    // Service execution endpoint with validation
+    this.app.post('/execute/:service', validateServiceParams, validateServiceExecution, async(req, res) => {
       try {
         const { service } = req.params;
         const { data } = req.body;

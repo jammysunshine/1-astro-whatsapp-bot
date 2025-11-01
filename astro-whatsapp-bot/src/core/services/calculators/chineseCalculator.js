@@ -733,4 +733,4 @@ class ChineseCalculator {
   }
 }
 
-module.exports = ChineseCalculator;
+module.exports = { ChineseCalculator };

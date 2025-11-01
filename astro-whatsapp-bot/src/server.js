@@ -213,12 +213,19 @@ app.get('/ready', (req, res) => {
   });
 });
 
+// Import validation middleware
+const {
+  validateWhatsAppWebhook,
+  validateRazorpayWebhook,
+  validateStripeWebhook
+} = require('./core/validation/middleware');
+
 // WhatsApp webhook endpoints
-app.post('/webhook', handleWhatsAppWebhook);
+app.post('/webhook', validateWhatsAppWebhook, handleWhatsAppWebhook);
 app.get('/webhook', verifyWhatsAppWebhook);
 
 // Payment webhook endpoints
-app.post('/webhooks/razorpay', async(req, res) => {
+app.post('/webhooks/razorpay', validateRazorpayWebhook, async(req, res) => {
   try {
     const result = await paymentService.handleRazorpayWebhook(req.body);
     res.status(200).json(result);
@@ -228,7 +235,7 @@ app.post('/webhooks/razorpay', async(req, res) => {
   }
 });
 
-app.post('/webhooks/stripe', async(req, res) => {
+app.post('/webhooks/stripe', validateStripeWebhook, async(req, res) => {
   try {
     const result = await paymentService.handleStripeWebhook(req.body);
     res.status(200).json(result);
@@ -262,7 +269,34 @@ process.on('uncaughtException', error => {
 
 process.on('unhandledRejection', (reason, promise) => {
   logger.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
+  logger.error('🛡️  Unhandled promise rejection detected - graceful degradation initiated');
+
+  // Don't immediately exit - give the application a chance to recover
+  // Log detailed error information for debugging
+  if (reason instanceof Error) {
+    logger.error(`Error details: ${reason.message}`);
+    logger.error(`Stack trace: ${reason.stack}`);
+  }
+
+  // Attempt graceful degradation instead of immediate crash
+  // In a production environment, you might want to:
+  // - Send alerts to monitoring services
+  // - Trigger health check failures
+  // - Perform cleanup operations
+
+  // For now, give the application 3 seconds to cleanup, then exit gracefully
+  setTimeout(() => {
+    logger.error('🔄 Shutting down due to unhandled rejection...');
+    // Instead of process.exit(1), use graceful shutdown
+    if (server) {
+      server.close(() => {
+        logger.error('✅ Server closed gracefully after unhandled rejection');
+        process.exit(1);
+      });
+    } else {
+      process.exit(1);
+    }
+  }, 3000);
 });
 
 // Graceful shutdown
@@ -311,6 +345,24 @@ if (process.env.NODE_ENV !== 'test') {
       global.gc();
     }
   }, 15000);
+
+  // Ensure the memory monitor interval is cleared on process exit
+  process.on('exit', () => {
+    clearInterval(memoryMonitorInterval);
+    logger.info('Memory monitor interval cleared.');
+  });
+
+  // Handle graceful shutdown signals
+  process.on('SIGINT', () => {
+    logger.info('SIGINT received. Shutting down gracefully.');
+    process.exit(0);
+  });
+
+  process.on('SIGTERM', () => {
+    logger.info('SIGTERM received. Shutting down gracefully.');
+    process.exit(0);
+  });
+
 
   // Handle server errors
   server.on('error', error => {

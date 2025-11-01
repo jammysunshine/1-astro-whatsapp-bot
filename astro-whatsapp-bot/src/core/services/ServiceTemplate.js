@@ -1,5 +1,7 @@
 const AstroServiceInterface = require('../interfaces/astroServiceInterface');
 const logger = require('../utils/logger');
+const Joi = require('joi');
+const { birthDataSchema } = require('../validation/schemas');
 
 class ServiceTemplate extends AstroServiceInterface {
   constructor(calculatorName) {
@@ -77,11 +79,11 @@ class ServiceTemplate extends AstroServiceInterface {
         await this.initialize();
       }
 
-      // Validate input data
-      this.validate(data);
+      // Validate input data and get sanitized data
+      const validatedData = this.validate(data);
 
       // Process the request using calculator
-      const result = await this.processCalculation(data);
+      const result = await this.processCalculation(validatedData);
 
       // Format and return result
       const formattedResult = this.formatResult(result);
@@ -98,7 +100,24 @@ class ServiceTemplate extends AstroServiceInterface {
     if (!data) {
       throw new Error('Input data is required');
     }
-    return true;
+    
+    // Allow services to define their own validation schema
+    if (this.inputSchema) {
+      const { error, value } = this.inputSchema.validate(data, {
+        abortEarly: false,
+        stripUnknown: true
+      });
+      
+      if (error) {
+        const errors = error.details.map(detail => detail.message);
+        throw new Error(`Validation errors: ${errors.join(', ')}`);
+      }
+      
+      // Update data with sanitized/validated values
+      return value;
+    }
+    
+    return data;
   }
 
   async processCalculation(data) {

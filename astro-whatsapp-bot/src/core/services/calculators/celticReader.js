@@ -1,6 +1,5 @@
-const { CelticDataProvider } = require('./CelticDataProvider');
-const { CelticCalculator } = require('./CelticCalculator');
-const { CelticAnalyzer } = require('./CelticAnalyzer');
+// Note: CelticDataProvider, CelticCalculator, and CelticAnalyzer are not available
+// Using simplified inline implementations for now
 const logger = require('../../../utils/logger');
 const sweph = require('sweph');
 const { Astrologer } = require('astrologer');
@@ -9,9 +8,7 @@ class CelticReader {
   constructor(astrologer, geocodingService) {
     this.astrologer = astrologer || new Astrologer();
     this.geocodingService = geocodingService;
-    this.dataProvider = new CelticDataProvider();
-    this.calculator = new CelticCalculator(this.dataProvider);
-    this.analyzer = new CelticAnalyzer();
+    // Simplified inline implementations since external modules are not available
     this._initializeEphemeris();
     logger.info('CelticReader initialized with astrologer integration.');
   }
@@ -54,32 +51,23 @@ class CelticReader {
       // Get astronomical data for Celtic correlations
       const astronomicalData = this._calculateCelticAstronomicalData(julianDay);
 
-      // Calculate tree sign
-      const treeSign = this.calculator.calculateTreeSign(birthDate);
+      // Calculate tree sign (simplified inline implementation)
+      const treeSign = this._calculateTreeSign(birthDate);
 
-      // Calculate animal totem
-      const animalTotem = this.calculator.calculateAnimalTotem(birthDate);
+      // Calculate animal totem (simplified inline implementation)
+      const animalTotem = this._calculateAnimalTotem(birthDate);
 
-      // Calculate seasonal influence
-      const seasonalInfluence =
-        this.calculator.calculateSeasonalInfluence(birthDate);
+      // Calculate seasonal influence (simplified inline implementation)
+      const seasonalInfluence = this._calculateSeasonalInfluence(birthDate);
 
-      // Generate druidic wisdom with astronomical correlations
-      const druidicWisdom = this.analyzer.generateDruidicWisdom(
-        treeSign,
-        animalTotem,
-        astronomicalData
-      );
+      // Generate druidic wisdom with astronomical correlations (simplified)
+      const druidicWisdom = this._generateDruidicWisdom(treeSign, animalTotem, astronomicalData);
 
-      // Calculate life path with astrological insights
-      const lifePath = this.analyzer.calculateLifePath(treeSign, animalTotem, astronomicalData);
+      // Calculate life path with astrological insights (simplified)
+      const lifePath = this._calculateLifePath(treeSign, animalTotem, astronomicalData);
 
-      // Generate personality traits with planetary correlations
-      const personalityTraits = this.analyzer.generatePersonalityTraits(
-        treeSign,
-        animalTotem,
-        astronomicalData
-      );
+      // Generate personality traits with planetary correlations (simplified)
+      const personalityTraits = this._generatePersonalityTraits(treeSign, animalTotem, astronomicalData);
 
       return {
         name,

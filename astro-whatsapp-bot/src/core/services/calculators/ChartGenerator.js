@@ -1,6 +1,7 @@
 const logger = require('../../../utils/logger');
 const sweph = require('sweph');
-const fs = require('fs');
+const fs = require('fs'); // Keep fs for fs.constants
+const fsp = require('fs').promises; // Import fs.promises separately
 const path = require('path');
 
 /**
@@ -21,7 +22,7 @@ class ChartGenerator {
    * Initialize Swiss Ephemeris system
    * @private
    */
-  _initializeSwissEphemeris() {
+  async _initializeSwissEphemeris() {
     try {
       logger.info('Initializing Swiss Ephemeris system for ChartGenerator...');
 
@@ -36,12 +37,11 @@ class ChartGenerator {
       let ephemerisSet = false;
       for (const ephePath of ephemerisPaths) {
         try {
-          if (fs.existsSync(ephePath)) {
-            sweph.set_ephe_path(ephePath);
-            logger.info(`ChartGenerator ephemeris path set: ${ephePath}`);
-            ephemerisSet = true;
-            break;
-          }
+          await fsp.access(ephePath, fs.constants.F_OK); // Check if path exists
+          sweph.set_ephe_path(ephePath);
+          logger.info(`ChartGenerator ephemeris path set: ${ephePath}`);
+          ephemerisSet = true;
+          break;
         } catch (pathError) {
           logger.debug(
             `Failed to set ephemeris path ${ephePath}:`,

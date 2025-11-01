@@ -10,7 +10,7 @@ class WesternBirthChartService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
     this.serviceName = 'WesternBirthChartService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/ChartGenerator';
+    this.calculatorPath = '../calculators/ChartGenerator';
     logger.info('WesternBirthChartService initialized');
 
     // Service-specific configuration
@@ -36,22 +36,40 @@ class WesternBirthChartService extends ServiceTemplate {
       this._validateInputs(birthData);
 
       // Calculate Western birth chart using calculator
-      const chartResult = await this.calculator.calculateWesternBirthChart(birthData);
+      const chartResult = await this.calculator.generateWesternBirthChart(birthData, this.serviceConfig.houseSystem);
 
-      // Add service metadata
-      chartResult.serviceMetadata = {
-        serviceName: this.serviceName,
-        calculationType: 'WesternBirthChart',
-        timestamp: new Date().toISOString(),
-        method: 'Tropical Western Astrology Chart',
-        zodiacSystem: this.serviceConfig.zodiacSystem,
-        houseSystem: this.serviceConfig.houseSystem
+      // Transform result to expected format
+      const formattedResult = {
+        birthData,
+        sunSign: chartResult.planets?.sun ? {
+          sign: chartResult.planets.sun.sign,
+          degree: chartResult.planets.sun.position.degrees
+        } : null,
+        moonSign: chartResult.planets?.moon ? {
+          sign: chartResult.planets.moon.sign,
+          degree: chartResult.planets.moon.position.degrees
+        } : null,
+        ascendant: chartResult.ascendant ? {
+          sign: chartResult.ascendant.sign,
+          degree: Math.floor(chartResult.ascendant.longitude % 30)
+        } : null,
+        planetaryPositions: chartResult.planets || {},
+        houseCusps: chartResult.houseCusps || [],
+        majorAspects: chartResult.aspects || [],
+        serviceMetadata: {
+          serviceName: this.serviceName,
+          calculationType: 'WesternBirthChart',
+          timestamp: new Date().toISOString(),
+          method: 'Tropical Western Astrology Chart',
+          zodiacSystem: this.serviceConfig.zodiacSystem,
+          houseSystem: this.serviceConfig.houseSystem
+        }
       };
 
       // Add Western-specific analysis
-      chartResult.westernAnalysis = this._performWesternAnalysis(chartResult);
+      formattedResult.westernAnalysis = this._performWesternAnalysis(formattedResult);
 
-      return chartResult;
+      return formattedResult;
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
       throw new Error(`Western birth chart calculation failed: ${error.message}`);
@@ -195,7 +213,7 @@ class WesternBirthChartService extends ServiceTemplate {
         }
       });
 
-      const maxElement = Object.keys(elements).reduce((a, b) => elements[a] > elements[b] ? a : b);
+      const maxElement = Object.keys(elements).reduce((a, b) => (elements[a] > elements[b] ? a : b));
       analysis.elementBalance = `Strong ${maxElement} element influence`;
     }
 
@@ -214,7 +232,7 @@ class WesternBirthChartService extends ServiceTemplate {
         }
       });
 
-      const maxModality = Object.keys(modalities).reduce((a, b) => modalities[a] > modalities[b] ? a : b);
+      const maxModality = Object.keys(modalities).reduce((a, b) => (modalities[a] > modalities[b] ? a : b));
       analysis.modalityBalance = `Strong ${maxModality} modality influence`;
     }
 

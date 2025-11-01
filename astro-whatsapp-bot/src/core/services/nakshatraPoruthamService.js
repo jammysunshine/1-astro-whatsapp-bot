@@ -1,4 +1,6 @@
 const logger = require('../../../utils/logger');
+const { NadiCompatibility } = require('../calculators/NadiCompatibility');
+
 /**
  * NakshatraPoruthamService - Service for traditional Indian marriage compatibility
  * Calculates compatibility between partners based on lunar mansion (nakshatra) matching

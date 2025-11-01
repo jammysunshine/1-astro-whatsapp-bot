@@ -6,8 +6,8 @@ const logger = require('../../../utils/logger');
  */
 class CompositeChartService extends ServiceTemplate {
   constructor() {
-    super('SynastryEngine');
-    this.serviceName = 'CompositeChartService';
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CompositeChartService';
     this.calculatorPath = '../calculators/SynastryEngine'; // Assuming this path for the main calculator
     logger.info('CompositeChartService initialized');
   }

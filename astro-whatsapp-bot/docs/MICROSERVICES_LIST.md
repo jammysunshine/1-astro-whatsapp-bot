@@ -1,95 +1,107 @@
 # List of Proposed Microservices
 
-This document lists the 88 unique astrological services identified from the `MENU_REFERENCE.md` that are intended to become individual microservices as part of the new architectural design.
+This document lists the astrological services identified from the `MENU_REFERENCE.md` that are implemented as individual services following the new architectural design.
 
 ## Astrological Microservices
-**Note:** All services are implemented in the `/src/core/services/` directory (root level, no subdirectories). All calculators are located in `/src/core/services/calculators/`. Total: 86 services implemented with 55 calculators.
+**Note:** All services are implemented in the `/src/core/services/` directory. All calculators are located in `/src/core/services/calculators/`. Total: services implemented with calculators.
 
-1.  `start_couple_compatibility_flow` - `src/core/services/coupleCompatibilityService.js` (uses: `src/core/services/calculators/CompatibilityAction.js`)
+1.  `start_couple_compatibility_flow` - `src/core/services/coupleCompatibilityService.js` (uses: `src/core/services/calculators/SynastryEngine.js`)
 2.  `get_synastry_analysis` - `src/core/services/synastryAnalysisService.js` (uses: `src/core/services/calculators/SynastryEngine.js`)
-3.  `start_family_astrology_flow` - `src/core/services/familyAstrologyService.js` (uses: `src/core/services/calculators/GroupAstrologyCalculator.js`)
+3.  `start_family_astrology_flow` - `src/core/services/familyAstrologyService.js` (uses: `src/core/services/calculators/GroupAstrologyCalculator.js` and `src/core/services/calculators/CompatibilityCalculator.js`)
 4.  `start_business_partnership_flow` - `src/core/services/businessPartnershipService.js` (uses: `src/core/services/calculators/GroupAstrologyCalculator.js`)
-5.  `start_group_timing_flow` - `src/core/services/groupTimingService.js` (uses: `src/core/services/calculators/GroupAstrologyCalculator.js` + `src/core/services/calculators/MuhurtaCalculator.js`)
-6.  `get_numerology_analysis` - `src/core/services/numerologyAnalysisService.js` (uses: `src/core/services/calculators/numerologyService.js`)
-7.  `get_numerology_report` - `src/core/services/numerologyService.js` (also `src/core/services/numerologyReportService.js`) (uses: `src/core/services/calculators/numerologyService.js`)
+5.  `start_group_timing_flow` - `src/core/services/groupTimingService.js` (uses: `src/core/services/calculators/GroupAstrologyCalculator.js` and `src/core/services/calculators/MuhurtaCalculator.js`)
+6.  `get_numerology_analysis` - `src/core/services/numerologyAnalysisService.js` (uses: `src/core/services/calculators/NumerologyCalculator.js`)
+7.  `get_numerology_report` - `src/core/services/numerologyService.js` (also `src/core/services/numerologyReportService.js`) (uses: `src/core/services/calculators/NumerologyCalculator.js`)
 8.  `get_lunar_return` - `src/core/services/lunarReturnService.js` (uses: `src/core/services/calculators/LunarReturnCalculator.js`)
-9.  `get_future_self_analysis` - `src/core/services/futureSelfAnalysisService.js` (uses: `src/core/services/calculators/FutureSelfSimulatorCalculator.js`)
-10. `get_electional_astrology` - `src/core/services/electionalAstrologyService.js` (uses: `src/core/services/calculators/PoliticalAstrology.js`)
-11. `get_mundane_astrology_analysis` - `src/core/services/mundaneAstrologyService.js` (uses: `src/core/services/calculators/PoliticalAstrology.js`)
+9.  `get_future_self_analysis` - `src/core/services/futureSelfAnalysisService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+10. `get_electional_astrology` - `src/core/services/electionalAstrologyService.js` (uses: `src/core/services/calculators/MuhurtaCalculator.js`)
+11. `get_mundane_astrology_analysis` - `src/core/services/mundaneAstrologyService.js` (uses: `src/core/services/calculators/ChartGenerator.js` and `src/core/services/calculators/PoliticalAstrology.js`)
 12. `get_daily_horoscope` - `src/core/services/dailyHoroscopeService.js` (uses: `src/core/services/calculators/DailyHoroscopeCalculator.js`)
 13. `show_birth_chart` - `src/core/services/birthChartService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
-14. `get_current_transits` - `src/core/services/currentTransitsService.js` (uses: `src/core/services/calculators/TransitCalculator.js`)
+14. `get_current_transits` - `src/core/services/currentTransitsService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
 15. `get_secondary_progressions` - `src/core/services/secondaryProgressionsService.js` (uses: `src/core/services/calculators/SecondaryProgressionsCalculator.js`)
 16. `get_solar_arc_directions` - `src/core/services/solarArcDirectionsService.js` (uses: `src/core/services/calculators/SolarArcDirectionsCalculator.js`)
-17. `get_fixed_stars_analysis` - `src/core/services/fixedStarsService.js` (uses: `src/core/services/calculators/FixedStarsCalculator.js`)
-20. `get_career_astrology_analysis` - `src/core/services/careerAstrologyService.js` (uses: `src/core/services/calculators/CareerAstrologyCalculator.js`)
-21. `get_financial_astrology_analysis` - `src/core/services/financialAstrologyService.js`
-22. `get_medical_astrology_analysis` - `src/core/services/medicalAstrologyService.js`
-23. `get_event_astrology_analysis` - `src/core/services/eventAstrologyService.js`
-24. `get_hindu_astrology_analysis` - `src/core/services/hinduAstrologyService.js`
-25. `show_nadi_flow` - `src/core/services/nadiAstrologyService.js`
-26. `generateDetailedChartAnalysis` - `src/core/services/detailedChartAnalysisService.js`
-27. `generateBasicBirthChart` - `src/core/services/basicBirthChartService.js`
-28. `generateWesternBirthChart` - `src/core/services/westernBirthChartService.js`
-29. `calculateSunSign` - `src/core/services/sunSignService.js`
-30. `calculateMoonSign` - `src/core/services/moonSignService.js`
-31. `calculateRisingSign` - `src/core/services/risingSignService.js`
-32. `calculateNakshatra` - `src/core/services/calculateNakshatraService.js`
-33. `get_vimshottari_dasha_analysis` - `src/core/services/vimshottariDashaService.js`
-34. `calculateCurrentDasha` - `src/core/services/currentDashaService.js`
-35. `calculateUpcomingDashas` - `src/core/services/upcomingDashasService.js`
-36. `calculateAntardasha` - `src/core/services/antardashaService.js`
-37. `calculateJaiminiAstrology` - `src/core/services/jaiminiAstrologyService.js`
-38. `calculateJaiminiDashas` - `src/core/services/jaiminiDashasService.js`
-39. `calculateGochar` - `src/core/services/gocharService.js`
-40. `calculateSolarReturn` - `src/core/services/solarReturnService.js`
-41. `calculateLunarReturn` - `src/core/services/lunarReturnService.js`
-42. `calculateVarshaphal` - `src/core/services/varshaphalService.js`
-43. `calculateSecondaryProgressions` - `src/core/services/secondaryProgressionsService.js`
-44. `calculateSolarArcDirections` - `src/core/services/solarArcDirectionsService.js`
-45. `calculateEnhancedSecondaryProgressions` - `src/core/services/enhancedSecondaryProgressionsService.js`
-46. `calculateEnhancedSolarArcDirections` - `src/core/services/enhancedSolarArcDirectionsService.js`
-47. `calculateNextSignificantTransits` - `src/core/services/significantTransitsService.js`
-48. `calculateAdvancedTransits` - `src/core/services/advancedTransitsService.js`
-49. `identifyMajorTransits` - `src/core/services/majorTransitsService.js`
-50. `generateTransitPreview` - `src/core/services/transitPreviewService.js`
-51. `calculateNakshatraPorutham` - `src/core/services/nakshatraPoruthamService.js`
-52. `calculateCompatibilityScore` - `src/core/services/compatibilityScoreService.js`
-53. `performSynastryAnalysis` - `src/core/services/performSynastryAnalysisService.js`
-54. `calculateCompositeChart` - `src/core/services/compositeChartService.js`
-55. `calculateDavisonChart` - `src/core/services/davisonChartService.js`
-56. `generateGroupAstrology` - `src/core/services/generateGroupAstrologyService.js`
-57. `get_ashtakavarga_analysis` - `src/core/services/ashtakavargaService.js`
-58. `generateShadbala` - `src/core/services/shadbalaService.js`
-59. `get_varga_charts_analysis` - `src/core/services/vargaChartsService.js`
-60. `get_prashna_astrology_analysis` - `src/core/services/prashnaAstrologyService.js`
-61. `calculateVedicYogas` - `src/core/services/vedicYogasService.js`
-62. `calculateAsteroids` - `src/core/services/asteroidsService.js`
-63. `generateComprehensiveVedicAnalysis` - `src/core/services/comprehensiveVedicAnalysisService.js`
-64. `generateFutureSelfSimulator` - `src/core/services/futureSelfSimulatorService.js`
-65. `get_ayurvedic_astrology_analysis` - `src/core/services/ayurvedicAstrologyService.js`
-66. `generateLifePatterns` - `src/core/services/lifePatternsService.js`
-67. `get_panchang_analysis` - `src/core/services/panchangService.js`
-68. `get_muhurta_analysis` - `src/core/services/muhurtaService.js`
-69. `calculateAbhijitMuhurta` - `src/core/services/abhijitMuhurtaService.js`
-70. `calculateRahukalam` - `src/core/services/rahukalamService.js`
-71. `calculateGulikakalam` - `src/core/services/gulikakalamService.js`
-72. `calculateCosmicEvents` - `src/core/services/cosmicEventsService.js`
-73. `generateEphemerisTable` - `src/core/services/ephemerisService.js`
-74. `calculateUpcomingSeasonalEvents` - `src/core/services/seasonalEventsService.js`
-75. `calculateUpcomingPlanetaryEvents` - `src/core/services/planetaryEventsService.js`
-76. `get_vedic_remedies_info` - `src/core/services/vedicRemediesService.js`
-77. `generateKaalSarpDosha` - `src/core/services/kaalSarpDoshaService.js`
-78. `generateSadeSatiAnalysis` - `src/core/services/sadeSatiService.js`
-79. `get_tarot_reading` - `src/core/services/tarotReadingService.js` (uses: `src/core/services/calculators/tarotReader.js`)
-80. `get_iching_reading` - `src/core/services/ichingReadingService.js` (uses: `src/core/services/calculators/ichingReader.js`)
-81. `get_palmistry_analysis` - `src/core/services/palmistryService.js` (uses: `src/core/services/calculators/palmistryReader.js`)
-82. `show_chinese_flow` - `src/core/services/chineseAstrologyService.js` (uses: `src/core/services/calculators/chineseCalculator.js`)
-83. `get_mayan_analysis` - `src/core/services/mayanAstrologyService.js` (uses: `src/core/services/calculators/mayanReader.js`)
-84. `get_celtic_analysis` - `src/core/services/celticAstrologyService.js` (uses: `src/core/services/calculators/celticReader.js`)
-85. `get_kabbalistic_analysis` - `src/core/services/kabbalisticAstrologyService.js` (uses: `src/core/services/calculators/kabbalisticReader.js`)
-86. `get_hellenistic_astrology_analysis` - `src/core/services/hellenisticAstrologyService.js` (uses: `src/core/services/calculators/hellenisticAstrology.js`)
-87. `get_horary_reading` - `src/core/services/horaryAstrologyService.js` (uses: `src/core/services/calculators/HoraryCalculator.js`)
-88. `get_astrocartography_analysis` - `src/core/services/astrocartographyService.js` (uses: `src/core/services/calculators/astrocartographyReader.js`)
-89. `get_hindu_festivals_info` - `src/core/services/hinduFestivalsService.js` (uses: `src/core/services/calculators/hinduFestivals.js`)
-90. `get_islamic_astrology_info` - `src/core/services/islamicAstrologyService.js` (uses: `src/core/services/calculators/islamicAstrology.js`)
+17. `get_fixed_stars_analysis` - `src/core/services/fixedStarsService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+18. `get_career_astrology_analysis` - `src/core/services/careerAstrologyService.js` (uses: `src/core/services/calculators/CareerAstrologyCalculator.js`)
+19. `get_financial_astrology_analysis` - `src/core/services/financialAstrologyService.js` (uses: `src/core/services/calculators/FinancialAstrologyCalculator.js`)
+20. `get_medical_astrology_analysis` - `src/core/services/medicalAstrologyService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+21. `get_event_astrology_analysis` - `src/core/services/eventAstrologyService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+22. `get_hindu_astrology_analysis` - `src/core/services/hinduAstrologyService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+23. `show_nadi_flow` - `src/core/services/nadiAstrologyService.js` (uses: `src/core/services/calculators/NadiCalculator.js`)
+24. `generateDetailedChartAnalysis` - `src/core/services/detailedChartAnalysisService.js` (uses: `src/core/services/calculators/DetailedChartAnalysisCalculator.js`)
+25. `generateBasicBirthChart` - `src/core/services/basicBirthChartService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+26. `generateWesternBirthChart` - `src/core/services/westernBirthChartService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+27. `calculateSunSign` - `src/core/services/sunSignService.js` (uses: `src/core/services/calculators/SignCalculator.js`)
+28. `calculateMoonSign` - `src/core/services/moonSignService.js` (uses: `src/core/services/calculators/SignCalculator.js`)
+29. `calculateRisingSign` - `src/core/services/risingSignService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+30. `calculateNakshatra` - `src/core/services/calculateNakshatraService.js` (uses: `src/core/services/calculators/SignCalculator.js`)
+31. `get_vimshottari_dasha_analysis` - `src/core/services/vimshottariDashaService.js` (uses: `src/core/services/calculators/DashaAnalysisCalculator.js`)
+32. `calculateCurrentDasha` - `src/core/services/currentDashaService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+33. `calculateUpcomingDashas` - `src/core/services/upcomingDashasService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+34. `calculateAntardasha` - `src/core/services/antardashaService.js` (uses: `src/core/services/calculators/AntardashaCalculator.js`)
+35. `calculateJaiminiAstrology` - `src/core/services/jaiminiAstrologyService.js` (uses: `src/core/services/calculators/JaiminiAstrology.js`)
+36. `calculateJaiminiDashas` - `src/core/services/jaiminiDashasService.js` (uses: `src/core/services/calculators/JaiminiCalculator.js`)
+37. `calculateGochar` - `src/core/services/gocharService.js` (uses: `src/core/services/calculators/VedicCalculator.js`)
+38. `calculateSolarReturn` - `src/core/services/solarReturnService.js` (uses: `src/core/services/calculators/SolarReturnCalculator.js`)
+39. `calculateLunarReturn` - `src/core/services/lunarReturnService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+40. `calculateVarshaphal` - `src/core/services/varshaphalService.js` (uses: `src/core/services/calculators/Varshaphal.js`)
+41. `calculateSecondaryProgressions` - `src/core/services/secondaryProgressionsService.js` (uses: `src/core/services/calculators/SecondaryProgressionsCalculator.js`)
+42. `calculateSolarArcDirections` - `src/core/services/solarArcDirectionsService.js` (uses: `src/core/services/calculators/SolarArcDirectionsCalculator.js`)
+43. `calculateEnhancedSecondaryProgressions` - `src/core/services/enhancedSecondaryProgressionsService.js` (uses: `src/core/services/calculators/EnhancedSecondaryProgressions.js`)
+44. `calculateEnhancedSolarArcDirections` - `src/core/services/enhancedSolarArcDirectionsService.js` (uses: `src/core/services/calculators/EnhancedSolarArcDirections.js`)
+45. `calculateNextSignificantTransits` - `src/core/services/significantTransitsService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+46. `calculateAdvancedTransits` - `src/core/services/advancedTransitsService.js` (uses: `src/core/services/calculators/SignificantTransitsCalculator.js`)
+47. `identifyMajorTransits` - `src/core/services/majorTransitsService.js` (uses: `src/core/services/calculators/SignificantTransitsCalculator.js`)
+48. `generateTransitPreview` - `src/core/services/transitPreviewService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+49. `calculateNakshatraPorutham` - `src/core/services/nakshatraPoruthamService.js` (uses: `src/core/services/calculators/NadiCompatibility.js`)
+50. `calculateCompatibilityScore` - `src/core/services/compatibilityScoreService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+51. `performSynastryAnalysis` - `src/core/services/performSynastryAnalysisService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+52. `calculateCompositeChart` - `src/core/services/compositeChartService.js` (uses: `src/core/services/calculators/SynastryEngine.js`)
+53. `calculateDavisonChart` - `src/core/services/davisonChartService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+54. `generateGroupAstrology` - `src/core/services/generateGroupAstrologyService.js` (uses: `src/core/services/calculators/GroupAstrologyCalculator.js`)
+55. `get_ashtakavarga_analysis` - `src/core/services/ashtakavargaService.js` (uses: `src/core/services/calculators/AshtakavargaCalculator.js`)
+56. `generateShadbala` - `src/core/services/shadbalaService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+57. `get_varga_charts_analysis` - `src/core/services/vargaChartsService.js` (uses: `src/core/services/calculators/VargaCharts.js`)
+58. `get_prashna_astrology_analysis` - `src/core/services/prashnaAstrologyService.js` (uses: `src/core/services/calculators/PrashnaCalculator.js`)
+59. `calculateVedicYogas` - `src/core/services/vedicYogasService.js` (uses: `src/core/services/calculators/VedicYogasCalculator.js`)
+60. `calculateAsteroids` - `src/core/services/asteroidsService.js` (uses: `src/core/services/calculators/AsteroidCalculator.js`)
+61. `generateComprehensiveVedicAnalysis` - `src/core/services/comprehensiveVedicAnalysisService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+62. `generateFutureSelfSimulator` - `src/core/services/futureSelfSimulatorService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+63. `get_ayurvedic_astrology_analysis` - `src/core/services/ayurvedicAstrologyService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+64. `generateLifePatterns` - `src/core/services/lifePatternsService.js` (uses: `src/core/services/calculators/ComprehensiveAnalysisCalculator.js`)
+65. `get_panchang_analysis` - `src/core/services/panchangService.js` (uses: `src/core/services/calculators/PanchangCalculator.js`)
+66. `get_muhurta_analysis` - `src/core/services/muhurtaService.js` (uses: `src/core/services/calculators/MuhurtaCalculator.js`)
+67. `calculateAbhijitMuhurta` - `src/core/services/abhijitMuhurtaService.js` (uses: `src/core/services/calculators/MuhurtaCalculator.js`)
+68. `calculateRahukalam` - `src/core/services/rahukalamService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+69. `calculateGulikakalam` - `src/core/services/gulikakalamService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+70. `calculateCosmicEvents` - `src/core/services/cosmicEventsService.js` (uses: `src/core/services/calculators/CosmicEventsCalculator.js`)
+71. `generateEphemerisTable` - `src/core/services/ephemerisService.js` (uses: `src/core/services/calculators/EphemerisCalculator.js`)
+72. `calculateUpcomingSeasonalEvents` - `src/core/services/seasonalEventsService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+73. `calculateUpcomingPlanetaryEvents` - `src/core/services/planetaryEventsService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+74. `get_vedic_remedies_info` - `src/core/services/vedicRemediesService.js` (uses: `src/core/services/calculators/VedicRemedies.js`)
+75. `generateKaalSarpDosha` - `src/core/services/kaalSarpDoshaService.js` (uses: `src/core/services/calculators/KaalSarpDoshaCalculator.js`)
+76. `generateSadeSatiAnalysis` - `src/core/services/sadeSatiService.js` (uses: `src/core/services/calculators/SadeSatiCalculator.js`)
+77. `get_tarot_reading` - `src/core/services/tarotReadingService.js` (uses: `src/core/services/calculators/PalmistryReader.js`)
+78. `get_iching_reading` - `src/core/services/ichingReadingService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+79. `get_palmistry_analysis` - `src/core/services/palmistryService.js` (uses: `src/core/services/calculators/PalmistryReader.js`)
+80. `show_chinese_flow` - `src/core/services/chineseAstrologyService.js` (uses: `src/core/services/calculators/ChineseCalculator.js`)
+81. `get_mayan_analysis` - `src/core/services/mayanAstrologyService.js` (uses: `src/core/services/calculators/MayanCalculator.js`)
+82. `get_celtic_analysis` - `src/core/services/celticAstrologyService.js` (uses: `src/core/services/calculators/CelticCalculator.js`)
+83. `get_kabbalistic_analysis` - `src/core/services/kabbalisticAstrologyService.js` (uses: `src/core/services/calculators/KabbalisticAstrologyCalculator.js`)
+84. `get_hellenistic_astrology_analysis` - `src/core/services/hellenisticAstrologyService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+85. `get_horary_reading` - `src/core/services/horaryAstrologyService.js` (uses: `src/core/services/calculators/PrashnaCalculator.js`)
+86. `get_astrocartography_analysis` - `src/core/services/astrocartographyService.js` (uses: `src/core/services/calculators/astrocartographyReader.js`)
+87. `get_hindu_festivals_info` - `src/core/services/hinduFestivalsService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+88. `get_islamic_astrology_info` - `src/core/services/islamicAstrologyService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+89. `get_horary_reading_analysis` - `src/core/services/horaryReadingService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+90. `get_divination_reading` - `src/core/services/divinationService.js` (uses: multiple calculators - no single calculator)
+91. `get_vedic_numerology_analysis` - `src/core/services/vedicNumerologyService.js` (uses: `src/core/services/calculators/VedicNumerology.js`)
+92. `get_vedic_yogas_analysis` - `src/core/services/vedicYogasService.js` (uses: `src/core/services/calculators/VedicYogasCalculator.js`)
+93. `get_future_self_simulator` - `src/core/services/futureSelfSimulatorService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+94. `get_compatibility_service_analysis` - `src/core/services/compatibilityService.js` (uses: multiple calculators)
+95. `get_enhanced_panchang_analysis` - `src/core/services/enhancedPanchangService.js` (uses: `src/core/services/calculators/PanchangCalculator.js`)
+96. `get_enhanced_secondary_progressions_analysis` - `src/core/services/enhancedSecondaryProgressionsService.js` (uses: `src/core/services/calculators/EnhancedSecondaryProgressions.js`)
+97. `get_enhanced_solar_arc_directions_analysis` - `src/core/services/enhancedSolarArcDirectionsService.js` (uses: `src/core/services/calculators/EnhancedSolarArcDirections.js`)
+98. `get_calendar_timing_analysis` - `src/core/services/calendarTimingService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+99. `get_specialized_analysis` - `src/core/services/specializedAnalysisService.js` (uses: multiple calculators)
+100. `get_dasha_predictive_analysis` - `src/core/services/dashaPredictiveService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)

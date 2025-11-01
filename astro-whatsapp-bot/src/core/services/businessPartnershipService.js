@@ -12,12 +12,9 @@ const logger = require('../../utils/logger');
  */
 class BusinessPartnershipService extends ServiceTemplate {
   constructor() {
-    super({
-      groupCalculator: new GroupAstrologyCalculator(),
-      compatibilityScorer: new CompatibilityCalculator(),
-      financialCalculator: new FinancialAstrologyCalculator()
-    });
+    super('CompatibilityCalculator');
     this.serviceName = 'BusinessPartnershipService';
+    this.calculatorPath = '../calculators/CompatibilityCalculator';
     logger.info('BusinessPartnershipService initialized');
   }
 

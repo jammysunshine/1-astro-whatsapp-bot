@@ -1,0 +1,387 @@
+--- ./astro-whatsapp-bot/src/core/services/jaiminiAstrologyService.js ---
+    super('JaiminiAstrology', {
+
+--- ./astro-whatsapp-bot/src/core/services/coupleCompatibilityService.js ---
+    super('SynastryEngine');
+    this.calculatorPath = '../../../services/astrology/compatibility/SynastryEngine';
+
+--- ./astro-whatsapp-bot/src/core/services/birthChartService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';
+
+--- ./astro-whatsapp-bot/src/core/services/calendarTimingService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CalendarTimingService';
+
+--- ./astro-whatsapp-bot/src/core/services/vimshottariDashaService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'VimshottariDashaService';
+    this.calculatorPath = '../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/varshaphalService.js ---
+    super('Varshaphal', {
+
+--- ./astro-whatsapp-bot/src/core/services/businessPartnershipService.js ---
+    super({
+
+--- ./astro-whatsapp-bot/src/core/services/advancedTransitsService.js ---
+    super('SignificantTransitsCalculator');
+    this.calculatorPath = '../../services/astrology/vedic/calculators/SignificantTransitsCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/electionalAstrologyService.js ---
+    super('MuhurtaCalculator');
+    this.calculatorPath = '../calculators/MuhurtaCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/advancedCompatibilityService.js ---
+    super('CompatibilityCalculator');
+    this.calculatorPath = '../calculators/CompatibilityCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/kaalSarpDoshaService.js ---
+    super('KaalSarpDoshaCalculator');
+    this.calculatorPath = '../calculators/KaalSarpDoshaCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/shadbalaService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';
+
+--- ./astro-whatsapp-bot/src/core/services/kabbalisticAstrologyService.js ---
+    super('KabbalisticAstrologyCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/KabbalisticAstrologyCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/nakshatraPoruthamService.js ---
+    super('NadiCompatibility'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/NadiCompatibility';
+
+--- ./astro-whatsapp-bot/src/core/services/prashnaService.js ---
+    super('PrashnaCalculator');
+
+--- ./astro-whatsapp-bot/src/core/services/remediesDoshaService.js ---
+    super('vedicRemedies');
+    this.calculatorPath = '../calculators/vedicRemedies'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/islamicAstrologyService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'IslamicAstrologyService';
+    this.calculatorPath = '../../../services/astrology/islamicAstrology';
+
+--- ./astro-whatsapp-bot/src/core/services/dashaPredictiveService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'DashaPredictiveService';
+
+--- ./astro-whatsapp-bot/src/core/services/hinduFestivalsService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HinduFestivalsService';
+    this.calculatorPath = '../../../services/astrology/hinduFestivals';
+
+--- ./astro-whatsapp-bot/src/core/services/cosmicEventsService.js ---
+    super('CosmicEventsCalculator');
+    this.calculatorPath = '../services/astrology/vedic/calculators/CosmicEventsCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/specializedAnalysisService.js ---
+    super({
+
+--- ./astro-whatsapp-bot/src/core/services/secondaryProgressionsService.js ---
+    super('SecondaryProgressionsCalculator');
+    this.calculatorPath = '../calculators/SecondaryProgressionsCalculator';    this.serviceName = 'SecondaryProgressionsService';
+
+--- ./astro-whatsapp-bot/src/core/services/ashtakavargaService.js ---
+    super('AshtakavargaCalculator');
+    this.calculatorPath = '../calculators/AshtakavargaCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/sadeSatiService.js ---
+    super('SadeSatiCalculator');
+
+--- ./astro-whatsapp-bot/src/core/services/vargaChartsService.js ---
+    super('VargaCharts');
+    this.calculatorPath = '../calculators/VargaCharts'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/compositeChartService.js ---
+    super('SynastryEngine');
+    this.calculatorPath = '../calculators/SynastryEngine'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/solarArcDirectionsService.js ---
+    super('SolarArcDirectionsCalculator');
+    this.calculatorPath = '../calculators/SolarArcDirectionsCalculator';    this.serviceName = 'SolarArcDirectionsService';
+
+--- ./astro-whatsapp-bot/src/core/services/asteroidsService.js ---
+    super('AsteroidCalculator');
+    this.calculatorPath = '../calculators/AsteroidCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/chineseAstrologyService.js ---
+    super('ChineseCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChineseCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/majorTransitsService.js ---
+    super('SignificantTransitsCalculator');
+
+--- ./astro-whatsapp-bot/src/core/services/celticAstrologyService.js ---
+    super('CelticCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/CelticCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/currentDashaService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CurrentDashaService';
+
+--- ./astro-whatsapp-bot/src/core/services/enhancedSolarArcDirectionsService.js ---
+    super('EnhancedSolarArcDirections', {
+
+--- ./astro-whatsapp-bot/src/core/services/eventAstrologyService.js ---
+    super('CosmicEventsCalculator');
+    this.calculatorPath = '../calculators/CosmicEventsCalculator';    this.serviceName = 'EventAstrologyService';
+
+--- ./astro-whatsapp-bot/src/core/services/compatibilityScoreService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CompatibilityScoreService';
+
+--- ./astro-whatsapp-bot/src/core/services/moonSignService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'MoonSignService';
+    this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/ephemerisService.js ---
+    super('EphemerisCalculator');
+    this.calculatorPath = '../services/astrology/vedic/calculators/EphemerisCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/fixedStarsService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'FixedStarsService';
+
+--- ./astro-whatsapp-bot/src/core/services/horaryAstrologyService.js ---
+    super('PrashnaCalculator');
+    this.calculatorPath = '../calculators/PrashnaCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/tarotReadingService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.calculatorPath = '../../../services/astrology/tarotReader';
+
+--- ./astro-whatsapp-bot/src/core/services/generateGroupAstrologyService.js ---
+    super('GroupAstrologyCalculator');
+    this.calculatorPath = '../calculators/GroupAstrologyCalculator'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/palmistryService.js ---
+    super('PalmistryReader');
+    this.calculatorPath = '../services/astrology/palmistryReader';
+
+--- ./astro-whatsapp-bot/src/core/services/significantTransitsService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'GocharService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/VedicCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/prashnaAstrologyService.js ---
+    super('PrashnaCalculator');
+
+--- ./astro-whatsapp-bot/src/core/services/ayurvedicAstrologyService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'AyurvedicAstrologyService';
+    this.calculatorPath = '../calculators/AyurvedicAstrology'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/hellenisticAstrologyService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HellenisticAstrologyService';
+    this.calculatorPath = '../calculators/hellenisticAstrologyReader'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/divinationService.js ---
+    super(); // No single calculator for divination service
+
+--- ./astro-whatsapp-bot/src/core/services/vedicNumerologyService.js ---
+    super('VedicNumerology');
+    this.calculatorPath = '../calculators/VedicNumerology'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/vedicYogasService.js ---
+    super('VedicYogasCalculator');
+
+--- ./astro-whatsapp-bot/src/core/services/futureSelfSimulatorService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';
+
+--- ./astro-whatsapp-bot/src/core/services/careerAstrologyService.js ---
+    super('CareerAstrologyService');
+    this.calculatorPath = '../../../services/astrology/calculators/CareerAstrologyCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/comprehensiveVedicAnalysisService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';
+
+--- ./astro-whatsapp-bot/src/core/services/horaryReadingService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HoraryReadingService';
+    this.calculatorPath = '../../../services/astrology/horary/HoraryCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/antardashaService.js ---
+    super('AntardashaCalculator');
+    this.calculatorPath = '../services/astrology/vedic/calculators/AntardashaCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/compatibilityService.js ---
+    super({
+
+--- ./astro-whatsapp-bot/src/core/services/enhancedSecondaryProgressionsService.js ---
+    super('EnhancedSecondaryProgressions', {
+
+--- ./astro-whatsapp-bot/src/core/services/numerologyService.js ---
+    super(); // No calculator class, using module functions
+
+--- ./astro-whatsapp-bot/src/core/services/enhancedPanchangService.js ---
+    super('PanchangCalculator');
+    this.calculatorPath = '../calculators/PanchangCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/familyAstrologyService.js ---
+    // No super() call with calculatorName as it manages multiple calculators directly
+
+--- ./astro-whatsapp-bot/src/core/services/synastryAnalysisService.js ---
+    super('CompatibilityCalculator');
+    this.calculatorPath = '../calculators/CompatibilityCalculator';    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'SynastryAnalysisService';
+
+--- ./astro-whatsapp-bot/src/core/services/panchangService.js ---
+    super('PanchangCalculator');
+    this.calculatorPath = '../calculators/PanchangCalculator';    this.serviceName = 'PanchangService';
+
+--- ./astro-whatsapp-bot/src/core/services/planetaryEventsService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'PlanetaryEventsService';
+    this.calculatorPath = '../calculators/PlanetaryEventsCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/nadiAstrologyService.js ---
+    super('NadiCalculator');
+
+--- ./astro-whatsapp-bot/src/core/services/mayanAstrologyService.js ---
+    super('MayanCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/MayanCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/currentTransitsService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CurrentTransitsService';
+
+--- ./astro-whatsapp-bot/src/core/services/sunSignService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'SunSignService';
+    this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/lifePatternsService.js ---
+    super('ComprehensiveAnalysisCalculator');
+    this.calculatorPath = '../calculators/ComprehensiveAnalysisCalculator';    this.serviceName = 'LifePatternsService';
+
+--- ./astro-whatsapp-bot/src/core/services/muhurtaService.js ---
+    super('MuhurtaCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/performSynastryAnalysisService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'PerformSynastryAnalysisService';
+    this.calculatorPath = '../calculators/SynastryEngine'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/financialAstrologyService.js ---
+    super('FinancialAstrologyCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/FinancialAstrologyCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/numerologyAnalysisService.js ---
+    super('NumerologyCalculator');
+
+--- ./astro-whatsapp-bot/src/core/services/numerologyReportService.js ---
+    super('NumerologyCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../../../services/astrology/numerologyService';
+
+--- ./astro-whatsapp-bot/src/core/services/dailyHoroscopeService.js ---
+    super('DailyHoroscopeCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/DailyHoroscopeCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/vedicRemediesService.js ---
+    super('VedicRemedies'); // Primary calculator for this service
+    this.calculatorPath = '../../../services/astrology/vedicRemedies';
+
+--- ./astro-whatsapp-bot/src/core/services/solarReturnService.js ---
+    super('SolarReturnCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/SolarReturnCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/rahukalamService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'RahukalamService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/astrocartographyService.js ---
+    super('astrocartographyReader');
+    this.calculatorPath = '../calculators/astrocartographyReader'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/davisonChartService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';
+
+--- ./astro-whatsapp-bot/src/core/services/medicalAstrologyService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'MedicalAstrologyService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/MedicalAstrologyCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/upcomingDashasService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'UpcomingDashasService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/gocharService.js ---
+    super('VedicCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/VedicCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/futureSelfAnalysisService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';
+
+--- ./astro-whatsapp-bot/src/core/services/basicBirthChartService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/calculateNakshatraService.js ---
+    super('SignCalculator');
+    this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/gulikakalamService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'GulikakalamService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/abhijitMuhurtaService.js ---
+    super('MuhurtaCalculator');
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/hinduAstrologyService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HinduAstrologyService';
+    this.calculatorPath = '../calculators/ChartGenerator'; // Assuming this path for the main calculator
+
+--- ./astro-whatsapp-bot/src/core/services/groupTimingService.js ---
+
+--- ./astro-whatsapp-bot/src/core/services/transitPreviewService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'TransitPreviewService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/TransitCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/jaiminiDashasService.js ---
+    super('JaiminiCalculator');
+    this.calculatorPath = '../calculators/JaiminiCalculator';    this.serviceName = 'JaiminiDashasService';
+
+--- ./astro-whatsapp-bot/src/core/services/ichingReadingService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'IChingReadingService';
+    // Don't set calculatorPath since we're directly importing and initializing
+
+--- ./astro-whatsapp-bot/src/core/services/detailedChartAnalysisService.js ---
+    super('DetailedChartAnalysisCalculator'); // Primary calculator for this service
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/DetailedChartAnalysisCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/risingSignService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'RisingSignService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/SignCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/seasonalEventsService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'SeasonalEventsService';
+    this.calculatorPath = '../calculators/SeasonalEventsCalculator';
+
+--- ./astro-whatsapp-bot/src/core/services/mundaneAstrologyService.js ---
+    super('ChartGenerator');
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'MundaneAstrologyService';
+    this.calculatorPath = '../../../services/astrology/mundane/PoliticalAstrology';
+
+--- ./astro-whatsapp-bot/src/core/services/lunarReturnService.js ---
+    super('ChartGenerator'); // Primary calculator for this service
+    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'LunarReturnService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/LunarReturnCalculator';
+

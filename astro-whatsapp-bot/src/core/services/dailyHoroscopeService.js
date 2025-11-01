@@ -23,11 +23,6 @@ class DailyHoroscopeService extends ServiceTemplate {
    */
   async processCalculation(birthData) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(birthData);
 
       // Generate daily horoscope
@@ -79,11 +74,6 @@ class DailyHoroscopeService extends ServiceTemplate {
    */
   async getHoroscopeForDate(birthData, targetDate) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(birthData);
 
       if (!targetDate) {
@@ -138,11 +128,6 @@ class DailyHoroscopeService extends ServiceTemplate {
    */
   async getWeeklyHoroscope(birthData) {
     try {
-      // Ensure calculator is loaded
-      if (!this.calculator) {
-        await this.initialize();
-      }
-
       this._validateInput(birthData);
 
       const weeklyHoroscopes = [];

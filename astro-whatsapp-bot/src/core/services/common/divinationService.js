@@ -120,7 +120,7 @@ class DivinationService extends ServiceTemplate {
       tarotSpreads: ['general', 'celtic-cross', 'three-card', 'relationship', 'career'],
       dependencies: []
     };
-  }  }
+  }
 
   /**
    * Get Tarot reading

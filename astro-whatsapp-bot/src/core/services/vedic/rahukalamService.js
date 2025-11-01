@@ -458,6 +458,8 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
       summary += `• ${measure}\n`;
     });
     
+    return summary;
+  }
 
 
   // Helper methods for calculations

@@ -6,7 +6,7 @@ jest.mock('astrologer');
 jest.mock('sweph');
 
 // Import the mocked module
-const calculator = require('../../../../src/services/astrology/vedicCalculator');
+const calculator = require('../../../../src/services/astrology/vedic/VedicCalculator');
 
 // Mock the module itself
 jest.mock('../../../../src/services/astrology/vedic/VedicCalculator', () => ({

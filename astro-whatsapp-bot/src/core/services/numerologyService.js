@@ -1,21 +1,19 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const { BirthData } = require('../../models');
-
-// Import calculator from legacy structure (for now)
+const { VedicNumerology } = require('./calculators/VedicNumerology');
 
 /**
  * NumerologyService - Service for numerology calculations and analysis
  * Provides comprehensive numerology readings including life path numbers,
  * expression numbers, soul urge numbers, and destiny analysis using
- * Pythagorean and Chaldean numerology systems.
+ * Vedic numerology system with Swiss Ephemeris and astrologer libraries.
  */
 class NumerologyService extends ServiceTemplate {
   constructor() {
-    super(); // No calculator class, using module functions
-    this.numerologyModule = NumerologyCalculator;
+    super('VedicNumerology');
+    this.calculator = new VedicNumerology();
     this.serviceName = 'NumerologyService';
-    logger.info('NumerologyService initialized');
+    logger.info('NumerologyService initialized with VedicNumerology');
   }
 
   /**
@@ -32,9 +30,8 @@ class NumerologyService extends ServiceTemplate {
     }
 
     // Validate birth data if provided
-    if (data.birthData) {
-      const validatedData = new BirthData(data.birthData);
-      validatedData.validate();
+    if (data.birthData && !data.birthData.birthDate) {
+      throw new Error('Birth date is required in birthData');
     }
 
     // Validate name if provided
@@ -46,65 +43,61 @@ class NumerologyService extends ServiceTemplate {
   }
 
   /**
-   * Process numerology calculation using the calculator
+   * Process numerology calculation using VedicNumerology calculator
    * @param {Object} data - Input data with name and/or birthData
    * @returns {Promise<Object>} Raw numerology result
    */
-  async lnumerologyCalculation(data) {
+  async processCalculation(data) {
     const { name, birthData, calculationType = 'comprehensive' } = data;
 
-    // Get numerology analysis from module functions
-    let analysis = {};
-
     try {
+      let analysis = {};
+
       if (name && birthData?.birthDate) {
-        // Get comprehensive numerology report
-        const fullReport = this.numerologyModule.getNumerologyReport(
+        // Get comprehensive Vedic numerology analysis
+        analysis = this.calculator.getVedicNumerologyAnalysis(
           birthData.birthDate,
           name
         );
-        analysis = {
-          ...fullReport,
-          calculationType: 'comprehensive'
-        };
+        analysis.calculationType = 'comprehensive';
       } else if (birthData?.birthDate) {
-        // Life path only
-        const lifePath = this.numerologyModule.calculateLifePath ?
-          this.numerologyModule.calculateLifePath(birthData.birthDate) :
-          this.numerologyModule.getNumerologyReport(
-            birthData.birthDate,
-            'User'
-          );
+        // Birth number only
+        const birthNumber = this.calculator.calculateBirthNumber(birthData.birthDate);
+        const interpretation = this.calculator.vedicInterpretations[birthNumber];
         analysis = {
-          lifePathNumber: lifePath,
-          calculationType: 'life-path'
+          birthNumber,
+          birthInterpretation: interpretation,
+          calculationType: 'birth-number'
         };
       } else if (name) {
-        // Name analysis only
-        const nameAnalysis = this.numerologyModule.getNumerologyReport ?
-          this.numerologyModule.getNumerologyReport('01/01/2000', name) :
-          { expressionNumber: name.length % 9 || 9 };
+        // Name number only
+        const nameNumber = this.calculator.calculateVedicNameNumber(name);
+        const interpretation = this.calculator.vedicInterpretations[nameNumber];
         analysis = {
-          ...nameAnalysis,
-          calculationType: 'name-analysis'
+          nameNumber,
+          nameInterpretation: interpretation,
+          calculationType: 'name-number'
         };
       }
+
+      // Add metadata
+      analysis.type = 'vedic-numerology';
+      analysis.generatedAt = new Date().toISOString();
+      analysis.service = this.serviceName;
+      analysis.name = name;
+      analysis.birthDate = birthData?.birthDate;
+
+      return analysis;
     } catch (error) {
       logger.error('NumerologyService calculation error:', error);
-      analysis = {
+      return {
         error: error.message,
-        calculationType
+        calculationType,
+        type: 'vedic-numerology',
+        generatedAt: new Date().toISOString(),
+        service: this.serviceName
       };
     }
-
-    // Add metadata
-    analysis.type = 'numerology';
-    analysis.generatedAt = new Date().toISOString();
-    analysis.service = this.serviceName;
-    analysis.name = name;
-    analysis.birthDate = birthData?.birthDate;
-
-    return analysis;
   }
 
   /**
@@ -140,14 +133,13 @@ class NumerologyService extends ServiceTemplate {
       name: 'NumerologyService',
       category: 'divination',
       description:
-        'Service for comprehensive numerology analysis using Pythagorean and Chaldean systems',
+        'Service for comprehensive Vedic numerology analysis using Swiss Ephemeris and astrologer libraries',
       version: '1.0.0',
       status: 'active',
       calculationTypes: [
-        'life-path',
-        'expression',
-        'soul-urge',
-        'personality',
+        'birth-number',
+        'name-number',
+        'destiny-number',
         'comprehensive'
       ]
     };

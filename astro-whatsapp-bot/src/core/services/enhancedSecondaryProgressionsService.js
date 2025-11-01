@@ -897,6 +897,11 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
       }
     };
   }
+
+  async processCalculation(data) {
+    return await this.calculate(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

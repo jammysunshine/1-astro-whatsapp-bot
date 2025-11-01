@@ -1,19 +1,21 @@
-/**
 const ServiceTemplate = require('./ServiceTemplate');
+const logger = require('../../utils/logger');
+const { VedicNumerology } = require('./calculators/VedicNumerology');
+
+/**
  * Vedic Numerology Service
  *
  * Provides Vedic numerology analysis using the traditional Chani system
  * based on Sanskrit alphabet and Vedic principles for name and birth number calculations.
+ * Uses Swiss Ephemeris and astrologer libraries for precise astronomical calculations.
  */
-
-const logger = require('../../../utils/logger');
 
 class VedicNumerologyService extends ServiceTemplate {
   constructor() {
     super('VedicNumerology');
+    this.calculator = new VedicNumerology();
     this.serviceName = 'VedicNumerologyService';
-    this.calculatorPath = '../calculators/VedicNumerology'; // Assuming this path for the main calculator
-    logger.info('VedicNumerologyService initialized');
+    logger.info('VedicNumerologyService initialized with VedicNumerology calculator');
   }
 
   /**
@@ -25,7 +27,7 @@ class VedicNumerologyService extends ServiceTemplate {
     try {
       this._validateInput(data);
 
-      // Get comprehensive numerology analysis
+      // Get comprehensive numerology analysis using VedicNumerology calculator
       const analysis = this.calculator.getVedicNumerologyAnalysis(
         data.birthDate,
         data.name
@@ -51,18 +53,14 @@ class VedicNumerologyService extends ServiceTemplate {
       }
 
       const nameNumber = this.calculator.calculateVedicNameNumber(name);
-      const interpretation =
-        this.calculator.vedicInterpretations[nameNumber] || {};
+      const interpretation = this.calculator.vedicInterpretations[nameNumber] || {};
 
       return {
         primaryNumber: nameNumber,
-        primaryMeaning:
-          interpretation.qualities || 'Unique vibrational pattern',
+        primaryMeaning: interpretation.qualities || 'Unique vibrational pattern',
         compoundNumber: nameNumber, // Simplified for compatibility
-        compoundMeaning:
-          interpretation.qualities || 'Unique vibrational pattern',
-        karmicPath:
-          interpretation.strengths || 'Personal growth and self-discovery',
+        compoundMeaning: interpretation.qualities || 'Unique vibrational pattern',
+        karmicPath: interpretation.strengths || 'Personal growth and self-discovery',
         error: false
       };
     } catch (error) {

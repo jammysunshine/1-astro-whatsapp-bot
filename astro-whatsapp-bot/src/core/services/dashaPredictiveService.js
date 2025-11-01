@@ -882,6 +882,11 @@ class DashaPredictiveService extends ServiceTemplate {
       dependencies: ['DashaAnalysisCalculator']
     };
   }
+
+  async processCalculation(data) {
+    return await this.ldashaPredictiveCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

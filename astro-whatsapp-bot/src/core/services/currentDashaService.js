@@ -584,6 +584,10 @@ class CurrentDashaService extends ServiceTemplate {
     };
   }
 
+  async processCalculation(data) {
+    return await this.lcurrentDashaCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

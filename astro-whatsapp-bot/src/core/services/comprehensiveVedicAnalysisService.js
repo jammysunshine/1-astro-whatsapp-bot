@@ -221,6 +221,11 @@ class ComprehensiveVedicAnalysisService extends ServiceTemplate {
 Comprehensive report with multi-level analysis, life predictions, and recommendations
     `.trim();
   }
+
+  async processCalculation(data) {
+    return await this.lcomprehensiveVedicAnalysisCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

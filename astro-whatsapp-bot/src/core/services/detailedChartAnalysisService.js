@@ -357,4 +357,4 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   }
 }
 
-module.exports = new DetailedChartAnalysisService();
+module.exports = DetailedChartAnalysisService;

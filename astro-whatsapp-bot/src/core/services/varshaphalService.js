@@ -733,4 +733,4 @@ class VarshaphalService extends ServiceTemplate {
   }
 }
 
-module.exports = new VarshaphalService();
+module.exports = VarshaphalService;

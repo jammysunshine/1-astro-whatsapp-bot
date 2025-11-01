@@ -786,4 +786,4 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   }
 }
 
-module.exports = new EnhancedSecondaryProgressionsService();
+module.exports = EnhancedSecondaryProgressionsService;

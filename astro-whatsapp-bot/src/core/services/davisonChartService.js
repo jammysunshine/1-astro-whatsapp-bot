@@ -12,7 +12,7 @@ class DavisonChartService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'DavisonChartService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/ChartGenerator';
+    this.calculatorPath = '../calculators/ChartGenerator';
     logger.info('DavisonChartService initialized');
   }
 
@@ -565,4 +565,4 @@ class DavisonChartService extends ServiceTemplate {
   }
 }
 
-module.exports = new DavisonChartService();
+module.exports = DavisonChartService;

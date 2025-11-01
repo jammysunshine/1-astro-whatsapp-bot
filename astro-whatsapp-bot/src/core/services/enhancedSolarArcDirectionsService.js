@@ -811,4 +811,4 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   }
 }
 
-module.exports = new EnhancedSolarArcDirectionsService();
+module.exports = EnhancedSolarArcDirectionsService;

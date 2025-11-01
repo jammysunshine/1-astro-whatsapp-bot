@@ -550,4 +550,4 @@ class JaiminiAstrologyService extends ServiceTemplate {
   }
 }
 
-module.exports = new JaiminiAstrologyService();
+module.exports = JaiminiAstrologyService;

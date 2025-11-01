@@ -7,14 +7,11 @@ const logger = require('../../../utils/logger');
  * Extends ServiceTemplate for standardized service architecture
  */
 class PrashnaService extends ServiceTemplate {
-  constructor(services) {
+  constructor() {
     super('PrashnaCalculator');
+    this.serviceName = 'PrashnaService';
     this.calculatorPath = '../calculators/PrashnaCalculator';
-    // Initialize Prashna Calculator with required dependencies
-    this.calculator = new PrashnaCalculator();
-
-    // Set services in calculator
-    this.calculator.setServices(services);
+    logger.info('PrashnaService initialized');
 
     // Service-specific configuration
     this.serviceConfig = {

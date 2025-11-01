@@ -7,14 +7,11 @@ const logger = require('../../../utils/logger');
  * Extends ServiceTemplate for standardized service architecture
  */
 class HoraryAstrologyService extends ServiceTemplate {
-  constructor(services) {
+  constructor() {
     super('PrashnaCalculator');
+    this.serviceName = 'HoraryAstrologyService';
     this.calculatorPath = '../calculators/PrashnaCalculator';
-    // Initialize Horary Calculator
-    this.calculator = new PrashnaCalculator();
-
-    // Set services in calculator
-    this.calculator.setServices(services);
+    logger.info('HoraryAstrologyService initialized');
 
     // Service-specific configuration
     this.serviceConfig = {

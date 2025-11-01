@@ -19,10 +19,26 @@ class ServiceTemplate extends AstroServiceInterface {
         // Dynamically import the calculator module
         const CalculatorModule = require(this.calculatorPath);
         // Get the calculator - try default export, then named export matching the name, then module itself
-        const rawCalculator =
+        let rawCalculator =
           CalculatorModule.default ||
           CalculatorModule[this.calculatorName] ||
           CalculatorModule;
+
+        // If it's still an object with the calculator name as a key, extract it
+        if (typeof rawCalculator === 'object' && rawCalculator[this.calculatorName]) {
+          rawCalculator = rawCalculator[this.calculatorName];
+        }
+
+        // If it's still undefined but the module is an object, try to find it by iterating keys
+        if (rawCalculator === undefined && typeof CalculatorModule === 'object') {
+          const keys = Object.keys(CalculatorModule);
+          for (const key of keys) {
+            if (key.toLowerCase().includes(this.calculatorName.toLowerCase())) {
+              rawCalculator = CalculatorModule[key];
+              break;
+            }
+          }
+        }
 
         // Check if rawCalculator is a constructor function (class) and needs instantiation
         if (

@@ -10,8 +10,7 @@ class AntardashaService extends ServiceTemplate {
   constructor() {
     super('AntardashaCalculator');
     this.serviceName = 'AntardashaService';
-    this.calculatorPath =
-      './calculators/AntardashaCalculator';
+    this.calculatorPath = './calculators/index';
     logger.info('AntardashaService initialized');
   }
 

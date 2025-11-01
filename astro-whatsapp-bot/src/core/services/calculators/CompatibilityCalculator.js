@@ -7,8 +7,8 @@ const logger = require('../../../utils/logger');
  */
 class CompatibilityCalculator {
   constructor(astrologer, geocodingService) {
-    this.astrologer = astrologer;
-    this.geocodingService = geocodingService;
+    this.astrologer = astrologer || {};
+    this.geocodingService = geocodingService || {};
   }
 
   /**
@@ -745,4 +745,4 @@ class CompatibilityCalculator {
   }
 }
 
-module.exports = { CompatibilityCalculator };
+module.exports = CompatibilityCalculator;

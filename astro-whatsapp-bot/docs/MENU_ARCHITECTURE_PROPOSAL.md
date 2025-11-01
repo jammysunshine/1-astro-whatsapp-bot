@@ -139,13 +139,13 @@ graph TD
     WebFrontend --> WebAdapter[Web Menu Adapter]
     TelegramFrontend --> TelegramAdapter[Telegram Menu Adapter]
     AndroidAppFrontend --> AndroidAdapter[Android App Menu Adapter]
-    iOSAppFrontend --> iOSAdapter[iOS App Menu Adapter]
+    iOSAppFrontend --> iOSAppAdapter[iOS App Menu Adapter]
 
     WhatsAppAdapter --> MenuRenderer
     WebAdapter --> MenuRenderer
     TelegramAdapter --> MenuRenderer
     AndroidAdapter --> MenuRenderer
-    iOSAdapter --> MenuRenderer
+    iOSAppAdapter --> MenuRenderer
 
     MenuRenderer --> MenuLoader
     MenuLoader --> MenuDefinitions
@@ -155,7 +155,7 @@ graph TD
     WebAdapter --> ActionMapper
     TelegramAdapter --> ActionMapper
     AndroidAdapter --> ActionMapper
-    iOSAdapter --> ActionMapper
+    iOSAppAdapter --> ActionMapper
 
     ActionMapper --> BackendServiceGateway
 
@@ -218,19 +218,19 @@ Platform-specific implementations that translate the generic menu representation
       menuId: string, // Unique identifier of the menu
       type: 'list' | 'buttons', // Type of menu to render
       body: string, // Translated main text/header of the menu
-      sections?: Array<{ // Present if type is 'list'
+      sections?: Array<{
         title: string, // Translated title of the section
-        rows: Array<{ // Menu items within the section
+        rows: Array<{
           id: string, // actionId
           title: string, // Translated display text for the row
           description?: string // Translated optional description
         }>
       }>,
-      buttons?: Array<{ // Present if type is 'buttons'
+      buttons?: Array<{
         id: string, // actionId
         title: string // Translated display text for the button
       }>,
-      navigation?: Array<{ // Common navigation options
+      navigation?: Array<{
         id: string, // actionId
         title: string // Translated display text for the navigation option
       }>,
@@ -272,10 +272,10 @@ Platform-specific implementations that translate the generic menu representation
         // Example: Telegram adapter translating a generic 'list' menu into inline keyboard
         const genericMenu = { /* ... generic menu object ... */ };
         const inlineKeyboard = genericMenu.sections.flatMap(section => 
-          section.rows.map(row => [{
+          section.rows.map(row => ([{
             text: row.title,
             callback_data: row.id
-          }])
+          }]))
         );
         // ... send Telegram message with inline keyboard ...
         ```
@@ -451,7 +451,7 @@ Create a new directory `config/menu_definitions/`. Each menu (including sub-menu
 ```
 
 **Example: `astro-whatsapp-bot/menu_definitions/vedic_astrology_menu.json`**
-*(Note: This is one of the larger menus, requiring internal navigation which will be handled by the adapter constructing the actual message content)*
+*(Note: This is one of the larger menus, requiring internal navigation which will be handled by the adapter constructing the actual message content)* 
 
 ```json
 {
@@ -716,7 +716,7 @@ These files will now become lean wrappers around the `WhatsAppMenuAdapter`. This
 
 ```javascript
 // src/frontends/whatsapp/actions/menu/ShowMainMenuAction.js
-const BaseAction = require('./BaseAction'); // Assuming BaseAction will be co-located or in a backend shared module
+const BaseAction = require('../../../core/services/BaseAction'); // Assuming BaseAction is in src/core/services
 const WhatsAppMenuAdapter = require('../whatsappMenuAdapter');
 
 class ShowMainMenuAction extends BaseAction {
@@ -739,7 +739,7 @@ module.exports = ShowMainMenuAction;
 
 These modules will now interact with the new `ActionMapper` (which will call the adapters and services). This demonstrates the **Dependency Inversion Principle (DIP)**, as these high-level modules depend on the `ActionMapper` abstraction (its public `executeAction` method) rather than directly on the concrete implementations of individual actions or services. Their primary responsibility is routing, adhering to **SRP**.
 
-**Example: `src/frontend/whatsapp/processors/InteractiveMessageProcessor.js`**
+**Example: `src/frontends/whatsapp/processors/InteractiveMessageProcessor.js`**
 
 ```javascript
 // src/frontends/whatsapp/processors/InteractiveMessageProcessor.js
@@ -826,7 +826,7 @@ module.exports = ActionMapper;
 
 ### Step 9: Implement an i18n Utility
 
-Create a dedicated utility module (e.g., `src/core/utils/i18n.js`) for managing and retrieving translated strings. This module adheres to the **Single Responsibility Principle (SRP)** by focusing solely on internationalization concerns, such as loading language files and providing a translation function. It does not concern itself with how these translations are used in menus or other parts of the application.
+Create a dedicated utility module (e.g., `src/shared/utils/i18n.js`) for managing and retrieving translated strings. This module adheres to the **Single Responsibility Principle (SRP)** by focusing solely on internationalization concerns, such as loading language files and providing a translation function. It does not concern itself with how these translations are used in menus or other parts of the application.
 
 ```javascript
 // src/shared/utils/i18n.js
@@ -971,3 +971,80 @@ module.exports = I18n;
     *   **Contract Testing:** For the transition to microservices, implement contract testing between the `ActionMapper` and the microservices to ensure that the API contracts are maintained as services evolve independently.
 
 This architecture provides a solid, future-proof foundation for a scalable, maintainable, and flexible bot experience across multiple platforms.
+
+## 7. Existing Codebase Analysis: Reusability, New Files, and Deprecation
+
+This section details how the existing codebase aligns with the proposed menu architecture, identifying components for reuse, new files/directories to be created, and elements to be deprecated or removed.
+
+### 7.1. Reusable Parts (with modifications)
+
+*   **`src/core/services/*` (All Astrological Services):**
+    *   **Reusability:** High. The core business logic of these 100+ services will be preserved.
+    *   **Modifications:** Their invocation will be managed by the new `ActionMapper`. Services might need to expose a standardized interface (e.g., `execute(userData, params)`) if they don't already, to be compatible with the `ActionMapper`'s invocation mechanism.
+*   **`src/core/utils/logger.js`:**
+    *   **Reusability:** High. This logger utility can be directly moved and reused as `src/shared/utils/logger.js`.
+*   **`src/services/i18n/locales/*` (Language Files):**
+    *   **Reusability:** High. The content of these JSON files (translated strings) will be directly moved to the new `config/i18n_keys/` directory.
+*   **`src/core/services/MessageCoordinator.js`:**
+    *   **Reusability:** Medium. This file will be refactored to utilize **Dependency Injection (DI)**, where its collaborators (processors, models, conversation engine, message senders) are passed into its constructor rather than being directly `require`d or instantiated internally. The core coordination logic might remain, but its dependencies will be inverted.
+*   **`src/core/services/messageProcessor.js`:**
+    *   **Reusability:** Medium. The message processing logic will be updated to interact with the new `ActionMapper` for routing and execution of actions. Parts of its existing parsing logic might be reusable.
+*   **`src/core/services/actions/*` (Existing Action Files, e.g., `ShowMainMenuAction.js`):**
+    *   **Reusability:** Medium. These files will be refactored to become lean wrappers around the new `WhatsAppMenuAdapter`. Their primary responsibility will shift from containing menu display logic to simply triggering the display of a specific menu via the adapter.
+*   **`src/core/services/processors/InteractiveMessageProcessor.js` and `src/core/services/processors/MessageRouter.js`:**
+    *   **Reusability:** Medium. These modules will be updated to interact with the new `ActionMapper` for handling interactive replies and routing incoming messages. Existing keyword mapping logic in `MessageRouter.js` will be integrated with the `ActionMapper`.
+*   **`ActionConfig.js` (Location to be confirmed, likely `src/core/services/actions/config/ActionConfig.js`):**
+    *   **Reusability:** Medium. This file will be heavily refactored to contain *only* service-specific metadata (e.g., `requiredProfileFields`, `subscriptionFeature`, `cooldown`, `errorMessages`), removing all menu display-related information.
+
+### 7.2. New Files and Directories to be Created
+
+*   **`/config/menu_definitions/`**: 
+    *   **Purpose:** Store JSON/YAML files defining the new, frontend-agnostic menu structures.
+*   **`/config/i18n_keys/`**: 
+    *   **Purpose:** Store language-specific JSON files for internationalization strings. Content from `src/services/i18n/locales/*` will be moved here.
+*   **`/src/frontends/`**: 
+    *   **Purpose:** Top-level directory to house all platform-specific frontend implementations.
+    *   **Subdirectories (for future expansion):** `/src/frontends/telegram/`, `/src/frontends/web/`, `/src/frontends/android/`, `/src/frontends/ios/`.
+*   **`/src/frontends/whatsapp/`**: 
+    *   **Purpose:** Dedicated directory for WhatsApp-specific frontend code.
+    *   **New Files:**
+        *   **`src/frontends/whatsapp/whatsappMenuAdapter.js`**: Implements the WhatsApp-specific rendering logic based on the generic menu object.
+    *   **Moved Files (from `src/core/adapters/whatsapp/`):**
+        *   **`src/frontends/whatsapp/whatsappHandler.js`**: Handles incoming WhatsApp messages.
+        *   **`src/frontends/whatsapp/index.js`**: Entry point for WhatsApp-specific logic.
+    *   **Moved Directories (from `src/services/whatsapp/`):**
+        *   **`src/frontends/whatsapp/actions/`**: Contains refactored WhatsApp-specific action files.
+        *   **`src/frontends/whatsapp/processors/`**: Contains refactored WhatsApp-specific message processors.
+*   **`/src/shared/`**: 
+    *   **Purpose:** Top-level directory for truly shared, platform-agnostic code consumed by both core backend and frontends.
+*   **`/src/shared/menu/`**: 
+    *   **Purpose:** Houses platform-agnostic menu logic.
+    *   **New Files:**
+        *   **`src/shared/menu/menuLoader.js`**: Loads and parses menu definitions and i18n strings.
+        *   **`src/shared/menu/genericMenuRenderer.js`**: Renders menus into a platform-independent, abstract representation.
+        *   **`src/shared/menu/actionMapper.js`**: Maps `actionId`s to backend service invocations.
+*   **`/src/shared/utils/`**: 
+    *   **Purpose:** Houses shared utility functions.
+    *   **New Files:**
+        *   **`src/shared/utils/i18n.js`**: New i18n utility (replaces/refactors `src/services/i18n/TranslationService.js`).
+    *   **Moved Files (from `src/core/utils/`):**
+        *   **`src/shared/utils/logger.js`**: Centralized logger utility.
+
+### 7.3. Files and Directories to be Deprecated or Removed
+
+*   **`src/core/adapters/whatsapp/`**: 
+    *   **Status:** Removed. This directory will be empty after its contents are moved to `src/frontends/whatsapp/`.
+*   **`src/services/i18n/`**: 
+    *   **Status:** Removed. This directory will be empty after `locales` are moved and `TranslationService.js` is replaced/refactored.
+*   **`src/services/whatsapp/MenuHandler.js`**: 
+    *   **Status:** Removed/Replaced. Its functionality will be superseded by the new `MenuLoader`, `GenericMenuRenderer`, and `WhatsAppMenuAdapter`.
+*   **`src/services/whatsapp/ActionRegistry.js` and `src/services/whatsapp/ActionRegistryInitializer.js`**: 
+    *   **Status:** Removed/Replaced. Their functionality will be replaced by the new `ActionMapper` and a more robust `serviceRegistry` implementation.
+*   **`src/services/whatsapp/KeywordMapper.js`**: 
+    *   **Status:** Removed/Integrated. Its logic for mapping keywords to actions will be integrated into the new `MessageRouter`'s interaction with the `ActionMapper`.
+*   **`src/core/utils/logger.js`**: 
+    *   **Status:** Removed (after move). This file will be moved to `src/shared/utils/logger.js`, and the original can then be removed.
+*   **`src/services/i18n/TranslationService.js`**: 
+    *   **Status:** Removed/Replaced. Its functionality will be replaced by the new `src/shared/utils/i18n.js`.
+
+This detailed breakdown should provide a clear roadmap for the refactoring.

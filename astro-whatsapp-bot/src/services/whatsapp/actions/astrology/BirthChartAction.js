@@ -1,5 +1,5 @@
 const AstrologyAction = require('../base/AstrologyAction');
-const vedicCalculator = require('../../../../services/astrology/vedic/VedicCalculator');
+const VedicCalculatorClass = require('../../../../core/services/calculators/VedicCalculator');
 const {
   AstrologyFormatterFactory
 } = require('../factories/AstrologyFormatterFactory');
@@ -109,7 +109,11 @@ class BirthChartAction extends AstrologyAction {
         );
       }
 
-      return await vedicCalculator.generateVedicKundli({
+      // Initialize the new VedicCalculator
+      const vedicCalculator = new VedicCalculator();
+      await vedicCalculator.initialize();
+
+      return await vedicCalculator.calculateBirthChart({
         birthDate: this.user.birthDate,
         birthTime: this.user.birthTime,
         birthPlace: this.user.birthPlace,
@@ -142,7 +146,12 @@ class BirthChartAction extends AstrologyAction {
         );
       }
 
-      return await vedicCalculator.generateWesternBirthChart({
+      // Use ChartGenerator directly for western chart
+      const ChartGenerator = require('../../../../core/services/calculators/ChartGenerator');
+      const chartGenerator = new ChartGenerator();
+      
+      // For western chart, we'll generate a basic chart with western settings
+      return await chartGenerator.generateWesternChart({
         birthDate: this.user.birthDate,
         birthTime: this.user.birthTime,
         birthPlace: this.user.birthPlace,

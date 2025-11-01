@@ -1,13 +1,11 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
-// Import calculator from legacy structure
-
 class AsteroidsService extends ServiceTemplate {
   constructor() {
     super('AsteroidCalculator');
     this.serviceName = 'AsteroidsService';
-    this.calculatorPath = './calculators/AsteroidCalculator';
+    this.calculatorPath = './calculators/index';
     logger.info('AsteroidsService initialized');
   }
 

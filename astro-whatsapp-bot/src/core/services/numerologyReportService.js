@@ -9,13 +9,15 @@ const { BirthData } = require('../../models/BirthData');
  * soul urge numbers, and personality numbers with comprehensive interpretations based
  * on name and birth date. Generates detailed reports with strengths, challenges,
  * career paths, and compatibility information.
+ * Updated to use VedicNumerology for enhanced Vedic numerology calculations
  */
 class NumerologyReportService extends ServiceTemplate {
-  constructor() {
-    super('NumerologyCalculator'); // Primary calculator for this service
+  constructor(vedicNumerology = require('./calculators/VedicNumerology')) {
+    super('VedicNumerology'); // Primary calculator for this service
     this.serviceName = 'NumerologyReportService';
-    this.calculatorPath = './calculators/numerologyService';
-    logger.info('NumerologyReportService initialized');
+    this.calculatorPath = './calculators/VedicNumerology';
+    this.calculator = new vedicNumerology();
+    logger.info('NumerologyReportService initialized with VedicNumerology');
   }
 
   async initialize() {
@@ -29,7 +31,7 @@ class NumerologyReportService extends ServiceTemplate {
   }
 
   /**
-   * Main calculation method for Numerology Report.
+   * Main calculation method for Numerology Report using VedicNumerology.
    * @param {Object} params - Analysis parameters.
    * @param {string} params.fullName - Full name for analysis.
    * @param {string} params.birthDate - Birth date (DD/MM/YYYY format).
@@ -47,7 +49,7 @@ class NumerologyReportService extends ServiceTemplate {
 
       const { fullName, birthDate, options = {} } = params;
 
-      // Use numerology service calculator for comprehensive analysis
+      // Use VedicNumerology calculator for comprehensive analysis
       const numerologyData = await this.calculator.generateFullReport(
         birthDate,
         fullName

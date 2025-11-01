@@ -149,4 +149,4 @@ class AshtakavargaCalculator {
   }
 }
 
-module.exports = { AshtakavargaCalculator };
+module.exports = AshtakavargaCalculator;

@@ -325,4 +325,4 @@ class AntardashaCalculator {
   }
 }
 
-module.exports = { AntardashaCalculator };
+module.exports = AntardashaCalculator;

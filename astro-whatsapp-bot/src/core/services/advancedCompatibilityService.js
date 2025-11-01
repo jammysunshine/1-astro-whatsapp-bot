@@ -10,7 +10,7 @@ class AdvancedCompatibilityService extends ServiceTemplate {
   constructor() {
     super('CompatibilityCalculator');
     this.serviceName = 'AdvancedCompatibilityService';
-    this.calculatorPath = './calculators/CompatibilityCalculator';
+    this.calculatorPath = './calculators/index';
     logger.info('AdvancedCompatibilityService initialized');
 
     // Service-specific configuration

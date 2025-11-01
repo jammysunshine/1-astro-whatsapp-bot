@@ -93,7 +93,7 @@ class VedicNumerologyService extends ServiceTemplate {
       );
 
       return {
-        analysis,
+        analysis: this._formatResult(analysis),
         summary: this._generateSummary(analysis),
         error: false
       };
@@ -104,6 +104,37 @@ class VedicNumerologyService extends ServiceTemplate {
         message: 'Unable to generate numerology analysis'
       };
     }
+  }
+
+  /**
+   * Validate input parameters (private method)
+   * @param {Object} input - Input data to validate
+   * @private
+   */
+  _validateInput(input) {
+    if (!input) {
+      throw new Error('Input data is required');
+    }
+
+    if (!input.name && !input.birthDate) {
+      throw new Error('Either name or birth date is required');
+    }
+  }
+
+  /**
+   * Format result for analysis (private method)
+   * @param {Object} result - Raw calculator result
+   * @returns {Object} Formatted result
+   * @private
+   */
+  _formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      system: 'Vedic Numerology',
+      calculationMethod: 'Chani system based on Sanskrit alphabet and Vedic principles',
+      timestamp: new Date().toISOString()
+    };
   }
 
   /**

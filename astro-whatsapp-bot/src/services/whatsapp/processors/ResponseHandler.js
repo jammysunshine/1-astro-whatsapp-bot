@@ -1,5 +1,5 @@
 const logger = require('../../../utils/logger');
-const generateAstrologyResponse = require('../../../services/astrology/astrologyEngine');
+const CalculationsCoordinator = require('../../../core/services/calculators/CalculationsCoordinator');
 const translationService = require('../../../services/i18n/TranslationService');
 
 /**
@@ -12,6 +12,21 @@ class ResponseHandler {
   }
 
   /**
+   * Determine message type based on content
+   * @param {string} messageText - Message text
+   * @returns {string} Message type
+   */
+  determineMessageType(messageText) {
+    const lowerText = messageText.toLowerCase();
+    
+    if (lowerText.includes('horoscope') || lowerText.includes('today') || lowerText.includes('daily')) {
+      return 'daily_horoscope';
+    }
+    
+    return 'general';
+  }
+
+  /**
    * Handle fallback response when no specific action matches
    * @param {string} messageText - Original message text
    * @param {Object} user - User object
@@ -19,13 +34,54 @@ class ResponseHandler {
    */
   async handleFallbackResponse(messageText, user, phoneNumber) {
     try {
-      const response = await generateAstrologyResponse(messageText, user);
+      let response = null;
       const userLanguage = user.preferredLanguage || 'en';
 
-      if (response && typeof response === 'string') {
+      // Try to generate a response using CalculationsCoordinator for astrology-related queries
+      if (user && user.birthDate && user.birthTime && user.birthPlace) {
+        try {
+          const calculationsCoordinator = new CalculationsCoordinator();
+          
+          // Generate a response based on the user's birth data and the message content
+          const messageType = this.determineMessageType(messageText);
+          
+          switch (messageType) {
+            case 'daily_horoscope':
+              // Use the DailyHoroscopeCalculator directly
+              const DailyHoroscopeCalculator = require('../../../core/services/calculators/DailyHoroscopeCalculator');
+              const dailyHoroscopeCalculator = new DailyHoroscopeCalculator();
+              // Set services if needed
+              dailyHoroscopeCalculator.setServices({});
+              response = await dailyHoroscopeCalculator.generateDailyHoroscope({
+                birthDate: user.birthDate,
+                birthTime: user.birthTime,
+                birthPlace: user.birthPlace,
+                name: user.name
+              });
+              break;
+              
+            default:
+              // Fall back to general astrology engine
+              const generateAstrologyResponse = require('../../../services/astrology/astrologyEngine');
+              response = await generateAstrologyResponse(messageText, user);
+          }
+        } catch (calculationError) {
+          this.logger.warn('CalculationsCoordinator failed, using fallback engine:', calculationError.message);
+          // Fall back to the original astrology engine
+          const generateAstrologyResponse = require('../../../services/astrology/astrologyEngine');
+          response = await generateAstrologyResponse(messageText, user);
+        }
+      } else {
+        // Fall back to the original astrology engine for users without birth data
+        const generateAstrologyResponse = require('../../../services/astrology/astrologyEngine');
+        response = await generateAstrologyResponse(messageText, user);
+      }
+
+      if (response && (typeof response === 'string' || response.content)) {
+        const responseText = typeof response === 'string' ? response : response.content;
         // Send response with menu
         const { sendMessage } = require('../messageSender');
-        await this.sendTextWithMenu(phoneNumber, response, userLanguage);
+        await this.sendTextWithMenu(phoneNumber, responseText, userLanguage);
       } else {
         await this.sendTextWithMenu(
           phoneNumber,

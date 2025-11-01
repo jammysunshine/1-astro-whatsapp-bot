@@ -1,5 +1,5 @@
 const AstrologyAction = require('../base/AstrologyAction');
-const generateAstrologyResponse = require('../../../../services/astrology/astrologyEngine');
+const DailyHoroscopeCalculator = require('../../../../core/services/calculators/DailyHoroscopeCalculator');
 const {
   AstrologyFormatterFactory
 } = require('../factories/AstrologyFormatterFactory');
@@ -68,26 +68,47 @@ class DailyHoroscopeAction extends AstrologyAction {
   }
 
   /**
-   * Generate personalized horoscope content using astrology engine
+   * Generate personalized horoscope content using DailyHoroscopeCalculator
    * @returns {Promise<Object>} Horoscope data object for formatting
    */
   async generateHoroscope() {
     try {
-      // Use the astrology engine to generate personalized daily horoscope
-      const rawResponse = await generateAstrologyResponse(
-        'daily horoscope',
-        this.user
-      );
-
-      if (typeof rawResponse === 'string' && rawResponse.length > 0) {
-        return this.buildHoroscopeData(rawResponse);
+      // Validate that user has birth data
+      if (!this.user) {
+        throw new Error('User data not available for horoscope generation');
       }
 
-      // Fallback if astrology engine fails
+      if (
+        !this.user.birthDate ||
+        !this.user.birthTime ||
+        !this.user.birthPlace
+      ) {
+        throw new Error(
+          'User must complete birth profile with date, time, and place for horoscope generation'
+        );
+      }
+
+      // Use the DailyHoroscopeCalculator to generate personalized daily horoscope
+      const dailyHoroscopeCalculator = new DailyHoroscopeCalculator();
+      // Set services if needed
+      dailyHoroscopeCalculator.setServices({});
+      
+      const horoscopeData = await dailyHoroscopeCalculator.generateDailyHoroscope({
+        birthDate: this.user.birthDate,
+        birthTime: this.user.birthTime,
+        birthPlace: this.user.birthPlace,
+        name: this.user.name
+      });
+
+      if (horoscopeData && !horoscopeData.error) {
+        return this.buildHoroscopeData(horoscopeData);
+      }
+
+      // Fallback if DailyHoroscopeCalculator fails
       return this.generateFallbackData();
     } catch (error) {
       this.logger.warn(
-        'Astrology engine failed, using fallback:',
+        'DailyHoroscopeCalculator failed, using fallback:',
         error.message
       );
       return this.generateFallbackData();
@@ -96,15 +117,18 @@ class DailyHoroscopeAction extends AstrologyAction {
 
   /**
    * Build horoscope data object for formatter
-   * @param {string} content - Raw horoscope content
+   * @param {Object} horoscopeData - Horoscope data from CalculationsCoordinator
    * @returns {Object} Structured horoscope data
    */
-  buildHoroscopeData(content) {
+  buildHoroscopeData(horoscopeData) {
     return {
       name: this.user?.name,
       date: new Date().toISOString(),
-      content: this.enhanceHoroscopeText(content),
-      guidance: this.generateRandomGuidance()
+      content: this.enhanceHoroscopeText(horoscopeData.content || horoscopeData),
+      guidance: horoscopeData.guidance || this.generateRandomGuidance(),
+      planets: horoscopeData.planets,
+      transits: horoscopeData.transits,
+      themes: horoscopeData.themes
     };
   }
 
@@ -118,7 +142,10 @@ class DailyHoroscopeAction extends AstrologyAction {
       date: new Date().toISOString(),
       content:
         'Today brings opportunities for growth and new experiences. Trust your instincts and stay open to the possibilities around you.',
-      guidance: 'Trust your intuition today and embrace change as growth.'
+      guidance: 'Trust your intuition today and embrace change as growth.',
+      planets: {},
+      transits: {},
+      themes: ['growth', 'opportunity', 'intuition']
     };
   }
 

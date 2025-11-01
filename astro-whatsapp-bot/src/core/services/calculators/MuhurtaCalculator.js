@@ -7,8 +7,8 @@ const sweph = require('sweph');
  */
 class MuhurtaCalculator {
   constructor(astrologer, geocodingService) {
-    this.astrologer = astrologer;
-    this.geocodingService = geocodingService;
+    this.astrologer = astrologer || {};
+    this.geocodingService = geocodingService || {};
 
     // Auspicious and inauspicious activity categories
     this.activityCategories = {
@@ -1015,4 +1015,4 @@ class MuhurtaCalculator {
   }
 }
 
-module.exports = { MuhurtaCalculator };
+module.exports = MuhurtaCalculator;

@@ -8,8 +8,8 @@ const sweph = require('sweph');
  */
 class AsteroidCalculator {
   constructor(astrologer, geocodingService) {
-    this.astrologer = astrologer;
-    this.geocodingService = geocodingService;
+    this.astrologer = astrologer || {};
+    this.geocodingService = geocodingService || {};
   }
 
   /**
@@ -254,4 +254,4 @@ class AsteroidCalculator {
   }
 }
 
-module.exports = { AsteroidCalculator };
+module.exports = AsteroidCalculator;

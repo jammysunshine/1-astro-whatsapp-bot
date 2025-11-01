@@ -95,6 +95,10 @@ const VedicRemediesService = require('./vedicRemediesService');
 const VedicYogasService = require('./vedicYogasService');
 const VimshottariDashaService = require('./vimshottariDashaService');
 
+// New service layers for proper separation of concerns
+const { UserManagementService } = require('./user');
+const { CompatibilityManagementService } = require('./compatibility');
+
 module.exports = {
   AbhijitMuhurtaService,
   AdvancedCompatibilityService,
@@ -191,5 +195,9 @@ module.exports = {
   VedicNumerologyService,
   VedicRemediesService,
   VedicYogasService,
-  VimshottariDashaService
+  VimshottariDashaService,
+  
+  // New service layers for proper separation of concerns
+  UserManagementService,
+  CompatibilityManagementService
 };

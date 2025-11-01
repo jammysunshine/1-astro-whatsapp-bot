@@ -5,13 +5,14 @@ const { BirthData } = require('../../models/BirthData');
 /**
  * BirthChartService - Service for generating Vedic astrology birth charts
  * Implements the standard ServiceTemplate pattern with proper dependency injection
+ * Updated to use new VedicCalculator for enhanced Vedic astrology calculations
  */
 class BirthChartService extends ServiceTemplate {
-  constructor(chartCalculator = require('./calculators/ChartGenerator')) {
-    super('ChartGenerator');
-    this.calculatorPath = './calculators/ChartGenerator';
-    this.calculator = new chartCalculator();
-    logger.info('BirthChartService initialized');
+  constructor(vedicCalculator = require('./calculators/VedicCalculator')) {
+    super('VedicCalculator');
+    this.calculatorPath = './calculators/VedicCalculator';
+    this.calculator = new vedicCalculator();
+    logger.info('BirthChartService initialized with VedicCalculator');
   }
 
   async calculateBirthChart(birthData) {
@@ -20,8 +21,13 @@ class BirthChartService extends ServiceTemplate {
       const validatedData = new BirthData(birthData);
       validatedData.validate();
 
-      // Get chart data from calculator
-      const chartData = await this.calculator.generateChart(validatedData);
+      // Initialize VedicCalculator if needed
+      if (!this.calculator.initialized) {
+        await this.calculator.initialize();
+      }
+
+      // Get chart data from VedicCalculator
+      const chartData = await this.calculator.calculateBirthChart(validatedData);
 
       // Add metadata
       chartData.type = 'vedic';

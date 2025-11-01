@@ -2,7 +2,6 @@ const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 const { BirthData } = require('../../models/BirthData');
 
-// Import calculator from legacy structure
 /**
  * AbhijitMuhurtaService - Specialized service for calculating Abhijit Muhurta timing
  *
@@ -14,8 +13,7 @@ class AbhijitMuhurtaService extends ServiceTemplate {
   constructor() {
     super('MuhurtaCalculator');
     this.serviceName = 'AbhijitMuhurtaService';
-    this.calculatorPath =
-      './calculators/MuhurtaCalculator';
+    this.calculatorPath = './calculators/index';
     logger.info('AbhijitMuhurtaService initialized');
   }
 

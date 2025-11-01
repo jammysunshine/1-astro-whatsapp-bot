@@ -1,55 +1,37 @@
-const logger = require('../../utils/logger');
-const TextMessageProcessor = require('./processors/TextMessageProcessor');
-const InteractiveMessageProcessor = require('./processors/InteractiveMessageProcessor');
-const MediaMessageProcessor = require('./processors/MediaMessageProcessor');
-const { ValidationService } = require('./utils/ValidationService');
-const {
-  getUserByPhone,
-  createUser,
-  updateUserProfile
-} = require('../../models/userModel');
-const { processFlowMessage } = require('../../conversation/conversationEngine');
-
 /**
  * Main MessageCoordinator - Clean entry point for all WhatsApp message processing.
  * Uses Strategy pattern to delegate to specialized processors based on message type.
  * This replaces the monolithic messageProcessor.js with a maintainable architecture.
  */
 class MessageCoordinator {
-  constructor() {
+  constructor({
+    logger,
+    textProcessor,
+    interactiveProcessor,
+    mediaProcessor,
+    userModel,
+    conversationEngine,
+    messageSender,
+    registry
+  }) {
     this.logger = logger;
-    this.initialized = false;
+    this.textProcessor = textProcessor;
+    this.interactiveProcessor = interactiveProcessor;
+    this.mediaProcessor = mediaProcessor;
+    this.userModel = userModel;
+    this.conversationEngine = conversationEngine;
+    this.messageSender = messageSender;
+    this.registry = registry; // ActionRegistry is now injected
   }
 
   /**
-   * Initialize the coordinator with registry and processors
+   * No longer needs an explicit initialize method for dependencies,
+   * as they are all injected via the constructor.
+   * This method can be removed or repurposed if needed for other internal setup.
    */
   async initialize() {
-    if (this.initialized) {
-      return this;
-    }
-
-    try {
-      // Import and initialize registry asynchronously
-      const createInitializedRegistry = require('./ActionRegistryInitializer');
-      this.registry = await createInitializedRegistry();
-
-      // Create processors
-      this.textProcessor = new TextMessageProcessor(this.registry);
-      this.interactiveProcessor = new InteractiveMessageProcessor(
-        this.registry
-      );
-      this.mediaProcessor = new MediaMessageProcessor();
-
-      this.initialized = true;
-      this.logger.info(
-        '🎯 MessageCoordinator initialized with new action architecture'
-      );
-      return this;
-    } catch (error) {
-      this.logger.error('❌ Failed to initialize MessageCoordinator:', error);
-      throw error;
-    }
+    this.logger.info('🎯 MessageCoordinator initialized via dependency injection');
+    return this;
   }
 
   /**
@@ -73,10 +55,10 @@ class MessageCoordinator {
       }
 
       // 2. Get or create user
-      let user = await getUserByPhone(phoneNumber);
+      let user = await this.userModel.getUserByPhone(phoneNumber);
       if (!user) {
         this.logger.info(`🆕 New user detected: ${phoneNumber}`);
-        user = await createUser(phoneNumber);
+        user = await this.userModel.createUser(phoneNumber);
       }
 
       // 3. Check if user needs onboarding
@@ -140,7 +122,7 @@ class MessageCoordinator {
       this.logger.info(
         `🆕 Starting onboarding for ${phoneNumber} (New: ${user.isNew}, Complete: ${user.profileComplete})`
       );
-      await processFlowMessage(message, user, 'onboarding');
+      await this.conversationEngine.processFlowMessage(message, user, 'onboarding');
       return false; // Stop further processing, onboarding handles everything
     }
 
@@ -195,7 +177,7 @@ class MessageCoordinator {
   async updateUserInteraction(user, phoneNumber) {
     try {
       user.lastInteraction = new Date();
-      await updateUserProfile(phoneNumber, {
+      await this.userModel.updateUserProfile(phoneNumber, {
         lastInteraction: user.lastInteraction
       });
     } catch (error) {
@@ -226,8 +208,7 @@ class MessageCoordinator {
 
     try {
       // Send error notification to user
-      const { sendMessage } = require('./messageSender');
-      await sendMessage(
+      await this.messageSender.sendMessage(
         phoneNumber,
         '❌ Sorry, I encountered an unexpected error. Our team has been notified. Please try again in a few moments.',
         'text'
@@ -248,8 +229,7 @@ class MessageCoordinator {
    */
   async sendUnsupportedMessageTypeResponse(phoneNumber) {
     try {
-      const { sendMessage } = require('./messageSender');
-      await sendMessage(
+      await this.messageSender.sendMessage(
         phoneNumber,
         '🤔 Sorry, I don\'t support that message type yet. Please send text messages or use the interactive buttons.',
         'text'
@@ -311,8 +291,34 @@ let coordinatorInstance = null;
 
 async function getMessageCoordinator() {
   if (!coordinatorInstance) {
-    const coordinator = new MessageCoordinator();
-    coordinatorInstance = await coordinator.initialize();
+    // Assemble dependencies here
+    const logger = require('../../core/utils/logger'); // Updated path
+    const TextMessageProcessor = require('./processors/TextMessageProcessor');
+    const InteractiveMessageProcessor = require('./processors/InteractiveMessageProcessor');
+    const MediaMessageProcessor = require('./processors/MediaMessageProcessor');
+    const { ValidationService } = require('./utils/ValidationService');
+    const userModel = require('../../models/userModel'); // Import entire module
+    const conversationEngine = require('../../conversation/conversationEngine'); // Import entire module
+    const messageSender = require('./messageSender'); // Import entire module
+    const createInitializedRegistry = require('./ActionRegistryInitializer'); // Dynamic require
+
+    const registry = await createInitializedRegistry();
+
+    const textProcessor = new TextMessageProcessor(registry);
+    const interactiveProcessor = new InteractiveMessageProcessor(registry);
+    const mediaProcessor = new MediaMessageProcessor();
+
+    const coordinator = new MessageCoordinator({
+      logger,
+      textProcessor,
+      interactiveProcessor,
+      mediaProcessor,
+      userModel,
+      conversationEngine,
+      messageSender,
+      registry
+    });
+    coordinatorInstance = await coordinator.initialize(); // Call initialize for any internal setup
   }
   return coordinatorInstance;
 }

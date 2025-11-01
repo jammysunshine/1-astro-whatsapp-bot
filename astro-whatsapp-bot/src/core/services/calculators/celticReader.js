@@ -78,7 +78,7 @@ class CelticReader {
         lifePath,
         personalityTraits,
         astronomicalCorrelations: astronomicalData,
-        celticDescription: this.analyzer.generateCelticDescription(
+        celticDescription: this._generateCelticDescription(
           treeSign,
           animalTotem,
           seasonalInfluence,
@@ -114,7 +114,7 @@ class CelticReader {
       // Calculate current astronomical influences
       const currentAstronomicalData = this._calculateCurrentCelticAstronomicalData(currentDate);
 
-      const baseGuidance = this.analyzer.generateCelticGuidance(treeSign, animalTotem);
+      const baseGuidance = this._generateCelticGuidance(treeSign, animalTotem);
 
       return {
         ...baseGuidance,
@@ -363,6 +363,106 @@ class CelticReader {
       'Winter': 'Reflection and divination'
     };
     return rituals[season] || 'Nature connection practices';
+  }
+
+  /**
+   * Calculate tree sign (simplified inline implementation)
+   * @private
+   */
+  _calculateTreeSign(birthDate) {
+    const [day, month] = birthDate.split('/').map(Number);
+    const treeSigns = [
+      'Birch', 'Rowan', 'Alder', 'Willow', 'Hawthorn', 'Oak',
+      'Holly', 'Hazel', 'Vine', 'Ivy', 'Reed', 'Elder'
+    ];
+    return treeSigns[(month - 1) % 12];
+  }
+
+  /**
+   * Calculate animal totem (simplified inline implementation)
+   * @private
+   */
+  _calculateAnimalTotem(birthDate) {
+    const [day] = birthDate.split('/').map(Number);
+    const animals = [
+      'Stag', 'Cat', 'Cow', 'Seal', 'Butterfly', 'Fox',
+      'Horse', 'Fish', 'Swan', 'Dog', 'Wolf', 'Eagle'
+    ];
+    return animals[(day - 1) % 12];
+  }
+
+  /**
+   * Calculate seasonal influence (simplified inline implementation)
+   * @private
+   */
+  _calculateSeasonalInfluence(birthDate) {
+    const [day, month] = birthDate.split('/').map(Number);
+    if (month >= 3 && month <= 5) return 'Spring Awakening';
+    if (month >= 6 && month <= 8) return 'Summer Abundance';
+    if (month >= 9 && month <= 11) return 'Autumn Harvest';
+    return 'Winter Reflection';
+  }
+
+  /**
+   * Generate druidic wisdom (simplified inline implementation)
+   * @private
+   */
+  _generateDruidicWisdom(treeSign, animalTotem, astronomicalData) {
+    return {
+      treeWisdom: `The ${treeSign} tree guides your intuition and wisdom`,
+      animalWisdom: `The ${animalTotem} totem brings you courage and guidance`,
+      astronomicalWisdom: astronomicalData.moonPhase ?
+        `During ${astronomicalData.moonPhase}, your Celtic energies are amplified` :
+        'Your Celtic energies flow with natural rhythms'
+    };
+  }
+
+  /**
+   * Calculate life path (simplified inline implementation)
+   * @private
+   */
+  _calculateLifePath(treeSign, animalTotem, astronomicalData) {
+    return {
+      primaryPath: `Path of the ${treeSign}`,
+      secondaryPath: `Guided by ${animalTotem}`,
+      astronomicalInfluence: astronomicalData.season || 'Natural cycles'
+    };
+  }
+
+  /**
+   * Generate personality traits (simplified inline implementation)
+   * @private
+   */
+  _generatePersonalityTraits(treeSign, animalTotem, astronomicalData) {
+    return [
+      `Wisdom of the ${treeSign}`,
+      `Spirit of the ${animalTotem}`,
+      'Deep connection to nature',
+      'Intuitive guidance',
+      'Celtic heritage strength'
+    ];
+  }
+
+  /**
+   * Generate Celtic description (simplified inline implementation)
+   * @private
+   */
+  _generateCelticDescription(treeSign, animalTotem, seasonalInfluence, astronomicalData) {
+    return `Your Celtic birth chart reveals the ${treeSign} tree as your guide, the ${animalTotem} as your totem, and ${seasonalInfluence} as your seasonal influence. The astronomical alignments enhance your natural Celtic wisdom.`;
+  }
+
+  /**
+   * Generate Celtic guidance (simplified inline implementation)
+   * @private
+   */
+  _generateCelticGuidance(treeSign, animalTotem) {
+    return {
+      treeGuidance: `Connect with ${treeSign} energy for wisdom`,
+      animalGuidance: `Seek guidance from ${animalTotem} spirit`,
+      dailyRitual: 'Meditate in nature',
+      seasonalWisdom: 'Flow with the Celtic wheel of the year',
+      affirmation: 'I am connected to Celtic wisdom and natural magic'
+    };
   }
 
   /**

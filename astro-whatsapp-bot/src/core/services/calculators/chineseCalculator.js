@@ -222,8 +222,8 @@ class ChineseCalculator {
   calculateYearPillar(year, julianDay) {
     try {
       // Use astronomical data for more precise calculation
-      const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, sweph.SEFLG_SWIEPH);
-      if (sunResult && sunResult.longitude) {
+      const sunResult = sweph.calc_ut(julianDay, 0, 0x2); // 0 = Sun
+      if (sunResult && sunResult.data) {
         // Calculate Chinese year based on solar longitude and traditional system
         // 1984 is Year of Wood Rat (甲子) - use as reference
         const stemIndex = (year - 1984) % 10;
@@ -234,7 +234,7 @@ class ChineseCalculator {
           branch: this.earthlyBranches[branchIndex],
           animal: this.zodiacAnimals[branchIndex],
           element: this.fiveElements[this.heavenlyStems[stemIndex]],
-          solarLongitude: sunResult.longitude[0]
+          solarLongitude: sunResult.data[0]
         };
       }
     } catch (error) {
@@ -435,7 +435,7 @@ class ChineseCalculator {
       const [latitude, longitude] = this._getCoordinatesForPlace(birthPlace);
       const timezone = this._getTimezoneForPlace(latitude, longitude);
       const ut = hour + minute / 60 - timezone;
-      const julianDay = sweph.swe_julday(year, month, day, ut, sweph.SE_GREG_CAL);
+      const julianDay = sweph.julday(year, month, day, ut, 1); // 1 for Gregorian calendar
 
       const yearPillar = this.calculateYearPillar(year, julianDay);
 
@@ -480,11 +480,11 @@ class ChineseCalculator {
 
     try {
       Object.entries(planetIds).forEach(([name, id]) => {
-        const result = sweph.swe_calc_ut(julianDay, id, sweph.SEFLG_SWIEPH);
-        if (result && result.longitude) {
+        const result = sweph.calc_ut(julianDay, id, 0x2);
+        if (result && result.data) {
           planets[name] = {
-            longitude: result.longitude[0],
-            sign: this._getZodiacSign(result.longitude[0])
+            longitude: result.data[0],
+            sign: this._getZodiacSign(result.data[0])
           };
         }
       });
@@ -511,11 +511,11 @@ class ChineseCalculator {
    */
   _calculateLunarPhase(julianDay) {
     try {
-      const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, sweph.SEFLG_SWIEPH);
-      const moonResult = sweph.swe_calc_ut(julianDay, sweph.SE_MOON, sweph.SEFLG_SWIEPH);
+      const sunResult = sweph.calc_ut(julianDay, 0, 0x2); // 0 = Sun
+      const moonResult = sweph.calc_ut(julianDay, 1, 0x2); // 1 = Moon
 
       if (sunResult && moonResult) {
-        const phaseAngle = ((moonResult.longitude[0] - sunResult.longitude[0] + 360) % 360);
+        const phaseAngle = ((moonResult.data[0] - sunResult.data[0] + 360) % 360);
         return this._getLunarPhaseName(phaseAngle);
       }
       return 'Unknown';
@@ -545,9 +545,9 @@ class ChineseCalculator {
    */
   _getSolarTerm(julianDay) {
     try {
-      const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, sweph.SEFLG_SWIEPH);
-      if (sunResult && sunResult.longitude) {
-        const longitude = sunResult.longitude[0] % 360;
+      const sunResult = sweph.calc_ut(julianDay, 0, 0x2); // 0 = Sun
+      if (sunResult && sunResult.data) {
+        const longitude = sunResult.data[0] % 360;
         const termIndex = Math.floor(longitude / 15) * 15;
         return this.solarTerms[termIndex] || 'Unknown';
       }
@@ -631,8 +631,8 @@ class ChineseCalculator {
       relevantPlanets.forEach(planet => {
         const planetId = this._getPlanetId(planet);
         if (planetId) {
-          const result = sweph.swe_calc_ut(julianDay, planetId, sweph.SEFLG_SWIEPH);
-          if (result && result.longitude) {
+          const result = sweph.calc_ut(julianDay, planetId, 0x2);
+          if (result && result.data) {
             // Add strength based on planetary position
             strength += 0.1;
           }
@@ -657,8 +657,8 @@ class ChineseCalculator {
       planets.forEach(planet => {
         const planetId = this._getPlanetId(planet);
         if (planetId) {
-          const result = sweph.swe_calc_ut(julianDay, planetId, sweph.SEFLG_SWIEPH);
-          if (result && result.longitude) {
+          const result = sweph.calc_ut(julianDay, planetId, 0x2);
+          if (result && result.data) {
             score += 0.1;
           }
         }

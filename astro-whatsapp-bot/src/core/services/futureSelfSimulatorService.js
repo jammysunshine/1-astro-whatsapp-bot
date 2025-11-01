@@ -303,6 +303,11 @@ class FutureSelfSimulatorService extends ServiceTemplate {
 Comprehensive future projection with themes, outcomes, preparation advice, and confidence rating
     `.trim();
   }
+
+  async processCalculation(data) {
+    return await this.lfutureSelfSimulatorCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

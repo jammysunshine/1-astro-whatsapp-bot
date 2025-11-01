@@ -316,6 +316,10 @@ class IChingReadingService extends ServiceTemplate {
     }
   }
 
+  async processCalculation(data) {
+    return await this.generateIChingReading(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

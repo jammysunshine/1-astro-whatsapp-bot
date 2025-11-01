@@ -40,7 +40,7 @@ class VedicNumerologyService extends ServiceTemplate {
       );
 
       // Format result for service consumption
-      return this._formatResult(analysis);
+      return this.formatResult(analysis);
     } catch (error) {
       logger.error('VedicNumerologyService error:', error);
       throw new Error(`Vedic numerology analysis failed: ${error.message}`);

@@ -280,6 +280,11 @@ class MajorTransitsService extends ServiceTemplate {
       dependencies: ['SignificantTransitsCalculator']
     };
   }
+
+  async processCalculation(data) {
+    return await this.lmajorTransitsCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

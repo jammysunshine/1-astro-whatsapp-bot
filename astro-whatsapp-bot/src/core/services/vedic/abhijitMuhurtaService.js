@@ -2,6 +2,7 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
+const MuhurtaCalculator = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
 
 /**
  * AbhijitMuhurtaService - Specialized service for calculating Abhijit Muhurta timing
@@ -11,19 +12,14 @@ const logger = require('../../utils/logger');
  * particularly favorable for important decisions, travel, business ventures, and spiritual practices.
  */
 class AbhijitMuhurtaService extends ServiceTemplate {
-  constructor(services) {
-    super('abhijitMuhurtaService');
-    
-    // Initialize calculator with services if provided
-    if (services) {
-      this.calculator.setServices(services);
-    }
-    
+  constructor() {
+    super('MuhurtaCalculator');
     this.serviceName = 'AbhijitMuhurtaService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
     logger.info('AbhijitMuhurtaService initialized');
   }
 
-  async labhijitMuhurtaCalculation(birthData) {
+  async processCalculation(birthData) {
     try {
       // Validate input
       this._validateInput(birthData);
@@ -48,35 +44,170 @@ class AbhijitMuhurtaService extends ServiceTemplate {
   }
 
   /**
-   * Calculate Abhijit Muhurta timing for a specific date and location
+   * Format result for service consumption
+   * @param {Object} result - Raw calculator result
+   * @returns {Object} Formatted result
+   */
+  formatResult(result) {
+    if (result.error) {
+      return {
+        success: false,
+        error: result.error,
+        message: 'Abhijit Muhurta analysis failed'
+      };
+    }
+
+    return {
+      success: true,
+      data: result,
+      summary: result.summary || 'Abhijit Muhurta analysis completed',
+      metadata: {
+        system: 'Abhijit Muhurta Analysis',
+        calculationMethod: 'Vedic muhurta timing with Swiss Ephemeris calculations',
+        elements: ['Timing', 'Significance', 'Recommendations', 'Activities'],
+        tradition: 'Vedic Hindu astrology with muhurta principles'
+      }
+    };
+  }
+
+  /**
+   * Validate input parameters
+   * @param {Object} input - Input data to validate
    * @private
-   * @param {Object} birthData - Birth data with date, time, and location
-   * @returns {Object} Abhijit Muhurta timing analysis
+   */
+  _validateInput(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required for Abhijit Muhurta analysis');
+    }
+
+    if (!birthData.birthDate) {
+      throw new Error('Birth date is required for Abhijit Muhurta analysis');
+    }
+
+    if (!birthData.birthTime) {
+      throw new Error('Birth time is required for Abhijit Muhurta analysis');
+    }
+
+    if (!birthData.birthPlace) {
+      throw new Error('Birth place is required for Abhijit Muhurta analysis');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthData.birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthData.birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+  }
+
+  /**
+   * Get service metadata
+   * @returns {Object} Service information
+   */
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'processCalculation', 'formatResult'],
+      dependencies: []
+    };
+  }
+
+  /**
+   * Get service-specific help
+   * @returns {string} Help information
+   */
+  getHelp() {
+    return `
+🌟 **Abhijit Muhurta Service**
+
+**Purpose:** Provides analysis of Abhijit Muhurta, the most auspicious time of day in Vedic astrology occurring around noon
+
+**Required Inputs:**
+• Birth date (DD/MM/YYYY)
+• Birth time (HH:MM)
+• Birth place (city, state/country)
+
+**Analysis Includes:**
+
+**⏰ Timing Details:**
+• Exact start and end times of Abhijit Muhurta
+• Duration (approximately 48 minutes)
+• Center time of maximum potency
+• Sunrise and sunset times for context
+
+**🌟 Significance Analysis:**
+• Mythological origins and meaning
+• Planetary influences and characteristics
+• Benefits and advantages
+• Activities most favorable during this time
+
+**🎯 Recommendations:**
+• Optimal usage tips for maximum benefit
+• Preparation methods before Abhijit
+• Activities to perform during Abhijit
+• Post-Abhijit practices
+• Mantras and remedies for enhanced results
+
+**📋 Activity Guidance:**
+• Highly recommended activities
+• Moderately recommended activities
+• Activities to avoid
+• Spiritual practices recommended
+
+**Example Usage:**
+"Abhijit Muhurta timing for 15/06/2025, time 06:45 in New Delhi"
+"Best time for important work today in Mumbai"
+"When is Abhijit Muhurta in Bangalore tomorrow?"
+
+**Output Format:**
+Comprehensive Abhijit Muhurta report with timing details, significance analysis, recommendations, and activity guidance
+    `.trim();
+  }
+
+  /**
+   * Calculate Abhijit Muhurta timing
+   * @private
+   * @param {Object} birthData - Birth data
+   * @returns {Object} Abhijit timing analysis
    */
   async _calculateAbhijitMuhurta(birthData) {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
       
-      // Parse date components
+      // Parse birth date and time
       const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
       
       // Get location coordinates and timezone
       const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
-      const timestamp = new Date(year, month - 1, day).getTime();
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+      const timestamp = birthDateTime.getTime();
       const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
       
-      // Calculate Abhijit Muhurta timing (around noon)
-      const abhijitTiming = this._calculateAbhijitTiming(year, month, day, latitude, longitude, timezone);
+      // Calculate Julian Day for the birth time
+      const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
       
-      // Analyze Abhijit significance for the date
-      const significanceAnalysis = this._analyzeAbhijitSignificance(abhijitTiming);
+      // Calculate sunrise and sunset times
+      const sunTimes = this._calculateSunTimes(jd, latitude, longitude);
+      
+      // Calculate Abhijit Muhurta timing (around noon)
+      const abhijitTiming = this._calculateAbhijitTiming(sunTimes);
+      
+      // Analyze Abhijit significance for the birth chart
+      const significanceAnalysis = this._analyzeAbhijitSignificance(abhijitTiming, birthData);
       
       // Generate timing recommendations
       const recommendations = this._generateAbhijitRecommendations(abhijitTiming, significanceAnalysis);
       
       return {
-        date: birthDate,
-        place: birthPlace,
+        birthData,
         abhijitTiming,
         significanceAnalysis,
         recommendations,
@@ -91,22 +222,11 @@ class AbhijitMuhurtaService extends ServiceTemplate {
   /**
    * Calculate Abhijit Muhurta timing
    * @private
-   * @param {number} year - Year
-   * @param {number} month - Month
-   * @param {number} day - Day
-   * @param {number} latitude - Latitude
-   * @param {number} longitude - Longitude
-   * @param {number} timezone - Timezone
+   * @param {Object} sunTimes - Sunrise and sunset times
    * @returns {Object} Abhijit timing details
    */
-  _calculateAbhijitTiming(year, month, day, latitude, longitude, timezone) {
+  _calculateAbhijitTiming(sunTimes) {
     try {
-      // Calculate approximate noon time for the location
-      const jd = this._dateToJulianDay(year, month, day, 12);
-      
-      // Calculate sunrise and sunset for more accurate timing
-      const sunTimes = this._calculateSunTimes(jd, latitude, longitude);
-      
       // Abhijit Muhurta typically occurs around noon, approximately 48 minutes long
       // It's considered to be the most powerful muhurta of the day
       const noon = 12.0;
@@ -156,9 +276,10 @@ class AbhijitMuhurtaService extends ServiceTemplate {
    * Analyze the significance of Abhijit Muhurta
    * @private
    * @param {Object} abhijitTiming - Abhijit timing details
+   * @param {Object} birthData - Birth data
    * @returns {Object} Significance analysis
    */
-  _analyzeAbhijitSignificance(abhijitTiming) {
+  _analyzeAbhijitSignificance(abhijitTiming, birthData) {
     return {
       name: 'Abhijit',
       sanskrit: 'अभिजित्',
@@ -270,8 +391,8 @@ class AbhijitMuhurtaService extends ServiceTemplate {
   _generateAbhijitSummary(abhijitTiming, significanceAnalysis, recommendations) {
     let summary = `🌟 *Abhijit Muhurta Analysis*\n\n`;
     
-    summary += `*Date:* ${abhijitTiming.date || 'Today'}\n`;
-    summary += `*Timing:* ${abhijitTiming.startTime} - ${abhijitTiming.endTime} (${abhijitTiming.durationMinutes} minutes)\n\n`;
+    summary += `*Timing:* ${abhijitTiming.startTime} - ${abhijitTiming.endTime} (${abhijitTiming.durationMinutes} minutes)\n`;
+    summary += `*Center Time:* ${abhijitTiming.centerTime}\n\n`;
     
     summary += `*Significance:*\n`;
     summary += `The Abhijit Muhurta (Unconquerable Victory) is the most auspicious time of the day, `;
@@ -293,123 +414,6 @@ class AbhijitMuhurtaService extends ServiceTemplate {
     });
     
     return summary;
-  }
-
-  /**
-   * Format result for service consumption
-   * @param {Object} result - Raw calculator result
-   * @returns {Object} Formatted result
-   */
-  formatResult(result) {
-    if (result.error) {
-      return {
-        success: false,
-        error: result.error,
-        message: 'Abhijit Muhurta analysis failed'
-      };
-    }
-
-    return {
-      success: true,
-      data: result,
-      summary: result.summary || 'Abhijit Muhurta analysis completed',
-      metadata: {
-        system: 'Abhijit Muhurta Analysis',
-        calculationMethod: 'Vedic muhurta timing with Swiss Ephemeris calculations',
-        elements: ['Timing', 'Significance', 'Recommendations', 'Activities'],
-        tradition: 'Vedic Hindu astrology with muhurta principles'
-      }
-    };
-  }
-
-  /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(birthData) {
-    if (!birthData) {
-      throw new Error('Birth data is required for Abhijit Muhurta analysis');
-    }
-
-    if (!birthData.birthDate) {
-      throw new Error('Birth date is required for Abhijit Muhurta analysis');
-    }
-
-    if (!birthData.birthPlace) {
-      throw new Error('Birth place is required for Abhijit Muhurta analysis');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthData.birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-  }
-
-  /**
-   * Get service metadata
-   * @returns {Object} Service information
-   */
-  getMetadata() {
-    return {
-      name: this.serviceName,
-      version: '1.0.0',
-      category: 'vedic',
-      methods: ['execute', 'labhijitMuhurtaCalculation', 'formatResult'],
-      dependencies: ['MuhurtaCalculator']
-    };
-  }
-
-  /**
-   * Get service-specific help
-   * @returns {string} Help information
-   */
-  getHelp() {
-    return `
-🌟 **Abhijit Muhurta Service**
-
-**Purpose:** Provides analysis of Abhijit Muhurta, the most auspicious time of day in Vedic astrology occurring around noon
-
-**Required Inputs:**
-• Birth date (DD/MM/YYYY)
-• Birth place (city, state/country)
-
-**Analysis Includes:**
-
-**⏰ Timing Details:**
-• Exact start and end times of Abhijit Muhurta
-• Duration (approximately 48 minutes)
-• Center time of maximum potency
-• Sunrise and sunset times for context
-
-**🌟 Significance Analysis:**
-• Mythological origins and meaning
-• Planetary influences and characteristics
-• Benefits and advantages
-• Activities most favorable during this time
-
-**🎯 Recommendations:**
-• Optimal usage tips for maximum benefit
-• Preparation methods before Abhijit
-• Activities to perform during Abhijit
-• Post-Abhijit practices
-• Mantras and remedies for enhanced results
-
-**📋 Activity Guidance:**
-• Highly recommended activities
-• Moderately recommended activities
-• Activities to avoid
-• Special considerations for different endeavor types
-
-**Example Usage:**
-"Abhijit Muhurta timing for 15/06/2025 in New Delhi"
-"Best time for important work today in Mumbai"
-"When is Abhijit Muhurta in Bangalore tomorrow?"
-
-**Output Format:**
-Comprehensive Abhijit Muhurta report with timing details, significance analysis, recommendations, and activity guidance
-    `.trim();
   }
 
   // Helper methods for calculations
@@ -487,17 +491,27 @@ Comprehensive Abhijit Muhurta report with timing details, significance analysis,
     const minutes = Math.floor((decimalHours - hours) * 60);
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();
       return {
         ...baseHealth,
         features: {
-          // Add service-specific features here
+          abhijitTiming: true,
+          muhurtaAnalysis: true,
+          spiritualPractices: true
         },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
+        supportedCalculations: [
+          'abhijit_muhurta_timing',
+          'spiritual_practice_timing',
+          'important_activity_timing'
+        ],
+        calculationMethods: {
+          abhijitTiming: true,
+          sunriseSunset: true,
+          planetaryPositions: true
+        }
       };
     } catch (error) {
       return {

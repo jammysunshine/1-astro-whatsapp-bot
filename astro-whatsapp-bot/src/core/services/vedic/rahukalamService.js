@@ -2,6 +2,7 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
+const MuhurtaCalculator = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
 
 /**
  * RahukalamService - Specialized service for calculating Rahukalam timing
@@ -11,19 +12,14 @@ const logger = require('../../utils/logger');
  * avoid important activities and minimize negative outcomes.
  */
 class RahukalamService extends ServiceTemplate {
-  constructor(services) {
-    super('rahukalamService');
-    
-    // Initialize calculator with services if provided
-    if (services) {
-      this.calculator.setServices(services);
-    }
-    
+  constructor() {
+    super('MuhurtaCalculator');
     this.serviceName = 'RahukalamService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
     logger.info('RahukalamService initialized');
   }
 
-  async lrahukalamCalculation(birthData) {
+  async processCalculation(birthData) {
     try {
       // Validate input
       this._validateInput(birthData);
@@ -48,6 +44,135 @@ class RahukalamService extends ServiceTemplate {
   }
 
   /**
+   * Format result for service consumption
+   * @param {Object} result - Raw calculator result
+   * @returns {Object} Formatted result
+   */
+  formatResult(result) {
+    if (result.error) {
+      return {
+        success: false,
+        error: result.error,
+        message: 'Rahukalam analysis failed'
+      };
+    }
+
+    return {
+      success: true,
+      data: result,
+      summary: result.summary || 'Rahukalam analysis completed',
+      metadata: {
+        system: 'Rahukalam Analysis',
+        calculationMethod: 'Vedic planetary period calculation with weekday-based timing',
+        elements: ['Timing', 'Significance', 'Recommendations', 'Activities'],
+        tradition: 'Vedic Hindu astrology with muhurta principles'
+      }
+    };
+  }
+
+  /**
+   * Validate input parameters
+   * @param {Object} input - Input data to validate
+   * @private
+   */
+  _validateInput(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required for Rahukalam analysis');
+    }
+
+    if (!birthData.birthDate) {
+      throw new Error('Birth date is required for Rahukalam analysis');
+    }
+
+    if (!birthData.birthTime) {
+      throw new Error('Birth time is required for Rahukalam analysis');
+    }
+
+    if (!birthData.birthPlace) {
+      throw new Error('Birth place is required for Rahukalam analysis');
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(birthData.birthDate)) {
+      throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthData.birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
+    }
+  }
+
+  /**
+   * Get service metadata
+   * @returns {Object} Service information
+   */
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['execute', 'processCalculation', 'formatResult'],
+      dependencies: ['MuhurtaCalculator']
+    };
+  }
+
+  /**
+   * Get service-specific help
+   * @returns {string} Help information
+   */
+  getHelp() {
+    return `
+🌑 **Rahukalam Service**
+
+**Purpose:** Provides analysis of Rahukalam, an inauspicious 90-minute period each day in Vedic astrology during which malefic planetary influences are strongest
+
+**Required Inputs:**
+• Birth date (DD/MM/YYYY)
+• Birth time (HH:MM)
+• Birth place (city, state/country)
+
+**Analysis Includes:**
+
+**⏰ Timing Details:**
+• Exact start and end times of Rahukalam
+• Duration (typically 90 minutes)
+• Planetary lord ruling the period
+• Sunrise and sunset times for context
+
+**🌑 Significance Analysis:**
+• Mythological origins and meaning
+• Planetary influences and characteristics
+• Risks and potential challenges
+• Activities to avoid during this time
+
+**🎯 Recommendations:**
+• Protective measures for minimizing negative effects
+• Spiritual practices for spiritual protection
+• Mental approaches for navigating this period
+• Positive actions that can be performed
+• Mantras and remedies for enhanced protection
+
+**📋 Activity Guidance:**
+• Activities to strictly avoid
+• Activities that are neutral or acceptable
+• Favorable activities during this period
+• Remedies and protective measures
+• Spiritual practices recommended
+
+**Example Usage:**
+"Rahukalam timing for 15/06/2025, time 06:45 in New Delhi"
+"When is Rahukalam today in Mumbai?"
+"Avoid activities during Rahukalam in Bangalore tomorrow"
+
+**Output Format:**
+Comprehensive Rahukalam report with timing details, significance analysis, recommendations, and activity guidance
+    `.trim();
+  }
+
+  /**
    * Calculate Rahukalam timing for a specific date and location
    * @private
    * @param {Object} birthData - Birth data with date, time, and location
@@ -55,14 +180,16 @@ class RahukalamService extends ServiceTemplate {
    */
   async _calculateRahukalam(birthData) {
     try {
-      const { birthDate, birthPlace } = birthData;
+      const { birthDate, birthTime, birthPlace } = birthData;
       
       // Parse date components
       const [day, month, year] = birthDate.split('/').map(Number);
+      const [hour, minute] = birthTime.split(':').map(Number);
       
       // Get location coordinates and timezone
       const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
-      const timestamp = new Date(year, month - 1, day).getTime();
+      const birthDateTime = new Date(year, month - 1, day, hour, minute);
+      const timestamp = birthDateTime.getTime();
       const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
       
       // Calculate Rahukalam timing based on weekday
@@ -375,6 +502,10 @@ class RahukalamService extends ServiceTemplate {
       throw new Error('Birth date is required for Rahukalam analysis');
     }
 
+    if (!birthData.birthTime) {
+      throw new Error('Birth time is required for Rahukalam analysis');
+    }
+
     if (!birthData.birthPlace) {
       throw new Error('Birth place is required for Rahukalam analysis');
     }
@@ -383,6 +514,12 @@ class RahukalamService extends ServiceTemplate {
     const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
     if (!dateRegex.test(birthData.birthDate)) {
       throw new Error('Birth date must be in DD/MM/YYYY format');
+    }
+
+    // Validate time format
+    const timeRegex = /^\d{1,2}:\d{1,2}$/;
+    if (!timeRegex.test(birthData.birthTime)) {
+      throw new Error('Birth time must be in HH:MM format');
     }
   }
 
@@ -395,7 +532,7 @@ class RahukalamService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'lrahukalamCalculation', 'formatResult'],
+      methods: ['execute', 'processCalculation', 'formatResult'],
       dependencies: ['MuhurtaCalculator']
     };
   }
@@ -412,6 +549,7 @@ class RahukalamService extends ServiceTemplate {
 
 **Required Inputs:**
 • Birth date (DD/MM/YYYY)
+• Birth time (HH:MM)
 • Birth place (city, state/country)
 
 **Analysis Includes:**
@@ -443,7 +581,7 @@ class RahukalamService extends ServiceTemplate {
 • Spiritual practices recommended
 
 **Example Usage:**
-"Rahukalam timing for 15/06/2025 in New Delhi"
+"Rahukalam timing for 15/06/2025, time 06:45 in New Delhi"
 "When is Rahukalam today in Mumbai?"
 "Avoid activities during Rahukalam in Bangalore tomorrow"
 
@@ -553,17 +691,27 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
     };
     return orders[weekday] || 1;
   }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();
       return {
         ...baseHealth,
         features: {
-          // Add service-specific features here
+          rahukalamTiming: true,
+          planetaryPeriods: true,
+          protectiveMeasures: true
         },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
+        supportedCalculations: [
+          'rahukalam_timing',
+          'planetary_periods',
+          'protective_measures'
+        ],
+        calculationMethods: {
+          weekdayBased: true,
+          planetaryOrder: true,
+          daylightDuration: true
+        }
       };
     } catch (error) {
       return {

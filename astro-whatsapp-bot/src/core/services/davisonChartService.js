@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
-const { BirthData } = require('../../models');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * DavisonChartService - Service for Davison chart calculations

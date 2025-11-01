@@ -1,5 +1,5 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
 

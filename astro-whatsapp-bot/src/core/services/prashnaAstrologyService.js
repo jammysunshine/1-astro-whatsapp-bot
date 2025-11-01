@@ -863,6 +863,11 @@ class PrashnaAstrologyService extends ServiceTemplate {
       dependencies: ['PrashnaCalculator']
     };
   }
+
+  async processCalculation(data) {
+    return await this.lprashnaAstrologyCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

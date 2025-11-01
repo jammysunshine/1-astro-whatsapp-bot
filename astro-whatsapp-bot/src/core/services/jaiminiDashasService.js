@@ -1,5 +1,5 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
 
@@ -194,7 +194,7 @@ class JaiminiDashasService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required');
     }
-    const { BirthData } = require('../../models');
+    const { BirthData } = require('../../models/BirthData');
     const validatedData = new BirthData(birthData);
     validatedData.validate();
   }

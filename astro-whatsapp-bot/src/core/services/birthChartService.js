@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const { BirthData } = require('../../models');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * BirthChartService - Service for generating Vedic astrology birth charts

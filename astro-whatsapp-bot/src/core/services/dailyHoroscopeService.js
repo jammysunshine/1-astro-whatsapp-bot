@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
-const { BirthData } = require('../../models');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * DailyHoroscopeService - Vedic daily horoscope prediction service
@@ -13,7 +13,7 @@ class DailyHoroscopeService extends ServiceTemplate {
     super('DailyHoroscopeCalculator'); // Primary calculator for this service
     this.serviceName = 'DailyHoroscopeService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/DailyHoroscopeCalculator';
+      ../calculators/DailyHoroscopeCalculator';
     logger.info('DailyHoroscopeService initialized');
   }
 

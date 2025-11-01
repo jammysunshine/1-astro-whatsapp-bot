@@ -7,7 +7,7 @@ const ServiceTemplate = require('./ServiceTemplate');
  * mantras, charities, pujas, and yantras based on birth chart analysis.
  */
 
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 class RemediesDoshaService extends ServiceTemplate {
   constructor() {

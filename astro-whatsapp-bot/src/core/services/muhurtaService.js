@@ -1,5 +1,5 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 /**
  * MuhurtaService - Service for auspicious timing calculations (Electional Astrology)
@@ -12,7 +12,7 @@ class MuhurtaService extends ServiceTemplate {
     super('MuhurtaCalculator'); // Primary calculator for this service
     this.serviceName = 'MuhurtaService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+      ../calculators/MuhurtaCalculator';
     logger.info('MuhurtaService initialized');
   }
 

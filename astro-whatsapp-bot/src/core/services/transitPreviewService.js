@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
-const { BirthData } = require('../../models');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * TransitPreviewService - Service for generating transit previews
@@ -13,7 +13,7 @@ class TransitPreviewService extends ServiceTemplate {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'TransitPreviewService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/TransitCalculator';
+      ../calculators/TransitCalculator';
     logger.info('TransitPreviewService initialized');
   }
 

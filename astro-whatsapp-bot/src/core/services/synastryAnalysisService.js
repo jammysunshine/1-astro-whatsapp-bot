@@ -729,6 +729,11 @@ class SynastryAnalysisService extends ServiceTemplate {
       dependencies: ['SynastryEngine']
     };
   }
+
+  async processCalculation(data) {
+    return await this.performSynastryAnalysis(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
-const { BirthData } = require('../../models');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * FinancialAstrologyService - Wealth, investments, and financial analysis service
@@ -13,7 +13,7 @@ class FinancialAstrologyService extends ServiceTemplate {
     super('FinancialAstrologyCalculator'); // Primary calculator for this service
     this.serviceName = 'FinancialAstrologyService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/FinancialAstrologyCalculator';
+      ../calculators/FinancialAstrologyCalculator';
     logger.info('FinancialAstrologyService initialized');
   }
 

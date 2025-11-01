@@ -1,4 +1,4 @@
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 const ServiceTemplate = require('./ServiceTemplate');
 
 class HellenisticAstrologyService extends ServiceTemplate {

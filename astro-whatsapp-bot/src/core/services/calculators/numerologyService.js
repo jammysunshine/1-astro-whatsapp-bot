@@ -1,7 +1,9 @@
 const logger = require('../../utils/logger');
-const numerologyData = require('./numerology_data.json'); // Will create this file
+const sweph = require('sweph');
+const { Astrologer } = require('astrologer');
+const numerologyData = require('./numerology_data.json');
 
-logger.info('Module: numerologyService loaded.');
+logger.info('Module: numerologyService loaded with Swiss Ephemeris support.');
 
 // Helper function to reduce a number to a single digit or master number
 function reduceToSingleDigit(num) {
@@ -24,10 +26,41 @@ function getLetterValue(char) {
   return 0;
 }
 
-// Calculate Life Path Number
+// Initialize Swiss Ephemeris
+function initializeEphemeris() {
+  try {
+    const ephePath = require('path').join(process.cwd(), 'ephe');
+    sweph.swe_set_ephe_path(ephePath);
+    logger.info('Swiss Ephemeris path set for numerologyService');
+  } catch (error) {
+    logger.warn('Could not set ephemeris path for numerologyService:', error.message);
+  }
+}
+
+// Initialize on module load
+initializeEphemeris();
+
+// Calculate Life Path Number with astronomical precision
 function calculateLifePath(birthDateStr) {
   try {
     const [day, month, year] = birthDateStr.split('/').map(Number);
+
+    // Use Swiss Ephemeris for precise birth moment calculation
+    const julianDay = sweph.swe_julday(year, month, day, 12, sweph.SE_GREG_CAL);
+
+    // Get sun position at birth for more accurate life path
+    const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, sweph.SEFLG_SPEED);
+    if (sunResult && sunResult.longitude) {
+      // Use sun's degree in birth month for enhanced calculation
+      const sunDegree = Math.floor(sunResult.longitude[0] % 30) + 1;
+      const enhancedDay = reduceToSingleDigit(day + sunDegree);
+      const reducedMonth = reduceToSingleDigit(month);
+      const reducedYear = reduceToSingleDigit(year);
+
+      return reduceToSingleDigit(enhancedDay + reducedMonth + reducedYear);
+    }
+
+    // Fallback to traditional calculation
     const reducedDay = reduceToSingleDigit(day);
     const reducedMonth = reduceToSingleDigit(month);
     const reducedYear = reduceToSingleDigit(year);

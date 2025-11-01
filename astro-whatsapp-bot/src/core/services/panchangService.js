@@ -167,6 +167,11 @@ class PanchangService extends ServiceTemplate {
       dependencies: ['Panchang']
     };
   }
+
+  async processCalculation(data) {
+    return await this.lpanchangCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

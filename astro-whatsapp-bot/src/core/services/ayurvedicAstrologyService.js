@@ -5,7 +5,7 @@
  * Determines dominant doshas (Vata/Pitta/Kapha) and provides personalized health guidance.
  */
 
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 const ServiceTemplate = require('./ServiceTemplate');
 
 class AyurvedicAstrologyService extends ServiceTemplate {

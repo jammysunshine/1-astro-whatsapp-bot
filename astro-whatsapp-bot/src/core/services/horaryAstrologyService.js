@@ -1,5 +1,5 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 /**
  * Horary Astrology Service

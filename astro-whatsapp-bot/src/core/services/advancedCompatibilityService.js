@@ -1,5 +1,5 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 /**
  * Advanced Compatibility Service
@@ -185,7 +185,7 @@ class AdvancedCompatibilityService extends ServiceTemplate {
       );
     }
 
-    const { BirthData } = require('../../models');
+    const { BirthData } = require('../../models/BirthData');
 
     // Validate person1
     const validatedPerson1 = new BirthData(person1);

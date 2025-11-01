@@ -7,7 +7,7 @@ const ServiceTemplate = require('./ServiceTemplate');
  * Combines individual birth charts with auspicious timing calculations using Vedic principles.
  */
 
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 class GroupTimingService extends ServiceTemplate {
   constructor() {

@@ -1,5 +1,5 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 
 /**
@@ -13,7 +13,7 @@ class RisingSignService extends ServiceTemplate {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'RisingSignService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/SignCalculator';
+      ../calculators/SignCalculator';
     logger.info('RisingSignService initialized');
   }
 

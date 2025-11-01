@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
-const { BirthData } = require('../../models');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * UpcomingDashasService - Service for forecasting future planetary periods
@@ -13,7 +13,7 @@ class UpcomingDashasService extends ServiceTemplate {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'UpcomingDashasService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
+      ../calculators/DashaAnalysisCalculator';
     logger.info('UpcomingDashasService initialized');
   }
 

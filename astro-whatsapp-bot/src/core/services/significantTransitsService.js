@@ -1,9 +1,9 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const VedicCalculator = require('../calculators/VedicCalculator'); const logger = require('../../../utils/logger');
+const VedicCalculator = require('../calculators/VedicCalculator'); const logger = require('../../utils/logger');
 const {
   validateCoordinates,
   validateDateTime
-} = require('../../../utils/validation');
+} = require('../../utils/validation');
 
 /**
  * GocharService - Service for planetary transit analysis (Gochar)
@@ -17,7 +17,7 @@ class GocharService extends ServiceTemplate {
     this.calculatorPath = '../calculators/ChartGenerator';
     this.serviceName = 'GocharService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/VedicCalculator';
+      ../calculators/VedicCalculator';
     logger.info('GocharService initialized');
   }
 

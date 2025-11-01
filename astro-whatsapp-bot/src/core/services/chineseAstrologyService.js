@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const { BirthData } = require('../../models');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * ChineseAstrologyService - Service for Chinese astrology analysis

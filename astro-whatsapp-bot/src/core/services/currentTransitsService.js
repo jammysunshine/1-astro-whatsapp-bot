@@ -13,7 +13,7 @@ class CurrentTransitsService extends ServiceTemplate {
   constructor() {
     super('TransitCalculator');
     this.serviceName = 'CurrentTransitsService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/TransitCalculator';
+    this.calculatorPath = ../calculators/TransitCalculator';
     logger.info('CurrentTransitsService initialized');
   }
 
@@ -46,7 +46,7 @@ class CurrentTransitsService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required');
     }
-    const { BirthData } = require('../../models');
+    const { BirthData } = require('../../models/BirthData');
     const validatedData = new BirthData(birthData);
     validatedData.validate();
   }

@@ -1,5 +1,5 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 // Import required calculators
 const { GroupAstrologyCalculator } = require('../calculators/GroupAstrologyCalculator');

@@ -932,6 +932,11 @@ class NumerologyAnalysisService extends ServiceTemplate {
       dependencies: ['numerologyService']
     };
   }
+
+  async processCalculation(data) {
+    return await this.lnumerologyAnalysisCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

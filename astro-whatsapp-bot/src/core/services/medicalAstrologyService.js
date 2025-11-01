@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
-const { BirthData } = require('../../models');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * MedicalAstrologyService - Specialized service for health patterns and wellness astrology
@@ -14,7 +14,7 @@ class MedicalAstrologyService extends ServiceTemplate {
     this.calculatorPath = '../calculators/ChartGenerator';
     this.serviceName = 'MedicalAstrologyService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/MedicalAstrologyCalculator';
+      ../calculators/MedicalAstrologyCalculator';
     logger.info('MedicalAstrologyService initialized');
   }
 

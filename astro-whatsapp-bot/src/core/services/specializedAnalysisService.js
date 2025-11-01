@@ -858,6 +858,11 @@ class SpecializedAnalysisService extends ServiceTemplate {
       ]
     };
   }
+
+  async processCalculation(data) {
+    return await this.lspecializedAnalysisCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

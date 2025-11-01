@@ -1,9 +1,9 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const VedicCalculator = require('../calculators/VedicCalculator'); const logger = require('../../../utils/logger');
+const VedicCalculator = require('../calculators/VedicCalculator'); const logger = require('../../utils/logger');
 const {
   validateCoordinates,
   validateDateTime
-} = require('../../../utils/validation');
+} = require('../../utils/validation');
 
 /**
  * GocharService - Service for planetary transit analysis (Gochar)

@@ -128,7 +128,7 @@ class NadiAstrologyService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for Nadi astrology reading');
     }
-    const { BirthData } = require('../../models');
+    const { BirthData } = require('../../models/BirthData');
     const validatedData = new BirthData(birthData);
     validatedData.validate();
   }

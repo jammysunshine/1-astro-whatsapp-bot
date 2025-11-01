@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
-const { BirthData } = require('../../models');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * LunarReturnService - Service for lunar return chart analysis
@@ -14,7 +14,7 @@ class LunarReturnService extends ServiceTemplate {
     this.calculatorPath = '../calculators/ChartGenerator';
     this.serviceName = 'LunarReturnService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/LunarReturnCalculator';
+      ../calculators/LunarReturnCalculator';
     logger.info('LunarReturnService initialized');
   }
 

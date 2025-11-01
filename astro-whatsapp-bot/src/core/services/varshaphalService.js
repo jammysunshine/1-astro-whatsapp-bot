@@ -7,8 +7,8 @@ const ServiceTemplate = require('./ServiceTemplate');
 const VedicCalculator = require('../calculators/VedicCalculator'); const {
   validateCoordinates,
   validateDateTime
-} = require('../../../utils/validation');
-const { formatDegree, formatTime } = require('../../../utils/formatters');
+} = require('../../utils/validation');
+const { formatDegree, formatTime } = require('../../utils/formatters');
 
 class VarshaphalService extends ServiceTemplate {
   constructor() {
@@ -772,6 +772,11 @@ class VarshaphalService extends ServiceTemplate {
       }
     };
   }
+
+  async processCalculation(data) {
+    return await this.calculate(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

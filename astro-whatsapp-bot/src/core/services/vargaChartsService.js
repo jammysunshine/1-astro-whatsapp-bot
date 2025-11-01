@@ -6,7 +6,7 @@ const ServiceTemplate = require('./ServiceTemplate');
  * with Swiss Ephemeris integration for precise chart calculations.
  */
 
-const logger = require('../../../utils/logger');
+const logger = require('../../utils/logger');
 
 class VargaChartsService extends ServiceTemplate {
   constructor() {

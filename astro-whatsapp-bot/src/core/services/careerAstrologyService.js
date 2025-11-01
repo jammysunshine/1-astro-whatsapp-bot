@@ -5,7 +5,7 @@ class CareerAstrologyService extends ServiceTemplate {
   constructor() {
     super('CareerAstrologyService');
     this.calculatorPath =
-      '../../../services/astrology/calculators/CareerAstrologyCalculator';
+      '../calculators/CareerAstrologyCalculator';
   }
 
   async initialize() {

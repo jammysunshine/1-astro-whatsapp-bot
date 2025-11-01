@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
-const { BirthData } = require('../../models');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * DetailedChartAnalysisService - Comprehensive Vedic chart interpretation service
@@ -13,7 +13,7 @@ class DetailedChartAnalysisService extends ServiceTemplate {
     super('DetailedChartAnalysisCalculator'); // Primary calculator for this service
     this.serviceName = 'DetailedChartAnalysisService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/DetailedChartAnalysisCalculator';
+      ../calculators/DetailedChartAnalysisCalculator';
     logger.info('DetailedChartAnalysisService initialized');
   }
 

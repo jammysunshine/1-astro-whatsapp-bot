@@ -7,8 +7,8 @@ const ServiceTemplate = require('./ServiceTemplate');
 const VedicCalculator = require('../calculators/VedicCalculator'); const {
   validateCoordinates,
   validateDateTime
-} = require('../../../utils/validation');
-const { formatDegree, formatTime } = require('../../../utils/formatters');
+} = require('../../utils/validation');
+const { formatDegree, formatTime } = require('../../utils/formatters');
 
 class JaiminiAstrologyService extends ServiceTemplate {
   constructor() {

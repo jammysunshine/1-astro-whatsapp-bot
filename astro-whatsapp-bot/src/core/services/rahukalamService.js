@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const { BirthData } = require('../../models');
+const { BirthData } = require('../../models/BirthData');
 
 // Import calculator from legacy structure
 /**
@@ -14,7 +14,7 @@ class RahukalamService extends ServiceTemplate {
   constructor() {
     this.serviceName = 'RahukalamService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+      ../calculators/MuhurtaCalculator';
     logger.info('RahukalamService initialized');
   }
 

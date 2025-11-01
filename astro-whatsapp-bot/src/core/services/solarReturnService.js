@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const logger = require('../../../utils/logger');
-const { BirthData } = require('../../models');
+const logger = require('../../utils/logger');
+const { BirthData } = require('../../models/BirthData');
 
 /**
  * SolarReturnService - Service for solar return chart analysis
@@ -13,7 +13,7 @@ class SolarReturnService extends ServiceTemplate {
     super('SolarReturnCalculator'); // Primary calculator for this service
     this.serviceName = 'SolarReturnService';
     this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/SolarReturnCalculator';
+      ../calculators/SolarReturnCalculator';
     logger.info('SolarReturnService initialized');
   }
 

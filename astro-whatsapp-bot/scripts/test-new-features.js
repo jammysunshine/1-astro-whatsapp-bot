@@ -1,12 +1,14 @@
 // Test script for new astrology features - UPDATED IMPORT PATHS
-const astrocartographyReader = require('./src/core/services/calculators/astrocartographyReader');
-const { PoliticalAstrology } = require('./src/core/services/calculators/PoliticalAstrology'); // Updated to use available calculator
-const HellenisticAstrologyReader = require('./src/core/services/calculators/hellenisticAstrology');
-const AgeHarmonicAstrologyReader = require('./src/core/services/numerologyService'); // TODO: Age harmonic service not yet migrated - using numerology service temporarily
+const astrocartographyReader = require('../src/core/services/calculators/astrocartographyReader');
+const { PoliticalAstrology } = require('../src/core/services/calculators/PoliticalAstrology'); // Updated to use available calculator
+const HellenisticAstrologyReader = require('../src/core/services/calculators/hellenisticAstrology');
+const AgeHarmonicAstrologyService = require('../src/core/services/ageHarmonicAstrologyService'); // Updated to use new service
+const PoliticalAstrologyService = require('../src/core/services/politicalAstrologyService'); // Added new service
 
 const mundaneAstrology = new PoliticalAstrology(); // Updated to use migrated PoliticalAstrology calculator
 const hellenisticAstrology = new HellenisticAstrologyReader();
-const ageHarmonicAstrology = new AgeHarmonicAstrologyReader();
+const ageHarmonicAstrology = new AgeHarmonicAstrologyService(); // Updated to use new service
+const politicalAstrology = new PoliticalAstrologyService(); // Added new service
 
 async function testNewFeatures() {
   console.log('🧪 Testing new astrology features...\n');
@@ -34,10 +36,15 @@ async function testNewFeatures() {
     const hellenisticResult = await hellenisticAstrology.generateHellenisticAnalysis(birthData);
     console.log('✅ Hellenistic Astrology result:', hellenisticResult ? 'Success' : 'Failed');
 
-    // Test Age Harmonic Astrology (using numerology service temporarily)
-    console.log('🔢 Testing Age Harmonic Astrology (numerology service)...');
-    const ageHarmonicResult = await ageHarmonicAstrology.generateAgeHarmonicAnalysis ? ageHarmonicAstrology.generateAgeHarmonicAnalysis(birthData) : ageHarmonicAstrology.generateFullReport('Test User', birthData.birthDate);
+    // Test Age Harmonic Astrology
+    console.log('🔢 Testing Age Harmonic Astrology...');
+    const ageHarmonicResult = await ageHarmonicAstrology.processCalculation(birthData);
     console.log('✅ Age Harmonic Astrology result:', ageHarmonicResult ? 'Success' : 'Failed');
+
+    // Test Political Astrology
+    console.log('🏛️ Testing Political Astrology...');
+    const politicalResult = await politicalAstrology.processCalculation(birthData);
+    console.log('✅ Political Astrology result:', politicalResult ? 'Success' : 'Failed');
 
     console.log('\n🎉 All new features tested successfully!');
 

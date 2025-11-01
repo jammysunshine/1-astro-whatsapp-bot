@@ -1,6 +1,6 @@
 // tests/unit/services/core/services/mundaneAstrologyService.test.js
-const MundaneAstrologyService = require('../../../../../src/core/services/mundaneAstrologyService');
-const logger = require('../../../../../src/utils/logger');
+const MundaneAstrologyService = require('../../../../src/core/services/mundaneAstrologyService');
+const logger = require('../../../../src/utils/logger');
 
 // Mock the MundaneAstrologyReader dependency
 const mockMundaneAstrologyReader = {
@@ -31,7 +31,7 @@ describe('MundaneAstrologyService', () => {
 
   beforeEach(() => {
     // Mock the import of MundaneAstrologyReader
-    jest.mock('../../../../../src/core/services/calculators/mundaneAstrologyReader', () => {
+    jest.mock('../../../../src/core/services/calculators/mundaneAstrologyReader', () => {
       return jest.fn().mockImplementation(() => mockMundaneAstrologyReader);
     });
     service = new MundaneAstrologyService();

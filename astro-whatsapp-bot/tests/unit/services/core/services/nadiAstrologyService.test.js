@@ -1,7 +1,7 @@
 // tests/unit/services/astrology/nadiReader.test.js
 // Unit tests for Nadi astrology reading service
 
-const NadiAstrologyService = require('../../../../../src/core/services/nadiAstrologyService');
+const NadiAstrologyService = require('../../../../src/core/services/nadiAstrologyService');
 
 describe('NadiAstrologyService', () => {
   let service;

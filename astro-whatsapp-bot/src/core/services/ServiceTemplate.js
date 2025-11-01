@@ -136,6 +136,23 @@ class ServiceTemplate extends AstroServiceInterface {
     return data;
   }
 
+  /**
+   * Validate that required parameters are present in the input data
+   * @param {Object} params - Input parameters to validate
+   * @param {Array<string>} requiredParams - Array of required parameter names
+   */
+  validateParams(params, requiredParams) {
+    if (!params || typeof params !== 'object') {
+      throw new Error('Parameters must be an object');
+    }
+
+    for (const param of requiredParams) {
+      if (!(param in params) || params[param] === undefined || params[param] === null) {
+        throw new Error(`Missing required parameter: ${param}`);
+      }
+    }
+  }
+
   async processCalculation(data) {
     // To be implemented by specific service
     throw new Error('processCalculation must be implemented');

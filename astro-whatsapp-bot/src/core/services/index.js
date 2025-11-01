@@ -205,6 +205,7 @@ module.exports = {
   AstrologicalThemesAnalysisService,
   PoliticalTimingAnalysisService,
   GlobalStabilityAnalysisService,
+  PoliticalAstrologyService,
   
   // New service layers for proper separation of concerns
   UserManagementService,

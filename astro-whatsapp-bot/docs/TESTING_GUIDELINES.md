@@ -28,6 +28,25 @@ To ensure high-quality and maintainable code, adhere to the following principles
 5.  **Readability:** Write clear, concise, and well-structured tests that are easy to understand and maintain.
 6.  **Maintainability:** Tests should be easy to update when the code changes. Avoid brittle tests that break with minor refactors.
 
+## Mocking Strategy for External Dependencies
+
+For dependencies marked as "Real," it is crucial to note that all necessary credentials, API keys, URLs, and connection strings are sourced from `.env` files and other project-specific configuration files (e.g., `config/appConfig.js`, `config/dbConfig.js`). Ensure these configurations are correctly set up in your local environment for these "Real" dependencies to function as expected during testing and development.
+
+To ensure efficient and reliable unit testing, external dependencies should be mocked according to the following guidelines:
+
+*   **WhatsApp API:** Real for authentication, but Mocked for `sendMessage`, `sendListMessage`, `sendButtonMessage`, etc.
+*   **Google Maps API:** Real.
+*   **Geocoding:** Real.
+*   **Mistral AI API:** Real.
+*   **MongoDB:** Real.
+*   **Stripe and Razorpay:** Mocked.
+*   **Twilio:** Mocked.
+*   **Astrological Calculation Libraries:** Real.
+*   **Ephe:** Real.
+*   **Swiss Ephemeris:** Real.
+*   **Astrologer library:** Real.
+
+
 ## Process for Fixing Existing Test Scripts
 
 This process applies to test files that are currently testing modules that have been migrated or refactored into `src/core/services/`. **Prioritize services over calculators.**
@@ -67,9 +86,8 @@ This process applies to services in `src/core/services/**` that currently lack d
 
 1.  **Locating New Test Files:**
     *   Create new test files in a mirroring directory structure under `tests/unit/services/core/`.
-    *   For example:
-        *   `src/core/services/myService.js` -> `tests/unit/services/core/services/myService.test.js`
-        *   `src/core/services/calculators/myCalculator.js` -> `tests/unit/services/core/calculators/myCalculator.test.js`
+    *   For **new services** (e.g., `src/core/services/myService.js`), the test file should be at `tests/unit/services/core/services/myService.test.js`.
+    *   For **new calculators** (e.g., `src/core/services/calculators/myCalculator.js`), the test file should be at `tests/unit/services/core/calculators/myCalculator.test.js`.
 
 2.      *   **Test File Naming Convention:** `[ServiceName].test.js` (e.g., `MyService.js` should have a test file named `MyService.test.js`). This ensures a direct and unambiguous mapping between a service and its test suite.
 

@@ -1,8 +1,8 @@
 // tests/unit/services/astrology/astrocartographyReader.test.js
 // Unit tests for Astrocartography Reader
 
-const AstrocartographyService = require('../../../../../src/core/services/astrocartographyService');
-const logger = require('../../../../../src/utils/logger');
+const AstrocartographyService = require('../../../../src/core/services/astrocartographyService');
+const logger = require('../../../../src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});

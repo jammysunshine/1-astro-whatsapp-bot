@@ -1,10 +1,10 @@
 // tests/unit/services/astrology/celticReader.test.js
 // Unit tests for Celtic Reader
 
-const CelticAstrologyService = require('../../../../../src/core/services/celticAstrologyService');
+const CelticAstrologyService = require('../../../../src/core/services/celticAstrologyService');
 
 // Mock dependencies
-const logger = require('../../../../../src/utils/logger');
+const logger = require('../../../../src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});

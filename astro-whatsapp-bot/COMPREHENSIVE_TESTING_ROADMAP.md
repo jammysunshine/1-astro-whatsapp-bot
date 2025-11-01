@@ -9,6 +9,9 @@
 
 ## 🎯 IMMEDIATE NEXT STEPS (Complete the 80% remaining)
 
+### **CRITICAL NOTE ON PRIORITIZATION:**
+**Strictly prioritize fixing and creating test scripts for services located in `@src/core/services/**`. Older services outside this directory (e.g., in `src/services/astrology/`) are considered legacy and will be addressed only after all `@src/core/services/**` are fully covered.**
+
 ### Phase 1A: Final Import Path Cleanup (1-2 hours)
 **Execute the created automation script:**
 ```bash

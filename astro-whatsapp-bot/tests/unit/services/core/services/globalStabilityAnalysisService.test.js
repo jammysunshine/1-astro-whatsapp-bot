@@ -1,5 +1,5 @@
-const GlobalStabilityAnalysisService = require('../../../../../src/core/services/globalStabilityAnalysisService');
-const logger = require('../../../../../src/utils/logger');
+const GlobalStabilityAnalysisService = require('../../../../src/core/services/globalStabilityAnalysisService');
+const logger = require('../../../../src/utils/logger');
 
 // Mock the GlobalStabilityAnalyzer dependency
 const mockGlobalStabilityAnalyzer = {
@@ -10,12 +10,12 @@ const mockGlobalStabilityAnalyzer = {
   analyzeGlobalStability: jest.fn(), // Added for processCalculation
 };
 
-jest.mock('../../../../../src/core/services/calculators/GlobalStabilityAnalyzer', () => {
-  return jest.fn().mockImplementation(() => mockGlobalStabilityAnalyzer);
-});
+jest.mock('../../../../src/core/services/calculators/GlobalStabilityAnalyzer', () => ({
+  GlobalStabilityAnalyzer: jest.fn().mockImplementation(() => mockGlobalStabilityAnalyzer)
+}));
 
 // Mock logger to prevent console output during tests
-jest.mock('../../../../../src/utils/logger');
+jest.mock('../../../../src/utils/logger');
 
 describe('GlobalStabilityAnalysisService', () => {
   let serviceInstance;

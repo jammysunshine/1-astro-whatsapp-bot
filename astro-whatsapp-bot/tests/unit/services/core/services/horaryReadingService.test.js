@@ -1,10 +1,10 @@
 // tests/unit/services/astrology/horaryReader.test.js
 // Unit tests for Horary Reader
 
-const HoraryReadingService = require('../../../../../src/core/services/horaryReadingService');
+const HoraryReadingService = require('../../../../src/core/services/horaryReadingService');
 
 // Mock dependencies
-const logger = require('../../../../../src/utils/logger');
+const logger = require('../../../../src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});

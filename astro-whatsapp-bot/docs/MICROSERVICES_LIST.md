@@ -4,7 +4,7 @@ This document lists the astrological services identified from the `MENU_REFERENC
 
 ## Astrological Microservices
 
-**Note:** All services are implemented in the `/src/core/services/` directory. All calculators are located in `/src/core/services/calculators/`. Total: 105 services implemented with calculators.
+**Note:** All services are implemented in the `/src/core/services/` directory. All calculators are located in `/src/core/services/calculators/`. Total: 107 services implemented with calculators.
 
 1.  `start_couple_compatibility_flow` - `src/core/services/coupleCompatibilityService.js` (uses: `src/core/services/calculators/SynastryEngine.js`)
 2.  `get_synastry_analysis` - `src/core/services/synastryAnalysisService.js` (uses: `src/core/services/calculators/SynastryEngine.js`)
@@ -111,3 +111,5 @@ This document lists the astrological services identified from the `MENU_REFERENC
 103. `get_astrological_themes_analysis` - `src/core/services/astrologicalThemesAnalysisService.js` (uses: `src/core/services/calculators/AstrologicalThemesAnalyzer.js`)
 104. `get_political_timing_analysis` - `src/core/services/politicalTimingAnalysisService.js` (uses: `src/core/services/calculators/PoliticalTimingAnalyzer.js`)
 105. `get_global_stability_analysis` - `src/core/services/globalStabilityAnalysisService.js` (uses: `src/core/services/calculators/GlobalStabilityAnalyzer.js`)
+106. `get_political_astrology_analysis` - `src/core/services/politicalAstrologyService.js` (uses: `src/core/services/calculators/PoliticalAstrology.js`)
+107. `get_age_harmonic_astrology_analysis` - `src/core/services/ageHarmonicAstrologyService.js` (uses: `src/core/services/calculators/AgeHarmonicAstrologyCalculator.js`)

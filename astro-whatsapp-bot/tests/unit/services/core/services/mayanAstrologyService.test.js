@@ -1,10 +1,10 @@
 // tests/unit/services/astrology/mayanReader.test.js
 // Unit tests for Mayan Reader
 
-const MayanAstrologyService = require('../../../../../src/core/services/mayanAstrologyService');
+const MayanAstrologyService = require('../../../../src/core/services/mayanAstrologyService');
 
 // Mock dependencies
-const logger = require('../../../../../src/utils/logger');
+const logger = require('../../../../src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});

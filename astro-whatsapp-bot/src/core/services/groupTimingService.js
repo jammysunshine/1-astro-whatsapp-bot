@@ -1,5 +1,6 @@
-/**
 const ServiceTemplate = require('./ServiceTemplate');
+
+/**
  * Group Timing Service
  *
  * Provides comprehensive group timing analysis for events involving multiple people,

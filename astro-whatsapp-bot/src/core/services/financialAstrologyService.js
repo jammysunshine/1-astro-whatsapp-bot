@@ -12,8 +12,7 @@ class FinancialAstrologyService extends ServiceTemplate {
   constructor() {
     super('FinancialAstrologyCalculator'); // Primary calculator for this service
     this.serviceName = 'FinancialAstrologyService';
-    this.calculatorPath =
-      ../calculators/FinancialAstrologyCalculator';
+    this.calculatorPath = './calculators/FinancialAstrologyCalculator';
     logger.info('FinancialAstrologyService initialized');
   }
 

@@ -12,8 +12,7 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   constructor() {
     super('DetailedChartAnalysisCalculator'); // Primary calculator for this service
     this.serviceName = 'DetailedChartAnalysisService';
-    this.calculatorPath =
-      ../calculators/DetailedChartAnalysisCalculator';
+    this.calculatorPath = './calculators/DetailedChartAnalysisCalculator';
     logger.info('DetailedChartAnalysisService initialized');
   }
 

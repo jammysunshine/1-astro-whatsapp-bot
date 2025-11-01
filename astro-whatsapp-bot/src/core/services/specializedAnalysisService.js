@@ -1,25 +1,16 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
+const AshtakavargaCalculator = require('./calculators/AshtakavargaCalculator');
+const VargaChartCalculator = require('./calculators/VargaChartCalculator');
+const VedicYogasCalculator = require('./calculators/VedicYogasCalculator');
+const ShadbalaCalculator = require('./calculators/ShadbalaCalculator');
 
-// Import calculators from legacy structure (for now)
-
-/**
- * SpecializedAnalysisService - Advanced Vedic astrological analysis service
- *
- * Provides comprehensive specialized analysis including Ashtakavarga analysis,
- * Varga (divisional) charts, yogas, shadbala, and other specialized techniques
- * for deep insights into life patterns and spiritual development.
- */
 class SpecializedAnalysisService extends ServiceTemplate {
   constructor() {
-    super('AshtakavargaCalculator');
+    super('AshtakavargaCalculator'); // Primary calculator for this service
     this.calculatorPath = './calculators/AshtakavargaCalculator';
-    this.ashtakavargaCalc = new AshtakavargaCalculator();
-    this.vargaCalc = new VargaChartCalculator();
-    this.yogasCalc = new VedicYogasCalculator();
-    this.shadbalaCalc = new ShadbalaCalculator();
     this.serviceName = 'SpecializedAnalysisService';
-    logger.info('SpecializedAnalysisService initialized');
+    logger.log('SpecializedAnalysisService initialized');
   }
 
   async lspecializedAnalysisCalculation(analysisData) {

@@ -1,15 +1,15 @@
-const { MundaneConfig } = require('./MundaneConfig');
-const { PoliticalStabilityAssessor } = require('./PoliticalStabilityAssessor');
-const { LeadershipAnalyzer } = require('./LeadershipAnalyzer');
-const { GovernmentChangePredictor } = require('./GovernmentChangePredictor');
+const { MundaneConfig } = require('../older-files-might-be-useful/MundaneConfig');
+const { PoliticalStabilityAssessor } = require('../older-files-might-be-useful/PoliticalStabilityAssessor');
+const { LeadershipAnalyzer } = require('../older-files-might-be-useful/LeadershipAnalyzer');
+const { GovernmentChangePredictor } = require('../older-files-might-be-useful/GovernmentChangePredictor');
 const {
   InternationalRelationsAnalyzer
-} = require('./InternationalRelationsAnalyzer');
-const { PoliticalEventIdentifier } = require('./PoliticalEventIdentifier');
-const { PoliticalTimingAnalyzer } = require('./PoliticalTimingAnalyzer');
+} = require('../older-files-might-be-useful/InternationalRelationsAnalyzer');
+const { PoliticalEventIdentifier } = require('../older-files-might-be-useful/PoliticalEventIdentifier');
+const { PoliticalTimingAnalyzer } = require('../older-files-might-be-useful/PoliticalTimingAnalyzer');
 const {
   PoliticalRecommendationGenerator
-} = require('./PoliticalRecommendationGenerator');
+} = require('../older-files-might-be-useful/PoliticalRecommendationGenerator');
 
 /**
  * PoliticalAstrology - World leadership and government analysis

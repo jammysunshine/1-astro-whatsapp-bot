@@ -1,5 +1,5 @@
-const AstrologicalThemesAnalysisService = require('../../../../src/core/services/astrologicalThemesAnalysisService');
-const logger = require('../../../../src/utils/logger');
+const AstrologicalThemesAnalysisService = require('src/core/services/astrologicalThemesAnalysisService');
+const logger = require('src/utils/logger');
 
 // Mock the AstrologicalThemesAnalyzer dependency
 const mockAstrologicalThemesAnalyzer = {
@@ -9,12 +9,12 @@ const mockAstrologicalThemesAnalyzer = {
   analyzeKarmicPatterns: jest.fn(),
 };
 
-jest.mock('../../../../src/core/services/calculators/AstrologicalThemesAnalyzer', () => {
+jest.mock('src/core/services/calculators/AstrologicalThemesAnalyzer', () => {
   return jest.fn().mockImplementation(() => mockAstrologicalThemesAnalyzer);
 });
 
 // Mock logger to prevent console output during tests
-jest.mock('../../../../src/utils/logger');
+jest.mock('src/utils/logger');
 
 describe('AstrologicalThemesAnalysisService', () => {
   let serviceInstance;

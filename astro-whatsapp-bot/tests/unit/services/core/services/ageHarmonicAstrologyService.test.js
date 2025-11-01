@@ -1,18 +1,18 @@
 // tests/unit/services/core/services/ageHarmonicAstrologyService.test.js
-const AgeHarmonicAstrologyService = require('../../../../src/core/services/ageHarmonicAstrologyService');
-const logger = require('../../../../src/utils/logger');
+const AgeHarmonicAstrologyService = require('src/core/services/ageHarmonicAstrologyService');
+const logger = require('src/utils/logger');
 
 // Mock the AgeHarmonicAstrologyCalculator dependency
 const mockAgeHarmonicAstrologyCalculator = {
   generateAgeHarmonicAnalysis: jest.fn(),
 };
 
-jest.mock('../../../../src/core/services/calculators/AgeHarmonicAstrologyCalculator', () => {
+jest.mock('src/core/services/calculators/AgeHarmonicAstrologyCalculator', () => {
   return jest.fn().mockImplementation(() => mockAgeHarmonicAstrologyCalculator);
 });
 
 // Mock logger to prevent console output during tests
-jest.mock('../../../../src/utils/logger');
+jest.mock('src/utils/logger');
 
 describe('AgeHarmonicAstrologyService', () => {
   let serviceInstance;

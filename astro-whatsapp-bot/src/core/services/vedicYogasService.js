@@ -9,15 +9,7 @@ const logger = require('../../utils/logger');
 class VedicYogasService extends ServiceTemplate {
   constructor(services) {
     super('VedicYogasCalculator');
-
-    // Initialize Vedic Yogas Calculator with required dependencies
-    this.calculator = new VedicYogasCalculator(
-      services.astrologer,
-      services.geocodingService
-    );
-
-    // Set services in calculator
-    this.calculator.setServices(services);
+    this.calculatorPath = './calculators/VedicYogasCalculator';
 
     // Service-specific configuration
     this.serviceConfig = {

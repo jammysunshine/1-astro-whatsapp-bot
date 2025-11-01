@@ -1,9 +1,9 @@
 // tests/unit/services/core/calculators/GlobalStabilityAnalyzer.test.js
-const { GlobalStabilityAnalyzer } = require('../../../../../src/core/services/calculators/GlobalStabilityAnalyzer');
-const logger = require('../../../../../src/utils/logger');
+const { GlobalStabilityAnalyzer } = require('../src/core/services/calculators/GlobalStabilityAnalyzer');
+const logger = require('../src/utils/logger');
 
 // Mock logger to prevent console output during tests
-jest.mock('../../../../../src/utils/logger');
+jest.mock('../src/utils/logger');
 
 describe('GlobalStabilityAnalyzer', () => {
   let analyzerInstance;

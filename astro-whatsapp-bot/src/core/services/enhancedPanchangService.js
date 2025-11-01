@@ -1,5 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
+const PanchangCalculator = require('./calculators/PanchangCalculator');
 
 /**
  * Enhanced Panchang Service

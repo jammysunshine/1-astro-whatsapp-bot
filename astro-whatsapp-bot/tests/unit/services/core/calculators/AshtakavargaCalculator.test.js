@@ -1,6 +1,6 @@
 // tests/unit/services/core/calculators/AshtakavargaCalculator.test.js
-const AshtakavargaCalculator = require('../../../../../src/core/services/calculators/AshtakavargaCalculator');
-const logger = require('../../../../../src/utils/logger');
+const AshtakavargaCalculator = require('../src/core/services/calculators/AshtakavargaCalculator');
+const logger = require('../src/utils/logger');
 const sweph = require('sweph');
 
 // Mock logger to prevent console output during tests

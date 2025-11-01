@@ -1,5 +1,5 @@
-const PoliticalTimingAnalysisService = require('../../../../src/core/services/politicalTimingAnalysisService');
-const logger = require('../../../../src/utils/logger');
+const PoliticalTimingAnalysisService = require('src/core/services/politicalTimingAnalysisService');
+const logger = require('src/utils/logger');
 
 // Mock the PoliticalTimingAnalyzer dependency
 const mockPoliticalTimingAnalyzer = {
@@ -9,12 +9,12 @@ const mockPoliticalTimingAnalyzer = {
   identifyMajorTransitions: jest.fn(),
 };
 
-jest.mock('../../../../src/core/services/calculators/PoliticalTimingAnalyzer', () => {
+jest.mock('src/core/services/calculators/PoliticalTimingAnalyzer', () => {
   return jest.fn().mockImplementation(() => mockPoliticalTimingAnalyzer);
 });
 
 // Mock logger to prevent console output during tests
-jest.mock('../../../../src/utils/logger');
+jest.mock('src/utils/logger');
 
 describe('PoliticalTimingAnalysisService', () => {
   let serviceInstance;

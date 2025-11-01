@@ -1,9 +1,9 @@
 // tests/unit/services/core/calculators/AstrologicalThemesAnalyzer.test.js
-const { AstrologicalThemesAnalyzer } = require('../../../../../src/core/services/calculators/AstrologicalThemesAnalyzer');
-const logger = require('../../../../../src/utils/logger');
+const { AstrologicalThemesAnalyzer } = require('../src/core/services/calculators/AstrologicalThemesAnalyzer');
+const logger = require('../src/utils/logger');
 
 // Mock logger to prevent console output during tests
-jest.mock('../../../../../src/utils/logger');
+jest.mock('../src/utils/logger');
 
 describe('AstrologicalThemesAnalyzer', () => {
   let analyzerInstance;

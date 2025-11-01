@@ -11,11 +11,19 @@ const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
 class GroupTimingService extends ServiceTemplate {
-  constructor() {
-    this.groupCalculator = new GroupAstrologyCalculator();
-    this.muhurtaCalculator = new MuhurtaCalculator();
-    this.compatibilityScorer = new CompatibilityCalculator();
-    logger.info('GroupTimingService initialized');
+  constructor(calculatorName = 'GroupAstrologyCalculator') {
+    super(calculatorName);
+    this.calculatorPath = './calculators/GroupAstrologyCalculator';
+    logger.log('GroupTimingService initialized with calculator:', calculatorName);
+  }
+
+  async initialize() {
+    // Load the main calculator using ServiceTemplate pattern
+    await super.initialize();
+
+    // Note: Additional calculators (MuhurtaCalculator, CompatibilityCalculator)
+    // would need to be handled by a composite calculator approach
+    // For now, they should be loaded by the main calculator
   }
 
   /**

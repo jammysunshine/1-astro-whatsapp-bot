@@ -9,11 +9,11 @@ const { VedicNumerology } = require('./calculators/VedicNumerology');
  * Vedic numerology system with Swiss Ephemeris and astrologer libraries.
  */
 class NumerologyService extends ServiceTemplate {
-  constructor() {
-    super('VedicNumerology');
-    this.calculator = new VedicNumerology();
+  constructor(calculatorName = 'VedicNumerology') {
+    super(calculatorName);
+    this.calculatorPath = './calculators/VedicNumerology';
     this.serviceName = 'NumerologyService';
-    logger.info('NumerologyService initialized with VedicNumerology');
+    logger.info(`NumerologyService initialized with ${calculatorName}`);
   }
 
   /**

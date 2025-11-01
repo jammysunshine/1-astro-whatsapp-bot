@@ -1,7 +1,7 @@
 // tests/unit/services/astrology/dailyHoroscopeService.test.js
 // Unit tests for DailyHoroscopeService
 
-const DailyHoroscopeService = require('../../../../src/core/services/dailyHoroscopeService');
+const DailyHoroscopeService = require('src/core/services/dailyHoroscopeService');
 
 describe('DailyHoroscopeService', () => {
   let service;

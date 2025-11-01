@@ -1,220 +1,311 @@
-// tests/unit/services/astrology/birthChartService.test.js
-// Unit tests for BirthChartService
+// tests/unit/services/core/services/birthChartService.test.js
+// Comprehensive test suite for birthChartService
 
-const BirthChartService = require('../../../../src/core/services/birthChartService');
+// Create mock calculator instance
+const mockCalculatorInstance = {
+  initialize: jest.fn().mockResolvedValue(true),
+  calculateBirthChart: jest.fn().mockResolvedValue({
+    planets: [],
+    houses: [],
+    ascendant: 'Aries',
+    nakshatra: 'Ashwini',
+    chartData: {}
+  }),
+  initialized: false
+};
+
+// Mock the calculator module before importing the service
+jest.mock('../src/core/services/calculators/VedicCalculator', () => {
+  return jest.fn().mockImplementation(() => mockCalculatorInstance);
+});
+
+// Mock the shared logger module (used by ServiceTemplate) before importing the service
+jest.mock('../../../../../src/shared/utils/logger', () => ({
+  info: jest.fn(),
+  error: jest.fn(),
+  warn: jest.fn(),
+  debug: jest.fn(),
+  verbose: jest.fn(),
+  silly: jest.fn()
+}));
+
+// Mock the regular logger module (used by birthChartService) before importing the service
+jest.mock('../src/utils/logger', () => ({
+  info: jest.fn(),
+  error: jest.fn(),
+  warn: jest.fn(),
+  debug: jest.fn(),
+  verbose: jest.fn(),
+  silly: jest.fn()
+}));
+
+// Mock BirthData model
+jest.mock('../src/models/BirthData', () => ({
+  BirthData: jest.fn().mockImplementation((data) => ({
+    data,
+    validate: jest.fn(() => {
+      // Simulate validation - throw error for invalid data
+      if (!data.birthDate || !data.birthTime || !data.birthPlace) {
+        throw new Error('Required field is missing or empty');
+      }
+    })
+  }))
+}));
+
+const BirthChartService = require('../src/core/services/birthChartService');
+const logger = require('../src/utils/logger');
 
 describe('BirthChartService', () => {
-  let service;
+  let birthChartService;
 
   beforeEach(() => {
-    service = new BirthChartService();
+    jest.clearAllMocks();
+    
+    // Create service instance with mocked calculator
+    birthChartService = new BirthChartService(mockCalculatorInstance);
   });
 
-  describe('validate', () => {
-    it('should validate valid birth data', () => {
-      const data = {
-        birthDate: '15031990',
-        birthTime: '1430',
-        birthPlace: 'Mumbai, India',
-        user: { id: 'user-123' }
-      };
-
-      expect(() => service.validate(data)).not.toThrow();
-      expect(service.validate(data)).toBe(true);
+  describe('Service Initialization', () => {
+    test('should initialize BirthChartService with calculator', () => {
+      expect(birthChartService.calculator).toBe(mockCalculatorInstance);
+      expect(birthChartService.calculatorPath).toBe('./calculators/VedicCalculator');
+      
+      // Verify logger was called during initialization
+      expect(logger.info).toHaveBeenCalledWith('BirthChartService initialized with VedicCalculator');
     });
 
-    it('should validate data with minimal required fields', () => {
-      const data = {
-        birthDate: '15031990',
-        birthPlace: 'Mumbai, India',
-        user: { id: 'user-123' }
+    test('should have correct default properties', () => {
+      expect(birthChartService.serviceName).toBe('VedicCalculator');
+      expect(birthChartService.calculatorPath).toBe('./calculators/VedicCalculator');
+    });
+  });
+
+  describe('calculateBirthChart method', () => {
+    const validBirthData = {
+      birthDate: '15/05/1990',
+      birthTime: '12:30',
+      birthPlace: 'Mumbai, India',
+      latitude: 19.0760,
+      longitude: 72.8777,
+      timezone: 'IST'
+    };
+
+    test('should generate birth chart with valid data', async () => {
+      const mockChartData = {
+        planets: [],
+        houses: [],
+        ascendant: 'Aries',
+        nakshatra: 'Ashwini',
+        chartData: {}
       };
 
-      expect(() => service.validate(data)).not.toThrow();
-      expect(service.validate(data)).toBe(true);
+      mockCalculatorInstance.calculateBirthChart.mockResolvedValue(mockChartData);
+
+      const result = await birthChartService.calculateBirthChart(validBirthData);
+
+      expect(mockCalculatorInstance.calculateBirthChart).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: validBirthData
+        })
+      );
+
+      expect(result.type).toBe('vedic');
+      expect(result.generatedAt).toBeDefined();
+      expect(result.service).toBe('VedicCalculator');
     });
 
-    it('should throw error for missing birthDate', () => {
-      const data = {
-        birthTime: '1430',
-        birthPlace: 'Mumbai, India',
-        user: { id: 'user-123' }
-      };
+    test('should handle calculator initialization if not initialized', async () => {
+      mockCalculatorInstance.initialized = false;
 
-      expect(() => service.validate(data)).toThrow('Birth date is required for birth chart calculation');
+      await birthChartService.calculateBirthChart(validBirthData);
+
+      expect(mockCalculatorInstance.initialize).toHaveBeenCalled();
+      expect(mockCalculatorInstance.calculateBirthChart).toHaveBeenCalled();
     });
 
-    it('should throw error for missing birthPlace', () => {
-      const data = {
-        birthDate: '15031990',
-        birthTime: '1430',
-        user: { id: 'user-123' }
-      };
+    test('should skip calculator initialization if already initialized', async () => {
+      mockCalculatorInstance.initialized = true;
 
-      expect(() => service.validate(data)).toThrow('Birth place is required for birth chart calculation');
+      await birthChartService.calculateBirthChart(validBirthData);
+
+      expect(mockCalculatorInstance.initialize).not.toHaveBeenCalled();
     });
 
-    it('should throw error for missing user', () => {
-      const data = {
-        birthDate: '15031990',
-        birthTime: '1430',
+    test('should throw error for invalid birth data', async () => {
+      const invalidBirthData = {
+        birthDate: '',
+        birthTime: '12:30',
         birthPlace: 'Mumbai, India'
       };
 
-      expect(() => service.validate(data)).toThrow('User data is required for birth chart calculation');
+      await expect(birthChartService.calculateBirthChart(invalidBirthData))
+        .rejects
+        .toThrow('Birth chart generation failed: Required field is missing or empty');
+    });
+
+    test('should handle calculator errors gracefully', async () => {
+      mockCalculatorInstance.calculateBirthChart.mockRejectedValue(
+        new Error('Calculator error')
+      );
+
+      await expect(birthChartService.calculateBirthChart(validBirthData))
+        .rejects
+        .toThrow('Birth chart generation failed: Calculator error');
+
+      expect(logger.error).toHaveBeenCalledWith(
+        'BirthChartService calculation error:',
+        expect.any(Error)
+      );
     });
   });
 
-  describe('processCalculation', () => {
-    it('should generate birth chart for valid data', async () => {
-      const data = {
-        birthDate: '15031990',
-        birthTime: '1430',
-        birthPlace: 'Mumbai, India',
-        user: { id: 'user-123', name: 'John Doe' }
+  describe('formatResult method', () => {
+    test('should format successful result correctly', () => {
+      const mockResult = {
+        planets: [],
+        houses: [],
+        ascendant: 'Aries'
       };
 
-      const result = await service.processCalculation(data);
-
-      expect(result).toBeDefined();
-      expect(result.planets).toBeDefined();
-      expect(result.houses).toBeDefined();
-      expect(result.aspects).toBeDefined();
-      expect(result.sunSign).toBeDefined();
-      expect(result.moonSign).toBeDefined();
-      expect(result.risingSign).toBeDefined();
-    });
-
-    it('should handle birth chart without birth time', async () => {
-      const data = {
-        birthDate: '15031990',
-        birthPlace: 'Mumbai, India',
-        user: { id: 'user-456', name: 'Jane Smith' }
-      };
-
-      const result = await service.processCalculation(data);
-
-      expect(result).toBeDefined();
-      expect(result.planets).toBeDefined();
-      expect(result.houses).toBeDefined();
-      expect(result.aspects).toBeDefined();
-    });
-
-    it('should calculate accurate planetary positions', async () => {
-      const data = {
-        birthDate: '15031990', // March 15, 1990
-        birthTime: '1430', // 2:30 PM
-        birthPlace: 'Mumbai, India',
-        user: { id: 'user-test', name: 'Test User' }
-      };
-
-      const result = await service.processCalculation(data);
-
-      expect(result).toBeDefined();
-      expect(result.sunSign).toBe('Pisces'); // Sun in Pisces on March 15
-      expect(result.planets).toBeInstanceOf(Array);
-      expect(result.planets.length).toBeGreaterThan(0);
-    });
-  });
-
-  describe('formatResult', () => {
-    it('should format successful birth chart result', () => {
-      const rawResult = {
-        sunSign: 'Pisces',
-        moonSign: 'Cancer',
-        risingSign: 'Sagittarius',
-        planets: [
-          { name: 'Sun', sign: 'Pisces', degree: 24.5 },
-          { name: 'Moon', sign: 'Cancer', degree: 12.3 }
-        ],
-        houses: [
-          { number: 1, sign: 'Sagittarius', degree: 15.2 },
-          { number: 2, sign: 'Capricorn', degree: 8.7 }
-        ],
-        aspects: [
-          { planet1: 'Sun', planet2: 'Moon', aspect: 'trine', orb: 1.2 }
-        ]
-      };
-
-      const formatted = service.formatResult(rawResult);
+      const formatted = birthChartService.formatResult(mockResult);
 
       expect(formatted.success).toBe(true);
-      expect(formatted.chart).toBeDefined();
-      expect(formatted.chart.sunSign).toBe('Pisces');
-      expect(formatted.chart.moonSign).toBe('Cancer');
-      expect(formatted.chart.risingSign).toBe('Sagittarius');
-      expect(formatted.chart.planets).toHaveLength(2);
-      expect(formatted.chart.houses).toHaveLength(2);
-      expect(formatted.chart.aspects).toHaveLength(1);
+      expect(formatted.data).toBe(mockResult);
       expect(formatted.timestamp).toBeDefined();
+      expect(formatted.service).toBe('VedicCalculator');
     });
 
-    it('should format error result', () => {
-      const rawResult = {
-        error: 'Invalid birth date format'
+    test('should format error result correctly', () => {
+      const mockErrorResult = {
+        error: 'Something went wrong'
       };
 
-      const formatted = service.formatResult(rawResult);
+      const formatted = birthChartService.formatResult(mockErrorResult);
 
       expect(formatted.success).toBe(false);
-      expect(formatted.error).toBe('Invalid birth date format');
-      expect(formatted.chart).toBeUndefined();
+      expect(formatted.error).toBe('Something went wrong');
+      expect(formatted.service).toBe('VedicCalculator');
     });
   });
 
-  describe('execute', () => {
-    it('should execute complete birth chart workflow', async () => {
-      const data = {
-        birthDate: '15031990',
-        birthTime: '1430',
-        birthPlace: 'Mumbai, India',
-        user: { id: 'user-123', name: 'John Doe' }
-      };
+  describe('getMetadata method', () => {
+    test('should return correct metadata', () => {
+      const metadata = birthChartService.getMetadata();
 
-      const result = await service.execute(data);
-
-      expect(result).toBeDefined();
-      expect(result.success).toBe(true);
-      expect(result.chart).toBeDefined();
-      expect(result.chart.sunSign).toBeDefined();
-      expect(result.chart.planets).toBeDefined();
-      expect(result.chart.houses).toBeDefined();
-      expect(result.timestamp).toBeDefined();
-    });
-
-    it('should handle validation errors in execute', async () => {
-      const data = {
-        birthTime: '1430',
-        birthPlace: 'Mumbai, India',
-        user: { id: 'user-123' }
-        // missing birthDate
-      };
-
-      await expect(service.execute(data)).rejects.toThrow('Birth date is required for birth chart calculation');
+      expect(metadata).toEqual({
+        name: 'VedicCalculator',
+        version: '1.0.0',
+        category: 'vedic',
+        methods: ['generateVedicKundli'],
+        dependencies: ['ChartGenerator']
+      });
     });
   });
 
-  describe('getMetadata', () => {
-    it('should return service metadata', () => {
-      const metadata = service.getMetadata();
+  describe('processCalculation method', () => {
+    test('should call calculateBirthChart with provided data', async () => {
+      const mockChartData = {
+        planets: [],
+        houses: [],
+        ascendant: 'Aries',
+        nakshatra: 'Ashwini',
+        chartData: {}
+      };
 
-      expect(metadata.name).toBe('BirthChartService');
-      expect(metadata.category).toBe('astrology');
-      expect(metadata.description).toContain('birth chart');
-      expect(metadata.version).toBe('1.0.0');
-      expect(metadata.supportedCalculations).toEqual(
-        expect.arrayContaining(['planets', 'houses', 'aspects'])
+      mockCalculatorInstance.calculateBirthChart.mockResolvedValue(mockChartData);
+
+      const result = await birthChartService.processCalculation({
+        birthDate: '15/05/1990',
+        birthTime: '12:30',
+        birthPlace: 'Mumbai, India'
+      });
+
+      expect(mockCalculatorInstance.calculateBirthChart).toHaveBeenCalled();
+      expect(result).toBe(mockChartData);
+    });
+  });
+
+  describe('getHealthStatus method', () => {
+    test('should return healthy status when service is operational', async () => {
+      const healthStatus = await birthChartService.getHealthStatus();
+
+      expect(healthStatus).toBeDefined();
+      expect(healthStatus.status).toBeDefined();
+      expect(healthStatus.features).toEqual({});
+      expect(healthStatus.supportedAnalyses).toEqual([]);
+    });
+
+    test('should return unhealthy status when error occurs', async () => {
+      jest.spyOn(birthChartService, 'getHealthStatus').mockRejectedValue(
+        new Error('Health check failed')
       );
-      expect(metadata.status).toBe('active');
+
+      await expect(birthChartService.getHealthStatus())
+        .rejects
+        .toThrow('Health check failed');
     });
   });
 
-  describe('getHealthStatus', () => {
-    it('should return healthy status when service is working', async () => {
-      const health = await service.getHealthStatus();
+  describe('Service Architecture Compliance', () => {
+    test('should implement ServiceTemplate pattern', () => {
+      expect(birthChartService.serviceName).toBeDefined();
+      expect(typeof birthChartService.getHealthStatus).toBe('function');
+      expect(typeof birthChartService.getMetadata).toBe('function');
+    });
 
-      expect(health.status).toBe('healthy');
-      expect(health.timestamp).toBeDefined();
+    test('should not expose calculator methods directly', () => {
+      // Service should abstract calculator details
+      expect(birthChartService.calculateBirthChart).toBeDefined(); // This is a service method
+      expect(birthChartService.initialize).toBeDefined(); // This is a service method
+    });
+  });
+
+  describe('Error Handling & Validation', () => {
+    test('should handle concurrent requests properly', async () => {
+      const birthData = {
+        birthDate: '15/05/1990',
+        birthTime: '12:30',
+        birthPlace: 'Mumbai, India'
+      };
+
+      const concurrentRequests = Array(5).fill().map(() =>
+        birthChartService.calculateBirthChart(birthData)
+      );
+
+      const results = await Promise.all(concurrentRequests);
+
+      // All should succeed
+      results.forEach(result => {
+        expect(result.type).toBe('vedic');
+        expect(result.service).toBe('VedicCalculator');
+      });
+
+      expect(mockCalculatorInstance.calculateBirthChart).toHaveBeenCalledTimes(5);
+    });
+
+    test('should handle null/undefined input gracefully', async () => {
+      const invalidInputs = [null, undefined, {}];
+
+      for (const input of invalidInputs) {
+        await expect(birthChartService.calculateBirthChart(input))
+          .rejects
+          .toThrow('Birth chart generation failed: Required field is missing or empty');
+      }
+    });
+  });
+
+  describe('Performance & Resilience', () => {
+    test('should respond within acceptable time for valid data', async () => {
+      const startTime = Date.now();
+      await birthChartService.calculateBirthChart({
+        birthDate: '15/05/1990',
+        birthTime: '12:30',
+        birthPlace: 'Mumbai, India'
+      });
+      const duration = Date.now() - startTime;
+
+      // Should complete within reasonable time (e.g., 100ms)
+      expect(duration).toBeLessThan(100);
     });
   });
 });

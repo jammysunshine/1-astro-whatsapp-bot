@@ -98,6 +98,7 @@ const VimshottariDashaService = require('./vimshottariDashaService');
 const AgeHarmonicAstrologyService = require('./ageHarmonicAstrologyService');
 const AstrologicalThemesAnalysisService = require('./astrologicalThemesAnalysisService');
 const PoliticalTimingAnalysisService = require('./politicalTimingAnalysisService');
+const PoliticalAstrologyService = require('./politicalAstrologyService');
 const GlobalStabilityAnalysisService = require('./globalStabilityAnalysisService');
 
 // New service layers for proper separation of concerns

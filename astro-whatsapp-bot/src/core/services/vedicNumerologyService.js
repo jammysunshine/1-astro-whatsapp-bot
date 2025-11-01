@@ -11,11 +11,11 @@ const VedicNumerology = require('./calculators/VedicNumerology');
  */
 
 class VedicNumerologyService extends ServiceTemplate {
-  constructor() {
-    super('VedicNumerology');
-    this.calculator = new VedicNumerology();
+  constructor(calculatorName = 'VedicNumerology') {
+    super(calculatorName);
+    this.calculatorPath = './calculators/VedicNumerology';
     this.serviceName = 'VedicNumerologyService';
-    logger.info('VedicNumerologyService initialized with VedicNumerology calculator');
+    logger.info(`VedicNumerologyService initialized with ${calculatorName}`);
   }
 
   /**

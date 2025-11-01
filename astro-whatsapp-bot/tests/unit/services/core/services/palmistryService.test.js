@@ -1,13 +1,13 @@
 // tests/unit/services/astrology/palmistryReader.test.js
 // Unit tests for Palmistry reading service
 
-const PalmistryService = require('../../../../src/core/services/palmistryService');
+const PalmistryService = require('src/core/services/palmistryService');
 
 // Mock dependencies
-const logger = require('../../../../src/utils/logger');
+const logger = require('src/utils/logger');
 
 // Mock the PalmistryReader calculator
-jest.mock('../../../../src/core/services/calculators/palmistryReader', () => {
+jest.mock('src/core/services/calculators/palmistryReader', () => {
   return jest.fn().mockImplementation(() => ({
     readPalm: jest.fn(async (handData, options) => {
       if (!handData || Object.keys(handData).length === 0) {

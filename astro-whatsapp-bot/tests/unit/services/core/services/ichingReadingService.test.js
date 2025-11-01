@@ -1,10 +1,10 @@
 // tests/unit/services/astrology/ichingReader.test.js
 // Unit tests for I Ching Reader
 
-const IChingReadingService = require('../../../../src/core/services/ichingReadingService');
+const IChingReadingService = require('src/core/services/ichingReadingService');
 
 // Mock dependencies
-const logger = require('../../../../src/utils/logger');
+const logger = require('src/utils/logger');
 
 let ichingReadingServiceInstance;
 

@@ -1,9 +1,9 @@
 // tests/unit/services/core/calculators/PoliticalTimingAnalyzer.test.js
-const { PoliticalTimingAnalyzer } = require('../../../../../src/core/services/calculators/PoliticalTimingAnalyzer');
-const logger = require('../../../../../src/utils/logger');
+const { PoliticalTimingAnalyzer } = require('../src/core/services/calculators/PoliticalTimingAnalyzer');
+const logger = require('../src/utils/logger');
 
 // Mock logger to prevent console output during tests
-jest.mock('../../../../../src/utils/logger');
+jest.mock('../src/utils/logger');
 
 describe('PoliticalTimingAnalyzer', () => {
   let analyzerInstance;

@@ -12,9 +12,10 @@ const { BirthData } = require('../../models/BirthData');
  */
 class RahukalamService extends ServiceTemplate {
   constructor() {
+    super('MuhurtaCalculator'); // Pass calculator name to super
     this.serviceName = 'RahukalamService';
     this.calculatorPath = './calculators/MuhurtaCalculator';
-    logger.info('RahukalamService initialized');
+    logger.log('RahukalamService initialized');
   }
 
   async processCalculation(birthData) {

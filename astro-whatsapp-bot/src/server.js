@@ -14,6 +14,19 @@ const {
 const paymentService = require('./services/payment/paymentService');
 const { errorHandler } = require('./utils/errorHandler');
 const logger = require('./utils/logger');
+const ServiceGateway = require('./core/monolith/ServiceGateway');
+
+const serviceGateway = new ServiceGateway();
+
+(async () => {
+  try {
+    await serviceGateway.initialize();
+    logger.info('✅ Service Gateway initialized successfully.');
+  } catch (error) {
+    logger.error('❌ Failed to initialize Service Gateway:', error);
+    process.exit(1);
+  }
+})();
 
 const app = express();
 
@@ -26,6 +39,7 @@ logger.debug(
 logger.debug(`WhatsApp Phone Number ID: ${whatsappPhoneNumberId || 'Not Set'}`);
 
 // Connect to MongoDB
+/*
 (async() => {
   try {
     await connectDB();
@@ -34,6 +48,7 @@ logger.debug(`WhatsApp Phone Number ID: ${whatsappPhoneNumberId || 'Not Set'}`);
     process.exit(1); // Exit if database connection fails at startup
   }
 })();
+*/
 
 const PORT = process.env.W1_PORT || 3000;
 
@@ -211,6 +226,22 @@ app.get('/ready', (req, res) => {
     timestamp: new Date().toISOString(),
     service: 'Astrology WhatsApp Bot API'
   });
+});
+
+// Service Gateway API endpoint
+app.post('/api/gateway', async (req, res) => {
+  const { serviceName, data, context } = req.body;
+  if (!serviceName) {
+    return res.status(400).json({ status: 'error', message: 'serviceName is required' });
+  }
+  const response = await serviceGateway.processRequest(serviceName, data, context);
+  res.json(response);
+});
+
+// Service Gateway Health endpoint
+app.get('/health/gateway', async (req, res) => {
+  const healthStatus = await serviceGateway.getHealthStatus();
+  res.json(healthStatus);
 });
 
 // Import validation middleware

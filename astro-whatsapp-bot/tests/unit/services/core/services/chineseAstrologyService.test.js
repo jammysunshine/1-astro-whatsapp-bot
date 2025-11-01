@@ -1,10 +1,10 @@
 // tests/unit/services/astrology/chineseCalculator.test.js
 // Unit tests for Chinese Calculator
 
-const ChineseAstrologyService = require('../../../../src/core/services/chineseAstrologyService');
+const ChineseAstrologyService = require('src/core/services/chineseAstrologyService');
 
 // Mock dependencies
-const logger = require('../../../../src/utils/logger');
+const logger = require('src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});

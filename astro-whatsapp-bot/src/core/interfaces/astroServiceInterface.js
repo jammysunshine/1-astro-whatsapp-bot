@@ -1,28 +1,50 @@
+/**
+ * @interface AstroServiceInterface
+ * Defines the standard interface for all astrological services.
+ * All services must implement these methods to ensure compatibility with the ServiceGateway.
+ */
 class AstroServiceInterface {
   /**
-   * Execute the astrological service
-   * @param {Object} data - Input data for the service
-   * @returns {Promise<Object>} - Service result
+   * Initializes the service with necessary configurations or dependencies.
+   * @param {object} config - Configuration object for the service.
    */
-  async execute(data) {
-    throw new Error('execute method must be implemented');
+  initialize(config) {
+    throw new Error('Method \'initialize()\' must be implemented by the service.');
   }
 
   /**
-   * Validate input data
-   * @param {Object} data - Input data to validate
-   * @returns {boolean} - True if valid
+   * Executes the core logic of the astrological service.
+   * @param {object} data - Input data for the service execution.
+   * @param {object} context - Contextual information (e.g., frontend, locale).
+   * @returns {Promise<object>} - The result of the service execution.
+   */
+  async execute(data, context) {
+    throw new Error('Method \'execute()\' must be implemented by the service.');
+  }
+
+  /**
+   * Validates the input data for the service.
+   * @param {object} data - Input data to validate.
+   * @returns {object} - Validation result, typically { isValid: boolean, errors: array }.
    */
   validate(data) {
-    throw new Error('validate method must be implemented');
+    throw new Error('Method \'validate()\' must be implemented by the service.');
   }
 
   /**
-   * Get service metadata
-   * @returns {Object} - Service information
+   * Retrieves metadata about the service.
+   * @returns {object} - Service metadata (e.g., name, description, required fields).
    */
   getMetadata() {
-    throw new Error('getMetadata method must be implemented');
+    throw new Error('Method \'getMetadata()\' must be implemented by the service.');
+  }
+
+  /**
+   * Performs a health check for the service.
+   * @returns {Promise<object>} - Health status, typically { isHealthy: boolean, message: string }.
+   */
+  async getHealthStatus() {
+    throw new Error('Method \'getHealthStatus()\' must be implemented by the service.');
   }
 }
 

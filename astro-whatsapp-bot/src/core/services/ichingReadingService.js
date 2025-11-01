@@ -9,11 +9,11 @@ const { createIChingService } = require('../../core/services/calculators/ichingR
  * interpretation, and guidance based on the ancient Chinese divination system.
  */
 class IChingReadingService extends ServiceTemplate {
-  constructor() {
-    super('IChingReadingService');
+  constructor(calculatorName = 'IChingReader') {
+    super(calculatorName);
+    this.calculatorPath = './calculators/ichingReader';
     this.serviceName = 'IChingReadingService';
-    this.ichingService = null; // Will be initialized in initialize()
-    logger.info('IChingReadingService initialized');
+    logger.info(`IChingReadingService initialized with ${calculatorName}`);
   }
 
   async initialize() {

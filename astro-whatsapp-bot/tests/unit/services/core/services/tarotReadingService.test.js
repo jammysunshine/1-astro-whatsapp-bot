@@ -1,8 +1,8 @@
 // tests/unit/services/core/services/tarotReadingService.test.js
 // Unit tests for TarotReadingService
 
-const TarotReadingService = require('../../../../src/core/services/tarotReadingService');
-const logger = require('../../../../src/utils/logger');
+const TarotReadingService = require('src/core/services/tarotReadingService');
+const logger = require('src/utils/logger');
 
 // Mock logger to prevent console output during tests
 beforeEach(() => {

@@ -12,12 +12,11 @@ const { BirthData } = require('../../models/BirthData');
  * Updated to use VedicNumerology for enhanced Vedic numerology calculations
  */
 class NumerologyReportService extends ServiceTemplate {
-  constructor(vedicNumerology = require('./calculators/VedicNumerology')) {
+  constructor() {
     super('VedicNumerology'); // Primary calculator for this service
     this.serviceName = 'NumerologyReportService';
     this.calculatorPath = './calculators/VedicNumerology';
-    this.calculator = new vedicNumerology();
-    logger.info('NumerologyReportService initialized with VedicNumerology');
+    logger.log('NumerologyReportService initialized with VedicNumerology');
   }
 
   async initialize() {

@@ -8,17 +8,8 @@ const logger = require('../../utils/logger');
  */
 class ShadbalaService extends ServiceTemplate {
   constructor(services) {
-    super('ChartGenerator');
-    this.calculatorPath = './calculators/ChartGenerator';
-    // Initialize Shadbala Calculator with required dependencies
-    this.calculator = new ShadbalaCalculator(
-      services.astrologer,
-      services.geocodingService
-    );
-
-    // Set services in calculator
-    this.calculator.setServices(services);
-
+    super('ShadbalaCalculator');
+    this.calculatorPath = './calculators/ShadbalaCalculator';
     // Service-specific configuration
     this.serviceConfig = {
       supportedInputs: ['birthData'],

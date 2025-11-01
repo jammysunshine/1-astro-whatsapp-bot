@@ -1,5 +1,5 @@
-const AstroServiceInterface = require('../interfaces/astroServiceInterface');
-const logger = require('../utils/logger');
+const AstroServiceInterface = require('../interfaces/AstroServiceInterface');
+const logger = require('../../shared/utils/logger');
 const Joi = require('joi');
 const { birthDataSchema } = require('../validation/schemas');
 
@@ -8,7 +8,7 @@ class ServiceTemplate extends AstroServiceInterface {
     super();
     this.calculatorName = calculatorName; // Store the calculator name
     this.calculator = null; // Will be loaded dynamically
-    logger.info(
+    logger.log(
       `Service ${this.constructor.name} initialized with calculator: ${calculatorName}`
     );
   }
@@ -65,7 +65,7 @@ class ServiceTemplate extends AstroServiceInterface {
           this.calculator = rawCalculator;
         }
 
-        logger.info(
+        logger.log(
           `Calculator ${this.calculatorName} loaded for ${this.constructor.name}`
         );
       } catch (error) {
@@ -88,7 +88,7 @@ class ServiceTemplate extends AstroServiceInterface {
 
   async execute(data) {
     try {
-      logger.info(`${this.constructor.name} execution started`, data);
+      logger.log(`${this.constructor.name} execution started`, data);
 
       // Ensure calculator is loaded before use
       if (this.calculatorName && !this.calculator) {
@@ -104,7 +104,7 @@ class ServiceTemplate extends AstroServiceInterface {
       // Format and return result
       const formattedResult = this.formatResult(result);
 
-      logger.info(`${this.constructor.name} execution completed`);
+      logger.log(`${this.constructor.name} execution completed`);
       return formattedResult;
     } catch (error) {
       logger.error(`${this.constructor.name} execution failed:`, error);

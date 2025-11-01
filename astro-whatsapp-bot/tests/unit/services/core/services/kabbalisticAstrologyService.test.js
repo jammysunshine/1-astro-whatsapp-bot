@@ -1,10 +1,10 @@
 // tests/unit/services/astrology/kabbalisticReader.test.js
 // Unit tests for Kabbalistic Reader
 
-const KabbalisticAstrologyService = require('../../../../src/core/services/kabbalisticAstrologyService');
+const KabbalisticAstrologyService = require('src/core/services/kabbalisticAstrologyService');
 
 // Mock dependencies
-const logger = require('../../../../src/utils/logger');
+const logger = require('src/utils/logger');
 
 beforeEach(() => {
   jest.spyOn(logger, 'info').mockImplementation(() => {});

@@ -1,4 +1,4 @@
-const ServiceTemplate = require('../ServiceTemplate');
+const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 const { TarotReader } = require('../calculators/TarotReader');
 const { IChingReader } = require('../calculators/IChingReader');

@@ -3,8 +3,8 @@
  * Implements advanced solar arc direction calculations with comprehensive lifetime analysis
  */
 
-const ServiceTemplate = require('../ServiceTemplate');
-const {
+const ServiceTemplate = require('./ServiceTemplate');
+const VedicCalculator = require('../vedic/VedicCalculator');const {
   validateCoordinates,
   validateDateTime
 } = require('../../../utils/validation');

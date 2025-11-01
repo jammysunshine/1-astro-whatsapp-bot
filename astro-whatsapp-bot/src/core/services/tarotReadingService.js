@@ -1,4 +1,4 @@
-const ServiceTemplate = require('../ServiceTemplate');
+const ServiceTemplate = require('./ServiceTemplate');
 
 /**
  * TarotReadingService - Core service for tarot card readings

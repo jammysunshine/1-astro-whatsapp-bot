@@ -3,8 +3,8 @@
  * Implements Jaimini system of Vedic astrology with Chara Karakas, Rasi aspects, and special combinations
  */
 
-const ServiceTemplate = require('../ServiceTemplate');
-const {
+const ServiceTemplate = require('./ServiceTemplate');
+const VedicCalculator = require('../vedic/VedicCalculator');const {
   validateCoordinates,
   validateDateTime
 } = require('../../../utils/validation');

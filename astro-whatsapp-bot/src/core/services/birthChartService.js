@@ -1,4 +1,4 @@
-const ServiceTemplate = require('../ServiceTemplate');
+const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 const { BirthData } = require('../../models');
 
@@ -66,6 +66,11 @@ class BirthChartService extends ServiceTemplate {
       dependencies: ['ChartGenerator']
     };
   }
+
+  async processCalculation(data) {
+    return await this.calculateBirthChart(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

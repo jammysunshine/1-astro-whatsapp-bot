@@ -3,8 +3,8 @@
  * Implements advanced secondary progression calculations with detailed life theme analysis
  */
 
-const ServiceTemplate = require('../ServiceTemplate');
-const {
+const ServiceTemplate = require('./ServiceTemplate');
+const VedicCalculator = require('../vedic/VedicCalculator');const {
   validateCoordinates,
   validateDateTime
 } = require('../../../utils/validation');

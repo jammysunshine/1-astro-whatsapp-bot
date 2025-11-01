@@ -294,6 +294,107 @@ class MedicalAstrologyCalculator {
   }
 
   /**
+   * Check if message is a medical astrology request
+   * @private
+   */
+  _isMedicalAstrologyRequest(message) {
+    if (!message || typeof message !== 'string') return false;
+
+    const keywords = [
+      'medical',
+      'health',
+      'disease',
+      'illness',
+      'health analysis',
+      'medical astrology',
+      'wellness',
+      'health patterns'
+    ];
+
+    const lowerMessage = message.toLowerCase();
+    return keywords.some(keyword => lowerMessage.includes(keyword));
+  }
+
+  /**
+   * Format birth data required message for medical astrology
+   * @private
+   */
+  _formatMedicalBirthDataRequiredMessage() {
+    return '🏥 *Medical Astrology Analysis*\n\n👤 I need your birth details for personalized health analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
+  }
+
+  /**
+   * Handle Medical Astrology request (migrated from handler)
+   * @param {string} message - User message
+   * @param {Object} user - User object
+   * @returns {string|null} Response or null if not handled
+   */
+  async handleMedicalAstrologyRequest(message, user) {
+    if (!this._isMedicalAstrologyRequest(message)) {
+      return null;
+    }
+
+    if (!user.birthDate) {
+      return this._formatMedicalBirthDataRequiredMessage();
+    }
+
+    try {
+      const birthData = {
+        birthDate: user.birthDate,
+        birthTime: user.birthTime || '12:00',
+        birthPlace: user.birthPlace || 'Delhi, India',
+        latitude: user.latitude || 28.6139,
+        longitude: user.longitude || 77.209,
+        timezone: user.timezone || 5.5
+      };
+
+      const analysis = await this.calculateMedicalAstrologyAnalysis(birthData);
+
+      if (analysis.error) {
+        return '❌ Unable to generate medical astrology analysis.';
+      }
+
+      // Format response with medical sections
+      let healthResult = '🏥 *Medical Astrology Analysis*\n\n';
+      healthResult += `📋 ${analysis.introduction}\n\n`;
+
+      if (analysis.healthIndicators && analysis.healthIndicators.length > 0) {
+        healthResult += `🩺 *Health Indicators:*\n`;
+        analysis.healthIndicators.slice(0, 3).forEach(indicator => {
+          healthResult += `• ${indicator.planet} in ${indicator.sign} (${indicator.house}): ${indicator.interpretation}\n`;
+        });
+        healthResult += '\n';
+      }
+
+      if (analysis.focusAreas && analysis.focusAreas.length > 0) {
+        healthResult += `🎯 *Focus Areas:*\n`;
+        analysis.focusAreas.forEach(area => {
+          healthResult += `• ${area.area}: ${area.insights}\n`;
+        });
+        healthResult += '\n';
+      }
+
+      if (analysis.recommendations && analysis.recommendations.length > 0) {
+        healthResult += `💊 *Recommendations:*\n`;
+        analysis.recommendations.forEach(rec => {
+          healthResult += `• ${rec}\n`;
+        });
+        healthResult += '\n';
+      }
+
+      healthResult += `⚠️ *Disclaimer:* Medical astrology complements, but does not replace, professional medical advice. Consult healthcare providers for medical concerns.\n\n`;
+
+      healthResult += '🕉️ *Vedic wellness integrates planetary influences with natural healing for holistic health.';
+
+      return healthResult;
+
+    } catch (error) {
+      logger.error('Medical astrology error:', error);
+      return '❌ Error generating medical astrology analysis.';
+    }
+  }
+
+  /**
    * Health check for MedicalAstrologyCalculator
    * @returns {Object} Health status
    */
@@ -306,7 +407,8 @@ class MedicalAstrologyCalculator {
         'Health Indicators',
         'House Analysis',
         'Focus Areas',
-        'Recommendations'
+        'Recommendations',
+        'Handler Methods'
       ],
       status: 'Operational'
     };

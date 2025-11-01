@@ -1,246 +1,93 @@
 # Backend Code Migration Plan
 
-## 1. Introduction
+## Objective
 
-This document outlines a detailed plan for migrating existing backend services and calculators from `src/core/services/**` and `src/core/services/calculators/**` to a new, consolidated directory: `src/services/core`. The goal is to streamline the backend architecture, improve modularity, and ensure a clear separation of concerns, aligning with the principles established in `MENU_ARCHITECTURE_PROPOSAL.md`.
+Deprecate older backend source code located in `astro-whatsapp-bot/src/services/` and migrate all necessary parts, including core business logic and calculators, to the new directory structure: `astro-whatsapp-bot/src/core/services/**`. This will ensure a cleaner architecture, better maintainability, and clear separation of concerns.
 
-## 2. New Architecture Overview
+## Phase 1: Identification and Analysis (Current State)
 
-The target architecture dictates that all core backend logic, including services and calculators, will reside under `src/services/core`. This centralizes backend components, making them easier to manage, test, and evolve.
+### 1.1 Identify "Old" Backend Services and Calculators
 
-## 3. Phase 1: Discovery and Identification
+The following files and directories within `astro-whatsapp-bot/src/services/` are considered "old" and need to be migrated or deprecated:
 
-This phase involves identifying all relevant files in the old structure and categorizing them based on their role and whether they need to be moved, refactored, or deprecated.
+*   All files directly under `astro-whatsapp-bot/src/services/astrology/` (e.g., `astro-whatsapp-bot/src/services/astrology/vedic/VedicCalculator.js`, `astro-whatsapp-bot/src/services/astrology/handlers/vedic/calculations.js`, etc.)
+*   All files under `astro-whatsapp-bot/src/services/astrology/calculators/` (e.g., `astro-whatsapp-bot/src/services/astrology/calculators/ChartGenerator.js`, etc.)
+*   All files under `astro-whatsapp-bot/src/services/astrology/handlers/` (e.e.g., `astro-whatsapp-bot/src/services/astrology/handlers/vedic/*Handler.js`, etc.)
+*   Any other core business logic files found directly under `astro-whatsapp-bot/src/services/` (e.g., `astro-whatsapp-bot/src/services/payment/paymentService.js`, `astro-whatsapp-bot/src/services/i18n/TranslationService.js`, etc.)
 
-### 3.1. Existing Backend Services (`src/core/services/**`)
+**(Note: A comprehensive list of specific files will be generated in the next step based on the provided glob output.)**
 
-- `abhijitMuhurtaService.js`
-- `advancedCompatibilityService.js`
-- `advancedTransitsService.js`
-- `antardashaService.js`
-- `ashtakavargaService.js`
-- `asteroidsService.js`
-- `astrocartographyService.js`
-- `ayurvedicAstrologyService.js`
-- `basicBirthChartService.js`
-- `birthChartService.js`
-- `businessPartnershipService.js`
-- `calculateNakshatraService.js`
-- `calendarTimingService.js`
-- `careerAstrologyService.js`
-- `celticAstrologyService.js`
-- `chineseAstrologyService.js`
-- `compatibilityScoreService.js`
-- `compatibilityService.js`
-- `compositeChartService.js`
-- `comprehensiveVedicAnalysisService.js`
-- `cosmicEventsService.js`
-- `coupleCompatibilityService.js`
-- `currentDashaService.js`
-- `currentTransitsService.js`
-- `dailyHoroscopeService.js`
-- `dashaPredictiveService.js`
-- `davisonChartService.js`
-- `detailedChartAnalysisService.js`
-- `divinationService.js`
-- `electionalAstrologyService.js`
-- `enhancedPanchangService.js`
-- `enhancedSecondaryProgressionsService.js`
-- `enhancedSolarArcDirectionsService.js`
-- `ephemerisService.js`
-- `eventAstrologyService.js`
-- `familyAstrologyService.js`
-- `financialAstrologyService.js`
-- `fixedStarsService.js`
-- `futureSelfAnalysisService.js`
-- `futureSelfSimulatorService.js`
-- `generateGroupAstrologyService.js`
-- `gocharService.js`
-- `groupTimingService.js`
-- `gulikakalamService.js`
-- `hellenisticAstrologyService.js`
-- `hinduAstrologyService.js`
-- `hinduFestivalsService.js`
-- `horaryAstrologyService.js`
-- `horaryReadingService.js`
-- `ichingReadingService.js`
-- `islamicAstrologyService.js`
-- `jaiminiAstrologyService.js`
-- `jaiminiDashasService.js`
-- `kaalSarpDoshaService.js`
-- `kabbalisticAstrologyService.js`
-- `lifePatternsService.js`
-- `lunarReturnService.js`
-- `majorTransitsService.js`
-- `mayanAstrologyService.js`
-- `medicalAstrologyService.js`
-- `moonSignService.js`
-- `muhurtaService.js`
-- `mundaneAstrologyService.js`
-- `nadiAstrologyService.js`
-- `nakshatraPoruthamService.js`
-- `numerologyAnalysisService.js`
-- `numerologyReportService.js`
-- `numerologyService.js`
-- `palmistryService.js`
-- `panchangService.js`
-- `performSynastryAnalysisService.js`
-- `planetaryEventsService.js`
-- `prashnaAstrologyService.js`
-- `prashnaService.js`
-- `rahukalamService.js`
-- `remediesDoshaService.js`
-- `risingSignService.js`
-- `sadeSatiService.js`
-- `seasonalEventsService.js`
-- `secondaryProgressionsService.js`
-- `shadbalaService.js`
-- `significantTransitsService.js`
-- `solarArcDirectionsService.js`
-- `solarReturnService.js`
-- `specializedAnalysisService.js`
-- `sunSignService.js`
-- `synastryAnalysisService.js`
-- `tarotReadingService.js`
-- `transitPreviewService.js`
-- `upcomingDashasService.js`
-- `vargaChartsService.js`
-- `varshaphalService.js`
-- `vedicNumerologyService.js`
-- `vedicRemediesService.js`
-- `vedicYogasService.js`
-- `vimshottariDashaService.js`
-- `westernBirthChartService.js`
+### 1.2 Dependency Mapping
 
-### 3.2. Existing Calculators (`src/core/services/calculators/**`)
+For each identified "old" service/calculator:
 
-- `AntardashaCalculator.js`
-- `AshtakavargaCalculator.js`
-- `AsteroidCalculator.js`
-- `CalculationsCoordinator.js`
-- `CareerAstrologyCalculator.js`
-- `ChartGenerator.js`
-- `CompatibilityAction.js`
-- `CompatibilityCalculator.js`
-- `ComprehensiveAnalysisCalculator.js`
-- `CosmicEventsCalculator.js`
-- `DailyHoroscopeCalculator.js`
-- `DashaAnalysisCalculator.js`
-- `DetailedChartAnalysisCalculator.js`
-- `DetailedChartCalculator.js`
-- `FinancialAstrologyCalculator.js`
-- `FixedStarsCalculator.js`
-- `FutureSelfSimulatorCalculator.js`
-- `FutureSelfSimulatorCalculator.js.backup`
-- `FutureSelfSimulatorCalculator.js.backup2`
-- `FutureSelfSimulatorCalculator.js.backup3`
-- `GocharCalculator.js`
-- `GroupAstrologyCalculator.js`
-- `HoraryCalculator.js`
-- `JaiminiAstrologyCalculator.js`
-- `JaiminiCalculator.js`
-- `KaalSarpDoshaCalculator.js`
-- `LifePatternsCalculator.js`
-- `LunarReturnCalculator.js`
-- `MarriageTimingCalculator.js`
-- `MedicalAstrologyCalculator.js`
-- `MuhurtaCalculator.js`
-- `NadiCompatibility.js`
-- `PanchangCalculator.js`
-- `PoliticalAstrology.js`
-- `PrashnaCalculator.js`
-- `RemedialMeasuresCalculator.js`
-- `SadeSatiCalculator.js`
-- `SecondaryProgressionsCalculator.js`
-- `ShadbalaCalculator.js`
-- `SignCalculator.js`
-- `SignificantTransitsCalculator.js`
-- `SolarArcDirectionsCalculator.js`
-- `SolarReturnCalculator.js`
-- `SynastryEngine.js`
-- `TransitCalculator.js`
-- `VargaChartCalculator.js`
-- `VarshaphalCalculator.js`
-- `VedicCalculator.js`
-- `VedicNumerology.js`
-- `VedicYogasCalculator.js`
-- `astrocartographyReader.js`
-- `celticReader.js`
-- `chineseCalculator.js`
-- `hellenisticAstrology.js`
-- `hinduFestivals.js`
-- `ichingReader.js`
-- `index.js`
-- `kabbalisticReader.js`
-- `mayanReader.js`
-- `numerologyService.js`
-- `numerology_data.json`
-- `palmistryReader.js`
-- `tarotReader.js`
+*   **Identify Internal Dependencies:** List all modules/files that the old service/calculator imports from *within* the `astro-whatsapp-bot/src/services/` structure.
+*   **Identify External Dependencies:** List any external libraries or APIs used by the old service/calculator.
+*   **Identify Consumers:** Determine which "new" services (`astro-whatsapp-bot/src/core/services/**`) or "action" files (`astro-whatsapp-bot/src/services/whatsapp/actions/**`) currently import and use the old service/calculator.
 
-### 3.3. Dependencies and Cross-References
+## Phase 2: Migration Strategy
 
-Many services directly `require` calculators or other services. These dependencies will need to be updated to reflect the new directory structure.
+The migration will follow a principle of moving core, reusable logic to `astro-whatsapp-bot/src/core/services/` and adapting higher-level components (e.g., WhatsApp actions) to use these new core services.
 
-## 4. Phase 2: Migration Strategy
+### 2.1 Core Service/Calculator Migration (High Priority)
 
-### 4.1. New Directory Creation
+1.  **Selection:** Prioritize "old" Calculator and core Service files identified in Phase 1.1 that contain fundamental, reusable logic.
+2.  **Move & Rename:** Move each selected file from `astro-whatsapp-bot/src/services/astrology/calculators/` or `astro-whatsapp-bot/src/services/astrology/handlers/` (or similar core locations) to the corresponding new `astro-whatsapp-bot/src/core/services/` subdirectory. For example, `astro-whatsapp-bot/src/services/astrology/calculators/ChartGenerator.js` should move to `astro-whatsapp-bot/src/core/services/calculators/ChartGenerator.js`.
+3.  **Namespace/Path Update:** Update all import/require paths within the moved files to reflect the new directory structure (`@astro-whatsapp-bot/src/core/services/`).
+4.  **Refactor (if necessary):** If an old service contains mixed responsibilities (e.g., calculation logic directly coupled with specific handler logic), refactor it to separate these concerns. The core calculation logic should reside in `astro-whatsapp-bot/src/core/services/calculators/`.
+5.  **Create New Service Layer (if applicable):** Create a new service file (e.g., `AstroChartService.js`) in `astro-whatsapp-bot/src/core/services/` that orchestrates calls to the migrated calculators. This aligns with the new architecture where `src/core/services` contains the business logic.
 
-Create the following new directory:
+### 2.2 Consumer Adaptation (Medium Priority)
 
-- `src/services/core`
+1.  **Identify Consumers:** Use the dependency mapping from Phase 1.2 to find all files (e.g., WhatsApp Actions like `astro-whatsapp-bot/src/services/whatsapp/actions/astrology/BirthChartAction.js`) that import the now-moved core services/calculators.
+2.  **Update Imports:** Modify these consumer files to import from the new `@astro-whatsapp-bot/src/core/services/` paths.
+3.  **Adaptation:** Adjust the instantiation and usage of the services/calculators to match any refactoring or new service layers created in Phase 2.1.
 
-### 4.2. File Movement and Refactoring
+### 2.3 Deprecate and Remove (Low Priority / Incremental)
 
-All files currently in `src/core/services/` and `src/core/services/calculators/` will be moved to `src/services/core/`. This is a direct move, and then internal `require` paths will be updated.
+1.  **Mark as Deprecated:** Once all consumers have been updated, mark the original files in `astro-whatsapp-bot/src/services/` as deprecated (e.g., add a `DEPRECATED` comment at the top, or rename them temporarily with a `.bak` extension).
+2.  **Monitor:** Allow a period for testing and validation to ensure no regressions.
+3.  **Removal:** Incrementally remove the deprecated files from the old `astro-whatsapp-bot/src/services/` directory.
 
-**Specific Actions:**
+## Phase 3: Testing Plan
 
-1.  **Move all files from `src/core/services/` to `src/services/core/`**
-    *   Example: `src/core/services/abhijitMuhurtaService.js` -> `src/services/core/abhijitMuhurtaService.js`
+Thorough testing is paramount to ensure a smooth migration.
 
-2.  **Move all files from `src/core/services/calculators/` to `src/services/core/calculators/`**
-    *   Example: `src/core/services/calculators/AntardashaCalculator.js` -> `src/services/core/calculators/AntardashaCalculator.js`
+### 3.1 Unit Testing
 
-3.  **Update `require` paths within all moved files:**
-    *   Any `require('../../utils/logger')` will become `require('../../../utils/logger')` (assuming `src/utils` is shared).
-    *   Any `require('./calculators/SomeCalculator')` will become `require('./calculators/SomeCalculator')` (relative path within the new `src/services/core` structure).
-    *   Any `require('../interfaces/astroServiceInterface')` will become `require('../../interfaces/astroServiceInterface')`.
-    *   Any `require('../../models/BirthData')` will become `require('../../models/BirthData')`.
+*   **Existing Tests:** Ensure all existing unit tests for migrated services/calculators still pass after moving and refactoring.
+*   **New Tests:** Write new unit tests for any refactored logic or new service layers created in `astro-whatsapp-bot/src/core/services/`.
 
-4.  **Refactor `src/core/services/index.js`:** This file currently exports all services. It will need to be updated to reflect the new paths of the moved services.
+### 3.2 Integration Testing
 
-5.  **Refactor `src/core/services/calculators/index.js`:** This file currently exports all calculators. It will need to be updated to reflect the new paths of the moved calculators.
+*   **End-to-End Flows:** Verify critical end-to-end user flows involving the migrated backend logic still function correctly (e.g., requesting a birth chart analysis via WhatsApp).
+*   **Automated Tests:** Update any automated integration tests to reflect new import paths and service interactions.
 
-### 4.3. Dependency Updates Across the Codebase
+### 3.3 Linting and Code Quality
 
-Any file outside of `src/core/services/` or `src/core/services/calculators/` that imports modules from these locations will need its `require` or `import` paths updated. This will require a global search and replace.
+*   **Linting:** Run `npm run lint` or equivalent to ensure adherence to code style and catch potential errors in the new/modified files.
+*   **Type Checking (if applicable):** If TypeScript is used, ensure all type checks pass.
 
-**Key areas to check:**
+## Phase 4: Rollback Plan
 
--   `src/services/whatsapp/MessageCoordinator.js` (and other WhatsApp-related files)
--   `src/core/config/ActionConfig.js` (if it imports any services/calculators)
--   Any test files (`tests/**`) that import these modules.
+In case of critical issues or unexpected regressions during or after migration:
 
-### 4.4. Testing Strategy
+*   **Version Control:** Utilize Git branches. All changes for this migration will be performed on a dedicated feature branch.
+*   **Revert Changes:** If necessary, the entire feature branch can be easily reverted to the last stable state.
+*   **Incremental Commits:** Make small, logical commits throughout the migration to facilitate easier debugging and partial rollbacks if needed.
 
--   **Unit Tests:** Ensure all existing unit tests for services and calculators pass after migration.
--   **Integration Tests:** Develop new integration tests or update existing ones to verify the correct interaction between services, calculators, and other parts of the application in the new structure.
--   **End-to-End Tests:** Run existing E2E tests to ensure no regressions in overall application functionality.
+## Example File Migration Flow (Illustrative)
 
-## 5. Phase 3: Deprecation and Removal
+**Old Path:** `astro-whatsapp-bot/src/services/astrology/calculators/ChartGenerator.js`
+**New Path:** `astro-whatsapp-bot/src/core/services/calculators/ChartGenerator.js`
 
-After successful migration and verification, the following directories will be empty and can be removed:
+**Steps:**
+1.  Move `ChartGenerator.js` to the new path.
+2.  Update internal imports within `ChartGenerator.js` (if any).
+3.  Identify consumers (e.g., `astro-whatsapp-bot/src/services/whatsapp/actions/astrology/BirthChartAction.js`).
+4.  Update imports in `BirthChartAction.js` from `../../../astrology/calculators/ChartGenerator` to `../../../../core/services/calculators/ChartGenerator`.
+5.  Run tests.
+6.  Mark `ChartGenerator.js` as deprecated in old location (or create a dummy file that only throws an error if still accessed).
+7.  Eventually remove the old file.
 
--   `src/core/services/` (after all its contents are moved)
--   `src/core/services/calculators/` (after all its contents are moved)
-
-## 6. Rollback Plan
-
-In case of critical issues during or after migration, the following rollback strategy will be employed:
-
-1.  Revert to the last stable commit before the migration began.
-2.  Analyze the root cause of the failure.
-3.  Adjust the migration plan and re-attempt the process.
-
-This plan ensures a systematic and safe transition of the backend codebase to the new architecture.
+**This plan does not include execution. It merely outlines the steps for a safe and efficient migration.**

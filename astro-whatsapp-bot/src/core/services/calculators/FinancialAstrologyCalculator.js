@@ -457,6 +457,167 @@ class FinancialAstrologyCalculator {
   }
 
   /**
+   * Check if message is a financial astrology request
+   * @private
+   */
+  _isFinancialAstrologyRequest(message) {
+    if (!message || typeof message !== 'string') return false;
+
+    const keywords = [
+      'financial',
+      'money',
+      'wealth',
+      'business',
+      'finance',
+      'investment',
+      'prosperity',
+      'income'
+    ];
+
+    const lowerMessage = message.toLowerCase();
+    return keywords.some(keyword => lowerMessage.includes(keyword));
+  }
+
+  /**
+   * Format birth data required message for financial astrology
+   * @private
+   */
+  _formatFinancialBirthDataRequiredMessage() {
+    return '💰 *Financial Astrology Analysis*\n\n👤 I need your birth details for personalized wealth analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)\n\nFor general financial astrology insights, you can ask about "wealth astrology" or "planetary finance indicators".';
+  }
+
+  /**
+   * Get planetary finance indicators educational content
+   * @private
+   */
+  _getFinancialIndicatorsContent() {
+    return {
+      planets: [
+        { planet: 'Jupiter', role: 'Prosperity and abundance', description: 'Expands fortunes, brings opportunities, governs growth cycles' },
+        { planet: 'Venus', role: 'Income and luxury', description: 'Rules possessions, represents natural flow of money, governs luxury spending' },
+        { planet: 'Saturn', role: 'Long-term wealth building', description: 'Builds lasting foundations, teaches financial discipline and patience' },
+        { planet: 'Mercury', role: 'Commerce and trade', description: 'Rules communication, business dealings, and mental calculation' },
+        { planet: 'Mars', role: 'Risk-taking investments', description: 'Drives ambitious enterprises and competitive business ventures' }
+      ],
+      cycles: [
+        { cycle: 'Jupiter Return (12 years)', description: 'Major wealth periods and prosperity breakthroughs' },
+        { cycle: 'Saturn Opposition (30 years)', description: 'Peak financial challenges requiring discipline and restructuring' },
+        { cycle: 'Venus Transit', description: 'Natural periods of income opportunity and financial flow' }
+      ],
+      warnings: [
+        'Mars-Uranus aspects can cause market volatility and risky investments',
+        'Saturn-Neptune aspects may create financial illusions or unrealistic expectations',
+        'Eclipse periods (Solar/Lunar) often bring sudden financial changes'
+      ],
+      markets: {
+        bull: 'Jupiter expansion phases create optimism and growth markets',
+        bear: 'Saturn contraction periods bring market corrections and caution',
+        volatile: 'Mars transits through Scorpio/8th or Aries/1st create price swings'
+      }
+    };
+  }
+
+  /**
+   * Handle Financial Astrology request (migrated from handler)
+   * @param {string} message - User message
+   * @param {Object} user - User object
+   * @returns {string|null} Response or null if not handled
+   */
+  async handleFinancialAstrologyRequest(message, user) {
+    if (!this._isFinancialAstrologyRequest(message)) {
+      return null;
+    }
+
+    try {
+      // Check if user has birth data for personalized analysis
+      if (user.birthDate) {
+        const birthData = {
+          birthDate: user.birthDate,
+          birthTime: user.birthTime || '12:00',
+          birthPlace: user.birthPlace || 'Delhi, India',
+          latitude: user.latitude || 28.6139,
+          longitude: user.longitude || 77.209,
+          timezone: user.timezone || 5.5
+        };
+
+        const analysis = await this.calculateFinancialAstrologyAnalysis(birthData);
+
+        if (analysis.error) {
+          return '❌ Unable to generate personalized financial astrology analysis.';
+        }
+
+        // Format personalized financial analysis
+        let financeResult = '💰 *Personalized Financial Astrology Analysis*\n\n';
+        financeResult += `📋 ${analysis.introduction}\n\n`;
+
+        if (analysis.wealthPlanets && analysis.wealthPlanets.length > 0) {
+          financeResult += `🌟 *Wealth Planets:*\n`;
+          analysis.wealthPlanets.slice(0, 3).forEach(planet => {
+            financeResult += `• ${planet.planet}: ${planet.interpretation}\n`;
+          });
+          financeResult += '\n';
+        }
+
+        if (analysis.financialCycles && analysis.financialCycles.length > 0) {
+          financeResult += `⏰ *Current Financial Cycles:*\n`;
+          analysis.financialCycles.forEach(cycle => {
+            financeResult += `• ${cycle.cycle}: ${cycle.description}\n`;
+          });
+          financeResult += '\n';
+        }
+
+        if (analysis.strategy) {
+          financeResult += `🎯 *Wealth Strategy:*\n${analysis.strategy}\n\n`;
+        }
+
+        financeResult += `🕉️ *Vedic Finance:* Your chart reveals personalized pathways to wealth. Jupiter-Venus combinations bring prosperity breakthroughs.\n\n`;
+        financeResult += `⚠️ *Disclaimer:* Financial astrology provides guidance, not guarantees. Always consult professional financial advisors.`;
+
+        return financeResult;
+
+      } else {
+        // Provide general educational content about financial astrology
+        const indicators = this._getFinancialIndicatorsContent();
+        let response = '💰 *Financial Astrology Analysis*\n\n';
+        response += 'Venus rules wealth and possessions. Jupiter expands fortunes. Saturn builds lasting foundations. Mars drives ambitious enterprises.\n\n';
+
+        response += '🪐 *Planetary Finance Indicators:*\n';
+        indicators.planets.forEach(p => {
+          response += `• ${p.planet}: ${p.role} - ${p.description}\n`;
+        });
+        response += '\n';
+
+        response += '📅 *Financial Cycles:*\n';
+        indicators.cycles.forEach(c => {
+          response += `• ${c.cycle}: ${c.description}\n`;
+        });
+        response += '\n';
+
+        response += '⚠️ *Financial Warnings:*\n';
+        indicators.warnings.forEach(w => {
+          response += `• ${w}\n`;
+        });
+        response += '\n';
+
+        response += '📊 *Market Weather:*\n';
+        response += `• Bull Markets: ${indicators.markets.bull}\n`;
+        response += `• Bear Markets: ${indicators.markets.bear}\n`;
+        response += `• Volatile Periods: ${indicators.markets.volatile}\n\n`;
+
+        response += '💫 *Wealth Building:* Financial astrology reveals optimal timing for investments, career moves, and business decisions.\n\n';
+        response += '🕉️ *Ancient Finance:* Vedic texts teach "Dhana Yoga" - planetary combinations creating wealth.\n\n';
+        response += this._formatFinancialBirthDataRequiredMessage();
+
+        return response;
+      }
+
+    } catch (error) {
+      logger.error('Financial astrology error:', error);
+      return '❌ Error generating financial astrology analysis.';
+    }
+  }
+
+  /**
    * Health check for FinancialAstrologyCalculator
    * @returns {Object} Health status
    */
@@ -469,7 +630,8 @@ class FinancialAstrologyCalculator {
         'Wealth Planets',
         'Financial Timing',
         'Risk Assessment',
-        'Prosperity Strategies'
+        'Prosperity Strategies',
+        'Handler Methods'
       ],
       status: 'Operational'
     };

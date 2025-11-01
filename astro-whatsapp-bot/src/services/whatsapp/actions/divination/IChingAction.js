@@ -5,7 +5,7 @@ const translationService = require('../../../services/i18n/TranslationService');
 const {
   IChingService,
   createIChingService
-} = require('../../../services/astrology/iching');
+} = require('../../../core/services/calculators/ichingReader');
 
 /**
  * IChingAction - Provides I Ching (Book of Changes) readings using ancient Chinese wisdom.

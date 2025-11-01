@@ -413,6 +413,188 @@ class CareerAstrologyCalculator {
     return influences[planet] || 'professional development';
   }
 
+  // ================= HANDLER METHODS - MIGRATED FROM CareerAstrologyHandler.js =================
+
+  /**
+   * Check if message is a career astrology request
+   * @private
+   */
+  _isCareerAstrologyRequest(message) {
+    if (!message || typeof message !== 'string') return false;
+
+    const keywords = [
+      'career',
+      'job',
+      'profession',
+      'work',
+      'professional',
+      'occupation'
+    ];
+
+    const lowerMessage = message.toLowerCase();
+    return keywords.some(keyword => lowerMessage.includes(keyword));
+  }
+
+  /**
+   * Get career astrology educational content
+   * @private
+   */
+  _getCareerAstrologyEducationalContent() {
+    return {
+      careerPlanets: [
+        { planet: 'Sun', domain: 'Leadership and authority roles', description: 'Executive positions, self-employment, creative leadership' },
+        { planet: 'Mars', domain: 'Military, engineering, competitive fields', description: 'Emergency services, sports, competitive business' },
+        { planet: 'Mercury', domain: 'Communication, teaching, business', description: 'Writing, journalism, consulting, administration' },
+        { planet: 'Jupiter', domain: 'Teaching, law, philosophy, international work', description: 'Education, legal profession, travel and tourism' },
+        { planet: 'Venus', domain: 'Arts, beauty, luxury industries', description: 'Design, fashion, entertainment, luxury goods' },
+        { planet: 'Saturn', domain: 'Government, construction, traditional careers', description: 'Civil service, real estate, manufacturing, banking' },
+        { planet: 'Uranus', domain: 'Technology, innovation, unconventional paths', description: 'IT, science, inventive work, humanitarian projects' }
+      ],
+      successIndicators: [
+        '10th Lord strong: Professional achievement and recognition',
+        'Sun-Mercury aspects: Communication and analytical careers',
+        'Venus-Jupiter conjunction: Creative prosperity and abundance',
+        'Saturn exalted: Long-term stability and established success',
+        'Mars in 10th: Action-oriented and competitive professions'
+      ],
+      careerCycles: [
+        { cycle: 'Saturn Return (29-30)', description: 'Career testing, maturity, and established position' },
+        { cycle: 'Uranus Opposition (40-42)', description: 'Career changes, reinvention, and new directions' },
+        { cycle: 'Jupiter Return (12, 24, 36, 48, 60, 72)', description: 'Expansion opportunities and career advancement' }
+      ],
+      vocationInsights: {
+        vocation: 'True calling (5th house) - What sets your soul on fire',
+        career: 'Professional path (10th house) - How you make a living',
+        midheaven: 'Public face (MC) - How the world sees your work',
+        integration: 'Exalted MC rulers bring exceptional success and fulfillment'
+      }
+    };
+  }
+
+  /**
+   * Format career astrology response from analysis or educational content
+   * @private
+   */
+  _formatCareerAstrologyResponse(analysisOrContent) {
+    if (analysisOrContent.introduction) {
+      // This is a personalized analysis - format detailed response
+      let response = '💼 *Personalized Career Astrology Analysis*\n\n';
+      response += `📋 ${analysisOrContent.introduction}\n\n`;
+
+      if (analysisOrContent.midheavenAnalysis) {
+        response += `🎯 ${analysisOrContent.midheavenAnalysis}\n\n`;
+      }
+
+      if (analysisOrContent.careerDirection) {
+        response += `🎯 *Career Direction:* ${analysisOrContent.careerDirection}\n\n`;
+      }
+
+      if (analysisOrContent.successPotential) {
+        response += `🏆 *Success Potential:* ${analysisOrContent.successPotential}\n\n`;
+      }
+
+      // Add timing if available
+      if (analysisOrContent.careerTiming && analysisOrContent.careerTiming.length > 0) {
+        response += `⏰ *Key Career Timing:*\n`;
+        analysisOrContent.careerTiming.forEach(timing => {
+          response += `• ${timing.event}: ${timing.description}\n`;
+        });
+        response += '\n';
+      }
+
+      // Add tenth house planets
+      if (analysisOrContent.tenthHousePlanets && analysisOrContent.tenthHousePlanets.length > 0) {
+        response += `🪐 *10th House Planetary Influences:*\n`;
+        analysisOrContent.tenthHousePlanets.forEach(item => {
+          response += `• ${item.planet}: ${item.influence}\n`;
+        });
+        response += '\n';
+      }
+
+      response += `🕉️ *Your birth chart reveals personalized career pathways aligned with cosmic timing.*`;
+      return response;
+
+    } else {
+      // This is educational content - format general response
+      const content = analysisOrContent;
+      let response = '💼 *Career Astrology Analysis*\n\n';
+      response += 'Your profession and success path are written in the stars. The 10th house shows career destiny, Midheaven reveals public image.\n\n';
+
+      response += '🪐 *Career Planets:*\n';
+      content.careerPlanets.forEach(p => {
+        response += `• ${p.planet}: ${p.domain} - ${p.description}\n`;
+      });
+      response += '\n';
+
+      response += '📊 *Career Success Indicators:*\n';
+      content.successIndicators.forEach(indicator => {
+        response += `• ${indicator}\n`;
+      });
+      response += '\n';
+
+      response += '🔄 *Career Cycles:*\n';
+      content.careerCycles.forEach(cycle => {
+        response += `• *${cycle.cycle}:* ${cycle.description}\n`;
+      });
+      response += '\n';
+
+      response += '💫 *Vocation vs. Career:*\n';
+      response += `• *True Calling (5th house):* ${content.vocationInsights.vocation}\n`;
+      response += `• *Professional Path (10th house):* ${content.vocationInsights.career}\n`;
+      response += `• *Midheaven (MC):* ${content.vocationInsights.midheaven}\n\n`;
+
+      response += '🕉️ *Cosmic Calling:* Your MC-lord shows life\'s work. ';
+      response += `${content.vocationInsights.integration}. Retrograde planets indicate behind-the-scenes careers.`;
+
+      return response;
+    }
+  }
+
+  /**
+   * Handle Career Astrology request (migrated from handler)
+   * @param {string} message - User message
+   * @param {Object} user - User object
+   * @returns {string|null} Response or null if not handled
+   */
+  async handleCareerAstrologyRequest(message, user) {
+    if (!this._isCareerAstrologyRequest(message)) {
+      return null;
+    }
+
+    try {
+      // Check if user has birth data for personalized analysis
+      if (user.birthDate && user.birthTime) {
+        const birthData = {
+          birthDate: user.birthDate,
+          birthTime: user.birthTime || '12:00',
+          birthPlace: user.birthPlace || 'Delhi, India',
+          latitude: user.latitude || 28.6139,
+          longitude: user.longitude || 77.209,
+          timezone: user.timezone || 5.5
+        };
+
+        const analysis = await this.calculateCareerAstrologyAnalysis(birthData);
+
+        if (analysis.error) {
+          logger.error('Career astrology calculation failed:', analysis.error);
+          // Fall back to educational content
+          return this._formatCareerAstrologyResponse(this._getCareerAstrologyEducationalContent());
+        }
+
+        return this._formatCareerAstrologyResponse(analysis);
+
+      } else {
+        // Provide educational content when no birth data available
+        return this._formatCareerAstrologyResponse(this._getCareerAstrologyEducationalContent());
+      }
+
+    } catch (error) {
+      logger.error('Career astrology error:', error);
+      // Fall back to educational content on error
+      return this._formatCareerAstrologyResponse(this._getCareerAstrologyEducationalContent());
+    }
+  }
+
   /**
    * Health check for CareerAstrologyCalculator
    * @returns {Object} Health status
@@ -426,7 +608,8 @@ class CareerAstrologyCalculator {
         'Midheaven Analysis',
         'Tenth House Planets',
         'Career Timing',
-        'Success Potential'
+        'Success Potential',
+        'Handler Methods'
       ],
       status: 'Operational'
     };

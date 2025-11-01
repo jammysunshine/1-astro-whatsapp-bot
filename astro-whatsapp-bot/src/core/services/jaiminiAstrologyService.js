@@ -5,7 +5,6 @@
 
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const VedicCalculator = require('./calculators/VedicCalculator');
 const {
   validateCoordinates,
   validateDateTime
@@ -262,7 +261,8 @@ class JaiminiAstrologyService extends ServiceTemplate {
       this.validateInput(userData);
 
       const { datetime, latitude, longitude } = userData;
-      const chart = await VedicCalculator.calculateChart(
+      // Use the service's own calculator instead of VedicCalculator directly
+      const chart = await this.calculator.calculateJaiminiChart(
         datetime,
         latitude,
         longitude

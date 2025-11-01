@@ -5,7 +5,6 @@
 
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const VedicCalculator = require('./calculators/VedicCalculator');
 const {
   validateCoordinates,
   validateDateTime
@@ -30,7 +29,8 @@ class VarshaphalService extends ServiceTemplate {
     year
   ) {
     // Find the time when Sun returns to the same position as birth
-    const birthChart = await VedicCalculator.calculateChart(
+    // Use the service's own calculator instead of VedicCalculator directly
+    const birthChart = await this.calculator.calculateChart(
       birthDatetime,
       birthLatitude,
       birthLongitude
@@ -53,7 +53,8 @@ class VarshaphalService extends ServiceTemplate {
       birthSun
     );
 
-    return await VedicCalculator.calculateChart(
+    // Use the service's own calculator instead of VedicCalculator directly
+    return await this.calculator.calculateChart(
       varshaphalDatetime,
       birthLatitude,
       birthLongitude
@@ -548,7 +549,8 @@ class VarshaphalService extends ServiceTemplate {
         longitude,
         year
       );
-      const birthChart = await VedicCalculator.calculateChart(
+      // Use the service's own calculator instead of VedicCalculator directly
+      const birthChart = await this.calculator.calculateChart(
         datetime,
         latitude,
         longitude

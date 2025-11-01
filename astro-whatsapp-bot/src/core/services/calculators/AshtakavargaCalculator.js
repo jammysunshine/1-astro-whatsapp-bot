@@ -131,6 +131,94 @@ class AshtakavargaCalculator {
   }
 
   /**
+   * Generate human-readable Ashtakavarga summary
+   * @private
+   */
+  _generateAshtakavargaSummary(analysis) {
+    let summary = '🔢 *Vedic Ashtakavarga Analysis*\n\n';
+    summary += `${analysis.overview}\n\n`;
+
+    if (analysis.planetaryStrengths && analysis.planetaryStrengths.length > 0) {
+      summary += '💫 *Planetary Strengths:*\n';
+      analysis.planetaryStrengths.forEach(strength => {
+        summary += `${strength.strength}\n`;
+      });
+    }
+
+    if (analysis.peakHouses && analysis.peakHouses.length > 0) {
+      summary += '\n🏆 *Peak Areas:*\n';
+      summary += `${analysis.peakHouses.join(', ')}\n`;
+    }
+
+    summary += `\n📖 *Interpretation:*\n${analysis.interpretation}\n`;
+    return summary;
+  }
+
+  /**
+   * Check if message is an Ashtakavarga request
+   * @private
+   */
+  _isAshtakavargaRequest(message) {
+    if (!message || typeof message !== 'string') return false;
+
+    const keywords = [
+      'ashtakavarga',
+      '64-point',
+      'benefic',
+      'strength analysis',
+      'shadbala',
+      'planetary strength'
+    ];
+
+    const lowerMessage = message.toLowerCase();
+    return keywords.some(keyword => lowerMessage.includes(keyword));
+  }
+
+  /**
+   * Format birth data required message
+   * @private
+   */
+  _formatBirthDataRequiredMessage() {
+    return '🔢 *Ashtakavarga Analysis*\n\n👤 I need your birth details for Vedic 64-point strength analysis.\n\nSend format: DDMMYY or DDMMYYYY\nExample: 150691 (June 15, 1991)';
+  }
+
+  /**
+   * Handle Ashtakavarga request (migrated from handler)
+   * @param {string} message - User message
+   * @param {Object} user - User object
+   * @returns {string|null} Response or null if not handled
+   */
+  async handleAshtakavargaRequest(message, user) {
+    if (!this._isAshtakavargaRequest(message)) {
+      return null;
+    }
+
+    if (!user.birthDate) {
+      return this._formatBirthDataRequiredMessage();
+    }
+
+    try {
+      const birthData = {
+        birthDate: user.birthDate || '15/06/1991',
+        birthTime: user.birthTime || '14:30',
+        birthPlace: user.birthPlace || 'Delhi, India'
+      };
+
+      const analysis = await this.calculateAshtakavarga(birthData);
+
+      if (analysis.error) {
+        return '❌ Error calculating Ashtakavarga. This requires precise ephemeris calculations. Please try again.';
+      }
+
+      const summary = this._generateAshtakavargaSummary(analysis.analysis || analysis);
+      return `${summary}\n\n🕉️ *Ancient Vedic wisdom uses 64 mathematical combinations to reveal planetary harmony at birth.*`;
+    } catch (error) {
+      logger.error('Ashtakavarga calculation error:', error);
+      return '❌ Error calculating Ashtakavarga. This requires precise ephemeris calculations. Please try again.';
+    }
+  }
+
+  /**
    * Health check for AshtakavargaCalculator
    * @returns {Object} Health status
    */
@@ -142,7 +230,8 @@ class AshtakavargaCalculator {
       calculations: [
         'Planetary Strengths',
         'Life Area Analysis',
-        'Beneficial Points'
+        'Beneficial Points',
+        'Handler Methods'
       ],
       status: 'Operational'
     };

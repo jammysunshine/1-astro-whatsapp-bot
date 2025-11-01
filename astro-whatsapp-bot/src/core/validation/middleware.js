@@ -79,6 +79,26 @@ const validateStripeWebhook = validate(require('./schemas').stripeWebhookSchema,
 const validateUserInput = validate(require('./schemas').userInputSchema, 'body');
 
 /**
+ * Validation middleware for numerology data
+ */
+const validateNumerologyData = validate(require('./schemas').numerologyDataSchema, 'body');
+
+/**
+ * Validation middleware for palmistry data
+ */
+const validatePalmistryData = validate(require('./schemas').palmistryDataSchema, 'body');
+
+/**
+ * Validation middleware for I Ching data
+ */
+const validateIChingData = validate(require('./schemas').ichingDataSchema, 'body');
+
+/**
+ * Validation middleware for birth chart data
+ */
+const validateBirthChartData = validate(require('./schemas').birthChartDataSchema, 'body');
+
+/**
  * Validate service parameters (for dynamic service routing)
  */
 const validateServiceParams = (req, res, next) => {
@@ -109,5 +129,9 @@ module.exports = {
   validateRazorpayWebhook,
   validateStripeWebhook,
   validateUserInput,
-  validateServiceParams
+  validateServiceParams,
+  validateNumerologyData,
+  validatePalmistryData,
+  validateIChingData,
+  validateBirthChartData
 };

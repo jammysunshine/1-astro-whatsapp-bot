@@ -324,6 +324,145 @@ const userInputSchema = Joi.object({
   })
 });
 
+// Specialized validation schemas for the updated services
+const numerologyDataSchema = Joi.object({
+  fullName: Joi.string()
+    .trim()
+    .min(2)
+    .max(100)
+    .required()
+    .messages({
+      'string.min': 'Full name must be at least 2 characters long',
+      'string.max': 'Full name cannot exceed 100 characters',
+      'any.required': 'Full name is required for numerology analysis'
+    }),
+  birthDate: Joi.string()
+    .pattern(patterns.date)
+    .required()
+    .messages({
+      'string.pattern.base': 'Birth date must be in YYYY-MM-DD format',
+      'any.required': 'Birth date is required for numerology analysis'
+    }),
+  options: Joi.object({
+    format: Joi.string().valid('json', 'text', 'html').optional(),
+    language: Joi.string().length(2).pattern(/^[a-z]{2}$/).optional(),
+    detailed: Joi.boolean().optional(),
+    deepAnalysis: Joi.boolean().optional()
+  }).optional()
+});
+
+const palmistryDataSchema = Joi.object({
+  handData: Joi.object({
+    leftHand: Joi.object({
+      lines: Joi.object({
+        heartLine: Joi.string().max(100).optional(),
+        headLine: Joi.string().max(100).optional(),
+        lifeLine: Joi.string().max(100).optional(),
+        fateLine: Joi.string().max(100).optional()
+      }).optional(),
+      mounts: Joi.object().optional(),
+      shape: Joi.string().valid('earth', 'air', 'fire', 'water').optional(),
+      fingers: Joi.object().optional()
+    }).optional(),
+    rightHand: Joi.object({
+      lines: Joi.object({
+        heartLine: Joi.string().max(100).optional(),
+        headLine: Joi.string().max(100).optional(),
+        lifeLine: Joi.string().max(100).optional(),
+        fateLine: Joi.string().max(100).optional()
+      }).optional(),
+      mounts: Joi.object().optional(),
+      shape: Joi.string().valid('earth', 'air', 'fire', 'water').optional(),
+      fingers: Joi.object().optional()
+    }).optional()
+  }).required(),
+  options: Joi.object({
+    format: Joi.string().valid('json', 'text', 'html').optional(),
+    language: Joi.string().length(2).pattern(/^[a-z]{2}$/).optional(),
+    detailed: Joi.boolean().optional()
+  }).optional()
+});
+
+const ichingDataSchema = Joi.object({
+  question: Joi.string()
+    .trim()
+    .min(3)
+    .max(500)
+    .required()
+    .messages({
+      'string.min': 'Question must be at least 3 characters long',
+      'string.max': 'Question cannot exceed 500 characters',
+      'any.required': 'Question is required for I Ching reading'
+    }),
+  focus: Joi.string()
+    .valid('career', 'love', 'health', 'finance', 'spiritual', 'general')
+    .optional()
+    .default('general'),
+  options: Joi.object({
+    format: Joi.string().valid('json', 'text', 'html').optional(),
+    language: Joi.string().length(2).pattern(/^[a-z]{2}$/).optional(),
+    detailed: Joi.boolean().optional()
+  }).optional()
+});
+
+const birthChartDataSchema = Joi.object({
+  birthDate: Joi.string()
+    .pattern(patterns.date)
+    .required()
+    .messages({
+      'string.pattern.base': 'Birth date must be in YYYY-MM-DD format',
+      'any.required': 'Birth date is required'
+    }),
+  birthTime: Joi.string()
+    .pattern(patterns.time)
+    .required()
+    .messages({
+      'string.pattern.base': 'Birth time must be in HH:MM format',
+      'any.required': 'Birth time is required'
+    }),
+  birthPlace: Joi.string()
+    .trim()
+    .min(2)
+    .max(100)
+    .required()
+    .messages({
+      'string.min': 'Birth place must be at least 2 characters long',
+      'string.max': 'Birth place cannot exceed 100 characters',
+      'any.required': 'Birth place is required'
+    }),
+  latitude: Joi.number()
+    .min(-90)
+    .max(90)
+    .required()
+    .messages({
+      'number.min': 'Latitude must be between -90 and 90',
+      'number.max': 'Latitude must be between -90 and 90',
+      'any.required': 'Latitude is required'
+    }),
+  longitude: Joi.number()
+    .min(-180)
+    .max(180)
+    .required()
+    .messages({
+      'number.min': 'Longitude must be between -180 and 180',
+      'number.max': 'Longitude must be between -180 and 180',
+      'any.required': 'Longitude is required'
+    }),
+  timezone: Joi.string()
+    .optional()
+    .default('UTC')
+    .messages({
+      'string.base': 'Timezone must be a string'
+    }),
+  name: Joi.string()
+    .trim()
+    .max(100)
+    .optional()
+    .messages({
+      'string.max': 'Name cannot exceed 100 characters'
+    })
+});
+
 // Generic validation schema for any data
 const genericDataSchema = Joi.object({
   data: Joi.alternatives().try(
@@ -344,5 +483,9 @@ module.exports = {
   stripeWebhookSchema,
   userInputSchema,
   genericDataSchema,
+  numerologyDataSchema,
+  palmistryDataSchema,
+  ichingDataSchema,
+  birthChartDataSchema,
   patterns
 };

@@ -61,20 +61,17 @@ class ResponseHandler {
               break;
               
             default:
-              // Fall back to general astrology engine
-              const generateAstrologyResponse = require('../../../services/astrology/astrologyEngine');
-              response = await generateAstrologyResponse(messageText, user);
+              // Fall back to general astrology calculations coordinator
+              response = await calculationsCoordinator.generateAstrologyResponse(messageText, user);
           }
         } catch (calculationError) {
           this.logger.warn('CalculationsCoordinator failed, using fallback engine:', calculationError.message);
           // Fall back to the original astrology engine
-          const generateAstrologyResponse = require('../../../services/astrology/astrologyEngine');
-          response = await generateAstrologyResponse(messageText, user);
+          response = { content: `I couldn't determine the best response for "${messageText}". Please try using our main menu options.` };
         }
       } else {
         // Fall back to the original astrology engine for users without birth data
-        const generateAstrologyResponse = require('../../../services/astrology/astrologyEngine');
-        response = await generateAstrologyResponse(messageText, user);
+        response = { content: `For personalized astrology insights, please complete your birth profile first or try our main menu options.` };
       }
 
       if (response && (typeof response === 'string' || response.content)) {

@@ -9,18 +9,17 @@ const { IChingReader } = require('../../services/astrology/ichingReader');
  * interpretation, and guidance based on the ancient Chinese divination system.
  */
 class IChingReadingService extends ServiceTemplate {
-  constructor() {
-    super('IChingReadingService');
-    this.calculatorPath = '../../../services/astrology/iching/IChingCalculator';
+  constructor(ichingReader = require('./calculators/ichingReader')) {
+    super('IChingReader');
     this.serviceName = 'IChingReadingService';
-    logger.info('IChingReadingService initialized');
+    this.calculatorPath = './calculators/ichingReader';
+    this.calculator = new ichingReader();
+    logger.info('IChingReadingService initialized with IChingReader');
   }
 
   async initialize() {
     try {
       await super.initialize();
-      // Initialize with the IChingReader calculator
-      this.calculator = new IChingReader();
       logger.info('✅ IChingReadingService initialized successfully');
     } catch (error) {
       logger.error('❌ Failed to initialize IChingReadingService:', error);

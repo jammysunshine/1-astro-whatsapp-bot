@@ -7,11 +7,10 @@
  */
 
 const logger = require('../../../utils/logger');
-
 class FamilyAstrologyService {
   constructor() {
     this.groupCalculator = new GroupAstrologyCalculator();
-    this.compatibilityScorer = new CompatibilityScorer();
+    this.compatibilityCalculator = new CompatibilityCalculator();
     logger.info('FamilyAstrologyService initialized');
   }
 
@@ -126,7 +125,7 @@ class FamilyAstrologyService {
           const member1 = familyMembers[i];
           const member2 = familyMembers[j];
 
-          const compatibility = await this.compatibilityScorer.calculateCompatibilityScore(member1, member2);
+          const compatibility = await this.compatibilityCalculator.checkCompatibility(member1, member2);
 
           const key = `${member1.name}-${member2.name}`;
           matrix[key] = {

@@ -15,7 +15,7 @@ class CompatibilityService extends ServiceTemplate {
     super({
       compatibilityAction: new CompatibilityAction(),
       synastryEngine: new SynastryEngine(),
-      compatibilityScorer: new CompatibilityScorer()
+      compatibilityScorer: new CompatibilityCalculator()
     });
     this.serviceName = 'CompatibilityService';
     logger.info('CompatibilityService initialized');
@@ -73,7 +73,7 @@ class CompatibilityService extends ServiceTemplate {
       const synastryAnalysis = await this.calculator.synastryEngine.performSynastryAnalysis(person1, person2);
 
       // Calculate compatibility score
-      const compatibilityScore = await this.calculator.compatibilityScorer.calculateCompatibilityScore(person1, person2);
+      const compatibilityScore = await this.calculator.compatibilityCalculator.checkCompatibility(person1, person2);
 
       // Generate composite chart if requested
       let compositeChart = null;
@@ -452,7 +452,6 @@ class CompatibilityService extends ServiceTemplate {
     return Math.floor(relativePosition / 30) + 1;
   }
 
-
   /**
    * Validate individual person data
    * @param {Object} person - Person data
@@ -488,7 +487,6 @@ class CompatibilityService extends ServiceTemplate {
       throw new Error(`${label} birth time must be in HH:MM format`);
     }
   }
-
 
   /**
    * Create compatibility summary for quick reference

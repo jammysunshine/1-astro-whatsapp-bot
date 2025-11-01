@@ -14,7 +14,7 @@ class BusinessPartnershipService extends ServiceTemplate {
   constructor() {
     super({
       groupCalculator: new GroupAstrologyCalculator(),
-      compatibilityScorer: new CompatibilityScorer(),
+      compatibilityScorer: new CompatibilityCalculator(),
       financialCalculator: new FinancialAstrologyCalculator()
     });
     this.serviceName = 'BusinessPartnershipService';
@@ -185,7 +185,7 @@ class BusinessPartnershipService extends ServiceTemplate {
           const partner1 = partners[i];
           const partner2 = partners[j];
 
-          const pairCompat = await this.compatibilityScorer.calculateCompatibilityScore(partner1, partner2);
+          const pairCompat = await this.compatibilityCalculator.checkCompatibility(partner1, partner2);
           pairwiseCompat.push({
             partners: [partner1.name, partner2.name],
             score: pairCompat.overall || 0,

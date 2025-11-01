@@ -11,7 +11,7 @@ class HoraryAstrologyService extends ServiceTemplate {
     super('HoraryAstrologyService', services);
 
     // Initialize Horary Calculator
-    this.calculator = new HoraryCalculator();
+    this.calculator = new PrashnaCalculator();
 
     // Set services in calculator
     this.calculator.setServices(services);

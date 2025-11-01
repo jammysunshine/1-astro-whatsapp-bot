@@ -2,8 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure
-const MuhurtaCalculator = require('../../../services/astrology/vedic/calculators/MuhurtaCalculator');
-
 /**
  * RahukalamService - Specialized service for calculating Rahukalam timing
  *
@@ -460,7 +458,6 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
 
     return summary;
   }
-
 
   // Helper methods for calculations
   async _getCoordinatesForPlace(place) {

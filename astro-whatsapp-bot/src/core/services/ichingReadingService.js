@@ -2,10 +2,6 @@ const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from existing implementation
-const { IChingCalculator } = require('../../../services/astrology/iching/IChingCalculator');
-const { IChingInterpreter } = require('../../../services/astrology/iching/IChingInterpreter');
-const { IChingConfig } = require('../../../services/astrology/iching/IChingConfig');
-
 /**
  * IChingReadingService - Specialized service for providing I Ching readings
  *

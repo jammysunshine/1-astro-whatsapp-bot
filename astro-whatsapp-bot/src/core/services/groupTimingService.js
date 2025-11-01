@@ -12,7 +12,7 @@ class GroupTimingService {
   constructor() {
     this.groupCalculator = new GroupAstrologyCalculator();
     this.muhurtaCalculator = new MuhurtaCalculator();
-    this.compatibilityScorer = new CompatibilityScorer();
+    this.compatibilityScorer = new CompatibilityCalculator();
     logger.info('GroupTimingService initialized');
   }
 
@@ -140,7 +140,7 @@ class GroupTimingService {
           const member1 = groupMembers[i];
           const member2 = groupMembers[j];
 
-          const pairCompat = await this.compatibilityScorer.calculateCompatibilityScore(member1, member2);
+          const pairCompat = await this.compatibilityCalculator.checkCompatibility(member1, member2);
           pairwiseScores.push({
             pair: [member1.name, member2.name],
             score: pairCompat.overall || 0,

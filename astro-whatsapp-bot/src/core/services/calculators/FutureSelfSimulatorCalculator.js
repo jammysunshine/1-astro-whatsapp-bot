@@ -532,14 +532,7 @@ class FutureSelfSimulatorCalculator {
       description: 'Projects future life scenarios based on current planetary influences',
       type: 'predictive'
     };
-  getMetadata() {
-    return {
-      name: 'FutureSelfSimulatorCalculator',
-      version: '1.0.0',
-      description: 'Projects future life scenarios based on current planetary influences',
-      type: 'predictive'
-    };
-  }
+  };
 }
 
 module.exports = { FutureSelfSimulatorCalculator };

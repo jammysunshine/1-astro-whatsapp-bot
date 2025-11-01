@@ -84,7 +84,6 @@ class LifePatternsService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for life patterns analysis');
     }
-    const { BirthData } = require('../../models');
     const validatedData = new BirthData(birthData);
     validatedData.validate();
 

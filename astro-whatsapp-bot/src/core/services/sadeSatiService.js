@@ -92,7 +92,6 @@ class SadeSatiService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for Sade Sati analysis');
     }
-    const { BirthData } = require('../../models');
     const validatedData = new BirthData(birthData);
     validatedData.validate();
   }

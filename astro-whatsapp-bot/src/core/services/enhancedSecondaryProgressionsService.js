@@ -12,26 +12,10 @@ const { formatDegree, formatTime } = require('../../../utils/formatters');
 
 class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   constructor() {
-    super('EnhancedSecondaryProgressions', {
-      description:
-        'Advanced secondary progressions with comprehensive life theme analysis',
-      version: '1.0.0',
-      author: 'Vedic Astrology System',
-      category: 'vedic',
-      requiresLocation: true,
-      requiresDateTime: true,
-      supportedLanguages: ['en', 'hi', 'sa'],
-      features: [
-        'secondary_progressions',
-        'life_themes',
-        'progressed_aspects',
-        'progressed_house_analysis',
-        'solar_arc_progressions',
-        'progressed_lunar_cycle',
-        'life_stage_analysis',
-        'predictive_timing'
-      ]
-    });
+    super('EnhancedSecondaryProgressions');
+    this.serviceName = 'EnhancedSecondaryProgressionsService';
+    this.calculatorPath = '../calculators/EnhancedSecondaryProgressions';
+    logger.info('EnhancedSecondaryProgressionsService initialized');
   }
 
   /**

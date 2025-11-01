@@ -1,5 +1,8 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
+const IChingCalculator = require('../../services/astrology/iching/IChingCalculator');
+const IChingInterpreter = require('../../services/astrology/iching/IChingInterpreter');
+const IChingConfig = require('../../services/astrology/iching/IChingConfig');
 
 // Import calculator from existing implementation
 /**

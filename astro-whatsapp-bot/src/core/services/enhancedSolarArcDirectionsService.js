@@ -12,26 +12,10 @@ const { formatDegree, formatTime } = require('../../../utils/formatters');
 
 class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   constructor() {
-    super('EnhancedSolarArcDirections', {
-      description:
-        'Advanced solar arc directions with comprehensive lifetime analysis',
-      version: '1.0.0',
-      author: 'Vedic Astrology System',
-      category: 'vedic',
-      requiresLocation: true,
-      requiresDateTime: true,
-      supportedLanguages: ['en', 'hi', 'sa'],
-      features: [
-        'solar_arc_directions',
-        'lifetime_analysis',
-        'directional_aspects',
-        'arc_progression',
-        'life_event_timing',
-        'directional_house_analysis',
-        'predictive_windows',
-        'arc_interpretations'
-      ]
-    });
+    super('EnhancedSolarArcDirections');
+    this.serviceName = 'EnhancedSolarArcDirectionsService';
+    this.calculatorPath = '../calculators/EnhancedSolarArcDirections';
+    logger.info('EnhancedSolarArcDirectionsService initialized');
   }
 
   /**

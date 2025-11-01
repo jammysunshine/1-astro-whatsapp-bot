@@ -4,8 +4,9 @@ const logger = require('../../utils/logger');
 class CoupleCompatibilityService extends ServiceTemplate {
   constructor() {
     super('SynastryEngine');
-    this.calculatorPath =
-      '../../../services/astrology/compatibility/SynastryEngine';
+    this.serviceName = 'CoupleCompatibilityService';
+    this.calculatorPath = '../calculators/SynastryEngine';
+    logger.info('CoupleCompatibilityService initialized');
   }
 
   async initialize() {

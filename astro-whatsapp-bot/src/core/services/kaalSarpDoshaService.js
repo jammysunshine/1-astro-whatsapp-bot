@@ -92,7 +92,6 @@ class KaalSarpDoshaService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for Kaal Sarp Dosha analysis');
     }
-    const { BirthData } = require('../../models');
     const validatedData = new BirthData(birthData);
     validatedData.validate();
   }

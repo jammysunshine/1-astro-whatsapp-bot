@@ -11,7 +11,7 @@ class JaiminiDashasService extends ServiceTemplate {
     logger.info('JaiminiDashasService initialized');
   }
 
-  async ljaiminiDashasCalculation(birthData) {
+  async processCalculation(birthData) {
     try {
       // Validate input
       this.validate(birthData);
@@ -194,15 +194,9 @@ class JaiminiDashasService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required');
     }
-
-    const required = ['birthDate', 'birthTime', 'birthPlace'];
-    for (const field of required) {
-      if (!birthData[field]) {
-        throw new Error(`${field} is required for Jaimini Dashas calculation`);
-      }
-    }
-
-    return true;
+    const { BirthData } = require('../../models');
+    const validatedData = new BirthData(birthData);
+    validatedData.validate();
   }
 
   getMetadata() {

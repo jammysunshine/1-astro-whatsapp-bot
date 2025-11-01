@@ -46,7 +46,6 @@ class SolarArcDirectionsService extends ServiceTemplate {
     if (!data || !data.birthData) {
       throw new Error('Birth data is required');
     }
-    const { BirthData } = require('../../models');
     const validatedData = new BirthData(data.birthData);
     validatedData.validate();
   }

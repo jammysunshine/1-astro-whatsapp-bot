@@ -12,26 +12,10 @@ const { formatDegree, formatTime } = require('../../../utils/formatters');
 
 class JaiminiAstrologyService extends ServiceTemplate {
   constructor() {
-    super('JaiminiAstrology', {
-      description:
-        'Jaimini system astrology with Chara Karakas and special techniques',
-      version: '1.0.0',
-      author: 'Vedic Astrology System',
-      category: 'vedic',
-      requiresLocation: true,
-      requiresDateTime: true,
-      supportedLanguages: ['en', 'hi', 'sa'],
-      features: [
-        'chara_karakas',
-        'sthira_karakas',
-        'rasi_aspects',
-        'pada_analysis',
-        'argala',
-        'iṣṭa_kaṣṭa',
-        'upapada_analysis',
-        'arudha_calculation'
-      ]
-    });
+    super('JaiminiAstrology');
+    this.serviceName = 'JaiminiAstrologyService';
+    this.calculatorPath = '../calculators/JaiminiAstrologyCalculator';
+    logger.info('JaiminiAstrologyService initialized');
   }
 
   /**

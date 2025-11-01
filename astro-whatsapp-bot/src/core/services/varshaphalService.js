@@ -12,26 +12,10 @@ const { formatDegree, formatTime } = require('../../../utils/formatters');
 
 class VarshaphalService extends ServiceTemplate {
   constructor() {
-    super('Varshaphal', {
-      description:
-        'Annual horoscope predictions using Tajika Varshaphal system',
-      version: '1.0.0',
-      author: 'Vedic Astrology System',
-      category: 'vedic',
-      requiresLocation: true,
-      requiresDateTime: true,
-      supportedLanguages: ['en', 'hi', 'sa'],
-      features: [
-        'annual_chart',
-        'tajika_dasas',
-        'muntha_analysis',
-        'sahams',
-        'yearly_aspects',
-        'patyayini_dasa',
-        'triple_transit',
-        'annual_predictions'
-      ]
-    });
+    super('Varshaphal');
+    this.serviceName = 'VarshaphalService';
+    this.calculatorPath = '../calculators/Varshaphal';
+    logger.info('VarshaphalService initialized');
   }
 
   /**

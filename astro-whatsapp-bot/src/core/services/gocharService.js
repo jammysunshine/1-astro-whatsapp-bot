@@ -15,8 +15,7 @@ class GocharService extends ServiceTemplate {
   constructor() {
     super('VedicCalculator'); // Primary calculator for this service
     this.serviceName = 'GocharService';
-    this.calculatorPath =
-      '../../../services/astrology/vedic/calculators/VedicCalculator';
+    this.calculatorPath = '../calculators/VedicCalculator';
     logger.info('GocharService initialized');
   }
 

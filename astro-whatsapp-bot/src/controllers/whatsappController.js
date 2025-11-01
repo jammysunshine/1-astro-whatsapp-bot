@@ -4,7 +4,9 @@ const {
 } = require('../services/whatsapp/MessageCoordinator');
 const {
   validateWebhookSignature,
-  verifyWebhookChallenge
+  verifyWebhookChallenge,
+  validateMessageFormat,
+  validateWebhookPayload
 } = require('../services/whatsapp/webhookValidator');
 
 // Cache the initialized coordinator
@@ -143,6 +145,13 @@ const handleWhatsAppWebhook = async(req, res) => {
       return res.status(400).json({ error: 'Invalid payload' });
     }
 
+    // Validate webhook payload structure for security
+    const isPayloadValid = validateWebhookPayload(body);
+    if (!isPayloadValid) {
+      logger.warn('⚠️ Webhook payload structure validation failed');
+      return res.status(400).json({ error: 'Invalid payload structure' });
+    }
+
     // Process each entry in the webhook
     for (const entry of body.entry) {
       if (!entry.changes || !entry.changes[0]) {
@@ -158,6 +167,13 @@ const handleWhatsAppWebhook = async(req, res) => {
           processIncomingMessage
         } = require('../services/whatsapp/messageProcessor');
         for (const message of value.messages) {
+          // Validate message format before processing
+          const isMessageValid = validateMessageFormat(message);
+          if (!isMessageValid) {
+            logger.warn('⚠️ Skipping invalid message format:', message.id);
+            continue;
+          }
+          
           await processMessageWithRetry(message, value);
         }
       }

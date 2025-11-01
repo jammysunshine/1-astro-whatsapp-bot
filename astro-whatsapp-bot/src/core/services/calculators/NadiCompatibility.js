@@ -14,9 +14,9 @@ class NadiCompatibility {
    */
   _initializeCompatibilityMatrix() {
     return {
-      'Aadya': { 'Aadya': 0, 'Madhya': 8, 'Antya': 8 },
-      'Madhya': { 'Aadya': 8, 'Madhya': 0, 'Antya': 8 },
-      'Antya': { 'Aadya': 8, 'Madhya': 8, 'Antya': 0 }
+      Aadya: { Aadya: 0, Madhya: 8, Antya: 8 },
+      Madhya: { Aadya: 8, Madhya: 0, Antya: 8 },
+      Antya: { Aadya: 8, Madhya: 8, Antya: 0 }
     };
   }
 
@@ -102,8 +102,9 @@ class NadiCompatibility {
   getMatchingSuggestions(nakshatra) {
     const nadi = this._getNadiFromNakshatra(nakshatra);
 
-    const compatibleNadis = Object.keys(this.compatibilityMatrix[nadi])
-      .filter(otherNadi => this.compatibilityMatrix[nadi][otherNadi] > 6);
+    const compatibleNadis = Object.keys(this.compatibilityMatrix[nadi]).filter(
+      otherNadi => this.compatibilityMatrix[nadi][otherNadi] > 6
+    );
 
     return {
       compatibleNadis,
@@ -120,19 +121,36 @@ class NadiCompatibility {
   _getNadiFromNakshatra(nakshatra) {
     const nadiMapping = {
       // Aadya Nadi (9 nakshatras: 1st, 4th, 7th...etc.)
-      'Ashwini': 'Aadya', 'Rohini': 'Aadya', 'Hasta': 'Aadya',
-      'Chitra': 'Aadya', 'Vishakha': 'Aadya', 'Anuradha': 'Aadya',
-      'Jyeshta': 'Aadya', 'Purva Bhadrapada': 'Aadya', 'Revati': 'Aadya',
+      Ashwini: 'Aadya',
+      Rohini: 'Aadya',
+      Hasta: 'Aadya',
+      Chitra: 'Aadya',
+      Vishakha: 'Aadya',
+      Anuradha: 'Aadya',
+      Jyeshta: 'Aadya',
+      'Purva Bhadrapada': 'Aadya',
+      Revati: 'Aadya',
 
       // Madhya Nadi (9 nakshatras)
-      'Bharani': 'Madhya', 'Mrigashira': 'Madhya', 'Ardra': 'Madhya',
-      'Punarvasu': 'Madhya', 'Swati': 'Madhya', 'Shravana': 'Madhya',
-      'Shatabhisha': 'Madhya', 'Dhanishta': 'Madhya',
+      Bharani: 'Madhya',
+      Mrigashira: 'Madhya',
+      Ardra: 'Madhya',
+      Punarvasu: 'Madhya',
+      Swati: 'Madhya',
+      Shravana: 'Madhya',
+      Shatabhisha: 'Madhya',
+      Dhanishta: 'Madhya',
 
       // Antya Nadi (9 nakshatras)
-      'Krittika': 'Antya', 'Pushya': 'Antya', 'Ashlesha': 'Antya',
-      'Purva Phalguni': 'Antya', 'Uttara Phalguni': 'Antya', 'Magha': 'Antya',
-      'Uttara Ashadha': 'Antya', 'Mula': 'Antya', 'Purva Ashadha': 'Antya'
+      Krittika: 'Antya',
+      Pushya: 'Antya',
+      Ashlesha: 'Antya',
+      'Purva Phalguni': 'Antya',
+      'Uttara Phalguni': 'Antya',
+      Magha: 'Antya',
+      'Uttara Ashadha': 'Antya',
+      Mula: 'Antya',
+      'Purva Ashadha': 'Antya'
     };
 
     return nadiMapping[nakshatra] || 'Unknown';
@@ -147,17 +165,28 @@ class NadiCompatibility {
   _assessNadiCompatibility(nadi1, nadi2) {
     const score = this.compatibilityMatrix[nadi1]?.[nadi2] || 0;
 
-    let level, message, strengths, challenges;
+    let level;
+    let message;
+    let strengths;
+    let challenges;
 
     if (sheet === 0) {
       level = 'incompatible';
-      message = 'Same Nadi indicates challenges for progeny health and compatibility';
+      message =
+        'Same Nadi indicates challenges for progeny health and compatibility';
       strengths = ['Shared understanding'];
-      challenges = ['Potential health issues for children', 'Need for remedial measures'];
+      challenges = [
+        'Potential health issues for children',
+        'Need for remedial measures'
+      ];
     } else {
       level = score > 6 ? 'compatible' : 'moderately_compatible';
       message = 'Compatible Nadi energies promote harmony and successful union';
-      strengths = ['Good energy harmony', 'Supportive relationship foundation', 'Positive family environment'];
+      strengths = [
+        'Good energy harmony',
+        'Supportive relationship foundation',
+        'Positive family environment'
+      ];
       challenges = ['May need conscious effort to maintain balance'];
     }
 
@@ -170,9 +199,15 @@ class NadiCompatibility {
    * @returns {string} Compatibility level
    */
   _getCompatibilityLevel(score) {
-    if (score === 0) return 'chalenging';
-    if (score >= 8) return 'excellent';
-    if (score >= 6) return 'good';
+    if (score === 0) {
+      return 'chalenging';
+    }
+    if (score >= 8) {
+      return 'excellent';
+    }
+    if (score >= 6) {
+      return 'good';
+    }
     return 'moderate';
   }
 
@@ -191,7 +226,8 @@ class NadiCompatibility {
         spiritual: 'Spiritual guidance through foundational principles'
       },
       'Aadya-Madhya': {
-        communication: 'Balanced communication between initiative and adaptability',
+        communication:
+          'Balanced communication between initiative and adaptability',
         emotional: 'Emotional harmony through complementary approaches',
         practical: 'Good balance of structure and flexibility',
         spiritual: 'Spiritual growth through mutual wisdom sharing'
@@ -225,12 +261,15 @@ class NadiCompatibility {
     const key = `${nadi1}-${nadi2}`;
     const reverseKey = `${nadi2}-${nadi1}`;
 
-    return combinations[key] || combinations[reverseKey] || {
-      communication: 'Harmonious communication patterns',
-      emotional: 'Balanced emotional connection',
-      practical: 'Practical collaboration in daily life',
-      spiritual: 'Spiritual connection and mutual growth'
-    };
+    return (
+      combinations[key] ||
+      combinations[reverseKey] || {
+        communication: 'Harmonious communication patterns',
+        emotional: 'Balanced emotional connection',
+        practical: 'Practical collaboration in daily life',
+        spiritual: 'Spiritual connection and mutual growth'
+      }
+    );
   }
 
   /**
@@ -240,9 +279,27 @@ class NadiCompatibility {
    */
   _getSuggestedTraits(nadi) {
     const traits = {
-      'Aadya': ['Leadership', 'Decisiveness', 'Independence', 'Courage', 'Initiative'],
-      'Madhya': ['Adaptability', 'Flexibility', 'Harmonious', 'Patient', 'Understanding'],
-      'Antya': ['Wisdom', 'Depth', 'Introspection', 'Stability', 'Long-lasting commitment']
+      Aadya: [
+        'Leadership',
+        'Decisiveness',
+        'Independence',
+        'Courage',
+        'Initiative'
+      ],
+      Madhya: [
+        'Adaptability',
+        'Flexibility',
+        'Harmonious',
+        'Patient',
+        'Understanding'
+      ],
+      Antya: [
+        'Wisdom',
+        'Depth',
+        'Introspection',
+        'Stability',
+        'Long-lasting commitment'
+      ]
     };
 
     return traits[nadi] || ['Balanced', 'Harmonious', 'Compassionate'];
@@ -255,32 +312,36 @@ class NadiCompatibility {
    */
   _getMarriageGuidance(nadi) {
     const guidance = {
-      'Aadya': {
+      Aadya: {
         idealPartner: 'Partner who appreciates leadership and initiative',
         keyStrengths: 'Ability to provide direction and security',
         focusAreas: 'Balance leadership with tenderness in relationships',
         recommendedRemedies: 'Regular spiritual practices for grounding energy'
       },
-      'Madhya': {
+      Madhya: {
         idealPartner: 'Partner who values harmony and understanding',
         keyStrengths: 'Excellent at creating harmonious relationships',
         focusAreas: 'Practice patience and acceptance of differences',
         recommendedRemedies: 'Mantras for emotional balance and peace'
       },
-      'Antya': {
+      Antya: {
         idealPartner: 'Partner who values deep emotional connection',
         keyStrengths: 'Deep wisdom and lasting commitment to relationships',
         focusAreas: 'Learn to express emotions clearly and openly',
-        recommendedRemedies: 'Spiritual practices for emotional healing and depth'
+        recommendedRemedies:
+          'Spiritual practices for emotional healing and depth'
       }
     };
 
-    return guidance[nadi] || {
-      idealPartner: 'Partner with complementary energies',
-      keyStrengths: 'Harmonious and balanced approach to relationships',
-      focusAreas: 'Focus on open communication and mutual understanding',
-      recommendedRemedies: 'Beneficial spiritual practices for relationship harmony'
-    };
+    return (
+      guidance[nadi] || {
+        idealPartner: 'Partner with complementary energies',
+        keyStrengths: 'Harmonious and balanced approach to relationships',
+        focusAreas: 'Focus on open communication and mutual understanding',
+        recommendedRemedies:
+          'Beneficial spiritual practices for relationship harmony'
+      }
+    );
   }
 }
 

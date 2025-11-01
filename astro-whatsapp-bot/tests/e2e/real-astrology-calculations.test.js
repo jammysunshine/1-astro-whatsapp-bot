@@ -12,7 +12,7 @@ const TEST_BIRTH_DATA = {
   date: '1990-06-15',
   time: '14:30:00',
   place: 'Mumbai, India',
-  latitude: 19.0760,
+  latitude: 19.076,
   longitude: 72.8777,
   timezone: 'Asia/Kolkata'
 };
@@ -34,15 +34,18 @@ describe('Real Astrology Calculations Integration Tests', () => {
     });
 
     // Create test user
-    testUser = await require('../../src/models/userModel').createUser(TEST_PHONE, {
-      profileComplete: true,
-      birthDate: TEST_BIRTH_DATA.date,
-      birthTime: TEST_BIRTH_DATA.time,
-      birthPlace: TEST_BIRTH_DATA.place,
-      latitude: TEST_BIRTH_DATA.latitude,
-      longitude: TEST_BIRTH_DATA.longitude,
-      timezone: TEST_BIRTH_DATA.timezone
-    });
+    testUser = await require('../../src/models/userModel').createUser(
+      TEST_PHONE,
+      {
+        profileComplete: true,
+        birthDate: TEST_BIRTH_DATA.date,
+        birthTime: TEST_BIRTH_DATA.time,
+        birthPlace: TEST_BIRTH_DATA.place,
+        latitude: TEST_BIRTH_DATA.latitude,
+        longitude: TEST_BIRTH_DATA.longitude,
+        timezone: TEST_BIRTH_DATA.timezone
+      }
+    );
 
     logger.info('✅ Astrology test user created');
   }, 30000);

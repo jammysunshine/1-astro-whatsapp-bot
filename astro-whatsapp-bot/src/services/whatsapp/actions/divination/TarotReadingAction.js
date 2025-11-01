@@ -48,7 +48,11 @@ class TarotReadingAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in TarotReadingAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -122,7 +126,10 @@ class TarotReadingAction extends BaseAction {
     });
 
     // Generate interpretation
-    reading.interpretation = this.generateTarotInterpretation(drawnCards, spreadType);
+    reading.interpretation = this.generateTarotInterpretation(
+      drawnCards,
+      spreadType
+    );
     reading.advice = this.generateTarotAdvice(drawnCards);
     reading.spiritualGuidance = this.generateSpiritualGuidance(drawnCards);
 
@@ -146,37 +153,177 @@ class TarotReadingAction extends BaseAction {
 
     const deck = [
       // Major Arcana
-      { name: 'The Fool', number: 0, suit: 'Major', keywords: ['new beginnings', 'innocence', 'spontaneity', 'trust'] },
-      { name: 'The Magician', number: 1, suit: 'Major', keywords: ['manifestation', 'resourcefulness', 'willpower', 'inspired action'] },
-      { name: 'The High Priestess', number: 2, suit: 'Major', keywords: ['intuition', 'mystical wisdom', 'unconscious', 'divine feminine'] },
-      { name: 'The Empress', number: 3, suit: 'Major', keywords: ['fertility', 'feminine abundance', 'creativity', 'nurturing'] },
-      { name: 'The Emperor', number: 4, suit: 'Major', keywords: ['authority', 'structure', 'control', 'father-figure'] },
-      { name: 'The Hierophant', number: 5, suit: 'Major', keywords: ['spiritual guidance', 'ritual', 'tradition', 'conformity'] },
-      { name: 'The Lovers', number: 6, suit: 'Major', keywords: ['relationships', 'choices', 'harmony', 'unity'] },
-      { name: 'The Chariot', number: 7, suit: 'Major', keywords: ['willpower', 'success', 'determination', 'control'] },
-      { name: 'Strength', number: 8, suit: 'Major', keywords: ['courage', 'patience', 'compassion', 'inner strength'] },
-      { name: 'The Hermit', number: 9, suit: 'Major', keywords: ['introspection', 'soul searching', 'spiritual guidance', 'solitude'] },
-      { name: 'Wheel of Fortune', number: 10, suit: 'Major', keywords: ['change', 'cycles', 'destiny', 'turning point'] },
-      { name: 'Justice', number: 11, suit: 'Major', keywords: ['justice', 'cause and effect', 'truth', 'balance'] },
-      { name: 'The Hanged Man', number: 12, suit: 'Major', keywords: ['sacrifice', 'release', 'martyrdom', 'suspension'] },
-      { name: 'Death', number: 13, suit: 'Major', keywords: ['transformation', 'endings', 'new beginnings', 'transition'] },
-      { name: 'Temperance', number: 14, suit: 'Major', keywords: ['balance', 'moderation', 'patience', 'purpose'] },
-      { name: 'The Devil', number: 15, suit: 'Major', keywords: ['bondage', 'addiction', 'sexuality', 'materialism'] },
-      { name: 'The Tower', number: 16, suit: 'Major', keywords: ['sudden change', 'upheaval', 'chaos', 'revelation'] },
-      { name: 'The Star', number: 17, suit: 'Major', keywords: ['hope', 'faith', 'purpose', 'renewal'] },
-      { name: 'The Moon', number: 18, suit: 'Major', keywords: ['illusion', 'intuition', 'fear', 'anxiety'] },
-      { name: 'The Sun', number: 19, suit: 'Major', keywords: ['positivity', 'fun', 'warmth', 'success'] },
-      { name: 'Judgement', number: 20, suit: 'Major', keywords: ['judgment', 'rebirth', 'inner calling', 'absolution'] },
-      { name: 'The World', number: 21, suit: 'Major', keywords: ['fulfillment', 'harmony', 'completion', 'integration'] }
+      {
+        name: 'The Fool',
+        number: 0,
+        suit: 'Major',
+        keywords: ['new beginnings', 'innocence', 'spontaneity', 'trust']
+      },
+      {
+        name: 'The Magician',
+        number: 1,
+        suit: 'Major',
+        keywords: [
+          'manifestation',
+          'resourcefulness',
+          'willpower',
+          'inspired action'
+        ]
+      },
+      {
+        name: 'The High Priestess',
+        number: 2,
+        suit: 'Major',
+        keywords: [
+          'intuition',
+          'mystical wisdom',
+          'unconscious',
+          'divine feminine'
+        ]
+      },
+      {
+        name: 'The Empress',
+        number: 3,
+        suit: 'Major',
+        keywords: [
+          'fertility',
+          'feminine abundance',
+          'creativity',
+          'nurturing'
+        ]
+      },
+      {
+        name: 'The Emperor',
+        number: 4,
+        suit: 'Major',
+        keywords: ['authority', 'structure', 'control', 'father-figure']
+      },
+      {
+        name: 'The Hierophant',
+        number: 5,
+        suit: 'Major',
+        keywords: ['spiritual guidance', 'ritual', 'tradition', 'conformity']
+      },
+      {
+        name: 'The Lovers',
+        number: 6,
+        suit: 'Major',
+        keywords: ['relationships', 'choices', 'harmony', 'unity']
+      },
+      {
+        name: 'The Chariot',
+        number: 7,
+        suit: 'Major',
+        keywords: ['willpower', 'success', 'determination', 'control']
+      },
+      {
+        name: 'Strength',
+        number: 8,
+        suit: 'Major',
+        keywords: ['courage', 'patience', 'compassion', 'inner strength']
+      },
+      {
+        name: 'The Hermit',
+        number: 9,
+        suit: 'Major',
+        keywords: [
+          'introspection',
+          'soul searching',
+          'spiritual guidance',
+          'solitude'
+        ]
+      },
+      {
+        name: 'Wheel of Fortune',
+        number: 10,
+        suit: 'Major',
+        keywords: ['change', 'cycles', 'destiny', 'turning point']
+      },
+      {
+        name: 'Justice',
+        number: 11,
+        suit: 'Major',
+        keywords: ['justice', 'cause and effect', 'truth', 'balance']
+      },
+      {
+        name: 'The Hanged Man',
+        number: 12,
+        suit: 'Major',
+        keywords: ['sacrifice', 'release', 'martyrdom', 'suspension']
+      },
+      {
+        name: 'Death',
+        number: 13,
+        suit: 'Major',
+        keywords: ['transformation', 'endings', 'new beginnings', 'transition']
+      },
+      {
+        name: 'Temperance',
+        number: 14,
+        suit: 'Major',
+        keywords: ['balance', 'moderation', 'patience', 'purpose']
+      },
+      {
+        name: 'The Devil',
+        number: 15,
+        suit: 'Major',
+        keywords: ['bondage', 'addiction', 'sexuality', 'materialism']
+      },
+      {
+        name: 'The Tower',
+        number: 16,
+        suit: 'Major',
+        keywords: ['sudden change', 'upheaval', 'chaos', 'revelation']
+      },
+      {
+        name: 'The Star',
+        number: 17,
+        suit: 'Major',
+        keywords: ['hope', 'faith', 'purpose', 'renewal']
+      },
+      {
+        name: 'The Moon',
+        number: 18,
+        suit: 'Major',
+        keywords: ['illusion', 'intuition', 'fear', 'anxiety']
+      },
+      {
+        name: 'The Sun',
+        number: 19,
+        suit: 'Major',
+        keywords: ['positivity', 'fun', 'warmth', 'success']
+      },
+      {
+        name: 'Judgement',
+        number: 20,
+        suit: 'Major',
+        keywords: ['judgment', 'rebirth', 'inner calling', 'absolution']
+      },
+      {
+        name: 'The World',
+        number: 21,
+        suit: 'Major',
+        keywords: ['fulfillment', 'harmony', 'completion', 'integration']
+      }
     ];
 
     // Minor Arcana (56 cards)
     suits.forEach(suit => {
       for (let num = 1; num <= 10; num++) {
-        deck.push({ name: `${num} of ${suit}`, number: num, suit, keywords: this.getMinorArcanaKeywords(suit, num) });
+        deck.push({
+          name: `${num} of ${suit}`,
+          number: num,
+          suit,
+          keywords: this.getMinorArcanaKeywords(suit, num)
+        });
       }
       ['Page', 'Knight', 'Queen', 'King'].forEach(court => {
-        deck.push({ name: `${court} of ${suit}`, number: 11 + ['Page', 'Knight', 'Queen', 'King'].indexOf(court), suit, keywords: this.getCourtCardKeywords(court, suit) });
+        deck.push({
+          name: `${court} of ${suit}`,
+          number: 11 + ['Page', 'Knight', 'Queen', 'King'].indexOf(court),
+          suit,
+          keywords: this.getCourtCardKeywords(court, suit)
+        });
       });
     });
 
@@ -255,7 +402,8 @@ class TarotReadingAction extends BaseAction {
     }
 
     if (card.isReversed) {
-      meaning += '. When reversed, this suggests blocked energy, internal challenges, or learning opportunities';
+      meaning +=
+        '. When reversed, this suggests blocked energy, internal challenges, or learning opportunities';
     }
 
     return meaning;
@@ -273,11 +421,14 @@ class TarotReadingAction extends BaseAction {
     let advice = '';
 
     if (energies > challenges) {
-      advice = 'The cards show favorable energies flowing. Trust your intuition and take inspired action toward your goals.';
+      advice =
+        'The cards show favorable energies flowing. Trust your intuition and take inspired action toward your goals.';
     } else if (challenges > energies) {
-      advice = 'This is a time for reflection and inner work. Address challenges before moving forward. Patience will be rewarded.';
+      advice =
+        'This is a time for reflection and inner work. Address challenges before moving forward. Patience will be rewarded.';
     } else {
-      advice = 'The cards suggest a time of balance and contemplation. Look within for guidance and trust the unfolding process.';
+      advice =
+        'The cards suggest a time of balance and contemplation. Look within for guidance and trust the unfolding process.';
     }
 
     return advice;
@@ -393,7 +544,8 @@ class TarotReadingAction extends BaseAction {
       message += `*Advice:* ${reading.advice}\n\n`;
     }
 
-    message += 'Remember: Tarot provides guidance, not definitive answers. Trust your intuition in making decisions.';
+    message +=
+      'Remember: Tarot provides guidance, not definitive answers. Trust your intuition in making decisions.';
 
     return message;
   }
@@ -426,7 +578,8 @@ class TarotReadingAction extends BaseAction {
    * Handle reading generation errors
    */
   async handleReadingError() {
-    const errorMessage = 'I\'m sorry, I couldn\'t generate a tarot reading right now. The mystical energies might be misaligned. Please try again in a moment.';
+    const errorMessage =
+      'I\'m sorry, I couldn\'t generate a tarot reading right now. The mystical energies might be misaligned. Please try again in a moment.';
     await this.sendMessage(errorMessage, 'text');
   }
 
@@ -435,7 +588,8 @@ class TarotReadingAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = 'An unexpected error occurred while consulting the cards. Please try your reading again.';
+    const errorMessage =
+      'An unexpected error occurred while consulting the cards. Please try your reading again.';
     await this.sendMessage(errorMessage, 'text');
   }
 

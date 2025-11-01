@@ -1,4 +1,3 @@
-
 class PoliticalStabilityAssessor {
   /**
    * Assess political stability based on planetary factors
@@ -19,11 +18,15 @@ class PoliticalStabilityAssessor {
           if ([1, 4, 7, 10].includes(house)) {
             // Angular houses - strong leadership position
             stabilityScore += 10;
-            factors.push(`Ruling planet ${planet} in powerful angular house demonstrates strong governmental authority`);
+            factors.push(
+              `Ruling planet ${planet} in powerful angular house demonstrates strong governmental authority`
+            );
           } else if ([6, 8, 12].includes(house)) {
             // Challenging houses - leadership difficulties
             stabilityScore -= 15;
-            factors.push(`${planet} in challenging position suggests governmental instability or significant changes`);
+            factors.push(
+              `${planet} in challenging position suggests governmental instability or significant changes`
+            );
           }
         }
       });
@@ -50,13 +53,16 @@ class PoliticalStabilityAssessor {
       outlook = 'Generally stable government with minor fluctuations possible';
     } else if (stabilityScore >= 45) {
       rating = 'Moderate';
-      outlook = 'Mixed stability with potential for significant political developments';
+      outlook =
+        'Mixed stability with potential for significant political developments';
     } else if (stabilityScore >= 30) {
       rating = 'Unstable';
-      outlook = 'Significant political changes and governmental transitions likely';
+      outlook =
+        'Significant political changes and governmental transitions likely';
     } else {
       rating = 'Very Unstable';
-      outlook = 'Major political upheaval and governmental restructuring probable';
+      outlook =
+        'Major political upheaval and governmental restructuring probable';
     }
 
     return {
@@ -76,20 +82,28 @@ class PoliticalStabilityAssessor {
    */
   analyzeSaturnFactors(chart, factors) {
     const saturnPosition = chart.planetaryPositions.saturn;
-    if (!saturnPosition) { return { scoreAdjustment: 0 }; }
+    if (!saturnPosition) {
+      return { scoreAdjustment: 0 };
+    }
 
     let scoreAdjustment = 0;
 
     // Saturn represents government, authority, structure
     if (saturnPosition.house === 10) {
       scoreAdjustment += 15;
-      factors.push('Saturn in Midheaven suggests strong governmental authority and responsibility');
+      factors.push(
+        'Saturn in Midheaven suggests strong governmental authority and responsibility'
+      );
     } else if (saturnPosition.house === 7 || saturnPosition.house === 11) {
       scoreAdjustment += 10;
-      factors.push('Saturn in social houses indicates structured international relations');
+      factors.push(
+        'Saturn in social houses indicates structured international relations'
+      );
     } else if ([6, 8, 12].includes(saturnPosition.house)) {
       scoreAdjustment -= 20;
-      factors.push('Saturn in challenging houses may indicate governmental limitations or crises');
+      factors.push(
+        'Saturn in challenging houses may indicate governmental limitations or crises'
+      );
     }
 
     return { scoreAdjustment };
@@ -103,19 +117,27 @@ class PoliticalStabilityAssessor {
    */
   analyzeUranusFactors(chart, factors) {
     const uranusPosition = chart.planetaryPositions.uranus;
-    if (!uranusPosition) { return { scoreAdjustment: 0 }; }
+    if (!uranusPosition) {
+      return { scoreAdjustment: 0 };
+    }
 
     let scoreAdjustment = 0;
 
     // Uranus represents revolutions, sudden changes, technology
     if ([1, 4, 7, 10].includes(uranusPosition.house)) {
       scoreAdjustment -= 10;
-      factors.push('Uranus in angular position suggests potential for political upheaval or sudden leadership changes');
+      factors.push(
+        'Uranus in angular position suggests potential for political upheaval or sudden leadership changes'
+      );
     } else if (uranusPosition.house === 11) {
       scoreAdjustment -= 15;
-      factors.push('Uranus in 11th house indicates revolutionary social movements and reform');
+      factors.push(
+        'Uranus in 11th house indicates revolutionary social movements and reform'
+      );
     } else if ([5, 9].includes(uranusPosition.house)) {
-      factors.push('Uranus supports progressive political ideologies and creative governance');
+      factors.push(
+        'Uranus supports progressive political ideologies and creative governance'
+      );
     }
 
     return { scoreAdjustment };
@@ -138,15 +160,21 @@ class PoliticalStabilityAssessor {
 
     if (sun) {
       if (sun.house === 10) {
-        influences.push('Solar authority concentrated in government leadership');
+        influences.push(
+          'Solar authority concentrated in government leadership'
+        );
       } else if (sun.house === 7) {
-        influences.push('Leadership focused on international relations and partnerships');
+        influences.push(
+          'Leadership focused on international relations and partnerships'
+        );
       }
     }
 
     if (saturn) {
       if (saturn.house === 10) {
-        influences.push('Saturnian discipline and structure in governmental affairs');
+        influences.push(
+          'Saturnian discipline and structure in governmental affairs'
+        );
       } else if (saturn.house === 4) {
         influences.push('Foundational governmental reforms and restructuring');
       }
@@ -154,13 +182,17 @@ class PoliticalStabilityAssessor {
 
     if (mars) {
       if ([1, 4, 7, 10].includes(mars.house)) {
-        influences.push('Martial energy in leadership suggests assertive or military-influenced government');
+        influences.push(
+          'Martial energy in leadership suggests assertive or military-influenced government'
+        );
       }
     }
 
     if (jupiter) {
       if (jupiter.house === 9) {
-        influences.push('Jovian expansion through philosophy, education, and international law');
+        influences.push(
+          'Jovian expansion through philosophy, education, and international law'
+        );
       }
     }
 

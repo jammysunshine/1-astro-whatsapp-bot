@@ -29,7 +29,8 @@ class PrashnaAstrologyAction extends BaseAction {
       const userProfile = await this.getUserProfile();
 
       // Send initial prompt for question
-      const promptMessage = '❓ *Prashna (Horary) Astrology*\n\nI can answer your specific questions using horary astrology by casting a chart at the moment you ask.\n\n*Please provide:*\n• Your specific question\n• The time you thought of this question (HH:MM)\n• Your current location\n\n*Example Questions:*\n• "Will I get the job I applied for?"\n• "Should I move to a new city?"\n• "Is this the right time to start business?"\n\nReply with your question and details to continue.';
+      const promptMessage =
+        '❓ *Prashna (Horary) Astrology*\n\nI can answer your specific questions using horary astrology by casting a chart at the moment you ask.\n\n*Please provide:*\n• Your specific question\n• The time you thought of this question (HH:MM)\n• Your current location\n\n*Example Questions:*\n• "Will I get the job I applied for?"\n• "Should I move to a new city?"\n• "Is this the right time to start business?"\n\nReply with your question and details to continue.';
 
       await this.sendDirectMessage(promptMessage);
 
@@ -45,7 +46,11 @@ class PrashnaAstrologyAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in PrashnaAstrologyAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -61,7 +66,11 @@ class PrashnaAstrologyAction extends BaseAction {
       // This should be implemented within this action rather than calling legacy function
       // For now, returning a placeholder to indicate this needs proper implementation
       const { sendMessage } = require('../../../messageSender');
-      await sendMessage(this.phoneNumber, 'Prashna (question-based) astrology analysis is being prepared...', 'text');
+      await sendMessage(
+        this.phoneNumber,
+        'Prashna (question-based) astrology analysis is being prepared...',
+        'text'
+      );
 
       return {
         success: true,
@@ -71,7 +80,11 @@ class PrashnaAstrologyAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in PrashnaAstrologyAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -80,7 +93,9 @@ class PrashnaAstrologyAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    await this.sendDirectMessage('❌ *Prashna Analysis Error*\n\nI encountered an error with your Prashna astrology analysis. Please try again later.');
+    await this.sendDirectMessage(
+      '❌ *Prashna Analysis Error*\n\nI encountered an error with your Prashna astrology analysis. Please try again later.'
+    );
   }
 
   /**
@@ -90,7 +105,8 @@ class PrashnaAstrologyAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Provide Horary/Prashna astrology analysis answering specific questions',
+      description:
+        'Provide Horary/Prashna astrology analysis answering specific questions',
       keywords: ['prashna', 'horary', 'question', 'answer'],
       category: 'astrology',
       subscriptionRequired: true,

@@ -36,7 +36,11 @@ class WesternAstrologyAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in WesternAstrologyAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -46,7 +50,8 @@ class WesternAstrologyAction extends BaseAction {
   async sendWesternAstrologyMenu() {
     const userLanguage = this.getUserLanguage();
 
-    const menuMessage = '🌟 *Western Astrology - Tropical Wisdom*\n\n' +
+    const menuMessage =
+      '🌟 *Western Astrology - Tropical Wisdom*\n\n' +
       'Western astrology interprets the cosmos through the lens of psychology, mythology, and modern life. Based on the Tropical Zodiac that aligns with the seasons.\n\n' +
       '*🌟 CORE FEATURES:*\n' +
       '• Complete Birth Chart Analysis\n' +
@@ -92,11 +97,7 @@ class WesternAstrologyAction extends BaseAction {
       userLanguage
     );
 
-    await sendMessage(
-      message.to,
-      message.interactive,
-      'interactive'
-    );
+    await sendMessage(message.to, message.interactive, 'interactive');
   }
 
   /**
@@ -104,7 +105,8 @@ class WesternAstrologyAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, there was an error loading the Western astrology menu. Please try typing "menu" to go back.';
+    const errorMessage =
+      '❌ Sorry, there was an error loading the Western astrology menu. Please try typing "menu" to go back.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -116,7 +118,12 @@ class WesternAstrologyAction extends BaseAction {
     return {
       id: this.actionId,
       description: 'Show Western astrology features and navigation menu',
-      keywords: ['western', 'western astrology', 'tropical', 'modern astrology'],
+      keywords: [
+        'western',
+        'western astrology',
+        'tropical',
+        'modern astrology'
+      ],
       category: 'astrology',
       subscriptionRequired: false,
       cooldown: 60000 // 1 minute between menu accesses

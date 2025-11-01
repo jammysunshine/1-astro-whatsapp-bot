@@ -2,12 +2,18 @@ const { AshtakavargaCalculator } = require('./AshtakavargaCalculator');
 const { AsteroidCalculator } = require('./AsteroidCalculator');
 const { ChartGenerator } = require('./ChartGenerator');
 const { CompatibilityCalculator } = require('./CompatibilityCalculator');
-const { ComprehensiveAnalysisCalculator } = require('./ComprehensiveAnalysisCalculator');
+const {
+  ComprehensiveAnalysisCalculator
+} = require('./ComprehensiveAnalysisCalculator');
 const { CosmicEventsCalculator } = require('./CosmicEventsCalculator');
 const { DailyHoroscopeCalculator } = require('./DailyHoroscopeCalculator');
 const { DashaAnalysisCalculator } = require('./DashaAnalysisCalculator');
-const { DetailedChartAnalysisCalculator } = require('./DetailedChartAnalysisCalculator');
-const { FutureSelfSimulatorCalculator } = require('./FutureSelfSimulatorCalculator');
+const {
+  DetailedChartAnalysisCalculator
+} = require('./DetailedChartAnalysisCalculator');
+const {
+  FutureSelfSimulatorCalculator
+} = require('./FutureSelfSimulatorCalculator');
 const { GocharCalculator } = require('./GocharCalculator');
 const { GroupAstrologyCalculator } = require('./GroupAstrologyCalculator');
 const { JaiminiAstrologyCalculator } = require('./JaiminiAstrologyCalculator');
@@ -20,11 +26,17 @@ const { PanchangCalculator } = require('./PanchangCalculator');
 const { PrashnaCalculator } = require('./PrashnaCalculator');
 const { RemedialMeasuresCalculator } = require('./RemedialMeasuresCalculator');
 const { SadeSatiCalculator } = require('./SadeSatiCalculator');
-const { SecondaryProgressionsCalculator } = require('./SecondaryProgressionsCalculator');
+const {
+  SecondaryProgressionsCalculator
+} = require('./SecondaryProgressionsCalculator');
 const { ShadbalaCalculator } = require('./ShadbalaCalculator');
 const { SignCalculator } = require('./SignCalculator');
-const { SignificantTransitsCalculator } = require('./SignificantTransitsCalculator');
-const { SolarArcDirectionsCalculator } = require('./SolarArcDirectionsCalculator');
+const {
+  SignificantTransitsCalculator
+} = require('./SignificantTransitsCalculator');
+const {
+  SolarArcDirectionsCalculator
+} = require('./SolarArcDirectionsCalculator');
 const { SolarReturnCalculator } = require('./SolarReturnCalculator');
 const { TransitCalculator } = require('./TransitCalculator');
 const { VarshaphalCalculator } = require('./VarshaphalCalculator');

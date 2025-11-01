@@ -189,7 +189,8 @@ const buildMedicalAstrologyResponse = medicalAnalysis => {
   response += '*Medical Astrology Summary:*\n';
   response += `${medicalAnalysis.summary}\n\n`;
 
-  response += 'Medical astrology provides traditional insights for holistic wellness! 🌿';
+  response +=
+    'Medical astrology provides traditional insights for holistic wellness! 🌿';
 
   return response;
 };
@@ -235,7 +236,8 @@ const buildFinancialAstrologyResponse = financialAnalysis => {
   response += '*Financial Astrology Summary:*\n';
   response += `${financialAnalysis.summary}\n\n`;
 
-  response += 'Financial astrology reveals your natural wealth patterns and optimal paths to prosperity! 💎';
+  response +=
+    'Financial astrology reveals your natural wealth patterns and optimal paths to prosperity! 💎';
 
   return response;
 };
@@ -284,7 +286,8 @@ const buildHarmonicAstrologyResponse = harmonicAnalysis => {
   response += '*Harmonic Astrology Summary:*\n';
   response += `${harmonicAnalysis.summary}\n\n`;
 
-  response += 'Harmonic astrology reveals the deeper rhythms and patterns of your soul\'s journey! ✨';
+  response +=
+    'Harmonic astrology reveals the deeper rhythms and patterns of your soul\'s journey! ✨';
 
   return response;
 };
@@ -319,7 +322,8 @@ const buildNumerologyResponse = numerologyAnalysis => {
   response += '*Numerology Summary:*\n';
   response += `${numerologyAnalysis.summary}\n\n`;
 
-  response += 'Your numbers hold the key to understanding your soul\'s blueprint! 🔑';
+  response +=
+    'Your numbers hold the key to understanding your soul\'s blueprint! 🔑';
 
   return response;
 };
@@ -366,7 +370,8 @@ const buildCareerAstrologyResponse = careerAnalysis => {
   response += '*Career Astrology Summary:*\n';
   response += `${careerAnalysis.summary}\n\n`;
 
-  response += 'Your career astrology reveals your professional destiny and optimal vocational path! 🎯';
+  response +=
+    'Your career astrology reveals your professional destiny and optimal vocational path! 🎯';
 
   return response;
 };

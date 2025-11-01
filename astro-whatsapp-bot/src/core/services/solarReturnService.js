@@ -12,7 +12,8 @@ class SolarReturnService extends ServiceTemplate {
   constructor() {
     super('SolarReturnCalculator'); // Primary calculator for this service
     this.serviceName = 'SolarReturnService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/SolarReturnCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/SolarReturnCalculator';
     logger.info('SolarReturnService initialized');
   }
 
@@ -36,7 +37,11 @@ class SolarReturnService extends ServiceTemplate {
       const year = targetYear || new Date().getFullYear();
 
       // Calculate solar return using calculator
-      const result = await this.calculator.calculateSolarReturn(birthData, year, location);
+      const result = await this.calculator.calculateSolarReturn(
+        birthData,
+        year,
+        location
+      );
       return { ...result, year };
     } catch (error) {
       logger.error('SolarReturnService processCalculation error:', error);
@@ -61,7 +66,8 @@ class SolarReturnService extends ServiceTemplate {
         timestamp: new Date().toISOString(),
         analysisYear: year
       },
-      disclaimer: 'Solar return charts show the astrological influences for the year ahead from birthday to birthday. The solar return Sun represents the individual\'s life direction for that year. Results should be considered alongside other astrological techniques.'
+      disclaimer:
+        'Solar return charts show the astrological influences for the year ahead from birthday to birthday. The solar return Sun represents the individual\'s life direction for that year. Results should be considered alongside other astrological techniques.'
     };
   }
 
@@ -87,9 +93,16 @@ class SolarReturnService extends ServiceTemplate {
   async getCurrentYearSolarReturn(birthData, location = null) {
     try {
       const currentYear = new Date().getFullYear();
-      return await this.execute({ birthData, targetYear: currentYear, location });
+      return await this.execute({
+        birthData,
+        targetYear: currentYear,
+        location
+      });
     } catch (error) {
-      logger.error('SolarReturnService getCurrentYearSolarReturn error:', error);
+      logger.error(
+        'SolarReturnService getCurrentYearSolarReturn error:',
+        error
+      );
       return {
         error: true,
         message: 'Error calculating current year solar return'
@@ -128,8 +141,16 @@ class SolarReturnService extends ServiceTemplate {
     try {
       this._validateInput({ birthData });
 
-      const return1 = await this.calculator.calculateSolarReturn(birthData, year1, location);
-      const return2 = await this.calculator.calculateSolarReturn(birthData, year2, location);
+      const return1 = await this.calculator.calculateSolarReturn(
+        birthData,
+        year1,
+        location
+      );
+      const return2 = await this.calculator.calculateSolarReturn(
+        birthData,
+        year2,
+        location
+      );
 
       const comparison = this._compareSolarReturnCharts(
         return1,
@@ -163,7 +184,11 @@ class SolarReturnService extends ServiceTemplate {
   async getSolarReturnThemes(birthData, targetYear = null, location = null) {
     try {
       const year = targetYear || new Date().getFullYear();
-      const solarReturn = await this.calculator.calculateSolarReturn(birthData, year, location);
+      const solarReturn = await this.calculator.calculateSolarReturn(
+        birthData,
+        year,
+        location
+      );
 
       const themes = this._extractThemes(solarReturn);
       const predictions = this._generatePredictions(solarReturn, year);
@@ -242,16 +267,18 @@ class SolarReturnService extends ServiceTemplate {
     const themes = [];
 
     if (solarReturn.planetaryPositions) {
-      Object.entries(solarReturn.planetaryPositions).forEach(([planet, position]) => {
-        if (position && position.house) {
-          themes.push({
-            planet,
-            house: position.house,
-            theme: this._getHouseTheme(position.house),
-            emphasis: this._getPlanetaryEmphasis(planet)
-          });
+      Object.entries(solarReturn.planetaryPositions).forEach(
+        ([planet, position]) => {
+          if (position && position.house) {
+            themes.push({
+              planet,
+              house: position.house,
+              theme: this._getHouseTheme(position.house),
+              emphasis: this._getPlanetaryEmphasis(planet)
+            });
+          }
         }
-      });
+      );
     }
 
     const angularHouses = [1, 4, 7, 10];
@@ -289,37 +316,61 @@ class SolarReturnService extends ServiceTemplate {
   // Helper methods
   _getHouseSignificance(house) {
     const significances = {
-      1: 'Personal identity and self-presentation', 2: 'Financial resources and self-worth', 4: 'Home and family foundations',
-      5: 'Creativity and children', 6: 'Health and daily routines', 7: 'Partnerships and relationships',
-      8: 'Transformation and shared resources', 9: 'Higher learning and travel',
-      10: 'Career and public reputation', 11: 'Friends and community', 12: 'Spirituality and inner life'
+      1: 'Personal identity and self-presentation',
+      2: 'Financial resources and self-worth',
+      4: 'Home and family foundations',
+      5: 'Creativity and children',
+      6: 'Health and daily routines',
+      7: 'Partnerships and relationships',
+      8: 'Transformation and shared resources',
+      9: 'Higher learning and travel',
+      10: 'Career and public reputation',
+      11: 'Friends and community',
+      12: 'Spirituality and inner life'
     };
     return significances[house] || 'General life area';
   }
 
   _getHouseTheme(house) {
     const themes = {
-      1: 'Personal growth and new beginnings', 2: 'Financial stability and material security', 4: 'Family matters and home life',
-      5: 'Creativity and self-expression', 6: 'Health and service to others', 7: 'Partnerships and relationships',
-      8: 'Transformation and deep change', 9: 'Learning and expansion',
-      10: 'Career and achievement', 11: 'Community and friendships', 12: 'Spirituality and inner work'
+      1: 'Personal growth and new beginnings',
+      2: 'Financial stability and material security',
+      4: 'Family matters and home life',
+      5: 'Creativity and self-expression',
+      6: 'Health and service to others',
+      7: 'Partnerships and relationships',
+      8: 'Transformation and deep change',
+      9: 'Learning and expansion',
+      10: 'Career and achievement',
+      11: 'Community and friendships',
+      12: 'Spirituality and inner work'
     };
     return themes[house] || 'General development';
   }
 
   _getPlanetaryEmphasis(planet) {
     const emphases = {
-      Sun: 'Identity and life force', Moon: 'Emotions and nurturing', Mars: 'Action and energy',
-      Mercury: 'Communication and learning', Jupiter: 'Growth and opportunity', Venus: 'Love and harmony',
-      Saturn: 'Structure and responsibility', Uranus: 'Innovation and change', Neptune: 'Spirituality and dreams',
+      Sun: 'Identity and life force',
+      Moon: 'Emotions and nurturing',
+      Mars: 'Action and energy',
+      Mercury: 'Communication and learning',
+      Jupiter: 'Growth and opportunity',
+      Venus: 'Love and harmony',
+      Saturn: 'Structure and responsibility',
+      Uranus: 'Innovation and change',
+      Neptune: 'Spirituality and dreams',
       Pluto: 'Transformation and power'
     };
     return emphases[planet] || 'General influence';
   }
 
   _getOverallTone(solarReturn) {
-    const planetCount = Object.keys(solarReturn.planetaryPositions || {}).length;
-    if (planetCount > 5) { return 'active and dynamic'; }
+    const planetCount = Object.keys(
+      solarReturn.planetaryPositions || {}
+    ).length;
+    if (planetCount > 5) {
+      return 'active and dynamic';
+    }
     return 'stable and developmental';
   }
 
@@ -333,14 +384,26 @@ class SolarReturnService extends ServiceTemplate {
       });
     }
     const maxHouse = Object.entries(houseCounts).sort((a, b) => b[1] - a[1])[0];
-    return maxHouse ? this._getHouseTheme(parseInt(maxHouse[0])) : 'personal development';
+    return maxHouse ?
+      this._getHouseTheme(parseInt(maxHouse[0])) :
+      'personal development';
   }
 
-  _predictCareer(solarReturn) { return 'Career development with opportunities for advancement and recognition'; }
-  _predictRelationships(solarReturn) { return 'Relationship growth and meaningful connections'; }
-  _predictFinance(solarReturn) { return 'Financial stability with potential for growth'; }
-  _predictHealth(solarReturn) { return 'Focus on well-being and healthy lifestyle choices'; }
-  _predictPersonal(solarReturn) { return 'Personal growth and self-discovery'; }
+  _predictCareer(solarReturn) {
+    return 'Career development with opportunities for advancement and recognition';
+  }
+  _predictRelationships(solarReturn) {
+    return 'Relationship growth and meaningful connections';
+  }
+  _predictFinance(solarReturn) {
+    return 'Financial stability with potential for growth';
+  }
+  _predictHealth(solarReturn) {
+    return 'Focus on well-being and healthy lifestyle choices';
+  }
+  _predictPersonal(solarReturn) {
+    return 'Personal growth and self-discovery';
+  }
 
   /**
    * Returns metadata for the service.
@@ -351,9 +414,16 @@ class SolarReturnService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', 'getCurrentYearSolarReturn', 'getNextYearSolarReturn', 'compareSolarReturns', 'getSolarReturnThemes'],
+      methods: [
+        'processCalculation',
+        'getCurrentYearSolarReturn',
+        'getNextYearSolarReturn',
+        'compareSolarReturns',
+        'getSolarReturnThemes'
+      ],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Service for solar return chart analysis and yearly predictions.'
+      description:
+        'Service for solar return chart analysis and yearly predictions.'
     };
   }
 

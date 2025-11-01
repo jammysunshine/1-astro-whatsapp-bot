@@ -2,8 +2,13 @@ const BaseMessageProcessor = require('./BaseMessageProcessor');
 const logger = require('../../../utils/logger');
 const ActionRegistry = require('../ActionRegistry');
 const { ValidationService } = require('../utils/ValidationService');
-const { processFlowMessage } = require('../../../conversation/conversationEngine');
-const { getUserSession, updateUserProfile } = require('../../../models/userModel');
+const {
+  processFlowMessage
+} = require('../../../conversation/conversationEngine');
+const {
+  getUserSession,
+  updateUserProfile
+} = require('../../../models/userModel');
 
 /**
  * Specialized processor for handling interactive messages in the astrology bot.
@@ -28,7 +33,9 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
       const { interactive } = message;
       const { type } = interactive;
 
-      this.logger.info(`🖱️ Processing ${type} interactive message from ${phoneNumber}`);
+      this.logger.info(
+        `🖱️ Processing ${type} interactive message from ${phoneNumber}`
+      );
 
       // Validate message structure
       if (!ValidationService.validateMessage(message, phoneNumber)) {
@@ -49,7 +56,10 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
         await this.sendUnsupportedInteractiveTypeResponse(phoneNumber);
       }
     } catch (error) {
-      this.logger.error(`❌ Error processing interactive message from ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error processing interactive message from ${phoneNumber}:`,
+        error
+      );
       await this.handleProcessingError(phoneNumber, error);
     }
   }
@@ -66,7 +76,9 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
       const { button } = message;
       const { payload, text } = button;
 
-      this.logger.info(`🔘 Processing button message from ${phoneNumber}: ${text} (${payload})`);
+      this.logger.info(
+        `🔘 Processing button message from ${phoneNumber}: ${text} (${payload})`
+      );
 
       // Handle button payload as text input
       const mockTextMessage = {
@@ -77,7 +89,10 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
       // For button messages, treat as direct action payload
       await this.processButtonPayload(phoneNumber, payload, text, user);
     } catch (error) {
-      this.logger.error(`❌ Error processing button message from ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error processing button message from ${phoneNumber}:`,
+        error
+      );
       await this.handleProcessingError(phoneNumber, error);
     }
   }
@@ -93,7 +108,9 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
     const { button_reply } = interactive;
     const { id: buttonId, title } = button_reply;
 
-    this.logger.info(`🟢 Processing button reply from ${phoneNumber}: ${title} (${buttonId})`);
+    this.logger.info(
+      `🟢 Processing button reply from ${phoneNumber}: ${title} (${buttonId})`
+    );
 
     // Check for special buttons first
     if (await this.handleSpecialButtons(buttonId, phoneNumber, user)) {
@@ -128,7 +145,9 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
     const { list_reply } = interactive;
     const { id: listId, title, description } = list_reply;
 
-    this.logger.info(`📋 Processing list reply from ${phoneNumber}: ${title} (${listId})`);
+    this.logger.info(
+      `📋 Processing list reply from ${phoneNumber}: ${title} (${listId})`
+    );
 
     // Get action from list mapping (legacy support)
     const actionId = this.getActionFromListMapping(listId);
@@ -138,9 +157,15 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
     } else {
       // Fallback error
       const userLanguage = user.preferredLanguage || 'en';
-      await this.sendErrorResponse(phoneNumber, 'unsupported_list_selection', userLanguage, {
-        title, description
-      });
+      await this.sendErrorResponse(
+        phoneNumber,
+        'unsupported_list_selection',
+        userLanguage,
+        {
+          title,
+          description
+        }
+      );
     }
   }
 
@@ -152,7 +177,9 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
    * @param {Object} user - User object
    */
   async processButtonPayload(phoneNumber, payload, text, user) {
-    this.logger.info(`💫 Processing button payload from ${phoneNumber}: ${text} (${payload})`);
+    this.logger.info(
+      `💫 Processing button payload from ${phoneNumber}: ${text} (${payload})`
+    );
 
     // Handle button payload as direct action
     const mockTextMessage = {
@@ -211,18 +238,22 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
         const parts = buttonId.split('_');
         const period = parts[1];
         const timeStr = parts[2];
-        const hours24 = period === 'pm' && parseInt(timeStr.substring(0, 2)) !== 12 ?
-          parseInt(timeStr.substring(0, 2)) + 12 :
-          period === 'am' && parseInt(timeStr.substring(0, 2)) === 12 ?
-            0 : parseInt(timeStr.substring(0, 2));
+        const hours24 =
+          period === 'pm' && parseInt(timeStr.substring(0, 2)) !== 12 ?
+            parseInt(timeStr.substring(0, 2)) + 12 :
+            period === 'am' && parseInt(timeStr.substring(0, 2)) === 12 ?
+              0 :
+              parseInt(timeStr.substring(0, 2));
         resolvedValue = `${hours24.toString().padStart(2, '0')}:${timeStr.substring(2)}`;
       }
 
       // Process as text input
       const mockMessage = { type: 'text', text: { body: resolvedValue } };
       const session = await getUserSession(phoneNumber);
-      const currentFlow = session?.currentFlow && session.currentFlow !== 'undefined' ?
-        session.currentFlow : 'onboarding';
+      const currentFlow =
+        session?.currentFlow && session.currentFlow !== 'undefined' ?
+          session.currentFlow :
+          'onboarding';
 
       await processFlowMessage(mockMessage, user, currentFlow);
     } catch (error) {
@@ -251,7 +282,11 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
       const mappedValue = this.getMappedValueForButton(session, buttonId);
       if (!mappedValue) {
         this.logger.warn(`⚠️ No mapping found for button ID: ${buttonId}`);
-        await this.sendErrorResponse(phoneNumber, 'invalid_button_selection', user.preferredLanguage || 'en');
+        await this.sendErrorResponse(
+          phoneNumber,
+          'invalid_button_selection',
+          user.preferredLanguage || 'en'
+        );
         return;
       }
 
@@ -295,19 +330,29 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
       // Handle special case for language buttons - extract language code from button ID
       if (actionId.startsWith('set_language_')) {
         const languageCode = actionId.replace('set_language_', '');
-        actualActionId = 'set_language';  // Use the base action ID
+        actualActionId = 'set_language'; // Use the base action ID
         actionData.languageCode = languageCode;
-        this.logger.info(`🌐 Extracting language code ${languageCode} from button ID ${actionId}`);
+        this.logger.info(
+          `🌐 Extracting language code ${languageCode} from button ID ${actionId}`
+        );
       }
 
       if (this.actionRegistry) {
-        const action = this.actionRegistry.getAction(actualActionId) ||
-                      this.actionRegistry.getActionForButton(actualActionId);
+        const action =
+          this.actionRegistry.getAction(actualActionId) ||
+          this.actionRegistry.getActionForButton(actualActionId);
 
         if (action) {
-          await this.actionRegistry.executeAction(actualActionId, user, phoneNumber, actionData);
+          await this.actionRegistry.executeAction(
+            actualActionId,
+            user,
+            phoneNumber,
+            actionData
+          );
         } else {
-          this.logger.warn(`⚠️ No action found for ${actualActionId}, trying legacy menu action`);
+          this.logger.warn(
+            `⚠️ No action found for ${actualActionId}, trying legacy menu action`
+          );
           await this.executeLegacyMenuAction(actualActionId, user, phoneNumber);
         }
       } else {
@@ -316,7 +361,11 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
     } catch (error) {
       this.logger.error(`❌ Error executing action ${actionId}:`, error);
       const userLanguage = user.preferredLanguage || 'en';
-      await this.sendErrorResponse(phoneNumber, 'action_execution_error', userLanguage);
+      await this.sendErrorResponse(
+        phoneNumber,
+        'action_execution_error',
+        userLanguage
+      );
     }
   }
 
@@ -330,7 +379,11 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
     // This would contain the legacy switch-case logic
     // For now, send a generic error
     this.logger.warn(`⚠️ Using legacy menu action for ${actionId}`);
-    await this.sendErrorResponse(phoneNumber, 'legacy_action_not_available', user.preferredLanguage || 'en');
+    await this.sendErrorResponse(
+      phoneNumber,
+      'legacy_action_not_available',
+      user.preferredLanguage || 'en'
+    );
   }
 
   /**
@@ -360,10 +413,12 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
    * @returns {boolean} True if in flow
    */
   isUserInFlow(session) {
-    return session &&
-           session.currentFlow &&
-           session.currentFlow !== 'undefined' &&
-           session.currentFlow !== undefined;
+    return (
+      session &&
+      session.currentFlow &&
+      session.currentFlow !== 'undefined' &&
+      session.currentFlow !== undefined
+    );
   }
 
   /**
@@ -411,7 +466,12 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
   async sendErrorResponse(phoneNumber, errorKey, language, params = {}) {
     try {
       const { ResponseBuilder } = require('../utils/ResponseBuilder');
-      const errorMessage = ResponseBuilder.buildErrorMessage(phoneNumber, errorKey, language, params);
+      const errorMessage = ResponseBuilder.buildErrorMessage(
+        phoneNumber,
+        errorKey,
+        language,
+        params
+      );
       const { sendMessage } = require('../messageSender');
       await sendMessage(phoneNumber, errorMessage, 'interactive');
     } catch (error) {
@@ -426,7 +486,11 @@ class InteractiveMessageProcessor extends BaseMessageProcessor {
    */
   async sendUnsupportedInteractiveTypeResponse(phoneNumber) {
     const language = 'en'; // Default language
-    await this.sendErrorResponse(phoneNumber, 'unsupported_interactive_type', language);
+    await this.sendErrorResponse(
+      phoneNumber,
+      'unsupported_interactive_type',
+      language
+    );
   }
 }
 

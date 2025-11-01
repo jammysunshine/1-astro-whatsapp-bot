@@ -50,7 +50,10 @@ class AstrologyEngine {
    * Calculate cosmic events
    */
   async calculateCosmicEvents(birthData, daysAhead = 30) {
-    return await this.vedicCalculator.calculateCosmicEvents(birthData, daysAhead);
+    return await this.vedicCalculator.calculateCosmicEvents(
+      birthData,
+      daysAhead
+    );
   }
 
   /**

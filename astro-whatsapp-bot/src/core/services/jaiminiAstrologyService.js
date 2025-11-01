@@ -4,13 +4,17 @@
  */
 
 const ServiceTemplate = require('../ServiceTemplate');
-const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
+const {
+  validateCoordinates,
+  validateDateTime
+} = require('../../../utils/validation');
 const { formatDegree, formatTime } = require('../../../utils/formatters');
 
 class JaiminiAstrologyService extends ServiceTemplate {
   constructor() {
     super('JaiminiAstrology', {
-      description: 'Jaimini system astrology with Chara Karakas and special techniques',
+      description:
+        'Jaimini system astrology with Chara Karakas and special techniques',
       version: '1.0.0',
       author: 'Vedic Astrology System',
       category: 'vedic',
@@ -124,8 +128,15 @@ class JaiminiAstrologyService extends ServiceTemplate {
   calculateArgala(chart, planet) {
     const planetPosition = this.getPlanetPosition(chart, planet);
     const argalaPositions = {
-      primary: [(planetPosition + 2) % 12 + 1, (planetPosition + 4) % 12 + 1, (planetPosition + 11) % 12 + 1],
-      secondary: [(planetPosition + 5) % 12 + 1, (planetPosition + 8) % 12 + 1]
+      primary: [
+        ((planetPosition + 2) % 12) + 1,
+        ((planetPosition + 4) % 12) + 1,
+        ((planetPosition + 11) % 12) + 1
+      ],
+      secondary: [
+        ((planetPosition + 5) % 12) + 1,
+        ((planetPosition + 8) % 12) + 1
+      ]
     };
     return argalaPositions;
   }
@@ -169,7 +180,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
     const arudhaLagna = ((ascendant - 1 + lordPosition - 1) % 12) + 1;
 
     // Exception: if Arudha Lagna is in 1st or 7th from ascendant, add 10 houses
-    const distanceFromAsc = ((arudhaLagna - ascendant + 12) % 12);
+    const distanceFromAsc = (arudhaLagna - ascendant + 12) % 12;
     if (distanceFromAsc === 0 || distanceFromAsc === 6) {
       return ((arudhaLagna + 9) % 12) + 1;
     }
@@ -233,8 +244,18 @@ class JaiminiAstrologyService extends ServiceTemplate {
    */
   getLongitudeSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     return signs[Math.floor(longitude / 30) % 12];
   }
@@ -255,7 +276,11 @@ class JaiminiAstrologyService extends ServiceTemplate {
       this.validateInput(userData);
 
       const { datetime, latitude, longitude } = userData;
-      const chart = await VedicCalculator.calculateChart(datetime, latitude, longitude);
+      const chart = await VedicCalculator.calculateChart(
+        datetime,
+        latitude,
+        longitude
+      );
 
       const charaKarakas = this.calculateCharaKarakas(chart);
       const sthiraKarakas = this.calculateSthiraKarakas(chart);
@@ -311,10 +336,13 @@ class JaiminiAstrologyService extends ServiceTemplate {
       Sun: 'Strong leadership qualities, soul purpose connected to authority and self-expression',
       Moon: 'Emotional depth, nurturing nature, soul purpose through emotional intelligence',
       Mars: 'Courage and initiative, soul purpose through action and competition',
-      Mercury: 'Intellectual pursuits, communication skills, soul purpose through knowledge',
+      Mercury:
+        'Intellectual pursuits, communication skills, soul purpose through knowledge',
       Jupiter: 'Wisdom and teaching, soul purpose through spiritual guidance',
-      Venus: 'Love and harmony, soul purpose through relationships and creativity',
-      Saturn: 'Discipline and responsibility, soul purpose through hard work and service',
+      Venus:
+        'Love and harmony, soul purpose through relationships and creativity',
+      Saturn:
+        'Discipline and responsibility, soul purpose through hard work and service',
       Rahu: 'Unconventional path, soul purpose through breaking boundaries',
       Ketu: 'Spiritual liberation, soul purpose through detachment and enlightenment'
     };
@@ -327,8 +355,18 @@ class JaiminiAstrologyService extends ServiceTemplate {
    */
   interpretArudhaLagna(arudhaLagna) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
 
     const sign = signs[arudhaLagna - 1];
@@ -355,8 +393,18 @@ class JaiminiAstrologyService extends ServiceTemplate {
    */
   interpretUpapada(upapada) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
 
     const sign = signs[upapada - 1];
@@ -387,14 +435,29 @@ class JaiminiAstrologyService extends ServiceTemplate {
     let ishtaLevel = 'Low';
     let kashtaLevel = 'Low';
 
-    if (ishta >= 165) { ishtaLevel = 'Very High'; } else if (ishta >= 135) { ishtaLevel = 'High'; } else if (ishta >= 105) { ishtaLevel = 'Medium'; }
+    if (ishta >= 165) {
+      ishtaLevel = 'Very High';
+    } else if (ishta >= 135) {
+      ishtaLevel = 'High';
+    } else if (ishta >= 105) {
+      ishtaLevel = 'Medium';
+    }
 
-    if (kashta >= 165) { kashtaLevel = 'Very High'; } else if (kashta >= 135) { kashtaLevel = 'High'; } else if (kashta >= 105) { kashtaLevel = 'Medium'; }
+    if (kashta >= 165) {
+      kashtaLevel = 'Very High';
+    } else if (kashta >= 135) {
+      kashtaLevel = 'High';
+    } else if (kashta >= 105) {
+      kashtaLevel = 'Medium';
+    }
 
     return {
       ishta: `${ishtaLevel} spiritual strength (${ishta}°)`,
       kashta: `${kashtaLevel} material challenges (${kashta}°)`,
-      balance: ishta > kashta ? 'Spiritual inclination dominates' : 'Material focus dominates'
+      balance:
+        ishta > kashta ?
+          'Spiritual inclination dominates' :
+          'Material focus dominates'
     };
   }
 
@@ -423,7 +486,10 @@ class JaiminiAstrologyService extends ServiceTemplate {
       strengths.push('Strong spiritual foundation and inner guidance');
     }
 
-    if (charaKarakas.AtmaKaraka === 'Jupiter' || charaKarakas.AtmaKaraka === 'Sun') {
+    if (
+      charaKarakas.AtmaKaraka === 'Jupiter' ||
+      charaKarakas.AtmaKaraka === 'Sun'
+    ) {
       strengths.push('Natural leadership and wisdom qualities');
     }
 
@@ -452,9 +518,13 @@ class JaiminiAstrologyService extends ServiceTemplate {
     const { charaKarakas, ishtaKashta } = data;
 
     if (ishtaKashta.ishta > ishtaKashta.kashta) {
-      recommendations.push('Focus on spiritual practices and inner development');
+      recommendations.push(
+        'Focus on spiritual practices and inner development'
+      );
     } else {
-      recommendations.push('Balance material pursuits with spiritual awareness');
+      recommendations.push(
+        'Balance material pursuits with spiritual awareness'
+      );
     }
 
     const akRemedies = {
@@ -469,7 +539,9 @@ class JaiminiAstrologyService extends ServiceTemplate {
       Ketu: 'Practice detachment and meditation'
     };
 
-    recommendations.push(akRemedies[charaKarakas.AtmaKaraka] || 'Follow your inner guidance');
+    recommendations.push(
+      akRemedies[charaKarakas.AtmaKaraka] || 'Follow your inner guidance'
+    );
 
     return recommendations;
   }

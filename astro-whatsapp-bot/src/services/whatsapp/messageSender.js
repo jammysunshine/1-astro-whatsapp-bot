@@ -28,7 +28,9 @@ class MessageSender {
     this.mediaSender = new MediaSender();
     this.menuHandler = new MenuHandler();
 
-    this.logger.info('📡 MessageSender initialized with modular WhatsApp architecture');
+    this.logger.info(
+      '📡 MessageSender initialized with modular WhatsApp architecture'
+    );
   }
 
   /**
@@ -42,28 +44,61 @@ class MessageSender {
    * Send interactive buttons - delegated to TemplateManager
    */
   async sendInteractiveButtons(phoneNumber, body, buttons, options = {}) {
-    return this.templateManager.sendInteractiveButtons(phoneNumber, body, buttons, options);
+    return this.templateManager.sendInteractiveButtons(
+      phoneNumber,
+      body,
+      buttons,
+      options
+    );
   }
 
   /**
    * Send list message - delegated to TemplateManager
    */
   async sendListMessage(phoneNumber, body, buttonText, sections, options = {}) {
-    return this.templateManager.sendListMessage(phoneNumber, body, buttonText, sections, options);
+    return this.templateManager.sendListMessage(
+      phoneNumber,
+      body,
+      buttonText,
+      sections,
+      options
+    );
   }
 
   /**
    * Send template message - delegated to TemplateManager
    */
-  async sendTemplateMessage(phoneNumber, templateName, languageCode = 'en', components = []) {
-    return this.templateManager.sendTemplateMessage(phoneNumber, templateName, languageCode, components);
+  async sendTemplateMessage(
+    phoneNumber,
+    templateName,
+    languageCode = 'en',
+    components = []
+  ) {
+    return this.templateManager.sendTemplateMessage(
+      phoneNumber,
+      templateName,
+      languageCode,
+      components
+    );
   }
 
   /**
    * Send media message - delegated to MediaSender
    */
-  async sendMediaMessage(phoneNumber, mediaType, mediaId, caption = '', options = {}) {
-    return this.mediaSender.sendMediaMessage(phoneNumber, mediaType, mediaId, caption, options);
+  async sendMediaMessage(
+    phoneNumber,
+    mediaType,
+    mediaId,
+    caption = '',
+    options = {}
+  ) {
+    return this.mediaSender.sendMediaMessage(
+      phoneNumber,
+      mediaType,
+      mediaId,
+      caption,
+      options
+    );
   }
 
   /**
@@ -98,7 +133,12 @@ class MessageSender {
    * Send document - delegated to MediaSender
    */
   async sendDocument(phoneNumber, documentId, caption = '', filename = null) {
-    return this.mediaSender.sendDocument(phoneNumber, documentId, caption, filename);
+    return this.mediaSender.sendDocument(
+      phoneNumber,
+      documentId,
+      caption,
+      filename
+    );
   }
 
   /**
@@ -109,12 +149,27 @@ class MessageSender {
    * @param {Object} options - Additional options
    * @param {string} language - Language code for translations
    */
-  async sendMessage(phoneNumber, message, messageType = 'text', options = {}, language = 'en') {
+  async sendMessage(
+    phoneNumber,
+    message,
+    messageType = 'text',
+    options = {},
+    language = 'en'
+  ) {
     try {
       // Handle translation for string messages
       let processedMessage = message;
-      if (typeof message === 'string' && message && message.includes('.') && !message.includes(' ')) {
-        processedMessage = await this.translationService.translate(message, language, options.parameters || {});
+      if (
+        typeof message === 'string' &&
+        message &&
+        message.includes('.') &&
+        !message.includes(' ')
+      ) {
+        processedMessage = await this.translationService.translate(
+          message,
+          language,
+          options.parameters || {}
+        );
       }
 
       switch (messageType) {
@@ -124,28 +179,58 @@ class MessageSender {
             type: 'reply',
             reply: { id: btn.id, title: btn.title }
           }));
-          return await this.sendInteractiveButtons(phoneNumber, processedMessage.body?.text || processedMessage.body, buttons, options);
+          return await this.sendInteractiveButtons(
+            phoneNumber,
+            processedMessage.body?.text || processedMessage.body,
+            buttons,
+            options
+          );
         } else if (processedMessage.type === 'list') {
           // Try sending list message, fallback to numbered menu if it fails
           try {
-            return await this._sendListWithFallback(phoneNumber, processedMessage, options, language);
+            return await this._sendListWithFallback(
+              phoneNumber,
+              processedMessage,
+              options,
+              language
+            );
           } catch (error) {
-            this.logger.warn(`⚠️ List message failed for ${phoneNumber}, using fallback menu`);
-            const fallbackMessage = this.menuHandler.createNumberedMenuFallback(processedMessage, phoneNumber);
-            return this.sendTextMessage(phoneNumber, fallbackMessage, options);
+            this.logger.warn(
+              `⚠️ List message failed for ${phoneNumber}, using fallback menu`
+            );
+            const fallbackMessage =
+                this.menuHandler.createNumberedMenuFallback(
+                  processedMessage,
+                  phoneNumber
+                );
+            return this.sendTextMessage(
+              phoneNumber,
+              fallbackMessage,
+              options
+            );
           }
         }
         break;
 
       case 'media':
         if (processedMessage.mediaType && processedMessage.mediaId) {
-          return this.sendMediaMessage(phoneNumber, processedMessage.mediaType, processedMessage.mediaId, processedMessage.caption);
+          return this.sendMediaMessage(
+            phoneNumber,
+            processedMessage.mediaType,
+            processedMessage.mediaId,
+            processedMessage.caption
+          );
         }
         break;
 
       case 'template':
         if (processedMessage.templateName) {
-          return this.sendTemplateMessage(phoneNumber, processedMessage.templateName, processedMessage.languageCode, processedMessage.components);
+          return this.sendTemplateMessage(
+            phoneNumber,
+            processedMessage.templateName,
+            processedMessage.languageCode,
+            processedMessage.components
+          );
         }
         break;
 
@@ -157,7 +242,10 @@ class MessageSender {
       // Fallback for unhandled types
       return this.sendTextMessage(phoneNumber, processedMessage, options);
     } catch (error) {
-      this.logger.error(`❌ Error in universal sendMessage for ${phoneNumber}:`, error.message);
+      this.logger.error(
+        `❌ Error in universal sendMessage for ${phoneNumber}:`,
+        error.message
+      );
       throw error;
     }
   }
@@ -190,28 +278,40 @@ class MessageSender {
   async _sendListWithFallback(phoneNumber, message, options, language) {
     try {
       // Prepare list data
-      const translatedBody = message.body?.text || message.body || 'Please select an option';
+      const translatedBody =
+        message.body?.text || message.body || 'Please select an option';
       const sections = message.sections || [];
       const buttonText = message.button || message.buttonText || 'Choose';
 
       // Prepare sections with validation
-      const validatedSections = sections.map(section => ({
-        title: section.title || 'Options',
-        rows: (section.rows || []).slice(0, 10).map(row => ({
-          id: row.id,
-          title: row.title,
-          description: row.description || ''
+      const validatedSections = sections
+        .map(section => ({
+          title: section.title || 'Options',
+          rows: (section.rows || []).slice(0, 10).map(row => ({
+            id: row.id,
+            title: row.title,
+            description: row.description || ''
+          }))
         }))
-      })).filter(section => section.rows.length > 0);
+        .filter(section => section.rows.length > 0);
 
       if (validatedSections.length === 0) {
         throw new Error('No valid list sections to display');
       }
 
-      return await this.sendListMessage(phoneNumber, translatedBody, buttonText, validatedSections, options);
+      return await this.sendListMessage(
+        phoneNumber,
+        translatedBody,
+        buttonText,
+        validatedSections,
+        options
+      );
     } catch (error) {
       // Create fallback menu and store mappings
-      const fallbackMessage = this.createNumberedMenuFallback(message, phoneNumber);
+      const fallbackMessage = this.createNumberedMenuFallback(
+        message,
+        phoneNumber
+      );
       return this.sendTextMessage(phoneNumber, fallbackMessage, options);
     }
   }
@@ -219,8 +319,18 @@ class MessageSender {
   /**
    * Build interactive button message - delegated to TemplateManager
    */
-  async buildInteractiveButtonMessage(phoneNumber, message, buttons, language = 'en') {
-    return this.templateManager.buildInteractiveButtonMessage(phoneNumber, message, buttons, language);
+  async buildInteractiveButtonMessage(
+    phoneNumber,
+    message,
+    buttons,
+    language = 'en'
+  ) {
+    return this.templateManager.buildInteractiveButtonMessage(
+      phoneNumber,
+      message,
+      buttons,
+      language
+    );
   }
 
   /**
@@ -264,17 +374,55 @@ module.exports = {
   MessageSender,
 
   // Functions for backward compatibility
-  sendTextMessage: (phoneNumber, message, options) => messageSender.sendTextMessage(phoneNumber, message, options),
-  sendInteractiveButtons: (phoneNumber, body, buttons, options) => messageSender.sendInteractiveButtons(phoneNumber, body, buttons, options),
-  sendListMessage: (phoneNumber, body, buttonText, sections, options) => messageSender.sendListMessage(phoneNumber, body, buttonText, sections, options),
-  sendTemplateMessage: (phoneNumber, templateName, languageCode, components) => messageSender.sendTemplateMessage(phoneNumber, templateName, languageCode, components),
-  sendMediaMessage: (phoneNumber, mediaType, mediaId, caption, options) => messageSender.sendMediaMessage(phoneNumber, mediaType, mediaId, caption, options),
+  sendTextMessage: (phoneNumber, message, options) =>
+    messageSender.sendTextMessage(phoneNumber, message, options),
+  sendInteractiveButtons: (phoneNumber, body, buttons, options) =>
+    messageSender.sendInteractiveButtons(phoneNumber, body, buttons, options),
+  sendListMessage: (phoneNumber, body, buttonText, sections, options) =>
+    messageSender.sendListMessage(
+      phoneNumber,
+      body,
+      buttonText,
+      sections,
+      options
+    ),
+  sendTemplateMessage: (phoneNumber, templateName, languageCode, components) =>
+    messageSender.sendTemplateMessage(
+      phoneNumber,
+      templateName,
+      languageCode,
+      components
+    ),
+  sendMediaMessage: (phoneNumber, mediaType, mediaId, caption, options) =>
+    messageSender.sendMediaMessage(
+      phoneNumber,
+      mediaType,
+      mediaId,
+      caption,
+      options
+    ),
   markMessageAsRead: messageId => messageSender.markMessageAsRead(messageId),
-  sendMessage: (phoneNumber, message, messageType, options, language) => messageSender.sendMessage(phoneNumber, message, messageType, options, language),
-  createNumberedMenuFallback: (message, phoneNumber) => messageSender.createNumberedMenuFallback(message, phoneNumber),
-  getNumberedMenuAction: (phoneNumber, userInput) => messageSender.getNumberedMenuAction(phoneNumber, userInput),
-  clearNumberedMenuMappings: phoneNumber => messageSender.clearNumberedMenuMappings(phoneNumber),
-  buildInteractiveButtonMessage: (phoneNumber, message, buttons, language) => messageSender.buildInteractiveButtonMessage(phoneNumber, message, buttons, language)
+  sendMessage: (phoneNumber, message, messageType, options, language) =>
+    messageSender.sendMessage(
+      phoneNumber,
+      message,
+      messageType,
+      options,
+      language
+    ),
+  createNumberedMenuFallback: (message, phoneNumber) =>
+    messageSender.createNumberedMenuFallback(message, phoneNumber),
+  getNumberedMenuAction: (phoneNumber, userInput) =>
+    messageSender.getNumberedMenuAction(phoneNumber, userInput),
+  clearNumberedMenuMappings: phoneNumber =>
+    messageSender.clearNumberedMenuMappings(phoneNumber),
+  buildInteractiveButtonMessage: (phoneNumber, message, buttons, language) =>
+    messageSender.buildInteractiveButtonMessage(
+      phoneNumber,
+      message,
+      buttons,
+      language
+    )
 };
 
 /**

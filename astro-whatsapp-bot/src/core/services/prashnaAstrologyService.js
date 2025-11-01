@@ -11,7 +11,8 @@ const logger = require('../../utils/logger');
 class PrashnaAstrologyService extends ServiceTemplate {
   constructor() {
     super('PrashnaCalculator');
-    this.calculatorPath = '../calculators/PrashnaCalculator';    this.serviceName = 'PrashnaAstrologyService';
+    this.calculatorPath = '../calculators/PrashnaCalculator';
+    this.serviceName = 'PrashnaAstrologyService';
     logger.info('PrashnaAstrologyService initialized');
   }
 
@@ -51,7 +52,8 @@ class PrashnaAstrologyService extends ServiceTemplate {
         considerations: result.considerations || [],
         recommendations: result.recommendations || []
       },
-      disclaimer: 'Horary astrology provides insights based on the astrological chart cast at the moment of questioning. Results are most reliable when the question is clearly formulated and sincerely asked. Consider horary analysis as one factor among many in decision making.'
+      disclaimer:
+        'Horary astrology provides insights based on the astrological chart cast at the moment of questioning. Results are most reliable when the question is clearly formulated and sincerely asked. Consider horary analysis as one factor among many in decision making.'
     };
   }
 
@@ -98,7 +100,11 @@ class PrashnaAstrologyService extends ServiceTemplate {
         throw new Error('Question type is required');
       }
 
-      const timingResult = await this.calculator.findQuestionTiming(birthData, questionType, dateRange);
+      const timingResult = await this.calculator.findQuestionTiming(
+        birthData,
+        questionType,
+        dateRange
+      );
 
       return {
         questionType,
@@ -141,11 +147,17 @@ class PrashnaAstrologyService extends ServiceTemplate {
         category,
         categoryGuidance: this._getCategoryGuidance(category),
         horaryAnalysis: analysis.prashna,
-        combinedInsights: this._combineCategoryAndHorary(category, analysis.prashna),
+        combinedInsights: this._combineCategoryAndHorary(
+          category,
+          analysis.prashna
+        ),
         error: false
       };
     } catch (error) {
-      logger.error('PrashnaAstrologyService analyzeQuestionCategory error:', error);
+      logger.error(
+        'PrashnaAstrologyService analyzeQuestionCategory error:',
+        error
+      );
       return {
         error: true,
         message: 'Error analyzing question category'
@@ -166,9 +178,15 @@ class PrashnaAstrologyService extends ServiceTemplate {
         return basicAnalysis;
       }
 
-      const detailedInterpretation = this._generateDetailedInterpretation(basicAnalysis.prashna);
-      const alternativeViews = this._generateAlternativeViews(basicAnalysis.prashna);
-      const timingConsiderations = this._analyzeTimingConsiderations(basicAnalysis.prashna);
+      const detailedInterpretation = this._generateDetailedInterpretation(
+        basicAnalysis.prashna
+      );
+      const alternativeViews = this._generateAlternativeViews(
+        basicAnalysis.prashna
+      );
+      const timingConsiderations = this._analyzeTimingConsiderations(
+        basicAnalysis.prashna
+      );
 
       return {
         ...basicAnalysis,
@@ -178,7 +196,10 @@ class PrashnaAstrologyService extends ServiceTemplate {
         confidence: this._assessInterpretationConfidence(basicAnalysis.prashna)
       };
     } catch (error) {
-      logger.error('PrashnaAstrologyService getDetailedInterpretation error:', error);
+      logger.error(
+        'PrashnaAstrologyService getDetailedInterpretation error:',
+        error
+      );
       return {
         error: true,
         message: 'Error generating detailed interpretation'
@@ -237,7 +258,9 @@ class PrashnaAstrologyService extends ServiceTemplate {
   async getDecisionGuidance(decisionType, questionTime, location) {
     try {
       if (!decisionType || !questionTime || !location) {
-        throw new Error('Decision type, question time, and location are required');
+        throw new Error(
+          'Decision type, question time, and location are required'
+        );
       }
 
       const question = `Should I proceed with this ${decisionType} decision?`;
@@ -247,9 +270,15 @@ class PrashnaAstrologyService extends ServiceTemplate {
         location
       });
 
-      const decisionGuidance = this._generateDecisionGuidance(decisionType, analysis.prashna);
+      const decisionGuidance = this._generateDecisionGuidance(
+        decisionType,
+        analysis.prashna
+      );
       const riskAssessment = this._assessDecisionRisks(analysis.prashna);
-      const alternatives = this._suggestDecisionAlternatives(decisionType, analysis.prashna);
+      const alternatives = this._suggestDecisionAlternatives(
+        decisionType,
+        analysis.prashna
+      );
 
       return {
         decisionType,
@@ -258,7 +287,9 @@ class PrashnaAstrologyService extends ServiceTemplate {
         decisionGuidance,
         riskAssessment,
         alternatives,
-        finalRecommendation: this._generateFinalRecommendation(analysis.prashna),
+        finalRecommendation: this._generateFinalRecommendation(
+          analysis.prashna
+        ),
         error: false
       };
     } catch (error) {
@@ -331,25 +362,53 @@ class PrashnaAstrologyService extends ServiceTemplate {
   _categorizeQuestion(question) {
     const lowerQuestion = question.toLowerCase();
 
-    if (lowerQuestion.includes('love') || lowerQuestion.includes('relationship') || lowerQuestion.includes('marriage')) {
+    if (
+      lowerQuestion.includes('love') ||
+      lowerQuestion.includes('relationship') ||
+      lowerQuestion.includes('marriage')
+    ) {
       return 'love_relationship';
     }
-    if (lowerQuestion.includes('career') || lowerQuestion.includes('job') || lowerQuestion.includes('work')) {
+    if (
+      lowerQuestion.includes('career') ||
+      lowerQuestion.includes('job') ||
+      lowerQuestion.includes('work')
+    ) {
       return 'career_profession';
     }
-    if (lowerQuestion.includes('money') || lowerQuestion.includes('finance') || lowerQuestion.includes('financial')) {
+    if (
+      lowerQuestion.includes('money') ||
+      lowerQuestion.includes('finance') ||
+      lowerQuestion.includes('financial')
+    ) {
       return 'finance_wealth';
     }
-    if (lowerQuestion.includes('health') || lowerQuestion.includes('illness') || lowerQuestion.includes('medical')) {
+    if (
+      lowerQuestion.includes('health') ||
+      lowerQuestion.includes('illness') ||
+      lowerQuestion.includes('medical')
+    ) {
       return 'health_wellness';
     }
-    if (lowerQuestion.includes('travel') || lowerQuestion.includes('journey') || lowerQuestion.includes('trip')) {
+    if (
+      lowerQuestion.includes('travel') ||
+      lowerQuestion.includes('journey') ||
+      lowerQuestion.includes('trip')
+    ) {
       return 'travel_journey';
     }
-    if (lowerQuestion.includes('education') || lowerQuestion.includes('study') || lowerQuestion.includes('exam')) {
+    if (
+      lowerQuestion.includes('education') ||
+      lowerQuestion.includes('study') ||
+      lowerQuestion.includes('exam')
+    ) {
       return 'education_learning';
     }
-    if (lowerQuestion.includes('spiritual') || lowerQuestion.includes('spiritual') || lowerQuestion.includes('meditation')) {
+    if (
+      lowerQuestion.includes('spiritual') ||
+      lowerQuestion.includes('spiritual') ||
+      lowerQuestion.includes('meditation')
+    ) {
       return 'spiritual_growth';
     }
 
@@ -371,12 +430,14 @@ class PrashnaAstrologyService extends ServiceTemplate {
       },
       career_profession: {
         focus: 'Sun, Saturn, Mars, and 10th house significators',
-        considerations: 'Professional growth, authority, and long-term stability',
+        considerations:
+          'Professional growth, authority, and long-term stability',
         bestTiming: 'Solar periods and Saturn return considerations'
       },
       finance_wealth: {
         focus: 'Jupiter, Venus, and 2nd/11th house significators',
-        considerations: 'Wealth accumulation, investment timing, and financial stability',
+        considerations:
+          'Wealth accumulation, investment timing, and financial stability',
         bestTiming: 'Jupiter periods and favorable Venus transits'
       },
       health_wellness: {
@@ -391,12 +452,14 @@ class PrashnaAstrologyService extends ServiceTemplate {
       },
       education_learning: {
         focus: 'Mercury, Jupiter, and 4th/9th house significators',
-        considerations: 'Learning capacity, concentration, and knowledge acquisition',
+        considerations:
+          'Learning capacity, concentration, and knowledge acquisition',
         bestTiming: 'Mercury periods and Jupiter expansion phases'
       },
       spiritual_growth: {
         focus: 'Jupiter, Neptune, and 9th/12th house significators',
-        considerations: 'Inner development, spiritual seeking, and higher understanding',
+        considerations:
+          'Inner development, spiritual seeking, and higher understanding',
         bestTiming: 'Jupiter and Neptune favorable periods'
       },
       general: {
@@ -423,7 +486,10 @@ class PrashnaAstrologyService extends ServiceTemplate {
       categorySpecificInsights: `This ${category.replace('_', ' ')} question shows ${horaryAnalysis.answer} with focus on ${categoryGuidance.focus.split(',')[0]}`,
       timingConsiderations: categoryGuidance.bestTiming,
       categoryFactors: categoryGuidance.considerations,
-      integratedAnswer: this._integrateCategoryWithAnswer(category, horaryAnalysis)
+      integratedAnswer: this._integrateCategoryWithAnswer(
+        category,
+        horaryAnalysis
+      )
     };
   }
 
@@ -437,11 +503,15 @@ class PrashnaAstrologyService extends ServiceTemplate {
     const recommendations = [];
 
     if (timingResult?.auspiciousTimes) {
-      recommendations.push(`Auspicious times for asking: ${timingResult.auspiciousTimes.join(', ')}`);
+      recommendations.push(
+        `Auspicious times for asking: ${timingResult.auspiciousTimes.join(', ')}`
+      );
     }
 
     if (timingResult?.planetaryHours) {
-      recommendations.push(`Best planetary hours: ${timingResult.planetaryHours.join(', ')}`);
+      recommendations.push(
+        `Best planetary hours: ${timingResult.planetaryHours.join(', ')}`
+      );
     }
 
     return recommendations;
@@ -483,7 +553,8 @@ class PrashnaAstrologyService extends ServiceTemplate {
 
     alternatives.push({
       perspective: 'Long-term vs immediate',
-      interpretation: 'Question may show immediate situation vs long-term development',
+      interpretation:
+        'Question may show immediate situation vs long-term development',
       reliability: 'Contextual factor'
     });
 
@@ -516,10 +587,14 @@ class PrashnaAstrologyService extends ServiceTemplate {
     const confidence = horaryAnalysis.confidence || 'medium';
 
     switch (confidence.toLowerCase()) {
-    case 'high': return 'Strong testimony from multiple sources';
-    case 'medium': return 'Moderate testimony with some clarity';
-    case 'low': return 'Weak testimony, consider asking again';
-    default: return 'Analysis completed with standard reliability';
+    case 'high':
+      return 'Strong testimony from multiple sources';
+    case 'medium':
+      return 'Moderate testimony with some clarity';
+    case 'low':
+      return 'Weak testimony, consider asking again';
+    default:
+      return 'Analysis completed with standard reliability';
     }
   }
 
@@ -530,12 +605,24 @@ class PrashnaAstrologyService extends ServiceTemplate {
    * @private
    */
   _analyzeQuestionComparisons(analyses) {
-    const positiveAnswers = analyses.filter(a => a.answer?.toLowerCase().includes('yes') || a.answer?.toLowerCase().includes('favorable')).length;
-    const negativeAnswers = analyses.filter(a => a.answer?.toLowerCase().includes('no') || a.answer?.toLowerCase().includes('unfavorable')).length;
+    const positiveAnswers = analyses.filter(
+      a =>
+        a.answer?.toLowerCase().includes('yes') ||
+        a.answer?.toLowerCase().includes('favorable')
+    ).length;
+    const negativeAnswers = analyses.filter(
+      a =>
+        a.answer?.toLowerCase().includes('no') ||
+        a.answer?.toLowerCase().includes('unfavorable')
+    ).length;
 
     return {
-      consistency: positiveAnswers === analyses.length ? 'All positive' :
-        negativeAnswers === analyses.length ? 'All negative' : 'Mixed results',
+      consistency:
+        positiveAnswers === analyses.length ?
+          'All positive' :
+          negativeAnswers === analyses.length ?
+            'All negative' :
+            'Mixed results',
       pattern: this._identifyAnswerPattern(analyses),
       evolution: this._analyzeAnswerEvolution(analyses)
     };
@@ -595,11 +682,15 @@ class PrashnaAstrologyService extends ServiceTemplate {
    */
   _generateDecisionGuidance(decisionType, horaryAnalysis) {
     const guidance = {
-      proceed: horaryAnalysis.answer?.toLowerCase().includes('yes') ||
-               horaryAnalysis.answer?.toLowerCase().includes('favorable'),
+      proceed:
+        horaryAnalysis.answer?.toLowerCase().includes('yes') ||
+        horaryAnalysis.answer?.toLowerCase().includes('favorable'),
       confidence: horaryAnalysis.confidence || 'medium',
       timing: this._getDecisionTiming(decisionType, horaryAnalysis),
-      considerations: this._getDecisionConsiderations(decisionType, horaryAnalysis)
+      considerations: this._getDecisionConsiderations(
+        decisionType,
+        horaryAnalysis
+      )
     };
 
     return guidance;
@@ -616,7 +707,10 @@ class PrashnaAstrologyService extends ServiceTemplate {
       riskLevel: horaryAnalysis.confidence === 'low' ? 'high' : 'moderate',
       riskFactors: horaryAnalysis.challengingFactors || [],
       mitigatingFactors: horaryAnalysis.supportingFactors || [],
-      overallAssessment: horaryAnalysis.confidence === 'high' ? 'Low risk decision' : 'Moderate risk, consider additional factors'
+      overallAssessment:
+        horaryAnalysis.confidence === 'high' ?
+          'Low risk decision' :
+          'Moderate risk, consider additional factors'
     };
   }
 
@@ -631,11 +725,15 @@ class PrashnaAstrologyService extends ServiceTemplate {
     const alternatives = [];
 
     if (horaryAnalysis.confidence === 'low') {
-      alternatives.push('Consider asking the question again at a more auspicious time');
+      alternatives.push(
+        'Consider asking the question again at a more auspicious time'
+      );
       alternatives.push('Seek additional information or professional advice');
     }
 
-    alternatives.push(`Explore ${decisionType} options that align with favorable planetary indications`);
+    alternatives.push(
+      `Explore ${decisionType} options that align with favorable planetary indications`
+    );
 
     return alternatives;
   }
@@ -647,9 +745,11 @@ class PrashnaAstrologyService extends ServiceTemplate {
    * @private
    */
   _generateFinalRecommendation(horaryAnalysis) {
-    if (horaryAnalysis.confidence === 'high' &&
-        (horaryAnalysis.answer?.toLowerCase().includes('yes') ||
-         horaryAnalysis.answer?.toLowerCase().includes('favorable'))) {
+    if (
+      horaryAnalysis.confidence === 'high' &&
+      (horaryAnalysis.answer?.toLowerCase().includes('yes') ||
+        horaryAnalysis.answer?.toLowerCase().includes('favorable'))
+    ) {
       return 'Proceed with confidence based on strong horary indications';
     } else if (horaryAnalysis.confidence === 'low') {
       return 'Exercise caution and consider additional factors before deciding';
@@ -678,7 +778,10 @@ class PrashnaAstrologyService extends ServiceTemplate {
    * @private
    */
   _getDecisionTiming(decisionType, horaryAnalysis) {
-    return horaryAnalysis.timing || 'Consider immediate action based on current indications';
+    return (
+      horaryAnalysis.timing ||
+      'Consider immediate action based on current indications'
+    );
   }
 
   /**
@@ -689,7 +792,11 @@ class PrashnaAstrologyService extends ServiceTemplate {
    * @private
    */
   _getDecisionConsiderations(decisionType, horaryAnalysis) {
-    return horaryAnalysis.considerations || ['Evaluate practical factors alongside astrological guidance'];
+    return (
+      horaryAnalysis.considerations || [
+        'Evaluate practical factors alongside astrological guidance'
+      ]
+    );
   }
 
   /**
@@ -700,11 +807,19 @@ class PrashnaAstrologyService extends ServiceTemplate {
    */
   _identifyAnswerPattern(analyses) {
     const answers = analyses.map(a => a.answer?.toLowerCase() || '');
-    const positiveCount = answers.filter(a => a.includes('yes') || a.includes('favorable')).length;
-    const negativeCount = answers.filter(a => a.includes('no') || a.includes('unfavorable')).length;
+    const positiveCount = answers.filter(
+      a => a.includes('yes') || a.includes('favorable')
+    ).length;
+    const negativeCount = answers.filter(
+      a => a.includes('no') || a.includes('unfavorable')
+    ).length;
 
-    if (positiveCount > negativeCount) { return 'Generally positive pattern'; }
-    if (negativeCount > positiveCount) { return 'Generally negative pattern'; }
+    if (positiveCount > negativeCount) {
+      return 'Generally positive pattern';
+    }
+    if (negativeCount > positiveCount) {
+      return 'Generally negative pattern';
+    }
     return 'Balanced or unclear pattern';
   }
 
@@ -715,10 +830,13 @@ class PrashnaAstrologyService extends ServiceTemplate {
    * @private
    */
   _analyzeAnswerEvolution(analyses) {
-    if (analyses.length < 2) { return 'Single question analysis'; }
+    if (analyses.length < 2) {
+      return 'Single question analysis';
+    }
 
     const firstAnswer = analyses[0].answer?.toLowerCase() || '';
-    const lastAnswer = analyses[analyses.length - 1].answer?.toLowerCase() || '';
+    const lastAnswer =
+      analyses[analyses.length - 1].answer?.toLowerCase() || '';
 
     if (firstAnswer.includes('yes') && lastAnswer.includes('no')) {
       return 'Answers evolved from positive to negative';
@@ -734,7 +852,14 @@ class PrashnaAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'findQuestionTiming', 'analyzeQuestionCategory', 'getDetailedInterpretation', 'compareQuestions', 'getDecisionGuidance'],
+      methods: [
+        'execute',
+        'findQuestionTiming',
+        'analyzeQuestionCategory',
+        'getDetailedInterpretation',
+        'compareQuestions',
+        'getDecisionGuidance'
+      ],
       dependencies: ['PrashnaCalculator']
     };
   }

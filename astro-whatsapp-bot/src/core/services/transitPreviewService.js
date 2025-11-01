@@ -12,7 +12,8 @@ class TransitPreviewService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'TransitPreviewService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/TransitCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/TransitCalculator';
     logger.info('TransitPreviewService initialized');
   }
 
@@ -30,7 +31,12 @@ class TransitPreviewService extends ServiceTemplate {
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + 30);
 
-      const result = await this.calculator.generateTransitPreview(birthData, startDate, endDate, {});
+      const result = await this.calculator.generateTransitPreview(
+        birthData,
+        startDate,
+        endDate,
+        {}
+      );
 
       return result;
     } catch (error) {
@@ -81,7 +87,12 @@ class TransitPreviewService extends ServiceTemplate {
 
       const { birthData, year, month, options = {} } = params;
 
-      const result = await this.calculator.getMonthlyTransitForecast(birthData, year, month, options);
+      const result = await this.calculator.getMonthlyTransitForecast(
+        birthData,
+        year,
+        month,
+        options
+      );
 
       return {
         success: true,
@@ -118,7 +129,11 @@ class TransitPreviewService extends ServiceTemplate {
 
       const { birthData, year, options = {} } = params;
 
-      const result = await this.calculator.getYearlyTransitForecast(birthData, year, options);
+      const result = await this.calculator.getYearlyTransitForecast(
+        birthData,
+        year,
+        options
+      );
 
       return {
         success: true,
@@ -154,7 +169,11 @@ class TransitPreviewService extends ServiceTemplate {
 
       const { birthData, startDate, options = {} } = params;
 
-      const result = await this.calculator.getWeeklyTransitPreview(birthData, startDate, options);
+      const result = await this.calculator.getWeeklyTransitPreview(
+        birthData,
+        startDate,
+        options
+      );
 
       return {
         success: true,
@@ -190,7 +209,11 @@ class TransitPreviewService extends ServiceTemplate {
 
       const { birthData, date, options = {} } = params;
 
-      const result = await this.calculator.getDailyTransitHighlights(birthData, date, options);
+      const result = await this.calculator.getDailyTransitHighlights(
+        birthData,
+        date,
+        options
+      );
 
       return {
         success: true,
@@ -226,7 +249,12 @@ class TransitPreviewService extends ServiceTemplate {
 
       const { birthData, startDate, endDate, options = {} } = params;
 
-      const result = await this.calculator.getCriticalTransitDates(birthData, startDate, endDate, options);
+      const result = await this.calculator.getCriticalTransitDates(
+        birthData,
+        startDate,
+        endDate,
+        options
+      );
 
       return {
         success: true,
@@ -260,7 +288,14 @@ class TransitPreviewService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', 'getMonthlyTransitForecast', 'getYearlyTransitForecast', 'getWeeklyTransitPreview', 'getDailyTransitHighlights', 'getCriticalTransitDates'],
+      methods: [
+        'processCalculation',
+        'getMonthlyTransitForecast',
+        'getYearlyTransitForecast',
+        'getWeeklyTransitPreview',
+        'getDailyTransitHighlights',
+        'getCriticalTransitDates'
+      ],
       dependencies: [], // Managed by ServiceTemplate
       description: 'Service for generating transit previews and forecasts.'
     };

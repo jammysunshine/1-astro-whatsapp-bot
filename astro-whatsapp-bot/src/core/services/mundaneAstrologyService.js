@@ -6,8 +6,10 @@ const logger = require('../../utils/logger');
 class MundaneAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'MundaneAstrologyService';
-    this.calculatorPath = '../../../services/astrology/mundane/PoliticalAstrology';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'MundaneAstrologyService';
+    this.calculatorPath =
+      '../../../services/astrology/mundane/PoliticalAstrology';
     logger.info('MundaneAstrologyService initialized');
   }
 
@@ -26,7 +28,8 @@ class MundaneAstrologyService extends ServiceTemplate {
       const insights = this.generatePoliticalInsights(politicalAnalysis);
 
       // Create recommendations
-      const recommendations = this.generatePoliticalRecommendations(politicalAnalysis);
+      const recommendations =
+        this.generatePoliticalRecommendations(politicalAnalysis);
 
       return {
         politicalAnalysis,
@@ -56,7 +59,10 @@ class MundaneAstrologyService extends ServiceTemplate {
       // Analyze each country
       const countryAnalyses = [];
       for (const country of countries) {
-        const analysis = await this.calculator.analyzePoliticalClimate(country, globalChart);
+        const analysis = await this.calculator.analyzePoliticalClimate(
+          country,
+          globalChart
+        );
         countryAnalyses.push({
           country,
           analysis
@@ -67,7 +73,10 @@ class MundaneAstrologyService extends ServiceTemplate {
       const globalPatterns = this.identifyGlobalPatterns(countryAnalyses);
 
       // Generate global forecast
-      const globalForecast = this.generateGlobalForecast(globalPatterns, globalChart);
+      const globalForecast = this.generateGlobalForecast(
+        globalPatterns,
+        globalChart
+      );
 
       return {
         success: true,
@@ -111,7 +120,10 @@ class MundaneAstrologyService extends ServiceTemplate {
       const { country, chart, timeframe, options = {} } = params;
 
       // Get political analysis
-      const politicalAnalysis = await this.calculator.analyzePoliticalClimate(country, chart);
+      const politicalAnalysis = await this.calculator.analyzePoliticalClimate(
+        country,
+        chart
+      );
 
       // Predict events based on timing analysis
       const eventPredictions = this.predictEventsFromTiming(
@@ -133,9 +145,15 @@ class MundaneAstrologyService extends ServiceTemplate {
           country,
           timeframe,
           predictions: assessedPredictions,
-          highProbabilityEvents: assessedPredictions.filter(p => p.probability >= 70),
-          mediumProbabilityEvents: assessedPredictions.filter(p => p.probability >= 40 && p.probability < 70),
-          lowProbabilityEvents: assessedPredictions.filter(p => p.probability < 40)
+          highProbabilityEvents: assessedPredictions.filter(
+            p => p.probability >= 70
+          ),
+          mediumProbabilityEvents: assessedPredictions.filter(
+            p => p.probability >= 40 && p.probability < 70
+          ),
+          lowProbabilityEvents: assessedPredictions.filter(
+            p => p.probability < 40
+          )
         },
         metadata: {
           calculationType: 'political_event_prediction',
@@ -220,7 +238,8 @@ class MundaneAstrologyService extends ServiceTemplate {
     if (politicalAnalysis.politicalStability?.rating === 'Unstable') {
       recommendations.push({
         category: 'stability',
-        advice: 'Focus on diplomatic solutions and avoid confrontational policies',
+        advice:
+          'Focus on diplomatic solutions and avoid confrontational policies',
         priority: 'high'
       });
     }
@@ -283,7 +302,9 @@ class MundaneAstrologyService extends ServiceTemplate {
     };
 
     // Analyze stability trends
-    const stabilityRatings = countryAnalyses.map(ca => ca.analysis.politicalStability?.rating).filter(Boolean);
+    const stabilityRatings = countryAnalyses
+      .map(ca => ca.analysis.politicalStability?.rating)
+      .filter(Boolean);
     const stableCount = stabilityRatings.filter(r => r === 'Stable').length;
     const unstableCount = stabilityRatings.filter(r => r === 'Unstable').length;
 
@@ -294,8 +315,8 @@ class MundaneAstrologyService extends ServiceTemplate {
     };
 
     // Identify common challenges
-    const allChallenges = countryAnalyses.flatMap(ca =>
-      ca.analysis.politicalStability?.factors || []
+    const allChallenges = countryAnalyses.flatMap(
+      ca => ca.analysis.politicalStability?.factors || []
     );
     const challengeCounts = {};
     allChallenges.forEach(challenge => {
@@ -359,7 +380,9 @@ class MundaneAstrologyService extends ServiceTemplate {
   predictEventsFromTiming(timingAnalysis, timeframe) {
     const predictions = [];
 
-    if (!timingAnalysis) { return predictions; }
+    if (!timingAnalysis) {
+      return predictions;
+    }
 
     // Generate predictions based on timing factors
     if (timingAnalysis.favorablePeriods) {
@@ -414,9 +437,13 @@ class MundaneAstrologyService extends ServiceTemplate {
    */
   assessEventImpact(prediction, politicalAnalysis) {
     if (prediction.category === 'opportunity') {
-      return politicalAnalysis.internationalInfluence?.strength === 'Strong' ? 'High' : 'Medium';
+      return politicalAnalysis.internationalInfluence?.strength === 'Strong' ?
+        'High' :
+        'Medium';
     } else {
-      return politicalAnalysis.politicalStability?.rating === 'Unstable' ? 'High' : 'Medium';
+      return politicalAnalysis.politicalStability?.rating === 'Unstable' ?
+        'High' :
+        'Medium';
     }
   }
 
@@ -426,13 +453,18 @@ class MundaneAstrologyService extends ServiceTemplate {
    * @returns {number} Confidence percentage
    */
   calculateForecastConfidence(globalPatterns) {
-    const totalCountries = globalPatterns.stabilityTrends.stable + globalPatterns.stabilityTrends.unstable;
-    if (totalCountries === 0) { return 50; }
+    const totalCountries =
+      globalPatterns.stabilityTrends.stable +
+      globalPatterns.stabilityTrends.unstable;
+    if (totalCountries === 0) {
+      return 50;
+    }
 
-    const dominantRatio = Math.max(
-      globalPatterns.stabilityTrends.stable,
-      globalPatterns.stabilityTrends.unstable
-    ) / totalCountries;
+    const dominantRatio =
+      Math.max(
+        globalPatterns.stabilityTrends.stable,
+        globalPatterns.stabilityTrends.unstable
+      ) / totalCountries;
 
     return Math.round(dominantRatio * 100);
   }
@@ -445,7 +477,10 @@ class MundaneAstrologyService extends ServiceTemplate {
   generateGlobalRecommendations(globalPatterns) {
     const recommendations = [];
 
-    if (globalPatterns.stabilityTrends.unstable > globalPatterns.stabilityTrends.stable) {
+    if (
+      globalPatterns.stabilityTrends.unstable >
+      globalPatterns.stabilityTrends.stable
+    ) {
       recommendations.push({
         category: 'global_stability',
         advice: 'Focus on international cooperation to address instability',
@@ -480,7 +515,9 @@ class MundaneAstrologyService extends ServiceTemplate {
 
     // Mundane astrology may not require birth data, but needs some chart information
     if (!chartData.country && !chartData.chart) {
-      throw new Error('Country name or chart data is required for mundane astrology analysis');
+      throw new Error(
+        'Country name or chart data is required for mundane astrology analysis'
+      );
     }
 
     return true;
@@ -491,7 +528,11 @@ class MundaneAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'mundane',
-      methods: ['analyzePoliticalClimate', 'analyzeGlobalTrends', 'predictPoliticalEvents'],
+      methods: [
+        'analyzePoliticalClimate',
+        'analyzeGlobalTrends',
+        'predictPoliticalEvents'
+      ],
       dependencies: ['PoliticalAstrology']
     };
   }

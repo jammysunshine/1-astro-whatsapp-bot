@@ -34,15 +34,17 @@ const isValidBirthDate = birthDate => {
     const date1900 = new Date(year1900, month - 1, day);
     const date2000 = new Date(year2000, month - 1, day);
 
-    const is1900Valid = date1900 <= new Date() &&
-                       date1900.getFullYear() === year1900 &&
-                       date1900.getMonth() === month - 1 &&
-                       date1900.getDate() === day;
+    const is1900Valid =
+      date1900 <= new Date() &&
+      date1900.getFullYear() === year1900 &&
+      date1900.getMonth() === month - 1 &&
+      date1900.getDate() === day;
 
-    const is2000Valid = date2000 <= new Date() &&
-                       date2000.getFullYear() === year2000 &&
-                       date2000.getMonth() === month - 1 &&
-                       date2000.getDate() === day;
+    const is2000Valid =
+      date2000 <= new Date() &&
+      date2000.getFullYear() === year2000 &&
+      date2000.getMonth() === month - 1 &&
+      date2000.getDate() === day;
 
     if (is1900Valid && !is2000Valid) {
       year = year1900;
@@ -250,7 +252,11 @@ const validateUserProfile = profileData => {
     errors.push('Invalid birth date format or value');
   }
 
-  if (value.birthTime && value.birthTime !== 'unknown' && !isValidBirthTime(value.birthTime)) {
+  if (
+    value.birthTime &&
+    value.birthTime !== 'unknown' &&
+    !isValidBirthTime(value.birthTime)
+  ) {
     errors.push('Invalid birth time format');
   }
 

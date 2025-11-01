@@ -49,7 +49,8 @@ class CompatibilityFormatter {
       result += '\n\n';
 
       // Footer
-      result += '*🕉️ Remember:*\nAstrology reveals cosmic potentials. All relationships offer growth opportunities. Professional consultation recommended for complex patterns.';
+      result +=
+        '*🕉️ Remember:*\nAstrology reveals cosmic potentials. All relationships offer growth opportunities. Professional consultation recommended for complex patterns.';
 
       return result;
     } catch (error) {
@@ -64,7 +65,9 @@ class CompatibilityFormatter {
    * @returns {string} Formatted score section
    */
   formatScoreSection(scores) {
-    if (!scores) { return '🎯 *Compatibility Score:* Unable to calculate'; }
+    if (!scores) {
+      return '🎯 *Compatibility Score:* Unable to calculate';
+    }
     const level = scores.level?.replace('_', ' ').toUpperCase() || 'UNKNOWN';
     return `🎯 *Compatibility Score:* ${scores.overall || 0}/100 (${level})`;
   }
@@ -75,13 +78,20 @@ class CompatibilityFormatter {
    * @returns {string} Formatted aspects string
    */
   formatKeyAspects(aspects) {
-    if (!aspects || aspects.length === 0) { return '*🔮 Planetary Aspects:* Analysis in progress'; }
+    if (!aspects || aspects.length === 0) {
+      return '*🔮 Planetary Aspects:* Analysis in progress';
+    }
 
     let result = '*🔮 Key Planetary Connections:*\n';
     const topAspects = aspects.slice(0, 3);
 
     topAspects.forEach((aspect, index) => {
-      const emoji = aspect.type === 'harmonious' ? '💫' : aspect.type === 'challenging' ? '⚡' : '🔄';
+      const emoji =
+        aspect.type === 'harmonious' ?
+          '💫' :
+          aspect.type === 'challenging' ?
+            '⚡' :
+            '🔄';
       const aspectName = aspect.aspectName || this.getAspectName(aspect.aspect);
       result += `${emoji} ${aspect.planet1}-${aspect.planet2}: ${aspectName}\n`;
     });
@@ -114,7 +124,9 @@ class CompatibilityFormatter {
    * @returns {string} Formatted strengths string
    */
   formatStrengths(strengths) {
-    if (!strengths || strengths.length === 0) { return '*💪 Strengths:* Analysis in progress'; }
+    if (!strengths || strengths.length === 0) {
+      return '*💪 Strengths:* Analysis in progress';
+    }
 
     let result = '*💪 Relationship Strengths:*\n';
     strengths.forEach(strength => {
@@ -130,7 +142,9 @@ class CompatibilityFormatter {
    * @returns {string} Formatted challenges string
    */
   formatChallenges(challenges) {
-    if (!challenges || challenges.length === 0) { return '*⚠️ Growth Areas:* None identified'; }
+    if (!challenges || challenges.length === 0) {
+      return '*⚠️ Growth Areas:* None identified';
+    }
 
     let result = '*⚠️ Growth Areas:*\n';
     challenges.forEach(challenge => {
@@ -163,12 +177,22 @@ class CompatibilityFormatter {
    * @returns {string} Detailed aspects format
    */
   formatDetailedAspects(aspects) {
-    if (!aspects || aspects.length === 0) { return 'No aspect data available'; }
+    if (!aspects || aspects.length === 0) {
+      return 'No aspect data available';
+    }
 
     let result = '*🔍 Detailed Planetary Aspects:*\n\n';
     aspects.slice(0, 10).forEach((aspect, index) => {
-      const type = aspect.type === 'harmonious' ? '💫' : aspect.type === 'challenging' ? '⚡' : '🔄';
-      const orbFormat = aspect.orb >= 0 ? `+${aspect.orb.toFixed(1)}°` : `${aspect.orb.toFixed(1)}°`;
+      const type =
+        aspect.type === 'harmonious' ?
+          '💫' :
+          aspect.type === 'challenging' ?
+            '⚡' :
+            '🔄';
+      const orbFormat =
+        aspect.orb >= 0 ?
+          `+${aspect.orb.toFixed(1)}°` :
+          `${aspect.orb.toFixed(1)}°`;
       result += `${index + 1}. ${type} ${aspect.planet1}-${aspect.planet2} (${aspect.aspectName})\n`;
       result += `   Orb: ${orbFormat} | ${aspect.significance}\n\n`;
     });
@@ -211,7 +235,20 @@ class CompatibilityFormatter {
    * @returns {string} Ordinal string
    */
   getOrdinal(house) {
-    const ordinals = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'];
+    const ordinals = [
+      '1st',
+      '2nd',
+      '3rd',
+      '4th',
+      '5th',
+      '6th',
+      '7th',
+      '8th',
+      '9th',
+      '10th',
+      '11th',
+      '12th'
+    ];
     return ordinals[house - 1] || `${house}th`;
   }
 
@@ -226,10 +263,14 @@ class CompatibilityFormatter {
     const score = scores?.overall || 0;
 
     return `💕 *Quick Synastry Summary:*\n\nYou & ${partner}: ${score}/100 compatibility\n\n${
-      score >= 80 ? '🌟 Excellent cosmic harmony!' :
-        score >= 70 ? '💫 Strong supportive connection.' :
-          score >= 60 ? '✅ Positive potential with effort.' :
-            '🔄 Growth opportunity through challenges.'}`;
+      score >= 80 ?
+        '🌟 Excellent cosmic harmony!' :
+        score >= 70 ?
+          '💫 Strong supportive connection.' :
+          score >= 60 ?
+            '✅ Positive potential with effort.' :
+            '🔄 Growth opportunity through challenges.'
+    }`;
   }
 }
 

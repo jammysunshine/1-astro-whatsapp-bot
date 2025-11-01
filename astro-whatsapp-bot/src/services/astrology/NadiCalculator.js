@@ -82,16 +82,17 @@ class NadiCalculator {
         now.getMonth() - birthDateObj.getMonth() + ageInYears * 12;
 
       // Simplified dasha calculation
-      const totalDashaYears = Object.values(this.dataProvider.dashaPeriods).reduce(
-        (sum, period) => sum + period.duration,
-        0
-      );
+      const totalDashaYears = Object.values(
+        this.dataProvider.dashaPeriods
+      ).reduce((sum, period) => sum + period.duration, 0);
       const currentPosition = ageInYears % totalDashaYears;
 
       let accumulatedYears = 0;
       let currentDasha = null;
 
-      for (const [planet, period] of Object.entries(this.dataProvider.dashaPeriods)) {
+      for (const [planet, period] of Object.entries(
+        this.dataProvider.dashaPeriods
+      )) {
         accumulatedYears += period.duration;
         if (currentPosition < accumulatedYears) {
           currentDasha = {

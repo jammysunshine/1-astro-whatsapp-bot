@@ -29,7 +29,10 @@ class MessageRouter {
     }
 
     // Check for numbered menu actions (legacy support)
-    const numberedAction = await this.getNumberedMenuAction(phoneNumber, messageText);
+    const numberedAction = await this.getNumberedMenuAction(
+      phoneNumber,
+      messageText
+    );
     if (numberedAction) {
       if (numberedAction === 'back') {
         await executor.executeAction('show_main_menu', user, phoneNumber);
@@ -42,7 +45,12 @@ class MessageRouter {
     // Check for compatibility requests with birth dates
     const compatibilityMatch = this.matchCompatibilityRequest(messageText);
     if (compatibilityMatch) {
-      await this.handleCompatibilityRequest(phoneNumber, user, compatibilityMatch[1], executor);
+      await this.handleCompatibilityRequest(
+        phoneNumber,
+        user,
+        compatibilityMatch[1],
+        executor
+      );
       return true;
     }
 
@@ -97,7 +105,9 @@ class MessageRouter {
       }
 
       const selectionNumber = parseInt(numberMatch[1]);
-      this.logger.info(`🔢 Processing numbered menu selection ${selectionNumber} for ${phoneNumber}`);
+      this.logger.info(
+        `🔢 Processing numbered menu selection ${selectionNumber} for ${phoneNumber}`
+      );
 
       // Get user's last menu from session
       const session = await this.getUserSession(phoneNumber);
@@ -106,9 +116,14 @@ class MessageRouter {
       }
 
       // Map numbered selection to action based on menu type
-      const actionId = this.mapNumberedSelectionToAction(session.lastMenu, selectionNumber);
+      const actionId = this.mapNumberedSelectionToAction(
+        session.lastMenu,
+        selectionNumber
+      );
       if (actionId) {
-        this.logger.info(`🔗 Mapped number ${selectionNumber} to action ${actionId} for menu ${session.lastMenu}`);
+        this.logger.info(
+          `🔗 Mapped number ${selectionNumber} to action ${actionId} for menu ${session.lastMenu}`
+        );
         return actionId;
       }
 
@@ -217,20 +232,38 @@ class MessageRouter {
    * @param {string} partnerBirthDate - Partner's birth date
    * @param {Object} executor - Action executor instance
    */
-  async handleCompatibilityRequest(phoneNumber, user, partnerBirthDate, executor) {
-    const { processFlowMessage } = require('../../../conversation/conversationEngine');
+  async handleCompatibilityRequest(
+    phoneNumber,
+    user,
+    partnerBirthDate,
+    executor
+  ) {
+    const {
+      processFlowMessage
+    } = require('../../../conversation/conversationEngine');
     const { ValidationService } = require('../utils/ValidationService');
 
     try {
       if (!user.birthDate) {
-        await executor.sendErrorResponse(phoneNumber, 'incomplete_profile_for_compatibility', user.preferredLanguage || 'en');
+        await executor.sendErrorResponse(
+          phoneNumber,
+          'incomplete_profile_for_compatibility',
+          user.preferredLanguage || 'en'
+        );
         return;
       }
 
       // Validate subscription limits
-      const limitsValidated = await ValidationService.checkSubscriptionLimits(user, 'compatibility');
+      const limitsValidated = await ValidationService.checkSubscriptionLimits(
+        user,
+        'compatibility'
+      );
       if (!limitsValidated) {
-        await executor.sendErrorResponse(phoneNumber, 'compatibility_limit_reached', user.preferredLanguage || 'en');
+        await executor.sendErrorResponse(
+          phoneNumber,
+          'compatibility_limit_reached',
+          user.preferredLanguage || 'en'
+        );
         return;
       }
 
@@ -265,7 +298,9 @@ class MessageRouter {
    * @param {string} messageText - Original message text
    */
   async handleSubscriptionRequest(phoneNumber, user, messageText) {
-    const { processFlowMessage } = require('../../../conversation/conversationEngine');
+    const {
+      processFlowMessage
+    } = require('../../../conversation/conversationEngine');
 
     let planId = 'essential'; // default
 
@@ -283,8 +318,14 @@ class MessageRouter {
    * @param {Object} user - User object
    */
   async handleNumerologyRequest(user) {
-    const { processFlowMessage } = require('../../../conversation/conversationEngine');
-    await processFlowMessage({ body: 'numerology_flow' }, user, 'numerology_flow');
+    const {
+      processFlowMessage
+    } = require('../../../conversation/conversationEngine');
+    await processFlowMessage(
+      { body: 'numerology_flow' },
+      user,
+      'numerology_flow'
+    );
   }
 
   /**

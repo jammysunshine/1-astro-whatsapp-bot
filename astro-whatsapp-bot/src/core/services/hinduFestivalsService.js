@@ -6,7 +6,8 @@ const logger = require('../../utils/logger');
 class HinduFestivalsService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HinduFestivalsService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'HinduFestivalsService';
     this.calculatorPath = '../../../services/astrology/hinduFestivals';
     logger.info('HinduFestivalsService initialized');
   }
@@ -23,17 +24,22 @@ class HinduFestivalsService extends ServiceTemplate {
 
       // Enhance with additional analysis
       const enhancedData = {
-        festivals: this.enhanceFestivalData(festivalData.festivals || festivalData),
+        festivals: this.enhanceFestivalData(
+          festivalData.festivals || festivalData
+        ),
         auspiciousTimings: this.getAuspiciousTimings(festivalData),
         regionalVariations: this.getRegionalVariations(festivalData, region),
-        astrologicalSignificance: this.analyzeAstrologicalSignificance(festivalData),
+        astrologicalSignificance:
+          this.analyzeAstrologicalSignificance(festivalData),
         recommendations: this.generateFestivalRecommendations(festivalData)
       };
 
       return enhancedData;
     } catch (error) {
       logger.error('HinduFestivalsService calculation error:', error);
-      throw new Error(`Festival information retrieval failed: ${error.message}`);
+      throw new Error(
+        `Festival information retrieval failed: ${error.message}`
+      );
     }
   }
 
@@ -51,7 +57,10 @@ class HinduFestivalsService extends ServiceTemplate {
       const { festivalName, region } = params;
 
       // Get specific festival from calculator
-      const festivalInfo = this.calculator.getSpecificFestival(festivalName, region);
+      const festivalInfo = this.calculator.getSpecificFestival(
+        festivalName,
+        region
+      );
 
       if (!festivalInfo) {
         return {
@@ -166,7 +175,11 @@ class HinduFestivalsService extends ServiceTemplate {
       const { month, year, region } = params;
 
       // Get monthly calendar from calculator
-      const calendarData = this.calculator.getMonthlyCalendar(month, year, region);
+      const calendarData = this.calculator.getMonthlyCalendar(
+        month,
+        year,
+        region
+      );
 
       // Enhance with additional calendar features
       const enhancedCalendar = {
@@ -217,7 +230,10 @@ class HinduFestivalsService extends ServiceTemplate {
       const { festivalName, region } = params;
 
       // Get regional data from calculator
-      const regionalData = this.calculator.getRegionalVariations(festivalName, region);
+      const regionalData = this.calculator.getRegionalVariations(
+        festivalName,
+        region
+      );
 
       // Enhance with detailed analysis
       const enhancedRegional = {
@@ -280,7 +296,9 @@ class HinduFestivalsService extends ServiceTemplate {
           timings.push({
             festival: festival.name,
             timings: festival.auspiciousTimings,
-            significance: this.getTimingSignificance(festival.auspiciousTimings)
+            significance: this.getTimingSignificance(
+              festival.auspiciousTimings
+            )
           });
         }
       });
@@ -293,7 +311,13 @@ class HinduFestivalsService extends ServiceTemplate {
     // Implementation would extract regional variations
     return {
       currentRegion: region || 'general',
-      availableRegions: ['North India', 'South India', 'East India', 'West India', 'International'],
+      availableRegions: [
+        'North India',
+        'South India',
+        'East India',
+        'West India',
+        'International'
+      ],
       variations: this.extractRegionalVariations(festivalData, region)
     };
   }
@@ -322,19 +346,22 @@ class HinduFestivalsService extends ServiceTemplate {
     // General recommendations for festival participation
     recommendations.push({
       category: 'spiritual_preparation',
-      advice: 'Begin spiritual preparation 3-4 days before major festivals through prayer and meditation',
+      advice:
+        'Begin spiritual preparation 3-4 days before major festivals through prayer and meditation',
       priority: 'high'
     });
 
     recommendations.push({
       category: 'family_participation',
-      advice: 'Involve family members in festival preparations to strengthen bonds and traditions',
+      advice:
+        'Involve family members in festival preparations to strengthen bonds and traditions',
       priority: 'medium'
     });
 
     recommendations.push({
       category: 'cultural_preservation',
-      advice: 'Document and preserve family traditions associated with festivals for future generations',
+      advice:
+        'Document and preserve family traditions associated with festivals for future generations',
       priority: 'medium'
     });
 
@@ -355,7 +382,8 @@ class HinduFestivalsService extends ServiceTemplate {
 
   getSpiritualSignificance(festivalInfo) {
     return {
-      coreMeaning: festivalInfo.significance || 'Spiritual significance not specified',
+      coreMeaning:
+        festivalInfo.significance || 'Spiritual significance not specified',
       deities: festivalInfo.deities || [],
       spiritualBenefits: this.getSpiritualBenefits(festivalInfo),
       karmicImplications: this.getKarmicImplications(festivalInfo),
@@ -457,7 +485,9 @@ class HinduFestivalsService extends ServiceTemplate {
 
   identifyPriorityFestivals(upcomingData) {
     return upcomingData
-      .filter(f => f.importance === 'major' || f.spiritualSignificance === 'high')
+      .filter(
+        f => f.importance === 'major' || f.spiritualSignificance === 'high'
+      )
       .slice(0, 5)
       .map(f => ({
         name: f.name,
@@ -488,7 +518,9 @@ class HinduFestivalsService extends ServiceTemplate {
 
   getAuspiciousDays(calendarData) {
     // Implementation would identify auspicious days
-    return calendarData.festivals?.filter(f => f.auspiciousness === 'high') || [];
+    return (
+      calendarData.festivals?.filter(f => f.auspiciousness === 'high') || []
+    );
   }
 
   getInauspiciousTimes(calendarData) {
@@ -539,71 +571,201 @@ class HinduFestivalsService extends ServiceTemplate {
   // Additional helper methods would be implemented here
   // For brevity, I'm including placeholder implementations
 
-  getFestivalAstrology(festival) { return festival.astrology || {}; }
-  getSpiritualLevel(festival) { return festival.spiritualLevel || 'moderate'; }
-  getCelebrationIntensity(festival) { return festival.intensity || 'moderate'; }
-  getFamilyInvolvementLevel(festival) { return festival.familyInvolvement || 'medium'; }
-  getCommunityAspect(festival) { return festival.communityAspect || 'local'; }
-  getTimingSignificance(timings) { return 'Auspicious for spiritual activities'; }
-  extractRegionalVariations(data, region) { return data.variations || []; }
-  getPlanetaryPositions(festival) { return festival.planets || {}; }
-  getLunarPhase(festival) { return festival.moonPhase || 'Not specified'; }
-  getNakshatra(festival) { return festival.nakshatra || 'Not specified'; }
-  getYoga(festival) { return festival.yoga || 'Not specified'; }
-  getKarana(festival) { return festival.karana || 'Not specified'; }
-  getSpiritualBenefits(festival) { return festival.benefits || []; }
-  getKarmicImplications(festival) { return festival.karma || 'Spiritual growth'; }
-  getMeditationFocus(festival) { return festival.meditation || 'Peace and harmony'; }
-  getPreparationSteps(festival) { return festival.preparation || []; }
-  getEssentialItems(festival) { return festival.items || []; }
-  getTimingGuidelines(festival) { return festival.timing || {}; }
-  getSafetyConsiderations(festival) { return festival.safety || []; }
-  extractLocalVariations(festival, region) { return festival.localVariations || []; }
-  getRegionalFoods(festival, region) { return festival.foods || []; }
-  getUniquePractices(festival, region) { return festival.practices || []; }
-  getSameSeasonFestivals(festival) { return festival.seasonalRelated || []; }
-  getSameDeityFestivals(festival) { return festival.deityRelated || []; }
-  getSimilarThemeFestivals(festival) { return festival.themeRelated || []; }
-  getMainMantras(festival) { return festival.mantras || []; }
-  getPrayers(festival) { return festival.prayers || []; }
-  getChants(festival) { return festival.chants || []; }
-  getMeditationPractices(festival) { return festival.meditation || []; }
-  getWeekDay(date) { return new Date(date).toLocaleDateString('en-US', { weekday: 'long' }); }
-  getAstrologicalDay(date) { return 'Favorable'; }
-  getCelebrationType(festival) { return festival.type || 'religious'; }
-  getParticipationLevel(festival) { return festival.participation || 'family'; }
-  getRahukalamTimes(calendar) { return calendar.rahukalam || []; }
-  getYamagandaTimes(calendar) { return calendar.yamaganda || []; }
-  getGulikakalamTimes(calendar) { return calendar.gulikakalam || []; }
-  getTithiData(calendar) { return calendar.tithi || {}; }
-  getNakshatraData(calendar) { return calendar.nakshatra || {}; }
-  getYogaData(calendar) { return calendar.yoga || {}; }
-  getKaranaData(calendar) { return calendar.karana || {}; }
-  getLocalFestivals(calendar, region) { return calendar.local || []; }
-  getSpecialCustoms(calendar, region) { return calendar.customs || []; }
-  getTraditionalPractices(calendar, region) { return calendar.practices || []; }
-  getSpiritualTheme(calendar) { return 'Spiritual growth and devotion'; }
-  getCulturalTheme(calendar) { return 'Cultural preservation and celebration'; }
-  getAgriculturalTheme(calendar) { return 'Harvest and abundance'; }
-  getPlanetaryTheme(calendar) { return 'Beneficial planetary alignments'; }
-  getSpiritualFocus(calendar) { return 'Meditation and prayer'; }
-  getFamilyActivities(calendar) { return 'Festival preparation and celebration'; }
-  getCommunityService(calendar) { return 'Charity and community participation'; }
-  getPersonalGrowth(calendar) { return 'Learning and self-improvement'; }
-  getImmediateActions(upcoming) { return upcoming.slice(0, 3).map(f => `Prepare for ${f.name}`); }
-  getWeeklyPreparation(upcoming) { return ['Clean home', 'Buy ingredients', 'Plan rituals']; }
-  getShoppingChecklist(upcoming) { return ['Flowers', 'Incense', 'Sweets', 'New clothes']; }
-  getSpiritualPreparation(upcoming) { return ['Daily meditation', 'Chanting', 'Fasting']; }
-  getBusiestWeek(upcoming) { return 'Week with most festivals'; }
-  getSpiritualThemes(upcoming) { return ['Devotion', 'Family', 'Prosperity']; }
-  getRulingPlanets(festival) { return festival.planets || ['Jupiter']; }
-  getZodiacInfluence(festival) { return festival.zodiac || 'Pisces'; }
-  getElementalBalance(festival) { return festival.elements || ['Water', 'Fire']; }
-  getEnergyLevel(festival) { return festival.energy || 'High'; }
-  getPreparationActivities(festival) { return festival.activities || []; }
-  getShoppingList(festival) { return festival.shopping || []; }
-  generateRegionalComparison(variations) { return { similarities: [], differences: [] }; }
-  getRegionalRecommendations(variations) { return ['Respect local customs', 'Learn regional variations']; }
+  getFestivalAstrology(festival) {
+    return festival.astrology || {};
+  }
+  getSpiritualLevel(festival) {
+    return festival.spiritualLevel || 'moderate';
+  }
+  getCelebrationIntensity(festival) {
+    return festival.intensity || 'moderate';
+  }
+  getFamilyInvolvementLevel(festival) {
+    return festival.familyInvolvement || 'medium';
+  }
+  getCommunityAspect(festival) {
+    return festival.communityAspect || 'local';
+  }
+  getTimingSignificance(timings) {
+    return 'Auspicious for spiritual activities';
+  }
+  extractRegionalVariations(data, region) {
+    return data.variations || [];
+  }
+  getPlanetaryPositions(festival) {
+    return festival.planets || {};
+  }
+  getLunarPhase(festival) {
+    return festival.moonPhase || 'Not specified';
+  }
+  getNakshatra(festival) {
+    return festival.nakshatra || 'Not specified';
+  }
+  getYoga(festival) {
+    return festival.yoga || 'Not specified';
+  }
+  getKarana(festival) {
+    return festival.karana || 'Not specified';
+  }
+  getSpiritualBenefits(festival) {
+    return festival.benefits || [];
+  }
+  getKarmicImplications(festival) {
+    return festival.karma || 'Spiritual growth';
+  }
+  getMeditationFocus(festival) {
+    return festival.meditation || 'Peace and harmony';
+  }
+  getPreparationSteps(festival) {
+    return festival.preparation || [];
+  }
+  getEssentialItems(festival) {
+    return festival.items || [];
+  }
+  getTimingGuidelines(festival) {
+    return festival.timing || {};
+  }
+  getSafetyConsiderations(festival) {
+    return festival.safety || [];
+  }
+  extractLocalVariations(festival, region) {
+    return festival.localVariations || [];
+  }
+  getRegionalFoods(festival, region) {
+    return festival.foods || [];
+  }
+  getUniquePractices(festival, region) {
+    return festival.practices || [];
+  }
+  getSameSeasonFestivals(festival) {
+    return festival.seasonalRelated || [];
+  }
+  getSameDeityFestivals(festival) {
+    return festival.deityRelated || [];
+  }
+  getSimilarThemeFestivals(festival) {
+    return festival.themeRelated || [];
+  }
+  getMainMantras(festival) {
+    return festival.mantras || [];
+  }
+  getPrayers(festival) {
+    return festival.prayers || [];
+  }
+  getChants(festival) {
+    return festival.chants || [];
+  }
+  getMeditationPractices(festival) {
+    return festival.meditation || [];
+  }
+  getWeekDay(date) {
+    return new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+  }
+  getAstrologicalDay(date) {
+    return 'Favorable';
+  }
+  getCelebrationType(festival) {
+    return festival.type || 'religious';
+  }
+  getParticipationLevel(festival) {
+    return festival.participation || 'family';
+  }
+  getRahukalamTimes(calendar) {
+    return calendar.rahukalam || [];
+  }
+  getYamagandaTimes(calendar) {
+    return calendar.yamaganda || [];
+  }
+  getGulikakalamTimes(calendar) {
+    return calendar.gulikakalam || [];
+  }
+  getTithiData(calendar) {
+    return calendar.tithi || {};
+  }
+  getNakshatraData(calendar) {
+    return calendar.nakshatra || {};
+  }
+  getYogaData(calendar) {
+    return calendar.yoga || {};
+  }
+  getKaranaData(calendar) {
+    return calendar.karana || {};
+  }
+  getLocalFestivals(calendar, region) {
+    return calendar.local || [];
+  }
+  getSpecialCustoms(calendar, region) {
+    return calendar.customs || [];
+  }
+  getTraditionalPractices(calendar, region) {
+    return calendar.practices || [];
+  }
+  getSpiritualTheme(calendar) {
+    return 'Spiritual growth and devotion';
+  }
+  getCulturalTheme(calendar) {
+    return 'Cultural preservation and celebration';
+  }
+  getAgriculturalTheme(calendar) {
+    return 'Harvest and abundance';
+  }
+  getPlanetaryTheme(calendar) {
+    return 'Beneficial planetary alignments';
+  }
+  getSpiritualFocus(calendar) {
+    return 'Meditation and prayer';
+  }
+  getFamilyActivities(calendar) {
+    return 'Festival preparation and celebration';
+  }
+  getCommunityService(calendar) {
+    return 'Charity and community participation';
+  }
+  getPersonalGrowth(calendar) {
+    return 'Learning and self-improvement';
+  }
+  getImmediateActions(upcoming) {
+    return upcoming.slice(0, 3).map(f => `Prepare for ${f.name}`);
+  }
+  getWeeklyPreparation(upcoming) {
+    return ['Clean home', 'Buy ingredients', 'Plan rituals'];
+  }
+  getShoppingChecklist(upcoming) {
+    return ['Flowers', 'Incense', 'Sweets', 'New clothes'];
+  }
+  getSpiritualPreparation(upcoming) {
+    return ['Daily meditation', 'Chanting', 'Fasting'];
+  }
+  getBusiestWeek(upcoming) {
+    return 'Week with most festivals';
+  }
+  getSpiritualThemes(upcoming) {
+    return ['Devotion', 'Family', 'Prosperity'];
+  }
+  getRulingPlanets(festival) {
+    return festival.planets || ['Jupiter'];
+  }
+  getZodiacInfluence(festival) {
+    return festival.zodiac || 'Pisces';
+  }
+  getElementalBalance(festival) {
+    return festival.elements || ['Water', 'Fire'];
+  }
+  getEnergyLevel(festival) {
+    return festival.energy || 'High';
+  }
+  getPreparationActivities(festival) {
+    return festival.activities || [];
+  }
+  getShoppingList(festival) {
+    return festival.shopping || [];
+  }
+  generateRegionalComparison(variations) {
+    return { similarities: [], differences: [] };
+  }
+  getRegionalRecommendations(variations) {
+    return ['Respect local customs', 'Learn regional variations'];
+  }
 
   formatResult(result) {
     return {
@@ -628,7 +790,11 @@ class HinduFestivalsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['getHinduFestivalsInfo', 'getSpecificFestivalDetails', 'getUpcomingFestivals'],
+      methods: [
+        'getHinduFestivalsInfo',
+        'getSpecificFestivalDetails',
+        'getUpcomingFestivals'
+      ],
       dependencies: ['hinduFestivals']
     };
   }

@@ -32,52 +32,86 @@ const validateAndFormatBirthDate = birthDate => {
   const sanitizedDate = birthDate.replace(/[<>'"`]/g, '').trim();
 
   if (sanitizedDate !== birthDate) {
-    logger.warn('⚠️ Sanitized potentially harmful characters from birth date input');
+    logger.warn(
+      '⚠️ Sanitized potentially harmful characters from birth date input'
+    );
   }
 
   let formattedDate = null;
   let error = null;
 
   try {
-    if (sanitizedDate.match(/^(\d{2})(\d{2})(\d{2})$/)) { // DDMMYY
-      const [_, day, month, year] = sanitizedDate.match(/^(\d{2})(\d{2})(\d{2})$/);
+    if (sanitizedDate.match(/^(\d{2})(\d{2})(\d{2})$/)) {
+      // DDMMYY
+      const [_, day, month, year] = sanitizedDate.match(
+        /^(\d{2})(\d{2})(\d{2})$/
+      );
       const numericDay = parseInt(day, 10);
       const numericMonth = parseInt(month, 10);
       const numericYear = parseInt(year, 10);
 
       // Validate date ranges
-      if (numericDay >= 1 && numericDay <= 31 && numericMonth >= 1 && numericMonth <= 12) {
-        const fullYear = (numericYear < new Date().getFullYear() % 100) ? 2000 + numericYear : 1900 + numericYear;
+      if (
+        numericDay >= 1 &&
+        numericDay <= 31 &&
+        numericMonth >= 1 &&
+        numericMonth <= 12
+      ) {
+        const fullYear =
+          numericYear < new Date().getFullYear() % 100 ?
+            2000 + numericYear :
+            1900 + numericYear;
         formattedDate = `${day}/${month}/${fullYear}`;
       } else {
         error = 'Invalid date values';
       }
-    } else if (sanitizedDate.match(/^(\d{2})(\d{2})(\d{4})$/)) { // DDMMYYYY
-      const [_, day, month, year] = sanitizedDate.match(/^(\d{2})(\d{2})(\d{4})$/);
+    } else if (sanitizedDate.match(/^(\d{2})(\d{2})(\d{4})$/)) {
+      // DDMMYYYY
+      const [_, day, month, year] = sanitizedDate.match(
+        /^(\d{2})(\d{2})(\d{4})$/
+      );
       const numericDay = parseInt(day, 10);
       const numericMonth = parseInt(month, 10);
       const numericYear = parseInt(year, 10);
 
       // Validate date ranges
-      if (numericDay >= 1 && numericDay <= 31 && numericMonth >= 1 && numericMonth <= 12 && numericYear >= 1900 && numericYear <= new Date().getFullYear()) {
+      if (
+        numericDay >= 1 &&
+        numericDay <= 31 &&
+        numericMonth >= 1 &&
+        numericMonth <= 12 &&
+        numericYear >= 1900 &&
+        numericYear <= new Date().getFullYear()
+      ) {
         formattedDate = `${day}/${month}/${year}`;
       } else {
         error = 'Invalid date values';
       }
-    } else if (sanitizedDate.match(/^(\d{4})-(\d{2})-(\d{2})$/)) { // YYYY-MM-DD
-      const [_, year, month, day] = sanitizedDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    } else if (sanitizedDate.match(/^(\d{4})-(\d{2})-(\d{2})$/)) {
+      // YYYY-MM-DD
+      const [_, year, month, day] = sanitizedDate.match(
+        /^(\d{4})-(\d{2})-(\d{2})$/
+      );
       const numericDay = parseInt(day, 10);
       const numericMonth = parseInt(month, 10);
       const numericYear = parseInt(year, 10);
 
       // Validate date ranges
-      if (numericDay >= 1 && numericDay <= 31 && numericMonth >= 1 && numericMonth <= 12 && numericYear >= 1900 && numericYear <= new Date().getFullYear()) {
+      if (
+        numericDay >= 1 &&
+        numericDay <= 31 &&
+        numericMonth >= 1 &&
+        numericMonth <= 12 &&
+        numericYear >= 1900 &&
+        numericYear <= new Date().getFullYear()
+      ) {
         formattedDate = `${day}/${month}/${year}`;
       } else {
         error = 'Invalid date values';
       }
     } else {
-      error = 'Unsupported date format. Please use DDMMYY, DDMMYYYY, or YYYY-MM-DD';
+      error =
+        'Unsupported date format. Please use DDMMYY, DDMMYYYY, or YYYY-MM-DD';
     }
   } catch (err) {
     error = 'Error processing birth date';
@@ -127,31 +161,45 @@ const validateAndFormatBirthTime = birthTime => {
   const sanitizedTime = birthTime.replace(/[<>'"`]/g, '').trim();
 
   if (sanitizedTime !== birthTime) {
-    logger.warn('⚠️ Sanitized potentially harmful characters from birth time input');
+    logger.warn(
+      '⚠️ Sanitized potentially harmful characters from birth time input'
+    );
   }
 
   let formattedTime = null;
   let error = null;
 
   try {
-    if (sanitizedTime.match(/^(\d{2})(\d{2})$/)) { // HHMM
+    if (sanitizedTime.match(/^(\d{2})(\d{2})$/)) {
+      // HHMM
       const [_, hour, minute] = sanitizedTime.match(/^(\d{2})(\d{2})$/);
       const numericHour = parseInt(hour, 10);
       const numericMinute = parseInt(minute, 10);
 
       // Validate time ranges
-      if (numericHour >= 0 && numericHour <= 23 && numericMinute >= 0 && numericMinute <= 59) {
+      if (
+        numericHour >= 0 &&
+        numericHour <= 23 &&
+        numericMinute >= 0 &&
+        numericMinute <= 59
+      ) {
         formattedTime = `${hour}:${minute}`;
       } else {
         error = 'Invalid time values (hour: 0-23, minute: 0-59)';
       }
-    } else if (sanitizedTime.match(/^(\d{1,2}):(\d{2})$/)) { // H:MM or HH:MM
+    } else if (sanitizedTime.match(/^(\d{1,2}):(\d{2})$/)) {
+      // H:MM or HH:MM
       const [_, hour, minute] = sanitizedTime.match(/^(\d{1,2}):(\d{2})$/);
       const numericHour = parseInt(hour, 10);
       const numericMinute = parseInt(minute, 10);
 
       // Validate time ranges
-      if (numericHour >= 0 && numericHour <= 23 && numericMinute >= 0 && numericMinute <= 59) {
+      if (
+        numericHour >= 0 &&
+        numericHour <= 23 &&
+        numericMinute >= 0 &&
+        numericMinute <= 59
+      ) {
         formattedTime = `${hour.padStart(2, '0')}:${minute}`;
       } else {
         error = 'Invalid time values (hour: 0-23, minute: 0-59)';
@@ -207,7 +255,9 @@ const validateAndFormatBirthPlace = birthPlace => {
   const sanitizedPlace = birthPlace.replace(/[<>'"`]/g, '').trim();
 
   if (sanitizedPlace !== birthPlace) {
-    logger.warn('⚠️ Sanitized potentially harmful characters from birth place input');
+    logger.warn(
+      '⚠️ Sanitized potentially harmful characters from birth place input'
+    );
   }
 
   // Ensure we have something meaningful

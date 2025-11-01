@@ -1,9 +1,11 @@
 # Action Classes Code Duplication Refactoring Plan
 
 ## Overview
+
 This comprehensive plan addresses the high code duplication in WhatsApp action classes (400-500 lines each) by extracting common patterns into reusable base classes, mixins, and factories. The goal is to reduce code by 65% per action class while improving maintainability and development velocity.
 
 ## Current State Analysis
+
 - **Identified Duplication**: 4 major code duplication patterns across 23+ action classes
 - **Impact**: ~200-300 lines duplicated per class, 4,000-6,000 total lines to eliminate
 - **Root Cause**: Astrology, profile, and menu actions share identical validation, error handling, and response building logic
@@ -13,6 +15,7 @@ This comprehensive plan addresses the high code duplication in WhatsApp action c
 ## 🎯 Identified Code Duplication Patterns
 
 ### 1. Validation Logic Duplication (15-25 lines per class)
+
 ```javascript
 // DUPLICATED IN: BirthChartAction, DailyHoroscopeAction, NumerologyReportAction, etc.
 if (!(await this.validateUserProfile('Feature Name'))) {
@@ -27,6 +30,7 @@ if (!limitsCheck.isAllowed) {
 ```
 
 ### 2. Error Handling Duplication (10-15 lines per class)
+
 ```javascript
 // IDENTICAL IN: Most astrology actions (BirthChartAction, DailyHoroscopeAction, etc.)
 async handleExecutionError(error) {
@@ -36,6 +40,7 @@ async handleExecutionError(error) {
 ```
 
 ### 3. Interactive Response Building Duplication (20-30 lines per class)
+
 ```javascript
 // SIMILAR ACROSS: All interactive actions
 const message = ResponseBuilder.buildInteractiveButtonMessage(
@@ -48,6 +53,7 @@ await sendMessage(message.to, message.interactive, 'interactive');
 ```
 
 ### 4. Notification Duplication (10-15 lines per class)
+
 ```javascript
 // IDENTICAL MESSAGE CONTENT PATTERNS:
 async sendIncompleteProfileNotification() {
@@ -68,6 +74,7 @@ async sendUpgradePrompt(limitsCheck) {
 ### Phase 1A: Create Specialized Base Classes
 
 #### 1.1 AstrologyAction Base Class
+
 ```javascript
 // src/services/whatsapp/actions/base/AstrologyAction.js
 class AstrologyAction extends BaseAction {
@@ -86,13 +93,17 @@ class AstrologyAction extends BaseAction {
 
   async buildAstrologyResponse(content, actionButtons) {
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, content, actionButtons, this.getUserLanguage()
+      this.phoneNumber,
+      content,
+      actionButtons,
+      this.getUserLanguage()
     );
     await sendMessage(message.to, message.interactive, 'interactive');
   }
 
   async sendIncompleteProfileNotification() {
-    const profilePrompt = '👤 *Complete Your Profile First*\n\nTo access this astrology service, please complete your birth profile with date, time, and place.';
+    const profilePrompt =
+      '👤 *Complete Your Profile First*\n\nTo access this astrology service, please complete your birth profile with date, time, and place.';
     await sendMessage(this.phoneNumber, profilePrompt, 'text');
   }
 
@@ -104,6 +115,7 @@ class AstrologyAction extends BaseAction {
 ```
 
 #### 1.2 ProfileAction Base Class
+
 ```javascript
 // src/services/whatsapp/actions/base/ProfileAction.js
 class ProfileAction extends BaseAction {
@@ -112,6 +124,7 @@ class ProfileAction extends BaseAction {
 ```
 
 #### 1.3 MenuAction Base Class
+
 ```javascript
 // src/services/whatsapp/actions/base/MenuAction.js
 class MenuAction extends BaseAction {
@@ -137,7 +150,7 @@ const ValidationMixin = {
       return { isAllowed: true }; // No subscription service = unlimited
     }
     return await this.subscriptionService.checkLimits(featureType, this.user);
-  }
+  },
 };
 
 module.exports = ValidationMixin;
@@ -194,10 +207,14 @@ module.exports = { ErrorResponseFactory };
 ### Phase 3: Refactor Existing Action Classes
 
 #### 3.1 BirthChartAction Refactoring
+
 ```javascript
 class BirthChartAction extends AstrologyAction {
   async execute() {
-    const validation = await this.validateProfileAndLimits('Birth Chart', 'birth_chart');
+    const validation = await this.validateProfileAndLimits(
+      'Birth Chart',
+      'birth_chart'
+    );
     if (!validation.success) return validation;
 
     const chartData = await this.generateBirthChart();
@@ -212,10 +229,14 @@ class BirthChartAction extends AstrologyAction {
 ```
 
 #### 3.2 DailyHoroscopeAction Refactoring
+
 ```javascript
 class DailyHoroscopeAction extends AstrologyAction {
   async execute() {
-    const validation = await this.validateProfileAndLimits('Daily Horoscope', 'horoscope_daily');
+    const validation = await this.validateProfileAndLimits(
+      'Daily Horoscope',
+      'horoscope_daily'
+    );
     if (!validation.success) return validation;
 
     const horoscope = await this.generateHoroscope();
@@ -239,9 +260,10 @@ const ACTION_CONFIGS = {
     subscriptionFeature: 'birth_chart',
     cooldown: 600000, // 10 minutes
     errorMessages: {
-      incomplete: 'Birth Chart requires complete profile with birth date, time, and place.',
-      limitReached: 'You have reached your birth chart limit for this month.'
-    }
+      incomplete:
+        'Birth Chart requires complete profile with birth date, time, and place.',
+      limitReached: 'You have reached your birth chart limit for this month.',
+    },
   },
   daily_horoscope: {
     requiredProfileFields: ['birthDate'],
@@ -249,9 +271,9 @@ const ACTION_CONFIGS = {
     cooldown: 300000, // 5 minutes
     errorMessages: {
       incomplete: 'Daily horoscopes require at least your birth date.',
-      limitReached: 'You have reached your daily horoscope limit for today.'
-    }
-  }
+      limitReached: 'You have reached your daily horoscope limit for today.',
+    },
+  },
 };
 
 module.exports = { ACTION_CONFIGS };
@@ -262,16 +284,19 @@ module.exports = { ACTION_CONFIGS };
 ## 📊 Quantified Benefits
 
 ### Code Reduction Metrics
+
 - **Individual Classes**: 65% average reduction (437 → 150 lines for BirthChartAction)
 - **Total Impact**: 4,000-6,000 lines eliminated across all action classes
 - **Maintenance**: Single point of change instead of 20+ locations
 
 ### Developer Productivity
+
 - **Development Time**: New astrology actions created in minutes vs hours
 - **Bug Reduction**: Consistent validation prevents copy-paste errors
 - **Feature Velocity**: 50% faster to add new astrology services
 
 ### Code Quality
+
 - **DRY Compliance**: Eliminates duplication across 23+ action classes
 - **SOLID Principles**: Each class has single responsibility
 - **Testability**: Shared components tested once, not per class
@@ -281,6 +306,7 @@ module.exports = { ACTION_CONFIGS };
 ## ✅ Implementation Timeline
 
 ### Week 1: Infrastructure Setup (4 days)
+
 - [ ] Create AstrologyAction, ProfileAction, MenuAction base classes
 - [ ] Implement ValidationMixin and extract common validations
 - [ ] Create AstrologyFormatterFactory and ErrorResponseFactory
@@ -288,18 +314,21 @@ module.exports = { ACTION_CONFIGS };
 - [ ] Comprehensive testing of base components
 
 ### Week 2: Migration Phase 1 (5 classes)
+
 - [ ] Refactor BirthChartAction (complex proof of concept)
 - [ ] Refactor DailyHoroscopeAction and NumerologyReportAction
 - [ ] Update tests and verify functionality
 - [ ] Refine patterns based on implementation feedback
 
 ### Week 3: Migration Phase 2 (10 classes)
+
 - [ ] Continue with remaining astrology actions
 - [ ] Optimize patterns discovered in Phase 1
 - [ ] Performance testing and optimization
 - [ ] Update documentation and examples
 
 ### Week 4: Finalization & Cleanup
+
 - [ ] Remove unused code and old patterns
 - [ ] Comprehensive regression testing
 - [ ] Documentation updates and developer guides

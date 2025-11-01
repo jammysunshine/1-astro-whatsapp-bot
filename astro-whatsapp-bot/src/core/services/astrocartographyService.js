@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 class AstrocartographyService extends ServiceTemplate {
   constructor() {
@@ -117,7 +118,8 @@ class AstrocartographyService extends ServiceTemplate {
   getMetadata() {
     return {
       name: 'AstrocartographyService',
-      description: 'Geographic astrology mapping planetary influences across locations for relocation and travel guidance',
+      description:
+        'Geographic astrology mapping planetary influences across locations for relocation and travel guidance',
       version: '1.0.0',
       dependencies: ['astrocartographyReader'],
       category: 'vedic'

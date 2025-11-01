@@ -5,7 +5,11 @@
 const logger = require('../../../../utils/logger');
 
 const handleIslamicAstrology = async(message, user) => {
-  if (!message.includes('islamic') && !message.includes('arabic') && !message.includes('persian')) {
+  if (
+    !message.includes('islamic') &&
+    !message.includes('arabic') &&
+    !message.includes('persian')
+  ) {
     return null;
   }
 

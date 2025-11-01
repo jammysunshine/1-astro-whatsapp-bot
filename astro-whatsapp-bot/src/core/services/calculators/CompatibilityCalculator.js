@@ -30,18 +30,26 @@ class CompatibilityCalculator {
       this._validateCompatibilityData(person1, person2);
 
       // Generate birth charts for both people using chart generator service
-      const chartService = this.services?.vedicCalculator?.chartGenerator ||
-                          this.services?.chartGenerator;
+      const chartService =
+        this.services?.vedicCalculator?.chartGenerator ||
+        this.services?.chartGenerator;
 
       if (!chartService) {
-        throw new Error('Chart generator service not available for compatibility analysis');
+        throw new Error(
+          'Chart generator service not available for compatibility analysis'
+        );
       }
 
       const chart1 = await chartService.generateVedicKundli(person1);
       const chart2 = await chartService.generateVedicKundli(person2);
 
       // Calculate comprehensive compatibility score
-      const compatibilityAnalysis = this._calculateComprehensiveCompatibility(chart1, chart2, person1, person2);
+      const compatibilityAnalysis = this._calculateComprehensiveCompatibility(
+        chart1,
+        chart2,
+        person1,
+        person2
+      );
 
       return compatibilityAnalysis;
     } catch (error) {
@@ -74,13 +82,19 @@ class CompatibilityCalculator {
 
     // Generate analysis and recommendations
     const analysis = this._generateCompatibilityAnalysis(factors, overallScore);
-    const recommendations = this._generateCompatibilityRecommendations(factors, overallScore);
+    const recommendations = this._generateCompatibilityRecommendations(
+      factors,
+      overallScore
+    );
 
     return {
       type: 'ved_compat',
       overall_score: Math.round(overallScore),
       overall_rating: this._getCompatibilityRating(overallScore),
-      compatibility_percentage: Math.min(100, Math.max(0, Math.round(overallScore))),
+      compatibility_percentage: Math.min(
+        100,
+        Math.max(0, Math.round(overallScore))
+      ),
       person1_name: person1.name || 'Person 1',
       person2_name: person2.name || 'Person 2',
 
@@ -128,16 +142,24 @@ class CompatibilityCalculator {
     const sun2 = chart2.planetaryPositions?.sun?.sign;
 
     if (!sun1 || !sun2) {
-      return { score: 50, description: 'Unable to analyze sun sign compatibility' };
+      return {
+        score: 50,
+        description: 'Unable to analyze sun sign compatibility'
+      };
     }
 
     const score = this._getSignCompatibilityScore(sun1, sun2);
 
     return {
       score,
-      description: score >= 8 ? 'Excellent core personality harmony' :
-        score >= 6 ? 'Good personality compatibility' :
-          score >= 4 ? 'Neutral personality connection' : 'Challenging personality dynamics'
+      description:
+        score >= 8 ?
+          'Excellent core personality harmony' :
+          score >= 6 ?
+            'Good personality compatibility' :
+            score >= 4 ?
+              'Neutral personality connection' :
+              'Challenging personality dynamics'
     };
   }
 
@@ -153,16 +175,24 @@ class CompatibilityCalculator {
     const moon2 = chart2.planetaryPositions?.moon?.sign;
 
     if (!moon1 || !moon2) {
-      return { score: 50, description: 'Unable to analyze moon sign compatibility' };
+      return {
+        score: 50,
+        description: 'Unable to analyze moon sign compatibility'
+      };
     }
 
     const score = this._getSignCompatibilityScore(moon1, moon2);
 
     return {
       score,
-      description: score >= 8 ? 'Harmonious emotional connection' :
-        score >= 6 ? 'Compatible emotional styles' :
-          score >= 4 ? 'Balanced emotional understanding' : 'Different emotional approaches'
+      description:
+        score >= 8 ?
+          'Harmonious emotional connection' :
+          score >= 6 ?
+            'Compatible emotional styles' :
+            score >= 4 ?
+              'Balanced emotional understanding' :
+              'Different emotional approaches'
     };
   }
 
@@ -178,7 +208,10 @@ class CompatibilityCalculator {
     const venus2 = chart2.planetaryPositions?.venus;
 
     if (!venus1 || !venus2) {
-      return { score: 50, description: 'Unable to analyze Venus compatibility' };
+      return {
+        score: 50,
+        description: 'Unable to analyze Venus compatibility'
+      };
     }
 
     let score = this._getSignCompatibilityScore(venus1.sign, venus2.sign);
@@ -192,9 +225,14 @@ class CompatibilityCalculator {
 
     return {
       score,
-      description: score >= 8 ? 'Romantically aligned with shared values' :
-        score >= 6 ? 'Romantically compatible' :
-          score >= 4 ? 'Romantically balanced' : 'Romantically challenging'
+      description:
+        score >= 8 ?
+          'Romantically aligned with shared values' :
+          score >= 6 ?
+            'Romantically compatible' :
+            score >= 4 ?
+              'Romantically balanced' :
+              'Romantically challenging'
     };
   }
 
@@ -217,9 +255,14 @@ class CompatibilityCalculator {
 
     return {
       score,
-      description: score >= 8 ? 'Energetically aligned' :
-        score >= 6 ? 'Energetically compatible' :
-          score >= 4 ? 'Energetically balanced' : 'Energetically challenging'
+      description:
+        score >= 8 ?
+          'Energetically aligned' :
+          score >= 6 ?
+            'Energetically compatible' :
+            score >= 4 ?
+              'Energetically balanced' :
+              'Energetically challenging'
     };
   }
 
@@ -235,16 +278,24 @@ class CompatibilityCalculator {
     const lagna2 = chart2.lagna || chart2.ascendant;
 
     if (!lagna1 || !lagna2) {
-      return { score: 50, description: 'Unable to analyze lagna compatibility' };
+      return {
+        score: 50,
+        description: 'Unable to analyze lagna compatibility'
+      };
     }
 
     const score = this._getSignCompatibilityScore(lagna1, lagna2);
 
     return {
       score,
-      description: score >= 8 ? 'Personally harmonious' :
-        score >= 6 ? 'Personally compatible' :
-          score >= 4 ? 'Personally balanced' : 'Personally challenging'
+      description:
+        score >= 8 ?
+          'Personally harmonious' :
+          score >= 6 ?
+            'Personally compatible' :
+            score >= 4 ?
+              'Personally balanced' :
+              'Personally challenging'
     };
   }
 
@@ -256,14 +307,30 @@ class CompatibilityCalculator {
    * @returns {number} Compatibility score
    */
   _getSignCompatibilityScore(sign1, sign2) {
-    if (!sign1 || !sign2) { return 5; }
+    if (!sign1 || !sign2) {
+      return 5;
+    }
 
-    const signOrder = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signOrder = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     const sign1Index = signOrder.indexOf(sign1);
     const sign2Index = signOrder.indexOf(sign2);
 
-    if (sign1Index === -1 || sign2Index === -1) { return 5; }
+    if (sign1Index === -1 || sign2Index === -1) {
+      return 5;
+    }
 
     // Calculate angular distance (0-6)
     const angularDistance = Math.min(
@@ -284,9 +351,18 @@ class CompatibilityCalculator {
    */
   _getSignElement(sign) {
     const elements = {
-      Aries: 'fire', Taurus: 'earth', Gemini: 'air', Cancer: 'water',
-      Leo: 'fire', Virgo: 'earth', Libra: 'air', Scorpio: 'water',
-      Sagittarius: 'fire', Capricorn: 'earth', Aquarius: 'air', Pisces: 'water'
+      Aries: 'fire',
+      Taurus: 'earth',
+      Gemini: 'air',
+      Cancer: 'water',
+      Leo: 'fire',
+      Virgo: 'earth',
+      Libra: 'air',
+      Scorpio: 'water',
+      Sagittarius: 'fire',
+      Capricorn: 'earth',
+      Aquarius: 'air',
+      Pisces: 'water'
     };
     return elements[sign] || '';
   }
@@ -300,11 +376,11 @@ class CompatibilityCalculator {
   _calculateOverallCompatibilityScore(factors) {
     // Vedic compatibility weights (traditional system)
     const weights = {
-      sun: 0.15,   // Core identity (15%)
-      moon: 0.25,  // Emotional nature (25%)
-      venus: 0.20, // Love and values (20%)
-      mars: 0.15,  // Energy and passion (15%)
-      lagna: 0.25  // Physical attraction (25%)
+      sun: 0.15, // Core identity (15%)
+      moon: 0.25, // Emotional nature (25%)
+      venus: 0.2, // Love and values (20%)
+      mars: 0.15, // Energy and passion (15%)
+      lagna: 0.25 // Physical attraction (25%)
     };
 
     let totalScore = 0;
@@ -319,7 +395,7 @@ class CompatibilityCalculator {
       }
     });
 
-    return totalWeight > 0 ? totalScore / totalWeight * totalWeight : 50;
+    return totalWeight > 0 ? (totalScore / totalWeight) * totalWeight : 50;
   }
 
   /**
@@ -354,22 +430,42 @@ class CompatibilityCalculator {
     const recommendations = [];
 
     if (overallScore >= 70) {
-      recommendations.push('🌟 This strong compatibility provides an excellent foundation for a harmonious relationship');
-      recommendations.push('💕 Focus on nurturing the natural harmony between you through mutual respect and understanding');
-      recommendations.push('🙏 Consider traditional Vedic ceremonies to strengthen the relationship bond');
+      recommendations.push(
+        '🌟 This strong compatibility provides an excellent foundation for a harmonious relationship'
+      );
+      recommendations.push(
+        '💕 Focus on nurturing the natural harmony between you through mutual respect and understanding'
+      );
+      recommendations.push(
+        '🙏 Consider traditional Vedic ceremonies to strengthen the relationship bond'
+      );
     } else if (overallScore >= 50) {
-      recommendations.push('🤝 This moderate compatibility requires conscious effort and communication');
-      recommendations.push('💬 Focus on understanding and compromising on areas of difference');
-      recommendations.push('📚 Consider astrological counseling to navigate challenges effectively');
+      recommendations.push(
+        '🤝 This moderate compatibility requires conscious effort and communication'
+      );
+      recommendations.push(
+        '💬 Focus on understanding and compromising on areas of difference'
+      );
+      recommendations.push(
+        '📚 Consider astrological counseling to navigate challenges effectively'
+      );
     } else {
-      recommendations.push('⚠️ This relationship may require significant effort and understanding');
-      recommendations.push('🏥 Consider professional counseling along with astrological guidance');
-      recommendations.push('🔮 Evaluate whether this relationship aligns with your long-term life goals');
+      recommendations.push(
+        '⚠️ This relationship may require significant effort and understanding'
+      );
+      recommendations.push(
+        '🏥 Consider professional counseling along with astrological guidance'
+      );
+      recommendations.push(
+        '🔮 Evaluate whether this relationship aligns with your long-term life goals'
+      );
     }
 
     // Specific recommendations based on weak areas
     if (factors.moon.score < 6) {
-      recommendations.push('😊 Work on emotional communication and understanding each other\'s feelings');
+      recommendations.push(
+        '😊 Work on emotional communication and understanding each other\'s feelings'
+      );
     }
 
     if (factors.venus.score < 6) {
@@ -377,10 +473,14 @@ class CompatibilityCalculator {
     }
 
     if (factors.mars.score < 6) {
-      recommendations.push('⚡ Find ways to align your energy levels and approaches to conflict');
+      recommendations.push(
+        '⚡ Find ways to align your energy levels and approaches to conflict'
+      );
     }
 
-    recommendations.push('🌿 Remember that astrology provides guidance - relationships require mutual effort and respect');
+    recommendations.push(
+      '🌿 Remember that astrology provides guidance - relationships require mutual effort and respect'
+    );
 
     return recommendations;
   }
@@ -392,10 +492,18 @@ class CompatibilityCalculator {
    * @returns {string} Rating text
    */
   _getCompatibilityRating(score) {
-    if (score >= 80) { return 'Excellent'; }
-    if (score >= 65) { return 'Very Good'; }
-    if (score >= 50) { return 'Good'; }
-    if (score >= 35) { return 'Fair'; }
+    if (score >= 80) {
+      return 'Excellent';
+    }
+    if (score >= 65) {
+      return 'Very Good';
+    }
+    if (score >= 50) {
+      return 'Good';
+    }
+    if (score >= 35) {
+      return 'Fair';
+    }
     return 'Challenging';
   }
 
@@ -417,10 +525,18 @@ class CompatibilityCalculator {
     const nadi2 = this._getNadiFromMoon(chart2.planetaryPositions?.moon);
 
     if (nadi1 === nadi2) {
-      return { compatible: false, score: 0, reason: 'Same Nadi - traditionally not recommended' };
+      return {
+        compatible: false,
+        score: 0,
+        reason: 'Same Nadi - traditionally not recommended'
+      };
     }
 
-    return { compatible: true, score: 8, reason: 'Different Nadi - good for progeny health' };
+    return {
+      compatible: true,
+      score: 8,
+      reason: 'Different Nadi - good for progeny health'
+    };
   }
 
   /**
@@ -435,9 +551,10 @@ class CompatibilityCalculator {
     const gana1 = this._getGanaFromMoon(chart1.planetaryPositions?.moon);
     const gana2 = this._getGanaFromMoon(chart2.planetaryPositions?.moon);
 
-    const compatible = (gana1 === 'dev' && gana2 !== 'rakshasa') ||
-                      (gana1 === 'manushya') ||
-                      (gana1 === 'rakshasa' && gana2 === 'dev');
+    const compatible =
+      (gana1 === 'dev' && gana2 !== 'rakshasa') ||
+      gana1 === 'manushya' ||
+      (gana1 === 'rakshasa' && gana2 === 'dev');
 
     return {
       compatible,
@@ -533,23 +650,44 @@ class CompatibilityCalculator {
 
   // Helper methods for Vedic compatibility calculations
   _getNadiFromMoon(moon) {
-    if (!moon) { return null; }
+    if (!moon) {
+      return null;
+    }
     const nakshatra = Math.floor(moon.longitude / 13.333); // 27 nakshatras * 13.333 degrees
     // Simplified: 1-9: Adya, 10-18: Madhya, 19-27: Antya
     return nakshatra <= 8 ? 'adya' : nakshatra <= 17 ? 'madhya' : 'antya';
   }
 
   _getGanaFromMoon(moon) {
-    if (!moon) { return null; }
+    if (!moon) {
+      return null;
+    }
     const nakshatra = Math.floor(moon.longitude / 13.333);
     const ganas = ['dev', 'manushya', 'rakshasa'];
     return ganas[nakshatra % 3];
   }
 
   _getYoniFromMoon(moon) {
-    if (!moon) { return null; }
+    if (!moon) {
+      return null;
+    }
     const nakshatra = Math.floor(moon.longitude / 13.333);
-    const yonis = ['horse', 'elephant', 'sheep', 'serpent', 'dog', 'cat', 'rat', 'cow', 'buffalo', 'tiger', 'hare', 'monkey', 'lion', 'mongoose'];
+    const yonis = [
+      'horse',
+      'elephant',
+      'sheep',
+      'serpent',
+      'dog',
+      'cat',
+      'rat',
+      'cow',
+      'buffalo',
+      'tiger',
+      'hare',
+      'monkey',
+      'lion',
+      'mongoose'
+    ];
     return yonis[nakshatra % yonis.length];
   }
 
@@ -559,7 +697,9 @@ class CompatibilityCalculator {
   }
 
   _getVarnaFromMoon(moon) {
-    if (!moon) { return null; }
+    if (!moon) {
+      return null;
+    }
     const nakshatra = Math.floor(moon.longitude / 13.333);
     const varnas = ['brahmin', 'kshatriya', 'vaishya', 'shudra'];
     return varnas[nakshatra % varnas.length];
@@ -567,9 +707,10 @@ class CompatibilityCalculator {
 
   _isVarnaCompatible(varna1, varna2) {
     // Traditional Varna compatibility (simplified)
-    const compatible = (varna1 === varna2) ||
-                      (varna1 === 'brahmin' && varna2 === 'kshatriya') ||
-                      (varna1 === 'kshatriya' && varna2 === 'vaishya');
+    const compatible =
+      varna1 === varna2 ||
+      (varna1 === 'brahmin' && varna2 === 'kshatriya') ||
+      (varna1 === 'kshatriya' && varna2 === 'vaishya');
     return compatible;
   }
 
@@ -596,7 +737,9 @@ class CompatibilityCalculator {
     const requiredFields = ['birthDate', 'birthTime', 'birthPlace'];
     for (const field of requiredFields) {
       if (!person1[field] || !person2[field]) {
-        throw new Error(`Missing required field: ${field} for ${!person1[field] ? 'Person 1' : 'Person 2'}`);
+        throw new Error(
+          `Missing required field: ${field} for ${!person1[field] ? 'Person 1' : 'Person 2'}`
+        );
       }
     }
   }

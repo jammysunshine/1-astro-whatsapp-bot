@@ -26,27 +26,43 @@ class SolarReturnCalculator {
    * @param {string} location - Location for calculation
    * @returns {Object} Solar return chart analysis
    */
-  async calculateSolarReturn(birthData, targetYear = new Date().getFullYear(), location = null) {
+  async calculateSolarReturn(
+    birthData,
+    targetYear = new Date().getFullYear(),
+    location = null
+  ) {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
       // Parse birth date
-      const [birthDay, birthMonth, birthYear] = birthDate.split('/').map(Number);
+      const [birthDay, birthMonth, birthYear] = birthDate
+        .split('/')
+        .map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get birth coordinates
       const [birthLat, birthLng] = await this._getCoordinates(birthPlace);
-      const timezone = await this._getTimezone(birthLat, birthLng, new Date(birthYear, birthMonth - 1, birthDay).getTime());
+      const timezone = await this._getTimezone(
+        birthLat,
+        birthLng,
+        new Date(birthYear, birthMonth - 1, birthDay).getTime()
+      );
 
       // Calculate solar return date and time
       const solarReturnInfo = this._calculateSolarReturnMoment(
-        birthDay, birthMonth, targetYear,
-        birthLat, birthLng, timezone
+        birthDay,
+        birthMonth,
+        targetYear,
+        birthLat,
+        birthLng,
+        timezone
       );
 
       // Calculate planetary positions at solar return
       const jd = this._dateToJD(
-        solarReturnInfo.year, solarReturnInfo.month, solarReturnInfo.day,
+        solarReturnInfo.year,
+        solarReturnInfo.month,
+        solarReturnInfo.day,
         solarReturnInfo.hour + solarReturnInfo.minute / 60
       );
 
@@ -55,9 +71,19 @@ class SolarReturnCalculator {
       const aspects = this._analyzeSolarReturnAspects(planets, houses);
 
       // Compare with natal chart
-      const natalBirthJd = this._dateToJD(birthYear, birthMonth, birthDay, hour + minute / 60);
-      const natalPlanets = await this._calculateSolarReturnPlanets(natalBirthJd);
-      const natalHouses = this._calculateSolarReturnHouses(natalBirthJd, birthLat, birthLng);
+      const natalBirthJd = this._dateToJD(
+        birthYear,
+        birthMonth,
+        birthDay,
+        hour + minute / 60
+      );
+      const natalPlanets =
+        await this._calculateSolarReturnPlanets(natalBirthJd);
+      const natalHouses = this._calculateSolarReturnHouses(
+        natalBirthJd,
+        birthLat,
+        birthLng
+      );
 
       return {
         birthData,
@@ -69,7 +95,12 @@ class SolarReturnCalculator {
         planets,
         houses,
         aspects,
-        comparisons: this._compareCharts(natalPlanets, planets, natalHouses, houses),
+        comparisons: this._compareCharts(
+          natalPlanets,
+          planets,
+          natalHouses,
+          houses
+        ),
         interpretation: this._interpretSolarReturn(planets, aspects)
       };
     } catch (error) {
@@ -82,7 +113,14 @@ class SolarReturnCalculator {
    * Calculate exact moment of solar return using progressive techniques
    * @private
    */
-  _calculateSolarReturnMoment(birthDay, birthMonth, targetYear, latitude, longitude, timezone) {
+  _calculateSolarReturnMoment(
+    birthDay,
+    birthMonth,
+    targetYear,
+    latitude,
+    longitude,
+    timezone
+  ) {
     // Find when Sun returns to exact birth degree
     // This requires iterative calculation - simplified version
 
@@ -104,9 +142,12 @@ class SolarReturnCalculator {
     for (let i = 0; i < iterations; i++) {
       sunPos = sweph.calc(currentJD, sweph.SE_SUN);
 
-      const diff = (sunPos.longitude - birthSunPos.longitude + 180) % 360 - 180; // Normalize difference
+      const diff =
+        ((sunPos.longitude - birthSunPos.longitude + 180) % 360) - 180; // Normalize difference
 
-      if (Math.abs(diff) < 0.0001) { break; } // Close enough
+      if (Math.abs(diff) < 0.0001) {
+        break;
+      } // Close enough
 
       // Adjust JD based on difference (1 degree ≈ 1 day for Sun)
       currentJD += diff / 360; // Degrees to days adjustment
@@ -114,7 +155,8 @@ class SolarReturnCalculator {
 
     // Convert JD back to date/time
     const dateComponents = this._jdToDate(currentJD);
-    const localTime = dateComponents.hour + (dateComponents.minute / 60) + timezone;
+    const localTime =
+      dateComponents.hour + dateComponents.minute / 60 + timezone;
 
     return {
       year: dateComponents.year,
@@ -133,14 +175,35 @@ class SolarReturnCalculator {
    */
   async _calculateSolarReturnPlanets(jd) {
     const planets = {};
-    const planetNames = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
+    const planetNames = [
+      'Sun',
+      'Moon',
+      'Mercury',
+      'Venus',
+      'Mars',
+      'Jupiter',
+      'Saturn'
+    ];
 
     for (const planet of planetNames) {
       try {
         const pos = sweph.calc(jd, this._getPlanetId(planet));
         if (pos.longitude !== undefined) {
           const signIndex = Math.floor(pos.longitude / 30);
-          const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+          const signs = [
+            'Aries',
+            'Taurus',
+            'Gemini',
+            'Cancer',
+            'Leo',
+            'Virgo',
+            'Libra',
+            'Scorpio',
+            'Sagittarius',
+            'Capricorn',
+            'Aquarius',
+            'Pisces'
+          ];
 
           planets[planet.toLowerCase()] = {
             name: planet,
@@ -196,7 +259,9 @@ class SolarReturnCalculator {
         const p2 = planetPositions[j];
 
         if (p1.longitude !== undefined && p2.longitude !== undefined) {
-          const angle = Math.abs(this._normalizeAngle(p1.longitude - p2.longitude));
+          const angle = Math.abs(
+            this._normalizeAngle(p1.longitude - p2.longitude)
+          );
 
           // Check for conjunction, opposition, trine, square, sextile
           const aspectTypes = [
@@ -213,7 +278,11 @@ class SolarReturnCalculator {
                 planets: [p1.name, p2.name],
                 type: aspect.name,
                 orb: Math.abs(angle - aspect.angle),
-                significance: this._getSolarReturnAspectSignificance(aspect.name, p1.name, p2.name)
+                significance: this._getSolarReturnAspectSignificance(
+                  aspect.name,
+                  p1.name,
+                  p2.name
+                )
               });
             }
           }
@@ -251,16 +320,20 @@ class SolarReturnCalculator {
     });
 
     // Compare house cusps
-    if (natalHouses.ascendant !== undefined && srHouses.ascendant !== undefined) {
+    if (
+      natalHouses.ascendant !== undefined &&
+      srHouses.ascendant !== undefined
+    ) {
       const ascDiff = Math.abs(srHouses.ascendant - natalHouses.ascendant);
 
       comparisons.ascendant_shift = {
         natalAsc: natalHouses.ascendant,
         srAsc: srHouses.ascendant,
         difference: ascDiff,
-        significance: ascDiff > 90 ?
-          'Major personality shift indicated' :
-          'Personality remains consistent but nuanced'
+        significance:
+          ascDiff > 90 ?
+            'Major personality shift indicated' :
+            'Personality remains consistent but nuanced'
       };
     }
 
@@ -276,19 +349,25 @@ class SolarReturnCalculator {
 
     // Check solar return Sun sign
     if (planets.sun) {
-      interpretation.push(`Solar return Sun in ${planets.sun.sign} indicates the theme of the coming year: ${this._getSunSignMeaning(planets.sun.sign)}`);
+      interpretation.push(
+        `Solar return Sun in ${planets.sun.sign} indicates the theme of the coming year: ${this._getSunSignMeaning(planets.sun.sign)}`
+      );
     }
 
     // Check aspects to Sun (solar return Sun shows year's energy)
     const sunAspects = aspects.filter(a => a.planets.includes('Sun'));
 
     if (sunAspects.length > 0) {
-      interpretation.push(`${sunAspects.length} aspects to the Sun show how your core energy will manifest throughout the year.`);
+      interpretation.push(
+        `${sunAspects.length} aspects to the Sun show how your core energy will manifest throughout the year.`
+      );
     }
 
     // Check Moon position (emotional tone)
     if (planets.moon) {
-      interpretation.push(`Moon in ${planets.moon.sign} sets the emotional tone for the year ahead.`);
+      interpretation.push(
+        `Moon in ${planets.moon.sign} sets the emotional tone for the year ahead.`
+      );
     }
 
     return {
@@ -298,7 +377,8 @@ class SolarReturnCalculator {
         'Compare with your natal chart for personal significance',
         'Look at planetary placements and aspects for life areas activation'
       ],
-      duration: 'The solar return influence lasts from birthday to next birthday'
+      duration:
+        'The solar return influence lasts from birthday to next birthday'
     };
   }
 
@@ -379,7 +459,14 @@ class SolarReturnCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + hour / 24;
   }
 

@@ -7,7 +7,11 @@ class VedicChartGenerator {
     this.astrologer = astrologer;
     this.geocodingService = geocodingService;
     this.vedicCore = vedicCore;
-    this.signCalculations = new SignCalculations(vedicCore, geocodingService, signCalculations);
+    this.signCalculations = new SignCalculations(
+      vedicCore,
+      geocodingService,
+      signCalculations
+    );
     this.interpreter = new ChartInterpreter();
     logger.info('VedicChartGenerator loaded');
   }
@@ -22,9 +26,21 @@ class VedicChartGenerator {
       const { birthDate, birthTime, birthPlace, name } = user;
 
       // Calculate signs with Vedic astrology and fallbacks
-      const sunSign = await this.signCalculations.calculateSunSign(birthDate, birthTime, birthPlace);
-      const moonSign = await this.signCalculations.calculateMoonSign(birthDate, birthTime, birthPlace);
-      const risingSign = await this.signCalculations.calculateRisingSign(birthDate, birthTime, birthPlace);
+      const sunSign = await this.signCalculations.calculateSunSign(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
+      const moonSign = await this.signCalculations.calculateMoonSign(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
+      const risingSign = await this.signCalculations.calculateRisingSign(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
 
       // Calculate Nakshatra (will be updated with actual moon position from chart)
       let moonNakshatra = { nakshatra: 'Unknown', lord: 'Unknown', pada: 1 };
@@ -41,7 +57,8 @@ class VedicChartGenerator {
       // Generate full natal chart using astrologer API
       let chart = {};
       try {
-        const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+        const locationInfo =
+          await this.geocodingService.getLocationInfo(birthPlace);
         const [day, month, year] = birthDate.split('/').map(Number);
         const [hour, minute] = birthTime.split(':').map(Number);
 
@@ -62,14 +79,17 @@ class VedicChartGenerator {
 
         // Update Nakshatra with actual moon position
         if (chart.planets?.moon?.longitude) {
-          moonNakshatra = this.signCalculations.calculateNakshatra(chart.planets.moon.longitude);
+          moonNakshatra = this.signCalculations.calculateNakshatra(
+            chart.planets.moon.longitude
+          );
         }
       } catch (error) {
         // Chart generation failed - will use basic data
       }
 
       // Generate chart description and analysis
-      const enhancedDescription = this.interpreter.generateEnhancedDescription(chart);
+      const enhancedDescription =
+        this.interpreter.generateEnhancedDescription(chart);
 
       return {
         name,
@@ -128,8 +148,12 @@ class VedicChartGenerator {
           fullChart.chartPatterns?.elementEmphasis
         ),
         lifePurpose: this.interpreter.deriveLifePurpose(basicChart),
-        currentTransits: this.interpreter.getCurrentTransits(basicChart.sunSign),
-        planetarySpeeds: this.interpreter.analyzePlanetarySpeeds(fullChart.planets || {}),
+        currentTransits: this.interpreter.getCurrentTransits(
+          basicChart.sunSign
+        ),
+        planetarySpeeds: this.interpreter.analyzePlanetarySpeeds(
+          fullChart.planets || {}
+        ),
         vedicDashaAnalysis: {}, // Would be populated with current dasha periods
         remedialMeasures: [] // Would include Vedic remedies
       };

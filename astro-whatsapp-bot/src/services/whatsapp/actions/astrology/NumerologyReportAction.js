@@ -1,6 +1,8 @@
 const AstrologyAction = require('../base/AstrologyAction');
 const numerologyService = require('../../../services/astrology/numerologyService');
-const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const {
+  AstrologyFormatterFactory
+} = require('../factories/AstrologyFormatterFactory');
 
 /**
  * NumerologyReportAction - Generates comprehensive numerology reports.
@@ -24,7 +26,10 @@ class NumerologyReportAction extends AstrologyAction {
       this.logAstrologyExecution('start', 'Generating numerology report');
 
       // Unified profile validation from base class
-      const validation = await this.validateProfileAndLimits('Numerology Analysis', 'numerology_analysis');
+      const validation = await this.validateProfileAndLimits(
+        'Numerology Analysis',
+        'numerology_analysis'
+      );
       if (!validation.success) {
         return validation;
       }
@@ -36,10 +41,17 @@ class NumerologyReportAction extends AstrologyAction {
       }
 
       // Format and send using centralized factory and base class methods
-      const formattedContent = AstrologyFormatterFactory.formatNumerology(numerologyData);
-      await this.buildAstrologyResponse(formattedContent, this.getNumerologyButtons());
+      const formattedContent =
+        AstrologyFormatterFactory.formatNumerology(numerologyData);
+      await this.buildAstrologyResponse(
+        formattedContent,
+        this.getNumerologyButtons()
+      );
 
-      this.logAstrologyExecution('complete', 'Numerology report delivered successfully');
+      this.logAstrologyExecution(
+        'complete',
+        'Numerology report delivered successfully'
+      );
       return {
         success: true,
         type: 'numerology_report',
@@ -48,7 +60,11 @@ class NumerologyReportAction extends AstrologyAction {
     } catch (error) {
       this.logger.error('Error in NumerologyReportAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -59,7 +75,9 @@ class NumerologyReportAction extends AstrologyAction {
   async generateNumerologyReport() {
     try {
       if (!this.user.birthDate || !this.user.name) {
-        throw new Error('Missing birth date or name for numerology calculations');
+        throw new Error(
+          'Missing birth date or name for numerology calculations'
+        );
       }
 
       const report = numerologyService.getNumerologyReport(
@@ -164,7 +182,9 @@ class NumerologyReportAction extends AstrologyAction {
    * @returns {number} Personality number
    */
   calculatePersonalityNumber(name) {
-    const consonants = name.toUpperCase().replace(/[^BCDFGHJKLMNPQRSTVWXYZ]/g, '');
+    const consonants = name
+      .toUpperCase()
+      .replace(/[^BCDFGHJKLMNPQRSTVWXYZ]/g, '');
     let sum = 0;
 
     for (const letter of consonants) {
@@ -197,9 +217,32 @@ class NumerologyReportAction extends AstrologyAction {
    */
   getLetterValue(letter) {
     const values = {
-      A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, I: 9,
-      J: 1, K: 2, L: 3, M: 4, N: 5, O: 6, P: 7, Q: 8, R: 9,
-      S: 1, T: 2, U: 3, V: 4, W: 5, X: 6, Y: 7, Z: 8
+      A: 1,
+      B: 2,
+      C: 3,
+      D: 4,
+      E: 5,
+      F: 6,
+      G: 7,
+      H: 8,
+      I: 9,
+      J: 1,
+      K: 2,
+      L: 3,
+      M: 4,
+      N: 5,
+      O: 6,
+      P: 7,
+      Q: 8,
+      R: 9,
+      S: 1,
+      T: 2,
+      U: 3,
+      V: 4,
+      W: 5,
+      X: 6,
+      Y: 7,
+      Z: 8
     };
     return values[letter] || 0;
   }
@@ -222,7 +265,10 @@ class NumerologyReportAction extends AstrologyAction {
    * @returns {number} Sum of digits
    */
   sumDigits(num) {
-    return num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+    return num
+      .toString()
+      .split('')
+      .reduce((sum, digit) => sum + parseInt(digit), 0);
   }
 
   /**
@@ -319,8 +365,15 @@ class NumerologyReportAction extends AstrologyAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Generate comprehensive numerology reports and life path analysis',
-      keywords: ['numerology', 'numbers', 'life path', 'expression', 'personality'],
+      description:
+        'Generate comprehensive numerology reports and life path analysis',
+      keywords: [
+        'numerology',
+        'numbers',
+        'life path',
+        'expression',
+        'personality'
+      ],
       category: 'astrology',
       subscriptionRequired: false,
       cooldown: 1800000 // 30 minutes between numerology reports

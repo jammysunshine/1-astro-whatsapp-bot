@@ -23,8 +23,10 @@ const ASTROLOGY_CONFIG = {
     subscriptionFeature: 'birth_chart',
     cooldown: 600000, // 10 minutes
     errorMessages: {
-      incomplete: 'Birth charts require complete birth information: date, time, and place.',
-      limitReached: 'You have reached your birth chart generation limit for this month.'
+      incomplete:
+        'Birth charts require complete birth information: date, time, and place.',
+      limitReached:
+        'You have reached your birth chart generation limit for this month.'
     }
   },
 
@@ -45,7 +47,8 @@ const ASTROLOGY_CONFIG = {
     subscriptionFeature: 'compatibility_couple',
     cooldown: 300000, // 5 minutes
     errorMessages: {
-      incomplete: 'Compatibility analysis requires birth date and time for both partners.',
+      incomplete:
+        'Compatibility analysis requires birth date and time for both partners.',
       limitReached: 'You have reached your compatibility analysis limit.'
     }
   },
@@ -67,7 +70,8 @@ const ASTROLOGY_CONFIG = {
     subscriptionFeature: 'synastry_relationship',
     cooldown: 3600000, // 1 hour
     errorMessages: {
-      incomplete: 'Relationship synastry requires complete birth information for both partners.',
+      incomplete:
+        'Relationship synastry requires complete birth information for both partners.',
       limitReached: 'You have reached your relationship analysis limit.'
     }
   },
@@ -177,8 +181,10 @@ const ASTROLOGY_CONFIG = {
     subscriptionFeature: 'horary_traditional',
     cooldown: 1800000, // 30 minutes
     errorMessages: {
-      incomplete: 'Horary charts are cast at the precise moment you ask your question.',
-      limitReached: 'Each genuine question deserves careful timing. Try again later.'
+      incomplete:
+        'Horary charts are cast at the precise moment you ask your question.',
+      limitReached:
+        'Each genuine question deserves careful timing. Try again later.'
     }
   }
 };
@@ -247,7 +253,8 @@ const DIVINATION_CONFIG = {
     cooldown: 3600000, // 1 hour
     errorMessages: {
       incomplete: '', // No profile requirements
-      limitReached: 'Palmistry analysis requires hand images (available in Premium).'
+      limitReached:
+        'Palmistry analysis requires hand images (available in Premium).'
     }
   }
 };

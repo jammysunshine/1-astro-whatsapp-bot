@@ -30,7 +30,9 @@ class DetailedChartAnalysisCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for detailed chart analysis' };
+        return {
+          error: 'Complete birth details required for detailed chart analysis'
+        };
       }
 
       // Parse birth details
@@ -38,13 +40,27 @@ class DetailedChartAnalysisCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Generate complete natal chart
-      const natalChart = await this._generateCompleteNatalChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const natalChart = await this._generateCompleteNatalChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Raj & Dhan Yogas analysis
       const rajDhanYogas = this._analyzeRajDhanYogas(natalChart);
@@ -56,7 +72,8 @@ class DetailedChartAnalysisCalculator {
       const upagrahas = this._calculateUpagrahas(natalChart);
 
       // Planetary aspects and combinations
-      const planetaryCombinations = this._analyzePlanetaryCombinations(natalChart);
+      const planetaryCombinations =
+        this._analyzePlanetaryCombinations(natalChart);
 
       // Chart especiais - special analysis points
       const chartEspecial = this._analyzeChartEspecial(natalChart);
@@ -77,7 +94,10 @@ class DetailedChartAnalysisCalculator {
       const healthAnalysis = this._analyzeHealthAndLongevity(natalChart);
 
       // Generate specific focus areas based on options
-      const focusedAnalysis = this._generateFocusedAnalysis(natalChart, options.focusAreas);
+      const focusedAnalysis = this._generateFocusedAnalysis(
+        natalChart,
+        options.focusAreas
+      );
 
       return {
         name,
@@ -93,7 +113,11 @@ class DetailedChartAnalysisCalculator {
         relationshipIndicators,
         healthAnalysis,
         focusedAnalysis,
-        summary: this._generateComprehensiveSummary(natalChart, rajDhanYogas, spiritualIndicators)
+        summary: this._generateComprehensiveSummary(
+          natalChart,
+          rajDhanYogas,
+          spiritualIndicators
+        )
       };
     } catch (error) {
       logger.error('❌ Error in detailed chart analysis:', error);
@@ -108,7 +132,9 @@ class DetailedChartAnalysisCalculator {
     try {
       const fullAnalysis = await this.generateDetailedChartAnalysis(birthData);
 
-      if (!fullAnalysis || fullAnalysis.error) { return fullAnalysis; }
+      if (!fullAnalysis || fullAnalysis.error) {
+        return fullAnalysis;
+      }
 
       const areaMap = {
         career: fullAnalysis.careerFinanceAnalysis,
@@ -119,7 +145,11 @@ class DetailedChartAnalysisCalculator {
         yoga_combinations: fullAnalysis.rajDhanYogas
       };
 
-      return areaMap[area] || { message: `Detailed ${area} analysis available in complete chart` };
+      return (
+        areaMap[area] || {
+          message: `Detailed ${area} analysis available in complete chart`
+        }
+      );
     } catch (error) {
       logger.error('Error getting chart insights:', error.message);
       return { error: 'Unable to get chart insights' };
@@ -130,7 +160,16 @@ class DetailedChartAnalysisCalculator {
    * Generate complete natal chart with all calculations
    * @private
    */
-  async _generateCompleteNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _generateCompleteNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     const chart = {
       planets: {},
       houses: [],
@@ -141,19 +180,35 @@ class DetailedChartAnalysisCalculator {
     };
 
     // Calculate Julian Day
-    const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+    const jd = this._dateToJulianDay(
+      year,
+      month,
+      day,
+      hour + minute / 60 - timezone
+    );
 
     // Calculate planets
     const planetIds = {
-      sun: sweph.SE_SUN, moon: sweph.SE_MOON, mars: sweph.SE_MARS,
-      mercury: sweph.SE_MERCURY, jupiter: sweph.SE_JUPITER,
-      venus: sweph.SE_VENUS, saturn: sweph.SE_SATURN,
-      uranus: sweph.SE_URANUS, neptune: sweph.SE_NEPTUNE, pluto: sweph.SE_PLUTO,
-      rahu: sweph.SE_TRUE_NODE, ketu: sweph.SE_MEAN_APOG
+      sun: sweph.SE_SUN,
+      moon: sweph.SE_MOON,
+      mars: sweph.SE_MARS,
+      mercury: sweph.SE_MERCURY,
+      jupiter: sweph.SE_JUPITER,
+      venus: sweph.SE_VENUS,
+      saturn: sweph.SE_SATURN,
+      uranus: sweph.SE_URANUS,
+      neptune: sweph.SE_NEPTUNE,
+      pluto: sweph.SE_PLUTO,
+      rahu: sweph.SE_TRUE_NODE,
+      ketu: sweph.SE_MEAN_APOG
     };
 
     for (const [planetName, planetId] of Object.entries(planetIds)) {
-      const position = sweph.calc(jd, planetId, sweph.SEFLG_SIDEREAL | sweph.SEFLG_SPEED);
+      const position = sweph.calc(
+        jd,
+        planetId,
+        sweph.SEFLG_SIDEREAL | sweph.SEFLG_SPEED
+      );
       if (position && Array.isArray(position.longitude)) {
         const longitude = position.longitude[0];
         const latitude = position.latitude || 0;
@@ -191,7 +246,11 @@ class DetailedChartAnalysisCalculator {
 
     // Assign planets to houses
     Object.entries(chart.planets).forEach(([planet, data]) => {
-      const houseNumber = this._getHouseForLongitude(data.longitude, houses.ascendant, houses.houseCusps);
+      const houseNumber = this._getHouseForLongitude(
+        data.longitude,
+        houses.ascendant,
+        houses.houseCusps
+      );
       if (chart.houses[houseNumber - 1]) {
         chart.houses[houseNumber - 1].planets.push(planet);
       }
@@ -199,7 +258,9 @@ class DetailedChartAnalysisCalculator {
     });
 
     // Identify empty houses and intercepted signs
-    chart.emptyHouses = chart.houses.filter(house => house.planets.length === 0).map(house => house.number);
+    chart.emptyHouses = chart.houses
+      .filter(house => house.planets.length === 0)
+      .map(house => house.number);
     chart.interceptedSigns = this._findInterceptedSigns(houses.houseCusps);
 
     // Generate aspects
@@ -240,16 +301,24 @@ class DetailedChartAnalysisCalculator {
       trikonaLords.forEach(trikona => {
         // Conjunction of lords
         if (natalChart.planets[kendra] && natalChart.planets[trikona]) {
-          const distance = Math.abs(natalChart.planets[kendra].longitude - natalChart.planets[trikona].longitude);
+          const distance = Math.abs(
+            natalChart.planets[kendra].longitude -
+              natalChart.planets[trikona].longitude
+          );
           const minDistance = Math.min(distance, 360 - distance);
 
-          if (minDistance <= 10) { // Within orb
+          if (minDistance <= 10) {
+            // Within orb
             rajCombinations.push({
               type: 'Raj Yoga',
               planets: [kendra, trikona],
               houses: `${natalChart.planets[kendra].house}, ${natalChart.planets[trikona].house}`,
               strength: this._assessYogaStrength(kendra, trikona, natalChart),
-              activatedBy: this._identifyYogaTriggers(kendra, trikona, natalChart),
+              activatedBy: this._identifyYogaTriggers(
+                kendra,
+                trikona,
+                natalChart
+              ),
               effects: this._describeRajYogaEffects(kendra, trikona)
             });
           }
@@ -278,14 +347,21 @@ class DetailedChartAnalysisCalculator {
     // Classic Dhan Yogas
     [ninthLord, eleventhLord].forEach(planet => {
       if (natalChart.planets[planet] && natalChart.planets[secondLord]) {
-        const distance = Math.abs(natalChart.planets[planet].longitude - natalChart.planets[secondLord].longitude);
+        const distance = Math.abs(
+          natalChart.planets[planet].longitude -
+            natalChart.planets[secondLord].longitude
+        );
         const minDistance = Math.min(distance, 360 - distance);
 
         if (minDistance <= 15) {
           dhanCombinations.push({
             type: 'Dhan Yoga',
             planets: [secondLord, planet],
-            strength: this._assessDhanYogaStrength(secondLord, planet, natalChart),
+            strength: this._assessDhanYogaStrength(
+              secondLord,
+              planet,
+              natalChart
+            ),
             wealthAreas: this._identifyWealthAreas(secondLord, planet),
             timing: 'Activated through Jupiter or Venus periods'
           });
@@ -296,7 +372,10 @@ class DetailedChartAnalysisCalculator {
     yogas.dhanYogas = dhanCombinations;
 
     // Combined Yogas (Raj + Dhan)
-    yogas.combinedYogas = this._findCombinedYogas(rajCombinations, dhanCombinations);
+    yogas.combinedYogas = this._findCombinedYogas(
+      rajCombinations,
+      dhanCombinations
+    );
 
     // Overall yoga strength assessment
     yogas.yogaStrength = this._calculateOverallYogaStrength(yogas);
@@ -315,11 +394,15 @@ class DetailedChartAnalysisCalculator {
     for (let houseNum = 1; houseNum <= 12; houseNum++) {
       const houseLord = natalChart.houses[houseNum - 1]?.lord;
 
-      if (!houseLord) { continue; }
+      if (!houseLord) {
+        continue;
+      }
 
       const lordData = natalChart.planets[houseLord];
 
-      if (!lordData) { continue; }
+      if (!lordData) {
+        continue;
+      }
 
       // Arudha calculation: Lord position + (Lord position - House position)
       const houseStart = natalChart.houses[houseNum - 1]?.longitude || 0;
@@ -336,7 +419,11 @@ class DetailedChartAnalysisCalculator {
         longitude: normalizedArudhaLong,
         sign: arudhaSign,
         degree: Math.round(arudhaDegree * 100) / 100,
-        house: this._getHouseForLongitude(normalizedArudhaLong, natalChart.ascendant.longitude, natalChart.houses.map(h => h.longitude)),
+        house: this._getHouseForLongitude(
+          normalizedArudhaLong,
+          natalChart.ascendant.longitude,
+          natalChart.houses.map(h => h.longitude)
+        ),
         significance: this._getArudhaSignificance(houseNum),
         planets: this._getArudhaPlanets(normalizedArudhaLong, natalChart)
       };
@@ -348,7 +435,8 @@ class DetailedChartAnalysisCalculator {
     }
 
     if (arudhas.arudha7) {
-      arudhas.arudha7.spouseCharacteristics = this._analyzeSpouseCharacteristics(arudhas.arudha7);
+      arudhas.arudha7.spouseCharacteristics =
+        this._analyzeSpouseCharacteristics(arudhas.arudha7);
     }
 
     if (arudhas.arudha10) {
@@ -376,7 +464,11 @@ class DetailedChartAnalysisCalculator {
       longitude: dhumaLong,
       sign: Math.floor(dhumaLong / 30) + 1,
       significance: 'Obstacles, smoke, delays',
-      house: this._getHouseForLongitude(dhumaLong, ascLong, natalChart.houses.map(h => h.longitude))
+      house: this._getHouseForLongitude(
+        dhumaLong,
+        ascLong,
+        natalChart.houses.map(h => h.longitude)
+      )
     };
 
     // Vyatipata Upagraha - 180° from Dhuma
@@ -385,7 +477,11 @@ class DetailedChartAnalysisCalculator {
       longitude: vyatipataLong,
       sign: Math.floor(vyatipataLong / 30) + 1,
       significance: 'Sudden misfortune, reversals',
-      house: this._getHouseForLongitude(vyatipataLong, ascLong, natalChart.houses.map(h => h.longitude))
+      house: this._getHouseForLongitude(
+        vyatipataLong,
+        ascLong,
+        natalChart.houses.map(h => h.longitude)
+      )
     };
 
     // Parivesha Upagraha - 180° from Vyatipata
@@ -394,7 +490,11 @@ class DetailedChartAnalysisCalculator {
       longitude: pariveshaLong,
       sign: Math.floor(pariveshaLong / 30) + 1,
       significance: 'Encirclement, environmental factors',
-      house: this._getHouseForLongitude(pariveshaLong, ascLong, natalChart.houses.map(h => h.longitude))
+      house: this._getHouseForLongitude(
+        pariveshaLong,
+        ascLong,
+        natalChart.houses.map(h => h.longitude)
+      )
     };
 
     // Indrachapa Upagraha - opposite of Indras (sun)
@@ -403,7 +503,11 @@ class DetailedChartAnalysisCalculator {
       longitude: indrachapaLong,
       sign: Math.floor(indrachapaLong / 30) + 1,
       significance: 'Achievements, spiritual success',
-      house: this._getHouseForLongitude(indrachapaLong, ascLong, natalChart.houses.map(h => h.longitude))
+      house: this._getHouseForLongitude(
+        indrachapaLong,
+        ascLong,
+        natalChart.houses.map(h => h.longitude)
+      )
     };
 
     // Additional Upagrahas based on planetary relationships
@@ -432,8 +536,11 @@ class DetailedChartAnalysisCalculator {
         if (planet1 < planet2 && data1.sign === data2.sign) {
           const distance = Math.abs(data1.longitude - data2.longitude);
 
-          if (distance <= 15) { // Within conjunction orb
-            if (!conjunctPlanets[data1.sign]) { conjunctPlanets[data1.sign] = []; }
+          if (distance <= 15) {
+            // Within conjunction orb
+            if (!conjunctPlanets[data1.sign]) {
+              conjunctPlanets[data1.sign] = [];
+            }
             conjunctPlanets[data1.sign].push([planet1, planet2, distance]);
           }
         }
@@ -448,7 +555,11 @@ class DetailedChartAnalysisCalculator {
           sign: parseInt(sign),
           separation: Math.round(distance * 100) / 100,
           significance: this._interpretConjunction(planet1, planet2),
-          strength: this._assessConjunctionStrength(planet1, planet2, natalChart)
+          strength: this._assessConjunctionStrength(
+            planet1,
+            planet2,
+            natalChart
+          )
         });
       });
     });
@@ -460,7 +571,8 @@ class DetailedChartAnalysisCalculator {
     combinations.mutualReceptions = this._findMutualReceptions(natalChart);
 
     // Special combinations (like Raja Yoga variations)
-    combinations.specialCombinations = this._findSpecialCombinations(natalChart);
+    combinations.specialCombinations =
+      this._findSpecialCombinations(natalChart);
 
     return combinations;
   }
@@ -484,7 +596,11 @@ class DetailedChartAnalysisCalculator {
     criticalDegrees.forEach(criticalDeg => {
       for (let sign = 1; sign <= 12; sign++) {
         const longitude = (sign - 1) * 30 + criticalDeg;
-        const planetsNearCritical = this._findPlanetsNearPoint(longitude, natalChart, 2);
+        const planetsNearCritical = this._findPlanetsNearPoint(
+          longitude,
+          natalChart,
+          2
+        );
 
         if (planetsNearCritical.length > 0) {
           sensitivePoints.push({
@@ -532,7 +648,8 @@ class DetailedChartAnalysisCalculator {
     }
 
     // Identify interdependent house themes
-    bhavatBhavam.interdependentThemes = this._findInterdependentThemes(natalChart);
+    bhavatBhavam.interdependentThemes =
+      this._findInterdependentThemes(natalChart);
 
     // Trace power flow through the chart
     bhavatBhavam.housePowerFlow = this._tracePowerFlow(natalChart);
@@ -561,7 +678,8 @@ class DetailedChartAnalysisCalculator {
     analysis.careerHouses.second = this._analyzeSecondHouse(natalChart); // Earnings
 
     // Analyze financial houses
-    analysis.financialHouses.second = this._analyzeSecondHouseForFinance(natalChart);
+    analysis.financialHouses.second =
+      this._analyzeSecondHouseForFinance(natalChart);
     analysis.financialHouses.eleventh = this._analyzeEleventhHouse(natalChart); // Gains
     analysis.financialHouses.eighth = this._analyzeEighthHouse(natalChart); // Inheritances/transformations
 
@@ -571,7 +689,8 @@ class DetailedChartAnalysisCalculator {
 
     // Identify key indicators
     analysis.careerIndicators = this._identifyCareerIndicators(natalChart);
-    analysis.financialIndicators = this._identifyFinancialIndicators(natalChart);
+    analysis.financialIndicators =
+      this._identifyFinancialIndicators(natalChart);
 
     // Timing factors for career/financial periods
     analysis.timingActivators = this._identifyTimingActivators(natalChart);
@@ -617,9 +736,12 @@ class DetailedChartAnalysisCalculator {
     }
 
     // Key planetary combinations
-    const keyCombinations = natalChart.aspects?.filter(aspect =>
-      aspect.orbs <= 3 && ['conjunction', 'trine', 'sextile'].includes(aspect.type)
-    ) || [];
+    const keyCombinations =
+      natalChart.aspects?.filter(
+        aspect =>
+          aspect.orbs <= 3 &&
+          ['conjunction', 'trine', 'sextile'].includes(aspect.type)
+      ) || [];
 
     if (keyCombinations.length > 0) {
       summary += '*Key Planetary Combinations:*\n';
@@ -629,19 +751,47 @@ class DetailedChartAnalysisCalculator {
       summary += '\n';
     }
 
-    summary += '*This detailed analysis examines the complete Vedic birth chart structure, providing comprehensive insights across all life areas.*';
+    summary +=
+      '*This detailed analysis examines the complete Vedic birth chart structure, providing comprehensive insights across all life areas.*';
 
     return summary;
   }
 
   // Helper methods for detailed calculations
   _getSignName(signNumber) {
-    const signs = ['', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      '',
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs[signNumber] || 'Unknown';
   }
 
   _getSignLord(sign) {
-    const lords = ['mars', 'venus', 'mercury', 'moon', 'sun', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'saturn', 'jupiter'];
+    const lords = [
+      'mars',
+      'venus',
+      'mercury',
+      'moon',
+      'sun',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn',
+      'saturn',
+      'jupiter'
+    ];
     return lords[sign - 1];
   }
 

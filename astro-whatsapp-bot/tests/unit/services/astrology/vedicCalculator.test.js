@@ -29,39 +29,43 @@ jest.mock('../../../../src/services/astrology/vedic/VedicCalculator', () => ({
     score: 85,
     description: 'Good compatibility'
   }),
-  calculateSecondaryProgressions: jest.fn().mockImplementation(async birthData => {
-    if (birthData.birthDate === 'invalid') {
-      return { error: 'Unable to calculate secondary progressions' };
-    }
-    return {
-      ageInYears: 30,
-      ageInDays: 10950,
-      progressedDate: '2024-01-15T14:30:00.000Z',
-      formattedProgressedDate: 'Monday, January 15, 2024',
-      progressedChart: {
-        sunSign: 'Aquarius',
-        moonSign: 'Pisces',
-        risingSign: 'Capricorn'
-      },
-      analysis: {
-        progressedSunSign: 'Aquarius',
-        progressedMoonSign: 'Pisces',
-        progressedRisingSign: 'Capricorn',
-        ageDescription: 'Mid-life transitions and stability',
-        planetaryPositions: {},
-        aspects: []
-      },
-      keyProgressions: [
-        {
-          planet: 'Sun',
-          position: 'Aquarius',
-          significance: 'Identity and life direction in Aquarius'
-        }
-      ],
-      majorThemes: ['Focus on mid-life transitions and stability'],
-      lifeChanges: ['Saturn Return: Major life restructuring and responsibility']
-    };
-  }),
+  calculateSecondaryProgressions: jest
+    .fn()
+    .mockImplementation(async birthData => {
+      if (birthData.birthDate === 'invalid') {
+        return { error: 'Unable to calculate secondary progressions' };
+      }
+      return {
+        ageInYears: 30,
+        ageInDays: 10950,
+        progressedDate: '2024-01-15T14:30:00.000Z',
+        formattedProgressedDate: 'Monday, January 15, 2024',
+        progressedChart: {
+          sunSign: 'Aquarius',
+          moonSign: 'Pisces',
+          risingSign: 'Capricorn'
+        },
+        analysis: {
+          progressedSunSign: 'Aquarius',
+          progressedMoonSign: 'Pisces',
+          progressedRisingSign: 'Capricorn',
+          ageDescription: 'Mid-life transitions and stability',
+          planetaryPositions: {},
+          aspects: []
+        },
+        keyProgressions: [
+          {
+            planet: 'Sun',
+            position: 'Aquarius',
+            significance: 'Identity and life direction in Aquarius'
+          }
+        ],
+        majorThemes: ['Focus on mid-life transitions and stability'],
+        lifeChanges: [
+          'Saturn Return: Major life restructuring and responsibility'
+        ]
+      };
+    }),
   calculateSolarArcDirections: jest.fn().mockImplementation(birthData => {
     if (birthData.birthDate === 'invalid') {
       return { error: 'Unable to calculate solar arc directions' };
@@ -88,10 +92,13 @@ jest.mock('../../../../src/services/astrology/vedic/VedicCalculator', () => ({
           planet: 'Sun',
           from: 'Natal position',
           to: 'Aquarius',
-          significance: 'Identity and life direction directed to Aquarius themes'
+          significance:
+            'Identity and life direction directed to Aquarius themes'
         }
       ],
-      lifeChanges: ['Saturn Return: Major life restructuring and responsibility']
+      lifeChanges: [
+        'Saturn Return: Major life restructuring and responsibility'
+      ]
     };
   })
 }));
@@ -185,7 +192,8 @@ describe('VedicCalculator', () => {
         birthPlace: 'Mumbai, India'
       };
 
-      const progressions = await calculator.calculateSecondaryProgressions(birthData);
+      const progressions =
+        await calculator.calculateSecondaryProgressions(birthData);
 
       expect(progressions).toBeDefined();
       expect(progressions.ageInYears).toBeDefined();
@@ -206,7 +214,8 @@ describe('VedicCalculator', () => {
         birthPlace: 'invalid'
       };
 
-      const progressions = await calculator.calculateSecondaryProgressions(birthData);
+      const progressions =
+        await calculator.calculateSecondaryProgressions(birthData);
 
       expect(progressions).toBeDefined();
       expect(progressions.error).toBeDefined();

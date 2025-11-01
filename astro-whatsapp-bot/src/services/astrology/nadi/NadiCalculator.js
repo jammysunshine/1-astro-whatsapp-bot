@@ -22,7 +22,10 @@ class NadiCalculator {
         person.birthDate,
         person.birthTime
       );
-      const nadiSystem = this.determineNadiSystem(birthNakshatra, person.birthDate);
+      const nadiSystem = this.determineNadiSystem(
+        birthNakshatra,
+        person.birthDate
+      );
       const dashaPeriod = this.calculateCurrentDasha(person.birthDate);
       const predictions = this.generatePredictions(
         birthNakshatra,
@@ -53,7 +56,9 @@ class NadiCalculator {
     try {
       // Parse birth date and time
       const [day, month, year] = birthDate.split('/').map(Number);
-      const [hour, minute] = birthTime ? birthTime.split(':').map(Number) : [12, 0];
+      const [hour, minute] = birthTime ?
+        birthTime.split(':').map(Number) :
+        [12, 0];
 
       // Calculate nakshatra based on date and time
       const dayOfYear = this.getDayOfYear(day, month);
@@ -70,7 +75,9 @@ class NadiCalculator {
         deity: nakshatra.deity || 'Associated Deity',
         nature: nakshatra.nature,
         pada: this.calculatePada(hour, minute),
-        characteristics: this.dataRepo.getNakshatraCharacteristics(nakshatra.name)
+        characteristics: this.dataRepo.getNakshatraCharacteristics(
+          nakshatra.name
+        )
       };
     } catch (error) {
       this.logger.error('Birth nakshatra calculation error:', error);
@@ -152,7 +159,8 @@ class NadiCalculator {
 
       // Calculate age in years
       const ageInYears = now.getFullYear() - birthDateObj.getFullYear();
-      const ageInMonths = (now.getMonth() - birthDateObj.getMonth()) + (ageInYears * 12);
+      const ageInMonths =
+        now.getMonth() - birthDateObj.getMonth() + ageInYears * 12;
 
       // Total dasha cycle duration (sum of all planet periods)
       const dashaPeriods = this.dataRepo.getDashaPeriods();

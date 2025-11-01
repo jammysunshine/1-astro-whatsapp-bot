@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class ColorTherapyAction extends BaseAction {
-  static get actionId() { return 'get_color_therapy_guide'; }
+  static get actionId() {
+    return 'get_color_therapy_guide';
+  }
 
   async execute() {
     try {
@@ -16,7 +18,8 @@ class ColorTherapyAction extends BaseAction {
   }
 
   async sendColorTherapyGuide() {
-    const guide = '🌈 *Color Therapy - Elemental Healing*\n\n' +
+    const guide =
+      '🌈 *Color Therapy - Elemental Healing*\n\n' +
       'Colors carry powerful vibrational energies that can harmonize your chakras, balance elements, and heal through light. Each color connects to planetary energies and elemental forces.\n\n' +
       '*🌈 ELEMENTAL COLORS:*\n' +
       '• Red (Fire) - Mars: Energy, passion, vitality\n' +
@@ -40,14 +43,19 @@ class ColorTherapyAction extends BaseAction {
       '*Choose colors that resonate with your soul\'s highest vibration.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, guide, buttons, userLanguage
+      this.phoneNumber,
+      guide,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -57,7 +65,12 @@ class ColorTherapyAction extends BaseAction {
     return {
       id: this.actionId,
       description: 'Get color therapy guides for healing and energy balancing',
-      keywords: ['color therapy', 'chromotherapy', 'elemental colors', 'healing colors'],
+      keywords: [
+        'color therapy',
+        'chromotherapy',
+        'elemental colors',
+        'healing colors'
+      ],
       category: 'utilities',
       subscriptionRequired: false,
       cooldown: 1800000

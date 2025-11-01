@@ -18,7 +18,11 @@ class AsteroidsService extends ServiceTemplate {
 
       // Calculate asteroid positions for default asteroids
       const asteroids = ['Ceres', 'Pallas', 'Juno', 'Vesta'];
-      const result = await this.calculator.calculateAsteroidPositions(birthData, asteroids, {});
+      const result = await this.calculator.calculateAsteroidPositions(
+        birthData,
+        asteroids,
+        {}
+      );
 
       return result;
     } catch (error) {
@@ -36,10 +40,18 @@ class AsteroidsService extends ServiceTemplate {
     try {
       this.validateParams(params, ['birthData']);
 
-      const { birthData, asteroids = ['Ceres', 'Pallas', 'Juno', 'Vesta'], options = {} } = params;
+      const {
+        birthData,
+        asteroids = ['Ceres', 'Pallas', 'Juno', 'Vesta'],
+        options = {}
+      } = params;
 
       // Analyze asteroid aspects
-      const result = await this.calculator.analyzeAsteroidAspects(birthData, asteroids, options);
+      const result = await this.calculator.analyzeAsteroidAspects(
+        birthData,
+        asteroids,
+        options
+      );
 
       return {
         success: true,
@@ -73,10 +85,22 @@ class AsteroidsService extends ServiceTemplate {
     try {
       this.validateParams(params, ['birthData']);
 
-      const { birthData, startDate, endDate, asteroids = ['Ceres', 'Pallas', 'Juno', 'Vesta'], options = {} } = params;
+      const {
+        birthData,
+        startDate,
+        endDate,
+        asteroids = ['Ceres', 'Pallas', 'Juno', 'Vesta'],
+        options = {}
+      } = params;
 
       // Calculate asteroid transits
-      const result = await this.calculator.calculateAsteroidTransits(birthData, startDate, endDate, asteroids, options);
+      const result = await this.calculator.calculateAsteroidTransits(
+        birthData,
+        startDate,
+        endDate,
+        asteroids,
+        options
+      );
 
       return {
         success: true,
@@ -150,7 +174,10 @@ class AsteroidsService extends ServiceTemplate {
       const { birthData, options = {} } = params;
 
       // Get Pallas analysis
-      const result = await this.calculator.getPallasAnalysis(birthData, options);
+      const result = await this.calculator.getPallasAnalysis(
+        birthData,
+        options
+      );
 
       return {
         success: true,
@@ -258,7 +285,10 @@ class AsteroidsService extends ServiceTemplate {
       const { birthData, options = {} } = params;
 
       // Get Chiron analysis
-      const result = await this.calculator.getChironAnalysis(birthData, options);
+      const result = await this.calculator.getChironAnalysis(
+        birthData,
+        options
+      );
 
       return {
         success: true,
@@ -311,7 +341,11 @@ class AsteroidsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['calculateAsteroidPositions', 'analyzeAsteroidAspects', 'calculateAsteroidTransits'],
+      methods: [
+        'calculateAsteroidPositions',
+        'analyzeAsteroidAspects',
+        'calculateAsteroidTransits'
+      ],
       dependencies: ['AsteroidCalculator']
     };
   }

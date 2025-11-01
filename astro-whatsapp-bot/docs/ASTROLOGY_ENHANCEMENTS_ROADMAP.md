@@ -1,9 +1,11 @@
 # 🚀 Astrology Services Enhancement Roadmap
 
 ## Overview
+
 This roadmap outlines comprehensive improvements to transform our astrology WhatsApp bot from a functional platform to a world-class astrology intelligence system capable of professional-level astrological calculations and interpretations.
 
 ## Current Status ✅
+
 - ✅ **Core Infrastructure:** Swiss Ephemeris precision across all services
 - ✅ **Menu System:** 79+ functional pathways with no dead ends
 - ✅ **Deployment Ready:** Node.js 18 compatibility, all services operational
@@ -16,11 +18,13 @@ This roadmap outlines comprehensive improvements to transform our astrology What
 ### 1.1 Advanced Swiss Ephemeris Integration
 
 #### Current Implementation
+
 - Basic planetary position calculations using Swiss Ephemeris
 - Simple house cusp calculations (Placidus system)
 - Basic aspect calculations with fixed orbs
 
 #### Enhanced Implementation
+
 ```javascript
 // Precessed house systems with accuracy customization
 const calculatePreciseChart = async (birthData, houseSystem = 'P') => {
@@ -52,6 +56,7 @@ const calculateVariableOrbs = (planets) => {
 ```
 
 **Features to Implement:**
+
 - ✅ **Multiple House Systems:** Placidus, Porphyry, Regiomontanus, Koch
 - ✅ **Variable Orbs:** Aspect and planet-speed adjusted orb calculations
 - ✅ **Retrograde Stations:** Exact critical points for planetary changes
@@ -62,33 +67,40 @@ const calculateVariableOrbs = (planets) => {
 ### 1.2 Advanced Timing Analysis
 
 #### Current Implementation
+
 - Basic transit calculations
 - Simple Saturn return identification
 - Basic planetary periods
 
 #### Enhanced Implementation
+
 **Secondary Progressions:**
+
 ```javascript
 const calculateSecondaryProgressions = async (birthChart, currentDate) => {
   // One degree = one year progressed
   const progressedSun = {
-    longitude: birthChart.sun.longitude + (yearsAlive / 360),
-    sign: getSignFromLongitude(progressedSun.longitude)
+    longitude: birthChart.sun.longitude + yearsAlive / 360,
+    sign: getSignFromLongitude(progressedSun.longitude),
   };
 
   // Progressed aspects to natal
-  const progressedAspects = calculateAspects(progressedPlanets, birthChart.planets);
+  const progressedAspects = calculateAspects(
+    progressedPlanets,
+    birthChart.planets
+  );
 
   return {
     progressedChart: progressedPlanets,
     secondaryAspects: progressedAspects,
     lifeLessons: interpretProgressedAspects(progressedAspects),
-    currentFoci: identifyProgressedThemes(progressedAspects)
+    currentFoci: identifyProgressedThemes(progressedAspects),
   };
 };
 ```
 
 **Solar Arc Directions:**
+
 ```javascript
 const calculateSolarArc = async (birthChart, currentDate) => {
   const yearsAlive = calculateAgeInYears(birthChart.birthDate, currentDate);
@@ -97,19 +109,24 @@ const calculateSolarArc = async (birthChart, currentDate) => {
   const directedPlanets = birthChart.planets.map(planet => ({
     originalLongitude: planet.longitude,
     directedLongitude: (planet.longitude + arcDistance) % 360,
-    interpretation: getSolarArcInterpretation(planet.name, planet.sign, directedLongitude)
+    interpretation: getSolarArcInterpretation(
+      planet.name,
+      planet.sign,
+      directedLongitude
+    ),
   }));
 
   return {
     arcDistance,
     directedPlanets,
     keyTransits: calculateArcTransits(directedPlanets, currentDate),
-    lifePurpose: calculateArcPurpose(directedPlanets)
+    lifePurpose: calculateArcPurpose(directedPlanets),
   };
 };
 ```
 
 **Comprehensive Timing Systems:**
+
 - ✅ **Transiting Planet Stations:** Retrograde/ingress critical timing
 - ✅ **Lunar Return Integration:** Personal monthly cycles
 - ✅ **Chani Returns:** 19-year life structure cycles
@@ -124,48 +141,68 @@ const calculateSolarArc = async (birthChart, currentDate) => {
 ### 2.1 Complete Divisional Chart System
 
 #### Current State
+
 Basic mention of D9 (Navamsa) and D10 (Dasamsa) charts
 
 #### Enhanced Implementation
+
 ```javascript
 const VedicDivisionCalculator = {
   // Complete 16 vargas system
   divisions: {
-    1: { name: 'Rashi', division: 1, purpose: 'Body and physical manifestation' },
+    1: {
+      name: 'Rashi',
+      division: 1,
+      purpose: 'Body and physical manifestation',
+    },
     2: { name: 'Hora', division: 2, purpose: 'Wealth and possessions' },
-    3: { name: 'Drekkana', division: 3, purpose: 'Siblings and extended family' },
-    4: { name: 'Chaturthamsa', division: 4, purpose: 'Fortune and immovable property' },
+    3: {
+      name: 'Drekkana',
+      division: 3,
+      purpose: 'Siblings and extended family',
+    },
+    4: {
+      name: 'Chaturthamsa',
+      division: 4,
+      purpose: 'Fortune and immovable property',
+    },
     5: { name: 'Saptamsa', division: 7, purpose: 'Children and creativity' },
     6: { name: 'Navamsa', division: 9, purpose: 'Marriage and partnerships' },
     7: { name: 'Dasamsa', division: 10, purpose: 'Career and profession' },
-    8: { name: 'Dwadasamsa', division: 12, purpose: 'Parents and spiritual wealth' },
+    8: {
+      name: 'Dwadasamsa',
+      division: 12,
+      purpose: 'Parents and spiritual wealth',
+    },
     9: { name: 'Shodasamsa', division: 16, purpose: 'Vehicles and pleasures' },
     // Plus additional divisions for specialized analysis
   },
 
-  calculateVargaStrength: (birthChart) => {
+  calculateVargaStrength: birthChart => {
     return divisions.map(division => ({
       varga: division.name,
       strength: calculateVargottamaScore(birthChart, division),
       interpretation: getDivisionInterpretation(birthChart, division),
-      careerImplications: getVargaCareerGuidance(birthChart, division)
+      careerImplications: getVargaCareerGuidance(birthChart, division),
     }));
-  }
+  },
 };
 ```
 
 #### Vargottama Analysis
+
 ```javascript
 const calculateVargottamaScore = (originalSign, vargaSign) => {
   // Planet in same sign in both rashi and varga = +1 point
   // Multiple vargottama planets = stronger placement
-  const sameSign = (originalSign === vargaSign) ? 1 : 0;
+  const sameSign = originalSign === vargaSign ? 1 : 0;
   const exaltedPoints = isExaltedInSign(vargaSign) ? 0.5 : 0;
   return sameSign + exaltedPoints;
 };
 ```
 
 **Complete Implementation:**
+
 - ✅ **All 16 Varga Charts** with automatic calculation
 - ✅ **Vargottama Strength Scoring** (0-5 points per planet)
 - ✅ **Division-Specific Career Guidance** (D-10 for profession, D-7 for children)
@@ -175,14 +212,26 @@ const calculateVargottamaScore = (originalSign, vargaSign) => {
 ### 2.2 Applied Nakshatra Integration
 
 #### Current State
+
 Basic nakshatra mention
 
 #### Enhanced Implementation
+
 ```javascript
 const NakshatraCalculator = {
   nakshatras: [
-    { name: 'Ashwini', deity: 'Ashwin Kumaras', energy: 'Healing', ruler: 'Ketu' },
-    { name: 'Bharani', deity: 'Yama', energy: 'Transformation', ruler: 'Venus' },
+    {
+      name: 'Ashwini',
+      deity: 'Ashwin Kumaras',
+      energy: 'Healing',
+      ruler: 'Ketu',
+    },
+    {
+      name: 'Bharani',
+      deity: 'Yama',
+      energy: 'Transformation',
+      ruler: 'Venus',
+    },
     // All 27 nakshatras with complete attributes
   ],
 
@@ -193,15 +242,19 @@ const NakshatraCalculator = {
     return {
       currentNakshatra: nakshatras[nakshatraIndex],
       pada: pada + 1,
-      qualities: analyzeNakshatraQualities(nakshatras[nakshatraIndex], planetName),
+      qualities: analyzeNakshatraQualities(
+        nakshatras[nakshatraIndex],
+        planetName
+      ),
       family: getNakshatraFamily(nakshatras[nakshatraIndex]),
-      remediation: getNakshatraRemedies(nakshatraIndex, planetName)
+      remediation: getNakshatraRemedies(nakshatraIndex, planetName),
     };
-  }
+  },
 };
 ```
 
 **Complete Nakshatra Features:**
+
 - ✅ **27 Nakshatra Full Analysis** with deity and energy profiles
 - ✅ **Pada (Quarter) Calculations** for precise positioning
 - ✅ **Family Classification** (Dhurva, Rakshasa, Manushya, Deva)
@@ -211,9 +264,11 @@ const NakshatraCalculator = {
 ### 2.3 Advanced Jaimini Karaka System
 
 #### Current State
+
 Basic 7 karakas with distance calculation
 
 #### Enhanced Implementation
+
 ```javascript
 const JaiminiCalculator = {
   calculateAdvancedKarakas: (moonLongitude, planets) => {
@@ -224,11 +279,11 @@ const JaiminiCalculator = {
       sphutaPositions: calculateSphutaChakra(planets, karakas),
       arudhaPadas: calculateArudhaPadas(planets, karakas),
       lifeProgression: analyzeKarakaSequence(karakas),
-      remedies: suggestJaiminiRemedies(karakas)
+      remedies: suggestJaiminiRemedies(karakas),
     };
   },
 
-  calculateArudhaPadas: (karakas) => {
+  calculateArudhaPadas: karakas => {
     // Arudha = Reputation and appearance of houses
     // For each house, count signs from karaka to its sign, project that many signs from lagna
     const arudhaLagna = calculateSingleArudha(lagnaSign, atmakarakaSign);
@@ -239,11 +294,12 @@ const JaiminiCalculator = {
       fortune: arudhaFortune, // Hidden wealth/spirituality
       // All 12 house arudhas
     };
-  }
+  },
 };
 ```
 
 **Advanced Jaimini Features:**
+
 - ✅ **Sphuta Chakra** (calculated life arc positions)
 - ✅ **Arudha Padas** (reputation points) for all 12 houses
 - ✅ **Karaka Sequence Analysis** showing life progression
@@ -257,13 +313,13 @@ const JaiminiCalculator = {
 
 ```javascript
 const HellenisticCalculator = {
-  calculateBounds: (longitude) => {
+  calculateBounds: longitude => {
     // Term rulers (bounds) - ancient degree rulerships
     // Each sign divided by planetary bounds instead of equal decans
     return getBoundRuler(longitude);
   },
 
-  calculateChronocrators: (date) => {
+  calculateChronocrators: date => {
     // World rulers on a 360-year cycle (360 * 7 = 2520 years precession)
     // Each 20 years has planetary rulership: Saturn(20) → Jupiter(20) → Mars(20) etc.
     const yearsFromEpoch = calculateYearsFromHellemsiticEpoch(date);
@@ -273,9 +329,9 @@ const HellenisticCalculator = {
       currentRuler: ruler,
       period: calculateChronocratorPeriod(date),
       worldInfluences: getChronocratorThemes(ruler),
-      personalTiming: calculatePersonalChronocrator(birthChart)
+      personalTiming: calculatePersonalChronocrator(birthChart),
     };
-  }
+  },
 };
 ```
 
@@ -283,7 +339,7 @@ const HellenisticCalculator = {
 
 ```javascript
 const AspectPatternAnalyzer = {
-  detectPatterns: (chart) => {
+  detectPatterns: chart => {
     const aspects = calculateAllAspects(chart.planets);
 
     return {
@@ -292,21 +348,21 @@ const AspectPatternAnalyzer = {
       yods: detectYods(aspects),
       grandTrios: {
         trines: detectGrandTrines(aspects),
-        sextiles: detectGrandSextiles(aspects)
+        sextiles: detectGrandSextiles(aspects),
       },
-      stelliums: detectStelliums(chart, aspects)
+      stelliums: detectStelliums(chart, aspects),
     };
   },
 
-  detectGrandTrines: (aspects) => {
+  detectGrandTrines: aspects => {
     // Find 3 planets 120° apart in same element (fire, earth, air, water)
     return findHarmonicTriangles(aspects, 120);
   },
 
-  detectYods: (aspects) => {
+  detectYods: aspects => {
     // Sextile between 2 planets, both quincunx to third = "finger of fate"
     return findYodConfigurations(aspects);
-  }
+  },
 };
 ```
 
@@ -324,11 +380,11 @@ const PredictiveAnalyzer = {
       rulingSign: getSignName(rulingSign),
       houseMatters: getSignHouseMatters(rulingSign),
       planetaryRulers: getSignRulers(rulingSign),
-      themes: getProfectionThemes(age, rulingSign)
+      themes: getProfectionThemes(age, rulingSign),
     };
   },
 
-  calculateZodiacalReleasing: (birthChart) => {
+  calculateZodiacalReleasing: birthChart => {
     // Life chapter divisions based on Lot of Fortune
     const lunarRevolutions = calculateLunarCycles(birthChart);
     const lifeChapters = divineZodiacalChapters(lunarRevolutions);
@@ -336,9 +392,9 @@ const PredictiveAnalyzer = {
     return {
       currentChapter: identifyCurrentChapter(new Date(), lifeChapters),
       remainingTime: calculateChapterTimeRemaining(),
-      chapterThemes: getChapterThemes(currentChapter)
+      chapterThemes: getChapterThemes(currentChapter),
     };
-  }
+  },
 };
 ```
 
@@ -358,29 +414,38 @@ const RelationshipCalculator = {
     // Midpoint chart of both people's positions
     const compositePlanets = chart1.planets.map((planet, index) => ({
       name: planet.name,
-      longitude: calculateMidpoint(planet.longitude, chart2.planets[index].longitude),
-      type: 'composite'
+      longitude: calculateMidpoint(
+        planet.longitude,
+        chart2.planets[index].longitude
+      ),
+      type: 'composite',
     }));
 
     return {
       planets: compositePlanets,
       houses: calculateCompositeHouses(compositePlanets, relationshipDate),
       energy: analyzeCompositeKleinianElements(compositePlanets),
-      purpose: interpretCompositeMission(compositePlanets)
+      purpose: interpretCompositeMission(compositePlanets),
     };
   },
 
   calculateDavison: (chart1, chart2, relationshipDate) => {
     // Midpoint in time between births = Davison midpoint
-    const midpointDate = calculateDateMidpoint(chart1.birthData, chart2.birthData);
-    const davisonChart = calculateNatalChart(midpointDate, relationshipLocation);
+    const midpointDate = calculateDateMidpoint(
+      chart1.birthData,
+      chart2.birthData
+    );
+    const davisonChart = calculateNatalChart(
+      midpointDate,
+      relationshipLocation
+    );
 
     return {
       chart: davisonChart,
       relationshipType: classifyDavisonRelationship(davisonChart),
-      development: predictRelationshipEvolution(davisonChart)
+      development: predictRelationshipEvolution(davisonChart),
     };
-  }
+  },
 };
 ```
 
@@ -393,22 +458,40 @@ const CompatibilityScorer = {
 
     return {
       spiritual: calculateSpiritualHarmony(chart1.sun, chart2.moon, aspects),
-      emotional: calculateEmotionalCompatibility(chart1.moon, chart2.moon, chart1.venus, chart2.venus),
-      communication: analyzeMercurySynastry(chart1.mercury, chart2.mercury, aspects),
-      intimacy: evaluateVenusMarsSynastry(chart1.venus, chart2.mars, chart2.venus, chart1.mars),
-      stability: assessSaturnJupiterConnections(chart1.saturn, chart2.jupiter, aspects),
+      emotional: calculateEmotionalCompatibility(
+        chart1.moon,
+        chart2.moon,
+        chart1.venus,
+        chart2.venus
+      ),
+      communication: analyzeMercurySynastry(
+        chart1.mercury,
+        chart2.mercury,
+        aspects
+      ),
+      intimacy: evaluateVenusMarsSynastry(
+        chart1.venus,
+        chart2.mars,
+        chart2.venus,
+        chart1.mars
+      ),
+      stability: assessSaturnJupiterConnections(
+        chart1.saturn,
+        chart2.jupiter,
+        aspects
+      ),
 
       totalScore: calculateWeightedTotal(scores),
       strengths: identifyStrongestAspects(aspects),
       challenges: identifyDifficultAspects(aspects),
-      timing: analyzeRelationshipTiming(brithDates, aspects)
+      timing: analyzeRelationshipTiming(brithDates, aspects),
     };
   },
 
   calculateDuodenaryRhythms: (birthDates, relationshipDate) => {
     // 12-year relationship cycles analysis
     return analyzeCyclicHarmony(birthDates, relationshipDate);
-  }
+  },
 };
 ```
 
@@ -420,7 +503,7 @@ const CompatibilityScorer = {
 
 ```javascript
 const MarketAnalyzer = {
-  calculateSaturnCycle: (currentDate) => {
+  calculateSaturnCycle: currentDate => {
     // 29.5 year market contraction cycle
     const cyclePosition = (currentDate - SATURN_CYCLE_START) % (29.5 * 365.25);
     const phase = getCyclePhase(cyclePosition, 29.5);
@@ -429,11 +512,11 @@ const MarketAnalyzer = {
       phase: phase, // Early, Peak, Late expansion/contraction
       marketImplications: getSaturnMarketThemes(phase),
       personalTiming: correlatePersonalSaturnReturn(birthChart, currentDate),
-      investmentStrategy: getSaturnInvestmentApproach(phase)
+      investmentStrategy: getSaturnInvestmentApproach(phase),
     };
   },
 
-  calculateJupiterCycle: (currentDate) => {
+  calculateJupiterCycle: currentDate => {
     // 11.9 year optimism/expansion cycle
     const cyclePosition = (currentDate - JUPITER_CYCLE_START) % (11.9 * 365.25);
     const phase = getCyclePhase(cyclePosition, 11.9);
@@ -442,9 +525,9 @@ const MarketAnalyzer = {
       phase: phase,
       marketPsychology: getJupiterMarketSentiment(phase),
       opportunityWindows: identifyJupiterExpansionPeriods(phase),
-      riskAssessment: calculateJupiterOverconfidenceRisk(phase)
+      riskAssessment: calculateJupiterOverconfidenceRisk(phase),
     };
-  }
+  },
 };
 ```
 
@@ -452,35 +535,35 @@ const MarketAnalyzer = {
 
 ```javascript
 const FinancialHouseAnalyzer = {
-  analyze2ndHouse: (chart) => {
+  analyze2ndHouse: chart => {
     // Personal wealth, spending/saving patterns
     return {
       wealthAccumulation: get2ndHouseWealthCapacity(chart),
       spendingHabits: analyze2ndLordAspects(chart),
       inheritance: calculateInheritedWealth(chart),
-      selfWorthCornerstone: get2ndHouseSelfWorthThemes(chart)
+      selfWorthCornerstone: get2ndHouseSelfWorthThemes(chart),
     };
   },
 
-  analyze8thHouse: (chart) => {
+  analyze8thHouse: chart => {
     // Shared/invested wealth, debt, insurance
     return {
       investmentStyle: get8thHouseRiskTolerance(chart),
       debtPatterns: analyze8thHouseSaturnAspects(chart),
       partneredWealth: calculateJointFinancialVentureSuccess(chart),
-      transformationFinances: get8thHouseChangeOpportunities(chart)
+      transformationFinances: get8thHouseChangeOpportunities(chart),
     };
   },
 
-  analyze11thHouse: (chart) => {
+  analyze11thHouse: chart => {
     // Gains, hopes, income from group efforts
     return {
       incomeChannels: analyze11thLordAspects(chart),
       groupVentures: get11thHouseCollectiveWealth(chart),
       wishesFulfillment: calculateWishFulfillmentTiming(chart),
-      networkingPotential: get11thHouseAllianceStrength(chart)
+      networkingPotential: get11thHouseAllianceStrength(chart),
     };
-  }
+  },
 };
 ```
 
@@ -492,20 +575,20 @@ const FinancialHouseAnalyzer = {
 
 ```javascript
 const UserPatternAnalyzer = {
-  analyzeConversationHistory: (conversations) => {
+  analyzeConversationHistory: conversations => {
     // NLP analysis of user engagement patterns
     const patterns = {
       primaryConcerns: extractPrimaryThemes(conversations),
       questionFrequency: analyzeQuestionPatterns(conversations),
       preferredServices: identifyServicePreferences(conversations),
-      languageStyle: classifyCommunicationStyle(conversations)
+      languageStyle: classifyCommunicationStyle(conversations),
     };
 
     return {
       personalizedThemes: generatePersonalizedThemes(patterns),
       recommendedServices: suggestRelevantServices(patterns),
       communicationStyle: adaptResponseStyle(patterns),
-      followUpSuggestions: generateFollowUpQuestions(patterns)
+      followUpSuggestions: generateFollowUpQuestions(patterns),
     };
   },
 
@@ -517,9 +600,9 @@ const UserPatternAnalyzer = {
       initialDepth: getInitialReadingDepth(relationshipLevel),
       progressionSpeed: calculateInformationReleaseRate(conversations),
       triggerPoints: identifyAdvancedTopicTriggers(conversations),
-      personalizedVocabulary: adaptAstrologicalLanguage(user)
+      personalizedVocabulary: adaptAstrologicalLanguage(user),
     };
-  }
+  },
 };
 ```
 
@@ -562,7 +645,7 @@ const followupEngine = {
       transitReminders: identifyUpcomingKeyTransits(reading.chart, new Date()),
       timingAlerts: scheduleAuspiciousPeriods(reading),
       healingCheckIns: generateHealingReminders(reading.medicine),
-      growthPrompts: createDevelopmentMilestoneNotifications(reading.spiritual)
+      growthPrompts: createDevelopmentMilestoneNotifications(reading.spiritual),
     };
   },
 
@@ -571,9 +654,9 @@ const followupEngine = {
       day1: initialOverview(reading),
       week1: deeperPlanetAnalysis(reading, userContext),
       month1: timingIntegration(reading),
-      quarterly: evolutionTracking(reading, new Date())
+      quarterly: evolutionTracking(reading, new Date()),
     };
-  }
+  },
 };
 ```
 
@@ -618,7 +701,7 @@ const EphemerisOptimizer = {
 ```javascript
 const UserDataOptimizer = {
   // Chart result caching with differential updates
-  chartCachingStrategy: (chart) => {
+  chartCachingStrategy: chart => {
     const cacheKey = generateChartHash(chart);
     const compressedChart = compressChartData(chart);
     const differentialUpdates = calculateTransitingUpdates(chart);
@@ -629,11 +712,11 @@ const UserDataOptimizer = {
       transitsOnly: differentialUpdates,
       expirationSwitches: {
         slowMoving: 30 * 24 * 60, // Jupiter, Saturn, Uranus (30 days)
-        fastMoving: 24 * 60,      // Inner planets (24 hours)
-        houses: 6 * 60           // House cusps (6 hours, accounting for lat/lng changes)
-      }
+        fastMoving: 24 * 60, // Inner planets (24 hours)
+        houses: 6 * 60, // House cusps (6 hours, accounting for lat/lng changes)
+      },
     };
-  }
+  },
 };
 ```
 
@@ -642,6 +725,7 @@ const UserDataOptimizer = {
 ## 📊 SCALING & PERFORMANCE METRICS
 
 ### Target Performance Standards
+
 - **Response Time:** < 2000ms for basic calculations, <5000ms for comprehensive
 - **Cache Hit Rate:** > 85% for repeated calculations
 - **Database Queries:** < 3 per complete analysis
@@ -649,6 +733,7 @@ const UserDataOptimizer = {
 - **Swiss Ephemeris Calls:** Batch multiple calculations per ephemeris library call
 
 ### Analytics Implementation
+
 ```javascript
 const ServiceUsageAnalytics = {
   trackServiceEngagement: () => {
@@ -661,10 +746,10 @@ const ServiceUsageAnalytics = {
       optimizationOpportunities: {
         abandonedServices: identifyServicesToImprove(),
         shortSessions: analyzeWhyUsersLeaveQuickly(),
-        repetitiveQuestions: findCommonFollowUpPatterns()
-      }
+        repetitiveQuestions: findCommonFollowUpPatterns(),
+      },
     };
-  }
+  },
 };
 ```
 
@@ -682,14 +767,14 @@ const SubscriptionTierManager = {
       basicReadings: 10,
       transitChecks: 5,
       storedCharts: 3,
-      detailedReports: 1
+      detailedReports: 1,
     },
     features: [
       'Complete birth chart analysis',
       'Monthly transit forecasts',
       'Basic astrological guidance',
-      'Standard response time'
-    ]
+      'Standard response time',
+    ],
   },
 
   // $14.99/month - Professional Astrology
@@ -699,7 +784,7 @@ const SubscriptionTierManager = {
       transitChecks: 20,
       storedCharts: 25,
       detailedReports: 10,
-      horaryQuestions: 2
+      horaryQuestions: 2,
     },
     features: [
       'Everything in Essential',
@@ -707,8 +792,8 @@ const SubscriptionTierManager = {
       'Horary astrology questions',
       'Priority response time',
       'Advanced transit timing',
-      'Consultation notes storage'
-    ]
+      'Consultation notes storage',
+    ],
   },
 
   // $39.99/month - Master Astrology
@@ -719,7 +804,7 @@ const SubscriptionTierManager = {
       storedCharts: 100,
       detailedReports: 50,
       horaryQuestions: 10,
-      consultations: 1
+      consultations: 1,
     },
     features: [
       'Everything in Professional',
@@ -727,13 +812,14 @@ const SubscriptionTierManager = {
       'Annual astrology reports',
       'Market timing analysis',
       'Relationship compatibility reports',
-      'Custom remedial recommendations'
-    ]
-  }
+      'Custom remedial recommendations',
+    ],
+  },
 };
 ```
 
 **Revenue Projection Model:**
+
 - **Month 1-3:** Freemium user acquisition (10,000 free users)
 - **Month 3-6:** 15% conversion to Essential (~1,500 subscribers × $5 = $7,500/month)
 - **Month 6-12:** 30% upgrade to Professional (~450 subscribers × $15 = $27,000/month)
@@ -744,17 +830,20 @@ const SubscriptionTierManager = {
 ## 📈 IMPLEMENTATION PHASES
 
 ### Phase 1: Foundation (Weeks 1-2)
+
 - ✅ **Deploy current system** with railway compatibility fix
 - ⏳ **Implement advanced Swiss Ephemeris caching**
 - ⏳ **Add variable orb calculations**
 - ⏳ **Complete 16 varga chart system**
 
 ### Phase 2: Vedic Enhancement (Weeks 3-4)
+
 - ⏳ **Full Nakshatra integration (27 nakshatras + padas)**
 - ⏳ **Jaimini Arudha Pada calculations**
 - ⏳ **Advanced Dasha analysis timing**
 
 ### Phase 3: Western Expansion (Weeks 5-6)
+
 - ⏳ **Hellenistic chronocrators and bounds**
 - ⏳ **Aspect pattern recognition**
 - ⏳ **Advanced predictive techniques**

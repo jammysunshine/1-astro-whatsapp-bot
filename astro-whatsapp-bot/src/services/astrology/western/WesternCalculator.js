@@ -38,17 +38,23 @@ function createPlaceholderWesternService() {
         venus: { name: 'Venus', longitude: 112.8, sign: 'Cancer', house: 2 },
         mars: { name: 'Mars', longitude: 298.1, sign: 'Capricorn', house: 6 },
         jupiter: { name: 'Jupiter', longitude: 152.4, sign: 'Leo', house: 3 },
-        saturn: { name: 'Saturn', longitude: 287.9, sign: 'Capricorn', house: 6 }
+        saturn: {
+          name: 'Saturn',
+          longitude: 287.9,
+          sign: 'Capricorn',
+          house: 6
+        }
       },
       houses: [
-        112.5, 145.2, 178.9, 202.3, 235.6, 268.9,
-        292.3, 325.6, 358.9, 25.2, 58.9, 112.5
+        112.5, 145.2, 178.9, 202.3, 235.6, 268.9, 292.3, 325.6, 358.9, 25.2,
+        58.9, 112.5
       ],
       aspects: [
         { planets: 'Sun-Mercury', aspect: 'Conjunction', orb: 7.1 },
         { planets: 'Moon-Jupiter', aspect: 'Trine', orb: 8.3 }
       ],
-      disclaimer: '⚠️ *Western Astrology Placeholder:* Professional calculations from Swiss Ephemeris pending. Current version provides structural compatibility while authentic astronomical precision is being implemented.'
+      disclaimer:
+        '⚠️ *Western Astrology Placeholder:* Professional calculations from Swiss Ephemeris pending. Current version provides structural compatibility while authentic astronomical precision is being implemented.'
     }),
 
     healthCheck: () => ({
@@ -56,7 +62,8 @@ function createPlaceholderWesternService() {
       placeholder: true,
       version: '0.1.0',
       status: 'Basic functionality available',
-      warning: 'Professional Western astrology calculations pending modular implementation'
+      warning:
+        'Professional Western astrology calculations pending modular implementation'
     })
   };
 }

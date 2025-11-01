@@ -5,6 +5,7 @@
 Create an advanced, comprehensive multi-channel astrology service platform that **starts with a fully comprehensive WhatsApp-based service** as the primary channel and expands to additional platforms, positioning itself as a **Personal Cosmic Coach**—your trusted guide for clarity, confidence, and control in uncertain times. The platform will provide hyper-personalized astrological readings, predictive life coaching, and subscription-based services focused on delivering **emotional ROI**—not just information but actionable insights that help users navigate life with confidence. The platform will support multiple astrology systems (Hindu, Western, Chinese, Tarot, Numerology, Palmistry, and more), innovative subscription tiers (Essential, Premium, VIP), one-time services, real astrologer chat functionality, predictive decision-timing features, and regional payment options for India, UAE, and Australia. The platform will feature an AI Twin system, Astro-Social Network, and advanced personalization to create an indispensable daily engagement experience that drives high retention and revenue growth through proven viral growth mechanisms.
 
 **Multi-Channel Strategy**:
+
 - **Phase 1**: Fully comprehensive WhatsApp-based service as the primary channel
 - **Phase 2**: Expand to additional channels including web app, mobile app, and other messaging platforms
 - **Phase 3**: Full cross-platform ecosystem with synchronized data and experiences
@@ -12,6 +13,7 @@ Create an advanced, comprehensive multi-channel astrology service platform that 
 ## Development Standards & Architecture
 
 ### WhatsApp Development Guidelines
+
 All WhatsApp bot development must follow the comprehensive standards outlined in [whatsapp-development-guidelines.md](whatsapp-development-guidelines.md). This document covers:
 
 - Message type architecture (buttons vs text)
@@ -27,248 +29,258 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Epics and User Stories
 
 ### Epic 1: Core WhatsApp Integration
+
 - **Goal**: Implement the core WhatsApp Business API integration to enable user interactions, message processing, and response generation for the astrology bot.
 - **Key Features**: WhatsApp Business API setup and configuration, message webhook handling, user authentication via WhatsApp number, basic message routing and processing, media handling for kundli sharing, compliance with WhatsApp Business API guidelines.
 - **MANDATE**: All WhatsApp user interactions MUST include interactive buttons for next actions to ensure intuitive navigation and engagement.
 - **MVP User Stories**:
-    - **As a user, I want to easily authenticate using my WhatsApp number so that I can securely access personalized astrological services.** *Acceptance Criteria: User receives OTP via WhatsApp, enters code via interactive buttons, authentication completes within 30 seconds.*
-    - **As a user, I want to access the service through WhatsApp as my primary channel so that I can get astrological guidance conveniently on my preferred messaging platform.** *Acceptance Criteria: All core features accessible via WhatsApp with consistent button navigation.*
-    - **As a user, I want my data and reading history to be synchronized across all channels so that I can access my information seamlessly regardless of device or platform.** *Acceptance Criteria: Reading history and preferences sync automatically between WhatsApp, web, and mobile within 5 minutes.*
-    - **As a user, I want to be able to use the service on web and mobile apps in future phases so that I can access advanced features on different devices.** *Acceptance Criteria: Web and mobile apps maintain feature parity with WhatsApp version.*
-    - **As a user, I want to interact with the bot in my preferred language so that I can understand astrological content clearly and comfortably.** *Acceptance Criteria: Support for 8+ languages with automatic detection and manual selection via buttons.*
-    - **As a new user, I want video guides to understand complex features so that I can learn how to use the platform effectively.** *Acceptance Criteria: Interactive video tutorials accessible via buttons, under 2 minutes each.*
-    - **As a new user, I want a tutorial on how to maximize my use of the service so that I can get the most value from my subscription.** *Acceptance Criteria: Step-by-step guided tutorial with button navigation completing in under 5 minutes.*
-    - **As a new user, I want to choose my preferred message frequency during onboarding so that I receive communications at a comfortable pace.** *Acceptance Criteria: Options for daily, weekly, or custom frequency with immediate effect.*
-    - **As a user, I want visual accessibility options like text size adjustment and high contrast mode so that I can use the service comfortably regardless of visual needs.** *Acceptance Criteria: Text size scaling (small/medium/large), high contrast toggle, screen reader compatibility.*
-    - **As a user, I want visual alternatives for audio content and text transcripts so that I can access all content regardless of hearing ability.** *Acceptance Criteria: All audio content has text transcripts and visual alternatives available via buttons.*
-    - **As a user, I want simple language options and clear navigation so that I can use the service easily without confusion.** *Acceptance Criteria: Flesch reading score under 60, consistent button layouts, clear menu hierarchy.*
-    - **As a user, I want voice command support for navigation so that I can interact hands-free when convenient.** *Acceptance Criteria: Voice commands work for 80%+ of navigation actions with button fallbacks.*
-    - **As a user, I want the platform to respect diverse cultural beliefs and practices so that I feel included and understood.** *Acceptance Criteria: Culturally appropriate content and button labels for major cultural groups.*
-    - **As a user, I want to set do-not-disturb schedules for notifications so that I can maintain work-life balance.** *Acceptance Criteria: Customizable quiet hours with automatic notification suppression.*
-    - **As a user, I want to prioritize certain types of notifications so that I see the most important information first.** *Acceptance Criteria: Notification priority levels (urgent, important, informational) with sorting options.*
-    - **As a user, I want to opt-in or opt-out of different notification types so that I control my communication preferences.** *Acceptance Criteria: Granular opt-in/opt-out for each notification category with clear button choices.*
-    - **As a user, I want notifications to be adjusted for my time zone so that I receive them at appropriate local times.** *Acceptance Criteria: Automatic time zone detection with manual override options.*
-    - **As a user, I want a simple and clear menu structure so that I can find features quickly and easily.** *Acceptance Criteria: Menu depth no more than 3 levels, consistent button placement, search functionality.*
-    - **As a user, I want quick access to my most used features so that I can perform common actions efficiently.** *Acceptance Criteria: Pinned shortcuts for top 5 most-used features, customizable quick access bar.*
-    - **As a user, I want to search for specific services and content so that I can find what I need quickly.** *Acceptance Criteria: Full-text search with filters, results displayed within 2 seconds.*
-    - **As a user, I want breadcrumb navigation for complex workflows so that I can understand my location and navigate back easily.** *Acceptance Criteria: Clear breadcrumb trail showing current location and navigation history.*
-    - **As a user, I want to ask questions using natural language so that I can interact conversationally with the bot.** *Acceptance Criteria: Natural language processing handles 90%+ of common queries with button suggestions for complex topics.*
-    - **As a user, I want the bot to provide context-aware responses based on my history so that I receive personalized and relevant guidance.** *Acceptance Criteria: Responses reference user's birth chart data and previous interactions.*
-    - **As a user, I want a personalized greeting and interaction style so that I feel the service understands me individually.** *Acceptance Criteria: Greeting uses user's name and preferred interaction style within first message.*
-    - **As a user, I want the bot to match my preferred tone so that our interaction feels natural and comfortable.** *Acceptance Criteria: Tone options (formal, casual, spiritual) with consistent application across all responses.*
-    - **As a user, I want the bot to have a distinct, warm, and wise personality so that I feel guided by a trusted advisor.** *Acceptance Criteria: Bot responses consistently reflect warm, wise personality traits in 95%+ of interactions.*
-    - **As a user, I want readings and reports to be well-organized and categorized so that I can easily find and reference past insights.** *Acceptance Criteria: Hierarchical organization by date, type, and astrology system with search and filter options.*
-    - **As a user, I want to bookmark important readings so that I can quickly access valuable insights later.** *Acceptance Criteria: One-click bookmarking with dedicated bookmarks section and tagging system.*
-    - **As a user, I want tools to compare different readings so that I can see patterns and changes over time.** *Acceptance Criteria: Side-by-side comparison view for up to 3 readings with highlighting of differences.*
-    - **As a user, I want to explore interactive birth chart visualizations so that I can understand my astrological blueprint visually.** *Acceptance Criteria: Interactive chart with clickable elements, zoom, and detailed explanations.*
-    - As a user, I want to access my complete reading history across all platforms with button navigation.
+  - **As a user, I want to easily authenticate using my WhatsApp number so that I can securely access personalized astrological services.** _Acceptance Criteria: User receives OTP via WhatsApp, enters code via interactive buttons, authentication completes within 30 seconds._
+  - **As a user, I want to access the service through WhatsApp as my primary channel so that I can get astrological guidance conveniently on my preferred messaging platform.** _Acceptance Criteria: All core features accessible via WhatsApp with consistent button navigation._
+  - **As a user, I want my data and reading history to be synchronized across all channels so that I can access my information seamlessly regardless of device or platform.** _Acceptance Criteria: Reading history and preferences sync automatically between WhatsApp, web, and mobile within 5 minutes._
+  - **As a user, I want to be able to use the service on web and mobile apps in future phases so that I can access advanced features on different devices.** _Acceptance Criteria: Web and mobile apps maintain feature parity with WhatsApp version._
+  - **As a user, I want to interact with the bot in my preferred language so that I can understand astrological content clearly and comfortably.** _Acceptance Criteria: Support for 8+ languages with automatic detection and manual selection via buttons._
+  - **As a new user, I want video guides to understand complex features so that I can learn how to use the platform effectively.** _Acceptance Criteria: Interactive video tutorials accessible via buttons, under 2 minutes each._
+  - **As a new user, I want a tutorial on how to maximize my use of the service so that I can get the most value from my subscription.** _Acceptance Criteria: Step-by-step guided tutorial with button navigation completing in under 5 minutes._
+  - **As a new user, I want to choose my preferred message frequency during onboarding so that I receive communications at a comfortable pace.** _Acceptance Criteria: Options for daily, weekly, or custom frequency with immediate effect._
+  - **As a user, I want visual accessibility options like text size adjustment and high contrast mode so that I can use the service comfortably regardless of visual needs.** _Acceptance Criteria: Text size scaling (small/medium/large), high contrast toggle, screen reader compatibility._
+  - **As a user, I want visual alternatives for audio content and text transcripts so that I can access all content regardless of hearing ability.** _Acceptance Criteria: All audio content has text transcripts and visual alternatives available via buttons._
+  - **As a user, I want simple language options and clear navigation so that I can use the service easily without confusion.** _Acceptance Criteria: Flesch reading score under 60, consistent button layouts, clear menu hierarchy._
+  - **As a user, I want voice command support for navigation so that I can interact hands-free when convenient.** _Acceptance Criteria: Voice commands work for 80%+ of navigation actions with button fallbacks._
+  - **As a user, I want the platform to respect diverse cultural beliefs and practices so that I feel included and understood.** _Acceptance Criteria: Culturally appropriate content and button labels for major cultural groups._
+  - **As a user, I want to set do-not-disturb schedules for notifications so that I can maintain work-life balance.** _Acceptance Criteria: Customizable quiet hours with automatic notification suppression._
+  - **As a user, I want to prioritize certain types of notifications so that I see the most important information first.** _Acceptance Criteria: Notification priority levels (urgent, important, informational) with sorting options._
+  - **As a user, I want to opt-in or opt-out of different notification types so that I control my communication preferences.** _Acceptance Criteria: Granular opt-in/opt-out for each notification category with clear button choices._
+  - **As a user, I want notifications to be adjusted for my time zone so that I receive them at appropriate local times.** _Acceptance Criteria: Automatic time zone detection with manual override options._
+  - **As a user, I want a simple and clear menu structure so that I can find features quickly and easily.** _Acceptance Criteria: Menu depth no more than 3 levels, consistent button placement, search functionality._
+  - **As a user, I want quick access to my most used features so that I can perform common actions efficiently.** _Acceptance Criteria: Pinned shortcuts for top 5 most-used features, customizable quick access bar._
+  - **As a user, I want to search for specific services and content so that I can find what I need quickly.** _Acceptance Criteria: Full-text search with filters, results displayed within 2 seconds._
+  - **As a user, I want breadcrumb navigation for complex workflows so that I can understand my location and navigate back easily.** _Acceptance Criteria: Clear breadcrumb trail showing current location and navigation history._
+  - **As a user, I want to ask questions using natural language so that I can interact conversationally with the bot.** _Acceptance Criteria: Natural language processing handles 90%+ of common queries with button suggestions for complex topics._
+  - **As a user, I want the bot to provide context-aware responses based on my history so that I receive personalized and relevant guidance.** _Acceptance Criteria: Responses reference user's birth chart data and previous interactions._
+  - **As a user, I want a personalized greeting and interaction style so that I feel the service understands me individually.** _Acceptance Criteria: Greeting uses user's name and preferred interaction style within first message._
+  - **As a user, I want the bot to match my preferred tone so that our interaction feels natural and comfortable.** _Acceptance Criteria: Tone options (formal, casual, spiritual) with consistent application across all responses._
+  - **As a user, I want the bot to have a distinct, warm, and wise personality so that I feel guided by a trusted advisor.** _Acceptance Criteria: Bot responses consistently reflect warm, wise personality traits in 95%+ of interactions._
+  - **As a user, I want readings and reports to be well-organized and categorized so that I can easily find and reference past insights.** _Acceptance Criteria: Hierarchical organization by date, type, and astrology system with search and filter options._
+  - **As a user, I want to bookmark important readings so that I can quickly access valuable insights later.** _Acceptance Criteria: One-click bookmarking with dedicated bookmarks section and tagging system._
+  - **As a user, I want tools to compare different readings so that I can see patterns and changes over time.** _Acceptance Criteria: Side-by-side comparison view for up to 3 readings with highlighting of differences._
+  - **As a user, I want to explore interactive birth chart visualizations so that I can understand my astrological blueprint visually.** _Acceptance Criteria: Interactive chart with clickable elements, zoom, and detailed explanations._
+  - As a user, I want to access my complete reading history across all platforms with button navigation.
 - **Current Implementation**: WhatsApp API endpoints, session management, language validation (`language_choice`), birth data input, and general messaging features are present.
 - **Gaps for MVP**: Detailed OTP verification flow, full range of multi-language content localization are not explicitly shown but implied. Full cross-platform synchronization and development of web/mobile apps are future phases.
 
 ### Epic 2: Multiple Astrology Services
+
 - **Goal**: Offer a wide array of accurate and diverse astrological systems to cater to varied user preferences and provide comprehensive insights.
 - **Key Features**: Hindu/Vedic, Western, Chinese, Tarot, Numerology, Palmistry, Nadi Astrology, Kabbalistic, Mayan, Celtic, I Ching, Astrocartography, Horary, and other systems.
 - **MVP User Stories**:
-    - **As a user, I want to select my preferred astrology system so that I receive readings tailored to my beliefs and interests.** *Acceptance Criteria: 10+ astrology systems available (Vedic, Western, Chinese, Tarot, etc.) with one-click selection.*
-    - **As a user, I want to receive readings from various astrological systems so that I can get a comprehensive view of my cosmic influences.** *Acceptance Criteria: Multi-system readings combine insights from 2+ systems with clear attribution.*
-    - **As a user, I want to understand the basics of different astrology systems so that I can make informed choices about which systems to explore.** *Acceptance Criteria: Educational content for each system under 3 minutes, accessible via dedicated buttons.*
-    - **As a new user, I want access to educational content about different astrology types so that I can learn and engage with the service effectively.** *Acceptance Criteria: Progressive educational content unlocked as user engages, with interactive quizzes.*
-    - **As a new user, I want to be introduced to the most relevant astrology system for me so that I start with content that resonates with my background.** *Acceptance Criteria: AI-driven recommendations based on user profile, location, and stated preferences.*
-    - **As a user, I want to set my preferences for the types of astrology readings I receive so that I only get content that interests me.** *Acceptance Criteria: Granular preference settings for each astrology system and reading type.*
+  - **As a user, I want to select my preferred astrology system so that I receive readings tailored to my beliefs and interests.** _Acceptance Criteria: 10+ astrology systems available (Vedic, Western, Chinese, Tarot, etc.) with one-click selection._
+  - **As a user, I want to receive readings from various astrological systems so that I can get a comprehensive view of my cosmic influences.** _Acceptance Criteria: Multi-system readings combine insights from 2+ systems with clear attribution._
+  - **As a user, I want to understand the basics of different astrology systems so that I can make informed choices about which systems to explore.** _Acceptance Criteria: Educational content for each system under 3 minutes, accessible via dedicated buttons._
+  - **As a new user, I want access to educational content about different astrology types so that I can learn and engage with the service effectively.** _Acceptance Criteria: Progressive educational content unlocked as user engages, with interactive quizzes._
+  - **As a new user, I want to be introduced to the most relevant astrology system for me so that I start with content that resonates with my background.** _Acceptance Criteria: AI-driven recommendations based on user profile, location, and stated preferences._
+  - **As a user, I want to set my preferences for the types of astrology readings I receive so that I only get content that interests me.** _Acceptance Criteria: Granular preference settings for each astrology system and reading type._
 - **Current Implementation**: Complete astrology system implementation with `vedicCalculator.js` (enhanced with Vimshottari Dasha, advanced transits, and precise astronomical calculations), `chineseCalculator.js`, `tarotReader.js`, `palmistryReader.js`, `nadiReader.js`, `kabbalisticReader.js`, `mayanReader.js`, `celticReader.js`, `ichingReader.js`, `astrocartographyReader.js`, and `horaryReader.js`. All systems are integrated into `astrologyEngine.js` and accessible through WhatsApp menu system.
 - **Gaps for MVP**: All major astrology systems are now implemented. Future enhancements may include additional systems or deeper integrations.
 
 ### Epic 3: Monetization, Subscriptions & Loyalty
+
 - **Goal**: Implement a flexible and growth-oriented monetization strategy through tiered subscriptions, micro-transactions, and a robust loyalty/referral program, ensuring regional compliance.
 - **Key Features**: Free, Essential, Premium, VIP tiers, one-time services, regional payment methods, AstroRewards loyalty program, AstroCircle referral program, and advanced monetization strategies.
 - **MVP User Stories**:
-    - **As a user, I want to choose from different subscription tiers to access features that match my needs with interactive button selection.** *Acceptance Criteria: User can view all tiers (Free, Essential, Premium, VIP) with clear pricing, features list, and one-click selection via buttons; selection completes within 3 clicks.*
-    - **As a user, I want to make one-time purchases for specific insights or services with button-based purchase flows.** *Acceptance Criteria: User can browse micro-transactions (Flash Insights ₹25, Transit Alerts ₹15, etc.), select via buttons, complete payment within 2 minutes, receive immediate delivery.*
-    - **As a user, I want to understand the benefits of each subscription tier before committing with button-accessed comparison tools.** *Acceptance Criteria: Interactive comparison table shows features, pricing, and benefits for all tiers; accessible via dedicated button; comparison loads within 5 seconds.*
-    - **As a free user, I want to receive a daily micro-prediction and a shareable birth chart with button sharing options.** *Acceptance Criteria: Daily prediction delivered automatically at preferred time; shareable birth chart image generated within 10 seconds; WhatsApp sharing button included.*
-    - **As an Essential tier user, I want to receive daily personalized horoscopes and weekly video predictions with button access.** *Acceptance Criteria: Daily horoscopes delivered at set time; weekly videos accessible via button; content personalized to user's birth chart and preferences.*
-    - **As a Premium tier user, I want unlimited AI questions and priority access to human astrologers with button priority options.** *Acceptance Criteria: Unlimited AI queries processed within 30 seconds; priority queue for human astrologers (24-hour vs 72-hour response); clear priority indicators in interface.*
-    - **As a VIP tier user, I want a dedicated human astrologer and exclusive life planning sessions with button scheduling.** *Acceptance Criteria: Dedicated astrologer assigned within 24 hours; quarterly sessions schedulable via button calendar; exclusive VIP content accessible only to this tier.*
-    - **As a user, I want to purchase quick, on-demand insights for immediate decisions (Flash Insights) with button purchases.** *Acceptance Criteria: Flash Insights available for ₹25/USD 1; purchase completes via button; 5-minute reading delivered within 60 seconds of payment.*
-    - **As a user, I want to receive alerts for important personal planetary transits (Transit Alerts) with button alert settings.** *Acceptance Criteria: Transit alerts customizable per user chart; ₹15 per alert; notification settings accessible via button; alerts delivered 24 hours before transit.*
-    - **As a user, I want to purchase quick spiritual remedies for challenging times (Remedial Quick Fixes) with button remedies.** *Acceptance Criteria: Remedial fixes available for ₹50-100; purchase via button; remedies include mantras, gemstone suggestions, and rituals; delivered within 5 minutes.*
-    - **As a user, I want to quickly check compatibility with new contacts (Compatibility Snapshots) with button checks.** *Acceptance Criteria: Compatibility snapshots for ₹75; input friend's birth details via button form; report generated within 30 seconds; shareable via WhatsApp.*
-    - **As a user, I want to purchase special readings during significant astrological events like eclipses with button event access.** *Acceptance Criteria: Eclipse packages available for ₹300-600; event-specific readings accessible via button; content timed for specific astrological events.*
-    - **As a user, I want to prepare for retrograde periods with specialized sessions with button preparation guides.** *Acceptance Criteria: Retrograde prep sessions for ₹200-400; guides include timing advice, protective measures, and opportunity identification; accessible via button.*
-    - **As a user, I want to participate in guided new moon intention setting sessions with button participation.** *Acceptance Criteria: New moon sessions for ₹150; guided meditation and intention setting; session accessible via button; monthly availability.*
-    - **As a user, I want to receive culturally relevant readings during festivals with button festival options.** *Acceptance Criteria: Festival readings for ₹100-200; culturally appropriate content for major festivals; accessible via festival-specific buttons.*
-    - **As a user in India, I want to pay using local payment methods like UPI and PayTM with button payment options.** *Acceptance Criteria: UPI, PayTM, Google Pay, PhonePe supported; payment buttons show local options; transactions complete within 2 minutes.*
-    - **As a user in UAE, I want to pay using credit cards and digital wallets with button payment choices.** *Acceptance Criteria: Credit cards, Apple Pay, Google Pay supported; payment buttons prioritize local preferences; AED currency display.*
-    - **As a user in Australia, I want to pay using credit cards and Apple Pay with button payment selection.** *Acceptance Criteria: Credit cards, Apple Pay, Google Pay, PayPal supported; AUD currency; payment completes within 3 minutes.*
-    - **As a user, I want to discover and purchase recommended astrological products with button marketplace access.** *Acceptance Criteria: Marketplace accessible via button; products include crystals, books, courses; 15-25% commission on sales; purchases complete via integrated payment.*
-    - **As a user, I want to access user-to-user services within the platform with button service listings.** *Acceptance Criteria: User-to-user services listed via button; platform takes 20% commission; services include peer readings and consultations.*
-    - **As a user, I want to purchase astrology education courses with button course enrollment.** *Acceptance Criteria: Courses available for ₹500-2000; enrollment via button; progressive content delivery; certification upon completion.*
-    - **As an aspiring astrologer, I want to enroll in certification programs with button program access.** *Acceptance Criteria: Certification programs for ₹5000-15000; enrollment via button; includes training modules and assessment; recognized certification upon completion.*
-    - **As a user, I want to manage auto-renewal options for my subscriptions with button toggle controls.** *Acceptance Criteria: Auto-renewal toggle accessible via button; clear on/off states; confirmation required for changes; renewal notifications sent 7 days prior.*
-    - **As a user, I want to understand the cancellation and refund policies with button policy access.** *Acceptance Criteria: Cancellation and refund policies accessible via button; clear terms displayed; 30-day money-back guarantee for subscriptions.*
-    - **As a user, I want to earn and redeem points for engaging with the platform and referring friends with button rewards.** *Acceptance Criteria: Points earned for purchases (1 point per ₹10), referrals (50 points), engagement (daily check-ins); redemption via button for discounts or free services.*
-    - **As a user, I want to be offered an upgrade to the Essential tier with clear benefits with button upgrade prompts.** *Acceptance Criteria: Upgrade prompts show clear benefits comparison; button leads to seamless upgrade flow; upgrade completes within 2 minutes.*
-    - **As a user, I want to be teased with premium features to encourage upgrade with button feature previews.** *Acceptance Criteria: Premium feature previews accessible via button; limited-time access (1-3 days); clear upgrade path presented after preview.*
-    - **As a long-term user, I want to be rewarded with loyalty benefits and VIP tier introductions with button rewards access.** *Acceptance Criteria: Loyalty benefits unlocked after 6+ months; VIP introductions for top users; rewards accessible via dedicated button; benefits include exclusive content and priority access.*
+  - **As a user, I want to choose from different subscription tiers to access features that match my needs with interactive button selection.** _Acceptance Criteria: User can view all tiers (Free, Essential, Premium, VIP) with clear pricing, features list, and one-click selection via buttons; selection completes within 3 clicks._
+  - **As a user, I want to make one-time purchases for specific insights or services with button-based purchase flows.** _Acceptance Criteria: User can browse micro-transactions (Flash Insights ₹25, Transit Alerts ₹15, etc.), select via buttons, complete payment within 2 minutes, receive immediate delivery._
+  - **As a user, I want to understand the benefits of each subscription tier before committing with button-accessed comparison tools.** _Acceptance Criteria: Interactive comparison table shows features, pricing, and benefits for all tiers; accessible via dedicated button; comparison loads within 5 seconds._
+  - **As a free user, I want to receive a daily micro-prediction and a shareable birth chart with button sharing options.** _Acceptance Criteria: Daily prediction delivered automatically at preferred time; shareable birth chart image generated within 10 seconds; WhatsApp sharing button included._
+  - **As an Essential tier user, I want to receive daily personalized horoscopes and weekly video predictions with button access.** _Acceptance Criteria: Daily horoscopes delivered at set time; weekly videos accessible via button; content personalized to user's birth chart and preferences._
+  - **As a Premium tier user, I want unlimited AI questions and priority access to human astrologers with button priority options.** _Acceptance Criteria: Unlimited AI queries processed within 30 seconds; priority queue for human astrologers (24-hour vs 72-hour response); clear priority indicators in interface._
+  - **As a VIP tier user, I want a dedicated human astrologer and exclusive life planning sessions with button scheduling.** _Acceptance Criteria: Dedicated astrologer assigned within 24 hours; quarterly sessions schedulable via button calendar; exclusive VIP content accessible only to this tier._
+  - **As a user, I want to purchase quick, on-demand insights for immediate decisions (Flash Insights) with button purchases.** _Acceptance Criteria: Flash Insights available for ₹25/USD 1; purchase completes via button; 5-minute reading delivered within 60 seconds of payment._
+  - **As a user, I want to receive alerts for important personal planetary transits (Transit Alerts) with button alert settings.** _Acceptance Criteria: Transit alerts customizable per user chart; ₹15 per alert; notification settings accessible via button; alerts delivered 24 hours before transit._
+  - **As a user, I want to purchase quick spiritual remedies for challenging times (Remedial Quick Fixes) with button remedies.** _Acceptance Criteria: Remedial fixes available for ₹50-100; purchase via button; remedies include mantras, gemstone suggestions, and rituals; delivered within 5 minutes._
+  - **As a user, I want to quickly check compatibility with new contacts (Compatibility Snapshots) with button checks.** _Acceptance Criteria: Compatibility snapshots for ₹75; input friend's birth details via button form; report generated within 30 seconds; shareable via WhatsApp._
+  - **As a user, I want to purchase special readings during significant astrological events like eclipses with button event access.** _Acceptance Criteria: Eclipse packages available for ₹300-600; event-specific readings accessible via button; content timed for specific astrological events._
+  - **As a user, I want to prepare for retrograde periods with specialized sessions with button preparation guides.** _Acceptance Criteria: Retrograde prep sessions for ₹200-400; guides include timing advice, protective measures, and opportunity identification; accessible via button._
+  - **As a user, I want to participate in guided new moon intention setting sessions with button participation.** _Acceptance Criteria: New moon sessions for ₹150; guided meditation and intention setting; session accessible via button; monthly availability._
+  - **As a user, I want to receive culturally relevant readings during festivals with button festival options.** _Acceptance Criteria: Festival readings for ₹100-200; culturally appropriate content for major festivals; accessible via festival-specific buttons._
+  - **As a user in India, I want to pay using local payment methods like UPI and PayTM with button payment options.** _Acceptance Criteria: UPI, PayTM, Google Pay, PhonePe supported; payment buttons show local options; transactions complete within 2 minutes._
+  - **As a user in UAE, I want to pay using credit cards and digital wallets with button payment choices.** _Acceptance Criteria: Credit cards, Apple Pay, Google Pay supported; payment buttons prioritize local preferences; AED currency display._
+  - **As a user in Australia, I want to pay using credit cards and Apple Pay with button payment selection.** _Acceptance Criteria: Credit cards, Apple Pay, Google Pay, PayPal supported; AUD currency; payment completes within 3 minutes._
+  - **As a user, I want to discover and purchase recommended astrological products with button marketplace access.** _Acceptance Criteria: Marketplace accessible via button; products include crystals, books, courses; 15-25% commission on sales; purchases complete via integrated payment._
+  - **As a user, I want to access user-to-user services within the platform with button service listings.** _Acceptance Criteria: User-to-user services listed via button; platform takes 20% commission; services include peer readings and consultations._
+  - **As a user, I want to purchase astrology education courses with button course enrollment.** _Acceptance Criteria: Courses available for ₹500-2000; enrollment via button; progressive content delivery; certification upon completion._
+  - **As an aspiring astrologer, I want to enroll in certification programs with button program access.** _Acceptance Criteria: Certification programs for ₹5000-15000; enrollment via button; includes training modules and assessment; recognized certification upon completion._
+  - **As a user, I want to manage auto-renewal options for my subscriptions with button toggle controls.** _Acceptance Criteria: Auto-renewal toggle accessible via button; clear on/off states; confirmation required for changes; renewal notifications sent 7 days prior._
+  - **As a user, I want to understand the cancellation and refund policies with button policy access.** _Acceptance Criteria: Cancellation and refund policies accessible via button; clear terms displayed; 30-day money-back guarantee for subscriptions._
+  - **As a user, I want to earn and redeem points for engaging with the platform and referring friends with button rewards.** _Acceptance Criteria: Points earned for purchases (1 point per ₹10), referrals (50 points), engagement (daily check-ins); redemption via button for discounts or free services._
+  - **As a user, I want to be offered an upgrade to the Essential tier with clear benefits with button upgrade prompts.** _Acceptance Criteria: Upgrade prompts show clear benefits comparison; button leads to seamless upgrade flow; upgrade completes within 2 minutes._
+  - **As a user, I want to be teased with premium features to encourage upgrade with button feature previews.** _Acceptance Criteria: Premium feature previews accessible via button; limited-time access (1-3 days); clear upgrade path presented after preview._
+  - **As a long-term user, I want to be rewarded with loyalty benefits and VIP tier introductions with button rewards access.** _Acceptance Criteria: Loyalty benefits unlocked after 6+ months; VIP introductions for top users; rewards accessible via dedicated button; benefits include exclusive content and priority access._
 - **Current Implementation**: `conversationEngine.js` has `process_subscription` to acknowledge plan choice (essential/premium) but no actual payment integration logic shown. Micro-transaction handling is not explicitly developed beyond mentions in `INITIAL-PROMPT.md`. Loyalty and referral program logic is not shown. Pricing is specified in `INITIAL-PROMPT.md` but not reflected in code.
 - **Gaps for MVP**: Actual payment gateway integration, detailed mechanics for micro-transaction services, and robust loyalty/referral system logic are **missing**.
 
 ### Epic 4: AI-Powered Personalization & AI Twin
+
 - **Goal**: Deliver hyper-personalized astrological insights and a unique AI companion that learns and adapts to user preferences, enhancing engagement and emotional ROI.
 - **Key Features**: AI Twin system, behavioral adaptation, personalized readings, customized alerts, and advanced personalization tools.
 - **MVP User Stories**:
-    - **As a user, I want instant AI-powered answers to my basic astrological questions with button-based query options.** *Acceptance Criteria: AI responses delivered within 30 seconds, 90%+ accuracy for basic questions, button suggestions for complex topics.*
-    - **As a user, I want an AI astrologer that understands my communication style and preferences with button personalization.** *Acceptance Criteria: AI adapts tone (formal/casual/spiritual) based on user history, remembers communication preferences, personalization settings accessible via button.*
-    - **As a user, I want the AI to recognize and highlight recurring life patterns based on my astrological chart with button pattern exploration.** *Acceptance Criteria: AI identifies patterns from birth chart and user history, patterns highlighted in readings, exploration accessible via dedicated button.*
-    - **As a user, I want to track the accuracy of predictions and provide feedback with button rating systems.** *Acceptance Criteria: 5-star rating system for predictions, feedback tracked over time, accuracy statistics displayed, rating buttons integrated into all readings.*
-    - **As a user, I want the AI to learn my preferences and provide insights that are most relevant to me with button preference settings.** *Acceptance Criteria: AI learns from user interactions and ratings, preferences adjustable via button, relevance score improves over time (target 95% relevant insights).*
-    - **As a user, I want my AI Twin to remember our past conversations and my preferences with button conversation history.** *Acceptance Criteria: Conversation history accessible via button, AI references past interactions in responses, preferences persist across sessions.*
-    - **As a new user, I want customized service recommendations with button-guided onboarding.** *Acceptance Criteria: AI-driven recommendations based on profile data, onboarding flow adapts to user responses, recommendations presented via interactive buttons.*
-    - **As a user, I want to receive personalized daily cosmic tips with button tip access.** *Acceptance Criteria: Daily tips personalized to user's chart and current transits, accessible via button, tips delivered at preferred time.*
-    - **As a user, I want to receive my lucky number of the day with button daily features.** *Acceptance Criteria: Lucky number calculated from birth chart and daily transits, displayed prominently, accessible via daily features button.*
-    - **As a user, I want personalized notifications about planetary transits relevant to my chart with button alert customization.** *Acceptance Criteria: Transit alerts customized to user's birth chart, notification preferences adjustable via button, alerts sent 24 hours before significant transits.*
-    - **As a user, I want the platform to learn my preferences and adapt its content and suggestions accordingly with button adaptive controls.** *Acceptance Criteria: Platform learns from user behavior and feedback, adaptive controls accessible via button, content relevance improves by 20% within 30 days.*
-    - **As a user, I want to customize the look and feel of my dashboard and notifications with button theme options.** *Acceptance Criteria: Multiple themes available (astrological, modern, traditional), theme selection via button, changes apply immediately across all interfaces.*
-    - **As a user, I want to filter content based on my preferred topics, intensity, and format with button filter controls.** *Acceptance Criteria: Filters for topics (career, relationships, health), intensity levels (light/deep), formats (text/audio/video), filters accessible via button.*
-    - **As a user, I want to receive personalized readings tailored to my life stage and interests with button reading customization.** *Acceptance Criteria: Readings customized based on age, life stage, stated interests, customization options accessible via button in reading requests.*
-    - **As a user, I want to customize the alerts I receive for transits and events with button alert settings.** *Acceptance Criteria: Granular alert settings for different transit types and events, settings accessible via button, alerts respect user time zones.*
-    - **As a user, I want to customize the interface of my dashboard with button interface options.** *Acceptance Criteria: Dashboard widgets customizable (charts, predictions, history), layout options available, changes saved automatically.*
-    - **As a user, I want personalized content feeds and custom report compilation with button feed management.** *Acceptance Criteria: AI-curated content feeds based on preferences, custom reports compilable from multiple readings, management accessible via button.*
-    - **As a user, I want the AI to learn my preferences and adapt its content and suggestions accordingly with button learning toggles.** *Acceptance Criteria: Learning toggles for different preference types, AI adaptation rate adjustable, learning progress visible to user.*
-    - **As a user, I want to experience "micro-aha" moments and validation of predictions with button validation features.** *Acceptance Criteria: Validation features highlight accurate predictions, "aha" moments celebrated in UI, validation accessible via button after prediction events.*
-    - **As a user, I want to receive proactive, valuable insights and exclusive content with button access.** *Acceptance Criteria: Proactive insights sent based on current transits, exclusive content unlocked for premium users, access via dedicated button.*
-    - As a user, I want interactive prompts that help me explore different life aspects and compatibility with button options.
-    - As a user, I want to reflect on my daily experiences with the bot with button reflection tools.
-    - As a user, I want to receive Monday motivation based on weekly planetary influences with button motivation.
-    - As a user, I want to check in with the bot about my feelings during transits with button check-ins.
-    - As a user, I want suggestions for weekend spiritual practices with button practice guides.
-    - As a user, I want to see my progress in discovering personal patterns with button progress tracking.
-    - As a user, I want future insights that are personalized and relevant with button insight access.
-    - As a user, I want to see social proof of prediction accuracy with button testimonials.
-    - As a user, I want time-sensitive value propositions with button offers.
-    - As a user, I want a summary of my personal insights after one month with button summaries.
-    - As a user, I want to compare my actual experiences with past predictions with button comparison tools.
-    - As a user, I want to provide feedback on the accuracy of insights with button feedback forms.
-    - As a user, I want to experience 'aha' moments that enhance my understanding with button moments.
-    - As a user, I want the service to help me form astrological habits through regular touchpoints with button habits.
-    - As a user, I want advanced features to be introduced gradually with button progression.
-    - As a user, I want my journey milestones and achievements to be celebrated with button celebrations.
-    - As a user, I want to be re-engaged with relevant astrological insights if I become inactive with button re-engagement.
-    - As a new user, I want an immediate, personalized first interaction with button responses.
-    - As a new user, I want a free initial reading that demonstrates personal relevance with button readings.
-    - As a potential user, I want to easily discover the service and initiate contact with button discovery.
+  - **As a user, I want instant AI-powered answers to my basic astrological questions with button-based query options.** _Acceptance Criteria: AI responses delivered within 30 seconds, 90%+ accuracy for basic questions, button suggestions for complex topics._
+  - **As a user, I want an AI astrologer that understands my communication style and preferences with button personalization.** _Acceptance Criteria: AI adapts tone (formal/casual/spiritual) based on user history, remembers communication preferences, personalization settings accessible via button._
+  - **As a user, I want the AI to recognize and highlight recurring life patterns based on my astrological chart with button pattern exploration.** _Acceptance Criteria: AI identifies patterns from birth chart and user history, patterns highlighted in readings, exploration accessible via dedicated button._
+  - **As a user, I want to track the accuracy of predictions and provide feedback with button rating systems.** _Acceptance Criteria: 5-star rating system for predictions, feedback tracked over time, accuracy statistics displayed, rating buttons integrated into all readings._
+  - **As a user, I want the AI to learn my preferences and provide insights that are most relevant to me with button preference settings.** _Acceptance Criteria: AI learns from user interactions and ratings, preferences adjustable via button, relevance score improves over time (target 95% relevant insights)._
+  - **As a user, I want my AI Twin to remember our past conversations and my preferences with button conversation history.** _Acceptance Criteria: Conversation history accessible via button, AI references past interactions in responses, preferences persist across sessions._
+  - **As a new user, I want customized service recommendations with button-guided onboarding.** _Acceptance Criteria: AI-driven recommendations based on profile data, onboarding flow adapts to user responses, recommendations presented via interactive buttons._
+  - **As a user, I want to receive personalized daily cosmic tips with button tip access.** _Acceptance Criteria: Daily tips personalized to user's chart and current transits, accessible via button, tips delivered at preferred time._
+  - **As a user, I want to receive my lucky number of the day with button daily features.** _Acceptance Criteria: Lucky number calculated from birth chart and daily transits, displayed prominently, accessible via daily features button._
+  - **As a user, I want personalized notifications about planetary transits relevant to my chart with button alert customization.** _Acceptance Criteria: Transit alerts customized to user's birth chart, notification preferences adjustable via button, alerts sent 24 hours before significant transits._
+  - **As a user, I want the platform to learn my preferences and adapt its content and suggestions accordingly with button adaptive controls.** _Acceptance Criteria: Platform learns from user behavior and feedback, adaptive controls accessible via button, content relevance improves by 20% within 30 days._
+  - **As a user, I want to customize the look and feel of my dashboard and notifications with button theme options.** _Acceptance Criteria: Multiple themes available (astrological, modern, traditional), theme selection via button, changes apply immediately across all interfaces._
+  - **As a user, I want to filter content based on my preferred topics, intensity, and format with button filter controls.** _Acceptance Criteria: Filters for topics (career, relationships, health), intensity levels (light/deep), formats (text/audio/video), filters accessible via button._
+  - **As a user, I want to receive personalized readings tailored to my life stage and interests with button reading customization.** _Acceptance Criteria: Readings customized based on age, life stage, stated interests, customization options accessible via button in reading requests._
+  - **As a user, I want to customize the alerts I receive for transits and events with button alert settings.** _Acceptance Criteria: Granular alert settings for different transit types and events, settings accessible via button, alerts respect user time zones._
+  - **As a user, I want to customize the interface of my dashboard with button interface options.** _Acceptance Criteria: Dashboard widgets customizable (charts, predictions, history), layout options available, changes saved automatically._
+  - **As a user, I want personalized content feeds and custom report compilation with button feed management.** _Acceptance Criteria: AI-curated content feeds based on preferences, custom reports compilable from multiple readings, management accessible via button._
+  - **As a user, I want the AI to learn my preferences and adapt its content and suggestions accordingly with button learning toggles.** _Acceptance Criteria: Learning toggles for different preference types, AI adaptation rate adjustable, learning progress visible to user._
+  - **As a user, I want to experience "micro-aha" moments and validation of predictions with button validation features.** _Acceptance Criteria: Validation features highlight accurate predictions, "aha" moments celebrated in UI, validation accessible via button after prediction events._
+  - **As a user, I want to receive proactive, valuable insights and exclusive content with button access.** _Acceptance Criteria: Proactive insights sent based on current transits, exclusive content unlocked for premium users, access via dedicated button._
+  - As a user, I want interactive prompts that help me explore different life aspects and compatibility with button options.
+  - As a user, I want to reflect on my daily experiences with the bot with button reflection tools.
+  - As a user, I want to receive Monday motivation based on weekly planetary influences with button motivation.
+  - As a user, I want to check in with the bot about my feelings during transits with button check-ins.
+  - As a user, I want suggestions for weekend spiritual practices with button practice guides.
+  - As a user, I want to see my progress in discovering personal patterns with button progress tracking.
+  - As a user, I want future insights that are personalized and relevant with button insight access.
+  - As a user, I want to see social proof of prediction accuracy with button testimonials.
+  - As a user, I want time-sensitive value propositions with button offers.
+  - As a user, I want a summary of my personal insights after one month with button summaries.
+  - As a user, I want to compare my actual experiences with past predictions with button comparison tools.
+  - As a user, I want to provide feedback on the accuracy of insights with button feedback forms.
+  - As a user, I want to experience 'aha' moments that enhance my understanding with button moments.
+  - As a user, I want the service to help me form astrological habits through regular touchpoints with button habits.
+  - As a user, I want advanced features to be introduced gradually with button progression.
+  - As a user, I want my journey milestones and achievements to be celebrated with button celebrations.
+  - As a user, I want to be re-engaged with relevant astrological insights if I become inactive with button re-engagement.
+  - As a new user, I want an immediate, personalized first interaction with button responses.
+  - As a new user, I want a free initial reading that demonstrates personal relevance with button readings.
+  - As a potential user, I want to easily discover the service and initiate contact with button discovery.
 - **Current Implementation**: The `conversationEngine.js` onboarding flow provides initial personalized responses and introduces elements like Sun Sign. The examples for bot experience in `INITIAL-PROMPT.md` show the desired interaction style.
 - **Gaps for MVP**: Many elements under UX and Engagement are descriptions of desired behavior and content (e.g., "Storytelling Integration", "Emotional Validation") rather than tangible features demonstrated in the code. These would need to be implemented through careful crafting of conversational flows and message content.
 
 ### Epic 5: Predictive Decision Timing
+
 - **Goal**: Provide users with precise astrological timing for important life decisions, empowering them with confidence and control.
 - **Key Features**: Transit Timing Engine, decision timing calculator, and predictive insights for optimal life event planning.
 - **MVP User Stories**:
-    - **As a user, I want to know the optimal timing for important life decisions based on astrology with button timing calculators.** *Acceptance Criteria: Decision timing calculator accessible via button, inputs decision type and timeframe, outputs optimal timing windows based on user's birth chart and current transits.*
-    - **As a user, I want tools to help me plan important life events based on optimal astrological timing with button planning tools.** *Acceptance Criteria: Event planning tools include wedding, career change, relocation calculators, tools accessible via button, planning considers user's full birth chart and planetary cycles.*
-    - **As a user, I want to know the best time to make a decision based on astrology with button decision timing.** *Acceptance Criteria: Decision timing feature provides yes/no/maybe recommendations based on transits, accessible via button, considers both Vedic and Western astrology systems.*
-    - **As a user, I want the service to help me achieve life goals with predictive timing with button goal planning.** *Acceptance Criteria: Goal planning integrates with user's stated objectives, provides timeline recommendations based on astrological cycles, accessible via button, tracks progress toward goals.*
+  - **As a user, I want to know the optimal timing for important life decisions based on astrology with button timing calculators.** _Acceptance Criteria: Decision timing calculator accessible via button, inputs decision type and timeframe, outputs optimal timing windows based on user's birth chart and current transits._
+  - **As a user, I want tools to help me plan important life events based on optimal astrological timing with button planning tools.** _Acceptance Criteria: Event planning tools include wedding, career change, relocation calculators, tools accessible via button, planning considers user's full birth chart and planetary cycles._
+  - **As a user, I want to know the best time to make a decision based on astrology with button decision timing.** _Acceptance Criteria: Decision timing feature provides yes/no/maybe recommendations based on transits, accessible via button, considers both Vedic and Western astrology systems._
+  - **As a user, I want the service to help me achieve life goals with predictive timing with button goal planning.** _Acceptance Criteria: Goal planning integrates with user's stated objectives, provides timeline recommendations based on astrological cycles, accessible via button, tracks progress toward goals._
 - **Current Implementation**: `vedicCalculator.js` has a placeholder `generateTransitPreview` that returns hardcoded messages. `conversationEngine.js` uses this to display 3-day transit previews during onboarding.
 - **Gaps for MVP**: The "Precision life planning with decision timing calculator" and "Transit Timing Engine" are **currently placeholders** with hardcoded outputs. A real implementation requiring complex astronomical calculations and personalized interpretations based on a user's full birth chart is **missing**.
 
 ### Epic 6: User Experience, Engagement & Marketing
+
 - **Goal**: Create an engaging and intuitive user experience from discovery to long-term retention, driven by effective marketing and user acquisition strategies.
 - **Key Features**: Enhanced onboarding, compelling user journeys, gamification elements, social sharing, and targeted marketing campaigns.
 - **MVP User Stories**:
-    - **As a new user, I want to receive a high-value free reading immediately upon signup with button access.** *Acceptance Criteria: Free reading delivered within 5 minutes of signup, personalized to birth details, includes shareable elements, leads to upgrade prompts.*
-    - **As a new user, I want my initial free reading to be personalized and visually appealing with button sharing.** *Acceptance Criteria: Reading uses user's birth chart data, includes visual elements (charts/images), WhatsApp sharing button functional, reading feels uniquely tailored.*
-    - **As a new user, I want the free reading to entice me to explore paid features with button upgrade prompts.** *Acceptance Criteria: Free reading ends with clear upgrade teasers, button links to premium features, upgrade flow seamless and compelling.*
-    - **As a new user, I want to feel like I'm part of a unique cosmic story from the start with button storytelling.** *Acceptance Criteria: Onboarding includes narrative elements, personalized cosmic story framework, storytelling buttons guide user through journey.*
-    - **As a new user, I want limited-time free access to premium features to experience their value with button trials.** *Acceptance Criteria: 1-3 day premium trial activated post-signup, all premium features accessible, clear expiration warnings, upgrade prompts at trial end.*
-    - **As a new user, I want an interactive tutorial to guide me through the platform's features, including compatibility sharing with button guides.** *Acceptance Criteria: Step-by-step tutorial with interactive elements, covers key features including compatibility, tutorial completable in under 10 minutes, button navigation throughout.*
-    - **As a new user, I want an engaging initial interaction that guides me to my first reading with button flows.** *Acceptance Criteria: First interaction personalized, guides to birth data input, leads to immediate reading, button-based flow prevents confusion.*
-    - **As a user, I want to be teased with premium features to encourage upgrade with button previews.** *Acceptance Criteria: Premium feature previews accessible via buttons, limited functionality demonstrations, clear upgrade paths presented.*
-    - **As a user, I want to receive proactive, valuable insights and exclusive content with button access.** *Acceptance Criteria: Proactive insights sent based on transits, exclusive content for subscribers, accessible via dedicated buttons, insights relevant to user's chart.*
-    - **As a user, I want interactive prompts that help me explore different life aspects and compatibility with button options.** *Acceptance Criteria: Interactive prompts for career, relationships, health, compatibility options included, button-based responses, prompts adaptive to user history.*
-    - **As a user, I want to reflect on my daily experiences with the bot with button reflection tools.** *Acceptance Criteria: Daily reflection prompts sent, button-based response options, reflections stored in user history, insights derived from reflections.*
-    - **As a user, I want to receive Monday motivation based on weekly planetary influences with button motivation.** *Acceptance Criteria: Weekly Monday messages with astrological motivation, personalized to user's chart, accessible via button, includes actionable advice.*
-    - **As a user, I want to check in with the bot about my feelings during transits with button check-ins.** *Acceptance Criteria: Transit-based check-in prompts, button options for emotional states, responses stored and analyzed, follow-up insights provided.*
-    - **As a user, I want suggestions for weekend spiritual practices with button practice guides.** *Acceptance Criteria: Weekend practice suggestions based on lunar phases, button access to guides, practices aligned with user's chart, includes meditation/audio options.*
-    - **As a user, I want to see my progress in discovering personal patterns with button progress tracking.** *Acceptance Criteria: Progress visualization for pattern discovery, button access to tracking, milestones celebrated, progress tied to engagement metrics.*
-    - **As a user, I want future insights that are personalized and relevant with button insight access.** *Acceptance Criteria: Future predictions based on current transits, personalized to user's chart, accessible via button, includes timing and preparation advice.*
-    - **As a user, I want to see social proof of prediction accuracy with button testimonials.** *Acceptance Criteria: User testimonials and success stories displayed, button access to testimonials, stories anonymized but verifiable, builds trust through community proof.*
-    - **As a user, I want time-sensitive value propositions with button offers.** *Acceptance Criteria: Limited-time offers based on astrological events, button access to offers, clear expiration times, compelling value propositions.*
-    - **As a user, I want a summary of my personal insights after one month with button summaries.** *Acceptance Criteria: Monthly summary generated automatically, includes key insights and patterns, accessible via button, shareable format.*
-    - **As a user, I want to compare my actual experiences with past predictions with button comparison tools.** *Acceptance Criteria: Prediction vs reality comparison tool, button access, visual comparison interface, accuracy ratings tracked.*
-    - **As a user, I want to provide feedback on the accuracy of insights with button feedback forms.** *Acceptance Criteria: Feedback forms accessible via button, rating system for predictions, feedback stored and analyzed, improvements implemented based on feedback.*
-    - **As a user, I want to experience 'aha' moments that enhance my understanding with button moments.** *Acceptance Criteria: 'Aha' moments highlighted in readings, button access to related content, moments tied to pattern recognition, emotional impact maximized.*
-    - **As a user, I want the service to help me form astrological habits through regular touchpoints with button habits.** *Acceptance Criteria: Habit-forming touchpoints (daily/weekly), button access to habit tracking, streaks and rewards for consistency, habits integrated into daily routine.*
-    - **As a user, I want advanced features to be introduced gradually with button progression.** *Acceptance Criteria: Feature unlocks based on engagement level, button access to new features, gradual introduction prevents overwhelm, progression feels rewarding.*
-    - **As a user, I want my journey milestones and achievements to be celebrated with button celebrations.** *Acceptance Criteria: Milestone celebrations triggered automatically, button access to celebration content, achievements shared socially, emotional validation provided.*
-    - **As a user, I want to be re-engaged with relevant astrological insights if I become inactive with button re-engagement.** *Acceptance Criteria: Re-engagement campaigns triggered by inactivity, insights relevant to user's chart, button access to re-engagement content, campaigns personalized.*
-    - **As a new user, I want an immediate, personalized first interaction with button responses.** *Acceptance Criteria: First message response within 10 seconds, personalized greeting using available data, button options for next steps, engaging and welcoming tone.*
-    - **As a new user, I want a free initial reading that demonstrates personal relevance with button readings.** *Acceptance Criteria: Initial reading free and immediate, demonstrates accuracy with personal details, button access to reading, leads to further engagement.*
-    - **As a potential user, I want to easily discover the service and initiate contact with button discovery.** *Acceptance Criteria: Clear discovery mechanisms (ads, referrals), easy WhatsApp initiation, button-based first interaction, low friction entry.*
+  - **As a new user, I want to receive a high-value free reading immediately upon signup with button access.** _Acceptance Criteria: Free reading delivered within 5 minutes of signup, personalized to birth details, includes shareable elements, leads to upgrade prompts._
+  - **As a new user, I want my initial free reading to be personalized and visually appealing with button sharing.** _Acceptance Criteria: Reading uses user's birth chart data, includes visual elements (charts/images), WhatsApp sharing button functional, reading feels uniquely tailored._
+  - **As a new user, I want the free reading to entice me to explore paid features with button upgrade prompts.** _Acceptance Criteria: Free reading ends with clear upgrade teasers, button links to premium features, upgrade flow seamless and compelling._
+  - **As a new user, I want to feel like I'm part of a unique cosmic story from the start with button storytelling.** _Acceptance Criteria: Onboarding includes narrative elements, personalized cosmic story framework, storytelling buttons guide user through journey._
+  - **As a new user, I want limited-time free access to premium features to experience their value with button trials.** _Acceptance Criteria: 1-3 day premium trial activated post-signup, all premium features accessible, clear expiration warnings, upgrade prompts at trial end._
+  - **As a new user, I want an interactive tutorial to guide me through the platform's features, including compatibility sharing with button guides.** _Acceptance Criteria: Step-by-step tutorial with interactive elements, covers key features including compatibility, tutorial completable in under 10 minutes, button navigation throughout._
+  - **As a new user, I want an engaging initial interaction that guides me to my first reading with button flows.** _Acceptance Criteria: First interaction personalized, guides to birth data input, leads to immediate reading, button-based flow prevents confusion._
+  - **As a user, I want to be teased with premium features to encourage upgrade with button previews.** _Acceptance Criteria: Premium feature previews accessible via buttons, limited functionality demonstrations, clear upgrade paths presented._
+  - **As a user, I want to receive proactive, valuable insights and exclusive content with button access.** _Acceptance Criteria: Proactive insights sent based on transits, exclusive content for subscribers, accessible via dedicated buttons, insights relevant to user's chart._
+  - **As a user, I want interactive prompts that help me explore different life aspects and compatibility with button options.** _Acceptance Criteria: Interactive prompts for career, relationships, health, compatibility options included, button-based responses, prompts adaptive to user history._
+  - **As a user, I want to reflect on my daily experiences with the bot with button reflection tools.** _Acceptance Criteria: Daily reflection prompts sent, button-based response options, reflections stored in user history, insights derived from reflections._
+  - **As a user, I want to receive Monday motivation based on weekly planetary influences with button motivation.** _Acceptance Criteria: Weekly Monday messages with astrological motivation, personalized to user's chart, accessible via button, includes actionable advice._
+  - **As a user, I want to check in with the bot about my feelings during transits with button check-ins.** _Acceptance Criteria: Transit-based check-in prompts, button options for emotional states, responses stored and analyzed, follow-up insights provided._
+  - **As a user, I want suggestions for weekend spiritual practices with button practice guides.** _Acceptance Criteria: Weekend practice suggestions based on lunar phases, button access to guides, practices aligned with user's chart, includes meditation/audio options._
+  - **As a user, I want to see my progress in discovering personal patterns with button progress tracking.** _Acceptance Criteria: Progress visualization for pattern discovery, button access to tracking, milestones celebrated, progress tied to engagement metrics._
+  - **As a user, I want future insights that are personalized and relevant with button insight access.** _Acceptance Criteria: Future predictions based on current transits, personalized to user's chart, accessible via button, includes timing and preparation advice._
+  - **As a user, I want to see social proof of prediction accuracy with button testimonials.** _Acceptance Criteria: User testimonials and success stories displayed, button access to testimonials, stories anonymized but verifiable, builds trust through community proof._
+  - **As a user, I want time-sensitive value propositions with button offers.** _Acceptance Criteria: Limited-time offers based on astrological events, button access to offers, clear expiration times, compelling value propositions._
+  - **As a user, I want a summary of my personal insights after one month with button summaries.** _Acceptance Criteria: Monthly summary generated automatically, includes key insights and patterns, accessible via button, shareable format._
+  - **As a user, I want to compare my actual experiences with past predictions with button comparison tools.** _Acceptance Criteria: Prediction vs reality comparison tool, button access, visual comparison interface, accuracy ratings tracked._
+  - **As a user, I want to provide feedback on the accuracy of insights with button feedback forms.** _Acceptance Criteria: Feedback forms accessible via button, rating system for predictions, feedback stored and analyzed, improvements implemented based on feedback._
+  - **As a user, I want to experience 'aha' moments that enhance my understanding with button moments.** _Acceptance Criteria: 'Aha' moments highlighted in readings, button access to related content, moments tied to pattern recognition, emotional impact maximized._
+  - **As a user, I want the service to help me form astrological habits through regular touchpoints with button habits.** _Acceptance Criteria: Habit-forming touchpoints (daily/weekly), button access to habit tracking, streaks and rewards for consistency, habits integrated into daily routine._
+  - **As a user, I want advanced features to be introduced gradually with button progression.** _Acceptance Criteria: Feature unlocks based on engagement level, button access to new features, gradual introduction prevents overwhelm, progression feels rewarding._
+  - **As a user, I want my journey milestones and achievements to be celebrated with button celebrations.** _Acceptance Criteria: Milestone celebrations triggered automatically, button access to celebration content, achievements shared socially, emotional validation provided._
+  - **As a user, I want to be re-engaged with relevant astrological insights if I become inactive with button re-engagement.** _Acceptance Criteria: Re-engagement campaigns triggered by inactivity, insights relevant to user's chart, button access to re-engagement content, campaigns personalized._
+  - **As a new user, I want an immediate, personalized first interaction with button responses.** _Acceptance Criteria: First message response within 10 seconds, personalized greeting using available data, button options for next steps, engaging and welcoming tone._
+  - **As a new user, I want a free initial reading that demonstrates personal relevance with button readings.** _Acceptance Criteria: Initial reading free and immediate, demonstrates accuracy with personal details, button access to reading, leads to further engagement._
+  - **As a potential user, I want to easily discover the service and initiate contact with button discovery.** _Acceptance Criteria: Clear discovery mechanisms (ads, referrals), easy WhatsApp initiation, button-based first interaction, low friction entry._
 - **Current Implementation**: The `conversationEngine.js` onboarding flow provides initial personalized responses and introduces elements like Sun Sign. The examples for bot experience in `INITIAL-PROMPT.md` show the desired interaction style.
 - **Gaps for MVP**: Many elements under UX and Engagement are descriptions of desired behavior and content (e.g., "Storytelling Integration", "Emotional Validation") rather than tangible features demonstrated in the code. These would need to be implemented through careful crafting of conversational flows and message content.
 
 ### Epic 7: Security, Authentication & Implementation Features
+
 - **Goal**: Implement comprehensive security and authentication features following BMAD methodology. This epic focuses on protecting user data and ensuring secure access to astrological services with robust authentication mechanisms.
 - **Key Features**: Advanced authentication and security features, two-factor authentication, social login options, account recovery, device management, privacy controls, session management, data encryption, input validation, webhook validation, rate limiting, CORS configuration, GDPR compliance, regional compliance, API key management, file upload validation, dependency scanning, security scanning, automated testing mandates, documentation standards, and various implementation guidelines.
 - **MVP User Stories**:
-    - **As a user, I want to create and manage my profile with accurate birth details with button profile management.** *Acceptance Criteria: Profile creation guided by buttons, birth details input validated, profile editable via button, changes saved automatically.*
-    - **As a user, I want to store my basic personal and birth information in my profile with button data entry.** *Acceptance Criteria: All required fields (name, DOB, time, place) collected via button forms, data validated for accuracy, stored securely, accessible for readings.*
-    - **As a user, I want to set my preferences for the types of astrology readings I receive and receive relevant reminders with button preference settings.** *Acceptance Criteria: Preference settings for astrology systems, reading types, reminder frequency, settings accessible via button, preferences applied to all future interactions.*
-    - **As a user, I want to manage my privacy and security settings with button controls.** *Acceptance Criteria: Privacy controls for data sharing, security settings for authentication, button access to settings, changes take effect immediately.*
-    - As a user, I want my birth chart to be automatically generated from my profile details with button generation.
-    - As a new user, I want a guided process to input my birth data with button-guided onboarding.
-    - As a user, I want to have additional verification options for account recovery with button recovery options.
-    - As a user, I want to enable two-factor authentication for enhanced security with button toggles.
-    - As a user, I want to link my social media accounts for easier login with button linking.
+  - **As a user, I want to create and manage my profile with accurate birth details with button profile management.** _Acceptance Criteria: Profile creation guided by buttons, birth details input validated, profile editable via button, changes saved automatically._
+  - **As a user, I want to store my basic personal and birth information in my profile with button data entry.** _Acceptance Criteria: All required fields (name, DOB, time, place) collected via button forms, data validated for accuracy, stored securely, accessible for readings._
+  - **As a user, I want to set my preferences for the types of astrology readings I receive and receive relevant reminders with button preference settings.** _Acceptance Criteria: Preference settings for astrology systems, reading types, reminder frequency, settings accessible via button, preferences applied to all future interactions._
+  - **As a user, I want to manage my privacy and security settings with button controls.** _Acceptance Criteria: Privacy controls for data sharing, security settings for authentication, button access to settings, changes take effect immediately._
+  - As a user, I want my birth chart to be automatically generated from my profile details with button generation.
+  - As a new user, I want a guided process to input my birth data with button-guided onboarding.
+  - As a user, I want to have additional verification options for account recovery with button recovery options.
+  - As a user, I want to enable two-factor authentication for enhanced security with button toggles.
+  - As a user, I want to link my social media accounts for easier login with button linking.
 - **Current Implementation**: `conversationEngine.js` directly calls `addBirthDetails` and `updateUserProfile` from `userModel` (though `userModel` itself isn't provided, its functions are called). This confirms the capability to collect and store birth data.
 - **Gaps for MVP**: The actual implementation details of additional verification methods (email/social login, 2FA) are **not shown**. Data privacy settings are mentioned but not explicitly implemented in the provided code.
 
 ### Epic 8: Educational Content, Services & Management
+
 - **Goal**: Implement comprehensive educational content, services, and content management following BMAD methodology. This epic focuses on content creation, educational programs, marketplace services, and content monetization strategies.
 - **Key Features**: Astrology course platform, certification programs, user-to-user service marketplace, course enrollment system, certification exams, educational CMS, content authoring tools, personalized recommendations, content analytics, expert instructor platform, marketplace commissions, course sales, certification programs, event-based monetization, affiliate ecosystem, and various educational and monetization features.
 - **MVP User Stories**:
-    - **As a user, I want to analyze my compatibility with friends and partners with button compatibility analysis.** *Acceptance Criteria: Compatibility analysis accessible via button, inputs friend's birth details, generates detailed report, considers multiple astrology systems.*
-    - **As a user, I want to generate and share visually appealing birth charts with others with button sharing.** *Acceptance Criteria: Birth chart generation takes <30 seconds, visually appealing design, WhatsApp sharing button functional, chart includes key astrological elements.*
-    - **As a user, I want to connect with a community of users who have similar astrological profiles with button community access.** *Acceptance Criteria: Community matching based on birth charts, button access to similar users, connection requests sent via button, privacy controls maintained.*
-    - **As a user, I want an easy way to check astrological compatibility with my friends and partners with button checks.** *Acceptance Criteria: Quick compatibility check via button, minimal input required, results displayed immediately, option to upgrade to detailed report.*
-    - **As a user, I want to easily share my astrological insights and achievements on social media with button sharing.** *Acceptance Criteria: Share buttons for insights and achievements, integrates with WhatsApp/social media, shareable content optimized for engagement, tracking of shares.*
-    - **As a user, I want to easily share aesthetically pleasing astrological insights that make me feel good with button aesthetics.** *Acceptance Criteria: Insights designed with aesthetic appeal, button access to sharing, content makes users feel special, shareable formats (images, text).*
-    - **As a user, I want to invite friends to unlock more detailed compatibility reports with button invitations.** *Acceptance Criteria: Invitation system via button, friends receive unlock incentives, detailed reports unlocked upon friend signup, referral tracking.*
-    - **As a user, I want the Astro-Social Network to become more valuable as more people join with button network growth.** *Acceptance Criteria: Network value increases with user base, button access to network features, growth metrics visible, benefits scale with network size.*
-    - **As a user, I want to invite friends to participate in group readings with button group invites.** *Acceptance Criteria: Group reading invitations via button, friends can join via link/button, group readings combine multiple charts, minimum group size enforced.*
-    - **As a user, I want to track and support my friends through their astrological transits with button tracking.** *Acceptance Criteria: Friend transit tracking accessible via button, notifications for important transits, support messages sendable, privacy permissions required.*
-    - **As a user, I want to easily share compatibility reports to encourage others to join with button report sharing.** *Acceptance Criteria: Compatibility reports shareable via button, includes signup incentives, tracks conversions from shares, viral sharing mechanics.*
-    - **As a user, I want to see success stories and prediction accuracy to build trust in the platform with button testimonials.** *Acceptance Criteria: Success stories accessible via button, includes prediction accuracy metrics, testimonials from verified users, builds community trust.*
-    - **As a user, I want to get combined astrological readings with my family and friends with button group readings.** *Acceptance Criteria: Group readings for 2+ people via button, combines individual charts, provides collective insights, minimum participants required.*
-    - **As a user, I want to manage my friends and social connections for compatibility checks with button friend management.** *Acceptance Criteria: Friend list management via button, add/remove friends, connection permissions, integration with compatibility features.*
-    - **As a user, I want to create a compatibility profile for matching with others with button profile creation.** *Acceptance Criteria: Compatibility profile creation via button, includes birth details and preferences, used for matching algorithms, privacy controls included.*
-    - **As a user, I want to share content with privacy controls with button privacy settings.** *Acceptance Criteria: Privacy settings for content sharing via button, granular controls (public/friends/private), settings applied to all shares, user consent required.*
-    - **As a user, I want to generate and share beautiful, personalized forecasts with button forecast sharing.** *Acceptance Criteria: Forecast generation personalized, beautiful design, button sharing options, forecasts based on current transits and user chart.*
-    - **As a new user, I want to be prompted to add a friend for a compatibility check during onboarding with button prompts.** *Acceptance Criteria: Onboarding includes friend addition prompt, button-based flow, compatibility check initiated immediately, optional step.*
-    - **As a user, I want to see my friends' progress in their cosmic journey and engage in friendly competition with button progress views.** *Acceptance Criteria: Friend progress visible via button, cosmic journey visualization, friendly competition elements, privacy permissions required.*
-    - **As a user, I want to easily share compatibility reports and add friends with button social actions.** *Acceptance Criteria: Social actions (share/add friend) via buttons, streamlined process, integration with WhatsApp, action tracking.*
-    - **As a user, I want to see and share success stories within the Astro-Social Network with button story sharing.** *Acceptance Criteria: Success stories from network accessible via button, sharing functionality included, stories build community engagement.*
-    - **As a VIP user, I want exclusive access to a community with direct astrologer interaction with button VIP access.** *Acceptance Criteria: VIP community access via button, direct astrologer interaction, exclusive content/features, access restricted to VIP tier.*
-    - **As a user, I want to participate in community challenges during planetary events with button challenge participation.** *Acceptance Criteria: Challenges accessible via button, tied to planetary events, participation tracked, rewards for completion, community-wide engagement.*
+  - **As a user, I want to analyze my compatibility with friends and partners with button compatibility analysis.** _Acceptance Criteria: Compatibility analysis accessible via button, inputs friend's birth details, generates detailed report, considers multiple astrology systems._
+  - **As a user, I want to generate and share visually appealing birth charts with others with button sharing.** _Acceptance Criteria: Birth chart generation takes <30 seconds, visually appealing design, WhatsApp sharing button functional, chart includes key astrological elements._
+  - **As a user, I want to connect with a community of users who have similar astrological profiles with button community access.** _Acceptance Criteria: Community matching based on birth charts, button access to similar users, connection requests sent via button, privacy controls maintained._
+  - **As a user, I want an easy way to check astrological compatibility with my friends and partners with button checks.** _Acceptance Criteria: Quick compatibility check via button, minimal input required, results displayed immediately, option to upgrade to detailed report._
+  - **As a user, I want to easily share my astrological insights and achievements on social media with button sharing.** _Acceptance Criteria: Share buttons for insights and achievements, integrates with WhatsApp/social media, shareable content optimized for engagement, tracking of shares._
+  - **As a user, I want to easily share aesthetically pleasing astrological insights that make me feel good with button aesthetics.** _Acceptance Criteria: Insights designed with aesthetic appeal, button access to sharing, content makes users feel special, shareable formats (images, text)._
+  - **As a user, I want to invite friends to unlock more detailed compatibility reports with button invitations.** _Acceptance Criteria: Invitation system via button, friends receive unlock incentives, detailed reports unlocked upon friend signup, referral tracking._
+  - **As a user, I want the Astro-Social Network to become more valuable as more people join with button network growth.** _Acceptance Criteria: Network value increases with user base, button access to network features, growth metrics visible, benefits scale with network size._
+  - **As a user, I want to invite friends to participate in group readings with button group invites.** _Acceptance Criteria: Group reading invitations via button, friends can join via link/button, group readings combine multiple charts, minimum group size enforced._
+  - **As a user, I want to track and support my friends through their astrological transits with button tracking.** _Acceptance Criteria: Friend transit tracking accessible via button, notifications for important transits, support messages sendable, privacy permissions required._
+  - **As a user, I want to easily share compatibility reports to encourage others to join with button report sharing.** _Acceptance Criteria: Compatibility reports shareable via button, includes signup incentives, tracks conversions from shares, viral sharing mechanics._
+  - **As a user, I want to see success stories and prediction accuracy to build trust in the platform with button testimonials.** _Acceptance Criteria: Success stories accessible via button, includes prediction accuracy metrics, testimonials from verified users, builds community trust._
+  - **As a user, I want to get combined astrological readings with my family and friends with button group readings.** _Acceptance Criteria: Group readings for 2+ people via button, combines individual charts, provides collective insights, minimum participants required._
+  - **As a user, I want to manage my friends and social connections for compatibility checks with button friend management.** _Acceptance Criteria: Friend list management via button, add/remove friends, connection permissions, integration with compatibility features._
+  - **As a user, I want to create a compatibility profile for matching with others with button profile creation.** _Acceptance Criteria: Compatibility profile creation via button, includes birth details and preferences, used for matching algorithms, privacy controls included._
+  - **As a user, I want to share content with privacy controls with button privacy settings.** _Acceptance Criteria: Privacy settings for content sharing via button, granular controls (public/friends/private), settings applied to all shares, user consent required._
+  - **As a user, I want to generate and share beautiful, personalized forecasts with button forecast sharing.** _Acceptance Criteria: Forecast generation personalized, beautiful design, button sharing options, forecasts based on current transits and user chart._
+  - **As a new user, I want to be prompted to add a friend for a compatibility check during onboarding with button prompts.** _Acceptance Criteria: Onboarding includes friend addition prompt, button-based flow, compatibility check initiated immediately, optional step._
+  - **As a user, I want to see my friends' progress in their cosmic journey and engage in friendly competition with button progress views.** _Acceptance Criteria: Friend progress visible via button, cosmic journey visualization, friendly competition elements, privacy permissions required._
+  - **As a user, I want to easily share compatibility reports and add friends with button social actions.** _Acceptance Criteria: Social actions (share/add friend) via buttons, streamlined process, integration with WhatsApp, action tracking._
+  - **As a user, I want to see and share success stories within the Astro-Social Network with button story sharing.** _Acceptance Criteria: Success stories from network accessible via button, sharing functionality included, stories build community engagement._
+  - **As a VIP user, I want exclusive access to a community with direct astrologer interaction with button VIP access.** _Acceptance Criteria: VIP community access via button, direct astrologer interaction, exclusive content/features, access restricted to VIP tier._
+  - **As a user, I want to participate in community challenges during planetary events with button challenge participation.** _Acceptance Criteria: Challenges accessible via button, tied to planetary events, participation tracked, rewards for completion, community-wide engagement._
 - **Current Implementation**: `vedicCalculator.js` has a `checkCompatibility` method. `conversationEngine.js` has a `generate_compatibility` action that uses this. `INITIAL-PROMPT.md` outlines many social features.
 - **Gaps for MVP**: A full "Astro-Social Network" with chat, profiles, and feeds, or advanced group reading features, are **not implemented** in the provided code and would require significant development. The social sharing mentioned primarily implies a user sharing externally, not within a platform social network.
 
 ### Epic 9: Gamification & User Engagement
+
 - **Goal**: Implement engaging gamification elements to drive user retention, encourage daily interaction, and reward loyalty.
 - **Key Features**: Karma Points system, streak mechanics, unlockable content, cosmic journey progress, achievement badges, and leaderboards.
 - **MVP User Stories**:
-    - **As a user, I want to earn badges and track my progress for engaging with the platform with button badge tracking.** *Acceptance Criteria: Badges earned for specific actions (daily login, referrals, readings), progress tracking via button, badge collection visible, achievements celebrated.*
-    - **As a user, I want to earn and redeem Karma Points for engaging with the platform and referring friends with button points system.** *Acceptance Criteria: Points earned for engagement activities, redemption catalog accessible via button, points balance visible, referral bonuses included.*
-    - **As a user, I want to maintain daily engagement streaks and share them with friends with button streak sharing.** *Acceptance Criteria: Daily streak tracking automatic, streak visualization, sharing buttons for social media/WhatsApp, streak preservation across sessions.*
-    - **As a user, I want to unlock new content and insights as I progress with button unlocks.** *Acceptance Criteria: Content unlocks based on engagement milestones, unlock notifications, button access to new content, progression feels rewarding.*
-    - **As a user, I want to visualize my progress on a cosmic journey and share it with friends with button journey views.** *Acceptance Criteria: Cosmic journey visualization shows progress, button access to views, sharing options included, journey tied to astrological themes.*
-    - **As a user, I want to participate in competitions and see my ranking on leaderboards with button leaderboards.** *Acceptance Criteria: Competitions based on engagement metrics, leaderboards updated in real-time, button access to rankings, participation rewards.*
-    - **As a user, I want to easily share my achievement badges and milestones on social media with button achievement sharing.** *Acceptance Criteria: Achievement sharing via button, integrates with social media/WhatsApp, shareable badge images, milestone highlights.*
-    - **As a user, I want to track my achievements and progress within the platform.** *Acceptance Criteria: Achievement tracking accessible via button, progress metrics visible, historical achievements stored, gamification elements clear.*
+  - **As a user, I want to earn badges and track my progress for engaging with the platform with button badge tracking.** _Acceptance Criteria: Badges earned for specific actions (daily login, referrals, readings), progress tracking via button, badge collection visible, achievements celebrated._
+  - **As a user, I want to earn and redeem Karma Points for engaging with the platform and referring friends with button points system.** _Acceptance Criteria: Points earned for engagement activities, redemption catalog accessible via button, points balance visible, referral bonuses included._
+  - **As a user, I want to maintain daily engagement streaks and share them with friends with button streak sharing.** _Acceptance Criteria: Daily streak tracking automatic, streak visualization, sharing buttons for social media/WhatsApp, streak preservation across sessions._
+  - **As a user, I want to unlock new content and insights as I progress with button unlocks.** _Acceptance Criteria: Content unlocks based on engagement milestones, unlock notifications, button access to new content, progression feels rewarding._
+  - **As a user, I want to visualize my progress on a cosmic journey and share it with friends with button journey views.** _Acceptance Criteria: Cosmic journey visualization shows progress, button access to views, sharing options included, journey tied to astrological themes._
+  - **As a user, I want to participate in competitions and see my ranking on leaderboards with button leaderboards.** _Acceptance Criteria: Competitions based on engagement metrics, leaderboards updated in real-time, button access to rankings, participation rewards._
+  - **As a user, I want to easily share my achievement badges and milestones on social media with button achievement sharing.** _Acceptance Criteria: Achievement sharing via button, integrates with social media/WhatsApp, shareable badge images, milestone highlights._
+  - **As a user, I want to track my achievements and progress within the platform.** _Acceptance Criteria: Achievement tracking accessible via button, progress metrics visible, historical achievements stored, gamification elements clear._
 - **Current Implementation**: Only mentions of "Achievement System" in `INITIAL-PROMPT.md` and basic concepts under "Gamification Elements". No direct code implementation for points, streaks, leaderboards, or unlockable content is shown.
 - **Gaps for MVP**: Full gamification mechanics with points, levels, and unlockable features are **not implemented**.
 
 ### Epic 10: Technology & Scaling
+
 - **Goal**: Build a robust, scalable, and cost-effective technology infrastructure capable of supporting rapid development, multi-channel delivery, and future growth.
 - **Key Features**: Rapid development strategy, backend services, solo developer AI infrastructure, database management, third-party integrations, multi-language tech stack, BMAd development tools, multi-channel delivery system, scaling and growth strategies, and development phases.
 - **MVP User Stories**: None directly user-facing, this is an infrastructure epic.
@@ -276,6 +288,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Gaps for MVP**: This is an internal epic. The presence of core files like `server.js`, `conversationEngine.js`, `vedicCalculator.js`, and general structure indicates a basic setup, but the scalability aspects ("Social Graph Database", "Time-series database") and advanced AI infrastructure are likely for later phases.
 
 ### Epic 11: Market Validation & Risk Mitigation
+
 - **Goal**: Validate market demand and mitigate potential risks (market, technical, operational, financial) to ensure the project's long-term success and revenue protection.
 - **Key Features**: MVP testing, A/B testing, churn analysis, competitive response strategies, regulatory compliance, security measures, and financial risk mitigation.
 - **MVP User Stories**: None directly user-facing.
@@ -283,6 +296,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Gaps for MVP**: These are primarily documentation and strategic considerations, not directly code-implementable user stories.
 
 ### Epic 12: AI-Agent Driven Development & BMAd Methodology
+
 - **Goal**: Leverage AI agents and the BMAd methodology for rapid, efficient, and high-quality development, ensuring continuous integration and automated quality assurance.
 - **Key Features**: AI-Agent Driven Development, Qwen CLI, Gemini CLI, automated testing generation, AI code review, automated deployment, and BMAd project management.
 - **MVP User Stories**: None directly user-facing. This is a development methodology.
@@ -290,16 +304,18 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Gaps for MVP**: Not applicable as this is a meta-development epic.
 
 ### Epic 13: Human Astrologer Services
+
 - **Goal**: Provide users with direct access to certified human astrologers for in-depth consultations and personalized guidance.
 - **Key Features**: Direct text/voice chat with astrologers, scheduled consultations, and follow-up reports.
 - **MVP User Stories**:
-    - **As a user, I want to chat directly with a human astrologer for personalized advice with button chat initiation.** *Acceptance Criteria: Chat initiation via button, connects to available certified astrologer, chat interface seamless, session duration tracked.*
-    - **As a user, I want to schedule a consultation with a specific astrologer at my convenience with button scheduling.** *Acceptance Criteria: Astrologer selection via button, calendar scheduling interface, confirmation sent, reminders before session, payment processed.*
-    - **As a user, I want a seamless handover to a human astrologer when needed with button handover.** *Acceptance Criteria: Handover triggered by user request or AI detection, smooth transition without data loss, astrologer briefed on conversation history, user notified of handover.*
+  - **As a user, I want to chat directly with a human astrologer for personalized advice with button chat initiation.** _Acceptance Criteria: Chat initiation via button, connects to available certified astrologer, chat interface seamless, session duration tracked._
+  - **As a user, I want to schedule a consultation with a specific astrologer at my convenience with button scheduling.** _Acceptance Criteria: Astrologer selection via button, calendar scheduling interface, confirmation sent, reminders before session, payment processed._
+  - **As a user, I want a seamless handover to a human astrologer when needed with button handover.** _Acceptance Criteria: Handover triggered by user request or AI detection, smooth transition without data loss, astrologer briefed on conversation history, user notified of handover._
 - **Current Implementation**: `conversationEngine.js` has a reference to `seamless handover to human astrologers when needed` in a User Interface & Interaction Design section, but no direct implementation is shown for connecting users to human astrologers.
 - **Gaps for MVP**: The actual functionality of connecting to human astrologers, scheduling, and managing these interactions is **not implemented**.
 
 ### Epic 14: Advanced Technology & Infrastructure
+
 - **Goal**: Implement advanced technological solutions and infrastructure to support complex features, high performance, and future innovation.
 - **Key Features**: Social Graph Database, Loyalty System Engine, AI Twin System, Transit Timing Engine, and advanced analytics.
 - **MVP User Stories**: This is an internal epic.
@@ -307,6 +323,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Gaps for MVP**: Many of these are **not yet implemented** beyond basic data structures or placeholder functions.
 
 ### Epic 15: Success Metrics & KPIs
+
 - **Goal**: Define and track key performance indicators and revenue metrics to measure project success, identify growth opportunities, and ensure profitability.
 - **Key Features**: MRR, ARR, ARPU, CLV, conversion rates, engagement metrics, phase-based targets, and revenue optimization alerts.
 - **MVP User Stories**: None directly user-facing. This is an internal epic.
@@ -314,6 +331,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Gaps for MVP**: Not applicable as this is a meta-epic for tracking.
 
 ### Epic 16: Payment Integration Enhancement
+
 - **Goal**: Implement enhanced payment integration and processing capabilities for the astrology WhatsApp bot.
 - **Key Features**: Advanced payment processing, regional payment methods, subscription management, billing integration, and payment security.
 - **MVP User Stories**: None directly user-facing. This is a payment infrastructure epic.
@@ -321,117 +339,128 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Gaps for MVP**: Full regional payment method support and advanced billing features need implementation.
 
 ### Epic 17: Data Analytics & Business Intelligence
+
 - **Goal**: Implement comprehensive data analytics and business intelligence capabilities to drive insights, optimize performance, and support data-driven decision making.
 - **Key Features**: User behavior analytics, revenue analytics, performance metrics, predictive analytics, A/B testing framework, data visualization, and business intelligence dashboards.
 - **MVP User Stories**:
-    - **As a business owner, I want to track user engagement metrics so that I can understand how users interact with the platform.** *Acceptance Criteria: Track daily active users, session duration, feature usage, conversion rates, and retention metrics.*
-    - **As a business owner, I want to analyze revenue performance so that I can optimize pricing and identify growth opportunities.** *Acceptance Criteria: Track MRR, ARR, ARPU, CLV, churn rate, and revenue by subscription tier and feature.*
-    - **As a business owner, I want to monitor system performance so that I can ensure optimal user experience.** *Acceptance Criteria: Track response times, error rates, uptime, and resource utilization.*
-    - **As a business owner, I want to conduct A/B testing so that I can optimize features and user experience.** *Acceptance Criteria: Framework for testing different features, pricing, messaging, and UI variations with statistical significance analysis.*
-    - **As a business owner, I want to predict user behavior so that I can proactively improve retention and revenue.** *Acceptance Criteria: Predictive models for churn risk, upgrade potential, and lifetime value.*
-    - **As a business owner, I want to visualize data through dashboards so that I can make informed decisions.** *Acceptance Criteria: Interactive dashboards with real-time data, customizable views, and export capabilities.*
+  - **As a business owner, I want to track user engagement metrics so that I can understand how users interact with the platform.** _Acceptance Criteria: Track daily active users, session duration, feature usage, conversion rates, and retention metrics._
+  - **As a business owner, I want to analyze revenue performance so that I can optimize pricing and identify growth opportunities.** _Acceptance Criteria: Track MRR, ARR, ARPU, CLV, churn rate, and revenue by subscription tier and feature._
+  - **As a business owner, I want to monitor system performance so that I can ensure optimal user experience.** _Acceptance Criteria: Track response times, error rates, uptime, and resource utilization._
+  - **As a business owner, I want to conduct A/B testing so that I can optimize features and user experience.** _Acceptance Criteria: Framework for testing different features, pricing, messaging, and UI variations with statistical significance analysis._
+  - **As a business owner, I want to predict user behavior so that I can proactively improve retention and revenue.** _Acceptance Criteria: Predictive models for churn risk, upgrade potential, and lifetime value._
+  - **As a business owner, I want to visualize data through dashboards so that I can make informed decisions.** _Acceptance Criteria: Interactive dashboards with real-time data, customizable views, and export capabilities._
 - **Current Implementation**: Basic analytics setup with user tracking. Advanced features need implementation.
 - **Gaps for MVP**: Full analytics platform and predictive modeling need development.
 
 ### Epic 18: Security & Privacy Compliance
+
 - **Goal**: Ensure comprehensive security and privacy compliance across all operations, protecting user data and meeting regulatory requirements.
 - **Key Features**: GDPR compliance, data encryption, privacy controls, security audits, compliance monitoring, and regional regulatory adherence.
 - **MVP User Stories**:
-    - **As a user, I want my personal data to be protected so that I can trust the platform with my information.** *Acceptance Criteria: End-to-end encryption, secure data storage, regular security audits, and compliance with data protection regulations.*
-    - **As a business owner, I want to comply with GDPR and regional privacy laws so that I can operate legally in target markets.** *Acceptance Criteria: GDPR compliance framework, data processing agreements, user consent management, and right to data portability.*
-    - **As a user, I want control over my privacy settings so that I can manage what data is shared and how.** *Acceptance Criteria: Granular privacy controls, data sharing preferences, opt-in/opt-out mechanisms, and clear privacy policy.*
-    - **As a business owner, I want to conduct regular security audits so that I can identify and address vulnerabilities.** *Acceptance Criteria: Automated security scanning, penetration testing, vulnerability assessments, and compliance reporting.*
+  - **As a user, I want my personal data to be protected so that I can trust the platform with my information.** _Acceptance Criteria: End-to-end encryption, secure data storage, regular security audits, and compliance with data protection regulations._
+  - **As a business owner, I want to comply with GDPR and regional privacy laws so that I can operate legally in target markets.** _Acceptance Criteria: GDPR compliance framework, data processing agreements, user consent management, and right to data portability._
+  - **As a user, I want control over my privacy settings so that I can manage what data is shared and how.** _Acceptance Criteria: Granular privacy controls, data sharing preferences, opt-in/opt-out mechanisms, and clear privacy policy._
+  - **As a business owner, I want to conduct regular security audits so that I can identify and address vulnerabilities.** _Acceptance Criteria: Automated security scanning, penetration testing, vulnerability assessments, and compliance reporting._
 - **Current Implementation**: Basic security measures in place. Advanced compliance features need implementation.
 - **Gaps for MVP**: Full compliance framework and privacy controls need development.
 
 ### Epic 19: Performance Monitoring & Optimization
+
 - **Goal**: Implement comprehensive performance monitoring and optimization to ensure high availability, fast response times, and optimal resource utilization.
 - **Key Features**: Application performance monitoring, real-time metrics, performance optimization, load balancing, and scalability planning.
 - **MVP User Stories**:
-    - **As a user, I want fast response times so that I can have a smooth experience.** *Acceptance Criteria: Response times under 2 seconds for all interactions, optimized for mobile networks.*
-    - **As a business owner, I want to monitor application performance so that I can identify and resolve issues quickly.** *Acceptance Criteria: Real-time performance monitoring, alerting for performance degradation, and detailed performance analytics.*
-    - **As a business owner, I want to optimize resource utilization so that I can reduce costs and improve efficiency.** *Acceptance Criteria: Automated scaling, resource optimization, and performance benchmarking.*
-    - **As a business owner, I want to ensure high availability so that users can access the service reliably.** *Acceptance Criteria: 99.9% uptime, redundant systems, and disaster recovery procedures.*
+  - **As a user, I want fast response times so that I can have a smooth experience.** _Acceptance Criteria: Response times under 2 seconds for all interactions, optimized for mobile networks._
+  - **As a business owner, I want to monitor application performance so that I can identify and resolve issues quickly.** _Acceptance Criteria: Real-time performance monitoring, alerting for performance degradation, and detailed performance analytics._
+  - **As a business owner, I want to optimize resource utilization so that I can reduce costs and improve efficiency.** _Acceptance Criteria: Automated scaling, resource optimization, and performance benchmarking._
+  - **As a business owner, I want to ensure high availability so that users can access the service reliably.** _Acceptance Criteria: 99.9% uptime, redundant systems, and disaster recovery procedures._
 - **Current Implementation**: Basic performance monitoring. Advanced optimization features need implementation.
 - **Gaps for MVP**: Full performance monitoring and optimization platform need development.
 
 ### Epic 20: API Integrations & Third-Party Services
+
 - **Goal**: Integrate with third-party APIs and services to enhance functionality, expand capabilities, and provide seamless user experiences.
 - **Key Features**: Payment gateway integrations, astrology API services, messaging services, cloud services, and external data sources.
 - **MVP User Stories**:
-    - **As a user, I want seamless payment processing so that I can subscribe and make purchases easily.** *Acceptance Criteria: Integration with regional payment gateways, secure transactions, and multiple payment methods.*
-    - **As a business owner, I want to integrate with astrology calculation APIs so that I can provide accurate readings.** *Acceptance Criteria: Reliable astrology APIs, data synchronization, and fallback mechanisms.*
-    - **As a user, I want integrations with other services so that I can access astrology insights in my preferred apps.** *Acceptance Criteria: API integrations with calendar apps, productivity tools, and social platforms.*
+  - **As a user, I want seamless payment processing so that I can subscribe and make purchases easily.** _Acceptance Criteria: Integration with regional payment gateways, secure transactions, and multiple payment methods._
+  - **As a business owner, I want to integrate with astrology calculation APIs so that I can provide accurate readings.** _Acceptance Criteria: Reliable astrology APIs, data synchronization, and fallback mechanisms._
+  - **As a user, I want integrations with other services so that I can access astrology insights in my preferred apps.** _Acceptance Criteria: API integrations with calendar apps, productivity tools, and social platforms._
 - **Current Implementation**: Basic API integrations. Advanced third-party services need implementation.
 - **Gaps for MVP**: Comprehensive API integration framework need development.
 
 ### Epic 21: Backup, Disaster Recovery & Business Continuity
+
 - **Goal**: Implement robust backup, disaster recovery, and business continuity solutions to ensure data integrity and service availability.
 - **Key Features**: Automated backups, disaster recovery plans, data redundancy, and business continuity planning.
 - **MVP User Stories**:
-    - **As a business owner, I want automated data backups so that I can recover from data loss incidents.** *Acceptance Criteria: Daily automated backups, offsite storage, and quick recovery procedures.*
-    - **As a user, I want service continuity so that I can access the platform even during outages.** *Acceptance Criteria: Redundant systems, failover mechanisms, and minimal downtime.*
-    - **As a business owner, I want disaster recovery plans so that I can restore operations quickly after incidents.** *Acceptance Criteria: Comprehensive DR plans, regular testing, and clear recovery procedures.*
+  - **As a business owner, I want automated data backups so that I can recover from data loss incidents.** _Acceptance Criteria: Daily automated backups, offsite storage, and quick recovery procedures._
+  - **As a user, I want service continuity so that I can access the platform even during outages.** _Acceptance Criteria: Redundant systems, failover mechanisms, and minimal downtime._
+  - **As a business owner, I want disaster recovery plans so that I can restore operations quickly after incidents.** _Acceptance Criteria: Comprehensive DR plans, regular testing, and clear recovery procedures._
 - **Current Implementation**: Basic backup procedures. Advanced disaster recovery need implementation.
 - **Gaps for MVP**: Full backup and disaster recovery system need development.
 
 ### Epic 22: Internationalization & Localization
+
 - **Goal**: Provide comprehensive internationalization and localization support to serve users in multiple languages and cultures.
 - **Key Features**: Multi-language support, cultural adaptation, regional content, and localized user experiences.
 - **MVP User Stories**:
-    - **As a user, I want to use the service in my native language so that I can understand content easily.** *Acceptance Criteria: Support for 8+ languages, accurate translations, and cultural relevance.*
-    - **As a user, I want culturally appropriate content so that I feel the service understands my background.** *Acceptance Criteria: Localized content, regional examples, and cultural sensitivity.*
-    - **As a business owner, I want to expand to international markets so that I can grow the user base.** *Acceptance Criteria: Localized marketing, regional payment methods, and cultural adaptation.*
+  - **As a user, I want to use the service in my native language so that I can understand content easily.** _Acceptance Criteria: Support for 8+ languages, accurate translations, and cultural relevance._
+  - **As a user, I want culturally appropriate content so that I feel the service understands my background.** _Acceptance Criteria: Localized content, regional examples, and cultural sensitivity._
+  - **As a business owner, I want to expand to international markets so that I can grow the user base.** _Acceptance Criteria: Localized marketing, regional payment methods, and cultural adaptation._
 - **Current Implementation**: Basic multi-language support. Advanced localization features need implementation.
 - **Gaps for MVP**: Comprehensive internationalization framework need development.
 
 ### Epic 23: User Profile & Subscription Management
+
 - **Goal**: Implement comprehensive user profile management and subscription lifecycle handling for the astrology WhatsApp bot.
 - **Key Features**: User profile creation and management, subscription plans and tier management, billing integration and lifecycle handling, account upgrades and downgrades.
 - **MVP User Stories**:
-    - **As a user, I want to create and manage my profile so that I can personalize my astrology experience.** *Acceptance Criteria: Profile creation with personal details, editing capabilities, privacy settings, data validation.*
-    - **As a business owner, I want subscription plans so that I can offer different service levels.** *Acceptance Criteria: Free and premium tiers defined, feature access control, plan comparison, benefits communication.*
-    - **As a user, I want automated billing management so that my subscription renews seamlessly.** *Acceptance Criteria: Automated billing cycles, payment method storage, renewal notifications, failed payment handling.*
-    - **As a user, I want to change my subscription so that I can adjust my service level.** *Acceptance Criteria: Seamless upgrade/downgrade process, prorated billing, immediate feature access changes.*
+  - **As a user, I want to create and manage my profile so that I can personalize my astrology experience.** _Acceptance Criteria: Profile creation with personal details, editing capabilities, privacy settings, data validation._
+  - **As a business owner, I want subscription plans so that I can offer different service levels.** _Acceptance Criteria: Free and premium tiers defined, feature access control, plan comparison, benefits communication._
+  - **As a user, I want automated billing management so that my subscription renews seamlessly.** _Acceptance Criteria: Automated billing cycles, payment method storage, renewal notifications, failed payment handling._
+  - **As a user, I want to change my subscription so that I can adjust my service level.** _Acceptance Criteria: Seamless upgrade/downgrade process, prorated billing, immediate feature access changes._
 - **Current Implementation**: Basic user profiles exist but need enhancement for subscription management.
 - **Gaps for MVP**: Full subscription lifecycle and billing integration need implementation.
 
 ### Epic 24: Customer Support & Feedback System
+
 - **Goal**: Implement comprehensive customer support and feedback collection system for the astrology WhatsApp bot.
 - **Key Features**: Support chat integration with WhatsApp, feedback collection and rating systems, support ticket management and escalation, analytics for support performance.
 - **MVP User Stories**:
-    - **As a user, I want to contact support through WhatsApp so that I can get help conveniently.** *Acceptance Criteria: Support chat accessible via commands, agent routing, chat history preservation, session management.*
-    - **As a business owner, I want to collect user feedback so that I can improve the service.** *Acceptance Criteria: Feedback collection after interactions, rating system, open-ended feedback, feedback storage.*
-    - **As a support agent, I want ticket management so that I can track and resolve issues.** *Acceptance Criteria: Automatic ticket creation, prioritization, resolution tracking, escalation procedures.*
-    - **As a manager, I want support analytics so that I can monitor support quality.** *Acceptance Criteria: Response time tracking, resolution rates, performance dashboards, feedback analysis.*
+  - **As a user, I want to contact support through WhatsApp so that I can get help conveniently.** _Acceptance Criteria: Support chat accessible via commands, agent routing, chat history preservation, session management._
+  - **As a business owner, I want to collect user feedback so that I can improve the service.** _Acceptance Criteria: Feedback collection after interactions, rating system, open-ended feedback, feedback storage._
+  - **As a support agent, I want ticket management so that I can track and resolve issues.** _Acceptance Criteria: Automatic ticket creation, prioritization, resolution tracking, escalation procedures._
+  - **As a manager, I want support analytics so that I can monitor support quality.** _Acceptance Criteria: Response time tracking, resolution rates, performance dashboards, feedback analysis._
 - **Current Implementation**: No dedicated support system exists.
 - **Gaps for MVP**: Full support system and feedback collection need implementation.
 
 ### Epic 25: User Profile & Subscription Management
+
 - **Goal**: Implement comprehensive user profile management and subscription lifecycle handling for the astrology WhatsApp bot.
 - **Key Features**: User profile creation and management, subscription plans and tier management, billing integration and lifecycle handling, account upgrades and downgrades.
 - **MVP User Stories**:
-    - **As a user, I want to create and manage my profile so that I can personalize my astrology experience.** *Acceptance Criteria: Profile creation with personal details, editing capabilities, privacy settings, data validation.*
-    - **As a business owner, I want subscription plans so that I can offer different service levels.** *Acceptance Criteria: Free and premium tiers defined, feature access control, plan comparison, benefits communication.*
-    - **As a user, I want automated billing management so that my subscription renews seamlessly.** *Acceptance Criteria: Automated billing cycles, payment method storage, renewal notifications, failed payment handling.*
-    - **As a user, I want to change my subscription so that I can adjust my service level.** *Acceptance Criteria: Seamless upgrade/downgrade process, prorated billing, immediate feature access changes.*
+  - **As a user, I want to create and manage my profile so that I can personalize my astrology experience.** _Acceptance Criteria: Profile creation with personal details, editing capabilities, privacy settings, data validation._
+  - **As a business owner, I want subscription plans so that I can offer different service levels.** _Acceptance Criteria: Free and premium tiers defined, feature access control, plan comparison, benefits communication._
+  - **As a user, I want automated billing management so that my subscription renews seamlessly.** _Acceptance Criteria: Automated billing cycles, payment method storage, renewal notifications, failed payment handling._
+  - **As a user, I want to change my subscription so that I can adjust my service level.** _Acceptance Criteria: Seamless upgrade/downgrade process, prorated billing, immediate feature access changes._
 - **Current Implementation**: Basic user profiles exist but need enhancement for subscription management.
 - **Gaps for MVP**: Full subscription lifecycle and billing integration need implementation.
 
 ### Epic 26: Customer Support & Feedback System
+
 - **Goal**: Implement comprehensive customer support and feedback collection system for the astrology WhatsApp bot.
 - **Key Features**: Support chat integration with WhatsApp, feedback collection and rating systems, support ticket management and escalation, analytics for support performance.
 - **MVP User Stories**:
-    - **As a user, I want to contact support through WhatsApp so that I can get help conveniently.** *Acceptance Criteria: Support chat accessible via commands, agent routing, chat history preservation, session management.*
-    - **As a business owner, I want to collect user feedback so that I can improve the service.** *Acceptance Criteria: Feedback collection after interactions, rating system, open-ended feedback, feedback storage.*
-    - **As a support agent, I want ticket management so that I can track and resolve issues.** *Acceptance Criteria: Automatic ticket creation, prioritization, resolution tracking, escalation procedures.*
-    - **As a manager, I want support analytics so that I can monitor support quality.** *Acceptance Criteria: Response time tracking, resolution rates, performance dashboards, feedback analysis.*
+  - **As a user, I want to contact support through WhatsApp so that I can get help conveniently.** _Acceptance Criteria: Support chat accessible via commands, agent routing, chat history preservation, session management._
+  - **As a business owner, I want to collect user feedback so that I can improve the service.** _Acceptance Criteria: Feedback collection after interactions, rating system, open-ended feedback, feedback storage._
+  - **As a support agent, I want ticket management so that I can track and resolve issues.** _Acceptance Criteria: Automatic ticket creation, prioritization, resolution tracking, escalation procedures._
+  - **As a manager, I want support analytics so that I can monitor support quality.** _Acceptance Criteria: Response time tracking, resolution rates, performance dashboards, feedback analysis._
 - **Current Implementation**: No dedicated support system exists.
 - **Gaps for MVP**: Full support system and feedback collection need implementation.
 
 ## Core Features (Developed with BMAd Methodology)
 
 ### Multiple Astrology Services (See Epic 2)
+
 - Hindu/Vedic Astrology (birth chart, planetary periods, compatibility)
 - Western Astrology (sun/moon/ascendant readings, transits)
 - Chinese Astrology (animal signs, elemental analysis)
@@ -445,6 +474,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a user, I want to understand the basics of different astrology systems offered.
 
 ### BMAd Implementation Features (See Epic 12)
+
 - **AI-Agent Driven Development**: All features developed using Qwen CLI, Gemini CLI and coordinated AI agents
 - **Rapid Iteration Cycles**: Features developed in fast, iterative cycles with immediate testing
 - **Automated Quality Assurance**: Built-in comprehensive testing for each feature component, with a strong emphasis on **real End-to-End (E2E) and Integration tests utilizing actual libraries and API calls for critical user flows, minimizing mocks to ensure authentic system validation.**
@@ -452,6 +482,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Modular and Independent Architecture**: All development (features, conversation flows, menus) must adhere to a modular and independent architecture as defined in Epic 16, ensuring easy updates, maintenance, and testing without impacting other parts of the codebase.
 
 ### Multi-Channel Service Delivery (WhatsApp First) (See Epic 1)
+
 - **Primary Channel**: Fully comprehensive WhatsApp-based service with all features available
 - **Secondary Channels** (Phase 2): Web app, mobile app, and other messaging platforms (Telegram, Instagram DMs, Facebook Messenger)
 - **Cross-Platform Synchronization**: Seamless data and history synchronization across all channels
@@ -460,6 +491,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a user, I want to be able to use the service on web and mobile apps in future phases.
 
 ### Enhanced Subscription Tiers (Optimized for Growth) (See Epic 3)
+
 - **Free Tier**: Daily micro-prediction (1 sentence), personal birth chart visualization (as shareable image), 7-day transit summary, community forum access, compatibility checking with one additional person
 - **Essential Tier**: Daily personalized horoscope with action items, weekly video predictions from AI avatar of top astrologer, monthly group Q&A sessions with astrologers, basic compatibility matching (up to 5 people)
 - **Premium Tier**: Unlimited questions to AI, priority access to human astrologers (24-hour response vs. 72-hour), personalized monthly reports with 3-month forecasts, access to exclusive remedial solutions, compatibility checking with unlimited people
@@ -470,6 +502,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a user, I want to understand the benefits of each subscription tier before committing.
 
 ### Service Modes
+
 - **AI-Powered Quick Readings (See Epic 4)**: Instant responses for basic questions
 - **Human Astrologer Chat (See Epic 13)**: Direct text/voice chat with certified astrologers
 - **Scheduled Consultations (See Epic 13)**: Book time with specific astrologers
@@ -483,6 +516,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story (Epic 5)**: As a user, I want to know the optimal timing for important life decisions based on astrology.
 
 ### User Features (Enhanced for Engagement)
+
 - **Complete profile with birth details (See Epic 7)**: User Story: As a user, I want to create and manage my profile with accurate birth details.
 - **Preference settings for different astrology types (See Epic 2)**: User Story: As a user, I want to set my preferences for the types of astrology readings I receive.
 - **Reading history and saved interpretations (with full history accessible across all channels) (See Epic 1)**: User Story: As a user, I want to access my complete reading history and saved interpretations across all devices.
@@ -502,6 +536,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Social Sharing Features (See Epic 8)**: Share forecasts, achievements, and compatibility results. User Story: As a user, I want to easily share my astrological insights and achievements on social media.
 
 ### Advanced Differentiating Features (Enhanced for Viral Growth)
+
 - **AI Twin System (See Epic 4)**: Personalized AI astrologer that learns communication style, preferences, and life patterns with conversational memory. User Story: As a user, I want a personalized AI astrologer that understands my unique needs and remembers our past interactions.
 - **Transit Timing Engine (See Epic 5)**: Precision life planning with decision timing calculator for optimal timing of important decisions. User Story: As a user, I want to use a decision timing calculator to plan important life events based on astrological transits.
 - **Astro-Social Network (See Epic 8)**: Chart-based matching and community wisdom platform with viral sharing potential. User Story: As a user, I want to connect with others who have compatible charts and share astrological insights.
@@ -520,19 +555,21 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Loyalty and Referral System (See Epic 3)**: Comprehensive "AstroRewards" program with points, tier levels, and rewards to encourage engagement and referrals. User Story: As a user, I want to earn rewards for my loyalty and for referring new users.
 
 ### Deepening Viral Loops & Network Effects (See Epic 8, Epic 9)
+
 - **Social Currency Integration**: Design every shareable output (birth chart, compatibility, achievement) for aesthetic appeal and ease of sharing, making users feel smart, insightful, or connected when they share. User Story (Epic 8): As a user, I want to easily share aesthetically pleasing astrological insights that make me feel good.
 - **Intrinsic Sharing Incentives**: Make the product inherently more valuable when shared.
-    - **Compatibility-Driven Virality (See Epic 8)**: Position Compatibility Checking as a primary viral loop: "Invite a friend to unlock their full compatibility report with you!" User Story (Epic 8): As a user, I want to invite friends to unlock more detailed compatibility reports.
-    - **Astro-Social Network as Network Effect Engine (See Epic 8)**: Emphasize that the more users, the richer the community insights and diverse compatibility matches, making the platform intrinsically more valuable to every participant and encouraging organic invitations. User Story (Epic 8): As a user, I want the Astro-Social Network to become more valuable as more people join.
+  - **Compatibility-Driven Virality (See Epic 8)**: Position Compatibility Checking as a primary viral loop: "Invite a friend to unlock their full compatibility report with you!" User Story (Epic 8): As a user, I want to invite friends to unlock more detailed compatibility reports.
+  - **Astro-Social Network as Network Effect Engine (See Epic 8)**: Emphasize that the more users, the richer the community insights and diverse compatibility matches, making the platform intrinsically more valuable to every participant and encouraging organic invitations. User Story (Epic 8): As a user, I want the Astro-Social Network to become more valuable as more people join.
 - **Utility & Value-Driven Sharing**: Implement features where sharing provides tangible benefits to both referrer and referee.
-    - **Group Reading Requirement (See Epic 8)**: A "Group Reading" feature could require inviting friends. User Story (Epic 8): As a user, I want to invite friends to participate in group readings.
-    - **Shared Journey Tracking (See Epic 8)**: Allow users to follow and support friends through key transits, making sharing a functional necessity. User Story (Epic 8): As a user, I want to track and support my friends through their astrological transits.
+  - **Group Reading Requirement (See Epic 8)**: A "Group Reading" feature could require inviting friends. User Story (Epic 8): As a user, I want to invite friends to participate in group readings.
+  - **Shared Journey Tracking (See Epic 8)**: Allow users to follow and support friends through key transits, making sharing a functional necessity. User Story (Epic 8): As a user, I want to track and support my friends through their astrological transits.
 
 ## Payment and Subscription Model (See Epic 3)
 
 ### Enhanced Tiered Value Architecture with Pricing (by region) - Focused on Emotional ROI:
 
 #### Free Tier (Enhanced for Viral Growth):
+
 - Daily micro-prediction (1 sentence) with basic sign info
 - Personal birth chart visualization (as shareable image)
 - Access to 7-day transit summary
@@ -544,6 +581,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a free user, I want to receive a daily micro-prediction and a shareable birth chart.
 
 #### Essential Tier (Revised with Emotional ROI Focus):
+
 - Daily personalized horoscope with action items
 - Weekly video predictions from AI avatar of top astrologer
 - Monthly group Q&A sessions with astrologers
@@ -559,6 +597,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As an Essential tier user, I want to receive daily personalized horoscopes and weekly video predictions.
 
 #### Premium Tier (Maintained with Emotional ROI & Viral Focus):
+
 - Unlimited questions to AI
 - Priority access to human astrologers (24-hour response vs. 72-hour)
 - Personalized monthly reports with 3-month forecasts
@@ -575,6 +614,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a Premium tier user, I want unlimited AI questions and priority access to human astrologers.
 
 #### VIP Tier (New - Premium Emotional Experience):
+
 - All Premium features
 - Dedicated human astrologer (user's choice of top 3)
 - Quarterly in-depth life planning sessions
@@ -594,23 +634,27 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a VIP tier user, I want a dedicated human astrologer and exclusive life planning sessions.
 
 ### Micro-Transaction Opportunities (See Epic 3):
+
 - **Flash Insights**: 5-minute micro-readings for immediate decisions (₹25/USD 1). User Story: As a user, I want to purchase quick, on-demand insights for immediate decisions.
 - **Transit Alerts**: Notifications for specific personal transits (₹15 per alert). User Story: As a user, I want to receive alerts for important personal planetary transits.
 - **Remedial Quick Fixes**: Immediate spiritual remedies for challenging periods (₹50-100). User Story: As a user, I want to purchase quick spiritual remedies for challenging times.
 - **Compatibility Snapshots**: Quick compatibility check with new contacts (₹75). User Story: As a user, I want to quickly check compatibility with new contacts.
 
 ### Event-Based Monetization (See Epic 3):
+
 - **Eclipse Packages**: Special readings during eclipses (₹300-600, limited-time premium content). User Story: As a user, I want to purchase special readings during significant astrological events like eclipses.
 - **Retrograde Prep Sessions**: Preparations before Mercury/other retrogrades (₹200-400). User Story: As a user, I want to prepare for retrograde periods with specialized sessions.
 - **New Moon Intention Setting**: Special guided sessions (₹150). User Story: As a user, I want to participate in guided new moon intention setting sessions.
 - **Festival-Specific Readings**: Cultural astrology during religious festivals (₹100-200). User Story: As a user, I want to receive culturally relevant readings during festivals.
 
 ### Payment Methods by Region (See Epic 3):
+
 - **India**: UPI, PayTM, Google Pay, PhonePe, NetBanking, Credit/Debit Cards, Wallets. User Story: As a user in India, I want to pay using local payment methods like UPI and PayTM.
 - **UAE**: Credit/Debit Cards, Apple Pay, Google Pay, PayPal, Digital Wallets. User Story: As a user in UAE, I want to pay using credit cards and digital wallets.
 - **Australia**: Credit/Debit Cards, Apple Pay, Google Pay, PayPal, Afterpay. User Story: As a user in Australia, I want to pay using credit cards and Apple Pay.
 
 ### Advanced Monetization Features (See Epic 3):
+
 - **Affiliate Ecosystem**: Commission from recommended products (crystals, books, services) - 15-25% commission. User Story: As a user, I want to discover and purchase recommended astrological products.
 - **Marketplace Integration**: User-to-user services (experienced users providing guidance) - platform takes 20% cut. User Story: As a user, I want to access user-to-user services within the platform.
 - **Course Sales**: Astrology education modules (₹500-2000 each). User Story: As a user, I want to purchase astrology education courses.
@@ -621,12 +665,14 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## User Authentication and Profile System (See Epic 7)
 
 ### Authentication Methods (See Epic 7):
+
 1. **WhatsApp Number Verification**: Primary authentication via WhatsApp Business API. User Story: As a user, I want to easily authenticate using my WhatsApp number.
 2. **Additional Verification**: Optional email or secondary mobile for account recovery. User Story: As a user, I want to have additional verification options for account recovery.
 3. **Two-Factor Authentication**: Optional additional security layer. User Story: As a user, I want to enable two-factor authentication for enhanced security.
 4. **Social Login**: Option to link Google/Facebook accounts for easier access. User Story: As a user, I want to link my social media accounts for easier login.
 
 ### User Profile Components (See Epic 7):
+
 1. **Basic Information**: Name, Gender, Date of birth, Time of birth (optional but recommended), Place of birth (city, country), Preferred language, Time zone. User Story: As a user, I want to store my basic personal and birth information in my profile.
 2. **Astrological Preferences**: Primary astrology system preference, Interested astrology systems, Favorite topics (career, relationships, health, spirituality), Reminders for planetary transits. User Story: As a user, I want to set my preferences for the types of astrology readings I receive and receive relevant reminders.
 3. **Social Features (See Epic 8)**: Friends/connections for compatibility checking, Shared reading preferences, Community participation settings. User Story: As a user, I want to manage my friends and social connections for compatibility checks.
@@ -635,6 +681,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 6. **Security Settings (See Epic 7)**: Privacy settings for profile information, Two-factor authentication toggle, Device management. User Story: As a user, I want to manage my privacy and security settings.
 
 ### Profile Features (See Epic 7):
+
 - **Birth Chart Creation**: Automatically generate birth chart based on provided details. User Story: As a user, I want my birth chart to be automatically generated from my profile details.
 - **Compatibility Profile (See Epic 8)**: For matching with others. User Story: As a user, I want to create a compatibility profile for matching with others.
 - **Reading History (See Epic 1)**: Track all past consultations and readings. User Story: As a user, I want to access a comprehensive history of my readings.
@@ -645,11 +692,13 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Multi-Language and Cultural Support (See Epic 1)
 
 ### Supported Languages (See Epic 1)
+
 - **Primary Languages**: English, Hindi, Arabic, Malayalam, Telugu, Tamil, Kannada, Punjabi. User Story: As a user, I want to use the bot in one of the primary supported languages.
 - **Additional Languages**: Filipino/Tagalog, Urdu, Gujarati, Marathi, Bengali, Malay, Indonesian. User Story: As a user, I want to use the bot in one of the additional supported languages.
 - **Regional Dialects**: Support for various regional dialects within major language groups. User Story: As a user, I want the bot to understand and respond in my regional dialect.
 
 ### Implementation Features (See Epic 1)
+
 1. **Automatic Language Detection**: Detect user's preferred language from WhatsApp settings. User Story: As a user, I want the bot to automatically detect my preferred language.
 2. **Manual Language Selection**: Allow users to choose from supported languages. User Story: As a user, I want to manually select my preferred language.
 3. **Astrological Term Translations**: Accurate translations of astrological terms and concepts. User Story: As a user, I want accurate translations of astrological terms.
@@ -657,6 +706,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 5. **Regional Calendars**: Support for regional calendar systems (e.g., Vikram Samvat, Hijri). User Story: As a user, I want the bot to use regional calendar systems for astrological calculations.
 
 ### Content Localization (See Epic 1)
+
 - Horoscope content in local languages with cultural relevance. User Story: As a user, I want to receive horoscope content in my local language and cultural context.
 - Astrological symbols and interpretations adapted for local customs. User Story: As a user, I want astrological symbols and interpretations to be adapted to local customs.
 - Festival and auspicious day notifications in local languages. User Story: As a user, I want to receive notifications for festivals and auspicious days in my local language.
@@ -664,6 +714,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - Local astrological traditions and practices integration. User Story: As a user, I want the bot to integrate local astrological traditions and practices.
 
 ### Technical Implementation (See Epic 1)
+
 - Real-time translation of user queries and system responses. User Story: As a user, I want real-time translation of my queries and the bot's responses.
 - Localized date/time formats for birth chart calculations. User Story: As a user, I want localized date and time formats for birth chart calculations.
 - Language-specific customer support. User Story: As a user, I want access to customer support in my preferred language.
@@ -671,6 +722,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - Voice support in multiple languages for audio consultations. User Story: As a user, I want voice support in multiple languages for audio consultations.
 
 ### Cultural Considerations (See Epic 1)
+
 - Adaptation of astrological interpretations to local cultural beliefs. User Story: As a user, I want astrological interpretations to respect my cultural beliefs.
 - Respect for regional customs and traditions in recommendations. User Story: As a user, I want recommendations to respect regional customs and traditions.
 - Culturally appropriate imagery and symbols. User Story: As a user, I want culturally appropriate imagery and symbols in the bot's responses.
@@ -680,6 +732,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Enhanced User Experience & Onboarding (Optimized for Engagement) (See Epic 1, Epic 6)
 
 ### Comprehensive Onboarding System (See Epic 1, Epic 6)
+
 1. **Immediate Value Hook (First 5 Minutes Rule)**:
    - Offer a high-value free reading on signup (e.g., "Your 2025 Destiny Snapshot" or "Love Compatibility Report") with shareable visual component. User Story (Epic 6): As a new user, I want to receive a high-value free reading immediately upon signup.
    - Make it personalized, visually engaging (using WhatsApp media), and emotionally resonant—not generic. User Story (Epic 6): As a new user, I want my initial free reading to be personalized and visually appealing.
@@ -707,6 +760,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
    - Guided meditation and mindfulness content. User Story: As a user, I want access to guided meditation and mindfulness content.
 
 ### Accessibility & Inclusion Features (See Epic 1)
+
 - **Visual Accessibility**: Text size adjustment, high contrast mode, screen reader compatibility. User Story: As a user, I want visual accessibility options like text size adjustment and high contrast mode.
 - **Hearing Accessibility**: Visual alternatives for audio content, text transcripts. User Story: As a user, I want visual alternatives for audio content and text transcripts.
 - **Cognitive Accessibility**: Simple language options, clear navigation, consistent interface. User Story: As a user, I want simple language options and clear navigation.
@@ -714,6 +768,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Cultural Accessibility**: Respectful handling of diverse beliefs and practices. User Story: As a user, I want the platform to respect diverse cultural beliefs and practices.
 
 ### Notification Management (See Epic 1, Epic 4)
+
 1. **Daily/Weekly Ritual Features**:
    - **Daily Cosmic Tips (See Epic 4)**: Send personalized daily messages like "Today's Moon in Leo: Speak your truth!" based on current transits and user's chart. User Story: As a user, I want to receive personalized daily cosmic tips.
    - **Lucky Number of the Day (See Epic 4)**: Provide simple, actionable, and shareable daily insights. User Story: As a user, I want to receive my lucky number of the day.
@@ -733,6 +788,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
    - Location-based time zone adjustments. User Story: As a user, I want notifications to be adjusted for my time zone.
 
 ### User Interface & Interaction Design (See Epic 1)
+
 1. **Intuitive Navigation**:
    - Simple, clear menu structure. User Story: As a user, I want a simple and clear menu structure for easy navigation.
    - Quick access to most used features. User Story: As a user, I want quick access to my most used features.
@@ -769,11 +825,13 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Advanced Personalization & Customization (See Epic 4, Epic 6)
 
 ### Deep Personalization Features (See Epic 4)
+
 1. **Behavioral Adaptation**: AI learning from user preferences and engagement; Adaptive content delivery based on historical interactions; Personalized service suggestions; Dynamic interface adjustments based on usage patterns. User Story: As a user, I want the platform to learn my preferences and adapt its content and suggestions accordingly.
 2. **Thematic Customization**: Customizable dashboard layouts; Personalized themes and color schemes; Custom notification tones and styles; Personalized astrologer matching based on compatibility. User Story: As a user, I want to customize the look and feel of my dashboard and notifications.
 3. **Content Filtering**: Topic-based content preferences; Intensity level selection (light, moderate, in-depth); Format preferences (text, audio, visual); Cultural sensitivity settings. User Story: As a user, I want to filter content based on my preferred topics, intensity, and format.
 
 ### Gamification Elements (Enhanced for Viral Growth) (See Epic 9)
+
 1. **Karma Points System**: Users earn points for opening messages, referring friends, or completing profile info (birth time, location); Redeem points for mini-readings or subscription discounts; Bonus points for engagement milestones; **Shareable Achievements**: Points and badges that users can share with friends. User Story: As a user, I want to earn and redeem Karma Points for engaging with the platform and referring friends.
 2. **Streak Mechanics**: Daily engagement streaks with rewards; "7-day cosmic streak! Keep going for a free love reading" achievements; Monthly streak bonuses; **Social Sharing**: Ability to share streaks with friends and challenge them. User Story: As a user, I want to maintain daily engagement streaks and share them with friends.
 3. **Unlockable Content**: Tiered insights (basic → love → career → spiritual) that require engagement or subscription to access; Exclusive content for consistent users; Achievement badges for various milestones. User Story: As a user, I want to unlock new content and insights as I progress.
@@ -781,27 +839,33 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 5. **Competition & Leaderboards**: Cosmic achievement leaderboards showing top engagers; Challenge-based competitions during planetary events; Community-based achievement unlocking where group milestones unlock collective rewards; **Friend Competitions**: Challenges you can invite friends to participate in. User Story: As a user, I want to participate in competitions and see my ranking on leaderboards.
 
 ### Advanced Gamification for Active Social Virality (See Epic 9)
+
 - **Shareable Achievement Badges & Milestones**: Every achievement, streak milestone, or "pattern mastery" unlock should include an immediate, frictionless CTA to share to WhatsApp or social media. These become organic, user-generated advertisements. User Story: As a user, I want to easily share my achievement badges and milestones on social media.
 - **"Cosmic Journey Progress System" as a Social Journey**: Make the progression not just personal but also social. Users can see their friends' progress, adding a layer of friendly competition and motivation to keep engaging and advancing—requiring more platform interaction. User Story: As a user, I want to see my friends' progress in their cosmic journey and engage in friendly competition.
 
 ### Customizable User Profiles (See Epic 7)
+
 1. **Extended Profile Options**: Spiritual path preferences (Vedic, Western, Mystical, etc.); Life focus areas (career, relationships, health, spirituality); Experience level settings (beginner, intermediate, advanced); Relationship status and family dynamics; Friends for compatibility checking. User Story: As a user, I want to customize my profile with extended personal and astrological preferences.
 2. **Preference Management**: Detailed communication preferences; Content consumption habits; Feedback integration for continuous improvement; Goal-setting and progress tracking. User Story: As a user, I want to manage my communication preferences and track my goals.
 
 ### Tailored Service Delivery (See Epic 4)
+
 1. **Personalized Readings**: Customized interpretation depth; Personal relevance scoring; Thematic focus based on user interests; Life stage appropriate guidance. User Story: As a user, I want to receive personalized readings tailored to my life stage and interests.
 2. **Customizable Alerts**: Personal transit significance ranking; Custom event notifications; Relationship-specific alerts; Career and business timing notifications. User Story: As a user, I want to customize the alerts I receive for transits and events.
 
 ### Advanced Customization Tools (See Epic 4)
+
 1. **Interface Customization**: Personal dashboard widgets; Custom quick-action shortcuts; Layout preferences; Font and display options. User Story: As a user, I want to customize the interface of my dashboard.
 2. **Content Aggregation**: Personalized content feeds; Custom report compilation; Saved reading templates; Personalized ritual and remedy suggestions. User Story: As a user, I want personalized content feeds and custom report compilation.
 
 ### Social Features (New) (See Epic 8)
+
 1. **Compatibility Sharing**: Easy way to check and share compatibility with friends; Group compatibility reports; "Add Friend" functionality. User Story: As a user, I want to easily share compatibility reports and add friends.
 2. **Community Building**: Connect with people with similar astrological profiles; Join sign-based or interest-based groups; Share prediction success stories. User Story: As a user, I want to connect with a community of like-minded individuals and share my experiences.
 
 ### Leveraging Community as a Primary Viral Engine (See Epic 8)
-- **Community-Driven Social Proof**: Highlight user success stories and testimonials *within* the Astro-Social Network, demonstrating the real-world impact of the insights and interpretations. This internal social proof acts as a powerful motivator for new users and encourages existing users to share. User Story: As a user, I want to see and share success stories within the Astro-Social Network.
+
+- **Community-Driven Social Proof**: Highlight user success stories and testimonials _within_ the Astro-Social Network, demonstrating the real-world impact of the insights and interpretations. This internal social proof acts as a powerful motivator for new users and encourages existing users to share. User Story: As a user, I want to see and share success stories within the Astro-Social Network.
 - **Exclusive Group Access & Content**: The VIP tier's "Exclusive Community" should not just be a perk but a highly coveted, aspirational space that drives upgrades through perceived exclusivity and unique value from interaction with top astrologers and like-minded individuals. User Story: As a VIP user, I want exclusive access to a community with direct astrologer interaction.
 - **Community Challenges**: Implement "Community Challenges" during planetary events (e.g., "New Moon Manifestation Challenge") where users collaboratively work towards goals, share experiences, and invite friends to participate, organically expanding the user base. User Story: As a user, I want to participate in community challenges during planetary events.
 
@@ -810,13 +874,16 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ### Compelling User Journey with Retention Hooks (See Epic 6)
 
 #### Phase 1: Discovery → First Value (Days 1-3) (See Epic 6)
+
 **Day 0 (Discovery)**
+
 - Ad or referral leads user to send "Hi" to bot. User Story: As a potential user, I want to easily discover the service and initiate contact.
 - Immediate personalized response: "I can read your birth chart and provide insights. What's your birth date? 🌟" User Story: As a new user, I want an immediate, personalized response upon first contact.
 - **Hook**: Intrigue through personalization AND social element: "Want to see how compatible you are with a friend? You can check that too!" User Story (Epic 8): As a new user, I want to be intrigued by the possibility of checking compatibility with friends.
 - **Viral Element**: Early compatibility feature offering. User Story (Epic 8): As a new user, I want to be offered an early compatibility feature to share.
 
 **Day 1 (Personalization)**
+
 - Guided birth data collection (date, time, place) with educational content. User Story (Epic 7): As a new user, I want a guided process to input my birth data.
 - Instant personalized birth chart analysis with one key insight as shareable image. User Story (Epic 4, Epic 8): As a new user, I want an instant, shareable personalized birth chart analysis.
 - **Hook**: Immediate personal value that feels "accurate". User Story (Epic 6): As a new user, I want to feel immediate personal value and accuracy from the service.
@@ -825,6 +892,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Retention Trigger**: Daily reminder to complete profile with "Get your complete chart analysis". User Story (Epic 7): As a new user, I want reminders to complete my profile for a full analysis.
 
 **Day 2 (Engagement)**
+
 - Deliver complete birth chart summary with "Your Top 3 Life Patterns". User Story (Epic 4): As a user, I want to receive a summary of my top life patterns.
 - Offer free 3-day prediction based on current transits. User Story (Epic 4): As a user, I want to receive a free short-term prediction based on transits.
 - **Hook**: Personalized future insights that feel relevant. User Story (Epic 6): As a user, I want future insights that are personalized and relevant.
@@ -832,19 +900,23 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Viral Element**: "Share your chart with a friend! Check their compatibility with you." User Story (Epic 8): As a user, I want to share my chart with a friend to check compatibility.
 
 **Day 3 (Investment)**
+
 - Show how transits from Day 2 are manifesting (validation). User Story (Epic 4): As a user, I want to see how past predictions are validated by my experiences.
 - Offer first premium decision: "Want to know exactly when your next major opportunity arrives? Also want to check unlimited compatibility with friends?" User Story (Epic 3): As a user, I want to be offered premium features that provide specific value.
 - **Hook**: Specific, time-sensitive value proposition. User Story (Epic 6): As a user, I want to receive time-sensitive value propositions.
 - **Viral Element**: Unlimited compatibility checks as premium feature. User Story (Epic 8): As a user, I want unlimited compatibility checks as a premium feature.
 
 #### Phase 2: Habit Formation (Days 4-30) (See Epic 6)
+
 **Daily Hooks**:
+
 - **Morning Transit Alert (See Epic 5)**: "Mercury is activating your career house today - perfect for important calls" (with action item). User Story: As a user, I want to receive morning transit alerts with actionable advice.
 - **Evening Reflection (See Epic 6)**: "How did today's energy feel? Tell me about it." (engagement loop). User Story: As a user, I want to reflect on my daily experiences with the bot.
 - **7-Day Cycle (See Epic 5)**: Weekly forecast every Sunday with "This Week's Power Hour" - specific best time for important decisions. User Story: As a user, I want a weekly forecast including optimal timing for decisions.
 - **Social Element (See Epic 8)**: "Your friend [sign] might be feeling similar energies today - how are they doing?" User Story: As a user, I want to see how my friends might be affected by current transits.
 
 **Weekly Engagement (See Epic 6)**:
+
 - **Monday Motivation**: Based on weekly planetary influences. User Story: As a user, I want to receive Monday motivation based on weekly planetary influences.
 - **Midweek Check-in**: "How are you feeling during this transit?" User Story: As a user, I want to check in with the bot about my feelings during transits.
 - **Weekend Ritual**: Suggested spiritual practice based on lunar phase. User Story: As a user, I want suggestions for weekend spiritual practices.
@@ -852,43 +924,53 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Social Interaction (See Epic 8)**: "Share your weekend ritual with a friend who has the same moon sign!" User Story: As a user, I want to share my weekend rituals with friends.
 
 **15-Day Critical Point (See Epic 6)**:
+
 - Show user progress: "You've discovered 5 key patterns about yourself". User Story: As a user, I want to see my progress in discovering personal patterns.
 - Offer Essential tier with "Want more detailed insights AND compatibility checks with up to 5 people?" User Story (Epic 3): As a user, I want to be offered an upgrade to the Essential tier with clear benefits.
 - Include social proof: "85% of users who try the weekly video predictions love them". User Story (Epic 8): As a user, I want to see social proof for premium features.
 
 #### Phase 3: Investment & Value Recognition (Days 31-90) (See Epic 6)
+
 **Monthly Milestones**:
+
 - **Day 30**: "One month of personal insights - here's what we've learned about your patterns". User Story: As a user, I want a summary of my personal insights after one month.
 - **Day 45**: Compare user's actual experiences with predictions. User Story (Epic 4): As a user, I want to compare my actual experiences with past predictions.
 - **Day 60**: "How accurate have our insights been for you?" (feedback loop). User Story (Epic 4): As a user, I want to provide feedback on the accuracy of insights.
 - **Day 90**: Lifetime value summary: "You've received 90 personalized insights worth ₹4,500, but you've paid much less". User Story (Epic 3): As a user, I want to see a summary of the value I've received from the service.
 
 **Advanced Engagement (See Epic 6)**:
+
 - **Compatibility Feature Unlock (See Epic 8)**: "Now that we know your chart well, discover who's most compatible with you - unlimited checks!" User Story: As a user, I want to unlock advanced compatibility features.
 - **Predictive Validation (See Epic 4)**: Show how previous predictions came true. User Story: As a user, I want to see how previous predictions were validated.
 - **Community Introduction (See Epic 8)**: "Join 500 others with similar charts for group insights". User Story: As a user, I want to be introduced to a community of users with similar charts.
 
 #### Phase 4: Premium Conversion (Days 30-180) (See Epic 3, Epic 6)
+
 **Graduated Premium Introduction**:
+
 - **Week 5-8**: Subtle premium feature glimpses: "To know the exact timing of this opportunity, upgrade to Essential". User Story (Epic 3): As a user, I want to see subtle glimpses of premium features.
 - **Week 9-12**: Value demonstration: "This is what Premium users are seeing right now - they can check unlimited compatibility too!" User Story (Epic 3): As a user, I want to see demonstrations of premium feature value.
 - **Week 13-16**: Urgency creation: "This specific planetary alignment happens only once this year - Essential tier users will get detailed guidance". User Story (Epic 3): As a user, I want to be informed of time-sensitive premium opportunities.
 - **Week 17-20**: Social proof: "67% of users with your chart type found the human astrologer sessions life-changing". User Story (Epic 8): As a user, I want to see social proof for premium features like human astrologer sessions.
 
 #### Phase 5: Long-term Retention & Upselling (Days 90+) (See Epic 3, Epic 6)
+
 **Habit Loops (See Epic 6)**:
+
 - **Daily**: Morning transit + evening reflection. User Story: As a long-term user, I want daily habit loops for engagement.
 - **Weekly**: Sunday forecasts + Saturday insights. User Story: As a long-term user, I want weekly forecasts and insights.
 - **Monthly**: Birthday chart updates, anniversary insights. User Story: As a long-term user, I want monthly chart updates and anniversary insights.
 - **Quarterly**: Deep dive reports, life planning sessions. User Story: As a long-term user, I want quarterly deep dive reports and life planning sessions.
 
 **Progressive Value (See Epic 6)**:
+
 - **Month 4**: "Now we can predict 6 months in advance based on your pattern". User Story: As a long-term user, I want longer-term predictions based on my patterns.
 - **Month 6**: Long-term pattern recognition and life planning. User Story: As a long-term user, I want the bot to help with long-term life planning.
 - **Month 9**: "You're becoming an expert in your own cycles". User Story: As a long-term user, I want to feel like an expert in my own astrological cycles.
 - **Month 12**: Loyalty rewards and VIP tier introduction. User Story (Epic 3): As a long-term user, I want to be rewarded with loyalty benefits and VIP tier introductions.
 
 **Viral Growth Loop (See Epic 8)**:
+
 - **Referral Mechanism**: "Your friend hasn't checked their compatibility with you yet - invite them to see how well you match!" User Story: As a user, I want to easily refer friends for compatibility checks.
 - **Social Sharing**: Beautiful forecasts that users want to share. User Story: As a user, I want to share beautiful forecasts with my network.
 - **Community Building**: VIP-only groups that are exclusive. User Story: As a VIP user, I want access to exclusive community groups.
@@ -896,6 +978,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ### Primary User Journeys (Enhanced) (See Epic 6)
 
 #### Journey 1: New User Discovery to First Value Experience (See Epic 6)
+
 - **Awareness**: User discovers service through referral, ad, or organic search. User Story: As a potential user, I want to easily discover the service.
 - **First Interaction**: User sends initial message to WhatsApp bot and receives immediate, personalized response based on their birth details. User Story: As a new user, I want an immediate, personalized first interaction.
 - **Onboarding**: Guided profile setup with birth details, enhanced with educational value and social features. User Story (Epic 7): As a new user, I want a guided and educational onboarding experience.
@@ -905,6 +988,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Success**: Receives satisfactory reading and becomes repeat user through daily engagement hooks. User Story: As a new user, I want to become a repeat user after a satisfactory reading.
 
 #### Journey 2: Curious Explorer to Committed Subscriber (See Epic 6)
+
 - **Curiosity**: User has specific question or life situation and tries multiple service types. User Story: As a curious user, I want to explore various service types for specific questions.
 - **Exploration**: User engages with daily transit alerts, evening reflections, and weekly forecasts. User Story: As an explorer, I want to engage with daily and weekly astrological content.
 - **Engagement**: User begins to see patterns and accuracy in readings, building trust. User Story: As an engaged user, I want to build trust through accurate readings.
@@ -914,6 +998,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Advocacy**: User begins recommending service to others after seeing results. User Story (Epic 8): As an advocate, I want to recommend the service to others.
 
 #### Journey 3: Skeptic to Believer Conversion (See Epic 6)
+
 - **Skepticism**: User approaches with doubt but curiosity and asks specific verifiable questions. User Story: As a skeptic, I want to test the service with verifiable questions.
 - **Challenge**: User tests with specific verifiable questions and tracks accuracy. User Story: As a skeptic, I want to track the accuracy of predictions.
 - **Validation**: User experiences accurate insights or predictions and builds trust through validation. User Story: As a skeptic, I want to build trust through accurate insights.
@@ -923,6 +1008,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Community**: User participates in social features and community elements. User Story (Epic 8): As a user, I want to participate in social and community features.
 
 ### Micro-Interactions & Touchpoints (Enhanced) (See Epic 6)
+
 1. **Welcome Sequence**: First 5 interactions designed to build trust and demonstrate value with personalization and social elements. User Story: As a new user, I want a welcome sequence that builds trust and demonstrates value.
 2. **Personalization Pivots (See Epic 4)**: Key moments where experience becomes customized with AI Twin features. User Story: As a user, I want my experience to be customized at key moments with AI Twin features.
 3. **Value Inflection Points**: Specific interactions that determine user retention through accuracy validation. User Story: As a user, I want interactions that validate the accuracy of the service.
@@ -937,6 +1023,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 12. **Achievement Sharing (See Epic 9)**: Mechanisms to share accomplishments with friends. User Story: As a user, I want to share my accomplishments with friends.
 
 ### Emotional Journey Mapping (Enhanced) (See Epic 6)
+
 - **Initial Hesitation**: Addressing skepticism and building trust through immediate personal value and social integration. User Story: As a user, I want the service to address my initial skepticism and build trust.
 - **Curiosity Peak**: Providing engaging but respectful first experiences with accuracy demonstrations. User Story: As a user, I want engaging first experiences that demonstrate accuracy.
 - **Value Recognition**: Demonstrating tangible benefits and insights through daily engagement. User Story: As a user, I want to recognize the tangible benefits of daily engagement.
@@ -948,11 +1035,13 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Sharing Motivation (See Epic 8)**: Natural desire to share valuable insights with friends and family. User Story: As a user, I want to be motivated to share valuable insights with friends and family.
 
 ### Reinforcing Emotional ROI & Habit Formation (See Epic 6)
+
 - **"Micro-Aha" Moments & Validation Cycles (See Epic 4)**: Continuously validate predictions post-event (e.g., "You noted yesterday that you felt overwhelmed, just as Gemini's influence impacted your communication house. Your chart shows a strong correlation.") to build immense trust and strengthen the emotional bond, fueling retention. User Story: As a user, I want to experience "micro-aha" moments and validation of predictions.
 - **Habit Stacking & Integration into Daily Life**: Emphasize how the bot becomes an indispensable part of the user's daily routine, not just an add-on. Frame "Daily Cosmic Tips," "Lucky Number," and "Best Time to Make a Decision" as quick, actionable, and personally relevant rituals. User Story: As a user, I want astrological insights to integrate seamlessly into my daily routine.
 - **Validation Cycles (See Epic 4)**: Strengthen the loop of prediction -> user experience -> bot validation to build trust and stickiness. User Story: As a user, I want to see continuous validation of predictions to build trust.
 
 ### Retention Journey Optimization (Enhanced) (See Epic 6)
+
 1. **Aha Moments**: Designing experiences that create 'aha' moments for users with pattern recognition and social connection. User Story: As a user, I want to experience 'aha' moments that enhance my understanding.
 2. **Habit Formation**: Creating regular touchpoints that form user habits with morning/evening routines. User Story: As a user, I want the service to help me form astrological habits through regular touchpoints.
 3. **Progressive Disclosure**: Gradually introducing advanced features including compatibility checking. User Story: As a user, I want advanced features to be introduced gradually.
@@ -968,6 +1057,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Regional Payment and Compliance Requirements (See Epic 3)
 
 ### India:
+
 1. **Payment Compliance**:
    - RBI guidelines for digital payments
    - PCI DSS compliance for card processing
@@ -983,6 +1073,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
    - FDI compliance if foreign investment involved. User Story: As the business, I need to ensure valid business registration and necessary licenses for operations in India.
 
 ### UAE:
+
 1. **Payment Compliance**:
    - Central Bank of UAE regulations
    - PCI DSS compliance
@@ -998,6 +1089,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
    - Compliance with Dubai International Financial Centre (DIFC) if applicable. User Story: As the business, I need to ensure valid trade license and business registration for operations in UAE.
 
 ### Australia:
+
 1. **Payment Compliance**:
    - Australian Transaction Reports and Analysis Centre (AUSTRAC) compliance
    - Australian Securities and Investments Commission (ASIC) regulations
@@ -1013,6 +1105,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
    - Australian Consumer Law compliance. User Story: As the business, I need to ensure valid ABN/ACN and compliance with Australian Consumer Law for operations in Australia.
 
 ### General Compliance (See Epic 3):
+
 - Age verification for users (18+ for some services). User Story: As the business, I need to implement age verification for users engaging in certain services.
 - Content guidelines for astrological services. User Story: As the business, I need to adhere to content guidelines for astrological services.
 - Anti-money laundering (AML) compliance. User Story: As the business, I need to implement AML compliance measures.
@@ -1021,6 +1114,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## WhatsApp Business API Compliance Guidelines (See Epic 1)
 
 ### Message Types and Usage (See Epic 1):
+
 1. **Template Messages**:
    - Pre-approved message templates for subscription confirmations
    - Payment receipts and invoices
@@ -1036,6 +1130,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
    - Personalized content based on user preferences. User Story: As the business, I need to send personalized notifications and alerts to users.
 
 ### Compliance Requirements (See Epic 1):
+
 1. **Message Frequency**:
    - No spam or unsolicited promotional messages
    - Respect user communication preferences
@@ -1054,6 +1149,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
    - Maintain accurate business profile information. User Story: As the business, I need to complete WhatsApp business verification and maintain an accurate profile.
 
 ### Technical Requirements (See Epic 1):
+
 1. **Webhook Implementation**:
    - Secure webhook endpoints
    - Proper message acknowledgment
@@ -1068,6 +1164,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
    - Secure handling of user data. User Story: As the business, I need to ensure secure transmission and handling of user data with the WhatsApp API.
 
 ### Prohibited Content and Practices (See Epic 1):
+
 - No sharing of personal information without consent
 - No harassment or unwelcome messages
 - No misleading business identity
@@ -1076,6 +1173,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Loyalty and Referral System (Enhanced for Viral Growth) (See Epic 3)
 
 ### Loyalty Program ( "AstroRewards") (Enhanced):
+
 1. **Points System**:
    - Earn 1 point for every ₹10/1 AED/1 AUD spent
    - Bonus points for subscription renewals (25% bonus)
@@ -1097,6 +1195,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
    - **Social Rewards**: Bonus points for successful referrals and social sharing. User Story: As a user, I want to redeem my points for various rewards and receive special benefits.
 
 ### Referral Program ("AstroCircle") (Enhanced):
+
 1. **Referral Rewards**:
    - Referrer: Get ₹100/5 AED/5 AUD credit for each successful referral
    - Referee: Get ₹50/2 AED/2 AUD credit for first purchase
@@ -1122,9 +1221,11 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Detailed Use Cases for User Interactions (Enhanced) (See Epic 1)
 
 ### Use Case 1: New User Registration and Profile Creation (Enhanced) (See Epic 1, Epic 7)
+
 **Actor**: New user
 **Precondition**: User has WhatsApp installed
 **Flow**:
+
 1. User sends "Hi" to the bot number
 2. Bot responds with welcome message and asks for basic information
 3. Bot guides user through birth details input (date, time, place)
@@ -1133,6 +1234,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 6. User sets up payment method
 7. System creates user profile and recommends initial reading with compatibility feature
 8. System suggests adding a friend for compatibility check
+
 - **User Story**: As a new user, I want to easily register and create my profile with birth details. (Covers steps 1-3, 7)
 - **User Story**: As a new user, I want my phone number to be verified via OTP. (Covers step 4)
 - **User Story**: As a new user, I want to select my preferences during registration. (Covers step 5)
@@ -1140,9 +1242,11 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a new user, I want the system to suggest adding a friend for compatibility. (Covers step 8)
 
 ### Use Case 2: Daily Horoscope Subscription (Enhanced) (See Epic 3, Epic 4)
+
 **Actor**: Registered user
 **Precondition**: User has completed basic profile setup
 **Flow**:
+
 1. User sends "Daily Horoscope" or selects from menu
 2. System confirms subscription status
 3. If unsubscribed, system presents daily plan options
@@ -1151,15 +1255,18 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 6. For subscribed users, system sends daily horoscope automatically at preferred time
 7. User can request daily horoscope manually at any time
 8. **Social Element**: User can share daily horoscope with friends/compatibility matches
+
 - **User Story**: As a user, I want to subscribe to a daily horoscope. (Covers steps 1-4)
 - **User Story**: As a subscribed user, I want to receive my daily horoscope automatically. (Covers step 6)
 - **User Story**: As a user, I want to manually request my daily horoscope. (Covers step 7)
 - **User Story**: As a user, I want to share my daily horoscope with friends. (Covers step 8)
 
 ### Use Case 3: One-Time Question Service (See Epic 3, Epic 4, Epic 13)
+
 **Actor**: Any user
 **Precondition**: User has basic account set up
 **Flow**:
+
 1. User asks a specific question (e.g., "Will I get a job promotion this month?")
 2. System responds with payment required message
 3. User confirms payment (based on question complexity)
@@ -1167,15 +1274,18 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 5. AI system provides initial analysis
 6. If needed, question is routed to human astrologer
 7. User receives comprehensive answer
+
 - **User Story**: As a user, I want to ask a one-time question and receive an answer. (Covers steps 1, 7)
 - **User Story**: As a user, I want to pay for a one-time question based on its complexity. (Covers steps 2-4)
 - **User Story**: As a user, I want the AI to provide an initial analysis of my question. (Covers step 5)
 - **User Story**: As a user, I want complex questions to be routed to a human astrologer. (Covers step 6)
 
 ### Use Case 4: Human Astrologer Chat (See Epic 13)
+
 **Actor**: Subscribed user
 **Precondition**: User has active subscription
 **Flow**:
+
 1. User sends "Chat with Astrologer" or selects from menu
 2. System checks subscription status
 3. If subscribed, connects user to available astrologer
@@ -1183,21 +1293,25 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 5. User-chat session begins with astrologer
 6. Session duration and type defined by subscription tier
 7. System sends follow-up report after chat completion
+
 - **User Story**: As a subscribed user, I want to chat with a human astrologer. (Covers steps 1-3, 5)
 - **User Story**: As an unsubscribed user, I want to pay for a one-time chat session with an astrologer. (Covers step 4)
 - **User Story**: As a user, I want the chat session duration to be based on my subscription tier. (Covers step 6)
 - **User Story**: As a user, I want to receive a follow-up report after my chat session. (Covers step 7)
 
 ### Use Case 5: Subscription Management (See Epic 3)
+
 **Actor**: Registered user
 **Precondition**: User has an account
 **Flow**:
+
 1. User sends "My Account" or "Manage Subscription"
 2. System displays current subscription status
 3. User can upgrade/downgrade plan
 4. User can update payment method
 5. User can manage auto-renewal settings
 6. User can cancel subscription (with proper notice)
+
 - **User Story**: As a user, I want to view my current subscription status. (Covers steps 1-2)
 - **User Story**: As a user, I want to upgrade or downgrade my subscription plan. (Covers step 3)
 - **User Story**: As a user, I want to update my payment method. (Covers step 4)
@@ -1205,23 +1319,28 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a user, I want to cancel my subscription with proper notice. (Covers step 6)
 
 ### Use Case 6: Multi-System Reading Request (See Epic 2, Epic 4)
+
 **Actor**: Subscribed user
 **Precondition**: User has active subscription
 **Flow**:
+
 1. User requests combined reading (e.g., "Vedic and Western compatibility report")
 2. System verifies subscription covers requested service
 3. System processes request using multiple astrology systems
 4. User receives integrated report with different perspective
 5. Option to ask follow-up questions about the reading
+
 - **User Story**: As a subscribed user, I want to request a combined reading from multiple astrology systems. (Covers steps 1, 3)
 - **User Story**: As a user, I want the system to verify my subscription for requested services. (Covers step 2)
 - **User Story**: As a user, I want to receive an integrated report with different astrological perspectives. (Covers step 4)
 - **User Story**: As a user, I want the option to ask follow-up questions about my reading. (Covers step 5)
 
 ### Use Case 7: Referral and Loyalty Rewards (Enhanced) (See Epic 3, Epic 8, Epic 9)
+
 **Actor**: Existing user
 **Precondition**: User has account and referral code
 **Flow**:
+
 1. User sends "refer" or "share" command
 2. System provides unique referral link/code with compatibility feature
 3. User shares with contacts via WhatsApp
@@ -1229,6 +1348,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 5. System updates loyalty points based on activities
 6. User can check reward status and redeem points
 7. **Social Element**: System shows compatibility between referrer and referred if both use service
+
 - **User Story**: As a user, I want to easily refer new users using a unique link/code. (Covers steps 1-3)
 - **User Story**: As a user, I want to receive rewards when my referred friends sign up and make purchases. (Covers step 4)
 - **User Story**: As a user, I want my loyalty points to be updated based on my activities. (Covers step 5)
@@ -1236,9 +1356,11 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a user, I want to see compatibility with my referred friends. (Covers step 7)
 
 ### Use Case 8: Payment and Billing (See Epic 3)
+
 **Actor**: Any user
 **Precondition**: User requires paid service
 **Flow**:
+
 1. User selects desired service
 2. System displays pricing based on region and currency
 3. User selects preferred payment method
@@ -1246,6 +1368,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 5. User receives payment confirmation
 6. Service is delivered as promised
 7. Receipt is sent via WhatsApp
+
 - **User Story**: As a user, I want to select a paid service. (Covers step 1)
 - **User Story**: As a user, I want to see pricing in my regional currency. (Covers step 2)
 - **User Story**: As a user, I want to select my preferred payment method. (Covers step 3)
@@ -1254,9 +1377,11 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **User Story**: As a user, I want the service to be delivered as promised after payment. (Covers step 6)
 
 ### Use Case 9: Compatibility and Social Features (New) (See Epic 8)
+
 **Actor**: Active user
 **Precondition**: User has basic profile set up
 **Flow**:
+
 1. User sends "compatibility" or "check with friend"
 2. System asks for friend's birth details
 3. System generates compatibility report
@@ -1264,6 +1389,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 5. Option to share results
 6. System suggests next steps for relationship growth
 7. **Viral Element**: Encourages friend to sign up for full compatibility report
+
 - **User Story**: As a user, I want to initiate a compatibility check with a friend. (Covers step 1)
 - **User Story**: As a user, I want to provide a friend's birth details for compatibility analysis. (Covers step 2)
 - **User Story**: As a user, I want to receive a compatibility report. (Covers step 3)
@@ -1274,6 +1400,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Technology Stack Recommendations (Solo Developer - Rapid 2-3 Day Development with BMAd AI-Driven Approach) (See Epic 10, Epic 11, Epic 12, Epic 14)
 
 ### Rapid Development Strategy (2-3 Days Focus) (See Epic 10)
+
 - **Leverage AI Agents**: Maximum use of Qwen CLI and Gemini CLI for code generation, testing, and deployment
 - **Pre-built Components**: Use existing libraries and services wherever possible to accelerate development
 - **Modular Architecture**: Build in independent, testable modules that can be developed in parallel
@@ -1282,6 +1409,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Automated Testing**: Comprehensive test generation by AI to ensure quality without manual testing
 
 ### Backend Services (Rapid Implementation) (See Epic 10)
+
 - Node.js/Express.js or Python/FastAPI for server-side logic (quick setup with AI-generated code)
 - WhatsApp Business API for messaging (pre-built integration libraries)
 - Payment gateways (Razorpay for India, Stripe for international) - fully managed services
@@ -1294,6 +1422,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Transit Timing Engine**: Integrate with existing astrology API services initially
 
 ### Solo Developer AI Infrastructure (Maximize Efficiency) (See Epic 12)
+
 - **Qwen CLI as Primary**: Primary development agent for architecture, code generation, and implementation
 - **Gemini CLI as Secondary**: Secondary development agent for optimization, refactoring, and code review
 - **AI Pair Programming**: Use both AI agents in coordination for faster problem solving
@@ -1303,6 +1432,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **AI Monitoring**: Intelligent error detection and performance monitoring
 
 ### Database (See Epic 10, Epic 14)
+
 - PostgreSQL or MongoDB for user profiles and preferences
 - Redis for caching and session management
 - Elasticsearch for search functionality
@@ -1311,6 +1441,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Loyalty Points Database**: For managing user points, rewards, and tier levels
 
 ### Third-Party Integrations (See Epic 10)
+
 - Multiple payment providers based on region
 - Astrology calculation libraries/APIs
 - SMS service for OTP verification
@@ -1319,6 +1450,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Social Media APIs**: For enhanced sharing capabilities
 
 ### Multi-Language Technology Stack (See Epic 10)
+
 - Translation APIs (Google Cloud Translation, AWS Translate)
 - Natural Language Processing for local language queries
 - Internationalization (i18n) framework
@@ -1327,6 +1459,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - Unicode support for various scripts (Devanagari, Arabic, etc.)
 
 ### BMAd Development Tools (See Epic 12)
+
 - **AI Agent Orchestration**: Coordinated development using multiple AI agents (Qwen CLI and Gemini CLI)
 - **Automated Testing Pipeline**: Continuous testing with AI-generated test cases
 - **CI/CD with AI Validation**: Automated deployment with AI quality checks
@@ -1334,6 +1467,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Qwen CLI and Gemini CLI Coordination**: Seamless switching between tools for optimal results
 
 ### Multi-Channel Delivery System (See Epic 10)
+
 - WhatsApp-first architecture with abstraction layer for other platforms
 - Web app framework (React/Vue.js) for web interface
 - Mobile app framework (React Native/Flutter) for mobile apps
@@ -1346,6 +1480,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Advanced Monetization Strategies (Enhanced) - MAXIMIZE REVENUE POTENTIAL (See Epic 3)
 
 ### Premium Add-On Services (Revenue Multipliers) (See Epic 3)
+
 - **Express Services**: Priority processing for urgent questions (2x-3x standard pricing with urgency-based value proposition)
 - **Extended Sessions**: Longer consultation times with human astrologers (premium pricing for in-depth analysis)
 - **Detailed Reports**: Comprehensive PDF reports with charts and analysis (high-value deliverables that justify premium pricing)
@@ -1358,6 +1493,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Group Readings**: Family or friend group analysis (viral element with group pricing models)
 
 ### Content Monetization (Passive Revenue Streams) (See Epic 3)
+
 - **Astrology Courses**: Educational content and workshops for enthusiasts (recurring course sales)
 - **Exclusive Content Library**: Premium articles, videos, and insights from master astrologers (content subscription model)
 - **Event-Based Services**: Special readings for weddings, business launches, etc. (high-value, one-time premium pricing)
@@ -1365,6 +1501,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Corporate Packages**: Business astrology services for companies (B2B opportunities with higher value transactions)
 
 ### Enhanced Advanced Subscription Tiers (Revenue Optimization) (See Epic 3)
+
 - **AI Twin Service**: Personalized AI astrologer with conversational memory and learning (sticky feature for Premium+ tiers)
 - **Transit Timing Engine**: Precision life planning with decision timing calculator (unique differentiator for Premium+ tiers)
 - **Astro-Social Network**: Chart-based matching and community wisdom platform (network effects for Premium+ tiers)
@@ -1375,6 +1512,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Astro-Marketplace**: Personalized remedy recommendations with commission revenue (revenue from all tiers)
 
 ### Revenue Optimization Features (Maximize Individual Customer Value) (See Epic 3)
+
 - **Dynamic Pricing**: Price adjustments based on user engagement level, astrologer expertise, and demand patterns
 - **Behavioral Pricing**: Higher value pricing for high-engagement users who demonstrate willingness to pay
 - **Subscription Laddering**: Clear upgrade paths with increasing value for each tier (Essential, Premium, VIP)
@@ -1386,6 +1524,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Scarcity Elements**: Limited slots for VIP tier (max 100 users) creates urgency and premium positioning
 
 ### High-Margin Revenue Streams (Maximize Profitability) (See Epic 3)
+
 - **Affiliate Programs**: Earn revenue from related products (gemstones, crystals, incense) - 15-25% commission with minimal operational cost
 - **Marketplace Commissions**: 20% cut from independent astrologers using platform with minimal overhead
 - **Referral Revenue**: Incentivize users to bring friends with both sides benefiting (viral growth with revenue impact)
@@ -1394,12 +1533,14 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Certification Programs**: For aspiring astrologers (₹5000-15000) with very high margins
 
 ### Micro-Transaction Opportunities (Easy Revenue) (See Epic 3)
+
 - **Flash Insights**: 5-minute micro-readings for immediate decisions (₹25/USD 1) - low-friction entry point with high conversion
 - **Transit Alerts**: Notifications for specific personal transits (₹15 per alert) - recurring revenue model
 - **Remedial Quick Fixes**: Immediate spiritual remedies for challenging periods (₹50-100) - impulse purchase opportunities
 - **Compatibility Snapshots**: Quick compatibility check with new contacts (₹75) - social sharing revenue driver
 
 ### Event-Based Revenue Maximization (Leverage Astrological Cycles) (See Epic 3)
+
 - **Eclipse Packages**: Special readings during eclipses (₹300-600, limited-time premium content) - scarcity-driven premium pricing
 - **Retrograde Prep Sessions**: Preparations before Mercury/other retrogrades (₹200-400) - predictable demand cycles
 - **New Moon Intention Setting**: Special guided sessions (₹150) - monthly predictable revenue
@@ -1407,6 +1548,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Annual Forecast Reports**: Yearly comprehensive predictions (₹800+) - high-value, recurring annual revenue
 
 ### Revenue Enhancement Metrics (Track What Drives Profit) (See Epic 15)
+
 - **Customer Lifetime Value (CLV) Optimization**: Focus on multi-tier engagement strategies to maximize revenue per user
 - **Average Revenue Per User (ARPU) Growth**: Track user journey from free to premium and optimize conversion paths
 - **Revenue Churn vs. User Churn**: Distinguish between users who leave and users who downgrade subscriptions
@@ -1414,6 +1556,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Monthly Recurring Revenue (MRR) Growth**: Primary focus metric for sustainable business growth
 
 ### Optimizing Subscription Funnels & Monetization (See Epic 3)
+
 - **Value Ladder Optimization**: Every free feature should logically lead to a paid solution for deeper value. Strengthen the "cliffhanger" strategy at the end of every free interaction, creating an unignorable gap that only a paid tier can fill.
 - **Dynamic and Behavioral Pricing**: Investigate dynamically adjusting micro-transaction offers or special upgrade incentives based on individual user engagement patterns, frequency of use, and demonstrated interest in specific astro-modalities.
 - **Anchoring and Decoy Effect**: Consistently apply psychological pricing cues when presenting subscription tiers. The VIP Tier with its high price serves as an anchor, making the Premium tier seem more reasonable and higher value by comparison.
@@ -1422,6 +1565,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Marketing and User Acquisition Strategies (Enhanced) (See Epic 6)
 
 ### Digital Marketing (See Epic 6)
+
 - **SEO Strategy**: Optimize for keywords like "free horoscope", "online astrology", "daily predictions"
 - **Content Marketing**: Regular blog posts about astrology trends, predictions, and tips
 - **Social Media Marketing**: Active presence on Instagram, Facebook, YouTube with engaging content
@@ -1429,6 +1573,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Paid Advertising**: Targeted ads during astrologically significant times (new moon, full moon)
 
 ### Referral and Viral Marketing (Enhanced) (See Epic 6, Epic 8)
+
 - **Viral Content Creation**: Shareable daily predictions and compatibility quizzes
 - **Social Proof Integration**: After a reading, prompt users: "Was this accurate? Share your insight with a friend—and both get 3 days free Premium!"
 - **User Success Stories**: Feature anonymized user success stories: "Riya used her Mercury Retrograde alert to delay a contract—and saved $10K!"
@@ -1445,10 +1590,12 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Compatibility Challenges**: "Check your compatibility with 3 friends this week and get a bonus insight!"
 
 ### Strategic Marketing & Acquisition for Hyper-Growth (See Epic 6, Epic 8)
+
 - **"Dark Social" Optimization**: Optimize content and sharing features specifically for direct, private sharing within WhatsApp groups and one-to-one chats. This includes easily forwardable insights, highly personalized media, and simple "Invite a Friend" buttons.
 - **Content Formats Tailored for Virality**: Develop visually striking, short-form video content (AI avatar driven) that explains daily forecasts or complex transits, designed to be easily shareable on WhatsApp statuses and Instagram stories. These act as organic acquisition magnets.
 
 ### Strategic Partnerships (See Epic 6)
+
 - **Wellness Platforms**: Integrate with yoga, meditation, and wellness apps
 - **Spiritual Content Creators**: Partner with spiritual teachers and gurus
 - **Event Organizers**: Provide services at spiritual and wellness events
@@ -1458,6 +1605,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Customer Retention and Engagement Strategies (See Epic 4, Epic 6)
 
 ### Personalization Features (See Epic 4)
+
 - **AI-Driven Recommendations**: Personalized service recommendations based on user behavior
 - **Customized Notifications**: Tailored alerts for planetary transits affecting individual charts
 - **Personal Milestones**: Track and notify about significant astrological events for users
@@ -1468,6 +1616,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Lunar Cycle Rituals**: Personalized ritual recommendations based on lunar phases and user's chart
 
 ### Engagement Mechanics (See Epic 6, Epic 9)
+
 - **Gamification Elements**: Achievements, badges, and levels based on usage
 - **Daily Challenges**: Interactive astrology-based daily tasks
 - **Community Features**: User forums and discussion groups
@@ -1476,13 +1625,14 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Social Challenges**: Group activities and competitions during planetary events
 
 ### Retention Programs (See Epic 6)
-- **Win-Back Campaigns**: 
+
+- **Win-Back Campaigns**:
   - "We missed you! Here's your updated Moon forecast—free for 48 hours."
   - Target inactive users with special offers based on their chart patterns
   - Personalized anniversary rewards: "It's been 30 days since your first reading! Enjoy a free compatibility check."
 - **Loyalty Tiers**: Enhanced benefits for long-term users
 - **Feedback Integration**: Regular surveys and implementation of user suggestions
-- **Seasonal Engagement**: 
+- **Seasonal Engagement**:
   - Special features during astrologically significant periods
   - Seasonal offers: "New Moon Special: 20% off annual plan—reset your destiny."
 - **User-Generated Content**: Encourage sharing of personal astrology experiences
@@ -1500,14 +1650,16 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Scaling and Growth Strategies (See Epic 10)
 
 ### Geographic Expansion (See Epic 10)
+
 - **Additional Markets**: Expand to other countries with high astrology interest (UK, USA, Canada, Singapore)
 - **Local Language Support**: Add regional languages beyond English
 - **Cultural Customization**: Adapt services to local cultural contexts
 - **Regional Astrologers**: Partner with local astrologers familiar with regional practices
 
 ### Multi-Channel Strategy (See Epic 10)
+
 - **WhatsApp-First Approach**: Fully comprehensive WhatsApp service as the foundation
-- **Channel Expansion Strategy**: 
+- **Channel Expansion Strategy**:
   - Phase 1: WhatsApp only (ensure profitability and user satisfaction)
   - Phase 2: Add web app for richer visualization and history access
   - Phase 3: Mobile app with enhanced UX and offline capabilities
@@ -1516,6 +1668,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Channel-Specific Optimization**: Optimize content format for each platform (voice notes for WhatsApp, rich media for web/app, etc.)
 
 ### Service Diversification (See Epic 10)
+
 - **New Modalities**: Add services like crystal healing, Reiki, or other spiritual practices
 - **Event-Based Services**: Specialized readings for life events (birthdays, anniversaries, career changes)
 - **Corporate Services**: Business and team compatibility analysis
@@ -1523,6 +1676,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Technology Integration**: AI-enhanced services and predictive analytics
 
 ### Technology Scaling (See Epic 10, Epic 14)
+
 - **AI Enhancement**: Improve automated readings with machine learning
 - **Multi-Platform Support**: Expand beyond WhatsApp to other messaging platforms
 - **Mobile App**: Develop dedicated mobile applications
@@ -1532,6 +1686,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Kundli Sharing Features**: Multi-format birth chart sharing optimized for each channel
 
 ### Advanced Growth Strategies (See Epic 10)
+
 - **White-Label Solutions**: Offer the platform to other astrology businesses
 - **API Services**: Provide astrology APIs to other applications
 - **Franchise Model**: License the model to regional operators
@@ -1540,6 +1695,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Social Network Features**: Build in more community and sharing capabilities
 
 ### International Expansion (See Epic 10)
+
 - **Localized Content**: Adapt readings to cultural contexts of different countries
 - **Regional Payment Methods**: Support local payment preferences in new markets
 - **Cultural Specialists**: Hire astrologers specializing in regional practices
@@ -1548,6 +1704,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Success Metrics and KPIs (Revenue-Focused with Actionable Insights) (See Epic 15)
 
 ### Primary Revenue Metrics (Revenue Growth Focus) (See Epic 15)
+
 - **Monthly Recurring Revenue (MRR)**: Target growth of 25% month-over-month in first 6 months, 20% months 7-12, 15% year 2+ with emphasis on quality growth over quantity
 - **Annual Recurring Revenue (ARR)**: Track for predictability and business stability with focus on maintaining growth trajectory
 - **Average Revenue Per User (ARPU)**: Monitor across all tiers to identify optimization opportunities - target $15+ by month 12
@@ -1559,6 +1716,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Marketplace Commission Revenue**: Target 15-25% of total revenue from affiliate relationships (high margin revenue)
 
 ### Conversion and Growth Metrics (Revenue Pipeline) (See Epic 15)
+
 - **Free-to-Paid Conversion Rate**: Target 20%+ of active free users converting to paid (vs. 15-25% baseline) with focus on quality over quantity
 - **Trial-to-Paid Conversion Rate**: For users experiencing premium features during onboarding
 - **Upgrade Rate**: Movement from lower to higher subscription tiers with focus on Premium/VIP conversion
@@ -1569,6 +1727,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Event-Based Purchase Rate**: Conversion during planetary events and promotions (target: 15%+ of user base)
 
 ### Engagement and Retention Metrics (Revenue Sustainability) (See Epic 15)
+
 - **Daily Active Revenue Users (DARU)**: Paying users engaging daily with revenue-generating features
 - **Weekly Active Revenue Users (WARU)**: Weekly engagement for paying users showing sustained value
 - **Feature Depth**: Number of revenue-generating interactions per paying user per week
@@ -1581,6 +1740,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Revenue Viral Coefficient**: How many revenue-generating users each paying user brings (vs. just any user)
 
 ### Advanced Revenue & Growth Metrics (See Epic 15)
+
 - **AI Twin Revenue Engagement**: How well paying users interact with revenue-generating AI Twin content
 - **Transit Timing Revenue Impact**: How many revenue decisions are guided by transit timing engine
 - **Personalized Revenue Upsell Rate**: How often personalization drives users to higher revenue tiers/services
@@ -1594,6 +1754,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ### Phase-Based Revenue Success Targets (See Epic 15)
 
 #### Phase 1 (Months 1-6): Foundation & Revenue Validation (See Epic 15)
+
 - MRR growth: 25% month-over-month with focus on quality over quantity
 - Free-to-paid conversion: 10% by month 2, 15% by month 6 (validated revenue model)
 - Day 30 paying-user retention: 45% by month 3, 50% by month 6 (revenue user focus)
@@ -1604,6 +1765,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Revenue Target**: $10,000 MRR by month 6
 
 #### Phase 2 (Months 7-12): Growth & Revenue Optimization (See Epic 15)
+
 - MRR growth: 22% month-over-month (sustained growth with quality focus)
 - Free-to-paid conversion: 22% by month 9, 25% by month 12
 - Day 90 paying-user retention: 50% by month 9, 55% by month 12
@@ -1615,6 +1777,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Revenue Target**: $150,000 MRR by month 12
 
 #### Phase 3 (Months 13+): Scale & Revenue Domination (See Epic 15)
+
 - MRR growth: 18% month-over-month (sustainable, profitable growth)
 - Free-to-paid conversion: 30%+ (market leadership position)
 - Day 90 paying-user retention: 60%+ (strong revenue value proposition)
@@ -1626,6 +1789,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Revenue Target**: $1,000,000+ MRR by month 24
 
 ### Conservative Estimate (Year 1 - Baseline): (See Epic 15)
+
 - 8,000 active users by end of year
 - 55% monthly retention rate
 - Average revenue per user: $10/month
@@ -1635,6 +1799,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Market**: 70% India, 20% UAE, 10% Australia
 
 ### Optimistic Estimate (Year 1 - Target): (See Epic 15)
+
 - 20,000 active users by end of year
 - 65% monthly retention rate (improved by AI Twin and Transit Timing)
 - Average revenue per user: $15/month (improved by premium features and marketplace)
@@ -1644,6 +1809,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Market**: 65% India, 20% UAE, 15% Australia (with expansion)
 
 ### Aggressive Estimate (Year 1 - Stretch Goal): (See Epic 15)
+
 - 50,000 active users by end of year
 - 70% monthly retention rate (driven by network effects and personalization)
 - Average revenue per user: $18/month (high adoption of premium features)
@@ -1653,6 +1819,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Market**: 60% India, 20% UAE, 15% Australia, 5% other markets
 
 ### Key Financial Drivers (Focus on Revenue Multipliers) (See Epic 15)
+
 1. **Premium Tier Adoption**: 30-40% of paying users in Premium/VIP (vs. 20% in basic models)
 2. **Viral Growth**: 40%+ of new users from referrals (reduces CAC to almost zero)
 3. **Retention Rate**: 65%+ monthly retention (extends customer lifetime and increases LTV)
@@ -1661,12 +1828,14 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 6. **Transit Timing Usage**: 60%+ of users using decision timing (justifies premium pricing)
 
 ### Break-even Analysis (See Epic 15)
+
 - **Fixed Costs**: $10,000/month (development, operations, marketing overhead)
 - **Variable Costs**: $1-2 per user (payment processing, API costs, customer support)
 - **Break-even Point**: 1,000 paying users at $10 ARPU with 60% gross margin
 - **Profitability Target**: Achieve profitability by month 8 with 5,000 paying users
 
 ### Funding Requirements and Milestone-Based Growth (See Epic 15)
+
 - **Seed Stage**: $50,000 needed to reach 1,000 paying users (validation and initial growth)
 - **Series A**: $500,000 needed at 5,000 paying users for scaling and expansion
 - **Growth Stage**: $2M+ needed at 25,000 users for international expansion
@@ -1674,6 +1843,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 ## Quick Reference Guide (Updated)
 
 ### Enhanced Core Service Offerings Summary:
+
 - **Multiple Astrology Systems**: Vedic, Western, Chinese, Tarot, Numerology, Palmistry, Nadi, and more (See Epic 2)
 - **Enhanced Subscription Tiers**: Free, Essential, Premium, VIP plans with clear value progression and viral features (See Epic 3)
 - **One-time Services**: Individual questions, specialized readings, and micro-transactions (See Epic 3)
@@ -1694,12 +1864,14 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **NEW: Gamification with Sharing**: Achievements, streaks, and social elements (See Epic 9)
 
 ### Target Markets:
+
 - **Primary**: India, UAE, Australia with regional pricing and payment methods
 - **Supported Languages**: English, Hindi, Arabic, Malayalam, Telugu, Tamil, Kannada, Punjabi, Filipino/Tagalog, Urdu, Gujarati, Marathi, Bengali, Malay, Indonesian
 - **Payment Methods**: Regional options including UPI, PayTM, Google Pay, PhonePe, NetBanking, cards, digital wallets, Apple Pay, PayPal, Afterpay
 - **Channel Strategy**: WhatsApp-optimized experience with future expansion to web, mobile, and other messaging platforms
 
 ### Advanced Differentiators:
+
 - **Personalized AI Astrologer (AI Twin)**: AI that learns communication style and remembers conversations
 - **Predictive Decision Timing**: Precision timing for important life decisions
 - **Astro-Social Network**: Connect with users who have compatible charts and shared experiences
@@ -1723,6 +1895,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **VIRAL DIFFERENTIATORS**: Compatibility checking, social sharing, referral bonuses, community building features
 
 ### Success Metrics Focus:
+
 - **Revenue Growth**: MRR targets of 25% month-over-month initially, with 5:1+ CLV:CAC ratio
 - **User Engagement**: Free-to-paid conversion of 25%+, 55%+ day-90 retention, 50%+ premium tier adoption
 - **Quality Indicators**: Prediction accuracy scores, feature adoption rates, community participation
@@ -1731,6 +1904,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Phase-Based Targets**: Clear milestones for foundation (Months 1-6), growth (Months 7-12), and scale (Months 13+)
 
 ### Personal Cosmic Coach Positioning:
+
 - **Core Value Proposition**: Not just delivering astrological data, but becoming users' trusted guide for clarity, confidence, and control in uncertain times
 - **Emotional ROI Focus**: Positioning services around outcomes and feelings rather than features
 - **Decision Support**: Helping users make important life decisions with confidence based on cosmic timing
@@ -1738,6 +1912,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Viral Positioning**: Create network effects where value increases as more people join (compatibility, community)
 
 ### Technical & UX Excellence:
+
 - **Natural Language Processing**: Advanced NLP to understand varied user questions and provide relevant, human-like responses
 - **Bot Personality**: Distinct, warm, and wise personality that aligns with astrology, creating emotional connection
 - **Intuitive Design**: Clear, concise menu options without overwhelming users
@@ -1746,6 +1921,7 @@ All WhatsApp bot development must follow the comprehensive standards outlined in
 - **Social Integration**: Easy sharing, compatibility checking, and community building features
 
 ### VIRAL GROWTH MECHANISMS:
+
 - **Compatibility Features**: Core functionality that requires multiple users to be valuable
 - **Shareable Content**: Beautiful, personalized forecasts that users want to share
 - **Referral Bonuses**: Double-sided rewards for bringing friends

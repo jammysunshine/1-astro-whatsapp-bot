@@ -13,7 +13,8 @@ const logger = require('../../utils/logger');
 class DashaPredictiveService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'DashaPredictiveService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'DashaPredictiveService';
     logger.info('DashaPredictiveService initialized');
   }
 
@@ -34,7 +35,8 @@ class DashaPredictiveService extends ServiceTemplate {
       service: 'Vedic Dasha Predictive Analysis',
       timestamp: new Date().toISOString(),
       data: result,
-      disclaimer: '⚠️ *Dasha Disclaimer:* This analysis provides astrological timing insights based on Vedic principles. Life events are influenced by multiple factors. Use this guidance alongside practical planning and professional advice.'
+      disclaimer:
+        '⚠️ *Dasha Disclaimer:* This analysis provides astrological timing insights based on Vedic principles. Life events are influenced by multiple factors. Use this guidance alongside practical planning and professional advice.'
     };
   }
 
@@ -86,22 +88,39 @@ class DashaPredictiveService extends ServiceTemplate {
       const { birthData, analysisType, currentDate } = dashaData;
 
       // Calculate current dasha period
-      const currentDasha = await this.calculator.calculateCurrentDasha(birthData);
+      const currentDasha =
+        await this.calculator.calculateCurrentDasha(birthData);
 
       // Calculate upcoming dasha periods
-      const upcomingDashas = await this.calculator.calculateUpcomingDashas(birthData, 5); // Next 5 major periods
+      const upcomingDashas = await this.calculator.calculateUpcomingDashas(
+        birthData,
+        5
+      ); // Next 5 major periods
 
       // Calculate antardasha (sub-periods) for current mahadasha
-      const antardashas = await this.calculator.calculateAntardasha(currentDasha.mahadasha, birthData);
+      const antardashas = await this.calculator.calculateAntardasha(
+        currentDasha.mahadasha,
+        birthData
+      );
 
       // Get dasha predictions and influences
-      const predictions = await this._getDashaPredictions(currentDasha, upcomingDashas, antardashas);
+      const predictions = await this._getDashaPredictions(
+        currentDasha,
+        upcomingDashas,
+        antardashas
+      );
 
       // Analyze planetary influences in current period
-      const planetaryInfluences = await this._analyzePlanetaryInfluences(currentDasha, birthData);
+      const planetaryInfluences = await this._analyzePlanetaryInfluences(
+        currentDasha,
+        birthData
+      );
 
       // Generate timing insights
-      const timingInsights = this._generateTimingInsights(currentDasha, upcomingDashas);
+      const timingInsights = this._generateTimingInsights(
+        currentDasha,
+        upcomingDashas
+      );
 
       return {
         birthData: this._sanitizeBirthData(birthData),
@@ -142,7 +161,9 @@ class DashaPredictiveService extends ServiceTemplate {
         planet: currentDasha.mahadasha,
         period: `${currentDasha.startDate} to ${currentDasha.endDate}`,
         remaining: this._calculateRemainingTime(currentDasha.endDate),
-        generalInfluence: this._getPlanetGeneralInfluence(currentDasha.mahadasha),
+        generalInfluence: this._getPlanetGeneralInfluence(
+          currentDasha.mahadasha
+        ),
         lifeAreas: this._getPlanetLifeAreas(currentDasha.mahadasha)
       };
 
@@ -152,7 +173,10 @@ class DashaPredictiveService extends ServiceTemplate {
         predictions.currentPeriod.antardasha = {
           planet: currentAntardasha.planet,
           period: `${currentAntardasha.startDate} to ${currentAntardasha.endDate}`,
-          influence: this._getPlanetSpecificInfluence(currentAntardasha.planet, currentDasha.mahadasha)
+          influence: this._getPlanetSpecificInfluence(
+            currentAntardasha.planet,
+            currentDasha.mahadasha
+          )
         };
       }
 
@@ -161,17 +185,26 @@ class DashaPredictiveService extends ServiceTemplate {
         predictions.upcomingPeriods.push({
           planet: dasha.planet,
           period: `${dasha.startDate} to ${dasha.endDate}`,
-          duration: this._calculatePeriodDuration(dasha.startDate, dasha.endDate),
+          duration: this._calculatePeriodDuration(
+            dasha.startDate,
+            dasha.endDate
+          ),
           significance: this._getPeriodSignificance(dasha.planet),
           preparation: this._getPreparationAdvice(dasha.planet)
         });
       });
 
       // Generate key insights
-      predictions.keyInsights = this._generateKeyInsights(currentDasha, upcomingDashas);
+      predictions.keyInsights = this._generateKeyInsights(
+        currentDasha,
+        upcomingDashas
+      );
 
       // Generate recommendations
-      predictions.recommendations = this._generateDashaRecommendations(currentDasha, upcomingDashas);
+      predictions.recommendations = this._generateDashaRecommendations(
+        currentDasha,
+        upcomingDashas
+      );
 
       return predictions;
     } catch (error) {
@@ -192,9 +225,15 @@ class DashaPredictiveService extends ServiceTemplate {
       const influences = {
         primaryPlanet: {
           name: currentDasha.mahadasha,
-          strength: this._calculatePlanetStrength(currentDasha.mahadasha, birthData),
-          characteristics: this._getPlanetCharacteristics(currentDasha.mahadasha),
-          currentPosition: birthData[currentDasha.mahadasha.toLowerCase()] || {}
+          strength: this._calculatePlanetStrength(
+            currentDasha.mahadasha,
+            birthData
+          ),
+          characteristics: this._getPlanetCharacteristics(
+            currentDasha.mahadasha
+          ),
+          currentPosition:
+            birthData[currentDasha.mahadasha.toLowerCase()] || {}
         },
         supportingPlanets: [],
         challengingPlanets: [],
@@ -202,7 +241,10 @@ class DashaPredictiveService extends ServiceTemplate {
       };
 
       // Analyze relationships with other planets
-      const planetRelationships = this._analyzePlanetRelationships(currentDasha.mahadasha, birthData);
+      const planetRelationships = this._analyzePlanetRelationships(
+        currentDasha.mahadasha,
+        birthData
+      );
 
       influences.supportingPlanets = planetRelationships.supporting;
       influences.challengingPlanets = planetRelationships.challenging;
@@ -383,7 +425,9 @@ class DashaPredictiveService extends ServiceTemplate {
     };
 
     const key = `${mainPlanet}-${subPlanet}`;
-    return combinations[key] || `${subPlanet} influence within ${mainPlanet} period`;
+    return (
+      combinations[key] || `${subPlanet} influence within ${mainPlanet} period`
+    );
   }
 
   /**
@@ -396,16 +440,24 @@ class DashaPredictiveService extends ServiceTemplate {
   _calculatePlanetStrength(planet, birthData) {
     // Simplified strength calculation
     const planetData = birthData[planet.toLowerCase()];
-    if (!planetData) { return 'Unknown'; }
+    if (!planetData) {
+      return 'Unknown';
+    }
 
     // Check if planet is in own sign, exalted, etc.
     const { sign } = planetData;
     const strengthFactors = [];
 
     // Basic strength assessment
-    if (this._isOwnSign(planet, sign)) { strengthFactors.push('Own Sign'); }
-    if (this._isExalted(planet, sign)) { strengthFactors.push('Exalted'); }
-    if (this._isDebilitated(planet, sign)) { strengthFactors.push('Debilitated'); }
+    if (this._isOwnSign(planet, sign)) {
+      strengthFactors.push('Own Sign');
+    }
+    if (this._isExalted(planet, sign)) {
+      strengthFactors.push('Exalted');
+    }
+    if (this._isDebilitated(planet, sign)) {
+      strengthFactors.push('Debilitated');
+    }
 
     if (strengthFactors.length > 0) {
       return strengthFactors.join(', ');
@@ -479,7 +531,9 @@ class DashaPredictiveService extends ServiceTemplate {
     // Determine overall energy
     if (relationships.supporting.length > relationships.challenging.length) {
       relationships.energy = 'Supportive';
-    } else if (relationships.challenging.length > relationships.supporting.length) {
+    } else if (
+      relationships.challenging.length > relationships.supporting.length
+    ) {
       relationships.energy = 'Challenging';
     }
 
@@ -649,18 +703,24 @@ class DashaPredictiveService extends ServiceTemplate {
     const insights = [];
 
     // Current period insight
-    insights.push(`Current ${currentDasha.mahadasha} Mahadasha focuses on ${this._getPlanetGeneralInfluence(currentDasha.mahadasha).toLowerCase()}`);
+    insights.push(
+      `Current ${currentDasha.mahadasha} Mahadasha focuses on ${this._getPlanetGeneralInfluence(currentDasha.mahadasha).toLowerCase()}`
+    );
 
     // Next major transition
     if (upcomingDashas.length > 0) {
       const nextDasha = upcomingDashas[0];
-      insights.push(`Next major transition to ${nextDasha.planet} period in ${nextDasha.startDate} will bring ${this._getPeriodSignificance(nextDasha.planet).toLowerCase()}`);
+      insights.push(
+        `Next major transition to ${nextDasha.planet} period in ${nextDasha.startDate} will bring ${this._getPeriodSignificance(nextDasha.planet).toLowerCase()}`
+      );
     }
 
     // Long-term pattern
     const nextThree = upcomingDashas.slice(0, 3);
     const pattern = nextThree.map(d => d.planet).join(' → ');
-    insights.push(`Three-period pattern: ${pattern} suggests evolving life themes`);
+    insights.push(
+      `Three-period pattern: ${pattern} suggests evolving life themes`
+    );
 
     return insights;
   }
@@ -676,17 +736,25 @@ class DashaPredictiveService extends ServiceTemplate {
     const recommendations = [];
 
     // Current period recommendations
-    recommendations.push(`During ${currentDasha.mahadasha} period: ${this._getPreparationAdvice(currentDasha.mahadasha)}`);
+    recommendations.push(
+      `During ${currentDasha.mahadasha} period: ${this._getPreparationAdvice(currentDasha.mahadasha)}`
+    );
 
     // Upcoming period preparation
     if (upcomingDashas.length > 0) {
       const nextDasha = upcomingDashas[0];
-      recommendations.push(`Prepare for ${nextDasha.planet} period: ${this._getPreparationAdvice(nextDasha.planet)}`);
+      recommendations.push(
+        `Prepare for ${nextDasha.planet} period: ${this._getPreparationAdvice(nextDasha.planet)}`
+      );
     }
 
     // General advice
-    recommendations.push('Track progress monthly and adjust activities based on planetary influences');
-    recommendations.push('Use meditation and spiritual practices to align with planetary energies');
+    recommendations.push(
+      'Track progress monthly and adjust activities based on planetary influences'
+    );
+    recommendations.push(
+      'Use meditation and spiritual practices to align with planetary energies'
+    );
 
     return recommendations;
   }
@@ -698,7 +766,9 @@ class DashaPredictiveService extends ServiceTemplate {
    * @private
    */
   _generateLongTermOutlook(upcomingDashas) {
-    if (upcomingDashas.length < 3) { return 'Insufficient data for long-term outlook'; }
+    if (upcomingDashas.length < 3) {
+      return 'Insufficient data for long-term outlook';
+    }
 
     const nextThree = upcomingDashas.slice(0, 3);
     const dominantEnergy = this._analyzeDominantEnergy(nextThree);
@@ -719,7 +789,9 @@ class DashaPredictiveService extends ServiceTemplate {
       return acc;
     }, {});
 
-    const dominant = Object.entries(energyCount).sort(([, a], [, b]) => b - a)[0][0];
+    const dominant = Object.entries(energyCount).sort(
+      ([, a], [, b]) => b - a
+    )[0][0];
     return dominant;
   }
 
@@ -774,7 +846,6 @@ class DashaPredictiveService extends ServiceTemplate {
     };
   }
 
-
   /**
    * Create dasha summary for quick reference
    * @param {Object} result - Full dasha analysis
@@ -785,13 +856,20 @@ class DashaPredictiveService extends ServiceTemplate {
     return {
       currentMahadasha: result.currentDasha.mahadasha,
       remainingTime: result.predictions.currentPeriod.remaining,
-      nextMajorPeriod: result.upcomingDashas.length > 0 ? {
-        planet: result.upcomingDashas[0].planet,
-        startDate: result.upcomingDashas[0].startDate
-      } : null,
-      dominantTheme: this._getPlanetGeneralInfluence(result.currentDasha.mahadasha),
-      keyTiming: result.timingInsights.favorablePeriods.length > 0 ?
-        result.timingInsights.favorablePeriods[0] : null
+      nextMajorPeriod:
+        result.upcomingDashas.length > 0 ?
+          {
+            planet: result.upcomingDashas[0].planet,
+            startDate: result.upcomingDashas[0].startDate
+          } :
+          null,
+      dominantTheme: this._getPlanetGeneralInfluence(
+        result.currentDasha.mahadasha
+      ),
+      keyTiming:
+        result.timingInsights.favorablePeriods.length > 0 ?
+          result.timingInsights.favorablePeriods[0] :
+          null
     };
   }
 

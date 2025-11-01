@@ -25,8 +25,16 @@ class CompatibilityChecker {
       }
 
       // Full synastry calculation
-      const { birthDate: date1, birthTime: time1 = '12:00', birthPlace: place1 = 'Delhi, India' } = person1;
-      const { birthDate: date2, birthTime: time2 = '12:00', birthPlace: place2 = 'Delhi, India' } = person2;
+      const {
+        birthDate: date1,
+        birthTime: time1 = '12:00',
+        birthPlace: place1 = 'Delhi, India'
+      } = person1;
+      const {
+        birthDate: date2,
+        birthTime: time2 = '12:00',
+        birthPlace: place2 = 'Delhi, India'
+      } = person2;
 
       // Parse birth data
       const [day1, month1, year1] = date1.split('/').map(Number);
@@ -43,13 +51,29 @@ class CompatibilityChecker {
 
       // Prepare chart data
       const chart1Data = {
-        year: year1, month: month1, date: day1, hours: hour1, minutes: minute1, seconds: 0,
-        latitude: locationInfo1.latitude, longitude: locationInfo1.longitude, timezone: locationInfo1.timezone, chartType: 'sidereal'
+        year: year1,
+        month: month1,
+        date: day1,
+        hours: hour1,
+        minutes: minute1,
+        seconds: 0,
+        latitude: locationInfo1.latitude,
+        longitude: locationInfo1.longitude,
+        timezone: locationInfo1.timezone,
+        chartType: 'sidereal'
       };
 
       const chart2Data = {
-        year: year2, month: month2, date: day2, hours: hour2, minutes: minute2, seconds: 0,
-        latitude: locationInfo2.latitude, longitude: locationInfo2.longitude, timezone: locationInfo2.timezone, chartType: 'sidereal'
+        year: year2,
+        month: month2,
+        date: day2,
+        hours: hour2,
+        minutes: minute2,
+        seconds: 0,
+        latitude: locationInfo2.latitude,
+        longitude: locationInfo2.longitude,
+        timezone: locationInfo2.timezone,
+        chartType: 'sidereal'
       };
 
       // Generate natal charts
@@ -57,10 +81,17 @@ class CompatibilityChecker {
       const chart2 = this.astrologer.generateNatalChartData(chart2Data);
 
       // Generate synastry chart (composite aspects between charts)
-      const synastryChart = this.astrologer.generateSynastryChartData(chart1Data, chart2Data);
+      const synastryChart = this.astrologer.generateSynastryChartData(
+        chart1Data,
+        chart2Data
+      );
 
       // Analyze compatibility
-      const compatibility = this._analyzeSynastryCompatibility(synastryChart, chart1, chart2);
+      const compatibility = this._analyzeSynastryCompatibility(
+        synastryChart,
+        chart1,
+        chart2
+      );
 
       return {
         person1: {
@@ -84,8 +115,20 @@ class CompatibilityChecker {
       logger.error('Error in synastry compatibility calculation:', error);
       // Fallback to basic compatibility
       return this._checkBasicCompatibility(
-        person1.birthDate ? await this.calculateSunSign(person1.birthDate, person1.birthTime, person1.birthPlace) : person1,
-        person2.birthDate ? await this.calculateSunSign(person2.birthDate, person2.birthTime, person2.birthPlace) : person2
+        person1.birthDate ?
+          await this.calculateSunSign(
+            person1.birthDate,
+            person1.birthTime,
+            person1.birthPlace
+          ) :
+          person1,
+        person2.birthDate ?
+          await this.calculateSunSign(
+            person2.birthDate,
+            person2.birthTime,
+            person2.birthPlace
+          ) :
+          person2
       );
     }
   }
@@ -196,8 +239,10 @@ class CompatibilityChecker {
 
     // Analyze major aspects between personal planets
     const personalPlanets = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars'];
-    const majorAspects = aspects.filter(aspect =>
-      personalPlanets.includes(aspect.planet1) && personalPlanets.includes(aspect.planet2)
+    const majorAspects = aspects.filter(
+      aspect =>
+        personalPlanets.includes(aspect.planet1) &&
+        personalPlanets.includes(aspect.planet2)
     );
 
     // Score based on aspect types
@@ -206,35 +251,46 @@ class CompatibilityChecker {
       case 'Conjunction':
         score += 15;
         keyAspects.push(`${aspect.planet1} conjunct ${aspect.planet2}`);
-        strengths.push(`Strong ${this._getPlanetDomain(aspect.planet1)} connection`);
+        strengths.push(
+          `Strong ${this._getPlanetDomain(aspect.planet1)} connection`
+        );
         break;
       case 'Trine':
         score += 12;
         keyAspects.push(`${aspect.planet1} trine ${aspect.planet2}`);
-        strengths.push(`Harmonious ${this._getPlanetDomain(aspect.planet1)} flow`);
+        strengths.push(
+          `Harmonious ${this._getPlanetDomain(aspect.planet1)} flow`
+        );
         break;
       case 'Sextile':
         score += 8;
         keyAspects.push(`${aspect.planet1} sextile ${aspect.planet2}`);
-        strengths.push(`Supportive ${this._getPlanetDomain(aspect.planet1)} energy`);
+        strengths.push(
+          `Supportive ${this._getPlanetDomain(aspect.planet1)} energy`
+        );
         break;
       case 'Square':
         score -= 10;
         keyAspects.push(`${aspect.planet1} square ${aspect.planet2}`);
-        challenges.push(`${this._getPlanetDomain(aspect.planet1)} tension to resolve`);
+        challenges.push(
+          `${this._getPlanetDomain(aspect.planet1)} tension to resolve`
+        );
         break;
       case 'Opposition':
         score -= 8;
         keyAspects.push(`${aspect.planet1} opposition ${aspect.planet2}`);
-        challenges.push(`${this._getPlanetDomain(aspect.planet1)} polarity to balance`);
+        challenges.push(
+          `${this._getPlanetDomain(aspect.planet1)} polarity to balance`
+        );
         break;
       }
     });
 
     // Analyze sun-moon aspects (very important for relationships)
-    const sunMoonAspects = aspects.filter(aspect =>
-      (aspect.planet1 === 'Sun' && aspect.planet2 === 'Moon') ||
-      (aspect.planet1 === 'Moon' && aspect.planet2 === 'Sun')
+    const sunMoonAspects = aspects.filter(
+      aspect =>
+        (aspect.planet1 === 'Sun' && aspect.planet2 === 'Moon') ||
+        (aspect.planet1 === 'Moon' && aspect.planet2 === 'Sun')
     );
 
     if (sunMoonAspects.length > 0) {
@@ -249,14 +305,19 @@ class CompatibilityChecker {
     }
 
     // Analyze venus-mars aspects (relationship dynamics)
-    const venusMarsAspects = aspects.filter(aspect =>
-      ((aspect.planet1 === 'Venus' && aspect.planet2 === 'Mars') ||
-       (aspect.planet1 === 'Mars' && aspect.planet2 === 'Venus'))
+    const venusMarsAspects = aspects.filter(
+      aspect =>
+        (aspect.planet1 === 'Venus' && aspect.planet2 === 'Mars') ||
+        (aspect.planet1 === 'Mars' && aspect.planet2 === 'Venus')
     );
 
     if (venusMarsAspects.length > 0) {
       const aspect = venusMarsAspects[0];
-      if (aspect.aspect === 'Conjunction' || aspect.aspect === 'Trine' || aspect.aspect === 'Sextile') {
+      if (
+        aspect.aspect === 'Conjunction' ||
+        aspect.aspect === 'Trine' ||
+        aspect.aspect === 'Sextile'
+      ) {
         score += 18;
         strengths.push('Natural chemistry and attraction');
       } else if (aspect.aspect === 'Square' || aspect.aspect === 'Opposition') {
@@ -267,10 +328,26 @@ class CompatibilityChecker {
 
     // Determine rating based on score
     let rating;
-    if (score >= 80) { rating = 'Excellent'; } else if (score >= 65) { rating = 'Very Good'; } else if (score >= 50) { rating = 'Good'; } else if (score >= 35) { rating = 'Fair'; } else { rating = 'Challenging'; }
+    if (score >= 80) {
+      rating = 'Excellent';
+    } else if (score >= 65) {
+      rating = 'Very Good';
+    } else if (score >= 50) {
+      rating = 'Good';
+    } else if (score >= 35) {
+      rating = 'Fair';
+    } else {
+      rating = 'Challenging';
+    }
 
     // Generate description
-    const description = this._generateCompatibilityDescription(rating, strengths, challenges, chart1, chart2);
+    const description = this._generateCompatibilityDescription(
+      rating,
+      strengths,
+      challenges,
+      chart1,
+      chart2
+    );
 
     return {
       rating,
@@ -314,7 +391,13 @@ class CompatibilityChecker {
    * @param {Object} chart2 - Second person's chart
    * @returns {string} Description
    */
-  _generateCompatibilityDescription(rating, strengths, challenges, chart1, chart2) {
+  _generateCompatibilityDescription(
+    rating,
+    strengths,
+    challenges,
+    chart1,
+    chart2
+  ) {
     const sign1 = chart1.interpretations.sunSign;
     const sign2 = chart2.interpretations.sunSign;
 
@@ -328,7 +411,8 @@ class CompatibilityChecker {
       description += `Areas for growth: ${challenges.join(', ')}. `;
     }
 
-    description += 'Remember, astrology offers insights but relationships require mutual understanding and effort.';
+    description +=
+      'Remember, astrology offers insights but relationships require mutual understanding and effort.';
 
     return description;
   }
@@ -347,7 +431,8 @@ class CompatibilityChecker {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+      const locationInfo =
+        await this.geocodingService.getLocationInfo(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
 

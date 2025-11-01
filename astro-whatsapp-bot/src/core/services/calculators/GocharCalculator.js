@@ -46,13 +46,20 @@ class GocharCalculator {
       );
 
       // Calculate transit aspects
-      const transitAspects = await this._calculateTransitAspects(birthJD, currentJD);
+      const transitAspects = await this._calculateTransitAspects(
+        birthJD,
+        currentJD
+      );
 
       // Calculate transit periods
       const transitPeriods = this._calculateTransitPeriods(currentDate);
 
       // Analyze transit effects on natal planets
-      const transitEffects = await this._analyzeTransitEffects(birthJD, currentJD, birthData);
+      const transitEffects = await this._analyzeTransitEffects(
+        birthJD,
+        currentJD,
+        birthData
+      );
 
       return {
         birthData: { birthDate, birthTime, birthPlace },
@@ -74,7 +81,15 @@ class GocharCalculator {
    */
   async _calculateTransitAspects(birthJD, currentJD) {
     const aspects = [];
-    const planets = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mercury',
+      'Venus',
+      'Mars',
+      'Jupiter',
+      'Saturn'
+    ];
 
     for (const planet of planets) {
       try {
@@ -82,7 +97,9 @@ class GocharCalculator {
         const transitPos = sweph.calc(currentJD, this._getPlanetId(planet));
 
         if (natalPos.longitude && transitPos.longitude) {
-          const angle = Math.abs(this._normalizeAngle(transitPos.longitude - natalPos.longitude));
+          const angle = Math.abs(
+            this._normalizeAngle(transitPos.longitude - natalPos.longitude)
+          );
 
           // Transiting planet aspecting natal planet
           const majorAspects = [
@@ -108,9 +125,14 @@ class GocharCalculator {
 
           // Inter-planet aspects (transiting planet aspecting other natal planets)
           for (const natalPlanet of planets.filter(p => p !== planet)) {
-            const natalPos2 = sweph.calc(birthJD, this._getPlanetId(natalPlanet));
+            const natalPos2 = sweph.calc(
+              birthJD,
+              this._getPlanetId(natalPlanet)
+            );
             if (natalPos2.longitude) {
-              const interAngle = Math.abs(this._normalizeAngle(transitPos.longitude - natalPos2.longitude));
+              const interAngle = Math.abs(
+                this._normalizeAngle(transitPos.longitude - natalPos2.longitude)
+              );
 
               for (const aspect of majorAspects) {
                 if (Math.abs(interAngle - aspect.angle) <= aspect.orb) {
@@ -119,8 +141,15 @@ class GocharCalculator {
                     natalPlanet,
                     aspect: aspect.name,
                     orb: Math.abs(interAngle - aspect.angle),
-                    strength: this._calculateAspectStrength(interAngle, aspect.orb),
-                    significance: this._getInterAspectSignificance(planet, natalPlanet, aspect.name)
+                    strength: this._calculateAspectStrength(
+                      interAngle,
+                      aspect.orb
+                    ),
+                    significance: this._getInterAspectSignificance(
+                      planet,
+                      natalPlanet,
+                      aspect.name
+                    )
                   });
                 }
               }
@@ -156,13 +185,30 @@ class GocharCalculator {
         const position = sweph.calc(currentJD, this._getPlanetId(planet));
         if (position.longitude !== undefined) {
           const signIndex = Math.floor(position.longitude / 30);
-          const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+          const signs = [
+            'Aries',
+            'Taurus',
+            'Gemini',
+            'Cancer',
+            'Leo',
+            'Virgo',
+            'Libra',
+            'Scorpio',
+            'Sagittarius',
+            'Capricorn',
+            'Aquarius',
+            'Pisces'
+          ];
 
           periods[planet.toLowerCase()] = {
             currentSign: signs[signIndex],
             longitude: position.longitude,
             house: this._getSignHouse(signs[signIndex]),
-            periodRemaining: this._estimateTransitPeriod(planet, signIndex, position.longitude)
+            periodRemaining: this._estimateTransitPeriod(
+              planet,
+              signIndex,
+              position.longitude
+            )
           };
         }
       } catch (error) {
@@ -188,7 +234,20 @@ class GocharCalculator {
     const moonPos = sweph.calc(currentJD, sweph.SE_MOON);
     if (moonPos.longitude !== undefined) {
       const signIndex = Math.floor(moonPos.longitude / 30);
-      const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+      const signs = [
+        'Aries',
+        'Taurus',
+        'Gemini',
+        'Cancer',
+        'Leo',
+        'Virgo',
+        'Libra',
+        'Scorpio',
+        'Sagittarius',
+        'Capricorn',
+        'Aquarius',
+        'Pisces'
+      ];
 
       effects.moonSign = signs[signIndex];
       effects.moonInauspicious = this._checkMoonInauspicious(signs[signIndex]);
@@ -199,8 +258,11 @@ class GocharCalculator {
     if (saturnPos.longitude !== undefined) {
       const saturnSign = Math.floor(saturnPos.longitude / 30);
 
-      if (saturnSign === 6 || saturnSign === 7) { // Leo or Virgo
-        effects.challenging.push('Saturn transit through challenging signs requiring discipline');
+      if (saturnSign === 6 || saturnSign === 7) {
+        // Leo or Virgo
+        effects.challenging.push(
+          'Saturn transit through challenging signs requiring discipline'
+        );
       }
     }
 
@@ -230,7 +292,7 @@ class GocharCalculator {
    */
   _calculateAspectStrength(angle, maxOrb) {
     const actualOrb = Math.abs(angle);
-    return Math.max(0, (maxOrb - actualOrb) / maxOrb * 10);
+    return Math.max(0, ((maxOrb - actualOrb) / maxOrb) * 10);
   }
 
   /**
@@ -262,7 +324,10 @@ class GocharCalculator {
       }
     };
 
-    return significances[planet]?.[aspect] || `${planet} transit bringing ${aspect} influences`;
+    return (
+      significances[planet]?.[aspect] ||
+      `${planet} transit bringing ${aspect} influences`
+    );
   }
 
   /**
@@ -284,7 +349,9 @@ class GocharCalculator {
       'Venus-Mars': 'love and action drive'
     };
 
-    return interactions[`${t}-${n}`] || `${t} influencing ${n} energies through ${a}`;
+    return (
+      interactions[`${t}-${n}`] || `${t} influencing ${n} energies through ${a}`
+    );
   }
 
   /**
@@ -293,9 +360,18 @@ class GocharCalculator {
    */
   _getSignHouse(sign) {
     const houses = {
-      Aries: 1, Taurus: 2, Gemini: 3, Cancer: 4, Leo: 5,
-      Virgo: 6, Libra: 7, Scorpio: 8, Sagittarius: 9,
-      Capricorn: 10, Aquarius: 11, Pisces: 12
+      Aries: 1,
+      Taurus: 2,
+      Gemini: 3,
+      Cancer: 4,
+      Leo: 5,
+      Virgo: 6,
+      Libra: 7,
+      Scorpio: 8,
+      Sagittarius: 9,
+      Capricorn: 10,
+      Aquarius: 11,
+      Pisces: 12
     };
     return houses[sign] || 1;
   }
@@ -306,7 +382,8 @@ class GocharCalculator {
    */
   _estimateTransitPeriod(planet, signIndex, longitude) {
     const degreesRemaining = 30 - (longitude % 30);
-    const planetSpeeds = { // degrees per day approximation
+    const planetSpeeds = {
+      // degrees per day approximation
       Saturn: 0.033,
       Jupiter: 0.083,
       Mars: 0.524
@@ -318,7 +395,9 @@ class GocharCalculator {
     return {
       degreesRemaining: Math.round(degreesRemaining * 100) / 100,
       daysRemaining,
-      exitDate: new Date(Date.now() + daysRemaining * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      exitDate: new Date(Date.now() + daysRemaining * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split('T')[0]
     };
   }
 
@@ -343,18 +422,25 @@ class GocharCalculator {
       return acc;
     }, {});
 
-    const mostActivePlanet = Object.keys(planetCount).reduce((a, b) => (planetCount[a] > planetCount[b] ? a : b), '');
+    const mostActivePlanet = Object.keys(planetCount).reduce(
+      (a, b) => (planetCount[a] > planetCount[b] ? a : b),
+      ''
+    );
 
     if (mostActivePlanet) {
       themes.push(`${mostActivePlanet} is most active in current transits`);
     }
 
-    const challengingAspects = aspects.filter(a => ['square', 'opposition'].includes(a.aspect));
+    const challengingAspects = aspects.filter(a =>
+      ['square', 'opposition'].includes(a.aspect)
+    );
     if (challengingAspects.length > aspects.length / 3) {
       themes.push('Period of significant challenges and growth opportunities');
     }
 
-    const harmoniousAspects = aspects.filter(a => ['trine', 'sextile'].includes(a.aspect));
+    const harmoniousAspects = aspects.filter(a =>
+      ['trine', 'sextile'].includes(a.aspect)
+    );
     if (harmoniousAspects.length > aspects.length / 2) {
       themes.push('Generally favorable period for progress');
     }
@@ -370,10 +456,12 @@ class GocharCalculator {
     let guidance = 'Pay attention to transiting planetary influences. ';
 
     if (effects.moonInauspicious) {
-      guidance += 'Be mindful during lunar transits through challenging areas. ';
+      guidance +=
+        'Be mindful during lunar transits through challenging areas. ';
     }
 
-    guidance += 'Focus on areas activated by current planetary positions for maximum growth.';
+    guidance +=
+      'Focus on areas activated by current planetary positions for maximum growth.';
 
     return guidance;
   }
@@ -400,7 +488,14 @@ class GocharCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + hour / 24;
   }
 

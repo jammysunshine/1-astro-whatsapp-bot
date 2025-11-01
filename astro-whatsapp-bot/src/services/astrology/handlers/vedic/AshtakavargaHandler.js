@@ -3,10 +3,17 @@
  * Handles Vedic 64-point strength analysis requests
  */
 const logger = require('../../../../utils/logger');
-const { AshtakavargaCalculator } = require('../../calculators/AshtakavargaCalculator');
+const {
+  AshtakavargaCalculator
+} = require('../../calculators/AshtakavargaCalculator');
 
 const handleAshtakavarga = async(message, user) => {
-  if (!message.includes('ashtakavarga') && !message.includes('64-point') && !message.includes('benefic') && !message.includes('strength analysis')) {
+  if (
+    !message.includes('ashtakavarga') &&
+    !message.includes('64-point') &&
+    !message.includes('benefic') &&
+    !message.includes('strength analysis')
+  ) {
     return null;
   }
 
@@ -18,7 +25,9 @@ const handleAshtakavarga = async(message, user) => {
     const calculator = new AshtakavargaCalculator();
     // Set services if available
     if (global.vedicCore?.geocodingService) {
-      calculator.setServices({ geocodingService: global.vedicCore.geocodingService });
+      calculator.setServices({
+        geocodingService: global.vedicCore.geocodingService
+      });
     }
 
     const birthData = {

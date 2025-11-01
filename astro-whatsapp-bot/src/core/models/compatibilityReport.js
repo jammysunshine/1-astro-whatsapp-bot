@@ -10,10 +10,18 @@ class CompatibilityReport {
   }
 
   getCompatibilityLevel() {
-    if (this.score >= 80) { return 'Excellent'; }
-    if (this.score >= 60) { return 'Good'; }
-    if (this.score >= 40) { return 'Moderate'; }
-    if (this.score >= 20) { return 'Challenging'; }
+    if (this.score >= 80) {
+      return 'Excellent';
+    }
+    if (this.score >= 60) {
+      return 'Good';
+    }
+    if (this.score >= 40) {
+      return 'Moderate';
+    }
+    if (this.score >= 20) {
+      return 'Challenging';
+    }
     return 'Poor';
   }
 

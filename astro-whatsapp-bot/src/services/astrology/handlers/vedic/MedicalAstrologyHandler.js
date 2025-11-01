@@ -6,7 +6,13 @@ const logger = require('../../../../utils/logger');
 const { createMundaneService } = require('../../mundane');
 
 const handleMedicalAstrology = async(message, user) => {
-  if (!message.includes('medical') && !message.includes('health') && !message.includes('disease') && !message.includes('illness') && !message.includes('health analysis')) {
+  if (
+    !message.includes('medical') &&
+    !message.includes('health') &&
+    !message.includes('disease') &&
+    !message.includes('illness') &&
+    !message.includes('health analysis')
+  ) {
     return null;
   }
 
@@ -22,7 +28,10 @@ const handleMedicalAstrology = async(message, user) => {
       aspects: []
     };
 
-    const healthAnalysis = await mundaneService.performMundaneAnalysis(chartData, 'health');
+    const healthAnalysis = await mundaneService.performMundaneAnalysis(
+      chartData,
+      'health'
+    );
 
     if (healthAnalysis.error) {
       return '❌ Unable to generate mundane astrology analysis for health.';
@@ -38,7 +47,10 @@ const handleMedicalAstrology = async(message, user) => {
       healthResult += `⏰ *Timing:*\n${healthAnalysis.timingAnalysis.currentPeriod || ''}\n\n`;
     }
 
-    if (healthAnalysis.recommendations && healthAnalysis.recommendations.length > 0) {
+    if (
+      healthAnalysis.recommendations &&
+      healthAnalysis.recommendations.length > 0
+    ) {
       healthResult += `💊 *Recommendations:*\n${healthAnalysis.recommendations.map(rec => `• ${rec}`).join('\n')}\n\n`;
     }
 

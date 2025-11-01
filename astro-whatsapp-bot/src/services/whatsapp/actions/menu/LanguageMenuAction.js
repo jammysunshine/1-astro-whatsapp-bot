@@ -34,11 +34,7 @@ class LanguageMenuAction extends BaseAction {
         this.user?.preferredLanguage || 'en'
       );
 
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
+      await sendMessage(message.to, message.interactive, 'interactive');
 
       this.logExecution('complete', 'Language menu displayed successfully');
       return {
@@ -49,7 +45,11 @@ class LanguageMenuAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in LanguageMenuAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -60,7 +60,9 @@ class LanguageMenuAction extends BaseAction {
    */
   generateLanguageMenu(currentLanguage) {
     const languages = this.getAllSupportedLanguages();
-    const currentLangInfo = languages.find(lang => lang.code === currentLanguage);
+    const currentLangInfo = languages.find(
+      lang => lang.code === currentLanguage
+    );
 
     return {
       title: '🌐 Language Settings',
@@ -71,7 +73,9 @@ class LanguageMenuAction extends BaseAction {
           rows: languages.map(lang => ({
             id: `set_language_${lang.code}`,
             title: `${lang.flag} ${lang.name}`,
-            description: lang.nativeName ? `${lang.nativeName} (${lang.users})` : `${lang.users} estimated speakers`
+            description: lang.nativeName ?
+              `${lang.nativeName} (${lang.users})` :
+              `${lang.users} estimated speakers`
           }))
         }
       ]
@@ -84,34 +88,200 @@ class LanguageMenuAction extends BaseAction {
    */
   getAllSupportedLanguages() {
     return [
-      { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸', users: '1.5B+' },
-      { code: 'hi', name: 'Hindi', nativeName: 'हिंदी', flag: '🇮🇳', users: '615M' },
-      { code: 'ar', name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦', users: '422M', rtl: true },
-      { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸', users: '580M' },
-      { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷', users: '280M' },
-      { code: 'bn', name: 'Bengali', nativeName: 'বাংলা', flag: '🇧🇩', users: '265M' },
-      { code: 'ur', name: 'Urdu', nativeName: 'اردو', flag: '🇵🇰', users: '230M', rtl: true },
-      { code: 'pt', name: 'Portuguese', nativeName: 'Português', flag: '🇧🇷', users: '260M' },
-      { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺', users: '258M' },
-      { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪', users: '135M' },
-      { code: 'it', name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹', users: '85M' },
+      {
+        code: 'en',
+        name: 'English',
+        nativeName: 'English',
+        flag: '🇺🇸',
+        users: '1.5B+'
+      },
+      {
+        code: 'hi',
+        name: 'Hindi',
+        nativeName: 'हिंदी',
+        flag: '🇮🇳',
+        users: '615M'
+      },
+      {
+        code: 'ar',
+        name: 'Arabic',
+        nativeName: 'العربية',
+        flag: '🇸🇦',
+        users: '422M',
+        rtl: true
+      },
+      {
+        code: 'es',
+        name: 'Spanish',
+        nativeName: 'Español',
+        flag: '🇪🇸',
+        users: '580M'
+      },
+      {
+        code: 'fr',
+        name: 'French',
+        nativeName: 'Français',
+        flag: '🇫🇷',
+        users: '280M'
+      },
+      {
+        code: 'bn',
+        name: 'Bengali',
+        nativeName: 'বাংলা',
+        flag: '🇧🇩',
+        users: '265M'
+      },
+      {
+        code: 'ur',
+        name: 'Urdu',
+        nativeName: 'اردو',
+        flag: '🇵🇰',
+        users: '230M',
+        rtl: true
+      },
+      {
+        code: 'pt',
+        name: 'Portuguese',
+        nativeName: 'Português',
+        flag: '🇧🇷',
+        users: '260M'
+      },
+      {
+        code: 'ru',
+        name: 'Russian',
+        nativeName: 'Русский',
+        flag: '🇷🇺',
+        users: '258M'
+      },
+      {
+        code: 'de',
+        name: 'German',
+        nativeName: 'Deutsch',
+        flag: '🇩🇪',
+        users: '135M'
+      },
+      {
+        code: 'it',
+        name: 'Italian',
+        nativeName: 'Italiano',
+        flag: '🇮🇹',
+        users: '85M'
+      },
       { code: 'th', name: 'Thai', nativeName: 'ไทย', flag: '🇹🇭', users: '60M' },
-      { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்', flag: '🇮🇳', users: '85M' },
-      { code: 'te', name: 'Telugu', nativeName: 'తెలుగు', flag: '🇮🇳', users: '83M' },
-      { code: 'gu', name: 'Gujarati', nativeName: 'ગુજરાતી', flag: '🇮🇳', users: '68M' },
-      { code: 'mr', name: 'Marathi', nativeName: 'मराठी', flag: '🇮🇳', users: '99M' },
-      { code: 'kn', name: 'Kannada', nativeName: 'ಕನ್ನಡ', flag: '🇮🇳', users: '59M' },
-      { code: 'ml', name: 'Malayalam', nativeName: 'മലയാളം', flag: '🇮🇳', users: '38M' },
-      { code: 'pa', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ', flag: '🇮🇳', users: '152M' },
-      { code: 'or', name: 'Oriya', nativeName: 'ଓଡ଼ିଆ', flag: '🇮🇳', users: '35M' },
-      { code: 'as', name: 'Assamese', nativeName: 'অসমীয়া', flag: '🇮🇳', users: '24M' },
-      { code: 'fa', name: 'Persian', nativeName: 'فارسی', flag: '🇮🇷', users: '75M', rtl: true },
-      { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷', users: '78M' },
-      { code: 'he', name: 'Hebrew', nativeName: 'עברית', flag: '🇮🇱', users: '9M', rtl: true },
-      { code: 'zh', name: 'Chinese', nativeName: '中文', flag: '🇨🇳', users: '918M' },
-      { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵', users: '128M' },
-      { code: 'ko', name: 'Korean', nativeName: '한국어', flag: '🇰🇷', users: '77M' },
-      { code: 'nl', name: 'Dutch', nativeName: 'Nederlands', flag: '🇳🇱', users: '22M' }
+      {
+        code: 'ta',
+        name: 'Tamil',
+        nativeName: 'தமிழ்',
+        flag: '🇮🇳',
+        users: '85M'
+      },
+      {
+        code: 'te',
+        name: 'Telugu',
+        nativeName: 'తెలుగు',
+        flag: '🇮🇳',
+        users: '83M'
+      },
+      {
+        code: 'gu',
+        name: 'Gujarati',
+        nativeName: 'ગુજરાતી',
+        flag: '🇮🇳',
+        users: '68M'
+      },
+      {
+        code: 'mr',
+        name: 'Marathi',
+        nativeName: 'मराठी',
+        flag: '🇮🇳',
+        users: '99M'
+      },
+      {
+        code: 'kn',
+        name: 'Kannada',
+        nativeName: 'ಕನ್ನಡ',
+        flag: '🇮🇳',
+        users: '59M'
+      },
+      {
+        code: 'ml',
+        name: 'Malayalam',
+        nativeName: 'മലയാളം',
+        flag: '🇮🇳',
+        users: '38M'
+      },
+      {
+        code: 'pa',
+        name: 'Punjabi',
+        nativeName: 'ਪੰਜਾਬੀ',
+        flag: '🇮🇳',
+        users: '152M'
+      },
+      {
+        code: 'or',
+        name: 'Oriya',
+        nativeName: 'ଓଡ଼ିଆ',
+        flag: '🇮🇳',
+        users: '35M'
+      },
+      {
+        code: 'as',
+        name: 'Assamese',
+        nativeName: 'অসমীয়া',
+        flag: '🇮🇳',
+        users: '24M'
+      },
+      {
+        code: 'fa',
+        name: 'Persian',
+        nativeName: 'فارسی',
+        flag: '🇮🇷',
+        users: '75M',
+        rtl: true
+      },
+      {
+        code: 'tr',
+        name: 'Turkish',
+        nativeName: 'Türkçe',
+        flag: '🇹🇷',
+        users: '78M'
+      },
+      {
+        code: 'he',
+        name: 'Hebrew',
+        nativeName: 'עברית',
+        flag: '🇮🇱',
+        users: '9M',
+        rtl: true
+      },
+      {
+        code: 'zh',
+        name: 'Chinese',
+        nativeName: '中文',
+        flag: '🇨🇳',
+        users: '918M'
+      },
+      {
+        code: 'ja',
+        name: 'Japanese',
+        nativeName: '日本語',
+        flag: '🇯🇵',
+        users: '128M'
+      },
+      {
+        code: 'ko',
+        name: 'Korean',
+        nativeName: '한국어',
+        flag: '🇰🇷',
+        users: '77M'
+      },
+      {
+        code: 'nl',
+        name: 'Dutch',
+        nativeName: 'Nederlands',
+        flag: '🇳🇱',
+        users: '22M'
+      }
     ];
   }
 
@@ -121,9 +291,34 @@ class LanguageMenuAction extends BaseAction {
    */
   static getLanguageSettingActions() {
     const languages = [
-      'en', 'hi', 'ar', 'es', 'fr', 'bn', 'ur', 'pt', 'ru', 'de',
-      'it', 'th', 'ta', 'te', 'gu', 'mr', 'kn', 'ml', 'pa', 'or',
-      'as', 'fa', 'tr', 'he', 'zh', 'ja', 'ko', 'nl'
+      'en',
+      'hi',
+      'ar',
+      'es',
+      'fr',
+      'bn',
+      'ur',
+      'pt',
+      'ru',
+      'de',
+      'it',
+      'th',
+      'ta',
+      'te',
+      'gu',
+      'mr',
+      'kn',
+      'ml',
+      'pa',
+      'or',
+      'as',
+      'fa',
+      'tr',
+      'he',
+      'zh',
+      'ja',
+      'ko',
+      'nl'
     ];
 
     return languages.map(code => ({
@@ -139,7 +334,8 @@ class LanguageMenuAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = 'Sorry, I encountered an error displaying the language menu. Please try accessing Settings again.';
+    const errorMessage =
+      'Sorry, I encountered an error displaying the language menu. Please try accessing Settings again.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 }

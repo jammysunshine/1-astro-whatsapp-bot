@@ -44,7 +44,11 @@ class PanchangCalculator {
         date,
         place,
         coordinates: { latitude, longitude },
-        timezone: await this._getTimezoneForPlace(latitude, longitude, new Date(`${year}-${month}-${day}`).getTime()),
+        timezone: await this._getTimezoneForPlace(
+          latitude,
+          longitude,
+          new Date(`${year}-${month}-${day}`).getTime()
+        ),
 
         // Tithi (lunar day)
         tithi: this._calculateTithi(day, month, year),
@@ -63,10 +67,18 @@ class PanchangCalculator {
         sunset: this._calculateSunset(day, month, year, latitude, longitude),
 
         // Sun's sign
-        sunSign: await this.services?.signCalculator?.calculateSunSign(date, time, place),
+        sunSign: await this.services?.signCalculator?.calculateSunSign(
+          date,
+          time,
+          place
+        ),
 
         // Moon's sign
-        moonSign: await this.services?.signCalculator?.calculateMoonSign(date, time, place),
+        moonSign: await this.services?.signCalculator?.calculateMoonSign(
+          date,
+          time,
+          place
+        ),
 
         // Auspicious times
         auspiciousPeriod: this._getAuspiciousPeriod(day, month, year),
@@ -143,7 +155,7 @@ class PanchangCalculator {
 
   async _getCoordinatesForPlace(place) {
     // Geocoding logic
-    return [28.6139, 77.2090]; // Delhi
+    return [28.6139, 77.209]; // Delhi
   }
 
   async _getTimezoneForPlace(lat, lng, timestamp) {

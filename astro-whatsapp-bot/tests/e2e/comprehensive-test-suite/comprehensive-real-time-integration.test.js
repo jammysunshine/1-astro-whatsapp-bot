@@ -5,8 +5,14 @@
  * API Failure Recovery (22), Database Operations (34), Synchronization (16)
  */
 
-const { TestDatabaseManager, setupWhatsAppMocks, getWhatsAppIntegration } = require('../../utils/testSetup');
-const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
+const {
+  TestDatabaseManager,
+  setupWhatsAppMocks,
+  getWhatsAppIntegration
+} = require('../../utils/testSetup');
+const {
+  processIncomingMessage
+} = require('../../../src/services/whatsapp/messageProcessor');
 
 describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tests)', () => {
   let dbManager;
@@ -33,16 +39,28 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
   describe('API Failure Recovery (22 tests)', () => {
     test('handles Google Maps geocoding service failures gracefully', async() => {
       const phoneNumber = '+integration_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1430' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: phoneNumber,
-        type: 'text',
-        text: { body: 'Test Geocoding Limit' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: phoneNumber,
+          type: 'text',
+          text: { body: 'Test Geocoding Limit' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Geocoding service temporarily unavailable')
@@ -51,16 +69,28 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
 
     test('manages Google Maps API quota exhaustion with fallback', async() => {
       const phoneNumber = '+integration_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1430' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: phoneNumber,
-        type: 'text',
-        text: { body: 'Quota Exceeded API' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: phoneNumber,
+          type: 'text',
+          text: { body: 'Quota Exceeded API' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('API quota exceeded')
@@ -69,16 +99,28 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
 
     test('handles Google Maps API rate limiting correctly', async() => {
       const phoneNumber = '+integration_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1430' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: phoneNumber,
-        type: 'text',
-        text: { body: 'Rate Limited Geocode' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: phoneNumber,
+          type: 'text',
+          text: { body: 'Rate Limited Geocode' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Too many requests')
@@ -87,18 +129,36 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
 
     test('manages Mistral AI content filtering violations', async() => {
       const phoneNumber = '+integration_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Mumbai, India' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1430' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Mumbai, India' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: phoneNumber,
-        type: 'text',
-        text: { body: 'Filtered Content Request' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: phoneNumber,
+          type: 'text',
+          text: { body: 'Filtered Content Request' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Content generation failed due to filtering')
@@ -107,18 +167,36 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
 
     test('handles Mistral AI API timeout gracefully', async() => {
       const phoneNumber = '+integration_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Mumbai, India' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1430' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Mumbai, India' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: phoneNumber,
-        type: 'text',
-        text: { body: 'AI Timeout Test' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: phoneNumber,
+          type: 'text',
+          text: { body: 'AI Timeout Test' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('AI service timeout')
@@ -127,18 +205,36 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
 
     test('manages Mistral AI rate limit exceeded scenarios', async() => {
       const phoneNumber = '+integration_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Mumbai, India' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1430' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Mumbai, India' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: phoneNumber,
-        type: 'text',
-        text: { body: 'Rate Limited AI' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: phoneNumber,
+          type: 'text',
+          text: { body: 'Rate Limited AI' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('AI service rate limit exceeded')
@@ -148,14 +244,21 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
     test('exponential backoff for Google Maps API failures', async() => {
       let attemptCount = 0;
       const originalSend = whatsAppIntegration.sendMessage;
-      whatsAppIntegration.sendMessage = jest.fn().mockImplementation((to, message, options) => {
-        attemptCount++;
-        if (attemptCount === 1) { throw new Error('API failure'); }
-        return originalSend(to, message, options);
-      });
+      whatsAppIntegration.sendMessage = jest
+        .fn()
+        .mockImplementation((to, message, options) => {
+          attemptCount++;
+          if (attemptCount === 1) {
+            throw new Error('API failure');
+          }
+          return originalSend(to, message, options);
+        });
 
       const phoneNumber = '+integration_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Retry API Call' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Retry API Call' } },
+        {}
+      );
 
       expect(attemptCount).toBeGreaterThan(1);
       console.log('✅ API exponential backoff structure validated');
@@ -229,11 +332,16 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
     test('handles concurrent user registration conflicts', async() => {
       const promises = [];
       for (let i = 0; i < 5; i++) {
-        promises.push(processIncomingMessage({
-          from: `+concurrent_test_${i}`,
-          type: 'text',
-          text: { body: 'Concurrent Registration' }
-        }, {}));
+        promises.push(
+          processIncomingMessage(
+            {
+              from: `+concurrent_test_${i}`,
+              type: 'text',
+              text: { body: 'Concurrent Registration' }
+            },
+            {}
+          )
+        );
       }
 
       await Promise.all(promises);
@@ -289,7 +397,9 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
     });
 
     test('manages cross-collection transaction consistency', async() => {
-      console.log('✅ Cross-collection transaction consistency structure validated');
+      console.log(
+        '✅ Cross-collection transaction consistency structure validated'
+      );
     });
 
     test('handles database connection string failures', async() => {
@@ -361,7 +471,9 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
     });
 
     test('manages read-only mode operation restrictions', async() => {
-      console.log('✅ Read-only mode operation restriction structure validated');
+      console.log(
+        '✅ Read-only mode operation restriction structure validated'
+      );
     });
 
     test('handles database diagnostic command failures', async() => {
@@ -409,7 +521,9 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
     });
 
     test('manages live compatibility result generation', async() => {
-      console.log('✅ Live compatibility result generation structure validated');
+      console.log(
+        '✅ Live compatibility result generation structure validated'
+      );
     });
 
     test('handles real-time prediction updates', async() => {
@@ -433,7 +547,9 @@ describe('COMPREHENSIVE REAL-TIME INTEGRATION: API & Database Operations (72 tes
     });
 
     test('manages concurrent real-time operation conflicts', async() => {
-      console.log('✅ Concurrent real-time operation conflict structure validated');
+      console.log(
+        '✅ Concurrent real-time operation conflict structure validated'
+      );
     });
 
     // 16 total real-time synchronization tests completed

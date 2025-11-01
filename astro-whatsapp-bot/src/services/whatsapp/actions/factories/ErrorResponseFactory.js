@@ -13,7 +13,9 @@ class ErrorResponseFactory {
    */
   static createProfileError(serviceName, config = {}) {
     const customMessage = config?.errorMessages?.incomplete;
-    if (customMessage) { return customMessage; }
+    if (customMessage) {
+      return customMessage;
+    }
 
     return `👤 *Complete Your Profile First*\n\nTo access ${serviceName}, please complete your birth profile with date, time, and place.\n\nUse the Settings menu to update your information.`;
   }
@@ -26,7 +28,9 @@ class ErrorResponseFactory {
    */
   static createSubscriptionError(limitsCheck = {}, config = {}) {
     const customMessage = config?.errorMessages?.limitReached;
-    if (customMessage) { return customMessage; }
+    if (customMessage) {
+      return customMessage;
+    }
 
     const plan = limitsCheck.plan || 'current';
     const feature = config?.subscriptionFeature || 'this feature';
@@ -65,7 +69,9 @@ class ErrorResponseFactory {
    * @returns {string} Formatted error message
    */
   static createRateLimitError(rateLimitData = {}) {
-    const resetTime = rateLimitData.resetTime ? new Date(rateLimitData.resetTime).toLocaleTimeString() : 'later';
+    const resetTime = rateLimitData.resetTime ?
+      new Date(rateLimitData.resetTime).toLocaleTimeString() :
+      'later';
     const limit = rateLimitData.limit || 10;
 
     return `⏰ *Rate Limit Exceeded*\n\nYou've reached the maximum of ${limit} requests for this service. Please try again ${resetTime}.`;
@@ -77,9 +83,10 @@ class ErrorResponseFactory {
    * @returns {string} Formatted error message
    */
   static createValidationError(validationErrors = []) {
-    const errorText = validationErrors.length > 0 ?
-      validationErrors.join('\n• ') :
-      'Please check your input and try again.';
+    const errorText =
+      validationErrors.length > 0 ?
+        validationErrors.join('\n• ') :
+        'Please check your input and try again.';
 
     return `❌ *Validation Error*\n\n• ${errorText}\n\nPlease correct these issues and try again.`;
   }

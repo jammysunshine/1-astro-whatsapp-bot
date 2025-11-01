@@ -25,7 +25,12 @@ class SignCalculator {
    * @param {string} chartType - Chart type (sidereal/tropical)
    * @returns {Object} Sun sign details
    */
-  async calculateSunSign(birthDate, birthTime = '12:00', birthPlace = 'Delhi, India', chartType = 'sidereal') {
+  async calculateSunSign(
+    birthDate,
+    birthTime = '12:00',
+    birthPlace = 'Delhi, India',
+    chartType = 'sidereal'
+  ) {
     try {
       // Parse birth date
       const [day, month, year] = birthDate.split('/').map(Number);
@@ -87,18 +92,78 @@ class SignCalculator {
       for (const sign of tropicalSigns) {
         if (dayOfYear >= sign.start && dayOfYear <= sign.end) {
           const signDetails = {
-            Capricorn: { element: 'Earth', quality: 'Cardinal', planet: 'Saturn', symbol: '🐐' },
-            Aquarius: { element: 'Air', quality: 'Fixed', planet: 'Uranus', symbol: '🏺' },
-            Pisces: { element: 'Water', quality: 'Mutable', planet: 'Neptune', symbol: '🐟' },
-            Aries: { element: 'Fire', quality: 'Cardinal', planet: 'Mars', symbol: '🐏' },
-            Taurus: { element: 'Earth', quality: 'Fixed', planet: 'Venus', symbol: '🐂' },
-            Gemini: { element: 'Air', quality: 'Mutable', planet: 'Mercury', symbol: '👯' },
-            Cancer: { element: 'Water', quality: 'Cardinal', planet: 'Moon', symbol: '🦀' },
-            Leo: { element: 'Fire', quality: 'Fixed', planet: 'Sun', symbol: '🦁' },
-            Virgo: { element: 'Earth', quality: 'Mutable', planet: 'Mercury', symbol: '👩' },
-            Libra: { element: 'Air', quality: 'Cardinal', planet: 'Venus', symbol: '⚖️' },
-            Scorpio: { element: 'Water', quality: 'Fixed', planet: 'Pluto', symbol: '🦂' },
-            Sagittarius: { element: 'Fire', quality: 'Mutable', planet: 'Jupiter', symbol: '🏹' }
+            Capricorn: {
+              element: 'Earth',
+              quality: 'Cardinal',
+              planet: 'Saturn',
+              symbol: '🐐'
+            },
+            Aquarius: {
+              element: 'Air',
+              quality: 'Fixed',
+              planet: 'Uranus',
+              symbol: '🏺'
+            },
+            Pisces: {
+              element: 'Water',
+              quality: 'Mutable',
+              planet: 'Neptune',
+              symbol: '🐟'
+            },
+            Aries: {
+              element: 'Fire',
+              quality: 'Cardinal',
+              planet: 'Mars',
+              symbol: '🐏'
+            },
+            Taurus: {
+              element: 'Earth',
+              quality: 'Fixed',
+              planet: 'Venus',
+              symbol: '🐂'
+            },
+            Gemini: {
+              element: 'Air',
+              quality: 'Mutable',
+              planet: 'Mercury',
+              symbol: '👯'
+            },
+            Cancer: {
+              element: 'Water',
+              quality: 'Cardinal',
+              planet: 'Moon',
+              symbol: '🦀'
+            },
+            Leo: {
+              element: 'Fire',
+              quality: 'Fixed',
+              planet: 'Sun',
+              symbol: '🦁'
+            },
+            Virgo: {
+              element: 'Earth',
+              quality: 'Mutable',
+              planet: 'Mercury',
+              symbol: '👩'
+            },
+            Libra: {
+              element: 'Air',
+              quality: 'Cardinal',
+              planet: 'Venus',
+              symbol: '⚖️'
+            },
+            Scorpio: {
+              element: 'Water',
+              quality: 'Fixed',
+              planet: 'Pluto',
+              symbol: '🦂'
+            },
+            Sagittarius: {
+              element: 'Fire',
+              quality: 'Mutable',
+              planet: 'Jupiter',
+              symbol: '🏹'
+            }
           };
 
           const details = signDetails[sign.name];
@@ -130,7 +195,12 @@ class SignCalculator {
    * @param {string} chartType - Chart type (sidereal/tropical)
    * @returns {Object} Moon sign details
    */
-  async calculateMoonSign(birthDate, birthTime = '12:00', birthPlace = 'Delhi, India', chartType = 'sidereal') {
+  async calculateMoonSign(
+    birthDate,
+    birthTime = '12:00',
+    birthPlace = 'Delhi, India',
+    chartType = 'sidereal'
+  ) {
     try {
       // Parse birth date and time
       const [day, month, year] = birthDate.split('/').map(Number);
@@ -138,25 +208,104 @@ class SignCalculator {
 
       // Get moon phase and approximate position
       // Simplified calculation - in full implementation use Swiss Ephemeris
-      const moonPosition = this._calculateMoonPosition(day, month, year, hour, minute);
+      const moonPosition = this._calculateMoonPosition(
+        day,
+        month,
+        year,
+        hour,
+        minute
+      );
 
-      const zodiacSigns = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+      const zodiacSigns = [
+        'Aries',
+        'Taurus',
+        'Gemini',
+        'Cancer',
+        'Leo',
+        'Virgo',
+        'Libra',
+        'Scorpio',
+        'Sagittarius',
+        'Capricorn',
+        'Aquarius',
+        'Pisces'
+      ];
       const signIndex = Math.floor(moonPosition.longitude / 30) % 12;
       const sign = zodiacSigns[signIndex];
 
       const signDetails = {
-        Aries: { element: 'Fire', quality: 'Cardinal', rulingPlanet: 'Mars', symbol: '🌙' },
-        Taurus: { element: 'Earth', quality: 'Fixed', rulingPlanet: 'Venus', symbol: '🌙' },
-        Gemini: { element: 'Air', quality: 'Mutable', rulingPlanet: 'Mercury', symbol: '🌙' },
-        Cancer: { element: 'Water', quality: 'Cardinal', rulingPlanet: 'Moon', symbol: '🌙' },
-        Leo: { element: 'Fire', quality: 'Fixed', rulingPlanet: 'Sun', symbol: '🌙' },
-        Virgo: { element: 'Earth', quality: 'Mutable', rulingPlanet: 'Mercury', symbol: '🌙' },
-        Libra: { element: 'Air', quality: 'Cardinal', rulingPlanet: 'Venus', symbol: '🌙' },
-        Scorpio: { element: 'Water', quality: 'Fixed', rulingPlanet: 'Pluto', symbol: '🌙' },
-        Sagittarius: { element: 'Fire', quality: 'Mutable', rulingPlanet: 'Jupiter', symbol: '🌙' },
-        Capricorn: { element: 'Earth', quality: 'Cardinal', rulingPlanet: 'Saturn', symbol: '🌙' },
-        Aquarius: { element: 'Air', quality: 'Fixed', rulingPlanet: 'Uranus', symbol: '🌙' },
-        Pisces: { element: 'Water', quality: 'Mutable', rulingPlanet: 'Neptune', symbol: '🌙' }
+        Aries: {
+          element: 'Fire',
+          quality: 'Cardinal',
+          rulingPlanet: 'Mars',
+          symbol: '🌙'
+        },
+        Taurus: {
+          element: 'Earth',
+          quality: 'Fixed',
+          rulingPlanet: 'Venus',
+          symbol: '🌙'
+        },
+        Gemini: {
+          element: 'Air',
+          quality: 'Mutable',
+          rulingPlanet: 'Mercury',
+          symbol: '🌙'
+        },
+        Cancer: {
+          element: 'Water',
+          quality: 'Cardinal',
+          rulingPlanet: 'Moon',
+          symbol: '🌙'
+        },
+        Leo: {
+          element: 'Fire',
+          quality: 'Fixed',
+          rulingPlanet: 'Sun',
+          symbol: '🌙'
+        },
+        Virgo: {
+          element: 'Earth',
+          quality: 'Mutable',
+          rulingPlanet: 'Mercury',
+          symbol: '🌙'
+        },
+        Libra: {
+          element: 'Air',
+          quality: 'Cardinal',
+          rulingPlanet: 'Venus',
+          symbol: '🌙'
+        },
+        Scorpio: {
+          element: 'Water',
+          quality: 'Fixed',
+          rulingPlanet: 'Pluto',
+          symbol: '🌙'
+        },
+        Sagittarius: {
+          element: 'Fire',
+          quality: 'Mutable',
+          rulingPlanet: 'Jupiter',
+          symbol: '🌙'
+        },
+        Capricorn: {
+          element: 'Earth',
+          quality: 'Cardinal',
+          rulingPlanet: 'Saturn',
+          symbol: '🌙'
+        },
+        Aquarius: {
+          element: 'Air',
+          quality: 'Fixed',
+          rulingPlanet: 'Uranus',
+          symbol: '🌙'
+        },
+        Pisces: {
+          element: 'Water',
+          quality: 'Mutable',
+          rulingPlanet: 'Neptune',
+          symbol: '🌙'
+        }
       };
 
       const details = signDetails[sign];
@@ -187,8 +336,13 @@ class SignCalculator {
    */
   _calculateMoonPosition(day, month, year, hour, minute) {
     // Simplified approximation - real calculation would use astronomical algorithms
-    const daysSinceEpoch = Math.floor((new Date(year, month - 1, day).getTime() - new Date(2000, 0, 1).getTime()) / (1000 * 60 * 60 * 24));
-    const longitude = (daysSinceEpoch * 0.54 + hour * 0.225 + minute * 0.00375) % 360;
+    const daysSinceEpoch = Math.floor(
+      (new Date(year, month - 1, day).getTime() -
+        new Date(2000, 0, 1).getTime()) /
+        (1000 * 60 * 60 * 24)
+    );
+    const longitude =
+      (daysSinceEpoch * 0.54 + hour * 0.225 + minute * 0.00375) % 360;
     return { longitude };
   }
 
@@ -200,17 +354,37 @@ class SignCalculator {
    */
   _getMoonSignTraits(sign) {
     const moonTraits = {
-      Aries: ['Impulsive', 'Passionate emotions', 'Quick to anger', 'Energetic feelings'],
+      Aries: [
+        'Impulsive',
+        'Passionate emotions',
+        'Quick to anger',
+        'Energetic feelings'
+      ],
       Taurus: ['Sturdy emotions', 'Loving', 'Patient', 'Comfort-seeking'],
-      Gemini: ['Versatile feelings', 'Intellectual', 'Communicative', 'Restless'],
+      Gemini: [
+        'Versatile feelings',
+        'Intellectual',
+        'Communicative',
+        'Restless'
+      ],
       Cancer: ['Deeply emotional', 'Nurturing', 'Intuitive', 'Protective'],
       Leo: ['Dramatic feelings', 'Warm-hearted', 'Proud', 'Creative'],
       Virgo: ['Analytical emotions', 'Practical', 'Critical', 'Helpful'],
       Libra: ['Harmonious', 'Diplomatic', 'Fair', 'Partnership-oriented'],
       Scorpio: ['Intense emotions', 'Deep', 'Possessive', 'Transformative'],
-      Sagittarius: ['Optimistic feelings', 'Adventurous', 'Honest', 'Freedom-loving'],
+      Sagittarius: [
+        'Optimistic feelings',
+        'Adventurous',
+        'Honest',
+        'Freedom-loving'
+      ],
       Capricorn: ['Reserved emotions', 'Responsible', 'Ambitious', 'Stable'],
-      Aquarius: ['Independent feelings', 'Unconventional', 'Humanitarian', 'Detached'],
+      Aquarius: [
+        'Independent feelings',
+        'Unconventional',
+        'Humanitarian',
+        'Detached'
+      ],
       Pisces: ['Sensitive', 'Compassionate', 'Imaginative', 'Spiritual']
     };
 
@@ -233,7 +407,12 @@ class SignCalculator {
       Virgo: ['Analytical', 'Practical', 'Hardworking', 'Kind'],
       Libra: ['Diplomatic', 'Fair-minded', 'Social', 'Idealistic'],
       Scorpio: ['Resourceful', 'Brave', 'Passionate', 'Stubborn'],
-      Sagittarius: ['Generous', 'Idealistic', 'Sense of humor', 'Freedom-loving'],
+      Sagittarius: [
+        'Generous',
+        'Idealistic',
+        'Sense of humor',
+        'Freedom-loving'
+      ],
       Capricorn: ['Responsible', 'Disciplined', 'Self-controlled', 'Ambitious'],
       Aquarius: ['Independent', 'Original', 'Humanitarian', 'Intellectual'],
       Pisces: ['Compassionate', 'Artistic', 'Intuitive', 'Gentle']

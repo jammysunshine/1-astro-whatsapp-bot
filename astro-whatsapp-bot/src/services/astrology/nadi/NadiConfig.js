@@ -5,7 +5,9 @@ const logger = require('../../../utils/logger');
  */
 class NadiConfig {
   constructor() {
-    logger.info('Module: NadiConfig loaded - Nadi Astrology constants and data');
+    logger.info(
+      'Module: NadiConfig loaded - Nadi Astrology constants and data'
+    );
   }
 
   /**
@@ -79,7 +81,8 @@ class NadiConfig {
       ashwini: {
         category: '1-10',
         grantha: 'bhrigu_nadi',
-        characteristics: 'Born leaders, authoritative, successful in politics/business',
+        characteristics:
+          'Born leaders, authoritative, successful in politics/business',
         compatibility: { adi: true, madhya: true, antya: false }
       },
       bharani: {
@@ -246,9 +249,18 @@ class NadiConfig {
    */
   getNadiMatching() {
     return {
-      adi: { compatible: ['adi', 'madhya'], description: 'Dynamic and energetic - compatible with active types' },
-      madhya: { compatible: ['adi', 'madhya', 'antya'], description: 'Balanced and harmonious - compatible with all types' },
-      antya: { compatible: ['madhya', 'antya'], description: 'Peaceful and spiritual - compatible with calm types' }
+      adi: {
+        compatible: ['adi', 'madhya'],
+        description: 'Dynamic and energetic - compatible with active types'
+      },
+      madhya: {
+        compatible: ['adi', 'madhya', 'antya'],
+        description: 'Balanced and harmonious - compatible with all types'
+      },
+      antya: {
+        compatible: ['madhya', 'antya'],
+        description: 'Peaceful and spiritual - compatible with calm types'
+      }
     };
   }
 
@@ -283,11 +295,33 @@ class NadiConfig {
    */
   getNakshatraNames() {
     return [
-      'ashwini', 'bharani', 'krittika', 'rohini', 'mrigashira', 'ardra',
-      'punarvasu', 'pushya', 'ashlesha', 'magha', 'purva_phalguni', 'uttara_phalguni',
-      'hasta', 'chitra', 'swati', 'vishakha', 'anuradha', 'jyeshtha',
-      'mula', 'purva_ashadha', 'uttara_ashadha', 'shravana', 'dhanishta',
-      'shatabhisha', 'purva_bhadrapada', 'uttara_bhadrapada', 'revati'
+      'ashwini',
+      'bharani',
+      'krittika',
+      'rohini',
+      'mrigashira',
+      'ardra',
+      'punarvasu',
+      'pushya',
+      'ashlesha',
+      'magha',
+      'purva_phalguni',
+      'uttara_phalguni',
+      'hasta',
+      'chitra',
+      'swati',
+      'vishakha',
+      'anuradha',
+      'jyeshtha',
+      'mula',
+      'purva_ashadha',
+      'uttara_ashadha',
+      'shravana',
+      'dhanishta',
+      'shatabhisha',
+      'purva_bhadrapada',
+      'uttara_bhadrapada',
+      'revati'
     ];
   }
 }

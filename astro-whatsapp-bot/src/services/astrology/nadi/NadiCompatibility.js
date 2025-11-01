@@ -19,11 +19,17 @@ class NadiCompatibility {
   generateCompatibilityInsights(birthNakshatra) {
     try {
       return {
-        compatibleSigns: this.dataRepo.getCompatibleNakshatras(birthNakshatra.name),
+        compatibleSigns: this.dataRepo.getCompatibleNakshatras(
+          birthNakshatra.name
+        ),
         bestMatches: this.dataRepo.getBestMatches(birthNakshatra.name),
-        relationshipAdvice: this.dataRepo.getRelationshipAdvice(birthNakshatra.name),
-        compatibilityStrengths: this.analyzeCompatibilityStrengths(birthNakshatra),
-        compatibilityChallenges: this.analyzeCompatibilityChallenges(birthNakshatra)
+        relationshipAdvice: this.dataRepo.getRelationshipAdvice(
+          birthNakshatra.name
+        ),
+        compatibilityStrengths:
+          this.analyzeCompatibilityStrengths(birthNakshatra),
+        compatibilityChallenges:
+          this.analyzeCompatibilityChallenges(birthNakshatra)
       };
     } catch (error) {
       this.logger.error('Compatibility insights error:', error);
@@ -139,7 +145,10 @@ class NadiCompatibility {
       const n2 = nakshatras.find(n => n.name === nakshatra2);
 
       if (!n1 || !n2) {
-        return { compatibility: 'neutral', message: 'Nakshatra data unavailable' };
+        return {
+          compatibility: 'neutral',
+          message: 'Nakshatra data unavailable'
+        };
       }
 
       // Check if they are compatible
@@ -158,11 +167,14 @@ class NadiCompatibility {
       } else {
         // Check for challenging combinations
         const challengingCombos = [
-          ['Ardra', 'Jyeshtha'], ['Mula', 'Purva Ashadha'], ['Ashlesha', 'Mula']
+          ['Ardra', 'Jyeshtha'],
+          ['Mula', 'Purva Ashadha'],
+          ['Ashlesha', 'Mula']
         ];
         const isChallengingCombo = challengingCombos.some(
-          ([a, b]) => (nakshatra1 === a && nakshatra2 === b) ||
-                     (nakshatra1 === b && nakshatra2 === a)
+          ([a, b]) =>
+            (nakshatra1 === a && nakshatra2 === b) ||
+            (nakshatra1 === b && nakshatra2 === a)
         );
 
         if (isChallengingCombo) {
@@ -174,8 +186,16 @@ class NadiCompatibility {
       return {
         compatibility,
         message,
-        strengths: this.getCompatibilityFactors(nakshatra1, nakshatra2, 'strengths'),
-        challenges: this.getCompatibilityFactors(nakshatra1, nakshatra2, 'challenges')
+        strengths: this.getCompatibilityFactors(
+          nakshatra1,
+          nakshatra2,
+          'strengths'
+        ),
+        challenges: this.getCompatibilityFactors(
+          nakshatra1,
+          nakshatra2,
+          'challenges'
+        )
       };
     } catch (error) {
       this.logger.error('Nakshatra compatibility analysis error:', error);
@@ -201,8 +221,14 @@ class NadiCompatibility {
         SwatiAnuradha: ['Balanced partnership', 'Mutual understanding']
       },
       challenges: {
-        ArdraJyeshtha: ['Intensity management needed', 'Communication focus required'],
-        MulaPurvaAshadha: ['Emotional understanding work', 'Patience development']
+        ArdraJyeshtha: [
+          'Intensity management needed',
+          'Communication focus required'
+        ],
+        MulaPurvaAshadha: [
+          'Emotional understanding work',
+          'Patience development'
+        ]
       }
     };
 
@@ -210,9 +236,15 @@ class NadiCompatibility {
     const reverseKey = `${n2}${n1}`.replace(/\s+/g, '');
 
     if (type === 'strengths') {
-      return factors.strengths[key] || factors.strengths[reverseKey] || ['Complementary energies'];
+      return (
+        factors.strengths[key] ||
+        factors.strengths[reverseKey] || ['Complementary energies']
+      );
     } else {
-      return factors.challenges[key] || factors.challenges[reverseKey] || ['Learn through experience'];
+      return (
+        factors.challenges[key] ||
+        factors.challenges[reverseKey] || ['Learn through experience']
+      );
     }
   }
 
@@ -248,13 +280,17 @@ class NadiCompatibility {
     }
 
     // Nakshatra nature combinations
-    if ((n1?.nature === 'Light' && n2?.nature === 'Fixed') ||
-        (n1?.nature === 'Fixed' && n2?.nature === 'Light')) {
+    if (
+      (n1?.nature === 'Light' && n2?.nature === 'Fixed') ||
+      (n1?.nature === 'Fixed' && n2?.nature === 'Light')
+    ) {
       dynamics.communication = 'Clear and balanced interaction';
     }
 
-    if ((n1?.nature === 'Fierce' && n2?.nature === 'Soft') ||
-        (n1?.nature === 'Soft' && n2?.nature === 'Fierce')) {
+    if (
+      (n1?.nature === 'Fierce' && n2?.nature === 'Soft') ||
+      (n1?.nature === 'Soft' && n2?.nature === 'Fierce')
+    ) {
       dynamics.growth = 'Intense learning through differences';
     }
 
@@ -269,14 +305,33 @@ class NadiCompatibility {
    */
   generateCompatibilityScore(nakshatra1, nakshatra2) {
     try {
-      const analysis = this.analyzeNakshatraCompatibility(nakshatra1, nakshatra2);
+      const analysis = this.analyzeNakshatraCompatibility(
+        nakshatra1,
+        nakshatra2
+      );
 
       const scores = {
-        excellent: { min: 85, max: 100, description: 'Exceptional cosmic harmony' },
+        excellent: {
+          min: 85,
+          max: 100,
+          description: 'Exceptional cosmic harmony'
+        },
         good: { min: 70, max: 84, description: 'Strong supportive connection' },
-        neutral: { min: 50, max: 69, description: 'Balanced complementary energies' },
-        challenging: { min: 30, max: 49, description: 'Growth through understanding' },
-        difficult: { min: 0, max: 29, description: 'Significant adjustment needed' }
+        neutral: {
+          min: 50,
+          max: 69,
+          description: 'Balanced complementary energies'
+        },
+        challenging: {
+          min: 30,
+          max: 49,
+          description: 'Growth through understanding'
+        },
+        difficult: {
+          min: 0,
+          max: 29,
+          description: 'Significant adjustment needed'
+        }
       };
 
       let score = 50; // Base neutral score
@@ -285,13 +340,22 @@ class NadiCompatibility {
       // Adjust score based on analysis
       switch (analysis.compatibility) {
       case 'excellent':
-        score = Math.floor(Math.random() * (compatibility.max - compatibility.min + 1)) + compatibility.min;
+        score =
+            Math.floor(
+              Math.random() * (compatibility.max - compatibility.min + 1)
+            ) + compatibility.min;
         break;
       case 'good':
-        score = Math.floor(Math.random() * (compatibility.max - compatibility.min + 1)) + compatibility.min;
+        score =
+            Math.floor(
+              Math.random() * (compatibility.max - compatibility.min + 1)
+            ) + compatibility.min;
         break;
       case 'challenging':
-        score = Math.floor(Math.random() * (compatibility.max - compatibility.min + 1)) + compatibility.min;
+        score =
+            Math.floor(
+              Math.random() * (compatibility.max - compatibility.min + 1)
+            ) + compatibility.min;
         break;
       default:
         score = Math.floor(Math.random() * 20) + 50; // 50-70 range
@@ -321,7 +385,8 @@ class NadiCompatibility {
    */
   getMatchingSuggestions(birthNakshatra) {
     try {
-      const compatibleSigns = this.dataRepo.getCompatibleNakshatras(birthNakshatra);
+      const compatibleSigns =
+        this.dataRepo.getCompatibleNakshatras(birthNakshatra);
       const bestMatches = this.dataRepo.getBestMatches(birthNakshatra);
 
       return {
@@ -336,7 +401,11 @@ class NadiCompatibility {
         primaryMatches: [],
         compatibleMatches: [],
         relationshipGuidance: 'Seek personalized relationship guidance',
-        successFactors: ['Open communication', 'Mutual respect', 'Shared values']
+        successFactors: [
+          'Open communication',
+          'Mutual respect',
+          'Shared values'
+        ]
       };
     }
   }

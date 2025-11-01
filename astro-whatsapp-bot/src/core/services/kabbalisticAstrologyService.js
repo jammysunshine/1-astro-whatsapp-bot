@@ -33,13 +33,17 @@ class KabbalisticAstrologyService extends ServiceTemplate {
       this._validateInput(birthData);
 
       // Perform Kabbalistic astrology analysis using the dynamically loaded calculator
-      const kabbalisticAnalysis = await this.calculator.analyzeBirthData(birthData, options);
+      const kabbalisticAnalysis = await this.calculator.analyzeBirthData(
+        birthData,
+        options
+      );
 
       // Generate additional insights
       const soulCorrection = this._getSoulCorrection(kabbalisticAnalysis);
       const lifePurpose = this._getLifePurpose(kabbalisticAnalysis);
       const spiritualPath = this._getSpiritualPath(kabbalisticAnalysis);
-      const challengesAndGifts = this._getChallengesAndGifts(kabbalisticAnalysis);
+      const challengesAndGifts =
+        this._getChallengesAndGifts(kabbalisticAnalysis);
 
       return {
         kabbalisticAnalysis,
@@ -47,11 +51,20 @@ class KabbalisticAstrologyService extends ServiceTemplate {
         lifePurpose,
         spiritualPath,
         challengesAndGifts,
-        summary: this._createComprehensiveSummary(kabbalisticAnalysis, soulCorrection, lifePurpose)
+        summary: this._createComprehensiveSummary(
+          kabbalisticAnalysis,
+          soulCorrection,
+          lifePurpose
+        )
       };
     } catch (error) {
-      logger.error('KabbalisticAstrologyService processCalculation error:', error);
-      throw new Error(`Kabbalistic Astrology analysis failed: ${error.message}`);
+      logger.error(
+        'KabbalisticAstrologyService processCalculation error:',
+        error
+      );
+      throw new Error(
+        `Kabbalistic Astrology analysis failed: ${error.message}`
+      );
     }
   }
 
@@ -62,7 +75,9 @@ class KabbalisticAstrologyService extends ServiceTemplate {
    */
   _validateInput(birthData) {
     if (!birthData) {
-      throw new Error('Birth data is required for Kabbalistic Astrology analysis.');
+      throw new Error(
+        'Birth data is required for Kabbalistic Astrology analysis.'
+      );
     }
     const validatedData = new BirthData(birthData);
     validatedData.validate();
@@ -92,7 +107,8 @@ class KabbalisticAstrologyService extends ServiceTemplate {
         calculationType: 'Kabbalistic Astrology Analysis',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'Kabbalistic Astrology offers profound insights into your spiritual journey and soul correction. It is a tool for self-discovery and spiritual growth, not a predictive science in the conventional sense. Interpretations should be used for personal reflection and guidance.'
+      disclaimer:
+        'Kabbalistic Astrology offers profound insights into your spiritual journey and soul correction. It is a tool for self-discovery and spiritual growth, not a predictive science in the conventional sense. Interpretations should be used for personal reflection and guidance.'
     };
   }
 
@@ -153,7 +169,10 @@ class KabbalisticAstrologyService extends ServiceTemplate {
   _getChallengesAndGifts(kabbalisticAnalysis) {
     // Placeholder for actual challenges and gifts determination
     return {
-      majorChallenges: ['Dealing with emotional intensity', 'Maintaining boundaries'],
+      majorChallenges: [
+        'Dealing with emotional intensity',
+        'Maintaining boundaries'
+      ],
       hiddenGifts: ['Profound empathy', 'Transformative power'],
       lessonsToLearn: ['Patience', 'Forgiveness'],
       blessings: ['Deep connections', 'Spiritual protection']
@@ -168,11 +187,17 @@ class KabbalisticAstrologyService extends ServiceTemplate {
    * @returns {string} Comprehensive summary text.
    * @private
    */
-  _createComprehensiveSummary(kabbalisticAnalysis, soulCorrection, lifePurpose) {
-    let summary = 'This Kabbalistic Astrology analysis delves into your spiritual blueprint, revealing profound insights into your soul\'s journey. ';
-    summary += 'Your primary soul correction (Tikkun) is focused on ' + soulCorrection.primaryTikkun.toLowerCase() + ', guiding you towards spiritual growth. ';
-    summary += 'Your life purpose is to ' + lifePurpose.corePurpose.toLowerCase() + ', utilizing your unique talents to fulfill your mission. ';
-    summary += 'Understanding these aspects can illuminate your path, helping you navigate challenges and embrace your spiritual gifts.';
+  _createComprehensiveSummary(
+    kabbalisticAnalysis,
+    soulCorrection,
+    lifePurpose
+  ) {
+    let summary =
+      'This Kabbalistic Astrology analysis delves into your spiritual blueprint, revealing profound insights into your soul\'s journey. ';
+    summary += `Your primary soul correction (Tikkun) is focused on ${soulCorrection.primaryTikkun.toLowerCase()}, guiding you towards spiritual growth. `;
+    summary += `Your life purpose is to ${lifePurpose.corePurpose.toLowerCase()}, utilizing your unique talents to fulfill your mission. `;
+    summary +=
+      'Understanding these aspects can illuminate your path, helping you navigate challenges and embrace your spiritual gifts.';
     return summary;
   }
 
@@ -185,9 +210,16 @@ class KabbalisticAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'kabbalistic',
-      methods: ['processCalculation', 'getSoulCorrection', 'getLifePurpose', 'getSpiritualPath', 'getChallengesAndGifts'],
+      methods: [
+        'processCalculation',
+        'getSoulCorrection',
+        'getLifePurpose',
+        'getSpiritualPath',
+        'getChallengesAndGifts'
+      ],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Service for Kabbalistic astrology analysis and spiritual insights.'
+      description:
+        'Service for Kabbalistic astrology analysis and spiritual insights.'
     };
   }
 

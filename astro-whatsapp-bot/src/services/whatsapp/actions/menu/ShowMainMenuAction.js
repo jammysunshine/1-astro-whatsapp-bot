@@ -41,7 +41,11 @@ class ShowMainMenuAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in ShowMainMenuAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -88,7 +92,8 @@ class ShowMainMenuAction extends BaseAction {
    * Handle menu loading error
    */
   async handleMenuLoadError() {
-    const errorMessage = 'Sorry, I couldn\'t load the main menu right now. Please try again in a moment.';
+    const errorMessage =
+      'Sorry, I couldn\'t load the main menu right now. Please try again in a moment.';
     await this.sendMessage(errorMessage, 'text');
   }
 
@@ -97,7 +102,8 @@ class ShowMainMenuAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = 'I encountered an error displaying the menu. Please try typing "menu" again.';
+    const errorMessage =
+      'I encountered an error displaying the menu. Please try typing "menu" again.';
     await this.sendMessage(errorMessage, 'text');
   }
 

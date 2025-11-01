@@ -28,14 +28,16 @@ class ComprehensiveAnalysisCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for comprehensive analysis' };
+        return {
+          error: 'Complete birth details required for comprehensive analysis'
+        };
       }
 
       // Multi-level chart analysis
       const analysisLevels = {
-        rasi: await this._analyzeRasiChart(birthData),           // D1 - Physical life
-        navamsa: await this._analyzeNavamsaChart(birthData),      // D9 - Marriage/Relationships
-        dashamsa: await this._analyzeDashamsaChart(birthData),    // D10 - Career
+        rasi: await this._analyzeRasiChart(birthData), // D1 - Physical life
+        navamsa: await this._analyzeNavamsaChart(birthData), // D9 - Marriage/Relationships
+        dashamsa: await this._analyzeDashamsaChart(birthData), // D10 - Career
         dwadasamsa: await this._analyzeDwadasamsaChart(birthData), // D12 - Parents/Spirituality
         divisional: await this._analyzeDivisionalCharts(birthData)
       };
@@ -51,7 +53,10 @@ class ComprehensiveAnalysisCalculator {
 
       // Holistic assessment
       const holisticAssessment = this._createHolisticAssessment(
-        analysisLevels, yogasAnalysis, dashaAnalysis, transitAnalysis
+        analysisLevels,
+        yogasAnalysis,
+        dashaAnalysis,
+        transitAnalysis
       );
 
       // Life predictions by period
@@ -65,7 +70,10 @@ class ComprehensiveAnalysisCalculator {
         transitAnalysis,
         holisticAssessment,
         lifePredictions,
-        summary: this._generateComprehensiveSummary(holisticAssessment, lifePredictions)
+        summary: this._generateComprehensiveSummary(
+          holisticAssessment,
+          lifePredictions
+        )
       };
     } catch (error) {
       logger.error('❌ Error in comprehensive Vedic analysis:', error);
@@ -112,7 +120,10 @@ class ComprehensiveAnalysisCalculator {
     try {
       // Get D9 analysis from existing calculators if available
       if (this.services?.calculateVargaChart) {
-        const d9Chart = await this.services.calculateVargaChart(birthData, 'D9');
+        const d9Chart = await this.services.calculateVargaChart(
+          birthData,
+          'D9'
+        );
         return d9Chart;
       }
 
@@ -135,7 +146,10 @@ class ComprehensiveAnalysisCalculator {
   async _analyzeDashamsaChart(birthData) {
     try {
       if (this.services?.calculateVargaChart) {
-        const d10Chart = await this.services.calculateVargaChart(birthData, 'D10');
+        const d10Chart = await this.services.calculateVargaChart(
+          birthData,
+          'D10'
+        );
         return d10Chart;
       }
 
@@ -158,7 +172,10 @@ class ComprehensiveAnalysisCalculator {
   async _analyzeDwadasamsaChart(birthData) {
     try {
       if (this.services?.calculateVargaChart) {
-        const d12Chart = await this.services.calculateVargaChart(birthData, 'D12');
+        const d12Chart = await this.services.calculateVargaChart(
+          birthData,
+          'D12'
+        );
         return d12Chart;
       }
 
@@ -183,14 +200,33 @@ class ComprehensiveAnalysisCalculator {
     const divisionalCharts = {};
 
     try {
-      const charts = ['D2', 'D3', 'D4', 'D7', 'D16', 'D20', 'D24', 'D27', 'D30', 'D40', 'D45', 'D60'];
+      const charts = [
+        'D2',
+        'D3',
+        'D4',
+        'D7',
+        'D16',
+        'D20',
+        'D24',
+        'D27',
+        'D30',
+        'D40',
+        'D45',
+        'D60'
+      ];
 
       for (const chart of charts) {
         try {
           if (this.services?.calculateVargaChart) {
-            divisionalCharts[chart] = await this.services.calculateVargaChart(birthData, chart);
+            divisionalCharts[chart] = await this.services.calculateVargaChart(
+              birthData,
+              chart
+            );
           } else {
-            divisionalCharts[chart] = { status: 'Not calculated', purpose: this._getDivisionalPurpose(chart) };
+            divisionalCharts[chart] = {
+              status: 'Not calculated',
+              purpose: this._getDivisionalPurpose(chart)
+            };
           }
         } catch (error) {
           divisionalCharts[chart] = { error: `Failed to calculate ${chart}` };
@@ -286,7 +322,12 @@ class ComprehensiveAnalysisCalculator {
   /**
    * Create holistic assessment combining all factors
    */
-  _createHolisticAssessment(analysisLevels, yogasAnalysis, dashaAnalysis, transitAnalysis) {
+  _createHolisticAssessment(
+    analysisLevels,
+    yogasAnalysis,
+    dashaAnalysis,
+    transitAnalysis
+  ) {
     const holistic = {
       overallLifePotential: 0,
       lifeBalance: '',
@@ -305,39 +346,74 @@ class ComprehensiveAnalysisCalculator {
     let potential = 0;
 
     // Add points based on various factors
-    if (yogasAnalysis.rajaYogas?.length > 0) { potential += 25; }
-    if (yogasAnalysis.dhanYogas?.length > 0) { potential += 20; }
-    if (analysisLevels.rasi?.strengths?.length > analysisLevels.rasi?.weaknesses?.length) { potential += 15; }
-    if (dashaAnalysis.currentPeriod !== 'Error') { potential += 20; }
-    if (!transitAnalysis.error) { potential += 20; }
+    if (yogasAnalysis.rajaYogas?.length > 0) {
+      potential += 25;
+    }
+    if (yogasAnalysis.dhanYogas?.length > 0) {
+      potential += 20;
+    }
+    if (
+      analysisLevels.rasi?.strengths?.length >
+      analysisLevels.rasi?.weaknesses?.length
+    ) {
+      potential += 15;
+    }
+    if (dashaAnalysis.currentPeriod !== 'Error') {
+      potential += 20;
+    }
+    if (!transitAnalysis.error) {
+      potential += 20;
+    }
 
     holistic.overallLifePotential = Math.min(potential, 100);
 
     // Determine life balance
     if (holistic.overallLifePotential >= 80) {
-      holistic.lifeBalance = 'Exceptional - strong foundations in multiple life areas';
+      holistic.lifeBalance =
+        'Exceptional - strong foundations in multiple life areas';
     } else if (holistic.overallLifePotential >= 65) {
-      holistic.lifeBalance = 'Strong - good balance with some areas needing attention';
+      holistic.lifeBalance =
+        'Strong - good balance with some areas needing attention';
     } else if (holistic.overallLifePotential >= 50) {
-      holistic.lifeBalance = 'Moderate - mixed influences requiring conscious effort';
+      holistic.lifeBalance =
+        'Moderate - mixed influences requiring conscious effort';
     } else if (holistic.overallLifePotential >= 35) {
       holistic.lifeBalance = 'Challenging - significant obstacles to overcome';
     } else {
-      holistic.lifeBalance = 'Very Challenging - requires major remedial efforts';
+      holistic.lifeBalance =
+        'Very Challenging - requires major remedial efforts';
     }
 
     // Identify dominant themes
-    holistic.dominantThemes = this._identifyDominantThemes(analysisLevels, yogasAnalysis);
+    holistic.dominantThemes = this._identifyDominantThemes(
+      analysisLevels,
+      yogasAnalysis
+    );
 
     // Assess life areas
-    holistic.relationshipHarmony = this._assessRelationshipHarmony(analysisLevels.navamsa);
-    holistic.spiritualPath = this._assessSpiritualPath(analysisLevels.dwadasamsa, yogasAnalysis);
-    holistic.materialPath = this._assessMaterialPath(analysisLevels.dashamsa, yogasAnalysis);
+    holistic.relationshipHarmony = this._assessRelationshipHarmony(
+      analysisLevels.navamsa
+    );
+    holistic.spiritualPath = this._assessSpiritualPath(
+      analysisLevels.dwadasamsa,
+      yogasAnalysis
+    );
+    holistic.materialPath = this._assessMaterialPath(
+      analysisLevels.dashamsa,
+      yogasAnalysis
+    );
     holistic.healthVigor = this._assessHealthVigor(analysisLevels);
-    holistic.financialProsperity = this._assessFinancialProsperity(yogasAnalysis, dashaAnalysis);
+    holistic.financialProsperity = this._assessFinancialProsperity(
+      yogasAnalysis,
+      dashaAnalysis
+    );
 
     // Generate recommendations
-    holistic.recommendations = this._generateHolisticRecommendations(holistic, dashaAnalysis, transitAnalysis);
+    holistic.recommendations = this._generateHolisticRecommendations(
+      holistic,
+      dashaAnalysis,
+      transitAnalysis
+    );
 
     return holistic;
   }
@@ -347,12 +423,12 @@ class ComprehensiveAnalysisCalculator {
    */
   _generateLifePredictions(holisticAssessment) {
     const predictions = {
-      earlyLife: {},     // Birth to 25
-      youngAdult: {},    // 26 to 40
-      middleAge: {},     // 41 to 60
-      laterYears: {},    // 61+
+      earlyLife: {}, // Birth to 25
+      youngAdult: {}, // 26 to 40
+      middleAge: {}, // 41 to 60
+      laterYears: {}, // 61+
       keyMilestones: [], // Major life events
-      turningPoints: []  // Critical transition periods
+      turningPoints: [] // Critical transition periods
     };
 
     const potential = holisticAssessment.overallLifePotential;
@@ -439,18 +515,47 @@ class ComprehensiveAnalysisCalculator {
 
     // Key milestones
     predictions.keyMilestones = [
-      { age: '22-25', event: 'Career establishment', significance: 'Foundation for professional life' },
-      { age: '27-32', event: 'Major relationships', significance: 'Partnerships and family foundation' },
-      { age: '35-42', event: 'Major achievements', significance: 'Peak accomplishment period' },
-      { age: '45-55', event: 'Leadership roles', significance: 'Positions of influence and responsibility' },
-      { age: '60+', event: 'Legacy and wisdom', significance: 'Passing on knowledge and experience' }
+      {
+        age: '22-25',
+        event: 'Career establishment',
+        significance: 'Foundation for professional life'
+      },
+      {
+        age: '27-32',
+        event: 'Major relationships',
+        significance: 'Partnerships and family foundation'
+      },
+      {
+        age: '35-42',
+        event: 'Major achievements',
+        significance: 'Peak accomplishment period'
+      },
+      {
+        age: '45-55',
+        event: 'Leadership roles',
+        significance: 'Positions of influence and responsibility'
+      },
+      {
+        age: '60+',
+        event: 'Legacy and wisdom',
+        significance: 'Passing on knowledge and experience'
+      }
     ];
 
     // Turning points
     predictions.turningPoints = [
-      { period: 'Age 27', significance: 'Saturn return - maturation and responsibility' },
-      { period: 'Age 40s', significance: 'Mid-life transition and reassessment' },
-      { period: 'Age 58-62', significance: 'Important life passage and wisdom period' },
+      {
+        period: 'Age 27',
+        significance: 'Saturn return - maturation and responsibility'
+      },
+      {
+        period: 'Age 40s',
+        significance: 'Mid-life transition and reassessment'
+      },
+      {
+        period: 'Age 58-62',
+        significance: 'Important life passage and wisdom period'
+      },
       { period: 'Age 65+', significance: 'Completion and spiritual focus' }
     ];
 
@@ -481,7 +586,8 @@ class ComprehensiveAnalysisCalculator {
 
     summary += `*Recommendations: ${holisticAssessment.recommendations.join(', ')}*\n\n`;
 
-    summary += '*This comprehensive analysis combines multiple Vedic techniques for holistic life understanding.*';
+    summary +=
+      '*This comprehensive analysis combines multiple Vedic techniques for holistic life understanding.*';
 
     return summary;
   }
@@ -524,7 +630,9 @@ class ComprehensiveAnalysisCalculator {
       themes.push('Relationships and partnerships');
     }
 
-    return themes.length > 0 ? themes : ['Personal development', 'Life learning'];
+    return themes.length > 0 ?
+      themes :
+      ['Personal development', 'Life learning'];
   }
 
   _assessRelationshipHarmony(navamsaAnalysis) {
@@ -616,7 +724,7 @@ class ComprehensiveAnalysisCalculator {
       return [coords.latitude, coords.longitude];
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Delhi
+      return [28.6139, 77.209]; // Delhi
     }
   }
 
@@ -624,7 +732,14 @@ class ComprehensiveAnalysisCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + (hour - 12) / 24;
   }
 }

@@ -75,14 +75,35 @@ class VedicYogasCalculator {
    */
   async _calculatePlanetaryPositions(jd) {
     const positions = {};
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     for (const planet of planets) {
       try {
         const pos = sweph.calc(jd, this._getPlanetId(planet));
         if (pos.longitude !== undefined) {
           const signIndex = Math.floor(pos.longitude / 30);
-          const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+          const signs = [
+            'Aries',
+            'Taurus',
+            'Gemini',
+            'Cancer',
+            'Leo',
+            'Virgo',
+            'Libra',
+            'Scorpio',
+            'Sagittarius',
+            'Capricorn',
+            'Aquarius',
+            'Pisces'
+          ];
 
           positions[planet.toLowerCase()] = {
             name: planet,
@@ -109,18 +130,24 @@ class VedicYogasCalculator {
     const { sun } = planets;
     const { moon } = planets;
 
-    if (!sun || !moon) { return { present: false }; }
+    if (!sun || !moon) {
+      return { present: false };
+    }
 
-    const sunMoonAngle = Math.abs(this._normalizeAngle(moon.longitude - sun.longitude));
+    const sunMoonAngle = Math.abs(
+      this._normalizeAngle(moon.longitude - sun.longitude)
+    );
 
     // Check if Moon is ahead of Sun (within certain degrees)
     const isNbhaya = sunMoonAngle < 180;
 
     return {
       present: isNbhaya,
-      strength: isNbhaya ? Math.max(1, 10 - (sunMoonAngle / 18)) : 0,
+      strength: isNbhaya ? Math.max(1, 10 - sunMoonAngle / 18) : 0,
       description: 'Sun and Moon in favorable relative position',
-      significance: isNbhaya ? 'Brings courage and fearlessness' : 'Standard positioning'
+      significance: isNbhaya ?
+        'Brings courage and fearlessness' :
+        'Standard positioning'
     };
   }
 
@@ -139,9 +166,10 @@ class VedicYogasCalculator {
       const ownSigns = ['Aries', 'Scorpio'];
       const friendlySigns = ['Leo', 'Sagittarius', 'Pisces', 'Taurus'];
 
-      const favorablePosition = exaltedSigns.includes(marsSign) ||
-                               ownSigns.includes(marsSign) ||
-                               friendlySigns.includes(marsSign);
+      const favorablePosition =
+        exaltedSigns.includes(marsSign) ||
+        ownSigns.includes(marsSign) ||
+        friendlySigns.includes(marsSign);
 
       // Check if in Kendra (1,4,7,10)
       const kendraSigns = ['Aries', 'Cancer', 'Libra', 'Capricorn'];
@@ -171,19 +199,25 @@ class VedicYogasCalculator {
     const kendraLords = ['Mars', 'Sun', 'Mercury', 'Venus']; // Approximation
     const trikonaLords = ['Sun', 'Moon', 'Mars', 'Jupiter'];
 
-    const strongRajYoga = kendraLords.some(lord => {
-      const planet = planets[lord.toLowerCase()];
-      return planet && this._isPlanetStrong(planet);
-    }) && trikonaLords.some(lord => {
-      const planet = planets[lord.toLowerCase()];
-      return planet && this._isPlanetStrong(planet);
-    });
+    const strongRajYoga =
+      kendraLords.some(lord => {
+        const planet = planets[lord.toLowerCase()];
+        return planet && this._isPlanetStrong(planet);
+      }) &&
+      trikonaLords.some(lord => {
+        const planet = planets[lord.toLowerCase()];
+        return planet && this._isPlanetStrong(planet);
+      });
 
     return {
       present: strongRajYoga,
       description: 'Combination leading to power, authority, and success',
       strength: strongRajYoga ? 9 : 0,
-      factors: ['Kendra lord strength', 'Trikona lord strength', 'Planetary dignity']
+      factors: [
+        'Kendra lord strength',
+        'Trikona lord strength',
+        'Planetary dignity'
+      ]
     };
   }
 
@@ -197,9 +231,10 @@ class VedicYogasCalculator {
     const { moon } = planets;
 
     // Dhan Yoga when Venus, Jupiter, Moon are well-placed
-    const present = (venus && this._isPlanetStrong(venus)) ||
-                   (jupiter && this._isPlanetStrong(jupiter)) ||
-                   (moon && this._isPlanetStrong(moon));
+    const present =
+      (venus && this._isPlanetStrong(venus)) ||
+      (jupiter && this._isPlanetStrong(jupiter)) ||
+      (moon && this._isPlanetStrong(moon));
 
     return {
       present,
@@ -217,9 +252,13 @@ class VedicYogasCalculator {
     const { moon } = planets;
     const { jupiter } = planets;
 
-    if (!moon || !jupiter) { return { present: false }; }
+    if (!moon || !jupiter) {
+      return { present: false };
+    }
 
-    const angle = Math.abs(this._normalizeAngle(jupiter.longitude - moon.longitude));
+    const angle = Math.abs(
+      this._normalizeAngle(jupiter.longitude - moon.longitude)
+    );
 
     // Gaja Kesari Yoga occurs when Jupiter is in Kendra from Moon
     const kendraPositions = [0, 90, 180, 270]; // 0° (conjunction), 90°, 180°, 270°
@@ -227,7 +266,8 @@ class VedicYogasCalculator {
 
     return {
       present: isKendra,
-      description: 'Moon-Jupiter combination bringing wisdom, wealth, and protection',
+      description:
+        'Moon-Jupiter combination bringing wisdom, wealth, and protection',
       strength: isKendra ? 8 : 0,
       positions: `Jupiter ${this._angleToAspect(angle)} from Moon`
     };
@@ -240,7 +280,9 @@ class VedicYogasCalculator {
   _analyzeKemadrumaYoga(planets) {
     const { moon } = planets;
 
-    if (!moon) { return { present: false }; }
+    if (!moon) {
+      return { present: false };
+    }
 
     // Kemadruma Yoga occurs when Moon has no planets in 2nd and 12th houses from it
     // This is a complex analysis requiring full chart interpretation
@@ -250,12 +292,14 @@ class VedicYogasCalculator {
     const { jupiter } = planets;
     const { mercury } = planets;
 
-    const hasBeneficsNearby = (jupiter && Math.abs(jupiter.signIndex - moonSignIndex) <= 1) ||
-                             (mercury && Math.abs(mercury.signIndex - moonSignIndex) <= 1);
+    const hasBeneficsNearby =
+      (jupiter && Math.abs(jupiter.signIndex - moonSignIndex) <= 1) ||
+      (mercury && Math.abs(mercury.signIndex - moonSignIndex) <= 1);
 
     return {
       present: !hasBeneficsNearby,
-      description: 'Moon without beneficial planets nearby (considerations apply)',
+      description:
+        'Moon without beneficial planets nearby (considerations apply)',
       strength: hasBeneficsNearby ? 0 : 4,
       remediation: 'Strengthen Moon through gemstones or mantras'
     };
@@ -287,7 +331,8 @@ class VedicYogasCalculator {
       Saturn: ['Capricorn', 'Aquarius']
     };
 
-    const exalted = planet.sign && exaltedSigns[planet.name]?.includes(planet.sign);
+    const exalted =
+      planet.sign && exaltedSigns[planet.name]?.includes(planet.sign);
     const own = planet.sign && ownSigns[planet.name]?.includes(planet.sign);
 
     return exalted || own;
@@ -337,9 +382,14 @@ class VedicYogasCalculator {
       totalStrength,
       averageStrength,
       yogaCount,
-      overallRating: averageStrength > 7 ? 'Very Auspicious' :
-        averageStrength > 5 ? 'Favorable' :
-          averageStrength > 3 ? 'Mixed' : 'Challenging'
+      overallRating:
+        averageStrength > 7 ?
+          'Very Auspicious' :
+          averageStrength > 5 ?
+            'Favorable' :
+            averageStrength > 3 ?
+              'Mixed' :
+              'Challenging'
     };
   }
 
@@ -348,9 +398,12 @@ class VedicYogasCalculator {
    * @private
    */
   _interpretYogas(yogas) {
-    const presentYogas = Object.entries(yogas).filter(([_, yoga]) => yoga.present);
-    const absentInauspicious = Object.entries(yogas)
-      .filter(([_, yoga]) => !yoga.present && yoga.description?.includes('inauspicious'));
+    const presentYogas = Object.entries(yogas).filter(
+      ([_, yoga]) => yoga.present
+    );
+    const absentInauspicious = Object.entries(yogas).filter(
+      ([_, yoga]) => !yoga.present && yoga.description?.includes('inauspicious')
+    );
 
     return {
       presentYogas: presentYogas.map(([name, yoga]) => ({
@@ -359,7 +412,8 @@ class VedicYogasCalculator {
         significance: yoga.significance || 'Positive influence present'
       })),
       notableAbsences: absentInauspicious.map(([name, _]) => name),
-      guidance: 'Focus on strengthening beneficial yogas and remediating challenging ones.',
+      guidance:
+        'Focus on strengthening beneficial yogas and remediating challenging ones.',
       recommendations: [
         'Consider gemstone recommendations for yoga enhancement',
         'Practice specific mantras for yoga activation',
@@ -390,7 +444,14 @@ class VedicYogasCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + hour / 24;
   }
 

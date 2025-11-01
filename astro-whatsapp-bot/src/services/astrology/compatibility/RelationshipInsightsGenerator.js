@@ -22,7 +22,10 @@ class RelationshipInsightsGenerator {
       const dynamics = synastryAnalysis.relationshipDynamics || {};
 
       return {
-        overview: this.getCompatibilityOverview(synastryAnalysis.compatibilityScores?.level, partnerData?.name),
+        overview: this.getCompatibilityOverview(
+          synastryAnalysis.compatibilityScores?.level,
+          partnerData?.name
+        ),
         strengths: this.extractRelationshipStrengths(synastryAnalysis),
         challenges: this.extractRelationshipChallenges(synastryAnalysis),
         dynamics,
@@ -38,7 +41,8 @@ class RelationshipInsightsGenerator {
         strengths: [],
         challenges: [],
         dynamics: {},
-        advice: 'Please consult a professional astrologer for detailed analysis'
+        advice:
+          'Please consult a professional astrologer for detailed analysis'
       };
     }
   }
@@ -61,7 +65,10 @@ class RelationshipInsightsGenerator {
       challenging: `⚡ Dynamic compatibility with ${partner}. This connection offers powerful lessons and transformation.`,
       difficult: `🔍 Complex compatibility with ${partner}. Professional astrological guidance recommended for navigation.`
     };
-    return overviews[level] || `Unique astrological pattern with ${partner} - professional consultation advised.`;
+    return (
+      overviews[level] ||
+      `Unique astrological pattern with ${partner} - professional consultation advised.`
+    );
   }
 
   /**
@@ -78,36 +85,49 @@ class RelationshipInsightsGenerator {
     const sextiles = aspects.filter(a => a.aspect === 60);
 
     if (trines.length > 0) {
-      strengths.push(`Natural flowing harmony through ${trines.length} trine aspects`);
+      strengths.push(
+        `Natural flowing harmony through ${trines.length} trine aspects`
+      );
     }
 
     if (sextiles.length > 0) {
-      strengths.push(`Supportive energy fostering growth (${sextiles.length} sextile connections)`);
+      strengths.push(
+        `Supportive energy fostering growth (${sextiles.length} sextile connections)`
+      );
     }
 
     // Venus-Mars aspects (chemistry)
-    const venusMars = aspects.filter(a =>
-      (a.planet1 === 'Venus' && a.planet2 === 'Mars') ||
-      (a.planet1 === 'Mars' && a.planet2 === 'Venus')
+    const venusMars = aspects.filter(
+      a =>
+        (a.planet1 === 'Venus' && a.planet2 === 'Mars') ||
+        (a.planet1 === 'Mars' && a.planet2 === 'Venus')
     );
     if (venusMars.length > 0) {
       strengths.push('Strong romantic and passionate chemistry indicated');
     }
 
     // Moon connections (emotional)
-    const moonAspects = aspects.filter(a => a.planet1 === 'Moon' || a.planet2 === 'Moon');
+    const moonAspects = aspects.filter(
+      a => a.planet1 === 'Moon' || a.planet2 === 'Moon'
+    );
     if (moonAspects.length >= 2) {
       strengths.push('Deep emotional bond and intuitive understanding');
     }
 
     // Sun connections (identity)
-    const sunAspects = aspects.filter(a => a.planet1 === 'Sun' || a.planet2 === 'Sun');
+    const sunAspects = aspects.filter(
+      a => a.planet1 === 'Sun' || a.planet2 === 'Sun'
+    );
     if (sunAspects.length > 0) {
-      strengths.push('Strong ego connection and mutual respect for individuality');
+      strengths.push(
+        'Strong ego connection and mutual respect for individuality'
+      );
     }
 
     // Mercury connections (communication)
-    const mercuryAspects = aspects.filter(a => a.planet1 === 'Mercury' || a.planet2 === 'Mercury');
+    const mercuryAspects = aspects.filter(
+      a => a.planet1 === 'Mercury' || a.planet2 === 'Mercury'
+    );
     if (mercuryAspects.length >= 2) {
       strengths.push('Excellent mental rapport and communication flow');
     }
@@ -129,29 +149,43 @@ class RelationshipInsightsGenerator {
     const oppositions = aspects.filter(a => a.aspect === 180);
 
     if (squares.length > 0) {
-      challenges.push(`Growth challenges through ${squares.length} square aspect(s) - learning through tension`);
+      challenges.push(
+        `Growth challenges through ${squares.length} square aspect(s) - learning through tension`
+      );
     }
 
     if (oppositions.length > 0) {
-      challenges.push(`Polarity dynamics through ${oppositions.length} opposition(s) - learning balance`);
+      challenges.push(
+        `Polarity dynamics through ${oppositions.length} opposition(s) - learning balance`
+      );
     }
 
     // Saturn aspects (commitment challenges)
-    const saturnAspects = aspects.filter(a => a.planet1 === 'Saturn' || a.planet2 === 'Saturn');
+    const saturnAspects = aspects.filter(
+      a => a.planet1 === 'Saturn' || a.planet2 === 'Saturn'
+    );
     if (saturnAspects.some(a => a.aspect >= 90)) {
-      challenges.push('Long-term commitment aspects may present patience-testing situations');
+      challenges.push(
+        'Long-term commitment aspects may present patience-testing situations'
+      );
     }
 
     // Mars aspects (conflict potential)
-    const marsAspects = aspects.filter(a => a.planet1 === 'Mars' || a.planet2 === 'Mars');
+    const marsAspects = aspects.filter(
+      a => a.planet1 === 'Mars' || a.planet2 === 'Mars'
+    );
     if (marsAspects.some(a => a.aspect >= 90)) {
-      challenges.push('Potential for conflicts requiring conscious conflict resolution');
+      challenges.push(
+        'Potential for conflicts requiring conscious conflict resolution'
+      );
     }
 
     // Quincunx aspects (adjustment needed)
     const quincunxes = aspects.filter(a => a.aspect === 150);
     if (quincunxes.length > 0) {
-      challenges.push('Adjustment aspects indicate areas needing continual adaptation');
+      challenges.push(
+        'Adjustment aspects indicate areas needing continual adaptation'
+      );
     }
 
     return challenges.slice(0, 3);
@@ -168,7 +202,9 @@ class RelationshipInsightsGenerator {
     const challengeCount = challenges.length;
 
     if (strengthCount > challengeCount) {
-      return strengths.some(s => s.includes('emotional') || s.includes('communication')) ?
+      return strengths.some(
+        s => s.includes('emotional') || s.includes('communication')
+      ) ?
         'Your relationship has excellent foundations. Focus on nurturing your natural emotional and communicative connections while gently addressing areas needing attention.' :
         'Your relationship enjoys natural harmony. Continue building on your planetary supports while navigating challenges with patience.';
     } else if (challengeCount > 0) {

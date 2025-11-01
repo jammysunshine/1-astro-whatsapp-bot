@@ -29,7 +29,8 @@ class ComprehensiveVedicAnalysisService extends ServiceTemplate {
   async lcomprehensiveVedicAnalysisCalculation(birthData) {
     try {
       // Get comprehensive analysis using calculator
-      const result = await this.calculator.generateComprehensiveVedicAnalysis(birthData);
+      const result =
+        await this.calculator.generateComprehensiveVedicAnalysis(birthData);
 
       // Add service metadata
       result.serviceMetadata = {
@@ -37,12 +38,22 @@ class ComprehensiveVedicAnalysisService extends ServiceTemplate {
         calculationType: 'Comprehensive Vedic Analysis',
         timestamp: new Date().toISOString(),
         analysisLevels: 5, // Rasi, Navamsa, Dashamsa, Dwadasamsa, Divisional
-        analysisComponents: ['charts', 'yogas', 'dasha', 'transits', 'holistic', 'predictions']
+        analysisComponents: [
+          'charts',
+          'yogas',
+          'dasha',
+          'transits',
+          'holistic',
+          'predictions'
+        ]
       };
 
       return result;
     } catch (error) {
-      logger.error('ComprehensiveVedicAnalysisService calculation error:', error);
+      logger.error(
+        'ComprehensiveVedicAnalysisService calculation error:',
+        error
+      );
       throw new Error(`Comprehensive Vedic analysis failed: ${error.message}`);
     }
   }
@@ -67,8 +78,17 @@ class ComprehensiveVedicAnalysisService extends ServiceTemplate {
       summary: result.summary || 'Comprehensive analysis completed',
       metadata: {
         system: 'Comprehensive Vedic Analysis',
-        calculationMethod: 'Multi-level Vedic analysis combining D1, D9, D10, D12 and other divisional charts',
-        elements: ['Rasi', 'Navamsa', 'Dashamsa', 'Dwadasamsa', 'Yogas', 'Dashas', 'Transits'],
+        calculationMethod:
+          'Multi-level Vedic analysis combining D1, D9, D10, D12 and other divisional charts',
+        elements: [
+          'Rasi',
+          'Navamsa',
+          'Dashamsa',
+          'Dwadasamsa',
+          'Yogas',
+          'Dashas',
+          'Transits'
+        ],
         tradition: 'Vedic Hindu astrology with multi-technique integration'
       }
     };
@@ -81,11 +101,15 @@ class ComprehensiveVedicAnalysisService extends ServiceTemplate {
    */
   validate(birthData) {
     if (!birthData) {
-      throw new Error('Birth data is required for comprehensive Vedic analysis');
+      throw new Error(
+        'Birth data is required for comprehensive Vedic analysis'
+      );
     }
 
     if (!birthData.birthDate || !birthData.birthTime || !birthData.birthPlace) {
-      throw new Error('Complete birth details (date, time, place) are required for comprehensive Vedic analysis');
+      throw new Error(
+        'Complete birth details (date, time, place) are required for comprehensive Vedic analysis'
+      );
     }
 
     // Validate date format
@@ -100,7 +124,10 @@ class ComprehensiveVedicAnalysisService extends ServiceTemplate {
       throw new Error('Birth time must be in HH:MM format');
     }
 
-    if (typeof birthData.birthPlace !== 'string' || birthData.birthPlace.trim() === '') {
+    if (
+      typeof birthData.birthPlace !== 'string' ||
+      birthData.birthPlace.trim() === ''
+    ) {
       throw new Error('Birth place is required');
     }
   }
@@ -114,7 +141,11 @@ class ComprehensiveVedicAnalysisService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'lcomprehensiveVedicAnalysisCalculation', 'formatResult'],
+      methods: [
+        'execute',
+        'lcomprehensiveVedicAnalysisCalculation',
+        'formatResult'
+      ],
       dependencies: ['ComprehensiveAnalysisCalculator']
     };
   }

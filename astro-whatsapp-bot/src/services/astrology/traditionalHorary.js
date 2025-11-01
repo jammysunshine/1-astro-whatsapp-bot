@@ -6,7 +6,20 @@ const logger = require('../../utils/logger');
  */
 class TraditionalHorary {
   constructor() {
-    this.houses = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'];
+    this.houses = [
+      '1st',
+      '2nd',
+      '3rd',
+      '4th',
+      '5th',
+      '6th',
+      '7th',
+      '8th',
+      '9th',
+      '10th',
+      '11th',
+      '12th'
+    ];
 
     // Traditional house significations
     this.houseMeanings = {
@@ -38,7 +51,11 @@ class TraditionalHorary {
       const chartTime = new Date(questionTime);
 
       // Create analysis using traditional horary principles
-      const analysis = this.analyzeHoraryQuestion(question, chartTime, questionLocation);
+      const analysis = this.analyzeHoraryQuestion(
+        question,
+        chartTime,
+        questionLocation
+      );
 
       return {
         summary: analysis.summary,
@@ -95,16 +112,32 @@ class TraditionalHorary {
   categorizeQuestion(question) {
     const lowerQuestion = question.toLowerCase();
 
-    if (lowerQuestion.includes('job') || lowerQuestion.includes('career') || lowerQuestion.includes('work')) {
+    if (
+      lowerQuestion.includes('job') ||
+      lowerQuestion.includes('career') ||
+      lowerQuestion.includes('work')
+    ) {
       return 'career';
     }
-    if (lowerQuestion.includes('money') || lowerQuestion.includes('invest') || lowerQuestion.includes('business')) {
+    if (
+      lowerQuestion.includes('money') ||
+      lowerQuestion.includes('invest') ||
+      lowerQuestion.includes('business')
+    ) {
       return 'financial';
     }
-    if (lowerQuestion.includes('relationship') || lowerQuestion.includes('marriage') || lowerQuestion.includes('love')) {
+    if (
+      lowerQuestion.includes('relationship') ||
+      lowerQuestion.includes('marriage') ||
+      lowerQuestion.includes('love')
+    ) {
       return 'relationship';
     }
-    if (lowerQuestion.includes('health') || lowerQuestion.includes('sick') || lowerQuestion.includes('doctor')) {
+    if (
+      lowerQuestion.includes('health') ||
+      lowerQuestion.includes('sick') ||
+      lowerQuestion.includes('doctor')
+    ) {
       return 'health';
     }
     if (lowerQuestion.includes('time') || lowerQuestion.includes('when')) {
@@ -129,12 +162,21 @@ class TraditionalHorary {
     const isFavorableMoon = moonPhase === 'waxing';
 
     const factors = [];
-    if (isGoodHour) { factors.push('Good hour for consultation'); }
-    if (isBeneficialDay) { factors.push('Beneficial planetary day'); }
-    if (isFavorableMoon) { factors.push('Favorable moon phase'); }
+    if (isGoodHour) {
+      factors.push('Good hour for consultation');
+    }
+    if (isBeneficialDay) {
+      factors.push('Beneficial planetary day');
+    }
+    if (isFavorableMoon) {
+      factors.push('Favorable moon phase');
+    }
 
     // Generate interpretation based on question type
-    const wisdom = this.generateQuestionInterpretation(questionType, isGoodHour);
+    const wisdom = this.generateQuestionInterpretation(
+      questionType,
+      isGoodHour
+    );
 
     return {
       ...wisdom,
@@ -170,10 +212,14 @@ class TraditionalHorary {
    */
   getMoonPhase(date) {
     // Simplified moon phase calculation
-    const daysSinceNewMoon = (date.getTime() - new Date('2024-01-11').getTime()) / (1000 * 60 * 60 * 24);
+    const daysSinceNewMoon =
+      (date.getTime() - new Date('2024-01-11').getTime()) /
+      (1000 * 60 * 60 * 24);
     const phase = daysSinceNewMoon % 29.5;
 
-    if (phase < 14.75) { return 'waxing'; }
+    if (phase < 14.75) {
+      return 'waxing';
+    }
     return 'waning';
   }
 
@@ -187,10 +233,13 @@ class TraditionalHorary {
     const interpretations = {
       career: {
         answer: {
-          determination: isGoodHour ? 'Favorable indications' : 'Mixed influences',
+          determination: isGoodHour ?
+            'Favorable indications' :
+            'Mixed influences',
           confidence: isGoodHour ? 'Strong' : 'Moderate'
         },
-        timing: 'Career matters will develop within 30-90 days if energies align'
+        timing:
+          'Career matters will develop within 30-90 days if energies align'
       },
       financial: {
         answer: {
@@ -201,7 +250,9 @@ class TraditionalHorary {
       },
       relationship: {
         answer: {
-          determination: isGoodHour ? 'Harmony indicated' : 'Communication needed',
+          determination: isGoodHour ?
+            'Harmony indicated' :
+            'Communication needed',
           confidence: isGoodHour ? 'Strong' : 'Moderate'
         },
         timing: 'Relationship matters unfold within 14-28 days'
@@ -257,12 +308,16 @@ class TraditionalHorary {
 
     // Add traditional horary wisdom
     analysis += '*🕉️ Traditional Horary Wisdom:*\n';
-    analysis += 'Horary astrology casts the chart at the moment of your question to provide divine guidance. The celestial configuration reveals hidden influences and timing for affairs of life.\n\n';
+    analysis +=
+      'Horary astrology casts the chart at the moment of your question to provide divine guidance. The celestial configuration reveals hidden influences and timing for affairs of life.\n\n';
 
-    analysis += '*Planetary Language:* Each planet speaks about different life areas:\n';
-    analysis += '• Sun: Self, life force, paternity\n• Moon: Emotions, home, changeability\n• Mars: Energy, courage, conflict\n• Mercury: Communication, learning\n• Jupiter: Fortune, growth, wisdom\n• Venus: Relationships, beauty, resources\n• Saturn: Discipline, karma, longevity\n\n';
+    analysis +=
+      '*Planetary Language:* Each planet speaks about different life areas:\n';
+    analysis +=
+      '• Sun: Self, life force, paternity\n• Moon: Emotions, home, changeability\n• Mars: Energy, courage, conflict\n• Mercury: Communication, learning\n• Jupiter: Fortune, growth, wisdom\n• Venus: Relationships, beauty, resources\n• Saturn: Discipline, karma, longevity\n\n';
 
-    analysis += '*Remember:* This reading is cast at your question\'s exact moment. True horary requires purity of intention and genuine concern for the matter. 🕉️';
+    analysis +=
+      '*Remember:* This reading is cast at your question\'s exact moment. True horary requires purity of intention and genuine concern for the matter. 🕉️';
 
     return analysis;
   }

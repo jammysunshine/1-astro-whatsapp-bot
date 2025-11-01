@@ -1,7 +1,6 @@
 const logger = require('../../../utils/logger');
 const { Muhurta } = require('../muhurta');
 
-
 /**
  * Handle solar arc directions analysis
  * @param {string} message - User message
@@ -9,7 +8,11 @@ const { Muhurta } = require('../muhurta');
  * @returns {string|null} Response or null if not handled
  */
 const handleSolarArc = (message, user) => {
-  if (!message.includes('solar arc') && !message.includes('arc direction') && !message.includes('solar arc')) {
+  if (
+    !message.includes('solar arc') &&
+    !message.includes('arc direction') &&
+    !message.includes('solar arc')
+  ) {
     return null;
   }
 
@@ -28,7 +31,13 @@ const handleSolarArc = (message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleEventAstrology = (message, user) => {
-  if (!message.includes('event') && !message.includes('timing') && !message.includes('wedding') && !message.includes('marriage') && !message.includes('graduation')) {
+  if (
+    !message.includes('event') &&
+    !message.includes('timing') &&
+    !message.includes('wedding') &&
+    !message.includes('marriage') &&
+    !message.includes('graduation')
+  ) {
     return null;
   }
 
@@ -47,19 +56,55 @@ const handleEventAstrology = (message, user) => {
  */
 const generateSecondaryProgressionsAnalysis = user => {
   const currentYear = new Date().getFullYear();
-  const birthYear = user.birthDate.length === 6 ?
-    parseInt(`19${user.birthDate.substring(4)}`) :
-    parseInt(user.birthDate.substring(4));
+  const birthYear =
+    user.birthDate.length === 6 ?
+      parseInt(`19${user.birthDate.substring(4)}`) :
+      parseInt(user.birthDate.substring(4));
   const age = currentYear - birthYear;
 
   const themes = {
-    20: { year: 'career awakening', activations: 'Saturn influences trigger professional maturity', themes: 'career direction, responsibility, building foundations', focus: 'long-term goals and professional identity' },
-    25: { year: 'relationship dynamics', activations: 'Venus/Moon cycles highlight partnership patterns', themes: 'love, marriage, friendship, social connections', focus: 'deepening meaningful relationships' },
-    30: { year: 'life structure', activations: 'Saturn return effects intensify', themes: 'career peaks, stability, family planning', focus: 'building supportive life frameworks' },
-    35: { year: 'transformation', activations: 'Pluto aspects bring deep changes', themes: 'personal growth, breaking habits, inner awakening', focus: 'emotional healing and self-improvement' },
-    40: { year: 'midlife review', activations: 'Midpoint progressions show life balance', themes: 'balance, accomplishment, redirect, fulfillment', focus: 'achievements vs remaining dreams' },
-    45: { year: 'leadership emergence', activations: 'Outer planet progressions mature', themes: 'authority, wisdom, teaching, mentoring', focus: 'sharing accumulated life experience' },
-    50: { year: 'golden years', activations: 'Completing significant life cycles', themes: 'legacy, retirement planning, spiritual growth', focus: 'meaningful contributions to others' }
+    20: {
+      year: 'career awakening',
+      activations: 'Saturn influences trigger professional maturity',
+      themes: 'career direction, responsibility, building foundations',
+      focus: 'long-term goals and professional identity'
+    },
+    25: {
+      year: 'relationship dynamics',
+      activations: 'Venus/Moon cycles highlight partnership patterns',
+      themes: 'love, marriage, friendship, social connections',
+      focus: 'deepening meaningful relationships'
+    },
+    30: {
+      year: 'life structure',
+      activations: 'Saturn return effects intensify',
+      themes: 'career peaks, stability, family planning',
+      focus: 'building supportive life frameworks'
+    },
+    35: {
+      year: 'transformation',
+      activations: 'Pluto aspects bring deep changes',
+      themes: 'personal growth, breaking habits, inner awakening',
+      focus: 'emotional healing and self-improvement'
+    },
+    40: {
+      year: 'midlife review',
+      activations: 'Midpoint progressions show life balance',
+      themes: 'balance, accomplishment, redirect, fulfillment',
+      focus: 'achievements vs remaining dreams'
+    },
+    45: {
+      year: 'leadership emergence',
+      activations: 'Outer planet progressions mature',
+      themes: 'authority, wisdom, teaching, mentoring',
+      focus: 'sharing accumulated life experience'
+    },
+    50: {
+      year: 'golden years',
+      activations: 'Completing significant life cycles',
+      themes: 'legacy, retirement planning, spiritual growth',
+      focus: 'meaningful contributions to others'
+    }
   };
 
   const ageTheme = themes[Math.floor(age / 5) * 5] || themes[20]; // find closest 5-year interval
@@ -80,9 +125,10 @@ const generateSecondaryProgressionsAnalysis = user => {
  */
 const generateSolarArcAnalysis = user => {
   const currentYear = new Date().getFullYear();
-  const birthYear = user.birthDate.length === 6 ?
-    parseInt(`19${user.birthDate.substring(4)}`) :
-    parseInt(user.birthDate.substring(4));
+  const birthYear =
+    user.birthDate.length === 6 ?
+      parseInt(`19${user.birthDate.substring(4)}`) :
+      parseInt(user.birthDate.substring(4));
   const age = currentYear - birthYear;
 
   // Calculate solar arcs based on age (simplified - in reality would use exact positions)
@@ -91,7 +137,8 @@ const generateSolarArcAnalysis = user => {
       arcs: 'Saturn 90° (responsibility), Uranus 60° (innovation)',
       timing: 'Late Q4 2024 - Q1 2025',
       peaks: 'January-February transitions',
-      opportunities: 'Career advancement, leadership opportunities, relationship commitments'
+      opportunities:
+        'Career advancement, leadership opportunities, relationship commitments'
     },
     30: {
       arcs: 'Pluto 180° (transformation), Jupiter 45° (expansion)',
@@ -103,13 +150,15 @@ const generateSolarArcAnalysis = user => {
       arcs: 'Neptune 120° (spirituality), Saturn 150° (karmic lessons)',
       timing: 'Q3-Q4 2025, with emphasis on September',
       peaks: 'Full moon periods in Q3',
-      opportunities: 'Creative breakthroughs, healing work, teaching/mentoring opportunities'
+      opportunities:
+        'Creative breakthroughs, healing work, teaching/mentoring opportunities'
     },
     40: {
       arcs: 'Uranus opposition (freedom), Venus 120° (harmony)',
       timing: 'Q1-Q2 2026, peaking during Venus direct motion',
       peaks: 'Venus-Jupiter conjunction windows',
-      opportunities: 'Mid-life career changes, artistic pursuits, meaningful relationships'
+      opportunities:
+        'Mid-life career changes, artistic pursuits, meaningful relationships'
     }
   };
 
@@ -136,18 +185,78 @@ const generateEventAstrologyAnalysis = user => {
 
   // Determine auspicious timing based on current season and planetary influences
   const seasonTimings = {
-    0: { season: 'Winter (Capricorn-Aquarius-Pisces)', windows: 'Late January, Early March', favorable: 'Planning and strategy sessions', challenging: 'Major initiatives during snow moon periods' },
-    1: { season: 'Winter to Spring', windows: 'February 15-March 15 (Pisces-Aries)', favorable: 'New beginnings, creative launches', challenging: 'Impulsive decisions during new moon' },
-    2: { season: 'Spring (Aries-Taurus-Gemini)', windows: 'March 20-April 20, May 1-15', favorable: 'Action-oriented events, career milestones', challenging: 'Retrograde periods for contracts' },
-    3: { season: 'Spring to Summer', windows: 'April 18-May 18 (Taurus)', favorable: 'Stable commitments, financial planning', challenging: 'Taurus full moon intensity' },
-    4: { season: 'Summer (Gemini-Cancer-Leo)', windows: 'June 1-15, July 1-20', favorable: 'Communication events, family gatherings', challenging: 'Cancer full moon emotional peaks' },
-    5: { season: 'Summer peak', windows: 'July 1-August 15 (Cancer-Leo)', favorable: 'Celebrations, social events', challenging: 'Leo new moon power struggles' },
-    6: { season: 'Summer to Fall', windows: 'August 15-September 10', favorable: 'Harvest season planning', challenging: 'Virgo new moon overthinking' },
-    7: { season: 'Fall (Virgo-Libra-Scorpio)', windows: 'September 15-October 15', favorable: 'Relationship events, business deals', challenging: 'Libra opposition intensity' },
-    8: { season: 'Fall peak', windows: 'October 1-November 1 (Libra)', favorable: 'Partnership ceremonies', challenging: 'Scorpio new moon transformation' },
-    9: { season: 'Fall to Winter', windows: 'October 20-November 20', favorable: 'Completion ceremonies, reflections', challenging: 'Sagittarius opposition expansion' },
-    10: { season: 'Early Winter (Sagittarius-Capricorn)', windows: 'November 15-December 20', favorable: 'Goal setting, strategic planning', challenging: 'Capricorn new moon pressure' },
-    11: { season: 'Winter peak', windows: 'December 15-January 15', favorable: 'Spiritual events, resolutions', challenging: 'Universal winter intensity' }
+    0: {
+      season: 'Winter (Capricorn-Aquarius-Pisces)',
+      windows: 'Late January, Early March',
+      favorable: 'Planning and strategy sessions',
+      challenging: 'Major initiatives during snow moon periods'
+    },
+    1: {
+      season: 'Winter to Spring',
+      windows: 'February 15-March 15 (Pisces-Aries)',
+      favorable: 'New beginnings, creative launches',
+      challenging: 'Impulsive decisions during new moon'
+    },
+    2: {
+      season: 'Spring (Aries-Taurus-Gemini)',
+      windows: 'March 20-April 20, May 1-15',
+      favorable: 'Action-oriented events, career milestones',
+      challenging: 'Retrograde periods for contracts'
+    },
+    3: {
+      season: 'Spring to Summer',
+      windows: 'April 18-May 18 (Taurus)',
+      favorable: 'Stable commitments, financial planning',
+      challenging: 'Taurus full moon intensity'
+    },
+    4: {
+      season: 'Summer (Gemini-Cancer-Leo)',
+      windows: 'June 1-15, July 1-20',
+      favorable: 'Communication events, family gatherings',
+      challenging: 'Cancer full moon emotional peaks'
+    },
+    5: {
+      season: 'Summer peak',
+      windows: 'July 1-August 15 (Cancer-Leo)',
+      favorable: 'Celebrations, social events',
+      challenging: 'Leo new moon power struggles'
+    },
+    6: {
+      season: 'Summer to Fall',
+      windows: 'August 15-September 10',
+      favorable: 'Harvest season planning',
+      challenging: 'Virgo new moon overthinking'
+    },
+    7: {
+      season: 'Fall (Virgo-Libra-Scorpio)',
+      windows: 'September 15-October 15',
+      favorable: 'Relationship events, business deals',
+      challenging: 'Libra opposition intensity'
+    },
+    8: {
+      season: 'Fall peak',
+      windows: 'October 1-November 1 (Libra)',
+      favorable: 'Partnership ceremonies',
+      challenging: 'Scorpio new moon transformation'
+    },
+    9: {
+      season: 'Fall to Winter',
+      windows: 'October 20-November 20',
+      favorable: 'Completion ceremonies, reflections',
+      challenging: 'Sagittarius opposition expansion'
+    },
+    10: {
+      season: 'Early Winter (Sagittarius-Capricorn)',
+      windows: 'November 15-December 20',
+      favorable: 'Goal setting, strategic planning',
+      challenging: 'Capricorn new moon pressure'
+    },
+    11: {
+      season: 'Winter peak',
+      windows: 'December 15-January 15',
+      favorable: 'Spiritual events, resolutions',
+      challenging: 'Universal winter intensity'
+    }
   };
 
   const timingInfo = seasonTimings[currentMonth];
@@ -177,8 +286,11 @@ const generateRecommendedDates = (user, year) => {
     `${year}-12-15 to ${year}-12-25\tCapricorn influence - career milestones`
   ];
 
-  return `${recommendations.slice(0, 4).join('\n• ')
-  }\n\n*Note: These are general auspicious periods. Professional timing consultation recommended for major events.*`;
+  return `${recommendations
+    .slice(0, 4)
+    .join(
+      '\n• '
+    )}\n\n*Note: These are general auspicious periods. Professional timing consultation recommended for major events.*`;
 };
 
 /**
@@ -188,7 +300,12 @@ const generateRecommendedDates = (user, year) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleFutureSelf = (message, user) => {
-  if (!message.includes('future') && !message.includes('self') && !message.includes('potential') && !message.includes('evolution')) {
+  if (
+    !message.includes('future') &&
+    !message.includes('self') &&
+    !message.includes('potential') &&
+    !message.includes('evolution')
+  ) {
     return null;
   }
 
@@ -211,7 +328,12 @@ const handleFutureSelf = (message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleGroupAstrology = (message, user) => {
-  if (!message.includes('group') && !message.includes('community') && !message.includes('collective') && !message.includes('team')) {
+  if (
+    !message.includes('group') &&
+    !message.includes('community') &&
+    !message.includes('collective') &&
+    !message.includes('team')
+  ) {
     return null;
   }
 
@@ -234,7 +356,12 @@ const handleGroupAstrology = (message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleMarriageCompatibility = (message, user) => {
-  if (!message.includes('marriage') && !message.includes('wedding') && !message.includes('partner') && !message.includes('compatibility')) {
+  if (
+    !message.includes('marriage') &&
+    !message.includes('wedding') &&
+    !message.includes('partner') &&
+    !message.includes('compatibility')
+  ) {
     return null;
   }
 
@@ -248,7 +375,13 @@ const handleMarriageCompatibility = (message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleLagnaAnalysis = (message, user) => {
-  if (!message.includes('lagna') && !message.includes('ascendant') && !message.includes('rising') && !message.includes('dhana') && !message.includes('bhava')) {
+  if (
+    !message.includes('lagna') &&
+    !message.includes('ascendant') &&
+    !message.includes('rising') &&
+    !message.includes('dhana') &&
+    !message.includes('bhava')
+  ) {
     return null;
   }
 
@@ -264,7 +397,12 @@ const handleLagnaAnalysis = (message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handlePrashna = (message, user) => {
-  if (!message.includes('prashna') && !message.includes('question') && !message.includes('answer') && !message.includes('consult')) {
+  if (
+    !message.includes('prashna') &&
+    !message.includes('question') &&
+    !message.includes('answer') &&
+    !message.includes('consult')
+  ) {
     return null;
   }
 
@@ -278,7 +416,14 @@ const handlePrashna = (message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleElectional = async(message, user) => {
-  if (!message.includes('electional') && !message.includes('auspicious') && !message.includes('timing') && !message.includes('muhurta') && !message.includes('wedding time') && !message.includes('business opening')) {
+  if (
+    !message.includes('electional') &&
+    !message.includes('auspicious') &&
+    !message.includes('timing') &&
+    !message.includes('muhurta') &&
+    !message.includes('wedding time') &&
+    !message.includes('business opening')
+  ) {
     return null;
   }
 
@@ -291,15 +436,34 @@ const handleElectional = async(message, user) => {
 
     if (messageLower.includes('wedding') || messageLower.includes('marriage')) {
       eventType = 'wedding';
-    } else if (messageLower.includes('business') || messageLower.includes('opening') || messageLower.includes('launch')) {
+    } else if (
+      messageLower.includes('business') ||
+      messageLower.includes('opening') ||
+      messageLower.includes('launch')
+    ) {
       eventType = 'business';
-    } else if (messageLower.includes('house') || messageLower.includes('property') || messageLower.includes('home')) {
+    } else if (
+      messageLower.includes('house') ||
+      messageLower.includes('property') ||
+      messageLower.includes('home')
+    ) {
       eventType = 'house';
-    } else if (messageLower.includes('travel') || messageLower.includes('journey')) {
+    } else if (
+      messageLower.includes('travel') ||
+      messageLower.includes('journey')
+    ) {
       eventType = 'travel';
-    } else if (messageLower.includes('medical') || messageLower.includes('surgery') || messageLower.includes('treatment')) {
+    } else if (
+      messageLower.includes('medical') ||
+      messageLower.includes('surgery') ||
+      messageLower.includes('treatment')
+    ) {
       eventType = 'medical';
-    } else if (messageLower.includes('spiritual') || messageLower.includes('ritual') || messageLower.includes('ceremony')) {
+    } else if (
+      messageLower.includes('spiritual') ||
+      messageLower.includes('ritual') ||
+      messageLower.includes('ceremony')
+    ) {
       eventType = 'spiritual';
     }
 
@@ -316,7 +480,7 @@ const handleElectional = async(message, user) => {
       preferredDateRange: `${startDateStr}|${endDateStr}`,
       location: {
         latitude: user.latitude || 28.6139,
-        longitude: user.longitude || 77.2090,
+        longitude: user.longitude || 77.209,
         timezone: user.timezone || 5.5
       },
       constraints: {}
@@ -342,12 +506,20 @@ const handleElectional = async(message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleHorary = async(message, user) => {
-  if (!message.includes('horary') && !message.includes('horoscope') && !message.includes('chart') && !message.includes('moment')) {
+  if (
+    !message.includes('horary') &&
+    !message.includes('horoscope') &&
+    !message.includes('chart') &&
+    !message.includes('moment')
+  ) {
     return null;
   }
 
   try {
-    const horaryReading = await horaryReader.generateHoraryReading(message, user);
+    const horaryReading = await horaryReader.generateHoraryReading(
+      message,
+      user
+    );
     return `⏰ *Horary Astrology Reading*\n\n${horaryReading.interpretation}\n\n🔔 *Chart Ruler:* ${horaryReading.ruler}\n📍 *Question House:* ${horaryReading.house}\n🎯 *Answer:* ${horaryReading.answer}\n⏳ *Timing:* ${horaryReading.timing}`;
   } catch (error) {
     logger.error('Horary reading error:', error);
@@ -362,7 +534,11 @@ const handleHorary = async(message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleSecondaryProgressions = async(message, user) => {
-  if (!message.includes('progression') && !message.includes('secondary') && !message.includes('life pattern')) {
+  if (
+    !message.includes('progression') &&
+    !message.includes('secondary') &&
+    !message.includes('life pattern')
+  ) {
     return null;
   }
 

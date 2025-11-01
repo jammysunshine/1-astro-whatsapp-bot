@@ -34,13 +34,17 @@ const numerologyService = require('../../src/services/astrology/numerologyServic
 jest.mock('../../src/services/i18n/TranslationService');
 const translationService = require('../../src/services/i18n/TranslationService');
 
-
 // Mock messageProcessor for error handling tests
 jest.mock('../../src/services/whatsapp/messageProcessor');
-const { processIncomingMessage } = require('../../src/services/whatsapp/messageProcessor');
+const {
+  processIncomingMessage
+} = require('../../src/services/whatsapp/messageProcessor');
 
 // For the first test, let it call the real function
-processIncomingMessage.mockImplementation(jest.requireActual('../../src/services/whatsapp/messageProcessor').processIncomingMessage);
+processIncomingMessage.mockImplementation(
+  jest.requireActual('../../src/services/whatsapp/messageProcessor')
+    .processIncomingMessage
+);
 
 // E2E tests use real database operations
 describe('Critical User Flow End-to-End Tests', () => {
@@ -66,10 +70,14 @@ describe('Critical User Flow End-to-End Tests', () => {
     while (mongoose.connection.readyState !== 1 && attempts < maxAttempts) {
       await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
       attempts++;
-      console.log(`Waiting for DB connection... Attempt ${attempts}/${maxAttempts}, State: ${mongoose.connection.readyState}`);
+      console.log(
+        `Waiting for DB connection... Attempt ${attempts}/${maxAttempts}, State: ${mongoose.connection.readyState}`
+      );
     }
     if (mongoose.connection.readyState !== 1) {
-      throw new Error(`Database connection failed after ${maxAttempts} attempts. Final state: ${mongoose.connection.readyState}`);
+      throw new Error(
+        `Database connection failed after ${maxAttempts} attempts. Final state: ${mongoose.connection.readyState}`
+      );
     }
     console.log('✅ Database connected successfully in test');
   });
@@ -116,22 +124,29 @@ describe('Critical User Flow End-to-End Tests', () => {
     });
     paymentService.getPlan = jest.fn().mockReturnValue({
       name: 'Premium',
-      features: ['Unlimited daily horoscopes', 'Advanced birth chart analysis', 'Priority support']
+      features: [
+        'Unlimited daily horoscopes',
+        'Advanced birth chart analysis',
+        'Priority support'
+      ]
     });
 
     // Setup mock responses for numerologyService
     numerologyService.getNumerologyReport = jest.fn().mockReturnValue({
       lifePath: {
         number: 5,
-        interpretation: 'As a Life Path 5, you\'re adventurous, freedom-loving, and adaptable. You thrive on change and new experiences.'
+        interpretation:
+          'As a Life Path 5, you\'re adventurous, freedom-loving, and adaptable. You thrive on change and new experiences.'
       },
       expression: {
         number: 8,
-        interpretation: 'Your name vibrates with power, success, and material abundance.'
+        interpretation:
+          'Your name vibrates with power, success, and material abundance.'
       },
       soulUrge: {
         number: 3,
-        interpretation: 'Your heart desires creativity, self-expression, and social connection.'
+        interpretation:
+          'Your heart desires creativity, self-expression, and social connection.'
       }
     });
 
@@ -174,7 +189,6 @@ describe('Critical User Flow End-to-End Tests', () => {
                   },
                   contacts: [
                     {
-
                       from: testPhone,
 
                       id: 'msg-birth-time',
@@ -184,11 +198,8 @@ describe('Critical User Flow End-to-End Tests', () => {
                       type: 'text',
 
                       text: {
-
                         body: '1430'
-
                       }
-
                     }
                   ],
                   messages: [

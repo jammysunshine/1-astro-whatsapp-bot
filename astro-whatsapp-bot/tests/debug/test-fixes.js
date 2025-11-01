@@ -1,6 +1,11 @@
 // Test file to verify all fixes are working
 const mongoose = require('mongoose');
-const { createUser, getUserByPhone, updateUserProfile, addBirthDetails } = require('../../src/models/userModel');
+const {
+  createUser,
+  getUserByPhone,
+  updateUserProfile,
+  addBirthDetails
+} = require('../../src/models/userModel');
 const User = require('../../src/models/User');
 
 async function testUserCreationAndDefaults() {
@@ -8,15 +13,20 @@ async function testUserCreationAndDefaults() {
 
   try {
     // Connect to test database
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    await mongoose.connect(
+      process.env.MONGODB_URI || 'mongodb://localhost:27017/test',
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      }
+    );
 
     console.log('✅ Connected to database');
 
     // Clean up any existing test data
-    await User.deleteMany({ phoneNumber: { $in: ['+1234567890', '+1234567891', '+1234567892'] } });
+    await User.deleteMany({
+      phoneNumber: { $in: ['+1234567890', '+1234567891', '+1234567892'] }
+    });
 
     // Test 1: Create user with name provided
     console.log('\n📝 Test 1: Create user with name provided');
@@ -77,7 +87,10 @@ async function testUserCreationAndDefaults() {
       preferredLanguage: updatedUser.preferredLanguage
     });
 
-    if (updatedUser.name === 'Updated Test User' && updatedUser.preferredLanguage === 'es') {
+    if (
+      updatedUser.name === 'Updated Test User' &&
+      updatedUser.preferredLanguage === 'es'
+    ) {
       console.log('✅ Test 4 PASSED: User profile updated correctly');
     } else {
       console.log('❌ Test 4 FAILED: User profile not updated correctly');
@@ -115,7 +128,9 @@ async function testUserCreationAndDefaults() {
   } finally {
     // Clean up
     try {
-      await User.deleteMany({ phoneNumber: { $in: ['+1234567890', '+1234567891', '+1234567892'] } });
+      await User.deleteMany({
+        phoneNumber: { $in: ['+1234567890', '+1234567891', '+1234567892'] }
+      });
       await mongoose.connection.close();
       console.log('🧹 Cleaned up test data');
     } catch (cleanupError) {

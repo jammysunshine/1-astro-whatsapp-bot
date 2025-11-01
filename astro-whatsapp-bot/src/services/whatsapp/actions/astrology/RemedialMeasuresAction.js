@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class RemedialMeasuresAction extends BaseAction {
-  static get actionId() { return 'get_remedial_measures'; }
+  static get actionId() {
+    return 'get_remedial_measures';
+  }
 
   async execute() {
     try {
@@ -21,7 +23,8 @@ class RemedialMeasuresAction extends BaseAction {
   }
 
   async sendRemedialGuide() {
-    const guide = '🛠️ *Vedic Remedial Measures - Karmic Healing Tools*\n\n' +
+    const guide =
+      '🛠️ *Vedic Remedial Measures - Karmic Healing Tools*\n\n' +
       'Vedic astrology offers precise spiritual technologies to harmonize challenging planetary influences. Rather than suffering planetary maleficence, we can practice specific remedies to transform negative karma into positive outcomes.\n\n' +
       '*🌟 REMEDIAL METHODS BY PLANET:*\n' +
       '• **Sun (Confidence, Father):** Wear ruby, donate wheat, respect elders\n' +
@@ -72,22 +75,29 @@ class RemedialMeasuresAction extends BaseAction {
       '*◓ The path of karma correction requires sincerity. What seems like remedy is actually the mechanism of grace transforming destiny.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'get_mantras',
-      titleKey: 'buttons.mantras',
-      title: '🪬 Mantras'
-    }, {
-      id: 'get_gemstones',
-      titleKey: 'buttons.gemstones',
-      title: '💎 Gemstones'
-    }, {
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'get_mantras',
+        titleKey: 'buttons.mantras',
+        title: '🪬 Mantras'
+      },
+      {
+        id: 'get_gemstones',
+        titleKey: 'buttons.gemstones',
+        title: '💎 Gemstones'
+      },
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, guide, buttons, userLanguage
+      this.phoneNumber,
+      guide,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -96,8 +106,15 @@ class RemedialMeasuresAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Provide Vedic remedial measures for planetary balancing and karmic healing',
-      keywords: ['remedial measures', 'vedic remedies', 'karma correction', 'planetary healing', 'spiritual remedies'],
+      description:
+        'Provide Vedic remedial measures for planetary balancing and karmic healing',
+      keywords: [
+        'remedial measures',
+        'vedic remedies',
+        'karma correction',
+        'planetary healing',
+        'spiritual remedies'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 1800000

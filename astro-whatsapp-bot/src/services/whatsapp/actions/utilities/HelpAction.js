@@ -35,7 +35,11 @@ class HelpAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in HelpAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -77,11 +81,7 @@ class HelpAction extends BaseAction {
         userLanguage
       );
 
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
+      await sendMessage(message.to, message.interactive, 'interactive');
     } catch (error) {
       this.logger.error('Error sending help information:', error);
       await this.handleExecutionError(error);
@@ -96,7 +96,8 @@ class HelpAction extends BaseAction {
     let help = '🆘 *Help & Support - Cosmic Companion*\n\n';
 
     help += '*👋 Welcome to your personal astrology guide!*\n';
-    help += 'I\'m here to help you understand the cosmic influences on your life through:\n\n';
+    help +=
+      'I\'m here to help you understand the cosmic influences on your life through:\n\n';
 
     // Main Features
     help += '*🌟 CORE FEATURES:*\n';
@@ -135,7 +136,8 @@ class HelpAction extends BaseAction {
     help += '• Support contact: Tap "📞 Support"\n';
     help += '• Profile setup: Available in main menu\n\n';
 
-    help += '*✨ Remember: The universe has a plan for you. Let the stars guide your journey.*';
+    help +=
+      '*✨ Remember: The universe has a plan for you. Let the stars guide your journey.*';
 
     return help;
   }
@@ -153,7 +155,8 @@ class HelpAction extends BaseAction {
    * @returns {string} Quick start text
    */
   formatQuickStartGuide() {
-    return '🚀 *Quick Start Guide*\n\n' +
+    return (
+      '🚀 *Quick Start Guide*\n\n' +
       '*🎯 First Steps:*\n' +
       '1. Complete your birth profile (required for most features)\n' +
       '2. Try "Daily Horoscope" for immediate cosmic guidance\n' +
@@ -164,7 +167,8 @@ class HelpAction extends BaseAction {
       '• "chart" - View your birth chart\n' +
       '• "tarot" - Mystical card reading\n' +
       '• "compatibility" - Relationship analysis\n\n' +
-      'Ready to explore the cosmos? Send "menu" to begin!';
+      'Ready to explore the cosmos? Send "menu" to begin!'
+    );
   }
 
   /**
@@ -180,30 +184,28 @@ class HelpAction extends BaseAction {
    * @returns {string} Commands text
    */
   formatCommandsList() {
-    return '📋 *Available Commands*\n\n' +
-
+    return (
+      '📋 *Available Commands*\n\n' +
       '*🎯 ASTROLOGY COMMANDS:*\n' +
       '• "horoscope" - Daily horoscope\n' +
       '• "chart" - Birth chart analysis\n' +
       '• "transits" - Current planetary influences\n' +
       '• "compatibility" - Relationship analysis\n' +
       '• "numerology" - Life path numbers\n\n' +
-
       '*🔮 DIVINATION COMMANDS:*\n' +
       '• "tarot" - Tarot card reading\n' +
       '• "iching" - I Ching consultation\n' +
       '• "palmistry" - Hand analysis\n\n' +
-
       '*⚙️ SYSTEM COMMANDS:*\n' +
       '• "menu" - Main navigation\n' +
       '• "help" - This help guide\n' +
       '• "profile" - User settings\n' +
       '• "language" - Change language\n\n' +
-
       '*💡 TIPS:*\n' +
       '• Commands work in any language\n' +
       '• Try natural language: "What\'s my destiny?"\n' +
-      '• Interactive buttons for easy navigation';
+      '• Interactive buttons for easy navigation'
+    );
   }
 
   /**
@@ -219,27 +221,25 @@ class HelpAction extends BaseAction {
    * @returns {string} Support text
    */
   formatSupportInfo() {
-    return '📞 *Contact Support*\n\n' +
+    return (
+      '📞 *Contact Support*\n\n' +
       '*🆘 Need Help?*\n' +
       'We\'re here to assist you on your cosmic journey!\n\n' +
-
       '*📧 Contact Methods:*\n' +
       '• In-app: Use the feedback option in settings\n' +
       '• Email: support@cosmiccompanion.com\n' +
       '• Hours: 24/7 (AI assistant available)\n\n' +
-
       '*❓ Common Questions:*\n' +
       '• How do I complete my profile? → Use "Settings" menu\n' +
       '• Why do I need birth details? → For accurate calculations\n' +
       '• Can I change my language? → Yes, in profile settings\n' +
       '• Is my data secure? → Yes, fully encrypted and private\n\n' +
-
       '*🕐 Response Time:*\n' +
       '• General questions: Immediate (this chat)\n' +
       '• Technical issues: Within 24 hours\n' +
       '• Custom consultations: 2-3 business days\n\n' +
-
-      '*💫 Thank you for choosing Cosmic Companion!*';
+      '*💫 Thank you for choosing Cosmic Companion!*'
+    );
   }
 
   /**
@@ -247,7 +247,8 @@ class HelpAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, there was an error displaying help information. Please try again or contact support if the problem persists.';
+    const errorMessage =
+      '❌ Sorry, there was an error displaying help information. Please try again or contact support if the problem persists.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 

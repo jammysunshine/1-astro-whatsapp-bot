@@ -11,8 +11,10 @@ const { BirthData } = require('../../models');
 class MedicalAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'MedicalAstrologyService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/MedicalAstrologyCalculator';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'MedicalAstrologyService';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/MedicalAstrologyCalculator';
     logger.info('MedicalAstrologyService initialized');
   }
 
@@ -31,7 +33,8 @@ class MedicalAstrologyService extends ServiceTemplate {
       this._validateInput(birthData);
 
       // Calculate medical astrology analysis
-      const medicalAnalysis = await this.calculator.calculateMedicalAstrologyAnalysis(birthData);
+      const medicalAnalysis =
+        await this.calculator.calculateMedicalAstrologyAnalysis(birthData);
 
       // Add service metadata
       medicalAnalysis.serviceMetadata = {
@@ -39,7 +42,8 @@ class MedicalAstrologyService extends ServiceTemplate {
         calculationType: 'Medical Astrology Analysis',
         timestamp: new Date().toISOString(),
         tradition: 'Vedic Hindu Astrology',
-        methodology: 'Planetary positions and house analysis for health patterns'
+        methodology:
+          'Planetary positions and house analysis for health patterns'
       };
 
       return medicalAnalysis;
@@ -84,8 +88,14 @@ class MedicalAstrologyService extends ServiceTemplate {
       metadata: {
         serviceName: this.serviceName,
         system: 'Medical Astrology Analysis',
-        calculationMethod: 'Vedic planetary positions and house analysis for health patterns',
-        elements: ['Health Indicators', 'House Analysis', 'Focus Areas', 'Recommendations'],
+        calculationMethod:
+          'Vedic planetary positions and house analysis for health patterns',
+        elements: [
+          'Health Indicators',
+          'House Analysis',
+          'Focus Areas',
+          'Recommendations'
+        ],
         tradition: 'Vedic Hindu astrology with medical astrology principles',
         timestamp: new Date().toISOString()
       }
@@ -103,7 +113,8 @@ class MedicalAstrologyService extends ServiceTemplate {
       category: 'vedic',
       methods: ['processCalculation'],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Specialized service for health patterns and wellness astrology.'
+      description:
+        'Specialized service for health patterns and wellness astrology.'
     };
   }
 

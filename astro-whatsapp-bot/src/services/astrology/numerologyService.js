@@ -105,17 +105,23 @@ async function generateFullReport(fullName, birthDate) {
 
     // Calculate additional numbers
     const destiny = reduceToSingleDigit(lifePath + expression); // Life Path + Expression
-    const maturity = reduceToSingleDigit(lifePath + expression + soulUrge + personality); // All numbers combined
+    const maturity = reduceToSingleDigit(
+      lifePath + expression + soulUrge + personality
+    ); // All numbers combined
 
     return {
       lifePath,
-      lifePathDescription: numerologyData.lifePath[lifePath] || 'Interpretation not found.',
+      lifePathDescription:
+        numerologyData.lifePath[lifePath] || 'Interpretation not found.',
       expression,
-      expressionDescription: numerologyData.expression[expression] || 'Interpretation not found.',
+      expressionDescription:
+        numerologyData.expression[expression] || 'Interpretation not found.',
       soulUrge,
-      soulUrgeDescription: numerologyData.soulUrge[soulUrge] || 'Interpretation not found.',
+      soulUrgeDescription:
+        numerologyData.soulUrge[soulUrge] || 'Interpretation not found.',
       personality,
-      personalityDescription: numerologyData.personality[personality] || 'Interpretation not found.',
+      personalityDescription:
+        numerologyData.personality[personality] || 'Interpretation not found.',
       destiny,
       maturity,
       strengths: getStrengths(lifePath, expression),
@@ -175,7 +181,9 @@ function getCareerPaths(lifePath, expression) {
     9: ['Humanitarian', 'Artist', 'Therapist', 'Visionary']
   };
 
-  return careersMap[lifePath] || ['Professional', 'Creative', 'Service-oriented'];
+  return (
+    careersMap[lifePath] || ['Professional', 'Creative', 'Service-oriented']
+  );
 }
 
 function getCompatibleNumbers(lifePath) {

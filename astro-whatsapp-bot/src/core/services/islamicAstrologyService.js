@@ -9,7 +9,8 @@ const logger = require('../../utils/logger');
 class IslamicAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'IslamicAstrologyService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'IslamicAstrologyService';
     this.calculatorPath = '../../../services/astrology/islamicAstrology';
     logger.info('IslamicAstrologyService initialized');
   }
@@ -36,7 +37,10 @@ class IslamicAstrologyService extends ServiceTemplate {
       const { birthData, options = {} } = params;
 
       // Get Islamic astrology analysis from calculator
-      const islamicAnalysis = await this.calculator.generateIslamicAnalysis(birthData, options);
+      const islamicAnalysis = await this.calculator.generateIslamicAnalysis(
+        birthData,
+        options
+      );
 
       return {
         success: true,
@@ -45,7 +49,12 @@ class IslamicAstrologyService extends ServiceTemplate {
           calculationType: 'islamic_astrology',
           timestamp: new Date().toISOString(),
           system: 'Traditional Islamic/Arabic Astrology',
-          elements: ['Lunar Mansions', 'Abjad Numerology', 'Planetary Influences', 'Spiritual Guidance']
+          elements: [
+            'Lunar Mansions',
+            'Abjad Numerology',
+            'Planetary Influences',
+            'Spiritual Guidance'
+          ]
         }
       };
     } catch (error) {
@@ -82,8 +91,14 @@ class IslamicAstrologyService extends ServiceTemplate {
       metadata: {
         system: 'Islamic Astrology Analysis',
         calculationMethod: 'Traditional Islamic/Arabic astrological principles',
-        elements: ['Lunar Mansions', 'Numerology', 'Planetary Influences', 'Spiritual Guidance'],
-        tradition: 'Islamic/Arabic astrological wisdom with Quranic foundations'
+        elements: [
+          'Lunar Mansions',
+          'Numerology',
+          'Planetary Influences',
+          'Spiritual Guidance'
+        ],
+        tradition:
+          'Islamic/Arabic astrological wisdom with Quranic foundations'
       }
     };
   }
@@ -95,7 +110,9 @@ class IslamicAstrologyService extends ServiceTemplate {
    */
   validateParams(params) {
     if (!params) {
-      throw new Error('Input parameters are required for Islamic astrology analysis');
+      throw new Error(
+        'Input parameters are required for Islamic astrology analysis'
+      );
     }
 
     // Birth data is optional for Islamic astrology as it focuses more on names and lunar positions
@@ -196,11 +213,17 @@ Comprehensive Islamic astrology report with lunar mansions analysis, numerology 
         numerology: numerologyAnalysis,
         lunarMansions: lunarAnalysis,
         spiritualGuidance,
-        summary: this._generateIslamicSummary(numerologyAnalysis, lunarAnalysis, spiritualGuidance)
+        summary: this._generateIslamicSummary(
+          numerologyAnalysis,
+          lunarAnalysis,
+          spiritualGuidance
+        )
       };
     } catch (error) {
       logger.error('Error generating Islamic analysis:', error);
-      throw new Error(`Failed to generate Islamic astrology analysis: ${error.message}`);
+      throw new Error(
+        `Failed to generate Islamic astrology analysis: ${error.message}`
+      );
     }
   }
 
@@ -328,8 +351,10 @@ Comprehensive Islamic astrology report with lunar mansions analysis, numerology 
     }
 
     summary += '*Spiritual Focus:*\n';
-    summary += 'Focus on increasing your connection with the Divine through regular prayer ';
-    summary += 'and remembrance. The current lunar phase offers opportunities for spiritual growth.\n\n';
+    summary +=
+      'Focus on increasing your connection with the Divine through regular prayer ';
+    summary +=
+      'and remembrance. The current lunar phase offers opportunities for spiritual growth.\n\n';
 
     summary += `*Divine Guidance:*\n"${guidance.quranicWisdom}"`;
 

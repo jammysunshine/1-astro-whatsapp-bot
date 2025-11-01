@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class BusinessAstrologyAction extends BaseAction {
-  static get actionId() { return 'start_business_partnership_flow'; }
+  static get actionId() {
+    return 'start_business_partnership_flow';
+  }
 
   async execute() {
     try {
@@ -21,7 +23,8 @@ class BusinessAstrologyAction extends BaseAction {
   }
 
   async sendBusinessAstrology() {
-    const analysis = '🤝 *Business & Partnership Astrology*\n\n' +
+    const analysis =
+      '🤝 *Business & Partnership Astrology*\n\n' +
       'Optimize business ventures, partnerships, and financial decisions with cosmic timing and astrological insights.\n\n' +
       '*💼 BUSINESS ASTROLOGY REVEALS:*\n' +
       '• **Partnership Synastry** - Business partner compatibility\n' +
@@ -52,7 +55,10 @@ class BusinessAstrologyAction extends BaseAction {
     ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -61,8 +67,15 @@ class BusinessAstrologyAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Analyze business partnerships and entrepreneurial astrology',
-      keywords: ['business', 'partnership', 'entrepreneur', 'business astrology', 'commercial'],
+      description:
+        'Analyze business partnerships and entrepreneurial astrology',
+      keywords: [
+        'business',
+        'partnership',
+        'entrepreneur',
+        'business astrology',
+        'commercial'
+      ],
       category: 'business',
       subscriptionRequired: true,
       cooldown: 7200000

@@ -48,7 +48,10 @@ class NumerologyReportService extends ServiceTemplate {
       const { fullName, birthDate, options = {} } = params;
 
       // Use numerology service calculator for comprehensive analysis
-      const numerologyData = await this.calculator.generateFullReport(birthDate, fullName); // Assuming generateFullReport exists
+      const numerologyData = await this.calculator.generateFullReport(
+        birthDate,
+        fullName
+      ); // Assuming generateFullReport exists
 
       // Enhance with additional analysis layers
       const enhancedAnalysis = {
@@ -56,7 +59,9 @@ class NumerologyReportService extends ServiceTemplate {
         lifePathAnalysis: this._analyzeLifePath(numerologyData.lifePath),
         expressionAnalysis: this._analyzeExpression(numerologyData.expression),
         soulUrgeAnalysis: this._analyzeSoulUrge(numerologyData.soulUrge),
-        personalityAnalysis: this._analyzePersonality(numerologyData.personality),
+        personalityAnalysis: this._analyzePersonality(
+          numerologyData.personality
+        ),
         destinyAnalysis: this._analyzeDestiny(numerologyData.destiny),
         maturityAnalysis: this._analyzeMaturity(numerologyData.maturity),
         nameAnalysis: this._analyzeName(fullName, numerologyData),
@@ -90,7 +95,9 @@ class NumerologyReportService extends ServiceTemplate {
    */
   _validateInput(params) {
     if (!params) {
-      throw new Error('Input data is required for numerology report generation');
+      throw new Error(
+        'Input data is required for numerology report generation'
+      );
     }
     const { fullName, birthDate } = params;
 
@@ -98,7 +105,9 @@ class NumerologyReportService extends ServiceTemplate {
       throw new Error('Full name is required for numerology report generation');
     }
     if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Birth date is required for numerology report generation');
+      throw new Error(
+        'Birth date is required for numerology report generation'
+      );
     }
     // Basic date format validation
     if (!birthDate.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
@@ -128,8 +137,16 @@ class NumerologyReportService extends ServiceTemplate {
       metadata: {
         serviceName: this.serviceName,
         system: 'Numerology Report',
-        calculationMethod: 'Comprehensive numerology analysis using Pythagorean system',
-        elements: ['Life Path', 'Expression', 'Soul Urge', 'Personality', 'Destiny', 'Maturity'],
+        calculationMethod:
+          'Comprehensive numerology analysis using Pythagorean system',
+        elements: [
+          'Life Path',
+          'Expression',
+          'Soul Urge',
+          'Personality',
+          'Destiny',
+          'Maturity'
+        ],
         tradition: 'Western numerology with detailed interpretations',
         timestamp: new Date().toISOString()
       }
@@ -169,20 +186,51 @@ class NumerologyReportService extends ServiceTemplate {
   }
 
   // Placeholder implementations for detailed analysis methods (these would be implemented with actual logic)
-  _analyzeLifePath(lifePathNumber) { return { lifePathNumber, description: `Life path ${lifePathNumber} journey` }; }
-  _analyzeExpression(expressionNumber) { return { number: expressionNumber }; }
-  _analyzeSoulUrge(soulUrgeNumber) { return { number: soulUrgeNumber }; }
-  _analyzePersonality(personalityNumber) { return { number: personalityNumber }; }
-  _analyzeDestiny(destinyNumber) { return { number: destinyNumber }; }
-  _analyzeMaturity(maturityNumber) { return { number: maturityNumber }; }
-  _analyzeName(fullName, numerologyData) { return { originalName: fullName }; }
-  _analyzeCompatibilityFactors(numerologyData) { return {}; }
-  _calculateYearlyCycles(numerologyData) { return {}; }
-  _identifyChallenges(numerologyData) { return {}; }
-  _generateRecommendations(numerologyData) { return {}; }
-  _getExpressionDescription(number) { return `Expression ${number} description`; }
-  _getSoulUrgeDescription(number) { return `Soul Urge ${number} description`; }
-  _getPersonalityDescription(number) { return `Personality ${number} description`; }
+  _analyzeLifePath(lifePathNumber) {
+    return {
+      lifePathNumber,
+      description: `Life path ${lifePathNumber} journey`
+    };
+  }
+  _analyzeExpression(expressionNumber) {
+    return { number: expressionNumber };
+  }
+  _analyzeSoulUrge(soulUrgeNumber) {
+    return { number: soulUrgeNumber };
+  }
+  _analyzePersonality(personalityNumber) {
+    return { number: personalityNumber };
+  }
+  _analyzeDestiny(destinyNumber) {
+    return { number: destinyNumber };
+  }
+  _analyzeMaturity(maturityNumber) {
+    return { number: maturityNumber };
+  }
+  _analyzeName(fullName, numerologyData) {
+    return { originalName: fullName };
+  }
+  _analyzeCompatibilityFactors(numerologyData) {
+    return {};
+  }
+  _calculateYearlyCycles(numerologyData) {
+    return {};
+  }
+  _identifyChallenges(numerologyData) {
+    return {};
+  }
+  _generateRecommendations(numerologyData) {
+    return {};
+  }
+  _getExpressionDescription(number) {
+    return `Expression ${number} description`;
+  }
+  _getSoulUrgeDescription(number) {
+    return `Soul Urge ${number} description`;
+  }
+  _getPersonalityDescription(number) {
+    return `Personality ${number} description`;
+  }
 
   /**
    * Returns metadata for the service.
@@ -193,7 +241,15 @@ class NumerologyReportService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', 'getNumerologyAnalysis', 'getLifePathAnalysis', 'getNameAnalysis', 'getNumerologyCompatibility', 'getYearlyPredictions', 'getMasterNumberAnalysis'],
+      methods: [
+        'processCalculation',
+        'getNumerologyAnalysis',
+        'getLifePathAnalysis',
+        'getNameAnalysis',
+        'getNumerologyCompatibility',
+        'getYearlyPredictions',
+        'getMasterNumberAnalysis'
+      ],
       dependencies: [], // Managed by ServiceTemplate
       description: 'Comprehensive numerology report generation service.'
     };

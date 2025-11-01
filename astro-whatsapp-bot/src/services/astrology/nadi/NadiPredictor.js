@@ -6,7 +6,9 @@ const logger = require('../../../utils/logger');
  */
 class NadiPredictor {
   constructor() {
-    logger.info('Module: NadiPredictor loaded - Nadi Astrology predictions and interpretations');
+    logger.info(
+      'Module: NadiPredictor loaded - Nadi Astrology predictions and interpretations'
+    );
   }
 
   setServices(services) {
@@ -21,13 +23,34 @@ class NadiPredictor {
    */
   generateAuthenticNadiPredictions(nadiClassification, planetaryAnalysis) {
     return {
-      past_life: this.getPastLifePrediction(nadiClassification, planetaryAnalysis),
-      current_life: this.getCurrentLifePrediction(nadiClassification, planetaryAnalysis),
-      future_events: this.getFutureEvents(nadiClassification, planetaryAnalysis),
-      spiritual_growth: this.getSpiritualPath(nadiClassification, planetaryAnalysis),
-      material_success: this.getMaterialSuccess(nadiClassification, planetaryAnalysis),
-      relationships: this.getRelationshipPredictions(nadiClassification, planetaryAnalysis),
-      health_wellness: this.getHealthPredictions(nadiClassification, planetaryAnalysis),
+      past_life: this.getPastLifePrediction(
+        nadiClassification,
+        planetaryAnalysis
+      ),
+      current_life: this.getCurrentLifePrediction(
+        nadiClassification,
+        planetaryAnalysis
+      ),
+      future_events: this.getFutureEvents(
+        nadiClassification,
+        planetaryAnalysis
+      ),
+      spiritual_growth: this.getSpiritualPath(
+        nadiClassification,
+        planetaryAnalysis
+      ),
+      material_success: this.getMaterialSuccess(
+        nadiClassification,
+        planetaryAnalysis
+      ),
+      relationships: this.getRelationshipPredictions(
+        nadiClassification,
+        planetaryAnalysis
+      ),
+      health_wellness: this.getHealthPredictions(
+        nadiClassification,
+        planetaryAnalysis
+      ),
       challenges: this.getLifeChallenges(nadiClassification, planetaryAnalysis)
     };
   }
@@ -49,7 +72,9 @@ class NadiPredictor {
       ardra: 'Past life involved intense spiritual transformation',
       punarvasu: 'Past life involved healing and spiritual learning'
     };
-    return pastLifeIndicators[nakshatra] || 'Past life connected to experiences';
+    return (
+      pastLifeIndicators[nakshatra] || 'Past life connected to experiences'
+    );
   }
 
   /**
@@ -75,7 +100,10 @@ class NadiPredictor {
       }
     };
 
-    return predictions[nadiType]?.[category] || `Life focused on ${nadiClassification.characteristics}`;
+    return (
+      predictions[nadiType]?.[category] ||
+      `Life focused on ${nadiClassification.characteristics}`
+    );
   }
 
   /**
@@ -158,7 +186,10 @@ class NadiPredictor {
    */
   generateAuthenticRemedies(nadiClassification, compatibility) {
     const remedies = {
-      general: ['Regular prayer and meditation', 'Charity and service to others'],
+      general: [
+        'Regular prayer and meditation',
+        'Charity and service to others'
+      ],
       specific: [],
       nadi_specific: []
     };
@@ -183,11 +214,18 @@ class NadiPredictor {
    * @param {Object} compatibility - Compatibility
    * @returns {string} Summary
    */
-  generateAuthenticNadiSummary(name, nadiClassification, predictions, compatibility) {
-    return `🌟 Nadi Analysis for ${name || 'User'}\n\n` +
-           `${nadiClassification.description}\n\n` +
-           `Current Life: ${predictions.current_life}\n\n` +
-           `Spiritual Path: ${predictions.spiritual_growth}`;
+  generateAuthenticNadiSummary(
+    name,
+    nadiClassification,
+    predictions,
+    compatibility
+  ) {
+    return (
+      `🌟 Nadi Analysis for ${name || 'User'}\n\n` +
+      `${nadiClassification.description}\n\n` +
+      `Current Life: ${predictions.current_life}\n\n` +
+      `Spiritual Path: ${predictions.spiritual_growth}`
+    );
   }
 }
 

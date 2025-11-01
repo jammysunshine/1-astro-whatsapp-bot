@@ -18,7 +18,11 @@ class HoroscopeGenerator {
    */
   async generateDailyHoroscope(birthData) {
     try {
-      const { birthDate, birthTime = '12:00', birthPlace = 'Delhi, India' } = birthData;
+      const {
+        birthDate,
+        birthTime = '12:00',
+        birthPlace = 'Delhi, India'
+      } = birthData;
 
       if (!birthDate || typeof birthDate !== 'string') {
         throw new Error('Invalid birth date provided');
@@ -29,7 +33,8 @@ class HoroscopeGenerator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone for birth place
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+      const locationInfo =
+        await this.geocodingService.getLocationInfo(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const birthTimestamp = birthDateTime.getTime();
 
@@ -148,7 +153,11 @@ class HoroscopeGenerator {
       }
 
       // Fallback to basic horoscope by sun sign
-      const sunSign = await this.signCalculations.calculateSunSign(birthDate, birthTime, birthPlace);
+      const sunSign = await this.signCalculations.calculateSunSign(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
       const basicHoroscopes = {
         Aries:
           'Today brings new opportunities for leadership. Trust your instincts and take bold action. Energy is high - channel it into productive activities.',
@@ -211,21 +220,33 @@ class HoroscopeGenerator {
    */
   async generateTransitPreview(birthData, days = 3) {
     try {
-      const { birthDate, birthTime = '12:00', birthPlace = 'Delhi, India' } = birthData;
+      const {
+        birthDate,
+        birthTime = '12:00',
+        birthPlace = 'Delhi, India'
+      } = birthData;
 
       // Parse birth date and time
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get birth coordinates and timezone
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+      const locationInfo =
+        await this.geocodingService.getLocationInfo(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const birthTimestamp = birthDateTime.getTime();
 
       // Prepare natal data
       const natalData = {
-        year, month, date: day, hours: hour, minutes: minute, seconds: 0,
-        latitude: locationInfo.latitude, longitude: locationInfo.longitude, timezone: locationInfo.timezone,
+        year,
+        month,
+        date: day,
+        hours: hour,
+        minutes: minute,
+        seconds: 0,
+        latitude: locationInfo.latitude,
+        longitude: locationInfo.longitude,
+        timezone: locationInfo.timezone,
         chartType: 'sidereal'
       };
 
@@ -240,16 +261,24 @@ class HoroscopeGenerator {
           year: transitDate.getFullYear(),
           month: transitDate.getMonth() + 1,
           date: transitDate.getDate(),
-          hours: 12, minutes: 0, seconds: 0, // Noon for daily transits
-          latitude: locationInfo.latitude, longitude: locationInfo.longitude, timezone: locationInfo.timezone,
+          hours: 12,
+          minutes: 0,
+          seconds: 0, // Noon for daily transits
+          latitude: locationInfo.latitude,
+          longitude: locationInfo.longitude,
+          timezone: locationInfo.timezone,
           chartType: 'sidereal'
         };
 
         // Generate transit chart
-        const transitChart = this.astrologer.generateTransitChartData(natalData, transitData);
+        const transitChart = this.astrologer.generateTransitChartData(
+          natalData,
+          transitData
+        );
 
         // Analyze major transits and aspects
-        const dayName = i === 0 ? 'today' : i === 1 ? 'tomorrow' : `day${i + 1}`;
+        const dayName =
+          i === 0 ? 'today' : i === 1 ? 'tomorrow' : `day${i + 1}`;
         transits[dayName] = this._interpretDailyTransits(transitChart, i);
       }
 
@@ -258,8 +287,10 @@ class HoroscopeGenerator {
       logger.error('Error generating transit preview:', error);
       // Fallback to basic preview
       return {
-        today: '🌅 *Today:* Planetary energies support new beginnings and communication. Perfect for starting conversations or initiating projects.',
-        tomorrow: '🌞 *Tomorrow:* Focus on relationships and partnerships. Harmonious energies make this a good day for collaboration.',
+        today:
+          '🌅 *Today:* Planetary energies support new beginnings and communication. Perfect for starting conversations or initiating projects.',
+        tomorrow:
+          '🌞 *Tomorrow:* Focus on relationships and partnerships. Harmonious energies make this a good day for collaboration.',
         day3: '🌙 *Day 3:* Creative inspiration flows strongly. Use this energy for artistic pursuits or innovative thinking.'
       };
     }
@@ -282,16 +313,41 @@ class HoroscopeGenerator {
     const planets = transitChart.planets || [];
 
     // Analyze major planetary aspects
-    const majorAspects = aspects.filter(aspect =>
-      ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'].includes(aspect.planet1) ||
-      ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'].includes(aspect.planet2)
+    const majorAspects = aspects.filter(
+      aspect =>
+        [
+          'Sun',
+          'Moon',
+          'Mercury',
+          'Venus',
+          'Mars',
+          'Jupiter',
+          'Saturn'
+        ].includes(aspect.planet1) ||
+        [
+          'Sun',
+          'Moon',
+          'Mercury',
+          'Venus',
+          'Mars',
+          'Jupiter',
+          'Saturn'
+        ].includes(aspect.planet2)
     );
 
     // Check for significant transits
-    const sunAspects = majorAspects.filter(a => a.planet1 === 'Sun' || a.planet2 === 'Sun');
-    const moonAspects = majorAspects.filter(a => a.planet1 === 'Moon' || a.planet2 === 'Moon');
-    const venusAspects = majorAspects.filter(a => a.planet1 === 'Venus' || a.planet2 === 'Venus');
-    const marsAspects = majorAspects.filter(a => a.planet1 === 'Mars' || a.planet2 === 'Mars');
+    const sunAspects = majorAspects.filter(
+      a => a.planet1 === 'Sun' || a.planet2 === 'Sun'
+    );
+    const moonAspects = majorAspects.filter(
+      a => a.planet1 === 'Moon' || a.planet2 === 'Moon'
+    );
+    const venusAspects = majorAspects.filter(
+      a => a.planet1 === 'Venus' || a.planet2 === 'Venus'
+    );
+    const marsAspects = majorAspects.filter(
+      a => a.planet1 === 'Mars' || a.planet2 === 'Mars'
+    );
 
     const insights = [];
 
@@ -300,7 +356,10 @@ class HoroscopeGenerator {
       const sunAspect = sunAspects[0];
       if (sunAspect.aspect === 'Trine' || sunAspect.aspect === 'Sextile') {
         insights.push('Solar energy brings confidence and vitality');
-      } else if (sunAspect.aspect === 'Square' || sunAspect.aspect === 'Opposition') {
+      } else if (
+        sunAspect.aspect === 'Square' ||
+        sunAspect.aspect === 'Opposition'
+      ) {
         insights.push('Solar challenges encourage self-awareness and growth');
       }
     }
@@ -310,14 +369,19 @@ class HoroscopeGenerator {
       const moonAspect = moonAspects[0];
       if (moonAspect.aspect === 'Trine' || moonAspect.aspect === 'Sextile') {
         insights.push('Emotional awareness and intuition are heightened');
-      } else if (moonAspect.aspect === 'Square' || moonAspect.aspect === 'Opposition') {
+      } else if (
+        moonAspect.aspect === 'Square' ||
+        moonAspect.aspect === 'Opposition'
+      ) {
         insights.push('Emotional challenges invite inner reflection');
       }
     }
 
     // Venus transits (relationships, harmony)
     if (venusAspects.length > 0) {
-      insights.push('Harmonious energies favor relationships and creative pursuits');
+      insights.push(
+        'Harmonious energies favor relationships and creative pursuits'
+      );
     }
 
     // Mars transits (action, energy)
@@ -326,19 +390,25 @@ class HoroscopeGenerator {
     }
 
     // Mercury transits (communication, thinking)
-    const mercuryAspects = majorAspects.filter(a => a.planet1 === 'Mercury' || a.planet2 === 'Mercury');
+    const mercuryAspects = majorAspects.filter(
+      a => a.planet1 === 'Mercury' || a.planet2 === 'Mercury'
+    );
     if (mercuryAspects.length > 0) {
       insights.push('Communication and mental clarity are emphasized');
     }
 
     // Jupiter transits (expansion, wisdom)
-    const jupiterAspects = majorAspects.filter(a => a.planet1 === 'Jupiter' || a.planet2 === 'Jupiter');
+    const jupiterAspects = majorAspects.filter(
+      a => a.planet1 === 'Jupiter' || a.planet2 === 'Jupiter'
+    );
     if (jupiterAspects.length > 0) {
       insights.push('Opportunities for growth and learning present themselves');
     }
 
     // Saturn transits (structure, responsibility)
-    const saturnAspects = majorAspects.filter(a => a.planet1 === 'Saturn' || a.planet2 === 'Saturn');
+    const saturnAspects = majorAspects.filter(
+      a => a.planet1 === 'Saturn' || a.planet2 === 'Saturn'
+    );
     if (saturnAspects.length > 0) {
       insights.push('Focus on structure, discipline, and long-term goals');
     }
@@ -350,7 +420,9 @@ class HoroscopeGenerator {
         'Focus on relationships and partnerships with harmonious energies',
         'Creative inspiration flows strongly for artistic pursuits'
       ];
-      interpretation += defaults[dayOffset] || 'A balanced day for personal growth and reflection';
+      interpretation +=
+        defaults[dayOffset] ||
+        'A balanced day for personal growth and reflection';
     } else {
       interpretation += `${insights.slice(0, 2).join('. ')}.`;
     }

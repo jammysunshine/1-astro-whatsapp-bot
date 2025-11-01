@@ -24,7 +24,11 @@ describe('HoraryReader', () => {
       const questionTime = '15/03/2024 14:30';
       const location = { latitude: 34.0522, longitude: -118.2437 }; // Los Angeles
 
-      const reading = horaryReader.generateHoraryReading(question, questionTime, location);
+      const reading = horaryReader.generateHoraryReading(
+        question,
+        questionTime,
+        location
+      );
 
       expect(reading).toBeDefined();
       expect(reading.question).toBe(question);
@@ -43,7 +47,11 @@ describe('HoraryReader', () => {
       const questionTime = '15/03/2024 14:30';
       const location = { latitude: 34.0522, longitude: -118.2437 };
 
-      const reading = horaryReader.generateHoraryReading(question, questionTime, location);
+      const reading = horaryReader.generateHoraryReading(
+        question,
+        questionTime,
+        location
+      );
 
       expect(reading).toBeDefined();
       expect(reading.valid).toBe(false);
@@ -56,7 +64,11 @@ describe('HoraryReader', () => {
       const questionTime = '15/03/2024 14:30';
       const location = { latitude: 34.0522, longitude: -118.2437 };
 
-      const reading = horaryReader.generateHoraryReading(question, questionTime, location);
+      const reading = horaryReader.generateHoraryReading(
+        question,
+        questionTime,
+        location
+      );
 
       expect(reading).toBeDefined();
       expect(reading.valid).toBe(false);
@@ -69,7 +81,11 @@ describe('HoraryReader', () => {
       const questionTime = 'invalid time'; // This will cause an error
       const location = { latitude: 34.0522, longitude: -118.2437 };
 
-      const reading = horaryReader.generateHoraryReading(question, questionTime, location);
+      const reading = horaryReader.generateHoraryReading(
+        question,
+        questionTime,
+        location
+      );
 
       expect(reading).toBeDefined();
       expect(reading.valid).toBe(false);

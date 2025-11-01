@@ -135,17 +135,21 @@ class TranslationService {
       });
     });
 
-    logger.info(`Initialized ${this.supportedLanguages.size} supported languages`);
+    logger.info(
+      `Initialized ${this.supportedLanguages.size} supported languages`
+    );
   }
 
   /**
    * Get supported languages
    */
   getSupportedLanguages() {
-    return Array.from(this.supportedLanguages.entries()).map(([code, config]) => ({
-      code,
-      ...config
-    }));
+    return Array.from(this.supportedLanguages.entries()).map(
+      ([code, config]) => ({
+        code,
+        ...config
+      })
+    );
   }
 
   /**
@@ -193,17 +197,39 @@ class TranslationService {
       }
 
       // Other regions
-      if (cleanNumber.startsWith('+1')) { return 'en'; } // USA
-      if (cleanNumber.startsWith('+44')) { return 'en'; } // UK
-      if (cleanNumber.startsWith('+33')) { return 'fr'; } // France
-      if (cleanNumber.startsWith('+49')) { return 'de'; } // Germany
-      if (cleanNumber.startsWith('+39')) { return 'it'; } // Italy
-      if (cleanNumber.startsWith('+34')) { return 'es'; } // Spain
-      if (cleanNumber.startsWith('+351')) { return 'pt'; } // Portugal
-      if (cleanNumber.startsWith('+7')) { return 'ru'; } // Russia
-      if (cleanNumber.startsWith('+86')) { return 'zh'; } // China
-      if (cleanNumber.startsWith('+81')) { return 'ja'; } // Japan
-      if (cleanNumber.startsWith('+82')) { return 'ko'; } // Korea
+      if (cleanNumber.startsWith('+1')) {
+        return 'en';
+      } // USA
+      if (cleanNumber.startsWith('+44')) {
+        return 'en';
+      } // UK
+      if (cleanNumber.startsWith('+33')) {
+        return 'fr';
+      } // France
+      if (cleanNumber.startsWith('+49')) {
+        return 'de';
+      } // Germany
+      if (cleanNumber.startsWith('+39')) {
+        return 'it';
+      } // Italy
+      if (cleanNumber.startsWith('+34')) {
+        return 'es';
+      } // Spain
+      if (cleanNumber.startsWith('+351')) {
+        return 'pt';
+      } // Portugal
+      if (cleanNumber.startsWith('+7')) {
+        return 'ru';
+      } // Russia
+      if (cleanNumber.startsWith('+86')) {
+        return 'zh';
+      } // China
+      if (cleanNumber.startsWith('+81')) {
+        return 'ja';
+      } // Japan
+      if (cleanNumber.startsWith('+82')) {
+        return 'ko';
+      } // Korea
     }
 
     // Default to English
@@ -262,7 +288,8 @@ class TranslationService {
    * Set cached result
    */
   setCachedResult(cacheKey, data) {
-    if (this.cache.size >= 100) { // Max cache size
+    if (this.cache.size >= 100) {
+      // Max cache size
       const firstKey = this.cache.keys().next().value;
       this.cache.delete(firstKey);
     }
@@ -276,14 +303,22 @@ class TranslationService {
    * Get nested value from object using dot notation
    */
   getNestedValue(obj, path) {
-    return path.split('.').reduce((current, key) => (current && current[key] !== undefined ? current[key] : undefined), obj);
+    return path
+      .split('.')
+      .reduce(
+        (current, key) =>
+          (current && current[key] !== undefined ? current[key] : undefined),
+        obj
+      );
   }
 
   /**
    * Normalize language code to standard format
    */
   normalizeLanguageCode(languageCode) {
-    if (!languageCode) { return 'en'; }
+    if (!languageCode) {
+      return 'en';
+    }
 
     const code = languageCode.toLowerCase();
 
@@ -344,12 +379,19 @@ class TranslationService {
 
       // If still not found, return the key as fallback
       if (translation === undefined) {
-        logger.warn(`Translation missing for key: ${key} in language: ${normalizedLanguage}`);
+        logger.warn(
+          `Translation missing for key: ${key} in language: ${normalizedLanguage}`
+        );
         return key;
       }
 
       // Handle parameters
-      if (typeof translation === 'string' && parameters && typeof parameters === 'object' && Object.keys(parameters).length > 0) {
+      if (
+        typeof translation === 'string' &&
+        parameters &&
+        typeof parameters === 'object' &&
+        Object.keys(parameters).length > 0
+      ) {
         translation = this.interpolateParameters(translation, parameters);
       }
 
@@ -433,7 +475,11 @@ class TranslationService {
     for (const [key, value] of Object.entries(obj)) {
       const fullKey = prefix ? `${prefix}.${key}` : key;
 
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      if (
+        typeof value === 'object' &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
         keys.push(...this.flattenObjectKeys(value, fullKey));
       } else {
         keys.push(fullKey);

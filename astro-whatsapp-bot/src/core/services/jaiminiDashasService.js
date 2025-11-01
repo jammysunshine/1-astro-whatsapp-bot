@@ -6,7 +6,8 @@ const logger = require('../../../utils/logger');
 class JaiminiDashasService extends ServiceTemplate {
   constructor() {
     super('JaiminiCalculator');
-    this.calculatorPath = '../calculators/JaiminiCalculator';    this.serviceName = 'JaiminiDashasService';
+    this.calculatorPath = '../calculators/JaiminiCalculator';
+    this.serviceName = 'JaiminiDashasService';
     logger.info('JaiminiDashasService initialized');
   }
 
@@ -16,7 +17,10 @@ class JaiminiDashasService extends ServiceTemplate {
       this.validate(birthData);
 
       // Use Jaimini calculator for dasha calculations
-      const result = await this.calculator.calculateJaiminiDashas(birthData, {});
+      const result = await this.calculator.calculateJaiminiDashas(
+        birthData,
+        {}
+      );
 
       return result;
     } catch (error) {
@@ -72,7 +76,10 @@ class JaiminiDashasService extends ServiceTemplate {
       const { birthData, count = 5 } = params;
 
       // Calculate upcoming dasha periods
-      const result = await this.calculator.getUpcomingJaiminiDashas(birthData, count);
+      const result = await this.calculator.getUpcomingJaiminiDashas(
+        birthData,
+        count
+      );
 
       return {
         success: true,
@@ -108,7 +115,10 @@ class JaiminiDashasService extends ServiceTemplate {
       const { birthData, options = {} } = params;
 
       // Calculate Chara Dasha
-      const result = await this.calculator.calculateCharaDasha(birthData, options);
+      const result = await this.calculator.calculateCharaDasha(
+        birthData,
+        options
+      );
 
       return {
         success: true,
@@ -144,7 +154,10 @@ class JaiminiDashasService extends ServiceTemplate {
       const { birthData, options = {} } = params;
 
       // Calculate Sthira Dasha
-      const result = await this.calculator.calculateSthiraDasha(birthData, options);
+      const result = await this.calculator.calculateSthiraDasha(
+        birthData,
+        options
+      );
 
       return {
         success: true,
@@ -197,7 +210,11 @@ class JaiminiDashasService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['calculateJaiminiDashas', 'getCurrentJaiminiDasha', 'getUpcomingJaiminiDashas'],
+      methods: [
+        'calculateJaiminiDashas',
+        'getCurrentJaiminiDasha',
+        'getUpcomingJaiminiDashas'
+      ],
       dependencies: ['JaiminiCalculator']
     };
   }

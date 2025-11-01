@@ -12,7 +12,8 @@ const logger = require('../../utils/logger');
 class PanchangService extends ServiceTemplate {
   constructor() {
     super('PanchangCalculator');
-    this.calculatorPath = '../calculators/PanchangCalculator';    this.serviceName = 'PanchangService';
+    this.calculatorPath = '../calculators/PanchangCalculator';
+    this.serviceName = 'PanchangService';
     logger.info('PanchangService initialized');
   }
 
@@ -39,7 +40,7 @@ class PanchangService extends ServiceTemplate {
         date: `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`,
         time: `${today.getHours()}:${today.getMinutes()}`,
         latitude: locationData.latitude || 28.6139, // Default Delhi
-        longitude: locationData.longitude || 77.2090,
+        longitude: locationData.longitude || 77.209,
         timezone: locationData.timezone || 5.5 // IST
       };
 
@@ -82,7 +83,7 @@ class PanchangService extends ServiceTemplate {
         date,
         time: '12:00', // Noon for general calculations
         latitude: locationData.latitude || 28.6139,
-        longitude: locationData.longitude || 77.2090,
+        longitude: locationData.longitude || 77.209,
         timezone: locationData.timezone || 5.5
       };
 
@@ -145,7 +146,8 @@ class PanchangService extends ServiceTemplate {
       panchang: result,
       metadata: {
         system: 'Panchang',
-        calculationMethod: 'Hindu daily calendar with Swiss Ephemeris precision',
+        calculationMethod:
+          'Hindu daily calendar with Swiss Ephemeris precision',
         elements: ['Tithi', 'Nakshatra', 'Yoga', 'Karana', 'Sunrise/Sunset'],
         tradition: 'Vedic Hindu calendar system'
       }

@@ -17,44 +17,215 @@ class IslamicAstrology {
   initializeIslamicDatabases() {
     // Abjad (Islamic Numerology) System
     this.abjadSystem = {
-      ا: 1, ب: 2, ج: 3, د: 4, ه: 5, و: 6, ز: 7, ح: 8, ط: 9,
-      ي: 10, ك: 20, ل: 30, م: 40, ن: 50, س: 60, ع: 70, ف: 80,
-      ص: 90, ق: 100, ر: 200, ش: 300, ت: 400, ث: 500, خ: 600,
-      ذ: 700, ض: 800, ظ: 900, غ: 1000,
+      ا: 1,
+      ب: 2,
+      ج: 3,
+      د: 4,
+      ه: 5,
+      و: 6,
+      ز: 7,
+      ح: 8,
+      ط: 9,
+      ي: 10,
+      ك: 20,
+      ل: 30,
+      م: 40,
+      ن: 50,
+      س: 60,
+      ع: 70,
+      ف: 80,
+      ص: 90,
+      ق: 100,
+      ر: 200,
+      ش: 300,
+      ت: 400,
+      ث: 500,
+      خ: 600,
+      ذ: 700,
+      ض: 800,
+      ظ: 900,
+      غ: 1000,
       // Persian/Urdu extensions
-      پ: 2, چ: 3, ژ: 7, گ: 1000, ں: 50, ہ: 5, ی: 10, ے: 10
+      پ: 2,
+      چ: 3,
+      ژ: 7,
+      گ: 1000,
+      ں: 50,
+      ہ: 5,
+      ی: 10,
+      ے: 10
     };
 
     // Islamic Lunar Mansions (Manazil al-Qamar - 28 stations)
     this.lunarMansions = [
-      { name: 'Al-Sharatan', arabic: 'الشرطان', meaning: 'The Two Signs', nature: 'Favorable' },
-      { name: 'Al-Butain', arabic: 'البطين', meaning: 'The Little Belly', nature: 'Favorable' },
-      { name: 'Al-Thurayya', arabic: 'الثريا', meaning: 'The Many Little Ones', nature: 'Favorable' },
-      { name: 'Al-Dabaran', arabic: 'الدبران', meaning: 'The Follower', nature: 'Unfavorable' },
-      { name: 'Al-Haq\'ah', arabic: 'الهقعة', meaning: 'The White Spot', nature: 'Favorable' },
-      { name: 'Al-Han\'ah', arabic: 'الهنعة', meaning: 'The Mark on the Neck', nature: 'Unfavorable' },
-      { name: 'Al-Dhira', arabic: 'الذراع', meaning: 'The Arm', nature: 'Favorable' },
-      { name: 'Al-Nathrah', arabic: 'النثرة', meaning: 'The Tip of the Nose', nature: 'Unfavorable' },
-      { name: 'Al-Tarf', arabic: 'الطرف', meaning: 'The Eyes', nature: 'Favorable' },
-      { name: 'Al-Jabhah', arabic: 'الجبهة', meaning: 'The Forehead', nature: 'Unfavorable' },
-      { name: 'Al-Zubrah', arabic: 'الزبرة', meaning: 'The Mane', nature: 'Favorable' },
-      { name: 'Al-Sarfah', arabic: 'الصرفة', meaning: 'The Change', nature: 'Unfavorable' },
-      { name: 'Al-Awwal', arabic: 'الأول', meaning: 'The First', nature: 'Favorable' },
-      { name: 'Al-Simak', arabic: 'السمك', meaning: 'The Unarmed', nature: 'Unfavorable' },
-      { name: 'Al-Ghafr', arabic: 'الغفر', meaning: 'The Covering', nature: 'Favorable' },
-      { name: 'Al-Zubana', arabic: 'الزبانى', meaning: 'The Claws', nature: 'Unfavorable' },
-      { name: 'Al-Iklil', arabic: 'الإكليل', meaning: 'The Crown', nature: 'Favorable' },
-      { name: 'Al-Qalb', arabic: 'القلب', meaning: 'The Heart', nature: 'Unfavorable' },
-      { name: 'Al-Shaulah', arabic: 'الشولة', meaning: 'The Sting', nature: 'Favorable' },
-      { name: 'Al-Na\'aim', arabic: 'النعائم', meaning: 'The Ostriches', nature: 'Unfavorable' },
-      { name: 'Al-Baldah', arabic: 'البلدة', meaning: 'The Town', nature: 'Favorable' },
-      { name: 'Al-Sa\'d al-Dhabih', arabic: 'السعد الذابح', meaning: 'The Lucky One of the Slaughterer', nature: 'Favorable' },
-      { name: 'Al-Sa\'d al-Bula', arabic: 'السعد البلع', meaning: 'The Lucky One of the Swallower', nature: 'Favorable' },
-      { name: 'Al-Sa\'d al-Su\'ud', arabic: 'السعد السعود', meaning: 'The Luckiest of the Lucky', nature: 'Favorable' },
-      { name: 'Al-Sa\'d al-Akhbiyah', arabic: 'السعد الأخبية', meaning: 'The Lucky One of the Tents', nature: 'Favorable' },
-      { name: 'Al-Fargh al-Muqaddam', arabic: 'الفرغ المقدم', meaning: 'The First Spout', nature: 'Unfavorable' },
-      { name: 'Al-Fargh al-Mu\'akhar', arabic: 'الفرغ المؤخر', meaning: 'The Last Spout', nature: 'Unfavorable' },
-      { name: 'Al-Risha', arabic: 'الرشاء', meaning: 'The Cord', nature: 'Favorable' }
+      {
+        name: 'Al-Sharatan',
+        arabic: 'الشرطان',
+        meaning: 'The Two Signs',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Butain',
+        arabic: 'البطين',
+        meaning: 'The Little Belly',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Thurayya',
+        arabic: 'الثريا',
+        meaning: 'The Many Little Ones',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Dabaran',
+        arabic: 'الدبران',
+        meaning: 'The Follower',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Haq\'ah',
+        arabic: 'الهقعة',
+        meaning: 'The White Spot',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Han\'ah',
+        arabic: 'الهنعة',
+        meaning: 'The Mark on the Neck',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Dhira',
+        arabic: 'الذراع',
+        meaning: 'The Arm',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Nathrah',
+        arabic: 'النثرة',
+        meaning: 'The Tip of the Nose',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Tarf',
+        arabic: 'الطرف',
+        meaning: 'The Eyes',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Jabhah',
+        arabic: 'الجبهة',
+        meaning: 'The Forehead',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Zubrah',
+        arabic: 'الزبرة',
+        meaning: 'The Mane',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Sarfah',
+        arabic: 'الصرفة',
+        meaning: 'The Change',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Awwal',
+        arabic: 'الأول',
+        meaning: 'The First',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Simak',
+        arabic: 'السمك',
+        meaning: 'The Unarmed',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Ghafr',
+        arabic: 'الغفر',
+        meaning: 'The Covering',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Zubana',
+        arabic: 'الزبانى',
+        meaning: 'The Claws',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Iklil',
+        arabic: 'الإكليل',
+        meaning: 'The Crown',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Qalb',
+        arabic: 'القلب',
+        meaning: 'The Heart',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Shaulah',
+        arabic: 'الشولة',
+        meaning: 'The Sting',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Na\'aim',
+        arabic: 'النعائم',
+        meaning: 'The Ostriches',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Baldah',
+        arabic: 'البلدة',
+        meaning: 'The Town',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Sa\'d al-Dhabih',
+        arabic: 'السعد الذابح',
+        meaning: 'The Lucky One of the Slaughterer',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Sa\'d al-Bula',
+        arabic: 'السعد البلع',
+        meaning: 'The Lucky One of the Swallower',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Sa\'d al-Su\'ud',
+        arabic: 'السعد السعود',
+        meaning: 'The Luckiest of the Lucky',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Sa\'d al-Akhbiyah',
+        arabic: 'السعد الأخبية',
+        meaning: 'The Lucky One of the Tents',
+        nature: 'Favorable'
+      },
+      {
+        name: 'Al-Fargh al-Muqaddam',
+        arabic: 'الفرغ المقدم',
+        meaning: 'The First Spout',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Fargh al-Mu\'akhar',
+        arabic: 'الفرغ المؤخر',
+        meaning: 'The Last Spout',
+        nature: 'Unfavorable'
+      },
+      {
+        name: 'Al-Risha',
+        arabic: 'الرشاء',
+        meaning: 'The Cord',
+        nature: 'Favorable'
+      }
     ];
 
     // Islamic Planetary Influences
@@ -147,11 +318,36 @@ class IslamicAstrology {
 
     // Islamic Prayer Times and Auspicious Periods
     this.prayerTimes = {
-      fajr: { name: 'Fajr', arabic: 'الفجر', time: 'Dawn', significance: 'Beginning of spiritual day' },
-      dhuhr: { name: 'Dhuhr', arabic: 'الظهر', time: 'Noon', significance: 'Peak of day, divine mercy' },
-      asr: { name: 'Asr', arabic: 'العصر', time: 'Afternoon', significance: 'Time of reflection' },
-      maghrib: { name: 'Maghrib', arabic: 'المغرب', time: 'Sunset', significance: 'Breaking fast, gratitude' },
-      isha: { name: 'Isha', arabic: 'العشاء', time: 'Night', significance: 'Night prayer, peace' }
+      fajr: {
+        name: 'Fajr',
+        arabic: 'الفجر',
+        time: 'Dawn',
+        significance: 'Beginning of spiritual day'
+      },
+      dhuhr: {
+        name: 'Dhuhr',
+        arabic: 'الظهر',
+        time: 'Noon',
+        significance: 'Peak of day, divine mercy'
+      },
+      asr: {
+        name: 'Asr',
+        arabic: 'العصر',
+        time: 'Afternoon',
+        significance: 'Time of reflection'
+      },
+      maghrib: {
+        name: 'Maghrib',
+        arabic: 'المغرب',
+        time: 'Sunset',
+        significance: 'Breaking fast, gratitude'
+      },
+      isha: {
+        name: 'Isha',
+        arabic: 'العشاء',
+        time: 'Night',
+        significance: 'Night prayer, peace'
+      }
     };
 
     // Auspicious Islamic Days and Periods
@@ -186,7 +382,10 @@ class IslamicAstrology {
    */
   calculateIlmNujum(name) {
     try {
-      const cleanName = name.replace(/[^\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/g, '');
+      const cleanName = name.replace(
+        /[^\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/g,
+        ''
+      );
       let totalValue = 0;
       const letterValues = [];
 
@@ -201,7 +400,10 @@ class IslamicAstrology {
       // Reduce to single digit (Islamic method)
       let reducedValue = totalValue;
       while (reducedValue > 9) {
-        reducedValue = reducedValue.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+        reducedValue = reducedValue
+          .toString()
+          .split('')
+          .reduce((sum, digit) => sum + parseInt(digit), 0);
       }
 
       const analysis = this.analyzeNumerologyValue(reducedValue);
@@ -236,31 +438,38 @@ class IslamicAstrology {
         strengths: 'Strong will, pioneering spirit, divine connection',
         challenges: 'Ego, isolation, impatience',
         islamic_significance: 'Represents Tawhid (Oneness of Allah)',
-        recommended: 'Focus on community service, balance independence with cooperation'
+        recommended:
+          'Focus on community service, balance independence with cooperation'
       },
       2: {
         meaning: 'Ithnan (Duality)',
         qualities: 'Cooperation, harmony, diplomacy, partnership',
         strengths: 'Mediation skills, empathy, relationship building',
         challenges: 'Indecision, dependency, conflict avoidance',
-        islamic_significance: 'Represents balance between worldly and spiritual life',
-        recommended: 'Develop decision-making skills, maintain healthy boundaries'
+        islamic_significance:
+          'Represents balance between worldly and spiritual life',
+        recommended:
+          'Develop decision-making skills, maintain healthy boundaries'
       },
       3: {
         meaning: 'Thalatha (Trinity)',
         qualities: 'Creativity, expression, optimism, social skills',
         strengths: 'Communication, artistic talents, inspiration',
         challenges: 'Scattering energy, superficiality, mood swings',
-        islamic_significance: 'Represents divine mercy, compassion, and creativity',
-        recommended: 'Channel creativity into productive activities, practice focus'
+        islamic_significance:
+          'Represents divine mercy, compassion, and creativity',
+        recommended:
+          'Channel creativity into productive activities, practice focus'
       },
       4: {
         meaning: 'Arba\'a (Foundation)',
         qualities: 'Stability, organization, practicality, hard work',
         strengths: 'Reliability, discipline, building foundations',
         challenges: 'Rigidity, workaholic tendencies, lack of flexibility',
-        islamic_significance: 'Represents four pillars of Islam, stability in faith',
-        recommended: 'Balance work with spiritual practice, embrace change when needed'
+        islamic_significance:
+          'Represents four pillars of Islam, stability in faith',
+        recommended:
+          'Balance work with spiritual practice, embrace change when needed'
       },
       5: {
         meaning: 'Khamsa (Grace)',
@@ -268,7 +477,8 @@ class IslamicAstrology {
         strengths: 'Adaptability, learning ability, freedom of spirit',
         challenges: 'Restlessness, commitment issues, excess freedom',
         islamic_significance: 'Represents five daily prayers, divine grace',
-        recommended: 'Ground yourself in faith, channel freedom into positive exploration'
+        recommended:
+          'Ground yourself in faith, channel freedom into positive exploration'
       },
       6: {
         meaning: 'Sitta (Harmony)',
@@ -276,7 +486,8 @@ class IslamicAstrology {
         strengths: 'Caregiving, teaching, creating harmony',
         challenges: 'Over-responsibility, martyrdom, imbalance',
         islamic_significance: 'Represents balance in all aspects of life',
-        recommended: 'Practice self-care, set healthy boundaries, serve with wisdom'
+        recommended:
+          'Practice self-care, set healthy boundaries, serve with wisdom'
       },
       7: {
         meaning: 'Sab\'a (Spirituality)',
@@ -284,7 +495,8 @@ class IslamicAstrology {
         strengths: 'Deep thinking, spiritual insight, research abilities',
         challenges: 'Isolation, over-analysis, detachment from worldly matters',
         islamic_significance: 'Represents seven heavens, spiritual perfection',
-        recommended: 'Balance contemplation with action, share wisdom with others'
+        recommended:
+          'Balance contemplation with action, share wisdom with others'
       },
       8: {
         meaning: 'Thamaniya (Abundance)',
@@ -299,19 +511,22 @@ class IslamicAstrology {
         qualities: 'Humanitarianism, compassion, completion, wisdom',
         strengths: 'Universal love, healing abilities, completion of cycles',
         challenges: 'Perfectionism, idealism, emotional intensity',
-        islamic_significance: 'Represents ninety-nine names of Allah, divine completion',
+        islamic_significance:
+          'Represents ninety-nine names of Allah, divine completion',
         recommended: 'Accept imperfection, channel compassion into action'
       }
     };
 
-    return analyses[value] || {
-      meaning: 'Unknown',
-      qualities: 'Unique spiritual path',
-      strengths: 'Individual divine guidance',
-      challenges: 'Personal spiritual tests',
-      islamic_significance: 'Special divine purpose',
-      recommended: 'Seek guidance from knowledgeable scholars'
-    };
+    return (
+      analyses[value] || {
+        meaning: 'Unknown',
+        qualities: 'Unique spiritual path',
+        strengths: 'Individual divine guidance',
+        challenges: 'Personal spiritual tests',
+        islamic_significance: 'Special divine purpose',
+        recommended: 'Seek guidance from knowledgeable scholars'
+      }
+    );
   }
 
   /**
@@ -327,13 +542,20 @@ class IslamicAstrology {
       const lunarMansion = this.calculateLunarMansion(birthDate, birthTime);
 
       // Analyze planetary influences
-      const planetaryAnalysis = this.analyzePlanetaryInfluences(birthDate, birthTime);
+      const planetaryAnalysis = this.analyzePlanetaryInfluences(
+        birthDate,
+        birthTime
+      );
 
       // Calculate life path number (Islamic adaptation)
       const lifePath = this.calculateIslamicLifePath(birthDate);
 
       // Generate destiny categories analysis
-      const destinyCategories = this.analyzeDestinyCategories(lunarMansion, planetaryAnalysis, lifePath);
+      const destinyCategories = this.analyzeDestinyCategories(
+        lunarMansion,
+        planetaryAnalysis,
+        lifePath
+      );
 
       return {
         name,
@@ -341,7 +563,11 @@ class IslamicAstrology {
         planetary_influences: planetaryAnalysis,
         life_path: lifePath,
         destiny_categories: destinyCategories,
-        summary: this.generateTaqdeerSummary(name, lunarMansion, destinyCategories)
+        summary: this.generateTaqdeerSummary(
+          name,
+          lunarMansion,
+          destinyCategories
+        )
       };
     } catch (error) {
       logger.error('Error calculating Taqdeer:', error);
@@ -383,14 +609,34 @@ class IslamicAstrology {
     const favorable = mansion.nature === 'Favorable';
 
     return {
-      general_influence: favorable ? 'Positive life flow, opportunities, success' : 'Challenges, tests, spiritual growth',
-      career: favorable ? 'Professional success, recognition, leadership' : 'Career challenges, need for perseverance',
-      relationships: favorable ? 'Harmonious relationships, good marriage' : 'Relationship tests, need for patience',
-      health: favorable ? 'Good health, vitality, protection' : 'Health challenges, need for care',
-      spiritual: favorable ? 'Strong faith, spiritual growth, divine guidance' : 'Spiritual tests, deeper faith development',
+      general_influence: favorable ?
+        'Positive life flow, opportunities, success' :
+        'Challenges, tests, spiritual growth',
+      career: favorable ?
+        'Professional success, recognition, leadership' :
+        'Career challenges, need for perseverance',
+      relationships: favorable ?
+        'Harmonious relationships, good marriage' :
+        'Relationship tests, need for patience',
+      health: favorable ?
+        'Good health, vitality, protection' :
+        'Health challenges, need for care',
+      spiritual: favorable ?
+        'Strong faith, spiritual growth, divine guidance' :
+        'Spiritual tests, deeper faith development',
       recommended_actions: favorable ?
-        ['Express gratitude', 'Help others', 'Maintain faith', 'Seize opportunities'] :
-        ['Patience and prayer', 'Seek knowledge', 'Practice charity', 'Strengthen faith']
+        [
+          'Express gratitude',
+          'Help others',
+          'Maintain faith',
+          'Seize opportunities'
+        ] :
+        [
+          'Patience and prayer',
+          'Seek knowledge',
+          'Practice charity',
+          'Strengthen faith'
+        ]
     };
   }
 
@@ -406,7 +652,15 @@ class IslamicAstrology {
     const dayOfWeek = birthDate.getDay();
 
     // Day of week corresponds to planetary rulership
-    const weekdayPlanets = ['saturn', 'sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus'];
+    const weekdayPlanets = [
+      'saturn',
+      'sun',
+      'moon',
+      'mars',
+      'mercury',
+      'jupiter',
+      'venus'
+    ];
     const rulingPlanet = weekdayPlanets[dayOfWeek];
 
     return {
@@ -424,16 +678,50 @@ class IslamicAstrology {
    */
   getPlanetaryLessons(planet) {
     const lessons = {
-      sun: ['Leadership through service', 'Balance authority with compassion', 'Radiate divine light'],
-      moon: ['Emotional intelligence', 'Balance intuition with logic', 'Nurture spiritual growth'],
-      mars: ['Righteous courage', 'Control anger through faith', 'Defend justice wisely'],
-      mercury: ['Seek divine knowledge', 'Use communication for good', 'Balance intellect with wisdom'],
-      jupiter: ['Share wisdom generously', 'Practice humility', 'Guide others with compassion'],
-      venus: ['Appreciate divine beauty', 'Practice generosity', 'Love unconditionally'],
-      saturn: ['Develop patience', 'Learn through challenges', 'Build character through tests']
+      sun: [
+        'Leadership through service',
+        'Balance authority with compassion',
+        'Radiate divine light'
+      ],
+      moon: [
+        'Emotional intelligence',
+        'Balance intuition with logic',
+        'Nurture spiritual growth'
+      ],
+      mars: [
+        'Righteous courage',
+        'Control anger through faith',
+        'Defend justice wisely'
+      ],
+      mercury: [
+        'Seek divine knowledge',
+        'Use communication for good',
+        'Balance intellect with wisdom'
+      ],
+      jupiter: [
+        'Share wisdom generously',
+        'Practice humility',
+        'Guide others with compassion'
+      ],
+      venus: [
+        'Appreciate divine beauty',
+        'Practice generosity',
+        'Love unconditionally'
+      ],
+      saturn: [
+        'Develop patience',
+        'Learn through challenges',
+        'Build character through tests'
+      ]
     };
 
-    return lessons[planet] || ['Follow divine guidance', 'Seek knowledge', 'Practice patience'];
+    return (
+      lessons[planet] || [
+        'Follow divine guidance',
+        'Seek knowledge',
+        'Practice patience'
+      ]
+    );
   }
 
   /**
@@ -451,7 +739,10 @@ class IslamicAstrology {
     const total = day + month + year;
     let lifePath = total;
     while (lifePath > 9) {
-      lifePath = lifePath.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+      lifePath = lifePath
+        .toString()
+        .split('')
+        .reduce((sum, digit) => sum + parseInt(digit), 0);
     }
 
     return {
@@ -474,9 +765,22 @@ class IslamicAstrology {
     for (const [key, category] of Object.entries(this.taqdeerCategories)) {
       categories[key] = {
         ...category,
-        strength: this.calculateCategoryStrength(key, lunarMansion, planetaryAnalysis, lifePath),
-        challenges: this.identifyCategoryChallenges(key, lunarMansion, planetaryAnalysis),
-        opportunities: this.identifyCategoryOpportunities(key, lunarMansion, planetaryAnalysis)
+        strength: this.calculateCategoryStrength(
+          key,
+          lunarMansion,
+          planetaryAnalysis,
+          lifePath
+        ),
+        challenges: this.identifyCategoryChallenges(
+          key,
+          lunarMansion,
+          planetaryAnalysis
+        ),
+        opportunities: this.identifyCategoryOpportunities(
+          key,
+          lunarMansion,
+          planetaryAnalysis
+        )
       };
     }
 
@@ -491,12 +795,21 @@ class IslamicAstrology {
    * @param {Object} lifePath - Life path
    * @returns {string} Strength level
    */
-  calculateCategoryStrength(category, lunarMansion, planetaryAnalysis, lifePath) {
+  calculateCategoryStrength(
+    category,
+    lunarMansion,
+    planetaryAnalysis,
+    lifePath
+  ) {
     // Simplified calculation based on various factors
     let strength = 0;
 
-    if (lunarMansion.nature === 'Favorable') { strength += 30; }
-    if (lifePath.number >= 5) { strength += 20; }
+    if (lunarMansion.nature === 'Favorable') {
+      strength += 30;
+    }
+    if (lifePath.number >= 5) {
+      strength += 20;
+    }
 
     // Category-specific calculations
     const categoryFactors = {
@@ -510,8 +823,12 @@ class IslamicAstrology {
       strength += 25;
     }
 
-    if (strength >= 60) { return 'Strong'; }
-    if (strength >= 30) { return 'Moderate'; }
+    if (strength >= 60) {
+      return 'Strong';
+    }
+    if (strength >= 30) {
+      return 'Moderate';
+    }
     return 'Developing';
   }
 
@@ -585,7 +902,8 @@ class IslamicAstrology {
     summary += `*Challenges:* ${analysis.challenges}\n\n`;
     summary += `*Islamic Significance:* ${analysis.islamic_significance}\n\n`;
     summary += `*Recommended:* ${analysis.recommended}\n\n`;
-    summary += '🕌 *Remember:* Your name number represents divine qualities bestowed upon you. Use them to serve Allah and benefit humanity.';
+    summary +=
+      '🕌 *Remember:* Your name number represents divine qualities bestowed upon you. Use them to serve Allah and benefit humanity.';
 
     return summary;
   }
@@ -610,13 +928,15 @@ class IslamicAstrology {
     summary += '\n';
 
     summary += '*Key Life Areas:*\n';
-    const strongestCategory = Object.entries(destinyCategories)
-      .reduce((a, b) => (destinyCategories[a[0]].strength === 'Strong' ? a : b));
+    const strongestCategory = Object.entries(destinyCategories).reduce(
+      (a, b) => (destinyCategories[a[0]].strength === 'Strong' ? a : b)
+    );
 
     summary += `• Most Blessed: ${destinyCategories[strongestCategory[0]].name}\n`;
     summary += `• Focus Areas: ${destinyCategories[strongestCategory[0]].aspects.join(', ')}\n\n`;
 
-    summary += '*Divine Guidance:* Your destiny is written by Allah, but you have free will to choose your path. Use prayer, knowledge, and good deeds to fulfill your divine purpose. 🕉️';
+    summary +=
+      '*Divine Guidance:* Your destiny is written by Allah, but you have free will to choose your path. Use prayer, knowledge, and good deeds to fulfill your divine purpose. 🕉️';
 
     return summary;
   }
@@ -627,7 +947,8 @@ class IslamicAstrology {
    * @param {string} location - Location coordinates
    * @returns {Object} Prayer times and periods
    */
-  getIslamicTimes(date, location = '21.3891,39.8579') { // Default to Mecca
+  getIslamicTimes(date, location = '21.3891,39.8579') {
+    // Default to Mecca
     // This would integrate with a prayer times API in production
     // For now, return general Islamic timing guidance
 
@@ -637,8 +958,10 @@ class IslamicAstrology {
       general_guidance: {
         friday: 'Most blessed day - focus on worship and charity',
         ramadan: 'Month of spiritual purification and intensive worship',
-        night_prayer: 'Tahajjud prayer between Isha and Fajr is highly recommended',
-        dua_timing: 'Best times for dua: Friday after Asr, during Ramadan, between prayers'
+        night_prayer:
+          'Tahajjud prayer between Isha and Fajr is highly recommended',
+        dua_timing:
+          'Best times for dua: Friday after Asr, during Ramadan, between prayers'
       }
     };
   }

@@ -170,7 +170,8 @@ describe('WhatsApp Message Processor', () => {
       await processIncomingMessage(message, value);
 
       // Should send profile prompt since user has no birthDetails
-      const expectedProfilePrompt = '👤 *Profile Required*\n\nTo provide accurate Daily Horoscope, I need your birth details:\n\n📅 *Birth Date* (DDMMYY or DDMMYYYY format)\n🕐 *Birth Time* (HHMM format - 24hr)\n📍 *Birth Place* (City, Country)\n\n*Example:*\n150690, 1430, Mumbai, India\n\nSend your birth details in this format, or use the Settings menu to update your profile permanently.';
+      const expectedProfilePrompt =
+        '👤 *Profile Required*\n\nTo provide accurate Daily Horoscope, I need your birth details:\n\n📅 *Birth Date* (DDMMYY or DDMMYYYY format)\n🕐 *Birth Time* (HHMM format - 24hr)\n📍 *Birth Place* (City, Country)\n\n*Example:*\n150690, 1430, Mumbai, India\n\nSend your birth details in this format, or use the Settings menu to update your profile permanently.';
 
       expect(sendMessage).toHaveBeenCalledWith(
         '1234567890',
@@ -204,7 +205,10 @@ describe('WhatsApp Message Processor', () => {
         '1234567890',
         'messages.errors.list_reply',
         'text',
-        { description: 'Check compatibility with a friend', title: 'Check Compatibility' },
+        {
+          description: 'Check compatibility with a friend',
+          title: 'Check Compatibility'
+        },
         'en'
       );
     });

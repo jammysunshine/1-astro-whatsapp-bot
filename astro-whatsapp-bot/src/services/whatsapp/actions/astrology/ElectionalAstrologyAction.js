@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class ElectionalAstrologyAction extends BaseAction {
-  static get actionId() { return 'get_electional_timing'; }
+  static get actionId() {
+    return 'get_electional_timing';
+  }
 
   async execute() {
     try {
@@ -16,7 +18,8 @@ class ElectionalAstrologyAction extends BaseAction {
   }
 
   async sendElectionalAstrologyGuide() {
-    const guide = '🔮 *Electional Astrology - Cosmic Timing Perfection*\n\n' +
+    const guide =
+      '🔮 *Electional Astrology - Cosmic Timing Perfection*\n\n' +
       'Electional astrology chooses the optimal moment for important life events by analyzing planetary placements for success, harmony, and longevity.\n\n' +
       '*📅 PERFECT TIMING FOR:*\n' +
       '• Weddings and marriage ceremonies\n' +
@@ -38,14 +41,19 @@ class ElectionalAstrologyAction extends BaseAction {
       '*Let the universe bless your journey with perfect timing.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, guide, buttons, userLanguage
+      this.phoneNumber,
+      guide,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -54,8 +62,14 @@ class ElectionalAstrologyAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Choose optimal timing for important life events using electional astrology',
-      keywords: ['electional astrology', 'auspicious timing', 'perfect time', 'cosmic timing'],
+      description:
+        'Choose optimal timing for important life events using electional astrology',
+      keywords: [
+        'electional astrology',
+        'auspicious timing',
+        'perfect time',
+        'cosmic timing'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 1800000

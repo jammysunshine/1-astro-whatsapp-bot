@@ -6,7 +6,12 @@ const logger = require('../../../../utils/logger');
 const VedicRemedies = require('../../vedicRemedies');
 
 const handleVedicRemedies = async(message, user) => {
-  if (!message.includes('remedy') && !message.includes('remedies') && !message.includes('gem') && !message.includes('gemstone')) {
+  if (
+    !message.includes('remedy') &&
+    !message.includes('remedies') &&
+    !message.includes('gem') &&
+    !message.includes('gemstone')
+  ) {
     return null;
   }
 

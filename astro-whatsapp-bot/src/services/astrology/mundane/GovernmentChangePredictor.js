@@ -20,7 +20,9 @@ class GovernmentChangePredictor {
     const uranusHouse = chart.planetaryPositions.uranus?.house;
     if (uranusHouse && [1, 4, 7, 10, 11].includes(uranusHouse)) {
       changeProbability += 25;
-      predictions.catalysts.push('Revolutionary energies suggest political upheaval');
+      predictions.catalysts.push(
+        'Revolutionary energies suggest political upheaval'
+      );
       predictions.typesOfChange.push('Sudden reforms or revolutionary changes');
       predictions.timeframes.push('0-6 months from chart date');
     }
@@ -29,7 +31,9 @@ class GovernmentChangePredictor {
     const saturnHouse = chart.planetaryPositions.saturn?.house;
     if (saturnHouse && [6, 8, 12].includes(saturnHouse)) {
       changeProbability += 15;
-      predictions.catalysts.push('Saturn indicates structural governmental limitations');
+      predictions.catalysts.push(
+        'Saturn indicates structural governmental limitations'
+      );
       predictions.typesOfChange.push('Gradual institutional reforms needed');
       predictions.timeframes.push('6-18 months timeframe');
     }
@@ -37,7 +41,9 @@ class GovernmentChangePredictor {
     // Jupiter factors - expansion or benevolent changes
     const jupiterHouse = chart.planetaryPositions.jupiter?.house;
     if (jupiterHouse && [9, 11].includes(jupiterHouse)) {
-      predictions.catalysts.push('Jovian influence suggests beneficial governmental expansion');
+      predictions.catalysts.push(
+        'Jovian influence suggests beneficial governmental expansion'
+      );
       predictions.typesOfChange.push('Positive governance improvements');
     }
 

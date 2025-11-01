@@ -29,7 +29,9 @@ class GroupAstrologyCalculator {
       const { people, analysisType, relationshipType } = requestData;
 
       if (!people || people.length < 2) {
-        return { error: 'At least 2 people required for group astrology analysis' };
+        return {
+          error: 'At least 2 people required for group astrology analysis'
+        };
       }
 
       // Calculate individual charts
@@ -40,24 +42,33 @@ class GroupAstrologyCalculator {
 
       switch (analysisType) {
       case 'compatibility':
-        comparativeAnalysis = await this._generateCompatibilityAnalysis(individualCharts, relationshipType);
+        comparativeAnalysis = await this._generateCompatibilityAnalysis(
+          individualCharts,
+          relationshipType
+        );
         break;
       case 'business_partnership':
-        comparativeAnalysis = await this._generateBusinessPartnershipAnalysis(individualCharts);
+        comparativeAnalysis =
+            await this._generateBusinessPartnershipAnalysis(individualCharts);
         break;
       case 'family_dynamics':
-        comparativeAnalysis = await this._generateFamilyDynamicsAnalysis(individualCharts);
+        comparativeAnalysis =
+            await this._generateFamilyDynamicsAnalysis(individualCharts);
         break;
       case 'synastry':
-        comparativeAnalysis = await this._generateSynastryAnalysis(individualCharts);
+        comparativeAnalysis =
+            await this._generateSynastryAnalysis(individualCharts);
         break;
       default:
-        comparativeAnalysis = await this._generateGeneralComparativeAnalysis(individualCharts);
+        comparativeAnalysis =
+            await this._generateGeneralComparativeAnalysis(individualCharts);
       }
 
       // Generate recommendations
       const recommendations = this._generateGroupRecommendations(
-        comparativeAnalysis, analysisType, relationshipType
+        comparativeAnalysis,
+        analysisType,
+        relationshipType
       );
 
       return {
@@ -92,24 +103,44 @@ class GroupAstrologyCalculator {
         const [hour, minute] = birthTime.split(':').map(Number);
 
         // Get coordinates and timezone
-        const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+        const [latitude, longitude] =
+          await this._getCoordinatesForPlace(birthPlace);
         const birthDateTime = new Date(year, month - 1, day, hour, minute);
         const timestamp = birthDateTime.getTime();
-        const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+        const timezone = await this._getTimezoneForPlace(
+          latitude,
+          longitude,
+          timestamp
+        );
 
         // Calculate natal chart
         charts[personKey] = await this._calculateNatalChart(
-          year, month, day, hour, minute, latitude, longitude, timezone, name
+          year,
+          month,
+          day,
+          hour,
+          minute,
+          latitude,
+          longitude,
+          timezone,
+          name
         );
 
         // Add personality profile
-        charts[personKey].personalityProfile = this._calculatePersonalityProfile(charts[personKey]);
+        charts[personKey].personalityProfile =
+          this._calculatePersonalityProfile(charts[personKey]);
 
         // Add relationship factors
-        charts[personKey].relationshipFactors = this._calculateRelationshipFactors(charts[personKey]);
+        charts[personKey].relationshipFactors =
+          this._calculateRelationshipFactors(charts[personKey]);
       } catch (error) {
-        logger.warn(`Error calculating chart for ${person.name}:`, error.message);
-        charts[personKey] = { error: `Failed to calculate chart for ${person.name}` };
+        logger.warn(
+          `Error calculating chart for ${person.name}:`,
+          error.message
+        );
+        charts[personKey] = {
+          error: `Failed to calculate chart for ${person.name}`
+        };
       }
     }
 
@@ -138,15 +169,24 @@ class GroupAstrologyCalculator {
       };
 
       // Lunar compatibility (Moon signs)
-      const lunarCompatibility = this._analyzeLunarCompatibility(person1, person2);
+      const lunarCompatibility = this._analyzeLunarCompatibility(
+        person1,
+        person2
+      );
       compatibility.compatibilityBreakdown.lunar = lunarCompatibility;
 
       // Venutian compatibility (Venus positions)
-      const venusCompatibility = this._analyzeVenusCompatibility(person1, person2);
+      const venusCompatibility = this._analyzeVenusCompatibility(
+        person1,
+        person2
+      );
       compatibility.compatibilityBreakdown.venus = venusCompatibility;
 
       // Ascendant compatibility
-      const ascendantCompatibility = this._analyzeAscendantCompatibility(person1, person2);
+      const ascendantCompatibility = this._analyzeAscendantCompatibility(
+        person1,
+        person2
+      );
       compatibility.compatibilityBreakdown.ascendant = ascendantCompatibility;
 
       // Planetary aspects between charts
@@ -154,8 +194,12 @@ class GroupAstrologyCalculator {
       compatibility.compatibilityBreakdown.synastry = synastricAspects;
 
       // Calculate overall score
-      const scores = Object.values(compatibility.compatibilityBreakdown).map(item => item.score || 0);
-      compatibility.overallScore = Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length);
+      const scores = Object.values(compatibility.compatibilityBreakdown).map(
+        item => item.score || 0
+      );
+      compatibility.overallScore = Math.round(
+        scores.reduce((sum, score) => sum + score, 0) / scores.length
+      );
 
       // Determine compatibility rating
       if (compatibility.overallScore >= 75) {
@@ -176,7 +220,9 @@ class GroupAstrologyCalculator {
       return { compatibility };
     }
 
-    return { error: 'Need at least two valid charts for compatibility analysis' };
+    return {
+      error: 'Need at least two valid charts for compatibility analysis'
+    };
   }
 
   /**
@@ -273,8 +319,14 @@ class GroupAstrologyCalculator {
     // Detailed synastry aspects
     Object.entries(charts).forEach(([person1Key, person1Chart], i) => {
       Object.entries(charts).forEach(([person2Key, person2Chart], j) => {
-        if (i < j) { // Avoid duplicate comparisons
-          const pairSynastry = this._calculateDetailedSynastry(person1Chart, person2Chart, person1Key, person2Key);
+        if (i < j) {
+          // Avoid duplicate comparisons
+          const pairSynastry = this._calculateDetailedSynastry(
+            person1Chart,
+            person2Chart,
+            person1Key,
+            person2Key
+          );
           synastry.planetaryInteractions.push(...pairSynastry.aspects);
           synastry.houseOverlays.push(...pairSynastry.overlays);
         }
@@ -325,7 +377,10 @@ class GroupAstrologyCalculator {
     const moon2 = person2.planets.moon;
 
     if (!moon1 || !moon2) {
-      return { score: 0, compatibility: 'Unable to analyze lunar compatibility' };
+      return {
+        score: 0,
+        compatibility: 'Unable to analyze lunar compatibility'
+      };
     }
 
     const signDiff = Math.abs(moon1.sign - moon2.sign);
@@ -341,8 +396,12 @@ class GroupAstrologyCalculator {
 
     if (element1 === element2) {
       score += 20; // Same element compatibility
-    } else if ((element1 === 'fire' && element2 === 'air') || (element1 === 'air' && element2 === 'fire') ||
-               (element1 === 'earth' && element2 === 'water') || (element1 === 'water' && element2 === 'earth')) {
+    } else if (
+      (element1 === 'fire' && element2 === 'air') ||
+      (element1 === 'air' && element2 === 'fire') ||
+      (element1 === 'earth' && element2 === 'water') ||
+      (element1 === 'water' && element2 === 'earth')
+    ) {
       score += 15; // Compatible elements
     }
 
@@ -350,16 +409,21 @@ class GroupAstrologyCalculator {
     if (minSignDiff <= 1) {
       score += 10; // Very close - similar emotional nature
     } else if (minSignDiff <= 3) {
-      score += 5;   // Compatible emotional styles
+      score += 5; // Compatible emotional styles
     } else if (minSignDiff >= 6) {
-      score -= 10;  // Opposite emotional approaches
+      score -= 10; // Opposite emotional approaches
     }
 
     return {
       score,
-      compatibility: score >= 70 ? 'Excellent lunar harmony' :
-        score >= 50 ? 'Good emotional compatibility' :
-          score >= 30 ? 'Moderate emotional understanding' : 'Challenging emotional connection',
+      compatibility:
+        score >= 70 ?
+          'Excellent lunar harmony' :
+          score >= 50 ?
+            'Good emotional compatibility' :
+            score >= 30 ?
+              'Moderate emotional understanding' :
+              'Challenging emotional connection',
       moonSigns: { person1: moon1.sign, person2: moon2.sign },
       emotionalSynergy: this._getLunarElementSynergy(element1, element2)
     };
@@ -373,7 +437,10 @@ class GroupAstrologyCalculator {
     const venus2 = person2.planets.venus;
 
     if (!venus1 || !venus2) {
-      return { score: 0, compatibility: 'Unable to analyze Venus compatibility' };
+      return {
+        score: 0,
+        compatibility: 'Unable to analyze Venus compatibility'
+      };
     }
 
     const signDiff = Math.abs(venus1.sign - venus2.sign);
@@ -406,9 +473,14 @@ class GroupAstrologyCalculator {
 
     return {
       score,
-      compatibility: score >= 70 ? 'Excellent value and love compatibility' :
-        score >= 55 ? 'Good romantic understanding' :
-          score >= 40 ? 'Moderate value compatibility' : 'Challenging romantic styles',
+      compatibility:
+        score >= 70 ?
+          'Excellent value and love compatibility' :
+          score >= 55 ?
+            'Good romantic understanding' :
+            score >= 40 ?
+              'Moderate value compatibility' :
+              'Challenging romantic styles',
       venusSigns: { person1: venus1.sign, person2: venus2.sign },
       relationshipStyles: this._getVenusRelationshipStyles(element1, element2)
     };
@@ -439,8 +511,8 @@ class GroupAstrologyCalculator {
       { signs: [6, 12], description: 'Virgo-Pisces service' }
     ];
 
-    const isComplementary = complementaryPairs.some(pair =>
-      (pair.signs.includes(asc1Sign) && pair.signs.includes(asc2Sign))
+    const isComplementary = complementaryPairs.some(
+      pair => pair.signs.includes(asc1Sign) && pair.signs.includes(asc2Sign)
     );
 
     if (isComplementary) {
@@ -453,18 +525,29 @@ class GroupAstrologyCalculator {
 
     return {
       score,
-      compatibility: score >= 70 ? 'Excellent first impression harmony' :
-        score >= 60 ? 'Good interpersonal compatibility' :
-          score >= 45 ? 'Moderate social understanding' : 'Different social approaches',
+      compatibility:
+        score >= 70 ?
+          'Excellent first impression harmony' :
+          score >= 60 ?
+            'Good interpersonal compatibility' :
+            score >= 45 ?
+              'Moderate social understanding' :
+              'Different social approaches',
       ascendantSigns: { person1: asc1Sign, person2: asc2Sign },
-      interactionStyle: isComplementary ? 'Complementary social dynamics' : 'Different but adaptable interaction styles'
+      interactionStyle: isComplementary ?
+        'Complementary social dynamics' :
+        'Different but adaptable interaction styles'
     };
   }
 
   /**
    * Generate group recommendations based on analysis
    */
-  _generateGroupRecommendations(comparativeAnalysis, analysisType, relationshipType) {
+  _generateGroupRecommendations(
+    comparativeAnalysis,
+    analysisType,
+    relationshipType
+  ) {
     const recommendations = {
       general: [],
       specific: [],
@@ -476,17 +559,27 @@ class GroupAstrologyCalculator {
     // Type-specific recommendations
     switch (analysisType) {
     case 'compatibility':
-      recommendations = this._generateCompatibilityRecommendations(comparativeAnalysis.compatibility);
+      recommendations = this._generateCompatibilityRecommendations(
+        comparativeAnalysis.compatibility
+      );
       break;
     case 'business_partnership':
-      recommendations = this._generateBusinessRecommendations(comparativeAnalysis.partnership);
+      recommendations = this._generateBusinessRecommendations(
+        comparativeAnalysis.partnership
+      );
       break;
     case 'family_dynamics':
-      recommendations = this._generateFamilyRecommendations(comparativeAnalysis.family);
+      recommendations = this._generateFamilyRecommendations(
+        comparativeAnalysis.family
+      );
       break;
     default:
-      recommendations.general.push('Maintain open communication and mutual understanding');
-      recommendations.general.push('Focus on complementary qualities rather than differences');
+      recommendations.general.push(
+        'Maintain open communication and mutual understanding'
+      );
+      recommendations.general.push(
+        'Focus on complementary qualities rather than differences'
+      );
     }
 
     return recommendations;
@@ -506,9 +599,11 @@ class GroupAstrologyCalculator {
       summary += `*Overall Compatibility:* ${compat.overallScore}% - ${compat.overallRating}\n\n`;
 
       summary += '*Compatibility Factors:*\n';
-      Object.entries(compat.compatibilityBreakdown).forEach(([factor, data]) => {
-        summary += `• ${factor.charAt(0).toUpperCase() + factor.slice(1)}: ${data.score}/100\n`;
-      });
+      Object.entries(compat.compatibilityBreakdown).forEach(
+        ([factor, data]) => {
+          summary += `• ${factor.charAt(0).toUpperCase() + factor.slice(1)}: ${data.score}/100\n`;
+        }
+      );
     } else if (comparativeAnalysis.partnership) {
       const partner = comparativeAnalysis.partnership;
       summary += `*Business Synergy:* ${partner.businessSynergy}/100\n\n`;
@@ -528,22 +623,43 @@ class GroupAstrologyCalculator {
     summary += '• Address challenging aspects constructively\n';
     summary += '• Leverage strengths for mutual benefit\n\n';
 
-    summary += '*Group astrology reveals the interconnected energies between individuals and their collective potential.*';
+    summary +=
+      '*Group astrology reveals the interconnected energies between individuals and their collective potential.*';
 
     return summary;
   }
 
   // Helper methods for calculations
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone, name) {
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone,
+    name
+  ) {
     // Similar to individual calculators - create basic planetary configuration
-    const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+    const jd = this._dateToJulianDay(
+      year,
+      month,
+      day,
+      hour + minute / 60 - timezone
+    );
 
     const planets = {};
     const planetIds = {
-      sun: sweph.SE_SUN, moon: sweph.SE_MOON, mars: sweph.SE_MARS,
-      mercury: sweph.SE_MERCURY, jupiter: sweph.SE_JUPITER,
-      venus: sweph.SE_VENUS, saturn: sweph.SE_SATURN,
-      rahu: sweph.SE_TRUE_NODE, ketu: sweph.SE_MEAN_APOG
+      sun: sweph.SE_SUN,
+      moon: sweph.SE_MOON,
+      mars: sweph.SE_MARS,
+      mercury: sweph.SE_MERCURY,
+      jupiter: sweph.SE_JUPITER,
+      venus: sweph.SE_VENUS,
+      saturn: sweph.SE_SATURN,
+      rahu: sweph.SE_TRUE_NODE,
+      ketu: sweph.SE_MEAN_APOG
     };
 
     for (const [planetName, planetId] of Object.entries(planetIds)) {
@@ -574,9 +690,15 @@ class GroupAstrologyCalculator {
   _getLunarElementSynergy(element1, element2) {
     if (element1 === element2) {
       return 'Deep emotional understanding and similar instinctive responses';
-    } else if ((element1 === 'water' && element2 === 'earth') || (element1 === 'earth' && element2 === 'water')) {
+    } else if (
+      (element1 === 'water' && element2 === 'earth') ||
+      (element1 === 'earth' && element2 === 'water')
+    ) {
       return 'Stable emotional foundation with nurturance and security';
-    } else if ((element1 === 'fire' && element2 === 'air') || (element1 === 'air' && element2 === 'fire')) {
+    } else if (
+      (element1 === 'fire' && element2 === 'air') ||
+      (element1 === 'air' && element2 === 'fire')
+    ) {
       return 'Dynamic emotional energy and enthusiastic communication';
     }
     return 'Different emotional approaches requiring understanding and adaptation';
@@ -617,7 +739,14 @@ class GroupAstrologyCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + (hour - 12) / 24;
   }
 
@@ -627,7 +756,7 @@ class GroupAstrologyCalculator {
       return [coords.latitude, coords.longitude];
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Delhi
+      return [28.6139, 77.209]; // Delhi
     }
   }
 
@@ -699,9 +828,17 @@ class GroupAstrologyCalculator {
 
   _determineGenerationalRole(chart, index) {
     const roles = [
-      { role: 'Pioneer/Leader', lessons: 'Independence', contribution: 'Direction' },
+      {
+        role: 'Pioneer/Leader',
+        lessons: 'Independence',
+        contribution: 'Direction'
+      },
       { role: 'Peacekeeper', lessons: 'Harmony', contribution: 'Stability' },
-      { role: 'Communicator', lessons: 'Expression', contribution: 'Connection' }
+      {
+        role: 'Communicator',
+        lessons: 'Expression',
+        contribution: 'Connection'
+      }
     ];
     return roles[index % roles.length];
   }
@@ -722,7 +859,14 @@ class GroupAstrologyCalculator {
 
   _calculateDetailedSynastry(person1, person2, person1Key, person2Key) {
     return {
-      aspects: [{ planet1: 'venus', planet2: 'mars', aspect: 'conjunction', significance: 'Strong attraction' }],
+      aspects: [
+        {
+          planet1: 'venus',
+          planet2: 'mars',
+          aspect: 'conjunction',
+          significance: 'Strong attraction'
+        }
+      ],
       overlays: [{ house: 7, overlay: 'Mutual 7th house activation' }]
     };
   }
@@ -736,11 +880,19 @@ class GroupAstrologyCalculator {
   }
 
   _findSharedElements(charts) {
-    return ['Similar values', 'Shared goals', 'Compatible communication styles'];
+    return [
+      'Similar values',
+      'Shared goals',
+      'Compatible communication styles'
+    ];
   }
 
   _findComplementaryFactors(charts) {
-    return ['Different skill sets', 'Balanced energies', 'Mutual learning opportunities'];
+    return [
+      'Different skill sets',
+      'Balanced energies',
+      'Mutual learning opportunities'
+    ];
   }
 
   _analyzeGroupStrengths(charts) {
@@ -758,7 +910,10 @@ class GroupAstrologyCalculator {
   _generateCompatibilityRecommendations(compatibility) {
     return {
       general: ['Focus on shared values and emotional understanding'],
-      specific: ['Develop communication skills', 'Practice patience during differences'],
+      specific: [
+        'Develop communication skills',
+        'Practice patience during differences'
+      ],
       timing: ['Plan important discussions during favorable lunar transits'],
       strengthening: ['Joint meditation', 'Shared activities'],
       precautions: ['Avoid decision-making during stressful transits']
@@ -768,7 +923,10 @@ class GroupAstrologyCalculator {
   _generateBusinessRecommendations(partnership) {
     return {
       general: ['Define clear roles and responsibilities'],
-      specific: ['Leverage complementary skills', 'Establish communication protocols'],
+      specific: [
+        'Leverage complementary skills',
+        'Establish communication protocols'
+      ],
       timing: ['Launch during favorable Jupiter transits'],
       strengthening: ['Regular strategy meetings', 'Shared vision exercises'],
       precautions: ['Have clear conflict resolution processes']

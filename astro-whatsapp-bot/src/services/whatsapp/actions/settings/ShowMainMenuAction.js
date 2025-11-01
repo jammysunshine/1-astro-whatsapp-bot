@@ -44,7 +44,11 @@ class ShowMainMenuAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error showing main menu:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -55,11 +59,7 @@ class ShowMainMenuAction extends BaseAction {
    */
   async sendMainMenu(mainMenu, userLanguage) {
     try {
-      await sendMessage(
-        this.phoneNumber,
-        mainMenu,
-        'interactive'
-      );
+      await sendMessage(this.phoneNumber, mainMenu, 'interactive');
     } catch (error) {
       this.logger.error('Error sending main menu:', error);
       await this.sendFallbackMenu(userLanguage);
@@ -83,11 +83,7 @@ class ShowMainMenuAction extends BaseAction {
         userLanguage
       );
 
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
+      await sendMessage(message.to, message.interactive, 'interactive');
     } catch (error) {
       this.logger.error('Error sending fallback menu:', error);
       // Final fallback to plain text
@@ -102,8 +98,12 @@ class ShowMainMenuAction extends BaseAction {
    */
   buildFallbackMenu(userLanguage) {
     return {
-      body: this.getTranslatedContent('messages.menus.main.welcome', userLanguage) ||
-           '🕉️ *Welcome to Astro Insights*\n\nDiscover your cosmic blueprint through ancient wisdom and modern astrology.',
+      body:
+        this.getTranslatedContent(
+          'messages.menus.main.welcome',
+          userLanguage
+        ) ||
+        '🕉️ *Welcome to Astro Insights*\n\nDiscover your cosmic blueprint through ancient wisdom and modern astrology.',
 
       sections: [
         {
@@ -208,8 +208,10 @@ class ShowMainMenuAction extends BaseAction {
   buildTextMenu(userLanguage) {
     return `🕉️ *Astro Insights - Main Menu*
 
-${this.getTranslatedContent('messages.menus.main.welcome', userLanguage) ||
-  'Discover your cosmic blueprint through ancient wisdom.'}
+${
+  this.getTranslatedContent('messages.menus.main.welcome', userLanguage) ||
+  'Discover your cosmic blueprint through ancient wisdom.'
+}
 
 *Available Services:*
 
@@ -250,7 +252,10 @@ Type "menu" to see this menu again.`;
     try {
       // If translation service is available, use it
       if (typeof global.translationService !== 'undefined') {
-        return global.translationService.translate(key, language) || this.getDefaultContent(key);
+        return (
+          global.translationService.translate(key, language) ||
+          this.getDefaultContent(key)
+        );
       }
     } catch (error) {
       // Ignore translation errors
@@ -265,7 +270,8 @@ Type "menu" to see this menu again.`;
    */
   getDefaultContent(key) {
     const defaults = {
-      'messages.menus.main.welcome': '🕉️ *Welcome to Astro Insights*\n\nDiscover your cosmic blueprint through ancient wisdom and modern astrology.',
+      'messages.menus.main.welcome':
+        '🕉️ *Welcome to Astro Insights*\n\nDiscover your cosmic blueprint through ancient wisdom and modern astrology.',
       'menu.section.astrology': '🔮 Astrology Services',
       'menu.daily_horoscope': '☀️ Daily Horoscope'
       // Add more defaults as needed
@@ -278,7 +284,8 @@ Type "menu" to see this menu again.`;
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = 'Sorry, I couldn\'t display the main menu right now. Please try again by typing "menu".';
+    const errorMessage =
+      'Sorry, I couldn\'t display the main menu right now. Please try again by typing "menu".';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 

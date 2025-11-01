@@ -41,7 +41,9 @@ class UserDataManager {
       const user = new User(userData);
       await user.save();
 
-      this.logger.info(`🆕 Created new user: ${phoneNumber} with name: ${user.name}`);
+      this.logger.info(
+        `🆕 Created new user: ${phoneNumber} with name: ${user.name}`
+      );
       return user.toObject();
     } catch (error) {
       this.logger.error(`❌ Error creating user ${phoneNumber}:`, error);
@@ -77,7 +79,10 @@ class UserDataManager {
    */
   async updateUserProfile(phoneNumber, updateData) {
     try {
-      this.logger.info(`Attempting to update user profile for ${phoneNumber} with data:`, updateData);
+      this.logger.info(
+        `Attempting to update user profile for ${phoneNumber} with data:`,
+        updateData
+      );
 
       const user = await User.findOneAndUpdate(
         { phoneNumber },
@@ -96,7 +101,9 @@ class UserDataManager {
         throw new Error(`User not found: ${phoneNumber}`);
       }
 
-      this.logger.info(`🔄 Updated user profile: ${phoneNumber}. New profileComplete status: ${user.profileComplete}`);
+      this.logger.info(
+        `🔄 Updated user profile: ${phoneNumber}. New profileComplete status: ${user.profileComplete}`
+      );
       return user.toObject();
     } catch (error) {
       this.logger.error(`❌ Error updating user ${phoneNumber}:`, error);
@@ -112,17 +119,31 @@ class UserDataManager {
    * @param {string} birthPlace - Birth place (City, Country)
    * @returns {Promise<Object>} Updated user object
    */
-  async addBirthDetails(phoneNumber, birthDate, birthTime = null, birthPlace = null) {
+  async addBirthDetails(
+    phoneNumber,
+    birthDate,
+    birthTime = null,
+    birthPlace = null
+  ) {
     try {
       const updateData = {
         birthDate,
         birthTime,
         birthPlace,
-        profileComplete: !!(birthDate && birthDate.trim() && birthPlace && birthPlace.trim())
+        profileComplete: !!(
+          birthDate &&
+          birthDate.trim() &&
+          birthPlace &&
+          birthPlace.trim()
+        )
       };
 
-      this.logger.info(`🎂 Setting profileComplete to ${updateData.profileComplete} for user: ${phoneNumber}`);
-      this.logger.info(`🎂 Birth data: date=${birthDate}, time=${birthTime}, place=${birthPlace}`);
+      this.logger.info(
+        `🎂 Setting profileComplete to ${updateData.profileComplete} for user: ${phoneNumber}`
+      );
+      this.logger.info(
+        `🎂 Birth data: date=${birthDate}, time=${birthTime}, place=${birthPlace}`
+      );
 
       const user = await User.findOneAndUpdate({ phoneNumber }, updateData, {
         new: true,
@@ -137,7 +158,10 @@ class UserDataManager {
       this.logger.info(`📊 Profile completion status: ${user.profileComplete}`);
       return user.toObject();
     } catch (error) {
-      this.logger.error(`❌ Error adding birth details for ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error adding birth details for ${phoneNumber}:`,
+        error
+      );
       throw error;
     }
   }

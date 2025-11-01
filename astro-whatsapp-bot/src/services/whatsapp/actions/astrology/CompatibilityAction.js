@@ -23,7 +23,10 @@ class CompatibilityAction extends AstrologyAction {
       this.logAstrologyExecution('start', 'Initiating compatibility flow');
 
       // Unified profile validation from base class
-      const validation = await this.validateProfileAndLimits('Compatibility Analysis', 'compatibility_couple');
+      const validation = await this.validateProfileAndLimits(
+        'Compatibility Analysis',
+        'compatibility_couple'
+      );
       if (!validation.success) {
         return validation;
       }
@@ -32,7 +35,10 @@ class CompatibilityAction extends AstrologyAction {
       const promptContent = this.getCompatibilityPromptMessage();
       await this.sendDirectMessage(promptContent);
 
-      this.logAstrologyExecution('complete', 'Compatibility flow initiated successfully');
+      this.logAstrologyExecution(
+        'complete',
+        'Compatibility flow initiated successfully'
+      );
       return {
         success: true,
         type: 'compatibility_flow_start',
@@ -41,7 +47,11 @@ class CompatibilityAction extends AstrologyAction {
     } catch (error) {
       this.logger.error('Error in CompatibilityAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -68,10 +78,12 @@ class CompatibilityAction extends AstrologyAction {
    * @returns {boolean} True if valid
    */
   validatePartnerData(partnerData) {
-    return partnerData &&
-           partnerData.birthDate &&
-           partnerData.birthTime &&
-           partnerData.birthPlace;
+    return (
+      partnerData &&
+      partnerData.birthDate &&
+      partnerData.birthTime &&
+      partnerData.birthPlace
+    );
   }
 
   /**
@@ -86,8 +98,14 @@ class CompatibilityAction extends AstrologyAction {
         throw new Error('User data not available for compatibility analysis');
       }
 
-      if (!this.user.birthDate || !this.user.birthTime || !this.user.birthPlace) {
-        throw new Error('User must complete birth profile with date, time, and place for compatibility analysis');
+      if (
+        !this.user.birthDate ||
+        !this.user.birthTime ||
+        !this.user.birthPlace
+      ) {
+        throw new Error(
+          'User must complete birth profile with date, time, and place for compatibility analysis'
+        );
       }
 
       if (!this.validatePartnerData(partnerData)) {
@@ -115,7 +133,9 @@ class CompatibilityAction extends AstrologyAction {
       };
 
       // Calculate compatibility using new service
-      const compatibility = await compatibilityService.processCalculation({ compatibilityData });
+      const compatibility = await compatibilityService.processCalculation({
+        compatibilityData
+      });
 
       return compatibility;
     } catch (error) {
@@ -132,7 +152,13 @@ class CompatibilityAction extends AstrologyAction {
     return {
       id: this.actionId,
       description: 'Analyze relationship compatibility through synastry charts',
-      keywords: ['compatibility', 'synastry', 'relationship', 'match', 'partner'],
+      keywords: [
+        'compatibility',
+        'synastry',
+        'relationship',
+        'match',
+        'partner'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 300000, // 5 minutes between compatibility analyses

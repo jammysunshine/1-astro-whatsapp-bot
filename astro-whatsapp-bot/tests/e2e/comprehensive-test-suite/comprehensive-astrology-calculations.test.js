@@ -5,8 +5,14 @@
  * Birth Data (67), Location-Based (28), Planetary Configurations (19)
  */
 
-const { TestDatabaseManager, setupWhatsAppMocks, getWhatsAppIntegration } = require('../../utils/testSetup');
-const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
+const {
+  TestDatabaseManager,
+  setupWhatsAppMocks,
+  getWhatsAppIntegration
+} = require('../../utils/testSetup');
+const {
+  processIncomingMessage
+} = require('../../../src/services/whatsapp/messageProcessor');
 
 describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 tests)', () => {
   let dbManager;
@@ -33,118 +39,280 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
   describe('Birth Data Edge Cases (67 tests)', () => {
     test('calculates chart accurately for exact solstice birth moment', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '21121990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1007' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Greenwich, UK' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '21121990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1007' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Greenwich, UK' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Birth Chart' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
-        expect.stringContaining('Calculating your birth chart for the exact moment of the solstice')
+        expect.stringContaining(
+          'Calculating your birth chart for the exact moment of the solstice'
+        )
       );
     });
 
     test('handles February 29th leap year birth correctly', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '29021992' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1200' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '29021992' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1200' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'London, UK' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Birth Chart' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
-        expect.stringContaining('Calculating your birth chart, correctly accounting for the leap day')
+        expect.stringContaining(
+          'Calculating your birth chart, correctly accounting for the leap day'
+        )
       );
     });
 
     test('handles polar latitude birth calculations', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1200' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'North Pole' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1200' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'North Pole' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
     test('incorporates eclipse energy in birth chart', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '16072000' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1333' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '16072000' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1333' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'London, UK' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Birth Chart' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
-        expect.stringContaining('eclipse indicates significant planetary influence')
+        expect.stringContaining(
+          'eclipse indicates significant planetary influence'
+        )
       );
     });
 
     test('calculates accurate midnight boundary charts', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '01011990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '2359' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '01011990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '2359' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'London, UK' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
     test('accurately calculates pre-1900 historical charts', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '01011850' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1200' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '01011850' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1200' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'London, UK' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
     test('handles ancient birth date astronomical verification', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '01010001' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1200' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Rome, Italy' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '01010001' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1200' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Rome, Italy' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
     test('provides future birth predictive calculations', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '01012050' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1200' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'New York, USA' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '01012050' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1200' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'New York, USA' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Predictive Chart' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Predictive Chart' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
-        expect.stringContaining('future planetary transits and progressions are calculated accurately')
+        expect.stringContaining(
+          'future planetary transits and progressions are calculated accurately'
+        )
       );
     });
 
     test('reproduces famous birth charts accurately', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '29081958' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '2200' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Gary, Indiana, USA' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '29081958' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '2200' } },
+        {}
+      );
+      await processIncomingMessage(
+        {
+          from: phoneNumber,
+          type: 'text',
+          text: { body: 'Gary, Indiana, USA' }
+        },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Birth Chart' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Birth Chart' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Michael Jackson')
@@ -153,31 +321,76 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
 
     test('maintains accuracy with seconds-level precision', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '143015' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Mumbai, India' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '143015' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Mumbai, India' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
     test('handles global timezone offset calculations correctly', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Tokyo, Japan' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1430' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Tokyo, Japan' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
     test('correctly handles DST transition adjustments', async() => {
       const phoneNumber = '+calc_test_user';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '28031993' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '0130' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '28031993' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '0130' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'London, UK' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
     });
 
@@ -187,7 +400,9 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
     });
 
     test('processes birth charts for mountains and subterranean locations', async() => {
-      console.log('✅ Mountain/subterranean location calculation structure validated');
+      console.log(
+        '✅ Mountain/subterranean location calculation structure validated'
+      );
     });
 
     test('calculates mobile births for planes/cars with motion', async() => {
@@ -199,11 +414,15 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
     });
 
     test('incorporates historical battleground karmic influences', async() => {
-      console.log('✅ Historical battleground karmic calculation structure validated');
+      console.log(
+        '✅ Historical battleground karmic calculation structure validated'
+      );
     });
 
     test('considers natural disaster environmental energy patterns', async() => {
-      console.log('✅ Natural disaster environmental energy calculation structure validated');
+      console.log(
+        '✅ Natural disaster environmental energy calculation structure validated'
+      );
     });
 
     // 67 total birth data tests completed
@@ -227,7 +446,9 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
     });
 
     test('calculates moving location charts for aircraft/airports', async() => {
-      console.log('✅ Aircraft moving location calculation structure validated');
+      console.log(
+        '✅ Aircraft moving location calculation structure validated'
+      );
     });
 
     test('integrates sacred site spiritual geographic energy', async() => {
@@ -260,7 +481,9 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
     });
 
     test('handles multiple planet conjunction complexity', async() => {
-      console.log('✅ Multiple planet conjunction calculation structure validated');
+      console.log(
+        '✅ Multiple planet conjunction calculation structure validated'
+      );
     });
 
     test('incorporates eclipse energy during planetary birth moments', async() => {
@@ -280,7 +503,9 @@ describe('COMPREHENSIVE ASTROLOGY CALCULATIONS: Birth Charts & Predictions (114 
     });
 
     test('recognizes Kite formation unique opportunity signatures', async() => {
-      console.log('✅ Kite formation opportunity signature structure validated');
+      console.log(
+        '✅ Kite formation opportunity signature structure validated'
+      );
     });
 
     test('analyzes complex aspect web energy flow patterns', async() => {

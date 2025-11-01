@@ -5,7 +5,9 @@ const MediaMessageProcessor = require('../../../../src/services/whatsapp/process
 
 // Mock dependencies
 jest.mock('../../../../src/services/whatsapp/processors/TextMessageProcessor');
-jest.mock('../../../../src/services/whatsapp/processors/InteractiveMessageProcessor');
+jest.mock(
+  '../../../../src/services/whatsapp/processors/InteractiveMessageProcessor'
+);
 jest.mock('../../../../src/services/whatsapp/processors/MediaMessageProcessor');
 jest.mock('../../../../src/utils/logger');
 jest.mock('../../../../src/models/userModel');
@@ -43,7 +45,9 @@ describe('MessageCoordinator', () => {
 
     // Mock constructors
     TextMessageProcessor.mockImplementation(() => mockTextProcessor);
-    InteractiveMessageProcessor.mockImplementation(() => mockInteractiveProcessor);
+    InteractiveMessageProcessor.mockImplementation(
+      () => mockInteractiveProcessor
+    );
     MediaMessageProcessor.mockImplementation(() => mockMediaProcessor);
 
     // Mock other modules
@@ -68,10 +72,14 @@ describe('MessageCoordinator', () => {
   describe('Initialization', () => {
     test('should initialize with all processors', () => {
       expect(TextMessageProcessor).toHaveBeenCalled();
-      expect(InteractiveMessageProcessor).toHaveBeenCalledWith(coordinator.registry);
+      expect(InteractiveMessageProcessor).toHaveBeenCalledWith(
+        coordinator.registry
+      );
       expect(MediaMessageProcessor).toHaveBeenCalled();
 
-      expect(mockLogger.info).toHaveBeenCalledWith('🎯 MessageCoordinator initialized with Strategy pattern');
+      expect(mockLogger.info).toHaveBeenCalledWith(
+        '🎯 MessageCoordinator initialized with Strategy pattern'
+      );
     });
 
     test('should have registry instance', () => {
@@ -93,8 +101,9 @@ describe('MessageCoordinator', () => {
       const message = null;
       const phoneNumber = null;
 
-      await expect(coordinator.validateMessage(message, phoneNumber))
-        .resolves.toBe(false);
+      await expect(
+        coordinator.validateMessage(message, phoneNumber)
+      ).resolves.toBe(false);
     });
 
     test('should reject missing environment variables', async() => {
@@ -106,7 +115,9 @@ describe('MessageCoordinator', () => {
 
       const result = await coordinator.validateMessage(message, phoneNumber);
       expect(result).toBe(false);
-      expect(mockLogger.error).toHaveBeenCalledWith('❌ Missing required WhatsApp environment variables');
+      expect(mockLogger.error).toHaveBeenCalledWith(
+        '❌ Missing required WhatsApp environment variables'
+      );
     });
   });
 
@@ -121,7 +132,11 @@ describe('MessageCoordinator', () => {
       const user = { id: '1', profileComplete: true, isNew: false };
       const message = { type: 'text' };
 
-      const result = await coordinator.handleUserOnboarding(message, user, '+123');
+      const result = await coordinator.handleUserOnboarding(
+        message,
+        user,
+        '+123'
+      );
       expect(result).toBe(true);
       expect(mockFlowEngine.processFlowMessage).not.toHaveBeenCalled();
     });
@@ -132,9 +147,17 @@ describe('MessageCoordinator', () => {
 
       mockFlowEngine.processFlowMessage.mockResolvedValue(null);
 
-      const result = await coordinator.handleUserOnboarding(message, user, '+123');
+      const result = await coordinator.handleUserOnboarding(
+        message,
+        user,
+        '+123'
+      );
       expect(result).toBe(false); // Should stop processing
-      expect(mockFlowEngine.processFlowMessage).toHaveBeenCalledWith(message, user, 'onboarding');
+      expect(mockFlowEngine.processFlowMessage).toHaveBeenCalledWith(
+        message,
+        user,
+        'onboarding'
+      );
     });
 
     test('should handle onboarding for incomplete profiles', async() => {
@@ -143,9 +166,17 @@ describe('MessageCoordinator', () => {
 
       mockFlowEngine.processFlowMessage.mockResolvedValue(null);
 
-      const result = await coordinator.handleUserOnboarding(message, user, '+123');
+      const result = await coordinator.handleUserOnboarding(
+        message,
+        user,
+        '+123'
+      );
       expect(result).toBe(false);
-      expect(mockFlowEngine.processFlowMessage).toHaveBeenCalledWith(message, user, 'onboarding');
+      expect(mockFlowEngine.processFlowMessage).toHaveBeenCalledWith(
+        message,
+        user,
+        'onboarding'
+      );
     });
   });
 
@@ -166,7 +197,11 @@ describe('MessageCoordinator', () => {
 
       await coordinator.routeToProcessor(message, user, '+123');
 
-      expect(mockTextProcessor.process).toHaveBeenCalledWith(message, user, '+123');
+      expect(mockTextProcessor.process).toHaveBeenCalledWith(
+        message,
+        user,
+        '+123'
+      );
       expect(mockInteractiveProcessor.process).not.toHaveBeenCalled();
       expect(mockMediaProcessor.process).not.toHaveBeenCalled();
     });
@@ -179,7 +214,11 @@ describe('MessageCoordinator', () => {
 
       await coordinator.routeToProcessor(message, user, '+123');
 
-      expect(mockInteractiveProcessor.process).toHaveBeenCalledWith(message, user, '+123');
+      expect(mockInteractiveProcessor.process).toHaveBeenCalledWith(
+        message,
+        user,
+        '+123'
+      );
       expect(mockTextProcessor.process).not.toHaveBeenCalled();
       expect(mockMediaProcessor.process).not.toHaveBeenCalled();
     });
@@ -192,7 +231,9 @@ describe('MessageCoordinator', () => {
 
       await coordinator.routeToProcessor(message, user, '+123');
 
-      expect(mockInteractiveProcessor.processButtonMessage).toHaveBeenCalledWith(message, user, '+123');
+      expect(
+        mockInteractiveProcessor.processButtonMessage
+      ).toHaveBeenCalledWith(message, user, '+123');
       expect(mockTextProcessor.process).not.toHaveBeenCalled();
       expect(mockMediaProcessor.process).not.toHaveBeenCalled();
     });
@@ -205,7 +246,11 @@ describe('MessageCoordinator', () => {
 
       await coordinator.routeToProcessor(message, user, '+123');
 
-      expect(mockMediaProcessor.process).toHaveBeenCalledWith(message, user, '+123');
+      expect(mockMediaProcessor.process).toHaveBeenCalledWith(
+        message,
+        user,
+        '+123'
+      );
       expect(mockTextProcessor.process).not.toHaveBeenCalled();
       expect(mockInteractiveProcessor.process).not.toHaveBeenCalled();
     });
@@ -218,7 +263,9 @@ describe('MessageCoordinator', () => {
 
       await coordinator.routeToProcessor(message, user, '+123');
 
-      expect(mockLogger.warn).toHaveBeenCalledWith('⚠️ Unsupported message type: unsupported');
+      expect(mockLogger.warn).toHaveBeenCalledWith(
+        '⚠️ Unsupported message type: unsupported'
+      );
       // Note: sendUnsupportedMessageTypeResponse test would require mocking sendMessage
     });
   });
@@ -255,10 +302,17 @@ describe('MessageCoordinator', () => {
       expect(mockUserModel.getUserByPhone).toHaveBeenCalledWith('+1234567890');
 
       // Verify message processing
-      expect(mockTextProcessor.process).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
+      expect(mockTextProcessor.process).toHaveBeenCalledWith(
+        message,
+        expect.any(Object),
+        '+1234567890'
+      );
 
       // Verify interaction timestamp update
-      expect(mockUserModel.updateUserProfile).toHaveBeenCalledWith('+1234567890', expect.any(Object));
+      expect(mockUserModel.updateUserProfile).toHaveBeenCalledWith(
+        '+1234567890',
+        expect.any(Object)
+      );
     });
 
     test('should handle new user creation', async() => {
@@ -269,20 +323,30 @@ describe('MessageCoordinator', () => {
         isNew: true
       });
 
-      const message = { type: 'text', from: '+1234567890', text: { body: 'hello' } };
+      const message = {
+        type: 'text',
+        from: '+1234567890',
+        text: { body: 'hello' }
+      };
 
       mockFlowEngine.processFlowMessage.mockResolvedValue(null);
 
       await coordinator.processIncomingMessage(message, { entry: [{}] });
 
       expect(mockUserModel.createUser).toHaveBeenCalledWith('+1234567890');
-      expect(mockFlowEngine.processFlowMessage).toHaveBeenCalledWith(message, expect.any(Object), 'onboarding');
+      expect(mockFlowEngine.processFlowMessage).toHaveBeenCalledWith(
+        message,
+        expect.any(Object),
+        'onboarding'
+      );
     });
 
     test('should handle global errors', async() => {
       // Force an error in validation
       const originalValidate = coordinator.validateMessage;
-      coordinator.validateMessage = jest.fn().mockRejectedValue(new Error('Test error'));
+      coordinator.validateMessage = jest
+        .fn()
+        .mockRejectedValue(new Error('Test error'));
 
       // Mock sendMessage for error handling
       const mockSendMessage = jest.fn();
@@ -298,11 +362,16 @@ describe('MessageCoordinator', () => {
       const message = { type: 'text', from: '+1234567890' };
       const value = { entry: [{}] };
 
-      freshCoordinator.validateMessage = jest.fn().mockRejectedValue(new Error('Test error'));
+      freshCoordinator.validateMessage = jest
+        .fn()
+        .mockRejectedValue(new Error('Test error'));
 
       await freshCoordinator.processIncomingMessage(message, value);
 
-      expect(mockLogger.error).toHaveBeenCalledWith('❌ Global error processing message from +1234567890:', 'Test error');
+      expect(mockLogger.error).toHaveBeenCalledWith(
+        '❌ Global error processing message from +1234567890:',
+        'Test error'
+      );
     });
   });
 
@@ -333,7 +402,9 @@ describe('MessageCoordinator', () => {
     test('should detect registry issues', () => {
       // Temporarily break registry validation
       const originalValidate = coordinator.registry.validate;
-      coordinator.registry.validate = jest.fn().mockReturnValue({ isValid: false, errors: ['Test error'] });
+      coordinator.registry.validate = jest
+        .fn()
+        .mockReturnValue({ isValid: false, errors: ['Test error'] });
 
       const health = coordinator.healthCheck();
 

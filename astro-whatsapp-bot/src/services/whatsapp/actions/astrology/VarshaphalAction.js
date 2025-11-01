@@ -87,7 +87,10 @@ class VarshaphalAction extends BaseAction {
     }
 
     // Tajika Yogas
-    if (analysis.sections['Tajika Yogas'] && analysis.sections['Tajika Yogas'].length > 0) {
+    if (
+      analysis.sections['Tajika Yogas'] &&
+      analysis.sections['Tajika Yogas'].length > 0
+    ) {
       response += t.tajikaYogas;
       const yogas = analysis.sections['Tajika Yogas'].slice(0, 4); // Limit to 4 major yogas
       yogas.forEach(yoga => {
@@ -107,7 +110,10 @@ class VarshaphalAction extends BaseAction {
     }
 
     // Patyayini Dasa
-    if (analysis.sections['Patyayini Dasa'] && analysis.sections['Patyayini Dasa'].length > 0) {
+    if (
+      analysis.sections['Patyayini Dasa'] &&
+      analysis.sections['Patyayini Dasa'].length > 0
+    ) {
       response += t.patyayiniDasa;
       const dasaPeriods = analysis.sections['Patyayini Dasa'].slice(0, 6); // Show first 6 periods
       dasaPeriods.forEach(dasa => {

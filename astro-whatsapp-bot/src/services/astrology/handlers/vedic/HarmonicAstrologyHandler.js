@@ -5,27 +5,52 @@
 const logger = require('../../../../utils/logger');
 
 const handleHarmonicAstrology = async(message, user) => {
-  if (!message.includes('harmonic') && !message.includes('cycle') && !message.includes('rhythm') && !message.includes('pattern')) {
+  if (
+    !message.includes('harmonic') &&
+    !message.includes('cycle') &&
+    !message.includes('rhythm') &&
+    !message.includes('pattern')
+  ) {
     return null;
   }
 
   try {
     // Simple harmonic astrology response using basic life cycle analysis
-    const currentAge = user.birthDate ? new Date().getFullYear() - new Date(user.birthDate.split('/').reverse().join('-')).getFullYear() : 30;
+    const currentAge = user.birthDate ?
+      new Date().getFullYear() -
+        new Date(user.birthDate.split('/').reverse().join('-')).getFullYear() :
+      30;
 
     const lifeCycles = [
-      { phase: 'Foundation', age: '0-20 years', themes: 'Building basics, learning, self-discovery' },
-      { phase: 'Development', age: '21-35 years', themes: 'Career, relationships, establishing independence' },
-      { phase: 'Mastery', age: '36-50 years', themes: 'Leadership, wisdom, major life contributions' },
-      { phase: 'Reflection', age: '51+ years', themes: 'Legacy, inner peace, guiding others' }
+      {
+        phase: 'Foundation',
+        age: '0-20 years',
+        themes: 'Building basics, learning, self-discovery'
+      },
+      {
+        phase: 'Development',
+        age: '21-35 years',
+        themes: 'Career, relationships, establishing independence'
+      },
+      {
+        phase: 'Mastery',
+        age: '36-50 years',
+        themes: 'Leadership, wisdom, major life contributions'
+      },
+      {
+        phase: 'Reflection',
+        age: '51+ years',
+        themes: 'Legacy, inner peace, guiding others'
+      }
     ];
 
-    const currentCycle = lifeCycles.find(cycle => {
-      const ageRange = cycle.age.split('-');
-      const minAge = parseInt(ageRange[0]);
-      const maxAge = parseInt(ageRange[1]) || 100; // Handle '51+ years'
-      return currentAge >= minAge && currentAge <= maxAge;
-    }) || lifeCycles[1];
+    const currentCycle =
+      lifeCycles.find(cycle => {
+        const ageRange = cycle.age.split('-');
+        const minAge = parseInt(ageRange[0]);
+        const maxAge = parseInt(ageRange[1]) || 100; // Handle '51+ years'
+        return currentAge >= minAge && currentAge <= maxAge;
+      }) || lifeCycles[1];
 
     const cycleInsights = [
       'Life follows predictable metamorphic phases',

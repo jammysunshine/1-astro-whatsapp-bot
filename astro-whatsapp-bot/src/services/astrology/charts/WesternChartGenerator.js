@@ -12,7 +12,9 @@ class WesternChartGenerator {
     this.geocodingService = geocodingService;
     this.vedicCore = vedicCore;
     this.calculations = new AstrologicalCalculations(vedicCore);
-    logger.info('Module: WesternChartGenerator loaded for Western astrology calculations');
+    logger.info(
+      'Module: WesternChartGenerator loaded for Western astrology calculations'
+    );
   }
 
   /**
@@ -30,15 +32,26 @@ class WesternChartGenerator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+      const locationInfo =
+        await this.geocodingService.getLocationInfo(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
 
       // Calculate Julian Day
-      const jd = this.calculations.dateToJulianDay(year, month, day, hour + minute / 60);
+      const jd = this.calculations.dateToJulianDay(
+        year,
+        month,
+        day,
+        hour + minute / 60
+      );
 
       // Calculate houses
-      const houses = this.calculations.calculateHouses(jd, locationInfo.latitude, locationInfo.longitude, houseSystem);
+      const houses = this.calculations.calculateHouses(
+        jd,
+        locationInfo.latitude,
+        locationInfo.longitude,
+        houseSystem
+      );
 
       // Calculate planetary positions
       const planets = {};
@@ -59,13 +72,30 @@ class WesternChartGenerator {
             const longitude = position.longitude[0];
             const speed = position.longitude[1];
             const signIndex = Math.floor(longitude / 30);
-            const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+            const signs = [
+              'Aries',
+              'Taurus',
+              'Gemini',
+              'Cancer',
+              'Leo',
+              'Virgo',
+              'Libra',
+              'Scorpio',
+              'Sagittarius',
+              'Capricorn',
+              'Aquarius',
+              'Pisces'
+            ];
 
             // Calculate house position
-            const house = this.calculations.getHouseFromLongitude(longitude, houses.houseCusps);
+            const house = this.calculations.getHouseFromLongitude(
+              longitude,
+              houses.houseCusps
+            );
 
             // Calculate sign subdivisions
-            const subdivisions = this.calculations.calculateSignSubdivisions(longitude);
+            const subdivisions =
+              this.calculations.calculateSignSubdivisions(longitude);
 
             planets[planetName] = {
               name: planetName.charAt(0).toUpperCase() + planetName.slice(1),
@@ -80,12 +110,15 @@ class WesternChartGenerator {
               position: {
                 degrees: Math.floor(longitude % 30),
                 minutes: Math.floor((longitude % 1) * 60),
-                seconds: Math.floor(((longitude % 1) * 60 % 1) * 60)
+                seconds: Math.floor((((longitude % 1) * 60) % 1) * 60)
               }
             };
           }
         } catch (error) {
-          logger.warn(`Error calculating ${planetName} position:`, error.message);
+          logger.warn(
+            `Error calculating ${planetName} position:`,
+            error.message
+          );
         }
       }
 
@@ -137,7 +170,9 @@ class WesternChartGenerator {
     const patterns = [];
 
     // Convert planets to array for easier processing
-    const planetList = Object.values(planets).filter(p => p.longitude !== undefined);
+    const planetList = Object.values(planets).filter(
+      p => p.longitude !== undefined
+    );
 
     // Find Grand Trines (3 planets in trine, forming a triangle)
     const grandTrines = this.findGrandTrines(planetList, aspects);

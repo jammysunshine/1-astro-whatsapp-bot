@@ -2,7 +2,10 @@
 // Unit tests for Payment Service
 
 const paymentService = require('../../../../src/services/payment/paymentService');
-const { getUserByPhone, createUser } = require('../../../../src/models/userModel');
+const {
+  getUserByPhone,
+  createUser
+} = require('../../../../src/models/userModel');
 const User = require('../../../../src/models/User');
 const mongoose = require('mongoose');
 
@@ -10,23 +13,29 @@ const mongoose = require('mongoose');
 const logger = require('../../../../src/utils/logger');
 
 // Mock Stripe
-jest.mock('stripe', () => jest.fn().mockImplementation(() => ({
-  paymentIntents: {
-    create: jest.fn()
-  }
-})));
+jest.mock('stripe', () =>
+  jest.fn().mockImplementation(() => ({
+    paymentIntents: {
+      create: jest.fn()
+    }
+  }))
+);
 
 // Mock Razorpay
-jest.mock('razorpay', () => jest.fn().mockImplementation(() => ({
-  orders: {
-    create: jest.fn()
-  }
-})));
+jest.mock('razorpay', () =>
+  jest.fn().mockImplementation(() => ({
+    orders: {
+      create: jest.fn()
+    }
+  }))
+);
 
 describe('PaymentService', () => {
   beforeAll(async() => {
     // Use the MongoDB URI from environment or default to test database
-    const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://test:test@cluster0.abc123.mongodb.net/astro-whatsapp-bot-test?retryWrites=true&w=majority';
+    const mongoUri =
+      process.env.MONGODB_URI ||
+      'mongodb+srv://test:test@cluster0.abc123.mongodb.net/astro-whatsapp-bot-test?retryWrites=true&w=majority';
     await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true
@@ -109,10 +118,17 @@ describe('PaymentService', () => {
 
     it('should handle payment failure', async() => {
       // Mock Razorpay payment failure
-      paymentService.razorpay.orders.create.mockRejectedValue(new Error('Payment processing failed'));
+      paymentService.razorpay.orders.create.mockRejectedValue(
+        new Error('Payment processing failed')
+      );
 
       await expect(
-        paymentService.processSubscription('+1234567890', 'premium', 'india', 'card')
+        paymentService.processSubscription(
+          '+1234567890',
+          'premium',
+          'india',
+          'card'
+        )
       ).rejects.toThrow('Payment processing failed');
     });
   });

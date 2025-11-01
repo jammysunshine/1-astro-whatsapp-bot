@@ -36,7 +36,17 @@ class ValidationService {
       return false;
     }
 
-    if (!['text', 'interactive', 'button', 'image', 'video', 'audio', 'document'].includes(message.type)) {
+    if (
+      ![
+        'text',
+        'interactive',
+        'button',
+        'image',
+        'video',
+        'audio',
+        'document'
+      ].includes(message.type)
+    ) {
       logger.warn(`⚠️ Unsupported message type: ${message.type}`);
       return false;
     }
@@ -63,13 +73,17 @@ class ValidationService {
     // Validate birth time (HHMM format)
     if (birthTime && !/^\d{4}$/.test(birthTime.replace(/\D/g, ''))) {
       result.isValid = false;
-      result.errors.push('Invalid birth time format. Use HHMM (24-hour format).');
+      result.errors.push(
+        'Invalid birth time format. Use HHMM (24-hour format).'
+      );
     }
 
     // Validate birth place
     if (!birthPlace || birthPlace.trim().length < 3) {
       result.isValid = false;
-      result.errors.push('Birth place is required and should be at least 3 characters.');
+      result.errors.push(
+        'Birth place is required and should be at least 3 characters.'
+      );
     }
 
     result.errorMessage = result.errors.join(' ');
@@ -101,9 +115,29 @@ class ValidationService {
    * @returns {string} Validated language code
    */
   static getValidatedLanguage(user, phoneNumber) {
-    const supportedLanguages = ['en', 'hi', 'ar', 'es', 'fr', 'ta', 'te', 'bn', 'mr', 'gu', 'de', 'it', 'pt', 'ru', 'zh'];
+    const supportedLanguages = [
+      'en',
+      'hi',
+      'ar',
+      'es',
+      'fr',
+      'ta',
+      'te',
+      'bn',
+      'mr',
+      'gu',
+      'de',
+      'it',
+      'pt',
+      'ru',
+      'zh'
+    ];
 
-    if (user && user.preferredLanguage && supportedLanguages.includes(user.preferredLanguage)) {
+    if (
+      user &&
+      user.preferredLanguage &&
+      supportedLanguages.includes(user.preferredLanguage)
+    ) {
       return user.preferredLanguage;
     }
 

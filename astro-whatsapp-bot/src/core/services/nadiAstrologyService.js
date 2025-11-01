@@ -62,9 +62,17 @@ class NadiAstrologyService extends ServiceTemplate {
       summary: this._generateNadiSummary(result),
       metadata: {
         system: 'Nadi Astrology Reading',
-        calculationMethod: 'Traditional Tamil Nadi system with birth nakshatra analysis',
-        elements: ['Birth Nakshatra', 'Nadi System', 'Current Dasha', 'Predictions', 'Compatibility'],
-        tradition: 'Ancient Tamil Nadi astrology with palm leaf manuscript tradition'
+        calculationMethod:
+          'Traditional Tamil Nadi system with birth nakshatra analysis',
+        elements: [
+          'Birth Nakshatra',
+          'Nadi System',
+          'Current Dasha',
+          'Predictions',
+          'Compatibility'
+        ],
+        tradition:
+          'Ancient Tamil Nadi astrology with palm leaf manuscript tradition'
       }
     };
   }

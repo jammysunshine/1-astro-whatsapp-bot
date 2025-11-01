@@ -37,10 +37,15 @@ class TemplateManager {
 
     try {
       const response = await this.whatsappAPI.makeRequest('/messages', payload);
-      this.logger.info(`🖱️ Interactive message sent successfully to ${phoneNumber}: ${response.messages[0].id}`);
+      this.logger.info(
+        `🖱️ Interactive message sent successfully to ${phoneNumber}: ${response.messages[0].id}`
+      );
       return response;
     } catch (error) {
-      this.logger.error(`❌ Error sending interactive message to ${phoneNumber}:`, error.message);
+      this.logger.error(
+        `❌ Error sending interactive message to ${phoneNumber}:`,
+        error.message
+      );
       throw error;
     }
   }
@@ -74,10 +79,15 @@ class TemplateManager {
     try {
       const response = await this.whatsappAPI.makeRequest('/messages', payload);
       const messageId = response?.messages?.[0]?.id;
-      this.logger.info(`📋 List message sent successfully to ${phoneNumber}: ${messageId || 'unknown'}`);
+      this.logger.info(
+        `📋 List message sent successfully to ${phoneNumber}: ${messageId || 'unknown'}`
+      );
       return response;
     } catch (error) {
-      this.logger.error(`❌ Error sending list message to ${phoneNumber}:`, error.message);
+      this.logger.error(
+        `❌ Error sending list message to ${phoneNumber}:`,
+        error.message
+      );
       throw error;
     }
   }
@@ -90,7 +100,12 @@ class TemplateManager {
    * @param {Array} components - Template components
    * @returns {Promise<Object>} API response
    */
-  async sendTemplateMessage(phoneNumber, templateName, languageCode = 'en', components = []) {
+  async sendTemplateMessage(
+    phoneNumber,
+    templateName,
+    languageCode = 'en',
+    components = []
+  ) {
     const payload = {
       messaging_product: 'whatsapp',
       to: phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`,
@@ -104,10 +119,15 @@ class TemplateManager {
 
     try {
       const response = await this.whatsappAPI.makeRequest('/messages', payload);
-      this.logger.info(`📝 Template message sent successfully to ${phoneNumber}: ${response.messages[0].id}`);
+      this.logger.info(
+        `📝 Template message sent successfully to ${phoneNumber}: ${response.messages[0].id}`
+      );
       return response;
     } catch (error) {
-      this.logger.error(`❌ Error sending template message to ${phoneNumber}:`, error.message);
+      this.logger.error(
+        `❌ Error sending template message to ${phoneNumber}:`,
+        error.message
+      );
       throw error;
     }
   }
@@ -120,10 +140,19 @@ class TemplateManager {
    * @param {string} language - Language code
    * @returns {Promise<Object>} API response
    */
-  async buildInteractiveButtonMessage(phoneNumber, message, buttons, language = 'en') {
+  async buildInteractiveButtonMessage(
+    phoneNumber,
+    message,
+    buttons,
+    language = 'en'
+  ) {
     // Translate body text
     let bodyText = message;
-    if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
+    if (
+      typeof message === 'string' &&
+      message.includes('.') &&
+      !message.includes(' ')
+    ) {
       bodyText = await this.translationService.translate(message, language);
     }
 
@@ -141,7 +170,12 @@ class TemplateManager {
       }
     }));
 
-    return await this.sendInteractiveButtons(phoneNumber, bodyText, whatsappButtons, {});
+    return await this.sendInteractiveButtons(
+      phoneNumber,
+      bodyText,
+      whatsappButtons,
+      {}
+    );
   }
 
   /**
@@ -180,11 +214,17 @@ class TemplateManager {
         errors.push('Interactive message missing type');
       }
 
-      if (type === 'button' && (!message.buttons || message.buttons.length > 3)) {
+      if (
+        type === 'button' &&
+          (!message.buttons || message.buttons.length > 3)
+      ) {
         errors.push('Button messages must have 1-3 buttons');
       }
 
-      if (type === 'list' && (!message.sections || message.sections.length === 0)) {
+      if (
+        type === 'list' &&
+          (!message.sections || message.sections.length === 0)
+      ) {
         errors.push('List messages must have at least one section');
       }
       break;
@@ -236,7 +276,12 @@ class TemplateManager {
         whatsappAPI: this.whatsappAPI.healthCheck(),
         translationService: !!this.translationService,
         version: '1.0.0',
-        capabilities: ['Interactive Buttons', 'List Messages', 'Templates', 'Message Validation'],
+        capabilities: [
+          'Interactive Buttons',
+          'List Messages',
+          'Templates',
+          'Message Validation'
+        ],
         status: 'Operational'
       };
     } catch (error) {

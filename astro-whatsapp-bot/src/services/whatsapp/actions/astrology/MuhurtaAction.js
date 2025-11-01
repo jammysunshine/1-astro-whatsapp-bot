@@ -29,7 +29,8 @@ class MuhurtaAction extends BaseAction {
       const userProfile = await this.getUserProfile();
 
       // Send initial prompt for muhurta details
-      const promptMessage = '⏰ *Muhurta (Auspicious Timing) Analysis*\n\nI can find the most auspicious timing for your important activities using Vedic electional astrology.\n\n*Please provide:*\n• Activity type (marriage, business, travel, etc.)\n• Preferred date (DD/MM/YYYY)\n• Your location\n• Optional: Time window (preferred hours)\n\n*Supported Activities:*\n• 💒 Marriage & Relationships\n• 💼 Business & Career\n• 🙏 Spiritual & Religious\n• 🏥 Health & Medical\n• ✈️ Travel & Relocation\n• 🏠 Home & Property\n\nReply with your activity and details to continue.';
+      const promptMessage =
+        '⏰ *Muhurta (Auspicious Timing) Analysis*\n\nI can find the most auspicious timing for your important activities using Vedic electional astrology.\n\n*Please provide:*\n• Activity type (marriage, business, travel, etc.)\n• Preferred date (DD/MM/YYYY)\n• Your location\n• Optional: Time window (preferred hours)\n\n*Supported Activities:*\n• 💒 Marriage & Relationships\n• 💼 Business & Career\n• 🙏 Spiritual & Religious\n• 🏥 Health & Medical\n• ✈️ Travel & Relocation\n• 🏠 Home & Property\n\nReply with your activity and details to continue.';
 
       await this.sendDirectMessage(promptMessage);
 
@@ -45,7 +46,11 @@ class MuhurtaAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in MuhurtaAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -54,7 +59,9 @@ class MuhurtaAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    await this.sendDirectMessage('❌ *Muhurta Analysis Error*\n\nI encountered an error with your Muhurta analysis. Please try again later.');
+    await this.sendDirectMessage(
+      '❌ *Muhurta Analysis Error*\n\nI encountered an error with your Muhurta analysis. Please try again later.'
+    );
   }
 
   /**
@@ -64,8 +71,14 @@ class MuhurtaAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Provide auspicious timing analysis for important activities using Vedic electional astrology',
-      keywords: ['muhurta', 'auspicious time', 'electional astrology', 'vedic timing'],
+      description:
+        'Provide auspicious timing analysis for important activities using Vedic electional astrology',
+      keywords: [
+        'muhurta',
+        'auspicious time',
+        'electional astrology',
+        'vedic timing'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 3600000 // 1 hour cooldown

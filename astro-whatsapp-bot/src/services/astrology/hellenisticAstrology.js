@@ -161,22 +161,31 @@ class HellenisticAstrologyReader {
       const { birthDate, birthTime, name, birthPlace } = birthData;
 
       // Calculate planetary positions using accurate astronomical data
-      const planetaryPositions = await this.calculateHellenisticPositions(birthDate, birthTime, birthPlace);
+      const planetaryPositions = await this.calculateHellenisticPositions(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
 
       // Calculate Arabic Parts (Lots)
       const arabicParts = this.calculateArabicParts(planetaryPositions);
 
       // Analyze essential dignities
-      const essentialDignities = this.analyzeEssentialDignities(planetaryPositions);
+      const essentialDignities =
+        this.analyzeEssentialDignities(planetaryPositions);
 
       // Analyze Hellenistic aspects
-      const hellenisticAspects = this.analyzeHellenisticAspects(planetaryPositions);
+      const hellenisticAspects =
+        this.analyzeHellenisticAspects(planetaryPositions);
 
       // Determine sect (day/night chart)
       const sect = this.determineSect(planetaryPositions);
 
       // Analyze triplicities
-      const triplicityAnalysis = this.analyzeTriplicities(planetaryPositions, sect);
+      const triplicityAnalysis = this.analyzeTriplicities(
+        planetaryPositions,
+        sect
+      );
 
       // Generate overall interpretation
       const interpretation = this.generateHellenisticInterpretation(
@@ -196,13 +205,15 @@ class HellenisticAstrologyReader {
         triplicityAnalysis,
         interpretation,
         techniques: this.getHellenisticTechniques(),
-        disclaimer: '⚠️ *Hellenistic Astrology Disclaimer:* This analysis uses ancient Greek astrological techniques. Hellenistic astrology focuses on essential dignities, Arabic parts, and sect. Results are interpretive and should be considered alongside modern astrological analysis.'
+        disclaimer:
+          '⚠️ *Hellenistic Astrology Disclaimer:* This analysis uses ancient Greek astrological techniques. Hellenistic astrology focuses on essential dignities, Arabic parts, and sect. Results are interpretive and should be considered alongside modern astrological analysis.'
       };
     } catch (error) {
       logger.error('Error generating Hellenistic analysis:', error);
       return {
         error: 'Unable to generate Hellenistic astrology analysis',
-        fallback: 'Hellenistic astrology studies ancient Greek astrological wisdom'
+        fallback:
+          'Hellenistic astrology studies ancient Greek astrological wisdom'
       };
     }
   }
@@ -218,7 +229,11 @@ class HellenisticAstrologyReader {
     try {
       // Use the vedic calculator's accurate positioning but adapt for Hellenistic
       const vedicCalc = require('./vedicCalculator');
-      const positions = await vedicCalc.calculatePlanetaryPositions(birthDate, birthTime, birthPlace);
+      const positions = await vedicCalc.calculatePlanetaryPositions(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
 
       // Enhance with Hellenistic-specific data
       const hellenisticPositions = {};
@@ -248,7 +263,9 @@ class HellenisticAstrologyReader {
    */
   calculateEssentialDignity(planet, sign) {
     const dignities = this.essentialDignities[planet];
-    if (!dignities) { return { score: 0, status: 'Neutral' }; }
+    if (!dignities) {
+      return { score: 0, status: 'Neutral' };
+    }
 
     let score = 0;
     let status = 'Neutral';
@@ -280,7 +297,9 @@ class HellenisticAstrologyReader {
    */
   getBoundRuler(sign, degrees) {
     const signBounds = this.bounds[sign];
-    if (!signBounds) { return 'Unknown'; }
+    if (!signBounds) {
+      return 'Unknown';
+    }
 
     for (const bound of signBounds) {
       const [start, end] = bound.degrees.split('-').map(Number);
@@ -300,13 +319,24 @@ class HellenisticAstrologyReader {
    */
   getTriplicityRuler(sign, sect) {
     const elements = {
-      Aries: 'fire', Taurus: 'earth', Gemini: 'air', Cancer: 'water',
-      Leo: 'fire', Virgo: 'earth', Libra: 'air', Scorpio: 'water',
-      Sagittarius: 'fire', Capricorn: 'earth', Aquarius: 'air', Pisces: 'water'
+      Aries: 'fire',
+      Taurus: 'earth',
+      Gemini: 'air',
+      Cancer: 'water',
+      Leo: 'fire',
+      Virgo: 'earth',
+      Libra: 'air',
+      Scorpio: 'water',
+      Sagittarius: 'fire',
+      Capricorn: 'earth',
+      Aquarius: 'air',
+      Pisces: 'water'
     };
 
     const element = elements[sign];
-    if (!element) { return 'Unknown'; }
+    if (!element) {
+      return 'Unknown';
+    }
 
     const triplicity = this.triplicities[element];
     return sect === 'day' ? triplicity.day : triplicity.night;
@@ -320,13 +350,13 @@ class HellenisticAstrologyReader {
    */
   getPlanetaryJoy(planet, house) {
     const joys = {
-      1: 'Sun',    // Sun joys in 1st (identity)
-      3: 'Moon',   // Moon joys in 3rd (mind, communication)
-      5: 'Venus',  // Venus joys in 5th (pleasure, creativity)
+      1: 'Sun', // Sun joys in 1st (identity)
+      3: 'Moon', // Moon joys in 3rd (mind, communication)
+      5: 'Venus', // Venus joys in 5th (pleasure, creativity)
       6: 'Mercury', // Mercury joys in 6th (service, health)
-      9: 'Sun',    // Sun also joys in 9th (philosophy, travel)
+      9: 'Sun', // Sun also joys in 9th (philosophy, travel)
       11: 'Jupiter', // Jupiter joys in 11th (friends, hopes)
-      12: 'Saturn'  // Saturn joys in 12th (spirituality, endings)
+      12: 'Saturn' // Saturn joys in 12th (spirituality, endings)
     };
 
     return joys[house] === planet ? 'In Joy' : 'Not in Joy';
@@ -374,13 +404,19 @@ class HellenisticAstrologyReader {
           longitude = this.normalizeLongitude(jupiter - saturn + ascendant);
           break;
         case 'marriage':
-          longitude = this.normalizeLongitude(saturn - venus + (ascendant + 180)); // Descendant
+          longitude = this.normalizeLongitude(
+            saturn - venus + (ascendant + 180)
+          ); // Descendant
           break;
         case 'children':
-          longitude = this.normalizeLongitude(jupiter - saturn + this.getHousePosition(5, ascendant));
+          longitude = this.normalizeLongitude(
+            jupiter - saturn + this.getHousePosition(5, ascendant)
+          );
           break;
         case 'parents':
-          longitude = this.normalizeLongitude(saturn - jupiter + this.getHousePosition(4, ascendant));
+          longitude = this.normalizeLongitude(
+            saturn - jupiter + this.getHousePosition(4, ascendant)
+          );
           break;
         case 'illness':
           longitude = this.normalizeLongitude(mars - saturn + ascendant);
@@ -419,8 +455,12 @@ class HellenisticAstrologyReader {
    * @returns {number} Normalized longitude
    */
   normalizeLongitude(longitude) {
-    while (longitude < 0) { longitude += 360; }
-    while (longitude >= 360) { longitude -= 360; }
+    while (longitude < 0) {
+      longitude += 360;
+    }
+    while (longitude >= 360) {
+      longitude -= 360;
+    }
     return longitude;
   }
 
@@ -431,9 +471,18 @@ class HellenisticAstrologyReader {
    */
   getZodiacSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer',
-      'Leo', 'Virgo', 'Libra', 'Scorpio',
-      'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     const signIndex = Math.floor(longitude / 30) % 12;
     return signs[signIndex];
@@ -458,7 +507,9 @@ class HellenisticAstrologyReader {
    */
   getHouseFromLongitude(longitude, ascendant) {
     let relativePosition = longitude - ascendant;
-    if (relativePosition < 0) { relativePosition += 360; }
+    if (relativePosition < 0) {
+      relativePosition += 360;
+    }
     return Math.floor(relativePosition / 30) + 1;
   }
 
@@ -550,8 +601,13 @@ class HellenisticAstrologyReader {
     const diff = Math.abs(pos1 - pos2);
     const normalizedDiff = Math.min(diff, 360 - diff);
 
-    for (const [aspectType, aspectData] of Object.entries(this.hellenisticAspects)) {
-      if (Math.abs(normalizedDiff - this.getAspectAngle(aspectType)) <= aspectData.orb) {
+    for (const [aspectType, aspectData] of Object.entries(
+      this.hellenisticAspects
+    )) {
+      if (
+        Math.abs(normalizedDiff - this.getAspectAngle(aspectType)) <=
+        aspectData.orb
+      ) {
         return {
           type: aspectType,
           orb: Math.abs(normalizedDiff - this.getAspectAngle(aspectType))
@@ -587,12 +643,14 @@ class HellenisticAstrologyReader {
     const { sun } = positions;
     const { moon } = positions;
 
-    if (!sun || !moon) { return 'unknown'; }
+    if (!sun || !moon) {
+      return 'unknown';
+    }
 
     // If Sun is above horizon (in houses 7-12), it's day sect
     // If Sun is below horizon (in houses 1-6), it's night sect
     const sunHouse = sun.house;
-    return (sunHouse >= 7 && sunHouse <= 12) ? 'day' : 'night';
+    return sunHouse >= 7 && sunHouse <= 12 ? 'day' : 'night';
   }
 
   /**
@@ -622,8 +680,9 @@ class HellenisticAstrologyReader {
     });
 
     // Find strongest element
-    const strongestElement = Object.entries(triplicityStrength)
-      .sort(([, a], [, b]) => b - a)[0][0];
+    const strongestElement = Object.entries(triplicityStrength).sort(
+      ([, a], [, b]) => b - a
+    )[0][0];
 
     return {
       elementStrengths: triplicityStrength,
@@ -639,9 +698,18 @@ class HellenisticAstrologyReader {
    */
   getElementFromSign(sign) {
     const elements = {
-      Aries: 'fire', Taurus: 'earth', Gemini: 'air', Cancer: 'water',
-      Leo: 'fire', Virgo: 'earth', Libra: 'air', Scorpio: 'water',
-      Sagittarius: 'fire', Capricorn: 'earth', Aquarius: 'air', Pisces: 'water'
+      Aries: 'fire',
+      Taurus: 'earth',
+      Gemini: 'air',
+      Cancer: 'water',
+      Leo: 'fire',
+      Virgo: 'earth',
+      Libra: 'air',
+      Scorpio: 'water',
+      Sagittarius: 'fire',
+      Capricorn: 'earth',
+      Aquarius: 'air',
+      Pisces: 'water'
     };
     return elements[sign];
   }
@@ -654,7 +722,12 @@ class HellenisticAstrologyReader {
    * @param {string} sect - Chart sect
    * @returns {string} Interpretation
    */
-  generateHellenisticInterpretation(essentialDignities, arabicParts, aspects, sect) {
+  generateHellenisticInterpretation(
+    essentialDignities,
+    arabicParts,
+    aspects,
+    sect
+  ) {
     let interpretation = '';
 
     // Analyze essential dignities

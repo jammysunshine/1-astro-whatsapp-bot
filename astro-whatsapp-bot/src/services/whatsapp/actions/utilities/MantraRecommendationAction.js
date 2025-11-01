@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class MantraRecommendationAction extends BaseAction {
-  static get actionId() { return 'get_personal_mantra'; }
+  static get actionId() {
+    return 'get_personal_mantra';
+  }
 
   async execute() {
     try {
@@ -21,7 +23,8 @@ class MantraRecommendationAction extends BaseAction {
   }
 
   async sendMantraGuide() {
-    const guide = '🪬 *Personal Mantra - Cosmic Vibrations*\n\n' +
+    const guide =
+      '🪬 *Personal Mantra - Cosmic Vibrations*\n\n' +
       'Mantras are sacred sounds that align you with divine planetary energies. Based on your birth chart, specific mantras can harmonize planetary influences and accelerate spiritual growth.\n\n' +
       '*🪬 POWERFUL MANTRAS:*\n' +
       '• Gayatri Mantra - Universal illumination\n' +
@@ -47,14 +50,19 @@ class MantraRecommendationAction extends BaseAction {
       '*Your personal mantra holds the key to cosmic alignment.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, guide, buttons, userLanguage
+      this.phoneNumber,
+      guide,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -63,8 +71,14 @@ class MantraRecommendationAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Get personalized mantra recommendations based on birth chart',
-      keywords: ['mantra', 'personal mantra', 'sacred vibrations', 'cosmic sound'],
+      description:
+        'Get personalized mantra recommendations based on birth chart',
+      keywords: [
+        'mantra',
+        'personal mantra',
+        'sacred vibrations',
+        'cosmic sound'
+      ],
       category: 'utilities',
       subscriptionRequired: true,
       cooldown: 43200000

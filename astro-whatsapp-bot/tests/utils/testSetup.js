@@ -36,7 +36,10 @@ class TestDatabaseManager {
    * Save conversation
    */
   async saveConversation(conversationId, conversationData) {
-    this.conversations.set(conversationId, { ...conversationData, _id: conversationId });
+    this.conversations.set(conversationId, {
+      ...conversationData,
+      _id: conversationId
+    });
     return this.conversations.get(conversationId);
   }
 

@@ -9,7 +9,9 @@ const translationService = require('../../../services/i18n/TranslationService');
  * Composite charts reveal the dynamics of partnerships, businesses, and creative collaborations.
  */
 class CompositeChartAction extends BaseAction {
-  static get actionId() { return 'create_composite_chart'; }
+  static get actionId() {
+    return 'create_composite_chart';
+  }
 
   async execute() {
     try {
@@ -28,7 +30,8 @@ class CompositeChartAction extends BaseAction {
   }
 
   async sendCompositeChartIntro() {
-    const analysis = '🌟 *Composite Chart - The Soul of Your Relationship*\n\n' +
+    const analysis =
+      '🌟 *Composite Chart - The Soul of Your Relationship*\n\n' +
       'A composite chart shows your relationship as a living entity with its own birth chart. This reveals the relationship\'s purpose, challenges, and potential.\n\n' +
       '*❤️ COMPOSITE CHART REVEALS:*\n' +
       '• The relationship\'s personality and character\n' +
@@ -44,14 +47,19 @@ class CompositeChartAction extends BaseAction {
       '*Your composite chart is the blueprint of your relationship\'s soul.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -60,7 +68,8 @@ class CompositeChartAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Create composite charts showing relationship dynamics as a single entity',
+      description:
+        'Create composite charts showing relationship dynamics as a single entity',
       keywords: ['composite chart', 'relationship chart', 'partnership chart'],
       category: 'relationships',
       subscriptionRequired: true,

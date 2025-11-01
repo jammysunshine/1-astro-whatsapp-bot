@@ -20,7 +20,10 @@ class GenericSubmenuAction extends BaseAction {
    */
   async execute() {
     try {
-      this.logExecution('start', `Showing submenu: ${this.constructor.actionId}`);
+      this.logExecution(
+        'start',
+        `Showing submenu: ${this.constructor.actionId}`
+      );
 
       // Get the translated submenu based on actionId
       const menuData = await this.getSubmenuData();
@@ -41,7 +44,10 @@ class GenericSubmenuAction extends BaseAction {
 
       await this.sendMessage(response.to, response.interactive, 'interactive');
 
-      this.logExecution('complete', `Submenu ${this.constructor.actionId} displayed successfully`);
+      this.logExecution(
+        'complete',
+        `Submenu ${this.constructor.actionId} displayed successfully`
+      );
       return {
         success: true,
         type: 'submenu_display',
@@ -50,7 +56,11 @@ class GenericSubmenuAction extends BaseAction {
     } catch (error) {
       this.logger.error(`Error in ${this.constructor.actionId}:`, error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -62,9 +72,15 @@ class GenericSubmenuAction extends BaseAction {
     try {
       // The actionId should match the menu config key
       const menuKey = this.constructor.actionId;
-      return await getTranslatedMenu(menuKey, this.user.preferredLanguage || 'en');
+      return await getTranslatedMenu(
+        menuKey,
+        this.user.preferredLanguage || 'en'
+      );
     } catch (error) {
-      this.logger.error(`Error loading submenu ${this.constructor.actionId}:`, error);
+      this.logger.error(
+        `Error loading submenu ${this.constructor.actionId}:`,
+        error
+      );
       return null;
     }
   }
@@ -73,9 +89,13 @@ class GenericSubmenuAction extends BaseAction {
    * Handle menu load errors
    */
   async handleMenuLoadError() {
-    const errorMessage = await this.translate('errors.menu_not_found', this.user.preferredLanguage || 'en', {
-      menu: this.constructor.actionId
-    });
+    const errorMessage = await this.translate(
+      'errors.menu_not_found',
+      this.user.preferredLanguage || 'en',
+      {
+        menu: this.constructor.actionId
+      }
+    );
     await this.sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -84,9 +104,13 @@ class GenericSubmenuAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = await this.translate('errors.submenu_execution_error', this.user.preferredLanguage || 'en', {
-      menu: this.constructor.actionId
-    });
+    const errorMessage = await this.translate(
+      'errors.submenu_execution_error',
+      this.user.preferredLanguage || 'en',
+      {
+        menu: this.constructor.actionId
+      }
+    );
     await this.sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 }

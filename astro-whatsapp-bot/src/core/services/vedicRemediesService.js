@@ -62,7 +62,9 @@ class VedicRemediesService extends ServiceTemplate {
 
     // At least planet or dosha should be specified
     if (!input.planet && !input.dosha) {
-      throw new Error('Either planet or dosha type is required for Vedic Remedies analysis.');
+      throw new Error(
+        'Either planet or dosha type is required for Vedic Remedies analysis.'
+      );
     }
   }
 
@@ -90,7 +92,8 @@ class VedicRemediesService extends ServiceTemplate {
       metadata: {
         serviceName: this.serviceName,
         system: 'Vedic Remedies',
-        calculationMethod: 'Traditional Vedic remedial measures for planetary appeasement',
+        calculationMethod:
+          'Traditional Vedic remedial measures for planetary appeasement',
         categories: ['Gemstones', 'Mantras', 'Charities', 'Pujas', 'Yantras'],
         tradition: 'Ancient Indian astrological remedial practices',
         timestamp: new Date().toISOString()
@@ -138,7 +141,8 @@ class VedicRemediesService extends ServiceTemplate {
       summary += `*Pujas:* ${remedies.pujas.join(', ')}\n`;
     }
 
-    summary += '\n*Note:* Consult a qualified priest or astrologer before performing pujas.';
+    summary +=
+      '\n*Note:* Consult a qualified priest or astrologer before performing pujas.';
 
     return summary;
   }
@@ -154,7 +158,8 @@ class VedicRemediesService extends ServiceTemplate {
       category: 'vedic',
       methods: ['processCalculation', 'getPlanetRemedies', 'getDoshaRemedies'],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Comprehensive Vedic remedial measures for planetary afflictions and dosha corrections.'
+      description:
+        'Comprehensive Vedic remedial measures for planetary afflictions and dosha corrections.'
     };
   }
 

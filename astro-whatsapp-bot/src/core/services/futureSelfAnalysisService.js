@@ -66,11 +66,15 @@ class FutureSelfAnalysisService extends ServiceTemplate {
         timestamp: new Date().toISOString(),
         method: 'Multi-technique future projection with Swiss Ephemeris',
         projectionPeriod: `${futureData.yearsAhead || 5} years ahead`,
-        calculationApproach: 'Advanced simulation using multiple predictive techniques'
+        calculationApproach:
+          'Advanced simulation using multiple predictive techniques'
       };
 
       // Add enhanced analysis
-      futureResult.enhancedAnalysis = this._performEnhancedFutureAnalysis(futureResult, futureData);
+      futureResult.enhancedAnalysis = this._performEnhancedFutureAnalysis(
+        futureResult,
+        futureData
+      );
 
       return futureResult;
     } catch (error) {
@@ -178,7 +182,8 @@ class FutureSelfAnalysisService extends ServiceTemplate {
     }
 
     // Add service footer
-    formatted += '---\n*Future Self Analysis - Multi-Technique Life Projection*';
+    formatted +=
+      '---\n*Future Self Analysis - Multi-Technique Life Projection*';
 
     return formatted;
   }
@@ -197,12 +202,23 @@ class FutureSelfAnalysisService extends ServiceTemplate {
       throw new Error('Birth data is required for future self analysis');
     }
 
-    if (!futureData.birthData.birthDate || !futureData.birthData.birthTime || !futureData.birthData.birthPlace) {
-      throw new Error('Complete birth details (date, time, place) are required for future self analysis');
+    if (
+      !futureData.birthData.birthDate ||
+      !futureData.birthData.birthTime ||
+      !futureData.birthData.birthPlace
+    ) {
+      throw new Error(
+        'Complete birth details (date, time, place) are required for future self analysis'
+      );
     }
 
-    if (futureData.yearsAhead && (futureData.yearsAhead < 1 || futureData.yearsAhead > 20)) {
-      throw new Error('Years ahead must be between 1 and 20 for accurate future self analysis');
+    if (
+      futureData.yearsAhead &&
+      (futureData.yearsAhead < 1 || futureData.yearsAhead > 20)
+    ) {
+      throw new Error(
+        'Years ahead must be between 1 and 20 for accurate future self analysis'
+      );
     }
   }
 
@@ -225,30 +241,46 @@ class FutureSelfAnalysisService extends ServiceTemplate {
 
     // Determine overall projection
     if (result.lifeThemes && result.potentialOutcomes) {
-      const positiveThemes = result.lifeThemes.filter(theme => theme.intensity === 'High' || theme.intensity === 'Medium').length;
-      const positiveOutcomes = result.potentialOutcomes.filter(outcome => outcome.probability === 'High' || outcome.probability === 'Medium').length;
+      const positiveThemes = result.lifeThemes.filter(
+        theme => theme.intensity === 'High' || theme.intensity === 'Medium'
+      ).length;
+      const positiveOutcomes = result.potentialOutcomes.filter(
+        outcome =>
+          outcome.probability === 'High' || outcome.probability === 'Medium'
+      ).length;
 
       if (positiveThemes >= 3 && positiveOutcomes >= 2) {
-        analysis.overallProjection = 'Highly positive future trajectory with strong growth potential';
-        analysis.projectionQuality = 'Excellent - Multiple favorable indicators';
-        analysis.actionableInsights = 'Focus on leveraging positive trends and preparing for expansion';
+        analysis.overallProjection =
+          'Highly positive future trajectory with strong growth potential';
+        analysis.projectionQuality =
+          'Excellent - Multiple favorable indicators';
+        analysis.actionableInsights =
+          'Focus on leveraging positive trends and preparing for expansion';
       } else if (positiveThemes >= 2 && positiveOutcomes >= 1) {
-        analysis.overallProjection = 'Moderate positive trajectory with balanced opportunities';
+        analysis.overallProjection =
+          'Moderate positive trajectory with balanced opportunities';
         analysis.projectionQuality = 'Good - Favorable conditions present';
-        analysis.actionableInsights = 'Build on existing strengths while preparing for challenges';
+        analysis.actionableInsights =
+          'Build on existing strengths while preparing for challenges';
       } else {
-        analysis.overallProjection = 'Mixed trajectory with both opportunities and challenges';
-        analysis.projectionQuality = 'Fair - Balanced conditions requiring preparation';
-        analysis.actionableInsights = 'Focus on skill development and strategic planning';
+        analysis.overallProjection =
+          'Mixed trajectory with both opportunities and challenges';
+        analysis.projectionQuality =
+          'Fair - Balanced conditions requiring preparation';
+        analysis.actionableInsights =
+          'Focus on skill development and strategic planning';
       }
     }
 
     // Identify growth areas
     if (result.lifeThemes) {
       const growthThemes = result.lifeThemes
-        .filter(theme => theme.theme.toLowerCase().includes('career') ||
-                           theme.theme.toLowerCase().includes('growth') ||
-                           theme.theme.toLowerCase().includes('opportunity'))
+        .filter(
+          theme =>
+            theme.theme.toLowerCase().includes('career') ||
+            theme.theme.toLowerCase().includes('growth') ||
+            theme.theme.toLowerCase().includes('opportunity')
+        )
         .map(theme => theme.theme);
 
       if (growthThemes.length > 0) {
@@ -259,7 +291,9 @@ class FutureSelfAnalysisService extends ServiceTemplate {
     // Identify challenge periods
     if (result.turningPoints) {
       const challenges = result.turningPoints
-        .filter(point => point.type === 'Challenge' || point.type === 'Obstacle')
+        .filter(
+          point => point.type === 'Challenge' || point.type === 'Obstacle'
+        )
         .map(point => `${point.year}: ${point.description}`)
         .slice(0, 3);
 
@@ -271,7 +305,11 @@ class FutureSelfAnalysisService extends ServiceTemplate {
     // Identify opportunity windows
     if (result.potentialOutcomes) {
       const opportunities = result.potentialOutcomes
-        .filter(outcome => outcome.probability === 'High' && outcome.timeline.toLowerCase().includes('soon'))
+        .filter(
+          outcome =>
+            outcome.probability === 'High' &&
+            outcome.timeline.toLowerCase().includes('soon')
+        )
         .map(outcome => `${outcome.area}: ${outcome.description}`)
         .slice(0, 3);
 
@@ -310,7 +348,9 @@ class FutureSelfAnalysisService extends ServiceTemplate {
 
     // Increase confidence for strong themes
     if (result.lifeThemes) {
-      const strongThemes = result.lifeThemes.filter(theme => theme.intensity === 'High').length;
+      const strongThemes = result.lifeThemes.filter(
+        theme => theme.intensity === 'High'
+      ).length;
       confidence += strongThemes * 3;
     }
 

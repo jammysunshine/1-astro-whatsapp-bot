@@ -12,31 +12,91 @@ class VedicNumerology {
     // Sanskrit letter to number mapping (traditional Vedic system)
     this.sanskritMap = {
       // Vowels (स्वर)
-      अ: 1, आ: 1, इ: 1, ई: 1, उ: 1, ऊ: 1,
-      ऋ: 1, ॠ: 1, ऌ: 1, ॡ: 1, ए: 1, ऐ: 1, ओ: 1, औ: 1,
-      अं: 1, अः: 1,
+      अ: 1,
+      आ: 1,
+      इ: 1,
+      ई: 1,
+      उ: 1,
+      ऊ: 1,
+      ऋ: 1,
+      ॠ: 1,
+      ऌ: 1,
+      ॡ: 1,
+      ए: 1,
+      ऐ: 1,
+      ओ: 1,
+      औ: 1,
+      अं: 1,
+      अः: 1,
 
       // Consonants (व्यंजन)
-      क: 2, ख: 2, ग: 2, घ: 2, ङ: 2,
-      च: 3, छ: 3, ज: 3, झ: 3, ञ: 3,
-      ट: 4, ठ: 4, ड: 4, ढ: 4, ण: 4,
-      त: 5, थ: 5, द: 5, ध: 5, न: 5,
-      प: 6, फ: 6, ब: 6, भ: 6, म: 6,
-      य: 7, र: 7, ल: 7, व: 7,
-      श: 8, ष: 8, स: 8, ह: 8,
-      क्ष: 9, ज्ञ: 9, त्र: 9, श्र: 9
+      क: 2,
+      ख: 2,
+      ग: 2,
+      घ: 2,
+      ङ: 2,
+      च: 3,
+      छ: 3,
+      ज: 3,
+      झ: 3,
+      ञ: 3,
+      ट: 4,
+      ठ: 4,
+      ड: 4,
+      ढ: 4,
+      ण: 4,
+      त: 5,
+      थ: 5,
+      द: 5,
+      ध: 5,
+      न: 5,
+      प: 6,
+      फ: 6,
+      ब: 6,
+      भ: 6,
+      म: 6,
+      य: 7,
+      र: 7,
+      ल: 7,
+      व: 7,
+      श: 8,
+      ष: 8,
+      स: 8,
+      ह: 8,
+      क्ष: 9,
+      ज्ञ: 9,
+      त्र: 9,
+      श्र: 9
     };
 
     // English letter approximation for names in English
     this.englishMap = {
-      A: 1, I: 1, J: 1, Q: 1, Y: 1,
-      B: 2, K: 2, R: 2,
-      C: 3, G: 3, L: 3, S: 3,
-      D: 4, M: 4, T: 4,
-      E: 5, H: 5, N: 5, X: 5,
-      U: 6, V: 6, W: 6,
-      O: 7, Z: 7,
-      F: 8, P: 8
+      A: 1,
+      I: 1,
+      J: 1,
+      Q: 1,
+      Y: 1,
+      B: 2,
+      K: 2,
+      R: 2,
+      C: 3,
+      G: 3,
+      L: 3,
+      S: 3,
+      D: 4,
+      M: 4,
+      T: 4,
+      E: 5,
+      H: 5,
+      N: 5,
+      X: 5,
+      U: 6,
+      V: 6,
+      W: 6,
+      O: 7,
+      Z: 7,
+      F: 8,
+      P: 8
     };
 
     // Vedic number interpretations
@@ -212,7 +272,10 @@ class VedicNumerology {
    * Get compound number interpretation
    */
   getCompoundInterpretation(number) {
-    return this.compoundNumbers[number] || `Compound number ${number} indicates complex karmic influences`;
+    return (
+      this.compoundNumbers[number] ||
+      `Compound number ${number} indicates complex karmic influences`
+    );
   }
 
   /**
@@ -222,7 +285,9 @@ class VedicNumerology {
     const birthNumber = this.calculateBirthNumber(birthDate);
     const nameNumber = this.calculateVedicNameNumber(name);
 
-    if (!birthNumber || !nameNumber) { return null; }
+    if (!birthNumber || !nameNumber) {
+      return null;
+    }
 
     return this.reduceToVedicNumber(birthNumber + nameNumber);
   }
@@ -238,7 +303,8 @@ class VedicNumerology {
 
       if (!birthNumber || !nameNumber) {
         return {
-          error: 'Unable to calculate numerology numbers. Please check birth date and name format.'
+          error:
+            'Unable to calculate numerology numbers. Please check birth date and name format.'
         };
       }
 
@@ -292,8 +358,10 @@ class VedicNumerology {
       summary += '*🔮 Vedic Numerology Summary:*\n';
       summary += `Your Vedic numbers reveal a unique cosmic blueprint. The birth number (${birthNumber}) shows your inherent nature, `;
       summary += `the name number (${nameNumber}) indicates how you express yourself, and the destiny number (${destinyNumber}) `;
-      summary += 'reveals your life\'s purpose. These numbers work together to guide your spiritual journey and material success.\n\n';
-      summary += 'Remember: Vedic numerology is a tool for self-understanding. Your free will and karma ultimately shape your destiny! 🕉️';
+      summary +=
+        'reveals your life\'s purpose. These numbers work together to guide your spiritual journey and material success.\n\n';
+      summary +=
+        'Remember: Vedic numerology is a tool for self-understanding. Your free will and karma ultimately shape your destiny! 🕉️';
 
       return {
         birthNumber,
@@ -307,7 +375,8 @@ class VedicNumerology {
     } catch (error) {
       logger.error('Error generating Vedic numerology analysis:', error);
       return {
-        error: 'Unable to generate Vedic numerology analysis. Please try again later.'
+        error:
+          'Unable to generate Vedic numerology analysis. Please try again later.'
       };
     }
   }
@@ -355,7 +424,8 @@ class VedicNumerology {
    */
   getVedicNumerologyCatalog() {
     return {
-      description: '🕉️ Vedic Numerology (Chani System) - Traditional Indian numerology based on Sanskrit alphabet and Vedic principles',
+      description:
+        '🕉️ Vedic Numerology (Chani System) - Traditional Indian numerology based on Sanskrit alphabet and Vedic principles',
       features: [
         'Birth Number (Janma Sankhya) - Your inherent nature',
         'Name Number (Naam Sankhya) - Your expression',

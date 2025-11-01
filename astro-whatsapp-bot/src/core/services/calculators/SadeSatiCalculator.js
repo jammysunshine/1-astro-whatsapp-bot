@@ -16,23 +16,37 @@ class SadeSatiCalculator {
       rising: {
         name: 'Rising Sade Sati',
         position: 'before',
-        effects: 'Career struggles, material loss, health issues, family problems',
+        effects:
+          'Career struggles, material loss, health issues, family problems',
         duration: '2.5 years',
-        remedies: ['Chant Om Shan Shanishcharaya Namaha', 'Wear blue sapphire', 'Donate sesame seeds']
+        remedies: [
+          'Chant Om Shan Shanishcharaya Namaha',
+          'Wear blue sapphire',
+          'Donate sesame seeds'
+        ]
       },
       peak: {
         name: 'Peak Sade Sati',
         position: 'conjunct',
-        effects: 'Maximum challenges, major life changes, enduring difficulties',
+        effects:
+          'Maximum challenges, major life changes, enduring difficulties',
         duration: '2.5 years',
-        remedies: ['Daily Saturn mantras', 'Iron donations on Saturdays', 'Meditate on Lord Hanuman']
+        remedies: [
+          'Daily Saturn mantras',
+          'Iron donations on Saturdays',
+          'Meditate on Lord Hanuman'
+        ]
       },
       descending: {
         name: 'Descending Sade Sati',
         position: 'after',
         effects: 'Recovery phase, lessons learned, gradual improvement',
         duration: '2.5 years',
-        remedies: ['Chant Shani Gayatri', 'Feed ants and crows', 'Practice patience and persistence']
+        remedies: [
+          'Chant Shani Gayatri',
+          'Feed ants and crows',
+          'Practice patience and persistence'
+        ]
       }
     };
   }
@@ -55,7 +69,9 @@ class SadeSatiCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        throw new Error('Complete birth details required for Sade Sati analysis');
+        throw new Error(
+          'Complete birth details required for Sade Sati analysis'
+        );
       }
 
       // Parse birth details
@@ -63,19 +79,32 @@ class SadeSatiCalculator {
       const parsedTime = this._parseBirthTime(birthTime);
 
       // Get coordinates and calculate natal chart
-      const [latitude, longitude] = await this.geocodingService.getCoordinates(birthPlace);
+      const [latitude, longitude] =
+        await this.geocodingService.getCoordinates(birthPlace);
       const timezone = 5.5; // Default IST (can be enhanced to get from coordinates)
 
       const natalChart = await this._calculateNatalChart(
-        parsedDate.year, parsedDate.month, parsedDate.day,
-        parsedTime.hour, parsedTime.minute, latitude, longitude, timezone
+        parsedDate.year,
+        parsedDate.month,
+        parsedDate.day,
+        parsedTime.hour,
+        parsedTime.minute,
+        latitude,
+        longitude,
+        timezone
       );
 
       // Determine Sade Sati triggering points
-      const sadeSatiTriggers = this._calculateSadeSatiTriggers(natalChart.planets.moon);
+      const sadeSatiTriggers = this._calculateSadeSatiTriggers(
+        natalChart.planets.moon
+      );
 
       // Calculate all Sade Sati periods in analysis timeframe
-      const sadeSatiPeriods = this._calculateAllSadeSatiPeriods(natalChart.birthJD, sadeSatiTriggers, analysisYears);
+      const sadeSatiPeriods = this._calculateAllSadeSatiPeriods(
+        natalChart.birthJD,
+        sadeSatiTriggers,
+        analysisYears
+      );
 
       // Analyze current and upcoming periods
       const currentStatus = this._analyzeCurrentSadeSatiStatus(sadeSatiPeriods);
@@ -83,13 +112,22 @@ class SadeSatiCalculator {
       const pastPeriods = this._analyzePastSadeSatiPeriods(sadeSatiPeriods);
 
       // Calculate periods without Sade Sati
-      const reliefPeriods = this._calculateSadeSatiReliefPeriods(sadeSatiPeriods, natalChart.birthJD, analysisYears);
+      const reliefPeriods = this._calculateSadeSatiReliefPeriods(
+        sadeSatiPeriods,
+        natalChart.birthJD,
+        analysisYears
+      );
 
       // Generate personalized predictions based on lunar sign
-      const lunarSignPredictions = this._generateLunarSignPredictions(natalChart.planets.moon.sign);
+      const lunarSignPredictions = this._generateLunarSignPredictions(
+        natalChart.planets.moon.sign
+      );
 
       // Provide remedial measures
-      const remedies = this._generateSadeSatiRemedies(currentStatus, natalChart);
+      const remedies = this._generateSadeSatiRemedies(
+        currentStatus,
+        natalChart
+      );
 
       return {
         name,
@@ -101,7 +139,11 @@ class SadeSatiCalculator {
         lunarSignPredictions,
         remedies,
         sadeSatiTriggers,
-        summary: this._generateSadeSatiSummary(currentStatus, upcomingPeriods, lunarSignPredictions)
+        summary: this._generateSadeSatiSummary(
+          currentStatus,
+          upcomingPeriods,
+          lunarSignPredictions
+        )
       };
     } catch (error) {
       logger.error('❌ Error in Sade Sati analysis:', error);
@@ -156,14 +198,19 @@ class SadeSatiCalculator {
    */
   _calculateAllSadeSatiPeriods(birthJD, triggers, analysisYears) {
     const periods = [];
-    const endDate = birthJD + (analysisYears * 365.25);
+    const endDate = birthJD + analysisYears * 365.25;
 
     // Saturn's average movement per year (~1/2.5 degrees per day = 365/2.5 ≈ 146 days per degree)
     const saturnSpeed = 30 / 365.25; // Degrees per day (approximate)
 
     // Calculate Saturn positions at regular intervals
-    for (let jd = birthJD; jd <= endDate; jd += 30) { // Check every 30 days
-      const saturnPosition = sweph.calc(jd, sweph.SE_SATURN, sweph.SEFLG_SIDEREAL);
+    for (let jd = birthJD; jd <= endDate; jd += 30) {
+      // Check every 30 days
+      const saturnPosition = sweph.calc(
+        jd,
+        sweph.SE_SATURN,
+        sweph.SEFLG_SIDEREAL
+      );
 
       if (saturnPosition && Array.isArray(saturnPosition.longitude)) {
         const longitude = saturnPosition.longitude[0];
@@ -173,9 +220,8 @@ class SadeSatiCalculator {
         Object.values(triggers).forEach(trigger => {
           if (saturnSign === trigger.sign) {
             const phaseType = trigger.phase;
-            const existingPeriod = periods.find(p =>
-              p.phase === phaseType &&
-              Math.abs(p.endJD - jd) < 30 // Within 30 days of existing period
+            const existingPeriod = periods.find(
+              p => p.phase === phaseType && Math.abs(p.endJD - jd) < 30 // Within 30 days of existing period
             );
 
             if (!existingPeriod) {
@@ -188,19 +234,32 @@ class SadeSatiCalculator {
                 endDate: '',
                 durationDays: 0,
                 effects: this.sadeSatiPhases[phaseType].effects,
-                intensity: this._calculatePhaseIntensity(phaseType, longitude, trigger),
-                description: this._generatePhaseDescription(phaseType, saturnSign)
+                intensity: this._calculatePhaseIntensity(
+                  phaseType,
+                  longitude,
+                  trigger
+                ),
+                description: this._generatePhaseDescription(
+                  phaseType,
+                  saturnSign
+                )
               });
             } else {
               existingPeriod.endJD = jd;
               existingPeriod.endDate = this._jdToDateString(jd);
-              existingPeriod.durationDays = Math.round((existingPeriod.endJD - existingPeriod.startJD));
+              existingPeriod.durationDays = Math.round(
+                existingPeriod.endJD - existingPeriod.startJD
+              );
 
               // Extend duration for peak phase (it can last longer)
               if (phaseType === 'peak') {
                 existingPeriod.endJD += 30; // Extend peak phase
-                existingPeriod.endDate = this._jdToDateString(existingPeriod.endJD);
-                existingPeriod.durationDays = Math.round((existingPeriod.endJD - existingPeriod.startJD));
+                existingPeriod.endDate = this._jdToDateString(
+                  existingPeriod.endJD
+                );
+                existingPeriod.durationDays = Math.round(
+                  existingPeriod.endJD - existingPeriod.startJD
+                );
               }
             }
           }
@@ -220,8 +279,8 @@ class SadeSatiCalculator {
    */
   _analyzeCurrentSadeSatiStatus(sadeSatiPeriods) {
     const todayJD = this._getCurrentJulianDate();
-    const currentPeriod = sadeSatiPeriods.find(p =>
-      todayJD >= p.startJD && todayJD <= p.endJD
+    const currentPeriod = sadeSatiPeriods.find(
+      p => todayJD >= p.startJD && todayJD <= p.endJD
     );
 
     if (currentPeriod) {
@@ -235,12 +294,18 @@ class SadeSatiCalculator {
         startDate: currentPeriod.startDate,
         endDate: currentPeriod.endDate,
         remainingDays: Math.round(currentPeriod.endJD - todayJD),
-        progress: Math.round(((todayJD - currentPeriod.startJD) / (currentPeriod.endJD - currentPeriod.startJD)) * 100)
+        progress: Math.round(
+          ((todayJD - currentPeriod.startJD) /
+            (currentPeriod.endJD - currentPeriod.startJD)) *
+            100
+        )
       };
     } else {
       // Find next upcoming period
       const nextPeriod = sadeSatiPeriods.find(p => p.startJD > todayJD);
-      const daysUntilNext = nextPeriod ? Math.round(nextPeriod.startJD - todayJD) : null;
+      const daysUntilNext = nextPeriod ?
+        Math.round(nextPeriod.startJD - todayJD) :
+        null;
 
       return {
         inSadeSati: false,
@@ -250,7 +315,9 @@ class SadeSatiCalculator {
         relief: {
           currentStatus: 'In relief period',
           durationRemaining: daysUntilNext,
-          preparationAdvice: nextPeriod ? this._generatePreparationAdvice(nextPeriod.phase) : null
+          preparationAdvice: nextPeriod ?
+            this._generatePreparationAdvice(nextPeriod.phase) :
+            null
         }
       };
     }
@@ -291,7 +358,8 @@ class SadeSatiCalculator {
 
     return {
       totalPastPeriods: pastPeriods.length,
-      periods: pastPeriods.slice(-3).map(p => ({ // Last 3 periods
+      periods: pastPeriods.slice(-3).map(p => ({
+        // Last 3 periods
         phase: p.phase,
         phaseName: p.phaseName,
         startDate: p.startDate,
@@ -314,7 +382,7 @@ class SadeSatiCalculator {
    * @returns {Array} Relief periods
    */
   _calculateSadeSatiReliefPeriods(sadeSatiPeriods, birthJD, analysisYears) {
-    const endJD = birthJD + (analysisYears * 365.25);
+    const endJD = birthJD + analysisYears * 365.25;
     const reliefPeriods = [];
 
     let currentStart = birthJD;
@@ -325,7 +393,8 @@ class SadeSatiCalculator {
           startDate: this._jdToDateString(currentStart),
           endDate: this._jdToDateString(period.startJD),
           duration: Math.round((period.startJD - currentStart) / 30), // months
-          characteristics: 'Relief period, stability, progress, reduced challenges'
+          characteristics:
+            'Relief period, stability, progress, reduced challenges'
         });
       }
       currentStart = Math.max(currentStart, period.endJD);
@@ -352,31 +421,55 @@ class SadeSatiCalculator {
    */
   _generateLunarSignPredictions(moonSign) {
     const lunarSignEffects = {
-      1: { // Aries Moon
+      1: {
+        // Aries Moon
         strongestChallenges: ['Health', 'Family conflicts', 'Career setbacks'],
         worstPhases: ['Peak period brings maximum family disputes'],
-        remedies: ['Focus on patience, regular exercise, family harmony rituals']
+        remedies: [
+          'Focus on patience, regular exercise, family harmony rituals'
+        ]
       },
-      4: { // Cancer Moon
-        strongestChallenges: ['Emotional stability', 'Home environment', 'Financial security'],
+      4: {
+        // Cancer Moon
+        strongestChallenges: [
+          'Emotional stability',
+          'Home environment',
+          'Financial security'
+        ],
         worstPhases: ['Rising phase affects home and relationships most'],
-        remedies: ['Emotional balance practices, meditation, nurturing routines']
+        remedies: [
+          'Emotional balance practices, meditation, nurturing routines'
+        ]
       },
-      7: { // Libra Moon
-        strongestChallenges: ['Partnerships', 'Legal matters', 'Social standing'],
+      7: {
+        // Libra Moon
+        strongestChallenges: [
+          'Partnerships',
+          'Legal matters',
+          'Social standing'
+        ],
         worstPhases: ['Peak period brings relationship tests'],
-        remedies: ['Partnership counseling if needed, balance in relationships']
+        remedies: [
+          'Partnership counseling if needed, balance in relationships'
+        ]
       },
-      10: { // Capricorn Moon
-        strongestChallenges: ['Career stability', 'Authority figures', 'Material security'],
+      10: {
+        // Capricorn Moon
+        strongestChallenges: [
+          'Career stability',
+          'Authority figures',
+          'Material security'
+        ],
         worstPhases: ['Peak period affects career significantly'],
-        remedies: ['Persistent effort, professional development, maintain structure']
+        remedies: [
+          'Persistent effort, professional development, maintain structure'
+        ]
       }
       // Add more specific lunar sign effects...
     };
 
-    const lunarSignEffect = lunarSignEffects[moonSign] ||
-      this._generateGenericLunarEffect(moonSign);
+    const lunarSignEffect =
+      lunarSignEffects[moonSign] || this._generateGenericLunarEffect(moonSign);
 
     return {
       moonSign: this._getSignName(moonSign),
@@ -425,7 +518,9 @@ class SadeSatiCalculator {
 
     // Status-specific remedies
     if (currentStatus.inSadeSati) {
-      remedies.specificToStatus = this._generateCurrentPhaseRemedies(currentStatus.currentPhase);
+      remedies.specificToStatus = this._generateCurrentPhaseRemedies(
+        currentStatus.currentPhase
+      );
       remedies.emergency = [
         'During crisis periods, chant Hanuman Chalisa daily',
         'Silver ring on middle finger (if not wearing blue sapphire)',
@@ -440,7 +535,9 @@ class SadeSatiCalculator {
     }
 
     // Moon sign specific remedies
-    remedies.moonSignSpecific = this._generateMoonSignRemedies(natalChart.planets.moon.sign);
+    remedies.moonSignSpecific = this._generateMoonSignRemedies(
+      natalChart.planets.moon.sign
+    );
 
     return remedies;
   }
@@ -453,7 +550,11 @@ class SadeSatiCalculator {
    * @param {Object} lunarSignPredictions - Lunar sign predictions
    * @returns {string} Formatted summary
    */
-  _generateSadeSatiSummary(currentStatus, upcomingPeriods, lunarSignPredictions) {
+  _generateSadeSatiSummary(
+    currentStatus,
+    upcomingPeriods,
+    lunarSignPredictions
+  ) {
     let summary = '🪐 *Sade Sati Analysis*\n\n';
 
     if (currentStatus.inSadeSati) {
@@ -492,8 +593,21 @@ class SadeSatiCalculator {
   }
 
   _getSignName(sign) {
-    const signs = ['', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      '',
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs[sign] || 'Unknown';
   }
 
@@ -507,25 +621,32 @@ class SadeSatiCalculator {
     for (const period of periods) {
       if (!current) {
         current = { ...period };
-      } else if (current.phase === period.phase &&
-                 Math.abs(current.endJD - period.startJD) < 10) { // Overlapping
+      } else if (
+        current.phase === period.phase &&
+        Math.abs(current.endJD - period.startJD) < 10
+      ) {
+        // Overlapping
         current.endJD = Math.max(current.endJD, period.endJD);
         current.endDate = this._jdToDateString(current.endJD);
-        current.durationDays = Math.round((current.endJD - current.startJD));
+        current.durationDays = Math.round(current.endJD - current.startJD);
       } else {
         merged.push(current);
         current = { ...period };
       }
     }
 
-    if (current) { merged.push(current); }
+    if (current) {
+      merged.push(current);
+    }
     return merged;
   }
 
   // Additional helper methods...
   _parseBirthDate(birthDate) {
     const cleanDate = birthDate.toString().replace(/\D/g, '');
-    let day; let month; let year;
+    let day;
+    let month;
+    let year;
 
     if (cleanDate.length === 6) {
       day = parseInt(cleanDate.substring(0, 2));
@@ -547,8 +668,22 @@ class SadeSatiCalculator {
     return { hour, minute };
   }
 
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
-    const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone || 5.5);
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
+    const jd = this._dateToJulianDay(
+      year,
+      month,
+      day,
+      hour + minute / 60 - timezone || 5.5
+    );
 
     // Calculate Moon position for Sade Sati reference
     const moonPosition = sweph.calc(jd, sweph.SE_MOON, sweph.SEFLG_SIDEREAL);
@@ -566,13 +701,25 @@ class SadeSatiCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + hour / 24;
   }
 
   _getCurrentJulianDate() {
     const now = new Date();
-    return this._dateToJulianDay(now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours() + now.getMinutes() / 60);
+    return this._dateToJulianDay(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      now.getDate(),
+      now.getHours() + now.getMinutes() / 60
+    );
   }
 
   _jdToDateString(jd) {
@@ -582,7 +729,11 @@ class SadeSatiCalculator {
 
   // Placeholder implementations (can be enhanced)
   _calculatePhaseIntensity(phaseType, saturnLongitude, trigger) {
-    return phaseType === 'peak' ? 'High' : phaseType === 'rising' ? 'Medium' : 'Low';
+    return phaseType === 'peak' ?
+      'High' :
+      phaseType === 'rising' ?
+        'Medium' :
+        'Low';
   }
 
   _generatePhaseDescription(phaseType, saturnSign) {
@@ -598,11 +749,15 @@ class SadeSatiCalculator {
   }
 
   _calculateLingeringEffects(period) {
-    return period.phase === 'peak' ? 'Some lingering challenges' : 'Generally resolved';
+    return period.phase === 'peak' ?
+      'Some lingering challenges' :
+      'Generally resolved';
   }
 
   _assessCumulativeImpact(periods) {
-    return periods.length >= 2 ? 'Significant life changes experienced' : 'Moderate impact';
+    return periods.length >= 2 ?
+      'Significant life changes experienced' :
+      'Moderate impact';
   }
 
   _generateGenericLunarEffect(moonSign) {
@@ -614,7 +769,9 @@ class SadeSatiCalculator {
   }
 
   _calculateLunarSignImpact(moonSign) {
-    return moonSign <= 6 ? 'Significant challenges requiring strong remedies' : 'Moderate challenges with proper precautions';
+    return moonSign <= 6 ?
+      'Significant challenges requiring strong remedies' :
+      'Moderate challenges with proper precautions';
   }
 
   _generateCurrentPhaseRemedies(phase) {
@@ -635,7 +792,7 @@ class SadeSatiCalculator {
       return await this.geocodingService.getCoordinates(place);
     } catch (error) {
       logger.warn('Geocoding error:', error.message);
-      return [28.6139, 77.2090]; // Delhi fallback
+      return [28.6139, 77.209]; // Delhi fallback
     }
   }
 }

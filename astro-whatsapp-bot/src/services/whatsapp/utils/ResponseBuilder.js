@@ -16,7 +16,9 @@ class ResponseBuilder {
   static getButtonTitle(key, language, fallback = '') {
     try {
       const translated = translationService.translate(key, language);
-      return translated && typeof translated === 'string' ? translated : fallback;
+      return translated && typeof translated === 'string' ?
+        translated :
+        fallback;
     } catch (error) {
       logger.warn(`⚠️ Translation failed for key: ${key}`, error.message);
       return fallback;
@@ -33,7 +35,9 @@ class ResponseBuilder {
   static getTranslatedContent(key, language, fallback = '') {
     try {
       const translated = translationService.translate(key, language);
-      return translated && typeof translated === 'string' ? translated : fallback;
+      return translated && typeof translated === 'string' ?
+        translated :
+        fallback;
     } catch (error) {
       logger.warn(`⚠️ Translation failed for key: ${key}`, error.message);
       return fallback;
@@ -48,7 +52,12 @@ class ResponseBuilder {
    * @param {string} language - Language code
    * @returns {Object} Interactive message object
    */
-  static buildInteractiveButtonMessage(phoneNumber, body, buttons, language = 'en') {
+  static buildInteractiveButtonMessage(
+    phoneNumber,
+    body,
+    buttons,
+    language = 'en'
+  ) {
     return {
       to: phoneNumber,
       type: 'interactive',
@@ -60,7 +69,11 @@ class ResponseBuilder {
             type: 'reply',
             reply: {
               id: button.id,
-              title: this.getTranslatedContent(button.titleKey, language, button.title)
+              title: this.getTranslatedContent(
+                button.titleKey,
+                language,
+                button.title
+              )
             }
           }))
         }
@@ -77,7 +90,13 @@ class ResponseBuilder {
    * @param {string} language - Language code
    * @returns {Object} Interactive message object
    */
-  static buildInteractiveListMessage(phoneNumber, body, buttonText, sections, language = 'en') {
+  static buildInteractiveListMessage(
+    phoneNumber,
+    body,
+    buttonText,
+    sections,
+    language = 'en'
+  ) {
     return {
       to: phoneNumber,
       type: 'interactive',
@@ -87,12 +106,25 @@ class ResponseBuilder {
         action: {
           button: this.getTranslatedContent(buttonText, language, buttonText),
           sections: sections.map(section => ({
-            title: this.getTranslatedContent(section.titleKey, language, section.title),
+            title: this.getTranslatedContent(
+              section.titleKey,
+              language,
+              section.title
+            ),
             rows: section.rows.map(row => ({
               id: row.id,
-              title: this.getTranslatedContent(row.titleKey, language, row.title),
+              title: this.getTranslatedContent(
+                row.titleKey,
+                language,
+                row.title
+              ),
               description: row.description ?
-                this.getTranslatedContent(row.descriptionKey, language, row.description) : undefined
+                this.getTranslatedContent(
+                  row.descriptionKey,
+                  language,
+                  row.description
+                ) :
+                undefined
             }))
           }))
         }
@@ -122,15 +154,23 @@ class ResponseBuilder {
    * @param {Object} params - Template parameters
    * @returns {Object} Error message object
    */
-  static buildErrorMessage(phoneNumber, errorKey, language = 'en', params = {}) {
+  static buildErrorMessage(
+    phoneNumber,
+    errorKey,
+    language = 'en',
+    params = {}
+  ) {
     try {
-      const errorMessage = translationService.translate(errorKey, language) ||
-                          'An unexpected error occurred. Please try again later.';
+      const errorMessage =
+        translationService.translate(errorKey, language) ||
+        'An unexpected error occurred. Please try again later.';
       return this.buildTextMessage(phoneNumber, errorMessage);
     } catch (error) {
       logger.warn(`⚠️ Error building error message: ${error.message}`);
-      return this.buildTextMessage(phoneNumber,
-        `An error occurred: ${params.details || 'Unknown error'}. Please try again.`);
+      return this.buildTextMessage(
+        phoneNumber,
+        `An error occurred: ${params.details || 'Unknown error'}. Please try again.`
+      );
     }
   }
 
@@ -142,8 +182,11 @@ class ResponseBuilder {
    * @returns {Object} Success message object
    */
   static buildSuccessMessage(phoneNumber, successKey, language = 'en') {
-    const successMessage = this.getTranslatedContent(successKey, language,
-      'Operation completed successfully!');
+    const successMessage = this.getTranslatedContent(
+      successKey,
+      language,
+      'Operation completed successfully!'
+    );
     return this.buildTextMessage(phoneNumber, successMessage);
   }
 
@@ -225,21 +268,38 @@ class ResponseBuilder {
       result.errors.push('Message must have a valid "to" field');
     }
 
-    const validTypes = ['text', 'interactive', 'image', 'video', 'audio', 'document'];
+    const validTypes = [
+      'text',
+      'interactive',
+      'image',
+      'video',
+      'audio',
+      'document'
+    ];
     if (!message.type || !validTypes.includes(message.type)) {
       result.isValid = false;
-      result.errors.push(`Message type must be one of: ${validTypes.join(', ')}`);
+      result.errors.push(
+        `Message type must be one of: ${validTypes.join(', ')}`
+      );
     }
 
     // Interactive message specific validation
     if (message.type === 'interactive') {
       if (!message.interactive || typeof message.interactive !== 'object') {
         result.isValid = false;
-        result.errors.push('Interactive message must have an "interactive" field');
-      } else if (!message.interactive.type ||
-                 !['button', 'list', 'product', 'product_list'].includes(message.interactive.type)) {
+        result.errors.push(
+          'Interactive message must have an "interactive" field'
+        );
+      } else if (
+        !message.interactive.type ||
+        !['button', 'list', 'product', 'product_list'].includes(
+          message.interactive.type
+        )
+      ) {
         result.isValid = false;
-        result.errors.push('Interactive message type must be button, list, product, or product_list');
+        result.errors.push(
+          'Interactive message type must be button, list, product, or product_list'
+        );
       }
     }
 

@@ -127,21 +127,71 @@ class LifePatternsCalculator {
    */
   _getLifeThemes(sunSign) {
     const themes = {
-      Aries: ['Pioneering new paths', 'Initiating leadership roles', 'Competitive achievement'],
-      Taurus: ['Building stability', 'Creating comfort', 'Sustaining material security'],
-      Gemini: ['Communication mastery', 'Learning exploration', 'Adaptive flexibility'],
+      Aries: [
+        'Pioneering new paths',
+        'Initiating leadership roles',
+        'Competitive achievement'
+      ],
+      Taurus: [
+        'Building stability',
+        'Creating comfort',
+        'Sustaining material security'
+      ],
+      Gemini: [
+        'Communication mastery',
+        'Learning exploration',
+        'Adaptive flexibility'
+      ],
       Cancer: ['Emotional security', 'Family connections', 'Nurturing care'],
-      Leo: ['Creative expression', 'Recognition seeking', 'Inspiring leadership'],
-      Virgo: ['Service to others', 'Perfection in work', 'Health and organization'],
-      Libra: ['Harmony in relationships', 'Diplomatic balance', 'Aesthetic appreciation'],
-      Scorpio: ['Deep transformation', 'Powerful insights', 'Regenerative cycles'],
-      Sagittarius: ['Philosophical wisdom', 'Exploration journeys', 'Truth seeking'],
-      Capricorn: ['Ambitious achievement', 'Structured success', 'Responsibility mastery'],
-      Aquarius: ['Innovation advancement', 'Humanitarian service', 'Progressive change'],
-      Pisces: ['Spiritual connection', 'Compassionate service', 'Creative inspiration']
+      Leo: [
+        'Creative expression',
+        'Recognition seeking',
+        'Inspiring leadership'
+      ],
+      Virgo: [
+        'Service to others',
+        'Perfection in work',
+        'Health and organization'
+      ],
+      Libra: [
+        'Harmony in relationships',
+        'Diplomatic balance',
+        'Aesthetic appreciation'
+      ],
+      Scorpio: [
+        'Deep transformation',
+        'Powerful insights',
+        'Regenerative cycles'
+      ],
+      Sagittarius: [
+        'Philosophical wisdom',
+        'Exploration journeys',
+        'Truth seeking'
+      ],
+      Capricorn: [
+        'Ambitious achievement',
+        'Structured success',
+        'Responsibility mastery'
+      ],
+      Aquarius: [
+        'Innovation advancement',
+        'Humanitarian service',
+        'Progressive change'
+      ],
+      Pisces: [
+        'Spiritual connection',
+        'Compassionate service',
+        'Creative inspiration'
+      ]
     };
 
-    return themes[sunSign] || ['Personal growth path', 'Life purpose development', 'Self-discovery journey'];
+    return (
+      themes[sunSign] || [
+        'Personal growth path',
+        'Life purpose development',
+        'Self-discovery journey'
+      ]
+    );
   }
 
   /**
@@ -152,21 +202,63 @@ class LifePatternsCalculator {
    */
   _getGrowthAreas(sunSign) {
     const growthAreas = {
-      Aries: ['Patience development', 'Collaboration skills', 'Long-term planning'],
-      Taurus: ['Flexibility improvement', 'Risk-taking courage', 'Change adaptation'],
-      Gemini: ['Focus enhancement', 'Commitment building', 'Depth of understanding'],
-      Cancer: ['Objectivity development', 'Independence strengthening', 'Boundary setting'],
+      Aries: [
+        'Patience development',
+        'Collaboration skills',
+        'Long-term planning'
+      ],
+      Taurus: [
+        'Flexibility improvement',
+        'Risk-taking courage',
+        'Change adaptation'
+      ],
+      Gemini: [
+        'Focus enhancement',
+        'Commitment building',
+        'Depth of understanding'
+      ],
+      Cancer: [
+        'Objectivity development',
+        'Independence strengthening',
+        'Boundary setting'
+      ],
       Leo: ['Humility cultivation', 'Listening skills', 'Shared leadership'],
-      Virgo: ['Self-acceptance', 'Big picture thinking', 'Perfectionism management'],
+      Virgo: [
+        'Self-acceptance',
+        'Big picture thinking',
+        'Perfectionism management'
+      ],
       Libra: ['Decision-making', 'Self-advocacy', 'Direct communication'],
       Scorpio: ['Trust building', 'Emotional expression', 'Control release'],
-      Sagittarius: ['Detail attention', 'Focus development', 'Committed relationships'],
-      Capricorn: ['Joy cultivation', 'Spontaneity development', 'Work-life balance'],
-      Aquarius: ['Emotional connection', 'Tradition appreciation', 'Personal intimacy'],
-      Pisces: ['Reality grounding', 'Boundary establishment', 'Practical focus']
+      Sagittarius: [
+        'Detail attention',
+        'Focus development',
+        'Committed relationships'
+      ],
+      Capricorn: [
+        'Joy cultivation',
+        'Spontaneity development',
+        'Work-life balance'
+      ],
+      Aquarius: [
+        'Emotional connection',
+        'Tradition appreciation',
+        'Personal intimacy'
+      ],
+      Pisces: [
+        'Reality grounding',
+        'Boundary establishment',
+        'Practical focus'
+      ]
     };
 
-    return growthAreas[sunSign] || ['Personal development', 'Character growth', 'Life balance'];
+    return (
+      growthAreas[sunSign] || [
+        'Personal development',
+        'Character growth',
+        'Life balance'
+      ]
+    );
   }
 
   /**
@@ -177,21 +269,75 @@ class LifePatternsCalculator {
    */
   _getTimingInsights(sunSign) {
     const timingInsights = {
-      Aries: ['Best for new beginnings in spring', 'Leadership opportunities in March-May', 'Competition peaks in autumn'],
-      Taurus: ['Financial growth in spring-summer', 'Stability building in winter', 'Beauty projects in late spring'],
-      Gemini: ['Communication projects in May-June', 'Learning opportunities year-round', 'Short trips in March-November'],
-      Cancer: ['Family matters in June-July', 'Nurturing time in spring', 'Emotional reflection in winter'],
-      Leo: ['Creative projects in summer', 'Recognition in late summer', 'Leadership in July-August'],
-      Virgo: ['Health focus in late summer', 'Organization in September', 'Service opportunities in fall'],
-      Libra: ['Relationship development in October', 'Balance work in March-October', 'Social time in spring-fall'],
-      Scorpio: ['Deep work in fall', 'Transformation in October-November', 'Intensive periods in winter'],
-      Sagittarius: ['Travel opportunities in November-March', 'Learning in autumn-winter', 'Philosophical growth year-round'],
-      Capricorn: ['Career advancement in winter-spring', 'Structure building in January', 'Authority in December-January'],
-      Aquarius: ['Innovation in January-February', 'Networking year-round', 'Humanitarian projects in summer'],
-      Pisces: ['Spiritual work in February-March', 'Creative time in late winter', 'Intuitive periods in water seasons']
+      Aries: [
+        'Best for new beginnings in spring',
+        'Leadership opportunities in March-May',
+        'Competition peaks in autumn'
+      ],
+      Taurus: [
+        'Financial growth in spring-summer',
+        'Stability building in winter',
+        'Beauty projects in late spring'
+      ],
+      Gemini: [
+        'Communication projects in May-June',
+        'Learning opportunities year-round',
+        'Short trips in March-November'
+      ],
+      Cancer: [
+        'Family matters in June-July',
+        'Nurturing time in spring',
+        'Emotional reflection in winter'
+      ],
+      Leo: [
+        'Creative projects in summer',
+        'Recognition in late summer',
+        'Leadership in July-August'
+      ],
+      Virgo: [
+        'Health focus in late summer',
+        'Organization in September',
+        'Service opportunities in fall'
+      ],
+      Libra: [
+        'Relationship development in October',
+        'Balance work in March-October',
+        'Social time in spring-fall'
+      ],
+      Scorpio: [
+        'Deep work in fall',
+        'Transformation in October-November',
+        'Intensive periods in winter'
+      ],
+      Sagittarius: [
+        'Travel opportunities in November-March',
+        'Learning in autumn-winter',
+        'Philosophical growth year-round'
+      ],
+      Capricorn: [
+        'Career advancement in winter-spring',
+        'Structure building in January',
+        'Authority in December-January'
+      ],
+      Aquarius: [
+        'Innovation in January-February',
+        'Networking year-round',
+        'Humanitarian projects in summer'
+      ],
+      Pisces: [
+        'Spiritual work in February-March',
+        'Creative time in late winter',
+        'Intuitive periods in water seasons'
+      ]
     };
 
-    return timingInsights[sunSign] || ['Timing for life activities', 'Seasonal patterns', 'Cyclical opportunities'];
+    return (
+      timingInsights[sunSign] || [
+        'Timing for life activities',
+        'Seasonal patterns',
+        'Cyclical opportunities'
+      ]
+    );
   }
 
   /**
@@ -212,7 +358,8 @@ class LifePatternsCalculator {
     summary += `\n*Life Themes: ${this._getLifeThemes(sunSign).join(', ')}*\n`;
     summary += `*Growth Areas: ${this._getGrowthAreas(sunSign).join(', ')}*\n\n`;
 
-    summary += 'These patterns reflect your fundamental approach to life based on your Sun sign. Understanding these tendencies can help you make conscious choices about your personal development and life direction.';
+    summary +=
+      'These patterns reflect your fundamental approach to life based on your Sun sign. Understanding these tendencies can help you make conscious choices about your personal development and life direction.';
 
     return summary;
   }
@@ -248,7 +395,8 @@ class LifePatternsCalculator {
 class LifePatternsService extends ServiceTemplate {
   constructor() {
     super('ComprehensiveAnalysisCalculator');
-    this.calculatorPath = '../calculators/ComprehensiveAnalysisCalculator';    this.serviceName = 'LifePatternsService';
+    this.calculatorPath = '../calculators/ComprehensiveAnalysisCalculator';
+    this.serviceName = 'LifePatternsService';
     logger.info('LifePatternsService initialized');
   }
 
@@ -258,7 +406,8 @@ class LifePatternsService extends ServiceTemplate {
       this._validateInput(birthData);
 
       // Generate life patterns
-      const result = await this.calculator.generateLifePatternsFromBirthData(birthData);
+      const result =
+        await this.calculator.generateLifePatternsFromBirthData(birthData);
 
       // Add service metadata
       result.serviceMetadata = {
@@ -296,8 +445,14 @@ class LifePatternsService extends ServiceTemplate {
       summary: result.summary || 'Life patterns analysis completed',
       metadata: {
         system: 'Life Patterns Analysis',
-        calculationMethod: 'Astrological life pattern analysis based on sun sign',
-        elements: ['Life Patterns', 'Core Themes', 'Growth Areas', 'Timing Insights'],
+        calculationMethod:
+          'Astrological life pattern analysis based on sun sign',
+        elements: [
+          'Life Patterns',
+          'Core Themes',
+          'Growth Areas',
+          'Timing Insights'
+        ],
         tradition: 'Vedic astrological pattern analysis'
       }
     };
@@ -318,11 +473,25 @@ class LifePatternsService extends ServiceTemplate {
     }
 
     // Validate sun sign
-    const validSunSigns = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const validSunSigns = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
 
     if (!validSunSigns.includes(birthData.sunSign)) {
-      throw new Error(`Invalid sun sign: ${birthData.sunSign}. Valid signs are: ${validSunSigns.join(', ')}`);
+      throw new Error(
+        `Invalid sun sign: ${birthData.sunSign}. Valid signs are: ${validSunSigns.join(', ')}`
+      );
     }
   }
 
@@ -335,7 +504,12 @@ class LifePatternsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'llifePatternsCalculation', 'formatResult', 'getLifePatterns'],
+      methods: [
+        'execute',
+        'llifePatternsCalculation',
+        'formatResult',
+        'getLifePatterns'
+      ],
       dependencies: ['LifePatternsCalculator']
     };
   }

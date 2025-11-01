@@ -14,7 +14,9 @@ class IChingService {
     this.calculator = new IChingCalculator(this.config);
     this.interpreter = new IChingInterpreter(this.config, this.calculator);
 
-    logger.info('Module: IChingService initialized - Complete I Ching divination system');
+    logger.info(
+      'Module: IChingService initialized - Complete I Ching divination system'
+    );
   }
 
   /**
@@ -124,7 +126,8 @@ class IChingService {
         'Daily Guidance',
         'Nuclear & Relating Hexagrams'
       ],
-      description: 'Complete traditional I Ching divination system with authentic Wilhelm/Baynes translations and modern interpretation capabilities'
+      description:
+        'Complete traditional I Ching divination system with authentic Wilhelm/Baynes translations and modern interpretation capabilities'
     };
   }
 
@@ -140,11 +143,16 @@ class IChingService {
 
       // System-wide tests
       const catalog = this.getIChingCatalog();
-      const validCatalog = catalog.trigramCount === 8 && catalog.hexagramCount === 64;
+      const validCatalog =
+        catalog.trigramCount === 8 && catalog.hexagramCount === 64;
 
       return {
         system: {
-          healthy: configHealth.healthy && calculatorHealth.healthy && interpreterHealth.healthy && validCatalog,
+          healthy:
+            configHealth.healthy &&
+            calculatorHealth.healthy &&
+            interpreterHealth.healthy &&
+            validCatalog,
           version: '1.0.0',
           name: 'Complete I Ching Divination System',
           modules: 3,
@@ -153,7 +161,12 @@ class IChingService {
         config: configHealth,
         calculator: calculatorHealth,
         interpreter: interpreterHealth,
-        status: configHealth.healthy && calculatorHealth.healthy && interpreterHealth.healthy ? 'Fully Operational' : 'Issues Detected',
+        status:
+          configHealth.healthy &&
+          calculatorHealth.healthy &&
+          interpreterHealth.healthy ?
+            'Fully Operational' :
+            'Issues Detected',
         capabilities: catalog.capabilities
       };
     } catch (error) {

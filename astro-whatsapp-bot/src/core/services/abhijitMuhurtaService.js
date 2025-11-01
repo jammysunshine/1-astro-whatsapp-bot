@@ -13,7 +13,8 @@ class AbhijitMuhurtaService extends ServiceTemplate {
   constructor() {
     super('MuhurtaCalculator');
     this.serviceName = 'AbhijitMuhurtaService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
     logger.info('AbhijitMuhurtaService initialized');
   }
 
@@ -61,7 +62,8 @@ class AbhijitMuhurtaService extends ServiceTemplate {
       summary: result.summary || 'Abhijit Muhurta analysis completed',
       metadata: {
         system: 'Abhijit Muhurta Analysis',
-        calculationMethod: 'Vedic muhurta timing with Swiss Ephemeris calculations',
+        calculationMethod:
+          'Vedic muhurta timing with Swiss Ephemeris calculations',
         elements: ['Timing', 'Significance', 'Recommendations', 'Activities'],
         tradition: 'Vedic Hindu astrology with muhurta principles'
       }
@@ -163,13 +165,23 @@ Comprehensive Abhijit Muhurta report with timing details, significance analysis,
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get location coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate Julian Day for the birth time
-      const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+      const jd = this._dateToJulianDay(
+        year,
+        month,
+        day,
+        hour + minute / 60 - timezone
+      );
 
       // Calculate sunrise and sunset times
       const sunTimes = this._calculateSunTimes(jd, latitude, longitude);
@@ -178,21 +190,33 @@ Comprehensive Abhijit Muhurta report with timing details, significance analysis,
       const abhijitTiming = this._calculateAbhijitTiming(sunTimes);
 
       // Analyze Abhijit significance for the birth chart
-      const significanceAnalysis = this._analyzeAbhijitSignificance(abhijitTiming, birthData);
+      const significanceAnalysis = this._analyzeAbhijitSignificance(
+        abhijitTiming,
+        birthData
+      );
 
       // Generate timing recommendations
-      const recommendations = this._generateAbhijitRecommendations(abhijitTiming, significanceAnalysis);
+      const recommendations = this._generateAbhijitRecommendations(
+        abhijitTiming,
+        significanceAnalysis
+      );
 
       return {
         birthData,
         abhijitTiming,
         significanceAnalysis,
         recommendations,
-        summary: this._generateAbhijitSummary(abhijitTiming, significanceAnalysis, recommendations)
+        summary: this._generateAbhijitSummary(
+          abhijitTiming,
+          significanceAnalysis,
+          recommendations
+        )
       };
     } catch (error) {
       logger.error('Error calculating Abhijit Muhurta:', error);
-      throw new Error(`Failed to calculate Abhijit Muhurta timing: ${error.message}`);
+      throw new Error(
+        `Failed to calculate Abhijit Muhurta timing: ${error.message}`
+      );
     }
   }
 
@@ -208,15 +232,15 @@ Comprehensive Abhijit Muhurta report with timing details, significance analysis,
       // It's considered to be the most powerful muhurta of the day
       const noon = 12.0;
       const abhijitStart = noon - 0.4; // 11:36 AM
-      const abhijitEnd = noon + 0.4;   // 12:24 PM
+      const abhijitEnd = noon + 0.4; // 12:24 PM
 
       // More precise calculation based on traditional texts
       // Abhijit spans from 8/15 to 1/15 of the time between sunrise and sunset
-      const daylightHours = (sunTimes.sunset - sunTimes.sunrise);
+      const daylightHours = sunTimes.sunset - sunTimes.sunrise;
       const abhijitDuration = daylightHours * (1 / 15);
-      const abhijitCenter = sunTimes.sunrise + (daylightHours * 8 / 15);
-      const preciseStart = abhijitCenter - (abhijitDuration / 2);
-      const preciseEnd = abhijitCenter + (abhijitDuration / 2);
+      const abhijitCenter = sunTimes.sunrise + (daylightHours * 8) / 15;
+      const preciseStart = abhijitCenter - abhijitDuration / 2;
+      const preciseEnd = abhijitCenter + abhijitDuration / 2;
 
       return {
         startTime: this._decimalToTime(preciseStart),
@@ -231,7 +255,10 @@ Comprehensive Abhijit Muhurta report with timing details, significance analysis,
         }
       };
     } catch (error) {
-      logger.warn('Error calculating precise Abhijit timing, using approximate:', error.message);
+      logger.warn(
+        'Error calculating precise Abhijit timing, using approximate:',
+        error.message
+      );
 
       // Fallback to approximate timing
       return {
@@ -365,20 +392,28 @@ Comprehensive Abhijit Muhurta report with timing details, significance analysis,
    * @param {Object} recommendations - Recommendations
    * @returns {string} Summary text
    */
-  _generateAbhijitSummary(abhijitTiming, significanceAnalysis, recommendations) {
+  _generateAbhijitSummary(
+    abhijitTiming,
+    significanceAnalysis,
+    recommendations
+  ) {
     let summary = '🌟 *Abhijit Muhurta Analysis*\n\n';
 
     summary += `*Timing:* ${abhijitTiming.startTime} - ${abhijitTiming.endTime} (${abhijitTiming.durationMinutes} minutes)\n`;
     summary += `*Center Time:* ${abhijitTiming.centerTime}\n\n`;
 
     summary += '*Significance:*\n';
-    summary += 'The Abhijit Muhurta (Unconquerable Victory) is the most auspicious time of the day, ';
-    summary += 'occurring around noon. It brings maximum divine blessings and is favorable for all important activities.\n\n';
+    summary +=
+      'The Abhijit Muhurta (Unconquerable Victory) is the most auspicious time of the day, ';
+    summary +=
+      'occurring around noon. It brings maximum divine blessings and is favorable for all important activities.\n\n';
 
     summary += '*Highly Recommended Activities:*\n';
-    significanceAnalysis.activities.highlyRecommended.slice(0, 4).forEach(activity => {
-      summary += `• ${activity}\n`;
-    });
+    significanceAnalysis.activities.highlyRecommended
+      .slice(0, 4)
+      .forEach(activity => {
+        summary += `• ${activity}\n`;
+      });
 
     summary += '\n*Benefits:*\n';
     significanceAnalysis.benefits.slice(0, 3).forEach(benefit => {
@@ -399,18 +434,18 @@ Comprehensive Abhijit Muhurta report with timing details, significance analysis,
       // Use geocoding service to get coordinates
       // This is a simplified implementation - would connect to actual geocoding service
       const defaultCoords = {
-        'New Delhi': [28.6139, 77.2090],
-        Mumbai: [19.0760, 72.8777],
+        'New Delhi': [28.6139, 77.209],
+        Mumbai: [19.076, 72.8777],
         Bangalore: [12.9716, 77.5946],
         Chennai: [13.0827, 80.2707],
         Kolkata: [22.5726, 88.3639]
       };
 
-      const coords = defaultCoords[place] || [28.6139, 77.2090]; // Default to Delhi
+      const coords = defaultCoords[place] || [28.6139, 77.209]; // Default to Delhi
       return coords;
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Default to Delhi
+      return [28.6139, 77.209]; // Default to Delhi
     }
   }
 
@@ -431,8 +466,14 @@ Comprehensive Abhijit Muhurta report with timing details, significance analysis,
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
 
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y +
-               Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
 
     // Add time fraction
     const timeFraction = (hour - 12) / 24;
@@ -444,21 +485,27 @@ Comprehensive Abhijit Muhurta report with timing details, significance analysis,
       // Simplified sunrise/sunset calculation
       // In reality, would use sweph.houses() or similar for accurate calculation
       const declination = 23.44 * Math.sin((jd - 2451545) * 0.017202); // Approximate
-      const hourAngle = Math.acos(-Math.tan(latitude * Math.PI / 180) * Math.tan(declination * Math.PI / 180));
+      const hourAngle = Math.acos(
+        -Math.tan((latitude * Math.PI) / 180) *
+          Math.tan((declination * Math.PI) / 180)
+      );
 
-      const noon = 12 + (longitude / 15); // Local noon
-      const sunrise = noon - (hourAngle * 12 / Math.PI);
-      const sunset = noon + (hourAngle * 12 / Math.PI);
+      const noon = 12 + longitude / 15; // Local noon
+      const sunrise = noon - (hourAngle * 12) / Math.PI;
+      const sunset = noon + (hourAngle * 12) / Math.PI;
 
       return {
         sunrise: Math.max(6, Math.min(18, sunrise)), // Clamp between 6AM-6PM
-        sunset: Math.max(18, Math.min(24, sunset))   // Clamp between 6PM-12AM
+        sunset: Math.max(18, Math.min(24, sunset)) // Clamp between 6PM-12AM
       };
     } catch (error) {
-      logger.warn('Error calculating sun times, using defaults:', error.message);
+      logger.warn(
+        'Error calculating sun times, using defaults:',
+        error.message
+      );
       return {
-        sunrise: 6.0,  // 6:00 AM
-        sunset: 18.0   // 6:00 PM
+        sunrise: 6.0, // 6:00 AM
+        sunset: 18.0 // 6:00 PM
       };
     }
   }

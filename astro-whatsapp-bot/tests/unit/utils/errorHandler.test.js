@@ -20,7 +20,11 @@ describe('ErrorHandler', () => {
       const result = errorHandler.handleError(error, context);
 
       expect(result).toBeUndefined();
-      expect(logger.error).toHaveBeenCalledWith('Error occurred:', error, context);
+      expect(logger.error).toHaveBeenCalledWith(
+        'Error occurred:',
+        error,
+        context
+      );
     });
 
     it('should handle error without context', () => {
@@ -29,7 +33,11 @@ describe('ErrorHandler', () => {
       const result = errorHandler.handleError(error);
 
       expect(result).toBeUndefined();
-      expect(logger.error).toHaveBeenCalledWith('Error occurred:', error, undefined);
+      expect(logger.error).toHaveBeenCalledWith(
+        'Error occurred:',
+        error,
+        undefined
+      );
     });
   });
 
@@ -41,7 +49,10 @@ describe('ErrorHandler', () => {
       const result = errorHandler.handleValidationError(error, field);
 
       expect(result).toBeUndefined();
-      expect(logger.warn).toHaveBeenCalledWith('Validation error for field email:', error);
+      expect(logger.warn).toHaveBeenCalledWith(
+        'Validation error for field email:',
+        error
+      );
     });
   });
 

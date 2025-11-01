@@ -21,7 +21,9 @@ class BaseMessageProcessor {
    * @returns {Promise<void>}
    */
   async processButtonMessage(message, user, phoneNumber) {
-    logger.warn(`${this.constructor.name}: processButtonMessage not implemented`);
+    logger.warn(
+      `${this.constructor.name}: processButtonMessage not implemented`
+    );
   }
 }
 

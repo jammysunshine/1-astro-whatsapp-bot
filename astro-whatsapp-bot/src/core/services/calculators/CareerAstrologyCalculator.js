@@ -7,7 +7,9 @@ const sweph = require('sweph');
  */
 class CareerAstrologyCalculator {
   constructor() {
-    logger.info('Module: CareerAstrologyCalculator loaded - Professional and career astrology');
+    logger.info(
+      'Module: CareerAstrologyCalculator loaded - Professional and career astrology'
+    );
   }
 
   setServices(calendricalService, geocodingService) {
@@ -27,14 +29,36 @@ class CareerAstrologyCalculator {
       const currentAge = this._calculateCurrentAge(birthData);
 
       // Analyze career indicators based on chart
-      const midheavenAnalysis = this._analyzeMidheaven(houses[9], planetaryPositions);
-      const tenthHousePlanets = this._analyzeTenthHousePlanets(planetaryPositions, houses);
-      const careerPlanets = this._analyzeCareerPlanets(planetaryPositions, houses);
-      const careerTiming = this._analyzeCareerTiming(currentAge, planetaryPositions, houses);
-      const careerDirection = this._determineCareerDirection(midheavenAnalysis, tenthHousePlanets, careerPlanets);
-      const successPotential = this._assessSuccessPotential(midheavenAnalysis, tenthHousePlanets, careerPlanets);
+      const midheavenAnalysis = this._analyzeMidheaven(
+        houses[9],
+        planetaryPositions
+      );
+      const tenthHousePlanets = this._analyzeTenthHousePlanets(
+        planetaryPositions,
+        houses
+      );
+      const careerPlanets = this._analyzeCareerPlanets(
+        planetaryPositions,
+        houses
+      );
+      const careerTiming = this._analyzeCareerTiming(
+        currentAge,
+        planetaryPositions,
+        houses
+      );
+      const careerDirection = this._determineCareerDirection(
+        midheavenAnalysis,
+        tenthHousePlanets,
+        careerPlanets
+      );
+      const successPotential = this._assessSuccessPotential(
+        midheavenAnalysis,
+        tenthHousePlanets,
+        careerPlanets
+      );
 
-      const introduction = 'Your birth chart reveals your professional calling, career strengths, and optimal timing for success. The Midheaven (MC) represents your public face and career direction.';
+      const introduction =
+        'Your birth chart reveals your professional calling, career strengths, and optimal timing for success. The Midheaven (MC) represents your public face and career direction.';
 
       return {
         introduction,
@@ -60,13 +84,30 @@ class CareerAstrologyCalculator {
     const [day, month, year] = birthDate.split('/').map(Number);
     const [hour, minute] = birthTime.split(':').map(Number);
 
-    const utcTime = new Date(Date.UTC(year, month - 1, day, hour - timezone, minute));
+    const utcTime = new Date(
+      Date.UTC(year, month - 1, day, hour - timezone, minute)
+    );
     const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
 
     const planets = {};
-    const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
-      sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
-    const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planetEphemIds = [
+      sweph.SE_SUN,
+      sweph.SE_MOON,
+      sweph.SE_MARS,
+      sweph.SE_MERCURY,
+      sweph.SE_JUPITER,
+      sweph.SE_VENUS,
+      sweph.SE_SATURN
+    ];
+    const planetNames = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     planetEphemIds.forEach((ephemId, index) => {
       const result = sweph.swe_calc_ut(julianDay, ephemId, sweph.SEFLG_SPEED);
@@ -87,11 +128,19 @@ class CareerAstrologyCalculator {
    * @private
    */
   async _calculateHouses(birthData) {
-    const { birthDate, birthTime, latitude = 28.6139, longitude = 77.2090, timezone = 5.5 } = birthData;
+    const {
+      birthDate,
+      birthTime,
+      latitude = 28.6139,
+      longitude = 77.209,
+      timezone = 5.5
+    } = birthData;
     const [day, month, year] = birthDate.split('/').map(Number);
     const [hour, minute] = birthTime.split(':').map(Number);
 
-    const utcTime = new Date(Date.UTC(year, month - 1, day, hour - timezone, minute));
+    const utcTime = new Date(
+      Date.UTC(year, month - 1, day, hour - timezone, minute)
+    );
     const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
 
     const cusps = new Array(13);
@@ -109,7 +158,9 @@ class CareerAstrologyCalculator {
 
     const birthDateObj = new Date(year, month - 1, day);
     const currentDate = new Date();
-    const currentAge = Math.floor((currentDate - birthDateObj) / (365.25 * 24 * 60 * 60 * 1000));
+    const currentAge = Math.floor(
+      (currentDate - birthDateObj) / (365.25 * 24 * 60 * 60 * 1000)
+    );
     return currentAge;
   }
 
@@ -118,8 +169,20 @@ class CareerAstrologyCalculator {
    * @private
    */
   _getSignFromLongitude(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     const signIndex = Math.floor(longitude / 30);
     return signs[signIndex];
   }
@@ -129,7 +192,7 @@ class CareerAstrologyCalculator {
    * @private
    */
   _getHouseNumber(longitude, ascendant) {
-    const angle = ((longitude - ascendant + 360) % 360);
+    const angle = (longitude - ascendant + 360) % 360;
     return Math.floor(angle / 30) + 1;
   }
 
@@ -191,14 +254,16 @@ class CareerAstrologyCalculator {
     if (planets.Jupiter?.longitude) {
       careerPlanets.push({
         planet: 'Jupiter',
-        careerImpact: 'Jupiter expansion favors wealth accumulation and professional opportunities'
+        careerImpact:
+          'Jupiter expansion favors wealth accumulation and professional opportunities'
       });
     }
 
     if (careerPlanets.length === 0) {
       careerPlanets.push({
         planet: 'Saturn',
-        careerImpact: 'Saturn shapes career through discipline and professional responsibility'
+        careerImpact:
+          'Saturn shapes career through discipline and professional responsibility'
       });
     }
 
@@ -247,21 +312,36 @@ class CareerAstrologyCalculator {
    * Determine career direction
    * @private
    */
-  _determineCareerDirection(midheavenAnalysis, tenthHousePlanets, careerPlanets) {
+  _determineCareerDirection(
+    midheavenAnalysis,
+    tenthHousePlanets,
+    careerPlanets
+  ) {
     let direction = 'Your career path emphasizes ';
 
     // Analyze MC sign
-    const mcSign = midheavenAnalysis.includes('Aries') ? 'leadership' :
-      midheavenAnalysis.includes('Taurus') ? 'practical achievements' :
-        midheavenAnalysis.includes('Gemini') ? 'communication' :
-          midheavenAnalysis.includes('Cancer') ? 'service oriented roles' :
-            midheavenAnalysis.includes('Leo') ? 'creative leadership' :
-              midheavenAnalysis.includes('Virgo') ? 'technical expertise' :
-                midheavenAnalysis.includes('Libra') ? 'relationship-focused careers' :
-                  midheavenAnalysis.includes('Scorpio') ? 'transformative professions' :
-                    midheavenAnalysis.includes('Sagittarius') ? 'teaching and exploration' :
-                      midheavenAnalysis.includes('Capricorn') ? 'authoritative positions' :
-                        midheavenAnalysis.includes('Aquarius') ? 'innovative fields' :
+    const mcSign = midheavenAnalysis.includes('Aries') ?
+      'leadership' :
+      midheavenAnalysis.includes('Taurus') ?
+        'practical achievements' :
+        midheavenAnalysis.includes('Gemini') ?
+          'communication' :
+          midheavenAnalysis.includes('Cancer') ?
+            'service oriented roles' :
+            midheavenAnalysis.includes('Leo') ?
+              'creative leadership' :
+              midheavenAnalysis.includes('Virgo') ?
+                'technical expertise' :
+                midheavenAnalysis.includes('Libra') ?
+                  'relationship-focused careers' :
+                  midheavenAnalysis.includes('Scorpio') ?
+                    'transformative professions' :
+                    midheavenAnalysis.includes('Sagittarius') ?
+                      'teaching and exploration' :
+                      midheavenAnalysis.includes('Capricorn') ?
+                        'authoritative positions' :
+                        midheavenAnalysis.includes('Aquarius') ?
+                          'innovative fields' :
                           'humanitarian pursuits';
 
     direction += `${mcSign}`;
@@ -269,7 +349,8 @@ class CareerAstrologyCalculator {
     // Add planetary influences
     if (tenthHousePlanets.length > 0) {
       const keyPlanet = tenthHousePlanets[0].planet;
-      const planetInfluence = this._getCareerPlanetInfluence(keyPlanet).toLowerCase();
+      const planetInfluence =
+        this._getCareerPlanetInfluence(keyPlanet).toLowerCase();
       direction += ` with ${planetInfluence} characteristics`;
     }
 
@@ -289,20 +370,26 @@ class CareerAstrologyCalculator {
     const beneficialPlanets = ['Jupiter', 'Venus', 'Sun'];
     const challengingPlanets = ['Saturn', 'Mars'];
 
-    const hasBeneficialInfluence = tenthHousePlanets.some(p => beneficialPlanets.includes(p.planet)) ||
+    const hasBeneficialInfluence =
+      tenthHousePlanets.some(p => beneficialPlanets.includes(p.planet)) ||
       careerPlanets.some(p => beneficialPlanets.includes(p.planet));
 
-    const hasChallenges = tenthHousePlanets.some(p => challengingPlanets.includes(p.planet)) ||
+    const hasChallenges =
+      tenthHousePlanets.some(p => challengingPlanets.includes(p.planet)) ||
       careerPlanets.some(p => challengingPlanets.includes(p.planet));
 
     if (hasBeneficialInfluence && !hasChallenges) {
-      potential += 'Beneficial planetary influences support professional success and recognition.';
+      potential +=
+        'Beneficial planetary influences support professional success and recognition.';
     } else if (hasChallenges && hasBeneficialInfluence) {
-      potential += 'Mixed influences suggest success through effort and persistence.';
+      potential +=
+        'Mixed influences suggest success through effort and persistence.';
     } else if (hasChallenges) {
-      potential += 'Chart indicates professional growth through overcoming challenges.';
+      potential +=
+        'Chart indicates professional growth through overcoming challenges.';
     } else {
-      potential += 'Balanced chart supports steady career development and achievement.';
+      potential +=
+        'Balanced chart supports steady career development and achievement.';
     }
 
     return potential;
@@ -335,7 +422,12 @@ class CareerAstrologyCalculator {
       healthy: true,
       version: '1.0.0',
       name: 'CareerAstrologyCalculator',
-      calculations: ['Midheaven Analysis', 'Tenth House Planets', 'Career Timing', 'Success Potential'],
+      calculations: [
+        'Midheaven Analysis',
+        'Tenth House Planets',
+        'Career Timing',
+        'Success Potential'
+      ],
       status: 'Operational'
     };
   }

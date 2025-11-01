@@ -6,7 +6,9 @@ const mongoose = require('mongoose');
 
 describe('Session Model', () => {
   beforeAll(async() => {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test');
+    await mongoose.connect(
+      process.env.MONGODB_URI || 'mongodb://localhost:27017/test'
+    );
   });
 
   afterAll(async() => {
@@ -47,7 +49,9 @@ describe('Session Model', () => {
 
       await new Session(sessionData).save();
 
-      const foundSession = await Session.findOne({ phoneNumber: '+1234567890' });
+      const foundSession = await Session.findOne({
+        phoneNumber: '+1234567890'
+      });
 
       expect(foundSession).toBeTruthy();
       expect(foundSession.currentFlow).toBe('onboarding');

@@ -21,7 +21,10 @@ class CompatibilityWorkflowManager {
    */
   async executeAction() {
     try {
-      this.logExecution('start', 'Initializing synastry compatibility analysis');
+      this.logExecution(
+        'start',
+        'Initializing synastry compatibility analysis'
+      );
 
       // Validate user profile completeness
       if (!(await this.validateUserProfile())) {
@@ -48,7 +51,11 @@ class CompatibilityWorkflowManager {
     } catch (error) {
       this.logger.error('Error in CompatibilityAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -92,10 +99,12 @@ class CompatibilityWorkflowManager {
    * @returns {boolean} True if valid
    */
   validatePartnerData(partnerData) {
-    return partnerData &&
-           partnerData.birthDate &&
-           partnerData.birthTime &&
-           partnerData.birthPlace;
+    return (
+      partnerData &&
+      partnerData.birthDate &&
+      partnerData.birthTime &&
+      partnerData.birthPlace
+    );
   }
 
   /**
@@ -106,7 +115,11 @@ class CompatibilityWorkflowManager {
    */
   async sendSynastryResults(analysis, insights, partnerInfo, formatter) {
     try {
-      const formattedResults = formatter.formatSynastryResults(analysis, insights, partnerInfo);
+      const formattedResults = formatter.formatSynastryResults(
+        analysis,
+        insights,
+        partnerInfo
+      );
       await sendMessage(this.phoneNumber, formattedResults, 'text');
 
       // Send interactive options for more details
@@ -121,7 +134,8 @@ class CompatibilityWorkflowManager {
    * Send analysis error message
    */
   async sendAnalysisError() {
-    const errorMessage = '❌ *Compatibility Analysis Error*\n\nUnable to complete the synastry calculation. This could be due to:\n• Incomplete birth data format\n• Invalid birth place coordinates\n• Ephemeris calculation issues\n\nPlease ensure all birth details are accurate and try again, or use Settings to verify your profile.';
+    const errorMessage =
+      '❌ *Compatibility Analysis Error*\n\nUnable to complete the synastry calculation. This could be due to:\n• Incomplete birth data format\n• Invalid birth place coordinates\n• Ephemeris calculation issues\n\nPlease ensure all birth details are accurate and try again, or use Settings to verify your profile.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -151,7 +165,8 @@ Type "settings" to explore more astrology services!`;
    * Send message for incomplete profile
    */
   async sendIncompleteProfileMessage() {
-    const message = '👤 *Profile Required for Compatibility*\n\nTo use compatibility analysis, you need a complete birth profile.\n\n📝 Use "Settings" from the main menu to update your profile, or send your birth details in this format:\n\nBirth Date (DDMMYY): 150690\nBirth Time (HHMM): 1430\nBirth Place: Mumbai, India';
+    const message =
+      '👤 *Profile Required for Compatibility*\n\nTo use compatibility analysis, you need a complete birth profile.\n\n📝 Use "Settings" from the main menu to update your profile, or send your birth details in this format:\n\nBirth Date (DDMMYY): 150690\nBirth Time (HHMM): 1430\nBirth Place: Mumbai, India';
     await sendMessage(this.phoneNumber, message, 'text');
   }
 
@@ -169,7 +184,8 @@ Type "settings" to explore more astrology services!`;
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, there was an error processing your compatibility analysis. Please try again or contact support if the problem persists.';
+    const errorMessage =
+      '❌ Sorry, there was an error processing your compatibility analysis. Please try again or contact support if the problem persists.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -188,9 +204,13 @@ Type "settings" to explore more astrology services!`;
    */
   async checkSubscriptionLimits() {
     try {
-      const benefits = this.subscriptionManager.getSubscriptionBenefits(this.user);
+      const benefits = this.subscriptionManager.getSubscriptionBenefits(
+        this.user
+      );
       const used = this.user.compatibilityChecks || 0;
-      const allowed = benefits.maxCompatibilityChecks === -1 || used < benefits.maxCompatibilityChecks;
+      const allowed =
+        benefits.maxCompatibilityChecks === -1 ||
+        used < benefits.maxCompatibilityChecks;
       return {
         allowed,
         used,
@@ -218,7 +238,13 @@ Type "settings" to explore more astrology services!`;
    * @param {Object} formatter - Results formatter
    * @returns {boolean} True if handled successfully
    */
-  async handleCompatibilityRequest(partnerBirthDate, calculator, scorer, insightsGen, formatter) {
+  async handleCompatibilityRequest(
+    partnerBirthDate,
+    calculator,
+    scorer,
+    insightsGen,
+    formatter
+  ) {
     try {
       if (!this.user.birthDate) {
         await this.sendIncompleteProfileMessage();
@@ -233,10 +259,16 @@ Type "settings" to explore more astrology services!`;
       }
 
       // Perform compatibility analysis
-      await this.performCompatibilityAnalysis({
-        birthDate: partnerBirthDate,
-        name: 'Partner'
-      }, calculator, scorer, insightsGen, formatter);
+      await this.performCompatibilityAnalysis(
+        {
+          birthDate: partnerBirthDate,
+          name: 'Partner'
+        },
+        calculator,
+        scorer,
+        insightsGen,
+        formatter
+      );
 
       return true;
     } catch (error) {
@@ -254,18 +286,38 @@ Type "settings" to explore more astrology services!`;
    * @param {Object} insightsGen - Insights generator
    * @param {Object} formatter - Results formatter
    */
-  async performCompatibilityAnalysis(partnerData, calculator, scorer, insightsGen, formatter) {
+  async performCompatibilityAnalysis(
+    partnerData,
+    calculator,
+    scorer,
+    insightsGen,
+    formatter
+  ) {
     try {
-      this.logger.info(`Starting synastry analysis for ${this.phoneNumber} and partner`);
+      this.logger.info(
+        `Starting synastry analysis for ${this.phoneNumber} and partner`
+      );
 
       // Calculate comprehensive synastry using Swiss Ephemeris
-      const synastryAnalysis = await this.calculateSwissEphemerisSynastry(partnerData, calculator, scorer);
+      const synastryAnalysis = await this.calculateSwissEphemerisSynastry(
+        partnerData,
+        calculator,
+        scorer
+      );
 
       // Generate relationship insights
-      const insights = await insightsGen.generateRelationshipInsights(synastryAnalysis, partnerData);
+      const insights = await insightsGen.generateRelationshipInsights(
+        synastryAnalysis,
+        partnerData
+      );
 
       // Send formatted results
-      await this.sendSynastryResults(synastryAnalysis, insights, partnerData, formatter);
+      await this.sendSynastryResults(
+        synastryAnalysis,
+        insights,
+        partnerData,
+        formatter
+      );
 
       // Update usage counters
       await this.updateCompatibilityUsage();
@@ -290,16 +342,31 @@ Type "settings" to explore more astrology services!`;
     const partnerChart = await calculator.calculateChartPositions(partnerData);
 
     // Calculate interchart aspects (planetary relationships)
-    const interchartAspects = await this.calculateInterchartAspects(userChart, partnerChart, calculator);
+    const interchartAspects = await this.calculateInterchartAspects(
+      userChart,
+      partnerChart,
+      calculator
+    );
 
     // Calculate house overlays (personal planets in partner houses)
-    const houseOverlays = await this.calculateHouseOverlays(userChart, partnerChart, calculator);
+    const houseOverlays = await this.calculateHouseOverlays(
+      userChart,
+      partnerChart,
+      calculator
+    );
 
     // Calculate composite chart (midpoint synthesis)
-    const compositeChart = await this.calculateCompositeChart(userChart, partnerChart, calculator);
+    const compositeChart = await this.calculateCompositeChart(
+      userChart,
+      partnerChart,
+      calculator
+    );
 
     // Generate compatibility scores
-    const compatibilityScores = scorer.calculateCompatibilityScores(interchartAspects, houseOverlays);
+    const compatibilityScores = scorer.calculateCompatibilityScores(
+      interchartAspects,
+      houseOverlays
+    );
 
     return {
       userChart,
@@ -308,7 +375,11 @@ Type "settings" to explore more astrology services!`;
       houseOverlays,
       compositeChart,
       compatibilityScores,
-      synastryHouses: this.getRelationshipHouses(userChart, partnerChart, calculator)
+      synastryHouses: this.getRelationshipHouses(
+        userChart,
+        partnerChart,
+        calculator
+      )
     };
   }
 
@@ -320,12 +391,22 @@ Type "settings" to explore more astrology services!`;
    */
   async calculateInterchartAspects(chart1, chart2, calculator) {
     const aspects = [];
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     // Calculate aspects between each pair of planets
     for (const planet1 of planets) {
       for (const planet2 of planets) {
-        if (!chart1.planets[planet1] || !chart2.planets[planet2]) { continue; }
+        if (!chart1.planets[planet1] || !chart2.planets[planet2]) {
+          continue;
+        }
 
         const pos1 = chart1.planets[planet1].longitude;
         const pos2 = chart2.planets[planet2].longitude;
@@ -338,8 +419,17 @@ Type "settings" to explore more astrology services!`;
             aspect: aspectData.aspect,
             aspectName: aspectData.aspectName,
             orb: aspectData.orb,
-            significance: this.analyzeAspectSignificance(planet1, planet2, aspectData.aspect),
-            type: aspectData.aspect <= 60 ? 'harmonious' : aspectData.aspect >= 90 ? 'challenging' : 'neutral'
+            significance: this.analyzeAspectSignificance(
+              planet1,
+              planet2,
+              aspectData.aspect
+            ),
+            type:
+              aspectData.aspect <= 60 ?
+                'harmonious' :
+                aspectData.aspect >= 90 ?
+                  'challenging' :
+                  'neutral'
           });
         }
       }
@@ -360,7 +450,10 @@ Type "settings" to explore more astrology services!`;
     // Check user's planets in partner's houses
     overlays.userInPartnerHouses = {};
     for (const [planet, data] of Object.entries(chart1.planets)) {
-      const house = calculator.longitudeToHouse(data.longitude, chart2.ascendant);
+      const house = calculator.longitudeToHouse(
+        data.longitude,
+        chart2.ascendant
+      );
       overlays.userInPartnerHouses[planet] = {
         house,
         significance: this.analyzeHouseOverlaySignificance(house, planet)
@@ -370,7 +463,10 @@ Type "settings" to explore more astrology services!`;
     // Check partner's planets in user's houses
     overlays.partnerInUserHouses = {};
     for (const [planet, data] of Object.entries(chart2.planets)) {
-      const house = calculator.longitudeToHouse(data.longitude, chart1.ascendant);
+      const house = calculator.longitudeToHouse(
+        data.longitude,
+        chart1.ascendant
+      );
       overlays.partnerInUserHouses[planet] = {
         house,
         significance: this.analyzeHouseOverlaySignificance(house, planet)
@@ -388,7 +484,15 @@ Type "settings" to explore more astrology services!`;
    */
   async calculateCompositeChart(chart1, chart2, calculator) {
     const composite = {};
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     composite.planets = {};
     for (const planet of planets) {
@@ -399,8 +503,14 @@ Type "settings" to explore more astrology services!`;
         // Calculate midpoint
         let midpoint = (pos1 + pos2) / 2;
         if (Math.abs(pos1 - pos2) > 180) {
-          if (pos1 < pos2) { midpoint = ((pos1 + 360) + pos2) / 2; } else { midpoint = (pos1 + (pos2 + 360)) / 2; }
-          if (midpoint >= 360) { midpoint -= 360; }
+          if (pos1 < pos2) {
+            midpoint = (pos1 + 360 + pos2) / 2;
+          } else {
+            midpoint = (pos1 + (pos2 + 360)) / 2;
+          }
+          if (midpoint >= 360) {
+            midpoint -= 360;
+          }
         }
 
         composite.planets[planet] = {
@@ -436,11 +546,17 @@ Type "settings" to explore more astrology services!`;
       VenusMars: 'Sexual chemistry and romantic harmony'
     };
     const key = `${planet1}${planet2}`;
-    const description = planetPairs[key] || planetPairs[`${planet2}${planet1}`] || `${planet1}-${planet2} planetary connection`;
+    const description =
+      planetPairs[key] ||
+      planetPairs[`${planet2}${planet1}`] ||
+      `${planet1}-${planet2} planetary connection`;
 
-    return aspect === 120 ? `Easy flowing harmony in ${description.toLowerCase()}` :
-      aspect === 60 ? `Supportive energy fostering ${description.toLowerCase()}` :
-        aspect === 180 ? `Polarity balance in ${description.toLowerCase()}` :
+    return aspect === 120 ?
+      `Easy flowing harmony in ${description.toLowerCase()}` :
+      aspect === 60 ?
+        `Supportive energy fostering ${description.toLowerCase()}` :
+        aspect === 180 ?
+          `Polarity balance in ${description.toLowerCase()}` :
           `${description.toLowerCase()}`;
   }
 

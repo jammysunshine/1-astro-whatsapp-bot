@@ -14,7 +14,9 @@ class HoraryCalculator {
     this.logger = logger;
     this.config = config;
 
-    this.logger.info('Module: HoraryCalculator loaded with astronomical calculation capabilities');
+    this.logger.info(
+      'Module: HoraryCalculator loaded with astronomical calculation capabilities'
+    );
   }
 
   /**
@@ -28,7 +30,9 @@ class HoraryCalculator {
       // Parse question time
       const [datePart, timePart] = questionTime.split(' ');
       const [day, month, year] = datePart.split('/').map(Number);
-      const [hour, minute] = timePart ? timePart.split(':').map(Number) : [12, 0];
+      const [hour, minute] = timePart ?
+        timePart.split(':').map(Number) :
+        [12, 0];
 
       // Default location if not provided
       const latitude = location.latitude || 28.6139; // Delhi
@@ -42,7 +46,15 @@ class HoraryCalculator {
       const planetaryPositions = this.calculatePlanetaryPositions(julianDay);
 
       // Calculate house cusps
-      const ascendant = this.calculateAscendant(hour, minute, day, month, year, latitude, longitude);
+      const ascendant = this.calculateAscendant(
+        hour,
+        minute,
+        day,
+        month,
+        year,
+        latitude,
+        longitude
+      );
       const houses = this.calculateHouses(ascendant);
 
       return {
@@ -100,7 +112,11 @@ class HoraryCalculator {
       ];
 
       for (const planet of planets) {
-        const result = sweph.swe_calc_ut(julianDay, planet.ephem, sweph.SEFLG_SPEED);
+        const result = sweph.swe_calc_ut(
+          julianDay,
+          planet.ephem,
+          sweph.SEFLG_SPEED
+        );
         if (result.rc >= 0) {
           const longitude = result.longitude[0];
           positions[planet.name] = {
@@ -131,7 +147,15 @@ class HoraryCalculator {
     this.logger.warn('Using simplified planetary position calculations');
 
     const positions = {};
-    const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
+    const planets = [
+      'sun',
+      'moon',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn'
+    ];
 
     planets.forEach((planet, index) => {
       const longitude = (julianDay * (index + 1) * 13.7) % 360;
@@ -175,14 +199,17 @@ class HoraryCalculator {
         symbol: this.getAscendantSymbol(ascendantDegree)
       };
     } catch (error) {
-      this.logger.warn('Swiss Ephemeris ascendant calculation failed, using simplified method');
+      this.logger.warn(
+        'Swiss Ephemeris ascendant calculation failed, using simplified method'
+      );
 
       // Simplified ascendant calculation (fallback)
       const totalMinutes = hour * 60 + minute;
       const dayOfYear = this.getDayOfYear(day, month);
       const seasonalOffset = Math.sin((dayOfYear / 365) * 2 * Math.PI) * 30;
 
-      const ascendantDegree = (totalMinutes * 0.25 + seasonalOffset + latitude) % 360;
+      const ascendantDegree =
+        (totalMinutes * 0.25 + seasonalOffset + latitude) % 360;
 
       return {
         degree: Math.round(ascendantDegree * 10) / 10,
@@ -228,7 +255,15 @@ class HoraryCalculator {
     const dayOfWeek = date.getDay();
 
     // Planetary day rulers (0 = Sunday, 6 = Saturday)
-    const dayRulers = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+    const dayRulers = [
+      'sun',
+      'moon',
+      'mars',
+      'mercury',
+      'jupiter',
+      'venus',
+      'saturn'
+    ];
 
     const dayRuler = dayRulers[dayOfWeek];
     const planetaryHours = this.config.getAllPlanetaryRulers();
@@ -346,7 +381,10 @@ class HoraryCalculator {
 
     Object.keys(positions).forEach(planet => {
       const planetPosition = positions[planet];
-      planetPosition.house = this.getHouseNumber(planetPosition.longitude, ascendantDegree);
+      planetPosition.house = this.getHouseNumber(
+        planetPosition.longitude,
+        ascendantDegree
+      );
     });
 
     return {
@@ -410,7 +448,8 @@ class HoraryCalculator {
     try {
       // Test basic calculations
       const testChart = this.castHoraryChart('15/10/2023 14:30', {});
-      const validChart = testChart && testChart.ascendant && testChart.planetaryPositions;
+      const validChart =
+        testChart && testChart.ascendant && testChart.planetaryPositions;
 
       // Test judge determination
       const testJudge = this.determineJudge(testChart, 'test question');
@@ -426,7 +465,12 @@ class HoraryCalculator {
         questionCategorization: !!testCategory,
         swissEphemerisAvailable: true, // Assume if no error thrown
         version: '1.0.0',
-        capabilities: ['Chart Casting', 'Planetary Calculations', 'House Systems', 'Judge Determination'],
+        capabilities: [
+          'Chart Casting',
+          'Planetary Calculations',
+          'House Systems',
+          'Judge Determination'
+        ],
         status: 'Operational'
       };
     } catch (error) {

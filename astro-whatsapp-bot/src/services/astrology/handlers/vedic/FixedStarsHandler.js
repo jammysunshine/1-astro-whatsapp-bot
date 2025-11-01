@@ -5,7 +5,12 @@
 const logger = require('../../../../utils/logger');
 
 const handleFixedStars = async(message, user) => {
-  if (!message.includes('fixed star') && !message.includes('fixed') && !message.includes('star') && !message.includes('constellation')) {
+  if (
+    !message.includes('fixed star') &&
+    !message.includes('fixed') &&
+    !message.includes('star') &&
+    !message.includes('constellation')
+  ) {
     return null;
   }
 

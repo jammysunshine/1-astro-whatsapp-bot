@@ -5,7 +5,12 @@
 const logger = require('../../../../utils/logger');
 
 const handleCareerAstrology = async(message, user) => {
-  if (!message.includes('career') && !message.includes('job') && !message.includes('profession') && !message.includes('work')) {
+  if (
+    !message.includes('career') &&
+    !message.includes('job') &&
+    !message.includes('profession') &&
+    !message.includes('work')
+  ) {
     return null;
   }
 

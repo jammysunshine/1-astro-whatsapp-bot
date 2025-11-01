@@ -8,11 +8,7 @@ class BirthData {
     this.data = { ...data };
 
     // Required fields
-    this.requiredFields = [
-      'birthDate',
-      'birthTime',
-      'birthPlace'
-    ];
+    this.requiredFields = ['birthDate', 'birthTime', 'birthPlace'];
 
     // Optional fields with defaults
     this.optionalFields = {
@@ -47,13 +43,18 @@ class BirthData {
     }
 
     // Validate birth place
-    if (!this.data.birthPlace || this.data.birthPlace.toString().trim() === '') {
+    if (
+      !this.data.birthPlace ||
+      this.data.birthPlace.toString().trim() === ''
+    ) {
       throw new Error('Birth place is required');
     }
 
     // Validate date range (not in future, not too far in past)
     if (!this.isValidDateRange(this.data.birthDate)) {
-      throw new Error('Birth date must be realistic (not in future, not before 1800)');
+      throw new Error(
+        'Birth date must be realistic (not in future, not before 1800)'
+      );
     }
 
     return true;
@@ -65,7 +66,9 @@ class BirthData {
    * @returns {boolean} True if valid format
    */
   isValidDateFormat(dateStr) {
-    if (typeof dateStr !== 'string') return false;
+    if (typeof dateStr !== 'string') {
+      return false;
+    }
 
     const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/\d{4}$/;
     return dateRegex.test(dateStr);
@@ -77,7 +80,9 @@ class BirthData {
    * @returns {boolean} True if valid format
    */
   isValidTimeFormat(timeStr) {
-    if (typeof timeStr !== 'string') return false;
+    if (typeof timeStr !== 'string') {
+      return false;
+    }
 
     const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
     return timeRegex.test(timeStr);
@@ -99,9 +104,11 @@ class BirthData {
       const now = new Date();
 
       // Check if valid date
-      if (birthDate.getFullYear() !== year ||
-          birthDate.getMonth() !== month ||
-          birthDate.getDate() !== day) {
+      if (
+        birthDate.getFullYear() !== year ||
+        birthDate.getMonth() !== month ||
+        birthDate.getDate() !== day
+      ) {
         return false;
       }
 
@@ -137,8 +144,12 @@ class BirthData {
     }
 
     // Convert string values to appropriate types where needed
-    if (normalized.latitude) normalized.latitude = parseFloat(normalized.latitude);
-    if (normalized.longitude) normalized.longitude = parseFloat(normalized.longitude);
+    if (normalized.latitude) {
+      normalized.latitude = parseFloat(normalized.latitude);
+    }
+    if (normalized.longitude) {
+      normalized.longitude = parseFloat(normalized.longitude);
+    }
 
     return normalized;
   }

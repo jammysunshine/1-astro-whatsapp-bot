@@ -9,7 +9,9 @@ const translationService = require('../../../services/i18n/TranslationService');
  * Uses birth chart analysis to recommend names that harmonize with the child's cosmic blueprint.
  */
 class BabyNameSuggestionAction extends BaseAction {
-  static get actionId() { return 'get_baby_name_suggestions'; }
+  static get actionId() {
+    return 'get_baby_name_suggestions';
+  }
 
   async execute() {
     try {
@@ -28,7 +30,8 @@ class BabyNameSuggestionAction extends BaseAction {
   }
 
   async sendBabyNameIntro() {
-    const analysis = '👶 *Vedic Baby Name Suggestions - Cosmic Naming*\n\n' +
+    const analysis =
+      '👶 *Vedic Baby Name Suggestions - Cosmic Naming*\n\n' +
       'In Vedic tradition, a child\'s name carries lifetime influence. Choose names that resonate with their birth chart for maximum harmony.\n\n' +
       '*🔆 VEDIC NAME PRINCIPLES:*\n' +
       '• First letter based on birth star (Nakshatra)\n' +
@@ -43,14 +46,19 @@ class BabyNameSuggestionAction extends BaseAction {
       '*✨ A perfect name awakens the soul\'s highest potential.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -59,8 +67,14 @@ class BabyNameSuggestionAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Suggest baby names based on Vedic astrology and birth chart analysis',
-      keywords: ['baby names', 'name suggestions', 'vedic names', 'child naming'],
+      description:
+        'Suggest baby names based on Vedic astrology and birth chart analysis',
+      keywords: [
+        'baby names',
+        'name suggestions',
+        'vedic names',
+        'child naming'
+      ],
       category: 'utilities',
       subscriptionRequired: true,
       cooldown: 3600000

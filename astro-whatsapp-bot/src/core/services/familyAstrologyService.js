@@ -1,3 +1,10 @@
+const ServiceTemplate = require('./ServiceTemplate');
+const logger = require('../../../utils/logger');
+
+// Import required calculators
+const { GroupAstrologyCalculator } = require('../calculators/GroupAstrologyCalculator');
+const { CompatibilityCalculator } = require('../calculators/CompatibilityCalculator');
+
 /**
  * Family Astrology Service
  *
@@ -5,8 +12,6 @@
  * generational patterns, ancestral influences, and family relationship dynamics using
  * Vedic astrological principles and Swiss Ephemeris calculations.
  */
-
-const logger = require('../../../utils/logger');
 class FamilyAstrologyService extends ServiceTemplate {
   constructor() {
     // No super() call with calculatorName as it manages multiple calculators directly
@@ -49,19 +54,29 @@ class FamilyAstrologyService extends ServiceTemplate {
       const memberAnalyses = await this._analyzeFamilyMembers(familyMembers);
 
       // Calculate compatibility between family members
-      const compatibilityMatrix = await this._calculateFamilyCompatibility(familyMembers);
+      const compatibilityMatrix =
+        await this._calculateFamilyCompatibility(familyMembers);
 
       // Identify generational patterns
-      const generationalPatterns = this._identifyGenerationalPatterns(memberAnalyses);
+      const generationalPatterns =
+        this._identifyGenerationalPatterns(memberAnalyses);
 
       // Analyze ancestral influences
-      const ancestralInfluences = this._analyzeAncestralInfluences(memberAnalyses);
+      const ancestralInfluences =
+        this._analyzeAncestralInfluences(memberAnalyses);
 
       // Generate family relationship dynamics
-      const relationshipDynamics = this._analyzeRelationshipDynamics(compatibilityMatrix, memberAnalyses);
+      const relationshipDynamics = this._analyzeRelationshipDynamics(
+        compatibilityMatrix,
+        memberAnalyses
+      );
 
       // Create family recommendations
-      const recommendations = this._generateFamilyRecommendations(compatibilityMatrix, generationalPatterns, ancestralInfluences);
+      const recommendations = this._generateFamilyRecommendations(
+        compatibilityMatrix,
+        generationalPatterns,
+        ancestralInfluences
+      );
 
       return {
         familyMembers: familyMembers.map(m => ({ name: m.name, role: m.role })),
@@ -73,7 +88,10 @@ class FamilyAstrologyService extends ServiceTemplate {
         ancestralInfluences,
         relationshipDynamics,
         recommendations,
-        familyStrength: this._calculateFamilyStrength(compatibilityMatrix, generationalPatterns)
+        familyStrength: this._calculateFamilyStrength(
+          compatibilityMatrix,
+          generationalPatterns
+        )
       };
     } catch (error) {
       logger.error('Error getting family astrology analysis:', error);
@@ -126,15 +144,23 @@ class FamilyAstrologyService extends ServiceTemplate {
           const member1 = familyMembers[i];
           const member2 = familyMembers[j];
 
-          const compatibility = await this.compatibilityCalculator.checkCompatibility(member1, member2);
+          const compatibility =
+            await this.compatibilityCalculator.checkCompatibility(
+              member1,
+              member2
+            );
 
           const key = `${member1.name}-${member2.name}`;
           matrix[key] = {
             members: [member1.name, member2.name],
             roles: [member1.role, member2.role],
             score: compatibility.overall || 0,
-            harmony: compatibility.overall > 70 ? 'High' :
-              compatibility.overall > 50 ? 'Moderate' : 'Challenging',
+            harmony:
+              compatibility.overall > 70 ?
+                'High' :
+                compatibility.overall > 50 ?
+                  'Moderate' :
+                  'Challenging',
             keyFactors: this._extractCompatibilityFactors(compatibility)
           };
         }
@@ -175,8 +201,10 @@ class FamilyAstrologyService extends ServiceTemplate {
 
       // Identify family-wide patterns
       patterns.familyStrengths = this._identifyFamilyStrengths(memberAnalyses);
-      patterns.familyChallenges = this._identifyFamilyChallenges(memberAnalyses);
-      patterns.inheritancePatterns = this._analyzeInheritancePatterns(memberAnalyses);
+      patterns.familyChallenges =
+        this._identifyFamilyChallenges(memberAnalyses);
+      patterns.inheritancePatterns =
+        this._analyzeInheritancePatterns(memberAnalyses);
 
       return patterns;
     } catch (error) {
@@ -207,17 +235,23 @@ class FamilyAstrologyService extends ServiceTemplate {
       );
 
       if (saturnInfluences.length > 0) {
-        influences.karmicPatterns.push('Strong ancestral karma patterns present');
+        influences.karmicPatterns.push(
+          'Strong ancestral karma patterns present'
+        );
         influences.recommendations.push('Consider ancestral healing practices');
       }
 
       // Look for Jupiter placements (wisdom, spiritual lineage)
       const jupiterInfluences = memberAnalyses.filter(m =>
-        m.keyPlanets.some(p => p.planet === 'Jupiter' && p.strength === 'Strong')
+        m.keyPlanets.some(
+          p => p.planet === 'Jupiter' && p.strength === 'Strong'
+        )
       );
 
       if (jupiterInfluences.length > 0) {
-        influences.ancestralGifts.push('Spiritual wisdom and teaching abilities');
+        influences.ancestralGifts.push(
+          'Spiritual wisdom and teaching abilities'
+        );
         influences.spiritualLineage = 'Strong spiritual lineage present';
       }
 
@@ -228,7 +262,9 @@ class FamilyAstrologyService extends ServiceTemplate {
 
       if (nodalInfluences.length > 0) {
         influences.karmicPatterns.push('Past life ancestral connections');
-        influences.recommendations.push('Explore family history and ancestral practices');
+        influences.recommendations.push(
+          'Explore family history and ancestral practices'
+        );
       }
 
       return influences;
@@ -278,10 +314,12 @@ class FamilyAstrologyService extends ServiceTemplate {
       });
 
       // Assess communication patterns
-      dynamics.communicationPatterns = this._assessCommunicationPatterns(memberAnalyses);
+      dynamics.communicationPatterns =
+        this._assessCommunicationPatterns(memberAnalyses);
 
       // Identify support systems
-      dynamics.supportSystems = this._identifySupportSystems(compatibilityMatrix);
+      dynamics.supportSystems =
+        this._identifySupportSystems(compatibilityMatrix);
 
       return dynamics;
     } catch (error) {
@@ -298,7 +336,11 @@ class FamilyAstrologyService extends ServiceTemplate {
    * @returns {Object} Family recommendations
    * @private
    */
-  _generateFamilyRecommendations(compatibilityMatrix, generationalPatterns, ancestralInfluences) {
+  _generateFamilyRecommendations(
+    compatibilityMatrix,
+    generationalPatterns,
+    ancestralInfluences
+  ) {
     const recommendations = {
       immediate: [],
       relationship: [],
@@ -307,29 +349,45 @@ class FamilyAstrologyService extends ServiceTemplate {
     };
 
     // Immediate recommendations based on challenging relationships
-    const challengingPairs = Object.values(compatibilityMatrix).filter(p => p.harmony === 'Challenging');
+    const challengingPairs = Object.values(compatibilityMatrix).filter(
+      p => p.harmony === 'Challenging'
+    );
     if (challengingPairs.length > 0) {
-      recommendations.immediate.push('Focus on understanding and patience with challenging family relationships');
-      recommendations.relationship.push('Practice active listening and empathy in family communications');
+      recommendations.immediate.push(
+        'Focus on understanding and patience with challenging family relationships'
+      );
+      recommendations.relationship.push(
+        'Practice active listening and empathy in family communications'
+      );
     }
 
     // Relationship recommendations
     if (Object.values(compatibilityMatrix).some(p => p.harmony === 'High')) {
-      recommendations.relationship.push('Leverage harmonious relationships as foundation for family strength');
+      recommendations.relationship.push(
+        'Leverage harmonious relationships as foundation for family strength'
+      );
     }
 
     // Spiritual recommendations based on ancestral influences
     if (ancestralInfluences.karmicPatterns.length > 0) {
-      recommendations.spiritual.push('Consider family puja or ancestral rituals for karmic healing');
+      recommendations.spiritual.push(
+        'Consider family puja or ancestral rituals for karmic healing'
+      );
     }
 
     if (ancestralInfluences.spiritualLineage) {
-      recommendations.spiritual.push('Explore family spiritual traditions and practices');
+      recommendations.spiritual.push(
+        'Explore family spiritual traditions and practices'
+      );
     }
 
     // Practical recommendations
-    recommendations.practical.push('Schedule regular family meetings to discuss important matters');
-    recommendations.practical.push('Create family traditions that honor both individual and collective needs');
+    recommendations.practical.push(
+      'Schedule regular family meetings to discuss important matters'
+    );
+    recommendations.practical.push(
+      'Create family traditions that honor both individual and collective needs'
+    );
 
     return recommendations;
   }
@@ -357,18 +415,30 @@ class FamilyAstrologyService extends ServiceTemplate {
   _identifyDominantTraits(member) {
     // Identify dominant personality traits based on key planets
     const traits = [];
-    if (member.sun?.sign) { traits.push(this._getSunSignTrait(member.sun.sign)); }
-    if (member.moon?.sign) { traits.push(this._getMoonSignTrait(member.moon.sign)); }
-    if (member.mars?.sign) { traits.push(this._getMarsSignTrait(member.mars.sign)); }
+    if (member.sun?.sign) {
+      traits.push(this._getSunSignTrait(member.sun.sign));
+    }
+    if (member.moon?.sign) {
+      traits.push(this._getMoonSignTrait(member.moon.sign));
+    }
+    if (member.mars?.sign) {
+      traits.push(this._getMarsSignTrait(member.mars.sign));
+    }
     return [...new Set(traits)]; // Remove duplicates
   }
 
   _identifyLifeThemes(member) {
     // Identify life themes based on planetary placements
     const themes = [];
-    if (member.jupiter?.house === 9) { themes.push('Spirituality and higher learning'); }
-    if (member.saturn?.house === 10) { themes.push('Career and responsibility'); }
-    if (member.venus?.house === 7) { themes.push('Relationships and harmony'); }
+    if (member.jupiter?.house === 9) {
+      themes.push('Spirituality and higher learning');
+    }
+    if (member.saturn?.house === 10) {
+      themes.push('Career and responsibility');
+    }
+    if (member.venus?.house === 7) {
+      themes.push('Relationships and harmony');
+    }
     return themes;
   }
 
@@ -383,9 +453,15 @@ class FamilyAstrologyService extends ServiceTemplate {
   _extractCompatibilityFactors(compatibility) {
     // Extract key compatibility factors
     const factors = [];
-    if (compatibility.emotional > 70) { factors.push('Strong emotional connection'); }
-    if (compatibility.intellectual > 70) { factors.push('Good intellectual synergy'); }
-    if (compatibility.physical > 70) { factors.push('Physical harmony'); }
+    if (compatibility.emotional > 70) {
+      factors.push('Strong emotional connection');
+    }
+    if (compatibility.intellectual > 70) {
+      factors.push('Good intellectual synergy');
+    }
+    if (compatibility.physical > 70) {
+      factors.push('Physical harmony');
+    }
     return factors;
   }
 
@@ -394,9 +470,15 @@ class FamilyAstrologyService extends ServiceTemplate {
   _groupByGeneration(memberAnalyses) {
     // Simplified generation grouping (would need birth dates for proper grouping)
     return {
-      'Older Generation': memberAnalyses.filter(m => ['Parent', 'Grandparent'].includes(m.role)),
-      'Middle Generation': memberAnalyses.filter(m => ['Parent', 'Adult Child'].includes(m.role)),
-      'Younger Generation': memberAnalyses.filter(m => ['Child', 'Teenager'].includes(m.role))
+      'Older Generation': memberAnalyses.filter(m =>
+        ['Parent', 'Grandparent'].includes(m.role)
+      ),
+      'Middle Generation': memberAnalyses.filter(m =>
+        ['Parent', 'Adult Child'].includes(m.role)
+      ),
+      'Younger Generation': memberAnalyses.filter(m =>
+        ['Child', 'Teenager'].includes(m.role)
+      )
     };
   }
 
@@ -411,7 +493,9 @@ class FamilyAstrologyService extends ServiceTemplate {
 
   _identifyFamilyStrengths(memberAnalyses) {
     const strengths = [];
-    const strongJupiter = memberAnalyses.filter(m => m.keyPlanets.some(p => p.planet === 'Jupiter')).length;
+    const strongJupiter = memberAnalyses.filter(m =>
+      m.keyPlanets.some(p => p.planet === 'Jupiter')
+    ).length;
     if (strongJupiter > memberAnalyses.length / 2) {
       strengths.push('Strong family wisdom and spiritual guidance');
     }
@@ -420,7 +504,9 @@ class FamilyAstrologyService extends ServiceTemplate {
 
   _identifyFamilyChallenges(memberAnalyses) {
     const challenges = [];
-    const weakSaturn = memberAnalyses.filter(m => !m.keyPlanets.some(p => p.planet === 'Saturn')).length;
+    const weakSaturn = memberAnalyses.filter(
+      m => !m.keyPlanets.some(p => p.planet === 'Saturn')
+    ).length;
     if (weakSaturn > memberAnalyses.length / 2) {
       challenges.push('May need to develop discipline and responsibility');
     }
@@ -464,13 +550,17 @@ class FamilyAstrologyService extends ServiceTemplate {
 
   _identifySupportSystems(compatibilityMatrix) {
     const systems = [];
-    const harmoniousPairs = Object.values(compatibilityMatrix).filter(p => p.harmony === 'High');
+    const harmoniousPairs = Object.values(compatibilityMatrix).filter(
+      p => p.harmony === 'High'
+    );
 
     if (harmoniousPairs.length > 0) {
       systems.push('Strong support networks within family');
     }
 
-    systems.push('Encourage individual personal growth alongside family responsibilities');
+    systems.push(
+      'Encourage individual personal growth alongside family responsibilities'
+    );
     return systems;
   }
 
@@ -613,18 +703,29 @@ class FamilyAstrologyService extends ServiceTemplate {
 
   _calculateFamilyStrength(compatibilityMatrix, generationalPatterns) {
     // Calculate overall family astrological strength
-    const compatibilityScores = Object.values(compatibilityMatrix).map(p => p.score);
-    const avgCompatibility = compatibilityScores.reduce((sum, score) => sum + score, 0) / compatibilityScores.length;
+    const compatibilityScores = Object.values(compatibilityMatrix).map(
+      p => p.score
+    );
+    const avgCompatibility =
+      compatibilityScores.reduce((sum, score) => sum + score, 0) /
+      compatibilityScores.length;
 
-    const generationalStrength = Object.keys(generationalPatterns.dominantPlanets || {}).length;
+    const generationalStrength = Object.keys(
+      generationalPatterns.dominantPlanets || {}
+    ).length;
 
-    const overallStrength = (avgCompatibility + (generationalStrength * 10)) / 2;
+    const overallStrength = (avgCompatibility + generationalStrength * 10) / 2;
 
     return {
       score: Math.min(100, overallStrength),
-      level: overallStrength > 75 ? 'Very Strong' :
-        overallStrength > 60 ? 'Strong' :
-          overallStrength > 45 ? 'Moderate' : 'Needs Attention',
+      level:
+        overallStrength > 75 ?
+          'Very Strong' :
+          overallStrength > 60 ?
+            'Strong' :
+            overallStrength > 45 ?
+              'Moderate' :
+              'Needs Attention',
       factors: {
         compatibility: avgCompatibility,
         generationalHarmony: generationalStrength
@@ -679,13 +780,17 @@ class FamilyAstrologyService extends ServiceTemplate {
       // Validate date format
       const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
       if (!dateRegex.test(member.birthDate)) {
-        throw new Error(`Family member ${index + 1} birth date must be in DD/MM/YYYY format`);
+        throw new Error(
+          `Family member ${index + 1} birth date must be in DD/MM/YYYY format`
+        );
       }
 
       // Validate time format
       const timeRegex = /^\d{2}:\d{2}$/;
       if (!timeRegex.test(member.birthTime)) {
-        throw new Error(`Family member ${index + 1} birth time must be in HH:MM format`);
+        throw new Error(
+          `Family member ${index + 1} birth time must be in HH:MM format`
+        );
       }
     });
   }
@@ -711,7 +816,8 @@ class FamilyAstrologyService extends ServiceTemplate {
       data: {
         analysis: result,
         summary: this._createFamilySummary(result),
-        disclaimer: '⚠️ *Family Astrology Disclaimer:* This analysis examines astrological influences on family dynamics. Real family relationships involve many factors beyond astrology. Professional counseling is recommended for serious family issues.'
+        disclaimer:
+          '⚠️ *Family Astrology Disclaimer:* This analysis examines astrological influences on family dynamics. Real family relationships involve many factors beyond astrology. Professional counseling is recommended for serious family issues.'
       }
     };
   }
@@ -728,10 +834,17 @@ class FamilyAstrologyService extends ServiceTemplate {
       overallStrength: result.familyStrength.level,
       strengthScore: result.familyStrength.score,
       keyInsights: {
-        harmoniousRelationships: result.relationshipDynamics.harmoniousPairs.length,
-        challengingRelationships: result.relationshipDynamics.challengingPairs.length,
-        dominantPlanets: Object.values(result.generationalPatterns.dominantPlanets || {}).flat(),
-        ancestralInfluences: result.ancestralInfluences.karmicPatterns.length > 0 ? 'Present' : 'Minimal'
+        harmoniousRelationships:
+          result.relationshipDynamics.harmoniousPairs.length,
+        challengingRelationships:
+          result.relationshipDynamics.challengingPairs.length,
+        dominantPlanets: Object.values(
+          result.generationalPatterns.dominantPlanets || {}
+        ).flat(),
+        ancestralInfluences:
+          result.ancestralInfluences.karmicPatterns.length > 0 ?
+            'Present' :
+            'Minimal'
       },
       topRecommendations: [
         ...(result.recommendations.immediate || []).slice(0, 1),
@@ -748,7 +861,8 @@ class FamilyAstrologyService extends ServiceTemplate {
   getMetadata() {
     return {
       name: 'FamilyAstrologyService',
-      description: 'Comprehensive family astrology analysis including member compatibility, generational patterns, ancestral influences, and family relationship dynamics',
+      description:
+        'Comprehensive family astrology analysis including member compatibility, generational patterns, ancestral influences, and family relationship dynamics',
       version: '1.0.0',
       dependencies: ['GroupAstrologyCalculator', 'CompatibilityScorer'],
       category: 'vedic'

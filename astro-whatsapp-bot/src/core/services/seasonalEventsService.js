@@ -11,7 +11,8 @@ const logger = require('../../utils/logger');
 class SeasonalEventsService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'SeasonalEventsService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'SeasonalEventsService';
     this.calculatorPath = '../calculators/SeasonalEventsCalculator';
     logger.info('SeasonalEventsService initialized');
   }
@@ -58,7 +59,9 @@ class SeasonalEventsService extends ServiceTemplate {
    */
   _validateInput(year) {
     if (typeof year !== 'number' || year < 1900 || year > 2100) {
-      throw new Error('A valid year (between 1900 and 2100) is required for seasonal events analysis.');
+      throw new Error(
+        'A valid year (between 1900 and 2100) is required for seasonal events analysis.'
+      );
     }
   }
 
@@ -86,7 +89,8 @@ class SeasonalEventsService extends ServiceTemplate {
         calculationType: 'Seasonal Events Analysis',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'Seasonal events analysis provides insights into the energetic shifts of the year. This information is for spiritual guidance and personal reflection, not definitive prediction. Individual experiences may vary.'
+      disclaimer:
+        'Seasonal events analysis provides insights into the energetic shifts of the year. This information is for spiritual guidance and personal reflection, not definitive prediction. Individual experiences may vary.'
     };
   }
 
@@ -149,7 +153,8 @@ class SeasonalEventsService extends ServiceTemplate {
   _createComprehensiveSummary(events, eventSummary) {
     let summary = `This analysis covers ${eventSummary.totalEvents} major seasonal astrological events for the year ${events[0]?.year || 'N/A'}. `;
     summary += `Key events include ${eventSummary.solstices} solstices, ${eventSummary.equinoxes} equinoxes, and ${eventSummary.crossQuarterDays} cross-quarter days. `;
-    summary += 'These events mark significant energetic shifts throughout the year, influencing natural cycles and offering opportunities for spiritual alignment and personal growth. Understanding these rhythms can enhance your connection to nature and your inner self.';
+    summary +=
+      'These events mark significant energetic shifts throughout the year, influencing natural cycles and offering opportunities for spiritual alignment and personal growth. Understanding these rhythms can enhance your connection to nature and your inner self.';
     return summary;
   }
 
@@ -162,9 +167,16 @@ class SeasonalEventsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'astronomy',
-      methods: ['processCalculation', 'getSeasonalEvents', 'getSolstices', 'getEquinoxes', 'getCrossQuarterDays'],
+      methods: [
+        'processCalculation',
+        'getSeasonalEvents',
+        'getSolstices',
+        'getEquinoxes',
+        'getCrossQuarterDays'
+      ],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Service for tracking and analyzing seasonal astrological events.'
+      description:
+        'Service for tracking and analyzing seasonal astrological events.'
     };
   }
 

@@ -9,7 +9,8 @@ const { BirthData } = require('../../models');
 class BirthChartService extends ServiceTemplate {
   constructor(chartCalculator = require('../calculators/ChartGenerator')) {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.calculator = new chartCalculator();
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculator = new chartCalculator();
     logger.info('BirthChartService initialized');
   }
 

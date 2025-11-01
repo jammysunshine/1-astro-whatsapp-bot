@@ -12,7 +12,8 @@ const logger = require('../../utils/logger');
 class CompatibilityScoreService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CompatibilityScoreService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'CompatibilityScoreService';
     logger.info('CompatibilityScoreService initialized');
   }
 
@@ -23,7 +24,9 @@ class CompatibilityScoreService extends ServiceTemplate {
       return result;
     } catch (error) {
       logger.error('CompatibilityScoreService calculation error:', error);
-      throw new Error(`Compatibility score calculation failed: ${error.message}`);
+      throw new Error(
+        `Compatibility score calculation failed: ${error.message}`
+      );
     }
   }
 
@@ -37,11 +40,15 @@ class CompatibilityScoreService extends ServiceTemplate {
       const { aspects, overlays } = compatibilityData;
 
       // Get comprehensive scoring from calculator
-      const scoringResult = this.calculator.calculateCompatibilityScores(aspects, overlays);
+      const scoringResult = this.calculator.calculateCompatibilityScores(
+        aspects,
+        overlays
+      );
 
       // Generate additional insights and recommendations
       const recommendations = this._generateRecommendations(scoringResult);
-      const compatibilityProfile = this._createCompatibilityProfile(scoringResult);
+      const compatibilityProfile =
+        this._createCompatibilityProfile(scoringResult);
 
       return {
         ...scoringResult,
@@ -66,33 +73,61 @@ class CompatibilityScoreService extends ServiceTemplate {
 
     // Overall score-based recommendations
     if (overall >= 80) {
-      recommendations.push('Celebrate the strong astrological foundation and focus on nurturing natural harmony');
-      recommendations.push('Use the excellent compatibility as a platform for mutual growth and shared goals');
+      recommendations.push(
+        'Celebrate the strong astrological foundation and focus on nurturing natural harmony'
+      );
+      recommendations.push(
+        'Use the excellent compatibility as a platform for mutual growth and shared goals'
+      );
     } else if (overall >= 60) {
-      recommendations.push('Build upon the solid compatibility foundation through open communication');
-      recommendations.push('Focus on understanding and appreciating complementary energies');
+      recommendations.push(
+        'Build upon the solid compatibility foundation through open communication'
+      );
+      recommendations.push(
+        'Focus on understanding and appreciating complementary energies'
+      );
     } else if (overall >= 40) {
-      recommendations.push('Work consciously on areas of challenge while appreciating areas of strength');
-      recommendations.push('Consider professional astrological guidance for navigating compatibility dynamics');
+      recommendations.push(
+        'Work consciously on areas of challenge while appreciating areas of strength'
+      );
+      recommendations.push(
+        'Consider professional astrological guidance for navigating compatibility dynamics'
+      );
     } else {
-      recommendations.push('Seek comprehensive astrological consultation to understand complex dynamics');
-      recommendations.push('Focus on personal growth and spiritual development alongside relationship work');
+      recommendations.push(
+        'Seek comprehensive astrological consultation to understand complex dynamics'
+      );
+      recommendations.push(
+        'Focus on personal growth and spiritual development alongside relationship work'
+      );
     }
 
     // Category-specific recommendations
     if (categories.aspects?.dominantType === 'challenging') {
-      recommendations.push('Pay special attention to communication during challenging aspect periods');
-      recommendations.push('Use challenging aspects as opportunities for deeper understanding and growth');
+      recommendations.push(
+        'Pay special attention to communication during challenging aspect periods'
+      );
+      recommendations.push(
+        'Use challenging aspects as opportunities for deeper understanding and growth'
+      );
     }
 
     if (categories.overlays?.strength === 'weak') {
-      recommendations.push('Focus on building emotional intimacy and shared experiences');
-      recommendations.push('Work on creating mutual understanding in relationship areas');
+      recommendations.push(
+        'Focus on building emotional intimacy and shared experiences'
+      );
+      recommendations.push(
+        'Work on creating mutual understanding in relationship areas'
+      );
     }
 
     if (categories.composite?.harmony === 'developing') {
-      recommendations.push('Practice patience and give the relationship time to develop its natural rhythm');
-      recommendations.push('Focus on shared activities and goals to strengthen the partnership foundation');
+      recommendations.push(
+        'Practice patience and give the relationship time to develop its natural rhythm'
+      );
+      recommendations.push(
+        'Focus on shared activities and goals to strengthen the partnership foundation'
+      );
     }
 
     return recommendations.slice(0, 5); // Limit to top 5 recommendations
@@ -128,11 +163,18 @@ class CompatibilityScoreService extends ServiceTemplate {
     const overlayStrength = categories.overlays?.strength;
     const compositeHarmony = categories.composite?.harmony;
 
-    if (aspectType === 'harmonious' && overlayStrength === 'strong' && compositeHarmony === 'very_high') {
+    if (
+      aspectType === 'harmonious' &&
+      overlayStrength === 'strong' &&
+      compositeHarmony === 'very_high'
+    ) {
       return 'Exceptionally harmonious with strong supportive energies flowing naturally';
     } else if (aspectType === 'harmonious' && overlayStrength !== 'weak') {
       return 'Primarily harmonious with good energetic support and understanding';
-    } else if (compositeHarmony === 'moderate' || overlayStrength === 'moderate') {
+    } else if (
+      compositeHarmony === 'moderate' ||
+      overlayStrength === 'moderate'
+    ) {
       return 'Balanced energies requiring conscious effort to maintain harmony';
     } else {
       return 'Complex energies offering significant growth opportunities through understanding';
@@ -168,19 +210,27 @@ class CompatibilityScoreService extends ServiceTemplate {
     const growthAreas = [];
 
     if (categories.aspects?.challenging > categories.aspects?.harmonious) {
-      growthAreas.push('Developing patience and understanding during challenging periods');
+      growthAreas.push(
+        'Developing patience and understanding during challenging periods'
+      );
     }
 
     if (categories.overlays?.strength === 'weak') {
-      growthAreas.push('Building deeper emotional intimacy and shared experiences');
+      growthAreas.push(
+        'Building deeper emotional intimacy and shared experiences'
+      );
     }
 
     if (categories.composite?.harmony === 'developing') {
-      growthAreas.push('Learning to balance individual needs with partnership goals');
+      growthAreas.push(
+        'Learning to balance individual needs with partnership goals'
+      );
     }
 
     if (growthAreas.length === 0) {
-      growthAreas.push('Continuing to nurture and strengthen existing harmonious connections');
+      growthAreas.push(
+        'Continuing to nurture and strengthen existing harmonious connections'
+      );
     }
 
     return growthAreas;
@@ -207,7 +257,9 @@ class CompatibilityScoreService extends ServiceTemplate {
     }
 
     if (strengths.length === 0) {
-      strengths.push('Unique astrological dynamic with individual learning opportunities');
+      strengths.push(
+        'Unique astrological dynamic with individual learning opportunities'
+      );
     }
 
     return strengths;
@@ -259,14 +311,22 @@ class CompatibilityScoreService extends ServiceTemplate {
 
     // Validate aspects structure
     for (const aspect of aspects) {
-      if (!aspect.planet1 || !aspect.planet2 || typeof aspect.aspect !== 'number') {
-        throw new Error('Invalid aspect structure: each aspect must have planet1, planet2, and aspect properties');
+      if (
+        !aspect.planet1 ||
+        !aspect.planet2 ||
+        typeof aspect.aspect !== 'number'
+      ) {
+        throw new Error(
+          'Invalid aspect structure: each aspect must have planet1, planet2, and aspect properties'
+        );
       }
     }
 
     // Validate overlays structure
     if (!overlays.userInPartnerHouses && !overlays.partnerInUserHouses) {
-      throw new Error('Overlays must contain userInPartnerHouses or partnerInUserHouses data');
+      throw new Error(
+        'Overlays must contain userInPartnerHouses or partnerInUserHouses data'
+      );
     }
   }
 
@@ -291,7 +351,8 @@ class CompatibilityScoreService extends ServiceTemplate {
         compatibilityProfile: result.compatibilityProfile,
         interpretation: result.interpretation
       },
-      disclaimer: 'Compatibility scores are interpretive tools. Real relationships involve many factors beyond astrological analysis. Professional counseling is recommended for important relationship decisions.'
+      disclaimer:
+        'Compatibility scores are interpretive tools. Real relationships involve many factors beyond astrological analysis. Professional counseling is recommended for important relationship decisions.'
     };
   }
 

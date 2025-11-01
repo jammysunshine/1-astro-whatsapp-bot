@@ -10,7 +10,9 @@ const extractPartnerData = message => {
 
   // Check if message contains birth date pattern
   const dateMatch = message.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
-  if (!dateMatch) { return null; }
+  if (!dateMatch) {
+    return null;
+  }
 
   const birthDate = dateMatch[1];
 
@@ -30,7 +32,9 @@ const extractPartnerData = message => {
 
   // Extract birth place if provided
   let birthPlace = 'Delhi, India';
-  const placeMatch = message.match(/(?:place:?\s*|birthplace:?\s*|born in:?\s*)([A-Za-z\s,]+)/i);
+  const placeMatch = message.match(
+    /(?:place:?\s*|birthplace:?\s*|born in:?\s*)([A-Za-z\s,]+)/i
+  );
   if (placeMatch) {
     birthPlace = placeMatch[1].trim();
   } else {
@@ -58,13 +62,14 @@ const extractPartnerData = message => {
  * @param {Array<string|RegExp>} patterns - Array of patterns to match
  * @returns {boolean} True if any pattern matches
  */
-const matchesIntent = (message, patterns) => patterns.some(pattern => {
-  const lowerMessage = message.toLowerCase();
-  if (typeof pattern === 'string') {
-    return lowerMessage.includes(pattern.toLowerCase());
-  }
-  return pattern.test(lowerMessage);
-});
+const matchesIntent = (message, patterns) =>
+  patterns.some(pattern => {
+    const lowerMessage = message.toLowerCase();
+    if (typeof pattern === 'string') {
+      return lowerMessage.includes(pattern.toLowerCase());
+    }
+    return pattern.test(lowerMessage);
+  });
 
 /**
  * Validate birth data completeness
@@ -79,7 +84,9 @@ const validateBirthData = (birthDate, birthTime, birthPlace) => {
   if (!birthDate) {
     errors.push('Birth date is required');
   } else {
-    let day; let month; let year;
+    let day;
+    let month;
+    let year;
     let isValidDate = false;
 
     // Try DDMMYY format
@@ -88,9 +95,14 @@ const validateBirthData = (birthDate, birthTime, birthPlace) => {
     if (shortMatch) {
       [, day, month] = shortMatch.map(Number);
       const yy = parseInt(shortMatch[3]);
-      year = (yy < new Date().getFullYear() % 100) ? 2000 + yy : 1900 + yy; // Simple heuristic for 2-digit year
+      year = yy < new Date().getFullYear() % 100 ? 2000 + yy : 1900 + yy; // Simple heuristic for 2-digit year
       const date = new Date(year, month - 1, day);
-      if (date <= new Date() && date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
+      if (
+        date <= new Date() &&
+        date.getFullYear() === year &&
+        date.getMonth() === month - 1 &&
+        date.getDate() === day
+      ) {
         isValidDate = true;
       }
     }
@@ -101,7 +113,12 @@ const validateBirthData = (birthDate, birthTime, birthPlace) => {
     if (!isValidDate && longMatch) {
       [, day, month, year] = longMatch.map(Number);
       const date = new Date(year, month - 1, day);
-      if (date <= new Date() && date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
+      if (
+        date <= new Date() &&
+        date.getFullYear() === year &&
+        date.getMonth() === month - 1 &&
+        date.getDate() === day
+      ) {
         isValidDate = true;
       }
     }
@@ -112,13 +129,20 @@ const validateBirthData = (birthDate, birthTime, birthPlace) => {
     if (!isValidDate && isoMatch) {
       [, year, month, day] = isoMatch.map(Number);
       const date = new Date(year, month - 1, day);
-      if (date <= new Date() && date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
+      if (
+        date <= new Date() &&
+        date.getFullYear() === year &&
+        date.getMonth() === month - 1 &&
+        date.getDate() === day
+      ) {
         isValidDate = true;
       }
     }
 
     if (!isValidDate) {
-      errors.push('Birth date must be a valid date in DDMMYY, DDMMYYYY or YYYY-MM-DD format, and not a future date.');
+      errors.push(
+        'Birth date must be a valid date in DDMMYY, DDMMYYYY or YYYY-MM-DD format, and not a future date.'
+      );
     }
   }
 
@@ -134,7 +158,10 @@ const validateBirthData = (birthDate, birthTime, birthPlace) => {
 
   return {
     isValid: errors.length === 0,
-    message: errors.length > 0 ? `Please provide: ${errors.join(', ')}` : 'Birth data is valid'
+    message:
+      errors.length > 0 ?
+        `Please provide: ${errors.join(', ')}` :
+        'Birth data is valid'
   };
 };
 

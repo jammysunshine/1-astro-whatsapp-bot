@@ -8,7 +8,9 @@ const sweph = require('sweph');
 class AstrologicalCalculations {
   constructor(vedicCore) {
     this.vedicCore = vedicCore;
-    logger.info('Module: AstrologicalCalculations loaded for shared astrology calculations');
+    logger.info(
+      'Module: AstrologicalCalculations loaded for shared astrology calculations'
+    );
   }
 
   /**
@@ -25,7 +27,14 @@ class AstrologicalCalculations {
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
 
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + hour / 24;
   }
 
@@ -39,7 +48,12 @@ class AstrologicalCalculations {
    */
   calculateHouses(jd, latitude, longitude, houseSystem) {
     try {
-      const houses = sweph.houses(jd, latitude, longitude, houseSystem.charAt(0).toUpperCase());
+      const houses = sweph.houses(
+        jd,
+        latitude,
+        longitude,
+        houseSystem.charAt(0).toUpperCase()
+      );
       return {
         system: houseSystem,
         ascendant: houses.ascendant[0],
@@ -117,11 +131,17 @@ class AstrologicalCalculations {
       sign: this.getSignFromLongitude(longitude),
       decanate: {
         number: decanate,
-        interpretation: this.interpretDecanate(this.getSignFromLongitude(longitude), decanate)
+        interpretation: this.interpretDecanate(
+          this.getSignFromLongitude(longitude),
+          decanate
+        )
       },
       duad: {
         number: duad,
-        interpretation: this.interpretDuad(this.getSignFromLongitude(longitude), duad)
+        interpretation: this.interpretDuad(
+          this.getSignFromLongitude(longitude),
+          duad
+        )
       }
     };
   }
@@ -156,14 +176,18 @@ class AstrologicalCalculations {
         const planet1 = planets[planetKeys[i]];
         const planet2 = planets[planetKeys[j]];
 
-        if (planet1.longitude !== undefined && planet2.longitude !== undefined) {
+        if (
+          planet1.longitude !== undefined &&
+          planet2.longitude !== undefined
+        ) {
           const angle = Math.abs(planet1.longitude - planet2.longitude) % 360;
           const minAngle = Math.min(angle, 360 - angle);
 
           // Check each aspect type
           Object.entries(aspectTypes).forEach(([aspectKey, aspectData]) => {
             if (Math.abs(minAngle - aspectData.angle) <= aspectData.orb) {
-              const exactness = 1 - (Math.abs(minAngle - aspectData.angle) / aspectData.orb);
+              const exactness =
+                1 - Math.abs(minAngle - aspectData.angle) / aspectData.orb;
               aspects.push({
                 planets: `${planet1.name}-${planet2.name}`,
                 aspect: aspectData.name,
@@ -171,7 +195,11 @@ class AstrologicalCalculations {
                 orb: Math.round((minAngle - aspectData.angle) * 10) / 10,
                 exactness: Math.round(exactness * 100),
                 applying: planet1.speed > planet2.speed, // Which planet is moving faster
-                interpretation: this.getAspectInterpretation(aspectKey, planet1.name, planet2.name)
+                interpretation: this.getAspectInterpretation(
+                  aspectKey,
+                  planet1.name,
+                  planet2.name
+                )
               });
             }
           });
@@ -189,7 +217,9 @@ class AstrologicalCalculations {
    */
   calculateMidpoints(planets) {
     const midpoints = [];
-    const planetList = Object.values(planets).filter(p => p.longitude !== undefined);
+    const planetList = Object.values(planets).filter(
+      p => p.longitude !== undefined
+    );
 
     // Calculate midpoints between all planet pairs
     for (let i = 0; i < planetList.length; i++) {
@@ -220,7 +250,11 @@ class AstrologicalCalculations {
               midpoint: midpointLong,
               conjunctPlanet: conjunct.name,
               sign: this.getSignFromLongitude(midpointLong),
-              interpretation: this.interpretMidpoint(planet1.name, planet2.name, conjunct.name)
+              interpretation: this.interpretMidpoint(
+                planet1.name,
+                planet2.name,
+                conjunct.name
+              )
             });
           });
         }
@@ -244,19 +278,63 @@ class AstrologicalCalculations {
     const padaSize = nakshatraSize / 4; // 3°20' per Pada
 
     const nakshatras = [
-      'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
-      'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
-      'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
-      'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhisha',
-      'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+      'Ashwini',
+      'Bharani',
+      'Krittika',
+      'Rohini',
+      'Mrigashira',
+      'Ardra',
+      'Punarvasu',
+      'Pushya',
+      'Ashlesha',
+      'Magha',
+      'Purva Phalguni',
+      'Uttara Phalguni',
+      'Hasta',
+      'Chitra',
+      'Swati',
+      'Vishakha',
+      'Anuradha',
+      'Jyeshtha',
+      'Mula',
+      'Purva Ashadha',
+      'Uttara Ashadha',
+      'Shravana',
+      'Dhanishta',
+      'Shatabhisha',
+      'Purva Bhadrapada',
+      'Uttara Bhadrapada',
+      'Revati'
     ];
 
     const lords = [
-      'Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu',
-      'Jupiter', 'Saturn', 'Mercury', 'Ketu', 'Venus', 'Sun',
-      'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury',
-      'Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu',
-      'Jupiter', 'Saturn', 'Mercury'
+      'Ketu',
+      'Venus',
+      'Sun',
+      'Moon',
+      'Mars',
+      'Rahu',
+      'Jupiter',
+      'Saturn',
+      'Mercury',
+      'Ketu',
+      'Venus',
+      'Sun',
+      'Moon',
+      'Mars',
+      'Rahu',
+      'Jupiter',
+      'Saturn',
+      'Mercury',
+      'Ketu',
+      'Venus',
+      'Sun',
+      'Moon',
+      'Mars',
+      'Rahu',
+      'Jupiter',
+      'Saturn',
+      'Mercury'
     ];
 
     const index = Math.floor(longitude / nakshatraSize);
@@ -264,7 +342,7 @@ class AstrologicalCalculations {
     const lord = lords[index];
 
     // Calculate Pada (1-4)
-    const positionInNakshatra = longitude - (index * nakshatraSize);
+    const positionInNakshatra = longitude - index * nakshatraSize;
     const pada = Math.floor(positionInNakshatra / padaSize) + 1;
 
     return {
@@ -332,7 +410,10 @@ class AstrologicalCalculations {
       quintile: `${planet1} and ${planet2} show creative and unique expression`,
       biquintile: `${planet1} and ${planet2} indicate specialized talents`
     };
-    return interpretations[aspect] || `${planet1} and ${planet2} form a ${aspect} aspect`;
+    return (
+      interpretations[aspect] ||
+      `${planet1} and ${planet2} form a ${aspect} aspect`
+    );
   }
 
   interpretDecanate(sign, decanate) {
@@ -371,7 +452,10 @@ class AstrologicalCalculations {
 
     const key = `${planet1}-${planet2}`;
     const reverseKey = `${planet2}-${planet1}`;
-    const theme = midpointThemes[key] || midpointThemes[reverseKey] || `${planet1} and ${planet2} synthesis`;
+    const theme =
+      midpointThemes[key] ||
+      midpointThemes[reverseKey] ||
+      `${planet1} and ${planet2} synthesis`;
 
     return `${conjunct} conjunct ${planet1}/${planet2} midpoint: ${theme} activated and expressed.`;
   }

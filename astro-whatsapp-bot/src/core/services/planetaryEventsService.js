@@ -11,7 +11,8 @@ const logger = require('../../utils/logger');
 class PlanetaryEventsService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'PlanetaryEventsService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'PlanetaryEventsService';
     this.calculatorPath = '../calculators/PlanetaryEventsCalculator';
     logger.info('PlanetaryEventsService initialized');
   }
@@ -33,7 +34,10 @@ class PlanetaryEventsService extends ServiceTemplate {
       this._validateInput(dateRange);
 
       // Perform planetary events analysis using the dynamically loaded calculator
-      const events = await this.calculator.getMajorPlanetaryEvents(dateRange.startDate, dateRange.endDate);
+      const events = await this.calculator.getMajorPlanetaryEvents(
+        dateRange.startDate,
+        dateRange.endDate
+      );
 
       // Generate additional insights
       const eventSummary = this._createEventSummary(events);
@@ -60,14 +64,28 @@ class PlanetaryEventsService extends ServiceTemplate {
    */
   _validateInput(dateRange) {
     if (!dateRange || !dateRange.startDate || !dateRange.endDate) {
-      throw new Error('Start date and end date are required for planetary events analysis.');
+      throw new Error(
+        'Start date and end date are required for planetary events analysis.'
+      );
     }
     // Basic date format validation (can be enhanced)
-    if (typeof dateRange.startDate !== 'string' || !dateRange.startDate.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
-      throw new Error('Start date must be in ISO 8601 format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ)');
+    if (
+      typeof dateRange.startDate !== 'string' ||
+      !dateRange.startDate.match(
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/
+      )
+    ) {
+      throw new Error(
+        'Start date must be in ISO 8601 format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ)'
+      );
     }
-    if (typeof dateRange.endDate !== 'string' || !dateRange.endDate.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
-      throw new Error('End date must be in ISO 8601 format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ)');
+    if (
+      typeof dateRange.endDate !== 'string' ||
+      !dateRange.endDate.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+    ) {
+      throw new Error(
+        'End date must be in ISO 8601 format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ)'
+      );
     }
     if (new Date(dateRange.startDate) >= new Date(dateRange.endDate)) {
       throw new Error('Start date must be before end date.');
@@ -98,7 +116,8 @@ class PlanetaryEventsService extends ServiceTemplate {
         calculationType: 'Planetary Events Analysis',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'Planetary events analysis provides insights into general astrological influences. Individual experiences may vary based on personal birth charts. This information is for guidance and awareness, not definitive prediction.'
+      disclaimer:
+        'Planetary events analysis provides insights into general astrological influences. Individual experiences may vary based on personal birth charts. This information is for guidance and awareness, not definitive prediction.'
     };
   }
 
@@ -167,7 +186,8 @@ class PlanetaryEventsService extends ServiceTemplate {
   _createComprehensiveSummary(events, eventSummary) {
     let summary = `This analysis covers ${eventSummary.totalEvents} major planetary events between ${events[0]?.date.substring(0, 10) || 'N/A'} and ${events[events.length - 1]?.date.substring(0, 10) || 'N/A'}. `;
     summary += `Key events include ${eventSummary.retrogrades} retrogrades, ${eventSummary.conjunctions} conjunctions, and ${eventSummary.oppositions} oppositions. `;
-    summary += 'These events signify important shifts in cosmic energies, influencing global trends and personal experiences. Understanding these cycles can help in navigating life with greater awareness.';
+    summary +=
+      'These events signify important shifts in cosmic energies, influencing global trends and personal experiences. Understanding these cycles can help in navigating life with greater awareness.';
     return summary;
   }
 
@@ -180,7 +200,14 @@ class PlanetaryEventsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'astronomy',
-      methods: ['processCalculation', 'getMajorPlanetaryEvents', 'getRetrogradePeriods', 'getConjunctions', 'getOppositions', 'getIngresses'],
+      methods: [
+        'processCalculation',
+        'getMajorPlanetaryEvents',
+        'getRetrogradePeriods',
+        'getConjunctions',
+        'getOppositions',
+        'getIngresses'
+      ],
       dependencies: [], // Managed by ServiceTemplate
       description: 'Service for tracking and analyzing major planetary events.'
     };

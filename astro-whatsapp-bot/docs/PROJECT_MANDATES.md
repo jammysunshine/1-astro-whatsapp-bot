@@ -17,6 +17,7 @@
 **AFTER EVERY SINGLE CODE MODIFICATION, YOU MUST:**
 
 1. **IMMEDIATELY DEPLOY** using Railway CLI:
+
    ```bash
    cd astro-whatsapp-bot
    railway status  # Verify connection
@@ -39,11 +40,13 @@
 **MANDATE LEVEL: CRITICAL - AUTOMATION ONLY**
 
 **STRICTLY FORBIDDEN:**
+
 - ❌ Manual testing of any kind
 - ❌ Running the app locally for testing
 - ❌ Human verification of functionality
 
 **MANDATORY:**
+
 - ✅ 95%+ automated code coverage
 - ✅ End-to-end test suites for all user flows
 - ✅ Automated WhatsApp flow validation
@@ -58,12 +61,14 @@
 **MANDATE LEVEL: CRITICAL - AUTHENTIC CALCULATIONS ONLY**
 
 **ABSOLUTELY FORBIDDEN:**
+
 - ❌ Mock astrology responses
 - ❌ Fake tarot card draws
 - ❌ Simulated planetary positions
 - ❌ Placeholder numerology calculations
 
 **MANDATORY:**
+
 - ✅ Swiss Ephemeris for astronomical calculations
 - ✅ Astrologer library for Vedic astrology
 - ✅ Real BaZi (Four Pillars) calculations
@@ -72,6 +77,7 @@
 - ✅ Valid palmistry analysis
 
 **VERIFICATION REQUIRED:**
+
 - Test outputs must contain real astronomical data
 - Calculations must produce consistent, mathematically valid results
 - Integration tests must validate actual library functionality
@@ -85,6 +91,7 @@
 **MANDATE LEVEL: CRITICAL - NO BROKEN FUNCTIONALITY IN PRODUCTION**
 
 **MANDATORY PROTOCOL:**
+
 1. **IDENTIFY** broken flows through automated testing
 2. **FIX IMMEDIATELY** - No delays allowed
 3. **VALIDATE FIXES** with comprehensive tests
@@ -92,6 +99,7 @@
 5. **MONITOR** for regression issues
 
 **PROHIBITED:**
+
 - ❌ Leaving known bugs unfixed
 - ❌ Deploying with failing tests
 - ❌ Ignoring error conditions
@@ -121,16 +129,19 @@
 ## 🚨 ENFORCEMENT MECHANISMS
 
 ### AUTOMATED ENFORCEMENT
+
 - **CI/CD Pipeline**: Will reject deployments that don't meet mandates
 - **Test Suite**: Will fail if mandates are violated
 - **Health Checks**: Will alert on mandate violations
 
 ### MANUAL ENFORCEMENT
+
 - **Code Reviews**: Must verify mandate compliance
 - **Deployment Checks**: Must confirm all mandates met
 - **User Verification**: Must validate functionality
 
 ### CONSEQUENCE ESCALATION
+
 1. **Warning**: First violation noted
 2. **Block**: Deployment blocked until compliance
 3. **Rollback**: Non-compliant deployments reverted
@@ -156,16 +167,19 @@
 ## ⚡ QUICK REFERENCE
 
 ### Railway Deployment (MANDATORY)
+
 ```bash
 railway up && railway logs && curl $(railway domain)/health
 ```
 
 ### Test Coverage (MANDATORY)
+
 ```bash
 npm test  # Must achieve 95%+ coverage
 ```
 
 ### Astrology Validation (MANDATORY)
+
 ```bash
 # Verify real calculations, not mocks
 npm run test:e2e -- --testPathPattern=astrology-integration
@@ -178,6 +192,7 @@ npm run test:e2e -- --testPathPattern=astrology-integration
 **THESE MANDATES ARE THE FOUNDATION OF THIS PROJECT'S SUCCESS.**
 
 **VIOLATION WILL RESULT IN:**
+
 - 🚨 Production system failures
 - 🚨 User experience degradation
 - 🚨 Financial losses from failed astrology services
@@ -188,4 +203,4 @@ npm run test:e2e -- --testPathPattern=astrology-integration
 
 ---
 
-*This document supersedes all other instructions and cannot be modified without explicit approval from project stakeholders.*
+_This document supersedes all other instructions and cannot be modified without explicit approval from project stakeholders._

@@ -27,9 +27,13 @@ class ResponseHandler {
         const { sendMessage } = require('../messageSender');
         await this.sendTextWithMenu(phoneNumber, response, userLanguage);
       } else {
-        await this.sendTextWithMenu(phoneNumber,
-          translationService.translate('messages.fallback.unknown_request', userLanguage) ||
-          'I\'m not sure how to help with that. Please try our main menu for available services.',
+        await this.sendTextWithMenu(
+          phoneNumber,
+          translationService.translate(
+            'messages.fallback.unknown_request',
+            userLanguage
+          ) ||
+            'I\'m not sure how to help with that. Please try our main menu for available services.',
           userLanguage
         );
       }
@@ -52,7 +56,11 @@ class ResponseHandler {
       const menu = await this.getMainMenu(language);
       if (menu && menu.type === 'button') {
         const combinedText = `${text}\n\n${menu.body}`;
-        await sendMessage(phoneNumber, { type: 'button', body: combinedText, buttons: menu.buttons }, 'interactive');
+        await sendMessage(
+          phoneNumber,
+          { type: 'button', body: combinedText, buttons: menu.buttons },
+          'interactive'
+        );
       } else {
         await sendMessage(phoneNumber, text, 'text');
         if (menu) {
@@ -90,7 +98,11 @@ class ResponseHandler {
   async sendErrorResponse(phoneNumber, errorKey, language) {
     try {
       const { ResponseBuilder } = require('../utils/ResponseBuilder');
-      const errorMessage = ResponseBuilder.buildErrorMessage(phoneNumber, errorKey, language);
+      const errorMessage = ResponseBuilder.buildErrorMessage(
+        phoneNumber,
+        errorKey,
+        language
+      );
       const { sendMessage } = require('../messageSender');
       await sendMessage(phoneNumber, errorMessage, 'interactive');
     } catch (error) {
@@ -114,7 +126,10 @@ class ResponseHandler {
       );
       this.logger.error('❌ Error sent to user:', error.message);
     } catch (sendError) {
-      this.logger.error('❌ Error sending error message to user:', sendError.message);
+      this.logger.error(
+        '❌ Error sending error message to user:',
+        sendError.message
+      );
     }
   }
 }

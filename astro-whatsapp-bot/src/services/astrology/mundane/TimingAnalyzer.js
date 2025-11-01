@@ -18,8 +18,8 @@ class TimingAnalyzer {
     // Analyze lunar phases, planetary stations, and key transits
     const outlook = {
       immediatePeriod: this.analyzeImmediateTiming(chartData), // 0-3 months
-      mediumTerm: this.analyzeMediumTermTiming(chartData),      // 3-12 months
-      longTerm: this.analyzeLongTermTiming(chartData),          // 1-5 years
+      mediumTerm: this.analyzeMediumTermTiming(chartData), // 3-12 months
+      longTerm: this.analyzeLongTermTiming(chartData), // 1-5 years
       auspiciousPeriods: this.identifyAuspiciousPeriods(chartData),
       challengingPeriods: this.identifyChallengingPeriods(chartData)
     };
@@ -36,7 +36,10 @@ class TimingAnalyzer {
     return {
       period: '0-3 months',
       outlook: 'Mixed developments',
-      keyFactors: ['Lunar cycle influences immediate events', 'Mercury position affects short-term communication patterns']
+      keyFactors: [
+        'Lunar cycle influences immediate events',
+        'Mercury position affects short-term communication patterns'
+      ]
     };
   }
 
@@ -49,7 +52,10 @@ class TimingAnalyzer {
     return {
       period: '3-12 months',
       outlook: 'Structured growth',
-      keyFactors: ['Jupiter aspects bring expansion', 'Saturn influences structural developments']
+      keyFactors: [
+        'Jupiter aspects bring expansion',
+        'Saturn influences structural developments'
+      ]
     };
   }
 
@@ -62,7 +68,10 @@ class TimingAnalyzer {
     return {
       period: '1-5 years',
       outlook: 'Peaceful resolution',
-      keyFactors: ['Outer planetary cycles shape long-term trends', 'Generational patterns unfold gradually']
+      keyFactors: [
+        'Outer planetary cycles shape long-term trends',
+        'Generational patterns unfold gradually'
+      ]
     };
   }
 

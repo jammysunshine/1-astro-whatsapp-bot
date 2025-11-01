@@ -23,7 +23,10 @@ describe('NumerologyService', () => {
       const birthDate = '15/03/1990';
       const name = 'John Doe';
 
-      const report = await numerologyService.generateFullReport(name, birthDate);
+      const report = await numerologyService.generateFullReport(
+        name,
+        birthDate
+      );
 
       expect(report).toBeDefined();
       expect(report.lifePath).toBeDefined();
@@ -46,7 +49,10 @@ describe('NumerologyService', () => {
       const birthDate = '15/03/1990';
       const name = '';
 
-      const report = await numerologyService.generateFullReport(name, birthDate);
+      const report = await numerologyService.generateFullReport(
+        name,
+        birthDate
+      );
 
       // Empty name should still return valid structure but with zero values
       expect(report).toBeDefined();

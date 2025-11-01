@@ -4,13 +4,17 @@
  */
 
 const ServiceTemplate = require('../ServiceTemplate');
-const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
+const {
+  validateCoordinates,
+  validateDateTime
+} = require('../../../utils/validation');
 const { formatDegree, formatTime } = require('../../../utils/formatters');
 
 class VarshaphalService extends ServiceTemplate {
   constructor() {
     super('Varshaphal', {
-      description: 'Annual horoscope predictions using Tajika Varshaphal system',
+      description:
+        'Annual horoscope predictions using Tajika Varshaphal system',
       version: '1.0.0',
       author: 'Vedic Astrology System',
       category: 'vedic',
@@ -33,14 +37,27 @@ class VarshaphalService extends ServiceTemplate {
   /**
    * Calculate Varshaphal chart for given year
    */
-  async calculateVarshaphalChart(birthDatetime, birthLatitude, birthLongitude, year) {
+  async calculateVarshaphalChart(
+    birthDatetime,
+    birthLatitude,
+    birthLongitude,
+    year
+  ) {
     // Find the time when Sun returns to the same position as birth
-    const birthChart = await VedicCalculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
+    const birthChart = await VedicCalculator.calculateChart(
+      birthDatetime,
+      birthLatitude,
+      birthLongitude
+    );
     const birthSun = birthChart.sun;
 
     // Calculate approximate date of solar return
     const birthDate = new Date(birthDatetime);
-    const solarReturnDate = new Date(year, birthDate.getMonth(), birthDate.getDate());
+    const solarReturnDate = new Date(
+      year,
+      birthDate.getMonth(),
+      birthDate.getDate()
+    );
 
     // Refine to exact solar return time
     const varshaphalDatetime = await this.findSolarReturnTime(
@@ -50,13 +67,22 @@ class VarshaphalService extends ServiceTemplate {
       birthSun
     );
 
-    return await VedicCalculator.calculateChart(varshaphalDatetime, birthLatitude, birthLongitude);
+    return await VedicCalculator.calculateChart(
+      varshaphalDatetime,
+      birthLatitude,
+      birthLongitude
+    );
   }
 
   /**
    * Find exact solar return time
    */
-  async findSolarReturnTime(approxDate, latitude, longitude, targetSunLongitude) {
+  async findSolarReturnTime(
+    approxDate,
+    latitude,
+    longitude,
+    targetSunLongitude
+  ) {
     // This is a simplified implementation
     // In practice, would need iterative calculation to find exact time
     return approxDate.toISOString();
@@ -85,8 +111,18 @@ class VarshaphalService extends ServiceTemplate {
    */
   getHouseSign(house, ascendant) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     const ascendantSign = Math.floor(ascendant / 30);
     return signs[(ascendantSign + house - 1) % 12];
@@ -143,7 +179,15 @@ class VarshaphalService extends ServiceTemplate {
    */
   findIthasalaYogas(chart) {
     const yogas = [];
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     for (let i = 0; i < planets.length; i++) {
       for (let j = i + 1; j < planets.length; j++) {
@@ -210,7 +254,10 @@ class VarshaphalService extends ServiceTemplate {
       const moonDiff = Math.abs(moonLong - planetLong);
       const sunDiff = Math.abs(sunLong - planetLong);
 
-      if ((moonDiff <= 1 || moonDiff >= 359) && (sunDiff <= 1 || sunDiff >= 359)) {
+      if (
+        (moonDiff <= 1 || moonDiff >= 359) &&
+        (sunDiff <= 1 || sunDiff >= 359)
+      ) {
         yogas.push({
           type: 'Nakta',
           planets: ['Moon', planet, 'Sun'],
@@ -423,8 +470,18 @@ class VarshaphalService extends ServiceTemplate {
    */
   getLongitudeSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     return signs[Math.floor(longitude / 30) % 12];
   }
@@ -434,7 +491,15 @@ class VarshaphalService extends ServiceTemplate {
    */
   calculatePatyayiniDasa(varshaphalChart) {
     const dasaPeriods = [];
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     // Sort planets by strength (simplified - using longitude)
     const sortedPlanets = planets.sort((a, b) => {
@@ -491,8 +556,17 @@ class VarshaphalService extends ServiceTemplate {
         throw new Error('Year is required for Varshaphal calculation');
       }
 
-      const varshaphalChart = await this.calculateVarshaphalChart(datetime, latitude, longitude, year);
-      const birthChart = await VedicCalculator.calculateChart(datetime, latitude, longitude);
+      const varshaphalChart = await this.calculateVarshaphalChart(
+        datetime,
+        latitude,
+        longitude,
+        year
+      );
+      const birthChart = await VedicCalculator.calculateChart(
+        datetime,
+        latitude,
+        longitude
+      );
 
       const muntha = this.calculateMuntha(birthChart, varshaphalChart, year);
       const tajikaYogas = this.calculateTajikaYogas(varshaphalChart);
@@ -545,9 +619,7 @@ class VarshaphalService extends ServiceTemplate {
       return 'No major Tajika yogas present this year';
     }
 
-    const interpretations = yogas.map(yoga =>
-      `${yoga.type}: ${yoga.effects}`
-    );
+    const interpretations = yogas.map(yoga => `${yoga.type}: ${yoga.effects}`);
 
     return interpretations.join('; ');
   }
@@ -572,8 +644,8 @@ class VarshaphalService extends ServiceTemplate {
     const currentMonth = new Date().getMonth();
     const currentDay = Math.floor((currentMonth / 12) * 365);
 
-    const currentDasa = dasaPeriods.find(dasa =>
-      currentDay >= dasa.startDay && currentDay <= dasa.endDay
+    const currentDasa = dasaPeriods.find(
+      dasa => currentDay >= dasa.startDay && currentDay <= dasa.endDay
     );
 
     if (currentDasa) {
@@ -608,7 +680,10 @@ class VarshaphalService extends ServiceTemplate {
       strengths.push('Favorable planetary combinations present');
     }
 
-    if (sahams.rajya && sahams.rajya.sign === 'Aries' || sahams.rajya.sign === 'Leo') {
+    if (
+      (sahams.rajya && sahams.rajya.sign === 'Aries') ||
+      sahams.rajya.sign === 'Leo'
+    ) {
       strengths.push('Strong potential for authority and recognition');
     }
 
@@ -648,12 +723,14 @@ class VarshaphalService extends ServiceTemplate {
     // Based on current dasa
     const currentMonth = new Date().getMonth();
     const currentDay = Math.floor((currentMonth / 12) * 365);
-    const currentDasa = patyayiniDasa.find(dasa =>
-      currentDay >= dasa.startDay && currentDay <= dasa.endDay
+    const currentDasa = patyayiniDasa.find(
+      dasa => currentDay >= dasa.startDay && currentDay <= dasa.endDay
     );
 
     if (currentDasa) {
-      recommendations.push(`Current ${currentDasa.planet} period favors ${currentDasa.effects.toLowerCase()}`);
+      recommendations.push(
+        `Current ${currentDasa.planet} period favors ${currentDasa.effects.toLowerCase()}`
+      );
     }
 
     return recommendations;

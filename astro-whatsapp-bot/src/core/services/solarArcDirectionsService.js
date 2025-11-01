@@ -11,7 +11,8 @@ const logger = require('../../utils/logger');
 class SolarArcDirectionsService extends ServiceTemplate {
   constructor() {
     super('SolarArcDirectionsCalculator');
-    this.calculatorPath = '../calculators/SolarArcDirectionsCalculator';    this.serviceName = 'SolarArcDirectionsService';
+    this.calculatorPath = '../calculators/SolarArcDirectionsCalculator';
+    this.serviceName = 'SolarArcDirectionsService';
     logger.info('SolarArcDirectionsService initialized');
   }
 
@@ -19,7 +20,10 @@ class SolarArcDirectionsService extends ServiceTemplate {
     try {
       const { birthData, targetDate } = data;
       // Calculate solar arc directions using calculator
-      const result = await this.calculator.calculateSolarArcDirections(birthData, targetDate);
+      const result = await this.calculator.calculateSolarArcDirections(
+        birthData,
+        targetDate
+      );
       return result;
     } catch (error) {
       logger.error('SolarArcDirectionsService calculation error:', error);
@@ -33,7 +37,8 @@ class SolarArcDirectionsService extends ServiceTemplate {
       service: 'Solar Arc Directions Analysis',
       timestamp: new Date().toISOString(),
       data: result,
-      disclaimer: 'Solar arc directions provide predictive insights based on day-for-year progression. Results should be considered alongside other astrological techniques and personal circumstances.'
+      disclaimer:
+        'Solar arc directions provide predictive insights based on day-for-year progression. Results should be considered alongside other astrological techniques and personal circumstances.'
     };
   }
 
@@ -81,7 +86,10 @@ class SolarArcDirectionsService extends ServiceTemplate {
       const today = new Date();
       return await this.execute(birthData, today);
     } catch (error) {
-      logger.error('SolarArcDirectionsService getCurrentAgeSolarArcs error:', error);
+      logger.error(
+        'SolarArcDirectionsService getCurrentAgeSolarArcs error:',
+        error
+      );
       return {
         error: true,
         message: 'Error calculating current age solar arcs'
@@ -104,13 +112,18 @@ class SolarArcDirectionsService extends ServiceTemplate {
       }
 
       // Calculate birth date plus target age
-      const [birthDay, birthMonth, birthYear] = birthData.birthDate.split('/').map(Number);
+      const [birthDay, birthMonth, birthYear] = birthData.birthDate
+        .split('/')
+        .map(Number);
       const targetYear = birthYear + targetAge;
       const targetDate = new Date(targetYear, birthMonth - 1, birthDay);
 
       return await this.execute(birthData, targetDate);
     } catch (error) {
-      logger.error('SolarArcDirectionsService getSolarArcsForAge error:', error);
+      logger.error(
+        'SolarArcDirectionsService getSolarArcsForAge error:',
+        error
+      );
       return {
         error: true,
         message: `Error calculating solar arcs for age ${targetAge}`
@@ -134,7 +147,9 @@ class SolarArcDirectionsService extends ServiceTemplate {
 
       const progression = this._analyzeProgression(solarArcs.solarArcs);
       const themes = this._extractLifetimeThemes(solarArcs.solarArcs);
-      const criticalPeriods = this._identifyCriticalPeriods(solarArcs.solarArcs);
+      const criticalPeriods = this._identifyCriticalPeriods(
+        solarArcs.solarArcs
+      );
 
       return {
         progression,
@@ -144,7 +159,10 @@ class SolarArcDirectionsService extends ServiceTemplate {
         error: false
       };
     } catch (error) {
-      logger.error('SolarArcDirectionsService getLifetimeProgression error:', error);
+      logger.error(
+        'SolarArcDirectionsService getLifetimeProgression error:',
+        error
+      );
       return {
         error: true,
         message: 'Error analyzing lifetime progression'
@@ -237,7 +255,12 @@ class SolarArcDirectionsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'getCurrentAgeSolarArcs', 'getSolarArcProgression', 'compareSolarArcAges'],
+      methods: [
+        'execute',
+        'getCurrentAgeSolarArcs',
+        'getSolarArcProgression',
+        'compareSolarArcAges'
+      ],
       dependencies: ['SolarArcDirectionsCalculator']
     };
   }
@@ -258,15 +281,17 @@ class SolarArcDirectionsService extends ServiceTemplate {
 
     // Analyze directed planetary positions
     if (solarArcs.directedPlanets) {
-      Object.entries(solarArcs.directedPlanets).forEach(([planet, position]) => {
-        if (position && position.house) {
-          progression.lifeAreas.push({
-            planet,
-            house: position.house,
-            area: this._getHouseLifeArea(position.house)
-          });
+      Object.entries(solarArcs.directedPlanets).forEach(
+        ([planet, position]) => {
+          if (position && position.house) {
+            progression.lifeAreas.push({
+              planet,
+              house: position.house,
+              area: this._getHouseLifeArea(position.house)
+            });
+          }
         }
-      });
+      );
     }
 
     // Determine current life phase
@@ -278,7 +303,11 @@ class SolarArcDirectionsService extends ServiceTemplate {
     // Analyze aspect intensity
     if (solarArcs.aspects) {
       const aspectCount = solarArcs.aspects.length;
-      if (aspectCount > 5) { progression.intensity = 'High'; } else if (aspectCount < 2) { progression.intensity = 'Low'; }
+      if (aspectCount > 5) {
+        progression.intensity = 'High';
+      } else if (aspectCount < 2) {
+        progression.intensity = 'Low';
+      }
     }
 
     return progression;
@@ -295,22 +324,27 @@ class SolarArcDirectionsService extends ServiceTemplate {
 
     // Analyze directed planetary positions
     if (solarArcs.directedPlanets) {
-      Object.entries(solarArcs.directedPlanets).forEach(([planet, position]) => {
-        if (position && position.sign) {
-          themes.push({
-            planet,
-            sign: position.sign,
-            theme: this._getDirectedPlanetTheme(planet, position.sign)
-          });
+      Object.entries(solarArcs.directedPlanets).forEach(
+        ([planet, position]) => {
+          if (position && position.sign) {
+            themes.push({
+              planet,
+              sign: position.sign,
+              theme: this._getDirectedPlanetTheme(planet, position.sign)
+            });
+          }
         }
-      });
+      );
     }
 
     // Analyze major aspects
     if (solarArcs.aspects) {
-      const majorAspects = solarArcs.aspects.filter(aspect =>
-        aspect.aspect === 'Conjunction' || aspect.aspect === 'Opposition' ||
-        aspect.aspect === 'Square' || aspect.aspect === 'Trine'
+      const majorAspects = solarArcs.aspects.filter(
+        aspect =>
+          aspect.aspect === 'Conjunction' ||
+          aspect.aspect === 'Opposition' ||
+          aspect.aspect === 'Square' ||
+          aspect.aspect === 'Trine'
       );
 
       majorAspects.forEach(aspect => {
@@ -337,23 +371,25 @@ class SolarArcDirectionsService extends ServiceTemplate {
 
     // Identify directed planets changing signs
     if (solarArcs.directedPlanets) {
-      Object.entries(solarArcs.directedPlanets).forEach(([planet, position]) => {
-        if (position && position.signChange) {
-          criticalPeriods.push({
-            type: 'sign_change',
-            planet,
-            newSign: position.sign,
-            significance: 'Major life transition',
-            timing: `Age ${solarArcs.currentAge || 'Unknown'}`
-          });
+      Object.entries(solarArcs.directedPlanets).forEach(
+        ([planet, position]) => {
+          if (position && position.signChange) {
+            criticalPeriods.push({
+              type: 'sign_change',
+              planet,
+              newSign: position.sign,
+              significance: 'Major life transition',
+              timing: `Age ${solarArcs.currentAge || 'Unknown'}`
+            });
+          }
         }
-      });
+      );
     }
 
     // Identify challenging aspects
     if (solarArcs.aspects) {
-      const challengingAspects = solarArcs.aspects.filter(aspect =>
-        aspect.aspect === 'Square' || aspect.aspect === 'Opposition'
+      const challengingAspects = solarArcs.aspects.filter(
+        aspect => aspect.aspect === 'Square' || aspect.aspect === 'Opposition'
       );
 
       challengingAspects.forEach(aspect => {
@@ -438,10 +474,18 @@ class SolarArcDirectionsService extends ServiceTemplate {
   }
 
   _getLifePhase(age) {
-    if (age >= 0 && age < 21) { return 'Foundation and learning'; }
-    if (age >= 21 && age < 35) { return 'Establishment and growth'; }
-    if (age >= 35 && age < 50) { return 'Mastery and contribution'; }
-    if (age >= 50 && age < 70) { return 'Wisdom and reflection'; }
+    if (age >= 0 && age < 21) {
+      return 'Foundation and learning';
+    }
+    if (age >= 21 && age < 35) {
+      return 'Establishment and growth';
+    }
+    if (age >= 35 && age < 50) {
+      return 'Mastery and contribution';
+    }
+    if (age >= 50 && age < 70) {
+      return 'Wisdom and reflection';
+    }
     return 'Legacy and completion';
   }
 

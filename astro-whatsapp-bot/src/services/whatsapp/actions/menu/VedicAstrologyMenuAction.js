@@ -42,7 +42,11 @@ class VedicAstrologyMenuAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in VedicAstrologyMenuAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -84,7 +88,8 @@ class VedicAstrologyMenuAction extends BaseAction {
       await this.sendMessage(message, 'interactive');
 
       // Also send numbered fallback instructions
-      const fallbackText = '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-14 for services, 15 to go back.';
+      const fallbackText =
+        '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-14 for services, 15 to go back.';
       await this.sendMessage(fallbackText, 'text');
     } catch (error) {
       this.logger.error('Error sending vedic astrology menu:', error);
@@ -113,7 +118,8 @@ class VedicAstrologyMenuAction extends BaseAction {
    * @returns {string} Numbered text menu
    */
   generateNumberedMenuText(menuData) {
-    let menuText = '🕉️ *Vedic Astrology Services*\n\nChoose by replying with a number:\n\n';
+    let menuText =
+      '🕉️ *Vedic Astrology Services*\n\nChoose by replying with a number:\n\n';
 
     let itemCount = 1;
     if (menuData.sections) {
@@ -137,16 +143,22 @@ class VedicAstrologyMenuAction extends BaseAction {
    * @returns {number} Total number of menu items
    */
   countMenuItems(menuData) {
-    if (!menuData.sections) { return 0; }
+    if (!menuData.sections) {
+      return 0;
+    }
 
-    return menuData.sections.reduce((total, section) => total + (section.rows ? section.rows.length : 0), 0);
+    return menuData.sections.reduce(
+      (total, section) => total + (section.rows ? section.rows.length : 0),
+      0
+    );
   }
 
   /**
    * Handle menu loading error
    */
   async handleMenuLoadError() {
-    const errorMessage = 'Sorry, I couldn\'t load the Vedic Astrology menu right now. Please try again in a moment.';
+    const errorMessage =
+      'Sorry, I couldn\'t load the Vedic Astrology menu right now. Please try again in a moment.';
     await this.sendMessage(errorMessage, 'text');
   }
 
@@ -155,7 +167,8 @@ class VedicAstrologyMenuAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = 'I encountered an error displaying the Vedic Astrology menu. Please try again.';
+    const errorMessage =
+      'I encountered an error displaying the Vedic Astrology menu. Please try again.';
     await this.sendMessage(errorMessage, 'text');
   }
 
@@ -167,7 +180,13 @@ class VedicAstrologyMenuAction extends BaseAction {
     return {
       id: this.actionId,
       description: 'Display the Vedic/Jyotish Astrology services menu',
-      keywords: ['vedic', 'jyotish', 'kundli', 'indian astrology', 'vedic astrology'],
+      keywords: [
+        'vedic',
+        'jyotish',
+        'kundli',
+        'indian astrology',
+        'vedic astrology'
+      ],
       category: 'menu',
       subscriptionRequired: false,
       cooldown: 0 // No cooldown for menu navigation

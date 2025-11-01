@@ -1,5 +1,7 @@
 const BaseAction = require('../BaseAction');
-const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const {
+  AstrologyFormatterFactory
+} = require('../factories/AstrologyFormatterFactory');
 const vedicCalculator = require('../../../services/astrology/vedic/VedicCalculator');
 
 /**
@@ -23,7 +25,10 @@ class KaalSarpAnalysisAction extends BaseAction {
       this.logExecution('start', 'Generating kaal sarp dosh analysis');
 
       // Unified validation using base class
-      const validation = await this.validateProfileAndLimits('Kaal Sarp Analysis', 'kaal_sarp_analysis');
+      const validation = await this.validateProfileAndLimits(
+        'Kaal Sarp Analysis',
+        'kaal_sarp_analysis'
+      );
       if (!validation.success) {
         return validation;
       }
@@ -35,8 +40,12 @@ class KaalSarpAnalysisAction extends BaseAction {
       }
 
       // Format and send response using centralized methods
-      const formattedContent = AstrologyFormatterFactory.formatKaalSarpAnalysis(analysisData);
-      await this.buildAstrologyResponse(formattedContent, this.getKaalSarpActionButtons());
+      const formattedContent =
+        AstrologyFormatterFactory.formatKaalSarpAnalysis(analysisData);
+      await this.buildAstrologyResponse(
+        formattedContent,
+        this.getKaalSarpActionButtons()
+      );
 
       this.logExecution('complete', 'Kaal sarp analysis sent successfully');
       return {
@@ -51,7 +60,11 @@ class KaalSarpAnalysisAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in KaalSarpAnalysisAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -66,8 +79,14 @@ class KaalSarpAnalysisAction extends BaseAction {
         throw new Error('User data not available for kaal sarp analysis');
       }
 
-      if (!this.user.birthDate || !this.user.birthTime || !this.user.birthPlace) {
-        throw new Error('User must complete birth profile with date, time, and place for kaal sarp analysis');
+      if (
+        !this.user.birthDate ||
+        !this.user.birthTime ||
+        !this.user.birthPlace
+      ) {
+        throw new Error(
+          'User must complete birth profile with date, time, and place for kaal sarp analysis'
+        );
       }
 
       // Calculate kaal sarp dosha using Vedic calculator
@@ -129,7 +148,8 @@ class KaalSarpAnalysisAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const message = 'I encountered an error generating your Kaal Sarp Dosh analysis. Please try again.';
+    const message =
+      'I encountered an error generating your Kaal Sarp Dosh analysis. Please try again.';
     await this.sendMessage(message, 'text');
   }
 

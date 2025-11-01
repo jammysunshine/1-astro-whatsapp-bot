@@ -4,8 +4,17 @@ const { WesternChartGenerator } = require('./WesternChartGenerator');
 
 class ChartGenerator {
   constructor(astrologer, geocodingService, vedicCore, signCalculations) {
-    this.vedicGenerator = new VedicChartGenerator(astrologer, geocodingService, vedicCore, signCalculations);
-    this.westernGenerator = new WesternChartGenerator(astrologer, geocodingService, vedicCore);
+    this.vedicGenerator = new VedicChartGenerator(
+      astrologer,
+      geocodingService,
+      vedicCore,
+      signCalculations
+    );
+    this.westernGenerator = new WesternChartGenerator(
+      astrologer,
+      geocodingService,
+      vedicCore
+    );
     logger.info('ChartGenerator: Clean modular architecture');
   }
 

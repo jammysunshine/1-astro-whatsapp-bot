@@ -11,8 +11,10 @@ const { BirthData } = require('../../models');
 class LunarReturnService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'LunarReturnService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/LunarReturnCalculator';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'LunarReturnService';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/LunarReturnCalculator';
     logger.info('LunarReturnService initialized');
   }
 
@@ -53,7 +55,10 @@ class LunarReturnService extends ServiceTemplate {
       const { birthData, targetDate = null } = data;
 
       // Get lunar return data from calculator
-      const result = await this.calculator.calculateLunarReturn(birthData, targetDate);
+      const result = await this.calculator.calculateLunarReturn(
+        birthData,
+        targetDate
+      );
 
       // Add metadata
       result.type = 'lunar_return';
@@ -121,7 +126,10 @@ class LunarReturnService extends ServiceTemplate {
       const now = new Date();
       return await this.execute({ birthData, targetDate: now });
     } catch (error) {
-      logger.error('LunarReturnService getCurrentMonthLunarReturn error:', error);
+      logger.error(
+        'LunarReturnService getCurrentMonthLunarReturn error:',
+        error
+      );
       return {
         error: true,
         message: 'Error calculating current month lunar return'
@@ -262,39 +270,70 @@ class LunarReturnService extends ServiceTemplate {
 
   _getHouseArea(house) {
     const areas = {
-      1: 'personal identity', 2: 'financial security', 4: 'home and family', 5: 'creativity and children',
-      6: 'health and service', 7: 'partnerships', 8: 'transformation', 9: 'learning and travel',
-      10: 'career and reputation', 11: 'community and friends', 12: 'spirituality and inner life'
+      1: 'personal identity',
+      2: 'financial security',
+      4: 'home and family',
+      5: 'creativity and children',
+      6: 'health and service',
+      7: 'partnerships',
+      8: 'transformation',
+      9: 'learning and travel',
+      10: 'career and reputation',
+      11: 'community and friends',
+      12: 'spirituality and inner life'
     };
     return areas[house] || 'general life area';
   }
 
   _getEmotionalTone(sign) {
     const tones = {
-      Aries: 'Energetic', Taurus: 'Stable', Gemini: 'Communicative',
-      Cancer: 'Nurturing', Leo: 'Dramatic', Virgo: 'Analytical',
-      Libra: 'Harmonious', Scorpio: 'Intense', Sagittarius: 'Adventurous',
-      Capricorn: 'Responsible', Aquarius: 'Independent', Pisces: 'Compassionate'
+      Aries: 'Energetic',
+      Taurus: 'Stable',
+      Gemini: 'Communicative',
+      Cancer: 'Nurturing',
+      Leo: 'Dramatic',
+      Virgo: 'Analytical',
+      Libra: 'Harmonious',
+      Scorpio: 'Intense',
+      Sagittarius: 'Adventurous',
+      Capricorn: 'Responsible',
+      Aquarius: 'Independent',
+      Pisces: 'Compassionate'
     };
     return tones[sign] || 'Balanced';
   }
 
   _getSensitivityLevel(sign) {
     const levels = {
-      Aries: 'Low', Taurus: 'Moderate', Gemini: 'Moderate',
-      Cancer: 'High', Leo: 'Moderate', Virgo: 'High',
-      Libra: 'Moderate', Scorpio: 'Very High', Sagittarius: 'Low',
-      Capricorn: 'Low', Aquarius: 'Moderate', Pisces: 'Very High'
+      Aries: 'Low',
+      Taurus: 'Moderate',
+      Gemini: 'Moderate',
+      Cancer: 'High',
+      Leo: 'Moderate',
+      Virgo: 'High',
+      Libra: 'Moderate',
+      Scorpio: 'Very High',
+      Sagittarius: 'Low',
+      Capricorn: 'Low',
+      Aquarius: 'Moderate',
+      Pisces: 'Very High'
     };
     return levels[sign] || 'Moderate';
   }
 
   _getHouseFocus(house) {
     const focuses = {
-      1: 'Self-development and personal goals', 2: 'Financial planning and material security',
-      4: 'Family and home life', 5: 'Creativity and self-expression', 6: 'Health and daily routines',
-      7: 'Relationships and partnerships', 8: 'Personal transformation and growth', 9: 'Learning and expansion',
-      10: 'Career and professional life', 11: 'Community and social connections', 12: 'Spiritual development and inner work'
+      1: 'Self-development and personal goals',
+      2: 'Financial planning and material security',
+      4: 'Family and home life',
+      5: 'Creativity and self-expression',
+      6: 'Health and daily routines',
+      7: 'Relationships and partnerships',
+      8: 'Personal transformation and growth',
+      9: 'Learning and expansion',
+      10: 'Career and professional life',
+      11: 'Community and social connections',
+      12: 'Spiritual development and inner work'
     };
     return focuses[house] || 'Personal development';
   }
@@ -308,9 +347,17 @@ class LunarReturnService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', 'getNextLunarReturn', 'getCurrentMonthLunarReturn', 'getLunarReturnForMonth', 'getLunarCycleThemes', 'compareLunarReturns'],
+      methods: [
+        'processCalculation',
+        'getNextLunarReturn',
+        'getCurrentMonthLunarReturn',
+        'getLunarReturnForMonth',
+        'getLunarCycleThemes',
+        'compareLunarReturns'
+      ],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Service for lunar return chart analysis and monthly emotional cycles.'
+      description:
+        'Service for lunar return chart analysis and monthly emotional cycles.'
     };
   }
 

@@ -6,7 +6,9 @@ const logger = require('../../../utils/logger');
  */
 class HoraryConfig {
   constructor() {
-    logger.info('Module: HoraryConfig loaded with complete horary astrology database');
+    logger.info(
+      'Module: HoraryConfig loaded with complete horary astrology database'
+    );
 
     // Initialize core horary data structures
     this.planetaryRulers = this.initializePlanetaryRulers();
@@ -67,8 +69,10 @@ class HoraryConfig {
         name: 'Saturn',
         symbol: '♄',
         dignity: 'Structure, discipline, elders, karma, limitations',
-        meaning: 'Discipline, structure, wisdom, but also depression and restriction',
-        questions: 'Career, elders, property, agriculture, chronic illness, karma'
+        meaning:
+          'Discipline, structure, wisdom, but also depression and restriction',
+        questions:
+          'Career, elders, property, agriculture, chronic illness, karma'
       }
     };
   }
@@ -245,9 +249,18 @@ class HoraryConfig {
    */
   getZodiacSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer',
-      'Leo', 'Virgo', 'Libra', 'Scorpio',
-      'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     const signIndex = Math.floor(longitude / 30) % 12;
     return signs[signIndex];
@@ -272,9 +285,18 @@ class HoraryConfig {
   getAscendantSymbol(degree) {
     const sign = this.getZodiacSign(degree);
     const symbols = {
-      Aries: '♈', Taurus: '♉', Gemini: '♊', Cancer: '♋',
-      Leo: '♌', Virgo: '♍', Libra: '♎', Scorpio: '♏',
-      Sagittarius: '♐', Capricorn: '♑', Aquarius: '♒', Pisces: '♓'
+      Aries: '♈',
+      Taurus: '♉',
+      Gemini: '♊',
+      Cancer: '♋',
+      Leo: '♌',
+      Virgo: '♍',
+      Libra: '♎',
+      Scorpio: '♏',
+      Sagittarius: '♐',
+      Capricorn: '♑',
+      Aquarius: '♒',
+      Pisces: '♓'
     };
     return symbols[sign] || '♈';
   }
@@ -286,10 +308,18 @@ class HoraryConfig {
    */
   getSignRuler(sign) {
     const rulers = {
-      Aries: 'mars', Taurus: 'venus', Gemini: 'mercury',
-      Cancer: 'moon', Leo: 'sun', Virgo: 'mercury',
-      Libra: 'venus', Scorpio: 'mars', Sagittarius: 'jupiter',
-      Capricorn: 'saturn', Aquarius: 'saturn', Pisces: 'jupiter'
+      Aries: 'mars',
+      Taurus: 'venus',
+      Gemini: 'mercury',
+      Cancer: 'moon',
+      Leo: 'sun',
+      Virgo: 'mercury',
+      Libra: 'venus',
+      Scorpio: 'mars',
+      Sagittarius: 'jupiter',
+      Capricorn: 'saturn',
+      Aquarius: 'saturn',
+      Pisces: 'jupiter'
     };
     return rulers[sign] || 'sun';
   }
@@ -321,14 +351,21 @@ class HoraryConfig {
       const categoriesLoaded = Object.keys(this.questionCategories).length;
 
       return {
-        healthy: planetsLoaded === 7 && housesLoaded === 12 && hoursLoaded === 24 && categoriesLoaded >= 8,
+        healthy:
+          planetsLoaded === 7 &&
+          housesLoaded === 12 &&
+          hoursLoaded === 24 &&
+          categoriesLoaded >= 8,
         planetsLoaded,
         housesLoaded,
         hoursLoaded,
         categoriesLoaded,
         version: '1.0.0',
         description: 'Complete horary astrology foundational database',
-        status: planetsLoaded === 7 && housesLoaded === 12 ? 'Complete' : 'Incomplete'
+        status:
+          planetsLoaded === 7 && housesLoaded === 12 ?
+            'Complete' :
+            'Incomplete'
       };
     } catch (error) {
       return {

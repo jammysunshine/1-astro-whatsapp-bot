@@ -24,7 +24,11 @@ class DashaAnalysisAction extends BaseAction {
       // This should be implemented within this action rather than calling legacy function
       // For now, returning a placeholder to indicate this needs proper implementation
       const { sendMessage } = require('../../../messageSender');
-      await sendMessage(this.phoneNumber, 'Vimshottari Dasha analysis is being prepared...', 'text');
+      await sendMessage(
+        this.phoneNumber,
+        'Vimshottari Dasha analysis is being prepared...',
+        'text'
+      );
 
       return {
         success: true,
@@ -34,7 +38,11 @@ class DashaAnalysisAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in DashaAnalysisAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -44,7 +52,11 @@ class DashaAnalysisAction extends BaseAction {
    */
   async handleExecutionError(error) {
     const { sendMessage } = require('../../messageSender');
-    await sendMessage(this.phoneNumber, 'I encountered an error generating your dasha analysis. Please try again.', 'text');
+    await sendMessage(
+      this.phoneNumber,
+      'I encountered an error generating your dasha analysis. Please try again.',
+      'text'
+    );
   }
 
   /**
@@ -54,8 +66,14 @@ class DashaAnalysisAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Provide Vimshottari Dasha analysis for planetary periods in Vedic astrology',
-      keywords: ['dasha', 'vimshottari dasha', 'planetary periods', 'vedic timing'],
+      description:
+        'Provide Vimshottari Dasha analysis for planetary periods in Vedic astrology',
+      keywords: [
+        'dasha',
+        'vimshottari dasha',
+        'planetary periods',
+        'vedic timing'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 3600000 // 1 hour cooldown

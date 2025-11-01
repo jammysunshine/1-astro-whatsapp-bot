@@ -7,7 +7,9 @@ const sweph = require('sweph');
  */
 class FixedStarsCalculator {
   constructor() {
-    logger.info('Module: FixedStarsCalculator loaded - Astral fixed star correlations');
+    logger.info(
+      'Module: FixedStarsCalculator loaded - Astral fixed star correlations'
+    );
   }
 
   setServices(calendricalService, geocodingService) {
@@ -23,13 +25,61 @@ class FixedStarsCalculator {
       const planetaryPositions = await this._getPlanetaryPositions(birthData);
 
       const fixedStars = [
-        { name: 'Regulus', constellation: 'Leo', longitude: 149.86, magnitude: 1.35, influence: 'Power, authority, leadership (can bring downfall if afflicted)' },
-        { name: 'Aldebaran', constellation: 'Taurus', longitude: 68.98, magnitude: 0.85, influence: 'Honor, success, material achievements (violent if afflicted)' },
-        { name: 'Antares', constellation: 'Scorpio', longitude: 248.07, magnitude: 1.09, influence: 'Power struggles, transformation through crisis (intense energy)' },
-        { name: 'Fomalhaut', constellation: 'Pisces', longitude: 331.83, magnitude: 1.16, influence: 'Spiritual wisdom, prosperity through service (mystical qualities)' },
-        { name: 'Spica', constellation: 'Virgo', longitude: 201.30, magnitude: 0.97, influence: 'Success through helpfulness, harvest abundance (beneficial)' },
-        { name: 'Sirius', constellation: 'Canis Major', longitude: 101.29, magnitude: -1.46, influence: 'Brightest star, brings heavenly favor, honor, wealth' },
-        { name: 'Vega', constellation: 'Lyra', longitude: 279.23, magnitude: 0.03, influence: 'Greatest good fortune, success in arts, music, literature' }
+        {
+          name: 'Regulus',
+          constellation: 'Leo',
+          longitude: 149.86,
+          magnitude: 1.35,
+          influence:
+            'Power, authority, leadership (can bring downfall if afflicted)'
+        },
+        {
+          name: 'Aldebaran',
+          constellation: 'Taurus',
+          longitude: 68.98,
+          magnitude: 0.85,
+          influence:
+            'Honor, success, material achievements (violent if afflicted)'
+        },
+        {
+          name: 'Antares',
+          constellation: 'Scorpio',
+          longitude: 248.07,
+          magnitude: 1.09,
+          influence:
+            'Power struggles, transformation through crisis (intense energy)'
+        },
+        {
+          name: 'Fomalhaut',
+          constellation: 'Pisces',
+          longitude: 331.83,
+          magnitude: 1.16,
+          influence:
+            'Spiritual wisdom, prosperity through service (mystical qualities)'
+        },
+        {
+          name: 'Spica',
+          constellation: 'Virgo',
+          longitude: 201.3,
+          magnitude: 0.97,
+          influence:
+            'Success through helpfulness, harvest abundance (beneficial)'
+        },
+        {
+          name: 'Sirius',
+          constellation: 'Canis Major',
+          longitude: 101.29,
+          magnitude: -1.46,
+          influence: 'Brightest star, brings heavenly favor, honor, wealth'
+        },
+        {
+          name: 'Vega',
+          constellation: 'Lyra',
+          longitude: 279.23,
+          magnitude: 0.03,
+          influence:
+            'Greatest good fortune, success in arts, music, literature'
+        }
       ];
 
       const conjunctions = [];
@@ -46,7 +96,11 @@ class FixedStarsCalculator {
             const minDiff = Math.min(diff1, diff2, diff3);
 
             if (minDiff <= conjOrb) {
-              const interpretation = this._getFixedStarInterpretation(star.name, planetName, minDiff);
+              const interpretation = this._getFixedStarInterpretation(
+                star.name,
+                planetName,
+                minDiff
+              );
               conjunctions.push({
                 star: star.name,
                 planet: planetName,
@@ -86,13 +140,30 @@ class FixedStarsCalculator {
     const [day, month, year] = birthDate.split('/').map(Number);
     const [hour, minute] = birthTime.split(':').map(Number);
 
-    const utcTime = new Date(Date.UTC(year, month - 1, day, hour - timezone, minute));
+    const utcTime = new Date(
+      Date.UTC(year, month - 1, day, hour - timezone, minute)
+    );
     const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
 
     const planets = {};
-    const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
-      sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
-    const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planetEphemIds = [
+      sweph.SE_SUN,
+      sweph.SE_MOON,
+      sweph.SE_MARS,
+      sweph.SE_MERCURY,
+      sweph.SE_JUPITER,
+      sweph.SE_VENUS,
+      sweph.SE_SATURN
+    ];
+    const planetNames = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     planetEphemIds.forEach((ephemId, index) => {
       const result = sweph.swe_calc_ut(julianDay, ephemId, sweph.SEFLG_SPEED);
@@ -124,7 +195,8 @@ class FixedStarsCalculator {
       Vega: 'Success in arts and creative excellence'
     };
 
-    const starInfluence = interpretations[starName] || `${starName}'s qualities`;
+    const starInfluence =
+      interpretations[starName] || `${starName}'s qualities`;
     return `${starName} conjunct ${planetName} (${orb.toFixed(2)}° orb) brings ${starInfluence} with ${planetName}'s influence.`;
   }
 
@@ -137,7 +209,11 @@ class FixedStarsCalculator {
       healthy: true,
       version: '1.0.0',
       name: 'FixedStarsCalculator',
-      calculations: ['Star Conjunctions', 'Astral Influences', 'Paranatellonta'],
+      calculations: [
+        'Star Conjunctions',
+        'Astral Influences',
+        'Paranatellonta'
+      ],
       status: 'Operational'
     };
   }

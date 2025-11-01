@@ -24,7 +24,11 @@ class VedicKundliAction extends BaseAction {
       // This should be implemented within this action rather than calling legacy function
       // For now, returning a placeholder to indicate this needs proper implementation
       const { sendMessage } = require('../../../messageSender');
-      await sendMessage(this.phoneNumber, 'Vedic kundli (birth chart) analysis is being prepared...', 'text');
+      await sendMessage(
+        this.phoneNumber,
+        'Vedic kundli (birth chart) analysis is being prepared...',
+        'text'
+      );
 
       return {
         success: true,
@@ -34,7 +38,11 @@ class VedicKundliAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in VedicKundliAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -44,7 +52,11 @@ class VedicKundliAction extends BaseAction {
    */
   async handleExecutionError(error) {
     const { sendMessage } = require('../../messageSender');
-    await sendMessage(this.phoneNumber, 'I encountered an error generating your Vedic Kundli. Please try again.', 'text');
+    await sendMessage(
+      this.phoneNumber,
+      'I encountered an error generating your Vedic Kundli. Please try again.',
+      'text'
+    );
   }
 
   /**
@@ -54,8 +66,15 @@ class VedicKundliAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Provide detailed Vedic birth chart analysis using Jyotish method',
-      keywords: ['kundli', 'vedic kundli', 'hindu astrology', 'jyotish chart', 'birth chart'],
+      description:
+        'Provide detailed Vedic birth chart analysis using Jyotish method',
+      keywords: [
+        'kundli',
+        'vedic kundli',
+        'hindu astrology',
+        'jyotish chart',
+        'birth chart'
+      ],
       category: 'astrology',
       subscriptionRequired: false,
       cooldown: 3600000 // 1 hour cooldown

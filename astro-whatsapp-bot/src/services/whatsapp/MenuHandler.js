@@ -53,7 +53,8 @@ class MenuHandler {
         menuText += '\n\n';
 
         // Map number to action ID
-        menuMappings[currentIndex.toString()] = row.id || row.title.toLowerCase();
+        menuMappings[currentIndex.toString()] =
+          row.id || row.title.toLowerCase();
 
         // Also map the clean title for flexibility
         const titleKey = cleanTitle.toLowerCase().trim();
@@ -67,9 +68,12 @@ class MenuHandler {
 
     // Store mappings
     numberedMenuMappings.set(phoneNumber, menuMappings);
-    this.logger.info(`🔢 Stored ${Object.keys(menuMappings).length} menu mappings for ${phoneNumber}`);
+    this.logger.info(
+      `🔢 Stored ${Object.keys(menuMappings).length} menu mappings for ${phoneNumber}`
+    );
 
-    menuText += '\n💡 *How to use:*\n• Type a number (1, 2, 3, etc.) to select\n• Or type the option name\n• Or type "menu" to see options again';
+    menuText +=
+      '\n💡 *How to use:*\n• Type a number (1, 2, 3, etc.) to select\n• Or type the option name\n• Or type "menu" to see options again';
 
     return menuText;
   }
@@ -91,26 +95,34 @@ class MenuHandler {
 
     // Check direct number mappings
     if (userMappings[cleanInput]) {
-      this.logger.info(`📌 Found numbered menu action: ${userMappings[cleanInput]} for input: ${userInput}`);
+      this.logger.info(
+        `📌 Found numbered menu action: ${userMappings[cleanInput]} for input: ${userInput}`
+      );
       return userMappings[cleanInput];
     }
 
     // Remove prefixes like numbers for partial matches
     const cleanedInput = cleanInput.replace(/^[\d\.•\-*]+/, '').trim();
     if (cleanedInput !== cleanInput && userMappings[cleanedInput]) {
-      this.logger.info(`📌 Found cleaned menu action: ${userMappings[cleanedInput]} for input: ${userInput}`);
+      this.logger.info(
+        `📌 Found cleaned menu action: ${userMappings[cleanedInput]} for input: ${userInput}`
+      );
       return userMappings[cleanedInput];
     }
 
     // Try partial matches for text input
     for (const [key, value] of Object.entries(userMappings)) {
       if (!/^\d+$/.test(key) && this._matchWords(cleanedInput, key)) {
-        this.logger.info(`📌 Found partial match: ${value} for input: ${userInput} (matched: ${key})`);
+        this.logger.info(
+          `📌 Found partial match: ${value} for input: ${userInput} (matched: ${key})`
+        );
         return value;
       }
     }
 
-    this.logger.debug(`No menu action found for ${phoneNumber} input: ${userInput}`);
+    this.logger.debug(
+      `No menu action found for ${phoneNumber} input: ${userInput}`
+    );
     return null;
   }
 
@@ -162,8 +174,10 @@ class MenuHandler {
     return {
       activeMenus,
       totalActiveUsers: numberedMenuMappings.size,
-      totalMappings: Array.from(numberedMenuMappings.values())
-        .reduce((total, mappings) => total + Object.keys(mappings).length, 0)
+      totalMappings: Array.from(numberedMenuMappings.values()).reduce(
+        (total, mappings) => total + Object.keys(mappings).length,
+        0
+      )
     };
   }
 
@@ -175,7 +189,9 @@ class MenuHandler {
   clearExpiredMappings(maxAgeHours = 24) {
     // In a real system, we'd track timestamps for each mapping
     // For now, this is a placeholder for future implementation
-    this.logger.info(`🧹 Menu cleanup requested - would clean mappings older than ${maxAgeHours} hours`);
+    this.logger.info(
+      `🧹 Menu cleanup requested - would clean mappings older than ${maxAgeHours} hours`
+    );
 
     // Simple implementation: for large numbers, do periodic cleanup
     if (numberedMenuMappings.size > 100) {
@@ -194,7 +210,9 @@ class MenuHandler {
    * @returns {string} Sanitized title
    */
   _sanitizeTitle(title) {
-    if (!title) { return 'Option'; }
+    if (!title) {
+      return 'Option';
+    }
 
     // Remove emoji for cleaner text (keep numbers/symbols)
     return title.replace(/([^\w\s\d\-])/g, '').trim() || title;
@@ -208,10 +226,15 @@ class MenuHandler {
    * @returns {boolean} True if words match
    */
   _matchWords(input, key) {
-    if (!input || !key) { return false; }
+    if (!input || !key) {
+      return false;
+    }
 
     // Split into words and check if input words are contained in key
-    const inputWords = input.toLowerCase().split(/\s+/).filter(w => w.length > 0);
+    const inputWords = input
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(w => w.length > 0);
     const keyLower = key.toLowerCase();
 
     // At least one word from input should match the key
@@ -224,8 +247,10 @@ class MenuHandler {
    */
   healthCheck() {
     try {
-      const activeMappings = Array.from(numberedMenuMappings.values())
-        .reduce((total, mappings) => total + Object.keys(mappings).length, 0);
+      const activeMappings = Array.from(numberedMenuMappings.values()).reduce(
+        (total, mappings) => total + Object.keys(mappings).length,
+        0
+      );
 
       return {
         healthy: true,

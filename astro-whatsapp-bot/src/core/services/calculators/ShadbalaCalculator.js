@@ -36,7 +36,9 @@ class ShadbalaCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for Shadbala analysis' };
+        return {
+          error: 'Complete birth details required for Shadbala analysis'
+        };
       }
 
       // Parse birth date and time
@@ -44,30 +46,65 @@ class ShadbalaCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate natal chart
-      const natalChart = await this._calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const natalChart = await this._calculateNatalChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Calculate all 6 types of Bala for each planet
       const shadbalaResults = {};
-      const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+      const planets = [
+        'sun',
+        'moon',
+        'mars',
+        'mercury',
+        'jupiter',
+        'venus',
+        'saturn'
+      ];
 
       // Calculate each type of bala
       const sthanaBala = this._calculateSthanaBala(natalChart);
       const digBala = this._calculateDigBala(natalChart);
-      const kalaBala = this._calculateKalaBala(natalChart, birthDateTime, year, month, day, hour, minute);
+      const kalaBala = this._calculateKalaBala(
+        natalChart,
+        birthDateTime,
+        year,
+        month,
+        day,
+        hour,
+        minute
+      );
       const chestaBala = this._calculateChestaBala(natalChart);
       const naisargikaBala = this._calculateNaisargikaBala();
       const drigBala = this._calculateDrigBala(natalChart);
 
       // Calculate total shadbala for each planet
       for (const planet of planets) {
-        const totalBala = sthanaBala[planet] + digBala[planet] + kalaBala[planet] +
-                         chestaBala[planet] + naisargikaBala[planet] + drigBala[planet];
+        const totalBala =
+          sthanaBala[planet] +
+          digBala[planet] +
+          kalaBala[planet] +
+          chestaBala[planet] +
+          naisargikaBala[planet] +
+          drigBala[planet];
 
         shadbalaResults[planet] = {
           totalBala,
@@ -81,7 +118,11 @@ class ShadbalaCalculator {
             drigBala: drigBala[planet]
           },
           strength: this._evaluateShadbalaStrength(totalBala),
-          influence: this._calculatePlanetaryInfluence(planet, totalBala, natalChart.planets[planet])
+          influence: this._calculatePlanetaryInfluence(
+            planet,
+            totalBala,
+            natalChart.planets[planet]
+          )
         };
       }
 
@@ -89,7 +130,10 @@ class ShadbalaCalculator {
       const chartStrength = this._evaluateChartStrength(shadbalaResults);
 
       // Generate detailed analysis
-      const analysis = this._analyzeShadbalaResults(shadbalaResults, natalChart);
+      const analysis = this._analyzeShadbalaResults(
+        shadbalaResults,
+        natalChart
+      );
 
       return {
         name,
@@ -97,7 +141,10 @@ class ShadbalaCalculator {
         chartStrength,
         analysis,
         summary: this._generateShadbalaSummary(shadbalaResults, analysis),
-        recommendations: this._generateShadbalaRecommendations(shadbalaResults, analysis)
+        recommendations: this._generateShadbalaRecommendations(
+          shadbalaResults,
+          analysis
+        )
       };
     } catch (error) {
       logger.error('❌ Error in Shadbala calculation:', error);
@@ -117,24 +164,44 @@ class ShadbalaCalculator {
     const maxSthana = 60; // Full strength
 
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') { return; }
+      if (planetName === 'ascendant') {
+        return;
+      }
 
       const { sign } = planet;
       let strength = 0;
 
       // Exalted signs
       const exaltations = {
-        sun: 1, moon: 2, mars: 10, mercury: 6, jupiter: 4, venus: 12, saturn: 7
+        sun: 1,
+        moon: 2,
+        mars: 10,
+        mercury: 6,
+        jupiter: 4,
+        venus: 12,
+        saturn: 7
       };
 
       // Moolatrikona signs
       const moolatrikona = {
-        sun: [1], moon: [2], mars: [1], mercury: [6], jupiter: [5], venus: [2], saturn: [10]
+        sun: [1],
+        moon: [2],
+        mars: [1],
+        mercury: [6],
+        jupiter: [5],
+        venus: [2],
+        saturn: [10]
       };
 
       // Own signs
       const ownSigns = {
-        sun: [5], moon: [4], mars: [1, 8], mercury: [3, 6], jupiter: [9, 12], venus: [2, 7], saturn: [10, 11]
+        sun: [5],
+        moon: [4],
+        mars: [1, 8],
+        mercury: [3, 6],
+        jupiter: [9, 12],
+        venus: [2, 7],
+        saturn: [10, 11]
       };
 
       // Friendly signs (neutral can be considered friendly for calculation)
@@ -150,11 +217,17 @@ class ShadbalaCalculator {
 
       if (exaltations[planetName] === sign) {
         strength = maxSthana; // Exalted = full strength
-      } else if (moolatrikona[planetName] && moolatrikona[planetName].includes(sign)) {
+      } else if (
+        moolatrikona[planetName] &&
+        moolatrikona[planetName].includes(sign)
+      ) {
         strength = 45; // Moolatrikona = 75% strength
       } else if (ownSigns[planetName] && ownSigns[planetName].includes(sign)) {
         strength = 30; // Own sign = 50% strength
-      } else if (friendlySigns[planetName] && friendlySigns[planetName].includes(sign)) {
+      } else if (
+        friendlySigns[planetName] &&
+        friendlySigns[planetName].includes(sign)
+      ) {
         strength = 22.5; // Friendly = 37.5% strength
       } else {
         strength = 15; // Debilitated/debilitated = 25% strength
@@ -183,7 +256,9 @@ class ShadbalaCalculator {
     };
 
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') { return; }
+      if (planetName === 'ascendant') {
+        return;
+      }
 
       let strength = 0;
 
@@ -205,7 +280,15 @@ class ShadbalaCalculator {
    * Based on weekday, lunar phase, year, etc.
    * @private
    */
-  _calculateKalaBala(natalChart, birthDateTime, year, month, day, hour, minute) {
+  _calculateKalaBala(
+    natalChart,
+    birthDateTime,
+    year,
+    month,
+    day,
+    hour,
+    minute
+  ) {
     const kalaBala = {};
 
     // Get weekday
@@ -219,7 +302,9 @@ class ShadbalaCalculator {
 
     // Kala Bala components
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') { return; }
+      if (planetName === 'ascendant') {
+        return;
+      }
 
       let strength = 0;
 
@@ -255,7 +340,9 @@ class ShadbalaCalculator {
     const chestaBala = {};
 
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') { return; }
+      if (planetName === 'ascendant') {
+        return;
+      }
 
       const speed = Math.abs(planet.speed);
       let strength = 60; // Base strength
@@ -303,12 +390,12 @@ class ShadbalaCalculator {
     // Fixed natural strengths in shashtiamsas
     return {
       sun: 30,
-      moon: 51.4,    // Moon has highest natural strength
+      moon: 51.4, // Moon has highest natural strength
       mars: 39.4,
       mercury: 25.7,
       jupiter: 34.3,
       venus: 42.9,
-      saturn: 8.6     // Saturn has lowest natural strength
+      saturn: 8.6 // Saturn has lowest natural strength
     };
   }
 
@@ -324,21 +411,31 @@ class ShadbalaCalculator {
     const aspects = [7, 9, 4, 10, 5, 11, 3, 12];
 
     Object.entries(natalChart.planets).forEach(([planetName, planet]) => {
-      if (planetName === 'ascendant') { return; }
+      if (planetName === 'ascendant') {
+        return;
+      }
 
       let strength = 0;
 
       // Check aspects from other planets
       Object.entries(natalChart.planets).forEach(([otherPlanet, otherData]) => {
-        if (otherPlanet === planetName || otherPlanet === 'ascendant') { return; }
+        if (otherPlanet === planetName || otherPlanet === 'ascendant') {
+          return;
+        }
 
         const signDifference = Math.abs(planet.sign - otherData.sign);
-        const normalizedDifference = Math.min(signDifference, 12 - signDifference);
+        const normalizedDifference = Math.min(
+          signDifference,
+          12 - signDifference
+        );
 
         // If planet aspects this one, add strength
         if (aspects.includes(normalizedDifference)) {
           // Different planets give different aspect strength
-          const aspectStrength = this._getAspectStrength(otherPlanet, planetName);
+          const aspectStrength = this._getAspectStrength(
+            otherPlanet,
+            planetName
+          );
           strength += aspectStrength;
         }
       });
@@ -364,11 +461,25 @@ class ShadbalaCalculator {
    * Calculate natal chart with planetary positions
    * @private
    */
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     const natalPlanets = {};
 
     // Calculate Julian Day
-    const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+    const jd = this._dateToJulianDay(
+      year,
+      month,
+      day,
+      hour + minute / 60 - timezone
+    );
 
     // Planet IDs for Swiss Ephemeris
     const planetIds = {
@@ -383,12 +494,22 @@ class ShadbalaCalculator {
 
     for (const [planetName, planetId] of Object.entries(planetIds)) {
       try {
-        const position = sweph.calc(jd, planetId, sweph.SEFLG_SIDEREAL | sweph.SEFLG_SPEED);
+        const position = sweph.calc(
+          jd,
+          planetId,
+          sweph.SEFLG_SIDEREAL | sweph.SEFLG_SPEED
+        );
 
         if (position && position.longitude !== undefined) {
-          const longitude = Array.isArray(position.longitude) ? position.longitude[0] : position.longitude;
-          const latitude = Array.isArray(position.latitude) ? position.latitude[0] : position.latitude || 0;
-          const speed = Array.isArray(position.longitude) ? position.longitude[3] || 0 : 0;
+          const longitude = Array.isArray(position.longitude) ?
+            position.longitude[0] :
+            position.longitude;
+          const latitude = Array.isArray(position.latitude) ?
+            position.latitude[0] :
+            position.latitude || 0;
+          const speed = Array.isArray(position.longitude) ?
+            position.longitude[3] || 0 :
+            0;
 
           natalPlanets[planetName] = {
             name: planetName.charAt(0).toUpperCase() + planetName.slice(1),
@@ -401,7 +522,10 @@ class ShadbalaCalculator {
           };
         }
       } catch (error) {
-        logger.warn(`Error calculating natal ${planetName} position:`, error.message);
+        logger.warn(
+          `Error calculating natal ${planetName} position:`,
+          error.message
+        );
       }
     }
 
@@ -458,17 +582,24 @@ class ShadbalaCalculator {
     });
 
     // Determine overall chart balance
-    const totalStrength = Object.values(shadbalaResults).reduce((sum, planet) => sum + planet.totalRP, 0);
+    const totalStrength = Object.values(shadbalaResults).reduce(
+      (sum, planet) => sum + planet.totalRP,
+      0
+    );
     if (totalStrength >= 400) {
-      analysis.overallBalance = 'Very Strong - Excellent vitality and planetary influence';
+      analysis.overallBalance =
+        'Very Strong - Excellent vitality and planetary influence';
     } else if (totalStrength >= 350) {
       analysis.overallBalance = 'Strong - Good planetary support and vitality';
     } else if (totalStrength >= 280) {
-      analysis.overallBalance = 'Moderate - Average strength with some supporting planets';
+      analysis.overallBalance =
+        'Moderate - Average strength with some supporting planets';
     } else if (totalStrength >= 200) {
-      analysis.overallBalance = 'Weak - Planetary weakness may cause challenges';
+      analysis.overallBalance =
+        'Weak - Planetary weakness may cause challenges';
     } else {
-      analysis.overallBalance = 'Very Weak - Significant planetary debilitation requiring remedies';
+      analysis.overallBalance =
+        'Very Weak - Significant planetary debilitation requiring remedies';
     }
 
     return analysis;
@@ -481,10 +612,18 @@ class ShadbalaCalculator {
   _evaluateShadbalaStrength(totalBala) {
     const rupas = totalBala / 60; // Convert to rupas
 
-    if (rupas >= 8) { return 'Very Strong'; }
-    if (rupas >= 6) { return 'Strong'; }
-    if (rupas >= 5) { return 'Moderate'; }
-    if (rupas >= 3) { return 'Weak'; }
+    if (rupas >= 8) {
+      return 'Very Strong';
+    }
+    if (rupas >= 6) {
+      return 'Strong';
+    }
+    if (rupas >= 5) {
+      return 'Moderate';
+    }
+    if (rupas >= 3) {
+      return 'Weak';
+    }
     return 'Very Weak';
   }
 
@@ -493,13 +632,26 @@ class ShadbalaCalculator {
    * @private
    */
   _evaluateChartStrength(shadbalaResults) {
-    const totalRupas = Object.values(shadbalaResults).reduce((sum, planet) => sum + planet.totalRP, 0);
+    const totalRupas = Object.values(shadbalaResults).reduce(
+      (sum, planet) => sum + planet.totalRP,
+      0
+    );
 
-    if (totalRupas >= 400) { return 'Exceptionally Strong'; }
-    if (totalRupas >= 350) { return 'Very Strong'; }
-    if (totalRupas >= 300) { return 'Strong'; }
-    if (totalRupas >= 250) { return 'Moderate'; }
-    if (totalRupas >= 200) { return 'Weak'; }
+    if (totalRupas >= 400) {
+      return 'Exceptionally Strong';
+    }
+    if (totalRupas >= 350) {
+      return 'Very Strong';
+    }
+    if (totalRupas >= 300) {
+      return 'Strong';
+    }
+    if (totalRupas >= 250) {
+      return 'Moderate';
+    }
+    if (totalRupas >= 200) {
+      return 'Weak';
+    }
     return 'Very Weak';
   }
 
@@ -545,10 +697,16 @@ class ShadbalaCalculator {
     });
 
     // General recommendations
-    if (analysis.functionalBenefics.length > analysis.functionalMalefics.length) {
-      recommendations.push('Strong planetary support - focus on leveraging beneficial influences');
+    if (
+      analysis.functionalBenefics.length > analysis.functionalMalefics.length
+    ) {
+      recommendations.push(
+        'Strong planetary support - focus on leveraging beneficial influences'
+      );
     } else {
-      recommendations.push('Balance weak planetary influences through appropriate remedies and timing');
+      recommendations.push(
+        'Balance weak planetary influences through appropriate remedies and timing'
+      );
     }
 
     return recommendations;
@@ -586,7 +744,13 @@ class ShadbalaCalculator {
   // Helper methods for Kala Bala calculations
   _getWeekdayStrength(planet, weekday) {
     const dayLords = {
-      0: 'sun', 1: 'moon', 2: 'mars', 3: 'mercury', 4: 'jupiter', 5: 'venus', 6: 'saturn'
+      0: 'sun',
+      1: 'moon',
+      2: 'mars',
+      3: 'mercury',
+      4: 'jupiter',
+      5: 'venus',
+      6: 'saturn'
     };
 
     return dayLords[weekday] === planet ? 15 : 7.5;
@@ -619,14 +783,33 @@ class ShadbalaCalculator {
   _getAspectStrength(aspectingPlanet, aspectedPlanet) {
     // Different planets give different aspect strength
     const aspectStrengthMap = {
-      sun: 15, moon: 12, mars: 8, mercury: 6, jupiter: 15, venus: 10, saturn: 8
+      sun: 15,
+      moon: 12,
+      mars: 8,
+      mercury: 6,
+      jupiter: 15,
+      venus: 10,
+      saturn: 8
     };
 
     return aspectStrengthMap[aspectingPlanet] || 7.5;
   }
 
   _getLagnaLord(sign) {
-    const lords = ['mars', 'venus', 'mercury', 'moon', 'sun', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'saturn', 'jupiter'];
+    const lords = [
+      'mars',
+      'venus',
+      'mercury',
+      'moon',
+      'sun',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn',
+      'saturn',
+      'jupiter'
+    ];
     return lords[sign - 1];
   }
 
@@ -649,7 +832,14 @@ class ShadbalaCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + (hour - 12) / 24;
   }
 
@@ -659,7 +849,7 @@ class ShadbalaCalculator {
       return [coords.latitude, coords.longitude];
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Delhi coordinates
+      return [28.6139, 77.209]; // Delhi coordinates
     }
   }
 

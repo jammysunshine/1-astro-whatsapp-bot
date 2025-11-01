@@ -51,7 +51,8 @@ class PrashnaService extends ServiceTemplate {
       this._validateInputs(questionData);
 
       // Analyze horary question using calculator
-      const prashnaResult = await this.calculator.analyzeHoraryQuestion(questionData);
+      const prashnaResult =
+        await this.calculator.analyzeHoraryQuestion(questionData);
 
       // Add service metadata
       prashnaResult.serviceMetadata = {
@@ -59,12 +60,14 @@ class PrashnaService extends ServiceTemplate {
         calculationType: 'Prashna (Horary Astrology)',
         timestamp: new Date().toISOString(),
         method: 'Question-based horary chart analysis',
-        questionCategory: prashnaResult.significators?.questionCategory || 'general',
+        questionCategory:
+          prashnaResult.significators?.questionCategory || 'general',
         chartType: 'Horary (Question Time)'
       };
 
       // Add enhanced analysis
-      prashnaResult.enhancedAnalysis = this._performEnhancedPrashnaAnalysis(prashnaResult);
+      prashnaResult.enhancedAnalysis =
+        this._performEnhancedPrashnaAnalysis(prashnaResult);
 
       return prashnaResult;
     } catch (error) {
@@ -112,7 +115,10 @@ class PrashnaService extends ServiceTemplate {
     }
 
     // Add answer trends
-    if (result.interpretation?.answerTrends && result.interpretation.answerTrends.length > 0) {
+    if (
+      result.interpretation?.answerTrends &&
+      result.interpretation.answerTrends.length > 0
+    ) {
       formatted += '*📈 Answer Trends:*\n';
       result.interpretation.answerTrends.forEach(trend => {
         formatted += `• ${trend}\n`;
@@ -169,16 +175,24 @@ class PrashnaService extends ServiceTemplate {
     }
 
     // Add additional guidance
-    if (result.additionalGuidance?.recommendedActions && result.additionalGuidance.recommendedActions.length > 0) {
+    if (
+      result.additionalGuidance?.recommendedActions &&
+      result.additionalGuidance.recommendedActions.length > 0
+    ) {
       formatted += '*💡 Recommended Actions:*\n';
-      result.additionalGuidance.recommendedActions.slice(0, 3).forEach(action => {
-        formatted += `• ${action}\n`;
-      });
+      result.additionalGuidance.recommendedActions
+        .slice(0, 3)
+        .forEach(action => {
+          formatted += `• ${action}\n`;
+        });
       formatted += '\n';
     }
 
     // Add important caveats
-    if (result.interpretation?.caveats && result.interpretation.caveats.length > 0) {
+    if (
+      result.interpretation?.caveats &&
+      result.interpretation.caveats.length > 0
+    ) {
       formatted += '*⚠️ Important Considerations:*\n';
       result.interpretation.caveats.slice(0, 2).forEach(caveat => {
         formatted += `• ${caveat}\n`;
@@ -187,7 +201,8 @@ class PrashnaService extends ServiceTemplate {
     }
 
     // Add service footer
-    formatted += '---\n*Prashna - Horary Astrology for Question-based Guidance*';
+    formatted +=
+      '---\n*Prashna - Horary Astrology for Question-based Guidance*';
 
     return formatted;
   }
@@ -243,13 +258,16 @@ class PrashnaService extends ServiceTemplate {
       const { confidence } = result.probabilityAssessment;
       if (confidence === 'High') {
         analysis.chartQuality = 'Excellent chart with clear indications';
-        analysis.recommendations = 'Proceed with confidence based on chart indications';
+        analysis.recommendations =
+          'Proceed with confidence based on chart indications';
       } else if (confidence === 'Moderate') {
         analysis.chartQuality = 'Good chart with reasonable clarity';
-        analysis.recommendations = 'Proceed with caution and monitor developments';
+        analysis.recommendations =
+          'Proceed with caution and monitor developments';
       } else {
         analysis.chartQuality = 'Challenging chart with mixed signals';
-        analysis.recommendations = 'Consider rephrasing question or waiting for better timing';
+        analysis.recommendations =
+          'Consider rephrasing question or waiting for better timing';
       }
     }
 
@@ -260,15 +278,18 @@ class PrashnaService extends ServiceTemplate {
       } else if (result.timingAnalysis.estimatedTimeline.includes('Weeks')) {
         analysis.timingAdvice = 'Moderate timeframe - patience required';
       } else {
-        analysis.timingAdvice = 'Longer timeframe indicated - persistent effort needed';
+        analysis.timingAdvice =
+          'Longer timeframe indicated - persistent effort needed';
       }
     }
 
     // Add warnings based on probability
     if (result.probabilityAssessment?.overall < 40) {
-      analysis.warnings = 'Low probability indicates challenging conditions - consider alternative approaches';
+      analysis.warnings =
+        'Low probability indicates challenging conditions - consider alternative approaches';
     } else if (result.probabilityAssessment?.overall < 60) {
-      analysis.warnings = 'Moderate probability suggests mixed outcomes - careful planning advised';
+      analysis.warnings =
+        'Moderate probability suggests mixed outcomes - careful planning advised';
     }
 
     // Identify confidence factors
@@ -281,7 +302,9 @@ class PrashnaService extends ServiceTemplate {
         analysis.confidenceFactors.push('Reliable horary chart');
       }
       if (breakdown.significatorHarmony > 60) {
-        analysis.confidenceFactors.push('Harmonious significator relationships');
+        analysis.confidenceFactors.push(
+          'Harmonious significator relationships'
+        );
       }
     }
 
@@ -302,17 +325,27 @@ class PrashnaService extends ServiceTemplate {
     }
 
     // Increase confidence for clear question categories
-    if (result.significators?.questionCategory && result.significators.questionCategory !== 'general') {
+    if (
+      result.significators?.questionCategory &&
+      result.significators.questionCategory !== 'general'
+    ) {
       confidence += 10;
     }
 
     // Increase confidence for complete analysis
-    if (result.timingAnalysis && result.questionRulerAnalysis && result.interpretation) {
+    if (
+      result.timingAnalysis &&
+      result.questionRulerAnalysis &&
+      result.interpretation
+    ) {
       confidence += 10;
     }
 
     // Increase confidence for strong significators
-    if (result.significators?.significatorPlanets && result.significators.significatorPlanets.length >= 3) {
+    if (
+      result.significators?.significatorPlanets &&
+      result.significators.significatorPlanets.length >= 3
+    ) {
       confidence += 5;
     }
 

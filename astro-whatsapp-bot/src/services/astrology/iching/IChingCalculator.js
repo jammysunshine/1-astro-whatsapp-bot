@@ -13,7 +13,9 @@ class IChingCalculator {
     this.logger = logger;
     this.config = config;
 
-    this.logger.info('Module: IChingCalculator loaded with hexagram calculation capabilities');
+    this.logger.info(
+      'Module: IChingCalculator loaded with hexagram calculation capabilities'
+    );
   }
 
   /**
@@ -283,11 +285,16 @@ class IChingCalculator {
    */
   getLineStrength(lineValue) {
     switch (lineValue) {
-    case 6: return 'Old Yin - Changing (soft → hard)';
-    case 7: return 'Young Yang - Strong (hard)';
-    case 8: return 'Young Yin - Weak (soft)';
-    case 9: return 'Old Yang - Changing (hard → soft)';
-    default: return 'Unknown';
+    case 6:
+      return 'Old Yin - Changing (soft → hard)';
+    case 7:
+      return 'Young Yang - Strong (hard)';
+    case 8:
+      return 'Young Yin - Weak (soft)';
+    case 9:
+      return 'Old Yang - Changing (hard → soft)';
+    default:
+      return 'Unknown';
     }
   }
 
@@ -301,7 +308,8 @@ class IChingCalculator {
 
       // Test basic calculation
       const testHexagram = this.generateHexagram();
-      const validHexagram = testHexagram && testHexagram.number >= 1 && testHexagram.number <= 64;
+      const validHexagram =
+        testHexagram && testHexagram.number >= 1 && testHexagram.number <= 64;
 
       // Test trigram calculations
       const testTrigamUpper = this.calculateUpperTrigram(testHexagram.lines);
@@ -314,8 +322,16 @@ class IChingCalculator {
         calculationTest: validHexagram,
         trigramTest: validTrigrams,
         version: '1.0.0',
-        capabilities: ['Hexagram Generation', 'Line Calculations', 'Trigram Analysis', 'Hexagram Transformations'],
-        status: configHealth.healthy && validHexagram && validTrigrams ? 'Operational' : 'Issues Found'
+        capabilities: [
+          'Hexagram Generation',
+          'Line Calculations',
+          'Trigram Analysis',
+          'Hexagram Transformations'
+        ],
+        status:
+          configHealth.healthy && validHexagram && validTrigrams ?
+            'Operational' :
+            'Issues Found'
       };
     } catch (error) {
       return {

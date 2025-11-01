@@ -25,7 +25,8 @@ describe('AstrocartographyReader', () => {
         name: 'Test User'
       };
 
-      const reading = astrocartographyReader.generateAstrocartography(birthData);
+      const reading =
+        astrocartographyReader.generateAstrocartography(birthData);
 
       expect(reading).toBeDefined();
       expect(reading.birthData).toBeDefined();
@@ -41,7 +42,8 @@ describe('AstrocartographyReader', () => {
         name: 'Test User'
       };
 
-      const reading = astrocartographyReader.generateAstrocartography(birthData);
+      const reading =
+        astrocartographyReader.generateAstrocartography(birthData);
       expect(reading).toBeDefined();
       expect(reading.error).toBeDefined();
     });
@@ -49,7 +51,10 @@ describe('AstrocartographyReader', () => {
 
   describe('calculatePlanetaryPositions', () => {
     it('should calculate planetary positions', () => {
-      const positions = astrocartographyReader.calculatePlanetaryPositions('15/03/1990', '14:30');
+      const positions = astrocartographyReader.calculatePlanetaryPositions(
+        '15/03/1990',
+        '14:30'
+      );
 
       expect(positions).toBeDefined();
       expect(Array.isArray(positions)).toBe(true);
@@ -59,7 +64,10 @@ describe('AstrocartographyReader', () => {
 
   describe('generatePlanetaryLines', () => {
     it('should generate planetary lines', () => {
-      const positions = astrocartographyReader.calculatePlanetaryPositions('15/03/1990', '14:30');
+      const positions = astrocartographyReader.calculatePlanetaryPositions(
+        '15/03/1990',
+        '14:30'
+      );
       const lines = astrocartographyReader.generatePlanetaryLines(positions);
 
       expect(lines).toBeDefined();

@@ -13,18 +13,66 @@ class KaalSarpDoshaCalculator {
 
     // Define Kaal Sarp Yoga types and their effects
     this.kaalSarpTypes = {
-      anant: { rahuDirection: 'East', effects: 'Strongest Kaal Sarp, deception and family problems', remedy: 'Anant Nag puja, gold donation' },
-      gulika: { rahuDirection: 'South', effects: 'Health issues and accidents', remedy: 'Gulika puja, medicinal herbs' },
-      vasuki: { rahuDirection: 'South-West', effects: 'Marital discord and relationships', remedy: 'Vasuki puja, devotion to Shiva' },
-      sankhapal: { rahuDirection: 'West', effects: 'Financial losses and poverty', remedy: 'Sankhapal puja, white marble items' },
-      padma: { rahuDirection: 'North-West', effects: 'Spiritual confusion and lack of peace', remedy: 'Padma puja, meditation' },
-      mahapadma: { rahuDirection: 'North', effects: 'Political or leadership challenges', remedy: 'Mahapadma puja, charity to priests' },
-      takshak: { rahuDirection: 'North-East', effects: 'Sudden losses and fear', remedy: 'Takshak puja, snake protection rituals' },
-      karkotak: { rahuDirection: 'East with strong Saturn', effects: 'Severe diseases and cancers', remedy: 'Karkotak puja, medical treatments' },
-      shankhchood: { rahuDirection: 'South with strong Mars', effects: 'Extreme poverty and servitude', remedy: 'Shankhchood puja, silver donation' },
-      ghatak: { rahuDirection: 'Variable negative influence', effects: 'Life-threatening situations', remedy: 'Ghatak puja, life-saving rituals' },
-      vishdhar: { rahuDirection: 'Variable', effects: 'Financial ruin and debts', remedy: 'Vishdhar puja, water-related rituals' },
-      sheshnaag: { rahuDirection: 'Beneficial direction', effects: 'Mild but can cause confusion', remedy: 'Sheshnaag puja, sesame seeds' }
+      anant: {
+        rahuDirection: 'East',
+        effects: 'Strongest Kaal Sarp, deception and family problems',
+        remedy: 'Anant Nag puja, gold donation'
+      },
+      gulika: {
+        rahuDirection: 'South',
+        effects: 'Health issues and accidents',
+        remedy: 'Gulika puja, medicinal herbs'
+      },
+      vasuki: {
+        rahuDirection: 'South-West',
+        effects: 'Marital discord and relationships',
+        remedy: 'Vasuki puja, devotion to Shiva'
+      },
+      sankhapal: {
+        rahuDirection: 'West',
+        effects: 'Financial losses and poverty',
+        remedy: 'Sankhapal puja, white marble items'
+      },
+      padma: {
+        rahuDirection: 'North-West',
+        effects: 'Spiritual confusion and lack of peace',
+        remedy: 'Padma puja, meditation'
+      },
+      mahapadma: {
+        rahuDirection: 'North',
+        effects: 'Political or leadership challenges',
+        remedy: 'Mahapadma puja, charity to priests'
+      },
+      takshak: {
+        rahuDirection: 'North-East',
+        effects: 'Sudden losses and fear',
+        remedy: 'Takshak puja, snake protection rituals'
+      },
+      karkotak: {
+        rahuDirection: 'East with strong Saturn',
+        effects: 'Severe diseases and cancers',
+        remedy: 'Karkotak puja, medical treatments'
+      },
+      shankhchood: {
+        rahuDirection: 'South with strong Mars',
+        effects: 'Extreme poverty and servitude',
+        remedy: 'Shankhchood puja, silver donation'
+      },
+      ghatak: {
+        rahuDirection: 'Variable negative influence',
+        effects: 'Life-threatening situations',
+        remedy: 'Ghatak puja, life-saving rituals'
+      },
+      vishdhar: {
+        rahuDirection: 'Variable',
+        effects: 'Financial ruin and debts',
+        remedy: 'Vishdhar puja, water-related rituals'
+      },
+      sheshnaag: {
+        rahuDirection: 'Beneficial direction',
+        effects: 'Mild but can cause confusion',
+        remedy: 'Sheshnaag puja, sesame seeds'
+      }
     };
   }
 
@@ -46,7 +94,9 @@ class KaalSarpDoshaCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for Kaal Sarp analysis' };
+        return {
+          error: 'Complete birth details required for Kaal Sarp analysis'
+        };
       }
 
       // Parse birth date and time
@@ -54,29 +104,59 @@ class KaalSarpDoshaCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate natal chart
-      const natalChart = await this._calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const natalChart = await this._calculateNatalChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Check for Kaal Sarp Dosha
       const kaalSarpAnalysis = this._analyzeKaalSarp(natalChart.planets);
 
       // Analyze dosha strength and effects
-      const doshaStrength = this._calculateDoshaStrength(kaalSarpAnalysis, natalChart.planets);
-      const effects = this._analyzeDoshaEffects(doshaStrength, kaalSarpAnalysis.kaalSarpType);
+      const doshaStrength = this._calculateDoshaStrength(
+        kaalSarpAnalysis,
+        natalChart.planets
+      );
+      const effects = this._analyzeDoshaEffects(
+        doshaStrength,
+        kaalSarpAnalysis.kaalSarpType
+      );
 
       // Calculate remedial measures
-      const remedies = this._calculateRemedialMeasures(kaalSarpAnalysis.kaalSarpType, doshaStrength);
+      const remedies = this._calculateRemedialMeasures(
+        kaalSarpAnalysis.kaalSarpType,
+        doshaStrength
+      );
 
       // Check for exceptions and cancellations
-      const exceptions = this._checkExceptionsAndCancellations(natalChart.planets, kaalSarpAnalysis);
+      const exceptions = this._checkExceptionsAndCancellations(
+        natalChart.planets,
+        kaalSarpAnalysis
+      );
 
       // Generate predictions
-      const predictions = this._generateKaalSarpPredictions(kaalSarpAnalysis, doshaStrength, exceptions);
+      const predictions = this._generateKaalSarpPredictions(
+        kaalSarpAnalysis,
+        doshaStrength,
+        exceptions
+      );
 
       return {
         name,
@@ -90,7 +170,11 @@ class KaalSarpDoshaCalculator {
         remedies,
         exceptions,
         predictions,
-        summary: this._generateKaalSarpSummary(kaalSarpAnalysis, doshaStrength, exceptions)
+        summary: this._generateKaalSarpSummary(
+          kaalSarpAnalysis,
+          doshaStrength,
+          exceptions
+        )
       };
     } catch (error) {
       logger.error('❌ Error in Kaal Sarp Dosha calculation:', error);
@@ -112,8 +196,8 @@ class KaalSarpDoshaCalculator {
     };
 
     // Get Rahu and Ketu positions
-    const rahu = planets.rahu;
-    const ketu = planets.ketu;
+    const { rahu } = planets;
+    const { ketu } = planets;
 
     if (!rahu || !ketu) {
       return analysis; // Can't analyze without Rahu/Ketu positions
@@ -132,8 +216,17 @@ class KaalSarpDoshaCalculator {
 
     // Check which planets are "hemmed" between Rahu and Ketu
     Object.entries(planets).forEach(([planetName, planet]) => {
-      if (planetName !== 'rahu' && planetName !== 'ketu' && planetName !== 'ascendant') {
-        const isHemmed = this._isPlanetHemmedBetween(planet.longitude, rahuKetuAxis.rahu, rahuKetuAxis.ketu, rahuKetuAxis.clockwise);
+      if (
+        planetName !== 'rahu' &&
+        planetName !== 'ketu' &&
+        planetName !== 'ascendant'
+      ) {
+        const isHemmed = this._isPlanetHemmedBetween(
+          planet.longitude,
+          rahuKetuAxis.rahu,
+          rahuKetuAxis.ketu,
+          rahuKetuAxis.clockwise
+        );
 
         if (isHemmed) {
           analysis.planetaryHemmed.push(planetName);
@@ -172,7 +265,7 @@ class KaalSarpDoshaCalculator {
     return {
       rahu: rahuLong,
       ketu: ketuLong,
-      clockwise: clockwise,
+      clockwise,
       arc: clockwise ? clockwiseArc : counterClockwiseArc
     };
   }
@@ -215,27 +308,38 @@ class KaalSarpDoshaCalculator {
     const rahuDegree = rahu.degree;
 
     // Different Kaal Sarp types based on Rahu's position
-    if (rahuSign >= 1 && rahuSign <= 3.20) { // Aries 0° to Cancer 20°
+    if (rahuSign >= 1 && rahuSign <= 3.2) {
+      // Aries 0° to Cancer 20°
       return 'Anant Kaal Sarp';
-    } else if (rahuSign <= 4 && rahuDegree < 13.20) { // Cancer 20° to Leo 13.20°
+    } else if (rahuSign <= 4 && rahuDegree < 13.2) {
+      // Cancer 20° to Leo 13.20°
       return 'Kulik Kaal Sarp';
-    } else if (rahuSign <= 5 && rahuDegree < 6.40) { // Leo 13.20° to Virgo 6.40°
+    } else if (rahuSign <= 5 && rahuDegree < 6.4) {
+      // Leo 13.20° to Virgo 6.40°
       return 'Vasuki Kaal Sarp';
-    } else if (rahuSign <= 6 && rahuDegree < 7.6) { // Virgo 6.40° to Libra 7.6°
+    } else if (rahuSign <= 6 && rahuDegree < 7.6) {
+      // Virgo 6.40° to Libra 7.6°
       return 'Sankhapal Kaal Sarp';
-    } else if (rahuSign <= 7 && rahuDegree < 21.6) { // Libra 7.6° to Scorpio 21.6°
+    } else if (rahuSign <= 7 && rahuDegree < 21.6) {
+      // Libra 7.6° to Scorpio 21.6°
       return 'Padma Kaal Sarp';
-    } else if (rahuSign <= 9 && rahuDegree < 3.20) { // Scorpio 21.6° to Sagittarius 3.20°
+    } else if (rahuSign <= 9 && rahuDegree < 3.2) {
+      // Scorpio 21.6° to Sagittarius 3.20°
       return 'Mahapadma Kaal Sarp';
-    } else if (rahuSign <= 10 && rahuDegree < 20) { // Sagittarius 3.20° to Capricorn 20°
+    } else if (rahuSign <= 10 && rahuDegree < 20) {
+      // Sagittarius 3.20° to Capricorn 20°
       return 'Takshak Kaal Sarp';
-    } else if (rahuSign <= 11 && rahuDegree < 13.20) { // Capricorn 20° to Aquarius 13.20°
+    } else if (rahuSign <= 11 && rahuDegree < 13.2) {
+      // Capricorn 20° to Aquarius 13.20°
       return 'Karkotak Kaal Sarp';
-    } else if (rahuSign <= 12 && rahuDegree < 6.40) { // Aquarius 13.20° to Pisces 6.40°
+    } else if (rahuSign <= 12 && rahuDegree < 6.4) {
+      // Aquarius 13.20° to Pisces 6.40°
       return 'Shankhchood Kaal Sarp';
-    } else if (rahuSign === 12 || rahuSign <= 1 && rahuDegree < 7.6) { // Pisces 6.40° to Aries 7.6°
+    } else if (rahuSign === 12 || (rahuSign <= 1 && rahuDegree < 7.6)) {
+      // Pisces 6.40° to Aries 7.6°
       return 'Ghatak Kaal Sarp';
-    } else if (rahuSign <= 2 && rahuDegree < 21.6) { // Aries 7.6° to Taurus 21.6°
+    } else if (rahuSign <= 2 && rahuDegree < 21.6) {
+      // Aries 7.6° to Taurus 21.6°
       return 'Vishdhar Kaal Sarp';
     } else {
       return 'Sheshnaag Kaal Sarp'; // Any remaining positions
@@ -250,10 +354,18 @@ class KaalSarpDoshaCalculator {
     const rahuSign = Math.floor(rahu.longitude / 30) + 1;
     const ketuSign = Math.floor(ketu.longitude / 30) + 1;
 
-    if (rahuSign >= 1 && rahuSign <= 4) return 'East';
-    if (rahuSign >= 5 && rahuSign <= 8) return 'South';
-    if (rahuSign >= 9 && rahuSign <= 12) return 'West';
-    if (ketuSign >= 1 && ketuSign <= 4) return 'North';
+    if (rahuSign >= 1 && rahuSign <= 4) {
+      return 'East';
+    }
+    if (rahuSign >= 5 && rahuSign <= 8) {
+      return 'South';
+    }
+    if (rahuSign >= 9 && rahuSign <= 12) {
+      return 'West';
+    }
+    if (ketuSign >= 1 && ketuSign <= 4) {
+      return 'North';
+    }
     return 'Neutral';
   }
 
@@ -291,18 +403,25 @@ class KaalSarpDoshaCalculator {
 
     // Stronger if Rahu/Ketu in unfavorable positions
     const rahuSign = kaalSarpAnalysis.rahuPosition.sign;
-    if ([6, 8, 12].includes(rahuSign)) { // Virgo, Scorpio, Pisces
+    if ([6, 8, 12].includes(rahuSign)) {
+      // Virgo, Scorpio, Pisces
       strength += 30; // Unfavorable signs for Rahu
     }
 
-    const level = strength >= 250 ? 'Very Strong' :
-                 strength >= 200 ? 'Strong' :
-                 strength >= 150 ? 'Moderate' :
-                 strength >= 100 ? 'Mild' : 'Weak';
+    const level =
+      strength >= 250 ?
+        'Very Strong' :
+        strength >= 200 ?
+          'Strong' :
+          strength >= 150 ?
+            'Moderate' :
+            strength >= 100 ?
+              'Mild' :
+              'Weak';
 
     return {
       total: strength,
-      level: level,
+      level,
       percentage: Math.min(strength / 3, 100) // Max 100%
     };
   }
@@ -320,7 +439,9 @@ class KaalSarpDoshaCalculator {
     };
 
     // General effects based on Kaal Sarp type
-    const typeEffects = this.kaalSarpTypes[kaalSarpType.toLowerCase().replace(' ', '')]?.effects || 'General challenges and delay';
+    const typeEffects =
+      this.kaalSarpTypes[kaalSarpType.toLowerCase().replace(' ', '')]
+        ?.effects || 'General challenges and delay';
 
     effects.specific.push(`Type Effect: ${typeEffects}`);
 
@@ -374,7 +495,9 @@ class KaalSarpDoshaCalculator {
         'Black sesame seeds charity on Saturdays',
         'Rahu-Ketu graha shanti puja'
       ],
-      specific: this.kaalSarpTypes[kaalSarpType.toLowerCase().replace(' ', '')]?.remedy || 'General remedial pujas',
+      specific:
+        this.kaalSarpTypes[kaalSarpType.toLowerCase().replace(' ', '')]
+          ?.remedy || 'General remedial pujas',
       lifestyle: [
         'Avoid inauspicious activities on certain days',
         'Practice meditation and spiritual discipline',
@@ -428,7 +551,9 @@ class KaalSarpDoshaCalculator {
     const jupiterHouse = planets.jupiter?.house || 0;
     if ([1, 4, 7, 10].includes(jupiterHouse)) {
       exceptions.cancelled = true;
-      exceptions.reasons.push('Jupiter in Kendra (1st, 4th, 7th, or 10th house)');
+      exceptions.reasons.push(
+        'Jupiter in Kendra (1st, 4th, 7th, or 10th house)'
+      );
     }
 
     // 2. All benefics in Kendra
@@ -448,7 +573,9 @@ class KaalSarpDoshaCalculator {
     if ([1, 4, 7, 10].includes(saturnHouse)) {
       exceptions.partialCancellation = true;
       exceptions.reasons.push('Saturn in Kendra - Partial cancellation');
-      exceptions.strengtheningFactors.push('Saturn provides discipline and structure');
+      exceptions.strengtheningFactors.push(
+        'Saturn provides discipline and structure'
+      );
     }
 
     // 4. Mars in Kendra
@@ -462,11 +589,15 @@ class KaalSarpDoshaCalculator {
     const ketuHouse = planets.ketu?.house || 0;
 
     if ([3, 6, 11].includes(rahuHouse)) {
-      exceptions.strengtheningFactors.push('Rahu in favorable house (3rd, 6th, or 11th)');
+      exceptions.strengtheningFactors.push(
+        'Rahu in favorable house (3rd, 6th, or 11th)'
+      );
     }
 
     if ([3, 6, 11].includes(ketuHouse)) {
-      exceptions.strengtheningFactors.push('Ketu in favorable house (3rd, 6th, or 11th)');
+      exceptions.strengtheningFactors.push(
+        'Ketu in favorable house (3rd, 6th, or 11th)'
+      );
     }
 
     return exceptions;
@@ -488,60 +619,110 @@ class KaalSarpDoshaCalculator {
     };
 
     if (!kaalSarpAnalysis.hasDosha) {
-      predictions.overall = 'No Kaal Sarp Dosha present - life flows more smoothly with fewer obstacles';
+      predictions.overall =
+        'No Kaal Sarp Dosha present - life flows more smoothly with fewer obstacles';
       return predictions;
     }
 
     if (exceptions.cancelled) {
-      predictions.overall = 'Kaal Sarp Dosha present but CANCELLED due to favorable planetary positions. Effects greatly reduced or nullified.';
-      predictions.spiritual.push('Cancelled dosha provides opportunity for spiritual growth');
+      predictions.overall =
+        'Kaal Sarp Dosha present but CANCELLED due to favorable planetary positions. Effects greatly reduced or nullified.';
+      predictions.spiritual.push(
+        'Cancelled dosha provides opportunity for spiritual growth'
+      );
       return predictions;
     }
 
     // General predictions based on strength
     switch (strength.level) {
-      case 'Very Strong':
-        predictions.overall = 'Strong Kaal Sarp Dosha requires diligent effort and remedial measures for success';
-        predictions.career.push('Career advancement requires persistent effort and multiple attempts');
-        predictions.marriage.push('Marriage may be delayed; relationship issues need careful handling');
-        predictions.health.push('Health requires attention; chronic conditions may be present');
-        predictions.finances.push('Financial stability comes after significant effort');
-        break;
+    case 'Very Strong':
+      predictions.overall =
+          'Strong Kaal Sarp Dosha requires diligent effort and remedial measures for success';
+      predictions.career.push(
+        'Career advancement requires persistent effort and multiple attempts'
+      );
+      predictions.marriage.push(
+        'Marriage may be delayed; relationship issues need careful handling'
+      );
+      predictions.health.push(
+        'Health requires attention; chronic conditions may be present'
+      );
+      predictions.finances.push(
+        'Financial stability comes after significant effort'
+      );
+      break;
 
-      case 'Strong':
-        predictions.overall = 'Moderate Kaal Sarp influences require conscious effort to balance and harmonize the influences';
-        predictions.career.push('Career progression may be slower and require extra effort');
-        predictions.marriage.push('Marriage timing may vary; patience needed in relationships');
-        predictions.health.push('Health generally good but requires preventive care');
-        predictions.finances.push('Financial stability achievable through discipline and planning');
-        break;
+    case 'Strong':
+      predictions.overall =
+          'Moderate Kaal Sarp influences require conscious effort to balance and harmonize the influences';
+      predictions.career.push(
+        'Career progression may be slower and require extra effort'
+      );
+      predictions.marriage.push(
+        'Marriage timing may vary; patience needed in relationships'
+      );
+      predictions.health.push(
+        'Health generally good but requires preventive care'
+      );
+      predictions.finances.push(
+        'Financial stability achievable through discipline and planning'
+      );
+      break;
 
-      case 'Moderate':
-        predictions.overall = 'Mild Kaal Sarp Dosha - balanced with conscious effort and positive lifestyle choices';
-        predictions.career.push('Career develops steadily with focus and determination');
-        predictions.marriage.push('Marriage blessed; relationships generally harmonious');
-        predictions.health.push('Health issues minimal; maintain healthy lifestyle');
-        predictions.finances.push('Financial stability through wise planning and savings');
-        break;
+    case 'Moderate':
+      predictions.overall =
+          'Mild Kaal Sarp Dosha - balanced with conscious effort and positive lifestyle choices';
+      predictions.career.push(
+        'Career develops steadily with focus and determination'
+      );
+      predictions.marriage.push(
+        'Marriage blessed; relationships generally harmonious'
+      );
+      predictions.health.push(
+        'Health issues minimal; maintain healthy lifestyle'
+      );
+      predictions.finances.push(
+        'Financial stability through wise planning and savings'
+      );
+      break;
 
-      case 'Mild':
-        predictions.overall = 'Very mild Kaal Sarp influences - more of an opportunity for growth than a hindrance';
-        predictions.career.push('Career opportunities available with moderate effort');
-        predictions.marriage.push('Positive marriage prospects with some initial adjustments');
-        predictions.health.push('Good health foundation with basic preventive care');
-        predictions.finances.push('Financial stability through responsible habits');
-        break;
+    case 'Mild':
+      predictions.overall =
+          'Very mild Kaal Sarp influences - more of an opportunity for growth than a hindrance';
+      predictions.career.push(
+        'Career opportunities available with moderate effort'
+      );
+      predictions.marriage.push(
+        'Positive marriage prospects with some initial adjustments'
+      );
+      predictions.health.push(
+        'Good health foundation with basic preventive care'
+      );
+      predictions.finances.push(
+        'Financial stability through responsible habits'
+      );
+      break;
 
-      case 'Weak':
-        predictions.overall = 'Minimal Kaal Sarp Dosha impact - life flows relatively smoothly';
-        predictions.career.push('Career opportunities available with moderate effort');
-        predictions.marriage.push('Harmonious marriage relationships with good potential');
-        predictions.health.push('Good health foundation with basic preventive care');
-        predictions.finances.push('Financial stability through responsible planning');
-        break;
+    case 'Weak':
+      predictions.overall =
+          'Minimal Kaal Sarp Dosha impact - life flows relatively smoothly';
+      predictions.career.push(
+        'Career opportunities available with moderate effort'
+      );
+      predictions.marriage.push(
+        'Harmonious marriage relationships with good potential'
+      );
+      predictions.health.push(
+        'Good health foundation with basic preventive care'
+      );
+      predictions.finances.push(
+        'Financial stability through responsible planning'
+      );
+      break;
 
-      default:
-        predictions.overall = 'Kaal Sarp Dosha requires individual analysis for accurate predictions';
+    default:
+      predictions.overall =
+          'Kaal Sarp Dosha requires individual analysis for accurate predictions';
     }
 
     // Add timing predictions for all levels
@@ -597,7 +778,16 @@ class KaalSarpDoshaCalculator {
    * Calculate natal chart for given parameters
    * @private
    */
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     // Placeholder - this should integrate with Swiss Ephemeris or similar
     return {
       planets: {
@@ -622,7 +812,7 @@ class KaalSarpDoshaCalculator {
    */
   async _getCoordinatesForPlace(place) {
     // Placeholder - integrate with geocoding service
-    return [28.6139, 77.2090]; // Delhi coordinates as default
+    return [28.6139, 77.209]; // Delhi coordinates as default
   }
 
   /**

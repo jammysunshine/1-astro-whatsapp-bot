@@ -35,15 +35,23 @@ class CelticAstrologyService extends ServiceTemplate {
 
       // Generate additional insights
       const treeSignTraits = this._getTreeSignTraits(celticAnalysis.treeSign);
-      const animalTotemInsights = this._getAnimalTotemInsights(celticAnalysis.animalTotem);
-      const spiritualConnections = this._getSpiritualConnections(celticAnalysis.treeSign, celticAnalysis.animalTotem);
+      const animalTotemInsights = this._getAnimalTotemInsights(
+        celticAnalysis.animalTotem
+      );
+      const spiritualConnections = this._getSpiritualConnections(
+        celticAnalysis.treeSign,
+        celticAnalysis.animalTotem
+      );
 
       return {
         celticAnalysis,
         treeSignTraits,
         animalTotemInsights,
         spiritualConnections,
-        summary: this._createComprehensiveSummary(celticAnalysis, treeSignTraits)
+        summary: this._createComprehensiveSummary(
+          celticAnalysis,
+          treeSignTraits
+        )
       };
     } catch (error) {
       logger.error('CelticAstrologyService processCalculation error:', error);
@@ -88,7 +96,8 @@ class CelticAstrologyService extends ServiceTemplate {
         calculationType: 'Celtic Astrology Analysis',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'Celtic Astrology offers insights into personality and spiritual connections based on ancient Celtic traditions. It is a tool for self-discovery and understanding your natural inclinations. Interpretations should be used for personal reflection and guidance.'
+      disclaimer:
+        'Celtic Astrology offers insights into personality and spiritual connections based on ancient Celtic traditions. It is a tool for self-discovery and understanding your natural inclinations. Interpretations should be used for personal reflection and guidance.'
     };
   }
 
@@ -103,19 +112,24 @@ class CelticAstrologyService extends ServiceTemplate {
       Apple: 'Love, generosity, charm, and a joyful spirit.',
       Fir: 'Dignity, mystery, artistic taste, and a love for beauty.',
       Elm: 'Noble-minded, good taste, leadership, and a protective nature.',
-      Cypress: 'Strength, adaptability, loyalty, and a deep connection to nature.',
+      Cypress:
+        'Strength, adaptability, loyalty, and a deep connection to nature.',
       Poplar: 'Uncertainty, courage, resilience, and a need for security.',
       Cedar: 'Confidence, strength, protection, and a love for luxury.',
       Pine: 'Discipline, organization, aesthetic appreciation, and a love for peace.',
-      Willow: 'Melancholy, intuition, creativity, and a deep understanding of cycles.',
+      Willow:
+        'Melancholy, intuition, creativity, and a deep understanding of cycles.',
       Oak: 'Courage, strength, independence, and a protective nature.',
       Hazel: 'Intelligence, charm, organization, and a love for knowledge.',
-      Rowan: 'Sensitivity, intuition, protection, and a strong spiritual connection.',
-      Maple: 'Independence, creativity, originality, and a love for new experiences.',
+      Rowan:
+        'Sensitivity, intuition, protection, and a strong spiritual connection.',
+      Maple:
+        'Independence, creativity, originality, and a love for new experiences.',
       Walnut: 'Passion, intensity, strategy, and a strong sense of justice.',
       Chestnut: 'Honesty, courage, justice, and a strong sense of family.',
       Ash: 'Ambition, intelligence, generosity, and a love for freedom.',
-      Hornbeam: 'Good taste, discipline, responsibility, and a strong sense of duty.',
+      Hornbeam:
+        'Good taste, discipline, responsibility, and a strong sense of duty.',
       Fig: 'Sensitivity, intuition, creativity, and a love for family.',
       Birch: 'Inspiration, new beginnings, purity, and a love for nature.',
       Olive: 'Peace, wisdom, balance, and a love for justice.',
@@ -133,17 +147,21 @@ class CelticAstrologyService extends ServiceTemplate {
   _getAnimalTotemInsights(animalTotem) {
     const insights = {
       Hawk: 'Focus, clarity, vision, and a strong sense of purpose.',
-      Salmon: 'Wisdom, inspiration, rebirth, and a deep connection to ancient knowledge.',
+      Salmon:
+        'Wisdom, inspiration, rebirth, and a deep connection to ancient knowledge.',
       Otter: 'Playfulness, curiosity, joy, and a strong sense of community.',
       Bear: 'Strength, introspection, healing, and a deep connection to the earth.',
-      Snake: 'Transformation, healing, wisdom, and a deep connection to the spiritual realm.',
+      Snake:
+        'Transformation, healing, wisdom, and a deep connection to the spiritual realm.',
       Owl: 'Wisdom, intuition, mystery, and a deep understanding of the unseen.',
       Wolf: 'Loyalty, intuition, freedom, and a strong sense of family.',
       Deer: 'Gentleness, grace, intuition, and a deep connection to nature.',
       Cat: 'Independence, mystery, intuition, and a strong sense of self.',
       Horse: 'Freedom, power, movement, and a strong sense of adventure.',
-      Eagle: 'Vision, courage, spiritual connection, and a strong sense of purpose.',
-      Raven: 'Mystery, magic, transformation, and a deep connection to the spiritual realm.'
+      Eagle:
+        'Vision, courage, spiritual connection, and a strong sense of purpose.',
+      Raven:
+        'Mystery, magic, transformation, and a deep connection to the spiritual realm.'
     };
     return insights[animalTotem] || 'Unique animal totem insights';
   }
@@ -175,7 +193,8 @@ class CelticAstrologyService extends ServiceTemplate {
   _createComprehensiveSummary(celticAnalysis, treeSignTraits) {
     let summary = `Your Celtic Tree Sign is ${celticAnalysis.treeSign}, which suggests ${treeSignTraits.toLowerCase()}. `;
     summary += `Your Animal Totem is the ${celticAnalysis.animalTotem}, guiding you with its unique energies. `;
-    summary += 'This analysis provides a deeper understanding of your innate strengths, challenges, and spiritual path according to ancient Celtic wisdom.';
+    summary +=
+      'This analysis provides a deeper understanding of your innate strengths, challenges, and spiritual path according to ancient Celtic wisdom.';
     return summary;
   }
 
@@ -188,9 +207,15 @@ class CelticAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'celtic',
-      methods: ['processCalculation', 'getTreeSignAnalysis', 'getAnimalTotemAnalysis', 'getSpiritualConnections'],
+      methods: [
+        'processCalculation',
+        'getTreeSignAnalysis',
+        'getAnimalTotemAnalysis',
+        'getSpiritualConnections'
+      ],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Service for Celtic tree astrology analysis and spiritual insights.'
+      description:
+        'Service for Celtic tree astrology analysis and spiritual insights.'
     };
   }
 

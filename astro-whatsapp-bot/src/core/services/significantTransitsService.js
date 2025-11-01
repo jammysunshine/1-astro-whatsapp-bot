@@ -1,6 +1,9 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
-const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
+const {
+  validateCoordinates,
+  validateDateTime
+} = require('../../../utils/validation');
 
 /**
  * GocharService - Service for planetary transit analysis (Gochar)
@@ -11,8 +14,10 @@ const { validateCoordinates, validateDateTime } = require('../../../utils/valida
 class GocharService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'GocharService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/VedicCalculator';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'GocharService';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/VedicCalculator';
     logger.info('GocharService initialized');
   }
 
@@ -37,15 +42,39 @@ class GocharService extends ServiceTemplate {
 
       this._validateInput(userData);
 
-      const { datetime, latitude, longitude, birthDatetime, birthLatitude, birthLongitude } = userData;
+      const {
+        datetime,
+        latitude,
+        longitude,
+        birthDatetime,
+        birthLatitude,
+        birthLongitude
+      } = userData;
 
-      const transitChart = await this._getCurrentTransits(datetime, latitude, longitude);
-      const natalChart = await this._getNatalChart(birthDatetime, birthLatitude, birthLongitude);
+      const transitChart = await this._getCurrentTransits(
+        datetime,
+        latitude,
+        longitude
+      );
+      const natalChart = await this._getNatalChart(
+        birthDatetime,
+        birthLatitude,
+        birthLongitude
+      );
 
-      const transitAspects = this._calculateTransitAspects(transitChart, natalChart);
-      const houseTransits = this._calculateHouseTransits(transitChart, natalChart);
+      const transitAspects = this._calculateTransitAspects(
+        transitChart,
+        natalChart
+      );
+      const houseTransits = this._calculateHouseTransits(
+        transitChart,
+        natalChart
+      );
       const retrogradeEffects = this._calculateRetrogradeEffects(transitChart);
-      const majorPeriods = this._calculateMajorTransitPeriods(transitChart, natalChart);
+      const majorPeriods = this._calculateMajorTransitPeriods(
+        transitChart,
+        natalChart
+      );
 
       const analysis = {
         transitAspects,
@@ -61,7 +90,6 @@ class GocharService extends ServiceTemplate {
       };
 
       return analysis;
-
     } catch (error) {
       logger.error('GocharService processCalculation error:', error);
       throw new Error(`Gochar calculation failed: ${error.message}`);
@@ -77,7 +105,14 @@ class GocharService extends ServiceTemplate {
     if (!userData) {
       throw new Error('User data is required for Gochar analysis.');
     }
-    const { datetime, latitude, longitude, birthDatetime, birthLatitude, birthLongitude } = userData;
+    const {
+      datetime,
+      latitude,
+      longitude,
+      birthDatetime,
+      birthLatitude,
+      birthLongitude
+    } = userData;
     validateDateTime(datetime);
     validateCoordinates(latitude, longitude);
     validateDateTime(birthDatetime);
@@ -105,7 +140,11 @@ class GocharService extends ServiceTemplate {
    * @private
    */
   async _getNatalChart(birthDatetime, birthLatitude, birthLongitude) {
-    return await this.calculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
+    return await this.calculator.calculateChart(
+      birthDatetime,
+      birthLatitude,
+      birthLongitude
+    );
   }
 
   /**
@@ -117,7 +156,17 @@ class GocharService extends ServiceTemplate {
    */
   _calculateTransitAspects(transitChart, natalChart) {
     const aspects = [];
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn',
+      'Rahu',
+      'Ketu'
+    ];
 
     for (const transitPlanet of planets) {
       const transitLong = transitChart[transitPlanet.toLowerCase()];
@@ -133,7 +182,11 @@ class GocharService extends ServiceTemplate {
             aspect: aspect.aspect,
             orb: aspect.orb,
             strength: aspect.strength,
-            type: this._getAspectType(transitPlanet, natalPlanet, aspect.aspect)
+            type: this._getAspectType(
+              transitPlanet,
+              natalPlanet,
+              aspect.aspect
+            )
           });
         }
       }
@@ -207,7 +260,17 @@ class GocharService extends ServiceTemplate {
    */
   _calculateHouseTransits(transitChart, natalChart) {
     const houseTransits = [];
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn',
+      'Rahu',
+      'Ketu'
+    ];
     const natalAscendant = natalChart.ascendant;
 
     for (const planet of planets) {
@@ -232,7 +295,10 @@ class GocharService extends ServiceTemplate {
    * @private
    */
   _getLongitudeHouse(longitude, ascendant) {
-    const normalizedLong = longitude >= ascendant ? longitude - ascendant : longitude + 360 - ascendant;
+    const normalizedLong =
+      longitude >= ascendant ?
+        longitude - ascendant :
+        longitude + 360 - ascendant;
     return Math.floor(normalizedLong / 30) + 1;
   }
 
@@ -244,8 +310,18 @@ class GocharService extends ServiceTemplate {
    */
   _getLongitudeSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     return signs[Math.floor(longitude / 30) % 12];
   }
@@ -449,7 +525,10 @@ class GocharService extends ServiceTemplate {
       periods.push(saturnReturn);
     }
 
-    const jupiterReturn = this._calculateJupiterReturn(transitChart, natalChart);
+    const jupiterReturn = this._calculateJupiterReturn(
+      transitChart,
+      natalChart
+    );
     if (jupiterReturn.approaching) {
       periods.push(jupiterReturn);
     }
@@ -529,9 +608,13 @@ class GocharService extends ServiceTemplate {
     const influences = [];
     const { significantTransits, retrogradeEffects } = data;
 
-    const strongTransits = significantTransits.filter(t => t.significance >= 20);
+    const strongTransits = significantTransits.filter(
+      t => t.significance >= 20
+    );
     strongTransits.forEach(transit => {
-      influences.push(`${transit.transitPlanet} ${transit.aspect} ${transit.natalPlanet}`);
+      influences.push(
+        `${transit.transitPlanet} ${transit.aspect} ${transit.natalPlanet}`
+      );
     });
 
     retrogradeEffects.forEach(retrograde => {
@@ -551,18 +634,21 @@ class GocharService extends ServiceTemplate {
   _analyzeTiming(data) {
     const { significantTransits, planetaryReturns } = data;
 
-    const activatingTransits = significantTransits.filter(t =>
-      t.aspect === 'square' || t.aspect === 'opposition'
+    const activatingTransits = significantTransits.filter(
+      t => t.aspect === 'square' || t.aspect === 'opposition'
     );
-    const harmoniousTransits = significantTransits.filter(t =>
-      t.aspect === 'trine' || t.aspect === 'sextile'
+    const harmoniousTransits = significantTransits.filter(
+      t => t.aspect === 'trine' || t.aspect === 'sextile'
     );
-    const upcomingReturns = planetaryReturns.filter(r =>
-      new Date(r.nextReturn) <= new Date()
+    const upcomingReturns = planetaryReturns.filter(
+      r => new Date(r.nextReturn) <= new Date()
     );
 
     return {
-      phase: activatingTransits.length > harmoniousTransits.length ? 'challenging' : 'growth',
+      phase:
+        activatingTransits.length > harmoniousTransits.length ?
+          'challenging' :
+          'growth',
       intensity: significantTransits.length > 5 ? 'high' : 'moderate',
       returns: upcomingReturns.length > 0 ? 'return period' : 'normal transit'
     };
@@ -578,16 +664,22 @@ class GocharService extends ServiceTemplate {
     const challenges = [];
     const { significantTransits, retrogradeEffects } = data;
 
-    const challengingTransits = significantTransits.filter(t =>
-      (t.aspect === 'square' || t.aspect === 'opposition') && t.significance >= 20
+    const challengingTransits = significantTransits.filter(
+      t =>
+        (t.aspect === 'square' || t.aspect === 'opposition') &&
+        t.significance >= 20
     );
     challengingTransits.forEach(transit => {
-      challenges.push(`${transit.transitPlanet} ${transit.aspect} ${transit.natalPlanet} - requires awareness`);
+      challenges.push(
+        `${transit.transitPlanet} ${transit.aspect} ${transit.natalPlanet} - requires awareness`
+      );
     });
 
     retrogradeEffects.forEach(retrograde => {
       if (retrograde.currentStatus) {
-        challenges.push(`${retrograde.planet} retrograde - ${retrograde.effects}`);
+        challenges.push(
+          `${retrograde.planet} retrograde - ${retrograde.effects}`
+        );
       }
     });
     return challenges;
@@ -603,16 +695,21 @@ class GocharService extends ServiceTemplate {
     const opportunities = [];
     const { significantTransits, planetaryReturns } = data;
 
-    const harmoniousTransits = significantTransits.filter(t =>
-      (t.aspect === 'trine' || t.aspect === 'sextile') && t.significance >= 15
+    const harmoniousTransits = significantTransits.filter(
+      t =>
+        (t.aspect === 'trine' || t.aspect === 'sextile') && t.significance >= 15
     );
     harmoniousTransits.forEach(transit => {
-      opportunities.push(`${transit.transitPlanet} ${transit.aspect} ${transit.natalPlanet} - favorable timing`);
+      opportunities.push(
+        `${transit.transitPlanet} ${transit.aspect} ${transit.natalPlanet} - favorable timing`
+      );
     });
 
     planetaryReturns.forEach(returnInfo => {
       if (new Date(returnInfo.nextReturn) <= new Date()) {
-        opportunities.push(`${returnInfo.planet} return - ${returnInfo.interpretation}`);
+        opportunities.push(
+          `${returnInfo.planet} return - ${returnInfo.interpretation}`
+        );
       }
     });
     return opportunities;
@@ -643,13 +740,22 @@ class GocharService extends ServiceTemplate {
    */
   _calculateTransitIntensity(data) {
     const { significantTransits } = data;
-    if (significantTransits.length === 0) return 'Low';
+    if (significantTransits.length === 0) {
+      return 'Low';
+    }
 
-    const totalSignificance = significantTransits.reduce((sum, t) => sum + t.significance, 0);
+    const totalSignificance = significantTransits.reduce(
+      (sum, t) => sum + t.significance,
+      0
+    );
     const averageSignificance = totalSignificance / significantTransits.length;
 
-    if (averageSignificance > 25) return 'High';
-    if (averageSignificance > 18) return 'Medium';
+    if (averageSignificance > 25) {
+      return 'High';
+    }
+    if (averageSignificance > 18) {
+      return 'Medium';
+    }
     return 'Low';
   }
 
@@ -663,13 +769,16 @@ class GocharService extends ServiceTemplate {
     const { significantTransits } = data;
     const planetCounts = {};
     significantTransits.forEach(transit => {
-      planetCounts[transit.transitPlanet] = (planetCounts[transit.transitPlanet] || 0) + 1;
+      planetCounts[transit.transitPlanet] =
+        (planetCounts[transit.transitPlanet] || 0) + 1;
     });
 
     const sortedPlanets = Object.entries(planetCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 3);
-    return sortedPlanets.map(([planet, count]) => `${planet} (${count} transits)`);
+    return sortedPlanets.map(
+      ([planet, count]) => `${planet} (${count} transits)`
+    );
   }
 
   /**
@@ -682,8 +791,8 @@ class GocharService extends ServiceTemplate {
     const recommendations = [];
     const { significantTransits, retrogradeEffects } = data;
 
-    const challengingTransits = significantTransits.filter(t =>
-      t.aspect === 'square' || t.aspect === 'opposition'
+    const challengingTransits = significantTransits.filter(
+      t => t.aspect === 'square' || t.aspect === 'opposition'
     );
     if (challengingTransits.length > 0) {
       recommendations.push('Navigate challenges with patience and awareness');
@@ -691,14 +800,18 @@ class GocharService extends ServiceTemplate {
 
     const activeRetrogrades = retrogradeEffects.filter(r => r.currentStatus);
     if (activeRetrogrades.length > 0) {
-      recommendations.push('Review and reconsider decisions before taking action');
+      recommendations.push(
+        'Review and reconsider decisions before taking action'
+      );
     }
 
-    const harmoniousTransits = significantTransits.filter(t =>
-      t.aspect === 'trine' || t.aspect === 'sextile'
+    const harmoniousTransits = significantTransits.filter(
+      t => t.aspect === 'trine' || t.aspect === 'sextile'
     );
     if (harmoniousTransits.length > 0) {
-      recommendations.push('Take advantage of favorable timing for new initiatives');
+      recommendations.push(
+        'Take advantage of favorable timing for new initiatives'
+      );
     }
     return recommendations;
   }
@@ -754,7 +867,7 @@ class GocharService extends ServiceTemplate {
         serviceName: this.serviceName,
         calculationType: 'Significant Transits',
         timestamp: new Date().toISOString(),
-        language: language
+        language
       }
     };
   }
@@ -768,9 +881,16 @@ class GocharService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', '_calculateSignificantTransits', '_calculateRetrogradeEffects', '_calculatePlanetaryReturns', '_calculateEclipseTransits'],
+      methods: [
+        'processCalculation',
+        '_calculateSignificantTransits',
+        '_calculateRetrogradeEffects',
+        '_calculatePlanetaryReturns',
+        '_calculateEclipseTransits'
+      ],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Identifies and analyzes major planetary transits and their impacts.'
+      description:
+        'Identifies and analyzes major planetary transits and their impacts.'
     };
   }
 

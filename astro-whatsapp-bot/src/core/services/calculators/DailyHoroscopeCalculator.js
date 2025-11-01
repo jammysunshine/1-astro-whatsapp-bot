@@ -26,7 +26,11 @@ class DailyHoroscopeCalculator {
    */
   async generateDailyHoroscope(birthData) {
     try {
-      const { birthDate, birthTime = '12:00', birthPlace = 'Delhi, India' } = birthData;
+      const {
+        birthDate,
+        birthTime = '12:00',
+        birthPlace = 'Delhi, India'
+      } = birthData;
 
       if (!birthDate || typeof birthDate !== 'string') {
         throw new Error('Invalid birth date provided');
@@ -37,10 +41,15 @@ class DailyHoroscopeCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone for birth place
-      const [birthLatitude, birthLongitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [birthLatitude, birthLongitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const birthTimestamp = birthDateTime.getTime();
-      const birthTimezone = await this._getTimezoneForPlace(birthLatitude, birthLongitude, birthTimestamp);
+      const birthTimezone = await this._getTimezoneForPlace(
+        birthLatitude,
+        birthLongitude,
+        birthTimestamp
+      );
 
       // Get current date for transit calculations
       const now = new Date();
@@ -53,7 +62,11 @@ class DailyHoroscopeCalculator {
 
       const currentLatitude = birthLatitude;
       const currentLongitude = birthLongitude;
-      const currentTimezone = await this._getTimezoneForPlace(currentLatitude, currentLongitude, currentTimestamp);
+      const currentTimezone = await this._getTimezoneForPlace(
+        currentLatitude,
+        currentLongitude,
+        currentTimestamp
+      );
 
       // Use astrologer library for detailed analysis (placeholder for full implementation)
       if (this.astrologer) {
@@ -79,7 +92,8 @@ class DailyHoroscopeCalculator {
       // Fallback if astrologer library not available
       return {
         date: now,
-        generalReading: 'Today brings opportunities for growth and new experiences.',
+        generalReading:
+          'Today brings opportunities for growth and new experiences.',
         recommendations: ['Trust your instincts', 'Stay open to possibilities']
       };
     } catch (error) {
@@ -122,7 +136,12 @@ class DailyHoroscopeCalculator {
    * Generate detailed horoscope based on actual transits
    * @private
    */
-  async _generateTransitBasedHoroscope(natalChart, transitChart, birthData, currentDate) {
+  async _generateTransitBasedHoroscope(
+    natalChart,
+    transitChart,
+    birthData,
+    currentDate
+  ) {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
@@ -136,17 +155,41 @@ class DailyHoroscopeCalculator {
       const currentAspects = aspects || [];
 
       // Generate dynamic readings based on transiting planets
-      const generalReading = this._generateGeneralReading(sunSign, currentAspects, currentDate);
-      const loveReading = this._generateLoveReading(moonSign, currentAspects, currentDate);
-      const careerReading = this._generateCareerReading(sunSign, currentAspects, currentDate);
-      const financeReading = this._generateFinanceReading(currentAspects, currentDate);
-      const healthReading = this._generateHealthReading(currentAspects, currentDate);
+      const generalReading = this._generateGeneralReading(
+        sunSign,
+        currentAspects,
+        currentDate
+      );
+      const loveReading = this._generateLoveReading(
+        moonSign,
+        currentAspects,
+        currentDate
+      );
+      const careerReading = this._generateCareerReading(
+        sunSign,
+        currentAspects,
+        currentDate
+      );
+      const financeReading = this._generateFinanceReading(
+        currentAspects,
+        currentDate
+      );
+      const healthReading = this._generateHealthReading(
+        currentAspects,
+        currentDate
+      );
 
       // Calculate planetary positions for the day
-      const planets = await this._getCurrentPlanetaryPositions(birthPlace, currentDate);
+      const planets = await this._getCurrentPlanetaryPositions(
+        birthPlace,
+        currentDate
+      );
 
       // Get sunrise/sunset times (simplified)
-      const { sunrise, sunset } = await this._getSunriseSunset(birthPlace, currentDate);
+      const { sunrise, sunset } = await this._getSunriseSunset(
+        birthPlace,
+        currentDate
+      );
 
       return {
         date: currentDate,
@@ -173,9 +216,11 @@ class DailyHoroscopeCalculator {
       // Fallback to basic readings
       return {
         date: currentDate,
-        generalReading: 'Today brings opportunities for growth and self-discovery. Trust your inner wisdom.',
+        generalReading:
+          'Today brings opportunities for growth and self-discovery. Trust your inner wisdom.',
         loveReading: 'Focus on meaningful connections and open communication.',
-        careerReading: 'Stay focused on your goals and maintain steady progress.',
+        careerReading:
+          'Stay focused on your goals and maintain steady progress.',
         luckyColor: 'Blue',
         luckyNumber: Math.floor(Math.random() * 9) + 1
       };
@@ -188,12 +233,16 @@ class DailyHoroscopeCalculator {
    */
   _generateGeneralReading(sunSign, aspects, currentDate) {
     const baseReadings = {
-      Aries: 'Today brings renewed energy and initiative. Take bold action toward your goals.',
-      Taurus: 'Focus on stability and practical matters. Your patience will bring rewards.',
-      Gemini: 'Communication flows freely. Express your ideas and connect with others.',
+      Aries:
+        'Today brings renewed energy and initiative. Take bold action toward your goals.',
+      Taurus:
+        'Focus on stability and practical matters. Your patience will bring rewards.',
+      Gemini:
+        'Communication flows freely. Express your ideas and connect with others.',
       Cancer: 'Pay attention to your emotional landscape and home environment.',
       Leo: 'Your creative energy is high. Share your talents and leadership abilities.',
-      Virgo: 'Attention to detail serves you well. Organize and streamline your activities.',
+      Virgo:
+        'Attention to detail serves you well. Organize and streamline your activities.',
       Libra: 'Seek balance in relationships and aesthetic pursuits.',
       Scorpio: 'Trust your intuition in transformational matters.',
       Sagittarius: 'Explore new horizons and expand your understanding.',
@@ -202,7 +251,9 @@ class DailyHoroscopeCalculator {
       Pisces: 'Trust your imagination and spiritual sensibilities.'
     };
 
-    let reading = baseReadings[sunSign] || 'Today brings opportunities for growth and self-discovery.';
+    let reading =
+      baseReadings[sunSign] ||
+      'Today brings opportunities for growth and self-discovery.';
 
     // Add transit-specific insights
     if (aspects.some(a => a.planet1 === 'Sun' || a.planet2 === 'Sun')) {
@@ -212,7 +263,8 @@ class DailyHoroscopeCalculator {
       reading += ' Emotional awareness is heightened today.';
     }
     if (aspects.some(a => a.planet1 === 'Jupiter' || a.planet2 === 'Jupiter')) {
-      reading += ' Opportunities for expansion and positive development present themselves.';
+      reading +=
+        ' Opportunities for expansion and positive development present themselves.';
     }
 
     return reading;
@@ -225,20 +277,25 @@ class DailyHoroscopeCalculator {
   _generateLoveReading(moonSign, aspects, currentDate) {
     const baseReadings = {
       Aries: 'Passionate energy flows. Express your feelings directly.',
-      Taurus: 'Sensual and stable connections. Physical affection is meaningful.',
-      Gemini: 'Communication in relationships. Light-hearted conversations spark joy.',
+      Taurus:
+        'Sensual and stable connections. Physical affection is meaningful.',
+      Gemini:
+        'Communication in relationships. Light-hearted conversations spark joy.',
       Cancer: 'Emotional intimacy deepens. Nurture your closest bonds.',
       Leo: 'Romantic and generous energy. Show appreciation for loved ones.',
-      Virgo: 'Thoughtful care in relationships. Small gestures make a big difference.',
+      Virgo:
+        'Thoughtful care in relationships. Small gestures make a big difference.',
       Libra: 'Harmonious connections blossom. Balance gives way to beauty.',
       Scorpio: 'Intense emotional depth. Trust builds through vulnerability.',
       Sagittarius: 'Adventurous romance. New experiences strengthen bonds.',
-      Capricorn: 'Committed and responsible love. Long-term planning brings security.',
+      Capricorn:
+        'Committed and responsible love. Long-term planning brings security.',
       Aquarius: 'Progressive relationships. Friendship forms the foundation.',
       Pisces: 'Compassionate and dreamy romance. Intuition guides your heart.'
     };
 
-    let reading = baseReadings[moonSign] || 'Focus on meaningful connections today.';
+    let reading =
+      baseReadings[moonSign] || 'Focus on meaningful connections today.';
 
     // Add Venus transit insights
     if (aspects.some(a => a.planet1 === 'Venus' || a.planet2 === 'Venus')) {
@@ -268,13 +325,17 @@ class DailyHoroscopeCalculator {
       Virgo: 'Attention to detail and service perfection pay off.',
       Libra: 'Diplomatic skills and balance create professional opportunities.',
       Scorpio: 'Transformational change in career direction is possible.',
-      Sagittarius: 'Expansion and learning new skills enhance career prospects.',
-      Capricorn: 'Disciplined effort and responsibility lead to career advancement.',
+      Sagittarius:
+        'Expansion and learning new skills enhance career prospects.',
+      Capricorn:
+        'Disciplined effort and responsibility lead to career advancement.',
       Aquarius: 'Innovative approaches and team collaboration bring success.',
       Pisces: 'Intuitive insights and compassionate leadership serve you well.'
     };
 
-    let reading = baseReadings[sunSign] || 'Focus on steady progress in your professional life.';
+    let reading =
+      baseReadings[sunSign] ||
+      'Focus on steady progress in your professional life.';
 
     // Adjust for weekend vs weekday
     if (isWeekend) {
@@ -314,7 +375,8 @@ class DailyHoroscopeCalculator {
    * @private
    */
   _generateHealthReading(aspects, currentDate) {
-    let reading = 'Notice your energy levels today. Rest when needed and stay hydrated.';
+    let reading =
+      'Notice your energy levels today. Rest when needed and stay hydrated.';
 
     if (aspects.some(a => a.planet1 === 'Mars' || a.planet2 === 'Mars')) {
       reading += ' Physical activity may be beneficial if you feel energetic.';
@@ -357,17 +419,22 @@ class DailyHoroscopeCalculator {
     const day = currentDate.getDate();
 
     // Approximate times based on season
-    let sunrise; let sunset;
-    if (month >= 3 && month <= 5) { // Spring
+    let sunrise;
+    let sunset;
+    if (month >= 3 && month <= 5) {
+      // Spring
       sunrise = '6:30 AM';
       sunset = '6:30 PM';
-    } else if (month >= 6 && month <= 8) { // Summer
+    } else if (month >= 6 && month <= 8) {
+      // Summer
       sunrise = '5:45 AM';
       sunset = '7:00 PM';
-    } else if (month >= 9 && month <= 11) { // Autumn
+    } else if (month >= 9 && month <= 11) {
+      // Autumn
       sunrise = '6:45 AM';
       sunset = '6:00 PM';
-    } else { // Winter
+    } else {
+      // Winter
       sunrise = '7:30 AM';
       sunset = '5:30 PM';
     }
@@ -380,7 +447,16 @@ class DailyHoroscopeCalculator {
    * @private
    */
   _getLuckyColor(aspects) {
-    const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'White', 'Black', 'Orange'];
+    const colors = [
+      'Red',
+      'Blue',
+      'Green',
+      'Yellow',
+      'Purple',
+      'White',
+      'Black',
+      'Orange'
+    ];
 
     // Simple logic based on aspects
     if (aspects.some(a => a.planet1 === 'Sun' || a.planet2 === 'Sun')) {
@@ -403,7 +479,8 @@ class DailyHoroscopeCalculator {
   _getLuckyNumber(currentDate, sunSign) {
     // Simple calculation based on date and sun sign
     const dateNumber = currentDate.getDate();
-    const signNumber = Math.floor((currentDate.getMonth() + dateNumber) / 3) + 1;
+    const signNumber =
+      Math.floor((currentDate.getMonth() + dateNumber) / 3) + 1;
 
     return ((dateNumber + signNumber) % 9) + 1; // 1-9 range
   }
@@ -458,7 +535,7 @@ class DailyHoroscopeCalculator {
       return [coords.latitude, coords.longitude];
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Delhi coordinates as fallback
+      return [28.6139, 77.209]; // Delhi coordinates as fallback
     }
   }
 

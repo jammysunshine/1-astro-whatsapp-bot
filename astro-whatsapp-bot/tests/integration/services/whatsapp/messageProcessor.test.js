@@ -15,7 +15,9 @@ const {
   validateUserProfile,
   listActionMapping
 } = require('../../../../src/services/whatsapp/messageProcessor');
-const { sendMessage } = require('../../../../src/services/whatsapp/messageSender');
+const {
+  sendMessage
+} = require('../../../../src/services/whatsapp/messageSender');
 const logger = require('../../../../src/utils/logger');
 
 describe('WhatsApp Message Processor Integration Tests', () => {
@@ -78,7 +80,9 @@ describe('WhatsApp Message Processor Integration Tests', () => {
     it('should process text message and return astrology response', async() => {
       // Setup mocks
       mockUserModel.getUserByPhone.mockResolvedValue(validUser);
-      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue('Test astrology response');
+      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue(
+        'Test astrology response'
+      );
       mockTranslationService.translate.mockReturnValue('Test translation');
 
       const message = {
@@ -93,12 +97,15 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       // Mock sendMessage to avoid actual HTTP calls
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
 
       await processIncomingMessage(message, value);
 
       expect(mockUserModel.getUserByPhone).toHaveBeenCalledWith(phoneNumber);
-      expect(mockAstrologyEngine.generateAstrologyResponse).toHaveBeenCalledWith('daily horoscope', validUser);
+      expect(
+        mockAstrologyEngine.generateAstrologyResponse
+      ).toHaveBeenCalledWith('daily horoscope', validUser);
       expect(sendMessageMock).toHaveBeenCalled();
     });
 
@@ -125,7 +132,8 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       // Mock sendMessage
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
 
       await processIncomingMessage(message, value);
 
@@ -157,12 +165,17 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       // Mock sendMessage and astrology response
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
-      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue('Daily horoscope reading');
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
+      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue(
+        'Daily horoscope reading'
+      );
 
       await processIncomingMessage(message, value);
 
-      expect(listActionMapping['get_daily_horoscope']).toBe('get_daily_horoscope');
+      expect(listActionMapping['get_daily_horoscope']).toBe(
+        'get_daily_horoscope'
+      );
       expect(sendMessageMock).toHaveBeenCalled();
     });
   });
@@ -170,9 +183,14 @@ describe('WhatsApp Message Processor Integration Tests', () => {
   describe('Language Handling', () => {
     it('should detect and use appropriate language', async() => {
       // Setup mocks
-      mockUserModel.getUserByPhone.mockResolvedValue({ ...validUser, preferredLanguage: 'es' });
+      mockUserModel.getUserByPhone.mockResolvedValue({
+        ...validUser,
+        preferredLanguage: 'es'
+      });
       mockTranslationService.translate.mockReturnValue('Respuesta traducida');
-      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue('Horóscopo diario');
+      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue(
+        'Horóscopo diario'
+      );
 
       const message = {
         from: phoneNumber,
@@ -184,7 +202,8 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       // Mock sendMessage
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
 
       await processIncomingMessage(message, { messaging_product: 'whatsapp' });
 
@@ -193,7 +212,11 @@ describe('WhatsApp Message Processor Integration Tests', () => {
     });
 
     it('should fallback to language detection for new users', async() => {
-      const newUser = { ...validUser, _id: 'newUser123', preferredLanguage: null };
+      const newUser = {
+        ...validUser,
+        _id: 'newUser123',
+        preferredLanguage: null
+      };
 
       // Setup mocks
       mockUserModel.getUserByPhone.mockResolvedValue(newUser);
@@ -210,11 +233,14 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       // Mock sendMessage
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
 
       await processIncomingMessage(message, { messaging_product: 'whatsapp' });
 
-      expect(mockTranslationService.detectLanguage).toHaveBeenCalledWith(phoneNumber);
+      expect(mockTranslationService.detectLanguage).toHaveBeenCalledWith(
+        phoneNumber
+      );
     });
   });
 
@@ -228,7 +254,9 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       // Setup mocks
       mockUserModel.getUserByPhone.mockResolvedValue(incompleteUser);
-      mockTranslationService.translate.mockReturnValue('Please complete your profile');
+      mockTranslationService.translate.mockReturnValue(
+        'Please complete your profile'
+      );
 
       const message = {
         from: phoneNumber,
@@ -240,7 +268,8 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       // Mock sendMessage
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
 
       await processIncomingMessage(message, { messaging_product: 'whatsapp' });
 
@@ -252,7 +281,9 @@ describe('WhatsApp Message Processor Integration Tests', () => {
     it('should process messages for complete profiles', async() => {
       // Setup mocks
       mockUserModel.getUserByPhone.mockResolvedValue(validUser);
-      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue('Valid profile response');
+      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue(
+        'Valid profile response'
+      );
 
       const message = {
         from: phoneNumber,
@@ -264,12 +295,15 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       // Mock sendMessage
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
 
       await processIncomingMessage(message, { messaging_product: 'whatsapp' });
 
       expect(sendMessageMock).toHaveBeenCalled();
-      expect(mockAstrologyEngine.generateAstrologyResponse).toHaveBeenCalledWith('horoscope', validUser);
+      expect(
+        mockAstrologyEngine.generateAstrologyResponse
+      ).toHaveBeenCalledWith('horoscope', validUser);
     });
   });
 
@@ -279,7 +313,9 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       await processIncomingMessage(invalidMessage, {});
 
-      expect(logger.warn).toHaveBeenCalledWith('⚠️ Invalid message structure received');
+      expect(logger.warn).toHaveBeenCalledWith(
+        '⚠️ Invalid message structure received'
+      );
     });
 
     it('should handle missing environment credentials', async() => {
@@ -297,14 +333,18 @@ describe('WhatsApp Message Processor Integration Tests', () => {
 
       await processIncomingMessage(message, { messaging_product: 'whatsapp' });
 
-      expect(logger.error).toHaveBeenCalledWith('❌ Missing required WhatsApp environment variables');
+      expect(logger.error).toHaveBeenCalledWith(
+        '❌ Missing required WhatsApp environment variables'
+      );
     });
   });
 
   describe('Message Type Dispatching', () => {
     it('should dispatch text messages to text processor', async() => {
       mockUserModel.getUserByPhone.mockResolvedValue(validUser);
-      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue('Text response');
+      mockAstrologyEngine.generateAstrologyResponse.mockResolvedValue(
+        'Text response'
+      );
 
       const message = {
         from: phoneNumber,
@@ -315,7 +355,8 @@ describe('WhatsApp Message Processor Integration Tests', () => {
       };
 
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
 
       await processIncomingMessage(message, { messaging_product: 'whatsapp' });
 
@@ -337,7 +378,8 @@ describe('WhatsApp Message Processor Integration Tests', () => {
       };
 
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
 
       await processIncomingMessage(message, { messaging_product: 'whatsapp' });
 
@@ -355,11 +397,14 @@ describe('WhatsApp Message Processor Integration Tests', () => {
       };
 
       const sendMessageMock = jest.fn().mockResolvedValue({ success: true });
-      require('../../../../src/services/whatsapp/messageSender').sendMessage = sendMessageMock;
+      require('../../../../src/services/whatsapp/messageSender').sendMessage =
+        sendMessageMock;
 
       await processIncomingMessage(message, { messaging_product: 'whatsapp' });
 
-      expect(logger.warn).toHaveBeenCalledWith('⚠️ Unsupported message type: unknown');
+      expect(logger.warn).toHaveBeenCalledWith(
+        '⚠️ Unsupported message type: unknown'
+      );
     });
   });
 });

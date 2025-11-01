@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 /**
  * CompositeChartService - Service for composite chart calculations
@@ -7,7 +8,8 @@ const logger = require('../../../utils/logger');
 class CompositeChartService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CompositeChartService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'CompositeChartService';
     this.calculatorPath = '../calculators/SynastryEngine'; // Assuming this path for the main calculator
     logger.info('CompositeChartService initialized');
   }
@@ -45,11 +47,15 @@ class CompositeChartService extends ServiceTemplate {
       const { chart1, chart2 } = chartData;
 
       // Get composite chart from calculator
-      const compositeChart = this.calculator.calculateCompositeChart(chart1, chart2);
+      const compositeChart = this.calculator.calculateCompositeChart(
+        chart1,
+        chart2
+      );
 
       // Generate additional analysis and interpretations
       const compositeAnalysis = this._analyzeCompositeChart(compositeChart);
-      const relationshipPurpose = this._identifyRelationshipPurpose(compositeChart);
+      const relationshipPurpose =
+        this._identifyRelationshipPurpose(compositeChart);
       const compositeAspects = this._analyzeCompositeAspects(compositeChart);
 
       return {
@@ -57,7 +63,10 @@ class CompositeChartService extends ServiceTemplate {
         compositeAnalysis,
         relationshipPurpose,
         compositeAspects,
-        interpretation: this._interpretCompositeChart(compositeChart, compositeAnalysis)
+        interpretation: this._interpretCompositeChart(
+          compositeChart,
+          compositeAnalysis
+        )
       };
     } catch (error) {
       logger.error('Composite chart calculation error:', error);
@@ -90,9 +99,18 @@ class CompositeChartService extends ServiceTemplate {
   _analyzeDominantElements(compositeChart) {
     const elements = { fire: 0, earth: 0, air: 0, water: 0 };
     const elementMap = {
-      Aries: 'fire', Taurus: 'earth', Gemini: 'air', Cancer: 'water',
-      Leo: 'fire', Virgo: 'earth', Libra: 'air', Scorpio: 'water',
-      Sagittarius: 'fire', Capricorn: 'earth', Aquarius: 'air', Pisces: 'water'
+      Aries: 'fire',
+      Taurus: 'earth',
+      Gemini: 'air',
+      Cancer: 'water',
+      Leo: 'fire',
+      Virgo: 'earth',
+      Libra: 'air',
+      Scorpio: 'water',
+      Sagittarius: 'fire',
+      Capricorn: 'earth',
+      Aquarius: 'air',
+      Pisces: 'water'
     };
 
     // Count planets by element
@@ -121,9 +139,18 @@ class CompositeChartService extends ServiceTemplate {
   _analyzeDominantQualities(compositeChart) {
     const qualities = { cardinal: 0, fixed: 0, mutable: 0 };
     const qualityMap = {
-      Aries: 'cardinal', Taurus: 'fixed', Gemini: 'mutable', Cancer: 'cardinal',
-      Leo: 'fixed', Virgo: 'mutable', Libra: 'cardinal', Scorpio: 'fixed',
-      Sagittarius: 'mutable', Capricorn: 'cardinal', Aquarius: 'fixed', Pisces: 'mutable'
+      Aries: 'cardinal',
+      Taurus: 'fixed',
+      Gemini: 'mutable',
+      Cancer: 'cardinal',
+      Leo: 'fixed',
+      Virgo: 'mutable',
+      Libra: 'cardinal',
+      Scorpio: 'fixed',
+      Sagittarius: 'mutable',
+      Capricorn: 'cardinal',
+      Aquarius: 'fixed',
+      Pisces: 'mutable'
     };
 
     // Count planets by quality
@@ -151,7 +178,10 @@ class CompositeChartService extends ServiceTemplate {
    */
   _analyzeHemisphereEmphasis(compositeChart) {
     const hemispheres = {
-      eastern: 0, western: 0, northern: 0, southern: 0
+      eastern: 0,
+      western: 0,
+      northern: 0,
+      southern: 0
     };
 
     // Count planets by hemisphere
@@ -166,7 +196,10 @@ class CompositeChartService extends ServiceTemplate {
       }
 
       // Northern vs Southern (based on MC-IC axis)
-      if ((longitude >= 0 && longitude <= 90) || (longitude >= 270 && longitude <= 360)) {
+      if (
+        (longitude >= 0 && longitude <= 90) ||
+        (longitude >= 270 && longitude <= 360)
+      ) {
         hemispheres.northern++;
       } else {
         hemispheres.southern++;
@@ -186,7 +219,10 @@ class CompositeChartService extends ServiceTemplate {
    */
   _identifyAngularPlanets(compositeChart) {
     const angularPlanets = [];
-    const angles = [compositeChart.ascendant || 0, compositeChart.midheaven || 90];
+    const angles = [
+      compositeChart.ascendant || 0,
+      compositeChart.midheaven || 90
+    ];
 
     for (const [planet, data] of Object.entries(compositeChart.planets || {})) {
       const distanceToAsc = Math.min(
@@ -225,13 +261,17 @@ class CompositeChartService extends ServiceTemplate {
       }
     }
 
-    const stelliumSign = Object.keys(signCounts).find(sign => signCounts[sign] >= 3);
+    const stelliumSign = Object.keys(signCounts).find(
+      sign => signCounts[sign] >= 3
+    );
 
     return {
       hasStellium: !!stelliumSign,
       sign: stelliumSign || null,
       planetCount: stelliumSign ? signCounts[stelliumSign] : 0,
-      description: stelliumSign ? `Strong emphasis on ${stelliumSign} themes in the relationship` : 'No significant stellium detected'
+      description: stelliumSign ?
+        `Strong emphasis on ${stelliumSign} themes in the relationship` :
+        'No significant stellium detected'
     };
   }
 
@@ -246,8 +286,12 @@ class CompositeChartService extends ServiceTemplate {
     const min = Math.min(...values);
     const range = max - min;
 
-    if (range <= 1) { return 'Well balanced across all elements'; }
-    if (range <= 2) { return 'Moderately balanced with some emphasis'; }
+    if (range <= 1) {
+      return 'Well balanced across all elements';
+    }
+    if (range <= 2) {
+      return 'Moderately balanced with some emphasis';
+    }
     return 'Strong emphasis on certain elements';
   }
 
@@ -262,7 +306,9 @@ class CompositeChartService extends ServiceTemplate {
       fixed: 'Stable and committed partnership',
       mutable: 'Adaptable and flexible connection'
     };
-    return descriptions[quality] || 'Balanced approach to relationship dynamics';
+    return (
+      descriptions[quality] || 'Balanced approach to relationship dynamics'
+    );
   }
 
   /**
@@ -273,10 +319,18 @@ class CompositeChartService extends ServiceTemplate {
   _determineHemisphereEmphasis(hemispheres) {
     const { eastern, western, northern, southern } = hemispheres;
 
-    if (eastern > western) { return 'Focus on personal identity and self-expression'; }
-    if (western > eastern) { return 'Emphasis on relationships and partnerships'; }
-    if (northern > southern) { return 'Career and public life orientation'; }
-    if (southern > northern) { return 'Home and family focus'; }
+    if (eastern > western) {
+      return 'Focus on personal identity and self-expression';
+    }
+    if (western > eastern) {
+      return 'Emphasis on relationships and partnerships';
+    }
+    if (northern > southern) {
+      return 'Career and public life orientation';
+    }
+    if (southern > northern) {
+      return 'Home and family focus';
+    }
     return 'Balanced distribution across life areas';
   }
 
@@ -314,11 +368,15 @@ class CompositeChartService extends ServiceTemplate {
 
     // Based on stellium
     if (analysis.stellium.hasStellium) {
-      purposes.push(`Intensive focus on ${analysis.stellium.sign} life themes and lessons`);
+      purposes.push(
+        `Intensive focus on ${analysis.stellium.sign} life themes and lessons`
+      );
     }
 
     if (purposes.length === 0) {
-      purposes.push('Harmonious partnership with balanced growth opportunities');
+      purposes.push(
+        'Harmonious partnership with balanced growth opportunities'
+      );
     }
 
     return purposes.slice(0, 3);
@@ -335,7 +393,8 @@ class CompositeChartService extends ServiceTemplate {
     return {
       majorAspects: [],
       configuration: 'Aspect analysis requires additional calculation logic',
-      tensionRelease: 'Composite chart aspects show internal relationship dynamics'
+      tensionRelease:
+        'Composite chart aspects show internal relationship dynamics'
     };
   }
 
@@ -346,7 +405,8 @@ class CompositeChartService extends ServiceTemplate {
    * @returns {string} Overall interpretation
    */
   _interpretCompositeChart(compositeChart, analysis) {
-    let interpretation = 'This composite chart represents the relationship as its own entity with unique characteristics. ';
+    let interpretation =
+      'This composite chart represents the relationship as its own entity with unique characteristics. ';
 
     interpretation += `The chart shows ${analysis.dominantElements.dominant} energy as the dominant element, suggesting ${this._getElementPurpose(analysis.dominantElements.dominant)}. `;
 
@@ -404,7 +464,10 @@ class CompositeChartService extends ServiceTemplate {
       throw new Error('chart2 must contain planets data');
     }
 
-    if (typeof chart1.ascendant !== 'number' || typeof chart2.ascendant !== 'number') {
+    if (
+      typeof chart1.ascendant !== 'number' ||
+      typeof chart2.ascendant !== 'number'
+    ) {
       throw new Error('Both charts must have valid ascendant values');
     }
   }
@@ -425,7 +488,8 @@ class CompositeChartService extends ServiceTemplate {
         compositeAspects: result.compositeAspects
       },
       interpretation: result.interpretation,
-      disclaimer: 'Composite charts represent the relationship as a separate entity. This analysis provides insights into the partnership\'s potential and purpose. Professional counseling is recommended for relationship guidance.'
+      disclaimer:
+        'Composite charts represent the relationship as a separate entity. This analysis provides insights into the partnership\'s potential and purpose. Professional counseling is recommended for relationship guidance.'
     };
   }
   async getHealthStatus() {

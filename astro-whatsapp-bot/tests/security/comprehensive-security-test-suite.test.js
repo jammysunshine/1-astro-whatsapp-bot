@@ -3,7 +3,9 @@
 
 const request = require('supertest');
 const app = require('../../src/server');
-const { validateWebhookSignature } = require('../../src/services/whatsapp/webhookValidator');
+const {
+  validateWebhookSignature
+} = require('../../src/services/whatsapp/webhookValidator');
 const logger = require('../../src/utils/logger');
 
 // Mock dependencies
@@ -12,7 +14,9 @@ jest.mock('../../src/services/whatsapp/messageProcessor');
 jest.mock('../../src/utils/logger');
 
 // Get mocked functions
-const { processIncomingMessage } = require('../../src/services/whatsapp/messageProcessor');
+const {
+  processIncomingMessage
+} = require('../../src/services/whatsapp/messageProcessor');
 const { sanitizeInput } = require('../../src/utils/inputValidator');
 
 describe('Comprehensive Security Test Suite', () => {
@@ -26,18 +30,24 @@ describe('Comprehensive Security Test Suite', () => {
   describe('Webhook Security Validation', () => {
     it('should validate correct webhook signature according to gemini.md mandates', async() => {
       const validPayload = JSON.stringify({
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              messages: [{
-                from: '1234567890',
-                type: 'text',
-                text: { body: 'Hello' }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  messages: [
+                    {
+                      from: '1234567890',
+                      type: 'text',
+                      text: { body: 'Hello' }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       });
 
       const validSignature = 'sha256=correct-signature';
@@ -67,18 +77,24 @@ describe('Comprehensive Security Test Suite', () => {
 
     it('should reject invalid webhook signatures as mandated by gemini.md', async() => {
       const validPayload = JSON.stringify({
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              messages: [{
-                from: '1234567890',
-                type: 'text',
-                text: { body: 'Hello' }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  messages: [
+                    {
+                      from: '1234567890',
+                      type: 'text',
+                      text: { body: 'Hello' }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       });
 
       const invalidSignature = 'sha256=invalid-signature';
@@ -106,18 +122,24 @@ describe('Comprehensive Security Test Suite', () => {
 
     it('should handle missing webhook signatures according to security best practices', async() => {
       const validPayload = JSON.stringify({
-        entry: [{
-          changes: [{
-            value: {
-              messaging_product: 'whatsapp',
-              messages: [{
-                from: '1234567890',
-                type: 'text',
-                text: { body: 'Hello' }
-              }]
-            }
-          }]
-        }]
+        entry: [
+          {
+            changes: [
+              {
+                value: {
+                  messaging_product: 'whatsapp',
+                  messages: [
+                    {
+                      from: '1234567890',
+                      type: 'text',
+                      text: { body: 'Hello' }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       });
 
       // When no signature is provided and verification is enabled
@@ -231,18 +253,24 @@ describe('Comprehensive Security Test Suite', () => {
           request(app)
             .post('/webhook')
             .send({
-              entry: [{
-                changes: [{
-                  value: {
-                    messaging_product: 'whatsapp',
-                    messages: [{
-                      from: '1234567890',
-                      type: 'text',
-                      text: { body: 'Hello' }
-                    }]
-                  }
-                }]
-              }]
+              entry: [
+                {
+                  changes: [
+                    {
+                      value: {
+                        messaging_product: 'whatsapp',
+                        messages: [
+                          {
+                            from: '1234567890',
+                            type: 'text',
+                            text: { body: 'Hello' }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
             })
             .set('Content-Type', 'application/json')
             .set('x-hub-signature-256', 'sha256=valid-signature')
@@ -263,18 +291,24 @@ describe('Comprehensive Security Test Suite', () => {
           request(app)
             .post('/webhook')
             .send({
-              entry: [{
-                changes: [{
-                  value: {
-                    messaging_product: 'whatsapp',
-                    messages: [{
-                      from: '1234567890',
-                      type: 'text',
-                      text: { body: 'Hello' }
-                    }]
-                  }
-                }]
-              }]
+              entry: [
+                {
+                  changes: [
+                    {
+                      value: {
+                        messaging_product: 'whatsapp',
+                        messages: [
+                          {
+                            from: '1234567890',
+                            type: 'text',
+                            text: { body: 'Hello' }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
             })
             .set('Content-Type', 'application/json')
             .set('x-hub-signature-256', 'sha256=valid-signature')
@@ -301,14 +335,18 @@ describe('Comprehensive Security Test Suite', () => {
 
     it('should implement security headers according to best practices', async() => {
       // Test security headers
-      const response = await request(app)
-        .get('/health')
-        .expect(200);
+      const response = await request(app).get('/health').expect(200);
 
       // In a real implementation, this would test actual security headers
-      expect(response.headers).toHaveProperty('x-content-type-options', 'nosniff');
+      expect(response.headers).toHaveProperty(
+        'x-content-type-options',
+        'nosniff'
+      );
       expect(response.headers).toHaveProperty('x-frame-options', 'DENY');
-      expect(response.headers).toHaveProperty('x-xss-protection', '1; mode=block');
+      expect(response.headers).toHaveProperty(
+        'x-xss-protection',
+        '1; mode=block'
+      );
     });
   });
 
@@ -420,7 +458,9 @@ describe('Comprehensive Security Test Suite', () => {
   describe('Error Handling and Logging Security', () => {
     it('should implement proper error logging without exposing sensitive data', async() => {
       // Test error logging implementation
-      const sensitiveError = new Error('Database connection failed for user 1234567890');
+      const sensitiveError = new Error(
+        'Database connection failed for user 1234567890'
+      );
 
       // In a real implementation, this would test actual error handling
       const sanitizeError = error => ({

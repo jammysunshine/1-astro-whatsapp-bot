@@ -2,7 +2,10 @@ const BaseAction = require('../BaseAction');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 const translationService = require('../../../services/i18n/TranslationService');
-const { IChingService, createIChingService } = require('../../../services/astrology/iching');
+const {
+  IChingService,
+  createIChingService
+} = require('../../../services/astrology/iching');
 
 /**
  * IChingAction - Provides I Ching (Book of Changes) readings using ancient Chinese wisdom.
@@ -44,7 +47,11 @@ class IChingAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in IChingAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -56,7 +63,9 @@ class IChingAction extends BaseAction {
     try {
       // Use the proper I Ching service for generating readings
       const ichingService = await createIChingService();
-      const reading = await ichingService.performIChingReading('What guidance does the I Ching offer?');
+      const reading = await ichingService.performIChingReading(
+        'What guidance does the I Ching offer?'
+      );
 
       return reading;
     } catch (error) {
@@ -98,9 +107,11 @@ class IChingAction extends BaseAction {
       50: 'The Cauldron - Sacred vessel of transformation and nourishment.'
     };
 
-    return interpretations[hexagramNumber] ||
+    return (
+      interpretations[hexagramNumber] ||
       `Hexagram ${hexagramNumber}: Ancient wisdom flows through subtle changes. ` +
-      'Trust the timing of the universe and maintain inner harmony.';
+        'Trust the timing of the universe and maintain inner harmony.'
+    );
   }
 
   /**
@@ -116,8 +127,10 @@ class IChingAction extends BaseAction {
       12: 'Stay centered during stagnation. This pause allows deeper understanding to emerge.'
     };
 
-    return advice[hexagramNumber] ||
-      'Flow with life\'s changes. What seems challenging today opens new paths tomorrow.';
+    return (
+      advice[hexagramNumber] ||
+      'Flow with life\'s changes. What seems challenging today opens new paths tomorrow.'
+    );
   }
 
   /**
@@ -154,11 +167,7 @@ class IChingAction extends BaseAction {
         userLanguage
       );
 
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
+      await sendMessage(message.to, message.interactive, 'interactive');
     } catch (error) {
       this.logger.error('Error sending I Ching reading:', error);
       await this.handleExecutionError(error);
@@ -183,8 +192,10 @@ class IChingAction extends BaseAction {
 
     response += `*💫 Guidance:*\n${reading.advice}\n\n`;
 
-    response += '*"The Tao that can be told is not the eternal Tao. The name that can be named is not the eternal name."*\n\n';
-    response += '*The I Ching reflects the fundamental principle that change is the only constant. How you navigate these changes determines your path.*';
+    response +=
+      '*"The Tao that can be told is not the eternal Tao. The name that can be named is not the eternal name."*\n\n';
+    response +=
+      '*The I Ching reflects the fundamental principle that change is the only constant. How you navigate these changes determines your path.*';
 
     return response;
   }
@@ -193,7 +204,8 @@ class IChingAction extends BaseAction {
    * Send error message when reading fails
    */
   async handleReadingError() {
-    const errorMessage = 'I\'m sorry, I couldn\'t connect to the ancient wisdom of the I Ching at this moment. The energies may be asking us to wait. Please try again later.';
+    const errorMessage =
+      'I\'m sorry, I couldn\'t connect to the ancient wisdom of the I Ching at this moment. The energies may be asking us to wait. Please try again later.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -202,7 +214,8 @@ class IChingAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = '❌ There was an error consulting the I Ching oracle. Please try again, or the universe may be guiding us to find wisdom elsewhere.';
+    const errorMessage =
+      '❌ There was an error consulting the I Ching oracle. Please try again, or the universe may be guiding us to find wisdom elsewhere.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -213,8 +226,16 @@ class IChingAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Generate I Ching hexagrams and ancient Chinese wisdom readings',
-      keywords: ['iching', 'i ching', 'book of changes', 'yi jing', 'oracle', 'chinese'],
+      description:
+        'Generate I Ching hexagrams and ancient Chinese wisdom readings',
+      keywords: [
+        'iching',
+        'i ching',
+        'book of changes',
+        'yi jing',
+        'oracle',
+        'chinese'
+      ],
       category: 'divination',
       subscriptionRequired: false,
       cooldown: 300000 // 5 minutes between readings

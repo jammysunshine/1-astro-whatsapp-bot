@@ -30,7 +30,9 @@ class FutureSelfSimulatorCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for future simulation' };
+        return {
+          error: 'Complete birth details required for future simulation'
+        };
       }
 
       // Parse birth details
@@ -38,32 +40,60 @@ class FutureSelfSimulatorCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate natal chart baseline
-      const natalChart = await this._calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const natalChart = await this._calculateNatalChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Calculate future date
       const futureDate = new Date(birthDateTime);
       futureDate.setFullYear(futureDate.getFullYear() + yearsAhead);
 
       // Generate future chart using multiple projection methods
-      const futureProjection = await this._generateFutureProjection(natalChart, futureDate, yearsAhead);
+      const futureProjection = await this._generateFutureProjection(
+        natalChart,
+        futureDate,
+        yearsAhead
+      );
 
       // Analyze predicted life themes
       const lifeThemes = this._analyzeLifeThemes(futureProjection, natalChart);
 
       // Calculate potential outcomes
-      const potentialOutcomes = this._calculatePotentialOutcomes(futureProjection, natalChart);
+      const potentialOutcomes = this._calculatePotentialOutcomes(
+        futureProjection,
+        natalChart
+      );
 
       // Identify turning points
-      const turningPoints = this._identifyTurningPoints(futureProjection, natalChart, yearsAhead);
+      const turningPoints = this._identifyTurningPoints(
+        futureProjection,
+        natalChart,
+        yearsAhead
+      );
 
       // Generate preparation advice
-      const preparationAdvice = this._generatePreparationAdvice(lifeThemes, potentialOutcomes);
+      const preparationAdvice = this._generatePreparationAdvice(
+        lifeThemes,
+        potentialOutcomes
+      );
 
       return {
         name,
@@ -76,11 +106,17 @@ class FutureSelfSimulatorCalculator {
         potentialOutcomes,
         turningPoints,
         preparationAdvice,
-        confidenceRating: this._calculateSimulationConfidence(yearsAhead, natalChart),
-        summary: this._generateFutureSummary(futureProjection, lifeThemes, potentialOutcomes)
+        confidenceRating: this._calculateSimulationConfidence(
+          yearsAhead,
+          natalChart
+        ),
+        summary: this._generateFutureSummary(
+          futureProjection,
+          lifeThemes,
+          potentialOutcomes
+        )
       };
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   /**
@@ -88,14 +124,20 @@ class FutureSelfSimulatorCalculator {
    */
   async simulateLifeAspect(birthData, aspect, yearsAhead = 3) {
     try {
-      const fullSimulation = await this.simulateFutureSelf(birthData, yearsAhead);
+      const fullSimulation = await this.simulateFutureSelf(
+        birthData,
+        yearsAhead
+      );
 
       if (!fullSimulation || fullSimulation.error) {
         return fullSimulation;
       }
 
       // Filter results for specific aspect
-      const aspectAnalysis = this._analyzeSpecificAspect(fullSimulation, aspect);
+      const aspectAnalysis = this._analyzeSpecificAspect(
+        fullSimulation,
+        aspect
+      );
 
       return {
         aspect,
@@ -130,10 +172,16 @@ class FutureSelfSimulatorCalculator {
     };
 
     // Calculate progressed chart (day for a year)
-    const progressedChart = this._calculateProgressedChart(natalChart, yearsAhead);
+    const progressedChart = this._calculateProgressedChart(
+      natalChart,
+      yearsAhead
+    );
 
     // Calculate transiting planets to natal chart
-    const transitOverlay = await this._calculateTransitOverlay(natalChart, futureDate);
+    const transitOverlay = await this._calculateTransitOverlay(
+      natalChart,
+      futureDate
+    );
 
     // Calculate solar arc directions
     const solarArcChart = this._calculateSolarArcChart(natalChart, yearsAhead);
@@ -146,16 +194,26 @@ class FutureSelfSimulatorCalculator {
     );
 
     // Calculate future houses
-    projection.houses = this._calculateFutureHouses(natalChart, progressedChart.ascendant);
+    projection.houses = this._calculateFutureHouses(
+      natalChart,
+      progressedChart.ascendant
+    );
 
     // Generate future aspects
-    projection.aspects = this._calculateFutureAspects(projection.planetaryPositions);
+    projection.aspects = this._calculateFutureAspects(
+      projection.planetaryPositions
+    );
 
     // Identify activation points
-    projection.activationPoints = this._identifyActivationPoints(projection, natalChart);
+    projection.activationPoints = this._identifyActivationPoints(
+      projection,
+      natalChart
+    );
 
     // Find critical degrees
-    projection.criticalDegrees = this._identifyCriticalDegrees(projection.planes);
+    projection.criticalDegrees = this._identifyCriticalDegrees(
+      projection.planes
+    );
 
     return projection;
   }
@@ -178,25 +236,37 @@ class FutureSelfSimulatorCalculator {
 
     // Analyze planetary emphasis areas
     const houseEmphasis = this._analyzeHouseEmphasis(futureProjection.houses);
-    const planetaryEmphasis = this._analyzePlanetaryEmphasis(futureProjection.planetaryPositions);
+    const planetaryEmphasis = this._analyzePlanetaryEmphasis(
+      futureProjection.planetaryPositions
+    );
 
     // Determine primary themes
-    themes.primary = this._extractPrimaryThemes(houseEmphasis, planetaryEmphasis);
+    themes.primary = this._extractPrimaryThemes(
+      houseEmphasis,
+      planetaryEmphasis
+    );
 
     // Determine secondary supporting themes
     themes.secondary = this._extractSecondaryThemes(futureProjection.aspects);
 
     // Identify emerging vs fading influences
-    themes.emerging = this._identifyEmergingThemes(futureProjection, natalChart);
+    themes.emerging = this._identifyEmergingThemes(
+      futureProjection,
+      natalChart
+    );
     themes.fading = this._identifyFadingThemes(futureProjection, natalChart);
 
     // Areas of transformation vs stability
-    themes.transformationAreas = this._identifyTransformationAreas(futureProjection);
+    themes.transformationAreas =
+      this._identifyTransformationAreas(futureProjection);
     themes.stabilityAreas = this._identifyStabilityAreas(futureProjection);
 
     // Determine overall intensity and direction
     themes.intensity = this._calculateThemeIntensity(futureProjection);
-    themes.direction = this._determineDevelopmentDirection(futureProjection, natalChart);
+    themes.direction = this._determineDevelopmentDirection(
+      futureProjection,
+      natalChart
+    );
 
     return themes;
   }
@@ -218,15 +288,21 @@ class FutureSelfSimulatorCalculator {
     };
 
     // Calculate outcome probabilities
-    const successFactors = this._assessSuccessFactors(futureProjection, natalChart);
+    const successFactors = this._assessSuccessFactors(
+      futureProjection,
+      natalChart
+    );
 
     // Generate scenario outcomes
     outcomes.optimistic = this._generateOptimisticOutcomes(successFactors.high);
     outcomes.realistic = this._generateRealisticOutcomes(successFactors.medium);
-    outcomes.challenging = this._generateChallengingOutcomes(successFactors.low);
+    outcomes.challenging = this._generateChallengingOutcomes(
+      successFactors.low
+    );
 
     // Identify transformative potential
-    outcomes.transformative = this._identifyTransformativeOutcomes(successFactors);
+    outcomes.transformative =
+      this._identifyTransformativeOutcomes(successFactors);
 
     // Determine most probable path
     outcomes.probablePath = this._determineProbablePath(outcomes);
@@ -238,7 +314,8 @@ class FutureSelfSimulatorCalculator {
     outcomes.catalystEvents = this._identifyCatalystEvents(futureProjection);
 
     // Calculate achievement potential score
-    outcomes.achievementPotential = this._calculateAchievementPotential(successFactors);
+    outcomes.achievementPotential =
+      this._calculateAchievementPotential(successFactors);
 
     return outcomes;
   }
@@ -257,22 +334,44 @@ class FutureSelfSimulatorCalculator {
     };
 
     // Identify major planetary returns and cycles
-    const planetaryReturns = this._calculatePlanetaryReturns(natalChart, yearsAhead);
+    const planetaryReturns = this._calculatePlanetaryReturns(
+      natalChart,
+      yearsAhead
+    );
 
     // Find aspect formations and breaks
-    const aspectPatterns = this._analyzeAspectPatterns(futureProjection.aspects);
+    const aspectPatterns = this._analyzeAspectPatterns(
+      futureProjection.aspects
+    );
 
     // Identify house activations
-    const houseActivations = this._identifyHouseActivations(futureProjection.houses);
+    const houseActivations = this._identifyHouseActivations(
+      futureProjection.houses
+    );
 
     // Calculate turning points based on these factors
-    turningPoints.majorTransitions = this._calculateMajorTransitions(planetaryReturns, aspectPatterns);
-    turningPoints.opportunityWindows = this._identifyOpportunityWindows(aspectPatterns, houseActivations);
-    turningPoints.challengePeriods = this._identifyChallengePeriods(aspectPatterns, planetaryReturns);
-    turningPoints.transformationPhases = this._identifyTransformationPhases(houseActivations, planetaryReturns);
+    turningPoints.majorTransitions = this._calculateMajorTransitions(
+      planetaryReturns,
+      aspectPatterns
+    );
+    turningPoints.opportunityWindows = this._identifyOpportunityWindows(
+      aspectPatterns,
+      houseActivations
+    );
+    turningPoints.challengePeriods = this._identifyChallengePeriods(
+      aspectPatterns,
+      planetaryReturns
+    );
+    turningPoints.transformationPhases = this._identifyTransformationPhases(
+      houseActivations,
+      planetaryReturns
+    );
 
     // Create timeline
-    turningPoints.timeline = this._createTurningPointTimeline(turningPoints, yearsAhead);
+    turningPoints.timeline = this._createTurningPointTimeline(
+      turningPoints,
+      yearsAhead
+    );
 
     return turningPoints;
   }
@@ -292,7 +391,10 @@ class FutureSelfSimulatorCalculator {
     };
 
     // Immediate actions (next 6 months)
-    advice.immediate = this._generateImmediateAdvice(lifeThemes.emerging, potentialOutcomes.catalystEvents);
+    advice.immediate = this._generateImmediateAdvice(
+      lifeThemes.emerging,
+      potentialOutcomes.catalystEvents
+    );
 
     // Short-term preparation (6-18 months)
     advice.shortTerm = this._generateShortTermAdvice(lifeThemes.primary);
@@ -301,13 +403,20 @@ class FutureSelfSimulatorCalculator {
     advice.longTerm = this._generateLongTermAdvice(lifeThemes.direction);
 
     // Preventive measures for challenges
-    advice.preventive = this._generatePreventiveAdvice(potentialOutcomes.challenging);
+    advice.preventive = this._generatePreventiveAdvice(
+      potentialOutcomes.challenging
+    );
 
     // Developmental recommendations
-    advice.developmental = this._generateDevelopmentalAdvice(lifeThemes.transformationAreas);
+    advice.developmental = this._generateDevelopmentalAdvice(
+      lifeThemes.transformationAreas
+    );
 
     // Resource recommendations
-    advice.resourceRecommendations = this._generateResourceRecommendations(lifeThemes, potentialOutcomes);
+    advice.resourceRecommendations = this._generateResourceRecommendations(
+      lifeThemes,
+      potentialOutcomes
+    );
 
     return advice;
   }
@@ -335,11 +444,17 @@ class FutureSelfSimulatorCalculator {
     confidence = Math.max(confidence, 20);
 
     let rating;
-    if (confidence >= 80) rating = 'High Confidence';
-    else if (confidence >= 60) rating = 'Moderate-High Confidence';
-    else if (confidence >= 40) rating = 'Moderate Confidence';
-    else if (confidence >= 25) rating = 'Low-Moderate Confidence';
-    else rating = 'Low Confidence';
+    if (confidence >= 80) {
+      rating = 'High Confidence';
+    } else if (confidence >= 60) {
+      rating = 'Moderate-High Confidence';
+    } else if (confidence >= 40) {
+      rating = 'Moderate Confidence';
+    } else if (confidence >= 25) {
+      rating = 'Low-Moderate Confidence';
+    } else {
+      rating = 'Low Confidence';
+    }
 
     return {
       percentage: Math.round(confidence),
@@ -355,7 +470,7 @@ class FutureSelfSimulatorCalculator {
   _generateFutureSummary(futureProjection, lifeThemes, potentialOutcomes) {
     let summary = '🔮 *Future Self Simulation*\n\n';
 
-    summary += `*Primary Life Themes:*\n`;
+    summary += '*Primary Life Themes:*\n';
     lifeThemes.primary.forEach(theme => {
       summary += `• ${theme}\n`;
     });
@@ -376,23 +491,45 @@ class FutureSelfSimulatorCalculator {
     summary += '• Prepare for turning points with flexibility\n';
     summary += '• Build support systems for challenging periods\n\n';
 
-    summary += '*This simulation provides probabilistic insights, not deterministic predictions.*';
+    summary +=
+      '*This simulation provides probabilistic insights, not deterministic predictions.*';
 
     return summary;
   }
 
   // Helper methods for complex calculations
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     // Simplified natal chart calculation for baseline
-    const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+    const jd = this._dateToJulianDay(
+      year,
+      month,
+      day,
+      hour + minute / 60 - timezone
+    );
 
     const planets = {};
     const planetIds = {
-      sun: sweph.SE_SUN, moon: sweph.SE_MOON, mars: sweph.SE_MARS,
-      mercury: sweph.SE_MERCURY, jupiter: sweph.SE_JUPITER,
-      venus: sweph.SE_VENUS, saturn: sweph.SE_SATURN,
-      uranus: sweph.SE_URANUS, neptune: sweph.SE_NEPTUNE, pluto: sweph.SE_PLUTO,
-      rahu: sweph.SE_TRUE_NODE, ketu: sweph.SE_MEAN_APOG
+      sun: sweph.SE_SUN,
+      moon: sweph.SE_MOON,
+      mars: sweph.SE_MARS,
+      mercury: sweph.SE_MERCURY,
+      jupiter: sweph.SE_JUPITER,
+      venus: sweph.SE_VENUS,
+      saturn: sweph.SE_SATURN,
+      uranus: sweph.SE_URANUS,
+      neptune: sweph.SE_NEPTUNE,
+      pluto: sweph.SE_PLUTO,
+      rahu: sweph.SE_TRUE_NODE,
+      ketu: sweph.SE_MEAN_APOG
     };
 
     for (const [planetName, planetId] of Object.entries(planetIds)) {
@@ -446,11 +583,18 @@ class FutureSelfSimulatorCalculator {
 
     const transits = {};
     const planetIds = {
-      sun: sweph.SE_SUN, moon: sweph.SE_MOON, mars: sweph.SE_MARS,
-      mercury: sweph.SE_MERCURY, jupiter: sweph.SE_JUPITER,
-      venus: sweph.SE_VENUS, saturn: sweph.SE_SATURN,
-      uranus: sweph.SE_URANUS, neptune: sweph.SE_NEPTUNE, pluto: sweph.SE_PLUTO,
-      rahu: sweph.SE_TRUE_NODE, ketu: sweph.SE_MEAN_APOG
+      sun: sweph.SE_SUN,
+      moon: sweph.SE_MOON,
+      mars: sweph.SE_MARS,
+      mercury: sweph.SE_MERCURY,
+      jupiter: sweph.SE_JUPITER,
+      venus: sweph.SE_VENUS,
+      saturn: sweph.SE_SATURN,
+      uranus: sweph.SE_URANUS,
+      neptune: sweph.SE_NEPTUNE,
+      pluto: sweph.SE_PLUTO,
+      rahu: sweph.SE_TRUE_NODE,
+      ketu: sweph.SE_MEAN_APOG
     };
 
     for (const [planetName, planetId] of Object.entries(planetIds)) {
@@ -529,10 +673,11 @@ class FutureSelfSimulatorCalculator {
     return {
       name: 'FutureSelfSimulatorCalculator',
       version: '1.0.0',
-      description: 'Projects future life scenarios based on current planetary influences',
+      description:
+        'Projects future life scenarios based on current planetary influences',
       type: 'predictive'
     };
-  };
+  }
 }
 
 module.exports = { FutureSelfSimulatorCalculator };

@@ -14,10 +14,27 @@ class TarotReader {
    */
   _initializeTarotCards() {
     const majorArcana = [
-      'The Fool', 'The Magician', 'The High Priestess', 'The Empress', 'The Emperor',
-      'The Hierophant', 'The Lovers', 'The Chariot', 'Strength', 'The Hermit',
-      'Wheel of Fortune', 'Justice', 'The Hanged Man', 'Death', 'Temperance',
-      'The Devil', 'The Tower', 'The Star', 'The Moon', 'The Sun', 'Judgement',
+      'The Fool',
+      'The Magician',
+      'The High Priestess',
+      'The Empress',
+      'The Emperor',
+      'The Hierophant',
+      'The Lovers',
+      'The Chariot',
+      'Strength',
+      'The Hermit',
+      'Wheel of Fortune',
+      'Justice',
+      'The Hanged Man',
+      'Death',
+      'Temperance',
+      'The Devil',
+      'The Tower',
+      'The Star',
+      'The Moon',
+      'The Sun',
+      'Judgement',
       'The World'
     ];
 
@@ -89,10 +106,10 @@ class TarotReader {
    */
   _getSpreadCardCount(spread) {
     const spreadCounts = {
-      'single': 1,
-      'three': 3,
+      single: 1,
+      three: 3,
       'celtic-cross': 10,
-      'general': 3
+      general: 3
     };
     return spreadCounts[spread] || 3;
   }
@@ -105,9 +122,9 @@ class TarotReader {
    */
   _getCardPosition(spread, index) {
     const positions = {
-      'general': ['Past', 'Present', 'Future'],
-      'three': ['Past', 'Present', 'Future'],
-      'single': ['Answer'],
+      general: ['Past', 'Present', 'Future'],
+      three: ['Past', 'Present', 'Future'],
+      single: ['Answer'],
       'celtic-cross': [
         'Present Situation',
         'Challenge',
@@ -143,20 +160,24 @@ class TarotReader {
 
     // Generate basic interpretation based on spread type
     switch (spread) {
-      case 'single':
-        interpretation.summary = `Card reveals: ${cards[0].name} (${cards[0].orientation})`;
-        interpretation.advice = 'Trust your intuition regarding this matter';
-        break;
+    case 'single':
+      interpretation.summary = `Card reveals: ${cards[0].name} (${cards[0].orientation})`;
+      interpretation.advice = 'Trust your intuition regarding this matter';
+      break;
 
-      case 'three':
-        interpretation.summary = `Timeline: ${cards[0].name} (${cards[0].orientation}) → ${cards[1].name} (${cards[1].orientation}) → ${cards[2].name} (${cards[2].orientation})`;
-        interpretation.outlook = 'Focus on transitioning from past patterns to future potential';
-        break;
+    case 'three':
+      interpretation.summary = `Timeline: ${cards[0].name} (${cards[0].orientation}) → ${cards[1].name} (${cards[1].orientation}) → ${cards[2].name} (${cards[2].orientation})`;
+      interpretation.outlook =
+          'Focus on transitioning from past patterns to future potential';
+      break;
 
-      default:
-        const cardSummary = cards.map(card => `${card.name} (${card.orientation})`).join(', ');
-        interpretation.summary = `Reading reveals: ${cardSummary}`;
-        interpretation.advice = 'Take time to reflect on the guidance offered by these cards';
+    default:
+      const cardSummary = cards
+        .map(card => `${card.name} (${card.orientation})`)
+        .join(', ');
+      interpretation.summary = `Reading reveals: ${cardSummary}`;
+      interpretation.advice =
+          'Take time to reflect on the guidance offered by these cards';
     }
 
     interpretation.recommendations = [

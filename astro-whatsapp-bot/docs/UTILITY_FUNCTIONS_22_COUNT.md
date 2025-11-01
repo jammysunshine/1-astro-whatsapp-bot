@@ -43,6 +43,7 @@ This document contains the complete list of 22 utility functions that need to be
 Each utility function maps to a source file in the existing codebase:
 
 ### Compatibility Utilities Sources:
+
 - `src/services/astrology/compatibility/CompatibilityChecker.js` → `compatibilityCheckerUtils.js`
 - `src/services/astrology/compatibility/CompatibilityFormatter.js` → `compatibilityFormatterUtils.js`
 - `src/services/astrology/compatibility/CompatibilityScorer.js` → `compatibilityScorerUtils.js`
@@ -52,6 +53,7 @@ Each utility function maps to a source file in the existing codebase:
 - `src/services/astrology/nadi/NadiCompatibility.js` → `nadiCompatibilityUtils.js`
 
 ### Chart Calculation Utilities Sources:
+
 - `src/services/astrology/calculations/SignCalculations.js` → `signCalculationsUtils.js`
 - `src/services/astrology/charts/AstrologicalCalculations.js` → `astrologicalCalculationsUtils.js`
 - `src/services/astrology/charts/ChartGenerator.js` → `chartGeneratorUtils.js`
@@ -62,12 +64,14 @@ Each utility function maps to a source file in the existing codebase:
 - `src/services/astrology/vedic/calculators/SignCalculator.js` → `vedicSignCalculatorUtils.js`
 
 ### Core Astrology Utilities Sources:
+
 - `src/services/astrology/core/VedicCore.js` → `vedicCoreUtils.js`
 - `src/services/astrology/horoscope/HoroscopeGenerator.js` → `horoscopeGeneratorUtils.js`
 - `src/services/astrology/ageHarmonicAstrology.js` → `ageHarmonicAstrologyUtils.js`
 - `src/services/astrology/astrologyEngine.js` → `astrologyEngineUtils.js`
 
 ### Specialized Utilities Sources:
+
 - `src/services/astrology/geocoding/GeocodingService.js` → `geocodingUtils.js`
 - `src/services/astrology/vedic/calculators/TransitCalculator.js` → `transitCalculatorUtils.js`
 - `src/services/astrology/vedic/calculators/JaiminiCalculator.js` → `jaiminiCalculatorUtils.js`

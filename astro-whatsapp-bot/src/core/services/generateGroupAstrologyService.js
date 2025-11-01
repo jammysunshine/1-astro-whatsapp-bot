@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 /**
  * GenerateGroupAstrologyService - Service for multi-person chart analysis
@@ -55,7 +56,10 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
       // Generate additional insights and interpretations
       const groupDynamics = this._analyzeGroupDynamics(groupAnalysis);
       const collectiveEnergy = this._assessCollectiveEnergy(groupAnalysis);
-      const recommendations = this._generateGroupRecommendations(groupAnalysis, analysisType);
+      const recommendations = this._generateGroupRecommendations(
+        groupAnalysis,
+        analysisType
+      );
       const timingInsights = this._provideTimingInsights(groupAnalysis);
 
       return {
@@ -117,31 +121,51 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
     switch (analysisType) {
     case 'compatibility':
       recommendations.push('Focus on building trust and open communication');
-      recommendations.push('Celebrate individual strengths while working toward common goals');
-      recommendations.push('Establish clear boundaries and respect personal space');
+      recommendations.push(
+        'Celebrate individual strengths while working toward common goals'
+      );
+      recommendations.push(
+        'Establish clear boundaries and respect personal space'
+      );
       break;
 
     case 'business_partnership':
-      recommendations.push('Define clear roles and responsibilities for each partner');
-      recommendations.push('Establish regular communication rhythms and decision-making processes');
-      recommendations.push('Create shared vision and long-term business goals');
+      recommendations.push(
+        'Define clear roles and responsibilities for each partner'
+      );
+      recommendations.push(
+        'Establish regular communication rhythms and decision-making processes'
+      );
+      recommendations.push(
+        'Create shared vision and long-term business goals'
+      );
       break;
 
     case 'family_dynamics':
-      recommendations.push('Honor individual family member needs while maintaining family unity');
-      recommendations.push('Establish family traditions and regular quality time together');
-      recommendations.push('Create open channels for expressing feelings and concerns');
+      recommendations.push(
+        'Honor individual family member needs while maintaining family unity'
+      );
+      recommendations.push(
+        'Establish family traditions and regular quality time together'
+      );
+      recommendations.push(
+        'Create open channels for expressing feelings and concerns'
+      );
       break;
 
     default:
-      recommendations.push('Foster open communication and mutual understanding');
+      recommendations.push(
+        'Foster open communication and mutual understanding'
+      );
       recommendations.push('Recognize and utilize individual strengths');
       recommendations.push('Work together toward shared goals and purposes');
     }
 
     // Add analysis-specific recommendations
     if (groupAnalysis.challenges) {
-      recommendations.push('Address potential challenges proactively through understanding');
+      recommendations.push(
+        'Address potential challenges proactively through understanding'
+      );
     }
 
     if (groupAnalysis.strengths) {
@@ -165,10 +189,18 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
     };
 
     // Basic timing insights based on group composition
-    insights.optimalActivities.push('Group activities during harmonious planetary alignments');
-    insights.challengingPeriods.push('Potential tension during conflicting planetary transits');
-    insights.growthCycles.push('Natural growth periods aligned with Jupiter and Venus transits');
-    insights.recommendations.push('Plan important group decisions during favorable astrological timing');
+    insights.optimalActivities.push(
+      'Group activities during harmonious planetary alignments'
+    );
+    insights.challengingPeriods.push(
+      'Potential tension during conflicting planetary transits'
+    );
+    insights.growthCycles.push(
+      'Natural growth periods aligned with Jupiter and Venus transits'
+    );
+    insights.recommendations.push(
+      'Plan important group decisions during favorable astrological timing'
+    );
 
     return insights;
   }
@@ -223,11 +255,15 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
     }
 
     if (groupAnalysis.differentEnergies) {
-      challenges.push('Different energy styles needing understanding and accommodation');
+      challenges.push(
+        'Different energy styles needing understanding and accommodation'
+      );
     }
 
     if (challenges.length === 0) {
-      challenges.push('Minor challenges that can be overcome through mutual respect');
+      challenges.push(
+        'Minor challenges that can be overcome through mutual respect'
+      );
     }
 
     return challenges;
@@ -319,25 +355,30 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
 
     switch (analysisType) {
     case 'compatibility':
-      summary = 'This group compatibility analysis reveals the astrological dynamics between individuals, showing how their energies interact and complement each other. ';
+      summary =
+          'This group compatibility analysis reveals the astrological dynamics between individuals, showing how their energies interact and complement each other. ';
       break;
 
     case 'business_partnership':
-      summary = 'The business partnership analysis examines how individual charts combine to create a powerful business entity with unique strengths and challenges. ';
+      summary =
+          'The business partnership analysis examines how individual charts combine to create a powerful business entity with unique strengths and challenges. ';
       break;
 
     case 'family_dynamics':
-      summary = 'Family dynamics analysis shows how family members\' charts interweave to create the family\'s collective energy and life path. ';
+      summary =
+          'Family dynamics analysis shows how family members\' charts interweave to create the family\'s collective energy and life path. ';
       break;
 
     default:
-      summary = 'This group astrology analysis provides insights into collective energies and interpersonal dynamics. ';
+      summary =
+          'This group astrology analysis provides insights into collective energies and interpersonal dynamics. ';
     }
 
     if (groupAnalysis.keyInsights) {
       summary += groupAnalysis.keyInsights;
     } else {
-      summary += 'The analysis reveals opportunities for growth, understanding, and collaborative achievement.';
+      summary +=
+        'The analysis reveals opportunities for growth, understanding, and collaborative achievement.';
     }
 
     return summary;
@@ -355,16 +396,24 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
     const { people, analysisType } = input;
 
     if (!Array.isArray(people) || people.length < 2) {
-      throw new Error('At least 2 people are required for group astrology analysis');
+      throw new Error(
+        'At least 2 people are required for group astrology analysis'
+      );
     }
 
     if (people.length > 10) {
       throw new Error('Maximum 10 people allowed for group analysis');
     }
 
-    const validTypes = ['compatibility', 'business_partnership', 'family_dynamics'];
+    const validTypes = [
+      'compatibility',
+      'business_partnership',
+      'family_dynamics'
+    ];
     if (!analysisType || !validTypes.includes(analysisType)) {
-      throw new Error(`Invalid analysis type. Must be one of: ${validTypes.join(', ')}`);
+      throw new Error(
+        `Invalid analysis type. Must be one of: ${validTypes.join(', ')}`
+      );
     }
 
     // Validate each person's birth data
@@ -374,7 +423,15 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
         throw new Error(`Person ${i + 1} data is invalid`);
       }
 
-      const requiredFields = ['year', 'month', 'day', 'hour', 'minute', 'latitude', 'longitude'];
+      const requiredFields = [
+        'year',
+        'month',
+        'day',
+        'hour',
+        'minute',
+        'latitude',
+        'longitude'
+      ];
       for (const field of requiredFields) {
         if (typeof person[field] !== 'number') {
           throw new Error(`Person ${i + 1} missing valid ${field}`);
@@ -383,7 +440,9 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
 
       // Validate date ranges
       if (person.year < 1900 || person.year > new Date().getFullYear() + 1) {
-        throw new Error(`Person ${i + 1} year must be between 1900 and ${new Date().getFullYear() + 1}`);
+        throw new Error(
+          `Person ${i + 1} year must be between 1900 and ${new Date().getFullYear() + 1}`
+        );
       }
 
       if (person.month < 1 || person.month > 12) {
@@ -407,7 +466,9 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
       }
 
       if (person.longitude < -180 || person.longitude > 180) {
-        throw new Error(`Person ${i + 1} longitude must be between -180 and 180`);
+        throw new Error(
+          `Person ${i + 1} longitude must be between -180 and 180`
+        );
       }
     }
   }
@@ -429,7 +490,8 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
         timingInsights: result.timingInsights
       },
       summary: result.summary,
-      disclaimer: 'Group astrology analysis examines collective energies and interpersonal dynamics. Individual charts retain their unique influences while contributing to group patterns. Professional counseling is recommended for important group decisions.'
+      disclaimer:
+        'Group astrology analysis examines collective energies and interpersonal dynamics. Individual charts retain their unique influences while contributing to group patterns. Professional counseling is recommended for important group decisions.'
     };
   }
   async getHealthStatus() {

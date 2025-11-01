@@ -10,8 +10,18 @@ class TarotReader {
     logger.info('Module: TarotReader loaded.');
     // Major Arcana cards (simplified for brevity)
     this.majorArcana = [
-      { name: 'The Fool', number: 0, upright: 'New beginnings', reversed: 'Recklessness' },
-      { name: 'The Magician', number: 1, upright: 'Manifestation', reversed: 'Manipulation' }
+      {
+        name: 'The Fool',
+        number: 0,
+        upright: 'New beginnings',
+        reversed: 'Recklessness'
+      },
+      {
+        name: 'The Magician',
+        number: 1,
+        upright: 'Manifestation',
+        reversed: 'Manipulation'
+      }
       // Add more major arcana cards...
     ];
 
@@ -40,7 +50,11 @@ class TarotReader {
     // Simplified deck for testing - normally would include full deck
     const deck = [
       ...this.majorArcana,
-      { name: 'Ace of Wands', upright: 'Inspiration', reversed: 'Lack of energy' }
+      {
+        name: 'Ace of Wands',
+        upright: 'Inspiration',
+        reversed: 'Lack of energy'
+      }
       // Add more cards...
     ];
 
@@ -77,7 +91,13 @@ class TarotReader {
       return {
         spread: 'single',
         question: question || 'General guidance',
-        cards: [{ position: 'Current Situation', card, interpretation: card.interpretation }],
+        cards: [
+          {
+            position: 'Current Situation',
+            card,
+            interpretation: card.interpretation
+          }
+        ],
         summary: `The ${card.name} provides guidance for your situation.`
       };
     } catch (error) {
@@ -101,7 +121,8 @@ class TarotReader {
           card,
           interpretation: card.interpretation
         })),
-        summary: 'Your past experiences are shaping your present, leading to future potential.'
+        summary:
+          'Your past experiences are shaping your present, leading to future potential.'
       };
 
       return reading;

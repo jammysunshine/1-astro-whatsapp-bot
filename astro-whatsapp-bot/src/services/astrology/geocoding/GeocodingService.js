@@ -17,7 +17,9 @@ const googleMapsClient = new Client({});
 // Ensure Google Maps API Key is set for Time Zone API
 const { GOOGLE_MAPS_API_KEY } = process.env;
 if (!GOOGLE_MAPS_API_KEY) {
-  logger.warn('⚠️ GOOGLE_MAPS_API_KEY is not set. Time Zone API functionality may be limited.');
+  logger.warn(
+    '⚠️ GOOGLE_MAPS_API_KEY is not set. Time Zone API functionality may be limited.'
+  );
 }
 
 /**
@@ -39,7 +41,9 @@ class GeocodingService {
 
     // Limit length to prevent potential abuse
     if (place.length > 200) {
-      logger.warn(`Place input too long for geocoding: ${place.substring(0, 50)}...`);
+      logger.warn(
+        `Place input too long for geocoding: ${place.substring(0, 50)}...`
+      );
       place = place.substring(0, 200);
     }
 
@@ -58,7 +62,10 @@ class GeocodingService {
         return [res[0].latitude, res[0].longitude];
       }
     } catch (error) {
-      logger.error(`❌ Error geocoding place "${sanitizedPlace}":`, error.message);
+      logger.error(
+        `❌ Error geocoding place "${sanitizedPlace}":`,
+        error.message
+      );
     }
     // Fallback to default if geocoding fails
     return [28.6139, 77.209]; // Default to Delhi, India
@@ -73,7 +80,9 @@ class GeocodingService {
    */
   async getTimezoneForPlace(latitude, longitude, timestamp) {
     if (!GOOGLE_MAPS_API_KEY) {
-      logger.warn('GOOGLE_MAPS_API_KEY is not set. Using default timezone offset (IST).');
+      logger.warn(
+        'GOOGLE_MAPS_API_KEY is not set. Using default timezone offset (IST).'
+      );
       return 5.5; // Default to IST offset
     }
 
@@ -92,10 +101,16 @@ class GeocodingService {
         const { dstOffset } = response.data; // Daylight saving offset in seconds
         return (rawOffset + dstOffset) / 3600; // Convert to hours
       } else {
-        logger.error('Google Maps Time Zone API error:', response.data.errorMessage);
+        logger.error(
+          'Google Maps Time Zone API error:',
+          response.data.errorMessage
+        );
       }
     } catch (error) {
-      logger.error('❌ Error fetching timezone from Google Maps API:', error.message);
+      logger.error(
+        '❌ Error fetching timezone from Google Maps API:',
+        error.message
+      );
     }
     // Fallback to default if API call fails
     return 5.5; // Default to IST offset
@@ -109,7 +124,11 @@ class GeocodingService {
    */
   async getLocationInfo(place, timestamp = Date.now()) {
     const [latitude, longitude] = await this.getCoordinatesForPlace(place);
-    const timezone = await this.getTimezoneForPlace(latitude, longitude, timestamp);
+    const timezone = await this.getTimezoneForPlace(
+      latitude,
+      longitude,
+      timestamp
+    );
 
     return {
       latitude,

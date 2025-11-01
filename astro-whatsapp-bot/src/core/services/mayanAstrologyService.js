@@ -45,7 +45,10 @@ class MayanAstrologyService extends ServiceTemplate {
         lifePurpose,
         spiritualPath,
         challengesAndGifts,
-        summary: this._createComprehensiveSummary(mayanAnalysis, cosmicSignature)
+        summary: this._createComprehensiveSummary(
+          mayanAnalysis,
+          cosmicSignature
+        )
       };
     } catch (error) {
       logger.error('MayanAstrologyService processCalculation error:', error);
@@ -90,7 +93,8 @@ class MayanAstrologyService extends ServiceTemplate {
         calculationType: 'Mayan Astrology Analysis',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'Mayan Astrology offers insights into your cosmic signature and life purpose based on the ancient Mayan calendar. It is a tool for self-discovery and understanding your spiritual path. Interpretations should be used for personal reflection and guidance.'
+      disclaimer:
+        'Mayan Astrology offers insights into your cosmic signature and life purpose based on the ancient Mayan calendar. It is a tool for self-discovery and understanding your spiritual path. Interpretations should be used for personal reflection and guidance.'
     };
   }
 
@@ -106,7 +110,8 @@ class MayanAstrologyService extends ServiceTemplate {
       galacticTone: mayanAnalysis.galacticTone || 'Unknown',
       solarSeal: mayanAnalysis.solarSeal || 'Unknown',
       destinyKin: mayanAnalysis.destinyKin || 'Unknown',
-      interpretation: 'Your cosmic signature reveals your unique energetic blueprint and life purpose.'
+      interpretation:
+        'Your cosmic signature reveals your unique energetic blueprint and life purpose.'
     };
   }
 
@@ -119,7 +124,8 @@ class MayanAstrologyService extends ServiceTemplate {
   _getLifePurpose(mayanAnalysis) {
     // Placeholder for actual life purpose calculation
     return {
-      corePurpose: 'To embody your authentic self and contribute to collective evolution',
+      corePurpose:
+        'To embody your authentic self and contribute to collective evolution',
       mission: 'To share your unique gifts and inspire others',
       talents: ['Creativity', 'Intuition', 'Leadership'],
       obstacles: ['Self-doubt', 'Resistance to change']
@@ -166,10 +172,13 @@ class MayanAstrologyService extends ServiceTemplate {
    * @private
    */
   _createComprehensiveSummary(mayanAnalysis, cosmicSignature) {
-    let summary = 'This Mayan Astrology analysis provides profound insights into your cosmic signature and life purpose. ';
+    let summary =
+      'This Mayan Astrology analysis provides profound insights into your cosmic signature and life purpose. ';
     summary += `Your Galactic Tone is ${cosmicSignature.galacticTone}, and your Solar Seal is ${cosmicSignature.solarSeal}, forming your unique destiny Kin. `;
-    summary += `This reveals your innate gifts, challenges, and the spiritual path you are destined to walk. `;
-    summary += 'Understanding these aspects can help you align with your true self and contribute to the greater cosmic plan.';
+    summary +=
+      'This reveals your innate gifts, challenges, and the spiritual path you are destined to walk. ';
+    summary +=
+      'Understanding these aspects can help you align with your true self and contribute to the greater cosmic plan.';
     return summary;
   }
 
@@ -182,9 +191,16 @@ class MayanAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'mayan',
-      methods: ['processCalculation', 'getCosmicSignature', 'getLifePurpose', 'getSpiritualPath', 'getChallengesAndGifts'],
+      methods: [
+        'processCalculation',
+        'getCosmicSignature',
+        'getLifePurpose',
+        'getSpiritualPath',
+        'getChallengesAndGifts'
+      ],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Service for Mayan astrology analysis and spiritual insights.'
+      description:
+        'Service for Mayan astrology analysis and spiritual insights.'
     };
   }
 

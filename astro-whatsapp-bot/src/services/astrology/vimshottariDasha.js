@@ -30,13 +30,47 @@ class VimshottariDasha {
     };
 
     // Dasha sequence order
-    this.dashaSequence = ['moon', 'sun', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury', 'ketu', 'venus'];
+    this.dashaSequence = [
+      'moon',
+      'sun',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury',
+      'ketu',
+      'venus'
+    ];
 
     // Nakshatra lords as per Vedic tradition
     this.nakshatraLords = [
-      'ketu', 'venus', 'sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury',
-      'ketu', 'venus', 'sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury',
-      'ketu', 'venus', 'sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury'
+      'ketu',
+      'venus',
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury',
+      'ketu',
+      'venus',
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury',
+      'ketu',
+      'venus',
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury'
     ];
 
     // Nakshatra spans (each 13.333... degrees)
@@ -100,7 +134,8 @@ class VimshottariDasha {
         negative: 'Indulgence, relationship issues, vanity'
       },
       saturn: {
-        general: 'Discipline, hard work, longevity, justice, delays, spirituality',
+        general:
+          'Discipline, hard work, longevity, justice, delays, spirituality',
         career: 'Agriculture, labor, government, research, social work',
         health: 'Joints, bones, teeth, skin, chronic diseases',
         relationships: 'Elderly people, servants, patients, spiritual teachers',
@@ -146,7 +181,9 @@ class VimshottariDasha {
       const moonPosition = await this._getMoonPosition(jd);
 
       // Determine nakshatra and position within it
-      const nakshatraInfo = this._calculateNakshatraPosition(moonPosition.longitude);
+      const nakshatraInfo = this._calculateNakshatraPosition(
+        moonPosition.longitude
+      );
 
       // Calculate starting Dasha based on Moon's position in nakshatra
       const startingDasha = this._getStartingDasha(nakshatraInfo);
@@ -154,11 +191,19 @@ class VimshottariDasha {
 
       // Calculate current Dasha and Bhukti
       const currentDashaData = await this._calculateCurrentDasha(
-        startingDasha, progressInNakshatra, year, month, day, hour, minute
+        startingDasha,
+        progressInNakshatra,
+        year,
+        month,
+        day,
+        hour,
+        minute
       );
 
       // Calculate upcoming Dashas
-      const upcomingDashas = await this._calculateUpcomingDashas(currentDashaData.currentDasha);
+      const upcomingDashas = await this._calculateUpcomingDashas(
+        currentDashaData.currentDasha
+      );
 
       // Generate predictions
       const currentPredictions = this._generateDashaPredictions(
@@ -176,7 +221,11 @@ class VimshottariDasha {
         current_period: currentDashaData,
         upcoming_dashas: upcomingDashas,
         predictions: currentPredictions,
-        summary: this._generateDashaSummary(birthData.name, currentDashaData, currentPredictions)
+        summary: this._generateDashaSummary(
+          birthData.name,
+          currentDashaData,
+          currentPredictions
+        )
       };
     } catch (error) {
       logger.error('Error calculating Vimshottari Dasha:', error);
@@ -193,10 +242,16 @@ class VimshottariDasha {
   async _getMoonPosition(jd) {
     try {
       // Use Swiss Ephemeris for accurate Moon calculation with sidereal zodiac
-      const result = sweph.calc(jd, sweph.SE_MOON, sweph.FLG_SWIEPH | sweph.FLG_SIDEREAL | sweph.FLG_SPEED);
+      const result = sweph.calc(
+        jd,
+        sweph.SE_MOON,
+        sweph.FLG_SWIEPH | sweph.FLG_SIDEREAL | sweph.FLG_SPEED
+      );
 
       if (!result || !result.longitude || result.longitude.length === 0) {
-        throw new Error('Unable to calculate Moon position using Swiss Ephemeris');
+        throw new Error(
+          'Unable to calculate Moon position using Swiss Ephemeris'
+        );
       }
 
       return {
@@ -224,14 +279,36 @@ class VimshottariDasha {
     const nakshatraEnd = ((nakshatraIndex + 1) * 360) / 27;
 
     // Calculate progress within nakshatra (0 to 1)
-    const progress = (moonLongitude - nakshatraStart) / ((360 / 27));
+    const progress = (moonLongitude - nakshatraStart) / (360 / 27);
 
     const nakshatraNames = [
-      'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
-      'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
-      'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
-      'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta',
-      'Shatabhisha', 'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+      'Ashwini',
+      'Bharani',
+      'Krittika',
+      'Rohini',
+      'Mrigashira',
+      'Ardra',
+      'Punarvasu',
+      'Pushya',
+      'Ashlesha',
+      'Magha',
+      'Purva Phalguni',
+      'Uttara Phalguni',
+      'Hasta',
+      'Chitra',
+      'Swati',
+      'Vishakha',
+      'Anuradha',
+      'Jyeshtha',
+      'Mula',
+      'Purva Ashadha',
+      'Uttara Ashadha',
+      'Shravana',
+      'Dhanishta',
+      'Shatabhisha',
+      'Purva Bhadrapada',
+      'Uttara Bhadrapada',
+      'Revati'
     ];
 
     return {
@@ -265,11 +342,20 @@ class VimshottariDasha {
    * Calculate current Dasha and Bhukti periods accurately
    * @private
    */
-  async _calculateCurrentDasha(startingDasha, progressInNakshatra, year, month, day, hour, minute) {
+  async _calculateCurrentDasha(
+    startingDasha,
+    progressInNakshatra,
+    year,
+    month,
+    day,
+    hour,
+    minute
+  ) {
     const birthDateTime = new Date(year, month - 1, day, hour, minute);
     const currentDateTime = new Date();
 
-    const totalYearsSinceBirth = (currentDateTime - birthDateTime) / (1000 * 60 * 60 * 24 * 365.25);
+    const totalYearsSinceBirth =
+      (currentDateTime - birthDateTime) / (1000 * 60 * 60 * 24 * 365.25);
 
     // Calculate which Dasha we're in based on the 120-year cycle
     let remainingTime = totalYearsSinceBirth;
@@ -280,7 +366,8 @@ class VimshottariDasha {
     let currentIndex = this.dashaSequence.indexOf(startingDasha);
 
     // Adjust for the progress within the nakshatra (this determines how much of first Dasha has passed)
-    const firstDashaRemaining = this.dashaPeriods[startingDasha] * (1 - progressInNakshatra);
+    const firstDashaRemaining =
+      this.dashaPeriods[startingDasha] * (1 - progressInNakshatra);
 
     if (remainingTime <= firstDashaRemaining) {
       // Still in the starting Dasha
@@ -290,7 +377,10 @@ class VimshottariDasha {
       dashaStartInCycle = totalYearsSinceBirth - remainingTime;
 
       // Continue through Dashas until we find the current one
-      while (remainingTime > 0 && this.dashaSequence[currentIndex] !== undefined) {
+      while (
+        remainingTime > 0 &&
+        this.dashaSequence[currentIndex] !== undefined
+      ) {
         const currentPlanet = this.dashaSequence[currentIndex];
         const periodLength = this.dashaPeriods[currentPlanet];
 
@@ -313,14 +403,21 @@ class VimshottariDasha {
     // Find current Bhukti by going through all planets in sequence within the current Dasha
     const currentDashaIndex = this.dashaSequence.indexOf(currentDasha);
     const bhuktiIndex = Math.floor(bhuktiProgress * this.dashaSequence.length);
-    const bhuktiPlanet = this.dashaSequence[(currentDashaIndex + bhuktiIndex) % this.dashaSequence.length];
+    const bhuktiPlanet =
+      this.dashaSequence[
+        (currentDashaIndex + bhuktiIndex) % this.dashaSequence.length
+      ];
 
     return {
       current_dasha: currentDasha,
       current_bhukti: bhuktiPlanet,
       dasha_start_year: birthDateTime.getFullYear() + dashaStartInCycle,
-      dasha_end_year: birthDateTime.getFullYear() + dashaStartInCycle + currentDashaTotal,
-      bhukti_end_year: birthDateTime.getFullYear() + dashaStartInCycle + (bhuktiIndex + 1) * (currentDashaTotal / this.dashaSequence.length),
+      dasha_end_year:
+        birthDateTime.getFullYear() + dashaStartInCycle + currentDashaTotal,
+      bhukti_end_year:
+        birthDateTime.getFullYear() +
+        dashaStartInCycle +
+        (bhuktiIndex + 1) * (currentDashaTotal / this.dashaSequence.length),
       years_in_current_dasha: timeInCurrentDasha,
       progress_in_dasha: (timeInCurrentDasha / currentDashaTotal) * 100
     };
@@ -334,7 +431,9 @@ class VimshottariDasha {
     const upcoming = [];
     const currentIndex = this.dashaSequence.indexOf(currentDasha);
 
-    if (currentIndex === -1) { return upcoming; }
+    if (currentIndex === -1) {
+      return upcoming;
+    }
 
     // Get next 5 Dashas in sequence
     for (let i = 1; i <= 5; i++) {
@@ -361,7 +460,25 @@ class VimshottariDasha {
     const themes = [];
 
     // Extract key themes based on planetary nature
-    if (planet === 'sun') { themes.push('Leadership', 'Authority', 'Career', 'Health'); } else if (planet === 'moon') { themes.push('Emotions', 'Family', 'Home', 'Mind'); } else if (planet === 'mars') { themes.push('Energy', 'Courage', 'Property', 'Action'); } else if (planet === 'mercury') { themes.push('Communication', 'Business', 'Learning', 'Adaptability'); } else if (planet === 'jupiter') { themes.push('Wisdom', 'Wealth', 'Spirituality', 'Children'); } else if (planet === 'venus') { themes.push('Relationships', 'Luxury', 'Arts', 'Pleasures'); } else if (planet === 'saturn') { themes.push('Discipline', 'Hard Work', 'Karma', 'Spirituality'); } else if (planet === 'rahu') { themes.push('Ambition', 'Foreign', 'Technology', 'Transformation'); } else if (planet === 'ketu') { themes.push('Spirituality', 'Detachment', 'Past Karma', 'Liberation'); }
+    if (planet === 'sun') {
+      themes.push('Leadership', 'Authority', 'Career', 'Health');
+    } else if (planet === 'moon') {
+      themes.push('Emotions', 'Family', 'Home', 'Mind');
+    } else if (planet === 'mars') {
+      themes.push('Energy', 'Courage', 'Property', 'Action');
+    } else if (planet === 'mercury') {
+      themes.push('Communication', 'Business', 'Learning', 'Adaptability');
+    } else if (planet === 'jupiter') {
+      themes.push('Wisdom', 'Wealth', 'Spirituality', 'Children');
+    } else if (planet === 'venus') {
+      themes.push('Relationships', 'Luxury', 'Arts', 'Pleasures');
+    } else if (planet === 'saturn') {
+      themes.push('Discipline', 'Hard Work', 'Karma', 'Spirituality');
+    } else if (planet === 'rahu') {
+      themes.push('Ambition', 'Foreign', 'Technology', 'Transformation');
+    } else if (planet === 'ketu') {
+      themes.push('Spirituality', 'Detachment', 'Past Karma', 'Liberation');
+    }
 
     return themes;
   }
@@ -376,7 +493,11 @@ class VimshottariDasha {
 
     // Determine compatibility between Dasha and Bhukti planets
     const compatibility = this._getPlanetCompatibility(dasha, bhukti);
-    const combinedInfluence = this._combinePlanetaryInfluences(dasha, bhukti, compatibility);
+    const combinedInfluence = this._combinePlanetaryInfluences(
+      dasha,
+      bhukti,
+      compatibility
+    );
 
     return {
       dasha_planet: dasha,
@@ -406,7 +527,7 @@ class VimshottariDasha {
       venus: ['moon', 'mercury', 'saturn', 'rahu'],
       saturn: ['mercury', 'venus', 'kethu'],
       rahu: ['mercury', 'venus', 'saturn'],
-      ketu: ['moon', 'kethu']  // Corrected to 'ketu' for consistency
+      ketu: ['moon', 'kethu'] // Corrected to 'ketu' for consistency
     };
 
     const enemyPlanets = {
@@ -422,9 +543,15 @@ class VimshottariDasha {
     const isFriend = friendPlanets[dasha]?.includes(bhukti) || false;
     const isEnemy = enemyPlanets[dasha]?.includes(bhukti) || false;
 
-    if (dasha === bhukti) { return 'Conjunction'; }
-    if (isFriend) { return 'Harmonious'; }
-    if (isEnemy) { return 'Challenging'; }
+    if (dasha === bhukti) {
+      return 'Conjunction';
+    }
+    if (isFriend) {
+      return 'Harmonious';
+    }
+    if (isEnemy) {
+      return 'Challenging';
+    }
     return 'Neutral';
   }
 
@@ -593,9 +720,11 @@ class VimshottariDasha {
     summary += `• *Combined:* ${predictions.remedies.combination_advice}\n\n`;
 
     summary += '*Authentic Vedic Insight:*\n';
-    summary += 'This calculation is based on your Moon\'s precise position in the nakshatra at birth. The Vimshottari Dasha system, considered the most accurate in Vedic astrology, reveals the cosmic timing of life events by aligning planetary periods with your karmic blueprint.\n\n';
+    summary +=
+      'This calculation is based on your Moon\'s precise position in the nakshatra at birth. The Vimshottari Dasha system, considered the most accurate in Vedic astrology, reveals the cosmic timing of life events by aligning planetary periods with your karmic blueprint.\n\n';
 
-    summary += '*Note:* For the most accurate guidance, consult a qualified Vedic astrologer. This analysis uses Swiss Ephemeris for precise astronomical calculations. 🕉️';
+    summary +=
+      '*Note:* For the most accurate guidance, consult a qualified Vedic astrologer. This analysis uses Swiss Ephemeris for precise astronomical calculations. 🕉️';
 
     return summary;
   }
@@ -614,8 +743,20 @@ class VimshottariDasha {
    * @private
    */
   _getSignFromLongitude(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     const signIndex = Math.floor(longitude / 30);
     return signs[signIndex];
   }
@@ -626,7 +767,8 @@ class VimshottariDasha {
    */
   getDashaCatalog() {
     return {
-      vimshottari_dasha: 'Authentic Vimshottari Dasha with precise nakshatra calculations',
+      vimshottari_dasha:
+        'Authentic Vimshottari Dasha with precise nakshatra calculations',
       current_period: 'Current Mahadasha and Bhukti analysis',
       upcoming_dashas: 'Next 5 Mahadasha periods with accurate timing',
       predictions: 'Period-specific predictions based on planetary timing',

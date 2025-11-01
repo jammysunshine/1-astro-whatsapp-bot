@@ -11,7 +11,8 @@ const logger = require('../../utils/logger');
 class EventAstrologyService extends ServiceTemplate {
   constructor() {
     super('CosmicEventsCalculator');
-    this.calculatorPath = '../calculators/CosmicEventsCalculator';    this.serviceName = 'EventAstrologyService';
+    this.calculatorPath = '../calculators/CosmicEventsCalculator';
+    this.serviceName = 'EventAstrologyService';
     logger.info('EventAstrologyService initialized');
   }
 
@@ -32,7 +33,8 @@ class EventAstrologyService extends ServiceTemplate {
       service: 'Event Astrology Analysis',
       timestamp: new Date().toISOString(),
       data: analysis,
-      disclaimer: 'Event timing analysis provides guidance based on Vedic astrology principles. Consider multiple factors including personal circumstances, logistics, and professional advice when planning important events.'
+      disclaimer:
+        'Event timing analysis provides guidance based on Vedic astrology principles. Consider multiple factors including personal circumstances, logistics, and professional advice when planning important events.'
     };
   }
 
@@ -67,7 +69,11 @@ class EventAstrologyService extends ServiceTemplate {
         throw new Error('Event type and location are required');
       }
 
-      const recommendations = await this._findAuspiciousPeriods(eventType, location, timeFrame);
+      const recommendations = await this._findAuspiciousPeriods(
+        eventType,
+        location,
+        timeFrame
+      );
 
       return {
         eventType,
@@ -96,14 +102,18 @@ class EventAstrologyService extends ServiceTemplate {
     try {
       const analysisYear = year || new Date().getFullYear();
 
-      const seasonalAnalysis = this._analyzeSeasonalInfluences(eventType, analysisYear);
+      const seasonalAnalysis = this._analyzeSeasonalInfluences(
+        eventType,
+        analysisYear
+      );
 
       return {
         eventType,
         year: analysisYear,
         seasonalAnalysis,
         bestSeasons: this._identifyBestSeasons(seasonalAnalysis),
-        recommendations: this._generateSeasonalRecommendations(seasonalAnalysis),
+        recommendations:
+          this._generateSeasonalRecommendations(seasonalAnalysis),
         error: false
       };
     } catch (error) {
@@ -126,7 +136,11 @@ class EventAstrologyService extends ServiceTemplate {
     try {
       this._validateBirthData(birthData);
 
-      const personalAnalysis = await this._analyzePersonalTiming(birthData, eventType, location);
+      const personalAnalysis = await this._analyzePersonalTiming(
+        birthData,
+        eventType,
+        location
+      );
       const generalTiming = await this.getAuspiciousTiming(eventType, location);
 
       return {
@@ -134,7 +148,10 @@ class EventAstrologyService extends ServiceTemplate {
         location,
         personalAnalysis,
         generalTiming: generalTiming.recommendations,
-        combinedRecommendations: this._combinePersonalAndGeneral(personalAnalysis, generalTiming.recommendations),
+        combinedRecommendations: this._combinePersonalAndGeneral(
+          personalAnalysis,
+          generalTiming.recommendations
+        ),
         error: false
       };
     } catch (error) {
@@ -160,19 +177,29 @@ class EventAstrologyService extends ServiceTemplate {
         throw new Error('Event type, date range, and location are required');
       }
 
-      const planetaryAnalysis = await this._analyzePlanetaryFactors(eventType, startDate, endDate, location);
+      const planetaryAnalysis = await this._analyzePlanetaryFactors(
+        eventType,
+        startDate,
+        endDate,
+        location
+      );
 
       return {
         eventType,
         dateRange: { start: startDate, end: endDate },
         location,
         planetaryAnalysis,
-        favorablePeriods: this._identifyFavorablePlanetaryPeriods(planetaryAnalysis),
-        challengingPeriods: this._identifyChallengingPlanetaryPeriods(planetaryAnalysis),
+        favorablePeriods:
+          this._identifyFavorablePlanetaryPeriods(planetaryAnalysis),
+        challengingPeriods:
+          this._identifyChallengingPlanetaryPeriods(planetaryAnalysis),
         error: false
       };
     } catch (error) {
-      logger.error('EventAstrologyService analyzePlanetaryInfluences error:', error);
+      logger.error(
+        'EventAstrologyService analyzePlanetaryInfluences error:',
+        error
+      );
       return {
         error: true,
         message: 'Error analyzing planetary influences'
@@ -189,8 +216,15 @@ class EventAstrologyService extends ServiceTemplate {
    */
   async getEventCompatibility(eventTypes, date, location) {
     try {
-      if (!Array.isArray(eventTypes) || eventTypes.length === 0 || !date || !location) {
-        throw new Error('Valid event types array, date, and location are required');
+      if (
+        !Array.isArray(eventTypes) ||
+        eventTypes.length === 0 ||
+        !date ||
+        !location
+      ) {
+        throw new Error(
+          'Valid event types array, date, and location are required'
+        );
       }
 
       const compatibilityAnalysis = {};
@@ -214,7 +248,9 @@ class EventAstrologyService extends ServiceTemplate {
         eventTypes,
         compatibilityAnalysis,
         bestEvent: this._findBestEventForDate(compatibilityAnalysis),
-        recommendations: this._generateCompatibilityRecommendations(compatibilityAnalysis),
+        recommendations: this._generateCompatibilityRecommendations(
+          compatibilityAnalysis
+        ),
         error: false
       };
     } catch (error) {
@@ -252,13 +288,26 @@ class EventAstrologyService extends ServiceTemplate {
 
     // Validate event type
     const validEventTypes = [
-      'wedding', 'marriage', 'engagement', 'graduation', 'business_launch',
-      'housewarming', 'surgery', 'travel', 'education', 'spiritual_ceremony',
-      'birthday_party', 'conference', 'meeting', 'contract_signing'
+      'wedding',
+      'marriage',
+      'engagement',
+      'graduation',
+      'business_launch',
+      'housewarming',
+      'surgery',
+      'travel',
+      'education',
+      'spiritual_ceremony',
+      'birthday_party',
+      'conference',
+      'meeting',
+      'contract_signing'
     ];
 
     if (!validEventTypes.includes(eventType.toLowerCase())) {
-      throw new Error(`Invalid event type. Valid types: ${validEventTypes.join(', ')}`);
+      throw new Error(
+        `Invalid event type. Valid types: ${validEventTypes.join(', ')}`
+      );
     }
   }
 
@@ -302,7 +351,11 @@ class EventAstrologyService extends ServiceTemplate {
     // Get planetary analysis if birth data provided
     let personalAnalysis = null;
     if (birthData) {
-      personalAnalysis = await this._analyzePersonalTiming(birthData, eventType, location);
+      personalAnalysis = await this._analyzePersonalTiming(
+        birthData,
+        eventType,
+        location
+      );
     }
 
     return {
@@ -312,10 +365,26 @@ class EventAstrologyService extends ServiceTemplate {
       muhurtaAnalysis,
       seasonalAnalysis,
       personalAnalysis,
-      overallRating: this._calculateOverallRating(muhurtaAnalysis, seasonalAnalysis, personalAnalysis),
-      favorableFactors: this._compileFavorableFactors(muhurtaAnalysis, seasonalAnalysis, personalAnalysis),
-      challengingFactors: this._compileChallengingFactors(muhurtaAnalysis, seasonalAnalysis, personalAnalysis),
-      recommendations: this._generateEventRecommendations(muhurtaAnalysis, seasonalAnalysis, personalAnalysis)
+      overallRating: this._calculateOverallRating(
+        muhurtaAnalysis,
+        seasonalAnalysis,
+        personalAnalysis
+      ),
+      favorableFactors: this._compileFavorableFactors(
+        muhurtaAnalysis,
+        seasonalAnalysis,
+        personalAnalysis
+      ),
+      challengingFactors: this._compileChallengingFactors(
+        muhurtaAnalysis,
+        seasonalAnalysis,
+        personalAnalysis
+      ),
+      recommendations: this._generateEventRecommendations(
+        muhurtaAnalysis,
+        seasonalAnalysis,
+        personalAnalysis
+      )
     };
   }
 
@@ -333,10 +402,18 @@ class EventAstrologyService extends ServiceTemplate {
     let daysToCheck = 30; // Default to next month
 
     switch (timeFrame) {
-    case 'next_week': daysToCheck = 7; break;
-    case 'next_month': daysToCheck = 30; break;
-    case 'next_3_months': daysToCheck = 90; break;
-    case 'next_6_months': daysToCheck = 180; break;
+    case 'next_week':
+      daysToCheck = 7;
+      break;
+    case 'next_month':
+      daysToCheck = 30;
+      break;
+    case 'next_3_months':
+      daysToCheck = 90;
+      break;
+    case 'next_6_months':
+      daysToCheck = 180;
+      break;
     }
 
     for (let i = 0; i < daysToCheck; i++) {
@@ -353,7 +430,10 @@ class EventAstrologyService extends ServiceTemplate {
           timeWindow: 'full_day'
         });
 
-        if (analysis.overallRating === 'excellent' || analysis.overallRating === 'good') {
+        if (
+          analysis.overallRating === 'excellent' ||
+          analysis.overallRating === 'good'
+        ) {
           periods.push({
             date: dateStr,
             rating: analysis.overallRating,
@@ -379,10 +459,26 @@ class EventAstrologyService extends ServiceTemplate {
   _analyzeSeasonalInfluences(eventType, year = null) {
     const analysisYear = year || new Date().getFullYear();
     const seasons = {
-      spring: { months: [3, 4, 5], energy: 'growth', suitable: ['wedding', 'graduation', 'business_launch'] },
-      summer: { months: [6, 7, 8], energy: 'celebration', suitable: ['wedding', 'birthday_party', 'conference'] },
-      autumn: { months: [9, 10, 11], energy: 'harvest', suitable: ['business_launch', 'contract_signing', 'education'] },
-      winter: { months: [12, 1, 2], energy: 'reflection', suitable: ['spiritual_ceremony', 'planning', 'education'] }
+      spring: {
+        months: [3, 4, 5],
+        energy: 'growth',
+        suitable: ['wedding', 'graduation', 'business_launch']
+      },
+      summer: {
+        months: [6, 7, 8],
+        energy: 'celebration',
+        suitable: ['wedding', 'birthday_party', 'conference']
+      },
+      autumn: {
+        months: [9, 10, 11],
+        energy: 'harvest',
+        suitable: ['business_launch', 'contract_signing', 'education']
+      },
+      winter: {
+        months: [12, 1, 2],
+        energy: 'reflection',
+        suitable: ['spiritual_ceremony', 'planning', 'education']
+      }
     };
 
     const eventSeason = this._findBestSeasonForEvent(eventType, seasons);
@@ -411,7 +507,11 @@ class EventAstrologyService extends ServiceTemplate {
     // This would integrate with transit analysis services
     // For now, return basic structure
     return {
-      personalFactors: ['Birth chart alignment', 'Current transits', 'Progressed planets'],
+      personalFactors: [
+        'Birth chart alignment',
+        'Current transits',
+        'Progressed planets'
+      ],
       favorableTransits: ['Jupiter aspects', 'Venus influences'],
       challengingTransits: ['Saturn aspects', 'Mars squares'],
       personalRating: 'good',
@@ -435,8 +535,16 @@ class EventAstrologyService extends ServiceTemplate {
       favorablePlanets: ['Jupiter', 'Venus'],
       challengingPlanets: ['Saturn', 'Mars'],
       planetaryPeriods: [
-        { period: 'Jupiter beneficial', dates: 'Various dates', influence: 'Positive' },
-        { period: 'Venus harmony', dates: 'Various dates', influence: 'Harmonious' }
+        {
+          period: 'Jupiter beneficial',
+          dates: 'Various dates',
+          influence: 'Positive'
+        },
+        {
+          period: 'Venus harmony',
+          dates: 'Various dates',
+          influence: 'Harmonious'
+        }
       ],
       overallPlanetaryRating: 'mixed'
     };
@@ -515,7 +623,11 @@ class EventAstrologyService extends ServiceTemplate {
       spring: [`March ${year}`, `April ${year}`, `May ${year}`],
       summer: [`June ${year}`, `July ${year}`, `August ${year}`],
       autumn: [`September ${year}`, `October ${year}`, `November ${year}`],
-      winter: [`December ${year}`, `January ${year + 1}`, `February ${year + 1}`]
+      winter: [
+        `December ${year}`,
+        `January ${year + 1}`,
+        `February ${year + 1}`
+      ]
     };
 
     return windows[season] || [];
@@ -532,12 +644,22 @@ class EventAstrologyService extends ServiceTemplate {
   _calculateOverallRating(muhurta, seasonal, personal) {
     const ratings = [muhurta?.overallRating];
 
-    if (seasonal?.isCurrentSeason) { ratings.push('good'); }
-    if (personal?.personalRating) { ratings.push(personal.personalRating); }
+    if (seasonal?.isCurrentSeason) {
+      ratings.push('good');
+    }
+    if (personal?.personalRating) {
+      ratings.push(personal.personalRating);
+    }
 
-    if (ratings.includes('excellent')) { return 'excellent'; }
-    if (ratings.includes('good')) { return 'good'; }
-    if (ratings.includes('fair')) { return 'fair'; }
+    if (ratings.includes('excellent')) {
+      return 'excellent';
+    }
+    if (ratings.includes('good')) {
+      return 'good';
+    }
+    if (ratings.includes('fair')) {
+      return 'fair';
+    }
     return 'neutral';
   }
 
@@ -552,9 +674,15 @@ class EventAstrologyService extends ServiceTemplate {
   _compileFavorableFactors(muhurta, seasonal, personal) {
     const factors = [];
 
-    if (muhurta?.auspiciousFactors) { factors.push(...muhurta.auspiciousFactors); }
-    if (seasonal?.seasonalFactors) { factors.push(...seasonal.seasonalFactors); }
-    if (personal?.favorableTransits) { factors.push(...personal.favorableTransits); }
+    if (muhurta?.auspiciousFactors) {
+      factors.push(...muhurta.auspiciousFactors);
+    }
+    if (seasonal?.seasonalFactors) {
+      factors.push(...seasonal.seasonalFactors);
+    }
+    if (personal?.favorableTransits) {
+      factors.push(...personal.favorableTransits);
+    }
 
     return [...new Set(factors)]; // Remove duplicates
   }
@@ -570,8 +698,12 @@ class EventAstrologyService extends ServiceTemplate {
   _compileChallengingFactors(muhurta, seasonal, personal) {
     const factors = [];
 
-    if (muhurta?.inauspiciousFactors) { factors.push(...muhurta.inauspiciousFactors); }
-    if (personal?.challengingTransits) { factors.push(...personal.challengingTransits); }
+    if (muhurta?.inauspiciousFactors) {
+      factors.push(...muhurta.inauspiciousFactors);
+    }
+    if (personal?.challengingTransits) {
+      factors.push(...personal.challengingTransits);
+    }
 
     return [...new Set(factors)]; // Remove duplicates
   }
@@ -587,11 +719,17 @@ class EventAstrologyService extends ServiceTemplate {
   _generateEventRecommendations(muhurta, seasonal, personal) {
     const recommendations = [];
 
-    if (muhurta?.recommendations) { recommendations.push(...muhurta.recommendations); }
-    if (seasonal?.bestSeason) {
-      recommendations.push(`Consider ${seasonal.bestSeason} season for optimal energy alignment`);
+    if (muhurta?.recommendations) {
+      recommendations.push(...muhurta.recommendations);
     }
-    if (personal?.recommendations) { recommendations.push(...personal.recommendations); }
+    if (seasonal?.bestSeason) {
+      recommendations.push(
+        `Consider ${seasonal.bestSeason} season for optimal energy alignment`
+      );
+    }
+    if (personal?.recommendations) {
+      recommendations.push(...personal.recommendations);
+    }
 
     return [...new Set(recommendations)]; // Remove duplicates
   }
@@ -607,7 +745,9 @@ class EventAstrologyService extends ServiceTemplate {
       return 'No highly auspicious periods found in the specified timeframe.';
     }
 
-    const excellentCount = recommendations.filter(r => r.rating === 'excellent').length;
+    const excellentCount = recommendations.filter(
+      r => r.rating === 'excellent'
+    ).length;
     const goodCount = recommendations.filter(r => r.rating === 'good').length;
 
     return `Found ${excellentCount} excellent and ${goodCount} good periods for your event timing.`;
@@ -660,7 +800,11 @@ class EventAstrologyService extends ServiceTemplate {
    * @private
    */
   _identifyFavorablePlanetaryPeriods(planetaryAnalysis) {
-    return planetaryAnalysis?.planetaryPeriods?.filter(p => p.influence === 'Positive') || [];
+    return (
+      planetaryAnalysis?.planetaryPeriods?.filter(
+        p => p.influence === 'Positive'
+      ) || []
+    );
   }
 
   /**
@@ -670,7 +814,11 @@ class EventAstrologyService extends ServiceTemplate {
    * @private
    */
   _identifyChallengingPlanetaryPeriods(planetaryAnalysis) {
-    return planetaryAnalysis?.planetaryPeriods?.filter(p => p.influence === 'Challenging') || [];
+    return (
+      planetaryAnalysis?.planetaryPeriods?.filter(
+        p => p.influence === 'Challenging'
+      ) || []
+    );
   }
 
   /**
@@ -707,7 +855,9 @@ class EventAstrologyService extends ServiceTemplate {
     const bestEvent = this._findBestEventForDate(compatibilityAnalysis);
 
     if (bestEvent) {
-      recommendations.push(`${bestEvent.replace('_', ' ')} appears most favorable for this date`);
+      recommendations.push(
+        `${bestEvent.replace('_', ' ')} appears most favorable for this date`
+      );
     }
 
     const excellentEvents = Object.entries(compatibilityAnalysis)
@@ -715,7 +865,9 @@ class EventAstrologyService extends ServiceTemplate {
       .map(([event, _]) => event);
 
     if (excellentEvents.length > 0) {
-      recommendations.push(`Excellent timing for: ${excellentEvents.join(', ')}`);
+      recommendations.push(
+        `Excellent timing for: ${excellentEvents.join(', ')}`
+      );
     }
 
     return recommendations;
@@ -726,7 +878,13 @@ class EventAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'getAuspiciousTiming', 'analyzeEventCompatibility', 'getSeasonalGuidance', 'getPersonalizedTiming'],
+      methods: [
+        'execute',
+        'getAuspiciousTiming',
+        'analyzeEventCompatibility',
+        'getSeasonalGuidance',
+        'getPersonalizedTiming'
+      ],
       dependencies: ['MuhurtaCalculator']
     };
   }

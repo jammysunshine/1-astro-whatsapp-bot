@@ -35,7 +35,11 @@ const handleTarot = async(message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleIChing = async(message, user) => {
-  if (!message.includes('iching') && !message.includes('i ching') && !message.includes('oracle')) {
+  if (
+    !message.includes('iching') &&
+    !message.includes('i ching') &&
+    !message.includes('oracle')
+  ) {
     return null;
   }
 
@@ -63,12 +67,20 @@ const { PrashnaAstrology } = require('../prashnaAstrology');
  * @returns {string|null} Response or null if not handled
  */
 const handlePrashna = async(message, user) => {
-  if (!message.includes('prashna') && !message.includes('question') && !message.includes('answer') && !message.includes('consult') && !message.includes('horary')) {
+  if (
+    !message.includes('prashna') &&
+    !message.includes('question') &&
+    !message.includes('answer') &&
+    !message.includes('consult') &&
+    !message.includes('horary')
+  ) {
     return null;
   }
 
   // Extract the actual question from the message
-  const question = message.replace(/prashna|question|answer|consult|horary/gi, '').replace(/^\s+|\s+$/g, '');
+  const question = message
+    .replace(/prashna|question|answer|consult|horary/gi, '')
+    .replace(/^\s+|\s+$/g, '');
   if (!question || question.length < 5) {
     return '❓ *Prashna Astrology - Question-Based Divination*\n\nPlease ask a specific question for accurate horary analysis.\n\nExamples:\n• "Will I get the job?"\n• "When will my relationship improve?"\n• "Should I invest in property now?"';
   }
@@ -83,13 +95,14 @@ const handlePrashna = async(message, user) => {
       questionDate: `${currentTime.getDate()}/${currentTime.getMonth() + 1}/${currentTime.getFullYear()}`,
       questionLocation: {
         latitude: user.latitude || 28.6139, // Default Delhi
-        longitude: user.longitude || 77.2090,
+        longitude: user.longitude || 77.209,
         timezone: user.timezone || 5.5
       },
       user
     };
 
-    const prashnaReading = await prashnaService.generatePrashnaAnalysis(prashnaData);
+    const prashnaReading =
+      await prashnaService.generatePrashnaAnalysis(prashnaData);
 
     if (prashnaReading.error) {
       return '❌ Unable to generate prashna reading. Please ensure your birth details are complete.';
@@ -109,7 +122,11 @@ const handlePrashna = async(message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleChineseAstrology = async(message, user) => {
-  if (!message.includes('chinese') && !message.includes('bazi') && !message.includes('four pillars')) {
+  if (
+    !message.includes('chinese') &&
+    !message.includes('bazi') &&
+    !message.includes('four pillars')
+  ) {
     return null;
   }
 
@@ -123,7 +140,11 @@ const handleChineseAstrology = async(message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleKabbalistic = async(message, user) => {
-  if (!message.includes('kabbal') && !message.includes('tree of life') && !message.includes('sephiroth')) {
+  if (
+    !message.includes('kabbal') &&
+    !message.includes('tree of life') &&
+    !message.includes('sephiroth')
+  ) {
     return null;
   }
 
@@ -137,7 +158,11 @@ const handleKabbalistic = async(message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleMayan = async(message, user) => {
-  if (!message.includes('mayan') && !message.includes('maya') && !message.includes('aztec')) {
+  if (
+    !message.includes('mayan') &&
+    !message.includes('maya') &&
+    !message.includes('aztec')
+  ) {
     return null;
   }
 
@@ -151,7 +176,11 @@ const handleMayan = async(message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleCeltic = async(message, user) => {
-  if (!message.includes('celtic') && !message.includes('druid') && !message.includes('tree sign')) {
+  if (
+    !message.includes('celtic') &&
+    !message.includes('druid') &&
+    !message.includes('tree sign')
+  ) {
     return null;
   }
 
@@ -165,7 +194,11 @@ const handleCeltic = async(message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleAstrocartography = async(message, user) => {
-  if (!message.includes('astro') && !message.includes('cartography') && !message.includes('geographic')) {
+  if (
+    !message.includes('astro') &&
+    !message.includes('cartography') &&
+    !message.includes('geographic')
+  ) {
     return null;
   }
 
@@ -201,8 +234,14 @@ const handleAstrocartography = async(message, user) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleVargaCharts = async(message, user) => {
-  if (!message.includes('varga') && !message.includes('division') && !message.includes('divisional') &&
-      !message.includes('navamsa') && !message.includes('dashamsa') && !message.includes('hora')) {
+  if (
+    !message.includes('varga') &&
+    !message.includes('division') &&
+    !message.includes('divisional') &&
+    !message.includes('navamsa') &&
+    !message.includes('dashamsa') &&
+    !message.includes('hora')
+  ) {
     return null;
   }
 
@@ -220,14 +259,19 @@ const handleVargaCharts = async(message, user) => {
       birthPlace: user.birthPlace || 'Unknown'
     };
 
-    const vargaAnalysis = await vargaService.calculateVargaCharts(birthData, ['NAVAMSA', 'DASHAMSA', 'HORA']);
+    const vargaAnalysis = await vargaService.calculateVargaCharts(birthData, [
+      'NAVAMSA',
+      'DASHAMSA',
+      'HORA'
+    ]);
 
     if (vargaAnalysis.error) {
       return `🕉️ *Vedic Varga Charts*\n\n${vargaAnalysis.fallbackMessage || 'Unable to calculate divisional charts at this time.'}`;
     }
 
     // Basic summary for handler
-    let response = '🕉️ *Vedic Varga Charts Analysis*\n\nKey Divisional Charts:\n';
+    let response =
+      '🕉️ *Vedic Varga Charts Analysis*\n\nKey Divisional Charts:\n';
 
     if (vargaAnalysis.vargaCharts.NAVAMSA) {
       response += `💍 Navamsa (Marriage): Ascendant in ${vargaAnalysis.vargaCharts.NAVAMSA.ascendantSign}\n`;
@@ -241,7 +285,8 @@ const handleVargaCharts = async(message, user) => {
       response += `💰 Hora (Wealth): Ascendant in ${vargaAnalysis.vargaCharts.HORA.ascendantSign}\n`;
     }
 
-    response += '\nVarga charts divide your birth chart to show specialized life areas. For detailed analysis, use the menu options.';
+    response +=
+      '\nVarga charts divide your birth chart to show specialized life areas. For detailed analysis, use the menu options.';
 
     return response;
   } catch (error) {

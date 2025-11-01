@@ -6,11 +6,14 @@ const logger = require('../../../utils/logger');
  * @returns {string} Sun sign name
  */
 const getSunSign = birthDate => {
-  if (!birthDate) { return 'Unknown'; }
+  if (!birthDate) {
+    return 'Unknown';
+  }
 
   // Extract day and month from birth date
   const birthDateStr = birthDate.toString();
-  let day; let month;
+  let day;
+  let month;
 
   if (birthDateStr.length === 6) {
     // DDMMYY format
@@ -31,13 +34,27 @@ const getSunSign = birthDate => {
 
   // Calculate zodiac sign based on month and day
   const signs = {
-    Capricorn: [1, 1, 19], Aquarius: [1, 20, 31], Pisces: [2, 1, 18],
-    Aries: [3, 1, 20], Taurus: [3, 21, 31], Gemini: [4, 1, 20],
-    Cancer: [5, 1, 22], Leo: [5, 23, 31], Virgo: [6, 1, 22],
-    Libra: [6, 23, 31], Scorpio: [7, 1, 22], Sagittarius: [7, 23, 31],
-    Capricorn: [8, 1, 22], Aquarius: [8, 23, 31], Pisces: [9, 1, 22],
-    Aries: [10, 1, 23], Taurus: [10, 24, 31], Gemini: [11, 1, 21],
-    Cancer: [11, 22, 30], Leo: [12, 1, 21], Sagittarius: [12, 22, 31]
+    Capricorn: [1, 1, 19],
+    Aquarius: [1, 20, 31],
+    Pisces: [2, 1, 18],
+    Aries: [3, 1, 20],
+    Taurus: [3, 21, 31],
+    Gemini: [4, 1, 20],
+    Cancer: [5, 1, 22],
+    Leo: [5, 23, 31],
+    Virgo: [6, 1, 22],
+    Libra: [6, 23, 31],
+    Scorpio: [7, 1, 22],
+    Sagittarius: [7, 23, 31],
+    Capricorn: [8, 1, 22],
+    Aquarius: [8, 23, 31],
+    Pisces: [9, 1, 22],
+    Aries: [10, 1, 23],
+    Taurus: [10, 24, 31],
+    Gemini: [11, 1, 21],
+    Cancer: [11, 22, 30],
+    Leo: [12, 1, 21],
+    Sagittarius: [12, 22, 31]
   };
 
   for (const [sign, [sigMonth, startDay, endDay]] of Object.entries(signs)) {
@@ -80,21 +97,114 @@ const handleHoroscope = (message, user) => {
  */
 const generateDailyInsights = sign => {
   const insights = {
-    Aries: { general: 'Today brings unexpected opportunities and new beginnings.', career: 'Be bold in communication', love: 'Rekindle old connections', finance: 'Opportunities from technology', health: 'Focus on fitness', numbers: '3, 8, 15' },
-    Taurus: { general: 'Stability and persistence will serve you well today.', career: 'Focus on long-term goals', love: 'Quality time matters', finance: 'Conservative approach pays', health: 'Rest and recovery', numbers: '1, 4, 12' },
-    Gemini: { general: 'Communication flows freely with important insights.', career: 'Networking brings success', love: 'Intellectual connection grows', finance: 'Flexible investments', health: 'Mental clarity improves', numbers: '5, 7, 22' },
-    Cancer: { general: 'Emotions run deep - trust your intuition.', career: 'Home-based opportunities', love: 'Family comes first', finance: 'Security focused', health: 'Emotional balance', numbers: '2, 9, 11' },
-    Leo: { general: 'Your charisma shines brightly today.', career: 'Leadership opportunities', love: 'Romantic gestures succeed', finance: 'Investment confidence grows', health: 'Creative energy boosts', numbers: '1, 6, 10' },
-    Virgo: { general: 'Attention to detail brings excellent results.', career: 'Service-based projects excel', love: 'Thoughtful acts appreciated', finance: 'Analytical approach wins', health: 'Diet optimization', numbers: '3, 5, 14' },
-    Libra: { general: 'Harmony and balance guide your decisions.', career: 'Partnership opportunities', love: 'Diplomatic approach works', finance: 'Balanced portfolio', health: 'Wellness through beauty', numbers: '2, 7, 16' },
-    Scorpio: { general: 'Deep transformations and insights emerge.', career: 'Individual projects succeed', love: 'Intense connections grow', finance: 'Strategic investments', health: 'Energy regeneration', numbers: '8, 9, 18' },
-    Sagittarius: { general: 'Adventure and learning expand your horizons.', career: 'Educational opportunities', love: 'Spontaneous romance', finance: 'Travel-related gains', health: 'Movement and exercise', numbers: '3, 6, 19' },
-    Capricorn: { general: 'Ambitious plans receive serious consideration.', career: 'Administrative success', love: 'Committed relationships grow', finance: 'Long-term planning', health: 'Structural health foundation', numbers: '4, 8, 13' },
-    Aquarius: { general: 'Innovative ideas and community connections flourish.', career: 'Team collaboration excels', love: 'Unique relationships thrive', finance: 'Tech investment potential', health: 'Progressive treatments', numbers: '4, 7, 17' },
-    Pisces: { general: 'Intuition and creativity flow abundantly.', career: 'Creative fields glow', love: 'Dreamy connections deepen', finance: 'Supportive investments', health: 'Spiritual healing', numbers: '3, 9, 12' }
+    Aries: {
+      general: 'Today brings unexpected opportunities and new beginnings.',
+      career: 'Be bold in communication',
+      love: 'Rekindle old connections',
+      finance: 'Opportunities from technology',
+      health: 'Focus on fitness',
+      numbers: '3, 8, 15'
+    },
+    Taurus: {
+      general: 'Stability and persistence will serve you well today.',
+      career: 'Focus on long-term goals',
+      love: 'Quality time matters',
+      finance: 'Conservative approach pays',
+      health: 'Rest and recovery',
+      numbers: '1, 4, 12'
+    },
+    Gemini: {
+      general: 'Communication flows freely with important insights.',
+      career: 'Networking brings success',
+      love: 'Intellectual connection grows',
+      finance: 'Flexible investments',
+      health: 'Mental clarity improves',
+      numbers: '5, 7, 22'
+    },
+    Cancer: {
+      general: 'Emotions run deep - trust your intuition.',
+      career: 'Home-based opportunities',
+      love: 'Family comes first',
+      finance: 'Security focused',
+      health: 'Emotional balance',
+      numbers: '2, 9, 11'
+    },
+    Leo: {
+      general: 'Your charisma shines brightly today.',
+      career: 'Leadership opportunities',
+      love: 'Romantic gestures succeed',
+      finance: 'Investment confidence grows',
+      health: 'Creative energy boosts',
+      numbers: '1, 6, 10'
+    },
+    Virgo: {
+      general: 'Attention to detail brings excellent results.',
+      career: 'Service-based projects excel',
+      love: 'Thoughtful acts appreciated',
+      finance: 'Analytical approach wins',
+      health: 'Diet optimization',
+      numbers: '3, 5, 14'
+    },
+    Libra: {
+      general: 'Harmony and balance guide your decisions.',
+      career: 'Partnership opportunities',
+      love: 'Diplomatic approach works',
+      finance: 'Balanced portfolio',
+      health: 'Wellness through beauty',
+      numbers: '2, 7, 16'
+    },
+    Scorpio: {
+      general: 'Deep transformations and insights emerge.',
+      career: 'Individual projects succeed',
+      love: 'Intense connections grow',
+      finance: 'Strategic investments',
+      health: 'Energy regeneration',
+      numbers: '8, 9, 18'
+    },
+    Sagittarius: {
+      general: 'Adventure and learning expand your horizons.',
+      career: 'Educational opportunities',
+      love: 'Spontaneous romance',
+      finance: 'Travel-related gains',
+      health: 'Movement and exercise',
+      numbers: '3, 6, 19'
+    },
+    Capricorn: {
+      general: 'Ambitious plans receive serious consideration.',
+      career: 'Administrative success',
+      love: 'Committed relationships grow',
+      finance: 'Long-term planning',
+      health: 'Structural health foundation',
+      numbers: '4, 8, 13'
+    },
+    Aquarius: {
+      general: 'Innovative ideas and community connections flourish.',
+      career: 'Team collaboration excels',
+      love: 'Unique relationships thrive',
+      finance: 'Tech investment potential',
+      health: 'Progressive treatments',
+      numbers: '4, 7, 17'
+    },
+    Pisces: {
+      general: 'Intuition and creativity flow abundantly.',
+      career: 'Creative fields glow',
+      love: 'Dreamy connections deepen',
+      finance: 'Supportive investments',
+      health: 'Spiritual healing',
+      numbers: '3, 9, 12'
+    }
   };
 
-  return insights[sign] || { general: 'Today brings balanced energies and steady progress.', career: 'Focus on meaningful tasks', love: 'Stability strengthens bonds', finance: 'Conservative approach works', health: 'Wellness through routine', numbers: '1, 2, 3' };
+  return (
+    insights[sign] || {
+      general: 'Today brings balanced energies and steady progress.',
+      career: 'Focus on meaningful tasks',
+      love: 'Stability strengthens bonds',
+      finance: 'Conservative approach works',
+      health: 'Wellness through routine',
+      numbers: '1, 2, 3'
+    }
+  );
 };
 
 /**
@@ -125,14 +235,19 @@ const handleNumerology = (message, user) => {
  * @returns {number} Life path number (1-9)
  */
 const calculateLifePathNumber = birthDate => {
-  if (!birthDate) { return 1; }
+  if (!birthDate) {
+    return 1;
+  }
 
   const digits = birthDate.toString().replace(/\D/g, '');
   let sum = digits.split('').reduce((acc, digit) => acc + parseInt(digit), 0);
 
   // Reduce to single digit (except master numbers 11, 22, 33)
   while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
-    sum = sum.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+    sum = sum
+      .toString()
+      .split('')
+      .reduce((acc, digit) => acc + parseInt(digit), 0);
   }
 
   return sum;
@@ -144,14 +259,46 @@ const calculateLifePathNumber = birthDate => {
  * @returns {number} Name number (1-9)
  */
 const calculateNameNumber = name => {
-  if (!name) { return 1; }
+  if (!name) {
+    return 1;
+  }
 
-  const letterValues = { a: 1, i: 9, j: 1, q: 8, r: 9, b: 2, c: 3, d: 4, e: 5, f: 6, g: 3, h: 8, k: 2, l: 3, s: 1, t: 4, u: 3, v: 6, w: 6, x: 5, y: 7, z: 8 };
-  const digits = name.toLowerCase().replace(/[^a-z]/g, '').split('').map(letter => letterValues[letter] || 1);
+  const letterValues = {
+    a: 1,
+    i: 9,
+    j: 1,
+    q: 8,
+    r: 9,
+    b: 2,
+    c: 3,
+    d: 4,
+    e: 5,
+    f: 6,
+    g: 3,
+    h: 8,
+    k: 2,
+    l: 3,
+    s: 1,
+    t: 4,
+    u: 3,
+    v: 6,
+    w: 6,
+    x: 5,
+    y: 7,
+    z: 8
+  };
+  const digits = name
+    .toLowerCase()
+    .replace(/[^a-z]/g, '')
+    .split('')
+    .map(letter => letterValues[letter] || 1);
 
   let sum = digits.reduce((acc, num) => acc + num, 0);
   while (sum > 9) {
-    sum = sum.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+    sum = sum
+      .toString()
+      .split('')
+      .reduce((acc, digit) => acc + parseInt(digit), 0);
   }
   return sum;
 };
@@ -178,17 +325,19 @@ const getNumerologyInsights = (lifePath, nameNum) => {
     33: 'Master healer and service.'
   };
 
-  const nameInsights = nameNum ? {
-    1: 'Independent and determined nature.',
-    2: 'Cooperative and intuitive personality.',
-    3: 'Creative and socially adept.',
-    4: 'Practical and detail-oriented.',
-    5: 'Adventurous and adaptable.',
-    6: 'Loving and responsible.',
-    7: 'Analytical and introspective.',
-    8: 'Confident and ambitious.',
-    9: 'Idealistic and compassionate.'
-  } : {};
+  const nameInsights = nameNum ?
+    {
+      1: 'Independent and determined nature.',
+      2: 'Cooperative and intuitive personality.',
+      3: 'Creative and socially adept.',
+      4: 'Practical and detail-oriented.',
+      5: 'Adventurous and adaptable.',
+      6: 'Loving and responsible.',
+      7: 'Analytical and introspective.',
+      8: 'Confident and ambitious.',
+      9: 'Idealistic and compassionate.'
+    } :
+    {};
 
   return {
     lifePath: lifePathInsights[lifePath] || 'Balanced and positive energy.',
@@ -204,7 +353,11 @@ const getNumerologyInsights = (lifePath, nameNum) => {
  * @returns {string|null} Response or null if not handled
  */
 const handleSolarReturn = (message, user) => {
-  if (!message.includes('solar') && !message.includes('birthday') && !message.includes('annual')) {
+  if (
+    !message.includes('solar') &&
+    !message.includes('birthday') &&
+    !message.includes('annual')
+  ) {
     return null;
   }
 
@@ -223,7 +376,9 @@ const handleSolarReturn = (message, user) => {
  */
 const generateSolarReturnAnalysis = user => {
   const sunSign = getSunSign(user.birthDate);
-  const age = new Date().getFullYear() - new Date(`20${user.birthDate.substring(4)}`).getFullYear();
+  const age =
+    new Date().getFullYear() -
+    new Date(`20${user.birthDate.substring(4)}`).getFullYear();
 
   const insights = {
     Aries: {
@@ -231,21 +386,25 @@ const generateSolarReturnAnalysis = user => {
       areas: '🎯 Career breakthroughs, new relationships, fresh starts',
       chart: 'Mars influences bring energy and determination',
       timing: 'Q1 shows strongest initiative, Q4 consolidates gains',
-      opportunities: 'Entrepreneurial ventures, bold decisions, leadership roles'
+      opportunities:
+        'Entrepreneurial ventures, bold decisions, leadership roles'
     },
     Taurus: {
       intro: `${age}-year solar return focuses on stability and material security.`,
-      areas: '💰 Financial stability, home improvements, relationship commitment',
+      areas:
+        '💰 Financial stability, home improvements, relationship commitment',
       chart: 'Venus position brings comfort and relationship growth',
       timing: 'Q2 and Q3 favor building foundations',
-      opportunities: 'Property investments, career stability, deepened relationships'
+      opportunities:
+        'Property investments, career stability, deepened relationships'
     },
     Gemini: {
       intro: `${age}-year solar return brings communication and learning opportunities.`,
       areas: '🧠 Education, travel, social connections, communication',
       chart: 'Mercury placement enhances learning and networking',
       timing: 'Gemini period (May-June) maximizes communication',
-      opportunities: 'Skills development, international opportunities, media work'
+      opportunities:
+        'Skills development, international opportunities, media work'
     },
     Cancer: {
       intro: `${age}-year solar return emphasizes emotional security and family.`,
@@ -266,14 +425,16 @@ const generateSolarReturnAnalysis = user => {
       areas: '🔧 Health routines, work efficiency, practical skills',
       chart: 'Mercury position favors detail-oriented activities',
       timing: 'Q3 provides focus for improvement projects',
-      opportunities: 'Career advancement, health improvements, organizational success'
+      opportunities:
+        'Career advancement, health improvements, organizational success'
     },
     Libra: {
       intro: `${age}-year solar return emphasizes harmony and relationships.`,
       areas: '❤️ Partnerships, beauty, justice, diplomatic endeavors',
       chart: 'Venus influence enhances relationship matters',
       timing: 'Libra season (Sept-Oct) optimizes partnerships',
-      opportunities: 'Marriage/commitment, business partnerships, artistic pursuits'
+      opportunities:
+        'Marriage/commitment, business partnerships, artistic pursuits'
     },
     Scorpio: {
       intro: `${age}-year solar return brings transformation and deep insights.`,
@@ -308,7 +469,8 @@ const generateSolarReturnAnalysis = user => {
       areas: '🎨 Creative expression, spiritual development, compassion',
       chart: 'Neptune/Pisces influences deepen spiritual awareness',
       timing: 'Pisces season enhances creative and intuitive abilities',
-      opportunities: 'Artistic pursuits, spiritual practices, healing professions'
+      opportunities:
+        'Artistic pursuits, spiritual practices, healing professions'
     }
   };
 
@@ -330,7 +492,11 @@ const generateSolarReturnAnalysis = user => {
  * @returns {string|null} Response or null if not handled
  */
 const handleAsteroids = (message, user) => {
-  if (!message.includes('asteroid') && !message.includes('chiron') && !message.includes('ceres')) {
+  if (
+    !message.includes('asteroid') &&
+    !message.includes('chiron') &&
+    !message.includes('ceres')
+  ) {
     return null;
   }
 

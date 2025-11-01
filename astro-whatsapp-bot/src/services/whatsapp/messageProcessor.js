@@ -14,17 +14,29 @@ const BirthChartAction = require('../whatsapp/actions/astrology/BirthChartAction
 
 // Stub actions for features not yet fully implemented
 class DailyHoroscopeStubAction {
-  static get actionId() { return 'get_daily_horoscope'; }
+  static get actionId() {
+    return 'get_daily_horoscope';
+  }
   async execute() {
-    await sendMessage(this.phoneNumber, '☀️ *Daily Horoscope*\n\nYour personalized daily horoscope is coming soon! Stay tuned for astrological insights tailored just for you.', 'text');
+    await sendMessage(
+      this.phoneNumber,
+      '☀️ *Daily Horoscope*\n\nYour personalized daily horoscope is coming soon! Stay tuned for astrological insights tailored just for you.',
+      'text'
+    );
     return { success: true, type: 'coming_soon' };
   }
 }
 
 class CompatibilityStubAction {
-  static get actionId() { return 'initiate_compatibility_flow'; }
+  static get actionId() {
+    return 'initiate_compatibility_flow';
+  }
   async execute() {
-    await sendMessage(this.phoneNumber, '👥 *Compatibility Analysis*\n\nRelationship compatibility analysis is being enhanced! This powerful feature will help you understand astrological harmony between partners.', 'text');
+    await sendMessage(
+      this.phoneNumber,
+      '👥 *Compatibility Analysis*\n\nRelationship compatibility analysis is being enhanced! This powerful feature will help you understand astrological harmony between partners.',
+      'text'
+    );
     return { success: true, type: 'coming_soon' };
   }
 }
@@ -62,7 +74,9 @@ class MessageRouter {
 
     if (!ActionClass) {
       logger.warn(`No action class found for actionId: ${actionId}`);
-      const userLanguage = user?.preferredLanguage || translationService.detectLanguage(phoneNumber);
+      const userLanguage =
+        user?.preferredLanguage ||
+        translationService.detectLanguage(phoneNumber);
       await sendMessage(
         phoneNumber,
         `Sorry, this feature (${actionId}) is currently being updated. Please try again later.`,
@@ -76,7 +90,9 @@ class MessageRouter {
       const action = new ActionClass({
         logger,
         sendMessage,
-        getUserLanguage: () => user?.preferredLanguage || translationService.detectLanguage(phoneNumber),
+        getUserLanguage: () =>
+          user?.preferredLanguage ||
+          translationService.detectLanguage(phoneNumber),
         phoneNumber,
         user
       });
@@ -131,15 +147,27 @@ class MessageRouter {
     const lowerText = text.toLowerCase().trim();
 
     // Simple keyword mapping - expand as needed
-    if (lowerText.includes('birth chart') || lowerText.includes('kundli') || lowerText === 'birth') {
+    if (
+      lowerText.includes('birth chart') ||
+      lowerText.includes('kundli') ||
+      lowerText === 'birth'
+    ) {
       return 'show_birth_chart';
     }
 
-    if (lowerText.includes('horoscope') || lowerText.includes('daily') || lowerText === '1') {
+    if (
+      lowerText.includes('horoscope') ||
+      lowerText.includes('daily') ||
+      lowerText === '1'
+    ) {
       return 'get_daily_horoscope';
     }
 
-    if (lowerText.includes('compatibility') || lowerText.includes('match') || lowerText === '3') {
+    if (
+      lowerText.includes('compatibility') ||
+      lowerText.includes('match') ||
+      lowerText === '3'
+    ) {
       return 'initiate_compatibility_flow';
     }
 
@@ -252,12 +280,20 @@ const processIncomingMessage = async(message, value) => {
       user.lastInteraction = new Date();
       await user.save();
     } catch (error) {
-      logger.warn(`Failed to update last interaction for user ${phoneNumber}:`, error.message);
+      logger.warn(
+        `Failed to update last interaction for user ${phoneNumber}:`,
+        error.message
+      );
       // Non-critical error, continue processing
     }
   } catch (error) {
-    const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
-    logger.error(`❌ Error processing message from ${phoneNumber}: ${errorMsg}`);
+    const errorMsg =
+      error.response?.data?.error?.message ||
+      error.response?.data?.message ||
+      error.message;
+    logger.error(
+      `❌ Error processing message from ${phoneNumber}: ${errorMsg}`
+    );
     await sendMessage(
       phoneNumber,
       'Sorry, there was an error processing your message. Please try again.',
@@ -293,7 +329,6 @@ const processTextMessage = async(message, user) => {
   // This is handled by the router now
   await processIncomingMessage(message, {});
 };
-
 
 /**
  * Legacy function for backward compatibility

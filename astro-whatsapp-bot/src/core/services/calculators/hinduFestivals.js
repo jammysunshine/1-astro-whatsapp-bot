@@ -22,7 +22,8 @@ class HinduFestivals {
         english: 'Festival of Lights',
         date: 'Amavasya (New Moon) in Kartik month',
         gregorian_period: 'October-November',
-        significance: 'Victory of light over darkness, triumph of good over evil',
+        significance:
+          'Victory of light over darkness, triumph of good over evil',
         deities: 'Lakshmi (Goddess of Wealth), Lord Ganesha',
         rituals: [
           'House cleaning and decoration with lights',
@@ -38,7 +39,8 @@ class HinduFestivals {
           'Investment and financial activities'
         ],
         duration: '5 days (from Dhanteras to Bhaiduj)',
-        regional_variations: 'Called Deepavali in South India, Diwali in North India'
+        regional_variations:
+          'Called Deepavali in South India, Diwali in North India'
       },
 
       holi: {
@@ -46,7 +48,8 @@ class HinduFestivals {
         english: 'Festival of Colors',
         date: 'Full Moon (Purnima) in Phalgun month',
         gregorian_period: 'February-March',
-        significance: 'Victory of good over evil, renewal, and spring celebration',
+        significance:
+          'Victory of good over evil, renewal, and spring celebration',
         deities: 'Lord Krishna, Radha, Prahlad',
         rituals: [
           'Holika Dahan (burning of Holika effigy)',
@@ -70,7 +73,8 @@ class HinduFestivals {
         english: 'Worship of Goddess Durga',
         date: 'Ashwin month (September-October)',
         gregorian_period: 'September-October',
-        significance: 'Victory of Goddess Durga over Mahishasura, divine feminine power',
+        significance:
+          'Victory of Goddess Durga over Mahishasura, divine feminine power',
         deities: 'Goddess Durga and her nine forms',
         rituals: [
           'Pandal decoration with Durga idols',
@@ -86,7 +90,8 @@ class HinduFestivals {
           'Charitable activities'
         ],
         duration: '10 days (from Maha Saptami to Vijayadashami)',
-        regional_variations: 'Most elaborate in West Bengal, called Dussehra in North India'
+        regional_variations:
+          'Most elaborate in West Bengal, called Dussehra in North India'
       },
 
       maha_shivaratri: {
@@ -94,7 +99,8 @@ class HinduFestivals {
         english: 'Great Night of Lord Shiva',
         date: '14th night of Krishna Paksha in Phalgun month',
         gregorian_period: 'February-March',
-        significance: 'Marriage of Shiva and Parvati, awakening of spiritual consciousness',
+        significance:
+          'Marriage of Shiva and Parvati, awakening of spiritual consciousness',
         deities: 'Lord Shiva',
         rituals: [
           'All-night vigil and prayers',
@@ -110,7 +116,8 @@ class HinduFestivals {
           'Healing and detoxification'
         ],
         duration: '1 day (all-night celebration)',
-        regional_variations: 'Special celebrations in Varanasi, Somnath, and Tamil Nadu'
+        regional_variations:
+          'Special celebrations in Varanasi, Somnath, and Tamil Nadu'
       },
 
       raksha_bandhan: {
@@ -133,7 +140,8 @@ class HinduFestivals {
           'Charitable activities'
         ],
         duration: '1 day',
-        regional_variations: 'Celebrated differently across India, special in North India'
+        regional_variations:
+          'Celebrated differently across India, special in North India'
       },
 
       ganesh_chaturthi: {
@@ -157,7 +165,8 @@ class HinduFestivals {
           'House construction'
         ],
         duration: '10 days (from Chaturthi to Anant Chaturdashi)',
-        regional_variations: 'Most elaborate in Maharashtra, 1-2 days in other regions'
+        regional_variations:
+          'Most elaborate in Maharashtra, 1-2 days in other regions'
       },
 
       navaratri: {
@@ -181,7 +190,8 @@ class HinduFestivals {
           'Health and wellness routines'
         ],
         duration: '9-10 days',
-        regional_variations: 'Garba in Gujarat, Durga Puja in Bengal, Saraswati Puja in Kerala'
+        regional_variations:
+          'Garba in Gujarat, Durga Puja in Bengal, Saraswati Puja in Kerala'
       },
 
       krishna_janmashtami: {
@@ -205,7 +215,8 @@ class HinduFestivals {
           'Charitable activities'
         ],
         duration: '1 day',
-        regional_variations: 'Dahi Handi in Maharashtra, special celebrations in Mathura'
+        regional_variations:
+          'Dahi Handi in Maharashtra, special celebrations in Mathura'
       },
 
       ram_navami: {
@@ -229,7 +240,8 @@ class HinduFestivals {
           'Community service'
         ],
         duration: '1 day',
-        regional_variations: 'Special celebrations in Ayodhya, special fasting in South India'
+        regional_variations:
+          'Special celebrations in Ayodhya, special fasting in South India'
       },
 
       hanuman_jayanti: {
@@ -253,24 +265,73 @@ class HinduFestivals {
           'Courage and determination activities'
         ],
         duration: '1 day',
-        regional_variations: 'Special celebrations in North India, Kerala, and Tamil Nadu'
+        regional_variations:
+          'Special celebrations in North India, Kerala, and Tamil Nadu'
       }
     };
 
     // Hindu Calendar Months
     this.hinduMonths = {
-      chaitra: { name: 'Chaitra', gregorian: 'March-April', festivals: ['Ram Navami', 'Hanuman Jayanti'] },
-      vaishakha: { name: 'Vaishakha', gregorian: 'April-May', festivals: ['Akshaya Tritiya'] },
-      jyeshtha: { name: 'Jyeshtha', gregorian: 'May-June', festivals: ['Vat Pournima'] },
-      ashadha: { name: 'Ashadha', gregorian: 'June-July', festivals: ['Guru Purnima'] },
-      shravana: { name: 'Shravana', gregorian: 'July-August', festivals: ['Raksha Bandhan', 'Krishna Janmashtami'] },
-      bhadrapada: { name: 'Bhadrapada', gregorian: 'August-September', festivals: ['Ganesh Chaturthi', 'Onam'] },
-      ashvina: { name: 'Ashvina', gregorian: 'September-October', festivals: ['Navaratri', 'Durga Puja', 'Diwali'] },
-      kartika: { name: 'Kartika', gregorian: 'October-November', festivals: ['Diwali', 'Kartik Purnima'] },
-      margashirsha: { name: 'Margashirsha', gregorian: 'November-December', festivals: ['Kartik Purnima'] },
-      pausha: { name: 'Pausha', gregorian: 'December-January', festivals: ['Sankranti'] },
-      magha: { name: 'Magha', gregorian: 'January-February', festivals: ['Maghi Purnima'] },
-      phalguna: { name: 'Phalguna', gregorian: 'February-March', festivals: ['Maha Shivaratri', 'Holi'] }
+      chaitra: {
+        name: 'Chaitra',
+        gregorian: 'March-April',
+        festivals: ['Ram Navami', 'Hanuman Jayanti']
+      },
+      vaishakha: {
+        name: 'Vaishakha',
+        gregorian: 'April-May',
+        festivals: ['Akshaya Tritiya']
+      },
+      jyeshtha: {
+        name: 'Jyeshtha',
+        gregorian: 'May-June',
+        festivals: ['Vat Pournima']
+      },
+      ashadha: {
+        name: 'Ashadha',
+        gregorian: 'June-July',
+        festivals: ['Guru Purnima']
+      },
+      shravana: {
+        name: 'Shravana',
+        gregorian: 'July-August',
+        festivals: ['Raksha Bandhan', 'Krishna Janmashtami']
+      },
+      bhadrapada: {
+        name: 'Bhadrapada',
+        gregorian: 'August-September',
+        festivals: ['Ganesh Chaturthi', 'Onam']
+      },
+      ashvina: {
+        name: 'Ashvina',
+        gregorian: 'September-October',
+        festivals: ['Navaratri', 'Durga Puja', 'Diwali']
+      },
+      kartika: {
+        name: 'Kartika',
+        gregorian: 'October-November',
+        festivals: ['Diwali', 'Kartik Purnima']
+      },
+      margashirsha: {
+        name: 'Margashirsha',
+        gregorian: 'November-December',
+        festivals: ['Kartik Purnima']
+      },
+      pausha: {
+        name: 'Pausha',
+        gregorian: 'December-January',
+        festivals: ['Sankranti']
+      },
+      magha: {
+        name: 'Magha',
+        gregorian: 'January-February',
+        festivals: ['Maghi Purnima']
+      },
+      phalguna: {
+        name: 'Phalguna',
+        gregorian: 'February-March',
+        festivals: ['Maha Shivaratri', 'Holi']
+      }
     };
 
     // Auspicious timings and muhurtas
@@ -337,7 +398,10 @@ class HinduFestivals {
           festivals.push({
             ...festival,
             key,
-            estimated_date: this.getEstimatedGregorianDate(festival, targetDate.getFullYear())
+            estimated_date: this.getEstimatedGregorianDate(
+              festival,
+              targetDate.getFullYear()
+            )
           });
         }
       }
@@ -381,10 +445,16 @@ class HinduFestivals {
       hanuman_jayanti: { month: 3, day: 28, range: 3 } // March-April
     };
 
-    const approx = festivalApproximations[festival.name.toLowerCase().replace(/\s+/g, '_')];
-    if (!approx) { return false; }
+    const approx =
+      festivalApproximations[festival.name.toLowerCase().replace(/\s+/g, '_')];
+    if (!approx) {
+      return false;
+    }
 
-    return Math.abs(month - approx.month) <= 1 && Math.abs(day - approx.day) <= approx.range;
+    return (
+      Math.abs(month - approx.month) <= 1 &&
+      Math.abs(day - approx.day) <= approx.range
+    );
   }
 
   /**
@@ -408,7 +478,10 @@ class HinduFestivals {
       hanuman_jayanti: `${year}-03-29`
     };
 
-    return estimations[festival.name.toLowerCase().replace(/\s+/g, '_')] || 'Date varies by lunar calendar';
+    return (
+      estimations[festival.name.toLowerCase().replace(/\s+/g, '_')] ||
+      'Date varies by lunar calendar'
+    );
   }
 
   /**
@@ -418,7 +491,15 @@ class HinduFestivals {
    */
   getAuspiciousTimingsForDate(date) {
     const dayOfWeek = date.getDay();
-    const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const weekdayNames = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday'
+    ];
 
     // Rahu Kalam timings by weekday (approximate)
     const rahuKalamTimings = {
@@ -428,7 +509,7 @@ class HinduFestivals {
       3: '12:00 PM - 1:30 PM', // Wednesday
       4: '1:30 PM - 3:00 PM', // Thursday
       5: '10:30 AM - 12:00 PM', // Friday
-      6: '9:00 AM - 10:30 AM'  // Saturday
+      6: '9:00 AM - 10:30 AM' // Saturday
     };
 
     return {
@@ -460,7 +541,7 @@ class HinduFestivals {
       3: '10:30 AM - 12:00 PM', // Wednesday
       4: '1:30 PM - 3:00 PM', // Thursday
       5: '10:30 AM - 12:00 PM', // Friday
-      6: '9:00 AM - 10:30 AM'  // Saturday
+      6: '9:00 AM - 10:30 AM' // Saturday
     };
 
     return yamagandamTimings[dayOfWeek];
@@ -479,7 +560,9 @@ class HinduFestivals {
       const checkDate = new Date(start);
       checkDate.setDate(start.getDate() + i);
 
-      const festivalsOnDate = this.getFestivalsForDate(checkDate.toISOString().split('T')[0]);
+      const festivalsOnDate = this.getFestivalsForDate(
+        checkDate.toISOString().split('T')[0]
+      );
       if (festivalsOnDate.festivals.length > 0) {
         upcoming.push({
           date: checkDate.toISOString().split('T')[0],
@@ -514,7 +597,10 @@ class HinduFestivals {
     return {
       ...festival,
       key: normalizedName,
-      estimated_dates: this.getEstimatedGregorianDate(festival, new Date().getFullYear()),
+      estimated_dates: this.getEstimatedGregorianDate(
+        festival,
+        new Date().getFullYear()
+      ),
       rituals_detailed: this.getDetailedRituals(festival),
       regional_significance: this.getRegionalSignificance(festival),
       modern_celebration: this.getModernCelebrationTips(festival)
@@ -547,7 +633,10 @@ class HinduFestivals {
       ]
     };
 
-    return detailedRituals[festival.name.toLowerCase().replace(/\s+/g, '_')] || festival.rituals;
+    return (
+      detailedRituals[festival.name.toLowerCase().replace(/\s+/g, '_')] ||
+      festival.rituals
+    );
   }
 
   /**
@@ -571,9 +660,13 @@ class HinduFestivals {
       }
     };
 
-    return regionalInfo[festival.name.toLowerCase().replace(/\s+/g, '_')] || {
-      general: festival.regional_variations || 'Celebrated across India with regional variations'
-    };
+    return (
+      regionalInfo[festival.name.toLowerCase().replace(/\s+/g, '_')] || {
+        general:
+          festival.regional_variations ||
+          'Celebrated across India with regional variations'
+      }
+    );
   }
 
   /**
@@ -599,12 +692,14 @@ class HinduFestivals {
       ]
     };
 
-    return modernTips[festival.name.toLowerCase().replace(/\s+/g, '_')] || [
-      'Connect with family and community',
-      'Practice the spiritual significance',
-      'Share joy and positivity',
-      'Maintain cultural traditions'
-    ];
+    return (
+      modernTips[festival.name.toLowerCase().replace(/\s+/g, '_')] || [
+        'Connect with family and community',
+        'Practice the spiritual significance',
+        'Share joy and positivity',
+        'Maintain cultural traditions'
+      ]
+    );
   }
 
   /**
@@ -628,12 +723,15 @@ class HinduFestivals {
     });
 
     summary += '*Auspicious Activities Today:*\n';
-    const allActivities = [...new Set(festivals.flatMap(f => f.auspicious_activities))];
+    const allActivities = [
+      ...new Set(festivals.flatMap(f => f.auspicious_activities))
+    ];
     allActivities.slice(0, 5).forEach(activity => {
       summary += `• ${activity}\n`;
     });
 
-    summary += '\n🕉️ *Note:* Dates may vary slightly based on lunar calendar. Consult local panchang for exact timings.';
+    summary +=
+      '\n🕉️ *Note:* Dates may vary slightly based on lunar calendar. Consult local panchang for exact timings.';
 
     return summary;
   }

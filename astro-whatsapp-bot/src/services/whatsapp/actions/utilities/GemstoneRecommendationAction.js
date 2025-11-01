@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class GemstoneRecommendationAction extends BaseAction {
-  static get actionId() { return 'get_gemstone_recommendations'; }
+  static get actionId() {
+    return 'get_gemstone_recommendations';
+  }
 
   async execute() {
     try {
@@ -21,7 +23,8 @@ class GemstoneRecommendationAction extends BaseAction {
   }
 
   async sendGemstoneGuide() {
-    const guide = '💎 *Gemstone Recommendations - Cosmic Crystals*\n\n' +
+    const guide =
+      '💎 *Gemstone Recommendations - Cosmic Crystals*\n\n' +
       'Gemstones amplify planetary energies in your birth chart. Based on Vedic tradition and crystal healing, stones can strengthen beneficial planets and balance weak ones.\n\n' +
       '*💫 GEMSTONES BY PLANET:*\n' +
       '• Sun (Leadership): Ruby, Red Garnet, Diamond\n' +
@@ -44,14 +47,19 @@ class GemstoneRecommendationAction extends BaseAction {
       '*Choose stones that resonate with your birth chart\'s needs.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, guide, buttons, userLanguage
+      this.phoneNumber,
+      guide,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -60,8 +68,15 @@ class GemstoneRecommendationAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Get astrological gemstone recommendations based on birth chart',
-      keywords: ['gemstones', 'crystals', 'stones', 'ratnas', 'planetary stones'],
+      description:
+        'Get astrological gemstone recommendations based on birth chart',
+      keywords: [
+        'gemstones',
+        'crystals',
+        'stones',
+        'ratnas',
+        'planetary stones'
+      ],
       category: 'utilities',
       subscriptionRequired: true,
       cooldown: 43200000

@@ -12,7 +12,8 @@ const logger = require('../../utils/logger');
 class CurrentDashaService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CurrentDashaService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'CurrentDashaService';
     logger.info('CurrentDashaService initialized');
   }
 
@@ -33,7 +34,8 @@ class CurrentDashaService extends ServiceTemplate {
       service: 'Vedic Current Dasha Analysis',
       timestamp: new Date().toISOString(),
       data: result,
-      disclaimer: 'Current Dasha analysis shows your present planetary period influences. Dasha periods indicate when certain planetary energies are most active. Complete astrological analysis considers the entire birth chart for comprehensive understanding.'
+      disclaimer:
+        'Current Dasha analysis shows your present planetary period influences. Dasha periods indicate when certain planetary energies are most active. Complete astrological analysis considers the entire birth chart for comprehensive understanding.'
     };
   }
 
@@ -79,7 +81,8 @@ class CurrentDashaService extends ServiceTemplate {
   async calculateCurrentDasha(birthData) {
     try {
       // Get Dasha analysis from calculator
-      const dashaAnalysis = await this.calculator.calculateVimshottariDasha(birthData);
+      const dashaAnalysis =
+        await this.calculator.calculateVimshottariDasha(birthData);
 
       // Extract current Dasha information
       const currentDasha = this._extractCurrentDasha(dashaAnalysis);
@@ -96,7 +99,10 @@ class CurrentDashaService extends ServiceTemplate {
         remainingTime,
         lifeImpact,
         recommendations,
-        interpretation: this._createCurrentDashaInterpretation(currentDasha, dashaInfluence)
+        interpretation: this._createCurrentDashaInterpretation(
+          currentDasha,
+          dashaInfluence
+        )
       };
     } catch (error) {
       logger.error('Current Dasha calculation error:', error);
@@ -119,7 +125,8 @@ class CurrentDashaService extends ServiceTemplate {
         endDate: current.mahadashaEnd || 'Unknown',
         totalYears: current.mahadashaYears || 0,
         remainingYears: current.remainingYears || 0,
-        elapsedYears: (current.mahadashaYears || 0) - (current.remainingYears || 0)
+        elapsedYears:
+          (current.mahadashaYears || 0) - (current.remainingYears || 0)
       },
       antardasha: {
         lord: current.antardashaLord || 'Unknown',
@@ -153,9 +160,15 @@ class CurrentDashaService extends ServiceTemplate {
     return {
       primaryInfluence: this._getPlanetaryInfluence(mahadashaLord),
       secondaryInfluence: this._getPlanetaryInfluence(antardashaLord),
-      combinedEffect: this._analyzeDashaCombination(mahadashaLord, antardashaLord),
+      combinedEffect: this._analyzeDashaCombination(
+        mahadashaLord,
+        antardashaLord
+      ),
       dominantThemes: this._getDashaThemes(mahadashaLord),
-      energyPattern: this._determineEnergyPattern(mahadashaLord, antardashaLord)
+      energyPattern: this._determineEnergyPattern(
+        mahadashaLord,
+        antardashaLord
+      )
     };
   }
 
@@ -172,8 +185,10 @@ class CurrentDashaService extends ServiceTemplate {
       mahadashaRemaining: {
         years: mahadasha.remainingYears,
         months: Math.round((mahadasha.remainingYears % 1) * 12),
-        percentage: mahadasha.totalYears > 0 ?
-          Math.round(((mahadasha.elapsedYears / mahadasha.totalYears) * 100)) : 0
+        percentage:
+          mahadasha.totalYears > 0 ?
+            Math.round((mahadasha.elapsedYears / mahadasha.totalYears) * 100) :
+            0
       },
       antardashaRemaining: {
         years: antardasha.remainingYears,
@@ -307,7 +322,9 @@ class CurrentDashaService extends ServiceTemplate {
    * @returns {string} Combination analysis
    */
   _analyzeDashaCombination(mahadasha, antardasha) {
-    if (!mahadasha || !antardasha) { return 'balanced planetary combination'; }
+    if (!mahadasha || !antardasha) {
+      return 'balanced planetary combination';
+    }
 
     const combinations = {
       'sun-moon': 'emotional self-expression and leadership',
@@ -390,10 +407,24 @@ class CurrentDashaService extends ServiceTemplate {
    * @returns {string} Next Mahadasha lord
    */
   _getNextMahadashaLord(currentLord) {
-    const sequence = ['Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury'];
-    const currentIndex = sequence.findIndex(lord => lord.toLowerCase() === currentLord.toLowerCase());
+    const sequence = [
+      'Ketu',
+      'Venus',
+      'Sun',
+      'Moon',
+      'Mars',
+      'Rahu',
+      'Jupiter',
+      'Saturn',
+      'Mercury'
+    ];
+    const currentIndex = sequence.findIndex(
+      lord => lord.toLowerCase() === currentLord.toLowerCase()
+    );
 
-    if (currentIndex === -1) { return 'Unknown'; }
+    if (currentIndex === -1) {
+      return 'Unknown';
+    }
 
     const nextIndex = (currentIndex + 1) % sequence.length;
     return sequence[nextIndex];
@@ -552,7 +583,6 @@ class CurrentDashaService extends ServiceTemplate {
       dependencies: ['DashaAnalysisCalculator']
     };
   }
-
 
   async getHealthStatus() {
     try {

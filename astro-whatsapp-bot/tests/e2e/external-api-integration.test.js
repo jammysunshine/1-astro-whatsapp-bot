@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 const User = require('../../src/models/User');
-const { processIncomingMessage } = require('../../src/services/whatsapp/messageProcessor');
+const {
+  processIncomingMessage
+} = require('../../src/services/whatsapp/messageProcessor');
 const logger = require('../../src/utils/logger');
 
 const TEST_BIRTH_DATA = {
   date: '15061990',
   time: '1430',
   place: 'Mumbai, India',
-  latitude: 19.0760,
+  latitude: 19.076,
   longitude: 72.8777,
   timezone: 'Asia/Kolkata'
 };
@@ -32,15 +34,18 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
     });
 
     // Create test user
-    testUser = await require('../../src/models/userModel').createUser(TEST_PHONE, {
-      profileComplete: true,
-      birthDate: '1990-06-15',
-      birthTime: '14:30:00',
-      birthPlace: 'Mumbai, India',
-      latitude: 19.0760,
-      longitude: 72.8777,
-      timezone: 'Asia/Kolkata'
-    });
+    testUser = await require('../../src/models/userModel').createUser(
+      TEST_PHONE,
+      {
+        profileComplete: true,
+        birthDate: '1990-06-15',
+        birthTime: '14:30:00',
+        birthPlace: 'Mumbai, India',
+        latitude: 19.076,
+        longitude: 72.8777,
+        timezone: 'Asia/Kolkata'
+      }
+    );
 
     logger.info('✅ API integration test user created');
   }, 30000);
@@ -72,8 +77,10 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
     test('should handle astrocartography requests safely', async() => {
       const mockSendMessage = jest.fn();
-      const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
-      require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
+      const originalSendMessage =
+        require('../../src/services/whatsapp/messageSender').sendMessage;
+      require('../../src/services/whatsapp/messageSender').sendMessage =
+        mockSendMessage;
 
       try {
         // Request astrocartography (should not make real API calls)
@@ -94,19 +101,22 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
         expect(mockSendMessage).toHaveBeenCalled();
 
-        const responseCall = mockSendMessage.mock.calls[mockSendMessage.mock.calls.length - 1];
+        const responseCall =
+          mockSendMessage.mock.calls[mockSendMessage.mock.calls.length - 1];
         const response = responseCall[1];
 
         expect(typeof response).toBe('string');
         expect(response.length).toBeGreaterThan(50);
 
         // Should contain astrocartography information
-        const hasAstroCartInfo = /astrocartography|planetary.*lines|relocation/i.test(response);
+        const hasAstroCartInfo =
+          /astrocartography|planetary.*lines|relocation/i.test(response);
         expect(hasAstroCartInfo).toBe(true);
 
         logger.info('✅ Astrocartography integration validated (no API costs)');
       } finally {
-        require('../../src/services/whatsapp/messageSender').sendMessage = originalSendMessage;
+        require('../../src/services/whatsapp/messageSender').sendMessage =
+          originalSendMessage;
       }
     }, 15000);
   });
@@ -127,8 +137,10 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
     test('should handle AI-powered readings safely', async() => {
       const mockSendMessage = jest.fn();
-      const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
-      require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
+      const originalSendMessage =
+        require('../../src/services/whatsapp/messageSender').sendMessage;
+      require('../../src/services/whatsapp/messageSender').sendMessage =
+        mockSendMessage;
 
       try {
         // Request future self analysis (may use AI)
@@ -149,7 +161,8 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
         expect(mockSendMessage).toHaveBeenCalled();
 
-        const responseCall = mockSendMessage.mock.calls[mockSendMessage.mock.calls.length - 1];
+        const responseCall =
+          mockSendMessage.mock.calls[mockSendMessage.mock.calls.length - 1];
         const response = responseCall[1];
 
         expect(typeof response).toBe('string');
@@ -157,7 +170,8 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
         logger.info('✅ AI-powered reading integration validated');
       } finally {
-        require('../../src/services/whatsapp/messageSender').sendMessage = originalSendMessage;
+        require('../../src/services/whatsapp/messageSender').sendMessage =
+          originalSendMessage;
       }
     }, 20000);
   });
@@ -182,8 +196,10 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
     test('should handle WhatsApp message processing', async() => {
       const mockSendMessage = jest.fn();
-      const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
-      require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
+      const originalSendMessage =
+        require('../../src/services/whatsapp/messageSender').sendMessage;
+      require('../../src/services/whatsapp/messageSender').sendMessage =
+        mockSendMessage;
 
       try {
         // Test basic text message processing
@@ -199,7 +215,8 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
         logger.info('✅ WhatsApp message processing validated');
       } finally {
-        require('../../src/services/whatsapp/messageSender').sendMessage = originalSendMessage;
+        require('../../src/services/whatsapp/messageSender').sendMessage =
+          originalSendMessage;
       }
     }, 10000);
   });
@@ -207,17 +224,23 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
   describe('Database Integration - REAL MONGO OPERATIONS', () => {
     test('should perform REAL database CRUD operations', async() => {
       // Test user creation (already done)
-      const user = await require('../../src/models/userModel').getUserByPhone(TEST_PHONE);
+      const user = await require('../../src/models/userModel').getUserByPhone(
+        TEST_PHONE
+      );
       expect(user).toBeDefined();
       expect(user.phoneNumber).toBe(TEST_PHONE);
 
       // Test user update
-      await require('../../src/models/userModel').updateUserProfile(TEST_PHONE, {
-        language: 'es',
-        notifications: false
-      });
+      await require('../../src/models/userModel').updateUserProfile(
+        TEST_PHONE,
+        {
+          language: 'es',
+          notifications: false
+        }
+      );
 
-      const updatedUser = await require('../../src/models/userModel').getUserByPhone(TEST_PHONE);
+      const updatedUser =
+        await require('../../src/models/userModel').getUserByPhone(TEST_PHONE);
       expect(updatedUser.language).toBe('es');
       expect(updatedUser.notifications).toBe(false);
 
@@ -226,7 +249,8 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
     test('should handle database connection errors gracefully', async() => {
       // Test with invalid phone number
-      const invalidUser = await require('../../src/models/userModel').getUserByPhone('+invalid');
+      const invalidUser =
+        await require('../../src/models/userModel').getUserByPhone('+invalid');
       expect(invalidUser).toBeNull();
 
       logger.info('✅ Database error handling validated');
@@ -245,8 +269,10 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
     test('should handle payment-related requests safely', async() => {
       const mockSendMessage = jest.fn();
-      const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
-      require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
+      const originalSendMessage =
+        require('../../src/services/whatsapp/messageSender').sendMessage;
+      require('../../src/services/whatsapp/messageSender').sendMessage =
+        mockSendMessage;
 
       try {
         // Test premium service request (should handle gracefully)
@@ -262,7 +288,8 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
         logger.info('✅ Payment integration handling validated');
       } finally {
-        require('../../src/services/whatsapp/messageSender').sendMessage = originalSendMessage;
+        require('../../src/services/whatsapp/messageSender').sendMessage =
+          originalSendMessage;
       }
     }, 10000);
   });
@@ -270,8 +297,10 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
   describe('Error Handling & Resilience', () => {
     test('should handle network timeouts gracefully', async() => {
       const mockSendMessage = jest.fn();
-      const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
-      require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
+      const originalSendMessage =
+        require('../../src/services/whatsapp/messageSender').sendMessage;
+      require('../../src/services/whatsapp/messageSender').sendMessage =
+        mockSendMessage;
 
       try {
         // Test with a service that might have network dependencies
@@ -295,22 +324,26 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
         logger.info('✅ Network error handling validated');
       } finally {
-        require('../../src/services/whatsapp/messageSender').sendMessage = originalSendMessage;
+        require('../../src/services/whatsapp/messageSender').sendMessage =
+          originalSendMessage;
       }
     }, 20000);
 
     test('should handle malformed data gracefully', async() => {
       const mockSendMessage = jest.fn();
-      const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
-      require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
+      const originalSendMessage =
+        require('../../src/services/whatsapp/messageSender').sendMessage;
+      require('../../src/services/whatsapp/messageSender').sendMessage =
+        mockSendMessage;
 
       try {
         // Test with incomplete user data
-        const incompleteUser = await require('../../src/models/userModel').createUser({
-          phoneNumber: '+incomplete',
-          profileComplete: false
-          // Missing birth data
-        });
+        const incompleteUser =
+          await require('../../src/models/userModel').createUser({
+            phoneNumber: '+incomplete',
+            profileComplete: false
+            // Missing birth data
+          });
 
         const message = {
           from: '+incomplete',
@@ -334,7 +367,8 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
 
         logger.info('✅ Malformed data handling validated');
       } finally {
-        require('../../src/services/whatsapp/messageSender').sendMessage = originalSendMessage;
+        require('../../src/services/whatsapp/messageSender').sendMessage =
+          originalSendMessage;
       }
     }, 15000);
   });
@@ -342,8 +376,10 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
   describe('Performance & Scalability', () => {
     test('should handle concurrent requests efficiently', async() => {
       const mockSendMessage = jest.fn();
-      const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
-      require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
+      const originalSendMessage =
+        require('../../src/services/whatsapp/messageSender').sendMessage;
+      require('../../src/services/whatsapp/messageSender').sendMessage =
+        mockSendMessage;
 
       const startTime = Date.now();
 
@@ -382,16 +418,21 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
         expect(totalTime).toBeLessThan(60000); // Under 1 minute for 5 concurrent requests
         expect(mockSendMessage).toHaveBeenCalled();
 
-        logger.info(`✅ Concurrent request performance validated: ${totalTime}ms for 5 requests`);
+        logger.info(
+          `✅ Concurrent request performance validated: ${totalTime}ms for 5 requests`
+        );
       } finally {
-        require('../../src/services/whatsapp/messageSender').sendMessage = originalSendMessage;
+        require('../../src/services/whatsapp/messageSender').sendMessage =
+          originalSendMessage;
       }
     }, 60000);
 
     test('should handle high-volume user load testing', async() => {
       const mockSendMessage = jest.fn();
-      const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
-      require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
+      const originalSendMessage =
+        require('../../src/services/whatsapp/messageSender').sendMessage;
+      require('../../src/services/whatsapp/messageSender').sendMessage =
+        mockSendMessage;
 
       const startTime = Date.now();
 
@@ -458,16 +499,21 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
         );
         await Promise.all(cleanupPromises);
 
-        logger.info(`✅ High-volume load testing validated: ${totalTime}ms for 30 requests`);
+        logger.info(
+          `✅ High-volume load testing validated: ${totalTime}ms for 30 requests`
+        );
       } finally {
-        require('../../src/services/whatsapp/messageSender').sendMessage = originalSendMessage;
+        require('../../src/services/whatsapp/messageSender').sendMessage =
+          originalSendMessage;
       }
     }, 120000);
 
     test('should maintain response times under load', async() => {
       const mockSendMessage = jest.fn();
-      const originalSendMessage = require('../../src/services/whatsapp/messageSender').sendMessage;
-      require('../../src/services/whatsapp/messageSender').sendMessage = mockSendMessage;
+      const originalSendMessage =
+        require('../../src/services/whatsapp/messageSender').sendMessage;
+      require('../../src/services/whatsapp/messageSender').sendMessage =
+        mockSendMessage;
 
       try {
         // Test response time consistency
@@ -497,7 +543,8 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
         }
 
         // Calculate average response time
-        const averageTime = responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
+        const averageTime =
+          responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
 
         // Should maintain reasonable response times (under 10 seconds average)
         expect(averageTime).toBeLessThan(10000);
@@ -507,9 +554,12 @@ describe('External API Integration Tests - SAFE VALIDATION', () => {
         const minTime = Math.min(...responseTimes);
         expect(maxTime / minTime).toBeLessThan(5);
 
-        logger.info(`✅ Response time consistency validated: avg ${averageTime}ms, range ${minTime}-${maxTime}ms`);
+        logger.info(
+          `✅ Response time consistency validated: avg ${averageTime}ms, range ${minTime}-${maxTime}ms`
+        );
       } finally {
-        require('../../src/services/whatsapp/messageSender').sendMessage = originalSendMessage;
+        require('../../src/services/whatsapp/messageSender').sendMessage =
+          originalSendMessage;
       }
     }, 60000);
   });

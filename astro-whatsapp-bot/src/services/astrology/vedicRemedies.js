@@ -27,7 +27,8 @@ class VedicRemedies {
         metal: 'Gold',
         benefits: 'Power, authority, leadership, vitality, confidence',
         mantras: ['Om Suryaya Namaha', 'Om Adityaya Namaha'],
-        precautions: 'Avoid wearing during solar eclipses, consult astrologer for exact weight'
+        precautions:
+          'Avoid wearing during solar eclipses, consult astrologer for exact weight'
       },
       moon: {
         name: 'Pearl (Moti)',
@@ -37,7 +38,8 @@ class VedicRemedies {
         finger: 'Little finger',
         day: 'Monday',
         metal: 'Silver',
-        benefits: 'Emotional balance, mental peace, intuition, fertility, wealth',
+        benefits:
+          'Emotional balance, mental peace, intuition, fertility, wealth',
         mantras: ['Om Chandraya Namaha', 'Om Somaya Namaha'],
         precautions: 'Avoid wearing during lunar eclipses, keep clean and pure'
       },
@@ -75,7 +77,8 @@ class VedicRemedies {
         metal: 'Gold',
         benefits: 'Wisdom, prosperity, children, spirituality, knowledge',
         mantras: ['Om Gurave Namaha', 'Om Brahmaputraya Namaha'],
-        precautions: 'Avoid wearing during Jupiter retrograde, ensure honey color'
+        precautions:
+          'Avoid wearing during Jupiter retrograde, ensure honey color'
       },
       venus: {
         name: 'Diamond (Heera)',
@@ -109,7 +112,8 @@ class VedicRemedies {
         finger: 'Middle finger',
         day: 'Saturday',
         metal: 'Silver',
-        benefits: 'Protection from evil, foreign travel, unconventional success',
+        benefits:
+          'Protection from evil, foreign travel, unconventional success',
         mantras: ['Om Rahave Namaha', 'Om Sarpaya Namaha'],
         precautions: 'Avoid wearing during Rahu Mahadasha, handle carefully'
       },
@@ -135,7 +139,8 @@ class VedicRemedies {
         stotra: 'Aditya Hridayam',
         count: '7000 times',
         time: 'Sunrise',
-        benefits: 'Removes Sun-related afflictions, improves health and authority'
+        benefits:
+          'Removes Sun-related afflictions, improves health and authority'
       },
       moon: {
         beej: 'Om Shram Shreem Shraum Sah Chandraya Namaha',
@@ -199,7 +204,8 @@ class VedicRemedies {
         stotra: 'Ketu Kavacham',
         count: '17000 times',
         time: 'Tuesday night',
-        benefits: 'Spiritual liberation, healing, detachment from material world'
+        benefits:
+          'Spiritual liberation, healing, detachment from material world'
       }
     };
 
@@ -218,13 +224,25 @@ class VedicRemedies {
         benefits: 'Emotional healing, family peace, mental clarity'
       },
       mars: {
-        items: ['Red lentils', 'Red flowers', 'Red cloth', 'Copper', 'Blood donation'],
+        items: [
+          'Red lentils',
+          'Red flowers',
+          'Red cloth',
+          'Copper',
+          'Blood donation'
+        ],
         places: ['Temples', 'Warriors', 'Poor people', 'Fire'],
         days: ['Tuesdays'],
         benefits: 'Reduces aggression, improves courage and vitality'
       },
       mercury: {
-        items: ['Green grams', 'Green vegetables', 'Books', 'Pen/pencil', 'Emerald'],
+        items: [
+          'Green grams',
+          'Green vegetables',
+          'Books',
+          'Pen/pencil',
+          'Emerald'
+        ],
         places: ['Temples', 'Students', 'Teachers', 'Poor children'],
         days: ['Wednesdays'],
         benefits: 'Improves intelligence, communication, and education'
@@ -242,7 +260,13 @@ class VedicRemedies {
         benefits: 'Love, beauty, luxury, artistic success'
       },
       saturn: {
-        items: ['Black sesame', 'Black cloth', 'Iron items', 'Oil', 'Black grams'],
+        items: [
+          'Black sesame',
+          'Black cloth',
+          'Iron items',
+          'Oil',
+          'Black grams'
+        ],
         places: ['Temples', 'Old people', 'Widows', 'Poor people'],
         days: ['Saturdays'],
         benefits: 'Reduces Saturn afflictions, improves longevity'
@@ -254,7 +278,13 @@ class VedicRemedies {
         benefits: 'Protection from evil, success in foreign ventures'
       },
       ketu: {
-        items: ['Brown items', 'Horse gram', 'Black dog food', 'Flags', 'Banners'],
+        items: [
+          'Brown items',
+          'Horse gram',
+          'Black dog food',
+          'Flags',
+          'Banners'
+        ],
         places: ['Temples', 'Dogs', 'Poor people', 'Spiritual organizations'],
         days: ['Tuesdays'],
         benefits: 'Spiritual liberation, healing, detachment'
@@ -265,7 +295,17 @@ class VedicRemedies {
     this.pujas = {
       navagraha: {
         name: 'Navagraha Puja',
-        planets: ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'],
+        planets: [
+          'Sun',
+          'Moon',
+          'Mars',
+          'Mercury',
+          'Jupiter',
+          'Venus',
+          'Saturn',
+          'Rahu',
+          'Ketu'
+        ],
         duration: '3-7 days',
         benefits: 'Overall planetary balance, removes multiple afflictions',
         requirements: ['Priest', 'Special materials', 'Sacred space']
@@ -275,7 +315,12 @@ class VedicRemedies {
         planets: ['Saturn'],
         duration: '1-3 days',
         benefits: 'Protection during Sade Sati, reduces Saturn afflictions',
-        requirements: ['Black sesame seeds', 'Iron nails', 'Black cloth', 'Priest']
+        requirements: [
+          'Black sesame seeds',
+          'Iron nails',
+          'Black cloth',
+          'Priest'
+        ]
       },
       kaal_sarp: {
         name: 'Kaal Sarp Dosha Nivaran Puja',
@@ -422,9 +467,11 @@ class VedicRemedies {
       }
     };
 
-    return remedies[doshaType] || {
-      error: `Remedies not available for dosha: ${doshaType}`
-    };
+    return (
+      remedies[doshaType] || {
+        error: `Remedies not available for dosha: ${doshaType}`
+      }
+    );
   }
 
   /**
@@ -459,7 +506,8 @@ class VedicRemedies {
     summary += `*Benefits:* ${charity.benefits}\n\n`;
 
     summary += `⚠️ *Precautions:* ${gem.precautions}\n\n`;
-    summary += '🕉️ *Note:* Consult a qualified astrologer before starting any remedies. Results vary by individual chart.';
+    summary +=
+      '🕉️ *Note:* Consult a qualified astrologer before starting any remedies. Results vary by individual chart.';
 
     return summary;
   }

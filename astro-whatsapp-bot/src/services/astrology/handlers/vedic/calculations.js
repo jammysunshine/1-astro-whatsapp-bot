@@ -9,9 +9,18 @@ const sweph = require('sweph');
 // Utility function to get zodiac sign from longitude
 const longitudeToSign = longitude => {
   const signs = [
-    'Aries', 'Taurus', 'Gemini', 'Cancer',
-    'Leo', 'Virgo', 'Libra', 'Scorpio',
-    'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+    'Aries',
+    'Taurus',
+    'Gemini',
+    'Cancer',
+    'Leo',
+    'Virgo',
+    'Libra',
+    'Scorpio',
+    'Sagittarius',
+    'Capricorn',
+    'Aquarius',
+    'Pisces'
   ];
 
   // Normalize longitude to 0-360 range
@@ -22,7 +31,7 @@ const longitudeToSign = longitude => {
 
 // Utility function to get house number from longitude and ascendant
 const longitudeToHouse = (longitude, ascendant) => {
-  const angle = ((longitude - ascendant + 360) % 360);
+  const angle = (longitude - ascendant + 360) % 360;
   return Math.floor(angle / 30) + 1;
 };
 
@@ -40,8 +49,17 @@ class AgeHarmonicAstrologyReader {
       return {
         interpretation: `Age ${age}: ${currentHarmonics[0]?.themes.join(', ') || 'development and growth'}.`,
         currentHarmonics,
-        techniques: ['Meditation', 'Journaling', 'Creative expression', 'Nature immersion'],
-        nextHarmonic: { name: `Harmonic ${currentHarmonics[0]?.harmonic + 1 || 8}`, ageRange: `${age + 2}-${age + 4}`, themes: ['Integration', 'Mastery'] },
+        techniques: [
+          'Meditation',
+          'Journaling',
+          'Creative expression',
+          'Nature immersion'
+        ],
+        nextHarmonic: {
+          name: `Harmonic ${currentHarmonics[0]?.harmonic + 1 || 8}`,
+          ageRange: `${age + 2}-${age + 4}`,
+          themes: ['Integration', 'Mastery']
+        },
         error: false
       };
     } catch (error) {
@@ -55,21 +73,55 @@ class AgeHarmonicAstrologyReader {
     const [day, month, year] = birthDate.split('/').map(Number);
     const birthYear = year < 100 ? 1900 + year : year;
     const birthDateObj = new Date(birthYear, month - 1, day);
-    const age = Math.floor((today - birthDateObj) / (365.25 * 24 * 60 * 60 * 1000));
+    const age = Math.floor(
+      (today - birthDateObj) / (365.25 * 24 * 60 * 60 * 1000)
+    );
     return age;
   }
 
   getHarmonicsForAge(age) {
     // Mock harmonic calculation
     const harmonics = [
-      { harmonic: 2, name: '2nd Harmonic', themes: ['Duality', 'Partnerships', 'Balance'] },
-      { harmonic: 3, name: '3rd Harmonic', themes: ['Creativity', 'Expression', 'Growth'] },
-      { harmonic: 4, name: '4th Harmonic', themes: ['Foundation', 'Home', 'Stability'] },
-      { harmonic: 5, name: '5th Harmonic', themes: ['Joy', 'Radiance', 'Self-expression'] },
-      { harmonic: 6, name: '6th Harmonic', themes: ['Service', 'Health', 'Routine'] },
-      { harmonic: 7, name: '7th Harmonic', themes: ['Spirituality', 'Introspection', 'Mystery'] },
-      { harmonic: 8, name: '8th Harmonic', themes: ['Transformation', 'Depth', 'Regeneration'] },
-      { harmonic: 9, name: '9th Harmonic', themes: ['Expansion', 'Philosophy', 'Travel'] }
+      {
+        harmonic: 2,
+        name: '2nd Harmonic',
+        themes: ['Duality', 'Partnerships', 'Balance']
+      },
+      {
+        harmonic: 3,
+        name: '3rd Harmonic',
+        themes: ['Creativity', 'Expression', 'Growth']
+      },
+      {
+        harmonic: 4,
+        name: '4th Harmonic',
+        themes: ['Foundation', 'Home', 'Stability']
+      },
+      {
+        harmonic: 5,
+        name: '5th Harmonic',
+        themes: ['Joy', 'Radiance', 'Self-expression']
+      },
+      {
+        harmonic: 6,
+        name: '6th Harmonic',
+        themes: ['Service', 'Health', 'Routine']
+      },
+      {
+        harmonic: 7,
+        name: '7th Harmonic',
+        themes: ['Spirituality', 'Introspection', 'Mystery']
+      },
+      {
+        harmonic: 8,
+        name: '8th Harmonic',
+        themes: ['Transformation', 'Depth', 'Regeneration']
+      },
+      {
+        harmonic: 9,
+        name: '9th Harmonic',
+        themes: ['Expansion', 'Philosophy', 'Travel']
+      }
     ];
 
     const harmonicIndex = age % harmonics.length;
@@ -90,21 +142,56 @@ const calculateJaiminiKarakaAnalysis = async user => {
 
     // Mock implementation - would normally calculate actual Jaimini Karakas
     const karakas = [
-      { name: 'Atmakaraka', planet: 'Jupiter', significance: 'Soul purpose and spiritual development' },
-      { name: 'Amatyakaraka', planet: 'Mercury', significance: 'Career and professional success' },
-      { name: 'Bhratrukaraka', planet: 'Saturn', significance: 'Siblings and extended family' },
-      { name: 'Matrukaraka', planet: 'Venus', significance: 'Mother and nurturing relationships' },
-      { name: 'Putrakaraka', planet: 'Jupiter', significance: 'Children and creative expression' },
-      { name: 'Gnatikaraka', planet: 'Mars', significance: 'Close friends and acquaintances' },
-      { name: 'Darakaraka', planet: 'Venus', significance: 'Spouse and romantic partnerships' },
-      { name: 'Ayarogyakaraka', planet: 'Moon', significance: 'Health and wellbeing' }
+      {
+        name: 'Atmakaraka',
+        planet: 'Jupiter',
+        significance: 'Soul purpose and spiritual development'
+      },
+      {
+        name: 'Amatyakaraka',
+        planet: 'Mercury',
+        significance: 'Career and professional success'
+      },
+      {
+        name: 'Bhratrukaraka',
+        planet: 'Saturn',
+        significance: 'Siblings and extended family'
+      },
+      {
+        name: 'Matrukaraka',
+        planet: 'Venus',
+        significance: 'Mother and nurturing relationships'
+      },
+      {
+        name: 'Putrakaraka',
+        planet: 'Jupiter',
+        significance: 'Children and creative expression'
+      },
+      {
+        name: 'Gnatikaraka',
+        planet: 'Mars',
+        significance: 'Close friends and acquaintances'
+      },
+      {
+        name: 'Darakaraka',
+        planet: 'Venus',
+        significance: 'Spouse and romantic partnerships'
+      },
+      {
+        name: 'Ayarogyakaraka',
+        planet: 'Moon',
+        significance: 'Health and wellbeing'
+      }
     ];
 
     return {
-      overview: 'Jaimini astrology emphasizes karakas (significators) as primary indicators of life areas',
+      overview:
+        'Jaimini astrology emphasizes karakas (significators) as primary indicators of life areas',
       karakas,
-      analysis: 'Each karaka represents a specific life area and its associated planetary influence',
-      guidance: 'Jaimini karakas reveal your soul\'s particular journey through earthly experiences'
+      analysis:
+        'Each karaka represents a specific life area and its associated planetary influence',
+      guidance:
+        'Jaimini karakas reveal your soul\'s particular journey through earthly experiences'
     };
   } catch (error) {
     logger.error('Jaimini Karaka calculation error:', error);
@@ -125,14 +212,31 @@ const calculateFinancialAstrologyAnalysis = async user => {
 
     // Mock implementation - would normally calculate actual financial indicators
     const financialIndicators = [
-      { planet: 'Jupiter', house: 2, influence: 'Prosperity and abundance through wisdom' },
-      { planet: 'Venus', house: 11, influence: 'Income through relationships and luxury' },
-      { planet: 'Mercury', house: 10, influence: 'Business success through communication' },
-      { planet: 'Saturn', house: 8, influence: 'Long-term wealth through discipline' }
+      {
+        planet: 'Jupiter',
+        house: 2,
+        influence: 'Prosperity and abundance through wisdom'
+      },
+      {
+        planet: 'Venus',
+        house: 11,
+        influence: 'Income through relationships and luxury'
+      },
+      {
+        planet: 'Mercury',
+        house: 10,
+        influence: 'Business success through communication'
+      },
+      {
+        planet: 'Saturn',
+        house: 8,
+        influence: 'Long-term wealth through discipline'
+      }
     ];
 
     return {
-      overview: 'Financial astrology connects planetary positions with wealth patterns',
+      overview:
+        'Financial astrology connects planetary positions with wealth patterns',
       indicators: financialIndicators,
       timing: 'Jupiter transits to 2nd/11th houses indicate prosperity periods',
       remedies: 'Venus-Jupiter aspects strengthen income flow'
@@ -158,12 +262,21 @@ const calculateMedicalAstrologyAnalysis = async user => {
     const healthIndicators = [
       { planet: 'Moon', house: 6, influence: 'Digestive system sensitivity' },
       { planet: 'Mars', house: 1, influence: 'Energy levels and vitality' },
-      { planet: 'Saturn', house: 8, influence: 'Chronic conditions and bone health' },
-      { planet: 'Jupiter', house: 12, influence: 'Liver function and expansion tendencies' }
+      {
+        planet: 'Saturn',
+        house: 8,
+        influence: 'Chronic conditions and bone health'
+      },
+      {
+        planet: 'Jupiter',
+        house: 12,
+        influence: 'Liver function and expansion tendencies'
+      }
     ];
 
     return {
-      overview: 'Medical astrology connects planetary positions with health patterns',
+      overview:
+        'Medical astrology connects planetary positions with health patterns',
       indicators: healthIndicators,
       timing: '6th house transits affect health and wellness periods',
       remedies: 'Moon-Mercury aspects support digestive health'
@@ -188,13 +301,26 @@ const calculateCareerAstrologyAnalysis = async user => {
     // Mock implementation - would normally calculate actual career indicators
     const careerIndicators = [
       { planet: 'Sun', house: 10, influence: 'Leadership and authority roles' },
-      { planet: 'Mercury', house: 6, influence: 'Communication and business skills' },
-      { planet: 'Jupiter', house: 9, influence: 'Teaching and philosophical careers' },
-      { planet: 'Saturn', house: 10, influence: 'Government and traditional careers' }
+      {
+        planet: 'Mercury',
+        house: 6,
+        influence: 'Communication and business skills'
+      },
+      {
+        planet: 'Jupiter',
+        house: 9,
+        influence: 'Teaching and philosophical careers'
+      },
+      {
+        planet: 'Saturn',
+        house: 10,
+        influence: 'Government and traditional careers'
+      }
     ];
 
     return {
-      overview: 'Career astrology connects planetary positions with professional path',
+      overview:
+        'Career astrology connects planetary positions with professional path',
       indicators: careerIndicators,
       timing: '10th house transits indicate career advancement periods',
       remedies: 'Sun-Jupiter aspects support professional growth'
@@ -227,13 +353,19 @@ const calculateAshtakavarga = async user => {
       { planet: 'Saturn', house: 8, strength: 'Saturn: 7 points' }
     ];
 
-    const peakHouses = ['House 1 (14 points)', 'House 7 (12 points)', 'House 9 (10 points)'];
+    const peakHouses = [
+      'House 1 (14 points)',
+      'House 7 (12 points)',
+      'House 9 (10 points)'
+    ];
 
     return {
-      overview: 'Ashtakavarga reveals planetary strength in 12 life areas through 64 mathematical combinations',
+      overview:
+        'Ashtakavarga reveals planetary strength in 12 life areas through 64 mathematical combinations',
       planetaryStrengths,
       peakHouses,
-      interpretation: 'Excellent planetary harmony across multiple life areas. Strong potential for success and fulfillment.',
+      interpretation:
+        'Excellent planetary harmony across multiple life areas. Strong potential for success and fulfillment.',
       error: false
     };
   } catch (error) {
@@ -255,17 +387,35 @@ const calculateFixedStarsAnalysis = async user => {
 
     // Mock implementation - would normally calculate actual Fixed Stars
     const fixedStars = [
-      { star: 'Regulus', planet: 'Mars', influence: 'Power and authority, but can bring downfall' },
-      { star: 'Aldebaran', planet: 'Mars', influence: 'Royal honors, but violent if afflicted' },
-      { star: 'Antares', planet: 'Mars', influence: 'Power struggles, transformation' },
-      { star: 'Fomalhaut', planet: 'Saturn', influence: 'Spiritual wisdom, prosperity' },
+      {
+        star: 'Regulus',
+        planet: 'Mars',
+        influence: 'Power and authority, but can bring downfall'
+      },
+      {
+        star: 'Aldebaran',
+        planet: 'Mars',
+        influence: 'Royal honors, but violent if afflicted'
+      },
+      {
+        star: 'Antares',
+        planet: 'Mars',
+        influence: 'Power struggles, transformation'
+      },
+      {
+        star: 'Fomalhaut',
+        planet: 'Saturn',
+        influence: 'Spiritual wisdom, prosperity'
+      },
       { star: 'Spica', planet: 'Venus', influence: 'Success through service' }
     ];
 
     return {
-      overview: 'Fixed stars are permanent stellar bodies that powerfully influence human destiny',
+      overview:
+        'Fixed stars are permanent stellar bodies that powerfully influence human destiny',
       stars: fixedStars,
-      interpretation: 'Twenty-eight nakshatras and major fixed stars create the backdrop of our earthly dramas',
+      interpretation:
+        'Twenty-eight nakshatras and major fixed stars create the backdrop of our earthly dramas',
       error: false
     };
   } catch (error) {
@@ -283,17 +433,47 @@ const calculateFixedStarsAnalysis = async user => {
 const calculateJaiminiKarakas = (planets, moonLongitude) =>
   // Mock implementation
   [
-    { karaka: 'Atmakaraka', planet: 'Jupiter', description: 'Soul purpose and spiritual development' },
-    { karaka: 'Amatyakaraka', planet: 'Mercury', description: 'Career and professional success' },
-    { karaka: 'Bhratrukaraka', planet: 'Saturn', description: 'Siblings and extended family' },
-    { karaka: 'Matrukaraka', planet: 'Venus', description: 'Mother and nurturing relationships' },
-    { karaka: 'Putrakaraka', planet: 'Jupiter', description: 'Children and creative expression' },
-    { karaka: 'Gnatikaraka', planet: 'Mars', description: 'Close friends and acquaintances' },
-    { karaka: 'Darakaraka', planet: 'Venus', description: 'Spouse and romantic partnerships' },
-    { karaka: 'Ayarogyakaraka', planet: 'Moon', description: 'Health and wellbeing' }
-  ]
-;
-
+    {
+      karaka: 'Atmakaraka',
+      planet: 'Jupiter',
+      description: 'Soul purpose and spiritual development'
+    },
+    {
+      karaka: 'Amatyakaraka',
+      planet: 'Mercury',
+      description: 'Career and professional success'
+    },
+    {
+      karaka: 'Bhratrukaraka',
+      planet: 'Saturn',
+      description: 'Siblings and extended family'
+    },
+    {
+      karaka: 'Matrukaraka',
+      planet: 'Venus',
+      description: 'Mother and nurturing relationships'
+    },
+    {
+      karaka: 'Putrakaraka',
+      planet: 'Jupiter',
+      description: 'Children and creative expression'
+    },
+    {
+      karaka: 'Gnatikaraka',
+      planet: 'Mars',
+      description: 'Close friends and acquaintances'
+    },
+    {
+      karaka: 'Darakaraka',
+      planet: 'Venus',
+      description: 'Spouse and romantic partnerships'
+    },
+    {
+      karaka: 'Ayarogyakaraka',
+      planet: 'Moon',
+      description: 'Health and wellbeing'
+    }
+  ];
 /**
  * Calculate Sphuta Positions
  * @param {Object} planets - Planetary positions
@@ -309,9 +489,7 @@ const calculateSphutaPositions = planets =>
     jupiterSphuta: 'Sagittarius 25°',
     venusSphuta: 'Libra 12°',
     saturnSphuta: 'Capricorn 4°'
-  })
-;
-
+  });
 /**
  * Generate Jaimini Insights
  * @param {Array} karakas - Jaimini Karakas
@@ -320,20 +498,28 @@ const calculateSphutaPositions = planets =>
 const generateJaiminiInsights = karakas =>
   // Mock implementation
   [
-    { insight: 'Atmakaraka in angular house indicates strong spiritual calling' },
+    {
+      insight: 'Atmakaraka in angular house indicates strong spiritual calling'
+    },
     { insight: 'Amatyakaraka in trine shows career expansion potential' },
     { insight: 'Darakaraka in dusthana suggests relationship challenges' }
-  ]
-;
-
+  ];
 /**
  * Get Karaka from Distance
  * @param {number} distance - Angular distance
  * @returns {string} Karaka name
  */
 const getKarakaFromDistance = distance => {
-  const karakas = ['Atmakaraka', 'Amatyakaraka', 'Bhratrukaraka', 'Matrukaraka',
-    'Putrakaraka', 'Gnatikaraka', 'Darakaraka', 'Ayarogyakaraka'];
+  const karakas = [
+    'Atmakaraka',
+    'Amatyakaraka',
+    'Bhratrukaraka',
+    'Matrukaraka',
+    'Putrakaraka',
+    'Gnatikaraka',
+    'Darakaraka',
+    'Ayarogyakaraka'
+  ];
   const index = Math.floor(distance / 45); // 360° / 8 karakas = 45° each
   return karakas[index % 8];
 };
@@ -402,11 +588,17 @@ const getCareerQualities = planet => {
 const analyzeWealthPlanets = (planets, cusps) =>
   // Mock implementation
   [
-    { planet: 'Jupiter', house: 2, influence: 'Natural wealth indicator in 2nd house' },
-    { planet: 'Venus', house: 11, influence: 'Income from relationships and luxury' }
-  ]
-;
-
+    {
+      planet: 'Jupiter',
+      house: 2,
+      influence: 'Natural wealth indicator in 2nd house'
+    },
+    {
+      planet: 'Venus',
+      house: 11,
+      influence: 'Income from relationships and luxury'
+    }
+  ];
 /**
  * Analyze Financial Timing
  * @param {number} currentAge - Current age
@@ -417,11 +609,17 @@ const analyzeWealthPlanets = (planets, cusps) =>
 const analyzeFinancialTiming = (currentAge, planets, cusps) =>
   // Mock implementation
   [
-    { period: 'Jupiter Return', description: 'Major wealth expansion opportunity', timing: 'Every 12 years' },
-    { period: 'Saturn Return', description: 'Financial maturity and stability', timing: 'Around age 29-30' }
-  ]
-;
-
+    {
+      period: 'Jupiter Return',
+      description: 'Major wealth expansion opportunity',
+      timing: 'Every 12 years'
+    },
+    {
+      period: 'Saturn Return',
+      description: 'Financial maturity and stability',
+      timing: 'Around age 29-30'
+    }
+  ];
 // Export all calculation functions
 module.exports = {
   calculateJaiminiKarakaAnalysis,

@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class SolarReturnAction extends BaseAction {
-  static get actionId() { return 'get_solar_return'; }
+  static get actionId() {
+    return 'get_solar_return';
+  }
 
   async execute() {
     try {
@@ -21,7 +23,8 @@ class SolarReturnAction extends BaseAction {
   }
 
   async sendSolarReturnAnalysis() {
-    const analysis = '☀️ *Solar Return - Your Annual Cosmic Blueprint*\n\n' +
+    const analysis =
+      '☀️ *Solar Return - Your Annual Cosmic Blueprint*\n\n' +
       'The solar return marks your personal New Year when the Sun returns to your natal position. This chart reveals the themes, opportunities, and challenges for your upcoming year.\n\n' +
       '*🌅 SOLAR RETURN SIGNIFICANCE:*\n' +
       '• Annual life themes and lessons\n' +
@@ -36,14 +39,19 @@ class SolarReturnAction extends BaseAction {
       '*The coming year holds special cosmic gifts for your soul\'s evolution.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -53,7 +61,12 @@ class SolarReturnAction extends BaseAction {
     return {
       id: this.actionId,
       description: 'Analyze annual solar return for personal yearly cycles',
-      keywords: ['solar return', 'annual return', 'yearly cycles', 'birthday chart'],
+      keywords: [
+        'solar return',
+        'annual return',
+        'yearly cycles',
+        'birthday chart'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 86400000

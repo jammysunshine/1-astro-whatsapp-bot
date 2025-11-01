@@ -1,9 +1,11 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 class HellenisticAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HellenisticAstrologyService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'HellenisticAstrologyService';
     this.calculatorPath = '../calculators/hellenisticAstrologyReader'; // Assuming this path for the main calculator
     logger.info('HellenisticAstrologyService initialized');
   }
@@ -25,7 +27,9 @@ class HellenisticAstrologyService extends ServiceTemplate {
       return this._formatResult(result);
     } catch (error) {
       logger.error('HellenisticAstrologyService error:', error);
-      throw new Error(`Hellenistic astrology analysis failed: ${error.message}`);
+      throw new Error(
+        `Hellenistic astrology analysis failed: ${error.message}`
+      );
     }
   }
 
@@ -54,15 +58,21 @@ class HellenisticAstrologyService extends ServiceTemplate {
     }
 
     if (!input.birthDate) {
-      throw new Error('Birth date is required for Hellenistic astrology analysis');
+      throw new Error(
+        'Birth date is required for Hellenistic astrology analysis'
+      );
     }
 
     if (!input.birthTime) {
-      throw new Error('Birth time is required for Hellenistic astrology analysis');
+      throw new Error(
+        'Birth time is required for Hellenistic astrology analysis'
+      );
     }
 
     if (!input.birthPlace) {
-      throw new Error('Birth place is required for Hellenistic astrology analysis');
+      throw new Error(
+        'Birth place is required for Hellenistic astrology analysis'
+      );
     }
 
     // Validate birth date format (DD/MM/YYYY)
@@ -119,7 +129,8 @@ class HellenisticAstrologyService extends ServiceTemplate {
   getMetadata() {
     return {
       name: 'HellenisticAstrologyService',
-      description: 'Ancient Greek astrological techniques including essential dignities, Arabic parts (lots), sect analysis, and triplicities',
+      description:
+        'Ancient Greek astrological techniques including essential dignities, Arabic parts (lots), sect analysis, and triplicities',
       version: '1.0.0',
       dependencies: ['hellenisticAstrologyReader'],
       category: 'vedic'

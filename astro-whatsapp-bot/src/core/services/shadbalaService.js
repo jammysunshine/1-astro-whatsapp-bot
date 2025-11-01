@@ -25,11 +25,11 @@ class ShadbalaService extends ServiceTemplate {
       requiredInputs: ['birthData'],
       outputFormats: ['detailed', 'summary', 'strength-analysis'],
       strengthThresholds: {
-        veryStrong: 480,    // 8 rupas
-        strong: 390,        // 6.5 rupas
-        average: 300,       // 5 rupas
-        weak: 210,          // 3.5 rupas
-        veryWeak: 120        // 2 rupas
+        veryStrong: 480, // 8 rupas
+        strong: 390, // 6.5 rupas
+        average: 300, // 5 rupas
+        weak: 210, // 3.5 rupas
+        veryWeak: 120 // 2 rupas
       }
     };
   }
@@ -55,11 +55,20 @@ class ShadbalaService extends ServiceTemplate {
         calculationType: 'Shadbala',
         timestamp: new Date().toISOString(),
         method: 'Six-fold Planetary Strength Assessment',
-        components: ['Sthana Bala', 'Dig Bala', 'Kala Bala', 'Chesta Bala', 'Naisargika Bala', 'Drig Bala']
+        components: [
+          'Sthana Bala',
+          'Dig Bala',
+          'Kala Bala',
+          'Chesta Bala',
+          'Naisargika Bala',
+          'Drig Bala'
+        ]
       };
 
       // Add strength analysis
-      shadbalaResult.strengthAnalysis = this._analyzeOverallStrength(shadbalaResult.shadbalaResults);
+      shadbalaResult.strengthAnalysis = this._analyzeOverallStrength(
+        shadbalaResult.shadbalaResults
+      );
 
       return shadbalaResult;
     } catch (error) {
@@ -92,7 +101,15 @@ class ShadbalaService extends ServiceTemplate {
     if (result.shadbalaResults) {
       formatted += '\n\n*💪 Planetary Strength Overview:*\n';
 
-      const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+      const planets = [
+        'sun',
+        'moon',
+        'mars',
+        'mercury',
+        'jupiter',
+        'venus',
+        'saturn'
+      ];
       planets.forEach(planet => {
         const planetData = result.shadbalaResults[planet];
         if (planetData) {
@@ -143,7 +160,9 @@ class ShadbalaService extends ServiceTemplate {
     }
 
     if (!birthData.birthDate || !birthData.birthTime || !birthData.birthPlace) {
-      throw new Error('Complete birth details (date, time, place) are required');
+      throw new Error(
+        'Complete birth details (date, time, place) are required'
+      );
     }
   }
 
@@ -196,11 +215,17 @@ class ShadbalaService extends ServiceTemplate {
 
       // Categorize planets
       if (strength >= this.serviceConfig.strengthThresholds.strong) {
-        analysis.strongPlanets.push(planet.charAt(0).toUpperCase() + planet.slice(1));
+        analysis.strongPlanets.push(
+          planet.charAt(0).toUpperCase() + planet.slice(1)
+        );
       } else if (strength <= this.serviceConfig.strengthThresholds.weak) {
-        analysis.weakPlanets.push(planet.charAt(0).toUpperCase() + planet.slice(1));
+        analysis.weakPlanets.push(
+          planet.charAt(0).toUpperCase() + planet.slice(1)
+        );
       } else {
-        analysis.balancedPlanets.push(planet.charAt(0).toUpperCase() + planet.slice(1));
+        analysis.balancedPlanets.push(
+          planet.charAt(0).toUpperCase() + planet.slice(1)
+        );
       }
     });
 
@@ -244,15 +269,18 @@ class ShadbalaService extends ServiceTemplate {
 
     if (result.shadbalaResults) {
       formatted += '*Planetary Strengths:*\n';
-      Object.entries(result.shadbalaResults).slice(0, 4).forEach(([planet, data]) => {
-        const planetName = planet.charAt(0).toUpperCase() + planet.slice(1);
-        const strength = data.strength || 'Average';
-        const rp = data.totalRP || 0;
-        formatted += `• ${planetName}: ${strength} (${rp} RP)\n`;
-      });
+      Object.entries(result.shadbalaResults)
+        .slice(0, 4)
+        .forEach(([planet, data]) => {
+          const planetName = planet.charAt(0).toUpperCase() + planet.slice(1);
+          const strength = data.strength || 'Average';
+          const rp = data.totalRP || 0;
+          formatted += `• ${planetName}: ${strength} (${rp} RP)\n`;
+        });
     }
 
-    formatted += '\n*Shadbala reveals the true strength and influence of each planet in your chart.*';
+    formatted +=
+      '\n*Shadbala reveals the true strength and influence of each planet in your chart.*';
 
     return formatted;
   }
@@ -266,11 +294,18 @@ class ShadbalaService extends ServiceTemplate {
     let confidence = 80; // Base confidence for Shadbala
 
     // Increase confidence based on data completeness
-    if (result.shadbalaResults && Object.keys(result.shadbalaResults).length >= 7) {
+    if (
+      result.shadbalaResults &&
+      Object.keys(result.shadbalaResults).length >= 7
+    ) {
       confidence += 10;
     }
 
-    if (result.analysis && result.analysis.strongest && result.analysis.weakest) {
+    if (
+      result.analysis &&
+      result.analysis.strongest &&
+      result.analysis.weakest
+    ) {
       confidence += 5;
     }
 

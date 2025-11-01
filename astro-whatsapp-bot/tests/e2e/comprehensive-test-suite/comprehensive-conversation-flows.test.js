@@ -6,8 +6,14 @@
  * Numerology (15), Nadi (12), Chinese (14), Group Astrology (39)
  */
 
-const { TestDatabaseManager, setupWhatsAppMocks, getWhatsAppIntegration } = require('../../utils/testSetup');
-const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
+const {
+  TestDatabaseManager,
+  setupWhatsAppMocks,
+  getWhatsAppIntegration
+} = require('../../utils/testSetup');
+const {
+  processIncomingMessage
+} = require('../../../src/services/whatsapp/messageProcessor');
 
 describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 tests)', () => {
   let dbManager;
@@ -32,35 +38,63 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
   });
 
   // Helper function for onboarding
-  const simulateOnboarding = async(phoneNumber, birthDate, birthTime, birthPlace) => {
-    await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-    await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: birthDate } }, {});
-    await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: birthTime } }, {});
-    await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: birthPlace } }, {});
-    await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+  const simulateOnboarding = async(
+    phoneNumber,
+    birthDate,
+    birthTime,
+    birthPlace
+  ) => {
+    await processIncomingMessage(
+      { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+      {}
+    );
+    await processIncomingMessage(
+      { from: phoneNumber, type: 'text', text: { body: birthDate } },
+      {}
+    );
+    await processIncomingMessage(
+      { from: phoneNumber, type: 'text', text: { body: birthTime } },
+      {}
+    );
+    await processIncomingMessage(
+      { from: phoneNumber, type: 'text', text: { body: birthPlace } },
+      {}
+    );
+    await processIncomingMessage(
+      { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+      {}
+    );
     whatsAppIntegration.mockSendMessage.mockClear();
   };
 
   describe('Onboarding Flow (23 tests)', () => {
     // All 23 onboarding tests from the gaps document
     test('handles invalid date formats (abc123 → error message)', async() => {
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: 'abc123' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: 'abc123' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
-        expect.stringContaining('Please provide date in DDMMYY or DDMMYYYY format')
+        expect.stringContaining(
+          'Please provide date in DDMMYY or DDMMYYYY format'
+        )
       );
     });
 
     test('rejects future dates (31122025 → rejection)', async() => {
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: '31122025' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '31122025' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Birth date cannot be in the future')
@@ -68,30 +102,44 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('auto-corrects malformed date (15/06/90 → 150690) and proceeds', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: 'Hi' } }, {});
+      await processIncomingMessage(
+        { from: '+conversation_test', type: 'text', text: { body: 'Hi' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: '15/06/90' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '15/06/90' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Now, please provide your birth time')
       );
-      const user = await dbManager.db.collection('users').findOne({ phoneNumber: '+conversation_test' });
+      const user = await dbManager.db
+        .collection('users')
+        .findOne({ phoneNumber: '+conversation_test' });
       expect(user.birthDate).toBe('15061990');
     });
 
     // Continue with all remaining 20 onboarding tests...
     test('accepts very old valid dates (01011800) and proceeds', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: 'Hi' } }, {});
+      await processIncomingMessage(
+        { from: '+conversation_test', type: 'text', text: { body: 'Hi' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: '01011800' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '01011800' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Now, please provide your birth time')
@@ -99,13 +147,19 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('shows error for literal date format text (DDMMYY) and re-prompts', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: 'Hi' } }, {});
+      await processIncomingMessage(
+        { from: '+conversation_test', type: 'text', text: { body: 'Hi' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: 'DDMMYY' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: 'DDMMYY' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Please provide date in DDMMYY')
@@ -113,13 +167,23 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('rejects time in colon format (9:30 → error)', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '15061990' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '15061990' }
+        },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: '9:30' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '9:30' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Please use 24-hour format without colon: 0930')
@@ -127,13 +191,23 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('rejects invalid hour (2530 → validation error)', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '15061990' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '15061990' }
+        },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: '2530' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '2530' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Hour must be between 00-23')
@@ -141,13 +215,23 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('rejects invalid minutes (2460 → validation error)', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '15061990' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '15061990' }
+        },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: '2460' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '2460' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Minutes must be between 00-59')
@@ -155,13 +239,23 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('auto-formats short time input (930 → 0930) and proceeds', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '15061990' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '15061990' }
+        },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: '930' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '930' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Please confirm your birth location')
@@ -169,48 +263,88 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('recognizes time skip functionality with various capitalizations', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '15061990' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '15061990' }
+        },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: 'skip' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: 'skip' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Please confirm your birth location')
       );
-      const user = await dbManager.db.collection('users').findOne({ phoneNumber: '+conversation_test' });
+      const user = await dbManager.db
+        .collection('users')
+        .findOne({ phoneNumber: '+conversation_test' });
       expect(user.birthTime).toBeNull();
     });
 
     test('handles geocoding failures gracefully', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '1430' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '15061990' }
+        },
+        {}
+      );
+      await processIncomingMessage(
+        { from: '+conversation_test', type: 'text', text: { body: '1430' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: 'Atlantis, Pacific' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: 'Atlantis, Pacific' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
-        expect.stringContaining('Could not find location for "Atlantis, Pacific"')
+        expect.stringContaining(
+          'Could not find location for "Atlantis, Pacific"'
+        )
       );
     });
 
     test('accepts timezone calculations for birth location', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '1430' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '15061990' }
+        },
+        {}
+      );
+      await processIncomingMessage(
+        { from: '+conversation_test', type: 'text', text: { body: '1430' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: 'Delhi, India' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: 'Delhi, India' }
+        },
+        {}
+      );
 
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
@@ -219,15 +353,28 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('handles DST transition in birth time correctly', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '28031993' } }, {});
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '0130' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '28031993' }
+        },
+        {}
+      );
+      await processIncomingMessage(
+        { from: '+conversation_test', type: 'text', text: { body: '0130' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: 'London, UK' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: 'London, UK' }
+        },
+        {}
+      );
 
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
@@ -236,15 +383,28 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('validates international location geocoding', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: '0900' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: '15061990' }
+        },
+        {}
+      );
+      await processIncomingMessage(
+        { from: '+conversation_test', type: 'text', text: { body: '0900' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({
-        from: '+conversation_test',
-        type: 'text',
-        text: { body: 'Sydney, Australia' }
-      }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: 'Sydney, Australia' }
+        },
+        {}
+      );
 
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
@@ -253,7 +413,14 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('defaults to English for invalid language codes', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: 'set language invalid' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: 'set language invalid' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Unsupported language')
@@ -261,7 +428,14 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     });
 
     test('lists available options for unsupported language', async() => {
-      await processIncomingMessage({ from: '+conversation_test', type: 'text', text: { body: 'set language Klingon' } }, {});
+      await processIncomingMessage(
+        {
+          from: '+conversation_test',
+          type: 'text',
+          text: { body: 'set language Klingon' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         '+conversation_test',
         expect.stringContaining('Please choose from available options')
@@ -270,10 +444,16 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
 
     test('handles language change mid-flow', async() => {
       const phoneNumber = '+conversation_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'set language es' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'set language es' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('¡Hola! Bienvenido al bot')
@@ -282,10 +462,16 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
 
     test('activates Hindi interface for emoji response', async() => {
       const phoneNumber = '+conversation_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '🇮🇳 हिंदी' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '🇮🇳 हिंदी' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('नमस्ते! ज्योतिष बॉट')
@@ -294,13 +480,28 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
 
     test('returns to date input when "No" is sent during confirmation', async() => {
       const phoneNumber = '+conversation_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '10012000' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1200' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'London, UK' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '10012000' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1200' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'London, UK' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'No' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'No' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Please re-enter your birth date')
@@ -310,13 +511,20 @@ describe('COMPREHENSIVE CONVERSATION FLOWS: User Interaction Scenarios (148 test
     test('restarts complete flow if confirmation attempted with missing data', async() => {
       const phoneNumber = '+conversation_test';
       await simulateOnboarding(phoneNumber, '10012000', '1200', 'London, UK');
-      await dbManager.db.collection('users').updateOne({ phoneNumber }, { $set: { birthDate: null } });
+      await dbManager.db
+        .collection('users')
+        .updateOne({ phoneNumber }, { $set: { birthDate: null } });
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Yes' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Yes' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
-        expect.stringContaining('Let\'s start over. Please provide your birth date')
+        expect.stringContaining(
+          'Let\'s start over. Please provide your birth date'
+        )
       );
     });
   });

@@ -5,7 +5,12 @@
 const logger = require('../../../../utils/logger');
 
 const handleFinancialAstrology = async(message, user) => {
-  if (!message.includes('financial') && !message.includes('money') && !message.includes('wealth') && !message.includes('business')) {
+  if (
+    !message.includes('financial') &&
+    !message.includes('money') &&
+    !message.includes('wealth') &&
+    !message.includes('business')
+  ) {
     return null;
   }
 

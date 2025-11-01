@@ -10,7 +10,8 @@ class CosmicEventsService extends ServiceTemplate {
   constructor() {
     super('CosmicEventsCalculator');
     this.serviceName = 'CosmicEventsService';
-    this.calculatorPath = '../services/astrology/vedic/calculators/CosmicEventsCalculator';
+    this.calculatorPath =
+      '../services/astrology/vedic/calculators/CosmicEventsCalculator';
     logger.info('CosmicEventsService initialized');
   }
 
@@ -36,7 +37,10 @@ class CosmicEventsService extends ServiceTemplate {
       const { dateRange, options = {} } = params;
 
       // Get cosmic events analysis from calculator
-      const cosmicEventsData = await this.calculator.getCosmicEventsAnalysis(dateRange, options);
+      const cosmicEventsData = await this.calculator.getCosmicEventsAnalysis(
+        dateRange,
+        options
+      );
 
       // Add metadata
       cosmicEventsData.type = 'cosmic_events';

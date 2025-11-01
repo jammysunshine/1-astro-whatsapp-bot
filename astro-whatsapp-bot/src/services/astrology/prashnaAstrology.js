@@ -18,31 +18,113 @@ class PrashnaAstrology {
   initializePrashnaSystem() {
     // Prashna houses and their meanings (Kashinath system)
     this.prashnaHouses = {
-      1: { name: 'Questioner', significance: 'Questioner, life, health, personality', positive: 'Strong, healthy, successful question', negative: 'Weak, ill, doubtful mind' },
-      2: { name: 'Family', significance: 'Family, wealth, speech, food', positive: 'Harmony, prosperity, good family', negative: 'Arguments, poverty, family tension' },
-      3: { name: 'Siblings', significance: 'Siblings, communications, short journeys, courage', positive: 'Good relations, successful journeys', negative: 'Conflicts, travel problems, cowardice' },
-      4: { name: 'Home', significance: 'Mother, home, property, emotions, education', positive: 'Happy home, property gain, emotional peace', negative: 'Domestic problems, property loss, misery' },
-      5: { name: 'Children', significance: 'Children, creativity, intelligence, speculation', positive: 'Children success, creative gains, wisdom', negative: 'Child problems, poor intelligence, losses in speculation' },
-      6: { name: 'Enemies', significance: 'Enemies, diseases, service, competition', positive: 'Victory over enemies, health improvement, good service', negative: 'Illness, defeat, legal problems, poor health' },
-      7: { name: 'Spouse', significance: 'Marriage, partnerships, spouse, business partners', positive: 'Successful marriage, good partnerships', negative: 'Divorce/separation, business failures, broken relationships' },
-      8: { name: 'Longevity', significance: 'Death, accidents, chronic diseases, occult', positive: 'Long life, recovery from illness, magical success', negative: 'Death, accidents, chronic illness, misfortunes' },
-      9: { name: 'Fortune', significance: 'Father, guru, long journeys, religion, higher learning', positive: 'Spiritual progress, foreign travels, luck, good fortune', negative: 'Misfortune, bad luck, family problems' },
-      10: { name: 'Career', significance: 'Profession, father, authority, reputation, honors', positive: 'Career success, fame, high position', negative: 'Job loss, bad reputation, low status' },
-      11: { name: 'Friends', significance: 'Friends, elder siblings, gains, hopes, wishes', positive: 'Fulfillment of desires, good friends, gains', negative: 'Betrayal, disappointment, financial loss' },
-      12: { name: 'Expenditure', significance: 'Expenses, foreign lands, spirituality, losses, secret enemies', positive: 'Liberation, foreign gains, secret success', negative: 'Heavy expenses, losses, imprisonment' }
+      1: {
+        name: 'Questioner',
+        significance: 'Questioner, life, health, personality',
+        positive: 'Strong, healthy, successful question',
+        negative: 'Weak, ill, doubtful mind'
+      },
+      2: {
+        name: 'Family',
+        significance: 'Family, wealth, speech, food',
+        positive: 'Harmony, prosperity, good family',
+        negative: 'Arguments, poverty, family tension'
+      },
+      3: {
+        name: 'Siblings',
+        significance: 'Siblings, communications, short journeys, courage',
+        positive: 'Good relations, successful journeys',
+        negative: 'Conflicts, travel problems, cowardice'
+      },
+      4: {
+        name: 'Home',
+        significance: 'Mother, home, property, emotions, education',
+        positive: 'Happy home, property gain, emotional peace',
+        negative: 'Domestic problems, property loss, misery'
+      },
+      5: {
+        name: 'Children',
+        significance: 'Children, creativity, intelligence, speculation',
+        positive: 'Children success, creative gains, wisdom',
+        negative: 'Child problems, poor intelligence, losses in speculation'
+      },
+      6: {
+        name: 'Enemies',
+        significance: 'Enemies, diseases, service, competition',
+        positive: 'Victory over enemies, health improvement, good service',
+        negative: 'Illness, defeat, legal problems, poor health'
+      },
+      7: {
+        name: 'Spouse',
+        significance: 'Marriage, partnerships, spouse, business partners',
+        positive: 'Successful marriage, good partnerships',
+        negative: 'Divorce/separation, business failures, broken relationships'
+      },
+      8: {
+        name: 'Longevity',
+        significance: 'Death, accidents, chronic diseases, occult',
+        positive: 'Long life, recovery from illness, magical success',
+        negative: 'Death, accidents, chronic illness, misfortunes'
+      },
+      9: {
+        name: 'Fortune',
+        significance: 'Father, guru, long journeys, religion, higher learning',
+        positive: 'Spiritual progress, foreign travels, luck, good fortune',
+        negative: 'Misfortune, bad luck, family problems'
+      },
+      10: {
+        name: 'Career',
+        significance: 'Profession, father, authority, reputation, honors',
+        positive: 'Career success, fame, high position',
+        negative: 'Job loss, bad reputation, low status'
+      },
+      11: {
+        name: 'Friends',
+        significance: 'Friends, elder siblings, gains, hopes, wishes',
+        positive: 'Fulfillment of desires, good friends, gains',
+        negative: 'Betrayal, disappointment, financial loss'
+      },
+      12: {
+        name: 'Expenditure',
+        significance:
+          'Expenses, foreign lands, spirituality, losses, secret enemies',
+        positive: 'Liberation, foreign gains, secret success',
+        negative: 'Heavy expenses, losses, imprisonment'
+      }
     };
 
     // Prashna significators and their rulerships
     this.significators = {
-      sun: { houses: [1, 9, 10, 11], meaning: 'Authority, father, government, vitality' },
+      sun: {
+        houses: [1, 9, 10, 11],
+        meaning: 'Authority, father, government, vitality'
+      },
       moon: { houses: [4], meaning: 'Mother, mind, emotions, public' },
-      mars: { houses: [3, 6], meaning: 'Brothers, enemies, accidents, courage' },
-      mercury: { houses: [3, 6], meaning: 'Communication, siblings, intellect, trade' },
-      jupiter: { houses: [2, 5, 9, 11], meaning: 'Children, wealth, wisdom, expansion' },
+      mars: {
+        houses: [3, 6],
+        meaning: 'Brothers, enemies, accidents, courage'
+      },
+      mercury: {
+        houses: [3, 6],
+        meaning: 'Communication, siblings, intellect, trade'
+      },
+      jupiter: {
+        houses: [2, 5, 9, 11],
+        meaning: 'Children, wealth, wisdom, expansion'
+      },
       venus: { houses: [2, 7], meaning: 'Spouse, luxury, arts, pleasure' },
-      saturn: { houses: [8, 12], meaning: 'Servants, old age, chronic illness, karma' },
-      rahu: { houses: [6, 8, 12], meaning: 'Foreigners, poison, underworld, sudden events' },
-      ketu: { houses: [6, 8, 12], meaning: 'Spirituality, detachment, mystical experiences' }
+      saturn: {
+        houses: [8, 12],
+        meaning: 'Servants, old age, chronic illness, karma'
+      },
+      rahu: {
+        houses: [6, 8, 12],
+        meaning: 'Foreigners, poison, underworld, sudden events'
+      },
+      ketu: {
+        houses: [6, 8, 12],
+        meaning: 'Spirituality, detachment, mystical experiences'
+      }
     };
 
     // Question types and their ruling houses
@@ -112,33 +194,52 @@ class PrashnaAstrology {
    */
   async generatePrashnaAnalysis(prashnaData) {
     try {
-      const { question, questionTime, questionDate, questionLocation, user } = prashnaData;
+      const { question, questionTime, questionDate, questionLocation, user } =
+        prashnaData;
 
       // Parse the exact moment of question
       const [day, month, year] = questionDate.split('/').map(Number);
       const [hour, minute] = questionTime.split(':').map(Number);
-      const julianDay = this.dateToJulianDay(year, month, day, hour + minute / 60);
+      const julianDay = this.dateToJulianDay(
+        year,
+        month,
+        day,
+        hour + minute / 60
+      );
 
       // Cast horary chart for exact question moment
-      const horaryChart = await this.castHoraryChart(julianDay, questionLocation);
+      const horaryChart = await this.castHoraryChart(
+        julianDay,
+        questionLocation
+      );
 
       // Analyze question type
       const questionAnalysis = this.analyzeQuestionType(question, horaryChart);
 
       // Determine main significator
-      const significator = this.determineSignificator(questionAnalysis.type, horaryChart);
+      const significator = this.determineSignificator(
+        questionAnalysis.type,
+        horaryChart
+      );
 
       // Analyze ruling planet
       const ruler = this.analyzeRulingPlanet(significator, horaryChart);
 
       // Generate prediction
-      const prediction = this.generatePrediction(significator, ruler, horaryChart);
+      const prediction = this.generatePrediction(
+        significator,
+        ruler,
+        horaryChart
+      );
 
       // Calculate timing
       const timing = this.calculateTiming(significator, horaryChart);
 
       // Generate recommendations
-      const recommendations = this.generatePrashnaRecommendations(prediction, timing);
+      const recommendations = this.generatePrashnaRecommendations(
+        prediction,
+        timing
+      );
 
       return {
         question,
@@ -152,7 +253,12 @@ class PrashnaAstrology {
         timing,
         recommendations,
         accuracy: this.assessAccuracy(horaryChart),
-        summary: this.generatePrashnaSummary(question, prediction, timing, recommendations)
+        summary: this.generatePrashnaSummary(
+          question,
+          prediction,
+          timing,
+          recommendations
+        )
       };
     } catch (error) {
       logger.error('Error generating prashna analysis:', error);
@@ -186,7 +292,11 @@ class PrashnaAstrology {
 
     for (const [name, id] of Object.entries(planetIds)) {
       if (id !== null) {
-        const result = sweph.calc(jd, id, sweph.FLG_SWIEPH | sweph.FLG_SIDEREAL);
+        const result = sweph.calc(
+          jd,
+          id,
+          sweph.FLG_SWIEPH | sweph.FLG_SIDEREAL
+        );
         if (result && result.longitude) {
           const longitude = result.longitude[0];
           planets[name] = {
@@ -194,7 +304,11 @@ class PrashnaAstrology {
             sign: this.longitudeToSign(longitude),
             house: this.longitudeToHouse(longitude, planets.ascendant),
             inRetrograde: this.isRetrograde(name, jd, result.longitude[2]),
-            strength: this.calculatePlanetaryStrength(name, longitude, planets.ascendant)
+            strength: this.calculatePlanetaryStrength(
+              name,
+              longitude,
+              planets.ascendant
+            )
           };
         }
       }
@@ -205,7 +319,12 @@ class PrashnaAstrology {
     planets.ascendant = ascendant;
 
     // Determine houses
-    const { houses, angles } = this.calculateHouses(ascendant, jd, latitude, longitude);
+    const { houses, angles } = this.calculateHouses(
+      ascendant,
+      jd,
+      latitude,
+      longitude
+    );
 
     return {
       planets,
@@ -255,13 +374,17 @@ class PrashnaAstrology {
    * @private
    */
   determineSignificator(questionType, horaryChart) {
-    const questionConfig = this.questionTypes[questionType] || this.questionTypes.general;
+    const questionConfig =
+      this.questionTypes[questionType] || this.questionTypes.general;
 
     // Primary significator from question type
     const primarySignificator = {
       planet: questionConfig.significator,
       house: questionConfig.best_house,
-      strength: this.calculateSignificatorStrength(questionConfig.significator, horaryChart)
+      strength: this.calculateSignificatorStrength(
+        questionConfig.significator,
+        horaryChart
+      )
     };
 
     // Check if moon is stronger (traditional prashna rule)
@@ -272,13 +395,19 @@ class PrashnaAstrology {
     }
 
     // Find mutual aspects
-    const mutualAspects = this.findMutualAspects(primarySignificator.planet, horaryChart);
+    const mutualAspects = this.findMutualAspects(
+      primarySignificator.planet,
+      horaryChart
+    );
 
     return {
       ...primarySignificator,
       mutualAspects,
       dispositor: this.findDispositor(primarySignificator.planet, horaryChart),
-      nextMajorAspect: this.findNextMajorAspect(primarySignificator.planet, horaryChart)
+      nextMajorAspect: this.findNextMajorAspect(
+        primarySignificator.planet,
+        horaryChart
+      )
     };
   }
 
@@ -288,7 +417,9 @@ class PrashnaAstrology {
    */
   analyzeRulingPlanet(significator, horaryChart) {
     const planet = horaryChart.planets[significator.planet];
-    if (!planet) { return { status: 'Not found', condition: 'Neutral' }; }
+    if (!planet) {
+      return { status: 'Not found', condition: 'Neutral' };
+    }
 
     let condition = 'Neutral';
     let { strength } = planet;
@@ -329,7 +460,11 @@ class PrashnaAstrology {
       strength,
       house: planet.house,
       aspects,
-      interpretation: this.interpretPlanetCondition(significator.planet, condition, dignity)
+      interpretation: this.interpretPlanetCondition(
+        significator.planet,
+        condition,
+        dignity
+      )
     };
   }
 
@@ -350,22 +485,39 @@ class PrashnaAstrology {
     let score = 0;
 
     // Ruling planet condition
-    if (rulingPlanet.condition === 'Favorable') { score += 2; } else if (rulingPlanet.condition === 'Difficult') { score -= 2; }
+    if (rulingPlanet.condition === 'Favorable') {
+      score += 2;
+    } else if (rulingPlanet.condition === 'Difficult') {
+      score -= 2;
+    }
 
     // Dignity strength
-    if (rulingPlanet.dignity === 'Exalted') { score += 2; } else if (rulingPlanet.dignity === 'Own Sign') { score += 1; } else if (rulingPlanet.dignity === 'Debilitated') { score -= 2; }
+    if (rulingPlanet.dignity === 'Exalted') {
+      score += 2;
+    } else if (rulingPlanet.dignity === 'Own Sign') {
+      score += 1;
+    } else if (rulingPlanet.dignity === 'Debilitated') {
+      score -= 2;
+    }
 
     // House position
-    if ([1, 5, 9].includes(rulingPlanet.house)) { score += 1; } else if ([6, 8, 12].includes(rulingPlanet.house)) { score -= 1; }
+    if ([1, 5, 9].includes(rulingPlanet.house)) {
+      score += 1;
+    } else if ([6, 8, 12].includes(rulingPlanet.house)) {
+      score -= 1;
+    }
 
     // Moon condition (mind of questioner)
     const moonSign = horaryChart.planets.moon?.sign;
-    if (moonSign && [3, 7, 11].includes(this.signToHouse(moonSign, horaryChart))) {
+    if (
+      moonSign &&
+      [3, 7, 11].includes(this.signToHouse(moonSign, horaryChart))
+    ) {
       score += 1; // Moon in trine = good mindset
     }
 
     // Convert score to probability and outcome
-    analysis.probability = Math.max(0, Math.min(100, 50 + (score * 15())));
+    analysis.probability = Math.max(0, Math.min(100, 50 + score * 15()));
     analysis.confidence = score >= 2 ? 'High' : score <= -2 ? 'Low' : 'Medium';
 
     // Determine yes/no based on score
@@ -424,10 +576,14 @@ class PrashnaAstrology {
       12: 'Final outcome timing (resolution period)'
     };
 
-    timing.description = houseTimings[planetHouse] || 'Timing impacted by house position';
+    timing.description =
+      houseTimings[planetHouse] || 'Timing impacted by house position';
 
     // Calculate specific timeframe
-    const timeframe = this.calculateSpecificTimeframe(significator, horaryChart);
+    const timeframe = this.calculateSpecificTimeframe(
+      significator,
+      horaryChart
+    );
     timing.timeframe = timeframe;
     timing.period = timeframe.description;
 
@@ -465,8 +621,12 @@ class PrashnaAstrology {
     recommendations.timing_advice = `Best timeframe: ${timing.period}. ${prediction.outcome === 'Positive' ? 'Take advantage of favorable timing.' : 'Use this period for planning and preparation.'}`;
 
     // Basic mantras for all
-    recommendations.mantras.push('Om Shreem Maha Lakshmiyei Namaha (for decisions)');
-    recommendations.mantras.push('Om Gam Ganapataye Namaha (for removing obstacles)');
+    recommendations.mantras.push(
+      'Om Shreem Maha Lakshmiyei Namaha (for decisions)'
+    );
+    recommendations.mantras.push(
+      'Om Gam Ganapataye Namaha (for removing obstacles)'
+    );
 
     return recommendations;
   }
@@ -545,16 +705,38 @@ class PrashnaAstrology {
 
   // Helper methods
   dateToJulianDay(year, month, day, hour) {
-    return hour / 24 + day + Math.floor((153 * month + 2) / 5) + 365 * year + Math.floor(year / 4) - Math.floor(year / 100) + Math.floor(year / 400) - 32045;
+    return (
+      hour / 24 +
+      day +
+      Math.floor((153 * month + 2) / 5) +
+      365 * year +
+      Math.floor(year / 4) -
+      Math.floor(year / 100) +
+      Math.floor(year / 400) -
+      32045
+    );
   }
 
   longitudeToSign(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs[Math.floor(longitude / 30) % 12];
   }
 
   longitudeToHouse(longitude, ascendant) {
-    const diff = ((longitude - ascendant + 360) % 360);
+    const diff = (longitude - ascendant + 360) % 360;
     return Math.floor(diff / 30) + 1;
   }
 
@@ -566,30 +748,64 @@ class PrashnaAstrology {
   calculateHouses(ascendant, jd, lat, lon) {
     const houses = [];
     for (let i = 0; i < 12; i++) {
-      houses[i] = (ascendant + (i * 30)) % 360;
+      houses[i] = (ascendant + i * 30) % 360;
     }
     return { houses, angles: { asc: ascendant, mc: (ascendant + 90) % 360 } };
   }
 
   // Additional helper methods would go here for planetary calculations
 
-  determineOutcome() { return 'Mixed'; }
-  calculateSignificatorStrength() { return 1; }
-  findMutualAspects() { return []; }
-  findDispositor() { return 'sun'; }
-  findNextMajorAspect() { return null; }
-  isRetrograde() { return false; }
-  calculatePlanetaryStrength() { return 1; }
-  isExalted() { return false; }
-  isOwnSign() { return false; }
-  isDebilitated() { return false; }
-  interpretPlanetCondition() { return 'Neutral condition'; }
-  determineYesNo() { return 'Uncertain'; }
-  findNextMajorAspect() { return {}; }
-  calculateSpecificTimeframe() { return { description: 'Within 1 month' }; }
-  isVoidOfCourse() { return false; }
-  getLordOfSign() { return 'sun'; }
-  signToHouse() { return 1; }
+  determineOutcome() {
+    return 'Mixed';
+  }
+  calculateSignificatorStrength() {
+    return 1;
+  }
+  findMutualAspects() {
+    return [];
+  }
+  findDispositor() {
+    return 'sun';
+  }
+  findNextMajorAspect() {
+    return null;
+  }
+  isRetrograde() {
+    return false;
+  }
+  calculatePlanetaryStrength() {
+    return 1;
+  }
+  isExalted() {
+    return false;
+  }
+  isOwnSign() {
+    return false;
+  }
+  isDebilitated() {
+    return false;
+  }
+  interpretPlanetCondition() {
+    return 'Neutral condition';
+  }
+  determineYesNo() {
+    return 'Uncertain';
+  }
+  findNextMajorAspect() {
+    return {};
+  }
+  calculateSpecificTimeframe() {
+    return { description: 'Within 1 month' };
+  }
+  isVoidOfCourse() {
+    return false;
+  }
+  getLordOfSign() {
+    return 'sun';
+  }
+  signToHouse() {
+    return 1;
+  }
 
   /**
    * Get all available prashna question types
@@ -601,7 +817,8 @@ class PrashnaAstrology {
       houses_significance: this.prashnaHouses,
       significators: this.significators,
       timing_periods: this.timingPeriods.map(t => t.description),
-      accuracy_factors: 'Moon condition, ruling planet strength, house placements, mutual aspects'
+      accuracy_factors:
+        'Moon condition, ruling planet strength, house placements, mutual aspects'
     };
   }
 }

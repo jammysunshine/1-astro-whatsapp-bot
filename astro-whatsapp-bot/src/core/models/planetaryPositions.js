@@ -5,8 +5,8 @@ class PlanetaryPositions {
   }
 
   getPlanetPosition(planetName) {
-    return this.positions.find(planet =>
-      planet.name.toLowerCase() === planetName.toLowerCase()
+    return this.positions.find(
+      planet => planet.name.toLowerCase() === planetName.toLowerCase()
     );
   }
 

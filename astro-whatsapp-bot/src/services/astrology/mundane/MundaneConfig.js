@@ -7,7 +7,9 @@ const logger = require('../../../utils/logger');
  */
 class MundaneConfig {
   constructor() {
-    logger.info('Module: MundaneConfig loaded with complete world astrology database');
+    logger.info(
+      'Module: MundaneConfig loaded with complete world astrology database'
+    );
 
     // Initialize core mundane astrology data structures
     this.countryRulerships = this.initializeCountryRulerships();
@@ -141,7 +143,8 @@ class MundaneConfig {
         planets: ['sun', 'saturn', 'mars'],
         houses: [1, 4, 7, 10],
         aspects: ['conjunction', 'square', 'opposition'],
-        description: 'Government actions, leadership changes, political conflicts'
+        description:
+          'Government actions, leadership changes, political conflicts'
       },
       economics: {
         planets: ['venus', 'mercury', 'jupiter'],
@@ -159,7 +162,8 @@ class MundaneConfig {
         planets: ['mars', 'saturn', 'uranus'],
         houses: [6, 8, 12],
         aspects: ['square', 'opposition', 'conjunction'],
-        description: 'Military actions, political conflicts, international tensions'
+        description:
+          'Military actions, political conflicts, international tensions'
       },
       technology: {
         planets: ['mercury', 'uranus'],
@@ -177,7 +181,8 @@ class MundaneConfig {
         planets: ['earth', 'neptune', 'uranus'],
         houses: [4, 12],
         aspects: ['square', 'opposition', 'conjunction'],
-        description: 'Climate change, environmental disasters, ecological issues'
+        description:
+          'Climate change, environmental disasters, ecological issues'
       },
       social_movements: {
         planets: ['uranus', 'saturn', 'pluto'],
@@ -195,7 +200,12 @@ class MundaneConfig {
   initializeElectionalFactors() {
     return {
       sun: {
-        good_for: ['leadership', 'authority', 'public events', 'government decisions'],
+        good_for: [
+          'leadership',
+          'authority',
+          'public events',
+          'government decisions'
+        ],
         avoid: ['illness', 'concealment', 'private matters'],
         best_houses: [1, 4, 7, 10],
         strength_period: 'Rising to mid-day'
@@ -246,7 +256,8 @@ class MundaneConfig {
   initializeHouseSignificances() {
     return {
       1: {
-        mundane: 'National identity, leadership, first impressions of countries',
+        mundane:
+          'National identity, leadership, first impressions of countries',
         events: ['Government changes', 'National image', 'Leadership crises']
       },
       2: {
@@ -255,7 +266,11 @@ class MundaneConfig {
       },
       3: {
         mundane: 'Communication, media, transportation, neighboring countries',
-        events: ['Media events', 'Transportation issues', 'Local communications']
+        events: [
+          'Media events',
+          'Transportation issues',
+          'Local communications'
+        ]
       },
       4: {
         mundane: 'National foundations, homeland, agriculture, real estate',
@@ -271,27 +286,48 @@ class MundaneConfig {
       },
       7: {
         mundane: 'International relations, partnerships, foreign affairs',
-        events: ['Diplomatic relations', 'Trade agreements', 'International treaties']
+        events: [
+          'Diplomatic relations',
+          'Trade agreements',
+          'International treaties'
+        ]
       },
       8: {
-        mundane: 'Transformation, secrets, other people\'s money, death and taxes',
+        mundane:
+          'Transformation, secrets, other people\'s money, death and taxes',
         events: ['Major transformations', 'Financial crises', 'Death rates']
       },
       9: {
         mundane: 'Religion, philosophy, higher education, long-distance travel',
-        events: ['Religious events', 'Educational reforms', 'International travel']
+        events: [
+          'Religious events',
+          'Educational reforms',
+          'International travel'
+        ]
       },
       10: {
         mundane: 'Government, authority, reputation, career of leaders',
-        events: ['Government changes', 'Policy announcements', 'Leadership image']
+        events: [
+          'Government changes',
+          'Policy announcements',
+          'Leadership image'
+        ]
       },
       11: {
         mundane: 'Community, technology, hopes, wishes, group activities',
-        events: ['Technological breakthroughs', 'Social movements', 'Group activities']
+        events: [
+          'Technological breakthroughs',
+          'Social movements',
+          'Group activities'
+        ]
       },
       12: {
         mundane: 'Spirituality, hidden enemies, institutions, foreign lands',
-        events: ['Spiritual movements', 'Behind-the-scenes activities', 'Institutional changes']
+        events: [
+          'Spiritual movements',
+          'Behind-the-scenes activities',
+          'Institutional changes'
+        ]
       }
     };
   }
@@ -402,9 +438,18 @@ class MundaneConfig {
    */
   getZodiacSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer',
-      'Leo', 'Virgo', 'Libra', 'Scorpio',
-      'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     const signIndex = Math.floor(longitude / 30) % 12;
     return signs[signIndex];
@@ -505,14 +550,24 @@ class MundaneConfig {
       const houses = Object.keys(this.houseSignificances).length;
 
       return {
-        healthy: countries >= 10 && significators >= 5 && electionals >= 5 && houses === 12,
+        healthy:
+          countries >= 10 &&
+          significators >= 5 &&
+          electionals >= 5 &&
+          houses === 12,
         countries,
         significators,
         electionals,
         houses,
         version: '1.0.0',
         description: 'Complete mundane astrology foundational database',
-        database_status: countries >= 10 && significators >= 5 && electionals >= 5 && houses === 12 ? 'Complete' : 'Incomplete'
+        database_status:
+          countries >= 10 &&
+          significators >= 5 &&
+          electionals >= 5 &&
+          houses === 12 ?
+            'Complete' :
+            'Incomplete'
       };
     } catch (error) {
       return {

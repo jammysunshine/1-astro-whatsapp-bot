@@ -8,7 +8,9 @@ const sweph = require('sweph');
 
 class Ashtakavarga {
   constructor() {
-    logger.info('Module: Ashtakavarga loaded - Vedic 64-Point Beneficial Analysis');
+    logger.info(
+      'Module: Ashtakavarga loaded - Vedic 64-Point Beneficial Analysis'
+    );
     this.initializeAshtakavargaSystem();
   }
 
@@ -29,18 +31,90 @@ class Ashtakavarga {
 
     // 12 zodiac signs (rashis) for the 7 planets create 12x7 = 84 potential points
     this.rashis = [
-      { name: 'Aries', sanskrit: 'मेष', symbol: '♈', element: 'Fire', quality: 'Cardinal' },
-      { name: 'Taurus', sanskrit: 'वृषभ', symbol: '♉', element: 'Earth', quality: 'Fixed' },
-      { name: 'Gemini', sanskrit: 'मिथुन', symbol: '♊', element: 'Air', quality: 'Mutable' },
-      { name: 'Cancer', sanskrit: 'कर्क', symbol: '♋', element: 'Water', quality: 'Cardinal' },
-      { name: 'Leo', sanskrit: 'सिंह', symbol: '♌', element: 'Fire', quality: 'Fixed' },
-      { name: 'Virgo', sanskrit: 'कन्या', symbol: '♍', element: 'Earth', quality: 'Mutable' },
-      { name: 'Libra', sanskrit: 'तुला', symbol: '♎', element: 'Air', quality: 'Cardinal' },
-      { name: 'Scorpio', sanskrit: 'वृश्चिक', symbol: '♏', element: 'Water', quality: 'Fixed' },
-      { name: 'Sagittarius', sanskrit: 'धनुष', symbol: '♐', element: 'Fire', quality: 'Mutable' },
-      { name: 'Capricorn', sanskrit: 'मकर', symbol: '♑', element: 'Earth', quality: 'Cardinal' },
-      { name: 'Aquarius', sanskrit: 'कुम्भ', symbol: '♒', element: 'Air', quality: 'Fixed' },
-      { name: 'Pisces', sanskrit: 'मीन', symbol: '♓', element: 'Water', quality: 'Mutable' }
+      {
+        name: 'Aries',
+        sanskrit: 'मेष',
+        symbol: '♈',
+        element: 'Fire',
+        quality: 'Cardinal'
+      },
+      {
+        name: 'Taurus',
+        sanskrit: 'वृषभ',
+        symbol: '♉',
+        element: 'Earth',
+        quality: 'Fixed'
+      },
+      {
+        name: 'Gemini',
+        sanskrit: 'मिथुन',
+        symbol: '♊',
+        element: 'Air',
+        quality: 'Mutable'
+      },
+      {
+        name: 'Cancer',
+        sanskrit: 'कर्क',
+        symbol: '♋',
+        element: 'Water',
+        quality: 'Cardinal'
+      },
+      {
+        name: 'Leo',
+        sanskrit: 'सिंह',
+        symbol: '♌',
+        element: 'Fire',
+        quality: 'Fixed'
+      },
+      {
+        name: 'Virgo',
+        sanskrit: 'कन्या',
+        symbol: '♍',
+        element: 'Earth',
+        quality: 'Mutable'
+      },
+      {
+        name: 'Libra',
+        sanskrit: 'तुला',
+        symbol: '♎',
+        element: 'Air',
+        quality: 'Cardinal'
+      },
+      {
+        name: 'Scorpio',
+        sanskrit: 'वृश्चिक',
+        symbol: '♏',
+        element: 'Water',
+        quality: 'Fixed'
+      },
+      {
+        name: 'Sagittarius',
+        sanskrit: 'धनुष',
+        symbol: '♐',
+        element: 'Fire',
+        quality: 'Mutable'
+      },
+      {
+        name: 'Capricorn',
+        sanskrit: 'मकर',
+        symbol: '♑',
+        element: 'Earth',
+        quality: 'Cardinal'
+      },
+      {
+        name: 'Aquarius',
+        sanskrit: 'कुम्भ',
+        symbol: '♒',
+        element: 'Air',
+        quality: 'Fixed'
+      },
+      {
+        name: 'Pisces',
+        sanskrit: 'मीन',
+        symbol: '♓',
+        element: 'Water',
+        quality: 'Mutable'
+      }
     ];
 
     // Relationship matrices for each planet (where they consider signs beneficial)
@@ -98,25 +172,82 @@ class Ashtakavarga {
 
     // House lords and their relationships to signs
     this.houseLords = {
-      0: 'mars',    1: 'venus',  2: 'mercury', 3: 'moon',
-      4: 'sun',     5: 'mercury', 6: 'venus',  7: 'mars',
-      8: 'jupiter', 9: 'saturn',  10: 'saturn', 11: 'jupiter'
+      0: 'mars',
+      1: 'venus',
+      2: 'mercury',
+      3: 'moon',
+      4: 'sun',
+      5: 'mercury',
+      6: 'venus',
+      7: 'mars',
+      8: 'jupiter',
+      9: 'saturn',
+      10: 'saturn',
+      11: 'jupiter'
     };
 
     // Bhavas (houses) and their meanings for Ashtakavarga application
     this.bhavas = {
-      1: { name: 'Self', sanskrit: 'आत्मभाव', significations: ['Life', 'Body', 'Personality'] },
-      2: { name: 'Wealth', sanskrit: 'धनभाव', significations: ['Family', 'Wealth', 'Speech'] },
-      3: { name: 'Siblings', sanskrit: 'सहोदर भाव', significations: ['Siblings', 'Communication', 'Courage'] },
-      4: { name: 'Home', sanskrit: 'सुखभाव', significations: ['Mother', 'Home', 'Education'] },
-      5: { name: 'Children', sanskrit: 'संतान भाव', significations: ['Children', 'Intelligence', 'Creativity'] },
-      6: { name: 'Enemies', sanskrit: 'रिपु भाव', significations: ['Enemies', 'Disease', 'Service'] },
-      7: { name: 'Spouse', sanskrit: 'कलात्र भाव', significations: ['Marriage', 'Business', 'Partnership'] },
-      8: { name: 'Longevity', sanskrit: 'आयु भाव', significations: ['Death', 'Occult', 'Chronic disease'] },
-      9: { name: 'Fortune', sanskrit: 'भाग्य भाव', significations: ['Father', 'Religion', 'Higher learning'] },
-      10: { name: 'Career', sanskrit: 'कर्म भाव', significations: ['Profession', 'Authority', 'Reputation'] },
-      11: { name: 'Gains', sanskrit: 'लाभ भाव', significations: ['Friends', 'Gains', 'Elders'] },
-      12: { name: 'Expenditure', sanskrit: 'व्यय भाव', significations: ['Expenses', 'Losses', 'Liberation'] }
+      1: {
+        name: 'Self',
+        sanskrit: 'आत्मभाव',
+        significations: ['Life', 'Body', 'Personality']
+      },
+      2: {
+        name: 'Wealth',
+        sanskrit: 'धनभाव',
+        significations: ['Family', 'Wealth', 'Speech']
+      },
+      3: {
+        name: 'Siblings',
+        sanskrit: 'सहोदर भाव',
+        significations: ['Siblings', 'Communication', 'Courage']
+      },
+      4: {
+        name: 'Home',
+        sanskrit: 'सुखभाव',
+        significations: ['Mother', 'Home', 'Education']
+      },
+      5: {
+        name: 'Children',
+        sanskrit: 'संतान भाव',
+        significations: ['Children', 'Intelligence', 'Creativity']
+      },
+      6: {
+        name: 'Enemies',
+        sanskrit: 'रिपु भाव',
+        significations: ['Enemies', 'Disease', 'Service']
+      },
+      7: {
+        name: 'Spouse',
+        sanskrit: 'कलात्र भाव',
+        significations: ['Marriage', 'Business', 'Partnership']
+      },
+      8: {
+        name: 'Longevity',
+        sanskrit: 'आयु भाव',
+        significations: ['Death', 'Occult', 'Chronic disease']
+      },
+      9: {
+        name: 'Fortune',
+        sanskrit: 'भाग्य भाव',
+        significations: ['Father', 'Religion', 'Higher learning']
+      },
+      10: {
+        name: 'Career',
+        sanskrit: 'कर्म भाव',
+        significations: ['Profession', 'Authority', 'Reputation']
+      },
+      11: {
+        name: 'Gains',
+        sanskrit: 'लाभ भाव',
+        significations: ['Friends', 'Gains', 'Elders']
+      },
+      12: {
+        name: 'Expenditure',
+        sanskrit: 'व्यय भाव',
+        significations: ['Expenses', 'Losses', 'Liberation']
+      }
     };
   }
 
@@ -132,7 +263,12 @@ class Ashtakavarga {
       // Parse birth data
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
-      const julianDay = this.dateToJulianDay(year, month, day, hour + minute / 60);
+      const julianDay = this.dateToJulianDay(
+        year,
+        month,
+        day,
+        hour + minute / 60
+      );
 
       // Calculate natal planetary positions
       const natalChart = await this.calculateNatalChart(julianDay, birthPlace);
@@ -145,7 +281,10 @@ class Ashtakavarga {
       for (const planet of this.planets) {
         const table = this.calculateAshtakavargaTable(planet.name, natalChart);
         ashtakavargaTables[planet.name] = table;
-        planetTotals[planet.name] = table.reduce((sum, points) => sum + points, 0);
+        planetTotals[planet.name] = table.reduce(
+          (sum, points) => sum + points,
+          0
+        );
         grandTotal += planetTotals[planet.name];
       }
 
@@ -153,13 +292,23 @@ class Ashtakavarga {
       const averageStrength = Math.round(grandTotal / 7);
 
       // Identify strongest and weakest areas
-      const areasAnalysis = this.analyzeAreasOfStrength(ashtakavargaTables, planetTotals);
+      const areasAnalysis = this.analyzeAreasOfStrength(
+        ashtakavargaTables,
+        planetTotals
+      );
 
       // Generate predictions based on Ashtakavarga
-      const predictions = this.generatePredictions(ashtakavargaTables, natalChart, averageStrength);
+      const predictions = this.generatePredictions(
+        ashtakavargaTables,
+        natalChart,
+        averageStrength
+      );
 
       // Calculate timing based on strengths
-      const timing = this.calculateTimingFromAshtakavarga(ashtakavargaTables, natalChart);
+      const timing = this.calculateTimingFromAshtakavarga(
+        ashtakavargaTables,
+        natalChart
+      );
 
       return {
         natalChart,
@@ -170,14 +319,25 @@ class Ashtakavarga {
         areasAnalysis,
         predictions,
         timing,
-        interpretation: this.generateAshtakavargaInterpretation(ashtakavargaTables, planetTotals, grandTotal, averageStrength),
-        summary: this.generateAshtakavargaSummary(predictions, areasAnalysis, averageStrength, timing)
+        interpretation: this.generateAshtakavargaInterpretation(
+          ashtakavargaTables,
+          planetTotals,
+          grandTotal,
+          averageStrength
+        ),
+        summary: this.generateAshtakavargaSummary(
+          predictions,
+          areasAnalysis,
+          averageStrength,
+          timing
+        )
       };
     } catch (error) {
       logger.error('Error generating Ashtakavarga analysis:', error);
       return {
         error: `Unable to generate Ashtakavarga analysis: ${error.message}`,
-        fallback: 'Ashtakavarga provides advanced Vedic 64-point beneficial influence analysis'
+        fallback:
+          'Ashtakavarga provides advanced Vedic 64-point beneficial influence analysis'
       };
     }
   }
@@ -194,17 +354,31 @@ class Ashtakavarga {
       let points = 0;
 
       // 1. Friendship/Natural Relationships
-      if (relationships.ownSign.includes(rashiIndex)) { points += 4; } else if (relationships.exalted.includes(rashiIndex)) { points += 4; } else if (relationships.friendlySigns.includes(rashiIndex)) { points += 4; } else if (relationships.neutralSigns.includes(rashiIndex)) { points += 3; } else if (relationships.enemySigns.includes(rashiIndex)) { points += 1; } else { points += 3; } // Mula-trikona or other relationships
+      if (relationships.ownSign.includes(rashiIndex)) {
+        points += 4;
+      } else if (relationships.exalted.includes(rashiIndex)) {
+        points += 4;
+      } else if (relationships.friendlySigns.includes(rashiIndex)) {
+        points += 4;
+      } else if (relationships.neutralSigns.includes(rashiIndex)) {
+        points += 3;
+      } else if (relationships.enemySigns.includes(rashiIndex)) {
+        points += 1;
+      } else {
+        points += 3;
+      } // Mula-trikona or other relationships
 
       // 2. Trikonasphuta: Relationships with houses 1, 5, 9 from planet's position
       const planetPosition = natalChart.planets[planetName]?.sign || 0;
       const trikonalHouses = [
         planetPosition,
         (planetPosition + 4) % 12, // 5th from planet
-        (planetPosition + 8) % 12  // 9th from planet
+        (planetPosition + 8) % 12 // 9th from planet
       ];
 
-      if (trikonalHouses.includes(rashiIndex)) { points += 3; }
+      if (trikonalHouses.includes(rashiIndex)) {
+        points += 3;
+      }
 
       // 3. Ekadhipatya: If rashi lord is in trikona from planet
       const rashiLord = this.houseLords[rashiIndex];
@@ -212,7 +386,9 @@ class Ashtakavarga {
         const lordPosition = natalChart.planets[rashiLord].sign;
         const distance = (lordPosition - planetPosition + 12) % 12;
 
-        if ([0, 4, 8].includes(distance)) { points += 2; }
+        if ([0, 4, 8].includes(distance)) {
+          points += 2;
+        }
       }
 
       // 4. Aspect considerations
@@ -222,7 +398,8 @@ class Ashtakavarga {
           const aspect = Math.abs(data.sign - rashiIndex);
           const normalizedAspect = aspect > 6 ? Math.abs(aspect - 12) : aspect;
 
-          if ([3, 6, 9].includes(normalizedAspect)) { // 4th, 7th, 10th aspects
+          if ([3, 6, 9].includes(normalizedAspect)) {
+            // 4th, 7th, 10th aspects
             points += 1;
           }
         }
@@ -251,7 +428,11 @@ class Ashtakavarga {
 
     for (const planet of this.planets) {
       try {
-        const result = sweph.calc(jd, this.getPlanetId(planet.name), sweph.FLG_SWIEPH | sweph.FLG_SIDEREAL);
+        const result = sweph.calc(
+          jd,
+          this.getPlanetId(planet.name),
+          sweph.FLG_SWIEPH | sweph.FLG_SIDEREAL
+        );
         const longitude = result.longitude?.[0] || 0;
         const sign = Math.floor(longitude / 30) % 12;
 
@@ -301,19 +482,19 @@ class Ashtakavarga {
         analysis.strongestAreas.push({
           rashi: rashiName,
           score,
-          areas: this.bhavas[(rashiIndex + 1) % 12 + 1]?.significations || []
+          areas: this.bhavas[((rashiIndex + 1) % 12) + 1]?.significations || []
         });
       } else if (score <= 3) {
         analysis.weakestAreas.push({
           rashi: rashiName,
           score,
-          areas: this.bhavas[(rashiIndex + 1) % 12 + 1]?.significations || []
+          areas: this.bhavas[((rashiIndex + 1) % 12) + 1]?.significations || []
         });
       } else {
         analysis.balancedAreas.push({
           rashi: rashiName,
           score,
-          areas: this.bhavas[(rashiIndex + 1) % 12 + 1]?.significations || []
+          areas: this.bhavas[((rashiIndex + 1) % 12) + 1]?.significations || []
         });
       }
     }
@@ -342,21 +523,31 @@ class Ashtakavarga {
 
     // Life area predictions
     for (let house = 1; house <= 12; house++) {
-      const houseIndex = (house - 1);
-      const averagePoints = this.getAverageForHouse(ashtakavargaTables, houseIndex);
+      const houseIndex = house - 1;
+      const averagePoints = this.getAverageForHouse(
+        ashtakavargaTables,
+        houseIndex
+      );
 
       predictions.lifeAreas[house] = {
         house,
         name: this.bhavas[house].name,
         significations: this.bhavas[house].significations,
         strength: averagePoints,
-        prediction: this.generateHousePrediction(house, averagePoints, averageStrength)
+        prediction: this.generateHousePrediction(
+          house,
+          averagePoints,
+          averageStrength
+        )
       };
     }
 
     // Planetary strength analysis
     for (const planet of this.planets) {
-      const total = ashtakavargaTables[planet.name].reduce((sum, points) => sum + points, 0);
+      const total = ashtakavargaTables[planet.name].reduce(
+        (sum, points) => sum + points,
+        0
+      );
       const maxPossible = 12 * 8; // 12 rashis * max 8 points = 96
       const percentage = Math.round((total / maxPossible) * 100);
 
@@ -369,7 +560,10 @@ class Ashtakavarga {
     }
 
     // Remedial measures for weak areas
-    predictions.remedialMeasures = this.generateRemedialMeasures(ashtakavargaTables, natalChart);
+    predictions.remedialMeasures = this.generateRemedialMeasures(
+      ashtakavargaTables,
+      natalChart
+    );
 
     return predictions;
   }
@@ -378,16 +572,24 @@ class Ashtakavarga {
    * Generate comprehensive Ashtakavarga interpretation
    * @private
    */
-  generateAshtakavargaInterpretation(ashtakavargaTables, planetTotals, grandTotal, averageStrength) {
+  generateAshtakavargaInterpretation(
+    ashtakavargaTables,
+    planetTotals,
+    grandTotal,
+    averageStrength
+  ) {
     let interpretation = '';
 
     // Overall strength
     if (averageStrength >= 40) {
-      interpretation += 'Your Ashtakavarga indicates strong benefic influences throughout life. ';
+      interpretation +=
+        'Your Ashtakavarga indicates strong benefic influences throughout life. ';
     } else if (averageStrength >= 30) {
-      interpretation += 'Your Ashtakavarga shows moderate benefic potential with some areas stronger than others. ';
+      interpretation +=
+        'Your Ashtakavarga shows moderate benefic potential with some areas stronger than others. ';
     } else {
-      interpretation += 'Your Ashtakavarga suggests areas requiring additional strengthening through spiritual practices. ';
+      interpretation +=
+        'Your Ashtakavarga suggests areas requiring additional strengthening through spiritual practices. ';
     }
 
     // Planetary analysis
@@ -402,8 +604,12 @@ class Ashtakavarga {
     // Life area insights
     const weakHouses = [];
     for (let house = 1; house <= 12; house++) {
-      const averagePoints = this.getAverageForHouse(ashtakavargaTables, house - 1);
-      if (averagePoints <= 25) { // Weak house threshold
+      const averagePoints = this.getAverageForHouse(
+        ashtakavargaTables,
+        house - 1
+      );
+      if (averagePoints <= 25) {
+        // Weak house threshold
         weakHouses.push(this.bhavas[house].name);
       }
     }
@@ -412,7 +618,8 @@ class Ashtakavarga {
       interpretation += `Areas requiring attention: ${weakHouses.join(', ')}. `;
     }
 
-    interpretation += 'Ashtakavarga reveals the distribution of benefic planetary influences across different life areas, guiding timing and success potential.';
+    interpretation +=
+      'Ashtakavarga reveals the distribution of benefic planetary influences across different life areas, guiding timing and success potential.';
 
     return interpretation;
   }
@@ -421,7 +628,12 @@ class Ashtakavarga {
    * Generate comprehensive summary
    * @private
    */
-  generateAshtakavargaSummary(predictions, areasAnalysis, averageStrength, timing) {
+  generateAshtakavargaSummary(
+    predictions,
+    areasAnalysis,
+    averageStrength,
+    timing
+  ) {
     return `🔢 **Ashtakavarga Analysis - Advanced Vedic 64-Point System**
 
 **Overall Strength:** ${averageStrength}/56 (${Math.round((averageStrength / 56) * 100)}%)
@@ -437,7 +649,10 @@ ${this.formatLifeAreasSummary(predictions.lifeAreas)}
 • Weak Planets: ${Object.values(predictions.planetaryStrengths).filter(p => p.assessment === 'Weak').length}/7
 
 **Recommended Focus Areas:**
-${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')}
+${predictions.remedialMeasures
+    .slice(0, 3)
+    .map(item => `• ${item}`)
+    .join('\n')}
 
 🕉️ *Ashtakavarga reveals benefic planetary dots across 12 zodiac signs for comprehensive life analysis.*`;
   }
@@ -462,12 +677,31 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
   }
 
   dateToJulianDay(year, month, day, hour) {
-    return hour / 24 + day + Math.floor((153 * month + 2) / 5) + 365 * year + Math.floor(year / 4) - Math.floor(year / 100) + Math.floor(year / 400) - 32045;
+    return (
+      hour / 24 +
+      day +
+      Math.floor((153 * month + 2) / 5) +
+      365 * year +
+      Math.floor(year / 4) -
+      Math.floor(year / 100) +
+      Math.floor(year / 400) -
+      32045
+    );
   }
 
   getMoonNakRuler(moon) {
     const nakshatraIndex = Math.floor(moon.longitude / (360 / 27));
-    const rulers = ['ketu', 'venus', 'sun', 'moon', 'mars', 'rahu', 'jupiter', 'saturn', 'mercury'];
+    const rulers = [
+      'ketu',
+      'venus',
+      'sun',
+      'moon',
+      'mars',
+      'rahu',
+      'jupiter',
+      'saturn',
+      'mercury'
+    ];
     return rulers[nakshatraIndex % 9] || 'moon';
   }
 
@@ -480,8 +714,12 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
   }
 
   generateHousePrediction(house, points, averageStrength) {
-    const strength = points > averageStrength ? 'Above Average' :
-      points < averageStrength - 10 ? 'Below Average' : 'Average';
+    const strength =
+      points > averageStrength ?
+        'Above Average' :
+        points < averageStrength - 10 ?
+          'Below Average' :
+          'Average';
 
     const houseName = this.bhavas[house].name;
     const significations = this.bhavas[house].significations.join(', ');
@@ -490,8 +728,12 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
   }
 
   assessPlanetaryStrength(percentage) {
-    if (percentage >= 70) { return 'Strong'; }
-    if (percentage >= 50) { return 'Moderate'; }
+    if (percentage >= 70) {
+      return 'Strong';
+    }
+    if (percentage >= 50) {
+      return 'Moderate';
+    }
     return 'Weak';
   }
 
@@ -513,24 +755,35 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
 
     // Check weak rashis (<3 average points)
     for (let rashiIndex = 0; rashiIndex < 12; rashiIndex++) {
-      const averagePoints = this.getAverageForHouse(ashtakavargaTables, rashiIndex);
+      const averagePoints = this.getAverageForHouse(
+        ashtakavargaTables,
+        rashiIndex
+      );
       if (averagePoints < 3) {
         const rashiName = this.rashis[rashiIndex].name;
-        measures.push(`Strengthen ${rashiName} influence through related gemstones and mantras`);
+        measures.push(
+          `Strengthen ${rashiName} influence through related gemstones and mantras`
+        );
       }
     }
 
     // Check planetary weaknesses
     for (const [planet, total] of Object.entries(planetTotals)) {
       if (total < 30) {
-        measures.push(`Strengthen ${planet} through specific gemstone and mantras`);
+        measures.push(
+          `Strengthen ${planet} through specific gemstone and mantras`
+        );
       }
     }
 
     // General measures
     if (measures.length === 0) {
-      measures.push('Regular spiritual practices to maintain beneficial influences');
-      measures.push('Chant "Om Shreem Maha Lakshmiyei Namaha" for overall prosperity');
+      measures.push(
+        'Regular spiritual practices to maintain beneficial influences'
+      );
+      measures.push(
+        'Chant "Om Shreem Maha Lakshmiyei Namaha" for overall prosperity'
+      );
     }
 
     return measures;
@@ -547,9 +800,10 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
   }
 
   formatLifeAreasSummary(lifeAreas) {
-    return `${Object.values(lifeAreas).slice(0, 6).map(area =>
-      `${area.name}: ${area.strength}/56 points`
-    ).join('\n• ')}\n• [... and 6 more areas]`;
+    return `${Object.values(lifeAreas)
+      .slice(0, 6)
+      .map(area => `${area.name}: ${area.strength}/56 points`)
+      .join('\n• ')}\n• [... and 6 more areas]`;
   }
 
   /**
@@ -560,11 +814,16 @@ ${predictions.remedialMeasures.slice(0, 3).map(item => `• ${item}`).join('\n')
     return {
       system_type: '64-point benefice analysis system',
       scope: 'Planetary beneficial influences across 12 zodiac signs',
-      traditional_use: 'Advanced Vedic timing and area-specific strength analysis',
-      calculation_method: 'Friendship, exaltation, trikona, and aspect-based scoring',
-      max_score_per_rashi: '8 points (7 planets x maximum beneficial relationships)',
-      interpretation: 'Higher scores indicate stronger benefic influences in that area',
-      modern_application: 'Career timing, marriage timing, health strengthening'
+      traditional_use:
+        'Advanced Vedic timing and area-specific strength analysis',
+      calculation_method:
+        'Friendship, exaltation, trikona, and aspect-based scoring',
+      max_score_per_rashi:
+        '8 points (7 planets x maximum beneficial relationships)',
+      interpretation:
+        'Higher scores indicate stronger benefic influences in that area',
+      modern_application:
+        'Career timing, marriage timing, health strengthening'
     };
   }
 }

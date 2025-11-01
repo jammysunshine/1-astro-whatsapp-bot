@@ -58,9 +58,14 @@ const connectDB = async() => {
         });
         mongoURI = mongoServer.getUri();
         process.env.MONGODB_URI = mongoURI; // Set for consistency
-        logger.info(`🔗 Using in-memory DB for ${process.env.NODE_ENV}: ${mongoURI}`);
+        logger.info(
+          `🔗 Using in-memory DB for ${process.env.NODE_ENV}: ${mongoURI}`
+        );
       } catch (error) {
-        logger.error('❌ Failed to start MongoDB Memory Server:', error.message);
+        logger.error(
+          '❌ Failed to start MongoDB Memory Server:',
+          error.message
+        );
         throw error;
       }
     }

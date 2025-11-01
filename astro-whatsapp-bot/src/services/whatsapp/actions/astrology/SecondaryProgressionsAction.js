@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class SecondaryProgressionsAction extends BaseAction {
-  static get actionId() { return 'get_secondary_progressions'; }
+  static get actionId() {
+    return 'get_secondary_progressions';
+  }
 
   async execute() {
     try {
@@ -21,7 +23,8 @@ class SecondaryProgressionsAction extends BaseAction {
   }
 
   async sendSecondaryProgressionsAnalysis() {
-    const analysis = '⏰ *Secondary Progressions - Your Soul\'s Evolution*\n\n' +
+    const analysis =
+      '⏰ *Secondary Progressions - Your Soul\'s Evolution*\n\n' +
       'Secondary progressions reveal your soul\'s growth journey by advancing planets one day for each year of life. This technique shows the deep, spiritual evolution of your consciousness.\n\n' +
       '*⭐ SECONDARY PROGRESSION MEANING:*\n' +
       '• Day = Year (1 day equals 1 year)\n' +
@@ -40,14 +43,19 @@ class SecondaryProgressionsAction extends BaseAction {
       '*Your secondary progressions reveal the divine curriculum of your soul.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -56,8 +64,14 @@ class SecondaryProgressionsAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Analyze secondary progressions for spiritual growth and karmic lessons',
-      keywords: ['secondary progressions', 'soul evolution', 'spiritual growth', 'consciousness'],
+      description:
+        'Analyze secondary progressions for spiritual growth and karmic lessons',
+      keywords: [
+        'secondary progressions',
+        'soul evolution',
+        'spiritual growth',
+        'consciousness'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 3600000

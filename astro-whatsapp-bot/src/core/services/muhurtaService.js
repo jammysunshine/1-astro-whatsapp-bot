@@ -11,7 +11,8 @@ class MuhurtaService extends ServiceTemplate {
   constructor() {
     super('MuhurtaCalculator'); // Primary calculator for this service
     this.serviceName = 'MuhurtaService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
     logger.info('MuhurtaService initialized');
   }
 
@@ -49,7 +50,10 @@ class MuhurtaService extends ServiceTemplate {
       };
 
       // Add enhanced analysis
-      muhurtaResult.enhancedAnalysis = this._performEnhancedMuhurtaAnalysis(muhurtaResult, muhurtaData);
+      muhurtaResult.enhancedAnalysis = this._performEnhancedMuhurtaAnalysis(
+        muhurtaResult,
+        muhurtaData
+      );
 
       return muhurtaResult;
     } catch (error) {
@@ -124,13 +128,22 @@ class MuhurtaService extends ServiceTemplate {
 
     if (result.planetaryStrengths) {
       formatted += '*🌟 Planetary Support:*\n';
-      if (result.planetaryStrengths.favorable && result.planetaryStrengths.favorable.length > 0) {
+      if (
+        result.planetaryStrengths.favorable &&
+        result.planetaryStrengths.favorable.length > 0
+      ) {
         formatted += `• **Favorable:** ${result.planetaryStrengths.favorable.join(', ')}\n`;
       }
-      if (result.planetaryStrengths.neutral && result.planetaryStrengths.neutral.length > 0) {
+      if (
+        result.planetaryStrengths.neutral &&
+        result.planetaryStrengths.neutral.length > 0
+      ) {
         formatted += `• **Neutral:** ${result.planetaryStrengths.neutral.join(', ')}\n`;
       }
-      if (result.planetaryStrengths.challenging && result.planetaryStrengths.challenging.length > 0) {
+      if (
+        result.planetaryStrengths.challenging &&
+        result.planetaryStrengths.challenging.length > 0
+      ) {
         formatted += `• **Challenging:** ${result.planetaryStrengths.challenging.join(', ')}\n`;
       }
       formatted += '\n';
@@ -162,7 +175,8 @@ class MuhurtaService extends ServiceTemplate {
       formatted += `*📋 Summary:*\n${result.summary}\n\n`;
     }
 
-    formatted += '---\n*Muhurta - Vedic Auspicious Timing for Important Activities*';
+    formatted +=
+      '---\n*Muhurta - Vedic Auspicious Timing for Important Activities*';
 
     return formatted;
   }
@@ -174,7 +188,9 @@ class MuhurtaService extends ServiceTemplate {
    */
   _validateInputs(muhurtaData) {
     if (!muhurtaData) {
-      throw new Error('Muhurta data is required for auspicious timing analysis');
+      throw new Error(
+        'Muhurta data is required for auspicious timing analysis'
+      );
     }
 
     if (!muhurtaData.activity || muhurtaData.activity.trim().length === 0) {
@@ -210,32 +226,49 @@ class MuhurtaService extends ServiceTemplate {
     if (result.dailyAnalysis?.overallRating) {
       const rating = result.dailyAnalysis.overallRating;
       if (rating === 'Excellent') {
-        analysis.overallAssessment = 'Highly auspicious day with excellent planetary support';
+        analysis.overallAssessment =
+          'Highly auspicious day with excellent planetary support';
         analysis.timingQuality = 'Premium timing - proceed with confidence';
-        analysis.actionableAdvice = 'This is an ideal time for your activity - take full advantage';
+        analysis.actionableAdvice =
+          'This is an ideal time for your activity - take full advantage';
       } else if (rating === 'Good') {
-        analysis.overallAssessment = 'Favorable day with good planetary alignments';
+        analysis.overallAssessment =
+          'Favorable day with good planetary alignments';
         analysis.timingQuality = 'Good timing - favorable conditions present';
-        analysis.actionableAdvice = 'Proceed with your activity during recommended time slots';
+        analysis.actionableAdvice =
+          'Proceed with your activity during recommended time slots';
       } else if (rating === 'Fair') {
-        analysis.overallAssessment = 'Moderate day with mixed planetary influences';
+        analysis.overallAssessment =
+          'Moderate day with mixed planetary influences';
         analysis.timingQuality = 'Acceptable timing - some precautions needed';
-        analysis.actionableAdvice = 'Proceed during best time slots with appropriate preparations';
+        analysis.actionableAdvice =
+          'Proceed during best time slots with appropriate preparations';
       } else {
-        analysis.overallAssessment = 'Challenging day with difficult planetary conditions';
+        analysis.overallAssessment =
+          'Challenging day with difficult planetary conditions';
         analysis.timingQuality = 'Difficult timing - consider alternatives';
-        analysis.actionableAdvice = 'Postpone activity or choose alternative date if possible';
+        analysis.actionableAdvice =
+          'Postpone activity or choose alternative date if possible';
       }
     }
 
     if (result.dailyAnalysis?.overallRating && result.timeSlotsAnalysis) {
-      const goodSlots = Object.values(result.timeSlotsAnalysis)
-        .filter(slot => slot.suitability.rating === 'Excellent' || slot.suitability.rating === 'Good')
-        .length;
+      const goodSlots = Object.values(result.timeSlotsAnalysis).filter(
+        slot =>
+          slot.suitability.rating === 'Excellent' ||
+          slot.suitability.rating === 'Good'
+      ).length;
 
-      if (result.dailyAnalysis.overallRating === 'Excellent' && goodSlots >= 3) {
-        analysis.confidenceLevel = 'High - Multiple excellent time slots available';
-      } else if (result.dailyAnalysis.overallRating === 'Good' && goodSlots >= 2) {
+      if (
+        result.dailyAnalysis.overallRating === 'Excellent' &&
+        goodSlots >= 3
+      ) {
+        analysis.confidenceLevel =
+          'High - Multiple excellent time slots available';
+      } else if (
+        result.dailyAnalysis.overallRating === 'Good' &&
+        goodSlots >= 2
+      ) {
         analysis.confidenceLevel = 'Moderate-High - Good options available';
       } else if (goodSlots >= 1) {
         analysis.confidenceLevel = 'Moderate - Limited but suitable options';
@@ -244,8 +277,13 @@ class MuhurtaService extends ServiceTemplate {
       }
     }
 
-    if (result.planetaryStrengths?.challenging && result.planetaryStrengths.challenging.length > 0) {
-      analysis.riskFactors.push(`Challenging planetary influences: ${result.planetaryStrengths.challenging.join(', ')}`);
+    if (
+      result.planetaryStrengths?.challenging &&
+      result.planetaryStrengths.challenging.length > 0
+    ) {
+      analysis.riskFactors.push(
+        `Challenging planetary influences: ${result.planetaryStrengths.challenging.join(', ')}`
+      );
     }
 
     if (result.dailyAnalysis?.overallRating === 'Poor') {
@@ -274,7 +312,8 @@ class MuhurtaService extends ServiceTemplate {
       category: 'vedic',
       methods: ['processCalculation'],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Service for auspicious timing calculations (Electional Astrology).'
+      description:
+        'Service for auspicious timing calculations (Electional Astrology).'
     };
   }
 

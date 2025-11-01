@@ -31,11 +31,15 @@ class DivinationService extends ServiceTemplate {
 
     const validMethods = ['tarot', 'iching', 'runes', 'scrying'];
     if (!validMethods.includes(data.method.toLowerCase())) {
-      throw new Error(`Invalid divination method. Valid methods: ${validMethods.join(', ')}`);
+      throw new Error(
+        `Invalid divination method. Valid methods: ${validMethods.join(', ')}`
+      );
     }
 
     if (!data.question && !data.focus) {
-      throw new Error('Either question or focus is required for divination reading');
+      throw new Error(
+        'Either question or focus is required for divination reading'
+      );
     }
 
     return true;
@@ -112,11 +116,18 @@ class DivinationService extends ServiceTemplate {
       ...super.getMetadata(),
       name: 'DivinationService',
       category: 'divination',
-      description: 'Service for various divination methods including Tarot, I Ching, and mystical arts',
+      description:
+        'Service for various divination methods including Tarot, I Ching, and mystical arts',
       version: '1.0.0',
       status: 'active',
       methods: ['tarot', 'iching', 'runes', 'scrying'],
-      tarotSpreads: ['general', 'celtic-cross', 'three-card', 'relationship', 'career'],
+      tarotSpreads: [
+        'general',
+        'celtic-cross',
+        'three-card',
+        'relationship',
+        'career'
+      ],
       dependencies: []
     };
   }
@@ -173,7 +184,16 @@ class DivinationService extends ServiceTemplate {
    */
   async _castRunes(question) {
     // Simulate rune casting (would integrate with actual rune calculator)
-    const runes = ['Fehu', 'Uruz', 'Thurisaz', 'Ansuz', 'Raidho', 'Kenaz', 'Gebo', 'Wunjo'];
+    const runes = [
+      'Fehu',
+      'Uruz',
+      'Thurisaz',
+      'Ansuz',
+      'Raidho',
+      'Kenaz',
+      'Gebo',
+      'Wunjo'
+    ];
     const selectedRunes = [];
 
     for (let i = 0; i < 3; i++) {
@@ -184,7 +204,8 @@ class DivinationService extends ServiceTemplate {
     return {
       runes: selectedRunes,
       interpretation: `The runes ${selectedRunes.join(', ')} suggest a path of transformation and opportunity.`,
-      guidance: 'Consider the ancient wisdom of the runes in your current situation.',
+      guidance:
+        'Consider the ancient wisdom of the runes in your current situation.',
       method: 'runes'
     };
   }
@@ -210,7 +231,8 @@ class DivinationService extends ServiceTemplate {
     return {
       vision,
       interpretation: `The scrying mirror reveals ${vision}, indicating significant changes approaching.`,
-      guidance: 'Trust your intuition as you navigate the coming transformations.',
+      guidance:
+        'Trust your intuition as you navigate the coming transformations.',
       method: 'scrying'
     };
   }
@@ -223,12 +245,20 @@ class DivinationService extends ServiceTemplate {
     return {
       tarot: {
         name: 'Tarot Reading',
-        description: 'Ancient divination using Tarot cards for insight and guidance',
-        spreads: ['general', 'celtic-cross', 'three-card', 'relationship', 'career']
+        description:
+          'Ancient divination using Tarot cards for insight and guidance',
+        spreads: [
+          'general',
+          'celtic-cross',
+          'three-card',
+          'relationship',
+          'career'
+        ]
       },
       iching: {
         name: 'I Ching',
-        description: 'Chinese oracle providing wisdom through hexagram patterns',
+        description:
+          'Chinese oracle providing wisdom through hexagram patterns',
         method: 'coin casting or yarrow stalks'
       },
       runes: {

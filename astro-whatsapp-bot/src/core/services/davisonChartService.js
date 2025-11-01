@@ -56,11 +56,15 @@ class DavisonChartService extends ServiceTemplate {
       const { person1, person2 } = data;
 
       // Calculate Davison chart using the dynamically loaded calculator
-      const davisonChart = await this.calculator.calculateDavisonChart(person1, person2);
+      const davisonChart = await this.calculator.calculateDavisonChart(
+        person1,
+        person2
+      );
 
       // Generate additional analysis and interpretations
       const davisonAnalysis = this._analyzeDavisonChart(davisonChart);
-      const relationshipInsights = this._generateRelationshipInsights(davisonChart);
+      const relationshipInsights =
+        this._generateRelationshipInsights(davisonChart);
       const lifePurpose = this._identifyLifePurpose(davisonChart);
 
       const result = {
@@ -68,7 +72,10 @@ class DavisonChartService extends ServiceTemplate {
         davisonAnalysis,
         relationshipInsights,
         lifePurpose,
-        interpretation: this._interpretDavisonChart(davisonChart, davisonAnalysis),
+        interpretation: this._interpretDavisonChart(
+          davisonChart,
+          davisonAnalysis
+        ),
         type: 'davison_chart',
         generatedAt: new Date().toISOString(),
         service: this.serviceName
@@ -140,7 +147,11 @@ class DavisonChartService extends ServiceTemplate {
         placements[planet] = {
           sign: data.sign,
           house: data.house,
-          significance: this._interpretPlanetaryPlacement(planet, data.sign, data.house)
+          significance: this._interpretPlanetaryPlacement(
+            planet,
+            data.sign,
+            data.house
+          )
         };
       }
     }
@@ -157,7 +168,9 @@ class DavisonChartService extends ServiceTemplate {
     // This would require aspect calculation logic
     return {
       majorAspects: davisonChart.majorAspects || [],
-      configuration: davisonChart.aspectConfiguration || 'Aspect analysis requires additional calculation',
+      configuration:
+        davisonChart.aspectConfiguration ||
+        'Aspect analysis requires additional calculation',
       harmony: this._assessChartHarmony(davisonChart)
     };
   }
@@ -182,7 +195,9 @@ class DavisonChartService extends ServiceTemplate {
     return {
       distribution: houseCounts,
       emphasizedHouses,
-      lifeAreas: emphasizedHouses.map(house => this._interpretHouseEmphasis(house))
+      lifeAreas: emphasizedHouses.map(house =>
+        this._interpretHouseEmphasis(house)
+      )
     };
   }
 
@@ -221,16 +236,26 @@ class DavisonChartService extends ServiceTemplate {
       insights.strengths.push(this._getSunHouseInsight(davisonChart.Sun.house));
     }
     if (davisonChart.Moon?.house) {
-      insights.strengths.push(this._getMoonHouseInsight(davisonChart.Moon.house));
+      insights.strengths.push(
+        this._getMoonHouseInsight(davisonChart.Moon.house)
+      );
     }
     if (davisonChart.Saturn?.house) {
-      insights.challenges.push(this._getSaturnHouseInsight(davisonChart.Saturn.house));
+      insights.challenges.push(
+        this._getSaturnHouseInsight(davisonChart.Saturn.house)
+      );
     }
     if (davisonChart.Jupiter?.house) {
-      insights.growth.push(this._getJupiterHouseInsight(davisonChart.Jupiter.house));
+      insights.growth.push(
+        this._getJupiterHouseInsight(davisonChart.Jupiter.house)
+      );
     }
-    insights.timing.push('Davison chart represents the relationship\'s developmental timeline');
-    insights.timing.push('Planetary periods indicate relationship growth phases');
+    insights.timing.push(
+      'Davison chart represents the relationship\'s developmental timeline'
+    );
+    insights.timing.push(
+      'Planetary periods indicate relationship growth phases'
+    );
     return insights;
   }
 
@@ -298,10 +323,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _interpretHouseEmphasis(house) {
     const houseAreas = {
-      1: 'personal identity and self-expression', 2: 'values, resources, and self-worth', 3: 'communication and learning',
-      4: 'home, family, and emotional foundation', 5: 'creativity, children, and self-expression', 6: 'service, health, and daily routines',
-      7: 'partnerships and relationships', 8: 'transformation, intimacy, and shared resources', 9: 'philosophy, travel, and higher learning',
-      10: 'career, reputation, and public life', 11: 'friendships, groups, and aspirations', 12: 'spirituality, endings, and inner life'
+      1: 'personal identity and self-expression',
+      2: 'values, resources, and self-worth',
+      3: 'communication and learning',
+      4: 'home, family, and emotional foundation',
+      5: 'creativity, children, and self-expression',
+      6: 'service, health, and daily routines',
+      7: 'partnerships and relationships',
+      8: 'transformation, intimacy, and shared resources',
+      9: 'philosophy, travel, and higher learning',
+      10: 'career, reputation, and public life',
+      11: 'friendships, groups, and aspirations',
+      12: 'spirituality, endings, and inner life'
     };
     return houseAreas[house] || `house ${house} themes`;
   }
@@ -314,10 +347,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getHouseArea(house) {
     const areas = {
-      1: 'personal identity', 2: 'values and resources', 3: 'communication',
-      4: 'home and family', 5: 'creativity and children', 6: 'service and health',
-      7: 'partnerships', 8: 'transformation', 9: 'philosophy and travel',
-      10: 'career and reputation', 11: 'friendships and groups', 12: 'spirituality'
+      1: 'personal identity',
+      2: 'values and resources',
+      3: 'communication',
+      4: 'home and family',
+      5: 'creativity and children',
+      6: 'service and health',
+      7: 'partnerships',
+      8: 'transformation',
+      9: 'philosophy and travel',
+      10: 'career and reputation',
+      11: 'friendships and groups',
+      12: 'spirituality'
     };
     return areas[house] || `house ${house}`;
   }
@@ -330,10 +371,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getSunSignTheme(sign) {
     const themes = {
-      Aries: 'Dynamic and pioneering partnership', Taurus: 'Stable and sensual relationship', Gemini: 'Communicative and intellectual connection',
-      Cancer: 'Nurturing and emotionally bonded union', Leo: 'Creative and expressive partnership', Virgo: 'Service-oriented and detail-focused relationship',
-      Libra: 'Harmonious and balanced partnership', Scorpio: 'Intense and transformative connection', Sagittarius: 'Adventurous and philosophical union',
-      Capricorn: 'Ambitious and structured relationship', Aquarius: 'Progressive and unconventional partnership', Pisces: 'Compassionate and spiritual connection'
+      Aries: 'Dynamic and pioneering partnership',
+      Taurus: 'Stable and sensual relationship',
+      Gemini: 'Communicative and intellectual connection',
+      Cancer: 'Nurturing and emotionally bonded union',
+      Leo: 'Creative and expressive partnership',
+      Virgo: 'Service-oriented and detail-focused relationship',
+      Libra: 'Harmonious and balanced partnership',
+      Scorpio: 'Intense and transformative connection',
+      Sagittarius: 'Adventurous and philosophical union',
+      Capricorn: 'Ambitious and structured relationship',
+      Aquarius: 'Progressive and unconventional partnership',
+      Pisces: 'Compassionate and spiritual connection'
     };
     return themes[sign] || 'Balanced and harmonious relationship';
   }
@@ -346,10 +395,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getMoonSignTheme(sign) {
     const themes = {
-      Aries: 'Emotionally direct and spontaneous', Taurus: 'Emotionally stable and sensual', Gemini: 'Emotionally communicative and adaptable',
-      Cancer: 'Deeply nurturing and protective', Leo: 'Emotionally expressive and generous', Virgo: 'Emotionally practical and caring',
-      Libra: 'Emotionally balanced and harmonious', Scorpio: 'Emotionally intense and passionate', Sagittarius: 'Emotionally adventurous and optimistic',
-      Capricorn: 'Emotionally responsible and structured', Aquarius: 'Emotionally independent and humanitarian', Pisces: 'Emotionally compassionate and intuitive'
+      Aries: 'Emotionally direct and spontaneous',
+      Taurus: 'Emotionally stable and sensual',
+      Gemini: 'Emotionally communicative and adaptable',
+      Cancer: 'Deeply nurturing and protective',
+      Leo: 'Emotionally expressive and generous',
+      Virgo: 'Emotionally practical and caring',
+      Libra: 'Emotionally balanced and harmonious',
+      Scorpio: 'Emotionally intense and passionate',
+      Sagittarius: 'Emotionally adventurous and optimistic',
+      Capricorn: 'Emotionally responsible and structured',
+      Aquarius: 'Emotionally independent and humanitarian',
+      Pisces: 'Emotionally compassionate and intuitive'
     };
     return themes[sign] || 'Emotionally balanced connection';
   }
@@ -362,10 +419,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getVenusTheme(house) {
     const themes = {
-      1: 'Love focused on personal identity and attraction', 2: 'Love expressed through values and shared resources', 3: 'Love through communication and intellectual connection',
-      4: 'Love centered on home and family', 5: 'Love through creativity and romance', 6: 'Love expressed through service and care',
-      7: 'Love focused on partnership and marriage', 8: 'Love through deep intimacy and transformation', 9: 'Love through philosophy and shared beliefs',
-      10: 'Love connected to career and public life', 11: 'Love through friendships and group activities', 12: 'Love through spirituality and compassion'
+      1: 'Love focused on personal identity and attraction',
+      2: 'Love expressed through values and shared resources',
+      3: 'Love through communication and intellectual connection',
+      4: 'Love centered on home and family',
+      5: 'Love through creativity and romance',
+      6: 'Love expressed through service and care',
+      7: 'Love focused on partnership and marriage',
+      8: 'Love through deep intimacy and transformation',
+      9: 'Love through philosophy and shared beliefs',
+      10: 'Love connected to career and public life',
+      11: 'Love through friendships and group activities',
+      12: 'Love through spirituality and compassion'
     };
     return themes[house] || 'Love expressed uniquely in this relationship';
   }
@@ -378,10 +443,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getSunHouseInsight(house) {
     const insights = {
-      1: 'Strong shared identity and purpose', 2: 'Shared values and financial goals', 3: 'Communication and learning together',
-      4: 'Building a home and family together', 5: 'Creative expression and joy in the relationship', 6: 'Service and care for each other',
-      7: 'Equal partnership and mutual respect', 8: 'Deep transformation and intimacy', 9: 'Shared philosophy and life exploration',
-      10: 'Public recognition and shared achievements', 11: 'Group activities and shared aspirations', 12: 'Spiritual growth and inner connection'
+      1: 'Strong shared identity and purpose',
+      2: 'Shared values and financial goals',
+      3: 'Communication and learning together',
+      4: 'Building a home and family together',
+      5: 'Creative expression and joy in the relationship',
+      6: 'Service and care for each other',
+      7: 'Equal partnership and mutual respect',
+      8: 'Deep transformation and intimacy',
+      9: 'Shared philosophy and life exploration',
+      10: 'Public recognition and shared achievements',
+      11: 'Group activities and shared aspirations',
+      12: 'Spiritual growth and inner connection'
     };
     return insights[house] || 'Shared purpose and direction';
   }
@@ -394,10 +467,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getMoonHouseInsight(house) {
     const insights = {
-      1: 'Emotional security in self-expression', 2: 'Emotional security through shared resources', 3: 'Emotional security through communication',
-      4: 'Emotional security in home and family', 5: 'Emotional security through creativity and fun', 6: 'Emotional security through care and service',
-      7: 'Emotional security in partnership', 8: 'Emotional security through intimacy', 9: 'Emotional security through shared beliefs',
-      10: 'Emotional security through achievements', 11: 'Emotional security through friendships', 12: 'Emotional security through spirituality'
+      1: 'Emotional security in self-expression',
+      2: 'Emotional security through shared resources',
+      3: 'Emotional security through communication',
+      4: 'Emotional security in home and family',
+      5: 'Emotional security through creativity and fun',
+      6: 'Emotional security through care and service',
+      7: 'Emotional security in partnership',
+      8: 'Emotional security through intimacy',
+      9: 'Emotional security through shared beliefs',
+      10: 'Emotional security through achievements',
+      11: 'Emotional security through friendships',
+      12: 'Emotional security through spirituality'
     };
     return insights[house] || 'Emotional security and comfort';
   }
@@ -410,10 +491,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getSaturnHouseInsight(house) {
     const insights = {
-      1: 'Learning about personal boundaries and responsibility', 2: 'Building financial stability and self-worth', 3: 'Developing clear communication and discipline',
-      4: 'Establishing strong family foundations', 5: 'Learning through creative challenges', 6: 'Developing healthy routines and service',
-      7: 'Building committed partnership structures', 8: 'Working through transformation and trust', 9: 'Developing philosophical maturity',
-      10: 'Building career stability and reputation', 11: 'Learning through group responsibilities', 12: 'Spiritual discipline and inner work'
+      1: 'Learning about personal boundaries and responsibility',
+      2: 'Building financial stability and self-worth',
+      3: 'Developing clear communication and discipline',
+      4: 'Establishing strong family foundations',
+      5: 'Learning through creative challenges',
+      6: 'Developing healthy routines and service',
+      7: 'Building committed partnership structures',
+      8: 'Working through transformation and trust',
+      9: 'Developing philosophical maturity',
+      10: 'Building career stability and reputation',
+      11: 'Learning through group responsibilities',
+      12: 'Spiritual discipline and inner work'
     };
     return insights[house] || 'Areas requiring patience and commitment';
   }
@@ -426,10 +515,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getJupiterHouseInsight(house) {
     const insights = {
-      1: 'Growth through self-discovery and confidence', 2: 'Abundance in resources and self-value', 3: 'Expansion through learning and communication',
-      4: 'Growth in family and home life', 5: 'Joy and expansion through creativity', 6: 'Growth through service and health',
-      7: 'Expansion in relationships and partnerships', 8: 'Growth through intimacy and transformation', 9: 'Philosophical and travel expansion',
-      10: 'Career growth and public recognition', 11: 'Growth through groups and aspirations', 12: 'Spiritual expansion and inner wisdom'
+      1: 'Growth through self-discovery and confidence',
+      2: 'Abundance in resources and self-value',
+      3: 'Expansion through learning and communication',
+      4: 'Growth in family and home life',
+      5: 'Joy and expansion through creativity',
+      6: 'Growth through service and health',
+      7: 'Expansion in relationships and partnerships',
+      8: 'Growth through intimacy and transformation',
+      9: 'Philosophical and travel expansion',
+      10: 'Career growth and public recognition',
+      11: 'Growth through groups and aspirations',
+      12: 'Spiritual expansion and inner wisdom'
     };
     return insights[house] || 'Areas of natural growth and expansion';
   }
@@ -442,10 +539,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getSunPurpose(house) {
     const purposes = {
-      1: 'To develop a strong shared identity and purpose', 2: 'To build security and shared values together', 3: 'To communicate and learn as a team',
-      4: 'To create a loving home and family foundation', 5: 'To express creativity and joy together', 6: 'To serve and care for each other',
-      7: 'To form an equal and balanced partnership', 8: 'To transform and deepen intimacy', 9: 'To explore philosophy and expand horizons',
-      10: 'To achieve public recognition together', 11: 'To work toward shared aspirations', 12: 'To develop spiritual connection and compassion'
+      1: 'To develop a strong shared identity and purpose',
+      2: 'To build security and shared values together',
+      3: 'To communicate and learn as a team',
+      4: 'To create a loving home and family foundation',
+      5: 'To express creativity and joy together',
+      6: 'To serve and care for each other',
+      7: 'To form an equal and balanced partnership',
+      8: 'To transform and deepen intimacy',
+      9: 'To explore philosophy and expand horizons',
+      10: 'To achieve public recognition together',
+      11: 'To work toward shared aspirations',
+      12: 'To develop spiritual connection and compassion'
     };
     return purposes[house] || 'To fulfill shared life purpose and destiny';
   }
@@ -458,10 +563,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getNodePurpose(house) {
     const purposes = {
-      1: 'Learning about authentic self-expression', 2: 'Developing self-worth and resource management', 3: 'Mastering communication and learning',
-      4: 'Building emotional security and family', 5: 'Expressing creativity and joy', 6: 'Learning service and healthy routines',
-      7: 'Developing partnership skills', 8: 'Mastering transformation and intimacy', 9: 'Expanding philosophical understanding',
-      10: 'Building career and public life', 11: 'Developing group consciousness', 12: 'Deepening spiritual awareness'
+      1: 'Learning about authentic self-expression',
+      2: 'Developing self-worth and resource management',
+      3: 'Mastering communication and learning',
+      4: 'Building emotional security and family',
+      5: 'Expressing creativity and joy',
+      6: 'Learning service and healthy routines',
+      7: 'Developing partnership skills',
+      8: 'Mastering transformation and intimacy',
+      9: 'Expanding philosophical understanding',
+      10: 'Building career and public life',
+      11: 'Developing group consciousness',
+      12: 'Deepening spiritual awareness'
     };
     return purposes[house] || 'Spiritual growth and life learning';
   }
@@ -474,10 +587,18 @@ class DavisonChartService extends ServiceTemplate {
    */
   _getMcPurpose(sign) {
     const purposes = {
-      Aries: 'To be pioneering leaders in their field', Taurus: 'To build lasting value and security', Gemini: 'To communicate and share knowledge',
-      Cancer: 'To nurture and care for others', Leo: 'To create and inspire through self-expression', Virgo: 'To serve with precision and care',
-      Libra: 'To create harmony and balance', Scorpio: 'To transform and heal deeply', Sagittarius: 'To explore and expand understanding',
-      Capricorn: 'To build structures and achieve goals', Aquarius: 'To innovate and serve humanity', Pisces: 'To offer compassion and spiritual guidance'
+      Aries: 'To be pioneering leaders in their field',
+      Taurus: 'To build lasting value and security',
+      Gemini: 'To communicate and share knowledge',
+      Cancer: 'To nurture and care for others',
+      Leo: 'To create and inspire through self-expression',
+      Virgo: 'To serve with precision and care',
+      Libra: 'To create harmony and balance',
+      Scorpio: 'To transform and heal deeply',
+      Sagittarius: 'To explore and expand understanding',
+      Capricorn: 'To build structures and achieve goals',
+      Aquarius: 'To innovate and serve humanity',
+      Pisces: 'To offer compassion and spiritual guidance'
     };
     return purposes[sign] || 'To contribute meaningfully to the world';
   }
@@ -490,15 +611,18 @@ class DavisonChartService extends ServiceTemplate {
    * @private
    */
   _interpretDavisonChart(davisonChart, analysis) {
-    let interpretation = 'The Davison chart represents the relationship as a separate entity with its own birth chart, calculated from the midpoint of both partners\' birth data. ';
+    let interpretation =
+      'The Davison chart represents the relationship as a separate entity with its own birth chart, calculated from the midpoint of both partners\' birth data. ';
     if (davisonChart.relationshipPurpose) {
       interpretation += `${davisonChart.relationshipPurpose} `;
     }
-    interpretation += 'This chart reveals the soul purpose and developmental path of the partnership, showing how the relationship evolves and grows over time. ';
+    interpretation +=
+      'This chart reveals the soul purpose and developmental path of the partnership, showing how the relationship evolves and grows over time. ';
     if (analysis.dominantThemes && analysis.dominantThemes.length > 0) {
       interpretation += `Key themes include: ${analysis.dominantThemes.join(', ')}. `;
     }
-    interpretation += 'The Davison chart provides insights into the relationship\'s timing, challenges, and ultimate potential for fulfillment.';
+    interpretation +=
+      'The Davison chart provides insights into the relationship\'s timing, challenges, and ultimate potential for fulfillment.';
     return interpretation;
   }
 
@@ -513,7 +637,8 @@ class DavisonChartService extends ServiceTemplate {
       category: 'vedic',
       methods: ['processCalculation', 'calculateDavisonChart'],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Service for Davison chart calculations and relationship analysis.'
+      description:
+        'Service for Davison chart calculations and relationship analysis.'
     };
   }
 

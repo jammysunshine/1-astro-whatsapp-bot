@@ -1,4 +1,5 @@
 /**
+const ServiceTemplate = require('./ServiceTemplate');
  * Remedies Dosha Service
  *
  * Provides comprehensive Vedic remedial measures for planetary afflictions,
@@ -44,22 +45,35 @@ class RemediesDoshaService extends ServiceTemplate {
    */
   async getRemediesDoshaAnalysis(remediesData) {
     try {
-      const { birthData, concerns, doshaType, remedyPreferences } = remediesData;
+      const { birthData, concerns, doshaType, remedyPreferences } =
+        remediesData;
 
       // Analyze planetary afflictions
-      const planetaryAfflictions = await this._analyzePlanetaryAfflictions(birthData);
+      const planetaryAfflictions =
+        await this._analyzePlanetaryAfflictions(birthData);
 
       // Identify doshas and imbalances
       const doshaAnalysis = await this._analyzeDoshas(birthData, doshaType);
 
       // Generate personalized remedies
-      const remedies = await this._generatePersonalizedRemedies(planetaryAfflictions, doshaAnalysis, concerns, remedyPreferences);
+      const remedies = await this._generatePersonalizedRemedies(
+        planetaryAfflictions,
+        doshaAnalysis,
+        concerns,
+        remedyPreferences
+      );
 
       // Calculate remedy effectiveness
-      const effectiveness = this._calculateRemedyEffectiveness(remedies, birthData);
+      const effectiveness = this._calculateRemedyEffectiveness(
+        remedies,
+        birthData
+      );
 
       // Generate implementation plan
-      const implementationPlan = this._generateImplementationPlan(remedies, concerns);
+      const implementationPlan = this._generateImplementationPlan(
+        remedies,
+        concerns
+      );
 
       return {
         birthData: this._sanitizeBirthData(birthData),
@@ -95,14 +109,31 @@ class RemediesDoshaService extends ServiceTemplate {
       };
 
       // Analyze each planet
-      const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn', 'rahu', 'ketu'];
+      const planets = [
+        'sun',
+        'moon',
+        'mars',
+        'mercury',
+        'jupiter',
+        'venus',
+        'saturn',
+        'rahu',
+        'ketu'
+      ];
 
       planets.forEach(planetKey => {
         const planet = birthData[planetKey];
-        if (!planet) { return; }
+        if (!planet) {
+          return;
+        }
 
-        const planetName = planetKey.charAt(0).toUpperCase() + planetKey.slice(1);
-        const analysis = this._analyzePlanetAffliction(planet, planetName, birthData);
+        const planetName =
+          planetKey.charAt(0).toUpperCase() + planetKey.slice(1);
+        const analysis = this._analyzePlanetAffliction(
+          planet,
+          planetName,
+          birthData
+        );
 
         if (analysis.isWeak) {
           afflictions.weakPlanets.push(analysis);
@@ -122,10 +153,12 @@ class RemediesDoshaService extends ServiceTemplate {
       });
 
       // Calculate overall severity
-      const totalAfflictions = afflictions.weakPlanets.length + afflictions.afflictedPlanets.length +
-                              afflictions.combustPlanets.length;
-      afflictions.severity = totalAfflictions > 5 ? 'High' :
-        totalAfflictions > 2 ? 'Medium' : 'Low';
+      const totalAfflictions =
+        afflictions.weakPlanets.length +
+        afflictions.afflictedPlanets.length +
+        afflictions.combustPlanets.length;
+      afflictions.severity =
+        totalAfflictions > 5 ? 'High' : totalAfflictions > 2 ? 'Medium' : 'Low';
 
       return afflictions;
     } catch (error) {
@@ -181,7 +214,10 @@ class RemediesDoshaService extends ServiceTemplate {
     }
 
     // Generate basic remedies
-    analysis.remedies = this._getBasicPlanetRemedies(planetName, analysis.reasons);
+    analysis.remedies = this._getBasicPlanetRemedies(
+      planetName,
+      analysis.reasons
+    );
 
     return analysis;
   }
@@ -212,11 +248,15 @@ class RemediesDoshaService extends ServiceTemplate {
       }
 
       // Calculate overall severity
-      const activeDoshas = Object.values(doshaAnalysis).filter(dosha =>
-        dosha && typeof dosha === 'object' && dosha.isPresent
+      const activeDoshas = Object.values(doshaAnalysis).filter(
+        dosha => dosha && typeof dosha === 'object' && dosha.isPresent
       );
-      doshaAnalysis.overallSeverity = activeDoshas.length > 2 ? 'High' :
-        activeDoshas.length > 0 ? 'Medium' : 'Low';
+      doshaAnalysis.overallSeverity =
+        activeDoshas.length > 2 ?
+          'High' :
+          activeDoshas.length > 0 ?
+            'Medium' :
+            'Low';
 
       return doshaAnalysis;
     } catch (error) {
@@ -234,15 +274,29 @@ class RemediesDoshaService extends ServiceTemplate {
   async _analyzeKaalSarpDosha(birthData) {
     try {
       // Check if all planets are between Rahu and Ketu
-      const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+      const planets = [
+        'sun',
+        'moon',
+        'mars',
+        'mercury',
+        'jupiter',
+        'venus',
+        'saturn'
+      ];
       const rahuLong = birthData.rahu?.longitude || 0;
       const ketuLong = birthData.ketu?.longitude || 0;
 
       let allBetween = true;
       planets.forEach(planet => {
         const planetLong = birthData[planet]?.longitude || 0;
-        const isBetween = this._isBetweenRahuKetu(planetLong, rahuLong, ketuLong);
-        if (!isBetween) { allBetween = false; }
+        const isBetween = this._isBetweenRahuKetu(
+          planetLong,
+          rahuLong,
+          ketuLong
+        );
+        if (!isBetween) {
+          allBetween = false;
+        }
       });
 
       return {
@@ -268,7 +322,9 @@ class RemediesDoshaService extends ServiceTemplate {
     const sunHouse = birthData.sun?.house || 0;
     const rahuHouse = birthData.rahu?.house || 0;
 
-    const isPresent = (sunHouse === 9 || sunHouse === 12) && (rahuHouse === 9 || rahuHouse === 12);
+    const isPresent =
+      (sunHouse === 9 || sunHouse === 12) &&
+      (rahuHouse === 9 || rahuHouse === 12);
 
     return {
       isPresent,
@@ -310,7 +366,10 @@ class RemediesDoshaService extends ServiceTemplate {
     const moonSign = birthData.moon?.sign || '';
     const saturnSign = birthData.saturn?.sign || '';
 
-    const isPresent = Math.abs(this._getSignNumber(moonSign) - this._getSignNumber(saturnSign)) <= 1;
+    const isPresent =
+      Math.abs(
+        this._getSignNumber(moonSign) - this._getSignNumber(saturnSign)
+      ) <= 1;
 
     return {
       isPresent,
@@ -329,7 +388,12 @@ class RemediesDoshaService extends ServiceTemplate {
    * @returns {Promise<Object>} Personalized remedies
    * @private
    */
-  async _generatePersonalizedRemedies(afflictions, doshas, concerns, preferences) {
+  async _generatePersonalizedRemedies(
+    afflictions,
+    doshas,
+    concerns,
+    preferences
+  ) {
     try {
       const remedies = {
         gemstones: [],
@@ -344,12 +408,18 @@ class RemediesDoshaService extends ServiceTemplate {
 
       // Generate remedies for planetary afflictions
       afflictions.weakPlanets?.forEach(planet => {
-        const planetRemedies = this._getComprehensivePlanetRemedies(planet.planet, planet.reasons);
+        const planetRemedies = this._getComprehensivePlanetRemedies(
+          planet.planet,
+          planet.reasons
+        );
         this._addRemediesToCategories(remedies, planetRemedies);
       });
 
       afflictions.afflictedPlanets?.forEach(planet => {
-        const planetRemedies = this._getComprehensivePlanetRemedies(planet.planet, planet.reasons);
+        const planetRemedies = this._getComprehensivePlanetRemedies(
+          planet.planet,
+          planet.reasons
+        );
         this._addRemediesToCategories(remedies, planetRemedies);
       });
 
@@ -370,7 +440,10 @@ class RemediesDoshaService extends ServiceTemplate {
 
       // Filter based on preferences
       if (preferences) {
-        remedies.filtered = this._filterRemediesByPreferences(remedies, preferences);
+        remedies.filtered = this._filterRemediesByPreferences(
+          remedies,
+          preferences
+        );
       }
 
       return remedies;
@@ -404,7 +477,10 @@ class RemediesDoshaService extends ServiceTemplate {
     });
 
     // Calculate effectiveness score
-    const totalRemedies = Object.values(categoryCount).reduce((sum, count) => sum + count, 0);
+    const totalRemedies = Object.values(categoryCount).reduce(
+      (sum, count) => sum + count,
+      0
+    );
     effectiveness.overall = Math.min(100, totalRemedies * 10);
 
     // Category breakdown
@@ -414,15 +490,21 @@ class RemediesDoshaService extends ServiceTemplate {
 
     // Generate recommendations
     if (effectiveness.overall < 50) {
-      effectiveness.recommendations.push('Consider consulting a qualified Vedic astrologer for more specific remedies');
+      effectiveness.recommendations.push(
+        'Consider consulting a qualified Vedic astrologer for more specific remedies'
+      );
     }
 
     if (categoryCount.mantras > 0) {
-      effectiveness.recommendations.push('Regular mantra recitation can significantly improve planetary influences');
+      effectiveness.recommendations.push(
+        'Regular mantra recitation can significantly improve planetary influences'
+      );
     }
 
     if (categoryCount.gemstones > 0) {
-      effectiveness.recommendations.push('Gemstone remedies work best when worn after proper energization rituals');
+      effectiveness.recommendations.push(
+        'Gemstone remedies work best when worn after proper energization rituals'
+      );
     }
 
     return effectiveness;
@@ -499,20 +581,30 @@ class RemediesDoshaService extends ServiceTemplate {
     const severity = doshaAnalysis.overallSeverity || 'Low';
 
     if (severity === 'High') {
-      guidance.overall = 'Multiple significant afflictions require comprehensive remedial approach. Consistency is key.';
-      guidance.precautions.push('Consult qualified priests for pujas and mantras');
-      guidance.precautions.push('Ensure gemstones are properly energized before wearing');
+      guidance.overall =
+        'Multiple significant afflictions require comprehensive remedial approach. Consistency is key.';
+      guidance.precautions.push(
+        'Consult qualified priests for pujas and mantras'
+      );
+      guidance.precautions.push(
+        'Ensure gemstones are properly energized before wearing'
+      );
       guidance.timeline = 'Results may take 6-12 months of consistent practice';
     } else if (severity === 'Medium') {
-      guidance.overall = 'Moderate afflictions can be addressed with regular remedial practices.';
-      guidance.precautions.push('Start with simpler remedies and gradually add more');
+      guidance.overall =
+        'Moderate afflictions can be addressed with regular remedial practices.';
+      guidance.precautions.push(
+        'Start with simpler remedies and gradually add more'
+      );
       guidance.timeline = 'Noticeable improvements in 3-6 months';
     } else {
-      guidance.overall = 'Minor imbalances can be corrected with basic spiritual practices.';
+      guidance.overall =
+        'Minor imbalances can be corrected with basic spiritual practices.';
       guidance.timeline = 'Positive changes within 1-3 months';
     }
 
-    guidance.encouragement = 'Remedial measures work best when combined with positive life changes and spiritual growth.';
+    guidance.encouragement =
+      'Remedial measures work best when combined with positive life changes and spiritual growth.';
 
     return guidance;
   }
@@ -521,8 +613,13 @@ class RemediesDoshaService extends ServiceTemplate {
 
   _isDebilitated(planet, sign) {
     const debilitation = {
-      Sun: 'Libra', Moon: 'Scorpio', Mars: 'Cancer',
-      Mercury: 'Pisces', Jupiter: 'Capricorn', Venus: 'Virgo', Saturn: 'Aries'
+      Sun: 'Libra',
+      Moon: 'Scorpio',
+      Mars: 'Cancer',
+      Mercury: 'Pisces',
+      Jupiter: 'Capricorn',
+      Venus: 'Virgo',
+      Saturn: 'Aries'
     };
     return debilitation[planet] === sign;
   }
@@ -533,7 +630,9 @@ class RemediesDoshaService extends ServiceTemplate {
   }
 
   _isCombust(planet, sun) {
-    if (!sun || !planet.longitude) { return false; }
+    if (!sun || !planet.longitude) {
+      return false;
+    }
     const distance = Math.abs(planet.longitude - sun.longitude);
     return distance <= 8.5; // Within 8.5 degrees of Sun
   }
@@ -733,8 +832,8 @@ class RemediesDoshaService extends ServiceTemplate {
 
     if (preferences.vegetarianOnly) {
       // Remove non-vegetarian charities
-      filtered.charities = filtered.charities?.filter(c =>
-        !['Feed fish', 'Feed meat'].includes(c.item)
+      filtered.charities = filtered.charities?.filter(
+        c => !['Feed fish', 'Feed meat'].includes(c.item)
       );
     }
 
@@ -758,8 +857,20 @@ class RemediesDoshaService extends ServiceTemplate {
   }
 
   _getSignNumber(sign) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs.indexOf(sign);
   }
 
@@ -833,7 +944,8 @@ class RemediesDoshaService extends ServiceTemplate {
       data: {
         analysis: result,
         summary: this._createRemediesSummary(result),
-        disclaimer: '⚠️ *Remedies Disclaimer:* These suggestions are based on Vedic astrological principles. Remedies should be performed under guidance of qualified practitioners. Results vary by individual circumstances and faith in the practice.'
+        disclaimer:
+          '⚠️ *Remedies Disclaimer:* These suggestions are based on Vedic astrological principles. Remedies should be performed under guidance of qualified practitioners. Results vary by individual circumstances and faith in the practice.'
       }
     };
   }
@@ -847,10 +959,12 @@ class RemediesDoshaService extends ServiceTemplate {
   _createRemediesSummary(result) {
     return {
       doshaSeverity: result.doshaAnalysis?.overallSeverity || 'Low',
-      afflictionCount: (result.planetaryAfflictions?.weakPlanets?.length || 0) +
-                      (result.planetaryAfflictions?.afflictedPlanets?.length || 0),
-      remedyCategories: Object.keys(result.remedies || {}).filter(key =>
-        Array.isArray(result.remedies[key]) && result.remedies[key].length > 0
+      afflictionCount:
+        (result.planetaryAfflictions?.weakPlanets?.length || 0) +
+        (result.planetaryAfflictions?.afflictedPlanets?.length || 0),
+      remedyCategories: Object.keys(result.remedies || {}).filter(
+        key =>
+          Array.isArray(result.remedies[key]) && result.remedies[key].length > 0
       ),
       topRemedies: this._getTopRemedies(result.remedies),
       effectiveness: result.effectiveness?.overall || 0
@@ -887,7 +1001,8 @@ class RemediesDoshaService extends ServiceTemplate {
   getMetadata() {
     return {
       name: 'RemediesDoshaService',
-      description: 'Comprehensive Vedic remedial measures for planetary afflictions and dosha corrections including gemstones, mantras, charities, pujas, and yantras based on birth chart analysis',
+      description:
+        'Comprehensive Vedic remedial measures for planetary afflictions and dosha corrections including gemstones, mantras, charities, pujas, and yantras based on birth chart analysis',
       version: '1.0.0',
       dependencies: ['vedicRemedies'],
       category: 'vedic'

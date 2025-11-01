@@ -100,8 +100,10 @@ class SubscriptionManager {
     const benefits = this.getSubscriptionBenefits(user);
 
     if (feature === 'compatibility') {
-      return benefits.maxCompatibilityChecks === -1 ||
-             (user.compatibilityChecks || 0) < benefits.maxCompatibilityChecks;
+      return (
+        benefits.maxCompatibilityChecks === -1 ||
+        (user.compatibilityChecks || 0) < benefits.maxCompatibilityChecks
+      );
     }
 
     return true; // Default allow for other features
@@ -115,17 +117,27 @@ class SubscriptionManager {
    * @param {Date} expiryDate - Subscription expiry date
    * @returns {Promise<Object>} Updated user object
    */
-  async updateSubscription(userDataManager, phoneNumber, tier, expiryDate = null) {
+  async updateSubscription(
+    userDataManager,
+    phoneNumber,
+    tier,
+    expiryDate = null
+  ) {
     try {
       const user = await userDataManager.updateUserProfile(phoneNumber, {
         subscriptionTier: tier,
         subscriptionExpiry: expiryDate
       });
 
-      this.logger.info(`💳 Updated subscription for user ${phoneNumber}: ${tier}`);
+      this.logger.info(
+        `💳 Updated subscription for user ${phoneNumber}: ${tier}`
+      );
       return user;
     } catch (error) {
-      this.logger.error(`❌ Error updating subscription for ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error updating subscription for ${phoneNumber}:`,
+        error
+      );
       throw error;
     }
   }
@@ -149,15 +161,23 @@ class SubscriptionManager {
         updateData = { $inc: { [feature]: 1 } };
       }
 
-      const user = await userDataManager.updateUserProfile(phoneNumber, updateData);
+      const user = await userDataManager.updateUserProfile(
+        phoneNumber,
+        updateData
+      );
 
       if (feature === 'compatibility') {
-        this.logger.info(`💞 Incremented compatibility checks for user ${phoneNumber}: ${user.compatibilityChecks}`);
+        this.logger.info(
+          `💞 Incremented compatibility checks for user ${phoneNumber}: ${user.compatibilityChecks}`
+        );
       }
 
       return user;
     } catch (error) {
-      this.logger.error(`❌ Error incrementing usage for ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error incrementing usage for ${phoneNumber}:`,
+        error
+      );
       throw error;
     }
   }
@@ -196,13 +216,18 @@ class SubscriptionManager {
           null // Lifetime subscription
         );
 
-        this.logger.info(`⭐ Loyalty points upgrade for ${phoneNumber}: ${currentTier} -> ${upgrade.nextTier}`);
+        this.logger.info(
+          `⭐ Loyalty points upgrade for ${phoneNumber}: ${currentTier} -> ${upgrade.nextTier}`
+        );
         return updatedUser;
       }
 
       return null; // No upgrade needed
     } catch (error) {
-      this.logger.error(`❌ Error upgrading user by loyalty points ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error upgrading user by loyalty points ${phoneNumber}:`,
+        error
+      );
       throw error;
     }
   }
@@ -220,14 +245,19 @@ class SubscriptionManager {
         $inc: { loyaltyPoints: points }
       });
 
-      this.logger.info(`⭐ Added ${points} loyalty points to user ${phoneNumber}: ${user.loyaltyPoints} total`);
+      this.logger.info(
+        `⭐ Added ${points} loyalty points to user ${phoneNumber}: ${user.loyaltyPoints} total`
+      );
 
       // Check for automatic upgrade
       await this.upgradeByLoyaltyPoints(userDataManager, phoneNumber);
 
       return user;
     } catch (error) {
-      this.logger.error(`❌ Error adding loyalty points for ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error adding loyalty points for ${phoneNumber}:`,
+        error
+      );
       throw error;
     }
   }
@@ -265,7 +295,8 @@ class SubscriptionManager {
         name: 'Free',
         cost: 0,
         currency: 'USD',
-        description: 'Basic astrology features with limited compatibility checks'
+        description:
+          'Basic astrology features with limited compatibility checks'
       },
       essential: {
         name: 'Essential',
@@ -277,7 +308,8 @@ class SubscriptionManager {
         name: 'Premium',
         cost: 19.99,
         currency: 'USD',
-        description: 'Unlimited questions and priority human astrologer support'
+        description:
+          'Unlimited questions and priority human astrologer support'
       },
       vip: {
         name: 'VIP',

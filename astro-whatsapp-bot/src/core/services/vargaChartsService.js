@@ -1,4 +1,5 @@
 /**
+const ServiceTemplate = require('./ServiceTemplate');
  * Varga Charts Service
  *
  * Provides Vedic divisional charts analysis using traditional Indian astrology divisions
@@ -26,11 +27,22 @@ class VargaChartsService extends ServiceTemplate {
       this._validateInput(birthData);
 
       // Default vargas if not specified
-      const defaultVargas = ['RASHI', 'HORA', 'DREKKANA', 'CHATURTHAMSA', 'SAPTAMSA', 'NAVAMSA', 'DASHAMSA'];
+      const defaultVargas = [
+        'RASHI',
+        'HORA',
+        'DREKKANA',
+        'CHATURTHAMSA',
+        'SAPTAMSA',
+        'NAVAMSA',
+        'DASHAMSA'
+      ];
       const selectedVargas = vargas || defaultVargas;
 
       // Get comprehensive varga charts analysis
-      const analysis = await this.calculator.calculateVargaCharts(birthData, selectedVargas);
+      const analysis = await this.calculator.calculateVargaCharts(
+        birthData,
+        selectedVargas
+      );
 
       // Format result for service consumption
       return this._formatResult(analysis);
@@ -55,7 +67,9 @@ class VargaChartsService extends ServiceTemplate {
       }
 
       // Get specific varga chart
-      const analysis = await this.calculator.calculateVargaCharts(birthData, [vargaName]);
+      const analysis = await this.calculator.calculateVargaCharts(birthData, [
+        vargaName
+      ]);
 
       if (!analysis.charts || !analysis.charts[vargaName]) {
         return {
@@ -114,8 +128,18 @@ class VargaChartsService extends ServiceTemplate {
       analysis: result.analysis,
       metadata: {
         system: 'Varga Charts',
-        calculationMethod: 'Vedic divisional charts with Swiss Ephemeris precision',
-        availableVargas: ['RASHI', 'HORA', 'DREKKANA', 'CHATURTHAMSA', 'SAPTAMSA', 'NAVAMSA', 'DASHAMSA', 'DVADASHAMSA'],
+        calculationMethod:
+          'Vedic divisional charts with Swiss Ephemeris precision',
+        availableVargas: [
+          'RASHI',
+          'HORA',
+          'DREKKANA',
+          'CHATURTHAMSA',
+          'SAPTAMSA',
+          'NAVAMSA',
+          'DASHAMSA',
+          'DVADASHAMSA'
+        ],
         totalCharts: Object.keys(result.charts || {}).length
       }
     };
@@ -129,14 +153,43 @@ class VargaChartsService extends ServiceTemplate {
    */
   _getVargaSignificances(vargaName) {
     const significances = {
-      RASHI: ['Physical body', 'Personality', 'First impressions', 'General life direction'],
+      RASHI: [
+        'Physical body',
+        'Personality',
+        'First impressions',
+        'General life direction'
+      ],
       HORA: ['Wealth', 'Family', 'Speech', 'Food', 'Material possessions'],
-      DREKKANA: ['Siblings', 'Courage', 'Short journeys', 'Communication', 'Early education'],
-      CHATURTHAMSA: ['Property', 'Home', 'Mother', 'Education', 'Conveyances', 'Fixed assets'],
-      SAPTAMSA: ['Children', 'Creativity', 'Grandchildren', 'Spiritual progress'],
+      DREKKANA: [
+        'Siblings',
+        'Courage',
+        'Short journeys',
+        'Communication',
+        'Early education'
+      ],
+      CHATURTHAMSA: [
+        'Property',
+        'Home',
+        'Mother',
+        'Education',
+        'Conveyances',
+        'Fixed assets'
+      ],
+      SAPTAMSA: [
+        'Children',
+        'Creativity',
+        'Grandchildren',
+        'Spiritual progress'
+      ],
       NAVAMSA: ['Marriage', 'Spouse', 'Dharma', 'Karma', 'Spiritual life'],
       DASHAMSA: ['Career', 'Profession', 'Status', 'Authority', 'Public image'],
-      DVADASHAMSA: ['Parents', 'Spirituality', 'Foreign travel', 'Expenses', 'Losses']
+      DVADASHAMSA: [
+        'Parents',
+        'Spirituality',
+        'Foreign travel',
+        'Expenses',
+        'Losses'
+      ]
     };
 
     return significances[vargaName] || ['General life areas'];
@@ -149,7 +202,8 @@ class VargaChartsService extends ServiceTemplate {
   getMetadata() {
     return {
       name: 'VargaChartsService',
-      description: 'Vedic divisional charts analysis with Swiss Ephemeris precision',
+      description:
+        'Vedic divisional charts analysis with Swiss Ephemeris precision',
       version: '1.0.0',
       dependencies: ['VargaCharts'],
       category: 'vedic',

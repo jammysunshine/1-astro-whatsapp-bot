@@ -28,7 +28,9 @@ class LunarReturnCalculator {
       const { birthDate, birthTime, birthPlace } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for lunar return analysis' };
+        return {
+          error: 'Complete birth details required for lunar return analysis'
+        };
       }
 
       // Parse birth date and time
@@ -36,14 +38,22 @@ class LunarReturnCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get birth location coordinates
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+      const locationInfo =
+        await this.geocodingService.getLocationInfo(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const birthTimestamp = birthDateTime.getTime();
 
       // Calculate birth moon position
-      const birthJD = this._dateToJulianDay(year, month, day, hour + minute / 60);
+      const birthJD = this._dateToJulianDay(
+        year,
+        month,
+        day,
+        hour + minute / 60
+      );
       const birthMoonPos = sweph.calc(birthJD, 1, 2);
-      const birthMoonLongitude = birthMoonPos.longitude ? birthMoonPos.longitude[0] : 0;
+      const birthMoonLongitude = birthMoonPos.longitude ?
+        birthMoonPos.longitude[0] :
+        0;
 
       // Determine target date (next lunar return if not specified)
       const now = targetDate || new Date();
@@ -64,7 +74,8 @@ class LunarReturnCalculator {
         const currentMoonLong = moonPos.longitude ? moonPos.longitude[0] : 0;
 
         const diff = this._normalizeAngle(currentMoonLong - birthMoonLongitude);
-        if (Math.abs(diff) < 1) { // Within 1 degree
+        if (Math.abs(diff) < 1) {
+          // Within 1 degree
           break;
         }
 
@@ -88,12 +99,19 @@ class LunarReturnCalculator {
       );
 
       // Analyze the lunar return chart
-      const analysis = this._analyzeLunarReturnChart(lunarReturnChart, birthData);
+      const analysis = this._analyzeLunarReturnChart(
+        lunarReturnChart,
+        birthData
+      );
 
       return {
         lunarReturnDate: lunarReturnDate.toLocaleDateString(),
         lunarReturnTime: lunarReturnDate.toLocaleTimeString(),
-        monthAhead: new Date(lunarReturnDate.getFullYear(), lunarReturnDate.getMonth() + 1, 0).toLocaleDateString(),
+        monthAhead: new Date(
+          lunarReturnDate.getFullYear(),
+          lunarReturnDate.getMonth() + 1,
+          0
+        ).toLocaleDateString(),
         lunarReturnChart,
         analysis,
         themes: analysis.themes,
@@ -115,12 +133,17 @@ class LunarReturnCalculator {
    * @param {number} birthMoonLongitude - Birth Moon longitude
    * @returns {Object} Lunar return chart
    */
-  async _generateLunarReturnChart(birthData, lunarReturnDate, birthMoonLongitude) {
+  async _generateLunarReturnChart(
+    birthData,
+    lunarReturnDate,
+    birthMoonLongitude
+  ) {
     try {
       const { birthPlace } = birthData;
 
       // Get coordinates
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+      const locationInfo =
+        await this.geocodingService.getLocationInfo(birthPlace);
       const timestamp = lunarReturnDate.getTime();
 
       // Generate chart for lunar return moment
@@ -142,7 +165,8 @@ class LunarReturnCalculator {
       // Ensure Moon is at birth position
       if (chart.planets.moon) {
         chart.planets.moon.longitude = birthMoonLongitude;
-        chart.planets.moon.signName = this._getSignFromLongitude(birthMoonLongitude);
+        chart.planets.moon.signName =
+          this._getSignFromLongitude(birthMoonLongitude);
       }
 
       return chart;
@@ -173,28 +197,37 @@ class LunarReturnCalculator {
       themes: [],
       opportunities: [],
       challenges: [],
-      lunarReturnMoonSign: lunarReturnChart.interpretations?.moonSign || 'Unknown',
-      lunarReturnSunSign: lunarReturnChart.interpretations?.sunSign || 'Unknown',
-      lunarReturnRisingSign: lunarReturnChart.interpretations?.risingSign || 'Unknown'
+      lunarReturnMoonSign:
+        lunarReturnChart.interpretations?.moonSign || 'Unknown',
+      lunarReturnSunSign:
+        lunarReturnChart.interpretations?.sunSign || 'Unknown',
+      lunarReturnRisingSign:
+        lunarReturnChart.interpretations?.risingSign || 'Unknown'
     };
 
     // Analyze Moon's house in lunar return (emotional focus for the month)
     const moonHouse = lunarReturnChart.planets.moon?.house || 'Unknown';
     if (moonHouse !== 'Unknown') {
-      analysis.themes.push(`Emotional focus in ${this._getHouseArea(moonHouse)}`);
+      analysis.themes.push(
+        `Emotional focus in ${this._getHouseArea(moonHouse)}`
+      );
     }
 
     // Analyze Sun's house in lunar return (conscious focus for the month)
     const sunHouse = lunarReturnChart.planets.sun?.house || 'Unknown';
     if (sunHouse !== 'Unknown') {
-      analysis.themes.push(`Conscious attention to ${this._getHouseArea(sunHouse)}`);
+      analysis.themes.push(
+        `Conscious attention to ${this._getHouseArea(sunHouse)}`
+      );
     }
 
     // Analyze angular planets (powerful influences for the month)
     const angularHouses = [1, 4, 7, 10];
     Object.entries(lunarReturnChart.planets).forEach(([planet, data]) => {
       if (angularHouses.includes(data.house)) {
-        analysis.themes.push(`${planet} strongly activated in ${this._getHouseArea(data.house)}`);
+        analysis.themes.push(
+          `${planet} strongly activated in ${this._getHouseArea(data.house)}`
+        );
       }
     });
 
@@ -202,9 +235,16 @@ class LunarReturnCalculator {
     if (lunarReturnChart.aspects) {
       lunarReturnChart.aspects.forEach(aspect => {
         if (aspect.aspect === 'Trine' || aspect.aspect === 'Sextile') {
-          analysis.opportunities.push(`${aspect.planets} harmony supports ${this._getAspectOpportunity(aspect)}`);
-        } else if (aspect.aspect === 'Square' || aspect.aspect === 'Opposition') {
-          analysis.challenges.push(`${aspect.planets} tension requires ${this._getAspectChallenge(aspect)}`);
+          analysis.opportunities.push(
+            `${aspect.planets} harmony supports ${this._getAspectOpportunity(aspect)}`
+          );
+        } else if (
+          aspect.aspect === 'Square' ||
+          aspect.aspect === 'Opposition'
+        ) {
+          analysis.challenges.push(
+            `${aspect.planets} tension requires ${this._getAspectChallenge(aspect)}`
+          );
         }
       });
     }
@@ -292,8 +332,12 @@ class LunarReturnCalculator {
    */
   _normalizeAngle(angle) {
     angle %= 360;
-    if (angle > 180) { angle -= 360; }
-    if (angle <= -180) { angle += 360; }
+    if (angle > 180) {
+      angle -= 360;
+    }
+    if (angle <= -180) {
+      angle += 360;
+    }
     return angle;
   }
 
@@ -306,7 +350,7 @@ class LunarReturnCalculator {
   _jdToDate(jd) {
     // Simplified JD to date conversion
     const z = Math.floor(jd + 0.5);
-    const f = (jd + 0.5) - z;
+    const f = jd + 0.5 - z;
 
     let a = z;
     if (z >= 2299161) {
@@ -377,7 +421,14 @@ class LunarReturnCalculator {
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
 
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + hour / 24;
   }
 }

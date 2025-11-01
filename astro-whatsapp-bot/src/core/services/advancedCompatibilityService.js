@@ -47,7 +47,10 @@ class AdvancedCompatibilityService extends ServiceTemplate {
       this._validateInputs(person1, person2);
 
       // Calculate compatibility using calculator
-      const compatibilityResult = await this.calculator.checkCompatibility(person1, person2);
+      const compatibilityResult = await this.calculator.checkCompatibility(
+        person1,
+        person2
+      );
 
       // Add service metadata
       compatibilityResult.serviceMetadata = {
@@ -59,12 +62,15 @@ class AdvancedCompatibilityService extends ServiceTemplate {
       };
 
       // Add enhanced analysis
-      compatibilityResult.enhancedAnalysis = this._performEnhancedAnalysis(compatibilityResult);
+      compatibilityResult.enhancedAnalysis =
+        this._performEnhancedAnalysis(compatibilityResult);
 
       return compatibilityResult;
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
-      throw new Error(`Advanced Compatibility calculation failed: ${error.message}`);
+      throw new Error(
+        `Advanced Compatibility calculation failed: ${error.message}`
+      );
     }
   }
 
@@ -129,10 +135,12 @@ class AdvancedCompatibilityService extends ServiceTemplate {
     // Add detailed scores if available
     if (result.detailed_scores) {
       formatted += '\n*📊 Detailed Scores:*\n';
-      Object.entries(result.detailed_scores).slice(0, 5).forEach(([factor, score]) => {
-        const factorName = factor.charAt(0).toUpperCase() + factor.slice(1);
-        formatted += `• ${factorName}: ${score}/10\n`;
-      });
+      Object.entries(result.detailed_scores)
+        .slice(0, 5)
+        .forEach(([factor, score]) => {
+          const factorName = factor.charAt(0).toUpperCase() + factor.slice(1);
+          formatted += `• ${factorName}: ${score}/10\n`;
+        });
     }
 
     // Add recommendations if available
@@ -158,7 +166,8 @@ class AdvancedCompatibilityService extends ServiceTemplate {
     }
 
     // Add service footer
-    formatted += '\n\n---\n*Advanced Compatibility - Comprehensive Vedic Analysis*';
+    formatted +=
+      '\n\n---\n*Advanced Compatibility - Comprehensive Vedic Analysis*';
 
     return formatted;
   }
@@ -171,7 +180,9 @@ class AdvancedCompatibilityService extends ServiceTemplate {
    */
   _validateInputs(person1, person2) {
     if (!person1 || !person2) {
-      throw new Error('Both persons\' birth data are required for compatibility analysis');
+      throw new Error(
+        'Both persons\' birth data are required for compatibility analysis'
+      );
     }
 
     const { BirthData } = require('../../models');
@@ -206,17 +217,25 @@ class AdvancedCompatibilityService extends ServiceTemplate {
 
     // Determine relationship strengths
     if (score >= 8) {
-      analysis.strengths = 'Excellent overall compatibility with strong harmony across multiple life areas';
-      analysis.longTermPotential = 'Very high potential for lasting, fulfilling partnership';
+      analysis.strengths =
+        'Excellent overall compatibility with strong harmony across multiple life areas';
+      analysis.longTermPotential =
+        'Very high potential for lasting, fulfilling partnership';
     } else if (score >= 6) {
-      analysis.strengths = 'Good compatibility with solid foundation for relationship growth';
-      analysis.longTermPotential = 'Good potential for successful partnership with mutual understanding';
+      analysis.strengths =
+        'Good compatibility with solid foundation for relationship growth';
+      analysis.longTermPotential =
+        'Good potential for successful partnership with mutual understanding';
     } else if (score >= 4) {
-      analysis.strengths = 'Moderate compatibility requiring conscious effort and understanding';
-      analysis.longTermPotential = 'Potential for growth through communication and compromise';
+      analysis.strengths =
+        'Moderate compatibility requiring conscious effort and understanding';
+      analysis.longTermPotential =
+        'Potential for growth through communication and compromise';
     } else {
-      analysis.strengths = 'Challenging compatibility requiring significant effort and awareness';
-      analysis.longTermPotential = 'Relationship success depends on commitment to personal growth';
+      analysis.strengths =
+        'Challenging compatibility requiring significant effort and awareness';
+      analysis.longTermPotential =
+        'Relationship success depends on commitment to personal growth';
     }
 
     // Identify challenges based on low-scoring factors
@@ -233,12 +252,21 @@ class AdvancedCompatibilityService extends ServiceTemplate {
 
     // Determine relationship type
     if (result.sun_compatibility && result.moon_compatibility) {
-      if (result.sun_compatibility.includes('Excellent') && result.moon_compatibility.includes('Harmonious')) {
-        analysis.relationshipType = 'Soulmate connection with deep understanding';
-      } else if (result.sun_compatibility.includes('Good') && result.moon_compatibility.includes('Compatible')) {
-        analysis.relationshipType = 'Compatible partnership with mutual respect';
+      if (
+        result.sun_compatibility.includes('Excellent') &&
+        result.moon_compatibility.includes('Harmonious')
+      ) {
+        analysis.relationshipType =
+          'Soulmate connection with deep understanding';
+      } else if (
+        result.sun_compatibility.includes('Good') &&
+        result.moon_compatibility.includes('Compatible')
+      ) {
+        analysis.relationshipType =
+          'Compatible partnership with mutual respect';
       } else {
-        analysis.relationshipType = 'Learning relationship with growth opportunities';
+        analysis.relationshipType =
+          'Learning relationship with growth opportunities';
       }
     }
 
@@ -254,7 +282,10 @@ class AdvancedCompatibilityService extends ServiceTemplate {
     let confidence = 80; // Base confidence for compatibility analysis
 
     // Increase confidence based on data completeness
-    if (result.detailed_scores && Object.keys(result.detailed_scores).length >= 5) {
+    if (
+      result.detailed_scores &&
+      Object.keys(result.detailed_scores).length >= 5
+    ) {
       confidence += 10;
     }
 

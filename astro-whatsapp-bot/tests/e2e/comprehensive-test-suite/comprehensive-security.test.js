@@ -5,8 +5,14 @@
  * Input Validation (25), Authentication & Authorization (19)
  */
 
-const { TestDatabaseManager, setupWhatsAppMocks, getWhatsAppIntegration } = require('../../utils/testSetup');
-const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
+const {
+  TestDatabaseManager,
+  setupWhatsAppMocks,
+  getWhatsAppIntegration
+} = require('../../utils/testSetup');
+const {
+  processIncomingMessage
+} = require('../../../src/services/whatsapp/messageProcessor');
 
 describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 tests)', () => {
   let dbManager;
@@ -34,7 +40,10 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
     test('prevents SQL injection through date input sanitization', async() => {
       const phoneNumber = '+security_test';
       const dangerousInput = '\'; DROP TABLE users; SELECT \'1';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: dangerousInput } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: dangerousInput } },
+        {}
+      );
 
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
@@ -51,11 +60,20 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       const phoneNumber = '+security_test';
       const xssPayload = 'Mumbai, India<script>alert("xss")</script>';
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1430' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: xssPayload } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: xssPayload } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).not.toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('<script>')
@@ -68,11 +86,20 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       // Attempt to inject command via location input
       const commandInjection = 'London, UK && rm -rf /';
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '15061990' } }, {});
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '1430' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '15061990' } },
+        {}
+      );
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '1430' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: commandInjection } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: commandInjection } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Could not find location')
@@ -85,7 +112,10 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       // Create extremely long input string
       const longInput = 'A'.repeat(10000);
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: longInput } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: longInput } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Please provide date in DDMMYY')
@@ -105,7 +135,10 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
 
       for (const attack of unicodeAttacks) {
         whatsAppIntegration.mockSendMessage.mockClear();
-        await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: attack } }, {});
+        await processIncomingMessage(
+          { from: phoneNumber, type: 'text', text: { body: attack } },
+          {}
+        );
 
         // Should not crash and should handle gracefully
         expect(whatsAppIntegration.mockSendMessage).toBeCalled();
@@ -116,9 +149,13 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
     test('sanitizes control character abuse in messages', async() => {
       const phoneNumber = '+security_test';
       // Control characters that could cause issues
-      const controlChars = '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F';
+      const controlChars =
+        '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F';
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: controlChars } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: controlChars } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Please provide date in DDMMYY')
@@ -130,7 +167,10 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       const phoneNumber = '+security_test';
       const extremelyLongInput = 'X'.repeat(100000); // 100KB of data
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: extremelyLongInput } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: extremelyLongInput } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Input too long')
@@ -143,7 +183,10 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       // Attempt directory traversal
       const pathTraversal = '../../../etc/passwd';
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: pathTraversal } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: pathTraversal } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).not.toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('/etc/passwd')
@@ -155,7 +198,10 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
       const phoneNumber = '+security_test';
       const htmlInput = '<b>Bold</b><i>Italic</i><script>malicious()</script>';
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: htmlInput } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: htmlInput } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).not.toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('<script>')
@@ -205,7 +251,9 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
     });
 
     test('handles floating point precision errors in calculations', async() => {
-      console.log('✅ Floating point precision error handling structure validated');
+      console.log(
+        '✅ Floating point precision error handling structure validated'
+      );
     });
 
     test('prevents race conditions in concurrent user operations', async() => {
@@ -257,7 +305,9 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
     });
 
     test('validates two-factor authentication integration', async() => {
-      console.log('✅ Two-factor authentication validation structure validated');
+      console.log(
+        '✅ Two-factor authentication validation structure validated'
+      );
     });
 
     test('handles account lockout after failed login attempts', async() => {
@@ -273,7 +323,9 @@ describe('COMPREHENSIVE SECURITY TESTS: Input & Access Control Validation (44 te
     });
 
     test('handles secure token expiration and refresh', async() => {
-      console.log('✅ Token expiration and refresh handling structure validated');
+      console.log(
+        '✅ Token expiration and refresh handling structure validated'
+      );
     });
 
     test('prevents unauthorized access to premium features', async() => {

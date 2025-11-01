@@ -25,31 +25,39 @@ class NadiRemedies {
       const nakshatraRemedies = this.dataRepo.getNakshatraRemedies();
       const specificRemedies = nakshatraRemedies[birthNakshatra.name];
       if (specificRemedies) {
-        remedies.push(...specificRemedies.map(remedy => ({
-          type: 'nakshatra',
-          category: 'spiritual',
-          remedy,
-          description: `Nakshatra-specific remedy for ${birthNakshatra.name}`
-        })));
+        remedies.push(
+          ...specificRemedies.map(remedy => ({
+            type: 'nakshatra',
+            category: 'spiritual',
+            remedy,
+            description: `Nakshatra-specific remedy for ${birthNakshatra.name}`
+          }))
+        );
       }
 
       // Nadi-based remedies
       const nadiRemedies = this.dataRepo.getNadiRemedies(nadiSystem.name);
-      remedies.push(...nadiRemedies.map(remedy => ({
-        type: 'nadi',
-        category: 'personal_development',
-        remedy,
-        description: `${nadiSystem.name} specific guidance`
-      })));
+      remedies.push(
+        ...nadiRemedies.map(remedy => ({
+          type: 'nadi',
+          category: 'personal_development',
+          remedy,
+          description: `${nadiSystem.name} specific guidance`
+        }))
+      );
 
       // Planetary remedies based on ruling planet
-      const planetaryRemedies = this.getPlanetaryRemedies(birthNakshatra.rulingPlanet);
-      remedies.push(...planetaryRemedies.map(remedy => ({
-        type: 'planetary',
-        category: 'mantra',
-        remedy,
-        description: `${birthNakshatra.rulingPlanet} planetary remedy`
-      })));
+      const planetaryRemedies = this.getPlanetaryRemedies(
+        birthNakshatra.rulingPlanet
+      );
+      remedies.push(
+        ...planetaryRemedies.map(remedy => ({
+          type: 'planetary',
+          category: 'mantra',
+          remedy,
+          description: `${birthNakshatra.rulingPlanet} planetary remedy`
+        }))
+      );
 
       // General strengthening remedies
       remedies.push(...this.getGeneralStrengtheningRemedies(nadiSystem));
@@ -86,7 +94,9 @@ class NadiRemedies {
       Ketu: ['Ketu mantra', 'Cat\'s eye gemstone', 'Meditation']
     };
 
-    const mantras = planetaryMantras[rulingPlanet] || ['General spiritual practices'];
+    const mantras = planetaryMantras[rulingPlanet] || [
+      'General spiritual practices'
+    ];
     return mantras.map(mantra => `${mantra}`);
   }
 
@@ -160,27 +170,21 @@ class NadiRemedies {
 
     switch (challengeType) {
     case 'health':
-      remedies.push(
-        ...this.generateHealthRemedies(nakshatra),
-        {
-          type: 'health',
-          category: 'preventive',
-          remedy: 'Regular health checkups',
-          description: 'Proactive health management'
-        }
-      );
+      remedies.push(...this.generateHealthRemedies(nakshatra), {
+        type: 'health',
+        category: 'preventive',
+        remedy: 'Regular health checkups',
+        description: 'Proactive health management'
+      });
       break;
 
     case 'career':
-      remedies.push(
-        ...this.generateCareerRemedies(nadiSystem),
-        {
-          type: 'career',
-          category: 'skill',
-          remedy: 'Continuous learning and skill development',
-          description: 'Professional growth focus'
-        }
-      );
+      remedies.push(...this.generateCareerRemedies(nadiSystem), {
+        type: 'career',
+        category: 'skill',
+        remedy: 'Continuous learning and skill development',
+        description: 'Professional growth focus'
+      });
       break;
 
     case 'relationships':
@@ -205,15 +209,12 @@ class NadiRemedies {
       break;
 
     case 'spiritual':
-      remedies.push(
-        ...this.generateSpiritualRemedies(nakshatra),
-        {
-          type: 'spiritual',
-          category: 'practice',
-          remedy: 'Daily spiritual practice and meditation',
-          description: 'Soul growth acceleration'
-        }
-      );
+      remedies.push(...this.generateSpiritualRemedies(nakshatra), {
+        type: 'spiritual',
+        category: 'practice',
+        remedy: 'Daily spiritual practice and meditation',
+        description: 'Soul growth acceleration'
+      });
       break;
 
     default:
@@ -282,7 +283,9 @@ class NadiRemedies {
       ]
     };
 
-    const remedies = careerRemedies[nadiSystem.name] || ['Seek career counseling'];
+    const remedies = careerRemedies[nadiSystem.name] || [
+      'Seek career counseling'
+    ];
     return remedies.map(remedy => ({
       type: 'career',
       category: 'advancement',
@@ -316,7 +319,9 @@ class NadiRemedies {
       ]
     };
 
-    const remedies = relationshipRemedies[nadiSystem.name] || ['Seek relationship counseling'];
+    const remedies = relationshipRemedies[nadiSystem.name] || [
+      'Seek relationship counseling'
+    ];
     return remedies.map(remedy => ({
       type: 'relationship',
       category: 'harmony',
@@ -409,7 +414,9 @@ class NadiRemedies {
       ]
     };
 
-    const remedies = dashaRemedies[dashaPeriod.planet] || ['General positive life choices'];
+    const remedies = dashaRemedies[dashaPeriod.planet] || [
+      'General positive life choices'
+    ];
     return remedies.map(remedy => ({
       type: 'dasha',
       category: 'planetary',
@@ -437,12 +444,21 @@ class NadiRemedies {
     const optimized = [];
     Object.entries(categories).forEach(([category, categoryRemedies]) => {
       // Keep top 3-5 remedies per category
-      const limit = category === 'spiritual' ? 5 : category === 'health' ? 4 : 3;
-      optimized.push(...this.prioritizeRemedies(categoryRemedies).slice(0, limit));
+      const limit =
+        category === 'spiritual' ? 5 : category === 'health' ? 4 : 3;
+      optimized.push(
+        ...this.prioritizeRemedies(categoryRemedies).slice(0, limit)
+      );
     });
 
     // Sort by priority (spiritual > health > personal_development > others)
-    const priorityOrder = ['spiritual', 'health', 'personal_development', 'mantra', 'planetary'];
+    const priorityOrder = [
+      'spiritual',
+      'health',
+      'personal_development',
+      'mantra',
+      'planetary'
+    ];
     return optimized.sort((a, b) => {
       const aPriority = priorityOrder.indexOf(a.category);
       const bPriority = priorityOrder.indexOf(b.category);
@@ -502,7 +518,9 @@ class NadiRemedies {
       ]
     };
 
-    const remedies = emergencyRemedies[emergencyType] || ['Seek appropriate professional guidance'];
+    const remedies = emergencyRemedies[emergencyType] || [
+      'Seek appropriate professional guidance'
+    ];
     return remedies.map(remedy => ({
       type: 'emergency',
       category: emergencyType,

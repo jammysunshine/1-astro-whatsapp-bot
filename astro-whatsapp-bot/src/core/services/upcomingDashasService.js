@@ -12,7 +12,8 @@ class UpcomingDashasService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'UpcomingDashasService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
     logger.info('UpcomingDashasService initialized');
   }
 
@@ -29,16 +30,21 @@ class UpcomingDashasService extends ServiceTemplate {
       const periodsToShow = options.periods || 5;
 
       // Get Dasha analysis from calculator
-      const dashaAnalysis = await this.calculator.calculateVimshottariDasha(birthData);
+      const dashaAnalysis =
+        await this.calculator.calculateVimshottariDasha(birthData);
 
       // Extract upcoming Dasha information
-      const upcomingDashas = this._extractUpcomingDashas(dashaAnalysis, periodsToShow);
+      const upcomingDashas = this._extractUpcomingDashas(
+        dashaAnalysis,
+        periodsToShow
+      );
 
       // Generate additional analysis
       const dashaTimeline = this._createDashaTimeline(upcomingDashas);
       const lifePhases = this._identifyLifePhases(upcomingDashas);
       const preparationGuide = this._createPreparationGuide(upcomingDashas);
-      const opportunityWindows = this._identifyOpportunityWindows(upcomingDashas);
+      const opportunityWindows =
+        this._identifyOpportunityWindows(upcomingDashas);
 
       return {
         upcomingDashas,
@@ -46,7 +52,10 @@ class UpcomingDashasService extends ServiceTemplate {
         lifePhases,
         preparationGuide,
         opportunityWindows,
-        interpretation: this._createUpcomingDashasInterpretation(upcomingDashas, lifePhases)
+        interpretation: this._createUpcomingDashasInterpretation(
+          upcomingDashas,
+          lifePhases
+        )
       };
     } catch (error) {
       logger.error('UpcomingDashasService processCalculation error:', error);
@@ -82,7 +91,8 @@ class UpcomingDashasService extends ServiceTemplate {
         calculationType: 'Upcoming Dashas Analysis',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'Upcoming Dashas analysis forecasts future planetary period influences. Dasha periods indicate timing of life experiences and karmic influences. Actual experiences depend on individual karma, free will, and complete birth chart analysis.'
+      disclaimer:
+        'Upcoming Dashas analysis forecasts future planetary period influences. Dasha periods indicate timing of life experiences and karmic influences. Actual experiences depend on individual karma, free will, and complete birth chart analysis.'
     };
   }
 
@@ -94,7 +104,10 @@ class UpcomingDashasService extends ServiceTemplate {
    * @private
    */
   _extractUpcomingDashas(dashaAnalysis, periodsToShow) {
-    const upcoming = (dashaAnalysis.upcomingDashas || []).slice(0, periodsToShow);
+    const upcoming = (dashaAnalysis.upcomingDashas || []).slice(
+      0,
+      periodsToShow
+    );
 
     return upcoming.map(dasha => ({
       mahadasha: {
@@ -138,7 +151,10 @@ class UpcomingDashasService extends ServiceTemplate {
           from: dasha.mahadasha.lord,
           to: upcomingDashas[index + 1].mahadasha.lord,
           date: upcomingDashas[index + 1].mahadasha.startDate,
-          significance: this._assessTransitionSignificance(dasha.mahadasha.lord, upcomingDashas[index + 1].mahadasha.lord)
+          significance: this._assessTransitionSignificance(
+            dasha.mahadasha.lord,
+            upcomingDashas[index + 1].mahadasha.lord
+          )
         });
       }
 
@@ -161,7 +177,12 @@ class UpcomingDashasService extends ServiceTemplate {
    * @private
    */
   _identifyLifePhases(upcomingDashas) {
-    const phases = { growth: [], challenge: [], stability: [], transformation: [] };
+    const phases = {
+      growth: [],
+      challenge: [],
+      stability: [],
+      transformation: []
+    };
 
     upcomingDashas.forEach(dasha => {
       const lord = dasha.mahadasha.lord.toLowerCase();
@@ -192,7 +213,12 @@ class UpcomingDashasService extends ServiceTemplate {
    * @private
    */
   _createPreparationGuide(upcomingDashas) {
-    const guide = { immediate: [], shortTerm: [], longTerm: [], generalAdvice: [] };
+    const guide = {
+      immediate: [],
+      shortTerm: [],
+      longTerm: [],
+      generalAdvice: []
+    };
 
     if (upcomingDashas.length > 0) {
       const nextDasha = upcomingDashas[0];
@@ -294,7 +320,9 @@ class UpcomingDashasService extends ServiceTemplate {
       rahu: ['Ambition', 'Innovation', 'Foreign matters', 'Spirituality'],
       ketu: ['Liberation', 'Detachment', 'Spirituality', 'Inner peace']
     };
-    return themes[planet?.toLowerCase()] || ['Personal growth', 'Life experience'];
+    return (
+      themes[planet?.toLowerCase()] || ['Personal growth', 'Life experience']
+    );
   }
 
   /**
@@ -312,8 +340,20 @@ class UpcomingDashasService extends ServiceTemplate {
       jupiter: ['Wisdom', 'Wealth', 'Children', 'Teaching', 'Abroad'],
       venus: ['Love', 'Marriage', 'Beauty', 'Luxury', 'Arts'],
       saturn: ['Career', 'Discipline', 'Elders', 'Real estate', 'Agriculture'],
-      rahu: ['Ambition', 'Foreign', 'Innovation', 'Technology', 'Unconventional'],
-      ketu: ['Spirituality', 'Detachment', 'Liberation', 'Past life', 'Mysticism']
+      rahu: [
+        'Ambition',
+        'Foreign',
+        'Innovation',
+        'Technology',
+        'Unconventional'
+      ],
+      ketu: [
+        'Spirituality',
+        'Detachment',
+        'Liberation',
+        'Past life',
+        'Mysticism'
+      ]
     };
     return areas[planet?.toLowerCase()] || ['General life areas'];
   }
@@ -330,11 +370,26 @@ class UpcomingDashasService extends ServiceTemplate {
       moon: ['Emotional instability', 'Family conflicts', 'Public criticism'],
       mars: ['Aggression', 'Accidents', 'Conflicts', 'Impatience'],
       mercury: ['Communication problems', 'Anxiety', 'Learning difficulties'],
-      jupiter: ['Over-optimism', 'Excess', 'Legal issues', 'Spiritual bypassing'],
+      jupiter: [
+        'Over-optimism',
+        'Excess',
+        'Legal issues',
+        'Spiritual bypassing'
+      ],
       venus: ['Relationship conflicts', 'Indulgence', 'Financial excess'],
       saturn: ['Depression', 'Delays', 'Restrictions', 'Loneliness'],
-      rahu: ['Confusion', 'Addictions', 'Foreign difficulties', 'Spiritual crisis'],
-      ketu: ['Detachment issues', 'Identity crisis', 'Past life karma', 'Isolation']
+      rahu: [
+        'Confusion',
+        'Addictions',
+        'Foreign difficulties',
+        'Spiritual crisis'
+      ],
+      ketu: [
+        'Detachment issues',
+        'Identity crisis',
+        'Past life karma',
+        'Isolation'
+      ]
     };
     return challenges[planet?.toLowerCase()] || ['General life challenges'];
   }
@@ -347,17 +402,64 @@ class UpcomingDashasService extends ServiceTemplate {
    */
   _getDashaOpportunities(planet) {
     const opportunities = {
-      sun: ['Leadership roles', 'Career advancement', 'Recognition', 'Self-confidence'],
-      moon: ['Family harmony', 'Emotional healing', 'Public success', 'Home stability'],
-      mars: ['New initiatives', 'Physical strength', 'Competitive success', 'Courage'],
-      mercury: ['Learning opportunities', 'Business success', 'Communication skills', 'Travel'],
-      jupiter: ['Spiritual growth', 'Wisdom', 'Teaching opportunities', 'Good fortune'],
-      venus: ['Love relationships', 'Material comfort', 'Artistic success', 'Harmony'],
-      saturn: ['Career stability', 'Discipline development', 'Long-term achievements', 'Respect'],
-      rahu: ['Ambition fulfillment', 'Innovation', 'Foreign connections', 'Spiritual awakening'],
-      ketu: ['Spiritual liberation', 'Inner peace', 'Detachment from material', 'Enlightenment']
+      sun: [
+        'Leadership roles',
+        'Career advancement',
+        'Recognition',
+        'Self-confidence'
+      ],
+      moon: [
+        'Family harmony',
+        'Emotional healing',
+        'Public success',
+        'Home stability'
+      ],
+      mars: [
+        'New initiatives',
+        'Physical strength',
+        'Competitive success',
+        'Courage'
+      ],
+      mercury: [
+        'Learning opportunities',
+        'Business success',
+        'Communication skills',
+        'Travel'
+      ],
+      jupiter: [
+        'Spiritual growth',
+        'Wisdom',
+        'Teaching opportunities',
+        'Good fortune'
+      ],
+      venus: [
+        'Love relationships',
+        'Material comfort',
+        'Artistic success',
+        'Harmony'
+      ],
+      saturn: [
+        'Career stability',
+        'Discipline development',
+        'Long-term achievements',
+        'Respect'
+      ],
+      rahu: [
+        'Ambition fulfillment',
+        'Innovation',
+        'Foreign connections',
+        'Spiritual awakening'
+      ],
+      ketu: [
+        'Spiritual liberation',
+        'Inner peace',
+        'Detachment from material',
+        'Enlightenment'
+      ]
     };
-    return opportunities[planet?.toLowerCase()] || ['Personal growth opportunities'];
+    return (
+      opportunities[planet?.toLowerCase()] || ['Personal growth opportunities']
+    );
   }
 
   /**
@@ -368,17 +470,59 @@ class UpcomingDashasService extends ServiceTemplate {
    */
   _getPreparationAdvice(planet) {
     const advice = {
-      sun: ['Build self-confidence and leadership skills', 'Focus on physical health and vitality', 'Prepare for increased responsibility'],
-      moon: ['Strengthen emotional resilience', 'Nurture family relationships', 'Develop public speaking skills'],
-      mars: ['Channel energy into productive activities', 'Practice patience and anger management', 'Focus on physical fitness'],
-      mercury: ['Enhance communication skills', 'Pursue learning opportunities', 'Develop business acumen'],
-      jupiter: ['Deepen spiritual practices', 'Share wisdom with others', 'Plan for expansion and growth'],
-      venus: ['Cultivate harmonious relationships', 'Develop artistic talents', 'Build material stability'],
-      saturn: ['Practice discipline and patience', 'Build strong foundations', 'Prepare for long-term commitments'],
-      rahu: ['Embrace innovation and change', 'Explore spiritual dimensions', 'Be mindful of material ambitions'],
-      ketu: ['Focus on spiritual liberation', 'Practice detachment from material desires', 'Embrace inner peace and contemplation']
+      sun: [
+        'Build self-confidence and leadership skills',
+        'Focus on physical health and vitality',
+        'Prepare for increased responsibility'
+      ],
+      moon: [
+        'Strengthen emotional resilience',
+        'Nurture family relationships',
+        'Develop public speaking skills'
+      ],
+      mars: [
+        'Channel energy into productive activities',
+        'Practice patience and anger management',
+        'Focus on physical fitness'
+      ],
+      mercury: [
+        'Enhance communication skills',
+        'Pursue learning opportunities',
+        'Develop business acumen'
+      ],
+      jupiter: [
+        'Deepen spiritual practices',
+        'Share wisdom with others',
+        'Plan for expansion and growth'
+      ],
+      venus: [
+        'Cultivate harmonious relationships',
+        'Develop artistic talents',
+        'Build material stability'
+      ],
+      saturn: [
+        'Practice discipline and patience',
+        'Build strong foundations',
+        'Prepare for long-term commitments'
+      ],
+      rahu: [
+        'Embrace innovation and change',
+        'Explore spiritual dimensions',
+        'Be mindful of material ambitions'
+      ],
+      ketu: [
+        'Focus on spiritual liberation',
+        'Practice detachment from material desires',
+        'Embrace inner peace and contemplation'
+      ]
     };
-    return advice[planet?.toLowerCase()] || ['Focus on personal growth', 'Maintain balance in life', 'Practice mindfulness'];
+    return (
+      advice[planet?.toLowerCase()] || [
+        'Focus on personal growth',
+        'Maintain balance in life',
+        'Practice mindfulness'
+      ]
+    );
   }
 
   /**
@@ -392,10 +536,16 @@ class UpcomingDashasService extends ServiceTemplate {
     const fromLord = from?.toLowerCase();
     const toLord = to?.toLowerCase();
 
-    if ((fromLord === 'saturn' && toLord === 'mercury') || (fromLord === 'rahu' && ['jupiter', 'saturn'].includes(toLord))) {
+    if (
+      (fromLord === 'saturn' && toLord === 'mercury') ||
+      (fromLord === 'rahu' && ['jupiter', 'saturn'].includes(toLord))
+    ) {
       return 'Major life transition requiring adaptation';
     }
-    if ((fromLord === 'venus' && toLord === 'sun') || (fromLord === 'mercury' && toLord === 'ketu')) {
+    if (
+      (fromLord === 'venus' && toLord === 'sun') ||
+      (fromLord === 'mercury' && toLord === 'ketu')
+    ) {
       return 'Transition to new growth phase';
     }
     return 'Natural progression in life phases';
@@ -437,14 +587,18 @@ class UpcomingDashasService extends ServiceTemplate {
     const challengePhases = lifePhases.challenge.length;
 
     if (growthPhases > challengePhases) {
-      interpretation += 'The coming years show more growth-oriented periods than challenges. ';
+      interpretation +=
+        'The coming years show more growth-oriented periods than challenges. ';
     } else if (challengePhases > growthPhases) {
-      interpretation += 'The coming years include several challenging periods that offer valuable growth opportunities. ';
+      interpretation +=
+        'The coming years include several challenging periods that offer valuable growth opportunities. ';
     } else {
-      interpretation += 'The coming years balance growth periods with challenging phases for comprehensive development. ';
+      interpretation +=
+        'The coming years balance growth periods with challenging phases for comprehensive development. ';
     }
 
-    interpretation += 'Each Dasha period brings specific planetary energies that influence different life areas and opportunities.';
+    interpretation +=
+      'Each Dasha period brings specific planetary energies that influence different life areas and opportunities.';
     return interpretation;
   }
 
@@ -457,9 +611,17 @@ class UpcomingDashasService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', 'getUpcomingDashas', 'getDashaTimeline', 'getLifePhases', 'getPreparationGuide', 'getOpportunityWindows'],
+      methods: [
+        'processCalculation',
+        'getUpcomingDashas',
+        'getDashaTimeline',
+        'getLifePhases',
+        'getPreparationGuide',
+        'getOpportunityWindows'
+      ],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Service for forecasting future planetary periods based on Vimshottari Dasha.'
+      description:
+        'Service for forecasting future planetary periods based on Vimshottari Dasha.'
     };
   }
 

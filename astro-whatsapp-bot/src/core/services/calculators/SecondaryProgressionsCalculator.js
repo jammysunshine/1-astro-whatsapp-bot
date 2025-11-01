@@ -40,7 +40,9 @@ class SecondaryProgressionsCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for secondary progressions' };
+        return {
+          error: 'Complete birth details required for secondary progressions'
+        };
       }
 
       // Parse birth details
@@ -48,32 +50,59 @@ class SecondaryProgressionsCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const timezone = await this._getTimezoneForPlace(latitude, longitude);
 
       // Calculate current age and progression date
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
-      const currentAge = Math.floor((Date.now() - birthDateTime.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+      const currentAge = Math.floor(
+        (Date.now() - birthDateTime.getTime()) / (365.25 * 24 * 60 * 60 * 1000)
+      );
       const progressionDate = new Date(birthDateTime);
       progressionDate.setDate(birthDateTime.getDate() + currentAge);
 
       // Calculate natal chart using Swiss Ephemeris
-      const natalChart = await this._calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const natalChart = await this._calculateNatalChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Calculate progressed chart using nautical almanac method
-      const progressedChart = await this._calculateProgressedChart(natalChart, progressionDate);
+      const progressedChart = await this._calculateProgressedChart(
+        natalChart,
+        progressionDate
+      );
 
       // Calculate progressed aspects
-      const progressedAspects = this._calculateProgressedAspects(progressedChart);
+      const progressedAspects =
+        this._calculateProgressedAspects(progressedChart);
 
       // Analyze progression phases
-      const progressionAnalysis = this._analyzeProgressionPhases(natalChart, progressedChart, currentAge);
+      const progressionAnalysis = this._analyzeProgressionPhases(
+        natalChart,
+        progressedChart,
+        currentAge
+      );
 
       // Calculate significant progression triggers
-      const significantTriggers = this._calculateSignificantTriggers(natalChart, progressedChart, progressedAspects);
+      const significantTriggers = this._calculateSignificantTriggers(
+        natalChart,
+        progressedChart,
+        progressedAspects
+      );
 
       // Generate interpretations
-      const interpretations = this._generateProgressionInterpretations(progressionAnalysis, significantTriggers);
+      const interpretations = this._generateProgressionInterpretations(
+        progressionAnalysis,
+        significantTriggers
+      );
 
       return {
         name,
@@ -85,21 +114,41 @@ class SecondaryProgressionsCalculator {
         progressionAnalysis,
         significantTriggers,
         interpretations,
-        summary: this._generateProgressionsSummary(currentAge, progressionAnalysis, interpretations)
+        summary: this._generateProgressionsSummary(
+          currentAge,
+          progressionAnalysis,
+          interpretations
+        )
       };
     } catch (error) {
       logger.error('❌ Error in secondary progressions calculation:', error);
-      throw new Error(`Secondary progressions calculation failed: ${error.message}`);
+      throw new Error(
+        `Secondary progressions calculation failed: ${error.message}`
+      );
     }
   }
 
   /**
    * Calculate natal chart with accelerated precession adjustments
    */
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     try {
       // Convert to Julian Day
-      const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+      const jd = this._dateToJulianDay(
+        year,
+        month,
+        day,
+        hour + minute / 60 - timezone
+      );
 
       const planets = {};
       const planetIds = {
@@ -117,10 +166,16 @@ class SecondaryProgressionsCalculator {
       // Calculate planetary positions using Swiss Ephemeris
       for (const [planetName, planetId] of Object.entries(planetIds)) {
         try {
-          const position = sweph.swe_calc_ut(jd, planetId, sweph.SEFLG_SIDEREAL);
+          const position = sweph.swe_calc_ut(
+            jd,
+            planetId,
+            sweph.SEFLG_SIDEREAL
+          );
 
           if (position && position.longitude !== undefined) {
-            const longitude = Array.isArray(position.longitude) ? position.longitude[0] : position.longitude;
+            const longitude = Array.isArray(position.longitude) ?
+              position.longitude[0] :
+              position.longitude;
 
             planets[planetName] = {
               name: planetName.charAt(0).toUpperCase() + planetName.slice(1),
@@ -132,7 +187,10 @@ class SecondaryProgressionsCalculator {
             };
           }
         } catch (error) {
-          logger.warn(`Swiss Ephemeris error for ${planetName}:`, error.message);
+          logger.warn(
+            `Swiss Ephemeris error for ${planetName}:`,
+            error.message
+          );
         }
       }
 
@@ -146,7 +204,10 @@ class SecondaryProgressionsCalculator {
       // Assign planets to houses
       for (const planetData of Object.values(planets)) {
         if (planetData.longitude && planets.ascendant?.longitude) {
-          planetData.house = this._getHouseForLongitude(planetData.longitude, planets.ascendant.longitude);
+          planetData.house = this._getHouseForLongitude(
+            planetData.longitude,
+            planets.ascendant.longitude
+          );
         }
       }
 
@@ -169,26 +230,35 @@ class SecondaryProgressionsCalculator {
 
     // Calculate years progressed (Day for a Year method)
     const scrutinize = new Date(progressionDate);
-    const radix = new Date(natalChart.date.year, natalChart.date.month - 1, natalChart.date.day);
-    const yearsProgressed = Math.floor((scrutinize - radix) / (365.25 * 24 * 60 * 60 * 1000));
+    const radix = new Date(
+      natalChart.date.year,
+      natalChart.date.month - 1,
+      natalChart.date.day
+    );
+    const yearsProgressed = Math.floor(
+      (scrutinize - radix) / (365.25 * 24 * 60 * 60 * 1000)
+    );
 
     // Progress each planet at its appropriate rate
     for (const [planetName, natalData] of Object.entries(natalChart.planets)) {
-      if (planetName === 'ascendant') { continue; }
+      if (planetName === 'ascendant') {
+        continue;
+      }
 
       // Different progression rates for different planets
       const progressionRates = {
-        sun: 1.0,      // ≈1° per year
-        moon: 13.18,   // ≈13.18° per year (297 days/28.4°)
-        mars: 0.531,   // Variable rate per Hindu astrology
+        sun: 1.0, // ≈1° per year
+        moon: 13.18, // ≈13.18° per year (297 days/28.4°)
+        mars: 0.531, // Variable rate per Hindu astrology
         mercury: 1.383, // Mercury's daily average
         jupiter: 0.083, // Jupiter's very slow rate
-        venus: 1.2,    // Venus's daily average
-        saturn: 0.034  // Saturn's very slow rate
+        venus: 1.2, // Venus's daily average
+        saturn: 0.034 // Saturn's very slow rate
       };
 
       const rate = progressionRates[planetName.toLowerCase()] || 1.0;
-      const progressedLongitude = (natalData.longitude + (yearsProgressed * rate)) % 360;
+      const progressedLongitude =
+        (natalData.longitude + yearsProgressed * rate) % 360;
 
       progressedPlanets[planetName] = {
         name: natalData.name,
@@ -203,7 +273,8 @@ class SecondaryProgressionsCalculator {
     }
 
     // Progressed ascendant (moves at solar rate ≈1° per year)
-    const progressedAscendantLong = (natalChart.planets.ascendant.longitude + yearsProgressed) % 360;
+    const progressedAscendantLong =
+      (natalChart.planets.ascendant.longitude + yearsProgressed) % 360;
     progressedPlanets.ascendant = {
       natalLongitude: natalChart.planets.ascendant.longitude,
       progressedLongitude: progressedAscendantLong,
@@ -230,7 +301,9 @@ class SecondaryProgressionsCalculator {
       oppositions: []
     };
 
-    const planets = Object.keys(progressedChart.planets).filter(p => p !== 'ascendant');
+    const planets = Object.keys(progressedChart.planets).filter(
+      p => p !== 'ascendant'
+    );
 
     // Calculate western aspects with wider orbs for progressions
     for (let i = 0; i < planets.length; i++) {
@@ -244,11 +317,37 @@ class SecondaryProgressionsCalculator {
         const angularDiff = Math.abs(long1 - long2);
         const minDiff = Math.min(angularDiff, 360 - angularDiff);
 
-        if (minDiff <= 12) { aspects.conjunctions.push({ planet1, planet2, orb: minDiff }); }
-        if (Math.abs(minDiff - 60) <= 10) { aspects.sextiles.push({ planet1, planet2, orb: Math.abs(minDiff - 60) }); }
-        if (Math.abs(minDiff - 90) <= 12) { aspects.squares.push({ planet1, planet2, orb: Math.abs(minDiff - 90) }); }
-        if (Math.abs(minDiff - 120) <= 12) { aspects.trines.push({ planet1, planet2, orb: Math.abs(minDiff - 120) }); }
-        if (Math.abs(minDiff - 180) <= 12) { aspects.oppositions.push({ planet1, planet2, orb: Math.abs(minDiff - 180) }); }
+        if (minDiff <= 12) {
+          aspects.conjunctions.push({ planet1, planet2, orb: minDiff });
+        }
+        if (Math.abs(minDiff - 60) <= 10) {
+          aspects.sextiles.push({
+            planet1,
+            planet2,
+            orb: Math.abs(minDiff - 60)
+          });
+        }
+        if (Math.abs(minDiff - 90) <= 12) {
+          aspects.squares.push({
+            planet1,
+            planet2,
+            orb: Math.abs(minDiff - 90)
+          });
+        }
+        if (Math.abs(minDiff - 120) <= 12) {
+          aspects.trines.push({
+            planet1,
+            planet2,
+            orb: Math.abs(minDiff - 120)
+          });
+        }
+        if (Math.abs(minDiff - 180) <= 12) {
+          aspects.oppositions.push({
+            planet1,
+            planet2,
+            orb: Math.abs(minDiff - 180)
+          });
+        }
       }
     }
 
@@ -275,7 +374,11 @@ class SecondaryProgressionsCalculator {
   /**
    * Calculate significant progression triggers
    */
-  _calculateSignificantTriggers(natalChart, progressedChart, progressedAspects) {
+  _calculateSignificantTriggers(
+    natalChart,
+    progressedChart,
+    progressedAspects
+  ) {
     const triggers = {
       planetaryAlignments: [],
       signChanges: [],
@@ -301,7 +404,10 @@ class SecondaryProgressionsCalculator {
       triggers.planetaryAlignments.push({
         planets: [aspect.planet1, aspect.planet2],
         type: 'conjunction',
-        significance: this._getConjunctionSignificance(aspect.planet1, aspect.planet2),
+        significance: this._getConjunctionSignificance(
+          aspect.planet1,
+          aspect.planet2
+        ),
         age: progressedChart.yearsProgressed.toFixed(1)
       });
     });
@@ -353,11 +459,18 @@ class SecondaryProgressionsCalculator {
   /**
    * Generate progression interpretations
    */
-  _generateProgressionInterpretations(progressionAnalysis, significantTriggers) {
+  _generateProgressionInterpretations(
+    progressionAnalysis,
+    significantTriggers
+  ) {
     const interpretations = {
       personality: this._interpretPersonalityProgression(progressionAnalysis),
-      career: this._interpretCareerProgression(progressionAnalysis, significantTriggers),
-      relationships: this._interpretRelationshipProgression(significantTriggers),
+      career: this._interpretCareerProgression(
+        progressionAnalysis,
+        significantTriggers
+      ),
+      relationships:
+        this._interpretRelationshipProgression(significantTriggers),
       health: this._interpretHealthProgression(progressionAnalysis),
       spiritual: this._interpretSpiritualProgression(progressionAnalysis),
       lifePurpose: this._interpretLifePurpose(significantTriggers),
@@ -370,7 +483,11 @@ class SecondaryProgressionsCalculator {
   /**
    * Generate comprehensive progressions summary
    */
-  _generateProgressionsSummary(currentAge, progressionAnalysis, interpretations) {
+  _generateProgressionsSummary(
+    currentAge,
+    progressionAnalysis,
+    interpretations
+  ) {
     let summary = '⏳ *Secondary Progressions Analysis*\n\n';
 
     summary += `*Current Age:* ${currentAge} years\n`;
@@ -386,36 +503,67 @@ class SecondaryProgressionsCalculator {
 
     summary += `*Life Purpose:* ${interpretations.lifePurpose}.\n\n`;
 
-    summary += '*Secondary progressions reveal the slow, internal unfolding of your life\'s developmental patterns through the principle of "Day for a Year".*';
+    summary +=
+      '*Secondary progressions reveal the slow, internal unfolding of your life\'s developmental patterns through the principle of "Day for a Year".*';
 
     return summary;
   }
 
   // Key helper methods for Secondary Progressions
   _getCurrentLifePhase(age) {
-    if (age <= 12) { return 'Early Development (Childhood)'; }
-    if (age <= 20) { return 'Adolescence'; }
-    if (age <= 30) { return 'Young Adulthood'; }
-    if (age <= 45) { return 'Established Life'; }
-    if (age <= 60) { return 'Peak Achievement'; }
+    if (age <= 12) {
+      return 'Early Development (Childhood)';
+    }
+    if (age <= 20) {
+      return 'Adolescence';
+    }
+    if (age <= 30) {
+      return 'Young Adulthood';
+    }
+    if (age <= 45) {
+      return 'Established Life';
+    }
+    if (age <= 60) {
+      return 'Peak Achievement';
+    }
     return 'Wisdom Phase';
   }
 
   _getPhaseCharacteristics(age) {
-    if (age <= 12) { return 'Foundation building, basic learning, family influences'; }
-    if (age <= 20) { return 'Identity formation, independence, career exploration'; }
-    if (age <= 30) { return 'Career establishment, relationships, independence'; }
-    if (age <= 45) { return 'Career stability, family responsibilities, social recognition'; }
-    if (age <= 60) { return 'Career peak, wisdom sharing, legacy building'; }
+    if (age <= 12) {
+      return 'Foundation building, basic learning, family influences';
+    }
+    if (age <= 20) {
+      return 'Identity formation, independence, career exploration';
+    }
+    if (age <= 30) {
+      return 'Career establishment, relationships, independence';
+    }
+    if (age <= 45) {
+      return 'Career stability, family responsibilities, social recognition';
+    }
+    if (age <= 60) {
+      return 'Career peak, wisdom sharing, legacy building';
+    }
     return 'Reflection, spiritual growth, life review';
   }
 
   _getDevelopmentalFocus(age) {
-    if (age <= 12) { return 'Education, family relationships, basic personality development'; }
-    if (age <= 20) { return 'Self-discovery, education completion, early career beginnings'; }
-    if (age <= 30) { return 'Professional growth, marriage/partnerships, financial independence'; }
-    if (age <= 45) { return 'Leadership, family building, financial security, community involvement'; }
-    if (age <= 60) { return 'Professional fulfillment, mentoring, creative contributions'; }
+    if (age <= 12) {
+      return 'Education, family relationships, basic personality development';
+    }
+    if (age <= 20) {
+      return 'Self-discovery, education completion, early career beginnings';
+    }
+    if (age <= 30) {
+      return 'Professional growth, marriage/partnerships, financial independence';
+    }
+    if (age <= 45) {
+      return 'Leadership, family building, financial security, community involvement';
+    }
+    if (age <= 60) {
+      return 'Professional fulfillment, mentoring, creative contributions';
+    }
     return 'Inner peace, family continuity, spiritual realization';
   }
 
@@ -446,19 +594,21 @@ class SecondaryProgressionsCalculator {
   }
 
   _interpretPersonalityProgression(analysis) {
-    return `During ${analysis.currentPhase}, you are developing ${
-      analysis.phaseCharacteristics.split(',')[0].toLowerCase()
-    } patterns that will shape your lifelong personality.`;
+    return `During ${analysis.currentPhase}, you are developing ${analysis.phaseCharacteristics
+      .split(',')[0]
+      .toLowerCase()} patterns that will shape your lifelong personality.`;
   }
 
   _interpretCareerProgression(analysis, triggers) {
-    const signChanges = triggers.signChanges.filter(t => ['sun', 'saturn', 'jupiter'].includes(t.planet.toLowerCase()));
+    const signChanges = triggers.signChanges.filter(t =>
+      ['sun', 'saturn', 'jupiter'].includes(t.planet.toLowerCase())
+    );
     const careerActivities = signChanges.length;
 
     if (careerActivities > 0) {
-      return `${careerActivities} significant career shifts occurring, focus on ${
-        analysis.developmentalFocus.split(',')[0].toLowerCase()
-      }.`;
+      return `${careerActivities} significant career shifts occurring, focus on ${analysis.developmentalFocus
+        .split(',')[0]
+        .toLowerCase()}.`;
     }
 
     return `Career development follows natural progression through ${
@@ -467,8 +617,13 @@ class SecondaryProgressionsCalculator {
   }
 
   _interpretRelationshipProgression(triggers) {
-    const venusChanges = triggers.signChanges.filter(t => t.planet.toLowerCase() === 'venus');
-    const relationshipFocus = venusChanges.length > 0 ? 'active relationship transformation' : 'relationship stability';
+    const venusChanges = triggers.signChanges.filter(
+      t => t.planet.toLowerCase() === 'venus'
+    );
+    const relationshipFocus =
+      venusChanges.length > 0 ?
+        'active relationship transformation' :
+        'relationship stability';
 
     return `Partnership dynamics show ${relationshipFocus} during this progression cycle.`;
   }
@@ -482,21 +637,38 @@ class SecondaryProgressionsCalculator {
   }
 
   _interpretLifePurpose(triggers) {
-    const totalTriggers = triggers.signChanges.length + triggers.planetaryAlignments.length;
+    const totalTriggers =
+      triggers.signChanges.length + triggers.planetaryAlignments.length;
     return `Life purpose clarifying through ${totalTriggers} major planetary shifts in the progressed chart.`;
   }
 
   _extractTimingInformation(triggers) {
-    return triggers.signChanges.concat(triggers.returnActivities).map(trigger => ({
-      age: trigger.age,
-      event: trigger.planet ? `${trigger.planet} enters ${trigger.toSign}` : trigger.type,
-      significance: trigger.significance
-    }));
+    return triggers.signChanges
+      .concat(triggers.returnActivities)
+      .map(trigger => ({
+        age: trigger.age,
+        event: trigger.planet ?
+          `${trigger.planet} enters ${trigger.toSign}` :
+          trigger.type,
+        significance: trigger.significance
+      }));
   }
 
   _getZodiacSign(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs[Math.floor(longitude / 30)];
   }
 
@@ -516,7 +688,14 @@ class SecondaryProgressionsCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + (hour - 12) / 24;
   }
 
@@ -539,9 +718,9 @@ class SecondaryProgressionsCalculator {
   _assessDignity(planet, sign) {
     // Simplified dignity assessment for secondary progressions
     const planetaryRules = {
-      sun: [5],      // Leo
-      moon: [4],     // Cancer
-      mars: [1, 8],  // Aries, Scorpio
+      sun: [5], // Leo
+      moon: [4], // Cancer
+      mars: [1, 8], // Aries, Scorpio
       mercury: [3, 6], // Gemini, Virgo
       jupiter: [5, 9], // Leo, Sagittarius
       venus: [2, 7], // Taurus, Libra
@@ -566,24 +745,28 @@ class SecondaryProgressionsCalculator {
     const cycle = 12;
     const yearsSinceBirth = birthDateTime.getFullYear() - year;
 
-    return [{
-      yearOffset: yearsSinceBirth + 7,
-      description: 'Jupiter transit through 7th house',
-      promise: 90,
-      duration: 1
-    }];
+    return [
+      {
+        yearOffset: yearsSinceBirth + 7,
+        description: 'Jupiter transit through 7th house',
+        promise: 90,
+        duration: 1
+      }
+    ];
   }
 
   _calculateSaturnSignificantYears(birthDateTime, year) {
     const cycle = 29;
     const yearsSinceBirth = birthDateTime.getFullYear() - year;
 
-    return [{
-      yearOffset: yearsSinceBirth + 7,
-      description: 'Saturn maturity period',
-      promise: 70,
-      duration: 3
-    }];
+    return [
+      {
+        yearOffset: yearsSinceBirth + 7,
+        description: 'Saturn maturity period',
+        promise: 70,
+        duration: 3
+      }
+    ];
   }
 }
 

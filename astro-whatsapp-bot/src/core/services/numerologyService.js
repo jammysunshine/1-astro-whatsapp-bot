@@ -59,7 +59,10 @@ class NumerologyService extends ServiceTemplate {
     try {
       if (name && birthData?.birthDate) {
         // Get comprehensive numerology report
-        const fullReport = this.numerologyModule.getNumerologyReport(birthData.birthDate, name);
+        const fullReport = this.numerologyModule.getNumerologyReport(
+          birthData.birthDate,
+          name
+        );
         analysis = {
           ...fullReport,
           calculationType: 'comprehensive'
@@ -68,7 +71,10 @@ class NumerologyService extends ServiceTemplate {
         // Life path only
         const lifePath = this.numerologyModule.calculateLifePath ?
           this.numerologyModule.calculateLifePath(birthData.birthDate) :
-          this.numerologyModule.getNumerologyReport(birthData.birthDate, 'User');
+          this.numerologyModule.getNumerologyReport(
+            birthData.birthDate,
+            'User'
+          );
         analysis = {
           lifePathNumber: lifePath,
           calculationType: 'life-path'
@@ -133,10 +139,17 @@ class NumerologyService extends ServiceTemplate {
       ...super.getMetadata(),
       name: 'NumerologyService',
       category: 'divination',
-      description: 'Service for comprehensive numerology analysis using Pythagorean and Chaldean systems',
+      description:
+        'Service for comprehensive numerology analysis using Pythagorean and Chaldean systems',
       version: '1.0.0',
       status: 'active',
-      calculationTypes: ['life-path', 'expression', 'soul-urge', 'personality', 'comprehensive']
+      calculationTypes: [
+        'life-path',
+        'expression',
+        'soul-urge',
+        'personality',
+        'comprehensive'
+      ]
     };
   }
 

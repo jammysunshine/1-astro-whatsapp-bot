@@ -23,7 +23,10 @@ class SetLanguageAction extends BaseAction {
    */
   async execute() {
     try {
-      this.logExecution('start', `Setting language to ${this.requestedLanguage}`);
+      this.logExecution(
+        'start',
+        `Setting language to ${this.requestedLanguage}`
+      );
 
       // Validate requested language
       const languageInfo = this.validateLanguage(this.requestedLanguage);
@@ -48,7 +51,11 @@ class SetLanguageAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in SetLanguageAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -83,17 +90,22 @@ class SetLanguageAction extends BaseAction {
    * @param {Object} languageInfo - Language information
    */
   async sendLanguageConfirmation(languageInfo) {
-    const confirmationMessage = await this.generateConfirmationMessage(languageInfo);
+    const confirmationMessage =
+      await this.generateConfirmationMessage(languageInfo);
 
     await sendMessage(this.phoneNumber, confirmationMessage, 'text');
 
     // Send quick guide in new language
     setTimeout(async() => {
       try {
-        const guideMessage = await translationService.translate('messages.language.set_confirmation_guide', languageInfo.code, {
-          flag: languageInfo.flag,
-          name: languageInfo.name
-        });
+        const guideMessage = await translationService.translate(
+          'messages.language.set_confirmation_guide',
+          languageInfo.code,
+          {
+            flag: languageInfo.flag,
+            name: languageInfo.name
+          }
+        );
         await sendMessage(this.phoneNumber, guideMessage, 'text');
       } catch (error) {
         this.logger.error('Error sending language guide:', error);
@@ -108,10 +120,17 @@ class SetLanguageAction extends BaseAction {
    */
   async generateConfirmationMessage(languageInfo) {
     // Use parameterized translation that works for all languages
-    const confirmationMessage = await translationService.translate('messages.language.set_confirmation', 'en', {
-      flag: languageInfo.flag || '🌐',
-      language: languageInfo.nativeName || languageInfo.name || languageInfo.code.toUpperCase()
-    });
+    const confirmationMessage = await translationService.translate(
+      'messages.language.set_confirmation',
+      'en',
+      {
+        flag: languageInfo.flag || '🌐',
+        language:
+          languageInfo.nativeName ||
+          languageInfo.name ||
+          languageInfo.code.toUpperCase()
+      }
+    );
 
     return confirmationMessage;
   }
@@ -124,7 +143,13 @@ class SetLanguageAction extends BaseAction {
     return [
       { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
       { code: 'hi', name: 'Hindi', nativeName: 'हिंदी', flag: '🇮🇳' },
-      { code: 'ar', name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦', rtl: true },
+      {
+        code: 'ar',
+        name: 'Arabic',
+        nativeName: 'العربية',
+        flag: '🇸🇦',
+        rtl: true
+      },
       { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
       { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷' },
       { code: 'bn', name: 'Bengali', nativeName: 'বাংলা', flag: '🇧🇩' },
@@ -143,9 +168,21 @@ class SetLanguageAction extends BaseAction {
       { code: 'pa', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ', flag: '🇮🇳' },
       { code: 'or', name: 'Oriya', nativeName: 'ଓଡ଼ିଆ', flag: '🇮🇳' },
       { code: 'as', name: 'Assamese', nativeName: 'অসমীয়া', flag: '🇮🇳' },
-      { code: 'fa', name: 'Persian', nativeName: 'فارسی', flag: '🇮🇷', rtl: true },
+      {
+        code: 'fa',
+        name: 'Persian',
+        nativeName: 'فارسی',
+        flag: '🇮🇷',
+        rtl: true
+      },
       { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷' },
-      { code: 'he', name: 'Hebrew', nativeName: 'עברית', flag: '🇮🇱', rtl: true },
+      {
+        code: 'he',
+        name: 'Hebrew',
+        nativeName: 'עברית',
+        flag: '🇮🇱',
+        rtl: true
+      },
       { code: 'zh', name: 'Chinese', nativeName: '中文', flag: '🇨🇳' },
       { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
       { code: 'ko', name: 'Korean', nativeName: '한국어', flag: '🇰🇷' },
@@ -157,7 +194,8 @@ class SetLanguageAction extends BaseAction {
    * Send error for invalid language
    */
   async sendInvalidLanguageError() {
-    const errorMessage = '❌ Invalid language selection.\n\nPlease choose from the supported 28 languages in the language menu.\n\nType "settings" or "language" to see all available options.';
+    const errorMessage =
+      '❌ Invalid language selection.\n\nPlease choose from the supported 28 languages in the language menu.\n\nType "settings" or "language" to see all available options.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -166,7 +204,8 @@ class SetLanguageAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, I couldn\'t update your language preference. Please try again or contact support.\n\nYou can still use the bot in English.';
+    const errorMessage =
+      '❌ Sorry, I couldn\'t update your language preference. Please try again or contact support.\n\nYou can still use the bot in English.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 }

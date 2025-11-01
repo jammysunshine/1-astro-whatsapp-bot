@@ -10,7 +10,8 @@ const logger = require('../../../utils/logger');
 class HoraryReadingService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HoraryReadingService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'HoraryReadingService';
     this.calculatorPath = '../../../services/astrology/horary/HoraryCalculator';
     logger.info('HoraryReadingService initialized');
   }
@@ -35,7 +36,10 @@ class HoraryReadingService extends ServiceTemplate {
       const { question, questionTime, location = {} } = questionData;
 
       // Cast horary chart using calculator
-      const horaryChart = await this.calculator.castHoraryChart(questionTime, location);
+      const horaryChart = await this.calculator.castHoraryChart(
+        questionTime,
+        location
+      );
 
       // Analyze the question and chart
       const readingAnalysis = {
@@ -51,7 +55,10 @@ class HoraryReadingService extends ServiceTemplate {
         aspects: this._analyzeAspects(horaryChart, question),
         answer: this._generateAnswer(horaryChart, question),
         recommendations: this._generateRecommendations(horaryChart, question),
-        followUpQuestions: this._generateFollowUpQuestions(horaryChart, question)
+        followUpQuestions: this._generateFollowUpQuestions(
+          horaryChart,
+          question
+        )
       };
 
       return readingAnalysis;
@@ -79,9 +86,14 @@ class HoraryReadingService extends ServiceTemplate {
     }
 
     // Basic date/time format validation (can be enhanced)
-    if (typeof input.questionTime !== 'string' || !input.questionTime.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
+    if (
+      typeof input.questionTime !== 'string' ||
+      !input.questionTime.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+    ) {
       // Assuming ISO string format for questionTime
-      throw new Error('Question time must be in ISO 8601 format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ)');
+      throw new Error(
+        'Question time must be in ISO 8601 format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ)'
+      );
     }
   }
 
@@ -121,11 +133,41 @@ class HoraryReadingService extends ServiceTemplate {
    */
   _categorizeQuestion(question) {
     const lowerQuestion = question.toLowerCase();
-    if (lowerQuestion.includes('love') || lowerQuestion.includes('relationship') || lowerQuestion.includes('marriage')) { return 'relationship'; }
-    if (lowerQuestion.includes('job') || lowerQuestion.includes('career') || lowerQuestion.includes('work')) { return 'career'; }
-    if (lowerQuestion.includes('money') || lowerQuestion.includes('financial') || lowerQuestion.includes('investment')) { return 'financial'; }
-    if (lowerQuestion.includes('health') || lowerQuestion.includes('illness') || lowerQuestion.includes('medical')) { return 'health'; }
-    if (lowerQuestion.includes('move') || lowerQuestion.includes('relocate') || lowerQuestion.includes('travel')) { return 'relocation'; }
+    if (
+      lowerQuestion.includes('love') ||
+      lowerQuestion.includes('relationship') ||
+      lowerQuestion.includes('marriage')
+    ) {
+      return 'relationship';
+    }
+    if (
+      lowerQuestion.includes('job') ||
+      lowerQuestion.includes('career') ||
+      lowerQuestion.includes('work')
+    ) {
+      return 'career';
+    }
+    if (
+      lowerQuestion.includes('money') ||
+      lowerQuestion.includes('financial') ||
+      lowerQuestion.includes('investment')
+    ) {
+      return 'financial';
+    }
+    if (
+      lowerQuestion.includes('health') ||
+      lowerQuestion.includes('illness') ||
+      lowerQuestion.includes('medical')
+    ) {
+      return 'health';
+    }
+    if (
+      lowerQuestion.includes('move') ||
+      lowerQuestion.includes('relocate') ||
+      lowerQuestion.includes('travel')
+    ) {
+      return 'relocation';
+    }
     return 'general';
   }
 
@@ -279,41 +321,103 @@ class HoraryReadingService extends ServiceTemplate {
    */
   _calculateAnswerConfidence(horaryChart, question) {
     let confidence = 50;
-    if (this._hasStrongSignificators(horaryChart, question)) { confidence += 20; }
-    if (this._hasClearAspects(horaryChart)) { confidence += 15; }
-    if (this._hasFavorableMoonPosition(horaryChart)) { confidence += 10; }
+    if (this._hasStrongSignificators(horaryChart, question)) {
+      confidence += 20;
+    }
+    if (this._hasClearAspects(horaryChart)) {
+      confidence += 15;
+    }
+    if (this._hasFavorableMoonPosition(horaryChart)) {
+      confidence += 10;
+    }
     return Math.min(100, Math.max(0, confidence));
   }
 
   // Placeholder implementations for detailed analysis methods
-  _getOverallInterpretation(horaryChart) { return 'Chart shows clear indications'; }
-  _interpretSignificators(horaryChart, question) { return { interpretation: 'Strong significators' }; }
-  _interpretRelevantHouses(horaryChart, question) { return { houses: 'Favorable house positions' }; }
-  _interpretMoonPosition(horaryChart) { return { moon: 'Moon in favorable position' }; }
-  _interpretKeyAspects(horaryChart, question) { return { aspects: 'Positive aspects dominate' }; }
-  _interpretTimingIndicators(horaryChart) { return { timing: 'Timing indicators present' }; }
-  _checkImmediateIndicators(horaryChart) { return { immediate: 'Some immediate indicators' }; }
-  _analyzeShortTermTiming(horaryChart) { return { shortTerm: 'Short-term timing favorable' }; }
-  _analyzeLongTermTiming(horaryChart) { return { longTerm: 'Long-term outlook positive' }; }
-  _calculatePlanetaryHours(horaryChart) { return { hours: ['Favorable planetary hours'] }; }
-  _identifyFavorableDays(horaryChart) { return { days: ['Favorable days identified'] }; }
-  _getApplyingAspects(horaryChart) { return ['Applying aspect 1', 'Applying aspect 2']; }
-  _getSeparatingAspects(horaryChart) { return ['Separating aspect 1']; }
-  _getMajorAspects(horaryChart) { return ['Major aspect 1', 'Major aspect 2']; }
-  _getMinorAspects(horaryChart) { return ['Minor aspect 1']; }
-  _identifyAspectPatterns(horaryChart) { return { patterns: ['Aspect pattern identified'] }; }
-  _getDirectAnswer(horaryChart, question) { return 'Yes, the outlook is favorable'; }
-  _calculateProbability(horaryChart, question) { return 75; }
-  _explainReasoning(horaryChart, question) { return 'Based on favorable planetary positions'; }
-  _suggestAlternatives(horaryChart, question) { return ['Alternative approach 1']; }
-  _getImmediateRecommendations(horaryChart, question) { return ['Immediate recommendation']; }
-  _getShortTermRecommendations(horaryChart, question) { return ['Short-term recommendation']; }
-  _getLongTermRecommendations(horaryChart, question) { return ['Long-term recommendation']; }
-  _getPrecautions(horaryChart, question) { return ['Precaution 1']; }
-  _getSuggestedActions(horaryChart, question) { return ['Action 1']; }
-  _hasStrongSignificators(horaryChart, question) { return true; }
-  _hasClearAspects(horaryChart) { return true; }
-  _hasFavorableMoonPosition(horaryChart) { return true; }
+  _getOverallInterpretation(horaryChart) {
+    return 'Chart shows clear indications';
+  }
+  _interpretSignificators(horaryChart, question) {
+    return { interpretation: 'Strong significators' };
+  }
+  _interpretRelevantHouses(horaryChart, question) {
+    return { houses: 'Favorable house positions' };
+  }
+  _interpretMoonPosition(horaryChart) {
+    return { moon: 'Moon in favorable position' };
+  }
+  _interpretKeyAspects(horaryChart, question) {
+    return { aspects: 'Positive aspects dominate' };
+  }
+  _interpretTimingIndicators(horaryChart) {
+    return { timing: 'Timing indicators present' };
+  }
+  _checkImmediateIndicators(horaryChart) {
+    return { immediate: 'Some immediate indicators' };
+  }
+  _analyzeShortTermTiming(horaryChart) {
+    return { shortTerm: 'Short-term timing favorable' };
+  }
+  _analyzeLongTermTiming(horaryChart) {
+    return { longTerm: 'Long-term outlook positive' };
+  }
+  _calculatePlanetaryHours(horaryChart) {
+    return { hours: ['Favorable planetary hours'] };
+  }
+  _identifyFavorableDays(horaryChart) {
+    return { days: ['Favorable days identified'] };
+  }
+  _getApplyingAspects(horaryChart) {
+    return ['Applying aspect 1', 'Applying aspect 2'];
+  }
+  _getSeparatingAspects(horaryChart) {
+    return ['Separating aspect 1'];
+  }
+  _getMajorAspects(horaryChart) {
+    return ['Major aspect 1', 'Major aspect 2'];
+  }
+  _getMinorAspects(horaryChart) {
+    return ['Minor aspect 1'];
+  }
+  _identifyAspectPatterns(horaryChart) {
+    return { patterns: ['Aspect pattern identified'] };
+  }
+  _getDirectAnswer(horaryChart, question) {
+    return 'Yes, the outlook is favorable';
+  }
+  _calculateProbability(horaryChart, question) {
+    return 75;
+  }
+  _explainReasoning(horaryChart, question) {
+    return 'Based on favorable planetary positions';
+  }
+  _suggestAlternatives(horaryChart, question) {
+    return ['Alternative approach 1'];
+  }
+  _getImmediateRecommendations(horaryChart, question) {
+    return ['Immediate recommendation'];
+  }
+  _getShortTermRecommendations(horaryChart, question) {
+    return ['Short-term recommendation'];
+  }
+  _getLongTermRecommendations(horaryChart, question) {
+    return ['Long-term recommendation'];
+  }
+  _getPrecautions(horaryChart, question) {
+    return ['Precaution 1'];
+  }
+  _getSuggestedActions(horaryChart, question) {
+    return ['Action 1'];
+  }
+  _hasStrongSignificators(horaryChart, question) {
+    return true;
+  }
+  _hasClearAspects(horaryChart) {
+    return true;
+  }
+  _hasFavorableMoonPosition(horaryChart) {
+    return true;
+  }
 
   /**
    * Returns metadata for the service.
@@ -324,9 +428,17 @@ class HoraryReadingService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', '_getQuickHoraryAnswer', '_getRelationshipHoraryAnalysis', '_getCareerHoraryAnalysis', '_getFinancialHoraryAnalysis', '_validateHoraryChart'],
+      methods: [
+        'processCalculation',
+        '_getQuickHoraryAnswer',
+        '_getRelationshipHoraryAnalysis',
+        '_getCareerHoraryAnalysis',
+        '_getFinancialHoraryAnalysis',
+        '_validateHoraryChart'
+      ],
       dependencies: [], // Managed by ServiceTemplate
-      description: 'Specialized service for casting and interpreting horary charts.'
+      description:
+        'Specialized service for casting and interpreting horary charts.'
     };
   }
 

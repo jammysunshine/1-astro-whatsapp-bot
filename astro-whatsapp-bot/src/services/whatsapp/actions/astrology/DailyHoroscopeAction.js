@@ -1,6 +1,8 @@
 const AstrologyAction = require('../base/AstrologyAction');
 const generateAstrologyResponse = require('../../../services/astrology/astrologyEngine');
-const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const {
+  AstrologyFormatterFactory
+} = require('../factories/AstrologyFormatterFactory');
 
 /**
  * DailyHoroscopeAction - Generates and sends daily horoscope readings.
@@ -23,7 +25,10 @@ class DailyHoroscopeAction extends AstrologyAction {
       this.logAstrologyExecution('start', 'Generating daily horoscope');
 
       // Unified profile and limits validation from base class
-      const validation = await this.validateProfileAndLimits('Daily Horoscope', 'horoscope_daily');
+      const validation = await this.validateProfileAndLimits(
+        'Daily Horoscope',
+        'horoscope_daily'
+      );
       if (!validation.success) {
         return validation;
       }
@@ -35,10 +40,17 @@ class DailyHoroscopeAction extends AstrologyAction {
       }
 
       // Format and send using centralized factory and base class methods
-      const formattedContent = AstrologyFormatterFactory.formatHoroscope(horoscopeData);
-      await this.buildAstrologyResponse(formattedContent, this.getHoroscopeActionButtons());
+      const formattedContent =
+        AstrologyFormatterFactory.formatHoroscope(horoscopeData);
+      await this.buildAstrologyResponse(
+        formattedContent,
+        this.getHoroscopeActionButtons()
+      );
 
-      this.logAstrologyExecution('complete', 'Daily horoscope delivered successfully');
+      this.logAstrologyExecution(
+        'complete',
+        'Daily horoscope delivered successfully'
+      );
       return {
         success: true,
         type: 'horoscope',
@@ -47,7 +59,11 @@ class DailyHoroscopeAction extends AstrologyAction {
     } catch (error) {
       this.logger.error('Error in DailyHoroscopeAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -58,7 +74,10 @@ class DailyHoroscopeAction extends AstrologyAction {
   async generateHoroscope() {
     try {
       // Use the astrology engine to generate personalized daily horoscope
-      const rawResponse = await generateAstrologyResponse('daily horoscope', this.user);
+      const rawResponse = await generateAstrologyResponse(
+        'daily horoscope',
+        this.user
+      );
 
       if (typeof rawResponse === 'string' && rawResponse.length > 0) {
         return this.buildHoroscopeData(rawResponse);
@@ -67,7 +86,10 @@ class DailyHoroscopeAction extends AstrologyAction {
       // Fallback if astrology engine fails
       return this.generateFallbackData();
     } catch (error) {
-      this.logger.warn('Astrology engine failed, using fallback:', error.message);
+      this.logger.warn(
+        'Astrology engine failed, using fallback:',
+        error.message
+      );
       return this.generateFallbackData();
     }
   }
@@ -94,7 +116,8 @@ class DailyHoroscopeAction extends AstrologyAction {
     return {
       name: this.user?.name,
       date: new Date().toISOString(),
-      content: 'Today brings opportunities for growth and new experiences. Trust your instincts and stay open to the possibilities around you.',
+      content:
+        'Today brings opportunities for growth and new experiences. Trust your instincts and stay open to the possibilities around you.',
       guidance: 'Trust your intuition today and embrace change as growth.'
     };
   }
@@ -109,16 +132,29 @@ class DailyHoroscopeAction extends AstrologyAction {
     let enhanced = text;
 
     const emojiMap = {
-      lucky: '🍀', fortunate: '🍀', blessed: '🍀',
-      challenges: '⚠️', difficulties: '⚠️',
-      love: '💕', romance: '💕', relationship: '💕',
-      career: '💼', work: '💼', job: '💼',
-      money: '💰', wealth: '💰', finance: '💰',
-      health: '🏥', wellness: '🏥'
+      lucky: '🍀',
+      fortunate: '🍀',
+      blessed: '🍀',
+      challenges: '⚠️',
+      difficulties: '⚠️',
+      love: '💕',
+      romance: '💕',
+      relationship: '💕',
+      career: '💼',
+      work: '💼',
+      job: '💼',
+      money: '💰',
+      wealth: '💰',
+      finance: '💰',
+      health: '🏥',
+      wellness: '🏥'
     };
 
     Object.entries(emojiMap).forEach(([keyword, emoji]) => {
-      enhanced = enhanced.replace(new RegExp(`\\b${keyword}\\b`, 'gi'), `${emoji} $&`);
+      enhanced = enhanced.replace(
+        new RegExp(`\\b${keyword}\\b`, 'gi'),
+        `${emoji} $&`
+      );
     });
 
     return enhanced;

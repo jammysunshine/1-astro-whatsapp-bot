@@ -30,13 +30,22 @@ class NadiReader {
   calculateNadiReading(birthDate, birthTime, birthPlace) {
     try {
       // 1. Delegate calculations to math specialist
-      const reading = this.calculator.calculateNadiReading({ birthDate, birthTime, birthPlace });
+      const reading = this.calculator.calculateNadiReading({
+        birthDate,
+        birthTime,
+        birthPlace
+      });
 
       // 2. Add healing recommendations from remedy specialist
-      reading.remedies = this.remedies.generateCompleteRemedies(reading.birthNakshatra, reading.nadiSystem);
+      reading.remedies = this.remedies.generateCompleteRemedies(
+        reading.birthNakshatra,
+        reading.nadiSystem
+      );
 
       // 3. Add relationship insights from compatibility expert
-      reading.compatibility = this.compatibility.generateCompatibilityInsights(reading.birthNakshatra);
+      reading.compatibility = this.compatibility.generateCompatibilityInsights(
+        reading.birthNakshatra
+      );
 
       return reading;
     } catch (error) {
@@ -72,4 +81,5 @@ class NadiReader {
 
 // Export singleton instance for legacy compatibility
 module.exports = new NadiReader();
-module.exports.generateNadiReading = user => module.exports.generateNadiReading(user);
+module.exports.generateNadiReading = user =>
+  module.exports.generateNadiReading(user);

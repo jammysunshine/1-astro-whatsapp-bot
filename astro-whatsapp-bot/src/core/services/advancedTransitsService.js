@@ -7,7 +7,8 @@ class AdvancedTransitsService extends ServiceTemplate {
   constructor() {
     super('SignificantTransitsCalculator');
     this.serviceName = 'AdvancedTransitsService';
-    this.calculatorPath = '../../services/astrology/vedic/calculators/SignificantTransitsCalculator';
+    this.calculatorPath =
+      '../../services/astrology/vedic/calculators/SignificantTransitsCalculator';
     logger.info('AdvancedTransitsService initialized');
   }
 
@@ -21,7 +22,12 @@ class AdvancedTransitsService extends ServiceTemplate {
       const endDate = new Date();
       endDate.setMonth(endDate.getMonth() + 6);
 
-      const result = await this.calculator.calculateAdvancedTransits(birthData, startDate, endDate, {});
+      const result = await this.calculator.calculateAdvancedTransits(
+        birthData,
+        startDate,
+        endDate,
+        {}
+      );
 
       return result;
     } catch (error) {
@@ -42,7 +48,11 @@ class AdvancedTransitsService extends ServiceTemplate {
       const { birthData, date, options = {} } = params;
 
       // Calculate transit aspects
-      const result = await this.calculator.calculateTransitAspects(birthData, date, options);
+      const result = await this.calculator.calculateTransitAspects(
+        birthData,
+        date,
+        options
+      );
 
       return {
         success: true,
@@ -79,7 +89,12 @@ class AdvancedTransitsService extends ServiceTemplate {
       const { birthData, planet, year, options = {} } = params;
 
       // Calculate transit returns
-      const result = await this.calculator.calculateTransitReturns(birthData, planet, year, options);
+      const result = await this.calculator.calculateTransitReturns(
+        birthData,
+        planet,
+        year,
+        options
+      );
 
       return {
         success: true,
@@ -117,7 +132,12 @@ class AdvancedTransitsService extends ServiceTemplate {
       const { startDate, endDate, planets = [], options = {} } = params;
 
       // Calculate planetary stations
-      const result = await this.calculator.calculatePlanetaryStations(startDate, endDate, planets, options);
+      const result = await this.calculator.calculatePlanetaryStations(
+        startDate,
+        endDate,
+        planets,
+        options
+      );
 
       return {
         success: true,
@@ -155,7 +175,12 @@ class AdvancedTransitsService extends ServiceTemplate {
       const { birthData, startDate, endDate, options = {} } = params;
 
       // Calculate eclipse transits
-      const result = await this.calculator.calculateEclipseTransits(birthData, startDate, endDate, options);
+      const result = await this.calculator.calculateEclipseTransits(
+        birthData,
+        startDate,
+        endDate,
+        options
+      );
 
       return {
         success: true,
@@ -192,7 +217,12 @@ class AdvancedTransitsService extends ServiceTemplate {
       const { birthData1, birthData2, date, options = {} } = params;
 
       // Calculate composite transits
-      const result = await this.calculator.calculateCompositeTransits(birthData1, birthData2, date, options);
+      const result = await this.calculator.calculateCompositeTransits(
+        birthData1,
+        birthData2,
+        date,
+        options
+      );
 
       return {
         success: true,
@@ -246,7 +276,11 @@ class AdvancedTransitsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['calculateAdvancedTransits', 'calculateTransitAspects', 'calculateTransitReturns'],
+      methods: [
+        'calculateAdvancedTransits',
+        'calculateTransitAspects',
+        'calculateTransitReturns'
+      ],
       dependencies: ['TransitCalculator']
     };
   }

@@ -12,7 +12,8 @@ class FinancialAstrologyService extends ServiceTemplate {
   constructor() {
     super('FinancialAstrologyCalculator'); // Primary calculator for this service
     this.serviceName = 'FinancialAstrologyService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/FinancialAstrologyCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/FinancialAstrologyCalculator';
     logger.info('FinancialAstrologyService initialized');
   }
 
@@ -31,7 +32,8 @@ class FinancialAstrologyService extends ServiceTemplate {
       this._validateInput(birthData);
 
       // Get financial astrology analysis from calculator
-      const financialAnalysis = await this.calculator.calculateFinancialAstrologyAnalysis(birthData);
+      const financialAnalysis =
+        await this.calculator.calculateFinancialAstrologyAnalysis(birthData);
 
       // Add service metadata
       financialAnalysis.serviceMetadata = {
@@ -46,7 +48,10 @@ class FinancialAstrologyService extends ServiceTemplate {
 
       return financialAnalysis;
     } catch (error) {
-      logger.error('FinancialAstrologyService processCalculation error:', error);
+      logger.error(
+        'FinancialAstrologyService processCalculation error:',
+        error
+      );
       throw new Error(`Financial astrology analysis failed: ${error.message}`);
     }
   }
@@ -58,7 +63,9 @@ class FinancialAstrologyService extends ServiceTemplate {
    */
   _validateInput(birthData) {
     if (!birthData) {
-      throw new Error('Birth data is required for financial astrology analysis');
+      throw new Error(
+        'Birth data is required for financial astrology analysis'
+      );
     }
     const validatedData = new BirthData(birthData);
     validatedData.validate();
@@ -87,7 +94,13 @@ class FinancialAstrologyService extends ServiceTemplate {
         serviceName: this.serviceName,
         system: 'Financial Astrology',
         calculationMethod: 'Wealth planets, cycles, and strategies analysis',
-        elements: ['Wealth Planets', 'Financial Cycles', 'Wealth Houses', 'Risk Assessment', 'Prosperity Opportunities'],
+        elements: [
+          'Wealth Planets',
+          'Financial Cycles',
+          'Wealth Houses',
+          'Risk Assessment',
+          'Prosperity Opportunities'
+        ],
         tradition: 'Vedic financial astrology with planetary wealth analysis',
         timestamp: new Date().toISOString()
       }

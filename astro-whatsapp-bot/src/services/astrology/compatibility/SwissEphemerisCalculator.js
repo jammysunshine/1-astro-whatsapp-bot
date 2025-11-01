@@ -23,7 +23,9 @@ class SwissEphemerisCalculator {
         planets: this.calculatePlanetaryPositions(julianDay),
         houses: this.calculateHouseCusps(julianDay, person),
         ascendant: this.getAscendant(julianDay, person),
-        ascendantSign: this.longitudeToSign(this.getAscendant(julianDay, person)),
+        ascendantSign: this.longitudeToSign(
+          this.getAscendant(julianDay, person)
+        ),
         julianDay,
         birthData: person
       };
@@ -40,16 +42,23 @@ class SwissEphemerisCalculator {
    */
   calculateJulianDay(person) {
     // Parse birth date and time
-    const birthYear = person.birthDate.length === 6 ?
-      parseInt(`19${person.birthDate.substring(4)}`) :
-      parseInt(person.birthDate.substring(4));
+    const birthYear =
+      person.birthDate.length === 6 ?
+        parseInt(`19${person.birthDate.substring(4)}`) :
+        parseInt(person.birthDate.substring(4));
     const birthMonth = parseInt(person.birthDate.substring(2, 4)) - 1;
     const birthDay = parseInt(person.birthDate.substring(0, 2));
-    const birthHour = person.birthTime ? parseInt(person.birthTime.substring(0, 2)) : 12;
-    const birthMinute = person.birthTime ? parseInt(person.birthTime.substring(2, 4)) : 0;
+    const birthHour = person.birthTime ?
+      parseInt(person.birthTime.substring(0, 2)) :
+      12;
+    const birthMinute = person.birthTime ?
+      parseInt(person.birthTime.substring(2, 4)) :
+      0;
 
     // Convert to Julian Day
-    const utcTime = new Date(Date.UTC(birthYear, birthMonth, birthDay, birthHour, birthMinute));
+    const utcTime = new Date(
+      Date.UTC(birthYear, birthMonth, birthDay, birthHour, birthMinute)
+    );
     return utcTime.getTime() / 86400000 + 2440587.5;
   }
 
@@ -72,7 +81,11 @@ class SwissEphemerisCalculator {
 
     for (const planet of planetIds) {
       try {
-        const result = sweph.swe_calc_ut(julianDay, planet.ephem, sweph.SEFLG_SPEED | sweph.SEFLG_SWIEPH);
+        const result = sweph.swe_calc_ut(
+          julianDay,
+          planet.ephem,
+          sweph.SEFLG_SPEED | sweph.SEFLG_SWIEPH
+        );
         if (result.rc >= 0) {
           planets[planet.name] = {
             longitude: result.longitude[0],
@@ -84,7 +97,10 @@ class SwissEphemerisCalculator {
           };
         }
       } catch (error) {
-        this.logger.warn(`Error calculating ${planet.name} position:`, error.message);
+        this.logger.warn(
+          `Error calculating ${planet.name} position:`,
+          error.message
+        );
       }
     }
 
@@ -99,7 +115,7 @@ class SwissEphemerisCalculator {
    */
   calculateHouseCusps(julianDay, person) {
     const defaultLat = 28.6139; // Default Delhi latitude
-    const defaultLng = 77.2090; // Default Delhi longitude
+    const defaultLng = 77.209; // Default Delhi longitude
     const lat = person.latitude || defaultLat;
     const lng = person.longitude || defaultLng;
 
@@ -125,7 +141,7 @@ class SwissEphemerisCalculator {
    */
   getAscendant(julianDay, person) {
     const defaultLat = 28.6139;
-    const defaultLng = 77.2090;
+    const defaultLng = 77.209;
     const lat = person.latitude || defaultLat;
     const lng = person.longitude || defaultLng;
 
@@ -141,8 +157,20 @@ class SwissEphemerisCalculator {
    * @returns {string} Zodiac sign
    */
   longitudeToSign(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs[Math.floor(longitude / 30) % 12];
   }
 
@@ -153,7 +181,7 @@ class SwissEphemerisCalculator {
    * @returns {number} House number (1-12)
    */
   longitudeToHouse(longitude, ascendant) {
-    const normalized = ((longitude - ascendant + 360) % 360);
+    const normalized = (longitude - ascendant + 360) % 360;
     return Math.floor(normalized / 30) + 1;
   }
 
@@ -187,7 +215,7 @@ class SwissEphemerisCalculator {
           aspect: angleNum,
           aspectName: name,
           orb: diff - angleNum,
-          exactness: 100 - (Math.abs(diff - angleNum) / orb * 100)
+          exactness: 100 - (Math.abs(diff - angleNum) / orb) * 100
         };
       }
     }

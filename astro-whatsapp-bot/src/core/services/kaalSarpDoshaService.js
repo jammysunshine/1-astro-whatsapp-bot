@@ -29,7 +29,8 @@ class KaalSarpDoshaService extends ServiceTemplate {
       this._validateInput(birthData);
 
       // Generate Kaal Sarp Dosha analysis
-      const kaalSarpAnalysis = await this.calculator.generateKaalSarpDosha(birthData);
+      const kaalSarpAnalysis =
+        await this.calculator.generateKaalSarpDosha(birthData);
 
       // Add service metadata
       kaalSarpAnalysis.serviceMetadata = {
@@ -67,8 +68,16 @@ class KaalSarpDoshaService extends ServiceTemplate {
       summary: result.summary || 'Kaal Sarp Dosha analysis completed',
       metadata: {
         system: 'Kaal Sarp Dosha Analysis',
-        calculationMethod: 'Vedic planetary positioning with Rahu-Ketu axis analysis',
-        elements: ['Dosha Presence', 'Type Analysis', 'Strength Assessment', 'Effects', 'Remedies', 'Exceptions'],
+        calculationMethod:
+          'Vedic planetary positioning with Rahu-Ketu axis analysis',
+        elements: [
+          'Dosha Presence',
+          'Type Analysis',
+          'Strength Assessment',
+          'Effects',
+          'Remedies',
+          'Exceptions'
+        ],
         tradition: 'Vedic Hindu astrology with Kaal Sarp Dosha principles'
       }
     };

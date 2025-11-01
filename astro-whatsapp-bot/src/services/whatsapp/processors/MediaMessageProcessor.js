@@ -26,7 +26,9 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       const { type } = message;
       const media = message[type]; // Get media object
 
-      this.logger.info(`📸 Processing ${type} media message from ${phoneNumber}`);
+      this.logger.info(
+        `📸 Processing ${type} media message from ${phoneNumber}`
+      );
 
       // Validate message structure
       if (!ValidationService.validateMessage(message, phoneNumber)) {
@@ -58,7 +60,10 @@ class MediaMessageProcessor extends BaseMessageProcessor {
         await this.sendUnsupportedMediaTypeResponse(phoneNumber, type);
       }
     } catch (error) {
-      this.logger.error(`❌ Error processing media message from ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error processing media message from ${phoneNumber}:`,
+        error
+      );
       await this.handleProcessingError(phoneNumber, error);
     }
   }
@@ -73,7 +78,9 @@ class MediaMessageProcessor extends BaseMessageProcessor {
     try {
       const { id, caption, mime_type } = image;
 
-      this.logger.info(`🖼️ Processing image from ${phoneNumber}: ${id} (${mime_type})`);
+      this.logger.info(
+        `🖼️ Processing image from ${phoneNumber}: ${id} (${mime_type})`
+      );
 
       // Check if this is a palmistry request
       if (this.isPalmistryRequest(caption)) {
@@ -111,15 +118,19 @@ class MediaMessageProcessor extends BaseMessageProcessor {
     try {
       const { id, caption, mime_type } = video;
 
-      this.logger.info(`🎥 Processing video from ${phoneNumber}: ${id} (${mime_type})`);
+      this.logger.info(
+        `🎥 Processing video from ${phoneNumber}: ${id} (${mime_type})`
+      );
 
       // Videos are less common, send acknowledgment
       const userLanguage = user.preferredLanguage || 'en';
-      const message = translationService.translate(
-        'messages.media.video_received',
-        userLanguage,
-        { id }
-      ) || `Thank you for sharing a video (${id}). Video analysis is not yet available.`;
+      const message =
+        translationService.translate(
+          'messages.media.video_received',
+          userLanguage,
+          { id }
+        ) ||
+        `Thank you for sharing a video (${id}). Video analysis is not yet available.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
     } catch (error) {
@@ -138,15 +149,19 @@ class MediaMessageProcessor extends BaseMessageProcessor {
     try {
       const { id, caption, mime_type } = audio;
 
-      this.logger.info(`🔊 Processing audio from ${phoneNumber}: ${id} (${mime_type})`);
+      this.logger.info(
+        `🔊 Processing audio from ${phoneNumber}: ${id} (${mime_type})`
+      );
 
       // Audio messages for voice readings or dictation
       const userLanguage = user.preferredLanguage || 'en';
-      const message = translationService.translate(
-        'messages.media.audio_received',
-        userLanguage,
-        { id }
-      ) || `Thank you for sharing an audio message (${id}). Voice analysis is not yet available.`;
+      const message =
+        translationService.translate(
+          'messages.media.audio_received',
+          userLanguage,
+          { id }
+        ) ||
+        `Thank you for sharing an audio message (${id}). Voice analysis is not yet available.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
     } catch (error) {
@@ -165,7 +180,9 @@ class MediaMessageProcessor extends BaseMessageProcessor {
     try {
       const { id, caption, filename, mime_type } = document;
 
-      this.logger.info(`📄 Processing document from ${phoneNumber}: ${filename || id} (${mime_type})`);
+      this.logger.info(
+        `📄 Processing document from ${phoneNumber}: ${filename || id} (${mime_type})`
+      );
 
       // Check if this is a chart or data file
       if (this.isChartFile(mime_type, filename)) {
@@ -175,11 +192,13 @@ class MediaMessageProcessor extends BaseMessageProcessor {
 
       // Generic document acknowledgment
       const userLanguage = user.preferredLanguage || 'en';
-      const message = translationService.translate(
-        'messages.media.document_received',
-        userLanguage,
-        { filename: filename || id }
-      ) || `Thank you for sharing a document (${filename || id}). Document analysis is not yet available.`;
+      const message =
+        translationService.translate(
+          'messages.media.document_received',
+          userLanguage,
+          { filename: filename || id }
+        ) ||
+        `Thank you for sharing a document (${filename || id}). Document analysis is not yet available.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
     } catch (error) {
@@ -197,9 +216,13 @@ class MediaMessageProcessor extends BaseMessageProcessor {
   async handlePalmistryRequest(image, user, phoneNumber) {
     try {
       // Validate user profile
-      if (!(await ValidationService.validateUserProfile(
-        user, phoneNumber, 'Palmistry Analysis'
-      ))) {
+      if (
+        !(await ValidationService.validateUserProfile(
+          user,
+          phoneNumber,
+          'Palmistry Analysis'
+        ))
+      ) {
         return;
       }
 
@@ -211,11 +234,13 @@ class MediaMessageProcessor extends BaseMessageProcessor {
       const userLanguage = user.preferredLanguage || 'en';
 
       // For now, provide a placeholder response
-      const palmistryMessage = translationService.translate(
-        'messages.palmistry.image_received',
-        userLanguage,
-        { id: image.id }
-      ) || `✋ Thank you for sharing your palm image! Palmistry analysis for image ${image.id} is being prepared.\n\nThis ancient art reveals insights about:\n• Life purpose and destiny\n• Health indicators\n• Relationship patterns\n• Career tendencies\n\nYour personalized palm reading will be available soon!`;
+      const palmistryMessage =
+        translationService.translate(
+          'messages.palmistry.image_received',
+          userLanguage,
+          { id: image.id }
+        ) ||
+        `✋ Thank you for sharing your palm image! Palmistry analysis for image ${image.id} is being prepared.\n\nThis ancient art reveals insights about:\n• Life purpose and destiny\n• Health indicators\n• Relationship patterns\n• Career tendencies\n\nYour personalized palm reading will be available soon!`;
 
       await this.sendAcknowledgment(phoneNumber, palmistryMessage);
     } catch (error) {
@@ -233,11 +258,13 @@ class MediaMessageProcessor extends BaseMessageProcessor {
   async handleKundliRequest(image, user, phoneNumber) {
     try {
       const userLanguage = user.preferredLanguage || 'en';
-      const message = translationService.translate(
-        'messages.chart.image_received',
-        userLanguage,
-        { id: image.id }
-      ) || `🕉️ Thank you for sharing your birth chart image (${image.id}). Visual chart analysis is not yet available.\n\nFor textual birth chart readings, please use the "Birth Chart" option from the main menu.`;
+      const message =
+        translationService.translate(
+          'messages.chart.image_received',
+          userLanguage,
+          { id: image.id }
+        ) ||
+        `🕉️ Thank you for sharing your birth chart image (${image.id}). Visual chart analysis is not yet available.\n\nFor textual birth chart readings, please use the "Birth Chart" option from the main menu.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
     } catch (error) {
@@ -255,11 +282,13 @@ class MediaMessageProcessor extends BaseMessageProcessor {
   async handlePhotoReadingRequest(image, user, phoneNumber) {
     try {
       const userLanguage = user.preferredLanguage || 'en';
-      const message = translationService.translate(
-        'messages.photo_reading.received',
-        userLanguage,
-        { id: image.id }
-      ) || `🔮 Thank you for sharing your photo (${image.id}). Photo analysis and aura reading services are not yet available.\n\nFor other divination methods, please try Tarot, I Ching, or Palmistry from the main menu.`;
+      const message =
+        translationService.translate(
+          'messages.photo_reading.received',
+          userLanguage,
+          { id: image.id }
+        ) ||
+        `🔮 Thank you for sharing your photo (${image.id}). Photo analysis and aura reading services are not yet available.\n\nFor other divination methods, please try Tarot, I Ching, or Palmistry from the main menu.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
     } catch (error) {
@@ -277,11 +306,13 @@ class MediaMessageProcessor extends BaseMessageProcessor {
   async handleChartFileUpload(document, user, phoneNumber) {
     try {
       const userLanguage = user.preferredLanguage || 'en';
-      const message = translationService.translate(
-        'messages.chart_file.received',
-        userLanguage,
-        { filename: document.filename }
-      ) || `📊 Thank you for uploading your chart file (${document.filename}). Chart file analysis is not yet available.\n\nPlease use our built-in birth chart generator for personalized readings.`;
+      const message =
+        translationService.translate(
+          'messages.chart_file.received',
+          userLanguage,
+          { filename: document.filename }
+        ) ||
+        `📊 Thank you for uploading your chart file (${document.filename}). Chart file analysis is not yet available.\n\nPlease use our built-in birth chart generator for personalized readings.`;
 
       await this.sendAcknowledgment(phoneNumber, message);
     } catch (error) {
@@ -296,8 +327,16 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    * @returns {boolean} True if palmistry request
    */
   isPalmistryRequest(caption) {
-    if (!caption) { return false; }
-    const palmistryKeywords = ['palm', 'hand', 'palmistry', 'palm reading', 'hand reading'];
+    if (!caption) {
+      return false;
+    }
+    const palmistryKeywords = [
+      'palm',
+      'hand',
+      'palmistry',
+      'palm reading',
+      'hand reading'
+    ];
     const lowerCaption = caption.toLowerCase();
     return palmistryKeywords.some(keyword => lowerCaption.includes(keyword));
   }
@@ -308,8 +347,16 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    * @returns {boolean} True if kundli request
    */
   isKundliRequest(caption) {
-    if (!caption) { return false; }
-    const kundliKeywords = ['kundli', 'chart', 'birth chart', 'natal chart', 'horoscope'];
+    if (!caption) {
+      return false;
+    }
+    const kundliKeywords = [
+      'kundli',
+      'chart',
+      'birth chart',
+      'natal chart',
+      'horoscope'
+    ];
     const lowerCaption = caption.toLowerCase();
     return kundliKeywords.some(keyword => lowerCaption.includes(keyword));
   }
@@ -320,8 +367,16 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    * @returns {boolean} True if photo reading request
    */
   isPhotoReadingRequest(caption) {
-    if (!caption) { return false; }
-    const photoKeywords = ['photo reading', 'photo analysis', 'aura', 'energy', 'vibe'];
+    if (!caption) {
+      return false;
+    }
+    const photoKeywords = [
+      'photo reading',
+      'photo analysis',
+      'aura',
+      'energy',
+      'vibe'
+    ];
     const lowerCaption = caption.toLowerCase();
     return photoKeywords.some(keyword => lowerCaption.includes(keyword));
   }
@@ -333,7 +388,9 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    * @returns {boolean} True if chart file
    */
   isChartFile(mimeType, filename) {
-    if (!mimeType && !filename) { return false; }
+    if (!mimeType && !filename) {
+      return false;
+    }
 
     const chartExtensions = ['.pdf', '.png', '.jpg', '.jpeg', '.svg'];
     const chartMimes = ['application/pdf', 'image/png', 'image/jpeg'];
@@ -341,8 +398,10 @@ class MediaMessageProcessor extends BaseMessageProcessor {
     const fileName = filename || '';
     const mime = mimeType || '';
 
-    return chartExtensions.some(ext => fileName.toLowerCase().endsWith(ext)) ||
-           chartMimes.includes(mime);
+    return (
+      chartExtensions.some(ext => fileName.toLowerCase().endsWith(ext)) ||
+      chartMimes.includes(mime)
+    );
   }
 
   /**
@@ -352,10 +411,11 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    */
   async sendImageAcknowledgment(phoneNumber, status) {
     const userLanguage = 'en'; // Default for error messages
-    const message = translationService.translate(
-      `messages.media.image_${status}`,
-      userLanguage
-    ) || `Thank you for sharing an image. Status: ${status}`;
+    const message =
+      translationService.translate(
+        `messages.media.image_${status}`,
+        userLanguage
+      ) || `Thank you for sharing an image. Status: ${status}`;
 
     await this.sendAcknowledgment(phoneNumber, message);
   }
@@ -367,11 +427,13 @@ class MediaMessageProcessor extends BaseMessageProcessor {
    */
   async sendUnsupportedMediaTypeResponse(phoneNumber, mediaType) {
     const userLanguage = 'en';
-    const message = translationService.translate(
-      'messages.media.unsupported_type',
-      userLanguage,
-      { type: mediaType }
-    ) || `Sorry, ${mediaType} files are not yet supported. Please send text messages or use the main menu options.`;
+    const message =
+      translationService.translate(
+        'messages.media.unsupported_type',
+        userLanguage,
+        { type: mediaType }
+      ) ||
+      `Sorry, ${mediaType} files are not yet supported. Please send text messages or use the main menu options.`;
 
     await this.sendAcknowledgment(phoneNumber, message);
   }

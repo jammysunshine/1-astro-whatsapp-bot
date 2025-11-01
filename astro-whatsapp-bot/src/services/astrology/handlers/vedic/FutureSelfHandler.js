@@ -3,10 +3,17 @@
  * Handles evolutionary potential and future self analysis
  */
 const logger = require('../../../../utils/logger');
-const { DashaAnalysisCalculator } = require('../../vedic/calculators/DashaAnalysisCalculator');
+const {
+  DashaAnalysisCalculator
+} = require('../../vedic/calculators/DashaAnalysisCalculator');
 
 const handleFutureSelf = async(message, user) => {
-  if (!message.includes('future') && !message.includes('self') && !message.includes('potential') && !message.includes('evolution')) {
+  if (
+    !message.includes('future') &&
+    !message.includes('self') &&
+    !message.includes('potential') &&
+    !message.includes('evolution')
+  ) {
     return null;
   }
 
@@ -18,7 +25,9 @@ const handleFutureSelf = async(message, user) => {
     const dashaCalculator = new DashaAnalysisCalculator();
     // Set services if available
     if (global.vedicCore?.geocodingService) {
-      dashaCalculator.setServices({ geocodingService: global.vedicCore.geocodingService });
+      dashaCalculator.setServices({
+        geocodingService: global.vedicCore.geocodingService
+      });
     }
 
     const birthData = {

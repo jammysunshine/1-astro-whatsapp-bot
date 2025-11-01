@@ -10,7 +10,8 @@ class AntardashaService extends ServiceTemplate {
   constructor() {
     super('AntardashaCalculator');
     this.serviceName = 'AntardashaService';
-    this.calculatorPath = '../services/astrology/vedic/calculators/AntardashaCalculator';
+    this.calculatorPath =
+      '../services/astrology/vedic/calculators/AntardashaCalculator';
     logger.info('AntardashaService initialized');
   }
 
@@ -36,7 +37,10 @@ class AntardashaService extends ServiceTemplate {
       const { birthData, options = {} } = params;
 
       // Get Antardasha analysis from calculator
-      const antardashaData = await this.calculator.getAntardashaAnalysis(birthData, options);
+      const antardashaData = await this.calculator.getAntardashaAnalysis(
+        birthData,
+        options
+      );
 
       // Add metadata
       antardashaData.type = 'antardasha';

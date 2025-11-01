@@ -6,7 +6,9 @@ class ServiceTemplate extends AstroServiceInterface {
     super();
     this.calculatorName = calculatorName; // Store the calculator name
     this.calculator = null; // Will be loaded dynamically
-    logger.info(`Service ${this.constructor.name} initialized with calculator: ${calculatorName}`);
+    logger.info(
+      `Service ${this.constructor.name} initialized with calculator: ${calculatorName}`
+    );
   }
 
   async initialize() {
@@ -15,10 +17,17 @@ class ServiceTemplate extends AstroServiceInterface {
         // Dynamically import the calculator module
         const CalculatorModule = require(this.calculatorPath);
         // Get the calculator - try default export, then named export matching the name, then module itself
-        const rawCalculator = CalculatorModule.default || CalculatorModule[this.calculatorName] || CalculatorModule;
+        const rawCalculator =
+          CalculatorModule.default ||
+          CalculatorModule[this.calculatorName] ||
+          CalculatorModule;
 
         // Check if rawCalculator is a constructor function (class) and needs instantiation
-        if (typeof rawCalculator === 'function' && rawCalculator.prototype && rawCalculator.prototype.constructor) {
+        if (
+          typeof rawCalculator === 'function' &&
+          rawCalculator.prototype &&
+          rawCalculator.prototype.constructor
+        ) {
           // This is a class constructor - we need to handle instantiation
           // For now, we'll try to instantiate with no arguments, which might fail for complex calculators
           // A more robust solution would require dependency injection, but for now we try basic instantiation
@@ -28,22 +37,34 @@ class ServiceTemplate extends AstroServiceInterface {
             // If instantiation fails (likely due to required constructor parameters),
             // store the class constructor for the service to handle its own instantiation if needed
             this.calculator = rawCalculator;
-            logger.warn(`Calculator ${this.calculatorName} is a class that requires constructor parameters. Stored as constructor:`, instantiationError.message);
+            logger.warn(
+              `Calculator ${this.calculatorName} is a class that requires constructor parameters. Stored as constructor:`,
+              instantiationError.message
+            );
           }
         } else {
           // This is likely an already instantiated object or static methods container
           this.calculator = rawCalculator;
         }
 
-        logger.info(`Calculator ${this.calculatorName} loaded for ${this.constructor.name}`);
+        logger.info(
+          `Calculator ${this.calculatorName} loaded for ${this.constructor.name}`
+        );
       } catch (error) {
-        logger.error(`Failed to load calculator ${this.calculatorName} from ${this.calculatorPath}:`, error);
+        logger.error(
+          `Failed to load calculator ${this.calculatorName} from ${this.calculatorPath}:`,
+          error
+        );
         throw new Error(`Failed to load calculator: ${this.calculatorName}`);
       }
     } else if (this.calculatorName) {
-      logger.warn(`Calculator path not defined for ${this.constructor.name}. Calculator ${this.calculatorName} will not be loaded.`);
+      logger.warn(
+        `Calculator path not defined for ${this.constructor.name}. Calculator ${this.calculatorName} will not be loaded.`
+      );
     } else {
-      logger.info(`No specific calculator defined for ${this.constructor.name}.`);
+      logger.info(
+        `No specific calculator defined for ${this.constructor.name}.`
+      );
     }
   }
 
@@ -110,7 +131,10 @@ class ServiceTemplate extends AstroServiceInterface {
       };
 
       // Check calculator health if loaded
-      if (this.calculator && typeof this.calculator.getHealthStatus === 'function') {
+      if (
+        this.calculator &&
+        typeof this.calculator.getHealthStatus === 'function'
+      ) {
         const calculatorHealth = await this.calculator.getHealthStatus();
         health.calculatorStatus = calculatorHealth;
       } else if (this.calculatorName) {

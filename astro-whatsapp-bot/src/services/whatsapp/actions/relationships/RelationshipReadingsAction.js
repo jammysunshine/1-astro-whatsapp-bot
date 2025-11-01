@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class RelationshipReadingsAction extends BaseAction {
-  static get actionId() { return 'start_family_astrology_flow'; }
+  static get actionId() {
+    return 'start_family_astrology_flow';
+  }
 
   async execute() {
     try {
@@ -21,7 +23,8 @@ class RelationshipReadingsAction extends BaseAction {
   }
 
   async sendRelationshipReadings() {
-    const analysis = '👪 *Family & Relationship Astrology*\n\n' +
+    const analysis =
+      '👪 *Family & Relationship Astrology*\n\n' +
       'Discover the cosmic bonds that connect families and loved ones through astrological synastry and composite charts.\n\n' +
       '*❤️ RELATIONSHIP ASTROLOGY COVERS:*\n' +
       '• **Composite Charts** - Your relationship as an entity\n' +
@@ -52,7 +55,10 @@ class RelationshipReadingsAction extends BaseAction {
     ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -62,7 +68,13 @@ class RelationshipReadingsAction extends BaseAction {
     return {
       id: this.actionId,
       description: 'Analyze family and relationship astrology patterns',
-      keywords: ['family', 'relationships', 'family astrology', 'relationships', 'synastry'],
+      keywords: [
+        'family',
+        'relationships',
+        'family astrology',
+        'relationships',
+        'synastry'
+      ],
       category: 'relationships',
       subscriptionRequired: true,
       cooldown: 7200000

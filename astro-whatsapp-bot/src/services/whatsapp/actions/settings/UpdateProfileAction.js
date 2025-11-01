@@ -1,6 +1,10 @@
 const BaseAction = require('../BaseAction');
 const { sendMessage } = require('../../messageSender');
-const { getUserByPhone, addBirthDetails, updateUserProfile } = require('../../../models/userModel');
+const {
+  getUserByPhone,
+  addBirthDetails,
+  updateUserProfile
+} = require('../../../models/userModel');
 const translationService = require('../../../services/i18n/TranslationService');
 
 /**
@@ -40,7 +44,11 @@ class UpdateProfileAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in UpdateProfileAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -62,10 +70,12 @@ class UpdateProfileAction extends BaseAction {
         body: '📝 *Select what to update:*',
         action: {
           button: 'Choose Update Option',
-          sections: [{
-            title: 'Profile Update Options',
-            rows: options.rows
-          }]
+          sections: [
+            {
+              title: 'Profile Update Options',
+              rows: options.rows
+            }
+          ]
         }
       }
     };
@@ -75,7 +85,8 @@ class UpdateProfileAction extends BaseAction {
     // Add helpful instruction
     setTimeout(async() => {
       try {
-        const hintMessage = '💡 *Tip:* Choose "Update Birth Details" for complete astrology readings. This is the most requested update!';
+        const hintMessage =
+          '💡 *Tip:* Choose "Update Birth Details" for complete astrology readings. This is the most requested update!';
         await sendMessage(this.phoneNumber, hintMessage, 'text');
       } catch (error) {
         this.logger.error('Error sending hint:', error);
@@ -128,9 +139,11 @@ class UpdateProfileAction extends BaseAction {
       });
     });
 
-    const message = `📋 *UPDATE YOUR COSMIC PROFILE*\n\n${user.profileComplete ?
-      '✅ Your profile is complete! Make targeted updates below:' :
-      '⚠️ Your profile needs birth details for full astrology analysis. Start with "Update Birth Details".'}\n
+    const message = `📋 *UPDATE YOUR COSMIC PROFILE*\n\n${
+      user.profileComplete ?
+        '✅ Your profile is complete! Make targeted updates below:' :
+        '⚠️ Your profile needs birth details for full astrology analysis. Start with "Update Birth Details".'
+    }\n
 🌟 Current Status:
 • Birth Info: ${user.birthDate ? 'Set' : 'Missing'}
 • Profile Complete: ${user.profileComplete ? 'Yes ✅' : 'No ⚠️'}
@@ -176,7 +189,8 @@ Choose what to update:`;
    * Handle name update flow
    */
   async handleNameUpdate() {
-    const promptMessage = '📝 *Update Your Name*\n\nPlease reply with your preferred name for your cosmic profile:';
+    const promptMessage =
+      '📝 *Update Your Name*\n\nPlease reply with your preferred name for your cosmic profile:';
     await sendMessage(this.phoneNumber, promptMessage, 'text');
 
     // Set user session to expect name update
@@ -191,10 +205,11 @@ Choose what to update:`;
 
     const flowMessage = `🎂 *Update Birth Details*
 
-${currentUser.birthDate ?
+${
+  currentUser.birthDate ?
     `📅 Current birth date: ${this.formatBirthDate(currentUser.birthDate)}\n` +
-  `${currentUser.birthTime ? `⏰ Current time: ${this.formatBirthTime(currentUser.birthTime)}\n` : ''}` +
-  `${currentUser.birthPlace ? `📍 Current place: ${currentUser.birthPlace}\n\n` : '\n'}` :
+      `${currentUser.birthTime ? `⏰ Current time: ${this.formatBirthTime(currentUser.birthTime)}\n` : ''}` +
+      `${currentUser.birthPlace ? `📍 Current place: ${currentUser.birthPlace}\n\n` : '\n'}` :
     '👋 Welcome! For accurate astrology readings, we need your birth details.\n\n'
 }
 
@@ -223,7 +238,10 @@ ${this.getBirthDetailsInstructions()}`;
    */
   async processBirthDetailsUpdate(birthData) {
     try {
-      this.logger.info(`Processing birth details update for ${this.phoneNumber}:`, birthData);
+      this.logger.info(
+        `Processing birth details update for ${this.phoneNumber}:`,
+        birthData
+      );
 
       // REUSE existing addBirthDetails function from userModel
       const updatedUser = await addBirthDetails(
@@ -241,9 +259,11 @@ ${this.getBirthDetailsInstructions()}`;
 • Time: ${birthData.birthTime ? this.formatBirthTime(birthData.birthTime) : 'Not specified'}
 • Place: ${birthData.birthPlace}
 
-${updatedUser.profileComplete ?
+${
+  updatedUser.profileComplete ?
     '✅ Your profile is now complete! You can access all astrology services.' :
-    '⚠️ Profile still incomplete. Add birth place for full analysis.'}
+    '⚠️ Profile still incomplete. Add birth place for full analysis.'
+}
 
 🌟 Ready for comprehensive astrology readings!`;
       await sendMessage(this.phoneNumber, successMessage, 'text');
@@ -297,7 +317,8 @@ ${updatedUser.profileComplete ?
    * Send language update instructions
    */
   async sendLanguageUpdateInstructions() {
-    const langMessage = '🌐 *Language Update*\n\nTo change your preferred language:\n\n1. Go to Settings → Language menu\n2. Select from 28 available languages\n3. Your preference will be saved automatically\n\nOr type "language" to access the language menu directly.';
+    const langMessage =
+      '🌐 *Language Update*\n\nTo change your preferred language:\n\n1. Go to Settings → Language menu\n2. Select from 28 available languages\n3. Your preference will be saved automatically\n\nOr type "language" to access the language menu directly.';
     await sendMessage(this.phoneNumber, langMessage, 'text');
   }
 
@@ -305,7 +326,8 @@ ${updatedUser.profileComplete ?
    * Send preferences update instructions
    */
   async sendPreferencesUpdateInstructions() {
-    const prefMessage = '⚙️ *Preferences*\n\nMost preferences are handled through our Settings menu. Let us know what specific preference you\'d like to update:\n\n• Astrology reading depth\n• Notification settings\n• Chart display preferences\n• Default language\n\nReply with what you want to change or use the main Settings menu.';
+    const prefMessage =
+      '⚙️ *Preferences*\n\nMost preferences are handled through our Settings menu. Let us know what specific preference you\'d like to update:\n\n• Astrology reading depth\n• Notification settings\n• Chart display preferences\n• Default language\n\nReply with what you want to change or use the main Settings menu.';
     await sendMessage(this.phoneNumber, prefMessage, 'text');
   }
 
@@ -313,7 +335,8 @@ ${updatedUser.profileComplete ?
    * Send invalid update error
    */
   async sendInvalidUpdateError() {
-    const errorMessage = '❌ Invalid update option. Please use the Settings menu to select a valid update choice.';
+    const errorMessage =
+      '❌ Invalid update option. Please use the Settings menu to select a valid update choice.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -379,9 +402,18 @@ ${updatedUser.profileComplete ?
    */
   getLanguageDisplay(languageCode) {
     const languages = {
-      en: 'English', hi: 'Hindi', ar: 'Arabic', es: 'Spanish',
-      fr: 'French', bn: 'Bengali', ur: 'Urdu', pt: 'Portuguese',
-      ru: 'Russian', de: 'German', it: 'Italian', th: 'Thai'
+      en: 'English',
+      hi: 'Hindi',
+      ar: 'Arabic',
+      es: 'Spanish',
+      fr: 'French',
+      bn: 'Bengali',
+      ur: 'Urdu',
+      pt: 'Portuguese',
+      ru: 'Russian',
+      de: 'German',
+      it: 'Italian',
+      th: 'Thai'
     };
     return languages[languageCode] || languageCode || 'English';
   }
@@ -394,7 +426,9 @@ ${updatedUser.profileComplete ?
     try {
       // This would update session to expect next input
       // Implementation depends on existing session management
-      this.logger.info(`Set session expectation: ${expectation} for ${this.phoneNumber}`);
+      this.logger.info(
+        `Set session expectation: ${expectation} for ${this.phoneNumber}`
+      );
     } catch (error) {
       this.logger.error('Error setting session expectation:', error);
     }
@@ -415,7 +449,8 @@ ${updatedUser.profileComplete ?
    * Send error for user not found
    */
   async sendUserNotFoundError() {
-    const errorMessage = '❌ Unable to find your profile. Please restart or contact support.';
+    const errorMessage =
+      '❌ Unable to find your profile. Please restart or contact support.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -423,7 +458,8 @@ ${updatedUser.profileComplete ?
    * Send birth details update error
    */
   async sendBirthDetailsError() {
-    const errorMessage = '❌ Error updating birth details. Please ensure date format is correct (DDMMYY) and try again.';
+    const errorMessage =
+      '❌ Error updating birth details. Please ensure date format is correct (DDMMYY) and try again.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -431,7 +467,8 @@ ${updatedUser.profileComplete ?
    * Send name update error
    */
   async sendNameUpdateError() {
-    const errorMessage = '❌ Error updating name. Please ensure name is 1-50 characters and try again.';
+    const errorMessage =
+      '❌ Error updating name. Please ensure name is 1-50 characters and try again.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -449,7 +486,8 @@ ${updatedUser.profileComplete ?
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, there was an error updating your profile. Please try again.';
+    const errorMessage =
+      '❌ Sorry, there was an error updating your profile. Please try again.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 }

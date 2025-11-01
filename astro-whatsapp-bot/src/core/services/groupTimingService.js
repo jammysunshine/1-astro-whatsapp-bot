@@ -1,4 +1,5 @@
 /**
+const ServiceTemplate = require('./ServiceTemplate');
  * Group Timing Service
  *
  * Provides comprehensive group timing analysis for events involving multiple people,
@@ -44,19 +45,35 @@ class GroupTimingService extends ServiceTemplate {
    */
   async getGroupTimingAnalysis(groupData) {
     try {
-      const { groupMembers, eventType, eventDate, eventLocation, analysisType } = groupData;
+      const {
+        groupMembers,
+        eventType,
+        eventDate,
+        eventLocation,
+        analysisType
+      } = groupData;
 
       // Analyze individual group member charts
       const memberAnalyses = await this._analyzeGroupMembers(groupMembers);
 
       // Calculate group compatibility and harmony
-      const groupCompatibility = await this._calculateGroupCompatibility(groupMembers);
+      const groupCompatibility =
+        await this._calculateGroupCompatibility(groupMembers);
 
       // Find optimal timing for the group event
-      const optimalTiming = await this._findOptimalGroupTiming(eventDate, eventLocation, eventType, groupCompatibility);
+      const optimalTiming = await this._findOptimalGroupTiming(
+        eventDate,
+        eventLocation,
+        eventType,
+        groupCompatibility
+      );
 
       // Analyze event-specific timing considerations
-      const eventTiming = await this._analyzeEventSpecificTiming(eventType, groupMembers, optimalTiming);
+      const eventTiming = await this._analyzeEventSpecificTiming(
+        eventType,
+        groupMembers,
+        optimalTiming
+      );
 
       // Generate timing recommendations
       const recommendations = this._generateGroupTimingRecommendations(
@@ -67,10 +84,17 @@ class GroupTimingService extends ServiceTemplate {
       );
 
       // Assess overall group timing success potential
-      const successPotential = this._assessTimingSuccessPotential(optimalTiming, groupCompatibility, eventTiming);
+      const successPotential = this._assessTimingSuccessPotential(
+        optimalTiming,
+        groupCompatibility,
+        eventTiming
+      );
 
       return {
-        groupMembers: groupMembers.map(m => ({ name: m.name, role: m.role || 'Member' })),
+        groupMembers: groupMembers.map(m => ({
+          name: m.name,
+          role: m.role || 'Member'
+        })),
         eventType,
         eventDate,
         eventLocation,
@@ -105,7 +129,10 @@ class GroupTimingService extends ServiceTemplate {
           currentDasha: member.currentDasha || 'Unknown',
           favorableTiming: this._assessPersonalTiming(member),
           energyLevel: this._assessPersonalEnergy(member),
-          participationSuitability: this._assessParticipationSuitability(member, member.role)
+          participationSuitability: this._assessParticipationSuitability(
+            member,
+            member.role
+          )
         };
         analyses.push(analysis);
       }
@@ -140,7 +167,11 @@ class GroupTimingService extends ServiceTemplate {
           const member1 = groupMembers[i];
           const member2 = groupMembers[j];
 
-          const pairCompat = await this.compatibilityCalculator.checkCompatibility(member1, member2);
+          const pairCompat =
+            await this.compatibilityCalculator.checkCompatibility(
+              member1,
+              member2
+            );
           pairwiseScores.push({
             pair: [member1.name, member2.name],
             score: pairCompat.overall || 0,
@@ -150,27 +181,40 @@ class GroupTimingService extends ServiceTemplate {
       }
 
       // Calculate overall group harmony
-      const avgScore = pairwiseScores.reduce((sum, score) => sum + score.score, 0) / pairwiseScores.length;
+      const avgScore =
+        pairwiseScores.reduce((sum, score) => sum + score.score, 0) /
+        pairwiseScores.length;
       compatibility.overallHarmony = avgScore;
 
       // Assess interpersonal dynamics
       compatibility.interpersonalDynamics = pairwiseScores.map(pair => ({
         members: pair.pair,
-        compatibility: pair.score > 70 ? 'Harmonious' :
-          pair.score > 50 ? 'Compatible' : 'Challenging',
+        compatibility:
+          pair.score > 70 ?
+            'Harmonious' :
+            pair.score > 50 ?
+              'Compatible' :
+              'Challenging',
         dynamic: this._assessPairDynamic(pair.roles, pair.score)
       }));
 
       // Determine group energy
-      compatibility.groupEnergy = avgScore > 75 ? 'Highly cohesive and energetic' :
-        avgScore > 60 ? 'Generally harmonious with good energy' :
-          avgScore > 45 ? 'Mixed energies requiring attention' :
-            'Challenging group dynamics';
+      compatibility.groupEnergy =
+        avgScore > 75 ?
+          'Highly cohesive and energetic' :
+          avgScore > 60 ?
+            'Generally harmonious with good energy' :
+            avgScore > 45 ?
+              'Mixed energies requiring attention' :
+              'Challenging group dynamics';
 
       // Identify potential challenges
       compatibility.potentialChallenges = pairwiseScores
         .filter(pair => pair.score < 50)
-        .map(pair => `${pair.pair.join(' and ')} may experience compatibility challenges`);
+        .map(
+          pair =>
+            `${pair.pair.join(' and ')} may experience compatibility challenges`
+        );
 
       // Assess harmony factors
       compatibility.harmonyFactors = {
@@ -196,7 +240,12 @@ class GroupTimingService extends ServiceTemplate {
    * @returns {Promise<Object>} Optimal timing analysis
    * @private
    */
-  async _findOptimalGroupTiming(eventDate, eventLocation, eventType, groupCompatibility) {
+  async _findOptimalGroupTiming(
+    eventDate,
+    eventLocation,
+    eventType,
+    groupCompatibility
+  ) {
     try {
       const timing = {
         proposedDate: eventDate,
@@ -209,28 +258,47 @@ class GroupTimingService extends ServiceTemplate {
       };
 
       // Analyze muhurta for the proposed date
-      timing.muhurtaAnalysis = await this.muhurtaCalculator.calculateMuhurta(eventDate, eventLocation, eventType);
+      timing.muhurtaAnalysis = await this.muhurtaCalculator.calculateMuhurta(
+        eventDate,
+        eventLocation,
+        eventType
+      );
 
       // Assess group dasha alignment (simplified)
       timing.groupDashaAlignment = this._assessGroupDashaAlignment(eventDate);
 
       // Calculate overall timing strength
       const muhurtaStrength = timing.muhurtaAnalysis.isFavorable ? 80 : 40;
-      const compatibilityBonus = groupCompatibility.overallHarmony > 60 ? 20 : 0;
-      timing.timingStrength = Math.min(100, muhurtaStrength + compatibilityBonus);
+      const compatibilityBonus =
+        groupCompatibility.overallHarmony > 60 ? 20 : 0;
+      timing.timingStrength = Math.min(
+        100,
+        muhurtaStrength + compatibilityBonus
+      );
 
       // Determine if proposed date is optimal
       if (timing.timingStrength > 70) {
         timing.optimalDate = eventDate;
-        timing.recommendations.push('Proposed date appears favorable for the group event');
+        timing.recommendations.push(
+          'Proposed date appears favorable for the group event'
+        );
       } else {
         timing.optimalDate = 'Alternative date recommended';
-        timing.alternativeDates = await this._findAlternativeDates(eventDate, eventLocation, eventType);
-        timing.recommendations.push('Consider alternative dates for better group timing');
+        timing.alternativeDates = await this._findAlternativeDates(
+          eventDate,
+          eventLocation,
+          eventType
+        );
+        timing.recommendations.push(
+          'Consider alternative dates for better group timing'
+        );
       }
 
       // Add event-specific timing considerations
-      timing.eventSpecific = this._getEventSpecificTiming(eventType, timing.muhurtaAnalysis);
+      timing.eventSpecific = this._getEventSpecificTiming(
+        eventType,
+        timing.muhurtaAnalysis
+      );
 
       return timing;
     } catch (error) {
@@ -297,7 +365,8 @@ class GroupTimingService extends ServiceTemplate {
           'Lunar phase considerations'
         ];
         eventTiming.planetaryInfluences = ['Jupiter', 'Saturn', 'Ketu'];
-        eventTiming.durationRecommendations = '2-6 hours depending on ceremony';
+        eventTiming.durationRecommendations =
+            '2-6 hours depending on ceremony';
         break;
 
       default:
@@ -313,11 +382,14 @@ class GroupTimingService extends ServiceTemplate {
       // Group size considerations
       const groupSize = groupMembers.length;
       if (groupSize <= 5) {
-        eventTiming.groupSizeConsiderations = 'Small intimate group - flexible timing';
+        eventTiming.groupSizeConsiderations =
+          'Small intimate group - flexible timing';
       } else if (groupSize <= 20) {
-        eventTiming.groupSizeConsiderations = 'Medium group - consider coordination logistics';
+        eventTiming.groupSizeConsiderations =
+          'Medium group - consider coordination logistics';
       } else {
-        eventTiming.groupSizeConsiderations = 'Large group - prioritize major auspicious periods';
+        eventTiming.groupSizeConsiderations =
+          'Large group - prioritize major auspicious periods';
       }
 
       // Preparation needs based on timing strength
@@ -350,7 +422,12 @@ class GroupTimingService extends ServiceTemplate {
    * @returns {Object} Timing recommendations
    * @private
    */
-  _generateGroupTimingRecommendations(optimalTiming, groupCompatibility, eventType, groupSize) {
+  _generateGroupTimingRecommendations(
+    optimalTiming,
+    groupCompatibility,
+    eventType,
+    groupSize
+  ) {
     const recommendations = {
       timing: [],
       preparation: [],
@@ -360,33 +437,53 @@ class GroupTimingService extends ServiceTemplate {
 
     // Timing recommendations
     if (optimalTiming.timingStrength > 70) {
-      recommendations.timing.push('Proceed with confidence - timing appears favorable');
+      recommendations.timing.push(
+        'Proceed with confidence - timing appears favorable'
+      );
     } else {
-      recommendations.timing.push('Consider adjusting date for better astrological alignment');
+      recommendations.timing.push(
+        'Consider adjusting date for better astrological alignment'
+      );
       if (optimalTiming.alternativeDates.length > 0) {
-        recommendations.timing.push(`Alternative dates: ${optimalTiming.alternativeDates.slice(0, 3).join(', ')}`);
+        recommendations.timing.push(
+          `Alternative dates: ${optimalTiming.alternativeDates.slice(0, 3).join(', ')}`
+        );
       }
     }
 
     // Preparation recommendations
     if (groupCompatibility.overallHarmony < 60) {
-      recommendations.preparation.push('Include group harmony prayers or mantras before event');
+      recommendations.preparation.push(
+        'Include group harmony prayers or mantras before event'
+      );
     }
 
-    recommendations.preparation.push('Create positive group intention and shared purpose');
-    recommendations.preparation.push('Ensure all participants are physically and mentally prepared');
+    recommendations.preparation.push(
+      'Create positive group intention and shared purpose'
+    );
+    recommendations.preparation.push(
+      'Ensure all participants are physically and mentally prepared'
+    );
 
     // Execution recommendations
-    recommendations.execution.push(`Plan for ${this._getEventDuration(eventType)} duration`);
+    recommendations.execution.push(
+      `Plan for ${this._getEventDuration(eventType)} duration`
+    );
     recommendations.execution.push('Include auspicious beginning rituals');
 
     if (groupSize > 10) {
-      recommendations.execution.push('Have clear coordination and communication plan');
+      recommendations.execution.push(
+        'Have clear coordination and communication plan'
+      );
     }
 
     // Contingency recommendations
-    recommendations.contingency.push('Have backup plans for unexpected changes');
-    recommendations.contingency.push('Monitor group energy and adjust as needed');
+    recommendations.contingency.push(
+      'Have backup plans for unexpected changes'
+    );
+    recommendations.contingency.push(
+      'Monitor group energy and adjust as needed'
+    );
 
     return recommendations;
   }
@@ -399,7 +496,11 @@ class GroupTimingService extends ServiceTemplate {
    * @returns {Object} Success potential assessment
    * @private
    */
-  _assessTimingSuccessPotential(optimalTiming, groupCompatibility, eventTiming) {
+  _assessTimingSuccessPotential(
+    optimalTiming,
+    groupCompatibility,
+    eventTiming
+  ) {
     const potential = {
       overallRating: 0,
       successFactors: [],
@@ -413,16 +514,29 @@ class GroupTimingService extends ServiceTemplate {
     const compatibilityScore = groupCompatibility.overallHarmony;
     const eventScore = eventTiming.specificConsiderations.length * 10; // Basic scoring
 
-    potential.overallRating = Math.min(100, (timingScore + compatibilityScore + eventScore) / 3);
+    potential.overallRating = Math.min(
+      100,
+      (timingScore + compatibilityScore + eventScore) / 3
+    );
 
     // Identify success factors
-    if (timingScore > 70) { potential.successFactors.push('Favorable astrological timing'); }
-    if (compatibilityScore > 70) { potential.successFactors.push('High group harmony'); }
-    if (eventTiming.specificConsiderations.length > 2) { potential.successFactors.push('Well-considered event timing'); }
+    if (timingScore > 70) {
+      potential.successFactors.push('Favorable astrological timing');
+    }
+    if (compatibilityScore > 70) {
+      potential.successFactors.push('High group harmony');
+    }
+    if (eventTiming.specificConsiderations.length > 2) {
+      potential.successFactors.push('Well-considered event timing');
+    }
 
     // Identify risk factors
-    if (timingScore < 50) { potential.riskFactors.push('Suboptimal astrological timing'); }
-    if (compatibilityScore < 50) { potential.riskFactors.push('Group compatibility challenges'); }
+    if (timingScore < 50) {
+      potential.riskFactors.push('Suboptimal astrological timing');
+    }
+    if (compatibilityScore < 50) {
+      potential.riskFactors.push('Group compatibility challenges');
+    }
     if (groupCompatibility.potentialChallenges.length > 0) {
       potential.riskFactors.push('Interpersonal dynamics to monitor');
     }
@@ -444,7 +558,9 @@ class GroupTimingService extends ServiceTemplate {
       potential.suggestions.push('Focus on creating positive group energy');
     }
 
-    potential.suggestions.push('Monitor and adjust based on actual group dynamics');
+    potential.suggestions.push(
+      'Monitor and adjust based on actual group dynamics'
+    );
 
     return potential;
   }
@@ -454,23 +570,33 @@ class GroupTimingService extends ServiceTemplate {
   _assessPersonalTiming(member) {
     // Simplified personal timing assessment
     const dasha = member.currentDasha;
-    if (['Jupiter', 'Venus', 'Mercury'].includes(dasha)) { return 'Favorable'; }
-    if (['Saturn', 'Mars', 'Rahu'].includes(dasha)) { return 'Challenging'; }
+    if (['Jupiter', 'Venus', 'Mercury'].includes(dasha)) {
+      return 'Favorable';
+    }
+    if (['Saturn', 'Mars', 'Rahu'].includes(dasha)) {
+      return 'Challenging';
+    }
     return 'Neutral';
   }
 
   _assessPersonalEnergy(member) {
     // Simplified energy assessment
     const moonSign = member.moon?.sign;
-    if (['Cancer', 'Taurus', 'Pisces'].includes(moonSign)) { return 'High'; }
-    if (['Capricorn', 'Aquarius', 'Virgo'].includes(moonSign)) { return 'Moderate'; }
+    if (['Cancer', 'Taurus', 'Pisces'].includes(moonSign)) {
+      return 'High';
+    }
+    if (['Capricorn', 'Aquarius', 'Virgo'].includes(moonSign)) {
+      return 'Moderate';
+    }
     return 'Balanced';
   }
 
   _assessParticipationSuitability(member, role) {
     // Assess how suitable the timing is for this person's role
     if (role === 'Leader' || role === 'Host') {
-      return this._assessPersonalTiming(member) === 'Favorable' ? 'Highly suitable' : 'Manageable';
+      return this._assessPersonalTiming(member) === 'Favorable' ?
+        'Highly suitable' :
+        'Manageable';
     }
     return 'Generally suitable';
   }
@@ -478,25 +604,39 @@ class GroupTimingService extends ServiceTemplate {
   // Helper methods for compatibility
 
   _assessPairDynamic(roles, score) {
-    if (score > 70) { return 'Strong supportive dynamic'; }
-    if (score > 50) { return 'Cooperative working relationship'; }
+    if (score > 70) {
+      return 'Strong supportive dynamic';
+    }
+    if (score > 50) {
+      return 'Cooperative working relationship';
+    }
     return 'May require extra effort to harmonize';
   }
 
   _assessGroupDiversity(groupMembers) {
     const roles = groupMembers.map(m => m.role).filter(Boolean);
     const uniqueRoles = new Set(roles);
-    return uniqueRoles.size > 1 ? 'Diverse roles and perspectives' : 'Similar roles and perspectives';
+    return uniqueRoles.size > 1 ?
+      'Diverse roles and perspectives' :
+      'Similar roles and perspectives';
   }
 
   _assessRoleBalance(groupMembers) {
     const roles = groupMembers.map(m => m.role).filter(Boolean);
-    const leaders = roles.filter(r => r.includes('Leader') || r.includes('Host')).length;
+    const leaders = roles.filter(
+      r => r.includes('Leader') || r.includes('Host')
+    ).length;
     const participants = roles.length - leaders;
 
-    if (leaders === 1 && participants > 0) { return 'Good balance with clear leadership'; }
-    if (leaders === 0) { return 'Peer group dynamic'; }
-    if (leaders > 1) { return 'Multiple leaders - coordination needed'; }
+    if (leaders === 1 && participants > 0) {
+      return 'Good balance with clear leadership';
+    }
+    if (leaders === 0) {
+      return 'Peer group dynamic';
+    }
+    if (leaders > 1) {
+      return 'Multiple leaders - coordination needed';
+    }
     return 'Unbalanced role distribution';
   }
 
@@ -505,8 +645,12 @@ class GroupTimingService extends ServiceTemplate {
     const highEnergy = energies.filter(e => e === 'High').length;
     const balanced = energies.filter(e => e === 'Balanced').length;
 
-    if (highEnergy > balanced) { return 'High energy group'; }
-    if (balanced > highEnergy) { return 'Balanced energy group'; }
+    if (highEnergy > balanced) {
+      return 'High energy group';
+    }
+    if (balanced > highEnergy) {
+      return 'Balanced energy group';
+    }
     return 'Mixed energy levels';
   }
 
@@ -526,12 +670,23 @@ class GroupTimingService extends ServiceTemplate {
       const testDate = new Date(baseDate);
       testDate.setDate(baseDate.getDate() + i);
 
-      const dateStr = testDate.toISOString().split('T')[0].split('-').reverse().join('/');
+      const dateStr = testDate
+        .toISOString()
+        .split('T')[0]
+        .split('-')
+        .reverse()
+        .join('/');
       try {
-        const muhurta = await this.muhurtaCalculator.calculateMuhurta(dateStr, eventLocation, eventType);
+        const muhurta = await this.muhurtaCalculator.calculateMuhurta(
+          dateStr,
+          eventLocation,
+          eventType
+        );
         if (muhurta.isFavorable) {
           alternatives.push(dateStr);
-          if (alternatives.length >= 3) { break; }
+          if (alternatives.length >= 3) {
+            break;
+          }
         }
       } catch (error) {
         // Skip invalid dates
@@ -550,7 +705,10 @@ class GroupTimingService extends ServiceTemplate {
       family: 'Consider generational preferences and family cycles'
     };
 
-    return considerations[eventType.toLowerCase()] || 'General auspicious timing preferred';
+    return (
+      considerations[eventType.toLowerCase()] ||
+      'General auspicious timing preferred'
+    );
   }
 
   _getEventDuration(eventType) {
@@ -580,7 +738,9 @@ class GroupTimingService extends ServiceTemplate {
     }
 
     if (input.groupMembers.length < 2) {
-      throw new Error('At least 2 group members are required for timing analysis');
+      throw new Error(
+        'At least 2 group members are required for timing analysis'
+      );
     }
 
     if (input.groupMembers.length > 20) {
@@ -625,13 +785,17 @@ class GroupTimingService extends ServiceTemplate {
 
       // Validate date format
       if (!dateRegex.test(member.birthDate)) {
-        throw new Error(`Group member ${index + 1} birth date must be in DD/MM/YYYY format`);
+        throw new Error(
+          `Group member ${index + 1} birth date must be in DD/MM/YYYY format`
+        );
       }
 
       // Validate time format
       const timeRegex = /^\d{2}:\d{2}$/;
       if (!timeRegex.test(member.birthTime)) {
-        throw new Error(`Group member ${index + 1} birth time must be in HH:MM format`);
+        throw new Error(
+          `Group member ${index + 1} birth time must be in HH:MM format`
+        );
       }
     });
   }
@@ -657,7 +821,8 @@ class GroupTimingService extends ServiceTemplate {
       data: {
         analysis: result,
         summary: this._createGroupTimingSummary(result),
-        disclaimer: '⚠️ *Group Timing Disclaimer:* This analysis examines astrological timing for group events. Success depends on many factors including preparation, group dynamics, and practical considerations. Professional event planning is recommended.'
+        disclaimer:
+          '⚠️ *Group Timing Disclaimer:* This analysis examines astrological timing for group events. Success depends on many factors including preparation, group dynamics, and practical considerations. Professional event planning is recommended.'
       }
     };
   }
@@ -677,10 +842,19 @@ class GroupTimingService extends ServiceTemplate {
       groupHarmony: result.groupCompatibility.overallHarmony,
       successPotential: result.successPotential.overallRating,
       keyInsights: {
-        optimalTiming: result.optimalTiming.optimalDate === result.eventDate ? 'Yes' : 'Alternative recommended',
+        optimalTiming:
+          result.optimalTiming.optimalDate === result.eventDate ?
+            'Yes' :
+            'Alternative recommended',
         groupEnergy: result.groupCompatibility.groupEnergy,
-        eventSpecific: result.eventTiming.specificConsiderations.length > 0 ? 'Considered' : 'General',
-        preparation: result.successPotential.overallRating < 70 ? 'Extra preparation needed' : 'Standard preparation'
+        eventSpecific:
+          result.eventTiming.specificConsiderations.length > 0 ?
+            'Considered' :
+            'General',
+        preparation:
+          result.successPotential.overallRating < 70 ?
+            'Extra preparation needed' :
+            'Standard preparation'
       },
       topRecommendations: [
         ...(result.recommendations.timing || []).slice(0, 1),
@@ -697,9 +871,14 @@ class GroupTimingService extends ServiceTemplate {
   getMetadata() {
     return {
       name: 'GroupTimingService',
-      description: 'Comprehensive group timing analysis for events involving multiple people, combining individual birth charts with auspicious timing calculations for optimal collective activities',
+      description:
+        'Comprehensive group timing analysis for events involving multiple people, combining individual birth charts with auspicious timing calculations for optimal collective activities',
       version: '1.0.0',
-      dependencies: ['GroupAstrologyCalculator', 'MuhurtaCalculator', 'CompatibilityScorer'],
+      dependencies: [
+        'GroupAstrologyCalculator',
+        'MuhurtaCalculator',
+        'CompatibilityScorer'
+      ],
       category: 'vedic'
     };
   }

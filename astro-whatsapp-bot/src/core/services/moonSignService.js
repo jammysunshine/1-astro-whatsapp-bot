@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 /**
  * MoonSignService - Service for Moon sign calculation and interpretation
@@ -59,8 +60,13 @@ class MoonSignService extends ServiceTemplate {
       // Generate additional analysis
       const moonSignTraits = this._getMoonSignTraits(moonSignData.sign);
       const emotionalNature = this._analyzeEmotionalNature(moonSignData);
-      const nakshatraInfluence = this._getNakshatraEmotionalInfluence(moonSignData.nakshatra);
-      const psychologicalDisposition = this._assessPsychologicalDisposition(moonSignData, moonSignTraits);
+      const nakshatraInfluence = this._getNakshatraEmotionalInfluence(
+        moonSignData.nakshatra
+      );
+      const psychologicalDisposition = this._assessPsychologicalDisposition(
+        moonSignData,
+        moonSignTraits
+      );
       const lifeAreas = this._identifyLifeAreas(moonSignData.sign);
 
       return {
@@ -71,7 +77,11 @@ class MoonSignService extends ServiceTemplate {
         psychologicalDisposition,
         lifeAreas,
         chartType,
-        interpretation: this._createMoonSignInterpretation(moonSignData, moonSignTraits, emotionalNature)
+        interpretation: this._createMoonSignInterpretation(
+          moonSignData,
+          moonSignTraits,
+          emotionalNature
+        )
       };
     } catch (error) {
       logger.error('Moon sign calculation error:', error);
@@ -148,8 +158,18 @@ class MoonSignService extends ServiceTemplate {
    */
   _getSignFromLongitude(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
 
     const signIndex = Math.floor(longitude / 30) % 12;
@@ -163,11 +183,33 @@ class MoonSignService extends ServiceTemplate {
    */
   _getNakshatraFromLongitude(longitude) {
     const nakshatras = [
-      'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
-      'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
-      'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
-      'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhisha',
-      'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+      'Ashwini',
+      'Bharani',
+      'Krittika',
+      'Rohini',
+      'Mrigashira',
+      'Ardra',
+      'Punarvasu',
+      'Pushya',
+      'Ashlesha',
+      'Magha',
+      'Purva Phalguni',
+      'Uttara Phalguni',
+      'Hasta',
+      'Chitra',
+      'Swati',
+      'Vishakha',
+      'Anuradha',
+      'Jyeshtha',
+      'Mula',
+      'Purva Ashadha',
+      'Uttara Ashadha',
+      'Shravana',
+      'Dhanishta',
+      'Shatabhisha',
+      'Purva Bhadrapada',
+      'Uttara Bhadrapada',
+      'Revati'
     ];
 
     const nakshatraIndex = Math.floor(longitude / (360 / 27)) % 27;
@@ -291,15 +333,17 @@ class MoonSignService extends ServiceTemplate {
       }
     };
 
-    return traits[moonSign] || {
-      emotionalNature: 'Unique emotional expression',
-      mindPattern: 'Individual thought processes',
-      psychologicalDisposition: 'Personal psychological makeup',
-      needs: 'Individual emotional requirements',
-      fears: 'Personal emotional challenges',
-      respondsTo: 'Unique emotional triggers',
-      copingMechanism: 'Personal coping strategies'
-    };
+    return (
+      traits[moonSign] || {
+        emotionalNature: 'Unique emotional expression',
+        mindPattern: 'Individual thought processes',
+        psychologicalDisposition: 'Personal psychological makeup',
+        needs: 'Individual emotional requirements',
+        fears: 'Personal emotional challenges',
+        respondsTo: 'Unique emotional triggers',
+        copingMechanism: 'Personal coping strategies'
+      }
+    );
   }
 
   /**
@@ -375,14 +419,26 @@ class MoonSignService extends ServiceTemplate {
    */
   _getVulnerabilityAreas(sign) {
     const vulnerabilities = {
-      Aries: ['Impatience with emotional processes', 'Quick to anger when feeling vulnerable'],
+      Aries: [
+        'Impatience with emotional processes',
+        'Quick to anger when feeling vulnerable'
+      ],
       Taurus: ['Resistance to change', 'Difficulty expressing deep emotions'],
-      Gemini: ['Emotional superficiality', 'Difficulty with deep emotional commitment'],
+      Gemini: [
+        'Emotional superficiality',
+        'Difficulty with deep emotional commitment'
+      ],
       Cancer: ['Mood swings', 'Over-sensitivity to rejection'],
       Leo: ['Need for constant validation', 'Difficulty accepting criticism'],
       Virgo: ['Over-worrying', 'Self-critical emotional patterns'],
-      Libra: ['Indecision in emotional matters', 'Avoiding conflict at all costs'],
-      Scorpio: ['Intensity overwhelming others', 'Trust issues from past hurts'],
+      Libra: [
+        'Indecision in emotional matters',
+        'Avoiding conflict at all costs'
+      ],
+      Scorpio: [
+        'Intensity overwhelming others',
+        'Trust issues from past hurts'
+      ],
       Sagittarius: ['Commitment phobia', 'Running from emotional depth'],
       Capricorn: ['Emotional repression', 'Difficulty showing vulnerability'],
       Aquarius: ['Emotional detachment', 'Intellectualizing feelings'],
@@ -405,12 +461,27 @@ class MoonSignService extends ServiceTemplate {
       Cancer: ['Deep empathy and care', 'Strong intuitive abilities'],
       Leo: ['Generous emotional nature', 'Creative emotional expression'],
       Virgo: ['Practical emotional support', 'Helpful and caring approach'],
-      Libra: ['Harmonious emotional connections', 'Diplomatic conflict resolution'],
-      Scorpio: ['Deep emotional commitment', 'Powerful transformative abilities'],
-      Sagittarius: ['Optimistic emotional outlook', 'Philosophical perspective on emotions'],
+      Libra: [
+        'Harmonious emotional connections',
+        'Diplomatic conflict resolution'
+      ],
+      Scorpio: [
+        'Deep emotional commitment',
+        'Powerful transformative abilities'
+      ],
+      Sagittarius: [
+        'Optimistic emotional outlook',
+        'Philosophical perspective on emotions'
+      ],
       Capricorn: ['Emotional responsibility', 'Long-term commitment abilities'],
-      Aquarius: ['Humanitarian emotional concerns', 'Intellectual emotional processing'],
-      Pisces: ['Compassionate emotional nature', 'Spiritual emotional connection']
+      Aquarius: [
+        'Humanitarian emotional concerns',
+        'Intellectual emotional processing'
+      ],
+      Pisces: [
+        'Compassionate emotional nature',
+        'Spiritual emotional connection'
+      ]
     };
 
     return strengths[sign] || ['Unique emotional strengths'];
@@ -423,23 +494,58 @@ class MoonSignService extends ServiceTemplate {
    */
   _getNakshatraEmotionalInfluence(nakshatra) {
     const influences = {
-      Rohini: { emotion: 'Nurturing and sensual', influence: 'Emotional nourishment and growth' },
-      Pushya: { emotion: 'Protective and caring', influence: 'Emotional security and support' },
-      Ashlesha: { emotion: 'Intense and transformative', influence: 'Deep emotional processing' },
-      Magha: { emotion: 'Proud and ancestral', influence: 'Emotional connection to heritage' },
-      Hasta: { emotion: 'Skillful and adaptable', influence: 'Emotional dexterity and healing' },
-      Swati: { emotion: 'Balanced and independent', influence: 'Emotional equilibrium' },
-      Anuradha: { emotion: 'Devotional and friendly', influence: 'Emotional commitment and loyalty' },
-      Mula: { emotion: 'Intense and foundational', influence: 'Emotional transformation and rebirth' },
-      Shravana: { emotion: 'Learning and receptive', influence: 'Emotional wisdom and understanding' },
-      Dhanishta: { emotion: 'Prosperous and rhythmic', influence: 'Emotional abundance and celebration' },
-      Revati: { emotion: 'Guiding and compassionate', influence: 'Emotional healing and guidance' }
+      Rohini: {
+        emotion: 'Nurturing and sensual',
+        influence: 'Emotional nourishment and growth'
+      },
+      Pushya: {
+        emotion: 'Protective and caring',
+        influence: 'Emotional security and support'
+      },
+      Ashlesha: {
+        emotion: 'Intense and transformative',
+        influence: 'Deep emotional processing'
+      },
+      Magha: {
+        emotion: 'Proud and ancestral',
+        influence: 'Emotional connection to heritage'
+      },
+      Hasta: {
+        emotion: 'Skillful and adaptable',
+        influence: 'Emotional dexterity and healing'
+      },
+      Swati: {
+        emotion: 'Balanced and independent',
+        influence: 'Emotional equilibrium'
+      },
+      Anuradha: {
+        emotion: 'Devotional and friendly',
+        influence: 'Emotional commitment and loyalty'
+      },
+      Mula: {
+        emotion: 'Intense and foundational',
+        influence: 'Emotional transformation and rebirth'
+      },
+      Shravana: {
+        emotion: 'Learning and receptive',
+        influence: 'Emotional wisdom and understanding'
+      },
+      Dhanishta: {
+        emotion: 'Prosperous and rhythmic',
+        influence: 'Emotional abundance and celebration'
+      },
+      Revati: {
+        emotion: 'Guiding and compassionate',
+        influence: 'Emotional healing and guidance'
+      }
     };
 
-    return influences[nakshatra] || {
-      emotion: 'Unique emotional quality',
-      influence: 'Special emotional influence'
-    };
+    return (
+      influences[nakshatra] || {
+        emotion: 'Unique emotional quality',
+        influence: 'Special emotional influence'
+      }
+    );
   }
 
   /**
@@ -489,18 +595,39 @@ class MoonSignService extends ServiceTemplate {
    */
   _getPsychologicalGrowthAreas(sign) {
     const growthAreas = {
-      Aries: ['Patience with emotional processes', 'Developing emotional depth'],
+      Aries: [
+        'Patience with emotional processes',
+        'Developing emotional depth'
+      ],
       Taurus: ['Embracing change', 'Expressing deep emotions'],
       Gemini: ['Deepening emotional commitment', 'Focusing emotional energy'],
-      Cancer: ['Managing emotional sensitivity', 'Setting emotional boundaries'],
-      Leo: ['Accepting constructive criticism', 'Balancing self-expression with listening'],
+      Cancer: [
+        'Managing emotional sensitivity',
+        'Setting emotional boundaries'
+      ],
+      Leo: [
+        'Accepting constructive criticism',
+        'Balancing self-expression with listening'
+      ],
       Virgo: ['Reducing self-criticism', 'Trusting emotional instincts'],
       Libra: ['Making independent decisions', 'Facing necessary conflicts'],
       Scorpio: ['Managing emotional intensity', 'Building trust gradually'],
-      Sagittarius: ['Committing to emotional relationships', 'Developing emotional patience'],
-      Capricorn: ['Expressing emotional vulnerability', 'Balancing work and emotional needs'],
-      Aquarius: ['Connecting emotionally with others', 'Balancing intellect and emotion'],
-      Pisces: ['Maintaining emotional boundaries', 'Grounding emotional sensitivity']
+      Sagittarius: [
+        'Committing to emotional relationships',
+        'Developing emotional patience'
+      ],
+      Capricorn: [
+        'Expressing emotional vulnerability',
+        'Balancing work and emotional needs'
+      ],
+      Aquarius: [
+        'Connecting emotionally with others',
+        'Balancing intellect and emotion'
+      ],
+      Pisces: [
+        'Maintaining emotional boundaries',
+        'Grounding emotional sensitivity'
+      ]
     };
 
     return growthAreas[sign] || ['Personal psychological development'];
@@ -521,7 +648,10 @@ class MoonSignService extends ServiceTemplate {
       Virgo: ['Emotional analysis', 'Practical emotional help'],
       Libra: ['Emotional diplomacy', 'Creating emotional harmony'],
       Scorpio: ['Emotional depth', 'Transformative emotional insight'],
-      Sagittarius: ['Emotional optimism', 'Philosophical emotional perspective'],
+      Sagittarius: [
+        'Emotional optimism',
+        'Philosophical emotional perspective'
+      ],
       Capricorn: ['Emotional responsibility', 'Long-term emotional commitment'],
       Aquarius: ['Emotional innovation', 'Humanitarian emotional concern'],
       Pisces: ['Emotional compassion', 'Spiritual emotional connection']
@@ -611,12 +741,14 @@ class MoonSignService extends ServiceTemplate {
       }
     };
 
-    return lifeAreas[sign] || {
-      home: 'Personal living preferences',
-      relationships: 'Emotional connection patterns',
-      career: 'Professional inclinations',
-      health: 'Wellness focus areas'
-    };
+    return (
+      lifeAreas[sign] || {
+        home: 'Personal living preferences',
+        relationships: 'Emotional connection patterns',
+        career: 'Professional inclinations',
+        health: 'Wellness focus areas'
+      }
+    );
   }
 
   /**
@@ -693,7 +825,8 @@ class MoonSignService extends ServiceTemplate {
         chartType: result.chartType
       },
       interpretation: result.interpretation,
-      disclaimer: 'Moon sign analysis reveals emotional patterns and psychological tendencies. Individual emotional experiences are influenced by the entire birth chart. Astrology provides insights for self-understanding and emotional growth.'
+      disclaimer:
+        'Moon sign analysis reveals emotional patterns and psychological tendencies. Individual emotional experiences are influenced by the entire birth chart. Astrology provides insights for self-understanding and emotional growth.'
     };
   }
   async getHealthStatus() {

@@ -12,14 +12,18 @@ const logger = require('../../utils/logger');
 class CurrentTransitsService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CurrentTransitsService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'CurrentTransitsService';
     logger.info('CurrentTransitsService initialized');
   }
 
   async lcurrentTransitsCalculation(birthData, targetDate = null) {
     try {
       // Analyze transits to natal chart
-      const result = await this.calculator.analyzeTransitsToNatal(birthData, targetDate);
+      const result = await this.calculator.analyzeTransitsToNatal(
+        birthData,
+        targetDate
+      );
       return result;
     } catch (error) {
       logger.error('CurrentTransitsService calculation error:', error);
@@ -33,7 +37,8 @@ class CurrentTransitsService extends ServiceTemplate {
       service: 'Vedic Current Transits Analysis',
       timestamp: new Date().toISOString(),
       data: result,
-      disclaimer: 'Transit analysis shows current planetary influences on your natal chart. Transits indicate timing of opportunities and challenges. Complete astrological analysis considers the entire birth chart.'
+      disclaimer:
+        'Transit analysis shows current planetary influences on your natal chart. Transits indicate timing of opportunities and challenges. Complete astrological analysis considers the entire birth chart.'
     };
   }
 
@@ -104,7 +109,10 @@ class CurrentTransitsService extends ServiceTemplate {
     try {
       this._validateInput(birthData);
 
-      const transitAnalysis = await this.calculator.analyzeTransitsToNatal(birthData, targetDate);
+      const transitAnalysis = await this.calculator.analyzeTransitsToNatal(
+        birthData,
+        targetDate
+      );
 
       return {
         influences: {
@@ -146,9 +154,15 @@ class CurrentTransitsService extends ServiceTemplate {
         checkDate.setDate(today.getDate() + i);
 
         const dateStr = `${checkDate.getDate()}/${checkDate.getMonth() + 1}/${checkDate.getFullYear()}`;
-        const transitAnalysis = await this.calculator.analyzeTransitsToNatal(birthData, dateStr);
+        const transitAnalysis = await this.calculator.analyzeTransitsToNatal(
+          birthData,
+          dateStr
+        );
 
-        const significant = this._identifySignificantTransits(transitAnalysis, dateStr);
+        const significant = this._identifySignificantTransits(
+          transitAnalysis,
+          dateStr
+        );
         if (significant.length > 0) {
           significantTransits.push({
             date: dateStr,
@@ -163,14 +177,16 @@ class CurrentTransitsService extends ServiceTemplate {
         error: false
       };
     } catch (error) {
-      logger.error('CurrentTransitsService getUpcomingSignificantTransits error:', error);
+      logger.error(
+        'CurrentTransitsService getUpcomingSignificantTransits error:',
+        error
+      );
       return {
         error: true,
         message: 'Error finding upcoming significant transits'
       };
     }
   }
-
 
   /**
    * Analyze career-related transits
@@ -185,7 +201,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     if (transitAnalysis.aspects) {
       transitAnalysis.aspects.forEach(aspect => {
-        if (careerPlanets.includes(aspect.transitingPlanet) || careerPlanets.includes(aspect.natalPlanet)) {
+        if (
+          careerPlanets.includes(aspect.transitingPlanet) ||
+          careerPlanets.includes(aspect.natalPlanet)
+        ) {
           careerInfluences.push({
             aspect: `${aspect.transitingPlanet} ${aspect.aspect} ${aspect.natalPlanet}`,
             influence: this._getCareerInfluence(aspect),
@@ -197,9 +216,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     return {
       influences: careerInfluences,
-      summary: careerInfluences.length > 0 ?
-        'Active career transits indicate changes and opportunities in professional life' :
-        'Stable career period with gradual development'
+      summary:
+        careerInfluences.length > 0 ?
+          'Active career transits indicate changes and opportunities in professional life' :
+          'Stable career period with gradual development'
     };
   }
 
@@ -216,7 +236,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     if (transitAnalysis.aspects) {
       transitAnalysis.aspects.forEach(aspect => {
-        if (relationshipPlanets.includes(aspect.transitingPlanet) || relationshipPlanets.includes(aspect.natalPlanet)) {
+        if (
+          relationshipPlanets.includes(aspect.transitingPlanet) ||
+          relationshipPlanets.includes(aspect.natalPlanet)
+        ) {
           relationshipInfluences.push({
             aspect: `${aspect.transitingPlanet} ${aspect.aspect} ${aspect.natalPlanet}`,
             influence: this._getRelationshipInfluence(aspect),
@@ -228,9 +251,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     return {
       influences: relationshipInfluences,
-      summary: relationshipInfluences.length > 0 ?
-        'Active relationship transits suggest changes in partnerships and connections' :
-        'Stable relationship period with harmonious developments'
+      summary:
+        relationshipInfluences.length > 0 ?
+          'Active relationship transits suggest changes in partnerships and connections' :
+          'Stable relationship period with harmonious developments'
     };
   }
 
@@ -247,7 +271,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     if (transitAnalysis.aspects) {
       transitAnalysis.aspects.forEach(aspect => {
-        if (financePlanets.includes(aspect.transitingPlanet) || financePlanets.includes(aspect.natalPlanet)) {
+        if (
+          financePlanets.includes(aspect.transitingPlanet) ||
+          financePlanets.includes(aspect.natalPlanet)
+        ) {
           financeInfluences.push({
             aspect: `${aspect.transitingPlanet} ${aspect.aspect} ${aspect.natalPlanet}`,
             influence: this._getFinanceInfluence(aspect),
@@ -259,9 +286,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     return {
       influences: financeInfluences,
-      summary: financeInfluences.length > 0 ?
-        'Active financial transits indicate changes in wealth and resources' :
-        'Stable financial period with steady growth'
+      summary:
+        financeInfluences.length > 0 ?
+          'Active financial transits indicate changes in wealth and resources' :
+          'Stable financial period with steady growth'
     };
   }
 
@@ -278,7 +306,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     if (transitAnalysis.aspects) {
       transitAnalysis.aspects.forEach(aspect => {
-        if (healthPlanets.includes(aspect.transitingPlanet) || healthPlanets.includes(aspect.natalPlanet)) {
+        if (
+          healthPlanets.includes(aspect.transitingPlanet) ||
+          healthPlanets.includes(aspect.natalPlanet)
+        ) {
           healthInfluences.push({
             aspect: `${aspect.transitingPlanet} ${aspect.aspect} ${aspect.natalPlanet}`,
             influence: this._getHealthInfluence(aspect),
@@ -290,9 +321,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     return {
       influences: healthInfluences,
-      summary: healthInfluences.length > 0 ?
-        'Active health transits suggest focus on well-being and vitality' :
-        'Generally stable health period'
+      summary:
+        healthInfluences.length > 0 ?
+          'Active health transits suggest focus on well-being and vitality' :
+          'Generally stable health period'
     };
   }
 
@@ -309,7 +341,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     if (transitAnalysis.aspects) {
       transitAnalysis.aspects.forEach(aspect => {
-        if (spiritualPlanets.includes(aspect.transitingPlanet) || spiritualPlanets.includes(aspect.natalPlanet)) {
+        if (
+          spiritualPlanets.includes(aspect.transitingPlanet) ||
+          spiritualPlanets.includes(aspect.natalPlanet)
+        ) {
           spiritualInfluences.push({
             aspect: `${aspect.transitingPlanet} ${aspect.aspect} ${aspect.natalPlanet}`,
             influence: this._getSpiritualInfluence(aspect),
@@ -321,9 +356,10 @@ class CurrentTransitsService extends ServiceTemplate {
 
     return {
       influences: spiritualInfluences,
-      summary: spiritualInfluences.length > 0 ?
-        'Active spiritual transits indicate growth and inner development' :
-        'Period of spiritual stability and integration'
+      summary:
+        spiritualInfluences.length > 0 ?
+          'Active spiritual transits indicate growth and inner development' :
+          'Period of spiritual stability and integration'
     };
   }
 
@@ -335,10 +371,15 @@ class CurrentTransitsService extends ServiceTemplate {
    */
   _calculateOverallIntensity(transitAnalysis) {
     const aspectCount = transitAnalysis.aspects?.length || 0;
-    const strongAspects = transitAnalysis.aspects?.filter(a => a.orb < 2).length || 0;
+    const strongAspects =
+      transitAnalysis.aspects?.filter(a => a.orb < 2).length || 0;
 
-    if (strongAspects > 3) { return 'high'; }
-    if (aspectCount > 5) { return 'moderate'; }
+    if (strongAspects > 3) {
+      return 'high';
+    }
+    if (aspectCount > 5) {
+      return 'moderate';
+    }
     return 'low';
   }
 
@@ -354,7 +395,8 @@ class CurrentTransitsService extends ServiceTemplate {
 
     if (transitAnalysis.aspects) {
       transitAnalysis.aspects.forEach(aspect => {
-        if (aspect.orb < 1) { // Very tight aspects
+        if (aspect.orb < 1) {
+          // Very tight aspects
           significant.push({
             aspect: `${aspect.transitingPlanet} ${aspect.aspect} ${aspect.natalPlanet}`,
             orb: aspect.orb,
@@ -368,19 +410,36 @@ class CurrentTransitsService extends ServiceTemplate {
   }
 
   // Helper methods for influence analysis
-  _getCareerInfluence(aspect) { return 'Career development and professional changes'; }
-  _getRelationshipInfluence(aspect) { return 'Relationship dynamics and partnerships'; }
-  _getFinanceInfluence(aspect) { return 'Financial opportunities and wealth changes'; }
-  _getHealthInfluence(aspect) { return 'Health focus and vitality changes'; }
-  _getSpiritualInfluence(aspect) { return 'Spiritual growth and inner development'; }
-  _getAspectSignificance(aspect) { return 'Significant astrological influence'; }
+  _getCareerInfluence(aspect) {
+    return 'Career development and professional changes';
+  }
+  _getRelationshipInfluence(aspect) {
+    return 'Relationship dynamics and partnerships';
+  }
+  _getFinanceInfluence(aspect) {
+    return 'Financial opportunities and wealth changes';
+  }
+  _getHealthInfluence(aspect) {
+    return 'Health focus and vitality changes';
+  }
+  _getSpiritualInfluence(aspect) {
+    return 'Spiritual growth and inner development';
+  }
+  _getAspectSignificance(aspect) {
+    return 'Significant astrological influence';
+  }
 
   getMetadata() {
     return {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'getCurrentTransits', 'getTransitInfluences', 'getUpcomingSignificantTransits'],
+      methods: [
+        'execute',
+        'getCurrentTransits',
+        'getTransitInfluences',
+        'getUpcomingSignificantTransits'
+      ],
       dependencies: ['TransitCalculator']
     };
   }

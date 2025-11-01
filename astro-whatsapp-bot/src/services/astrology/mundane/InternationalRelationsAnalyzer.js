@@ -20,7 +20,9 @@ class InternationalRelationsAnalyzer {
     if (venus) {
       if (venus.house === 7) {
         assessment.relationshipStrength = 'Strong diplomatic capability';
-        assessment.diplomaticOpportunities.push('Favorable international partnerships possible');
+        assessment.diplomaticOpportunities.push(
+          'Favorable international partnerships possible'
+        );
       } else if (venus.house === 6) {
         assessment.conflicts.push('Diplomatic tensions with foreign powers');
       }
@@ -30,10 +32,15 @@ class InternationalRelationsAnalyzer {
     const { mars } = chart.planetaryPositions;
     if (mars) {
       if (mars.house === 7) {
-        assessment.conflicts.push('Potential conflicts with international partners');
-        assessment.relationshipStrength = 'Challenging - assertive foreign policy';
+        assessment.conflicts.push(
+          'Potential conflicts with international partners'
+        );
+        assessment.relationshipStrength =
+          'Challenging - assertive foreign policy';
       } else if ([8, 12].includes(mars.house)) {
-        assessment.conflicts.push('Deep-seated international conflicts or secret enmities');
+        assessment.conflicts.push(
+          'Deep-seated international conflicts or secret enmities'
+        );
       }
     }
 
@@ -41,10 +48,15 @@ class InternationalRelationsAnalyzer {
     const { jupiter } = chart.planetaryPositions;
     if (jupiter) {
       if (jupiter.house === 9) {
-        assessment.internationalRole = 'Educational and philosophical leadership';
-        assessment.alliances.push('Strong international cooperation on educational and justice matters');
+        assessment.internationalRole =
+          'Educational and philosophical leadership';
+        assessment.alliances.push(
+          'Strong international cooperation on educational and justice matters'
+        );
       } else if (jupiter.house === 7) {
-        assessment.alliances.push('Beneficial international trade and legal partnerships');
+        assessment.alliances.push(
+          'Beneficial international trade and legal partnerships'
+        );
       }
     }
 

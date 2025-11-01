@@ -25,10 +25,14 @@ class CelticReader {
       const animalTotem = this.calculator.calculateAnimalTotem(birthDate);
 
       // Calculate seasonal influence
-      const seasonalInfluence = this.calculator.calculateSeasonalInfluence(birthDate);
+      const seasonalInfluence =
+        this.calculator.calculateSeasonalInfluence(birthDate);
 
       // Generate druidic wisdom
-      const druidicWisdom = this.analyzer.generateDruidicWisdom(treeSign, animalTotem);
+      const druidicWisdom = this.analyzer.generateDruidicWisdom(
+        treeSign,
+        animalTotem
+      );
 
       // Calculate life path
       const lifePath = this.analyzer.calculateLifePath(treeSign, animalTotem);

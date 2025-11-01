@@ -1,6 +1,8 @@
 const AstrologyAction = require('../base/AstrologyAction');
 const vedicCalculator = require('../../../services/astrology/vedic/VedicCalculator');
-const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const {
+  AstrologyFormatterFactory
+} = require('../factories/AstrologyFormatterFactory');
 
 /**
  * BirthChartAction - Generates and displays birth chart (kundli) for users.
@@ -23,7 +25,10 @@ class BirthChartAction extends AstrologyAction {
       this.logAstrologyExecution('start', 'Generating birth chart');
 
       // Unified validation using base class
-      const validation = await this.validateProfileAndLimits('Birth Chart', 'birth_chart');
+      const validation = await this.validateProfileAndLimits(
+        'Birth Chart',
+        'birth_chart'
+      );
       if (!validation.success) {
         return validation;
       }
@@ -35,8 +40,12 @@ class BirthChartAction extends AstrologyAction {
       }
 
       // Format and send response using centralized methods
-      const formattedContent = AstrologyFormatterFactory.formatBirthChart(chartData);
-      await this.buildAstrologyResponse(formattedContent, this.getChartActionButtons());
+      const formattedContent =
+        AstrologyFormatterFactory.formatBirthChart(chartData);
+      await this.buildAstrologyResponse(
+        formattedContent,
+        this.getChartActionButtons()
+      );
 
       this.logAstrologyExecution('complete', 'Birth chart sent successfully');
       return {
@@ -50,7 +59,11 @@ class BirthChartAction extends AstrologyAction {
     } catch (error) {
       this.logger.error('Error in BirthChartAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -62,7 +75,9 @@ class BirthChartAction extends AstrologyAction {
     try {
       // Try Vedic chart first (more detailed)
       const vedicChart = await this.generateVedicChart();
-      if (vedicChart && !vedicChart.error) { return vedicChart; }
+      if (vedicChart && !vedicChart.error) {
+        return vedicChart;
+      }
 
       // Fallback to Western chart if Vedic fails
       this.logger.warn('Vedic chart generation failed, using Western fallback');
@@ -84,8 +99,14 @@ class BirthChartAction extends AstrologyAction {
         throw new Error('User data not available for birth chart generation');
       }
 
-      if (!this.user.birthDate || !this.user.birthTime || !this.user.birthPlace) {
-        throw new Error('User must complete birth profile with date, time, and place for birth chart generation');
+      if (
+        !this.user.birthDate ||
+        !this.user.birthTime ||
+        !this.user.birthPlace
+      ) {
+        throw new Error(
+          'User must complete birth profile with date, time, and place for birth chart generation'
+        );
       }
 
       return await vedicCalculator.generateVedicKundli({
@@ -111,8 +132,14 @@ class BirthChartAction extends AstrologyAction {
         throw new Error('User data not available for western chart generation');
       }
 
-      if (!this.user.birthDate || !this.user.birthTime || !this.user.birthPlace) {
-        throw new Error('User must complete birth profile with date, time, and place for western chart generation');
+      if (
+        !this.user.birthDate ||
+        !this.user.birthTime ||
+        !this.user.birthPlace
+      ) {
+        throw new Error(
+          'User must complete birth profile with date, time, and place for western chart generation'
+        );
       }
 
       return await vedicCalculator.generateWesternBirthChart({
@@ -136,7 +163,8 @@ class BirthChartAction extends AstrologyAction {
       type: 'fallback',
       name: this.user?.name || 'User',
       birthDate: this.user?.birthDate || 'Not provided',
-      disclaimer: 'Chart calculation temporarily unavailable. Please try again later.',
+      disclaimer:
+        'Chart calculation temporarily unavailable. Please try again later.',
       planets: {
         Sun: { sign: 'Unknown', longitude: 0 },
         Moon: { sign: 'Unknown', longitude: 0 }

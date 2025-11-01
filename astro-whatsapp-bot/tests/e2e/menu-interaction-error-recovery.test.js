@@ -1,5 +1,10 @@
-const { TestDatabaseManager, getWhatsAppIntegration } = require('../../utils/testSetup');
-const { getMessageCoordinator } = require('../../../src/services/whatsapp/MessageCoordinator');
+const {
+  TestDatabaseManager,
+  getWhatsAppIntegration
+} = require('../../utils/testSetup');
+const {
+  getMessageCoordinator
+} = require('../../../src/services/whatsapp/MessageCoordinator');
 const { getMenu } = require('../../../src/conversation/menuLoader');
 
 // Mock external services for safe menu testing
@@ -37,7 +42,10 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
 
     // Create test users
     await dbManager.createTestUser(testUser, testUserData);
-    await dbManager.createTestUser(testUser2, { ...testUserData, name: 'Menu Test User 2' });
+    await dbManager.createTestUser(testUser2, {
+      ...testUserData,
+      name: 'Menu Test User 2'
+    });
   }, 60000);
 
   afterAll(async() => {
@@ -179,18 +187,25 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
     test('MENU_ERROR_004: Concurrent duplicate menu selections', async() => {
       // Test behavior when multiple users select same menu option simultaneously
 
-      const concurrentSelections = Array(5).fill().map(async(_, i) => processIncomingMessage({
-        from: testUser,
-        interactive: {
-          type: 'list_reply',
-          list_reply: {
-            id: 'show_western_astrology_menu',
-            title: 'Western Astrology',
-            description: `Concurrent access ${i}`
-          }
-        },
-        type: 'interactive'
-      }, {}));
+      const concurrentSelections = Array(5)
+        .fill()
+        .map(async(_, i) =>
+          processIncomingMessage(
+            {
+              from: testUser,
+              interactive: {
+                type: 'list_reply',
+                list_reply: {
+                  id: 'show_western_astrology_menu',
+                  title: 'Western Astrology',
+                  description: `Concurrent access ${i}`
+                }
+              },
+              type: 'interactive'
+            },
+            {}
+          )
+        );
 
       await Promise.all(concurrentSelections);
       expect(messageSender.sendMessage).toHaveBeenCalled();
@@ -241,17 +256,20 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       });
 
       try {
-        await processIncomingMessage({
-          from: testUser,
-          interactive: {
-            type: 'list_reply',
-            list_reply: {
-              id: 'show_main_menu',
-              title: 'Main Menu'
-            }
+        await processIncomingMessage(
+          {
+            from: testUser,
+            interactive: {
+              type: 'list_reply',
+              list_reply: {
+                id: 'show_main_menu',
+                title: 'Main Menu'
+              }
+            },
+            type: 'interactive'
           },
-          type: 'interactive'
-        }, {});
+          {}
+        );
       } catch (error) {
         // Handle expected timeout
       } finally {
@@ -272,7 +290,9 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
         { sections: [] }, // Empty sections
         { sections: [{ title: null, rows: null }] }, // Null section data
         { sections: [{ title: 'Corrupted', rows: [null, undefined] }] }, // Null rows
-        { sections: [{ title: 'Incomplete', rows: [{ id: 'missing_title' }] }] } // Missing required fields
+        {
+          sections: [{ title: 'Incomplete', rows: [{ id: 'missing_title' }] }]
+        } // Missing required fields
       ];
 
       for (const corruptedMenu of corruptedMenus) {
@@ -312,19 +332,24 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       });
 
       // Attempt multiple rapid menu operations
-      const rapidRequests = Array(5).fill().map((_, i) =>
-        processIncomingMessage({
-          from: testUser,
-          interactive: {
-            type: 'list_reply',
-            list_reply: {
-              id: `rapid_menu_${i}`,
-              title: `Rapid Menu ${i}`
-            }
-          },
-          type: 'interactive'
-        }, {})
-      );
+      const rapidRequests = Array(5)
+        .fill()
+        .map((_, i) =>
+          processIncomingMessage(
+            {
+              from: testUser,
+              interactive: {
+                type: 'list_reply',
+                list_reply: {
+                  id: `rapid_menu_${i}`,
+                  title: `Rapid Menu ${i}`
+                }
+              },
+              type: 'interactive'
+            },
+            {}
+          )
+        );
 
       await Promise.all(rapidRequests);
 
@@ -586,10 +611,16 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       // Test handling of malformed WhatsApp menu response data
 
       const parsingFailures = [
-        { responseFormat: 'xml_instead_of_json', content: '<invalid>xml</invalid>' },
+        {
+          responseFormat: 'xml_instead_of_json',
+          content: '<invalid>xml</invalid>'
+        },
         { responseFormat: 'empty_response', content: '' },
         { responseFormat: 'truncated_json', content: '{"incomplete": "json' },
-        { responseFormat: 'encoded_mismatch', content: Buffer.from('invalid').toString('base64') }
+        {
+          responseFormat: 'encoded_mismatch',
+          content: Buffer.from('invalid').toString('base64')
+        }
       ];
 
       for (const parsingFail of parsingFailures) {
@@ -711,10 +742,22 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       // Test error reporting and monitoring for menu interactions
 
       const monitoringScenarios = [
-        { event: 'menu_error_occurred', severity: 'high', userAffected: testUser },
-        { event: 'menu_performance_issue', threshold: 'exceeded', duration: 5000 },
+        {
+          event: 'menu_error_occurred',
+          severity: 'high',
+          userAffected: testUser
+        },
+        {
+          event: 'menu_performance_issue',
+          threshold: 'exceeded',
+          duration: 5000
+        },
         { event: 'menu_access_denied', reason: 'permission_error', count: 5 },
-        { event: 'menu_state_corruption', corruptionLevel: 'severe', recovery: 'required' }
+        {
+          event: 'menu_state_corruption',
+          corruptionLevel: 'severe',
+          recovery: 'required'
+        }
       ];
 
       for (const monitoring of monitoringScenarios) {
@@ -775,10 +818,30 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       // Test recovery mechanisms for incomplete menu interactions
 
       const interruptedFlows = [
-        { flow: 'onboarding', step: 3, totalSteps: 5, interruption: 'connection_lost' },
-        { flow: 'compatibility_analysis', step: 2, totalSteps: 4, interruption: 'user_timeout' },
-        { flow: 'numerology_calculation', step: 1, totalSteps: 3, interruption: 'validation_error' },
-        { flow: 'horoscope_generation', step: 4, totalSteps: 6, interruption: 'system_error' }
+        {
+          flow: 'onboarding',
+          step: 3,
+          totalSteps: 5,
+          interruption: 'connection_lost'
+        },
+        {
+          flow: 'compatibility_analysis',
+          step: 2,
+          totalSteps: 4,
+          interruption: 'user_timeout'
+        },
+        {
+          flow: 'numerology_calculation',
+          step: 1,
+          totalSteps: 3,
+          interruption: 'validation_error'
+        },
+        {
+          flow: 'horoscope_generation',
+          step: 4,
+          totalSteps: 6,
+          interruption: 'system_error'
+        }
       ];
 
       for (const interrupted of interruptedFlows) {
@@ -822,19 +885,23 @@ describe('MENU INTERACTION ERROR RECOVERY: Complete Error Handling Suite (23 Sce
       };
 
       // Test comprehensive menu error handling
-      await processIncomingMessage({
-        from: testUser,
-        type: 'text',
-        text: { body: 'comprehensive_menu_error_test' },
-        comprehensiveMenuTest: comprehensiveTest
-      }, {});
+      await processIncomingMessage(
+        {
+          from: testUser,
+          type: 'text',
+          text: { body: 'comprehensive_menu_error_test' },
+          comprehensiveMenuTest: comprehensiveTest
+        },
+        {}
+      );
 
       expect(messageSender.sendMessage).toHaveBeenCalled();
 
       // Final integration verification
       const integrationResults = {
         errorScenariosCovered: comprehensiveTest.scenarios.length,
-        recoveryBehaviorsVerified: comprehensiveTest.expectedRecoveryBehaviors.length,
+        recoveryBehaviorsVerified:
+          comprehensiveTest.expectedRecoveryBehaviors.length,
         userExperiencePreserved: true,
         systemStabilityMaintained: true
       };

@@ -177,11 +177,18 @@ const ValidationMixin = {
 
       // Check field lengths
       if (validationRules.maxLengths) {
-        Object.entries(validationRules.maxLengths).forEach(([field, maxLength]) => {
-          if (inputData[field] && inputData[field].toString().length > maxLength) {
-            errors.push(`Field '${field}' exceeds maximum length of ${maxLength} characters`);
+        Object.entries(validationRules.maxLengths).forEach(
+          ([field, maxLength]) => {
+            if (
+              inputData[field] &&
+              inputData[field].toString().length > maxLength
+            ) {
+              errors.push(
+                `Field '${field}' exceeds maximum length of ${maxLength} characters`
+              );
+            }
           }
-        });
+        );
       }
 
       // Check field formats (basic patterns)
@@ -195,7 +202,9 @@ const ValidationMixin = {
 
       // Custom validation functions
       if (validationRules.custom) {
-        for (const [field, validator] of Object.entries(validationRules.custom)) {
+        for (const [field, validator] of Object.entries(
+          validationRules.custom
+        )) {
           if (typeof validator === 'function') {
             const result = await validator(inputData[field], inputData);
             if (result !== true) {
@@ -234,12 +243,16 @@ const ValidationMixin = {
     try {
       // Profile validation
       if (params.requireProfile !== false) {
-        results.profile.isValid = await this.validateProfileCompletion(params.displayName || 'this service');
+        results.profile.isValid = await this.validateProfileCompletion(
+          params.displayName || 'this service'
+        );
       }
 
       // Subscription validation
       if (params.checkSubscription !== false) {
-        results.subscription = await this.validateSubscriptionLimits(params.featureType);
+        results.subscription = await this.validateSubscriptionLimits(
+          params.featureType
+        );
       }
 
       // Cooldown validation
@@ -249,29 +262,51 @@ const ValidationMixin = {
 
       // Daily limits validation
       if (params.checkDailyLimits === true) {
-        results.dailyLimits = await this.validateDailyLimits(params.featureType);
+        results.dailyLimits = await this.validateDailyLimits(
+          params.featureType
+        );
       }
 
       // Input validation
       if (params.inputData && params.validationRules) {
-        results.input = await this.validateInputData(params.inputData, params.validationRules);
+        results.input = await this.validateInputData(
+          params.inputData,
+          params.validationRules
+        );
       }
 
       // Overall result
-      results.overall.canProceed = (
+      results.overall.canProceed =
         results.profile.isValid &&
         results.subscription.isAllowed &&
         results.cooldown.canProceed &&
         results.dailyLimits.canProceed &&
-        results.input.isValid
-      );
+        results.input.isValid;
 
       // Collect all errors
-      if (!results.profile.isValid) { results.overall.errors.push('Profile incomplete'); }
-      if (!results.subscription.isAllowed) { results.overall.errors.push(results.subscription.message || 'Subscription limit reached'); }
-      if (!results.cooldown.canProceed) { results.overall.errors.push(results.cooldown.message || 'Cooldown active'); }
-      if (!results.dailyLimits.canProceed) { results.overall.errors.push(results.dailyLimits.message || 'Daily limit reached'); }
-      if (!results.input.isValid) { results.overall.errors.push(results.input.errorMessage || 'Input validation failed'); }
+      if (!results.profile.isValid) {
+        results.overall.errors.push('Profile incomplete');
+      }
+      if (!results.subscription.isAllowed) {
+        results.overall.errors.push(
+          results.subscription.message || 'Subscription limit reached'
+        );
+      }
+      if (!results.cooldown.canProceed) {
+        results.overall.errors.push(
+          results.cooldown.message || 'Cooldown active'
+        );
+      }
+      if (!results.dailyLimits.canProceed) {
+        results.overall.errors.push(
+          results.dailyLimits.message || 'Daily limit reached'
+        );
+      }
+      if (!results.input.isValid) {
+        results.overall.errors.push(
+          results.input.errorMessage || 'Input validation failed'
+        );
+      }
     } catch (error) {
       this.logger.error('Error in comprehensive validation:', error);
       results.overall.canProceed = false;
@@ -340,8 +375,10 @@ const ValidationMixin = {
    */
   async generateProfileError(displayName) {
     const config = this.getActionConfig();
-    return config?.errorMessages?.incomplete ||
-      `👤 *Complete Your Profile First*\n\nTo access ${displayName}, please complete your birth profile with date, time, and place.\n\nUse the Settings menu to update your information.`;
+    return (
+      config?.errorMessages?.incomplete ||
+      `👤 *Complete Your Profile First*\n\nTo access ${displayName}, please complete your birth profile with date, time, and place.\n\nUse the Settings menu to update your information.`
+    );
   },
 
   /**
@@ -351,14 +388,20 @@ const ValidationMixin = {
    */
   async generateSubscriptionError(displayName) {
     const config = this.getActionConfig();
-    return config?.errorMessages?.limitReached ||
-      '⭐ *Premium Astrology Available*\n\nYou\'ve reached your limit for astrology insights.\n\nUpgrade to Premium for unlimited personalized readings!';
+    return (
+      config?.errorMessages?.limitReached ||
+      '⭐ *Premium Astrology Available*\n\nYou\'ve reached your limit for astrology insights.\n\nUpgrade to Premium for unlimited personalized readings!'
+    );
   },
 
   // Placeholder methods for future implementation
-  async getLastActionTime(actionId) { return null; },
-  async setLastActionTime(actionId, timestamp) { },
-  async getDailyUsage(featureType) { return 0; }
+  async getLastActionTime(actionId) {
+    return null;
+  },
+  async setLastActionTime(actionId, timestamp) {},
+  async getDailyUsage(featureType) {
+    return 0;
+  }
 };
 
 module.exports = ValidationMixin;

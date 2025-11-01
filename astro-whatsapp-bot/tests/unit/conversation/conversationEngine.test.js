@@ -10,7 +10,15 @@ jest.mock('../../../src/services/astrology/astrologyEngine');
 jest.mock('../../../src/utils/logger');
 jest.mock('../../../src/conversation/flowLoader');
 
-const { getUserByPhone, createUser, addBirthDetails, updateUserProfile, getUserSession, setUserSession, deleteUserSession } = require('../../../src/models/userModel');
+const {
+  getUserByPhone,
+  createUser,
+  addBirthDetails,
+  updateUserProfile,
+  getUserSession,
+  setUserSession,
+  deleteUserSession
+} = require('../../../src/models/userModel');
 const { sendMessage } = require('../../../src/services/whatsapp/messageSender');
 const astrologyEngine = require('../../../src/services/astrology/astrologyEngine');
 const logger = require('../../../src/utils/logger');
@@ -40,7 +48,6 @@ describe('ConversationEngine', () => {
     });
   });
 
-
   describe('processFlowMessage', () => {
     it('should initialize session for new flow and access flow.start_step without temporal dead zone error', async() => {
       const message = {
@@ -53,7 +60,11 @@ describe('ConversationEngine', () => {
       };
       const flowId = 'test_flow';
 
-      const result = await conversationEngine.processFlowMessage(message, user, flowId);
+      const result = await conversationEngine.processFlowMessage(
+        message,
+        user,
+        flowId
+      );
 
       expect(result).toBe(true);
       expect(getUserSession).toHaveBeenCalledWith('+1234567890');
@@ -82,7 +93,11 @@ describe('ConversationEngine', () => {
       };
       const flowId = 'test_flow';
 
-      const result = await conversationEngine.processFlowMessage(message, user, flowId);
+      const result = await conversationEngine.processFlowMessage(
+        message,
+        user,
+        flowId
+      );
 
       expect(result).toBe(true);
       expect(setUserSession).not.toHaveBeenCalled();
@@ -99,7 +114,11 @@ describe('ConversationEngine', () => {
       };
       const flowId = 'test_flow';
 
-      const result = await conversationEngine.processFlowMessage(message, user, flowId);
+      const result = await conversationEngine.processFlowMessage(
+        message,
+        user,
+        flowId
+      );
 
       expect(result).toBe(true);
       // Should return early for interactive messages without processing validation
@@ -118,7 +137,11 @@ describe('ConversationEngine', () => {
       };
       const flowId = 'nonexistent_flow';
 
-      const result = await conversationEngine.processFlowMessage(message, user, flowId);
+      const result = await conversationEngine.processFlowMessage(
+        message,
+        user,
+        flowId
+      );
 
       expect(result).toBe(false);
       expect(sendMessage).toHaveBeenCalledWith(
@@ -139,10 +162,16 @@ describe('ConversationEngine', () => {
       };
       const flowId = 'test_flow';
 
-      const result = await conversationEngine.processFlowMessage(message, user, flowId);
+      const result = await conversationEngine.processFlowMessage(
+        message,
+        user,
+        flowId
+      );
 
       expect(result).toBe(false);
-      expect(logger.error).toHaveBeenCalledWith('❌ No phone number provided to processFlowMessage');
+      expect(logger.error).toHaveBeenCalledWith(
+        '❌ No phone number provided to processFlowMessage'
+      );
     });
   });
 });

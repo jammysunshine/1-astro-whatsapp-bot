@@ -35,7 +35,11 @@ class VedicAstrologyAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in VedicAstrologyAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -45,7 +49,8 @@ class VedicAstrologyAction extends BaseAction {
   async sendVedicAstrologyMenu() {
     const userLanguage = this.getUserLanguage();
 
-    const menuMessage = '🕉️ *Vedic Astrology - Ancient Wisdom*\n\n' +
+    const menuMessage =
+      '🕉️ *Vedic Astrology - Ancient Wisdom*\n\n' +
       'Jyotish (Vedic astrology) reveals your karmic path through ancient Indian spiritual science. Using Sidereal Zodiac and lunar-based calculations for profound life guidance.\n\n' +
       '*🕉️ SACRED FEATURES:*\n' +
       '• Complete Vedic Birth Chart (Kundli)\n' +
@@ -91,11 +96,7 @@ class VedicAstrologyAction extends BaseAction {
       userLanguage
     );
 
-    await sendMessage(
-      message.to,
-      message.interactive,
-      'interactive'
-    );
+    await sendMessage(message.to, message.interactive, 'interactive');
   }
 
   /**
@@ -103,7 +104,8 @@ class VedicAstrologyAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, there was an error loading the Vedic astrology menu. Please try typing "menu" to return to main navigation.';
+    const errorMessage =
+      '❌ Sorry, there was an error loading the Vedic astrology menu. Please try typing "menu" to return to main navigation.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -114,7 +116,8 @@ class VedicAstrologyAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Show Vedic astrology (Jyotish) features and navigation menu',
+      description:
+        'Show Vedic astrology (Jyotish) features and navigation menu',
       keywords: ['vedic', 'jyotish', 'hindu astrology', 'indian', 'kundli'],
       category: 'astrology',
       subscriptionRequired: false,

@@ -12,7 +12,8 @@ const logger = require('../../utils/logger');
 class RahukalamService extends ServiceTemplate {
   constructor() {
     this.serviceName = 'RahukalamService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
     logger.info('RahukalamService initialized');
   }
 
@@ -60,7 +61,8 @@ class RahukalamService extends ServiceTemplate {
       summary: result.summary || 'Rahukalam analysis completed',
       metadata: {
         system: 'Rahukalam Analysis',
-        calculationMethod: 'Vedic planetary period calculation with weekday-based timing',
+        calculationMethod:
+          'Vedic planetary period calculation with weekday-based timing',
         elements: ['Timing', 'Significance', 'Recommendations', 'Activities'],
         tradition: 'Vedic Hindu astrology with muhurta principles'
       }
@@ -163,19 +165,35 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get location coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate Rahukalam timing based on weekday
-      const rahukalamTiming = this._calculateRahukalamTiming(year, month, day, latitude, longitude, timezone);
+      const rahukalamTiming = this._calculateRahukalamTiming(
+        year,
+        month,
+        day,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Analyze Rahukalam significance for the date
-      const significanceAnalysis = this._analyzeRahukalamSignificance(rahukalamTiming);
+      const significanceAnalysis =
+        this._analyzeRahukalamSignificance(rahukalamTiming);
 
       // Generate timing recommendations
-      const recommendations = this._generateRahukalamRecommendations(rahukalamTiming, significanceAnalysis);
+      const recommendations = this._generateRahukalamRecommendations(
+        rahukalamTiming,
+        significanceAnalysis
+      );
 
       return {
         date: birthDate,
@@ -183,7 +201,11 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
         rahukalamTiming,
         significanceAnalysis,
         recommendations,
-        summary: this._generateRahukalamSummary(rahukalamTiming, significanceAnalysis, recommendations)
+        summary: this._generateRahukalamSummary(
+          rahukalamTiming,
+          significanceAnalysis,
+          recommendations
+        )
       };
     } catch (error) {
       logger.error('Error calculating Rahukalam:', error);
@@ -232,7 +254,8 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
       const planetaryPeriod = daylightDuration / 8;
 
       // Rahukalam starts at sunrise and comes in the order given above
-      const rahukalamStartDecimal = sunTimes.sunrise + ((dayInfo.order - 1) * planetaryPeriod);
+      const rahukalamStartDecimal =
+        sunTimes.sunrise + (dayInfo.order - 1) * planetaryPeriod;
       const rahukalamEndDecimal = rahukalamStartDecimal + planetaryPeriod;
 
       return {
@@ -249,10 +272,16 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
         }
       };
     } catch (error) {
-      logger.warn('Error calculating precise Rahukalam timing, using approximate:', error.message);
+      logger.warn(
+        'Error calculating precise Rahukalam timing, using approximate:',
+        error.message
+      );
 
       // Fallback to approximate timing based on weekday
-      const weekday = new Date(year, month - 1, day).toLocaleDateString('en-US', { weekday: 'long' });
+      const weekday = new Date(year, month - 1, day).toLocaleDateString(
+        'en-US',
+        { weekday: 'long' }
+      );
       const approximateTimings = {
         Sunday: { startTime: '07:30', endTime: '09:00', duration: 90 },
         Monday: { startTime: '09:00', endTime: '10:30', duration: 90 },
@@ -263,7 +292,11 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
         Saturday: { startTime: '16:30', endTime: '18:00', duration: 90 }
       };
 
-      const timing = approximateTimings[weekday] || { startTime: '12:00', endTime: '13:30', duration: 90 };
+      const timing = approximateTimings[weekday] || {
+        startTime: '12:00',
+        endTime: '13:30',
+        duration: 90
+      };
 
       return {
         weekday,
@@ -292,7 +325,8 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
       name: 'Rahukalam',
       sanskrit: 'राहुकालम्',
       translation: 'Time of Rahu',
-      mythology: 'Period ruled by Rahu, the shadow planet representing illusion, deception, and obstacles',
+      mythology:
+        'Period ruled by Rahu, the shadow planet representing illusion, deception, and obstacles',
       duration: `${rahukalamTiming.durationMinutes} minutes`,
       planetaryInfluence: `Ruled by ${rahukalamTiming.planetaryLord}`,
       characteristics: [
@@ -407,7 +441,11 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
    * @param {Object} recommendations - Recommendations
    * @returns {string} Summary text
    */
-  _generateRahukalamSummary(rahukalamTiming, significanceAnalysis, recommendations) {
+  _generateRahukalamSummary(
+    rahukalamTiming,
+    significanceAnalysis,
+    recommendations
+  ) {
     let summary = '🌑 *Rahukalam Analysis*\n\n';
 
     summary += `*Date:* ${rahukalamTiming.date}\n`;
@@ -416,8 +454,10 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
     summary += `*Planetary Lord:* ${rahukalamTiming.planetaryLord}\n\n`;
 
     summary += '*Significance:*\n';
-    summary += 'Rahukalam is an inauspicious period ruled by Rahu, representing illusion and obstacles. ';
-    summary += 'It\'s advisable to avoid important activities during this time.\n\n';
+    summary +=
+      'Rahukalam is an inauspicious period ruled by Rahu, representing illusion and obstacles. ';
+    summary +=
+      'It\'s advisable to avoid important activities during this time.\n\n';
 
     summary += '*Activities to Avoid:*\n';
     significanceAnalysis.activitiesToAvoid.slice(0, 4).forEach(activity => {
@@ -443,18 +483,18 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
       // Use geocoding service to get coordinates
       // This is a simplified implementation - would connect to actual geocoding service
       const defaultCoords = {
-        'New Delhi': [28.6139, 77.2090],
-        Mumbai: [19.0760, 72.8777],
+        'New Delhi': [28.6139, 77.209],
+        Mumbai: [19.076, 72.8777],
         Bangalore: [12.9716, 77.5946],
         Chennai: [13.0827, 80.2707],
         Kolkata: [22.5726, 88.3639]
       };
 
-      const coords = defaultCoords[place] || [28.6139, 77.2090]; // Default to Delhi
+      const coords = defaultCoords[place] || [28.6139, 77.209]; // Default to Delhi
       return coords;
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Default to Delhi
+      return [28.6139, 77.209]; // Default to Delhi
     }
   }
 
@@ -475,8 +515,14 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
 
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y +
-               Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
 
     // Add time fraction
     const timeFraction = (hour - 12) / 24;
@@ -488,21 +534,27 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
       // Simplified sunrise/sunset calculation
       // In reality, would use sweph.houses() or similar for accurate calculation
       const declination = 23.44 * Math.sin((jd - 2451545) * 0.017202); // Approximate
-      const hourAngle = Math.acos(-Math.tan(latitude * Math.PI / 180) * Math.tan(declination * Math.PI / 180));
+      const hourAngle = Math.acos(
+        -Math.tan((latitude * Math.PI) / 180) *
+          Math.tan((declination * Math.PI) / 180)
+      );
 
-      const noon = 12 + (longitude / 15); // Local noon
-      const sunrise = noon - (hourAngle * 12 / Math.PI);
-      const sunset = noon + (hourAngle * 12 / Math.PI);
+      const noon = 12 + longitude / 15; // Local noon
+      const sunrise = noon - (hourAngle * 12) / Math.PI;
+      const sunset = noon + (hourAngle * 12) / Math.PI;
 
       return {
         sunrise: Math.max(6, Math.min(18, sunrise)), // Clamp between 6AM-6PM
-        sunset: Math.max(18, Math.min(24, sunset))   // Clamp between 6PM-12AM
+        sunset: Math.max(18, Math.min(24, sunset)) // Clamp between 6PM-12AM
       };
     } catch (error) {
-      logger.warn('Error calculating sun times, using defaults:', error.message);
+      logger.warn(
+        'Error calculating sun times, using defaults:',
+        error.message
+      );
       return {
-        sunrise: 6.0,  // 6:00 AM
-        sunset: 18.0   // 6:00 PM
+        sunrise: 6.0, // 6:00 AM
+        sunset: 18.0 // 6:00 PM
       };
     }
   }

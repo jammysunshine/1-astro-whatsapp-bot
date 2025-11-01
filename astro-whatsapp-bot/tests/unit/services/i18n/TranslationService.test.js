@@ -97,8 +97,12 @@ describe('TranslationService', () => {
     });
 
     it('should respect explicit language parameter', () => {
-      expect(TranslationService.detectLanguage('+919876543210', 'ar')).toBe('ar');
-      expect(TranslationService.detectLanguage('+447123456789', 'fr')).toBe('fr');
+      expect(TranslationService.detectLanguage('+919876543210', 'ar')).toBe(
+        'ar'
+      );
+      expect(TranslationService.detectLanguage('+447123456789', 'fr')).toBe(
+        'fr'
+      );
     });
 
     it('should handle invalid phone numbers gracefully', () => {
@@ -130,7 +134,10 @@ describe('TranslationService', () => {
     it('should return cached bundle if available and not expired', async() => {
       const mockBundle = { common: { welcome: 'Welcome!' } };
       TranslationService.resourceBundles.set('en', mockBundle);
-      TranslationService.cache.set('bundle_en', { timestamp: Date.now(), data: mockBundle });
+      TranslationService.cache.set('bundle_en', {
+        timestamp: Date.now(),
+        data: mockBundle
+      });
 
       const bundle = await TranslationService.loadResourceBundle('en');
 
@@ -140,10 +147,13 @@ describe('TranslationService', () => {
 
     it('should reload bundle if cache is expired', async() => {
       const mockBundle = { common: { welcome: 'Welcome!' } };
-      const expiredTime = Date.now() - (31 * 60 * 1000); // 31 minutes ago
+      const expiredTime = Date.now() - 31 * 60 * 1000; // 31 minutes ago
 
       TranslationService.resourceBundles.set('en', { old: 'data' });
-      TranslationService.cache.set('bundle_en', { timestamp: expiredTime, data: { old: 'data' } });
+      TranslationService.cache.set('bundle_en', {
+        timestamp: expiredTime,
+        data: { old: 'data' }
+      });
 
       fs.readFile.mockResolvedValue(JSON.stringify(mockBundle));
 
@@ -191,12 +201,20 @@ describe('TranslationService', () => {
     });
 
     it('should handle parameter interpolation', async() => {
-      const result = await TranslationService.translate('common.greeting', 'en', { name: 'John' });
+      const result = await TranslationService.translate(
+        'common.greeting',
+        'en',
+        { name: 'John' }
+      );
       expect(result).toBe('Hello John!');
     });
 
     it('should handle multiple parameters', async() => {
-      const result = await TranslationService.translate('astrology.sign', 'en', { sign: 'Leo' });
+      const result = await TranslationService.translate(
+        'astrology.sign',
+        'en',
+        { sign: 'Leo' }
+      );
       expect(result).toBe('Your sign is Leo');
     });
 
@@ -211,23 +229,35 @@ describe('TranslationService', () => {
         if (filePath.includes('hi.json')) {
           return Promise.resolve(JSON.stringify(mockBundleHi));
         }
-        return Promise.resolve(JSON.stringify({
-          common: { welcome: 'Welcome!', greeting: 'Hello {name}!' },
-          astrology: { sign: 'Your sign is {sign}' }
-        }));
+        return Promise.resolve(
+          JSON.stringify({
+            common: { welcome: 'Welcome!', greeting: 'Hello {name}!' },
+            astrology: { sign: 'Your sign is {sign}' }
+          })
+        );
       });
 
-      const result = await TranslationService.translate('common.greeting', 'hi', { name: 'John' });
+      const result = await TranslationService.translate(
+        'common.greeting',
+        'hi',
+        { name: 'John' }
+      );
       expect(result).toBe('Hello John!'); // Should fallback to English
     });
 
     it('should return key if translation not found in any language', async() => {
-      const result = await TranslationService.translate('nonexistent.key', 'en');
+      const result = await TranslationService.translate(
+        'nonexistent.key',
+        'en'
+      );
       expect(result).toBe('nonexistent.key');
     });
 
     it('should handle nested key access', async() => {
-      const result = await TranslationService.translate('astrology.error', 'en');
+      const result = await TranslationService.translate(
+        'astrology.error',
+        'en'
+      );
       expect(result).toBe('Error occurred');
     });
 
@@ -269,8 +299,14 @@ describe('TranslationService', () => {
 
       fs.readFile.mockResolvedValue(JSON.stringify(mockBundle));
 
-      const exists = await TranslationService.hasTranslation('common.welcome', 'en');
-      const notExists = await TranslationService.hasTranslation('common.missing', 'en');
+      const exists = await TranslationService.hasTranslation(
+        'common.welcome',
+        'en'
+      );
+      const notExists = await TranslationService.hasTranslation(
+        'common.missing',
+        'en'
+      );
 
       expect(exists).toBe(true);
       expect(notExists).toBe(false);
@@ -300,7 +336,10 @@ describe('TranslationService', () => {
   describe('reloadBundles', () => {
     it('should clear cache and reload bundles', async() => {
       TranslationService.resourceBundles.set('en', { old: 'data' });
-      TranslationService.cache.set('en', { timestamp: Date.now(), data: { old: 'data' } });
+      TranslationService.cache.set('en', {
+        timestamp: Date.now(),
+        data: { old: 'data' }
+      });
 
       await TranslationService.reloadBundles();
 
@@ -322,7 +361,11 @@ describe('TranslationService', () => {
 
       fs.readFile.mockResolvedValue(JSON.stringify(mockBundle));
 
-      const result = await TranslationService.translate('common.greeting', 'en', null);
+      const result = await TranslationService.translate(
+        'common.greeting',
+        'en',
+        null
+      );
       expect(result).toBe('Hello {name}!'); // Should not interpolate
     });
 
@@ -333,7 +376,10 @@ describe('TranslationService', () => {
 
       fs.readFile.mockResolvedValue(JSON.stringify(mockBundle));
 
-      const result = await TranslationService.translate('common.greeting', 'en');
+      const result = await TranslationService.translate(
+        'common.greeting',
+        'en'
+      );
       expect(result).toBe('Hello {name}!'); // Should keep placeholder
     });
   });
@@ -356,8 +402,11 @@ describe('TranslationService', () => {
       fs.readFile.mockResolvedValue(JSON.stringify(mockBundle));
 
       // Set cache with expired timestamp
-      const expiredTime = Date.now() - (35 * 60 * 1000); // 35 minutes ago
-      TranslationService.cache.set('en', { timestamp: expiredTime, data: mockBundle });
+      const expiredTime = Date.now() - 35 * 60 * 1000; // 35 minutes ago
+      TranslationService.cache.set('en', {
+        timestamp: expiredTime,
+        data: mockBundle
+      });
 
       await TranslationService.translate('common.welcome', 'en');
 

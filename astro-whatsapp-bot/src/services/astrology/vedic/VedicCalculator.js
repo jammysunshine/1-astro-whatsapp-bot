@@ -14,7 +14,9 @@ class VedicCalculator {
    * Initialize the calculator with required modules
    */
   async initialize() {
-    if (this.initialized) { return; }
+    if (this.initialized) {
+      return;
+    }
 
     try {
       // Import specialized calculators dynamically to avoid circular dependencies

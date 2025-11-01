@@ -43,7 +43,10 @@ class ChartGenerator {
             break;
           }
         } catch (pathError) {
-          logger.debug(`Failed to set ephemeris path ${ephePath}:`, pathError.message);
+          logger.debug(
+            `Failed to set ephemeris path ${ephePath}:`,
+            pathError.message
+          );
         }
       }
 
@@ -59,7 +62,10 @@ class ChartGenerator {
         logger.warn('Could not set ayanamsa:', ayanamsaError.message);
       }
     } catch (error) {
-      logger.error('❌ Critical error initializing Swiss Ephemeris in ChartGenerator:', error);
+      logger.error(
+        '❌ Critical error initializing Swiss Ephemeris in ChartGenerator:',
+        error
+      );
     }
   }
 
@@ -89,7 +95,8 @@ class ChartGenerator {
       const parsedTime = this._parseBirthTime(birthTime);
 
       // Get coordinates and timezone
-      const coordinates = await this.geocodingService.getCoordinates(birthPlace);
+      const coordinates =
+        await this.geocodingService.getCoordinates(birthPlace);
 
       // Generate basic chart first to get lagna
       const basicChart = await this.generateWesternBirthChart(birthData);
@@ -98,10 +105,16 @@ class ChartGenerator {
       this.lagnaLongitude = basicChart.ascendant.longitude;
 
       // Calculate Vedic houses using traditional equal house system
-      const vedicHouses = this._calculateVedicHouses(this.lagnaLongitude, coordinates.latitude);
+      const vedicHouses = this._calculateVedicHouses(
+        this.lagnaLongitude,
+        coordinates.latitude
+      );
 
       // Calculate all planetary positions with Vedic adjustments
-      const vedicPlanets = await this._calculateVedicPlanetaryPositions(birthData, vedicHouses);
+      const vedicPlanets = await this._calculateVedicPlanetaryPositions(
+        birthData,
+        vedicHouses
+      );
 
       // Calculate aspects using Vedic principles
       const vedicAspects = this._calculateVedicAspects(vedicPlanets);
@@ -112,13 +125,19 @@ class ChartGenerator {
 
       try {
         if (this.services && this.services.calculateVargaChart) {
-          navamsaChart = await this.services.calculateVargaChart(birthData, 'D9');
+          navamsaChart = await this.services.calculateVargaChart(
+            birthData,
+            'D9'
+          );
         }
         if (this.services && this.services.calculateVimshottariDasha) {
           dashas = await this.services.calculateVimshottariDasha(birthData);
         }
       } catch (serviceError) {
-        logger.warn('Could not get enhanced chart data from services:', serviceError.message);
+        logger.warn(
+          'Could not get enhanced chart data from services:',
+          serviceError.message
+        );
       }
 
       return {
@@ -130,14 +149,17 @@ class ChartGenerator {
           time: birthTime,
           place: birthPlace,
           coordinates,
-          timezone: this._getTimezoneFromCoordinates(coordinates.latitude, coordinates.longitude)
+          timezone: this._getTimezoneFromCoordinates(
+            coordinates.latitude,
+            coordinates.longitude
+          )
         },
         lagna: {
           sign: basicChart.ascendant.sign,
           longitude: this.lagnaLongitude,
           degrees: Math.floor(this.lagnaLongitude % 30),
           minutes: Math.floor((this.lagnaLongitude % 1) * 60),
-          seconds: Math.floor(((this.lagnaLongitude % 1) * 60 % 1) * 60)
+          seconds: Math.floor((((this.lagnaLongitude % 1) * 60) % 1) * 60)
         },
         houses: vedicHouses,
         planetaryPositions: vedicPlanets,
@@ -146,7 +168,11 @@ class ChartGenerator {
         rasiChart: this._generateRasiChart(vedicPlanets),
         navamsaChart,
         dashas,
-        interpretations: this._generateVedicInterpretations(vedicPlanets, vedicHouses, vedicAspects)
+        interpretations: this._generateVedicInterpretations(
+          vedicPlanets,
+          vedicHouses,
+          vedicAspects
+        )
       };
     } catch (error) {
       logger.error('❌ Error in Vedic kundli generation:', error);
@@ -166,7 +192,9 @@ class ChartGenerator {
    */
   _parseBirthDate(birthDate) {
     const cleanDate = birthDate.toString().replace(/\D/g, '');
-    let day; let month; let year;
+    let day;
+    let month;
+    let year;
 
     if (cleanDate.length === 6) {
       day = parseInt(cleanDate.substring(0, 2));
@@ -213,7 +241,20 @@ class ChartGenerator {
    */
   _calculateVedicHouses(lagnaLongitude, latitude) {
     const houses = {};
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
 
     for (let i = 1; i <= 12; i++) {
       const houseLongitude = (lagnaLongitude + (i - 1) * 30) % 360;
@@ -238,10 +279,18 @@ class ChartGenerator {
    */
   _getHouseLord(sign) {
     const lords = {
-      Aries: 'Mars', Taurus: 'Venus', Gemini: 'Mercury',
-      Cancer: 'Moon', Leo: 'Sun', Virgo: 'Mercury',
-      Libra: 'Venus', Scorpio: 'Mars', Sagittarius: 'Jupiter',
-      Capricorn: 'Saturn', Aquarius: 'Saturn', Pisces: 'Jupiter'
+      Aries: 'Mars',
+      Taurus: 'Venus',
+      Gemini: 'Mercury',
+      Cancer: 'Moon',
+      Leo: 'Sun',
+      Virgo: 'Mercury',
+      Libra: 'Venus',
+      Scorpio: 'Mars',
+      Sagittarius: 'Jupiter',
+      Capricorn: 'Saturn',
+      Aquarius: 'Saturn',
+      Pisces: 'Jupiter'
     };
     return lords[sign] || 'Unknown';
   }
@@ -258,7 +307,10 @@ class ChartGenerator {
     const vedicPositions = {};
 
     Object.entries(westernChart.planets).forEach(([planet, data]) => {
-      const house = this._getHouseFromLongitude(data.longitude, this._calculateHouseCusps(this.lagnaLongitude, westernChart.birthPlace));
+      const house = this._getHouseFromLongitude(
+        data.longitude,
+        this._calculateHouseCusps(this.lagnaLongitude, westernChart.birthPlace)
+      );
       const dignity = this._calculatePlanetaryDignity(planet, data.sign);
 
       vedicPositions[planet] = {
@@ -335,7 +387,20 @@ class ChartGenerator {
    * @returns {string} Dignity description
    */
   _calculatePlanetaryDignity(planet, sign) {
-    const signOrder = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signOrder = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
 
     const dignityRules = {
       sun: {
@@ -383,12 +448,22 @@ class ChartGenerator {
     };
 
     const rules = dignityRules[planet.toLowerCase()];
-    if (!rules) { return 'Neutral'; }
+    if (!rules) {
+      return 'Neutral';
+    }
 
-    if (rules.ownSigns.includes(sign)) { return 'Own Sign'; }
-    if (rules.exalted === sign) { return 'Exalted'; }
-    if (rules.debilitated === sign) { return 'Debilitated'; }
-    if (rules.friendlySigns.includes(sign)) { return 'Friendly'; }
+    if (rules.ownSigns.includes(sign)) {
+      return 'Own Sign';
+    }
+    if (rules.exalted === sign) {
+      return 'Exalted';
+    }
+    if (rules.debilitated === sign) {
+      return 'Debilitated';
+    }
+    if (rules.friendlySigns.includes(sign)) {
+      return 'Friendly';
+    }
 
     return 'Neutral';
   }
@@ -441,7 +516,8 @@ class ChartGenerator {
     ];
 
     for (const aspect of aspects) {
-      if (Math.abs(minAngle - aspect.angle) <= 8) { // 8 degree orb
+      if (Math.abs(minAngle - aspect.angle) <= 8) {
+        // 8 degree orb
         return aspect;
       }
     }
@@ -509,16 +585,30 @@ class ChartGenerator {
       const { hour, minute } = parsedTime;
 
       // Get coordinates and timezone
-      const coordinates = await this.geocodingService.getCoordinates(birthPlace);
+      const coordinates =
+        await this.geocodingService.getCoordinates(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneFromCoordinates(coordinates.latitude, coordinates.longitude);
+      const timezone = await this._getTimezoneFromCoordinates(
+        coordinates.latitude,
+        coordinates.longitude
+      );
 
       // Calculate Julian Day with timezone correction
-      const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+      const jd = this._dateToJulianDay(
+        year,
+        month,
+        day,
+        hour + minute / 60 - timezone
+      );
 
       // Calculate houses using Placidus system
-      const houses = this._calculateHouses(jd, coordinates.latitude, coordinates.longitude, houseSystem);
+      const houses = this._calculateHouses(
+        jd,
+        coordinates.latitude,
+        coordinates.longitude,
+        houseSystem
+      );
 
       // Calculate planetary positions
       const planets = {};
@@ -537,13 +627,29 @@ class ChartGenerator {
           const position = sweph.calc(jd, planetId, sweph.SEFLG_SIDEREAL);
           if (position && position.longitude !== undefined) {
             const longitude = position.longitude[0] || position.longitude;
-            const speed = (position.longitude[1] || position.speed || 0);
+            const speed = position.longitude[1] || position.speed || 0;
 
             const signIndex = Math.floor(longitude / 30);
-            const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+            const signs = [
+              'Aries',
+              'Taurus',
+              'Gemini',
+              'Cancer',
+              'Leo',
+              'Virgo',
+              'Libra',
+              'Scorpio',
+              'Sagittarius',
+              'Capricorn',
+              'Aquarius',
+              'Pisces'
+            ];
 
             // Calculate house position
-            const house = this._getHouseFromLongitude(longitude, houses.houseCusps);
+            const house = this._getHouseFromLongitude(
+              longitude,
+              houses.houseCusps
+            );
 
             planets[planetName] = {
               name: planetName.charAt(0).toUpperCase() + planetName.slice(1),
@@ -556,12 +662,15 @@ class ChartGenerator {
               position: {
                 degrees: Math.floor(longitude % 30),
                 minutes: Math.floor((longitude % 1) * 60),
-                seconds: Math.floor(((longitude % 1) * 60 % 1) * 60)
+                seconds: Math.floor((((longitude % 1) * 60) % 1) * 60)
               }
             };
           }
         } catch (error) {
-          logger.warn(`Error calculating ${planetName} position:`, error.message);
+          logger.warn(
+            `Error calculating ${planetName} position:`,
+            error.message
+          );
         }
       }
 
@@ -587,7 +696,9 @@ class ChartGenerator {
       };
     } catch (error) {
       logger.error('❌ Error in Western birth chart generation:', error);
-      throw new Error(`Western birth chart generation failed: ${error.message}`);
+      throw new Error(
+        `Western birth chart generation failed: ${error.message}`
+      );
     }
   }
 
@@ -611,7 +722,11 @@ class ChartGenerator {
         system,
         ascendant: houses.ascendant || 0,
         mc: houses.mc || 0,
-        houseCusps: houses.house || new Array(12).fill(0).map((_, i) => (houses.ascendant + i * 30) % 360)
+        houseCusps:
+          houses.house ||
+          new Array(12)
+            .fill(0)
+            .map((_, i) => (houses.ascendant + i * 30) % 360)
       };
     } catch (error) {
       logger.warn('Error calculating houses, using default:', error.message);
@@ -620,7 +735,9 @@ class ChartGenerator {
         system,
         ascendant,
         mc: (ascendant + 90) % 360,
-        houseCusps: new Array(12).fill(0).map((_, i) => (ascendant + i * 30) % 360)
+        houseCusps: new Array(12)
+          .fill(0)
+          .map((_, i) => (ascendant + i * 30) % 360)
       };
     }
   }
@@ -632,8 +749,20 @@ class ChartGenerator {
    * @returns {string} Zodiac sign
    */
   _getSignFromLongitude(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs[Math.floor(longitude / 30) % 12];
   }
 
@@ -649,7 +778,10 @@ class ChartGenerator {
 
     for (let i = 0; i < planetList.length; i++) {
       for (let j = i + 1; j < planetList.length; j++) {
-        const aspect = this._calculateAspectBetweenPlanets(planetList[i], planetList[j]);
+        const aspect = this._calculateAspectBetweenPlanets(
+          planetList[i],
+          planetList[j]
+        );
         if (aspect) {
           aspects.push(aspect);
         }
@@ -742,7 +874,14 @@ class ChartGenerator {
       const a = Math.floor((14 - month) / 12);
       const y = year + 4800 - a;
       const m = month + 12 * a - 3;
-      const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+      const jd =
+        day +
+        Math.floor((153 * m + 2) / 5) +
+        365 * y +
+        Math.floor(y / 4) -
+        Math.floor(y / 100) +
+        Math.floor(y / 400) -
+        32045;
       return jd + hour / 24;
     } catch (error) {
       logger.warn('Error calculating Julian Day:', error.message);
@@ -772,8 +911,12 @@ class ChartGenerator {
    * @returns {string} Personality description
    */
   _interpretPersonality(planets) {
-    const sunSign = Object.values(planets).find(p => p.name.toLowerCase() === 'sun')?.sign;
-    const moonSign = Object.values(planets).find(p => p.name.toLowerCase() === 'moon')?.sign;
+    const sunSign = Object.values(planets).find(
+      p => p.name.toLowerCase() === 'sun'
+    )?.sign;
+    const moonSign = Object.values(planets).find(
+      p => p.name.toLowerCase() === 'moon'
+    )?.sign;
     const ascendantSign = this._getSignFromLongitude(this.lagnaLongitude);
 
     return `Your core personality is influenced by ${sunSign} Sun, ${moonSign} Moon, and ${ascendantSign} rising. This creates a unique blend of characteristics.`;

@@ -13,7 +13,9 @@ class HoraryService {
     // NOTE: HoraryInterpreter circular dependency - we'll create it inline for now
     // TODO: Implement proper module structure to avoid circular imports
 
-    logger.info('Module: HoraryService initialized - Complete horary astrology system');
+    logger.info(
+      'Module: HoraryService initialized - Complete horary astrology system'
+    );
   }
 
   /**
@@ -32,7 +34,8 @@ class HoraryService {
           question,
           valid: false,
           reason: validation.reason,
-          advice: 'Please ask a clear, specific question about a matter of genuine concern.'
+          advice:
+            'Please ask a clear, specific question about a matter of genuine concern.'
         };
       }
 
@@ -60,8 +63,13 @@ class HoraryService {
         questionAnalysis,
         answer,
         timing: this.determineTiming(refinedChart),
-        disclaimer: '⚠️ *Important Disclaimer:* This horary reading uses simplified calculations for educational purposes. Real horary astrology requires precise astronomical data and should be interpreted by a professional astrologer. Results should not be used for major life decisions.',
-        horaryDescription: this.generateHoraryDescription(refinedChart, judge, answer)
+        disclaimer:
+          '⚠️ *Important Disclaimer:* This horary reading uses simplified calculations for educational purposes. Real horary astrology requires precise astronomical data and should be interpreted by a professional astrologer. Results should not be used for major life decisions.',
+        horaryDescription: this.generateHoraryDescription(
+          refinedChart,
+          judge,
+          answer
+        )
       };
     } catch (error) {
       logger.error('Error generating horary reading:', error);
@@ -69,7 +77,8 @@ class HoraryService {
         question,
         valid: false,
         error: 'Unable to generate horary reading at this time',
-        fallback: 'Horary astrology reveals the answer hidden in the stars at the moment of your question'
+        fallback:
+          'Horary astrology reveals the answer hidden in the stars at the moment of your question'
       };
     }
   }
@@ -99,7 +108,8 @@ class HoraryService {
       if (lowerQuestion.includes(word)) {
         return {
           isValid: false,
-          reason: 'This type of question is not appropriate for horary astrology as it deals with harmful or speculative matters.'
+          reason:
+            'This type of question is not appropriate for horary astrology as it deals with harmful or speculative matters.'
         };
       }
     }
@@ -118,7 +128,8 @@ class HoraryService {
     if (!isQuestion) {
       return {
         isValid: false,
-        reason: 'Please ask a clear question. Horary astrology works best with specific inquiries.'
+        reason:
+          'Please ask a clear question. Horary astrology works best with specific inquiries.'
       };
     }
 
@@ -126,7 +137,8 @@ class HoraryService {
     if (question.length < 10) {
       return {
         isValid: false,
-        reason: 'Please provide more detail in your question for a meaningful horary reading.'
+        reason:
+          'Please provide more detail in your question for a meaningful horary reading.'
       };
     }
 
@@ -169,11 +181,16 @@ class HoraryService {
       love: /(love|relationship|marriage|partner|boyfriend|girlfriend|romance|affection)/,
       career: /(career|job|work|profession|business|promotion|boss|colleague)/,
       health: /(health|illness|doctor|medical|body|pain|disease|sick|recovery)/,
-      money: /(money|finance|financial|rich|poor|debt|investment|salary|income)/,
-      travel: /(travel|journey|trip|visit|location|place|distance|abroad|vacation)/,
-      family: /(family|parent|father|mother|child|children|sibling|brother|sister|home|house)/,
-      legal: /(legal|law|court|contract|agreement|police|justice|lawsuit|divorce)/,
-      spiritual: /(spiritual|spirit|god|soul|divine|sacred|religion|meditation|karma)/
+      money:
+        /(money|finance|financial|rich|poor|debt|investment|salary|income)/,
+      travel:
+        /(travel|journey|trip|visit|location|place|distance|abroad|vacation)/,
+      family:
+        /(family|parent|father|mother|child|children|sibling|brother|sister|home|house)/,
+      legal:
+        /(legal|law|court|contract|agreement|police|justice|lawsuit|divorce)/,
+      spiritual:
+        /(spiritual|spirit|god|soul|divine|sacred|religion|meditation|karma)/
     };
 
     // Check patterns
@@ -224,7 +241,9 @@ class HoraryService {
     // Check moon position (moon is co-significator)
     const moonPosition = chart.planetaryPositions.moon;
     if (moonPosition) {
-      indicators.push(`Moon in ${moonPosition.sign} (house ${moonPosition.house})`);
+      indicators.push(
+        `Moon in ${moonPosition.sign} (house ${moonPosition.house})`
+      );
     }
 
     // Check judge position
@@ -232,12 +251,16 @@ class HoraryService {
     const judge = calculator.determineJudge(chart, '');
     const judgePosition = chart.planetaryPositions[judge.planet];
     if (judgePosition) {
-      indicators.push(`${judge.name} in ${judgePosition.sign} (house ${judgePosition.house})`);
+      indicators.push(
+        `${judge.name} in ${judgePosition.sign} (house ${judgePosition.house})`
+      );
     }
 
     // Add category-specific indicators
     if (category === 'love') {
-      indicators.push('Venus and Mars positions indicate relationship dynamics');
+      indicators.push(
+        'Venus and Mars positions indicate relationship dynamics'
+      );
     } else if (category === 'career') {
       indicators.push('Saturn and Jupiter show career development');
     }
@@ -288,8 +311,11 @@ class HoraryService {
 
     // Angular houses generally indicate positive outcomes
     if ([1, 4, 7, 10].includes(judgeHouse)) {
-      return judge.planet === 'mars' ? 'No (Mars denies in angular house)' :
-        judge.planet === 'saturn' ? 'Delayed, but eventually yes' : 'Yes';
+      return judge.planet === 'mars' ?
+        'No (Mars denies in angular house)' :
+        judge.planet === 'saturn' ?
+          'Delayed, but eventually yes' :
+          'Yes';
     }
 
     // Cadent houses may indicate no or delay
@@ -353,11 +379,15 @@ class HoraryService {
     // House-based advice
     const relevantHouse = questionAnalysis.relevantHouses[0];
     if (relevantHouse) {
-      advice.push(`Focus attention on matters of ${relevantHouse.meaning.toLowerCase()}.`);
+      advice.push(
+        `Focus attention on matters of ${relevantHouse.meaning.toLowerCase()}.`
+      );
     }
 
     // Planetary hour advice
-    advice.push(`The planetary hour of ${chart.planetaryHour} suggests ${this.getHourAdvice(chart.planetaryHour)}.`);
+    advice.push(
+      `The planetary hour of ${chart.planetaryHour} suggests ${this.getHourAdvice(chart.planetaryHour)}.`
+    );
 
     // Add specific advice based on question category
     if (questionAnalysis.category === 'love') {
@@ -399,14 +429,18 @@ class HoraryService {
     // Check for challenging planetary positions
     Object.entries(chart.planetaryPositions).forEach(([planet, position]) => {
       if ([6, 8, 12].includes(position.house)) {
-        warnings.push(`${planet} in challenging house ${position.house} suggests obstacles or delays.`);
+        warnings.push(
+          `${planet} in challenging house ${position.house} suggests obstacles or delays.`
+        );
       }
     });
 
     // Check retrograde status (simplified - full implementation would need speed)
     const moonSpeed = chart.planetaryPositions.moon?.speed || 0;
     if (moonSpeed < 0) {
-      warnings.push('Moon is in apparent retrograde motion - internal reflection needed.');
+      warnings.push(
+        'Moon is in apparent retrograde motion - internal reflection needed.'
+      );
     }
 
     return warnings.slice(0, 3); // Limit to most important warnings
@@ -421,7 +455,8 @@ class HoraryService {
    */
   generateHoraryDescription(chart, judge, answer) {
     let description = '🔮 *Traditional Horary Astrology Reading*\n\n';
-    description += '⚠️ *Educational Disclaimer:* This horary reading uses calculations for demonstration. Traditional horary requires precise astronomical data and professional astrological expertise.\n\n';
+    description +=
+      '⚠️ *Educational Disclaimer:* This horary reading uses calculations for demonstration. Traditional horary requires precise astronomical data and professional astrological expertise.\n\n';
 
     // Chart casting info
     description += `⏰ *Chart Cast:* ${chart.questionTime.day}/${chart.questionTime.month}/${chart.questionTime.year} ${String(chart.questionTime.hour).padStart(2, '0')}:${String(chart.questionTime.minute).padStart(2, '0')}\n`;
@@ -470,11 +505,14 @@ class HoraryService {
     description += '📚 *Traditional Horary Principles:*\n';
     description += '• The ascendant represents the querent (questioner)\n';
     description += '• The judge shows the outcome and final answer\n';
-    description += '• Angular houses (1,4,7,10) indicate strength and success\n';
+    description +=
+      '• Angular houses (1,4,7,10) indicate strength and success\n';
     description += '• The Moon reveals the emotional truth of the matter\n';
-    description += '• Early degrees suggest early timing, late degrees delayed\n\n';
+    description +=
+      '• Early degrees suggest early timing, late degrees delayed\n\n';
 
-    description += '*🔮 Remember: Horary astrology reveals the "truth of the hour" when your question was asked. This reading reflects the astrological wisdom of that moment. Consult professional astrologers for complex life matters.*';
+    description +=
+      '*🔮 Remember: Horary astrology reveals the "truth of the hour" when your question was asked. This reading reflects the astrological wisdom of that moment. Consult professional astrologers for complex life matters.*';
 
     return description;
   }
@@ -487,7 +525,8 @@ class HoraryService {
     return {
       planetaryRulers: Object.keys(this.config.getAllPlanetaryRulers()).length,
       houseMeanings: Object.keys(this.config.getAllHouseMeanings()).length,
-      questionCategories: Object.keys(this.config.getAllQuestionCategories()).length,
+      questionCategories: Object.keys(this.config.getAllQuestionCategories())
+        .length,
       planetaryHours: 24, // Fixed 24 planetary hours
       capabilities: [
         'Question Validation',
@@ -497,7 +536,8 @@ class HoraryService {
         'Timing Analysis',
         'Traditional Interpretation'
       ],
-      description: 'Complete traditional horary astrology system with question-based divination, planetary rulers, house meanings, and authentic astrological wisdom'
+      description:
+        'Complete traditional horary astrology system with question-based divination, planetary rulers, house meanings, and authentic astrological wisdom'
     };
   }
 
@@ -514,7 +554,9 @@ class HoraryService {
       const invalidQuestion = this.validateQuestion('');
 
       // Test question categorization
-      const testCategory = this.categorizeQuestion('Will my relationship improve?');
+      const testCategory = this.categorizeQuestion(
+        'Will my relationship improve?'
+      );
 
       // Test reading generation (basic test)
       const mockChart = {
@@ -535,23 +577,46 @@ class HoraryService {
 
       const mockAnalysis = { category: 'love', relevantHouses: [] };
 
-      const testAnswer = this.generateAnswer(mockChart, mockJudge, mockAnalysis);
-      const testDescription = this.generateHoraryDescription(mockChart, mockJudge, { yesNo: 'Yes', confidence: 'High', timing: 'Soon', advice: 'Trust your instincts', warnings: [] });
+      const testAnswer = this.generateAnswer(
+        mockChart,
+        mockJudge,
+        mockAnalysis
+      );
+      const testDescription = this.generateHoraryDescription(
+        mockChart,
+        mockJudge,
+        {
+          yesNo: 'Yes',
+          confidence: 'High',
+          timing: 'Soon',
+          advice: 'Trust your instincts',
+          warnings: []
+        }
+      );
 
       const catalog = this.getHoraryCatalog();
 
       return {
         system: {
-          healthy: configHealth.healthy && validQuestion.isValid && !invalidQuestion.isValid && testCategory && testAnswer && testDescription,
+          healthy:
+            configHealth.healthy &&
+            validQuestion.isValid &&
+            !invalidQuestion.isValid &&
+            testCategory &&
+            testAnswer &&
+            testDescription,
           version: '1.0.0',
           name: 'Complete Traditional Horary Astrology System',
-          databaseComplete: catalog.planetaryRulers === 7 && catalog.houseMeanings === 12,
+          databaseComplete:
+            catalog.planetaryRulers === 7 && catalog.houseMeanings === 12,
           capabilities: catalog.capabilities.length
         },
         config: configHealth,
         validationTests: validQuestion.isValid && !invalidQuestion.isValid,
         generationTest: testDescription && testDescription.length > 0,
-        status: configHealth.healthy ? 'Fully Operational' : 'Configuration Issues',
+        status: configHealth.healthy ?
+          'Fully Operational' :
+          'Configuration Issues',
         knowledgeBase: catalog
       };
     } catch (error) {

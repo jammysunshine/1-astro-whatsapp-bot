@@ -45,15 +45,11 @@ class SessionManager {
         }
       }
 
-      await Session.findOneAndUpdate(
-        { phoneNumber },
-        update,
-        {
-          upsert: true, // Create if doesn't exist
-          new: true,
-          runValidators: true
-        }
-      );
+      await Session.findOneAndUpdate({ phoneNumber }, update, {
+        upsert: true, // Create if doesn't exist
+        new: true,
+        runValidators: true
+      });
     } catch (error) {
       this.logger.error(`❌ Error setting session for ${phoneNumber}:`, error);
       throw error;
@@ -91,9 +87,14 @@ class SessionManager {
       };
 
       await this.setUserSession(phoneNumber, sessionData);
-      this.logger.info(`🔄 Updated session flow for ${phoneNumber}: ${flowName} step ${step}`);
+      this.logger.info(
+        `🔄 Updated session flow for ${phoneNumber}: ${flowName} step ${step}`
+      );
     } catch (error) {
-      this.logger.error(`❌ Error updating session flow for ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error updating session flow for ${phoneNumber}:`,
+        error
+      );
       throw error;
     }
   }
@@ -112,7 +113,10 @@ class SessionManager {
       });
       this.logger.info(`🧹 Cleared session flow for ${phoneNumber}`);
     } catch (error) {
-      this.logger.error(`❌ Error clearing session flow for ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error clearing session flow for ${phoneNumber}:`,
+        error
+      );
       throw error;
     }
   }
@@ -125,12 +129,17 @@ class SessionManager {
   async isUserInFlow(phoneNumber) {
     try {
       const session = await this.getUserSession(phoneNumber);
-      return session &&
-             session.currentFlow &&
-             session.currentFlow !== 'undefined' &&
-             session.currentFlow !== undefined;
+      return (
+        session &&
+        session.currentFlow &&
+        session.currentFlow !== 'undefined' &&
+        session.currentFlow !== undefined
+      );
     } catch (error) {
-      this.logger.error(`❌ Error checking flow status for ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error checking flow status for ${phoneNumber}:`,
+        error
+      );
       return false;
     }
   }
@@ -152,7 +161,10 @@ class SessionManager {
         step: session.currentStep || 0
       };
     } catch (error) {
-      this.logger.error(`❌ Error getting flow info for ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error getting flow info for ${phoneNumber}:`,
+        error
+      );
       return { flowName: null, step: 0 };
     }
   }
@@ -171,9 +183,14 @@ class SessionManager {
       };
 
       await this.setUserSession(phoneNumber, sessionData);
-      this.logger.info(`🔄 Updated session menu for ${phoneNumber}: ${menuType}`);
+      this.logger.info(
+        `🔄 Updated session menu for ${phoneNumber}: ${menuType}`
+      );
     } catch (error) {
-      this.logger.error(`❌ Error updating session menu for ${phoneNumber}:`, error);
+      this.logger.error(
+        `❌ Error updating session menu for ${phoneNumber}:`,
+        error
+      );
       throw error;
     }
   }

@@ -35,15 +35,22 @@ class ChineseAstrologyService extends ServiceTemplate {
 
       // Generate additional insights
       const zodiacTraits = this._getZodiacTraits(chineseAnalysis.zodiacAnimal);
-      const elementInfluence = this._getElementInfluence(chineseAnalysis.element);
-      const compatibility = this._getCompatibilityInsights(chineseAnalysis.zodiacAnimal);
+      const elementInfluence = this._getElementInfluence(
+        chineseAnalysis.element
+      );
+      const compatibility = this._getCompatibilityInsights(
+        chineseAnalysis.zodiacAnimal
+      );
 
       return {
         chineseAnalysis,
         zodiacTraits,
         elementInfluence,
         compatibility,
-        summary: this._createComprehensiveSummary(chineseAnalysis, zodiacTraits)
+        summary: this._createComprehensiveSummary(
+          chineseAnalysis,
+          zodiacTraits
+        )
       };
     } catch (error) {
       logger.error('ChineseAstrologyService processCalculation error:', error);
@@ -88,7 +95,8 @@ class ChineseAstrologyService extends ServiceTemplate {
         calculationType: 'Chinese Astrology Analysis',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'Chinese Astrology provides insights into personality and destiny based on traditional Chinese zodiac and elemental cycles. It is a tool for self-understanding and understanding interpersonal dynamics, not a definitive prediction of the future. Interpretations should be used for personal reflection and guidance.'
+      disclaimer:
+        'Chinese Astrology provides insights into personality and destiny based on traditional Chinese zodiac and elemental cycles. It is a tool for self-understanding and understanding interpersonal dynamics, not a definitive prediction of the future. Interpretations should be used for personal reflection and guidance.'
     };
   }
 
@@ -141,18 +149,54 @@ class ChineseAstrologyService extends ServiceTemplate {
    */
   _getCompatibilityInsights(zodiacAnimal) {
     const compatibility = {
-      Rat: { bestMatch: ['Dragon', 'Monkey', 'Ox'], worstMatch: ['Horse', 'Rabbit', 'Rooster'] },
-      Ox: { bestMatch: ['Rat', 'Snake', 'Rooster'], worstMatch: ['Goat', 'Horse', 'Dog'] },
-      Tiger: { bestMatch: ['Horse', 'Dog', 'Dragon'], worstMatch: ['Monkey', 'Snake'] },
-      Rabbit: { bestMatch: ['Goat', 'Pig', 'Dog'], worstMatch: ['Rooster', 'Dragon', 'Rat'] },
-      Dragon: { bestMatch: ['Rat', 'Monkey', 'Rooster'], worstMatch: ['Ox', 'Rabbit', 'Dog'] },
-      Snake: { bestMatch: ['Ox', 'Rooster', 'Dragon'], worstMatch: ['Tiger', 'Pig'] },
-      Horse: { bestMatch: ['Tiger', 'Goat', 'Dog'], worstMatch: ['Rat', 'Ox', 'Rabbit'] },
-      Goat: { bestMatch: ['Rabbit', 'Pig', 'Horse'], worstMatch: ['Ox', 'Dog', 'Tiger'] },
-      Monkey: { bestMatch: ['Rat', 'Dragon', 'Snake'], worstMatch: ['Tiger', 'Pig'] },
-      Rooster: { bestMatch: ['Ox', 'Snake', 'Dragon'], worstMatch: ['Rabbit', 'Rat', 'Dog'] },
-      Dog: { bestMatch: ['Tiger', 'Rabbit', 'Horse'], worstMatch: ['Ox', 'Dragon', 'Rooster'] },
-      Pig: { bestMatch: ['Rabbit', 'Goat', 'Tiger'], worstMatch: ['Snake', 'Monkey'] }
+      Rat: {
+        bestMatch: ['Dragon', 'Monkey', 'Ox'],
+        worstMatch: ['Horse', 'Rabbit', 'Rooster']
+      },
+      Ox: {
+        bestMatch: ['Rat', 'Snake', 'Rooster'],
+        worstMatch: ['Goat', 'Horse', 'Dog']
+      },
+      Tiger: {
+        bestMatch: ['Horse', 'Dog', 'Dragon'],
+        worstMatch: ['Monkey', 'Snake']
+      },
+      Rabbit: {
+        bestMatch: ['Goat', 'Pig', 'Dog'],
+        worstMatch: ['Rooster', 'Dragon', 'Rat']
+      },
+      Dragon: {
+        bestMatch: ['Rat', 'Monkey', 'Rooster'],
+        worstMatch: ['Ox', 'Rabbit', 'Dog']
+      },
+      Snake: {
+        bestMatch: ['Ox', 'Rooster', 'Dragon'],
+        worstMatch: ['Tiger', 'Pig']
+      },
+      Horse: {
+        bestMatch: ['Tiger', 'Goat', 'Dog'],
+        worstMatch: ['Rat', 'Ox', 'Rabbit']
+      },
+      Goat: {
+        bestMatch: ['Rabbit', 'Pig', 'Horse'],
+        worstMatch: ['Ox', 'Dog', 'Tiger']
+      },
+      Monkey: {
+        bestMatch: ['Rat', 'Dragon', 'Snake'],
+        worstMatch: ['Tiger', 'Pig']
+      },
+      Rooster: {
+        bestMatch: ['Ox', 'Snake', 'Dragon'],
+        worstMatch: ['Rabbit', 'Rat', 'Dog']
+      },
+      Dog: {
+        bestMatch: ['Tiger', 'Rabbit', 'Horse'],
+        worstMatch: ['Ox', 'Dragon', 'Rooster']
+      },
+      Pig: {
+        bestMatch: ['Rabbit', 'Goat', 'Tiger'],
+        worstMatch: ['Snake', 'Monkey']
+      }
     };
     return compatibility[zodiacAnimal] || { bestMatch: [], worstMatch: [] };
   }
@@ -168,7 +212,8 @@ class ChineseAstrologyService extends ServiceTemplate {
     let summary = `Your Chinese Zodiac Animal is the ${chineseAnalysis.zodiacAnimal}, and your governing element is ${chineseAnalysis.element}. `;
     summary += `You are known for being ${zodiacTraits.toLowerCase().replace(/\.$/, '')} due to your animal sign. `;
     summary += `The influence of the ${chineseAnalysis.element} element further shapes your personality, making you more ${this._getElementInfluence(chineseAnalysis.element).toLowerCase().replace(/\.$/, '')}. `;
-    summary += 'This analysis provides a deeper understanding of your innate strengths, challenges, and compatibility according to traditional Chinese wisdom.';
+    summary +=
+      'This analysis provides a deeper understanding of your innate strengths, challenges, and compatibility according to traditional Chinese wisdom.';
     return summary;
   }
 
@@ -181,7 +226,12 @@ class ChineseAstrologyService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'chinese',
-      methods: ['processCalculation', 'getZodiacAnimalAnalysis', 'getElementInfluenceAnalysis', 'getCompatibilityAnalysis'],
+      methods: [
+        'processCalculation',
+        'getZodiacAnimalAnalysis',
+        'getElementInfluenceAnalysis',
+        'getCompatibilityAnalysis'
+      ],
       dependencies: [], // Managed by ServiceTemplate
       description: 'Service for Chinese astrology analysis and insights.'
     };

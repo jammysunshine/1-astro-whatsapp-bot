@@ -108,7 +108,10 @@ class AstrologyFormatterFactory {
       response += `*Overall Compatibility: ${score}%*\n\n`;
     }
 
-    if (compatibilityData.strengths && Array.isArray(compatibilityData.strengths)) {
+    if (
+      compatibilityData.strengths &&
+      Array.isArray(compatibilityData.strengths)
+    ) {
       response += '*💪 Strengths:*\n';
       compatibilityData.strengths.slice(0, 3).forEach(strength => {
         response += `• ${strength}\n`;
@@ -116,7 +119,10 @@ class AstrologyFormatterFactory {
       response += '\n';
     }
 
-    if (compatibilityData.challenges && Array.isArray(compatibilityData.challenges)) {
+    if (
+      compatibilityData.challenges &&
+      Array.isArray(compatibilityData.challenges)
+    ) {
       response += '*⚠️ Areas for Growth:*\n';
       compatibilityData.challenges.slice(0, 3).forEach(challenge => {
         response += `• ${challenge}\n`;
@@ -251,7 +257,9 @@ class AstrologyFormatterFactory {
    * @returns {string} Sanitized name
    */
   static sanitizeName(name) {
-    if (!name) { return 'Unknown'; }
+    if (!name) {
+      return 'Unknown';
+    }
     return name.replace(/[<>'"&]/g, '').substring(0, 50);
   }
 
@@ -266,8 +274,12 @@ class AstrologyFormatterFactory {
     if (chartData.birthDetails) {
       const { date, time, place } = chartData.birthDetails;
       info += `📅 ${date || 'Unknown'}`;
-      if (time) { info += ` ${time}`; }
-      if (place) { info += `\n📍 ${place}`; }
+      if (time) {
+        info += ` ${time}`;
+      }
+      if (place) {
+        info += `\n📍 ${place}`;
+      }
     }
 
     return `${info}\n`;
@@ -282,7 +294,17 @@ class AstrologyFormatterFactory {
     let response = '\n🪐 *Planetary Positions:*\n';
 
     const planets = chartData.planetaryPositions || chartData.planets || {};
-    const planetOrder = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+    const planetOrder = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn',
+      'Rahu',
+      'Ketu'
+    ];
 
     planetOrder.forEach(planet => {
       if (planets[planet]) {
@@ -314,11 +336,13 @@ class AstrologyFormatterFactory {
     }
 
     let response = '🏠 *House Cusps:*\n';
-    Object.entries(chartData.houses).slice(0, 12).forEach(([house, data]) => {
-      if (data && data.sign) {
-        response += `• House ${house}: ${data.sign}\n`;
-      }
-    });
+    Object.entries(chartData.houses)
+      .slice(0, 12)
+      .forEach(([house, data]) => {
+        if (data && data.sign) {
+          response += `• House ${house}: ${data.sign}\n`;
+        }
+      });
 
     return `${response}\n`;
   }
@@ -332,9 +356,10 @@ class AstrologyFormatterFactory {
     let response = '💫 *Chart Insights:*\n';
 
     if (chartData.kundliSummary) {
-      const summary = chartData.kundliSummary.length > 300 ?
-        `${chartData.kundliSummary.substring(0, 300)}...` :
-        chartData.kundliSummary;
+      const summary =
+        chartData.kundliSummary.length > 300 ?
+          `${chartData.kundliSummary.substring(0, 300)}...` :
+          chartData.kundliSummary;
       response += `${summary}\n\n`;
     }
 
@@ -361,7 +386,8 @@ class AstrologyFormatterFactory {
       disclaimer += '⚠️ *Note:* Chart calculation temporarily unavailable.\n';
     } else {
       disclaimer += '📋 *This is your basic birth chart overview.*\n';
-      disclaimer += '*For detailed analysis, consult with a certified astrologer.*\n';
+      disclaimer +=
+        '*For detailed analysis, consult with a certified astrologer.*\n';
     }
 
     return disclaimer;
@@ -376,16 +402,29 @@ class AstrologyFormatterFactory {
     let enhanced = text;
 
     const emojiMap = {
-      lucky: '🍀', fortunate: '🍀', blessed: '🍀',
-      challenges: '⚠️', difficulties: '⚠️',
-      love: '💕', romance: '💕', relationship: '💕',
-      career: '💼', work: '💼', job: '💼',
-      money: '💰', wealth: '💰', finance: '💰',
-      health: '🏥', wellness: '🏥'
+      lucky: '🍀',
+      fortunate: '🍀',
+      blessed: '🍀',
+      challenges: '⚠️',
+      difficulties: '⚠️',
+      love: '💕',
+      romance: '💕',
+      relationship: '💕',
+      career: '💼',
+      work: '💼',
+      job: '💼',
+      money: '💰',
+      wealth: '💰',
+      finance: '💰',
+      health: '🏥',
+      wellness: '🏥'
     };
 
     Object.entries(emojiMap).forEach(([keyword, emoji]) => {
-      enhanced = enhanced.replace(new RegExp(`\\b${keyword}\\b`, 'gi'), `${emoji} $&`);
+      enhanced = enhanced.replace(
+        new RegExp(`\\b${keyword}\\b`, 'gi'),
+        `${emoji} $&`
+      );
     });
 
     return enhanced;

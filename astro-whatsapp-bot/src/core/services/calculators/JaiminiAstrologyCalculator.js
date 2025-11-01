@@ -19,11 +19,19 @@ class JaiminiAstrologyCalculator {
       matruKaraka: 'Mother, home, and emotional security',
       putraKaraka: 'Children, creativity, and legacy',
       gnatiKaraka: 'Extended family and social connections',
-      daraKaraka: 'Spouse and one-on-one relationships'
+      daraKaraka: 'Spouse and one-on-one relationships',
     };
 
     // Chara karaka calculation order
-    this.karakaOrder = ['atmaKaraka', 'amatyakaraka', 'bhratruKaraka', 'matruKaraka', 'putraKaraka', 'gnatiKaraka', 'daraKaraka'];
+    this.karakaOrder = [
+      'atmaKaraka',
+      'amatyakaraka',
+      'bhratruKaraka',
+      'matruKaraka',
+      'putraKaraka',
+      'gnatiKaraka',
+      'daraKaraka',
+    ];
   }
 
   /**
@@ -43,7 +51,10 @@ class JaiminiAstrologyCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for Jaimini astrology analysis' };
+        return {
+          error:
+            'Complete birth details required for Jaimini astrology analysis',
+        };
       }
 
       // Parse birth details
@@ -51,25 +62,48 @@ class JaiminiAstrologyCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate natal chart
-      const natalChart = await this._calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const natalChart = await this._calculateNatalChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Calculate Atma Karaka (highest degree planet)
       const atmaKaraka = this._findAtmaKaraka(natalChart.planets);
 
       // Calculate other Chara Karakas
-      const charaKarakas = this._calculateCharaKarakas(natalChart.planets, atmaKaraka);
+      const charaKarakas = this._calculateCharaKarakas(
+        natalChart.planets,
+        atmaKaraka
+      );
 
       // Calculate Jaimini houses based on Atma Karaka
-      const jaiminiHouses = this._calculateJaiminiHouses(atmaKaraka, natalChart);
+      const jaiminiHouses = this._calculateJaiminiHouses(
+        atmaKaraka,
+        natalChart
+      );
 
       // Analyze Arudha Padas (different from Parasara)
-      const arudhaPadas = this._calculateJaiminiArudhaPadas(charaKarakas, natalChart);
+      const arudhaPadas = this._calculateJaiminiArudhaPadas(
+        charaKarakas,
+        natalChart
+      );
 
       // Sphuta calculations (special mathematical combinations)
       const sphuta = this._calculateSphuta(charaKarakas, natalChart);
@@ -78,10 +112,17 @@ class JaiminiAstrologyCalculator {
       const padanatha = this._calculatePadanatha(atmaKaraka, natalChart);
 
       // Analyze karaka relationships and aspects
-      const karakaRelationships = this._analyzeKarakaRelationships(charaKarakas, natalChart);
+      const karakaRelationships = this._analyzeKarakaRelationships(
+        charaKarakas,
+        natalChart
+      );
 
       // Generate predictions based on karakas
-      const jaiminiPredictions = this._generateJaiminiPredictions(charaKarakas, jaiminiHouses, karakaRelationships);
+      const jaiminiPredictions = this._generateJaiminiPredictions(
+        charaKarakas,
+        jaiminiHouses,
+        karakaRelationships
+      );
 
       return {
         name,
@@ -93,7 +134,11 @@ class JaiminiAstrologyCalculator {
         padanatha,
         karakaRelationships,
         jaiminiPredictions,
-        summary: this._generateJaiminiSummary(atmaKaraka, charaKarakas, jaiminiPredictions)
+        summary: this._generateJaiminiSummary(
+          atmaKaraka,
+          charaKarakas,
+          jaiminiPredictions
+        ),
       };
     } catch (error) {
       logger.error('❌ Error in Jaimini astrology analysis:', error);
@@ -120,7 +165,7 @@ class JaiminiAstrologyCalculator {
         atmaKaraka: atmaKaraka.significator,
         lifeMission: soulPurpose.primaryPurpose,
         challenges: soulPurpose.challenges,
-        recommendedPath: fulfillmentMethods.path
+        recommendedPath: fulfillmentMethods.path,
       };
     } catch (error) {
       logger.error('Error analyzing soul purpose:', error.message);
@@ -132,16 +177,42 @@ class JaiminiAstrologyCalculator {
    * Calculate natal chart for Jaimini analysis
    * @private
    */
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     const natalPlanets = {};
 
-    const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+    const jd = this._dateToJulianDay(
+      year,
+      month,
+      day,
+      hour + minute / 60 - timezone
+    );
 
-    const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+    const planets = [
+      'sun',
+      'moon',
+      'mars',
+      'mercury',
+      'jupiter',
+      'venus',
+      'saturn',
+    ];
     const planetIds = {
-      sun: sweph.SE_SUN, moon: sweph.SE_MOON, mars: sweph.SE_MARS,
-      mercury: sweph.SE_MERCURY, jupiter: sweph.SE_JUPITER,
-      venus: sweph.SE_VENUS, saturn: sweph.SE_SATURN
+      sun: sweph.SE_SUN,
+      moon: sweph.SE_MOON,
+      mars: sweph.SE_MARS,
+      mercury: sweph.SE_MERCURY,
+      jupiter: sweph.SE_JUPITER,
+      venus: sweph.SE_VENUS,
+      saturn: sweph.SE_SATURN,
     };
 
     for (const planet of planets) {
@@ -151,7 +222,7 @@ class JaiminiAstrologyCalculator {
           longitude: position.longitude[0],
           sign: Math.floor(position.longitude[0] / 30) + 1,
           degree: position.longitude[0] % 30,
-          minutes: (position.longitude[0] % 1) * 60
+          minutes: (position.longitude[0] % 1) * 60,
         };
       }
     }
@@ -160,7 +231,7 @@ class JaiminiAstrologyCalculator {
     const houses = sweph.houses(jd, latitude, longitude, 'E');
     natalPlanets.ascendant = {
       longitude: houses.ascendant,
-      sign: Math.floor(houses.ascendant / 30) + 1
+      sign: Math.floor(houses.ascendant / 30) + 1,
     };
 
     return { planets: natalPlanets, jd };
@@ -203,7 +274,7 @@ class JaiminiAstrologyCalculator {
       minutes: Math.floor((position.degree % 1) * 60),
       meaning: this._getAtmaKarakaMeaning(atmaKaraka),
       lifePurpose: this._getAtmaKarakaPurpose(atmaKaraka),
-      challenges: this._getAtmaKarakaChallenges(atmaKaraka)
+      challenges: this._getAtmaKarakaChallenges(atmaKaraka),
     };
   }
 
@@ -218,7 +289,8 @@ class JaiminiAstrologyCalculator {
     const planetDegrees = [];
     Object.entries(planets).forEach(([planet, data]) => {
       if (planet !== 'ascendant') {
-        const totalDeg = (data.sign - 1) * 30 + data.degree + (data.minutes || 0) / 60;
+        const totalDeg =
+          (data.sign - 1) * 30 + data.degree + (data.minutes || 0) / 60;
         planetDegrees.push({ planet, degrees: totalDeg, data });
       }
     });
@@ -241,7 +313,10 @@ class JaiminiAstrologyCalculator {
           sign: this._getSignName(planetData.data.sign),
           degree: Math.floor(planetData.data.degree),
           meaning: this.karakas[karakaName],
-          indications: this._getKarakaIndications(karakaName, planetData.planet)
+          indications: this._getKarakaIndications(
+            karakaName,
+            planetData.planet
+          ),
         };
         karakaIndex++;
       }
@@ -266,14 +341,22 @@ class JaiminiAstrologyCalculator {
       const houseSign = Math.floor(houseStartLong / 30) + 1;
 
       // Find planets in this house
-      const planetsInHouse = this._getPlanetsInJaiminiHouse(houseNum, baseLongitude, natalChart.planets);
+      const planetsInHouse = this._getPlanetsInJaiminiHouse(
+        houseNum,
+        baseLongitude,
+        natalChart.planets
+      );
 
       jaiminiHouses[houseNum] = {
         sign: this._getSignName(houseSign),
         lord: this._getSignLord(houseSign),
         planets: planetsInHouse,
         significations: this._getJaiminiHouseSignifications(houseNum),
-        strength: this._assessJaiminiHouseStrength(houseNum, planetsInHouse, natalChart)
+        strength: this._assessJaiminiHouseStrength(
+          houseNum,
+          planetsInHouse,
+          natalChart
+        ),
       };
     }
 
@@ -302,7 +385,11 @@ class JaiminiAstrologyCalculator {
       }
 
       if (karaka) {
-        arudhas[`arudha${houseNum}`] = this._calculateJaiminiArudhaForHouse(houseNum, karaka, natalChart);
+        arudhas[`arudha${houseNum}`] = this._calculateJaiminiArudhaForHouse(
+          houseNum,
+          karaka,
+          natalChart
+        );
       }
     });
 
@@ -317,20 +404,30 @@ class JaiminiAstrologyCalculator {
     const sphuta = {
       kendraSphuta: {},
       trikonaSphuta: {},
-      specialCombinations: []
+      specialCombinations: [],
     };
 
     // Kendra Sphuta: Special relationship between karakas and kendra houses
     Object.entries(charaKarakas).forEach(([karakaName, karakaData]) => {
-      const relations = this._calculateKarakaSphutaRelations(karakaName, karakaData, natalChart);
+      const relations = this._calculateKarakaSphutaRelations(
+        karakaName,
+        karakaData,
+        natalChart
+      );
       sphuta.kendraSphuta[karakaName] = relations;
     });
 
     // Trikona Sphuta: Special relationship with trikode houses
-    sphuta.trikonaSphuta = this._calculateTrikonaSphuta(charaKarakas, natalChart);
+    sphuta.trikonaSphuta = this._calculateTrikonaSphuta(
+      charaKarakas,
+      natalChart
+    );
 
     // Special combinations from Jaimini sutras
-    sphuta.specialCombinations = this._findJaiminiSpecialCombinations(charaKarakas, natalChart);
+    sphuta.specialCombinations = this._findJaiminiSpecialCombinations(
+      charaKarakas,
+      natalChart
+    );
 
     return sphuta;
   }
@@ -354,7 +451,7 @@ class JaiminiAstrologyCalculator {
         sign: this._getSignName(houseSign),
         lord: lord,
         significations: this._getPadanathaSignifications(i),
-        planetInSign: this._getPlanetInSign(houseSign, natalChart.planets)
+        planetInSign: this._getPlanetInSign(houseSign, natalChart.planets),
       };
     }
 
@@ -375,20 +472,28 @@ class JaiminiAstrologyCalculator {
       oppositions: {},
       trines: {},
       harmonious: [],
-      challenging: []
+      challenging: [],
     };
 
     // Analyze aspects between karakas
     Object.entries(charaKarakas).forEach(([karaka1Key, karaka1]) => {
       Object.entries(charaKarakas).forEach(([karaka2Key, karaka2]) => {
         if (karaka1Key !== karaka2Key) {
-          const aspect = this._calculateKarakaAspect(karaka1, karaka2, natalChart);
+          const aspect = this._calculateKarakaAspect(
+            karaka1,
+            karaka2,
+            natalChart
+          );
 
           if (aspect.exists) {
             relationships.aspects[`${karaka1Key}-${karaka2Key}`] = {
               aspect: aspect.type,
-              significance: this._interpretKarakaAspect(karaka1Key, karaka2Key, aspect.type),
-              strength: aspect.strength
+              significance: this._interpretKarakaAspect(
+                karaka1Key,
+                karaka2Key,
+                aspect.type
+              ),
+              strength: aspect.strength,
             };
           }
         }
@@ -405,7 +510,11 @@ class JaiminiAstrologyCalculator {
    * Generate predictions based on Jaimini principles
    * @private
    */
-  _generateJaiminiPredictions(charaKarakas, jaiminiHouses, karakaRelationships) {
+  _generateJaiminiPredictions(
+    charaKarakas,
+    jaiminiHouses,
+    karakaRelationships
+  ) {
     const predictions = {
       lifePurpose: '',
       significantAreas: [],
@@ -414,27 +523,39 @@ class JaiminiAstrologyCalculator {
       challenges: [],
       opportunities: [],
       timing: {},
-      spiritualPath: ''
+      spiritualPath: '',
     };
 
     // Determine life purpose from Atma Karaka combination
     predictions.lifePurpose = this._determineLifePurpose(charaKarakas);
 
     // Significant life areas based on karaka placements
-    predictions.significantAreas = this._identifySignificantAreas(charaKarakas, jaiminiHouses);
+    predictions.significantAreas = this._identifySignificantAreas(
+      charaKarakas,
+      jaiminiHouses
+    );
 
     // Career based on Amatyakaraka
-    predictions.careerPath = this._predictCareerFromAmatyakaraka(charaKarakas.amatyakaraka);
+    predictions.careerPath = this._predictCareerFromAmatyakaraka(
+      charaKarakas.amatyakaraka
+    );
 
     // Relationships based on Dara Karaka
-    predictions.relationships = this._predictRelationshipsFromDaraKaraka(charaKarakas.daraKaraka);
+    predictions.relationships = this._predictRelationshipsFromDaraKaraka(
+      charaKarakas.daraKaraka
+    );
 
     // Challenges and opportunities from karaka relationships
-    predictions.challenges = this._identifyKarakaChallenges(karakaRelationships);
-    predictions.opportunities = this._identifyKarakaOpportunities(karakaRelationships);
+    predictions.challenges =
+      this._identifyKarakaChallenges(karakaRelationships);
+    predictions.opportunities =
+      this._identifyKarakaOpportunities(karakaRelationships);
 
     // Important timing in life
-    predictions.timing = this._predictImportantTiming(charaKarakas, jaiminiHouses);
+    predictions.timing = this._predictImportantTiming(
+      charaKarakas,
+      jaiminiHouses
+    );
 
     // Spiritual path
     predictions.spiritualPath = this._determineSpiritualPath(charaKarakas);
@@ -474,19 +595,47 @@ class JaiminiAstrologyCalculator {
       });
     }
 
-    summary += '\n*Jaimini astrology reveals the soul\'s native potentials and karmic evolution through planetary karakas.*';
+    summary +=
+      "\n*Jaimini astrology reveals the soul's native potentials and karmic evolution through planetary karakas.*";
 
     return summary;
   }
 
   // Helper methods
   _getSignName(signNumber) {
-    const signs = ['', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      '',
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces',
+    ];
     return signs[signNumber] || 'Unknown';
   }
 
   _getSignLord(sign) {
-    const lords = ['mars', 'venus', 'mercury', 'moon', 'sun', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'saturn', 'jupiter'];
+    const lords = [
+      'mars',
+      'venus',
+      'mercury',
+      'moon',
+      'sun',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn',
+      'saturn',
+      'jupiter',
+    ];
     return lords[sign - 1];
   }
 
@@ -498,7 +647,7 @@ class JaiminiAstrologyCalculator {
       mercury: 'Intelligence, communication, business, education, youth',
       jupiter: 'Wisdom, spirituality, children, wealth, teaching',
       venus: 'Love, marriage, arts, luxury, pleasures, spouse',
-      saturn: 'Discipline, karma, longevity, service, detachment'
+      saturn: 'Discipline, karma, longevity, service, detachment',
     };
     return meanings[planet] || 'Spiritual growth and service';
   }
@@ -511,7 +660,7 @@ class JaiminiAstrologyCalculator {
       mercury: 'Share knowledge and wisdom; serve through communication',
       jupiter: 'Teach and guide others; spread spiritual wisdom',
       venus: 'Create beauty and harmony; bring joy to others',
-      saturn: 'Serve humanity through discipline and hard work'
+      saturn: 'Serve humanity through discipline and hard work',
     };
     return purposes[planet] || 'Spiritual growth and awakening';
   }
@@ -524,7 +673,7 @@ class JaiminiAstrologyCalculator {
       mercury: 'Nervousness, deception, lack of focus, anxiety',
       jupiter: 'Overconfidence, dogmatism, excessive indulgence',
       venus: 'Attachment to pleasure, laziness, relationship issues',
-      saturn: 'Fear, depression, isolation, excessive discipline'
+      saturn: 'Fear, depression, isolation, excessive discipline',
     };
     return challenges[planet] || 'Spiritual detachment and materialism';
   }
@@ -545,7 +694,7 @@ class JaiminiAstrologyCalculator {
       mercury: 'airy, intellectual, adaptable',
       jupiter: 'fiery, expansive, philosophical',
       venus: 'watery, artistic, harmonious',
-      saturn: 'earthy, disciplined, karmic'
+      saturn: 'earthy, disciplined, karmic',
     };
     return natures[planet] || 'balanced, spiritual';
   }
@@ -554,7 +703,14 @@ class JaiminiAstrologyCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + (hour - 12) / 24;
   }
 
@@ -564,7 +720,7 @@ class JaiminiAstrologyCalculator {
       return [coords.latitude, coords.longitude];
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Delhi
+      return [28.6139, 77.209]; // Delhi
     }
   }
 
@@ -607,7 +763,7 @@ class JaiminiAstrologyCalculator {
       9: 'Fortune, father, higher learning, spirituality, pilgrimage',
       10: 'Career, reputation, authority, public life, achievements',
       11: 'Friends, gains, hopes, wishes, elder siblings, income',
-      12: 'Spirituality, foreign lands, expenses, losses, liberation'
+      12: 'Spirituality, foreign lands, expenses, losses, liberation',
     };
     return significations[houseNum] || 'General life matters';
   }
@@ -616,11 +772,15 @@ class JaiminiAstrologyCalculator {
     let strength = 0;
 
     // Benefic planets increase strength
-    const benefics = planetsInHouse.filter(p => ['jupiter', 'venus', 'mercury', 'moon'].includes(p));
+    const benefics = planetsInHouse.filter(p =>
+      ['jupiter', 'venus', 'mercury', 'moon'].includes(p)
+    );
     strength += benefics.length * 20;
 
     // Malefic planets decrease strength but show activation
-    const malefics = planetsInHouse.filter(p => ['saturn', 'mars', 'sun', 'rahu', 'ketu'].includes(p));
+    const malefics = planetsInHouse.filter(p =>
+      ['saturn', 'mars', 'sun', 'rahu', 'ketu'].includes(p)
+    );
     if (malefics.length > 0) strength += 10; // Activated but challenging
 
     return Math.min(100, Math.max(0, strength));
@@ -633,7 +793,10 @@ class JaiminiAstrologyCalculator {
       longitude: karakaLong,
       sign: natalChart.planets[kapaka.planet]?.sign || karaka.sign,
       significations: this._getJaiminiArudhaSignifications(houseNum),
-      rulingCharacteristics: this._getArudhaRulingCharacteristics(houseNum, karaka.planet)
+      rulingCharacteristics: this._getArudhaRulingCharacteristics(
+        houseNum,
+        karaka.planet
+      ),
     };
 
     return result;
@@ -644,7 +807,7 @@ class JaiminiAstrologyCalculator {
     return {
       kendraRelation: 'moderate',
       aspectStrength: 'normal',
-      specialCombinations: []
+      specialCombinations: [],
     };
   }
 
@@ -653,7 +816,7 @@ class JaiminiAstrologyCalculator {
       dharmaSphuta: 'karma and righteousness',
       arthaSphuta: 'wealth and prosperity',
       kamaSphuta: 'desire and fulfillment',
-      mokshaSphuta: 'liberation and enlightenment'
+      mokshaSphuta: 'liberation and enlightenment',
     };
   }
 
@@ -661,7 +824,7 @@ class JaiminiAstrologyCalculator {
     return [
       'Harmonious karaka alignments indicate positive life flow',
       'Challenging karaka aspects suggest areas of growth',
-      'Balanced karaka relationships promote overall well-being'
+      'Balanced karaka relationships promote overall well-being',
     ];
   }
 
@@ -678,15 +841,17 @@ class JaiminiAstrologyCalculator {
       9: 'Father and spiritual wisdom',
       10: 'Career and authority',
       11: 'Gains and friendships',
-      12: 'Spirituality and liberation'
+      12: 'Spirituality and liberation',
     };
     return padanathaSignifications[houseNum] || 'General life area';
   }
 
   _getPlanetInSign(sign, planets) {
-    return Object.entries(planets).find(([planet, data]) =>
-      planet !== 'ascendant' && data.sign === sign
-    )?.[0] || null;
+    return (
+      Object.entries(planets).find(
+        ([planet, data]) => planet !== 'ascendant' && data.sign === sign
+      )?.[0] || null
+    );
   }
 
   _identifyPadanathaIssues(padanatha) {
@@ -695,8 +860,13 @@ class JaiminiAstrologyCalculator {
     // Check for malefic padanathas in adverse positions
     const adverseHouses = [6, 8, 12];
     adverseHouses.forEach(house => {
-      if (padanatha[house] && ['saturn', 'mars', 'rahu', 'ketu'].includes(padanatha[house].lord)) {
-        issues.push(`Malefic Padanatha in house ${house} - challenges in ${padanatha[house].significations}`);
+      if (
+        padanatha[house] &&
+        ['saturn', 'mars', 'rahu', 'ketu'].includes(padanatha[house].lord)
+      ) {
+        issues.push(
+          `Malefic Padanatha in house ${house} - challenges in ${padanatha[house].significations}`
+        );
       }
     });
 
@@ -731,7 +901,24 @@ class JaiminiAstrologyCalculator {
     return {
       exists: hasAspect,
       type: aspectType,
-      strength: hasAspect ? Math.max(1, 11 - Math.abs(minAngle - [0, 60, 90, 120, 180][['conjunction', 'sextile', 'square', 'trine', 'opposition'].indexOf(aspectType)] || 0)) : 0
+      strength: hasAspect
+        ? Math.max(
+            1,
+            11 -
+              Math.abs(
+                minAngle -
+                  [0, 60, 90, 120, 180][
+                    [
+                      'conjunction',
+                      'sextile',
+                      'square',
+                      'trine',
+                      'opposition',
+                    ].indexOf(aspectType)
+                  ] || 0
+              )
+          )
+        : 0,
     };
   }
 
@@ -747,9 +934,13 @@ class JaiminiAstrologyCalculator {
   _categorizeKarakaRelationships(relationships, charaKarakas) {
     Object.values(relationships.aspects).forEach(aspect => {
       if (['trine', 'sextile', 'conjunction'].includes(aspect.aspect)) {
-        relationships.harmonious.push(`${aspect.aspect} aspect supports life balance`);
+        relationships.harmonious.push(
+          `${aspect.aspect} aspect supports life balance`
+        );
       } else if (['square', 'opposition'].includes(aspect.aspect)) {
-        relationships.challenging.push(`${aspect.aspect} aspect indicates growth areas`);
+        relationships.challenging.push(
+          `${aspect.aspect} aspect indicates growth areas`
+        );
       }
     });
   }
@@ -757,10 +948,12 @@ class JaiminiAstrologyCalculator {
   _getJaiminiArudhaSignifications(houseNum) {
     const significations = {
       1: 'External personality and self-image',
-      7: 'Spouse\'s appearance and social status',
-      10: 'Career reputation and public achievement'
+      7: "Spouse's appearance and social status",
+      10: 'Career reputation and public achievement',
     };
-    return significations[houseNum] || 'Projected image and external perception';
+    return (
+      significations[houseNum] || 'Projected image and external perception'
+    );
   }
 
   _getArudhaRulingCharacteristics(houseNum, planet) {
@@ -772,7 +965,7 @@ class JaiminiAstrologyCalculator {
       primaryPurpose: atmaKaraka.lifePurpose,
       soulLesson: atmaKaraka.challenges,
       evolutionaryGoal: `Master the qualities of ${atmaKaraka.significator}`,
-      lifetimeMission: 'Grow beyond ego limitations and serve divine will'
+      lifetimeMission: 'Grow beyond ego limitations and serve divine will',
     };
 
     return soulPurpose;
@@ -780,19 +973,45 @@ class JaiminiAstrologyCalculator {
 
   _getFulfillmentMethods(atmaKaraka) {
     const methods = {
-      sun: { path: 'Leadership and teaching', practices: ['Meditate on your higher self', 'Practice selfless service'] },
-      moon: { path: 'Emotional healing and care', practices: ['Develop intuition', 'Care for others'] },
-      mars: { path: 'Disciplined action and courage', practices: ['Physical exercise', 'Stand for justice'] },
-      mercury: { path: 'Knowledge sharing', practices: ['Study and teaching', 'Help others learn'] },
-      jupiter: { path: 'Spiritual guidance', practices: ['Philosophical study', 'Mentor others'] },
-      venus: { path: 'Love and beauty', practices: ['Create harmony', 'Share your gifts'] },
-      saturn: { path: 'Service and discipline', practices: ['Self-discipline', 'Help the needy'] }
+      sun: {
+        path: 'Leadership and teaching',
+        practices: [
+          'Meditate on your higher self',
+          'Practice selfless service',
+        ],
+      },
+      moon: {
+        path: 'Emotional healing and care',
+        practices: ['Develop intuition', 'Care for others'],
+      },
+      mars: {
+        path: 'Disciplined action and courage',
+        practices: ['Physical exercise', 'Stand for justice'],
+      },
+      mercury: {
+        path: 'Knowledge sharing',
+        practices: ['Study and teaching', 'Help others learn'],
+      },
+      jupiter: {
+        path: 'Spiritual guidance',
+        practices: ['Philosophical study', 'Mentor others'],
+      },
+      venus: {
+        path: 'Love and beauty',
+        practices: ['Create harmony', 'Share your gifts'],
+      },
+      saturn: {
+        path: 'Service and discipline',
+        practices: ['Self-discipline', 'Help the needy'],
+      },
     };
 
-    return methods[atmaKaraka.planet] || {
-      path: 'Spiritual growth',
-      practices: ['Self-reflection', 'Service to others']
-    };
+    return (
+      methods[atmaKaraka.planet] || {
+        path: 'Spiritual growth',
+        practices: ['Self-reflection', 'Service to others'],
+      }
+    );
   }
 
   _determineLifePurpose(charaKarakas) {
@@ -817,11 +1036,14 @@ class JaiminiAstrologyCalculator {
       areas.push('Children and creative expression');
     }
 
-    return areas.length > 0 ? areas : ['Personal growth', 'Spiritual development', 'Service to others'];
+    return areas.length > 0
+      ? areas
+      : ['Personal growth', 'Spiritual development', 'Service to others'];
   }
 
   _predictCareerFromAmatyakaraka(amatyakaraka) {
-    if (!amatyakaraka) return 'Career path unfolds naturally through life experiences.';
+    if (!amatyakaraka)
+      return 'Career path unfolds naturally through life experiences.';
 
     const planet = amatyakaraka.planet;
     const sign = amatyakaraka.sign;
@@ -833,14 +1055,15 @@ class JaiminiAstrologyCalculator {
       mercury: 'Communication, writing, teaching, business, law',
       jupiter: 'Teaching, religion, law, counseling, publishing',
       venus: 'Arts, entertainment, beauty, hospitality, counseling',
-      saturn: 'Agriculture, labor, construction, administration, social work'
+      saturn: 'Agriculture, labor, construction, administration, social work',
     };
 
     return `Career direction through ${planet} influence: ${careerPredictions[planet] || 'intellectual pursuits.'} Develop skills associated with ${sign}.`;
   }
 
   _predictRelationshipsFromDaraKaraka(daraKaraka) {
-    if (!daraKaraka) return 'Relationships develop through life experiences and personal growth.';
+    if (!daraKaraka)
+      return 'Relationships develop through life experiences and personal growth.';
 
     const planet = daraKaraka.planet;
     const sign = daraKaraka.sign;
@@ -849,21 +1072,27 @@ class JaiminiAstrologyCalculator {
       sun: 'Partner with leadership qualities, authoritative, creative person',
       moon: 'Nurturing, emotional partner, creative, sensitive connection',
       mars: 'Active partner, assertive, courageous, adventurous relationship',
-      mercury: 'Intellectual partner, communicative, youthful, adaptable connection',
+      mercury:
+        'Intellectual partner, communicative, youthful, adaptable connection',
       jupiter: 'Wise partner, philosophical, expansive, spiritual bond',
-      venus: 'Harmonious partner, artistic, loving, aesthetically pleasing connection',
-      saturn: 'Serious partner, disciplined, committed, mature relationship'
+      venus:
+        'Harmonious partner, artistic, loving, aesthetically pleasing connection',
+      saturn: 'Serious partner, disciplined, committed, mature relationship',
     };
 
     return `Spouse characteristics: ${relationshipPredictions[planet] || 'balanced and understanding person.'} Marriage qualities influenced by ${sign}.`;
   }
 
   _identifyKarakaChallenges(relationships) {
-    return relationships.challenging.slice(0, 3).map(challenge => challenge.replace(' aspect', ' areas'));
+    return relationships.challenging
+      .slice(0, 3)
+      .map(challenge => challenge.replace(' aspect', ' areas'));
   }
 
   _identifyKarakaOpportunities(relationships) {
-    return relationships.harmonious.slice(0, 3).map(harm => harm.replace(' aspect', ' areas'));
+    return relationships.harmonious
+      .slice(0, 3)
+      .map(harm => harm.replace(' aspect', ' areas'));
   }
 
   _predictImportantTiming(charaKarakas, jaiminiHouses) {
@@ -871,7 +1100,12 @@ class JaiminiAstrologyCalculator {
       earlyLife: 'Foundation building through learning experiences',
       middleAge: 'Career and relationship maturity',
       laterLife: 'Wisdom sharing and spiritual focus',
-      keyPhases: ['Education completion', 'Career establishment', 'Family building', 'Spiritual awakening']
+      keyPhases: [
+        'Education completion',
+        'Career establishment',
+        'Family building',
+        'Spiritual awakening',
+      ],
     };
   }
 

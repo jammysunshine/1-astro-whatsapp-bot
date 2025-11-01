@@ -13,7 +13,8 @@ class GulikakalamService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
     this.serviceName = 'GulikakalamService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/MuhurtaCalculator';
     logger.info('GulikakalamService initialized');
   }
 
@@ -61,7 +62,8 @@ class GulikakalamService extends ServiceTemplate {
       summary: result.summary || 'Gulikakalam analysis completed',
       metadata: {
         system: 'Gulikakalam Analysis',
-        calculationMethod: 'Vedic planetary period calculation with weekday-based timing',
+        calculationMethod:
+          'Vedic planetary period calculation with weekday-based timing',
         elements: ['Timing', 'Significance', 'Recommendations', 'Activities'],
         tradition: 'Vedic Hindu astrology with muhurta principles'
       }
@@ -164,19 +166,35 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get location coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate Gulikakalam timing based on weekday
-      const gulikakalamTiming = this._calculateGulikakalamTiming(year, month, day, latitude, longitude, timezone);
+      const gulikakalamTiming = this._calculateGulikakalamTiming(
+        year,
+        month,
+        day,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Analyze Gulikakalam significance for the date
-      const significanceAnalysis = this._analyzeGulikakalamSignificance(gulikakalamTiming);
+      const significanceAnalysis =
+        this._analyzeGulikakalamSignificance(gulikakalamTiming);
 
       // Generate timing recommendations
-      const recommendations = this._generateGulikakalamRecommendations(gulikakalamTiming, significanceAnalysis);
+      const recommendations = this._generateGulikakalamRecommendations(
+        gulikakalamTiming,
+        significanceAnalysis
+      );
 
       return {
         date: birthDate,
@@ -184,11 +202,17 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
         gulikakalamTiming,
         significanceAnalysis,
         recommendations,
-        summary: this._generateGulikakalamSummary(gulikakalamTiming, significanceAnalysis, recommendations)
+        summary: this._generateGulikakalamSummary(
+          gulikakalamTiming,
+          significanceAnalysis,
+          recommendations
+        )
       };
     } catch (error) {
       logger.error('Error calculating Gulikakalam:', error);
-      throw new Error(`Failed to calculate Gulikakalam timing: ${error.message}`);
+      throw new Error(
+        `Failed to calculate Gulikakalam timing: ${error.message}`
+      );
     }
   }
 
@@ -233,7 +257,8 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
       const planetaryPeriod = daylightDuration / 8;
 
       // Gulikakalam starts at sunrise and comes in the order given above
-      const gulikakalamStartDecimal = sunTimes.sunrise + ((dayInfo.order - 1) * planetaryPeriod);
+      const gulikakalamStartDecimal =
+        sunTimes.sunrise + (dayInfo.order - 1) * planetaryPeriod;
       const gulikakalamEndDecimal = gulikakalamStartDecimal + planetaryPeriod;
 
       return {
@@ -250,10 +275,16 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
         }
       };
     } catch (error) {
-      logger.warn('Error calculating precise Gulikakalam timing, using approximate:', error.message);
+      logger.warn(
+        'Error calculating precise Gulikakalam timing, using approximate:',
+        error.message
+      );
 
       // Fallback to approximate timing based on weekday
-      const weekday = new Date(year, month - 1, day).toLocaleDateString('en-US', { weekday: 'long' });
+      const weekday = new Date(year, month - 1, day).toLocaleDateString(
+        'en-US',
+        { weekday: 'long' }
+      );
       const approximateTimings = {
         Sunday: { startTime: '16:30', endTime: '18:00', duration: 90 },
         Monday: { startTime: '07:30', endTime: '09:00', duration: 90 },
@@ -264,7 +295,11 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
         Saturday: { startTime: '15:00', endTime: '16:30', duration: 90 }
       };
 
-      const timing = approximateTimings[weekday] || { startTime: '12:00', endTime: '13:30', duration: 90 };
+      const timing = approximateTimings[weekday] || {
+        startTime: '12:00',
+        endTime: '13:30',
+        duration: 90
+      };
 
       return {
         weekday,
@@ -293,7 +328,8 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
       name: 'Gulikakalam',
       sanskrit: 'गुलिककालम्',
       translation: 'Time of Gulika',
-      mythology: 'Period ruled by Gulika, son of Rahu, representing obstacles, delays, and challenges',
+      mythology:
+        'Period ruled by Gulika, son of Rahu, representing obstacles, delays, and challenges',
       duration: `${gulikakalamTiming.durationMinutes} minutes`,
       planetaryInfluence: `Ruled by ${gulikakalamTiming.planetaryLord}`,
       characteristics: [
@@ -408,7 +444,11 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
    * @param {Object} recommendations - Recommendations
    * @returns {string} Summary text
    */
-  _generateGulikakalamSummary(gulikakalamTiming, significanceAnalysis, recommendations) {
+  _generateGulikakalamSummary(
+    gulikakalamTiming,
+    significanceAnalysis,
+    recommendations
+  ) {
     let summary = '🪐 *Gulikakalam Analysis*\n\n';
 
     summary += `*Date:* ${gulikakalamTiming.date}\n`;
@@ -417,8 +457,10 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
     summary += `*Planetary Lord:* ${gulikakalamTiming.planetaryLord}\n\n`;
 
     summary += '*Significance:*\n';
-    summary += 'Gulikakalam is an inauspicious period ruled by Gulika, representing obstacles and delays. ';
-    summary += 'It\'s advisable to avoid important activities during this time.\n\n';
+    summary +=
+      'Gulikakalam is an inauspicious period ruled by Gulika, representing obstacles and delays. ';
+    summary +=
+      'It\'s advisable to avoid important activities during this time.\n\n';
 
     summary += '*Activities to Avoid:*\n';
     significanceAnalysis.activitiesToAvoid.slice(0, 4).forEach(activity => {
@@ -444,18 +486,18 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
       // Use geocoding service to get coordinates
       // This is a simplified implementation - would connect to actual geocoding service
       const defaultCoords = {
-        'New Delhi': [28.6139, 77.2090],
-        Mumbai: [19.0760, 72.8777],
+        'New Delhi': [28.6139, 77.209],
+        Mumbai: [19.076, 72.8777],
         Bangalore: [12.9716, 77.5946],
         Chennai: [13.0827, 80.2707],
         Kolkata: [22.5726, 88.3639]
       };
 
-      const coords = defaultCoords[place] || [28.6139, 77.2090]; // Default to Delhi
+      const coords = defaultCoords[place] || [28.6139, 77.209]; // Default to Delhi
       return coords;
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Default to Delhi
+      return [28.6139, 77.209]; // Default to Delhi
     }
   }
 
@@ -476,8 +518,14 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
 
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y +
-               Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
 
     // Add time fraction
     const timeFraction = (hour - 12) / 24;
@@ -489,21 +537,27 @@ Comprehensive Gulikakalam report with timing details, significance analysis, rec
       // Simplified sunrise/sunset calculation
       // In reality, would use sweph.houses() or similar for accurate calculation
       const declination = 23.44 * Math.sin((jd - 2451545) * 0.017202); // Approximate
-      const hourAngle = Math.acos(-Math.tan(latitude * Math.PI / 180) * Math.tan(declination * Math.PI / 180));
+      const hourAngle = Math.acos(
+        -Math.tan((latitude * Math.PI) / 180) *
+          Math.tan((declination * Math.PI) / 180)
+      );
 
-      const noon = 12 + (longitude / 15); // Local noon
-      const sunrise = noon - (hourAngle * 12 / Math.PI);
-      const sunset = noon + (hourAngle * 12 / Math.PI);
+      const noon = 12 + longitude / 15; // Local noon
+      const sunrise = noon - (hourAngle * 12) / Math.PI;
+      const sunset = noon + (hourAngle * 12) / Math.PI;
 
       return {
         sunrise: Math.max(6, Math.min(18, sunrise)), // Clamp between 6AM-6PM
-        sunset: Math.max(18, Math.min(24, sunset))   // Clamp between 6PM-12AM
+        sunset: Math.max(18, Math.min(24, sunset)) // Clamp between 6PM-12AM
       };
     } catch (error) {
-      logger.warn('Error calculating sun times, using defaults:', error.message);
+      logger.warn(
+        'Error calculating sun times, using defaults:',
+        error.message
+      );
       return {
-        sunrise: 6.0,  // 6:00 AM
-        sunset: 18.0   // 6:00 PM
+        sunrise: 6.0, // 6:00 AM
+        sunset: 18.0 // 6:00 PM
       };
     }
   }

@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class HealthAstrologyAction extends BaseAction {
-  static get actionId() { return 'get_medical_astrology_analysis'; }
+  static get actionId() {
+    return 'get_medical_astrology_analysis';
+  }
 
   async execute() {
     try {
@@ -23,7 +25,8 @@ class HealthAstrologyAction extends BaseAction {
   }
 
   async sendHealthAnalysis() {
-    const analysis = '🏥 *Medical Astrology - Body & Spirit Integration*\n\n' +
+    const analysis =
+      '🏥 *Medical Astrology - Body & Spirit Integration*\n\n' +
       'Astrology reveals the cosmic influences on health, vitality, and healing patterns in your life.\n\n' +
       '*🔬 MEDICAL ASTROLOGY INSIGHTS:*\n' +
       '• **1st House** - Overall vitality and physical body\n' +
@@ -38,14 +41,19 @@ class HealthAstrologyAction extends BaseAction {
       '*Note: Medical astrology complements professional healthcare but should not replace medical advice.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');

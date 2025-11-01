@@ -3,6 +3,7 @@
 This document lists the astrological services identified from the `MENU_REFERENCE.md` that are implemented as individual services following the new architectural design.
 
 ## Astrological Microservices
+
 **Note:** All services are implemented in the `/src/core/services/` directory. All calculators are located in `/src/core/services/calculators/`. Total: services implemented with calculators.
 
 1.  `start_couple_compatibility_flow` - `src/core/services/coupleCompatibilityService.js` (uses: `src/core/services/calculators/SynastryEngine.js`)
@@ -104,4 +105,4 @@ This document lists the astrological services identified from the `MENU_REFERENC
 97. `get_enhanced_solar_arc_directions_analysis` - `src/core/services/enhancedSolarArcDirectionsService.js` (uses: `src/core/services/calculators/EnhancedSolarArcDirections.js`)
 98. `get_calendar_timing_analysis` - `src/core/services/calendarTimingService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
 99. `get_specialized_analysis` - `src/core/services/specializedAnalysisService.js` (uses: multiple calculators)
-100. `get_dasha_predictive_analysis` - `src/core/services/dashaPredictiveService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)
+100.  `get_dasha_predictive_analysis` - `src/core/services/dashaPredictiveService.js` (uses: `src/core/services/calculators/ChartGenerator.js`)

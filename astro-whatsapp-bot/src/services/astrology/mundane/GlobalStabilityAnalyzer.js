@@ -6,7 +6,9 @@ const logger = require('../../../utils/logger');
  */
 class GlobalStabilityAnalyzer {
   constructor() {
-    logger.info('Module: GlobalStabilityAnalyzer loaded for political stability analysis');
+    logger.info(
+      'Module: GlobalStabilityAnalyzer loaded for political stability analysis'
+    );
   }
 
   /**
@@ -27,7 +29,10 @@ class GlobalStabilityAnalyzer {
     });
 
     return {
-      overallStability: this.calculateOverallStability(stableCount, unstableCount),
+      overallStability: this.calculateOverallStability(
+        stableCount,
+        unstableCount
+      ),
       stableNations: stableCount,
       unstableNations: unstableCount,
       globalStabilityIndex: (stableCount / (stableCount + unstableCount)) * 100
@@ -44,9 +49,15 @@ class GlobalStabilityAnalyzer {
     const total = stable + unstable;
     const stabilityPercentage = (stable / total) * 100;
 
-    if (stabilityPercentage >= 70) { return 'High'; }
-    if (stabilityPercentage >= 50) { return 'Moderate'; }
-    if (stabilityPercentage >= 30) { return 'Low-Moderate'; }
+    if (stabilityPercentage >= 70) {
+      return 'High';
+    }
+    if (stabilityPercentage >= 50) {
+      return 'Moderate';
+    }
+    if (stabilityPercentage >= 30) {
+      return 'Low-Moderate';
+    }
     return 'Low';
   }
 
@@ -82,7 +93,10 @@ class GlobalStabilityAnalyzer {
     // Identify countries with Unstable or Very Unstable ratings
     Object.entries(politicalResults).forEach(([country, analysis]) => {
       const rating = analysis.politicalStability?.rating;
-      if (rating && (rating.includes('Unstable') || rating.includes('Challenging'))) {
+      if (
+        rating &&
+        (rating.includes('Unstable') || rating.includes('Challenging'))
+      ) {
         tensions.push({
           country,
           rating,
@@ -105,8 +119,12 @@ class GlobalStabilityAnalyzer {
 
     // Look for stable countries with strong diplomatic potentials
     Object.entries(politicalResults).forEach(([country, analysis]) => {
-      if (analysis.internationalInfluence?.relationshipStrength?.includes('Strong') ||
-          analysis.politicalStability?.rating?.includes('Stable')) {
+      if (
+        analysis.internationalInfluence?.relationshipStrength?.includes(
+          'Strong'
+        ) ||
+        analysis.politicalStability?.rating?.includes('Stable')
+      ) {
         opportunities.push(country);
       }
     });

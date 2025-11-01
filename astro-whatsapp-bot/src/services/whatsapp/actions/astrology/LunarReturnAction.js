@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class LunarReturnAction extends BaseAction {
-  static get actionId() { return 'get_lunar_return'; }
+  static get actionId() {
+    return 'get_lunar_return';
+  }
 
   async execute() {
     try {
@@ -21,7 +23,8 @@ class LunarReturnAction extends BaseAction {
   }
 
   async sendLunarReturnAnalysis() {
-    const analysis = '🌙 *Lunar Return - Monthly Cosmic Rebirth*\n\n' +
+    const analysis =
+      '🌙 *Lunar Return - Monthly Cosmic Rebirth*\n\n' +
       'A Lunar Return occurs when the Moon returns to its natal position, creating a new monthly cycle of emotional and intuitive themes.\n\n' +
       '*🌙 LUNAR CYCLES REVEAL:*\n' +
       '• Emotional cycles and mood patterns\n' +
@@ -34,14 +37,19 @@ class LunarReturnAction extends BaseAction {
       '*This month, the cosmos supports your emotional intelligence and intuitive guidance.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');

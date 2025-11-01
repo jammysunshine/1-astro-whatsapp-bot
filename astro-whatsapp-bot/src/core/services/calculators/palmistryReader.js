@@ -776,7 +776,8 @@ class PalmistryReader {
         mounts: analysis.mountAnalysis || {},
         interpretation: analysis.overallPersonality,
         advice:
-          analysis.recommendations?.join('. ') || 'Trust your natural abilities'
+          analysis.recommendations?.join('. ') ||
+          'Trust your natural abilities'
       };
     } catch (error) {
       logger.error('Error generating palmistry reading:', error);

@@ -121,7 +121,9 @@ class CoreApp {
     try {
       this.app.listen(port, () => {
         logger.info(`Core Modular Monolith running on port ${port}`);
-        logger.info(`Available services: ${this.serviceManager.getAllServices().length}`);
+        logger.info(
+          `Available services: ${this.serviceManager.getAllServices().length}`
+        );
       });
     } catch (error) {
       logger.error('Failed to start Core App:', error);

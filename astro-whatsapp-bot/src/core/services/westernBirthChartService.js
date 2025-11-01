@@ -36,23 +36,32 @@ class WesternBirthChartService extends ServiceTemplate {
       this._validateInputs(birthData);
 
       // Calculate Western birth chart using calculator
-      const chartResult = await this.calculator.generateWesternBirthChart(birthData, this.serviceConfig.houseSystem);
+      const chartResult = await this.calculator.generateWesternBirthChart(
+        birthData,
+        this.serviceConfig.houseSystem
+      );
 
       // Transform result to expected format
       const formattedResult = {
         birthData,
-        sunSign: chartResult.planets?.sun ? {
-          sign: chartResult.planets.sun.sign,
-          degree: chartResult.planets.sun.position.degrees
-        } : null,
-        moonSign: chartResult.planets?.moon ? {
-          sign: chartResult.planets.moon.sign,
-          degree: chartResult.planets.moon.position.degrees
-        } : null,
-        ascendant: chartResult.ascendant ? {
-          sign: chartResult.ascendant.sign,
-          degree: Math.floor(chartResult.ascendant.longitude % 30)
-        } : null,
+        sunSign: chartResult.planets?.sun ?
+          {
+            sign: chartResult.planets.sun.sign,
+            degree: chartResult.planets.sun.position.degrees
+          } :
+          null,
+        moonSign: chartResult.planets?.moon ?
+          {
+            sign: chartResult.planets.moon.sign,
+            degree: chartResult.planets.moon.position.degrees
+          } :
+          null,
+        ascendant: chartResult.ascendant ?
+          {
+            sign: chartResult.ascendant.sign,
+            degree: Math.floor(chartResult.ascendant.longitude % 30)
+          } :
+          null,
         planetaryPositions: chartResult.planets || {},
         houseCusps: chartResult.houseCusps || [],
         majorAspects: chartResult.aspects || [],
@@ -67,12 +76,15 @@ class WesternBirthChartService extends ServiceTemplate {
       };
 
       // Add Western-specific analysis
-      formattedResult.westernAnalysis = this._performWesternAnalysis(formattedResult);
+      formattedResult.westernAnalysis =
+        this._performWesternAnalysis(formattedResult);
 
       return formattedResult;
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
-      throw new Error(`Western birth chart calculation failed: ${error.message}`);
+      throw new Error(
+        `Western birth chart calculation failed: ${error.message}`
+      );
     }
   }
 
@@ -113,9 +125,23 @@ class WesternBirthChartService extends ServiceTemplate {
     }
 
     // Add planetary positions
-    if (result.planetaryPositions && Object.keys(result.planetaryPositions).length > 0) {
+    if (
+      result.planetaryPositions &&
+      Object.keys(result.planetaryPositions).length > 0
+    ) {
       formatted += '*🪐 Planetary Positions:*\n';
-      const planets = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
+      const planets = [
+        'Sun',
+        'Moon',
+        'Mercury',
+        'Venus',
+        'Mars',
+        'Jupiter',
+        'Saturn',
+        'Uranus',
+        'Neptune',
+        'Pluto'
+      ];
       planets.forEach(planet => {
         if (result.planetaryPositions[planet]) {
           const pos = result.planetaryPositions[planet];
@@ -175,11 +201,15 @@ class WesternBirthChartService extends ServiceTemplate {
    */
   _validateInputs(birthData) {
     if (!birthData) {
-      throw new Error('Birth data is required for Western birth chart analysis');
+      throw new Error(
+        'Birth data is required for Western birth chart analysis'
+      );
     }
 
     if (!birthData.birthDate || !birthData.birthTime || !birthData.birthPlace) {
-      throw new Error('Complete birth details (date, time, place) are required');
+      throw new Error(
+        'Complete birth details (date, time, place) are required'
+      );
     }
   }
 
@@ -202,9 +232,18 @@ class WesternBirthChartService extends ServiceTemplate {
     if (result.planetaryPositions) {
       const elements = { fire: 0, earth: 0, air: 0, water: 0 };
       const signs = {
-        Aries: 'fire', Taurus: 'earth', Gemini: 'air', Cancer: 'water',
-        Leo: 'fire', Virgo: 'earth', Libra: 'air', Scorpio: 'water',
-        Sagittarius: 'fire', Capricorn: 'earth', Aquarius: 'air', Pisces: 'water'
+        Aries: 'fire',
+        Taurus: 'earth',
+        Gemini: 'air',
+        Cancer: 'water',
+        Leo: 'fire',
+        Virgo: 'earth',
+        Libra: 'air',
+        Scorpio: 'water',
+        Sagittarius: 'fire',
+        Capricorn: 'earth',
+        Aquarius: 'air',
+        Pisces: 'water'
       };
 
       Object.values(result.planetaryPositions).forEach(pos => {
@@ -213,7 +252,9 @@ class WesternBirthChartService extends ServiceTemplate {
         }
       });
 
-      const maxElement = Object.keys(elements).reduce((a, b) => (elements[a] > elements[b] ? a : b));
+      const maxElement = Object.keys(elements).reduce((a, b) =>
+        (elements[a] > elements[b] ? a : b)
+      );
       analysis.elementBalance = `Strong ${maxElement} element influence`;
     }
 
@@ -221,9 +262,18 @@ class WesternBirthChartService extends ServiceTemplate {
     if (result.planetaryPositions) {
       const modalities = { cardinal: 0, fixed: 0, mutable: 0 };
       const signModalities = {
-        Aries: 'cardinal', Taurus: 'fixed', Gemini: 'mutable', Cancer: 'cardinal',
-        Leo: 'fixed', Virgo: 'mutable', Libra: 'cardinal', Scorpio: 'fixed',
-        Sagittarius: 'mutable', Capricorn: 'cardinal', Aquarius: 'fixed', Pisces: 'mutable'
+        Aries: 'cardinal',
+        Taurus: 'fixed',
+        Gemini: 'mutable',
+        Cancer: 'cardinal',
+        Leo: 'fixed',
+        Virgo: 'mutable',
+        Libra: 'cardinal',
+        Scorpio: 'fixed',
+        Sagittarius: 'mutable',
+        Capricorn: 'cardinal',
+        Aquarius: 'fixed',
+        Pisces: 'mutable'
       };
 
       Object.values(result.planetaryPositions).forEach(pos => {
@@ -232,7 +282,9 @@ class WesternBirthChartService extends ServiceTemplate {
         }
       });
 
-      const maxModality = Object.keys(modalities).reduce((a, b) => (modalities[a] > modalities[b] ? a : b));
+      const maxModality = Object.keys(modalities).reduce((a, b) =>
+        (modalities[a] > modalities[b] ? a : b)
+      );
       analysis.modalityBalance = `Strong ${maxModality} modality influence`;
     }
 
@@ -264,7 +316,10 @@ class WesternBirthChartService extends ServiceTemplate {
     let confidence = 85; // Base confidence for Western astrology
 
     // Increase confidence based on data completeness
-    if (result.planetaryPositions && Object.keys(result.planetaryPositions).length >= 7) {
+    if (
+      result.planetaryPositions &&
+      Object.keys(result.planetaryPositions).length >= 7
+    ) {
       confidence += 10;
     }
 

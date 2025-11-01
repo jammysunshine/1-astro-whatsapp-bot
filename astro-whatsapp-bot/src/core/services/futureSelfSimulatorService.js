@@ -30,10 +30,16 @@ class FutureSelfSimulatorService extends ServiceTemplate {
       const yearsAhead = birthData.yearsAhead || 5;
 
       // Get future self simulation using calculator
-      const result = await this.calculator.simulateFutureSelf(birthData, yearsAhead);
+      const result = await this.calculator.simulateFutureSelf(
+        birthData,
+        yearsAhead
+      );
 
       if (result.error) {
-        logger.error('FutureSelfSimulatorService calculation error:', result.error);
+        logger.error(
+          'FutureSelfSimulatorService calculation error:',
+          result.error
+        );
         throw new Error(`Future self simulation failed: ${result.error}`);
       }
 
@@ -43,7 +49,8 @@ class FutureSelfSimulatorService extends ServiceTemplate {
         calculationType: 'Future Self Simulation',
         yearsProjected: yearsAhead,
         timestamp: new Date().toISOString(),
-        simulationMethod: 'Multi-technique projection with progressions, transits, and solar arcs',
+        simulationMethod:
+          'Multi-technique projection with progressions, transits, and solar arcs',
         confidenceRating: result.confidenceRating?.percentage || 'N/A'
       };
 
@@ -74,8 +81,16 @@ class FutureSelfSimulatorService extends ServiceTemplate {
       summary: result.summary || 'Future self simulation completed',
       metadata: {
         system: 'Future Self Simulator',
-        calculationMethod: 'Multi-technique projection combining progressions, transits, solar arcs, and predictive analysis',
-        elements: ['Progressed Chart', 'Transits', 'Solar Arcs', 'Life Themes', 'Potential Outcomes', 'Turning Points'],
+        calculationMethod:
+          'Multi-technique projection combining progressions, transits, solar arcs, and predictive analysis',
+        elements: [
+          'Progressed Chart',
+          'Transits',
+          'Solar Arcs',
+          'Life Themes',
+          'Potential Outcomes',
+          'Turning Points'
+        ],
         tradition: 'Vedic predictive astrology with probabilistic analysis'
       }
     };
@@ -92,7 +107,9 @@ class FutureSelfSimulatorService extends ServiceTemplate {
     }
 
     if (!birthData.birthDate || !birthData.birthTime || !birthData.birthPlace) {
-      throw new Error('Complete birth details (date, time, place) are required for future self simulation');
+      throw new Error(
+        'Complete birth details (date, time, place) are required for future self simulation'
+      );
     }
 
     // Validate date format
@@ -107,14 +124,23 @@ class FutureSelfSimulatorService extends ServiceTemplate {
       throw new Error('Birth time must be in HH:MM format');
     }
 
-    if (typeof birthData.birthPlace !== 'string' || birthData.birthPlace.trim() === '') {
+    if (
+      typeof birthData.birthPlace !== 'string' ||
+      birthData.birthPlace.trim() === ''
+    ) {
       throw new Error('Birth place is required');
     }
 
     // Validate years ahead parameter if provided
     if (birthData.yearsAhead !== undefined) {
-      if (typeof birthData.yearsAhead !== 'number' || birthData.yearsAhead <= 0 || birthData.yearsAhead > 50) {
-        throw new Error('Years ahead must be a positive number between 1 and 50');
+      if (
+        typeof birthData.yearsAhead !== 'number' ||
+        birthData.yearsAhead <= 0 ||
+        birthData.yearsAhead > 50
+      ) {
+        throw new Error(
+          'Years ahead must be a positive number between 1 and 50'
+        );
       }
     }
   }
@@ -131,10 +157,15 @@ class FutureSelfSimulatorService extends ServiceTemplate {
       this.validate(birthData);
 
       // Default to 3 years for aspect simulation if not specified
-      const simulationYears = yearsAhead || (birthData.yearsAhead ? birthData.yearsAhead : 3);
+      const simulationYears =
+        yearsAhead || (birthData.yearsAhead ? birthData.yearsAhead : 3);
 
       // Get specific aspect simulation using calculator
-      const result = await this.calculator.simulateLifeAspect(birthData, aspect, simulationYears);
+      const result = await this.calculator.simulateLifeAspect(
+        birthData,
+        aspect,
+        simulationYears
+      );
 
       if (result.error) {
         return {
@@ -157,16 +188,30 @@ class FutureSelfSimulatorService extends ServiceTemplate {
       return {
         success: true,
         data: result,
-        summary: result.timeline?.slice(0, 3).map(t => t.event).join(', ') || `Future ${aspect} projection`,
+        summary:
+          result.timeline
+            ?.slice(0, 3)
+            .map(t => t.event)
+            .join(', ') || `Future ${aspect} projection`,
         metadata: {
           system: `Future ${aspect} Simulator`,
-          calculationMethod: 'Multi-technique projection focused on specific life aspect',
-          elements: ['Aspect Analysis', 'Development Path', 'Challenges', 'Opportunities', 'Timeline'],
+          calculationMethod:
+            'Multi-technique projection focused on specific life aspect',
+          elements: [
+            'Aspect Analysis',
+            'Development Path',
+            'Challenges',
+            'Opportunities',
+            'Timeline'
+          ],
           tradition: 'Vedic predictive astrology with aspect-specific analysis'
         }
       };
     } catch (error) {
-      logger.error('FutureSelfSimulatorService aspect simulation error:', error);
+      logger.error(
+        'FutureSelfSimulatorService aspect simulation error:',
+        error
+      );
       return {
         success: false,
         error: error.message,
@@ -184,7 +229,12 @@ class FutureSelfSimulatorService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'lfutureSelfSimulatorCalculation', 'formatResult', 'simulateLifeAspect'],
+      methods: [
+        'execute',
+        'lfutureSelfSimulatorCalculation',
+        'formatResult',
+        'simulateLifeAspect'
+      ],
       dependencies: ['FutureSelfSimulatorCalculator']
     };
   }

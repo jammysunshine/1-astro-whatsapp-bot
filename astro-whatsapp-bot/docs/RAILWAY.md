@@ -160,12 +160,14 @@ chmod +x scripts/update-whatsapp-token.sh
 ## Cron Jobs Configuration
 
 Configured in `railway.toml`:
+
 - Token monitoring every 30 minutes
 - Daily health reports at 9 AM
 
 ## Useful Railway Commands
 
 ### Project Management
+
 ```bash
 # List projects
 railway projects
@@ -178,6 +180,7 @@ railway services
 ```
 
 ### Variables Management
+
 ```bash
 # Set multiple variables at once
 railway variables --set "KEY1=value1" --set "KEY2=value2"
@@ -190,6 +193,7 @@ railway variables --set "KEY=value" --skip-deploys
 ```
 
 ### Monitoring and Debugging
+
 ```bash
 # View real-time logs
 railway logs --follow
@@ -202,6 +206,7 @@ railway connect
 ```
 
 ### Redeployment
+
 ```bash
 # Redeploy after code changes
 railway up
@@ -212,47 +217,52 @@ railway up -s service-name
 
 ## Environment Variables Reference
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `W1_WHATSAPP_ACCESS_TOKEN` | WhatsApp Business API access token | Yes |
-| `W1_WHATSAPP_PHONE_NUMBER_ID` | WhatsApp phone number ID | Yes |
-| `W1_WHATSAPP_VERIFY_TOKEN` | Webhook verification token | Yes |
-| `W1_WHATSAPP_APP_SECRET` | WhatsApp app secret | Yes |
-| `MONGODB_URI` | MongoDB connection string | Yes |
-| `JWT_SECRET` | JWT signing secret | Yes |
-| `STRIPE_SECRET_KEY` | Stripe secret key | No |
-| `RAZORPAY_KEY_ID` | Razorpay key ID | No |
-| `RAZORPAY_KEY_SECRET` | Razorpay secret | No |
-| `OPENAI_API_KEY` | OpenAI API key | No |
-| `NODE_ENV` | Environment (production/development) | Yes |
-| `LOG_LEVEL` | Logging level (info/debug/error) | No |
-| `W1_SKIP_WEBHOOK_SIGNATURE` | Skip webhook signature validation (false in prod) | No |
+| Variable                      | Description                                       | Required |
+| ----------------------------- | ------------------------------------------------- | -------- |
+| `W1_WHATSAPP_ACCESS_TOKEN`    | WhatsApp Business API access token                | Yes      |
+| `W1_WHATSAPP_PHONE_NUMBER_ID` | WhatsApp phone number ID                          | Yes      |
+| `W1_WHATSAPP_VERIFY_TOKEN`    | Webhook verification token                        | Yes      |
+| `W1_WHATSAPP_APP_SECRET`      | WhatsApp app secret                               | Yes      |
+| `MONGODB_URI`                 | MongoDB connection string                         | Yes      |
+| `JWT_SECRET`                  | JWT signing secret                                | Yes      |
+| `STRIPE_SECRET_KEY`           | Stripe secret key                                 | No       |
+| `RAZORPAY_KEY_ID`             | Razorpay key ID                                   | No       |
+| `RAZORPAY_KEY_SECRET`         | Razorpay secret                                   | No       |
+| `OPENAI_API_KEY`              | OpenAI API key                                    | No       |
+| `NODE_ENV`                    | Environment (production/development)              | Yes      |
+| `LOG_LEVEL`                   | Logging level (info/debug/error)                  | No       |
+| `W1_SKIP_WEBHOOK_SIGNATURE`   | Skip webhook signature validation (false in prod) | No       |
 
 ## Troubleshooting
 
 ### Token Management Issues
 
 #### Issue: Bot Using Expired Token Despite Valid Token in Railway Variables
+
 **Date:** October 25, 2025
 **Problem:** Bot was using an expired WhatsApp token even though Railway environment variables contained a valid token.
 
 **Symptoms:**
+
 - Webhook receives messages successfully
 - Bot fails to send responses with "Session has expired" error
 - Token validation via `railway run npm run check-token` shows valid token
 - Bot logs show old expired token being used
 
 **Root Cause:**
+
 - Bot was using cached or old token value
 - Redeployment didn't pick up new environment variables
 - Token mismatch between Railway variables and running application
 
 **Solution:**
+
 1. Update token in Railway environment variables
 2. Use `railway up` to force redeployment (not git-based deployment)
 3. Verify token is working by checking logs after redeployment
 
 **Commands Used:**
+
 ```bash
 # Check current token
 railway run npm run check-token
@@ -265,6 +275,7 @@ railway up
 ```
 
 **Prevention:**
+
 - Always use `railway up` for deployments when environment variables change
 - Monitor token expiry proactively using the token manager cron job
 - Set up alerts for token expiry detection
@@ -280,6 +291,7 @@ railway up
 ### Health Checks
 
 The application includes health check endpoints:
+
 - `GET /health` - General health status
 - `GET /health/whatsapp` - WhatsApp API connectivity
 - `GET /health/database` - Database connectivity

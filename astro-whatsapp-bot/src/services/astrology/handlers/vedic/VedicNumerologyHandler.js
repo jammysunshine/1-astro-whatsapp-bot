@@ -6,7 +6,11 @@ const logger = require('../../../../utils/logger');
 const vedicNumerology = require('../../vedicNumerology');
 
 const handleVedicNumerology = async(message, user) => {
-  if (!message.includes('vedic') && !message.includes('numerology') && !message.includes('numbers')) {
+  if (
+    !message.includes('vedic') &&
+    !message.includes('numerology') &&
+    !message.includes('numbers')
+  ) {
     return null;
   }
 

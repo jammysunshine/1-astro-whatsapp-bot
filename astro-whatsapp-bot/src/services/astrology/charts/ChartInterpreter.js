@@ -6,7 +6,9 @@ const logger = require('../../../utils/logger');
  */
 class ChartInterpreter {
   constructor() {
-    logger.info('Module: ChartInterpreter loaded for chart analysis and interpretation');
+    logger.info(
+      'Module: ChartInterpreter loaded for chart analysis and interpretation'
+    );
   }
 
   /**
@@ -44,7 +46,10 @@ class ChartInterpreter {
     if (chart.planets?.jupiter?.house === 1) {
       strengths.push('Natural optimism and leadership potential');
     }
-    if (chart.planets?.mercury?.house === 3 || chart.planets?.mercury?.house === 9) {
+    if (
+      chart.planets?.mercury?.house === 3 ||
+      chart.planets?.mercury?.house === 9
+    ) {
       strengths.push('Excellent analytical and learning abilities');
     }
 
@@ -62,7 +67,9 @@ class ChartInterpreter {
 
     // Add challenges based on difficult aspects
     if (chart.planets?.saturn?.house === 1) {
-      challenges.push('May experience self-doubt and need to build confidence gradually');
+      challenges.push(
+        'May experience self-doubt and need to build confidence gradually'
+      );
     }
 
     return challenges;
@@ -96,7 +103,8 @@ class ChartInterpreter {
    */
   generateEnhancedDescription(chart) {
     // Simplified version - would generate detailed descriptions
-    let description = 'Enhanced chart description based on planetary positions and aspects.';
+    let description =
+      'Enhanced chart description based on planetary positions and aspects.';
 
     if (chart.interpretations?.dominantElements) {
       description += ` Dominant elements: ${chart.interpretations.dominantElements.join(', ')}.`;

@@ -69,7 +69,6 @@ const handleWhatsAppWebhook = async(req, res) => {
   }
 };
 
-
 module.exports = {
   handleWhatsAppWebhook
 };

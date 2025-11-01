@@ -13,15 +13,47 @@ class VarshaphalCalculator {
 
     // Define yearly significators and their effects
     this.varshaphalSignificators = {
-      sun: { aspects: ['Career', 'Authority', 'Father', 'Physical health'], strength: 'Leadership potential' },
-      moon: { aspects: ['Mind', 'Emotions', 'Mother', 'Public', 'Women'], strength: 'Emotional stability' },
-      mars: { aspects: ['Energy', 'Conflict', 'Siblings', 'Property'], strength: 'Action and initiative' },
-      mercury: { aspects: ['Communication', 'Education', 'Business', 'Short travels'], strength: 'Intellectual pursuits' },
-      jupiter: { aspects: ['Growth', 'Wealth', 'Spirituality', 'Long travels'], strength: 'Expansion and wisdom' },
-      venus: { aspects: ['Love', 'Luxury', 'Arts', 'Marriage', 'Finances'], strength: 'Harmonious relationships' },
-      saturn: { aspects: ['Discipline', 'Responsibilities', 'Hard work', 'Aging'], strength: 'Maturity and structure' },
-      rahu: { aspects: ['Ambitions', 'Social climbing', 'Innovation', 'Foreign matters'], strength: 'Breakthroughs' },
-      ketu: { aspects: ['Spirituality', 'Detachment', 'Introspection', 'Liberation'], strength: 'Inner growth' }
+      sun: {
+        aspects: ['Career', 'Authority', 'Father', 'Physical health'],
+        strength: 'Leadership potential'
+      },
+      moon: {
+        aspects: ['Mind', 'Emotions', 'Mother', 'Public', 'Women'],
+        strength: 'Emotional stability'
+      },
+      mars: {
+        aspects: ['Energy', 'Conflict', 'Siblings', 'Property'],
+        strength: 'Action and initiative'
+      },
+      mercury: {
+        aspects: ['Communication', 'Education', 'Business', 'Short travels'],
+        strength: 'Intellectual pursuits'
+      },
+      jupiter: {
+        aspects: ['Growth', 'Wealth', 'Spirituality', 'Long travels'],
+        strength: 'Expansion and wisdom'
+      },
+      venus: {
+        aspects: ['Love', 'Luxury', 'Arts', 'Marriage', 'Finances'],
+        strength: 'Harmonious relationships'
+      },
+      saturn: {
+        aspects: ['Discipline', 'Responsibilities', 'Hard work', 'Aging'],
+        strength: 'Maturity and structure'
+      },
+      rahu: {
+        aspects: [
+          'Ambitions',
+          'Social climbing',
+          'Innovation',
+          'Foreign matters'
+        ],
+        strength: 'Breakthroughs'
+      },
+      ketu: {
+        aspects: ['Spirituality', 'Detachment', 'Introspection', 'Liberation'],
+        strength: 'Inner growth'
+      }
     };
   }
 
@@ -43,12 +75,17 @@ class VarshaphalCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace || !year) {
-        throw new Error('Complete birth details and target year required for Varshaphal');
+        throw new Error(
+          'Complete birth details and target year required for Varshaphal'
+        );
       }
 
       // Calculate solar return date and chart
       const solarReturnData = this._calculateSolarReturnDate(birthData, year);
-      const solarReturnChart = await this._calculateSolarReturnChart(solarReturnData, birthData);
+      const solarReturnChart = await this._calculateSolarReturnChart(
+        solarReturnData,
+        birthData
+      );
 
       // Analyze progressed moon movement
       const progressedMoonData = this._calculateProgressedMoon(birthData, year);
@@ -60,14 +97,27 @@ class VarshaphalCalculator {
       const annualYogas = this._analyzeAnnualYogas(solarReturnChart);
 
       // Generate yearly predictive analysis
-      const predictions = this._generateAnnualPredictions(solarReturnChart, progressedMoonData, annualMuhurta);
+      const predictions = this._generateAnnualPredictions(
+        solarReturnChart,
+        progressedMoonData,
+        annualMuhurta
+      );
 
       // Identify favorable and challenging periods
-      const favorablePeriods = this._identifyFavorablePeriods(solarReturnChart, year);
-      const challengingPeriods = this._identifyChallengingPeriods(solarReturnChart, year);
+      const favorablePeriods = this._identifyFavorablePeriods(
+        solarReturnChart,
+        year
+      );
+      const challengingPeriods = this._identifyChallengingPeriods(
+        solarReturnChart,
+        year
+      );
 
       // Provide year-specific remedial measures
-      const remedies = this._generateAnnualRemedies(solarReturnChart, annualMuhurta);
+      const remedies = this._generateAnnualRemedies(
+        solarReturnChart,
+        annualMuhurta
+      );
 
       return {
         name,
@@ -81,7 +131,11 @@ class VarshaphalCalculator {
         favorablePeriods,
         challengingPeriods,
         remedies,
-        summary: this._generateVarshaphalSummary(year, predictions, annualMuhurta)
+        summary: this._generateVarshaphalSummary(
+          year,
+          predictions,
+          annualMuhurta
+        )
       };
     } catch (error) {
       logger.error('❌ Error in Varshaphal calculation:', error);
@@ -102,14 +156,26 @@ class VarshaphalCalculator {
     const parsedTime = this._parseBirthTime(birthData.birthTime);
 
     // Calculate Julian Days
-    const birthJD = this._dateToJulianDay(parsedBirth.year, parsedBirth.month, parsedBirth.day,
-      parsedTime.hour + parsedTime.minute / 60);
+    const birthJD = this._dateToJulianDay(
+      parsedBirth.year,
+      parsedBirth.month,
+      parsedBirth.day,
+      parsedTime.hour + parsedTime.minute / 60
+    );
 
-    const targetJD = this._dateToJulianDay(year, parsedBirth.month, parsedBirth.day,
-      parsedTime.hour + parsedTime.minute / 60);
+    const targetJD = this._dateToJulianDay(
+      year,
+      parsedBirth.month,
+      parsedBirth.day,
+      parsedTime.hour + parsedTime.minute / 60
+    );
 
     // Calculate solar return date (Sun's return to birth position)
-    const sunReturnData = sweph.calc(targetJD, sweph.SE_SUN, sweph.SEFLG_SIDEREAL);
+    const sunReturnData = sweph.calc(
+      targetJD,
+      sweph.SE_SUN,
+      sweph.SEFLG_SIDEREAL
+    );
     const solarReturnDate = this._jdToDateString(targetJD);
 
     return {
@@ -128,20 +194,29 @@ class VarshaphalCalculator {
    * @returns {Object} Solar return chart
    */
   async _calculateSolarReturnChart(solarReturnData, birthData) {
-    const coordinates = await this.geocodingService.getCoordinates(birthData.birthPlace);
+    const coordinates = await this.geocodingService.getCoordinates(
+      birthData.birthPlace
+    );
     const jd = solarReturnData.returnJD;
 
     // Calculate all planets at solar return moment
     const planets = {};
     const planetIds = {
-      sun: sweph.SE_SUN, moon: sweph.SE_MOON, mars: sweph.SE_MARS,
-      mercury: sweph.SE_MERCURY, jupiter: sweph.SE_JUPITER,
-      venus: sweph.SE_VENUS, saturn: sweph.SE_SATURN,
-      rahu: sweph.SE_TRUE_NODE, ketu: null // Ketu is opposite Rahu
+      sun: sweph.SE_SUN,
+      moon: sweph.SE_MOON,
+      mars: sweph.SE_MARS,
+      mercury: sweph.SE_MERCURY,
+      jupiter: sweph.SE_JUPITER,
+      venus: sweph.SE_VENUS,
+      saturn: sweph.SE_SATURN,
+      rahu: sweph.SE_TRUE_NODE,
+      ketu: null // Ketu is opposite Rahu
     };
 
     Object.entries(planetIds).forEach(([planet, planetId]) => {
-      if (!planetId) { return; } // Skip Ketu for now
+      if (!planetId) {
+        return;
+      } // Skip Ketu for now
 
       try {
         const position = sweph.calc(jd, planetId, sweph.SEFLG_SIDEREAL);
@@ -165,16 +240,27 @@ class VarshaphalCalculator {
           }
         }
       } catch (error) {
-        logger.warn(`Error calculating ${planet} for solar return:`, error.message);
+        logger.warn(
+          `Error calculating ${planet} for solar return:`,
+          error.message
+        );
       }
     });
 
     // Calculate houses for solar return location
-    const houses = this._calculateHouses(jd, coordinates.latitude, coordinates.longitude, 'P');
+    const houses = this._calculateHouses(
+      jd,
+      coordinates.latitude,
+      coordinates.longitude,
+      'P'
+    );
 
     // Determine house positions
     Object.entries(planets).forEach(([planet, data]) => {
-      data.house = this._getHouseForLongitude(data.longitude, houses.houseCusps);
+      data.house = this._getHouseForLongitude(
+        data.longitude,
+        houses.houseCusps
+      );
     });
 
     return {
@@ -196,11 +282,17 @@ class VarshaphalCalculator {
    */
   _calculateProgressedMoon(birthData, year) {
     const parsedBirth = this._parseBirthDate(birthData.birthDate);
-    const birthJD = this._dateToJulianDay(parsedBirth.year, parsedBirth.month, parsedBirth.day, 12);
+    const birthJD = this._dateToJulianDay(
+      parsedBirth.year,
+      parsedBirth.month,
+      parsedBirth.day,
+      12
+    );
 
     // Progressed Moon moves approximately 1 degree per year
     const yearsPassed = year - parsedBirth.year;
-    const progressedLongitude = (parsedBirth.month * 30 + parsedBirth.day) % 360;
+    const progressedLongitude =
+      (parsedBirth.month * 30 + parsedBirth.day) % 360;
 
     return {
       yearsPassed,
@@ -208,7 +300,10 @@ class VarshaphalCalculator {
       sign: Math.floor(progressedLongitude / 30) + 1,
       charan: Math.floor((progressedLongitude % 30) / 3.75), // 1-9 charans
       nakshatra: Math.floor(progressedLongitude / 13.333),
-      significance: this._interpretProgressedMoon(progressedLongitude, yearsPassed)
+      significance: this._interpretProgressedMoon(
+        progressedLongitude,
+        yearsPassed
+      )
     };
   }
 
@@ -232,21 +327,48 @@ class VarshaphalCalculator {
     const ascendantSign = solarReturnChart.ascendant.sign;
 
     // Favorable activities based on strong houses/planets
-    if (solarReturnChart.planets.jupiter.house <= 3 || solarReturnChart.planets.jupiter.house >= 9) {
-      muhurtaAnalysis.favorableActivities.push('Spiritual practices', 'Education', 'Travel', 'Investment');
+    if (
+      solarReturnChart.planets.jupiter.house <= 3 ||
+      solarReturnChart.planets.jupiter.house >= 9
+    ) {
+      muhurtaAnalysis.favorableActivities.push(
+        'Spiritual practices',
+        'Education',
+        'Travel',
+        'Investment'
+      );
     }
 
-    if (solarReturnChart.planets.venus.house <= 3 || solarReturnChart.planets.venus.house >= 9) {
-      muhurtaAnalysis.favorableActivities.push('Marriage', 'Arts', 'Luxury purchases', 'Relationships');
+    if (
+      solarReturnChart.planets.venus.house <= 3 ||
+      solarReturnChart.planets.venus.house >= 9
+    ) {
+      muhurtaAnalysis.favorableActivities.push(
+        'Marriage',
+        'Arts',
+        'Luxury purchases',
+        'Relationships'
+      );
     }
 
-    if (solarReturnChart.planets.mars.house <= 3 || solarReturnChart.planets.mars.house >= 9) {
-      muhurtaAnalysis.favorableActivities.push('New ventures', 'Competitive activities', 'Property purchase');
+    if (
+      solarReturnChart.planets.mars.house <= 3 ||
+      solarReturnChart.planets.mars.house >= 9
+    ) {
+      muhurtaAnalysis.favorableActivities.push(
+        'New ventures',
+        'Competitive activities',
+        'Property purchase'
+      );
     }
 
     // Challenging activities (weak periods)
     if ([8, 12].includes(solarReturnChart.planets.saturn.house)) {
-      muhurtaAnalysis.challengingActivities.push('Major purchases', 'Legal matters', 'Health treatments');
+      muhurtaAnalysis.challengingActivities.push(
+        'Major purchases',
+        'Legal matters',
+        'Health treatments'
+      );
     }
 
     // Best and worst months
@@ -331,7 +453,11 @@ class VarshaphalCalculator {
       favorable.push({
         period: 'Venus influence periods',
         reason: 'Venus in beneficial position',
-        activities: ['Marriage ceremonies', 'Artistic pursuits', 'Social events']
+        activities: [
+          'Marriage ceremonies',
+          'Artistic pursuits',
+          'Social events'
+        ]
       });
     }
 
@@ -353,7 +479,11 @@ class VarshaphalCalculator {
       challenging.push({
         period: 'Saturn influence periods',
         reason: 'Saturn in challenging position',
-        effects: ['Increased responsibilities', 'Health concerns', 'Financial pressure'],
+        effects: [
+          'Increased responsibilities',
+          'Health concerns',
+          'Financial pressure'
+        ],
         remedies: ['Saturn mantras', 'Charitable donations']
       });
     }
@@ -395,7 +525,9 @@ class VarshaphalCalculator {
 
     // Planet-specific remedies based on challenging positions
     if (solarReturnChart.planets.saturn.house >= 6) {
-      remedies.specific.push('Saturn mantras and oil donations to Saturn temple');
+      remedies.specific.push(
+        'Saturn mantras and oil donations to Saturn temple'
+      );
     }
 
     if ([6, 8].includes(solarReturnChart.planets.mars.house)) {
@@ -404,7 +536,9 @@ class VarshaphalCalculator {
 
     // Monthly remedies based on challenging months
     annualMuhurta.worstMonths.forEach(month => {
-      remedies.monthly.push(`Extra prayers during ${month} (challenging month)`);
+      remedies.monthly.push(
+        `Extra prayers during ${month} (challenging month)`
+      );
     });
 
     return remedies;
@@ -451,7 +585,9 @@ class VarshaphalCalculator {
 
   _parseBirthDate(birthDate) {
     const cleanDate = birthDate.toString().replace(/\D/g, '');
-    let day; let month; let year;
+    let day;
+    let month;
+    let year;
 
     if (cleanDate.length === 6) {
       day = parseInt(cleanDate.substring(0, 2));
@@ -477,7 +613,14 @@ class VarshaphalCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + hour / 24;
   }
 
@@ -492,7 +635,11 @@ class VarshaphalCalculator {
         system,
         ascendant: houses.ascendant || 0,
         mc: houses.mc || 0,
-        houseCusps: houses.house || new Array(12).fill(0).map((_, i) => (houses.ascendant + i * 30) % 360)
+        houseCusps:
+          houses.house ||
+          new Array(12)
+            .fill(0)
+            .map((_, i) => (houses.ascendant + i * 30) % 360)
       };
     } catch (error) {
       const ascendant = 0;
@@ -500,7 +647,9 @@ class VarshaphalCalculator {
         system,
         ascendant,
         mc: (ascendant + 90) % 360,
-        houseCusps: new Array(12).fill(0).map((_, i) => (ascendant + i * 30) % 360)
+        houseCusps: new Array(12)
+          .fill(0)
+          .map((_, i) => (ascendant + i * 30) % 360)
       };
     }
   }
@@ -524,15 +673,32 @@ class VarshaphalCalculator {
   }
 
   _getSignFromLongitude(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs[Math.floor(longitude / 30) % 12];
   }
 
   // Predictive analysis methods
   _interpretProgressedMoon(longitude, yearsPassed) {
     const sign = Math.floor(longitude / 30) + 1;
-    const progressionStage = yearsPassed <= 30 ? 'Youth' : yearsPassed <= 60 ? 'Middle age' : 'Later years';
+    const progressionStage =
+      yearsPassed <= 30 ?
+        'Youth' :
+        yearsPassed <= 60 ?
+          'Middle age' :
+          'Later years';
 
     return `${progressionStage} focus on ${this._getSignFromLongitude(longitude)} themes`;
   }
@@ -547,16 +713,28 @@ class VarshaphalCalculator {
     return ['April-June']; // Based on challenging aspects
   }
 
-  _checkRajYogas(chart) { return []; } // Would implement specific yoga logic
-  _checkDhanYogas(chart) { return []; }
-  _checkNabhasYogas(chart) { return []; }
+  _checkRajYogas(chart) {
+    return [];
+  } // Would implement specific yoga logic
+  _checkDhanYogas(chart) {
+    return [];
+  }
+  _checkNabhasYogas(chart) {
+    return [];
+  }
 
   _predictCareer(chart, progressedMoon) {
-    return { summary: 'Career growth opportunities present, leadership potential increases' };
+    return {
+      summary:
+        'Career growth opportunities present, leadership potential increases'
+    };
   }
 
   _predictRelationships(chart) {
-    return { summary: 'Harmonious relationships, good marriage prospects if applicable' };
+    return {
+      summary:
+        'Harmonious relationships, good marriage prospects if applicable'
+    };
   }
 
   _predictHealth(chart) {

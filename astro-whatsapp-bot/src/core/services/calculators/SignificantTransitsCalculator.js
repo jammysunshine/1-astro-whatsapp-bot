@@ -29,7 +29,9 @@ class SignificantTransitsCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for transit analysis' };
+        return {
+          error: 'Complete birth details required for transit analysis'
+        };
       }
 
       // Parse birth details
@@ -37,31 +39,57 @@ class SignificantTransitsCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate natal chart
-      const natalChart = await this._calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const natalChart = await this._calculateNatalChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Identify significant natal aspects/points
-      const significantNatalPoints = this._identifySignificantNatalPoints(natalChart);
+      const significantNatalPoints =
+        this._identifySignificantNatalPoints(natalChart);
 
       // Calculate upcoming transits
-      const transits = await this._calculateUpcomingTransits(significantNatalPoints, monthsAhead);
+      const transits = await this._calculateUpcomingTransits(
+        significantNatalPoints,
+        monthsAhead
+      );
 
       // Classify transits by significance
-      const classifiedTransits = this._classifyTransitsBySignificance(transits, natalChart);
+      const classifiedTransits = this._classifyTransitsBySignificance(
+        transits,
+        natalChart
+      );
 
       // Sort transits by importance and timing
       const sortedTransits = this._sortTransitsByImportance(classifiedTransits);
 
       // Generate timing recommendations
-      const timingRecommendations = this._generateTimingRecommendations(sortedTransits.slice(0, 5)); // Top 5
+      const timingRecommendations = this._generateTimingRecommendations(
+        sortedTransits.slice(0, 5)
+      ); // Top 5
 
       // Calculate overall transit influence for the period
-      const periodInfluence = this._calculatePeriodInfluence(sortedTransits, monthsAhead);
+      const periodInfluence = this._calculatePeriodInfluence(
+        sortedTransits,
+        monthsAhead
+      );
 
       return {
         name,
@@ -76,21 +104,41 @@ class SignificantTransitsCalculator {
         },
         timingRecommendations,
         periodInfluence,
-        summary: this._generateTransitsSummary(sortedTransits, periodInfluence, monthsAhead)
+        summary: this._generateTransitsSummary(
+          sortedTransits,
+          periodInfluence,
+          monthsAhead
+        )
       };
     } catch (error) {
       logger.error('❌ Error in significant transits calculation:', error);
-      throw new Error(`Significant transits calculation failed: ${error.message}`);
+      throw new Error(
+        `Significant transits calculation failed: ${error.message}`
+      );
     }
   }
 
   /**
    * Calculate natal chart for transit reference
    */
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     const natalPlanets = {};
 
-    const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+    const jd = this._dateToJulianDay(
+      year,
+      month,
+      day,
+      hour + minute / 60 - timezone
+    );
 
     // Planet IDs for Swiss Ephemeris
     const planetIds = {
@@ -115,18 +163,32 @@ class SignificantTransitsCalculator {
         if (planetName === 'ketu') {
           const rahuPos = sweph.calc(jd, sweph.SE_TRUE_NODE);
           position = {
-            longitude: (Array.isArray(rahuPos.longitude) ? rahuPos.longitude[0] : rahuPos.longitude) + 180 % 360,
+            longitude:
+              (Array.isArray(rahuPos.longitude) ?
+                rahuPos.longitude[0] :
+                rahuPos.longitude) +
+              (180 % 360),
             latitude: 0,
             speed: { longitude: 0 }
           };
         } else {
-          position = sweph.calc(jd, planetId, sweph.SEFLG_SIDEREAL | sweph.SEFLG_SPEED);
+          position = sweph.calc(
+            jd,
+            planetId,
+            sweph.SEFLG_SIDEREAL | sweph.SEFLG_SPEED
+          );
         }
 
         if (position && position.longitude !== undefined) {
-          const longitude = Array.isArray(position.longitude) ? position.longitude[0] : position.longitude;
-          const latitude = Array.isArray(position.latitude) ? position.latitude[0] : position.latitude || 0;
-          const speed = Array.isArray(position.longitude) ? position.longitude[3] || 0 : 0;
+          const longitude = Array.isArray(position.longitude) ?
+            position.longitude[0] :
+            position.longitude;
+          const latitude = Array.isArray(position.latitude) ?
+            position.latitude[0] :
+            position.latitude || 0;
+          const speed = Array.isArray(position.longitude) ?
+            position.longitude[3] || 0 :
+            0;
 
           natalPlanets[planetName] = {
             name: planetName.charAt(0).toUpperCase() + planetName.slice(1),
@@ -139,7 +201,10 @@ class SignificantTransitsCalculator {
           };
         }
       } catch (error) {
-        logger.warn(`Error calculating natal ${planetName} position:`, error.message);
+        logger.warn(
+          `Error calculating natal ${planetName} position:`,
+          error.message
+        );
       }
     }
 
@@ -173,7 +238,10 @@ class SignificantTransitsCalculator {
       significantPoints.planets[planet] = {
         longitude: data.longitude,
         sign: data.sign,
-        house: this._calculateHouseForLongitude(data.longitude, natalChart.planets.ascendant?.longitude || 0)
+        house: this._calculateHouseForLongitude(
+          data.longitude,
+          natalChart.planets.ascendant?.longitude || 0
+        )
       };
     });
 
@@ -187,7 +255,8 @@ class SignificantTransitsCalculator {
     };
 
     // Identify positions that are particularly sensitive
-    significantPoints.importantPositions = this._identifySensitivePositions(natalChart);
+    significantPoints.importantPositions =
+      this._identifySensitivePositions(natalChart);
 
     return significantPoints;
   }
@@ -200,28 +269,68 @@ class SignificantTransitsCalculator {
     const startDate = new Date();
 
     // Transiting planets to check
-    const transitingPlanets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'rahu'];
+    const transitingPlanets = [
+      'sun',
+      'moon',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn',
+      'rahu'
+    ];
 
     // Check each month
     for (let month = 0; month < monthsAhead; month++) {
-      const currentMonthStart = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
-      const currentMonthEnd = new Date(startDate.getFullYear(), startDate.getMonth() + month + 1, 0);
+      const currentMonthStart = new Date(
+        startDate.getFullYear(),
+        startDate.getMonth() + month,
+        1
+      );
+      const currentMonthEnd = new Date(
+        startDate.getFullYear(),
+        startDate.getMonth() + month + 1,
+        0
+      );
 
       // Check each transiting planet
       for (const transitingPlanet of transitingPlanets) {
         let planetId;
-        if (transitingPlanet === 'sun') { planetId = sweph.SE_SUN; } else if (transitingPlanet === 'moon') { planetId = sweph.SE_MOON; } else if (transitingPlanet === 'mercury') { planetId = sweph.SE_MERCURY; } else if (transitingPlanet === 'venus') { planetId = sweph.SE_VENUS; } else if (transitingPlanet === 'mars') { planetId = sweph.SE_MARS; } else if (transitingPlanet === 'jupiter') { planetId = sweph.SE_JUPITER; } else if (transitingPlanet === 'saturn') { planetId = sweph.SE_SATURN; } else if (transitingPlanet === 'rahu') { planetId = sweph.SE_TRUE_NODE; }
+        if (transitingPlanet === 'sun') {
+          planetId = sweph.SE_SUN;
+        } else if (transitingPlanet === 'moon') {
+          planetId = sweph.SE_MOON;
+        } else if (transitingPlanet === 'mercury') {
+          planetId = sweph.SE_MERCURY;
+        } else if (transitingPlanet === 'venus') {
+          planetId = sweph.SE_VENUS;
+        } else if (transitingPlanet === 'mars') {
+          planetId = sweph.SE_MARS;
+        } else if (transitingPlanet === 'jupiter') {
+          planetId = sweph.SE_JUPITER;
+        } else if (transitingPlanet === 'saturn') {
+          planetId = sweph.SE_SATURN;
+        } else if (transitingPlanet === 'rahu') {
+          planetId = sweph.SE_TRUE_NODE;
+        }
 
         // Check aspects to all significant natal points
-        for (const [pointType, points] of Object.entries(significantNatalPoints)) {
-          if (pointType === 'importantPositions') { continue; }
+        for (const [pointType, points] of Object.entries(
+          significantNatalPoints
+        )) {
+          if (pointType === 'importantPositions') {
+            continue;
+          }
 
           for (const [pointName, pointData] of Object.entries(points)) {
             try {
               const natalLongitude = pointData.longitude;
               const transitDate = await this._findTransitDate(
-                transitingPlanet, planetId, natalLongitude,
-                currentMonthStart, currentMonthEnd
+                transitingPlanet,
+                planetId,
+                natalLongitude,
+                currentMonthStart,
+                currentMonthEnd
               );
 
               if (transitDate) {
@@ -234,8 +343,15 @@ class SignificantTransitsCalculator {
                     longitude: natalLongitude
                   },
                   aspect: 'conjunction', // Exact conjunction for now
-                  significance: this._calculateTransitSignificance(transitingPlanet, pointType, pointName),
-                  intensity: this._calculateTransitIntensity(transitingPlanet, pointType)
+                  significance: this._calculateTransitSignificance(
+                    transitingPlanet,
+                    pointType,
+                    pointName
+                  ),
+                  intensity: this._calculateTransitIntensity(
+                    transitingPlanet,
+                    pointType
+                  )
                 });
               }
             } catch (error) {
@@ -253,15 +369,25 @@ class SignificantTransitsCalculator {
   /**
    * Find the date when a transiting planet aspects a natal point within a month
    */
-  async _findTransitDate(transitingPlanet, planetId, natalLongitude, startDate, endDate) {
+  async _findTransitDate(
+    transitingPlanet,
+    planetId,
+    natalLongitude,
+    startDate,
+    endDate
+  ) {
     try {
       // Calculate positions at 5-day intervals
       const checkIntervals = 5;
-      const totalDays = Math.floor((endDate - startDate) / (24 * 60 * 60 * 1000));
+      const totalDays = Math.floor(
+        (endDate - startDate) / (24 * 60 * 60 * 1000)
+      );
       const intervals = Math.max(1, Math.floor(totalDays / checkIntervals));
 
       for (let i = 0; i <= intervals; i++) {
-        const checkDate = new Date(startDate.getTime() + (i * checkIntervals * 24 * 60 * 60 * 1000));
+        const checkDate = new Date(
+          startDate.getTime() + i * checkIntervals * 24 * 60 * 60 * 1000
+        );
 
         const jd = this._dateToJulianDay(
           checkDate.getFullYear(),
@@ -301,7 +427,8 @@ class SignificantTransitsCalculator {
     };
 
     transits.forEach(transit => {
-      const significanceScore = transit.significance.score + transit.intensity.score;
+      const significanceScore =
+        transit.significance.score + transit.intensity.score;
 
       if (significanceScore >= 15) {
         classified.major.push(transit);
@@ -364,18 +491,35 @@ class SignificantTransitsCalculator {
           period: `${month} ${transit.date.getDate()}`,
           duration: '15-30 days',
           reason: `${planet} transit to natal ${transit.natalPoint.name}`,
-          activities: ['Caution', 'Planning', 'Preparation', 'Remedial measures']
+          activities: [
+            'Caution',
+            'Planning',
+            'Preparation',
+            'Remedial measures'
+          ]
         });
       }
     });
 
     // General advice
-    if (recommendations.favorablePeriods.length > recommendations.challengingPeriods.length) {
-      recommendations.generalAdvice.push('Overall favorable period for major actions and decisions');
-    } else if (recommendations.challengingPeriods.length > recommendations.favorablePeriods.length) {
-      recommendations.generalAdvice.push('Period requires careful planning and patience');
+    if (
+      recommendations.favorablePeriods.length >
+      recommendations.challengingPeriods.length
+    ) {
+      recommendations.generalAdvice.push(
+        'Overall favorable period for major actions and decisions'
+      );
+    } else if (
+      recommendations.challengingPeriods.length >
+      recommendations.favorablePeriods.length
+    ) {
+      recommendations.generalAdvice.push(
+        'Period requires careful planning and patience'
+      );
     } else {
-      recommendations.generalAdvice.push('Mixed influences - balance careful planning with appropriate action');
+      recommendations.generalAdvice.push(
+        'Mixed influences - balance careful planning with appropriate action'
+      );
     }
 
     return recommendations;
@@ -389,17 +533,29 @@ class SignificantTransitsCalculator {
     let challengingScore = 0;
 
     sortedTransits.forEach(transit => {
-      if (this._isBeneficialTransit(transit.transitingPlanet, transit.natalPoint.type)) {
+      if (
+        this._isBeneficialTransit(
+          transit.transitingPlanet,
+          transit.natalPoint.type
+        )
+      ) {
         beneficialScore += transit.significance.score * transit.intensity.score;
-      } else if (this._isChallengingTransit(transit.transitingPlanet, transit.natalPoint.type)) {
-        challengingScore += transit.significance.score * transit.intensity.score;
+      } else if (
+        this._isChallengingTransit(
+          transit.transitingPlanet,
+          transit.natalPoint.type
+        )
+      ) {
+        challengingScore +=
+          transit.significance.score * transit.intensity.score;
       }
     });
 
     const totalScore = beneficialScore + challengingScore;
     const netBalance = beneficialScore - challengingScore;
 
-    let influence; let rating;
+    let influence;
+    let rating;
 
     if (netBalance > 50) {
       influence = 'Very favorable period for favorable planets';
@@ -447,16 +603,25 @@ class SignificantTransitsCalculator {
     summary += '\n*Key Periods to Note:*\n';
 
     // Add favorable periods
-    if (topTransits.some(t => this._isBeneficialTransit(t.transitingPlanet, t.natalPoint.type))) {
+    if (
+      topTransits.some(t =>
+        this._isBeneficialTransit(t.transitingPlanet, t.natalPoint.type)
+      )
+    ) {
       summary += '• Favorable opportunities available\n';
     }
 
     // Add challenging periods
-    if (topTransits.some(t => this._isChallengingTransit(t.transitingPlanet, t.natalPoint.type))) {
+    if (
+      topTransits.some(t =>
+        this._isChallengingTransit(t.transitingPlanet, t.natalPoint.type)
+      )
+    ) {
       summary += '• Challenging periods requiring caution and planning\n';
     }
 
-    summary += '\n*Recommendation:* Monitor these transits closely and avoid major decisions during challenging aspects.';
+    summary +=
+      '\n*Recommendation:* Monitor these transits closely and avoid major decisions during challenging aspects.';
 
     return summary;
   }
@@ -472,7 +637,8 @@ class SignificantTransitsCalculator {
 
     // Check for planets in challenging positions
     Object.entries(natalChart.planets).forEach(([planet, data]) => {
-      if (data.house === 1 || data.house === 8 || data.house === 12) { // Angles or challenging houses
+      if (data.house === 1 || data.house === 8 || data.house === 12) {
+        // Angles or challenging houses
         sensitive.push({
           type: 'sensitive_degree',
           longitude: data.longitude,
@@ -485,7 +651,11 @@ class SignificantTransitsCalculator {
     return sensitive;
   }
 
-  _calculateTransitSignificance(transitingPlanet, natalPointType, natalPointName) {
+  _calculateTransitSignificance(
+    transitingPlanet,
+    natalPointType,
+    natalPointName
+  ) {
     // Significance based on planet and point type
     let score = 5; // Base score
 
@@ -514,7 +684,8 @@ class SignificantTransitsCalculator {
       score += 3;
     }
 
-    const significance = score >= 14 ? 'Major' : score >= 9 ? 'Significant' : 'Minor';
+    const significance =
+      score >= 14 ? 'Major' : score >= 9 ? 'Significant' : 'Minor';
 
     return { score, level: significance };
   }
@@ -522,7 +693,14 @@ class SignificantTransitsCalculator {
   _calculateTransitIntensity(transitingPlanet, natalPointType) {
     // Intensity based on planetary nature
     const intensities = {
-      sun: 8, jupiter: 8, saturn: 9, rahu: 9, mars: 7, moon: 6, mercury: 5, venus: 5
+      sun: 8,
+      jupiter: 8,
+      saturn: 9,
+      rahu: 9,
+      mars: 7,
+      moon: 6,
+      mercury: 5,
+      venus: 5
     };
 
     const score = intensities[transitingPlanet] || 5;
@@ -533,19 +711,35 @@ class SignificantTransitsCalculator {
 
   _isBeneficialTransit(planet, pointType) {
     const beneficialPlanets = ['jupiter', 'venus', 'moon'];
-    return beneficialPlanets.includes(planet.toLowerCase()) && pointType !== 'malefic_points';
+    return (
+      beneficialPlanets.includes(planet.toLowerCase()) &&
+      pointType !== 'malefic_points'
+    );
   }
 
   _isChallengingTransit(planet, pointType) {
     const challengingPlanets = ['saturn', 'mars', 'rahu'];
-    return challengingPlanets.includes(planet.toLowerCase()) || pointType === 'malefic_points';
+    return (
+      challengingPlanets.includes(planet.toLowerCase()) ||
+      pointType === 'malefic_points'
+    );
   }
 
   _getBeneficialActivities(pointType) {
     if (pointType === 'angles') {
-      return ['Major decisions', 'New beginnings', 'Important meetings', 'Career changes'];
+      return [
+        'Major decisions',
+        'New beginnings',
+        'Important meetings',
+        'Career changes'
+      ];
     } else if (pointType === 'planets') {
-      return ['Social activities', 'Relationship matters', 'Financial decisions', 'Personal development'];
+      return [
+        'Social activities',
+        'Relationship matters',
+        'Financial decisions',
+        'Personal development'
+      ];
     } else {
       return ['Regular activities', 'Planning', 'Important communications'];
     }
@@ -555,7 +749,14 @@ class SignificantTransitsCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + (hour - 12) / 24;
   }
 
@@ -565,7 +766,7 @@ class SignificantTransitsCalculator {
       return [coords.latitude, coords.longitude];
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Delhi
+      return [28.6139, 77.209]; // Delhi
     }
   }
 

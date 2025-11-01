@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 /**
  * PerformSynastryAnalysisService - Service for detailed interchart analysis
@@ -7,7 +8,8 @@ const logger = require('../../../utils/logger');
 class PerformSynastryAnalysisService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'PerformSynastryAnalysisService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'PerformSynastryAnalysisService';
     this.calculatorPath = '../calculators/SynastryEngine'; // Assuming this path for the main calculator
     logger.info('PerformSynastryAnalysisService initialized');
   }
@@ -45,12 +47,19 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
       const { chart1, chart2 } = synastryData;
 
       // Get complete synastry analysis from calculator
-      const synastryResult = await this.calculator.performSynastryAnalysis(chart1, chart2);
+      const synastryResult = await this.calculator.performSynastryAnalysis(
+        chart1,
+        chart2
+      );
 
       // Generate additional insights and interpretations
-      const keyAspects = this._analyzeKeyAspects(synastryResult.interchartAspects);
-      const relationshipThemes = this._identifyRelationshipThemes(synastryResult);
-      const compatibilityInsights = this._generateCompatibilityInsights(synastryResult);
+      const keyAspects = this._analyzeKeyAspects(
+        synastryResult.interchartAspects
+      );
+      const relationshipThemes =
+        this._identifyRelationshipThemes(synastryResult);
+      const compatibilityInsights =
+        this._generateCompatibilityInsights(synastryResult);
 
       return {
         ...synastryResult,
@@ -78,9 +87,15 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
     };
 
     // Add interpretation for each category
-    keyAspects.harmoniousInterpretation = this._interpretHarmoniousAspects(keyAspects.harmonious);
-    keyAspects.challengingInterpretation = this._interpretChallengingAspects(keyAspects.challenging);
-    keyAspects.significantInterpretation = this._interpretSignificantAspects(keyAspects.significant);
+    keyAspects.harmoniousInterpretation = this._interpretHarmoniousAspects(
+      keyAspects.harmonious
+    );
+    keyAspects.challengingInterpretation = this._interpretChallengingAspects(
+      keyAspects.challenging
+    );
+    keyAspects.significantInterpretation = this._interpretSignificantAspects(
+      keyAspects.significant
+    );
 
     return keyAspects;
   }
@@ -91,7 +106,9 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
    * @returns {string} Interpretation
    */
   _interpretHarmoniousAspects(aspects) {
-    if (aspects.length === 0) { return 'Limited harmonious connections suggest areas requiring conscious effort'; }
+    if (aspects.length === 0) {
+      return 'Limited harmonious connections suggest areas requiring conscious effort';
+    }
 
     const aspectCount = aspects.length;
     const planets = [...new Set(aspects.flatMap(a => [a.planet1, a.planet2]))];
@@ -111,7 +128,9 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
    * @returns {string} Interpretation
    */
   _interpretChallengingAspects(aspects) {
-    if (aspects.length === 0) { return 'No significant challenging aspects indicate smooth relational dynamics'; }
+    if (aspects.length === 0) {
+      return 'No significant challenging aspects indicate smooth relational dynamics';
+    }
 
     const aspectCount = aspects.length;
     const planets = [...new Set(aspects.flatMap(a => [a.planet1, a.planet2]))];
@@ -129,7 +148,9 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
    * @returns {string} Interpretation
    */
   _interpretSignificantAspects(aspects) {
-    if (aspects.length === 0) { return 'No extremely tight aspects suggest balanced, less intense dynamics'; }
+    if (aspects.length === 0) {
+      return 'No extremely tight aspects suggest balanced, less intense dynamics';
+    }
 
     const planets = [...new Set(aspects.flatMap(a => [a.planet1, a.planet2]))];
     return `Very tight connections between ${planets.join(' and ')} indicate powerful, transformative energies`;
@@ -146,10 +167,13 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
 
     // Analyze house overlays for relationship themes
     const relationshipHouses = [5, 7, 8];
-    const overlayCount = Object.values(houseOverlays.userInPartnerHouses || {})
-      .filter(data => relationshipHouses.includes(data.house)).length +
-      Object.values(houseOverlays.partnerInUserHouses || {})
-        .filter(data => relationshipHouses.includes(data.house)).length;
+    const overlayCount =
+      Object.values(houseOverlays.userInPartnerHouses || {}).filter(data =>
+        relationshipHouses.includes(data.house)
+      ).length +
+      Object.values(houseOverlays.partnerInUserHouses || {}).filter(data =>
+        relationshipHouses.includes(data.house)
+      ).length;
 
     if (overlayCount >= 3) {
       themes.push('Deep emotional and relational commitment');
@@ -158,24 +182,24 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
     }
 
     // Analyze aspects for themes
-    const venusAspects = interchartAspects.filter(a =>
-      a.planet1 === 'Venus' || a.planet2 === 'Venus'
+    const venusAspects = interchartAspects.filter(
+      a => a.planet1 === 'Venus' || a.planet2 === 'Venus'
     );
 
     if (venusAspects.some(a => a.type === 'harmonious')) {
       themes.push('Romantic harmony and affectionate connection');
     }
 
-    const marsAspects = interchartAspects.filter(a =>
-      a.planet1 === 'Mars' || a.planet2 === 'Mars'
+    const marsAspects = interchartAspects.filter(
+      a => a.planet1 === 'Mars' || a.planet2 === 'Mars'
     );
 
     if (marsAspects.some(a => a.type === 'harmonious')) {
       themes.push('Passionate and dynamic physical connection');
     }
 
-    const moonAspects = interchartAspects.filter(a =>
-      a.planet1 === 'Moon' || a.planet2 === 'Moon'
+    const moonAspects = interchartAspects.filter(
+      a => a.planet1 === 'Moon' || a.planet2 === 'Moon'
     );
 
     if (moonAspects.some(a => a.type === 'harmonious')) {
@@ -205,24 +229,36 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
     const { interchartAspects, houseOverlays } = synastryResult;
 
     // Analyze strengths
-    const harmoniousCount = interchartAspects.filter(a => a.type === 'harmonious').length;
+    const harmoniousCount = interchartAspects.filter(
+      a => a.type === 'harmonious'
+    ).length;
     if (harmoniousCount >= 5) {
       insights.strengths.push('Exceptional natural harmony and understanding');
     } else if (harmoniousCount >= 3) {
-      insights.strengths.push('Good foundation of supportive planetary connections');
+      insights.strengths.push(
+        'Good foundation of supportive planetary connections'
+      );
     }
 
     // Analyze challenges
-    const challengingCount = interchartAspects.filter(a => a.type === 'challenging').length;
+    const challengingCount = interchartAspects.filter(
+      a => a.type === 'challenging'
+    ).length;
     if (challengingCount >= 4) {
-      insights.challenges.push('Several challenging aspects require patience and communication');
+      insights.challenges.push(
+        'Several challenging aspects require patience and communication'
+      );
     } else if (challengingCount >= 2) {
-      insights.challenges.push('Some challenging connections offer growth opportunities');
+      insights.challenges.push(
+        'Some challenging connections offer growth opportunities'
+      );
     }
 
     // Analyze growth potential
     if (challengingCount > 0 && harmoniousCount > 0) {
-      insights.growth.push('Balanced mix of harmony and challenge supports mutual growth');
+      insights.growth.push(
+        'Balanced mix of harmony and challenge supports mutual growth'
+      );
     }
 
     // Overall assessment
@@ -230,11 +266,14 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
     const harmonyRatio = totalAspects > 0 ? harmoniousCount / totalAspects : 0;
 
     if (harmonyRatio >= 0.6) {
-      insights.overall = 'Strong harmonious foundation with excellent compatibility potential';
+      insights.overall =
+        'Strong harmonious foundation with excellent compatibility potential';
     } else if (harmonyRatio >= 0.4) {
-      insights.overall = 'Balanced compatibility with opportunities for conscious relationship development';
+      insights.overall =
+        'Balanced compatibility with opportunities for conscious relationship development';
     } else {
-      insights.overall = 'Complex dynamics offering significant opportunities for personal and relational growth';
+      insights.overall =
+        'Complex dynamics offering significant opportunities for personal and relational growth';
     }
 
     return insights;
@@ -248,8 +287,12 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
   _createSynastrySummary(synastryResult) {
     const { interchartAspects, houseOverlays } = synastryResult;
 
-    const harmoniousCount = interchartAspects.filter(a => a.type === 'harmonious').length;
-    const challengingCount = interchartAspects.filter(a => a.type === 'challenging').length;
+    const harmoniousCount = interchartAspects.filter(
+      a => a.type === 'harmonious'
+    ).length;
+    const challengingCount = interchartAspects.filter(
+      a => a.type === 'challenging'
+    ).length;
 
     let summary = '';
 
@@ -262,13 +305,16 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
     }
 
     // Add house overlay insights
-    const relationshipOverlays = Object.values(houseOverlays.userInPartnerHouses || {})
-      .filter(data => [5, 7, 8].includes(data.house)).length;
+    const relationshipOverlays = Object.values(
+      houseOverlays.userInPartnerHouses || {}
+    ).filter(data => [5, 7, 8].includes(data.house)).length;
 
     if (relationshipOverlays >= 2) {
-      summary += 'Strong house overlays in relationship sectors indicate deep emotional commitment and shared experiences.';
+      summary +=
+        'Strong house overlays in relationship sectors indicate deep emotional commitment and shared experiences.';
     } else {
-      summary += 'House placements suggest opportunities for developing deeper relational understanding.';
+      summary +=
+        'House placements suggest opportunities for developing deeper relational understanding.';
     }
 
     return summary;
@@ -302,17 +348,34 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
       throw new Error('chart2 must contain planets data');
     }
 
-    if (typeof chart1.ascendant !== 'number' || typeof chart2.ascendant !== 'number') {
+    if (
+      typeof chart1.ascendant !== 'number' ||
+      typeof chart2.ascendant !== 'number'
+    ) {
       throw new Error('Both charts must have valid ascendant values');
     }
 
     // Check for required planets
-    const requiredPlanets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const requiredPlanets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
     for (const planet of requiredPlanets) {
-      if (!chart1.planets[planet] || typeof chart1.planets[planet].longitude !== 'number') {
+      if (
+        !chart1.planets[planet] ||
+        typeof chart1.planets[planet].longitude !== 'number'
+      ) {
         throw new Error(`chart1 missing valid longitude for ${planet}`);
       }
-      if (!chart2.planets[planet] || typeof chart2.planets[planet].longitude !== 'number') {
+      if (
+        !chart2.planets[planet] ||
+        typeof chart2.planets[planet].longitude !== 'number'
+      ) {
         throw new Error(`chart2 missing valid longitude for ${planet}`);
       }
     }
@@ -340,7 +403,8 @@ class PerformSynastryAnalysisService extends ServiceTemplate {
         compatibilityInsights: result.compatibilityInsights,
         summary: result.summary
       },
-      disclaimer: 'Synastry analysis examines astrological compatibility between two individuals. Real relationships involve many factors beyond planetary positions. Professional counseling is recommended for important relationship decisions.'
+      disclaimer:
+        'Synastry analysis examines astrological compatibility between two individuals. Real relationships involve many factors beyond planetary positions. Professional counseling is recommended for important relationship decisions.'
     };
   }
   async getHealthStatus() {

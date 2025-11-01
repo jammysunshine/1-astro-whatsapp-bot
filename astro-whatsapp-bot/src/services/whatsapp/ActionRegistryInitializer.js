@@ -93,13 +93,21 @@ class ActionRegistryInitializer {
     try {
       const validation = this.registry.validate();
       if (!validation.isValid) {
-        logger.warn('⚠️ ActionRegistry validation warnings:', validation.errorMessage);
-        logger.warn('📋 Continuing with graceful degradation - some features may be unavailable');
+        logger.warn(
+          '⚠️ ActionRegistry validation warnings:',
+          validation.errorMessage
+        );
+        logger.warn(
+          '📋 Continuing with graceful degradation - some features may be unavailable'
+        );
       } else {
         logger.info('✅ ActionRegistry validation passed');
       }
     } catch (error) {
-      logger.warn('⚠️ ActionRegistry validation failed, continuing:', error.message);
+      logger.warn(
+        '⚠️ ActionRegistry validation failed, continuing:',
+        error.message
+      );
     }
 
     logger.info('✅ ActionRegistry initialized successfully');
@@ -113,76 +121,195 @@ class ActionRegistryInitializer {
    */
   registerActionClasses() {
     // Phase 1 - Core Astrology Actions
-    this.registry.registerAction(DailyHoroscopeAction.actionId, DailyHoroscopeAction);
+    this.registry.registerAction(
+      DailyHoroscopeAction.actionId,
+      DailyHoroscopeAction
+    );
     this.registry.registerAction(BirthChartAction.actionId, BirthChartAction);
-    this.registry.registerAction(CompatibilityAction.actionId, CompatibilityAction);
-    this.registry.registerAction(CurrentTransitsAction.actionId, CurrentTransitsAction);
-    this.registry.registerAction(NumerologyReportAction.actionId, NumerologyReportAction);
+    this.registry.registerAction(
+      CompatibilityAction.actionId,
+      CompatibilityAction
+    );
+    this.registry.registerAction(
+      CurrentTransitsAction.actionId,
+      CurrentTransitsAction
+    );
+    this.registry.registerAction(
+      NumerologyReportAction.actionId,
+      NumerologyReportAction
+    );
 
     // Menu Actions
-    this.registry.registerAction(ShowMainMenuAction.actionId, ShowMainMenuAction);
-    this.registry.registerAction(WesternAstrologyMenuAction.actionId, WesternAstrologyMenuAction);
-    this.registry.registerAction(VedicAstrologyMenuAction.actionId, VedicAstrologyMenuAction);
-    this.registry.registerAction(DivinationMysticMenuAction.actionId, DivinationMysticMenuAction);
-    this.registry.registerAction(NumerologySpecialMenuAction.actionId, NumerologySpecialMenuAction);
-    this.registry.registerAction(RelationshipsGroupsMenuAction.actionId, RelationshipsGroupsMenuAction);
-    this.registry.registerAction(SettingsProfileMenuAction.actionId, SettingsProfileMenuAction);
-    this.registry.registerAction(LanguageMenuAction.actionId, LanguageMenuAction);
+    this.registry.registerAction(
+      ShowMainMenuAction.actionId,
+      ShowMainMenuAction
+    );
+    this.registry.registerAction(
+      WesternAstrologyMenuAction.actionId,
+      WesternAstrologyMenuAction
+    );
+    this.registry.registerAction(
+      VedicAstrologyMenuAction.actionId,
+      VedicAstrologyMenuAction
+    );
+    this.registry.registerAction(
+      DivinationMysticMenuAction.actionId,
+      DivinationMysticMenuAction
+    );
+    this.registry.registerAction(
+      NumerologySpecialMenuAction.actionId,
+      NumerologySpecialMenuAction
+    );
+    this.registry.registerAction(
+      RelationshipsGroupsMenuAction.actionId,
+      RelationshipsGroupsMenuAction
+    );
+    this.registry.registerAction(
+      SettingsProfileMenuAction.actionId,
+      SettingsProfileMenuAction
+    );
+    this.registry.registerAction(
+      LanguageMenuAction.actionId,
+      LanguageMenuAction
+    );
 
     // Key Astrology Actions (using legacy implementations)
     this.registry.registerAction(VedicKundliAction.actionId, VedicKundliAction);
-    this.registry.registerAction(KaalSarpAnalysisAction.actionId, KaalSarpAnalysisAction);
-    this.registry.registerAction(PrashnaAstrologyAction.actionId, PrashnaAstrologyAction);
+    this.registry.registerAction(
+      KaalSarpAnalysisAction.actionId,
+      KaalSarpAnalysisAction
+    );
+    this.registry.registerAction(
+      PrashnaAstrologyAction.actionId,
+      PrashnaAstrologyAction
+    );
     this.registry.registerAction(MuhurtaAction.actionId, MuhurtaAction);
-    this.registry.registerAction(PanchangAnalysisAction.actionId, PanchangAnalysisAction);
-    this.registry.registerAction(HoroscopeAnalysisAction.actionId, HoroscopeAnalysisAction);
-    this.registry.registerAction(DashaAnalysisAction.actionId, DashaAnalysisAction);
-    this.registry.registerAction(HinduFestivalsAction.actionId, HinduFestivalsAction);
+    this.registry.registerAction(
+      PanchangAnalysisAction.actionId,
+      PanchangAnalysisAction
+    );
+    this.registry.registerAction(
+      HoroscopeAnalysisAction.actionId,
+      HoroscopeAnalysisAction
+    );
+    this.registry.registerAction(
+      DashaAnalysisAction.actionId,
+      DashaAnalysisAction
+    );
+    this.registry.registerAction(
+      HinduFestivalsAction.actionId,
+      HinduFestivalsAction
+    );
     // Temporarily disable TarotReadingAction until tarotReader module is available
     try {
-      this.registry.registerAction(TarotReadingAction.actionId, TarotReadingAction);
+      this.registry.registerAction(
+        TarotReadingAction.actionId,
+        TarotReadingAction
+      );
     } catch (error) {
-      logger.warn('⚠️ TarotReadingAction temporarily disabled - tarotReader module needed');
+      logger.warn(
+        '⚠️ TarotReadingAction temporarily disabled - tarotReader module needed'
+      );
     }
     this.registry.registerAction(HelpAction.actionId, HelpAction);
 
     // Phase 2 - Complete Professional Astrology Suite (17 comprehensive actions)
-    this.registry.registerAction(WesternAstrologyAction.actionId, WesternAstrologyAction);
-    this.registry.registerAction(VedicAstrologyAction.actionId, VedicAstrologyAction);
+    this.registry.registerAction(
+      WesternAstrologyAction.actionId,
+      WesternAstrologyAction
+    );
+    this.registry.registerAction(
+      VedicAstrologyAction.actionId,
+      VedicAstrologyAction
+    );
     this.registry.registerAction(IChingAction.actionId, IChingAction);
     this.registry.registerAction(PalmistryAction.actionId, PalmistryAction);
-    this.registry.registerAction(CareerGuidanceAction.actionId, CareerGuidanceAction);
-    this.registry.registerAction(HealthAstrologyAction.actionId, HealthAstrologyAction);
+    this.registry.registerAction(
+      CareerGuidanceAction.actionId,
+      CareerGuidanceAction
+    );
+    this.registry.registerAction(
+      HealthAstrologyAction.actionId,
+      HealthAstrologyAction
+    );
     this.registry.registerAction(LunarReturnAction.actionId, LunarReturnAction);
-    this.registry.registerAction(RelationshipReadingsAction.actionId, RelationshipReadingsAction);
-    this.registry.registerAction(BusinessAstrologyAction.actionId, BusinessAstrologyAction);
+    this.registry.registerAction(
+      RelationshipReadingsAction.actionId,
+      RelationshipReadingsAction
+    );
+    this.registry.registerAction(
+      BusinessAstrologyAction.actionId,
+      BusinessAstrologyAction
+    );
     this.registry.registerAction(SolarReturnAction.actionId, SolarReturnAction);
-    this.registry.registerAction(SecondaryProgressionsAction.actionId, SecondaryProgressionsAction);
-    this.registry.registerAction(ElectionalAstrologyAction.actionId, ElectionalAstrologyAction);
+    this.registry.registerAction(
+      SecondaryProgressionsAction.actionId,
+      SecondaryProgressionsAction
+    );
+    this.registry.registerAction(
+      ElectionalAstrologyAction.actionId,
+      ElectionalAstrologyAction
+    );
     this.registry.registerAction(MuhurtaAction.actionId, MuhurtaAction);
-    this.registry.registerAction(CompositeChartAction.actionId, CompositeChartAction);
-    this.registry.registerAction(BabyNameSuggestionAction.actionId, BabyNameSuggestionAction);
-    this.registry.registerAction(GemstoneRecommendationAction.actionId, GemstoneRecommendationAction);
-    this.registry.registerAction(MantraRecommendationAction.actionId, MantraRecommendationAction);
-    this.registry.registerAction(ColorTherapyAction.actionId, ColorTherapyAction);
-    this.registry.registerAction(DashaAnalysisAction.actionId, DashaAnalysisAction);
-    this.registry.registerAction(PanchangAnalysisAction.actionId, PanchangAnalysisAction);
+    this.registry.registerAction(
+      CompositeChartAction.actionId,
+      CompositeChartAction
+    );
+    this.registry.registerAction(
+      BabyNameSuggestionAction.actionId,
+      BabyNameSuggestionAction
+    );
+    this.registry.registerAction(
+      GemstoneRecommendationAction.actionId,
+      GemstoneRecommendationAction
+    );
+    this.registry.registerAction(
+      MantraRecommendationAction.actionId,
+      MantraRecommendationAction
+    );
+    this.registry.registerAction(
+      ColorTherapyAction.actionId,
+      ColorTherapyAction
+    );
+    this.registry.registerAction(
+      DashaAnalysisAction.actionId,
+      DashaAnalysisAction
+    );
+    this.registry.registerAction(
+      PanchangAnalysisAction.actionId,
+      PanchangAnalysisAction
+    );
     this.registry.registerAction(FixedStarsAction.actionId, FixedStarsAction);
     this.registry.registerAction(LunarNodesAction.actionId, LunarNodesAction);
-    this.registry.registerAction(TraditionalHoraryAction.actionId, TraditionalHoraryAction);
-    this.registry.registerAction(RemedialMeasuresAction.actionId, RemedialMeasuresAction);
+    this.registry.registerAction(
+      TraditionalHoraryAction.actionId,
+      TraditionalHoraryAction
+    );
+    this.registry.registerAction(
+      RemedialMeasuresAction.actionId,
+      RemedialMeasuresAction
+    );
     this.registry.registerAction(VargaChartsAction.actionId, VargaChartsAction);
 
     // New medium-priority services
-    this.registry.registerAction(JaiminiAstrologyAction.actionId, JaiminiAstrologyAction);
+    this.registry.registerAction(
+      JaiminiAstrologyAction.actionId,
+      JaiminiAstrologyAction
+    );
     this.registry.registerAction(GocharAction.actionId, GocharAction);
     this.registry.registerAction(VarshaphalAction.actionId, VarshaphalAction);
 
     // Language and Settings Actions
-    this.registry.registerAction(LanguageMenuAction.actionId, LanguageMenuAction);
+    this.registry.registerAction(
+      LanguageMenuAction.actionId,
+      LanguageMenuAction
+    );
     this.registry.registerAction(SetLanguageAction.actionId, SetLanguageAction);
     this.registry.registerAction(ViewProfileAction.actionId, ViewProfileAction);
-    this.registry.registerAction(UpdateProfileAction.actionId, UpdateProfileAction);
+    this.registry.registerAction(
+      UpdateProfileAction.actionId,
+      UpdateProfileAction
+    );
     // Note: SetLanguageAction handles all individual language settings via dynamic languageCode
 
     logger.info('📝 Registered action classes with registry');
@@ -199,11 +326,20 @@ class ActionRegistryInitializer {
 
     // Astrology commands
     this.registry.registerKeyword('horoscope', DailyHoroscopeAction.actionId);
-    this.registry.registerKeyword('horoscope analysis', HoroscopeAnalysisAction.actionId);
-    this.registry.registerKeyword('daily horoscope', DailyHoroscopeAction.actionId);
+    this.registry.registerKeyword(
+      'horoscope analysis',
+      HoroscopeAnalysisAction.actionId
+    );
+    this.registry.registerKeyword(
+      'daily horoscope',
+      DailyHoroscopeAction.actionId
+    );
     this.registry.registerKeyword('chart', BirthChartAction.actionId);
     this.registry.registerKeyword('birth chart', BirthChartAction.actionId);
-    this.registry.registerKeyword('compatibility', CompatibilityAction.actionId);
+    this.registry.registerKeyword(
+      'compatibility',
+      CompatibilityAction.actionId
+    );
     this.registry.registerKeyword('synastry', CompatibilityAction.actionId);
     this.registry.registerKeyword('relationship', CompatibilityAction.actionId);
     this.registry.registerKeyword('match', CompatibilityAction.actionId);
@@ -211,7 +347,10 @@ class ActionRegistryInitializer {
     this.registry.registerKeyword('current', CurrentTransitsAction.actionId);
     this.registry.registerKeyword('planets', CurrentTransitsAction.actionId);
     this.registry.registerKeyword('influences', CurrentTransitsAction.actionId);
-    this.registry.registerKeyword('numerology', NumerologyReportAction.actionId);
+    this.registry.registerKeyword(
+      'numerology',
+      NumerologyReportAction.actionId
+    );
     this.registry.registerKeyword('numbers', NumerologyReportAction.actionId);
     this.registry.registerKeyword('life path', NumerologyReportAction.actionId);
 
@@ -229,9 +368,15 @@ class ActionRegistryInitializer {
 
     // Additional new action keywords
     this.registry.registerKeyword('western', WesternAstrologyAction.actionId);
-    this.registry.registerKeyword('western astrology', WesternAstrologyAction.actionId);
+    this.registry.registerKeyword(
+      'western astrology',
+      WesternAstrologyAction.actionId
+    );
     this.registry.registerKeyword('vedic', VedicAstrologyAction.actionId);
-    this.registry.registerKeyword('vedic astrology', VedicAstrologyAction.actionId);
+    this.registry.registerKeyword(
+      'vedic astrology',
+      VedicAstrologyAction.actionId
+    );
     this.registry.registerKeyword('jyotish', VedicAstrologyAction.actionId);
     this.registry.registerKeyword('kundli', VedicKundliAction.actionId);
     this.registry.registerKeyword('kaal sarp', KaalSarpAnalysisAction.actionId);
@@ -241,52 +386,109 @@ class ActionRegistryInitializer {
     this.registry.registerKeyword('palmistry', PalmistryAction.actionId);
     this.registry.registerKeyword('palm reading', PalmistryAction.actionId);
     this.registry.registerKeyword('career', CareerGuidanceAction.actionId);
-    this.registry.registerKeyword(' career astrology', CareerGuidanceAction.actionId);
+    this.registry.registerKeyword(
+      ' career astrology',
+      CareerGuidanceAction.actionId
+    );
     this.registry.registerKeyword('health', HealthAstrologyAction.actionId);
-    this.registry.registerKeyword('medical astrology', HealthAstrologyAction.actionId);
+    this.registry.registerKeyword(
+      'medical astrology',
+      HealthAstrologyAction.actionId
+    );
     this.registry.registerKeyword('lunar return', LunarReturnAction.actionId);
-    this.registry.registerKeyword('family', RelationshipReadingsAction.actionId);
-    this.registry.registerKeyword('relationships', RelationshipReadingsAction.actionId);
+    this.registry.registerKeyword(
+      'family',
+      RelationshipReadingsAction.actionId
+    );
+    this.registry.registerKeyword(
+      'relationships',
+      RelationshipReadingsAction.actionId
+    );
     this.registry.registerKeyword('business', BusinessAstrologyAction.actionId);
-    this.registry.registerKeyword('commercial astrology', BusinessAstrologyAction.actionId);
+    this.registry.registerKeyword(
+      'commercial astrology',
+      BusinessAstrologyAction.actionId
+    );
     this.registry.registerKeyword('solar return', SolarReturnAction.actionId);
-    this.registry.registerKeyword('progressions', SecondaryProgressionsAction.actionId);
-    this.registry.registerKeyword('electional', ElectionalAstrologyAction.actionId);
+    this.registry.registerKeyword(
+      'progressions',
+      SecondaryProgressionsAction.actionId
+    );
+    this.registry.registerKeyword(
+      'electional',
+      ElectionalAstrologyAction.actionId
+    );
     this.registry.registerKeyword('timing', ElectionalAstrologyAction.actionId);
     this.registry.registerKeyword('muhurta', MuhurtaAction.actionId);
     this.registry.registerKeyword('composite', CompositeChartAction.actionId);
-    this.registry.registerKeyword('baby names', BabyNameSuggestionAction.actionId);
-    this.registry.registerKeyword('gemstones', GemstoneRecommendationAction.actionId);
-    this.registry.registerKeyword('mantras', MantraRecommendationAction.actionId);
+    this.registry.registerKeyword(
+      'baby names',
+      BabyNameSuggestionAction.actionId
+    );
+    this.registry.registerKeyword(
+      'gemstones',
+      GemstoneRecommendationAction.actionId
+    );
+    this.registry.registerKeyword(
+      'mantras',
+      MantraRecommendationAction.actionId
+    );
     this.registry.registerKeyword('color therapy', ColorTherapyAction.actionId);
     this.registry.registerKeyword('dasha', DashaAnalysisAction.actionId);
     this.registry.registerKeyword('panchang', PanchangAnalysisAction.actionId);
     this.registry.registerKeyword('calendar', PanchangAnalysisAction.actionId);
-    this.registry.registerKeyword('hindu festivals', HinduFestivalsAction.actionId);
+    this.registry.registerKeyword(
+      'hindu festivals',
+      HinduFestivalsAction.actionId
+    );
     this.registry.registerKeyword('festivals', HinduFestivalsAction.actionId);
-    this.registry.registerKeyword('festival dates', HinduFestivalsAction.actionId);
-    this.registry.registerKeyword('auspicious dates', HinduFestivalsAction.actionId);
+    this.registry.registerKeyword(
+      'festival dates',
+      HinduFestivalsAction.actionId
+    );
+    this.registry.registerKeyword(
+      'auspicious dates',
+      HinduFestivalsAction.actionId
+    );
     this.registry.registerKeyword('fixed stars', FixedStarsAction.actionId);
     this.registry.registerKeyword('stellar', FixedStarsAction.actionId);
     this.registry.registerKeyword('lunar nodes', LunarNodesAction.actionId);
     this.registry.registerKeyword('rahu ketu', LunarNodesAction.actionId);
     this.registry.registerKeyword('horary', TraditionalHoraryAction.actionId);
-    this.registry.registerKeyword('traditional horary', TraditionalHoraryAction.actionId);
-    this.registry.registerKeyword('questions', TraditionalHoraryAction.actionId);
+    this.registry.registerKeyword(
+      'traditional horary',
+      TraditionalHoraryAction.actionId
+    );
+    this.registry.registerKeyword(
+      'questions',
+      TraditionalHoraryAction.actionId
+    );
     this.registry.registerKeyword('remedial', RemedialMeasuresAction.actionId);
     this.registry.registerKeyword('remedies', RemedialMeasuresAction.actionId);
     this.registry.registerKeyword('healing', RemedialMeasuresAction.actionId);
 
     // New medium-priority service keywords
     this.registry.registerKeyword('jaimini', JaiminiAstrologyAction.actionId);
-    this.registry.registerKeyword('jaimini astrology', JaiminiAstrologyAction.actionId);
-    this.registry.registerKeyword('chara karakas', JaiminiAstrologyAction.actionId);
+    this.registry.registerKeyword(
+      'jaimini astrology',
+      JaiminiAstrologyAction.actionId
+    );
+    this.registry.registerKeyword(
+      'chara karakas',
+      JaiminiAstrologyAction.actionId
+    );
     this.registry.registerKeyword('gochar', GocharAction.actionId);
     this.registry.registerKeyword('transit analysis', GocharAction.actionId);
     this.registry.registerKeyword('planetary transits', GocharAction.actionId);
     this.registry.registerKeyword('varshaphal', VarshaphalAction.actionId);
-    this.registry.registerKeyword('annual horoscope', VarshaphalAction.actionId);
-    this.registry.registerKeyword('yearly predictions', VarshaphalAction.actionId);
+    this.registry.registerKeyword(
+      'annual horoscope',
+      VarshaphalAction.actionId
+    );
+    this.registry.registerKeyword(
+      'yearly predictions',
+      VarshaphalAction.actionId
+    );
 
     // Language and Settings keywords
     this.registry.registerKeyword('language', LanguageMenuAction.actionId);
@@ -306,32 +508,96 @@ class ActionRegistryInitializer {
     this.registry.registerButton('horoscope_menu', 'show_main_menu');
 
     // Submenu buttons
-    this.registry.registerButton('show_western_astrology_menu', WesternAstrologyMenuAction.actionId);
-    this.registry.registerButton('show_vedic_astrology_menu', VedicAstrologyMenuAction.actionId);
-    this.registry.registerButton('show_divination_mystic_menu', DivinationMysticMenuAction.actionId);
-    this.registry.registerButton('show_numerology_special_menu', NumerologySpecialMenuAction.actionId);
-    this.registry.registerButton('show_relationships_groups_menu', RelationshipsGroupsMenuAction.actionId);
-    this.registry.registerButton('show_settings_profile_menu', SettingsProfileMenuAction.actionId);
-    this.registry.registerButton('show_language_menu', LanguageMenuAction.actionId);
+    this.registry.registerButton(
+      'show_western_astrology_menu',
+      WesternAstrologyMenuAction.actionId
+    );
+    this.registry.registerButton(
+      'show_vedic_astrology_menu',
+      VedicAstrologyMenuAction.actionId
+    );
+    this.registry.registerButton(
+      'show_divination_mystic_menu',
+      DivinationMysticMenuAction.actionId
+    );
+    this.registry.registerButton(
+      'show_numerology_special_menu',
+      NumerologySpecialMenuAction.actionId
+    );
+    this.registry.registerButton(
+      'show_relationships_groups_menu',
+      RelationshipsGroupsMenuAction.actionId
+    );
+    this.registry.registerButton(
+      'show_settings_profile_menu',
+      SettingsProfileMenuAction.actionId
+    );
+    this.registry.registerButton(
+      'show_language_menu',
+      LanguageMenuAction.actionId
+    );
 
     // Action-specific buttons (match actual actionId properties)
-    this.registry.registerButton('get_daily_horoscope', DailyHoroscopeAction.actionId);
+    this.registry.registerButton(
+      'get_daily_horoscope',
+      DailyHoroscopeAction.actionId
+    );
     this.registry.registerButton('get_birth_chart', BirthChartAction.actionId);
     this.registry.registerButton('get_tarot_reading', 'get_tarot_reading');
-    this.registry.registerButton('initiate_compatibility_flow', CompatibilityAction.actionId);
-    this.registry.registerButton('get_current_transits', CurrentTransitsAction.actionId);
-    this.registry.registerButton('get_numerology_analysis', NumerologyReportAction.actionId);
+    this.registry.registerButton(
+      'initiate_compatibility_flow',
+      CompatibilityAction.actionId
+    );
+    this.registry.registerButton(
+      'get_current_transits',
+      CurrentTransitsAction.actionId
+    );
+    this.registry.registerButton(
+      'get_numerology_analysis',
+      NumerologyReportAction.actionId
+    );
     this.registry.registerButton('show_help_support', 'show_help_support');
 
     // Navigation buttons (some of these may not exist as separate actions)
-    try { this.registry.registerButton('get_more_compatibility_details', CompatibilityAction.actionId); } catch (e) {}
-    try { this.registry.registerButton('get_relationship_advice', CompatibilityAction.actionId); } catch (e) {}
-    try { this.registry.registerButton('get_transit_predictions', CurrentTransitsAction.actionId); } catch (e) {}
-    try { this.registry.registerButton('get_numerology_timeline', NumerologyReportAction.actionId); } catch (e) {}
-    try { this.registry.registerButton('get_name_analysis', NumerologyReportAction.actionId); } catch (e) {}
-    try { this.registry.registerButton('show_quick_start', 'show_help_support'); } catch (e) {}
-    try { this.registry.registerButton('contact_support', 'show_help_support'); } catch (e) {}
-    try { this.registry.registerButton('show_commands_list', 'show_help_support'); } catch (e) {}
+    try {
+      this.registry.registerButton(
+        'get_more_compatibility_details',
+        CompatibilityAction.actionId
+      );
+    } catch (e) {}
+    try {
+      this.registry.registerButton(
+        'get_relationship_advice',
+        CompatibilityAction.actionId
+      );
+    } catch (e) {}
+    try {
+      this.registry.registerButton(
+        'get_transit_predictions',
+        CurrentTransitsAction.actionId
+      );
+    } catch (e) {}
+    try {
+      this.registry.registerButton(
+        'get_numerology_timeline',
+        NumerologyReportAction.actionId
+      );
+    } catch (e) {}
+    try {
+      this.registry.registerButton(
+        'get_name_analysis',
+        NumerologyReportAction.actionId
+      );
+    } catch (e) {}
+    try {
+      this.registry.registerButton('show_quick_start', 'show_help_support');
+    } catch (e) {}
+    try {
+      this.registry.registerButton('contact_support', 'show_help_support');
+    } catch (e) {}
+    try {
+      this.registry.registerButton('show_commands_list', 'show_help_support');
+    } catch (e) {}
 
     // Language buttons - all 28 supported languages mapped to single set_language action
     // The InteractiveMessageProcessor will extract the language code from the button ID
@@ -356,17 +622,29 @@ class ActionRegistryInitializer {
     this.registry.registerButton('set_language_pa', SetLanguageAction.actionId);
     this.registry.registerButton('set_language_or', SetLanguageAction.actionId);
     this.registry.registerButton('set_language_as', SetLanguageAction.actionId);
-    this.registry.registerButton('set_language_mai', SetLanguageAction.actionId);
+    this.registry.registerButton(
+      'set_language_mai',
+      SetLanguageAction.actionId
+    );
     this.registry.registerButton('set_language_ne', SetLanguageAction.actionId);
     this.registry.registerButton('set_language_si', SetLanguageAction.actionId);
     this.registry.registerButton('set_language_sd', SetLanguageAction.actionId);
-    this.registry.registerButton('set_language_zgh', SetLanguageAction.actionId);
+    this.registry.registerButton(
+      'set_language_zgh',
+      SetLanguageAction.actionId
+    );
     this.registry.registerButton('set_language_am', SetLanguageAction.actionId);
     this.registry.registerButton('set_language_sw', SetLanguageAction.actionId);
 
     // Profile and Settings buttons
-    this.registry.registerButton('btn_update_profile', UpdateProfileAction.actionId);
-    this.registry.registerButton('btn_view_profile', ViewProfileAction.actionId);
+    this.registry.registerButton(
+      'btn_update_profile',
+      UpdateProfileAction.actionId
+    );
+    this.registry.registerButton(
+      'btn_view_profile',
+      ViewProfileAction.actionId
+    );
 
     logger.info('🔘 Registered button ID mappings');
   }

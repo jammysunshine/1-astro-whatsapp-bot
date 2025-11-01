@@ -12,7 +12,8 @@ class DailyHoroscopeService extends ServiceTemplate {
   constructor() {
     super('DailyHoroscopeCalculator'); // Primary calculator for this service
     this.serviceName = 'DailyHoroscopeService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/DailyHoroscopeCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/DailyHoroscopeCalculator';
     logger.info('DailyHoroscopeService initialized');
   }
 
@@ -62,7 +63,8 @@ class DailyHoroscopeService extends ServiceTemplate {
         calculationType: 'Vedic Daily Horoscope',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'Daily horoscopes provide general astrological guidance based on planetary positions. Individual results may vary based on complete birth chart analysis.'
+      disclaimer:
+        'Daily horoscopes provide general astrological guidance based on planetary positions. Individual results may vary based on complete birth chart analysis.'
     };
   }
 
@@ -85,7 +87,8 @@ class DailyHoroscopeService extends ServiceTemplate {
         targetDate
       };
 
-      const result = await this.calculator.generateDailyHoroscope(horoscopeData);
+      const result =
+        await this.calculator.generateDailyHoroscope(horoscopeData);
 
       return {
         horoscope: result,
@@ -139,7 +142,10 @@ class DailyHoroscopeService extends ServiceTemplate {
 
         const dateStr = `${targetDate.getDate()}/${targetDate.getMonth() + 1}/${targetDate.getFullYear()}`;
 
-        const dailyHoroscope = await this.getHoroscopeForDate(birthData, dateStr);
+        const dailyHoroscope = await this.getHoroscopeForDate(
+          birthData,
+          dateStr
+        );
         if (!dailyHoroscope.error) {
           weeklyHoroscopes.push({
             date: dateStr,
@@ -185,7 +191,8 @@ class DailyHoroscopeService extends ServiceTemplate {
     });
 
     return {
-      general: 'Weekly horoscope overview shows mixed planetary influences with opportunities for growth and some challenges to navigate.',
+      general:
+        'Weekly horoscope overview shows mixed planetary influences with opportunities for growth and some challenges to navigate.',
       career: this._findCommonTheme(themes.career),
       relationships: this._findCommonTheme(themes.relationships),
       finance: this._findCommonTheme(themes.finance),
@@ -202,7 +209,9 @@ class DailyHoroscopeService extends ServiceTemplate {
    * @private
    */
   _findCommonTheme(predictions) {
-    if (!predictions || predictions.length === 0) { return 'General developments'; }
+    if (!predictions || predictions.length === 0) {
+      return 'General developments';
+    }
     const words = predictions.join(' ').toLowerCase().split(/\s+/);
     const wordCount = {};
     words.forEach(word => {
@@ -211,7 +220,9 @@ class DailyHoroscopeService extends ServiceTemplate {
       }
     });
     const sortedWords = Object.entries(wordCount).sort((a, b) => b[1] - a[1]);
-    return sortedWords.length > 0 ? `Focus on ${sortedWords[0][0]}` : 'General developments';
+    return sortedWords.length > 0 ?
+      `Focus on ${sortedWords[0][0]}` :
+      'General developments';
   }
 
   /**
@@ -261,7 +272,12 @@ class DailyHoroscopeService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', 'getHoroscopeForDate', 'getTodaysHoroscope', 'getWeeklyHoroscope'],
+      methods: [
+        'processCalculation',
+        'getHoroscopeForDate',
+        'getTodaysHoroscope',
+        'getWeeklyHoroscope'
+      ],
       dependencies: [], // Managed by ServiceTemplate
       description: 'Vedic daily horoscope prediction service.'
     };

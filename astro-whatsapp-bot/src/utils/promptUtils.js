@@ -12,7 +12,13 @@
  * @param {string} examplePlace - Example birth place for the prompt
  * @returns {string} Formatted prompt string
  */
-const getBirthDetailsPrompt = (serviceName, description, timeOptional = false, includeName = false, examplePlace = 'Mumbai, India') => {
+const getBirthDetailsPrompt = (
+  serviceName,
+  description,
+  timeOptional = false,
+  includeName = false,
+  examplePlace = 'Mumbai, India'
+) => {
   let prompt = `For ${serviceName} analysis, I need your complete birth details`;
 
   if (description) {
@@ -44,11 +50,12 @@ const getBirthDetailsPrompt = (serviceName, description, timeOptional = false, i
 
   // Add disclaimer about default values
   if (timeOptional) {
-    prompt += '\n\n💡 *Note:* If birth time is not provided, calculations will use 12:00 PM (noon) by default, which may affect accuracy.';
+    prompt +=
+      '\n\n💡 *Note:* If birth time is not provided, calculations will use 12:00 PM (noon) by default, which may affect accuracy.';
   }
   // Assuming birthPlace is always required if not provided by user, a default is used by the calculator
-  prompt += '\n\n🌍 *Note:* If birth place is not provided, calculations will use a default location (e.g., Delhi, India), which may affect accuracy.';
-
+  prompt +=
+    '\n\n🌍 *Note:* If birth place is not provided, calculations will use a default location (e.g., Delhi, India), which may affect accuracy.';
 
   return prompt;
 };
@@ -105,7 +112,11 @@ const getBirthTimePrompt = (serviceName, description) => {
  * @param {string} exampleName - Example name for the prompt
  * @returns {string} Formatted prompt string
  */
-const getNameAndBirthDatePrompt = (serviceName, description, exampleName = 'John Michael Smith') => {
+const getNameAndBirthDatePrompt = (
+  serviceName,
+  description,
+  exampleName = 'John Michael Smith'
+) => {
   let prompt = `For ${serviceName} analysis, I need your birth details and full name`;
 
   if (description) {

@@ -46,11 +46,7 @@ class AstrologyAction extends BaseAction {
         this.getUserLanguage()
       );
 
-      await sendMessage(
-        message.to,
-        message.interactive,
-        'interactive'
-      );
+      await sendMessage(message.to, message.interactive, 'interactive');
     } catch (error) {
       this.logger.error('Error sending astrology response:', error);
       // Fallback to simple text message
@@ -64,7 +60,8 @@ class AstrologyAction extends BaseAction {
    */
   async sendIncompleteProfileNotification(serviceName) {
     const config = ASTROLOGY_CONFIG[this.constructor.actionId];
-    const profilePrompt = config?.errorMessages?.incomplete ||
+    const profilePrompt =
+      config?.errorMessages?.incomplete ||
       `👤 *Complete Your Profile First*\n\nTo access ${serviceName}, please complete your birth profile with date, time, and place.\n\nUse the Settings menu to update your information.`;
 
     await sendMessage(this.phoneNumber, profilePrompt, 'text');
@@ -76,7 +73,8 @@ class AstrologyAction extends BaseAction {
    */
   async sendUpgradePrompt(limitsCheck) {
     const config = ASTROLOGY_CONFIG[this.constructor.actionId];
-    const upgradeMessage = config?.errorMessages?.limitReached ||
+    const upgradeMessage =
+      config?.errorMessages?.limitReached ||
       `⭐ *Premium Astrology Available*\n\nYou've reached your limit for astrology insights in the ${limitsCheck.plan || 'current'} plan.\n\nUpgrade to Premium for unlimited personalized readings!`;
 
     await sendMessage(this.phoneNumber, upgradeMessage, 'text');
@@ -141,7 +139,9 @@ class AstrologyAction extends BaseAction {
    * @returns {string} Sanitized name safe for display
    */
   sanitizeName(name) {
-    if (!name) { return 'Unknown'; }
+    if (!name) {
+      return 'Unknown';
+    }
     // Remove potentially harmful characters
     return name.replace(/[<>'"&]/g, '').substring(0, 50);
   }

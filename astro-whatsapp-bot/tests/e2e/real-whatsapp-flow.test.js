@@ -7,7 +7,13 @@ const mongoose = require('mongoose');
 const app = require('../../src/server');
 const User = require('../../src/models/User');
 const Session = require('../../src/models/Session');
-const { getAllUsers, getUserByPhone, createUser, updateUserProfile, addBirthDetails } = require('../../src/models/userModel');
+const {
+  getAllUsers,
+  getUserByPhone,
+  createUser,
+  updateUserProfile,
+  addBirthDetails
+} = require('../../src/models/userModel');
 
 // Mock message sending to avoid actual WhatsApp API calls in tests
 // Mock message sending to avoid actual WhatsApp API calls in tests
@@ -18,7 +24,12 @@ const { getAllUsers, getUserByPhone, createUser, updateUserProfile, addBirthDeta
 //   sendListMessage: jest.fn().mockResolvedValue({})
 // }));
 
-const { sendMessage, sendTextMessage, sendInteractiveButtons, sendListMessage } = require('../../src/services/whatsapp/messageSender');
+const {
+  sendMessage,
+  sendTextMessage,
+  sendInteractiveButtons,
+  sendListMessage
+} = require('../../src/services/whatsapp/messageSender');
 
 jest.mock('../../src/services/whatsapp/messageSender', () => ({
   sendMessage: jest.fn().mockResolvedValue({}),
@@ -56,24 +67,35 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       const birthDateResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-1',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-birth-date',
-                  timestamp: Date.now().toString(),
-                  text: { body: '15031990' }, // 15/03/1990
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-1',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test'
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone }
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-birth-date',
+                        timestamp: Date.now().toString(),
+                        text: { body: '15031990' }, // 15/03/1990
+                        type: 'text'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -92,24 +114,35 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       const birthTimeInputResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-2',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-birth-time-input',
-                  timestamp: Date.now().toString(),
-                  text: { body: '1430' }, // 14:30
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-2',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test'
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone }
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-birth-time-input',
+                        timestamp: Date.now().toString(),
+                        text: { body: '1430' }, // 14:30
+                        type: 'text'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -120,24 +153,35 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       const birthPlaceResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-3',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-birth-place',
-                  timestamp: Date.now().toString(),
-                  text: { body: 'Mumbai, India' },
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-3',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test'
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone }
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-birth-place',
+                        timestamp: Date.now().toString(),
+                        text: { body: 'Mumbai, India' },
+                        type: 'text'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -148,30 +192,41 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       const languageResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-4',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-language',
-                  timestamp: Date.now().toString(),
-                  type: 'interactive',
-                  interactive: {
-                    type: 'button_reply',
-                    button_reply: {
-                      id: 'lang_english',
-                      title: 'English 🇺🇸'
-                    }
+          entry: [
+            {
+              id: 'test-entry-4',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test'
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone }
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-language',
+                        timestamp: Date.now().toString(),
+                        type: 'interactive',
+                        interactive: {
+                          type: 'button_reply',
+                          button_reply: {
+                            id: 'lang_english',
+                            title: 'English 🇺🇸'
+                          }
+                        }
+                      }
+                    ]
                   }
-                }]
-              }
-            }]
-          }]
+                }
+              ]
+            }
+          ]
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -182,30 +237,41 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       const confirmResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-5',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+1234567890', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Test User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-confirm',
-                  timestamp: Date.now().toString(),
-                  type: 'interactive',
-                  interactive: {
-                    type: 'button_reply',
-                    button_reply: {
-                      id: 'confirm_yes',
-                      title: '✅ Yes, Continue'
-                    }
+          entry: [
+            {
+              id: 'test-entry-5',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+1234567890',
+                      phone_number_id: 'test'
+                    },
+                    contacts: [
+                      { profile: { name: 'Test User' }, wa_id: testPhone }
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-confirm',
+                        timestamp: Date.now().toString(),
+                        type: 'interactive',
+                        interactive: {
+                          type: 'button_reply',
+                          button_reply: {
+                            id: 'confirm_yes',
+                            title: '✅ Yes, Continue'
+                          }
+                        }
+                      }
+                    ]
                   }
-                }]
-              }
-            }]
-          }]
+                }
+              ]
+            }
+          ]
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -235,17 +301,25 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       // Verify the completion message content
       expect(sendMessage).toHaveBeenCalledTimes(2); // One for the completion message, one for the main menu
       const completionMessageCall = sendMessage.mock.calls[0][1];
-      expect(completionMessageCall).toContain('🎉 *Welcome to your cosmic journey!*');
+      expect(completionMessageCall).toContain(
+        '🎉 *Welcome to your cosmic journey!*'
+      );
       expect(completionMessageCall).toContain(`☀️ *Sun Sign:* ${user.sunSign}`);
-      expect(completionMessageCall).toContain(`🌙 *Moon Sign:* ${user.moonSign}`);
-      expect(completionMessageCall).toContain(`⬆️ *Rising Sign:* ${user.risingSign}`);
+      expect(completionMessageCall).toContain(
+        `🌙 *Moon Sign:* ${user.moonSign}`
+      );
+      expect(completionMessageCall).toContain(
+        `⬆️ *Rising Sign:* ${user.risingSign}`
+      );
       expect(completionMessageCall).toContain('🔥 *Your Top 3 Life Patterns:*');
       expect(completionMessageCall).toContain('⭐ *3-Day Cosmic Preview:*');
 
       // Verify the main menu was sent
       const mainMenuCall = sendMessage.mock.calls[1][1];
       expect(mainMenuCall.type).toBe('button');
-      expect(mainMenuCall.body).toContain('🌟 *What would you like to explore today?*');
+      expect(mainMenuCall.body).toContain(
+        '🌟 *What would you like to explore today?*'
+      );
       expect(mainMenuCall.buttons).toHaveLength(3);
 
       console.log('✅ User onboarding completed successfully!');
@@ -272,31 +346,47 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
 
       // Set session to main menu
       const Session = require('../../src/models/Session');
-      await Session.create({ sessionId: testPhone, phoneNumber: testPhone, state: 'main_menu', currentFlow: 'main_menu' });
+      await Session.create({
+        sessionId: testPhone,
+        phoneNumber: testPhone,
+        state: 'main_menu',
+        currentFlow: 'main_menu'
+      });
     });
 
     it('should generate real daily horoscope for existing user', async() => {
       const horoscopeResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-horoscope',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+0987654321', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Existing User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-horoscope',
-                  timestamp: Date.now().toString(),
-                  text: { body: 'Daily horoscope' },
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-horoscope',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+0987654321',
+                      phone_number_id: 'test'
+                    },
+                    contacts: [
+                      { profile: { name: 'Existing User' }, wa_id: testPhone }
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-horoscope',
+                        timestamp: Date.now().toString(),
+                        text: { body: 'Daily horoscope' },
+                        type: 'text'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -310,7 +400,9 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       expect(horoscopeMessage.body).toContain('Pisces');
       const menuMessage = sendMessage.mock.calls[1][1];
       expect(menuMessage.type).toBe('button');
-      expect(menuMessage.body).toContain('🌟 *What would you like to explore today?*');
+      expect(menuMessage.body).toContain(
+        '🌟 *What would you like to explore today?*'
+      );
 
       console.log('✅ Daily horoscope request processed successfully!');
     });
@@ -319,24 +411,35 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       const compatibilityResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            id: 'test-entry-compatibility',
-            changes: [{
-              field: 'messages',
-              value: {
-                messaging_product: 'whatsapp',
-                metadata: { display_phone_number: '+0987654321', phone_number_id: 'test' },
-                contacts: [{ profile: { name: 'Existing User' }, wa_id: testPhone }],
-                messages: [{
-                  from: testPhone,
-                  id: 'msg-compatibility',
-                  timestamp: Date.now().toString(),
-                  text: { body: 'Check compatibility with 25/12/1985' },
-                  type: 'text'
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              id: 'test-entry-compatibility',
+              changes: [
+                {
+                  field: 'messages',
+                  value: {
+                    messaging_product: 'whatsapp',
+                    metadata: {
+                      display_phone_number: '+0987654321',
+                      phone_number_id: 'test'
+                    },
+                    contacts: [
+                      { profile: { name: 'Existing User' }, wa_id: testPhone }
+                    ],
+                    messages: [
+                      {
+                        from: testPhone,
+                        id: 'msg-compatibility',
+                        timestamp: Date.now().toString(),
+                        text: { body: 'Check compatibility with 25/12/1985' },
+                        type: 'text'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200);
@@ -345,7 +448,8 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
 
       // Verify that sendMessage was called with a compatibility message
       expect(sendMessage).toHaveBeenCalled();
-      const sentMessage = sendMessage.mock.calls[sendMessage.mock.calls.length - 1][1];
+      const sentMessage =
+        sendMessage.mock.calls[sendMessage.mock.calls.length - 1][1];
       expect(sentMessage).toContain('💕 *Compatibility Analysis*');
       expect(sentMessage).toContain('*Your Sign:* Pisces');
       expect(sentMessage).toContain('*Their Sign:* Capricorn'); // 25/12/1985 is Capricorn
@@ -370,17 +474,23 @@ describe('REAL WhatsApp Bot End-to-End Flow Tests', () => {
       const malformedResponse = await request(app)
         .post('/webhook')
         .send({
-          entry: [{
-            changes: [{
-              value: {
-                messages: [{
-                  from: '+1234567890',
-                  type: 'text',
-                  text: {} // Missing body
-                }]
-              }
-            }]
-          }]
+          entry: [
+            {
+              changes: [
+                {
+                  value: {
+                    messages: [
+                      {
+                        from: '+1234567890',
+                        type: 'text',
+                        text: {} // Missing body
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
         })
         .set('x-hub-signature-256', 'test-signature')
         .expect(200); // Should not crash

@@ -6,8 +6,12 @@ const logger = require('../../../utils/logger');
  */
 class NaturalEventsAnalyzer {
   constructor() {
-    logger.info('Module: NaturalEventsAnalyzer loaded - placeholder for weather and disaster analysis');
-    logger.info('🔄 *Natural Events Analysis:* Modular weather astrology implementation pending');
+    logger.info(
+      'Module: NaturalEventsAnalyzer loaded - placeholder for weather and disaster analysis'
+    );
+    logger.info(
+      '🔄 *Natural Events Analysis:* Modular weather astrology implementation pending'
+    );
   }
 
   /**
@@ -23,7 +27,8 @@ class NaturalEventsAnalyzer {
       seismicActivity: this.assessSeismicIndicators(chartData),
       climaticEvents: this.analyzeClimaticInfluences(chartData),
       astronomicalEvents: this.identifyAstronomicalFactors(chartData),
-      disclaimer: '🔄 *Natural Events Analysis:* Modular weather astrology implementation pending - current analysis uses astrological significators for natural forces.'
+      disclaimer:
+        '🔄 *Natural Events Analysis:* Modular weather astrology implementation pending - current analysis uses astrological significators for natural forces.'
     };
   }
 
@@ -47,7 +52,9 @@ class NaturalEventsAnalyzer {
       potentials.push('Uncertain situations and boundary dissolution');
     }
 
-    return potentials.length > 0 ? potentials : ['No immediate catastrophic potentials identified'];
+    return potentials.length > 0 ?
+      potentials :
+      ['No immediate catastrophic potentials identified'];
   }
 
   /**
@@ -78,11 +85,15 @@ class NaturalEventsAnalyzer {
     if (mars && uranus) {
       const separation = Math.abs(mars.longitude - uranus.longitude);
       if (Math.abs(separation - 90) <= 10) {
-        indicators.push('Mars-Uranus square suggests sudden seismic events possible');
+        indicators.push(
+          'Mars-Uranus square suggests sudden seismic events possible'
+        );
       }
     }
 
-    return indicators.length > 0 ? indicators : ['No significant seismic indicators identified'];
+    return indicators.length > 0 ?
+      indicators :
+      ['No significant seismic indicators identified'];
   }
 
   /**
@@ -93,7 +104,8 @@ class NaturalEventsAnalyzer {
   analyzeClimaticInfluences(chartData) {
     return {
       temperature: 'Uranus influences suggest climate pattern changes',
-      precipitation: 'Venus and Neptune affect water and atmospheric conditions',
+      precipitation:
+        'Venus and Neptune affect water and atmospheric conditions',
       atmospheric: 'Jupiter expands atmospheric phenomena'
     };
   }
@@ -107,7 +119,8 @@ class NaturalEventsAnalyzer {
     return {
       solar: 'Solar activity influences geomagnetic activity',
       lunar: 'Lunar alignments affect tidal and emotional patterns',
-      planetary: 'Mars and Uranus positionings indicate dynamic energy patterns'
+      planetary:
+        'Mars and Uranus positionings indicate dynamic energy patterns'
     };
   }
 }

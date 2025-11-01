@@ -7,7 +7,15 @@ const logger = require('../../../utils/logger');
  * @returns {string|null} Response or null if not handled
  */
 const handleGreeting = (message, user) => {
-  const greetings = ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening'];
+  const greetings = [
+    'hello',
+    'hi',
+    'hey',
+    'greetings',
+    'good morning',
+    'good afternoon',
+    'good evening'
+  ];
 
   if (greetings.some(greeting => message.includes(greeting))) {
     return '🌟 Hello! I\'m the Astro Wisdom Bot. I can help you with astrology readings, numerology, tarot, and more mystical insights.\n\nUse the menu to explore available services.';
@@ -62,7 +70,8 @@ const handleDefaultResponse = (message, user) => {
     'Tell me your birth details to get personalized readings.'
   ];
 
-  const randomHint = helpfulHints[Math.floor(Math.random() * helpfulHints.length)];
+  const randomHint =
+    helpfulHints[Math.floor(Math.random() * helpfulHints.length)];
 
   return `🌟 I understand you're looking for astrological guidance!\n\n${randomHint}\n\nWhat would you like to explore today?`;
 };

@@ -5,7 +5,14 @@ class GocharAction extends BaseAction {
   constructor() {
     super('gochar', {
       description: 'Planetary transit analysis (Gochar)',
-      parameters: ['datetime', 'latitude', 'longitude', 'birthDatetime', 'birthLatitude', 'birthLongitude'],
+      parameters: [
+        'datetime',
+        'latitude',
+        'longitude',
+        'birthDatetime',
+        'birthLatitude',
+        'birthLongitude'
+      ],
       examples: ['gochar analysis', 'current transits', 'planetary transits']
     });
   }
@@ -52,7 +59,8 @@ class GocharAction extends BaseAction {
         summary: '• Summary: ',
         intensity: '• Intensity: ',
         keyThemes: '• Key Themes: ',
-        footer: '\n\n_This transit analysis provides insights into current planetary influences and timing._'
+        footer:
+          '\n\n_This transit analysis provides insights into current planetary influences and timing._'
       },
       hi: {
         header: '🌍 *ग्रह गोचर विश्लेषण*\n\n',
@@ -68,7 +76,8 @@ class GocharAction extends BaseAction {
         summary: '• सारांश: ',
         intensity: '• तीव्रता: ',
         keyThemes: '• मुख्य विषय: ',
-        footer: '\n\n_यह गोचर विश्लेषण वर्तमान ग्रहीय प्रभावों और समय पर अंतर्दृष्टि प्रदान करता है।_'
+        footer:
+          '\n\n_यह गोचर विश्लेषण वर्तमान ग्रहीय प्रभावों और समय पर अंतर्दृष्टि प्रदान करता है।_'
       }
     };
 
@@ -76,7 +85,10 @@ class GocharAction extends BaseAction {
     let response = t.header;
 
     // Transit Aspects
-    if (analysis.sections['Transit Aspects'] && analysis.sections['Transit Aspects'].length > 0) {
+    if (
+      analysis.sections['Transit Aspects'] &&
+      analysis.sections['Transit Aspects'].length > 0
+    ) {
       response += t.transitAspects;
       const aspects = analysis.sections['Transit Aspects'].slice(0, 5); // Limit to 5 most significant
       aspects.forEach(aspect => {
@@ -86,7 +98,10 @@ class GocharAction extends BaseAction {
     }
 
     // House Transits
-    if (analysis.sections['House Transits'] && analysis.sections['House Transits'].length > 0) {
+    if (
+      analysis.sections['House Transits'] &&
+      analysis.sections['House Transits'].length > 0
+    ) {
       response += t.houseTransits;
       const houseTransits = analysis.sections['House Transits'].slice(0, 6); // Limit to 6 key transits
       houseTransits.forEach(transit => {
@@ -96,7 +111,10 @@ class GocharAction extends BaseAction {
     }
 
     // Retrograde Effects
-    if (analysis.sections['Retrograde Effects'] && analysis.sections['Retrograde Effects'].length > 0) {
+    if (
+      analysis.sections['Retrograde Effects'] &&
+      analysis.sections['Retrograde Effects'].length > 0
+    ) {
       response += t.retrogradeEffects;
       const retrogrades = analysis.sections['Retrograde Effects'];
       retrogrades.forEach(retrograde => {
@@ -106,7 +124,10 @@ class GocharAction extends BaseAction {
     }
 
     // Major Periods
-    if (analysis.sections['Major Transit Periods'] && analysis.sections['Major Transit Periods'].length > 0) {
+    if (
+      analysis.sections['Major Transit Periods'] &&
+      analysis.sections['Major Transit Periods'].length > 0
+    ) {
       response += t.majorPeriods;
       const periods = analysis.sections['Major Transit Periods'];
       periods.forEach(period => {
@@ -121,18 +142,30 @@ class GocharAction extends BaseAction {
 
       response += t.interpretations;
 
-      if (interpretations.majorInfluences && interpretations.majorInfluences.length > 0) {
+      if (
+        interpretations.majorInfluences &&
+        interpretations.majorInfluences.length > 0
+      ) {
         response += `${t.majorInfluences + interpretations.majorInfluences.slice(0, 3).join(', ')}\n`;
       }
 
       if (interpretations.timing) {
         const { timing } = interpretations;
         let timingText = '';
-        if (timing.favorable) { timingText = 'Favorable period for new initiatives'; } else if (timing.challenges) { timingText = 'Challenging period requiring patience'; } else { timingText = 'Balanced period with mixed influences'; }
+        if (timing.favorable) {
+          timingText = 'Favorable period for new initiatives';
+        } else if (timing.challenges) {
+          timingText = 'Challenging period requiring patience';
+        } else {
+          timingText = 'Balanced period with mixed influences';
+        }
         response += `${t.timing + timingText}\n`;
       }
 
-      if (interpretations.recommendations && interpretations.recommendations.length > 0) {
+      if (
+        interpretations.recommendations &&
+        interpretations.recommendations.length > 0
+      ) {
         response += `${t.recommendations + interpretations.recommendations.slice(0, 2).join(', ')}\n`;
       }
 
@@ -163,7 +196,14 @@ class GocharAction extends BaseAction {
   }
 
   validateParams(params) {
-    const required = ['datetime', 'latitude', 'longitude', 'birthDatetime', 'birthLatitude', 'birthLongitude'];
+    const required = [
+      'datetime',
+      'latitude',
+      'longitude',
+      'birthDatetime',
+      'birthLatitude',
+      'birthLongitude'
+    ];
     const missing = required.filter(param => !params[param]);
 
     if (missing.length > 0) {

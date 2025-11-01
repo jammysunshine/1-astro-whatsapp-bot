@@ -6,11 +6,13 @@
  */
 
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 class AyurvedicAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'AyurvedicAstrologyService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'AyurvedicAstrologyService';
     this.calculatorPath = '../calculators/AyurvedicAstrology'; // Assuming this path for the main calculator
     logger.info('AyurvedicAstrologyService initialized');
   }
@@ -31,7 +33,9 @@ class AyurvedicAstrologyService extends ServiceTemplate {
       return this._formatResult(analysis);
     } catch (error) {
       logger.error('AyurvedicAstrologyService error:', error);
-      throw new Error(`Ayurvedic constitution analysis failed: ${error.message}`);
+      throw new Error(
+        `Ayurvedic constitution analysis failed: ${error.message}`
+      );
     }
   }
 
@@ -88,7 +92,10 @@ class AyurvedicAstrologyService extends ServiceTemplate {
         error: false
       };
     } catch (error) {
-      logger.error('AyurvedicAstrologyService getRecommendations error:', error);
+      logger.error(
+        'AyurvedicAstrologyService getRecommendations error:',
+        error
+      );
       return {
         error: true,
         message: 'Unable to generate health recommendations'
@@ -131,7 +138,8 @@ class AyurvedicAstrologyService extends ServiceTemplate {
       analysis: result,
       metadata: {
         system: 'Ayurvedic Astrology',
-        calculationMethod: 'Vedic astrology integrated with Ayurvedic health principles',
+        calculationMethod:
+          'Vedic astrology integrated with Ayurvedic health principles',
         doshas: ['Vata', 'Pitta', 'Kapha'],
         focus: 'Holistic health through constitutional awareness'
       }
@@ -164,7 +172,8 @@ class AyurvedicAstrologyService extends ServiceTemplate {
   getMetadata() {
     return {
       name: 'AyurvedicAstrologyService',
-      description: 'Ayurvedic constitution analysis linking Vedic astrology with Ayurvedic health principles',
+      description:
+        'Ayurvedic constitution analysis linking Vedic astrology with Ayurvedic health principles',
       version: '1.0.0',
       dependencies: ['AyurvedicAstrology'],
       category: 'vedic',

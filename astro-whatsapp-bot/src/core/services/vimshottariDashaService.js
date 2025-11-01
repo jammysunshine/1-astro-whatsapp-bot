@@ -8,7 +8,8 @@ class VimshottariDashaService extends ServiceTemplate {
   constructor() {
     super('DashaAnalysisCalculator');
     this.serviceName = 'VimshottariDashaService';
-    this.calculatorPath = '../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
+    this.calculatorPath =
+      '../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
     logger.info('VimshottariDashaService initialized');
   }
 

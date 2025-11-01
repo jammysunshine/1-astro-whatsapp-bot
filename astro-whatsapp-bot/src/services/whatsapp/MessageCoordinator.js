@@ -3,7 +3,11 @@ const TextMessageProcessor = require('./processors/TextMessageProcessor');
 const InteractiveMessageProcessor = require('./processors/InteractiveMessageProcessor');
 const MediaMessageProcessor = require('./processors/MediaMessageProcessor');
 const { ValidationService } = require('./utils/ValidationService');
-const { getUserByPhone, createUser, updateUserProfile } = require('../../models/userModel');
+const {
+  getUserByPhone,
+  createUser,
+  updateUserProfile
+} = require('../../models/userModel');
 const { processFlowMessage } = require('../../conversation/conversationEngine');
 
 /**
@@ -21,7 +25,9 @@ class MessageCoordinator {
    * Initialize the coordinator with registry and processors
    */
   async initialize() {
-    if (this.initialized) { return this; }
+    if (this.initialized) {
+      return this;
+    }
 
     try {
       // Import and initialize registry asynchronously
@@ -30,11 +36,15 @@ class MessageCoordinator {
 
       // Create processors
       this.textProcessor = new TextMessageProcessor(this.registry);
-      this.interactiveProcessor = new InteractiveMessageProcessor(this.registry);
+      this.interactiveProcessor = new InteractiveMessageProcessor(
+        this.registry
+      );
       this.mediaProcessor = new MediaMessageProcessor();
 
       this.initialized = true;
-      this.logger.info('🎯 MessageCoordinator initialized with new action architecture');
+      this.logger.info(
+        '🎯 MessageCoordinator initialized with new action architecture'
+      );
       return this;
     } catch (error) {
       this.logger.error('❌ Failed to initialize MessageCoordinator:', error);
@@ -53,7 +63,9 @@ class MessageCoordinator {
     const phoneNumber = from;
 
     try {
-      this.logger.info(`📞 Processing message from ${phoneNumber} (Type: ${type})`);
+      this.logger.info(
+        `📞 Processing message from ${phoneNumber} (Type: ${type})`
+      );
 
       // 1. Validate message structure
       if (!(await this.validateMessage(message, phoneNumber))) {
@@ -109,8 +121,10 @@ class MessageCoordinator {
    * @returns {boolean} True if all required vars are present
    */
   validateEnvironment() {
-    return !!(process.env.W1_WHATSAPP_ACCESS_TOKEN &&
-             process.env.W1_WHATSAPP_PHONE_NUMBER_ID);
+    return !!(
+      process.env.W1_WHATSAPP_ACCESS_TOKEN &&
+      process.env.W1_WHATSAPP_PHONE_NUMBER_ID
+    );
   }
 
   /**
@@ -123,7 +137,9 @@ class MessageCoordinator {
   async handleUserOnboarding(message, user, phoneNumber) {
     // New users: always start onboarding
     if (user.isNew || !user.profileComplete) {
-      this.logger.info(`🆕 Starting onboarding for ${phoneNumber} (New: ${user.isNew}, Complete: ${user.profileComplete})`);
+      this.logger.info(
+        `🆕 Starting onboarding for ${phoneNumber} (New: ${user.isNew}, Complete: ${user.profileComplete})`
+      );
       await processFlowMessage(message, user, 'onboarding');
       return false; // Stop further processing, onboarding handles everything
     }
@@ -151,7 +167,11 @@ class MessageCoordinator {
 
     case 'button':
       // Button messages handled by InteractiveMessageProcessor
-      await this.interactiveProcessor.processButtonMessage(message, user, phoneNumber);
+      await this.interactiveProcessor.processButtonMessage(
+        message,
+        user,
+        phoneNumber
+      );
       break;
 
     case 'image':
@@ -179,7 +199,10 @@ class MessageCoordinator {
         lastInteraction: user.lastInteraction
       });
     } catch (error) {
-      this.logger.error(`Error updating interaction timestamp for ${phoneNumber}:`, error);
+      this.logger.error(
+        `Error updating interaction timestamp for ${phoneNumber}:`,
+        error
+      );
       // Non-critical error, don't throw
     }
   }
@@ -191,12 +214,15 @@ class MessageCoordinator {
    * @param {Object} message - Original message
    */
   async handleGlobalError(phoneNumber, error, message) {
-    const errorMsg = error.response?.data?.error?.message ||
-                    error.response?.data?.message ||
-                    error.message ||
-                    'Unknown error occurred';
+    const errorMsg =
+      error.response?.data?.error?.message ||
+      error.response?.data?.message ||
+      error.message ||
+      'Unknown error occurred';
 
-    this.logger.error(`❌ Global error processing message from ${phoneNumber}: ${errorMsg}`);
+    this.logger.error(
+      `❌ Global error processing message from ${phoneNumber}: ${errorMsg}`
+    );
 
     try {
       // Send error notification to user
@@ -209,7 +235,10 @@ class MessageCoordinator {
 
       // Could also send error details to admin/logging system here
     } catch (sendError) {
-      this.logger.error('❌ Failed to send error message to user:', sendError.message);
+      this.logger.error(
+        '❌ Failed to send error message to user:',
+        sendError.message
+      );
     }
   }
 

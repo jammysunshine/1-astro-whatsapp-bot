@@ -5,8 +5,14 @@
  * Multi-Language Support (33), Accessibility Testing (18)
  */
 
-const { TestDatabaseManager, setupWhatsAppMocks, getWhatsAppIntegration } = require('../../utils/testSetup');
-const { processIncomingMessage } = require('../../../src/services/whatsapp/messageProcessor');
+const {
+  TestDatabaseManager,
+  setupWhatsAppMocks,
+  getWhatsAppIntegration
+} = require('../../utils/testSetup');
+const {
+  processIncomingMessage
+} = require('../../../src/services/whatsapp/messageProcessor');
 
 describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 tests)', () => {
   let dbManager;
@@ -33,7 +39,14 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
   describe('Multi-Language Support (33 tests)', () => {
     test('defaults to English for invalid language codes', async() => {
       const phoneNumber = '+ux_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'set language invalid' } }, {});
+      await processIncomingMessage(
+        {
+          from: phoneNumber,
+          type: 'text',
+          text: { body: 'set language invalid' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Unsupported language')
@@ -43,7 +56,14 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
 
     test('lists available options for unsupported Klingon language', async() => {
       const phoneNumber = '+ux_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'set language Klingon' } }, {});
+      await processIncomingMessage(
+        {
+          from: phoneNumber,
+          type: 'text',
+          text: { body: 'set language Klingon' }
+        },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('Please choose from available options')
@@ -53,10 +73,16 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
 
     test('handles Spanish language switching mid-flow', async() => {
       const phoneNumber = '+ux_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'Hi' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'Hi' } },
+        {}
+      );
       whatsAppIntegration.mockSendMessage.mockClear();
 
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: 'set language es' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: 'set language es' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('¡Hola! Bienvenido al bot')
@@ -66,7 +92,10 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
 
     test('activates Hindi interface with emoji flag input', async() => {
       const phoneNumber = '+ux_test';
-      await processIncomingMessage({ from: phoneNumber, type: 'text', text: { body: '🇮🇳 हिंदी' } }, {});
+      await processIncomingMessage(
+        { from: phoneNumber, type: 'text', text: { body: '🇮🇳 हिंदी' } },
+        {}
+      );
       expect(whatsAppIntegration.mockSendMessage).toHaveBeenCalledWith(
         phoneNumber,
         expect.stringContaining('नमस्ते! ज्योतिष बॉट')
@@ -83,7 +112,9 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
     });
 
     test('translates time validation errors in Hindi', async() => {
-      console.log('✅ Hindi time validation error translation structure validated');
+      console.log(
+        '✅ Hindi time validation error translation structure validated'
+      );
     });
 
     test('manages language persistence across user sessions', async() => {
@@ -107,7 +138,9 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
     });
 
     test('translations preserve cultural context in Kannada', async() => {
-      console.log('✅ Kannada cultural context preservation structure validated');
+      console.log(
+        '✅ Kannada cultural context preservation structure validated'
+      );
     });
 
     test('language resources load correctly for Gujarati users', async() => {
@@ -123,7 +156,9 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
     });
 
     test('linguistically validates Punjabi greeting responses', async() => {
-      console.log('✅ Punjabi greeting linguistic validation structure validated');
+      console.log(
+        '✅ Punjabi greeting linguistic validation structure validated'
+      );
     });
 
     test('persists Urdu text direction preferences', async() => {
@@ -143,7 +178,9 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
     });
 
     test('defaults to English when language server is unavailable', async() => {
-      console.log('✅ Language server unavailability fallback structure validated');
+      console.log(
+        '✅ Language server unavailability fallback structure validated'
+      );
     });
 
     test('handles concurrent multi-language user support', async() => {
@@ -175,23 +212,33 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
     });
 
     test('validates festival notification language accuracy', async() => {
-      console.log('✅ Festival notification language accuracy structure validated');
+      console.log(
+        '✅ Festival notification language accuracy structure validated'
+      );
     });
 
     test('supports administrative region language variations', async() => {
-      console.log('✅ Administrative region language variations structure validated');
+      console.log(
+        '✅ Administrative region language variations structure validated'
+      );
     });
 
     test('handles mixed language conversation scenarios', async() => {
-      console.log('✅ Mixed language conversation handling structure validated');
+      console.log(
+        '✅ Mixed language conversation handling structure validated'
+      );
     });
 
     test('validates backup language fallback mechanisms', async() => {
-      console.log('✅ Language fallback mechanism validation structure validated');
+      console.log(
+        '✅ Language fallback mechanism validation structure validated'
+      );
     });
 
     test('language context preservation in chart interpretations', async() => {
-      console.log('✅ Language chart interpretation context structure validated');
+      console.log(
+        '✅ Language chart interpretation context structure validated'
+      );
     });
 
     // Continue with remaining multi-language support tests...
@@ -232,7 +279,9 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
     });
 
     test('validates error message presentation in accessible formats', async() => {
-      console.log('✅ Error message accessibility presentation structure validated');
+      console.log(
+        '✅ Error message accessibility presentation structure validated'
+      );
     });
 
     test('supports multiple assistive technology combinations', async() => {
@@ -260,7 +309,9 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
     });
 
     test('provides accessible chart visualization alternatives', async() => {
-      console.log('✅ Chart visualization accessible alternatives structure validated');
+      console.log(
+        '✅ Chart visualization accessible alternatives structure validated'
+      );
     });
 
     test('supports multiple cognitive processing patterns', async() => {
@@ -272,7 +323,9 @@ describe('COMPREHENSIVE USER EXPERIENCE: Language & Accessibility Testing (51 te
     });
 
     test('handles mobility accessibility for motor control variations', async() => {
-      console.log('✅ Mobility accessibility motor variations structure validated');
+      console.log(
+        '✅ Mobility accessibility motor variations structure validated'
+      );
     });
 
     // 18 total accessibility testing scenarios completed

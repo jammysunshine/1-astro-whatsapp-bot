@@ -30,40 +30,162 @@ class Panchang {
       { name: 'Dashami', sanskrit: 'दशमी', meaning: 'Tenth, virtuous' },
       { name: 'Ekadashi', sanskrit: 'एकादशी', meaning: 'Eleventh, auspicious' },
       { name: 'Dwadashi', sanskrit: 'द्वादशी', meaning: 'Twelfth, devotion' },
-      { name: 'Trayodashi', sanskrit: 'त्रयोदशी', meaning: 'Thirteenth, transformation' },
-      { name: 'Chaturdashi', sanskrit: 'चतुर्दशी', meaning: 'Fourteenth, preparation' },
-      { name: 'Purnima', sanskrit: 'पूर्णिमा', meaning: 'Full moon, completion' },
+      {
+        name: 'Trayodashi',
+        sanskrit: 'त्रयोदशी',
+        meaning: 'Thirteenth, transformation'
+      },
+      {
+        name: 'Chaturdashi',
+        sanskrit: 'चतुर्दशी',
+        meaning: 'Fourteenth, preparation'
+      },
+      {
+        name: 'Purnima',
+        sanskrit: 'पूर्णिमा',
+        meaning: 'Full moon, completion'
+      },
       { name: 'Amavasya', sanskrit: 'अमावस्या', meaning: 'New moon, renewal' }
     ];
 
     // Nakshatra data with ruling deities
     this.nakshatras = [
-      { name: 'Ashwini', sanskrit: 'अश्विनी', deity: 'Ashwin Kumaras', symbol: 'Horse' },
-      { name: 'Bharani', sanskrit: 'भरणी', deity: 'Yama', symbol: 'Burial ground' },
-      { name: 'Krittika', sanskrit: 'कृत्तिका', deity: 'Karttikeya', symbol: 'Razor' },
-      { name: 'Rohini', sanskrit: 'रोहिणी', deity: 'Brahma', symbol: 'Chariot' },
-      { name: 'Mrigashira', sanskrit: 'मृगशीर्षा', deity: 'Soma', symbol: 'Deer' },
-      { name: 'Ardra', sanskrit: 'आर्द्रा', deity: 'Rudra', symbol: 'Teardrop' },
-      { name: 'Punarvasu', sanskrit: 'पुन्नर्वसु', deity: 'Aditi', symbol: 'Bow' },
-      { name: 'Pushya', sanskrit: 'पुष्य', deity: 'Brihaspati', symbol: 'Flower' },
-      { name: 'Ashlesha', sanskrit: 'आश्लेषा', deity: 'Nagas', symbol: 'Serpent' },
-      { name: 'Magha', sanskrit: 'मघा', deity: 'Pitamaha', symbol: 'Royal throne' },
-      { name: 'Purva Phalguni', sanskrit: 'पूर्व फाल्गुनी', deity: 'Bhaga', symbol: 'Couch' },
-      { name: 'Uttara Phalguni', sanskrit: 'उत्तर फाल्गुनी', deity: 'Sun', symbol: 'Bed' },
+      {
+        name: 'Ashwini',
+        sanskrit: 'अश्विनी',
+        deity: 'Ashwin Kumaras',
+        symbol: 'Horse'
+      },
+      {
+        name: 'Bharani',
+        sanskrit: 'भरणी',
+        deity: 'Yama',
+        symbol: 'Burial ground'
+      },
+      {
+        name: 'Krittika',
+        sanskrit: 'कृत्तिका',
+        deity: 'Karttikeya',
+        symbol: 'Razor'
+      },
+      {
+        name: 'Rohini',
+        sanskrit: 'रोहिणी',
+        deity: 'Brahma',
+        symbol: 'Chariot'
+      },
+      {
+        name: 'Mrigashira',
+        sanskrit: 'मृगशीर्षा',
+        deity: 'Soma',
+        symbol: 'Deer'
+      },
+      {
+        name: 'Ardra',
+        sanskrit: 'आर्द्रा',
+        deity: 'Rudra',
+        symbol: 'Teardrop'
+      },
+      {
+        name: 'Punarvasu',
+        sanskrit: 'पुन्नर्वसु',
+        deity: 'Aditi',
+        symbol: 'Bow'
+      },
+      {
+        name: 'Pushya',
+        sanskrit: 'पुष्य',
+        deity: 'Brihaspati',
+        symbol: 'Flower'
+      },
+      {
+        name: 'Ashlesha',
+        sanskrit: 'आश्लेषा',
+        deity: 'Nagas',
+        symbol: 'Serpent'
+      },
+      {
+        name: 'Magha',
+        sanskrit: 'मघा',
+        deity: 'Pitamaha',
+        symbol: 'Royal throne'
+      },
+      {
+        name: 'Purva Phalguni',
+        sanskrit: 'पूर्व फाल्गुनी',
+        deity: 'Bhaga',
+        symbol: 'Couch'
+      },
+      {
+        name: 'Uttara Phalguni',
+        sanskrit: 'उत्तर फाल्गुनी',
+        deity: 'Sun',
+        symbol: 'Bed'
+      },
       { name: 'Hasta', sanskrit: 'हस्त', deity: 'Savitur', symbol: 'Hand' },
-      { name: 'Chitra', sanskrit: 'चित्रा', deity: 'Vishwakarma', symbol: 'Pearl' },
+      {
+        name: 'Chitra',
+        sanskrit: 'चित्रा',
+        deity: 'Vishwakarma',
+        symbol: 'Pearl'
+      },
       { name: 'Swati', sanskrit: 'स्वाती', deity: 'Vayu', symbol: 'Coral' },
-      { name: 'Vishakha', sanskrit: 'विशाखा', deity: 'Indra', symbol: 'Victorious archer' },
-      { name: 'Anuradha', sanskrit: 'अनुराधा', deity: 'Mitra', symbol: 'Lotus' },
-      { name: 'Jyeshtha', sanskrit: 'ज्येष्ठा', deity: 'Indra', symbol: 'Umbrella' },
-      { name: 'Mula', sanskrit: 'मूल', deity: 'Nirriti', symbol: 'Bunch of roots' },
-      { name: 'Purva Ashadha', sanskrit: 'पूर्वाषाढ़ा', deity: 'Varuna', symbol: 'Elephant' },
-      { name: 'Uttara Ashadha', sanskrit: 'उत्तराषाढ़ा', deity: 'Vishwadevas', symbol: 'Universal square' },
+      {
+        name: 'Vishakha',
+        sanskrit: 'विशाखा',
+        deity: 'Indra',
+        symbol: 'Victorious archer'
+      },
+      {
+        name: 'Anuradha',
+        sanskrit: 'अनुराधा',
+        deity: 'Mitra',
+        symbol: 'Lotus'
+      },
+      {
+        name: 'Jyeshtha',
+        sanskrit: 'ज्येष्ठा',
+        deity: 'Indra',
+        symbol: 'Umbrella'
+      },
+      {
+        name: 'Mula',
+        sanskrit: 'मूल',
+        deity: 'Nirriti',
+        symbol: 'Bunch of roots'
+      },
+      {
+        name: 'Purva Ashadha',
+        sanskrit: 'पूर्वाषाढ़ा',
+        deity: 'Varuna',
+        symbol: 'Elephant'
+      },
+      {
+        name: 'Uttara Ashadha',
+        sanskrit: 'उत्तराषाढ़ा',
+        deity: 'Vishwadevas',
+        symbol: 'Universal square'
+      },
       { name: 'Shravana', sanskrit: 'श्रवण', deity: 'Vishnu', symbol: 'Ear' },
       { name: 'Dhanishta', sanskrit: 'धनिष्ठा', deity: 'Vasu', symbol: 'Drum' },
-      { name: 'Shatabhisha', sanskrit: 'शतभिषा', deity: 'Varuna', symbol: 'Empty circle' },
-      { name: 'Purva Bhadrapada', sanskrit: 'पूर्वभाद्रपदा', deity: 'Aja Ekapada', symbol: 'Sword' },
-      { name: 'Uttara Bhadrapada', sanskrit: 'उत्तरभाद्रपदा', deity: 'Ahir Budhnya', symbol: 'Cobra' },
+      {
+        name: 'Shatabhisha',
+        sanskrit: 'शतभिषा',
+        deity: 'Varuna',
+        symbol: 'Empty circle'
+      },
+      {
+        name: 'Purva Bhadrapada',
+        sanskrit: 'पूर्वभाद्रपदा',
+        deity: 'Aja Ekapada',
+        symbol: 'Sword'
+      },
+      {
+        name: 'Uttara Bhadrapada',
+        sanskrit: 'उत्तरभाद्रपदा',
+        deity: 'Ahir Budhnya',
+        symbol: 'Cobra'
+      },
       { name: 'Revati', sanskrit: 'रेवती', deity: 'Pushan', symbol: 'Fish' }
     ];
 
@@ -115,9 +237,21 @@ class Panchang {
 
     // Auspicious muhurta windows
     this.muholies = [
-      { name: 'Rutu Mahalaya', hours: 'Morning', significance: 'Auspicious for ceremonies' },
-      { name: 'Abhijit', hours: '12:00-12:48', significance: 'Most auspicious time' },
-      { name: 'Varjya', hours: 'Various', significance: 'Inauspicious periods to avoid' }
+      {
+        name: 'Rutu Mahalaya',
+        hours: 'Morning',
+        significance: 'Auspicious for ceremonies'
+      },
+      {
+        name: 'Abhijit',
+        hours: '12:00-12:48',
+        significance: 'Most auspicious time'
+      },
+      {
+        name: 'Varjya',
+        hours: 'Various',
+        significance: 'Inauspicious periods to avoid'
+      }
     ];
   }
 
@@ -133,19 +267,37 @@ class Panchang {
       // Parse date
       const [day, month, year] = date.split('/').map(Number);
       const [hour, minute] = time.split(':').map(Number);
-      const julianDay = this.dateToJulianDay(year, month, day, hour + minute / 60 + timezone);
+      const julianDay = this.dateToJulianDay(
+        year,
+        month,
+        day,
+        hour + minute / 60 + timezone
+      );
 
       // Calculate all panchang components
       const tithi = await this.calculateTithi(julianDay);
       const nakshatra = await this.calculateNakshatra(julianDay);
       const yoga = await this.calculateYoga(julianDay);
       const karana = await this.calculateKarana(julianDay);
-      const sunrise = await this.calculateSunrise(julianDay, latitude, longitude);
+      const sunrise = await this.calculateSunrise(
+        julianDay,
+        latitude,
+        longitude
+      );
       const sunset = await this.calculateSunset(julianDay, latitude, longitude);
 
       // Determine overall auspiciousness
-      const overallRating = this.calculateOverallRating(tithi, nakshatra, yoga, karana);
-      const auspiciousTimes = this.calculateAuspiciousTimes(julianDay, sunrise, sunset);
+      const overallRating = this.calculateOverallRating(
+        tithi,
+        nakshatra,
+        yoga,
+        karana
+      );
+      const auspiciousTimes = this.calculateAuspiciousTimes(
+        julianDay,
+        sunrise,
+        sunset
+      );
 
       return {
         date,
@@ -158,14 +310,28 @@ class Panchang {
         sunset,
         overallRating,
         auspiciousTimes,
-        recommendations: this.generateRecommendations(tithi, nakshatra, yoga, karana),
-        summary: this.generatePanchangSummary(tithi, nakshatra, yoga, karana, sunrise, sunset, overallRating)
+        recommendations: this.generateRecommendations(
+          tithi,
+          nakshatra,
+          yoga,
+          karana
+        ),
+        summary: this.generatePanchangSummary(
+          tithi,
+          nakshatra,
+          yoga,
+          karana,
+          sunrise,
+          sunset,
+          overallRating
+        )
       };
     } catch (error) {
       logger.error('Error generating panchang:', error);
       return {
         error: `Unable to generate panchang: ${error.message}`,
-        fallback: 'Panchang provides Hindu daily calendar with auspicious timings'
+        fallback:
+          'Panchang provides Hindu daily calendar with auspicious timings'
       };
     }
   }
@@ -217,7 +383,9 @@ class Panchang {
         progress: Math.round(progressInNakshatra),
         rulingPlanet: this.getNakshatraRulingPlanet(nakshatraIndex + 1),
         pada: this.calculateNakshatraPada(moon, nakshatraIndex),
-        next: this.nakshatras[(nakshatraIndex + 1) % 27]?.name || this.nakshatras[0].name
+        next:
+          this.nakshatras[(nakshatraIndex + 1) % 27]?.name ||
+          this.nakshatras[0].name
       };
     } catch (error) {
       logger.error('Error calculating nakshatra:', error);
@@ -330,20 +498,41 @@ class Panchang {
     let score = 0;
 
     // Tithi scoring
-    if (tithi.type === 'Auspicious') { score += 3; } else if (tithi.type === 'Neutral') { score += 2; } else { score += 1; }
+    if (tithi.type === 'Auspicious') {
+      score += 3;
+    } else if (tithi.type === 'Neutral') {
+      score += 2;
+    } else {
+      score += 1;
+    }
 
     // Yoga scoring
-    if (yoga.nature === 'Auspicious') { score += 3; } else if (yoga.nature === 'Neutral') { score += 2; } else { score += 1; }
+    if (yoga.nature === 'Auspicious') {
+      score += 3;
+    } else if (yoga.nature === 'Neutral') {
+      score += 2;
+    } else {
+      score += 1;
+    }
 
     // Karana scoring
-    if (karana.nature === 'Auspicious') { score += 2; } else if (karana.nature === 'Neutral') { score += 1; }
+    if (karana.nature === 'Auspicious') {
+      score += 2;
+    } else if (karana.nature === 'Neutral') {
+      score += 1;
+    }
 
     // Nakshatra scoring (simplified)
     score += 2; // Most nakshatras are neutral
 
-    const rating = score >= 8 ? 'Very Auspicious' :
-      score >= 6 ? 'Auspicious' :
-        score >= 4 ? 'Neutral' : 'Inauspicious';
+    const rating =
+      score >= 8 ?
+        'Very Auspicious' :
+        score >= 6 ?
+          'Auspicious' :
+          score >= 4 ?
+            'Neutral' :
+            'Inauspicious';
 
     return {
       score,
@@ -357,7 +546,9 @@ class Panchang {
    * @private
    */
   normalizeAngle(angle) {
-    if (angle < 0) { return angle + 360; }
+    if (angle < 0) {
+      return angle + 360;
+    }
     return angle % 360;
   }
 
@@ -371,19 +562,34 @@ class Panchang {
     const auspicious = [1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13];
     const inauspicious = [4, 9, 14, 15]; // 15 = Amavasya
 
-    if (auspicious.includes(tithiNumber)) { return 'Auspicious'; }
-    if (inauspicious.includes(tithiNumber)) { return 'Inauspicious'; }
+    if (auspicious.includes(tithiNumber)) {
+      return 'Auspicious';
+    }
+    if (inauspicious.includes(tithiNumber)) {
+      return 'Inauspicious';
+    }
     return 'Neutral';
   }
 
   getNakshatraRulingPlanet(nakshatraNumber) {
-    const rulingPlanets = ['Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury'];
+    const rulingPlanets = [
+      'Ketu',
+      'Venus',
+      'Sun',
+      'Moon',
+      'Mars',
+      'Rahu',
+      'Jupiter',
+      'Saturn',
+      'Mercury'
+    ];
     return rulingPlanets[(nakshatraNumber - 1) % 9] || 'Moon';
   }
 
   calculateNakshatraPada(longitude, nakshatraIndex) {
     const startLongitude = nakshatraIndex * (360 / 27);
-    const positionInNakshatra = ((longitude - startLongitude + 360) % 360) % (360 / 27);
+    const positionInNakshatra =
+      ((longitude - startLongitude + 360) % 360) % (360 / 27);
     return Math.floor(positionInNakshatra / (360 / 27 / 4)) + 1;
   }
 
@@ -435,14 +641,24 @@ class Panchang {
 
     // Tithi-based
     if (tithi.type === 'Auspicious') {
-      recommendations.activities.push('Weddings', 'Business launches', 'Spiritual practices');
+      recommendations.activities.push(
+        'Weddings',
+        'Business launches',
+        'Spiritual practices'
+      );
     } else if (tithi.type === 'Inauspicious') {
-      recommendations.caution.push('Avoid major decisions', 'Be cautious with investments');
+      recommendations.caution.push(
+        'Avoid major decisions',
+        'Be cautious with investments'
+      );
     }
 
     // Yoga-based
     if (yoga.nature === 'Inauspicious') {
-      recommendations.caution.push('Delay important meetings', 'Avoid travel if possible');
+      recommendations.caution.push(
+        'Delay important meetings',
+        'Avoid travel if possible'
+      );
     } else {
       recommendations.activities.push('Creative work', 'Learning activities');
     }
@@ -450,7 +666,15 @@ class Panchang {
     return recommendations;
   }
 
-  generatePanchangSummary(tithi, nakshatra, yoga, karana, sunrise, sunset, rating) {
+  generatePanchangSummary(
+    tithi,
+    nakshatra,
+    yoga,
+    karana,
+    sunrise,
+    sunset,
+    rating
+  ) {
     return `🌅 **Daily Panchang Summary**
 
 **Date:** ${new Date().toLocaleDateString()}
@@ -472,7 +696,16 @@ ${rating.recommendation}
 
   dateToJulianDay(year, month, day, hour) {
     // Simplified Julian Day calculation
-    return hour / 24 + day + Math.floor((153 * month + 2) / 5) + 365 * year + Math.floor(year / 4) - Math.floor(year / 100) + Math.floor(year / 400) - 32045;
+    return (
+      hour / 24 +
+      day +
+      Math.floor((153 * month + 2) / 5) +
+      365 * year +
+      Math.floor(year / 4) -
+      Math.floor(year / 100) +
+      Math.floor(year / 400) -
+      32045
+    );
   }
 
   /**
@@ -482,12 +715,14 @@ ${rating.recommendation}
   getPanchangCatalog() {
     return {
       tithi_calculation: 'Precise lunar day from Sun-Moon angle',
-      nakshatra_calculation: '27 constellations with ruling deities and symbolism',
+      nakshatra_calculation:
+        '27 constellations with ruling deities and symbolism',
       yoga_calculation: '27 luni-solar combinations determining daily energy',
       karana_calculation: '11 karanas determining half-tithi influences',
       auspicious_timing: 'Abhijit Muhurta and favorable day periods',
       overall_rating: 'Composite auspiciousness based on all panchang elements',
-      hindu_observance: 'Traditional Hindu daily calendar for ceremonies and observances'
+      hindu_observance:
+        'Traditional Hindu daily calendar for ceremonies and observances'
     };
   }
 }

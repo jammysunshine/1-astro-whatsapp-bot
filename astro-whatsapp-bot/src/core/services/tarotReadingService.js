@@ -7,7 +7,8 @@ const ServiceTemplate = require('../ServiceTemplate');
 class TarotReadingService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.calculatorPath = '../../../services/astrology/tarotReader';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = '../../../services/astrology/tarotReader';
   }
 
   /**
@@ -79,7 +80,8 @@ class TarotReadingService extends ServiceTemplate {
       ...super.getMetadata(),
       name: 'TarotReadingService',
       category: 'divination',
-      description: 'Core service for tarot card readings with multiple spread types',
+      description:
+        'Core service for tarot card readings with multiple spread types',
       version: '1.0.0',
       supportedSpreads: ['single', 'three', 'three-card'],
       status: 'active',

@@ -32,11 +32,13 @@ class PanchangAnalysisAction extends BaseAction {
       const panchangData = {
         date: new Date().toISOString().split('T')[0], // Today's date
         location: userProfile?.birthPlace || 'Delhi, India',
-        birthData: userProfile ? {
-          birthDate: userProfile.birthDate,
-          birthTime: userProfile.birthTime,
-          birthPlace: userProfile.birthPlace
-        } : null,
+        birthData: userProfile ?
+          {
+            birthDate: userProfile.birthDate,
+            birthTime: userProfile.birthTime,
+            birthPlace: userProfile.birthPlace
+          } :
+          null,
         options: {
           includeFestivals: true,
           includeMuhurta: true,
@@ -45,7 +47,9 @@ class PanchangAnalysisAction extends BaseAction {
       };
 
       // Calculate panchang using service
-      const panchangResult = await panchangService.processCalculation({ panchangData });
+      const panchangResult = await panchangService.processCalculation({
+        panchangData
+      });
 
       // Format result for WhatsApp
       const formattedResult = panchangService.formatResult(panchangResult);
@@ -62,7 +66,11 @@ class PanchangAnalysisAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in PanchangAnalysisAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -78,7 +86,11 @@ class PanchangAnalysisAction extends BaseAction {
       // This should be implemented within this action rather than calling legacy function
       // For now, returning a placeholder to indicate this needs proper implementation
       const { sendMessage } = require('../../../messageSender');
-      await sendMessage(this.phoneNumber, 'Panchang (daily calendar) analysis is being prepared...', 'text');
+      await sendMessage(
+        this.phoneNumber,
+        'Panchang (daily calendar) analysis is being prepared...',
+        'text'
+      );
 
       return {
         success: true,
@@ -88,7 +100,11 @@ class PanchangAnalysisAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in PanchangAnalysisAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -97,7 +113,9 @@ class PanchangAnalysisAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    await this.sendDirectMessage('❌ *Panchang Analysis Error*\n\nI encountered an error generating your panchang analysis. Please try again later.');
+    await this.sendDirectMessage(
+      '❌ *Panchang Analysis Error*\n\nI encountered an error generating your panchang analysis. Please try again later.'
+    );
   }
 
   /**
@@ -108,7 +126,13 @@ class PanchangAnalysisAction extends BaseAction {
     return {
       id: this.actionId,
       description: 'Provide Hindu calendar analysis and panchang information',
-      keywords: ['panchang', 'hindu calendar', 'tithi', 'nakshatra', 'calendar'],
+      keywords: [
+        'panchang',
+        'hindu calendar',
+        'tithi',
+        'nakshatra',
+        'calendar'
+      ],
       category: 'astrology',
       subscriptionRequired: false,
       cooldown: 1800000 // 30 minutes cooldown

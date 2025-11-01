@@ -8,7 +8,9 @@ const sweph = require('sweph');
 
 class VargaCharts {
   constructor() {
-    logger.info('Module: VargaCharts loaded - Vedic Divisional Charts for Detailed Analysis');
+    logger.info(
+      'Module: VargaCharts loaded - Vedic Divisional Charts for Detailed Analysis'
+    );
     this.initializeVargaSystem();
   }
 
@@ -18,112 +20,229 @@ class VargaCharts {
   initializeVargaSystem() {
     // Varga (Division) Charts with their Sanskrit names and significances
     this.vargaDetails = {
-      RASHI: {    // D-1 (Birth Chart)
+      RASHI: {
+        // D-1 (Birth Chart)
         Sanskrit: 'राशि',
         divisional: 1,
-        significances: ['Physical body', 'Personality', 'First impressions', 'General life direction'],
+        significances: [
+          'Physical body',
+          'Personality',
+          'First impressions',
+          'General life direction'
+        ],
         planetsMultiplied: 1
       },
-      HORA: {     // D-2 (Wealth Chart)
+      HORA: {
+        // D-2 (Wealth Chart)
         Sanskrit: 'होरा',
         divisional: 2,
-        significances: ['Wealth', 'Family', 'Speech', 'Food', 'Material possessions'],
+        significances: [
+          'Wealth',
+          'Family',
+          'Speech',
+          'Food',
+          'Material possessions'
+        ],
         planetsMultiplied: 1
       },
-      DREKKANA: { // D-3 (Siblings Chart)
+      DREKKANA: {
+        // D-3 (Siblings Chart)
         Sanskrit: 'द्रेक्काण',
         divisional: 3,
-        significances: ['Siblings', 'Courage', 'Short journeys', 'Communication', 'Early education'],
+        significances: [
+          'Siblings',
+          'Courage',
+          'Short journeys',
+          'Communication',
+          'Early education'
+        ],
         planetsMultiplied: 1
       },
-      CHATURTHAMSA: { // D-4 (Property Chart)
+      CHATURTHAMSA: {
+        // D-4 (Property Chart)
         Sanskrit: 'चतुर्थांश',
         divisional: 4,
-        significances: ['Property', 'Home', 'Mother', 'Education', 'Conveyances', 'Fixed assets'],
+        significances: [
+          'Property',
+          'Home',
+          'Mother',
+          'Education',
+          'Conveyances',
+          'Fixed assets'
+        ],
         planetsMultiplied: 1
       },
-      SAPTAMSA: { // D-7 (Children Chart)
+      SAPTAMSA: {
+        // D-7 (Children Chart)
         Sanskrit: 'सप्तमांश',
         divisional: 7,
-        significances: ['Children', 'Creativity', 'Grandchildren', 'Spiritual progress'],
+        significances: [
+          'Children',
+          'Creativity',
+          'Grandchildren',
+          'Spiritual progress'
+        ],
         planetsMultiplied: 1
       },
-      NAVAMSA: {  // D-9 (Marriage/Spouse Chart) - Most important
+      NAVAMSA: {
+        // D-9 (Marriage/Spouse Chart) - Most important
         Sanskrit: 'नवांश',
         divisional: 9,
-        significances: ['Marriage', 'Spouse', 'Dharma', 'Fortune', 'Spiritual life', 'Past karma'],
+        significances: [
+          'Marriage',
+          'Spouse',
+          'Dharma',
+          'Fortune',
+          'Spiritual life',
+          'Past karma'
+        ],
         planetsMultiplied: 1
       },
-      DASHAMSA: { // D-10 (Career Chart)
+      DASHAMSA: {
+        // D-10 (Career Chart)
         Sanskrit: 'दशमांश',
         divisional: 10,
-        significances: ['Career', 'Profession', 'Authority', 'Public reputation', 'Fame'],
+        significances: [
+          'Career',
+          'Profession',
+          'Authority',
+          'Public reputation',
+          'Fame'
+        ],
         planetsMultiplied: 1
       },
-      DWADASAMSA: { // D-12 (Parents Chart)
+      DWADASAMSA: {
+        // D-12 (Parents Chart)
         Sanskrit: 'द्वादशांश',
         divisional: 12,
-        significances: ['Parents', 'Spirituality', 'Foreign travel', 'Expenses', 'Liberation'],
+        significances: [
+          'Parents',
+          'Spirituality',
+          'Foreign travel',
+          'Expenses',
+          'Liberation'
+        ],
         planetsMultiplied: 1
       },
-      SHODASAMSA: { // D-16 (Vehicles/Conveyances Chart)
+      SHODASAMSA: {
+        // D-16 (Vehicles/Conveyances Chart)
         Sanskrit: 'षोडशांश',
         divisional: 16,
-        significances: ['Vehicles', 'Happiness', 'Comfort', 'Luxury items', 'Pleasure'],
+        significances: [
+          'Vehicles',
+          'Happiness',
+          'Comfort',
+          'Luxury items',
+          'Pleasure'
+        ],
         planetsMultiplied: 1
       },
-      VIMSAMSA: { // D-20 (Spiritual Chart)
+      VIMSAMSA: {
+        // D-20 (Spiritual Chart)
         Sanskrit: 'विंशांश',
         divisional: 20,
-        significances: ['Worship', 'Religious activities', 'Meditation', 'Spiritual growth'],
+        significances: [
+          'Worship',
+          'Religious activities',
+          'Meditation',
+          'Spiritual growth'
+        ],
         planetsMultiplied: 1
       },
-      CHATURVIMSAMSA: { // D-24 (Education Chart)
+      CHATURVIMSAMSA: {
+        // D-24 (Education Chart)
         Sanskrit: 'चतुर्विंशांश',
         divisional: 24,
         significances: ['Higher education', 'Knowledge', 'Learning', 'Skills'],
         planetsMultiplied: 1
       },
-      SAPTAVIMSAMSA: { // D-27 (Strength Chart)
+      SAPTAVIMSAMSA: {
+        // D-27 (Strength Chart)
         Sanskrit: 'सप्तविंशांश',
         divisional: 27,
-        significances: ['Strength', 'Vitality', 'Enemies', 'Diseases', 'Obstacles'],
+        significances: [
+          'Strength',
+          'Vitality',
+          'Enemies',
+          'Diseases',
+          'Obstacles'
+        ],
         planetsMultiplied: 1
       },
-      TRIMSAMSA: { // D-30 (Misfortunes Chart)
+      TRIMSAMSA: {
+        // D-30 (Misfortunes Chart)
         Sanskrit: 'त्रिंशांश',
         divisional: 30,
-        significances: ['Misfortunes', 'Sorrows', 'Debts', 'Enemies', 'Longevity'],
+        significances: [
+          'Misfortunes',
+          'Sorrows',
+          'Debts',
+          'Enemies',
+          'Longevity'
+        ],
         planetsMultiplied: 1
       },
-      KHAVEDAMSA: { // D-40 (Auspicious Chart)
+      KHAVEDAMSA: {
+        // D-40 (Auspicious Chart)
         Sanskrit: 'खवेदांश',
         divisional: 40,
-        significances: ['Auspicious events', 'Royal favor', 'Good fortune', 'Blessings'],
+        significances: [
+          'Auspicious events',
+          'Royal favor',
+          'Good fortune',
+          'Blessings'
+        ],
         planetsMultiplied: 1
       },
-      AKSHAVEDAMSA: { // D-45 (Character Chart)
+      AKSHAVEDAMSA: {
+        // D-45 (Character Chart)
         Sanskrit: 'अक्षवेदांश',
         divisional: 45,
-        significances: ['Character', 'Nature', 'Personality traits', 'Behavioral patterns'],
+        significances: [
+          'Character',
+          'Nature',
+          'Personality traits',
+          'Behavioral patterns'
+        ],
         planetsMultiplied: 1
       },
-      SHASHTYAMSA: { // D-60 (Past Life Chart) - Most detailed
+      SHASHTYAMSA: {
+        // D-60 (Past Life Chart) - Most detailed
         Sanskrit: 'षष्ट्यांश',
         divisional: 60,
-        significances: ['Past lives', 'Karma', 'Subconscious mind', 'Hidden strengths'],
+        significances: [
+          'Past lives',
+          'Karma',
+          'Subconscious mind',
+          'Hidden strengths'
+        ],
         planetsMultiplied: 1
       }
     };
 
     // Shadvarga (6-fold system) - Traditional strength classification
     this.shadvarga = {
-      CHESHTA: { aspects: ['Initiative'], description: 'Power to initiate actions' },
-      NAIPEUNIKA: { aspects: ['Relationship power'], description: 'Power in relationships' },
+      CHESHTA: {
+        aspects: ['Initiative'],
+        description: 'Power to initiate actions'
+      },
+      NAIPEUNIKA: {
+        aspects: ['Relationship power'],
+        description: 'Power in relationships'
+      },
       KENDRA: { aspects: ['Stability'], description: 'Power of stability' },
-      DREKKANA: { aspects: ['Direct action'], description: 'Power of direct action' },
-      STHIRAMSHA: { aspects: ['Fixed assets'], description: 'Power over fixed assets' },
-      ASPECTS: { aspects: ['Influence'], description: 'Power through planetary aspects' }
+      DREKKANA: {
+        aspects: ['Direct action'],
+        description: 'Power of direct action'
+      },
+      STHIRAMSHA: {
+        aspects: ['Fixed assets'],
+        description: 'Power over fixed assets'
+      },
+      ASPECTS: {
+        aspects: ['Influence'],
+        description: 'Power through planetary aspects'
+      }
     };
 
     // Planetary significances in different vargas
@@ -131,7 +250,12 @@ class VargaCharts {
       Sun: ['Self', 'Father', 'Authority', 'Government'],
       Moon: ['Mind', 'Mother', 'Emotions', 'Public'],
       Mars: ['Energy', 'Brothers', 'Enemies', 'Property'],
-      Mercury: ['Intelligence', 'Communication', 'Business', 'Maternal relatives'],
+      Mercury: [
+        'Intelligence',
+        'Communication',
+        'Business',
+        'Maternal relatives'
+      ],
       Jupiter: ['Wisdom', 'Children', 'Wealth', 'Spouse'],
       Venus: ['Luxury', 'Vehicles', 'Spouse', 'Arts'],
       Saturn: ['Service', 'Longevity', 'Hard work', 'Paternal relatives'],
@@ -146,15 +270,34 @@ class VargaCharts {
    * @param {Array} vargas - Which vargas to calculate (optional)
    * @returns {Object} Varga chart analysis
    */
-  async calculateVargaCharts(birthData, vargas = ['RASHI', 'HORA', 'DREKKANA', 'CHATURTHAMSA', 'SAPTAMSA', 'NAVAMSA', 'DASHAMSA']) {
+  async calculateVargaCharts(
+    birthData,
+    vargas = [
+      'RASHI',
+      'HORA',
+      'DREKKANA',
+      'CHATURTHAMSA',
+      'SAPTAMSA',
+      'NAVAMSA',
+      'DASHAMSA'
+    ]
+  ) {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
 
       // Parse birth data
-      const { julianDay, latitude, longitude } = this.parseBirthData(birthDate, birthTime, birthPlace);
+      const { julianDay, latitude, longitude } = this.parseBirthData(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
 
       // Calculate main birth chart first
-      const birthChart = await this.calculateRashiChart(julianDay, latitude, longitude);
+      const birthChart = await this.calculateRashiChart(
+        julianDay,
+        latitude,
+        longitude
+      );
 
       // Calculate requested varga charts
       const vargaCharts = {};
@@ -178,7 +321,9 @@ class VargaCharts {
       logger.error('Error calculating varga charts:', error);
       return {
         error: `Varga chart calculation failed: ${error.message}`,
-        recommendations: ['Varga charts provide detailed life area analysis through chart divisions']
+        recommendations: [
+          'Varga charts provide detailed life area analysis through chart divisions'
+        ]
       };
     }
   }
@@ -192,9 +337,21 @@ class VargaCharts {
     const houses = {};
 
     // Calculate planet positions
-    const planetList = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+    const planetList = [
+      'sun',
+      'moon',
+      'mars',
+      'mercury',
+      'jupiter',
+      'venus',
+      'saturn'
+    ];
     for (const planet of planetList) {
-      const result = sweph.calc(julianDay, this.getPlanetId(planet), sweph.FLG_SWIEPH | sweph.FLG_SIDEREAL);
+      const result = sweph.calc(
+        julianDay,
+        this.getPlanetId(planet),
+        sweph.FLG_SWIEPH | sweph.FLG_SIDEREAL
+      );
       if (result.longitude) {
         const longitude = result.longitude[0];
         planets[planet.charAt(0).toUpperCase() + planet.slice(1)] = {
@@ -213,7 +370,10 @@ class VargaCharts {
 
     // Update house assignments for planets
     Object.keys(planets).forEach(planet => {
-      planets[planet].house = this.longitudeToHouse(planets[planet].longitude, lagna);
+      planets[planet].house = this.longitudeToHouse(
+        planets[planet].longitude,
+        lagna
+      );
     });
 
     // House cusps
@@ -236,7 +396,13 @@ class VargaCharts {
    * Calculate specific varga chart
    * @private
    */
-  async calculateVargaChart(vargaName, birthChart, julianDay, latitude, longitude) {
+  async calculateVargaChart(
+    vargaName,
+    birthChart,
+    julianDay,
+    latitude,
+    longitude
+  ) {
     if (!this.vargaDetails[vargaName]) {
       throw new Error(`Unknown varga: ${vargaName}`);
     }
@@ -260,7 +426,11 @@ class VargaCharts {
         longitude: divLongitude,
         sign: this.longitudeToSign(divLongitude),
         house: Math.floor(divLongitude / 30) + 1,
-        strength: this.calculatePlanetaryStrength(planet, divLongitude, vargaName)
+        strength: this.calculatePlanetaryStrength(
+          planet,
+          divLongitude,
+          vargaName
+        )
       };
     });
 
@@ -338,9 +508,13 @@ class VargaCharts {
 
     if (venus) {
       if (venus.house === 7 || venus.house === 5) {
-        insights.push('Venus well-placed in Navamsa - harmonious relationships');
+        insights.push(
+          'Venus well-placed in Navamsa - harmonious relationships'
+        );
       } else if (venus.house === 6 || venus.house === 12) {
-        concerns.push('Venus in challenging position - relationship adjustments needed');
+        concerns.push(
+          'Venus in challenging position - relationship adjustments needed'
+        );
       }
     }
 
@@ -363,7 +537,9 @@ class VargaCharts {
 
     // Check 10th house (career house) in Dashamsa
     if (dashamsaChart.houses && dashamsaChart.houses[10]) {
-      insights.push(`Dashamsa 10th house in ${dashamsaChart.houses[10].sign} - career direction`);
+      insights.push(
+        `Dashamsa 10th house in ${dashamsaChart.houses[10].sign} - career direction`
+      );
     }
 
     // Sun and Mars positioning
@@ -389,11 +565,17 @@ class VargaCharts {
     const insights = [];
 
     // Hora shows wealth: 2nd and 11th houses are key
-    if (horaChart.planets.Jupiter && [2, 11].includes(horaChart.planets.Jupiter.house)) {
+    if (
+      horaChart.planets.Jupiter &&
+      [2, 11].includes(horaChart.planets.Jupiter.house)
+    ) {
       insights.push('Jupiter in wealth houses - prosperous periods ahead');
     }
 
-    if (horaChart.planets.Venus && [2, 11].includes(horaChart.planets.Venus.house)) {
+    if (
+      horaChart.planets.Venus &&
+      [2, 11].includes(horaChart.planets.Venus.house)
+    ) {
       insights.push('Venus in wealth houses - comfort through material means');
     }
 
@@ -408,7 +590,15 @@ class VargaCharts {
     const strength = {};
 
     // Key planets to check across vargas
-    const keyPlanets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const keyPlanets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     keyPlanets.forEach(planet => {
       strength[planet] = {
@@ -450,13 +640,15 @@ class VargaCharts {
     // Marriage recommendations from Navamsa
     if (vargaCharts.NAVAMSA) {
       const navamsa = vargaCharts.NAVAMSA;
-      recommendations.lifeAreas.marriage = this.getNavamsaMarriageGuidance(navamsa);
+      recommendations.lifeAreas.marriage =
+        this.getNavamsaMarriageGuidance(navamsa);
     }
 
     // Career recommendations from Dashamsa
     if (vargaCharts.DASHAMSA) {
       const dashamsa = vargaCharts.DASHAMSA;
-      recommendations.lifeAreas.career = this.getDashamsaCareerGuidance(dashamsa);
+      recommendations.lifeAreas.career =
+        this.getDashamsaCareerGuidance(dashamsa);
     }
 
     // Wealth recommendations from Hora
@@ -483,7 +675,8 @@ class VargaCharts {
       if ([5, 7, 9].includes(venus.house)) {
         guidance += 'Venus well-positioned for harmonious marriage';
       } else if ([6, 8, 12].includes(venus.house)) {
-        guidance += 'Venus placement suggests adjustments needed in relationships';
+        guidance +=
+          'Venus placement suggests adjustments needed in relationships';
       }
     }
 
@@ -539,7 +732,9 @@ class VargaCharts {
 
     // Check for weak Jupiter placements (common remedy)
     if (this.needsJupiterRemedies(vargaCharts)) {
-      remedies.push('Consider yellow sapphire or Jupiter remedies for wisdom and fortune');
+      remedies.push(
+        'Consider yellow sapphire or Jupiter remedies for wisdom and fortune'
+      );
     }
 
     // Venus remedies for relationship issues
@@ -552,7 +747,9 @@ class VargaCharts {
       remedies.push('Practice Surya namaskar and wear ruby for confidence');
     }
 
-    remedies.push('Consult a qualified Vedic astrologer for personalized remedies');
+    remedies.push(
+      'Consult a qualified Vedic astrologer for personalized remedies'
+    );
 
     return remedies;
   }
@@ -567,32 +764,68 @@ class VargaCharts {
     return {
       julianDay,
       latitude: 28.6139, // New Delhi coordinates as default
-      longitude: 77.2090
+      longitude: 77.209
     };
   }
 
   dateToJulianDay(date) {
-    return Math.floor((date.getTime() / 86400000) + 2440587.5);
+    return Math.floor(date.getTime() / 86400000 + 2440587.5);
   }
 
   longitudeToSign(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs[Math.floor(longitude / 30) % 12];
   }
 
   longitudeToHouse(longitude, ascendant) {
-    const diff = ((longitude - ascendant + 360) % 360);
+    const diff = (longitude - ascendant + 360) % 360;
     return Math.floor(diff / 30) + 1;
   }
 
   longitudeToNakshatra(longitude) {
     const nakshatras = [
-      'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra', 'Punarvasu', 'Pushya', 'Ashlesha',
-      'Magha', 'Purva Phalguni', 'Uttara Phalguni', 'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha',
-      'Jyeshtha', 'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishtha', 'Shatabhisha',
-      'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+      'Ashwini',
+      'Bharani',
+      'Krittika',
+      'Rohini',
+      'Mrigashira',
+      'Ardra',
+      'Punarvasu',
+      'Pushya',
+      'Ashlesha',
+      'Magha',
+      'Purva Phalguni',
+      'Uttara Phalguni',
+      'Hasta',
+      'Chitra',
+      'Swati',
+      'Vishakha',
+      'Anuradha',
+      'Jyeshtha',
+      'Mula',
+      'Purva Ashadha',
+      'Uttara Ashadha',
+      'Shravana',
+      'Dhanishtha',
+      'Shatabhisha',
+      'Purva Bhadrapada',
+      'Uttara Bhadrapada',
+      'Revati'
     ];
-    const nakIndex = Math.floor(longitude * 27 / 360) % 27;
+    const nakIndex = Math.floor((longitude * 27) / 360) % 27;
     return nakshatras[nakIndex];
   }
 
@@ -637,26 +870,34 @@ class VargaCharts {
       Saturn: [1, 8, 9]
     };
 
-    if (favorableHouses[planet]?.includes(house)) { return 3; }
-    if (challengingHouses[planet]?.includes(house)) { return 0; }
+    if (favorableHouses[planet]?.includes(house)) {
+      return 3;
+    }
+    if (challengingHouses[planet]?.includes(house)) {
+      return 0;
+    }
     return 1.5; // Neutral placement
   }
 
   needsJupiterRemedies(vargaCharts) {
     // Check if Jupiter is weak in key vargas
-    return ['NAVAMSA', 'DASHAMSA'].some(varga =>
-      vargaCharts[varga]?.planets?.Jupiter?.strength < 2
+    return ['NAVAMSA', 'DASHAMSA'].some(
+      varga => vargaCharts[varga]?.planets?.Jupiter?.strength < 2
     );
   }
 
   needsVenusRemedies(vargaCharts) {
-    return vargaCharts.NAVAMSA?.planets?.Venus?.house === 12 ||
-           vargaCharts.NAVAMSA?.planets?.Venus?.house === 6;
+    return (
+      vargaCharts.NAVAMSA?.planets?.Venus?.house === 12 ||
+      vargaCharts.NAVAMSA?.planets?.Venus?.house === 6
+    );
   }
 
   needsSunRemedies(vargaCharts) {
-    return vargaCharts.DASHAMSA?.planets?.Sun?.house === 12 ||
-           vargaCharts.DASHAMSA?.planets?.Sun?.house === 8;
+    return (
+      vargaCharts.DASHAMSA?.planets?.Sun?.house === 12 ||
+      vargaCharts.DASHAMSA?.planets?.Sun?.house === 8
+    );
   }
 
   /**
@@ -670,7 +911,8 @@ class VargaCharts {
       keyVargas: ['NAVAMSA', 'DASHAMSA', 'HORA', 'DREKKANA', 'CHATURTHAMSA'],
       shadvarga: this.shadvarga,
       planetarySignificance: this.planetarySignificance,
-      calculationMethod: 'Traditional Vedic divisional harmonics using Swiss Ephemeris',
+      calculationMethod:
+        'Traditional Vedic divisional harmonics using Swiss Ephemeris',
       traditionalReference: 'Brihat Parasara Hora Sastra divisions'
     };
   }

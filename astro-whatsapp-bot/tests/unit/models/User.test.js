@@ -7,7 +7,9 @@ const mongoose = require('mongoose');
 describe('User Model', () => {
   beforeAll(async() => {
     // Connect to test database
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test');
+    await mongoose.connect(
+      process.env.MONGODB_URI || 'mongodb://localhost:27017/test'
+    );
   });
 
   afterAll(async() => {

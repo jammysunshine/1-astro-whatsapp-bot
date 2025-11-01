@@ -6,7 +6,9 @@ const logger = require('../../../utils/logger');
  */
 class GlobalOverviewGenerator {
   constructor() {
-    logger.info('Module: GlobalOverviewGenerator loaded for global consciousness analysis');
+    logger.info(
+      'Module: GlobalOverviewGenerator loaded for global consciousness analysis'
+    );
   }
 
   /**
@@ -20,7 +22,8 @@ class GlobalOverviewGenerator {
       dominantThemes: this.identifyDominantThemes(chartData),
       globalMood: this.assessGlobalMood(chartData),
       keyTransactions: this.identifyKeyTransactions(chartData),
-      collectiveUnconsciousIndicators: this.analyzeCollectiveUnconscious(chartData),
+      collectiveUnconsciousIndicators:
+        this.analyzeCollectiveUnconscious(chartData),
       planetaryClimates: this.analyzePlanetaryClimates(chartData)
     };
 
@@ -53,7 +56,9 @@ class GlobalOverviewGenerator {
       themes.push('Expansion and growth potentials');
     }
 
-    return themes.length > 0 ? themes : ['Unknown planetary energies - general observation required'];
+    return themes.length > 0 ?
+      themes :
+      ['Unknown planetary energies - general observation required'];
   }
 
   /**
@@ -64,17 +69,26 @@ class GlobalOverviewGenerator {
   assessGlobalMood(chartData) {
     const { moon } = chartData.planetaryPositions;
 
-    if (!moon) { return 'Unknown collective mood'; }
+    if (!moon) {
+      return 'Unknown collective mood';
+    }
 
     // Moon in different houses affects global emotional state
     switch (moon.house) {
-    case 1: return 'Bold and initiative-driven global mood';
-    case 4: return 'Protective and homeland-focused consciousness';
-    case 7: return 'Relationship and partnership-oriented awareness';
-    case 10: return 'Authority and leadership-conscious collective energy';
-    case 11: return 'Community and humanitarian focused global mood';
-    case 12: return 'Spiritual and introspective international consciousness';
-    default: return 'Mixed emotional currents in global consciousness';
+    case 1:
+      return 'Bold and initiative-driven global mood';
+    case 4:
+      return 'Protective and homeland-focused consciousness';
+    case 7:
+      return 'Relationship and partnership-oriented awareness';
+    case 10:
+      return 'Authority and leadership-conscious collective energy';
+    case 11:
+      return 'Community and humanitarian focused global mood';
+    case 12:
+      return 'Spiritual and introspective international consciousness';
+    default:
+      return 'Mixed emotional currents in global consciousness';
     }
   }
 
@@ -89,14 +103,22 @@ class GlobalOverviewGenerator {
     // Check for major planetary ingresses (movements)
     const outerPlanets = ['saturn', 'uranus', 'neptune', 'pluto'];
 
-    transactions.push('Monitor Saturn transits for structural international changes');
-    transactions.push('Observe Uranus placements indicating innovation and revolution');
-    transactions.push('Note Jupiter developments for expansion and philosophical shifts');
+    transactions.push(
+      'Monitor Saturn transits for structural international changes'
+    );
+    transactions.push(
+      'Observe Uranus placements indicating innovation and revolution'
+    );
+    transactions.push(
+      'Note Jupiter developments for expansion and philosophical shifts'
+    );
 
     // Check for eclipses if critical degrees are prominent
     const eclipseFactors = this.checkEclipseDegrees(chartData);
     if (eclipseFactors.length > 0) {
-      transactions.push('Eclipse-like planetary placements suggest major global transitions');
+      transactions.push(
+        'Eclipse-like planetary placements suggest major global transitions'
+      );
     }
 
     return transactions;
@@ -126,15 +148,21 @@ class GlobalOverviewGenerator {
 
     const marsSaturnAspects = this.checkMarsSaturnAspects(chartData);
     if (marsSaturnAspects > 0) {
-      climates.push('Mars-Saturn aspects indicate disciplined action and structured conflict');
+      climates.push(
+        'Mars-Saturn aspects indicate disciplined action and structured conflict'
+      );
     }
 
     const venusJupiterTransits = this.checkVenusJupiterTransits(chartData);
     if (venusJupiterTransits > 0) {
-      climates.push('Venus-Jupiter influences suggest prosperous and harmonious developments');
+      climates.push(
+        'Venus-Jupiter influences suggest prosperous and harmonious developments'
+      );
     }
 
-    return climates.length > 0 ? climates : ['Neutral planetary climates influencing global weather'];
+    return climates.length > 0 ?
+      climates :
+      ['Neutral planetary climates influencing global weather'];
   }
 
   // Helper methods
@@ -154,13 +182,17 @@ class GlobalOverviewGenerator {
     const { mars } = chartData.planetaryPositions;
     const { saturn } = chartData.planetaryPositions;
 
-    if (!mars || !saturn) { return 0; }
+    if (!mars || !saturn) {
+      return 0;
+    }
 
     const separation = Math.abs(mars.longitude - saturn.longitude);
     const aspects = [60, 90, 120, 150, 180]; // List of major aspects
 
     for (const aspect of aspects) {
-      if (Math.abs(separation - aspect) <= 8) { return 1; }
+      if (Math.abs(separation - aspect) <= 8) {
+        return 1;
+      }
     }
 
     return 0;
@@ -170,18 +202,30 @@ class GlobalOverviewGenerator {
     const { venus } = chartData.planetaryPositions;
     const { jupiter } = chartData.planetaryPositions;
 
-    if (!venus || !jupiter) { return 0; }
+    if (!venus || !jupiter) {
+      return 0;
+    }
 
     const separation = Math.abs(venus.longitude - jupiter.longitude);
-    if (separation <= 15) { return 1; } // Conjunct or close aspects
+    if (separation <= 15) {
+      return 1;
+    } // Conjunct or close aspects
 
     return 0;
   }
 
-  identifyArchetypalInfluences(chartData) { return ['Sun = Hero\'s journey']; }
-  analyzeKarmicPatterns(chartData) { return ['Saturn indicates karmic cycles']; }
-  assessPsychologicalClimate(chartData) { return 'Mixed emotional currents'; }
-  identifyTransformativePotential(chartData) { return 'High awareness expansion'; }
+  identifyArchetypalInfluences(chartData) {
+    return ['Sun = Hero\'s journey'];
+  }
+  analyzeKarmicPatterns(chartData) {
+    return ['Saturn indicates karmic cycles'];
+  }
+  assessPsychologicalClimate(chartData) {
+    return 'Mixed emotional currents';
+  }
+  identifyTransformativePotential(chartData) {
+    return 'High awareness expansion';
+  }
 }
 
 module.exports = { GlobalOverviewGenerator };

@@ -46,7 +46,10 @@ describe('ChineseCalculator', () => {
       const birthDate = '15/03/1990';
       const birthTime = '14:30';
 
-      const pillars = chineseCalculator.calculateFourPillars(birthDate, birthTime);
+      const pillars = chineseCalculator.calculateFourPillars(
+        birthDate,
+        birthTime
+      );
 
       expect(pillars).toBeDefined();
       expect(pillars.pillars).toBeDefined();
@@ -60,7 +63,10 @@ describe('ChineseCalculator', () => {
       const birthDate = 'invalid';
       const birthTime = 'invalid';
 
-      const pillars = chineseCalculator.calculateFourPillars(birthDate, birthTime);
+      const pillars = chineseCalculator.calculateFourPillars(
+        birthDate,
+        birthTime
+      );
 
       expect(pillars).toBeDefined();
       expect(pillars.error).toBeDefined();

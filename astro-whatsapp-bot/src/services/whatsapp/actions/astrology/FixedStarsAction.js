@@ -3,7 +3,9 @@ const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
 
 class FixedStarsAction extends BaseAction {
-  static get actionId() { return 'get_fixed_stars_analysis'; }
+  static get actionId() {
+    return 'get_fixed_stars_analysis';
+  }
 
   async execute() {
     try {
@@ -21,7 +23,8 @@ class FixedStarsAction extends BaseAction {
   }
 
   async sendFixedStarsAnalysis() {
-    const analysis = '⭐ *Fixed Stars - Ancient Cosmic Guardians*\n\n' +
+    const analysis =
+      '⭐ *Fixed Stars - Ancient Cosmic Guardians*\n\n' +
       'Fixed stars are ancient stellar guardians that cast their forever-light upon our planetary movements. These unchanging points reveal our karmic contracts and illuminate the higher purpose of planetary activities.\n\n' +
       '*✨ MAJOR FIXED STARS BY CONSTELLATION:*\n' +
       '• **Aldebaran (Eye of the Bull)** - Ambitious, practical, royal bearing\n' +
@@ -47,14 +50,19 @@ class FixedStarsAction extends BaseAction {
       '*The fixed stars weave the tapestry of cosmic destiny, guiding souls through the grand design of universal evolution.*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
@@ -63,8 +71,14 @@ class FixedStarsAction extends BaseAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Analyze fixed stars conjunctions and karmic stellar influences',
-      keywords: ['fixed stars', 'stellar karma', 'cosmic guardians', 'fixed star conjunctions'],
+      description:
+        'Analyze fixed stars conjunctions and karmic stellar influences',
+      keywords: [
+        'fixed stars',
+        'stellar karma',
+        'cosmic guardians',
+        'fixed star conjunctions'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 3600000

@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 /**
  * HinduAstrologyService - Service for traditional Vedic analysis
@@ -7,7 +8,8 @@ const logger = require('../../../utils/logger');
 class HinduAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'HinduAstrologyService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'HinduAstrologyService';
     this.calculatorPath = '../calculators/ChartGenerator'; // Assuming this path for the main calculator
     logger.info('HinduAstrologyService initialized');
   }
@@ -64,7 +66,11 @@ class HinduAstrologyService extends ServiceTemplate {
         yogas,
         dashas,
         remedies,
-        interpretation: this._createVedicInterpretation(vedicChart, planetaryDignities, yogas)
+        interpretation: this._createVedicInterpretation(
+          vedicChart,
+          planetaryDignities,
+          yogas
+        )
       };
     } catch (error) {
       logger.error('Hindu astrology analysis error:', error);
@@ -89,16 +95,53 @@ class HinduAstrologyService extends ServiceTemplate {
 
     // Basic dignity analysis based on traditional Vedic rules
     const dignityRules = {
-      Sun: { exalted: 'Aries', ownSign: 'Leo', friendly: ['Sagittarius', 'Pisces'], enemy: ['Saturn'] },
-      Moon: { exalted: 'Taurus', ownSign: 'Cancer', friendly: ['Sun', 'Mercury'], enemy: [] },
-      Mars: { exalted: 'Capricorn', ownSign: 'Aries', friendly: ['Sun', 'Moon', 'Jupiter'], enemy: ['Mercury'] },
-      Mercury: { exalted: 'Virgo', ownSign: 'Gemini', friendly: ['Sun', 'Venus'], enemy: ['Moon'] },
-      Jupiter: { exalted: 'Cancer', ownSign: 'Sagittarius', friendly: ['Sun', 'Moon', 'Mars'], enemy: ['Mercury', 'Venus'] },
-      Venus: { exalted: 'Pisces', ownSign: 'Taurus', friendly: ['Mercury', 'Saturn'], enemy: ['Sun', 'Moon'] },
-      Saturn: { exalted: 'Libra', ownSign: 'Capricorn', friendly: ['Mercury', 'Venus'], enemy: ['Sun', 'Moon', 'Mars'] }
+      Sun: {
+        exalted: 'Aries',
+        ownSign: 'Leo',
+        friendly: ['Sagittarius', 'Pisces'],
+        enemy: ['Saturn']
+      },
+      Moon: {
+        exalted: 'Taurus',
+        ownSign: 'Cancer',
+        friendly: ['Sun', 'Mercury'],
+        enemy: []
+      },
+      Mars: {
+        exalted: 'Capricorn',
+        ownSign: 'Aries',
+        friendly: ['Sun', 'Moon', 'Jupiter'],
+        enemy: ['Mercury']
+      },
+      Mercury: {
+        exalted: 'Virgo',
+        ownSign: 'Gemini',
+        friendly: ['Sun', 'Venus'],
+        enemy: ['Moon']
+      },
+      Jupiter: {
+        exalted: 'Cancer',
+        ownSign: 'Sagittarius',
+        friendly: ['Sun', 'Moon', 'Mars'],
+        enemy: ['Mercury', 'Venus']
+      },
+      Venus: {
+        exalted: 'Pisces',
+        ownSign: 'Taurus',
+        friendly: ['Mercury', 'Saturn'],
+        enemy: ['Sun', 'Moon']
+      },
+      Saturn: {
+        exalted: 'Libra',
+        ownSign: 'Capricorn',
+        friendly: ['Mercury', 'Venus'],
+        enemy: ['Sun', 'Moon', 'Mars']
+      }
     };
 
-    for (const [planet, data] of Object.entries(vedicChart.planetaryPositions || {})) {
+    for (const [planet, data] of Object.entries(
+      vedicChart.planetaryPositions || {}
+    )) {
       if (dignityRules[planet] && data.sign) {
         const rules = dignityRules[planet];
         const { sign } = data;
@@ -127,11 +170,31 @@ class HinduAstrologyService extends ServiceTemplate {
    */
   _analyzeDivisionalCharts(vedicChart) {
     const vargas = {
-      d9: { name: 'Navamsa', purpose: 'Marriage and partnerships', significance: 'Spiritual development' },
-      d10: { name: 'Dashamsa', purpose: 'Career and profession', significance: 'Life achievements' },
-      d12: { name: 'Dwadasamsa', purpose: 'Parents and ancestry', significance: 'Karmic inheritance' },
-      d24: { name: 'Chaturvimsamsa', purpose: 'Education and learning', significance: 'Knowledge acquisition' },
-      d30: { name: 'Trimsamsa', purpose: 'Misfortunes and challenges', significance: 'Karmic lessons' }
+      d9: {
+        name: 'Navamsa',
+        purpose: 'Marriage and partnerships',
+        significance: 'Spiritual development'
+      },
+      d10: {
+        name: 'Dashamsa',
+        purpose: 'Career and profession',
+        significance: 'Life achievements'
+      },
+      d12: {
+        name: 'Dwadasamsa',
+        purpose: 'Parents and ancestry',
+        significance: 'Karmic inheritance'
+      },
+      d24: {
+        name: 'Chaturvimsamsa',
+        purpose: 'Education and learning',
+        significance: 'Knowledge acquisition'
+      },
+      d30: {
+        name: 'Trimsamsa',
+        purpose: 'Misfortunes and challenges',
+        significance: 'Karmic lessons'
+      }
     };
 
     // Basic divisional chart analysis
@@ -230,7 +293,11 @@ class HinduAstrologyService extends ServiceTemplate {
         effects: 'General influence of current dasha'
       },
       upcomingPeriods: [
-        { period: 'Next major period', duration: 'Approximate years', influence: 'Expected effects' }
+        {
+          period: 'Next major period',
+          duration: 'Approximate years',
+          influence: 'Expected effects'
+        }
       ],
       favorablePeriods: ['Periods favorable for specific activities'],
       challengingPeriods: ['Periods requiring caution']
@@ -345,7 +412,8 @@ class HinduAstrologyService extends ServiceTemplate {
    * @returns {string} Complete interpretation
    */
   _createVedicInterpretation(vedicChart, dignities, yogas) {
-    let interpretation = 'This Vedic astrology analysis follows traditional Hindu astrological principles, examining the birth chart through the lens of ancient Indian wisdom. ';
+    let interpretation =
+      'This Vedic astrology analysis follows traditional Hindu astrological principles, examining the birth chart through the lens of ancient Indian wisdom. ';
 
     // Add dignity insights
     if (dignities.exalted.length > 0) {
@@ -353,13 +421,17 @@ class HinduAstrologyService extends ServiceTemplate {
     }
 
     // Add yoga insights
-    const beneficialYogas = yogas.filter(yoga => yoga.type.includes('Beneficial'));
+    const beneficialYogas = yogas.filter(yoga =>
+      yoga.type.includes('Beneficial')
+    );
     if (beneficialYogas.length > 0) {
-      interpretation += 'Several beneficial yogas are present, suggesting success, prosperity, and spiritual growth potential. ';
+      interpretation +=
+        'Several beneficial yogas are present, suggesting success, prosperity, and spiritual growth potential. ';
     }
 
     // Add general Vedic wisdom
-    interpretation += 'The Vedic system emphasizes karma, dharma, and the soul\'s journey through multiple lives. Planetary positions indicate both challenges and opportunities for spiritual evolution.';
+    interpretation +=
+      'The Vedic system emphasizes karma, dharma, and the soul\'s journey through multiple lives. Planetary positions indicate both challenges and opportunities for spiritual evolution.';
 
     return interpretation;
   }
@@ -373,7 +445,15 @@ class HinduAstrologyService extends ServiceTemplate {
       throw new Error('Birth data is required');
     }
 
-    const requiredFields = ['year', 'month', 'day', 'hour', 'minute', 'latitude', 'longitude'];
+    const requiredFields = [
+      'year',
+      'month',
+      'day',
+      'hour',
+      'minute',
+      'latitude',
+      'longitude'
+    ];
 
     for (const field of requiredFields) {
       if (typeof input[field] !== 'number') {
@@ -383,7 +463,9 @@ class HinduAstrologyService extends ServiceTemplate {
 
     // Validate date ranges
     if (input.year < 1900 || input.year > new Date().getFullYear() + 1) {
-      throw new Error(`Year must be between 1900 and ${new Date().getFullYear() + 1}`);
+      throw new Error(
+        `Year must be between 1900 and ${new Date().getFullYear() + 1}`
+      );
     }
 
     if (input.month < 1 || input.month > 12) {
@@ -429,7 +511,8 @@ class HinduAstrologyService extends ServiceTemplate {
         remedies: result.remedies
       },
       interpretation: result.interpretation,
-      disclaimer: 'This Hindu astrology analysis follows traditional Vedic principles. Astrology is a tool for self-understanding and should not replace professional medical, legal, or psychological advice. Consult qualified practitioners for important life decisions.'
+      disclaimer:
+        'This Hindu astrology analysis follows traditional Vedic principles. Astrology is a tool for self-understanding and should not replace professional medical, legal, or psychological advice. Consult qualified practitioners for important life decisions.'
     };
   }
   async getHealthStatus() {

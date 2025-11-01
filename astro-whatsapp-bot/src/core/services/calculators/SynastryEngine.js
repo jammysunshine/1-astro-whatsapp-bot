@@ -42,12 +42,22 @@ class SynastryEngine {
    */
   calculateInterchartAspects(chart1, chart2) {
     const aspects = [];
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     // Calculate aspects between each pair of planets
     for (const planet1 of planets) {
       for (const planet2 of planets) {
-        if (!chart1.planets[planet1] || !chart2.planets[planet2]) { continue; }
+        if (!chart1.planets[planet1] || !chart2.planets[planet2]) {
+          continue;
+        }
 
         const pos1 = chart1.planets[planet1].longitude;
         const pos2 = chart2.planets[planet2].longitude;
@@ -60,8 +70,17 @@ class SynastryEngine {
             aspect: aspectData.aspect,
             aspectName: aspectData.aspectName,
             orb: aspectData.orb,
-            significance: this.analyzeAspectSignificance(planet1, planet2, aspectData.aspect),
-            type: aspectData.aspect <= 60 ? 'harmonious' : aspectData.aspect >= 90 ? 'challenging' : 'neutral',
+            significance: this.analyzeAspectSignificance(
+              planet1,
+              planet2,
+              aspectData.aspect
+            ),
+            type:
+              aspectData.aspect <= 60 ?
+                'harmonious' :
+                aspectData.aspect >= 90 ?
+                  'challenging' :
+                  'neutral',
             exactness: aspectData.exactness
           });
         }
@@ -84,7 +103,10 @@ class SynastryEngine {
     overlays.userInPartnerHouses = {};
 
     for (const [planet, data] of Object.entries(chart1.planets)) {
-      const house = this.calculator.longitudeToHouse(data.longitude, chart2.ascendant);
+      const house = this.calculator.longitudeToHouse(
+        data.longitude,
+        chart2.ascendant
+      );
       overlays.userInPartnerHouses[planet] = {
         house,
         significance: this.analyzeHouseOverlaySignificance(house, planet)
@@ -95,7 +117,10 @@ class SynastryEngine {
     overlays.partnerInUserHouses = {};
 
     for (const [planet, data] of Object.entries(chart2.planets)) {
-      const house = this.calculator.longitudeToHouse(data.longitude, chart1.ascendant);
+      const house = this.calculator.longitudeToHouse(
+        data.longitude,
+        chart1.ascendant
+      );
       overlays.partnerInUserHouses[planet] = {
         house,
         significance: this.analyzeHouseOverlaySignificance(house, planet)
@@ -115,7 +140,15 @@ class SynastryEngine {
     const composite = {};
 
     // Calculate midpoint composite
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     composite.planets = {};
     for (const planet of planets) {
@@ -129,11 +162,13 @@ class SynastryEngine {
         // Handle 0-360 wraparound
         if (Math.abs(pos1 - pos2) > 180) {
           if (pos1 < pos2) {
-            midpoint = ((pos1 + 360) + pos2) / 2;
+            midpoint = (pos1 + 360 + pos2) / 2;
           } else {
             midpoint = (pos1 + (pos2 + 360)) / 2;
           }
-          if (midpoint >= 360) { midpoint -= 360; }
+          if (midpoint >= 360) {
+            midpoint -= 360;
+          }
         }
 
         composite.planets[planet] = {
@@ -146,7 +181,9 @@ class SynastryEngine {
 
     // Composite houses (average ascendant positions)
     composite.ascendant = (chart1.ascendant + chart2.ascendant) / 2;
-    composite.ascendantSign = this.calculator.longitudeToSign(composite.ascendant);
+    composite.ascendantSign = this.calculator.longitudeToSign(
+      composite.ascendant
+    );
 
     return composite;
   }
@@ -168,9 +205,15 @@ class SynastryEngine {
     // Analyze based on key planetary aspects between charts
     const aspects = this.calculateInterchartAspects(chart1, chart2);
 
-    const moonAspects = aspects.filter(a => a.planet1 === 'Moon' || a.planet2 === 'Moon').length;
-    const venusAspects = aspects.filter(a => a.planet1 === 'Venus' || a.planet2 === 'Venus').length;
-    const saturnAspects = aspects.filter(a => a.planet1 === 'Saturn' || a.planet2 === 'Saturn').length;
+    const moonAspects = aspects.filter(
+      a => a.planet1 === 'Moon' || a.planet2 === 'Moon'
+    ).length;
+    const venusAspects = aspects.filter(
+      a => a.planet1 === 'Venus' || a.planet2 === 'Venus'
+    ).length;
+    const saturnAspects = aspects.filter(
+      a => a.planet1 === 'Saturn' || a.planet2 === 'Saturn'
+    ).length;
 
     if (venusAspects > moonAspects) {
       dynamics.intimacy = 'Romantic and affectionate';
@@ -183,7 +226,9 @@ class SynastryEngine {
     }
 
     // Add communication analysis
-    const mercuryAspects = aspects.filter(a => a.planet1 === 'Mercury' || a.planet2 === 'Mercury').length;
+    const mercuryAspects = aspects.filter(
+      a => a.planet1 === 'Mercury' || a.planet2 === 'Mercury'
+    ).length;
     if (mercuryAspects >= 2) {
       dynamics.communication = 'Strong mental connection';
     } else if (mercuryAspects === 1) {
@@ -253,15 +298,24 @@ class SynastryEngine {
 
     const key = `${planet1}${planet2}`;
     const reverseKey = `${planet2}${planet1}`;
-    const description = planetPairs[key] || planetPairs[reverseKey] || `${planet1}-${planet2} planetary connection`;
+    const description =
+      planetPairs[key] ||
+      planetPairs[reverseKey] ||
+      `${planet1}-${planet2} planetary connection`;
 
     switch (aspect) {
-    case 120: return `Easy flowing harmony in ${description.toLowerCase()}`;
-    case 60: return `Supportive energy fostering ${description.toLowerCase()}`;
-    case 0: return `Deep integration of ${description.toLowerCase()}`;
-    case 90: return `Transformational tension in ${description.toLowerCase()}`;
-    case 180: return `Polarity balance in ${description.toLowerCase()}`;
-    default: return `Unique dynamic in ${description.toLowerCase()}`;
+    case 120:
+      return `Easy flowing harmony in ${description.toLowerCase()}`;
+    case 60:
+      return `Supportive energy fostering ${description.toLowerCase()}`;
+    case 0:
+      return `Deep integration of ${description.toLowerCase()}`;
+    case 90:
+      return `Transformational tension in ${description.toLowerCase()}`;
+    case 180:
+      return `Polarity balance in ${description.toLowerCase()}`;
+    default:
+      return `Unique dynamic in ${description.toLowerCase()}`;
     }
   }
 

@@ -17,29 +17,73 @@ class KeywordMapper {
    * Initialize with default keyword mappings
    */
   initialize() {
-    if (this.initialized) { return; }
+    if (this.initialized) {
+      return;
+    }
 
     // Basic astrology actions
-    this.addKeywordMapping(['horoscope', 'horo', 'daily horoscope'], 'get_daily_horoscope');
-    this.addKeywordMapping(['chart', 'birth chart', 'natal chart'], 'show_birth_chart');
-    this.addKeywordMapping(['compatibility', 'match', 'synastry'], 'initiate_compatibility_flow');
+    this.addKeywordMapping(
+      ['horoscope', 'horo', 'daily horoscope'],
+      'get_daily_horoscope'
+    );
+    this.addKeywordMapping(
+      ['chart', 'birth chart', 'natal chart'],
+      'show_birth_chart'
+    );
+    this.addKeywordMapping(
+      ['compatibility', 'match', 'synastry'],
+      'initiate_compatibility_flow'
+    );
     this.addKeywordMapping(['tarot', 'card reading'], 'get_tarot_reading');
-    this.addKeywordMapping(['iching', 'i ching', 'yijing'], 'get_iching_reading');
-    this.addKeywordMapping(['palmistry', 'palm reading', 'hand reading'], 'get_palmistry_analysis');
+    this.addKeywordMapping(
+      ['iching', 'i ching', 'yijing'],
+      'get_iching_reading'
+    );
+    this.addKeywordMapping(
+      ['palmistry', 'palm reading', 'hand reading'],
+      'get_palmistry_analysis'
+    );
 
     // Menu navigation
     this.addKeywordMapping(['menu', 'main menu', 'home'], 'show_main_menu');
-    this.addKeywordMapping(['western astrology', 'western'], 'show_western_astrology_menu');
-    this.addKeywordMapping(['vedic astrology', 'hindu astrology', 'vedic', 'indian astrology'], 'show_vedic_astrology_menu');
-    this.addKeywordMapping(['divination', 'mystic', 'spiritual'], 'show_divination_mystic_menu');
-    this.addKeywordMapping(['numerology', 'numbers', 'numeretic'], 'show_numerology_special_menu');
-    this.addKeywordMapping(['relationships', 'groups', 'family', 'couple'], 'show_relationships_groups_menu');
+    this.addKeywordMapping(
+      ['western astrology', 'western'],
+      'show_western_astrology_menu'
+    );
+    this.addKeywordMapping(
+      ['vedic astrology', 'hindu astrology', 'vedic', 'indian astrology'],
+      'show_vedic_astrology_menu'
+    );
+    this.addKeywordMapping(
+      ['divination', 'mystic', 'spiritual'],
+      'show_divination_mystic_menu'
+    );
+    this.addKeywordMapping(
+      ['numerology', 'numbers', 'numeretic'],
+      'show_numerology_special_menu'
+    );
+    this.addKeywordMapping(
+      ['relationships', 'groups', 'family', 'couple'],
+      'show_relationships_groups_menu'
+    );
 
     // Settings and help
-    this.addKeywordMapping(['settings', 'profile', 'preferences'], 'show_settings_profile_menu');
-    this.addKeywordMapping(['language', 'lang', 'idioma', 'sprache'], 'show_language_settings_menu');
-    this.addKeywordMapping(['help', 'support', 'assistance'], 'show_help_support');
-    this.addKeywordMapping(['subscription', 'plan', 'premium'], 'show_subscription_plans');
+    this.addKeywordMapping(
+      ['settings', 'profile', 'preferences'],
+      'show_settings_profile_menu'
+    );
+    this.addKeywordMapping(
+      ['language', 'lang', 'idioma', 'sprache'],
+      'show_language_settings_menu'
+    );
+    this.addKeywordMapping(
+      ['help', 'support', 'assistance'],
+      'show_help_support'
+    );
+    this.addKeywordMapping(
+      ['subscription', 'plan', 'premium'],
+      'show_subscription_plans'
+    );
 
     // Contextual patterns for better matching
     this.initializeContextualPatterns();
@@ -92,20 +136,53 @@ class KeywordMapper {
    */
   initializeContextualPatterns() {
     // Astrology contexts
-    this.contextualPatterns.set('astrology_expertise', new Set([
-      'read', 'reading', 'chart', 'kundli', 'predict', 'forecast',
-      'zodiac', 'horoscope', 'birth', 'natal'
-    ]));
+    this.contextualPatterns.set(
+      'astrology_expertise',
+      new Set([
+        'read',
+        'reading',
+        'chart',
+        'kundli',
+        'predict',
+        'forecast',
+        'zodiac',
+        'horoscope',
+        'birth',
+        'natal'
+      ])
+    );
 
-    this.contextualPatterns.set('question_intent', new Set([
-      'what', 'how', 'when', 'why', 'where', 'who',
-      'should', 'can', 'will', 'does', 'is', 'are'
-    ]));
+    this.contextualPatterns.set(
+      'question_intent',
+      new Set([
+        'what',
+        'how',
+        'when',
+        'why',
+        'where',
+        'who',
+        'should',
+        'can',
+        'will',
+        'does',
+        'is',
+        'are'
+      ])
+    );
 
-    this.contextualPatterns.set('greeting', new Set([
-      'hello', 'hi', 'hey', 'good morning', 'good evening',
-      'namaste', 'salaam', 'welcome'
-    ]));
+    this.contextualPatterns.set(
+      'greeting',
+      new Set([
+        'hello',
+        'hi',
+        'hey',
+        'good morning',
+        'good evening',
+        'namaste',
+        'salaam',
+        'welcome'
+      ])
+    );
   }
 
   /**
@@ -120,7 +197,9 @@ class KeywordMapper {
     }
 
     const cleanText = text.toLowerCase().trim();
-    if (!cleanText) { return null; }
+    if (!cleanText) {
+      return null;
+    }
 
     // Direct exact matches first
     if (this.keywordMap.has(cleanText)) {
@@ -149,7 +228,10 @@ class KeywordMapper {
 
     // Language-specific matching
     if (context.language && context.language !== 'en') {
-      const langAction = this.matchLocalizedKeywords(cleanText, context.language);
+      const langAction = this.matchLocalizedKeywords(
+        cleanText,
+        context.language
+      );
       if (langAction) {
         return langAction;
       }
@@ -174,7 +256,8 @@ class KeywordMapper {
 
     for (const [keyword, mapping] of this.keywordMap) {
       const score = this.calculateSimilarity(input, keyword);
-      if (score > bestScore && score > 0.6) { // 60% similarity threshold
+      if (score > bestScore && score > 0.6) {
+        // 60% similarity threshold
         bestMatch = mapping.actionId;
         bestScore = score;
       }
@@ -193,7 +276,9 @@ class KeywordMapper {
     const longer = str1.length > str2.length ? str1 : str2;
     const shorter = str1.length > str2.length ? str2 : str1;
 
-    if (longer.length === 0) { return 1.0; }
+    if (longer.length === 0) {
+      return 1.0;
+    }
 
     const editDistance = this.levenshteinDistance(longer, shorter);
     return (longer.length - editDistance) / longer.length;
@@ -223,8 +308,8 @@ class KeywordMapper {
         } else {
           matrix[i][j] = Math.min(
             matrix[i - 1][j - 1] + 1, // substitution
-            matrix[i][j - 1] + 1,     // insertion
-            matrix[i - 1][j] + 1      // deletion
+            matrix[i][j - 1] + 1, // insertion
+            matrix[i - 1][j] + 1 // deletion
           );
         }
       }
@@ -243,21 +328,24 @@ class KeywordMapper {
 
     // Check astrology expertise context
     const astrologyWords = words.filter(word =>
-      this.contextualPatterns.get('astrology_expertise').has(word));
+      this.contextualPatterns.get('astrology_expertise').has(word)
+    );
     if (astrologyWords.length > 0) {
       return 'show_main_menu';
     }
 
     // Check question intent
     const questionWords = words.filter(word =>
-      this.contextualPatterns.get('question_intent').has(word));
+      this.contextualPatterns.get('question_intent').has(word)
+    );
     if (questionWords.length > 2) {
       return 'get_tarot_reading'; // Default to tarot for questions
     }
 
     // Check greeting
     const greetingWords = words.filter(word =>
-      this.contextualPatterns.get('greeting').has(word));
+      this.contextualPatterns.get('greeting').has(word)
+    );
     if (greetingWords.length > 0) {
       return 'show_main_menu';
     }
@@ -315,16 +403,46 @@ class KeywordMapper {
    */
   isAstrologyQuery(text) {
     const astrologyIndicators = [
-      'zodiac', 'sign', 'planet', 'moon', 'sun', 'mercury', 'venus', 'mars',
-      'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'aries', 'taurus',
-      'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius',
-      'capricorn', 'aquarius', 'pisces', 'rashi', 'nakshatra', 'dasha',
-      'transit', 'aspect', 'house', 'cusp', 'midheaven', 'ascendant'
+      'zodiac',
+      'sign',
+      'planet',
+      'moon',
+      'sun',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn',
+      'uranus',
+      'neptune',
+      'pluto',
+      'aries',
+      'taurus',
+      'gemini',
+      'cancer',
+      'leo',
+      'virgo',
+      'libra',
+      'scorpio',
+      'sagittarius',
+      'capricorn',
+      'aquarius',
+      'pisces',
+      'rashi',
+      'nakshatra',
+      'dasha',
+      'transit',
+      'aspect',
+      'house',
+      'cusp',
+      'midheaven',
+      'ascendant'
     ];
 
     const words = text.toLowerCase().split(/\s+/);
     const astrologyWords = words.filter(word =>
-      astrologyIndicators.some(indicator => word.includes(indicator)));
+      astrologyIndicators.some(indicator => word.includes(indicator))
+    );
 
     return astrologyWords.length > 0;
   }

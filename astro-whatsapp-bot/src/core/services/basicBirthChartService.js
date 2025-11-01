@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 /**
  * BasicBirthChartService - Service for simplified birth chart generation
@@ -59,9 +60,15 @@ class BasicBirthChartService extends ServiceTemplate {
       }
 
       // Generate basic interpretations
-      const basicInterpretation = this._generateBasicInterpretation(basicChart, chartType);
+      const basicInterpretation = this._generateBasicInterpretation(
+        basicChart,
+        chartType
+      );
       const keyIndicators = this._identifyKeyIndicators(basicChart, chartType);
-      const personalityProfile = this._createPersonalityProfile(basicChart, chartType);
+      const personalityProfile = this._createPersonalityProfile(
+        basicChart,
+        chartType
+      );
 
       return {
         chart: basicChart,
@@ -113,7 +120,15 @@ class BasicBirthChartService extends ServiceTemplate {
    */
   _extractBasicPlanets(planetaryPositions) {
     const basicPlanets = {};
-    const keyPlanets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const keyPlanets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     for (const planet of keyPlanets) {
       if (planetaryPositions[planet]) {
@@ -189,15 +204,21 @@ class BasicBirthChartService extends ServiceTemplate {
     }
 
     if (chart.planets.Moon?.house) {
-      indicators.strengths.push(this._getMoonHouseStrength(chart.planets.Moon.house));
+      indicators.strengths.push(
+        this._getMoonHouseStrength(chart.planets.Moon.house)
+      );
     }
 
     if (chart.planets.Jupiter?.house) {
-      indicators.opportunities.push(this._getJupiterHouseOpportunity(chart.planets.Jupiter.house));
+      indicators.opportunities.push(
+        this._getJupiterHouseOpportunity(chart.planets.Jupiter.house)
+      );
     }
 
     if (chart.planets.Saturn?.house) {
-      indicators.challenges.push(this._getSaturnHouseChallenge(chart.planets.Saturn.house));
+      indicators.challenges.push(
+        this._getSaturnHouseChallenge(chart.planets.Saturn.house)
+      );
     }
 
     return indicators;
@@ -260,7 +281,10 @@ class BasicBirthChartService extends ServiceTemplate {
       Pisces: 'Compassionate and spiritually inclined nature'
     };
 
-    return interpretations[sign] || `Rising ${sign} indicates a ${sign.toLowerCase()} approach to life`;
+    return (
+      interpretations[sign] ||
+      `Rising ${sign} indicates a ${sign.toLowerCase()} approach to life`
+    );
   }
 
   /**
@@ -270,7 +294,9 @@ class BasicBirthChartService extends ServiceTemplate {
    * @returns {string} Sun sign interpretation
    */
   _interpretSunSign(sun, chartType) {
-    if (!sun) { return 'Sun placement analysis unavailable'; }
+    if (!sun) {
+      return 'Sun placement analysis unavailable';
+    }
 
     const { sign } = sun;
     const { house } = sun;
@@ -285,7 +311,9 @@ class BasicBirthChartService extends ServiceTemplate {
    * @returns {string} Moon sign interpretation
    */
   _interpretMoonSign(moon, chartType) {
-    if (!moon) { return 'Moon placement analysis unavailable'; }
+    if (!moon) {
+      return 'Moon placement analysis unavailable';
+    }
 
     const { sign } = moon;
     const { house } = moon;
@@ -427,7 +455,9 @@ class BasicBirthChartService extends ServiceTemplate {
       12: 'Spiritual doubts and isolation periods'
     };
 
-    return challenges[house] || 'Life lesson requiring patience and perseverance';
+    return (
+      challenges[house] || 'Life lesson requiring patience and perseverance'
+    );
   }
 
   /**
@@ -508,7 +538,9 @@ class BasicBirthChartService extends ServiceTemplate {
    * @returns {string} Communication style
    */
   _getCommunicationStyle(mercury) {
-    if (!mercury) { return 'Clear and effective communication'; }
+    if (!mercury) {
+      return 'Clear and effective communication';
+    }
 
     const { sign } = mercury;
     const styles = {
@@ -528,7 +560,9 @@ class BasicBirthChartService extends ServiceTemplate {
    * @returns {string} Life approach
    */
   _getLifeApproach(mars) {
-    if (!mars) { return 'Balanced and determined life approach'; }
+    if (!mars) {
+      return 'Balanced and determined life approach';
+    }
 
     const { sign } = mars;
     const approaches = {
@@ -555,7 +589,9 @@ class BasicBirthChartService extends ServiceTemplate {
    * @returns {string} Motivation description
    */
   _getMotivation(venus) {
-    if (!venus) { return 'Harmonious and loving motivation'; }
+    if (!venus) {
+      return 'Harmonious and loving motivation';
+    }
 
     const { sign } = venus;
     const motivations = {
@@ -588,7 +624,8 @@ class BasicBirthChartService extends ServiceTemplate {
       summary += `The ${chart.ascendant.sign} ascendant suggests a ${this._getAscendantTrait(chart.ascendant.sign).toLowerCase()} approach to life. `;
     }
 
-    summary += 'Use this chart as a foundation for understanding your astrological blueprint and life patterns.';
+    summary +=
+      'Use this chart as a foundation for understanding your astrological blueprint and life patterns.';
 
     return summary;
   }
@@ -646,7 +683,8 @@ class BasicBirthChartService extends ServiceTemplate {
         chartType: result.chartType
       },
       summary: result.summary,
-      disclaimer: 'This basic birth chart provides essential astrological information for general understanding. For comprehensive analysis, consult a qualified astrologer. Astrology is a tool for self-awareness and should not replace professional advice.'
+      disclaimer:
+        'This basic birth chart provides essential astrological information for general understanding. For comprehensive analysis, consult a qualified astrologer. Astrology is a tool for self-awareness and should not replace professional advice.'
     };
   }
   async getHealthStatus() {

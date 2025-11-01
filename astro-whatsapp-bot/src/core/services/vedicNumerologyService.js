@@ -1,4 +1,5 @@
 /**
+const ServiceTemplate = require('./ServiceTemplate');
  * Vedic Numerology Service
  *
  * Provides Vedic numerology analysis using the traditional Chani system
@@ -25,7 +26,10 @@ class VedicNumerologyService extends ServiceTemplate {
       this._validateInput(data);
 
       // Get comprehensive numerology analysis
-      const analysis = this.calculator.getVedicNumerologyAnalysis(data.birthDate, data.name);
+      const analysis = this.calculator.getVedicNumerologyAnalysis(
+        data.birthDate,
+        data.name
+      );
 
       // Format result for service consumption
       return this._formatResult(analysis);
@@ -47,14 +51,18 @@ class VedicNumerologyService extends ServiceTemplate {
       }
 
       const nameNumber = this.calculator.calculateVedicNameNumber(name);
-      const interpretation = this.calculator.vedicInterpretations[nameNumber] || {};
+      const interpretation =
+        this.calculator.vedicInterpretations[nameNumber] || {};
 
       return {
         primaryNumber: nameNumber,
-        primaryMeaning: interpretation.qualities || 'Unique vibrational pattern',
+        primaryMeaning:
+          interpretation.qualities || 'Unique vibrational pattern',
         compoundNumber: nameNumber, // Simplified for compatibility
-        compoundMeaning: interpretation.qualities || 'Unique vibrational pattern',
-        karmicPath: interpretation.strengths || 'Personal growth and self-discovery',
+        compoundMeaning:
+          interpretation.qualities || 'Unique vibrational pattern',
+        karmicPath:
+          interpretation.strengths || 'Personal growth and self-discovery',
         error: false
       };
     } catch (error) {
@@ -75,7 +83,10 @@ class VedicNumerologyService extends ServiceTemplate {
     try {
       this._validateInput(data);
 
-      const analysis = this.calculator.getVedicNumerologyAnalysis(data.birthDate, data.name);
+      const analysis = this.calculator.getVedicNumerologyAnalysis(
+        data.birthDate,
+        data.name
+      );
 
       return {
         analysis,
@@ -118,8 +129,14 @@ class VedicNumerologyService extends ServiceTemplate {
       analysis: result,
       metadata: {
         system: 'Vedic Numerology',
-        calculationMethod: 'Chani system based on Sanskrit alphabet and Vedic principles',
-        numbers: ['Birth Number', 'Name Number', 'Destiny Number', 'Compound Numbers'],
+        calculationMethod:
+          'Chani system based on Sanskrit alphabet and Vedic principles',
+        numbers: [
+          'Birth Number',
+          'Name Number',
+          'Destiny Number',
+          'Compound Numbers'
+        ],
         tradition: 'Traditional Indian numerology'
       }
     };
@@ -149,7 +166,8 @@ class VedicNumerologyService extends ServiceTemplate {
       summary += `*Destiny Meaning:* ${analysis.destinyInterpretation || 'Your life purpose'}\n\n`;
     }
 
-    summary += '*🕉️ Vedic Wisdom:* Numbers are vibrations that connect us to cosmic energies.';
+    summary +=
+      '*🕉️ Vedic Wisdom:* Numbers are vibrations that connect us to cosmic energies.';
 
     return summary;
   }
@@ -161,7 +179,8 @@ class VedicNumerologyService extends ServiceTemplate {
   getMetadata() {
     return {
       name: 'VedicNumerologyService',
-      description: 'Vedic numerology analysis using the traditional Chani system',
+      description:
+        'Vedic numerology analysis using the traditional Chani system',
       version: '1.0.0',
       dependencies: ['VedicNumerology'],
       category: 'vedic',

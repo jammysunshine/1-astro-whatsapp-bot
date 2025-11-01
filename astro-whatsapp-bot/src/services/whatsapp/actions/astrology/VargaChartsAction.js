@@ -1,6 +1,8 @@
 const AstrologyAction = require('../base/AstrologyAction');
 const { VargaCharts } = require('../../../astrology/vargaCharts');
-const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const {
+  AstrologyFormatterFactory
+} = require('../factories/AstrologyFormatterFactory');
 
 /**
  * VargaChartsAction - Provides Vedic divisional chart analysis
@@ -23,7 +25,10 @@ class VargaChartsAction extends AstrologyAction {
       this.logAstrologyExecution('start', 'Analyzing Varga Charts');
 
       // Unified profile and limits validation from base class
-      const validation = await this.validateProfileAndLimits('Varga Charts', 'varga_charts');
+      const validation = await this.validateProfileAndLimits(
+        'Varga Charts',
+        'varga_charts'
+      );
       if (!validation.success) {
         return validation;
       }
@@ -38,9 +43,15 @@ class VargaChartsAction extends AstrologyAction {
       const formattedContent = this.formatVargaAnalysis(vargaData);
 
       // Build astrology response using base class methods
-      await this.buildAstrologyResponse(formattedContent, this.getVargaActionButtons());
+      await this.buildAstrologyResponse(
+        formattedContent,
+        this.getVargaActionButtons()
+      );
 
-      this.logAstrologyExecution('complete', 'Varga charts analysis delivered successfully');
+      this.logAstrologyExecution(
+        'complete',
+        'Varga charts analysis delivered successfully'
+      );
       return {
         success: true,
         type: 'varga_charts',
@@ -52,7 +63,11 @@ class VargaChartsAction extends AstrologyAction {
     } catch (error) {
       this.logger.error('Error in VargaChartsAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -67,27 +82,36 @@ class VargaChartsAction extends AstrologyAction {
         throw new Error('User data not available for varga analysis');
       }
 
-      if (!this.user.birthDate || !this.user.birthTime || !this.user.birthPlace) {
-        throw new Error('User must complete birth profile with date, time, and place for varga analysis');
+      if (
+        !this.user.birthDate ||
+        !this.user.birthTime ||
+        !this.user.birthPlace
+      ) {
+        throw new Error(
+          'User must complete birth profile with date, time, and place for varga analysis'
+        );
       }
 
       // Use key vargas for analysis
       const keyVargas = ['RASHI', 'NAVAMSA', 'DASHAMSA', 'HORA', 'DREKKANA'];
 
-      return await this.vargaService.calculateVargaCharts({
-        birthDate: this.user.birthDate,
-        birthTime: this.user.birthTime,
-        birthPlace: this.user.birthPlace
-      }, keyVargas);
+      return await this.vargaService.calculateVargaCharts(
+        {
+          birthDate: this.user.birthDate,
+          birthTime: this.user.birthTime,
+          birthPlace: this.user.birthPlace
+        },
+        keyVargas
+      );
     } catch (error) {
       this.logger.error('Varga calculation failed:', error);
       return {
         error: error.message,
-        fallbackMessage: 'Varga analysis provides detailed insights into specific life areas through chart divisions'
+        fallbackMessage:
+          'Varga analysis provides detailed insights into specific life areas through chart divisions'
       };
     }
   }
-
 
   /**
    * Format detailed varga analysis with insights
@@ -110,22 +134,33 @@ class VargaChartsAction extends AstrologyAction {
 
     // Navamsa analysis (marriage/spirituality)
     if (vargaData.vargaCharts?.NAVAMSA) {
-      response += this.formatNavamsaAnalysis(vargaData.vargaCharts.NAVAMSA, vargaData.recommendations?.lifeAreas?.marriage);
+      response += this.formatNavamsaAnalysis(
+        vargaData.vargaCharts.NAVAMSA,
+        vargaData.recommendations?.lifeAreas?.marriage
+      );
     }
 
     // Dashamsa analysis (career)
     if (vargaData.vargaCharts?.DASHAMSA) {
-      response += this.formatDashamsaAnalysis(vargaData.vargaCharts.DASHAMSA, vargaData.recommendations?.lifeAreas?.career);
+      response += this.formatDashamsaAnalysis(
+        vargaData.vargaCharts.DASHAMSA,
+        vargaData.recommendations?.lifeAreas?.career
+      );
     }
 
     // Hora analysis (wealth)
     if (vargaData.vargaCharts?.HORA) {
-      response += this.formatHoraAnalysis(vargaData.vargaCharts.HORA, vargaData.recommendations?.lifeAreas?.wealth);
+      response += this.formatHoraAnalysis(
+        vargaData.vargaCharts.HORA,
+        vargaData.recommendations?.lifeAreas?.wealth
+      );
     }
 
     // Planetary strength overview
     if (vargaData.analysis?.strengthAnalysis) {
-      response += this.formatPlanetaryStrength(vargaData.analysis.strengthAnalysis);
+      response += this.formatPlanetaryStrength(
+        vargaData.analysis.strengthAnalysis
+      );
     }
 
     // Recommendations
@@ -246,9 +281,14 @@ class VargaChartsAction extends AstrologyAction {
       .slice(0, 3);
 
     sortedPlanets.forEach(([planet, data]) => {
-      const strength = data.score > 9 ? 'Very Strong' :
-        data.score > 6 ? 'Strong' :
-          data.score > 3 ? 'Moderate' : 'Needs Support';
+      const strength =
+        data.score > 9 ?
+          'Very Strong' :
+          data.score > 6 ?
+            'Strong' :
+            data.score > 3 ?
+              'Moderate' :
+              'Needs Support';
       response += `\n• ${planet}: ${strength} (${data.favorableVargas.length} favorable vargas)`;
     });
 
@@ -270,7 +310,8 @@ class VargaChartsAction extends AstrologyAction {
       });
     }
 
-    response += '\n*Varga Charts show specialized life areas where planetary influences are divided and analyzed separately from the birth chart.*';
+    response +=
+      '\n*Varga Charts show specialized life areas where planetary influences are divided and analyzed separately from the birth chart.*';
 
     return response;
   }
@@ -307,7 +348,14 @@ class VargaChartsAction extends AstrologyAction {
     return {
       id: this.actionId,
       description: 'Analyze Vedic divisional charts for specialized life areas',
-      keywords: ['varga', 'division', 'divisional charts', 'navamsa', 'dashamsa', 'hora'],
+      keywords: [
+        'varga',
+        'division',
+        'divisional charts',
+        'navamsa',
+        'dashamsa',
+        'hora'
+      ],
       category: 'astrology',
       subscriptionRequired: false,
       cooldown: 300000 // 5 minutes between requests

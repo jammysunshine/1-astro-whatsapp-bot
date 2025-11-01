@@ -13,7 +13,8 @@ const logger = require('../../utils/logger');
 class CalendarTimingService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'CalendarTimingService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'CalendarTimingService';
     logger.info('CalendarTimingService initialized');
   }
 
@@ -34,7 +35,8 @@ class CalendarTimingService extends ServiceTemplate {
       service: 'Vedic Calendar Timing Analysis',
       timestamp: new Date().toISOString(),
       data: result,
-      disclaimer: '⚠️ *Timing Disclaimer:* This analysis provides general auspicious timing guidance based on Vedic principles. Final decisions should consider personal birth chart, current planetary transits, and professional consultation.'
+      disclaimer:
+        '⚠️ *Timing Disclaimer:* This analysis provides general auspicious timing guidance based on Vedic principles. Final decisions should consider personal birth chart, current planetary transits, and professional consultation.'
     };
   }
 
@@ -59,7 +61,9 @@ class CalendarTimingService extends ServiceTemplate {
 
     // Validate location has coordinates
     if (!timingData.location.latitude || !timingData.location.longitude) {
-      throw new Error('Location must include latitude and longitude coordinates');
+      throw new Error(
+        'Location must include latitude and longitude coordinates'
+      );
     }
 
     return true;
@@ -75,16 +79,29 @@ class CalendarTimingService extends ServiceTemplate {
       const { date, location, activityType, birthData } = timingData;
 
       // Calculate Muhurta (auspicious timing)
-      const muhurtaAnalysis = await this.calculator.calculateMuhurta(date, location, activityType);
+      const muhurtaAnalysis = await this.calculator.calculateMuhurta(
+        date,
+        location,
+        activityType
+      );
 
       // Calculate Abhijit Muhurta (most auspicious 48-minute period)
-      const abhijitMuhurta = await this.calculator.calculateAbhijitMuhurta(date, location);
+      const abhijitMuhurta = await this.calculator.calculateAbhijitMuhurta(
+        date,
+        location
+      );
 
       // Calculate Rahukalam (inauspicious period)
-      const rahukalam = await this.calculator.calculateRahukalam(date, location);
+      const rahukalam = await this.calculator.calculateRahukalam(
+        date,
+        location
+      );
 
       // Calculate Gulikakalam (another inauspicious period)
-      const gulikakalam = await this.calculator.calculateGulikakalam(date, location);
+      const gulikakalam = await this.calculator.calculateGulikakalam(
+        date,
+        location
+      );
 
       // Get daily Panchang for additional timing context
       const panchangData = await this._getPanchangTiming(date, location);
@@ -147,7 +164,13 @@ class CalendarTimingService extends ServiceTemplate {
    * @private
    */
   _generateTimingRecommendations(analysis) {
-    const { muhurtaAnalysis, abhijitMuhurta, rahukalam, gulikakalam, activityType } = analysis;
+    const {
+      muhurtaAnalysis,
+      abhijitMuhurta,
+      rahukalam,
+      gulikakalam,
+      activityType
+    } = analysis;
 
     const recommendations = {
       optimalTimes: [],
@@ -194,10 +217,12 @@ class CalendarTimingService extends ServiceTemplate {
     }
 
     // Activity-specific advice
-    recommendations.activitySpecific = this._getActivitySpecificAdvice(activityType);
+    recommendations.activitySpecific =
+      this._getActivitySpecificAdvice(activityType);
 
     // General advice
-    recommendations.generalAdvice = 'Consider planetary transits, personal birth chart, and current dasha periods when selecting final timing.';
+    recommendations.generalAdvice =
+      'Consider planetary transits, personal birth chart, and current dasha periods when selecting final timing.';
 
     return recommendations;
   }
@@ -212,7 +237,8 @@ class CalendarTimingService extends ServiceTemplate {
     const activityAdvice = {
       marriage: {
         priority: 'High',
-        considerations: 'Check for auspicious tithi, nakshatra, and planetary alignments',
+        considerations:
+          'Check for auspicious tithi, nakshatra, and planetary alignments',
         bestMuhurta: 'Abhijit Muhurta or Brahma Muhurta'
       },
       business: {
@@ -245,7 +271,6 @@ class CalendarTimingService extends ServiceTemplate {
     return activityAdvice[activityType] || activityAdvice.general;
   }
 
-
   /**
    * Create timing summary for quick reference
    * @param {Object} result - Full timing analysis
@@ -257,8 +282,10 @@ class CalendarTimingService extends ServiceTemplate {
       date: result.date,
       location: result.location,
       activityType: result.activityType,
-      optimalTiming: result.recommendations.optimalTimes.length > 0 ?
-        result.recommendations.optimalTimes[0] : null,
+      optimalTiming:
+        result.recommendations.optimalTimes.length > 0 ?
+          result.recommendations.optimalTimes[0] :
+          null,
       timesToAvoid: result.recommendations.avoidTimes,
       keyRecommendation: result.recommendations.activitySpecific
     };

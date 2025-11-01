@@ -42,20 +42,37 @@ class MarriageTimingCalculator {
     try {
       logger.info('🔍 Starting comprehensive marriage timing analysis');
 
-      const { birthDate, birthTime, birthPlace, name = 'Individual' } = birthData;
+      const {
+        birthDate,
+        birthTime,
+        birthPlace,
+        name = 'Individual'
+      } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required: date, time, and place' };
+        return {
+          error: 'Complete birth details required: date, time, and place'
+        };
       }
 
       // Parse birth parameters
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const timezone = await this._getTimezoneForPlace(latitude, longitude);
 
       // Calculate natal chart using Swiss Ephemeris
-      const natalChart = await this._calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const natalChart = await this._calculateNatalChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Comprehensive analysis
       const analysis = {
@@ -73,7 +90,10 @@ class MarriageTimingCalculator {
       };
 
       if (partnerData) {
-        analysis.compatibility = await this._analyzePartnerCompatibility(birthData, partnerData);
+        analysis.compatibility = await this._analyzePartnerCompatibility(
+          birthData,
+          partnerData
+        );
       }
 
       logger.info('✅ Marriage timing analysis completed successfully');
@@ -87,10 +107,24 @@ class MarriageTimingCalculator {
   /**
    * Calculate natal chart using Swiss Ephemeris
    */
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     try {
       // Convert to Julian Day
-      const jd = this._calculateJulianDay(year, month, day, hour + minute / 60 - timezone);
+      const jd = this._calculateJulianDay(
+        year,
+        month,
+        day,
+        hour + minute / 60 - timezone
+      );
 
       logger.info(`🪐 Calculating natal chart for ${year}-${month}-${day}`);
 
@@ -110,7 +144,11 @@ class MarriageTimingCalculator {
       // Calculate planetary positions
       for (const [planetName, planetId] of Object.entries(planetIds)) {
         try {
-          const position = sweph.swe_calc_ut(jd, planetId, sweph.SEFLG_SIDEREAL);
+          const position = sweph.swe_calc_ut(
+            jd,
+            planetId,
+            sweph.SEFLG_SIDEREAL
+          );
 
           if (position && position.longitude !== undefined) {
             planets[planetName] = {
@@ -127,7 +165,10 @@ class MarriageTimingCalculator {
             logger.warn(`Could not calculate position for ${planetName}`);
           }
         } catch (error) {
-          logger.warn(`Swiss Ephemeris error for ${planetName}:`, error.message);
+          logger.warn(
+            `Swiss Ephemeris error for ${planetName}:`,
+            error.message
+          );
         }
       }
 
@@ -139,7 +180,10 @@ class MarriageTimingCalculator {
       // Assign planets to houses
       for (const planetData of Object.values(planets)) {
         if (planetData.longitude && planets.ascendant?.longitude) {
-          planetData.house = this._getHouseForLongitude(planetData.longitude, planets.ascendant.longitude);
+          planetData.house = this._getHouseForLongitude(
+            planetData.longitude,
+            planets.ascendant.longitude
+          );
         }
       }
 
@@ -176,8 +220,11 @@ class MarriageTimingCalculator {
       const ascendant = ascendantResult ? ascendantResult.ascendant : 0;
 
       // Midheaven calculation
-      const midheavenResult = sweph.swe_calc_ut(jd, sweph.SE_MIDHEAVEN,
-        sweph.SEFLG_SIDEREAL | sweph.SEFLG_EQUATORIAL);
+      const midheavenResult = sweph.swe_calc_ut(
+        jd,
+        sweph.SE_MIDHEAVEN,
+        sweph.SEFLG_SIDEREAL | sweph.SEFLG_EQUATORIAL
+      );
       const midheaven = midheavenResult ? midheavenResult.longitude[0] : 0;
 
       return {
@@ -213,11 +260,33 @@ class MarriageTimingCalculator {
     const nakshatraDegrees = 13.333333; // 27 nakshatras in 360°
     const nakshatraNumber = Math.floor(longitude / nakshatraDegrees);
     const nakshatraNames = [
-      'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
-      'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni',
-      'Uttara Phalguni', 'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha',
-      'Jyeshta', 'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana',
-      'Dhanishta', 'Satabhisa', 'Purva Bhadarpa', 'Uttara Bhadrapada', 'Revati'
+      'Ashwini',
+      'Bharani',
+      'Krittika',
+      'Rohini',
+      'Mrigashira',
+      'Ardra',
+      'Punarvasu',
+      'Pushya',
+      'Ashlesha',
+      'Magha',
+      'Purva Phalguni',
+      'Uttara Phalguni',
+      'Hasta',
+      'Chitra',
+      'Swati',
+      'Vishakha',
+      'Anuradha',
+      'Jyeshta',
+      'Mula',
+      'Purva Ashadha',
+      'Uttara Ashadha',
+      'Shravana',
+      'Dhanishta',
+      'Satabhisa',
+      'Purva Bhadarpa',
+      'Uttara Bhadrapada',
+      'Revati'
     ];
 
     return {
@@ -231,8 +300,18 @@ class MarriageTimingCalculator {
    */
   _getZodiacSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     return signs[Math.floor(longitude / 30)] || 'Unknown';
   }
@@ -264,19 +343,24 @@ class MarriageTimingCalculator {
 
     // Venus analysis (primary marriage significator)
     if (planets.venus) {
-      indicators.planetaryStrengths.venus = this._assessVenusMarriagePower(planets.venus);
+      indicators.planetaryStrengths.venus = this._assessVenusMarriagePower(
+        planets.venus
+      );
 
-      if ([2, 7, 12].includes(planets.venus.sign)) { // Own/signs/exalted
+      if ([2, 7, 12].includes(planets.venus.sign)) {
+        // Own/signs/exalted
         indicators.favorableFactors.push('Strong Venus placement');
         indicators.overallPotential += 15;
       }
 
-      if ([7, 2].includes(planets.venus.house)) { // Benefic houses
+      if ([7, 2].includes(planets.venus.house)) {
+        // Benefic houses
         indicators.favorableFactors.push('Venus in favorable house');
         indicators.overallPotential += 10;
       }
 
-      if ([6, 8, 12].includes(planets.venus.house)) { // Dusthana houses
+      if ([6, 8, 12].includes(planets.venus.house)) {
+        // Dusthana houses
         indicators.concerningFactors.push('Venus in challenging house');
         indicators.overallPotential -= 10;
       }
@@ -284,14 +368,17 @@ class MarriageTimingCalculator {
 
     // Jupiter analysis (marriage blessing)
     if (planets.jupiter) {
-      indicators.planetaryStrengths.jupiter = this._assessJupiterMarriageBlessing(planets.jupiter);
+      indicators.planetaryStrengths.jupiter =
+        this._assessJupiterMarriageBlessing(planets.jupiter);
 
-      if ([1, 4, 5, 7, 9, 10].includes(planets.jupiter.house)) { // Kendra trikona
+      if ([1, 4, 5, 7, 9, 10].includes(planets.jupiter.house)) {
+        // Kendra trikona
         indicators.favorableFactors.push('Beneficial Jupiter placement');
         indicators.overallPotential += 15;
       }
 
-      if ([5, 9].includes(planets.jupiter.sign) || planets.jupiter.sign === 4) { // Own/exalted
+      if ([5, 9].includes(planets.jupiter.sign) || planets.jupiter.sign === 4) {
+        // Own/exalted
         indicators.favorableFactors.push('Strong Jupiter');
         indicators.overallPotential += 10;
       }
@@ -299,9 +386,12 @@ class MarriageTimingCalculator {
 
     // Mars analysis (combat/sexual drive)
     if (planets.mars) {
-      indicators.planetaryStrengths.mars = this._assessMarsMarriageImpact(planets.mars);
+      indicators.planetaryStrengths.mars = this._assessMarsMarriageImpact(
+        planets.mars
+      );
 
-      if ([1, 8, 12].includes(planets.mars.house)) { // Own houses
+      if ([1, 8, 12].includes(planets.mars.house)) {
+        // Own houses
         indicators.favorableFactors.push('Mars shows strong drive');
         indicators.overallPotential += 5;
       }
@@ -309,32 +399,46 @@ class MarriageTimingCalculator {
       // Manglik considerations (dangerous for marriage)
       const dangerousHouses = [1, 2, 4, 7, 8, 12];
       if (dangerousHouses.includes(planets.mars.house)) {
-        indicators.concerningFactors.push('Mars in dangerous location (Manglik Dosh consideration)');
+        indicators.concerningFactors.push(
+          'Mars in dangerous location (Manglik Dosh consideration)'
+        );
         indicators.overallPotential -= 10;
       }
     }
 
     // Moon analysis (emotional happiness)
     if (planets.moon) {
-      indicators.planetaryStrengths.moon = this._assessMoonMarriageComfort(planets.moon);
+      indicators.planetaryStrengths.moon = this._assessMoonMarriageComfort(
+        planets.moon
+      );
 
-      if ([4, 7, 10].includes(planets.moon.house)) { // Kendra houses
+      if ([4, 7, 10].includes(planets.moon.house)) {
+        // Kendra houses
         indicators.favorableFactors.push('Moon in supportive position');
         indicators.overallPotential += 10;
       }
     }
 
     // 7th house analysis
-    const seventhHousePlanets = Object.values(planets).filter(p =>
-      p.house === 7 && !['ascendant', 'midheaven'].includes(Object.keys({ planets })[Object.values(planets).indexOf(p)])
+    const seventhHousePlanets = Object.values(planets).filter(
+      p =>
+        p.house === 7 &&
+        !['ascendant', 'midheaven'].includes(
+          Object.keys({ planets })[Object.values(planets).indexOf(p)]
+        )
     );
 
     if (seventhHousePlanets.length > 0) {
-      indicators.favorableFactors.push('Planets in 7th house activate marriage');
+      indicators.favorableFactors.push(
+        'Planets in 7th house activate marriage'
+      );
       indicators.overallPotential += 10 * seventhHousePlanets.length;
     }
 
-    indicators.overallPotential = Math.max(0, Math.min(100, indicators.overallPotential));
+    indicators.overallPotential = Math.max(
+      0,
+      Math.min(100, indicators.overallPotential)
+    );
 
     return indicators;
   }
@@ -357,12 +461,14 @@ class MarriageTimingCalculator {
       const venusHouse = planets.venus.house;
 
       // Venus in early marriage signs
-      if (venusSign === 7 || venusSign === 12) { // Libra, Pisces
+      if (venusSign === 7 || venusSign === 12) {
+        // Libra, Pisces
         windows.earlyMarriage.likelihood += 15;
         windows.earlyMarriage.factors.push('Venus indicates early marriage');
       }
 
-      if (venusHouse >= 9) { // Venus in higher houses suggests late marriage
+      if (venusHouse >= 9) {
+        // Venus in higher houses suggests late marriage
         windows.laterMarriage.likelihood += 15;
         windows.averageMarriage.likelihood -= 10;
       }
@@ -371,25 +477,31 @@ class MarriageTimingCalculator {
     if (planets.jupiter) {
       const jupiterHouse = planets.jupiter.house;
 
-      if ([2, 5].includes(jupiterHouse)) { // Good marriage houses for Jupiter
+      if ([2, 5].includes(jupiterHouse)) {
+        // Good marriage houses for Jupiter
         windows.averageMarriage.likelihood += 15;
-        windows.averageMarriage.factors.push('Jupiter favors marriage around 24-30');
+        windows.averageMarriage.factors.push(
+          'Jupiter favors marriage around 24-30'
+        );
       }
 
-      if ([9, 10, 11].includes(planets.jupiter.sign)) { // Later signs
+      if ([9, 10, 11].includes(planets.jupiter.sign)) {
+        // Later signs
         windows.laterMarriage.likelihood += 10;
       }
     }
 
     if (planets.mars) {
-      if (planets.mars.house === 7) { // Mars in 7th urges marriage
+      if (planets.mars.house === 7) {
+        // Mars in 7th urges marriage
         windows.earlyMarriage.likelihood += 10;
         windows.averageMarriage.likelihood += 5;
       }
     }
 
     if (planets.saturn) {
-      if (planets.saturn.house === 7) { // Saturn in 7th delays marriage
+      if (planets.saturn.house === 7) {
+        // Saturn in 7th delays marriage
         windows.delayedMarriage.likelihood += 20;
         windows.laterMarriage.likelihood += 10;
         windows.averageMarriage.likelihood -= 15;
@@ -401,17 +513,24 @@ class MarriageTimingCalculator {
     if (planets[seventhLord]) {
       const lordHouse = planets[seventhLord].house;
 
-      if ([1, 2, 3].includes(lordHouse)) { // Early activation
+      if ([1, 2, 3].includes(lordHouse)) {
+        // Early activation
         windows.earlyMarriage.likelihood += 10;
-      } else if ([8, 9, 10, 11, 12].includes(lordHouse)) { // Later activation
+      } else if ([8, 9, 10, 11, 12].includes(lordHouse)) {
+        // Later activation
         windows.laterMarriage.likelihood += 10;
       }
     }
 
     // Normalize percentages
-    const total = Object.values(windows).reduce((sum, w) => sum + w.likelihood, 0);
+    const total = Object.values(windows).reduce(
+      (sum, w) => sum + w.likelihood,
+      0
+    );
     Object.keys(windows).forEach(key => {
-      windows[key].likelihood = Math.round((windows[key].likelihood / total) * 100);
+      windows[key].likelihood = Math.round(
+        (windows[key].likelihood / total) * 100
+      );
     });
 
     // Find most promising window
@@ -434,9 +553,18 @@ class MarriageTimingCalculator {
     const currentYear = new Date().getFullYear();
 
     // Major transit periods
-    const jupiterPeriods = this._calculateJupiterMarriagePeriods(natalChart, currentYear);
-    const saturnPeriods = this._calculateSaturnMarriagePeriods(natalChart, currentYear);
-    const venusPeriods = this._calculateVenusMarriagePeriods(natalChart, currentYear);
+    const jupiterPeriods = this._calculateJupiterMarriagePeriods(
+      natalChart,
+      currentYear
+    );
+    const saturnPeriods = this._calculateSaturnMarriagePeriods(
+      natalChart,
+      currentYear
+    );
+    const venusPeriods = this._calculateVenusMarriagePeriods(
+      natalChart,
+      currentYear
+    );
 
     // Combine all periods
     const allPeriods = [...jupiterPeriods, ...saturnPeriods, ...venusPeriods];
@@ -447,9 +575,10 @@ class MarriageTimingCalculator {
     // Filter to top 10 unique periods
     const uniquePeriods = [];
     allPeriods.forEach(period => {
-      const existing = uniquePeriods.find(p =>
-        Math.abs(p.startYear - period.startYear) <= 1 &&
-        Math.abs(p.promiseLevel - period.promiseLevel) <= 10
+      const existing = uniquePeriods.find(
+        p =>
+          Math.abs(p.startYear - period.startYear) <= 1 &&
+          Math.abs(p.promiseLevel - period.promiseLevel) <= 10
       );
 
       if (!existing) {
@@ -475,7 +604,11 @@ class MarriageTimingCalculator {
         description: `Jupiter ${years}-year cycle peak`,
         promiseLevel: 85,
         duration: '2 years',
-        primaryInfluences: ['Jupiter expansion', 'Marriage opportunities', 'Blessings'],
+        primaryInfluences: [
+          'Jupiter expansion',
+          'Marriage opportunities',
+          'Blessings'
+        ],
         strength: 'High'
       });
     });
@@ -498,7 +631,11 @@ class MarriageTimingCalculator {
         description: `Saturn ${years}-year maturity cycle`,
         promiseLevel: 70,
         duration: '3 years',
-        primaryInfluences: ['Saturn commitment', 'Long-term stability', 'Responsible relationships'],
+        primaryInfluences: [
+          'Saturn commitment',
+          'Long-term stability',
+          'Responsible relationships'
+        ],
         strength: 'Moderate'
       });
     });
@@ -521,7 +658,11 @@ class MarriageTimingCalculator {
         description: `Venus ${years}-year cycle`,
         promiseLevel: 80,
         duration: '2 years',
-        primaryInfluences: ['Venus love & beauty', 'Romance & marriage', 'Harmonious relationships'],
+        primaryInfluences: [
+          'Venus love & beauty',
+          'Romance & marriage',
+          'Harmonious relationships'
+        ],
         strength: 'High'
       });
     });
@@ -584,7 +725,9 @@ class MarriageTimingCalculator {
     }
 
     // Empty 7th house
-    const seventhHousePlanets = Object.values(planets).filter(p => p.house === 7).length;
+    const seventhHousePlanets = Object.values(planets).filter(
+      p => p.house === 7
+    ).length;
     if (seventhHousePlanets === 0) {
       obstacles.warnings.push({
         description: 'Empty 7th house - marriage depends on planetary transits',
@@ -607,7 +750,9 @@ class MarriageTimingCalculator {
       obstacles.recommendations.push('Minor remedial measures, careful timing');
     }
 
-    obstacles.recommendations.push('Consult qualified Vedic astrologer for personalized guidance');
+    obstacles.recommendations.push(
+      'Consult qualified Vedic astrologer for personalized guidance'
+    );
 
     return obstacles;
   }
@@ -674,23 +819,41 @@ class MarriageTimingCalculator {
 
     // Primary marriage significators
     analysis.marriageSignificators = {
-      venus: planets.venus ? this._detailedPlanetAnalysis(planets.venus, 'marriage') : null,
-      jupiter: planets.jupiter ? this._detailedPlanetAnalysis(planets.jupiter, 'blessings') : null,
-      moon: planets.moon ? this._detailedPlanetAnalysis(planets.moon, 'emotions') : null
+      venus: planets.venus ?
+        this._detailedPlanetAnalysis(planets.venus, 'marriage') :
+        null,
+      jupiter: planets.jupiter ?
+        this._detailedPlanetAnalysis(planets.jupiter, 'blessings') :
+        null,
+      moon: planets.moon ?
+        this._detailedPlanetAnalysis(planets.moon, 'emotions') :
+        null
     };
 
     // Functional benefics for marriage
     analysis.functionalBenefics = {
-      mercury: planets.mercury ? this._detailedPlanetAnalysis(planets.mercury, 'communication') : null,
-      sun: planets.sun ? this._detailedPlanetAnalysis(planets.sun, 'vitality') : null
+      mercury: planets.mercury ?
+        this._detailedPlanetAnalysis(planets.mercury, 'communication') :
+        null,
+      sun: planets.sun ?
+        this._detailedPlanetAnalysis(planets.sun, 'vitality') :
+        null
     };
 
     // Functional malefics for marriage
     analysis.functionalMalefics = {
-      mars: planets.mars ? this._detailedPlanetAnalysis(planets.mars, 'drive') : null,
-      saturn: planets.saturn ? this._detailedPlanetAnalysis(planets.saturn, 'karma') : null,
-      rahu: planets.rahu ? this._detailedPlanetAnalysis(planets.rahu, 'transformation') : null,
-      ketu: planets.ketu ? this._detailedPlanetAnalysis(planets.ketu, 'liberation') : null
+      mars: planets.mars ?
+        this._detailedPlanetAnalysis(planets.mars, 'drive') :
+        null,
+      saturn: planets.saturn ?
+        this._detailedPlanetAnalysis(planets.saturn, 'karma') :
+        null,
+      rahu: planets.rahu ?
+        this._detailedPlanetAnalysis(planets.rahu, 'transformation') :
+        null,
+      ketu: planets.ketu ?
+        this._detailedPlanetAnalysis(planets.ketu, 'liberation') :
+        null
     };
 
     return analysis;
@@ -711,18 +874,26 @@ class MarriageTimingCalculator {
 
     // Calculate overall score based on key factors
     if (planets.venus) {
-      if ([2, 7, 12].includes(planets.venus.sign)) { strength.overallScore += 15; }
-      if ([7, 2].includes(planets.venus.house)) { strength.overallScore += 10; }
+      if ([2, 7, 12].includes(planets.venus.sign)) {
+        strength.overallScore += 15;
+      }
+      if ([7, 2].includes(planets.venus.house)) {
+        strength.overallScore += 10;
+      }
       strength.strengthAreas.push('Venus strength');
     }
 
     if (planets.jupiter) {
-      if ([1, 4, 5, 7, 9, 10].includes(planets.jupiter.house)) { strength.overallScore += 15; }
+      if ([1, 4, 5, 7, 9, 10].includes(planets.jupiter.house)) {
+        strength.overallScore += 15;
+      }
       strength.strengthAreas.push('Jupiter blessings');
     }
 
     if (planets.mars) {
-      if (planets.mars.house === 7) { strength.overallScore += 10; }
+      if (planets.mars.house === 7) {
+        strength.overallScore += 10;
+      }
       if ([1, 2, 4, 7, 8, 12].includes(planets.mars.house)) {
         strength.weaknessAreas.push('Manglik considerations');
         strength.overallScore -= 10;
@@ -739,11 +910,20 @@ class MarriageTimingCalculator {
     strength.overallScore = Math.max(0, Math.min(100, strength.overallScore));
 
     strength.generalIndicators = {
-      forecast: strength.overallScore >= 75 ? 'Very promising' :
-        strength.overallScore >= 60 ? 'Promising' :
-          strength.overallScore >= 40 ? 'Moderate potential' : 'Requires effort',
-      timeRange: strength.overallScore >= 70 ? '18-30 years' :
-        strength.overallScore >= 50 ? '21-35 years' : '25-45+ years'
+      forecast:
+        strength.overallScore >= 75 ?
+          'Very promising' :
+          strength.overallScore >= 60 ?
+            'Promising' :
+            strength.overallScore >= 40 ?
+              'Moderate potential' :
+              'Requires effort',
+      timeRange:
+        strength.overallScore >= 70 ?
+          '18-30 years' :
+          strength.overallScore >= 50 ?
+            '21-35 years' :
+            '25-45+ years'
     };
 
     return strength;
@@ -764,28 +944,44 @@ class MarriageTimingCalculator {
 
     // Immediate recommendations
     if (planets.venus && planets.venus.house !== 7) {
-      recommendations.immediate.push('Focus on Venus-centered activities (art, music, romance)');
+      recommendations.immediate.push(
+        'Focus on Venus-centered activities (art, music, romance)'
+      );
     }
 
     // Spiritual recommendations
-    recommendations.spiritual.push('Chant Venus (Om Shukraya Namaha) and Jupiter (Om Gurave Namaha) mantras');
-    recommendations.spiritual.push('Visit marriage-related temples during favorable transits');
+    recommendations.spiritual.push(
+      'Chant Venus (Om Shukraya Namaha) and Jupiter (Om Gurave Namaha) mantras'
+    );
+    recommendations.spiritual.push(
+      'Visit marriage-related temples during favorable transits'
+    );
 
     // Practical recommendations
-    recommendations.practical.push('Enhance interpersonal skills and social networking');
-    recommendations.practical.push('Focus on personal growth and self-improvement');
+    recommendations.practical.push(
+      'Enhance interpersonal skills and social networking'
+    );
+    recommendations.practical.push(
+      'Focus on personal growth and self-improvement'
+    );
 
     // Remedial recommendations (based on weaknesses)
     if (planets.saturn && planets.saturn.house === 7) {
-      recommendations.remedial.push('Saturn remedies: fast on Saturdays, donate to the needy');
+      recommendations.remedial.push(
+        'Saturn remedies: fast on Saturdays, donate to the needy'
+      );
     }
 
     if (planets.mars && [1, 2, 4, 7, 8, 12].includes(planets.mars.house)) {
-      recommendations.remedial.push('Mars remedies: Hanuman Chalisa, red coral gemstone');
+      recommendations.remedial.push(
+        'Mars remedies: Hanuman Chalisa, red coral gemstone'
+      );
     }
 
     if (planets.rahu && [7, 8].includes(planets.rahu.house)) {
-      recommendations.remedial.push('Rahu remedies: temple visits, silver donations');
+      recommendations.remedial.push(
+        'Rahu remedies: temple visits, silver donations'
+      );
     }
 
     return recommendations;
@@ -815,10 +1011,21 @@ class MarriageTimingCalculator {
     muhurta.unfavorableYears = saturnYears.map(y => currentYear + y);
 
     // Best Tithis (lunar days)
-    muhurta.bestTithis = ['8th waxing (Ashtami)', '12th waxing (Dwadashi)', 'Full Moon'];
+    muhurta.bestTithis = [
+      '8th waxing (Ashtami)',
+      '12th waxing (Dwadashi)',
+      'Full Moon'
+    ];
 
     // Best Nakshatras for marriage
-    muhurta.bestNakshatras = ['Rohini', 'Magha', 'Uttara Phalguni', 'Hasta', 'Swati', 'Anuradha'];
+    muhurta.bestNakshatras = [
+      'Rohini',
+      'Magha',
+      'Uttara Phalguni',
+      'Hasta',
+      'Swati',
+      'Anuradha'
+    ];
 
     // Auspicious directions for marriage
     muhurta.auspiciousDirections = {
@@ -849,9 +1056,21 @@ class MarriageTimingCalculator {
       );
 
       // Get current Jupiter, Venus, Saturn positions
-      const jupiterTrans = sweph.swe_calc_ut(currentJd, sweph.SE_JUPITER, sweph.SEFLG_SIDEREAL);
-      const venusTrans = sweph.swe_calc_ut(currentJd, sweph.SE_VENUS, sweph.SEFLG_SIDEREAL);
-      const saturnTrans = sweph.swe_calc_ut(currentJd, sweph.SE_SATURN, sweph.SEFLG_SIDEREAL);
+      const jupiterTrans = sweph.swe_calc_ut(
+        currentJd,
+        sweph.SE_JUPITER,
+        sweph.SEFLG_SIDEREAL
+      );
+      const venusTrans = sweph.swe_calc_ut(
+        currentJd,
+        sweph.SE_VENUS,
+        sweph.SEFLG_SIDEREAL
+      );
+      const saturnTrans = sweph.swe_calc_ut(
+        currentJd,
+        sweph.SE_SATURN,
+        sweph.SEFLG_SIDEREAL
+      );
 
       // Analyze transits
       if (jupiterTrans) {
@@ -896,7 +1115,10 @@ class MarriageTimingCalculator {
       overallMatch: 'Compatible',
       challengedAreas: [],
       harmoniousElements: [],
-      recommendations: ['Proceed with wedding plans', 'Consider Kundali matching']
+      recommendations: [
+        'Proceed with wedding plans',
+        'Consider Kundali matching'
+      ]
     };
   }
 
@@ -904,9 +1126,15 @@ class MarriageTimingCalculator {
   _assessVenusMarriagePower(venus) {
     let power = 50;
 
-    if ([2, 7, 12].includes(venus.sign)) { power += 25; }
-    if ([7, 2, 5, 9].includes(venus.house)) { power += 20; }
-    if ([6, 8, 12].includes(venus.house)) { power -= 15; }
+    if ([2, 7, 12].includes(venus.sign)) {
+      power += 25;
+    }
+    if ([7, 2, 5, 9].includes(venus.house)) {
+      power += 20;
+    }
+    if ([6, 8, 12].includes(venus.house)) {
+      power -= 15;
+    }
 
     return Math.max(0, Math.min(100, power));
   }
@@ -914,8 +1142,12 @@ class MarriageTimingCalculator {
   _assessJupiterMarriageBlessing(jupiter) {
     let blessing = 50;
 
-    if ([1, 4, 5, 7, 9, 10].includes(jupiter.house)) { blessing += 25; }
-    if ([5, 9].includes(jupiter.sign) || jupiter.sign === 4) { blessing += 20; }
+    if ([1, 4, 5, 7, 9, 10].includes(jupiter.house)) {
+      blessing += 25;
+    }
+    if ([5, 9].includes(jupiter.sign) || jupiter.sign === 4) {
+      blessing += 20;
+    }
 
     return Math.max(0, Math.min(100, blessing));
   }
@@ -923,10 +1155,16 @@ class MarriageTimingCalculator {
   _assessMarsMarriageImpact(mars) {
     let impact = 50;
 
-    if (mars.house === 7) { impact += 20; }
-    if ([1, 8, 12].includes(mars.house)) { impact += 15; }
+    if (mars.house === 7) {
+      impact += 20;
+    }
+    if ([1, 8, 12].includes(mars.house)) {
+      impact += 15;
+    }
     const dangerousHouses = [1, 2, 4, 7, 8, 12];
-    if (dangerousHouses.includes(mars.house)) { impact -= 10; }
+    if (dangerousHouses.includes(mars.house)) {
+      impact -= 10;
+    }
 
     return Math.max(0, Math.min(100, impact));
   }
@@ -934,8 +1172,12 @@ class MarriageTimingCalculator {
   _assessMoonMarriageComfort(moon) {
     let comfort = 50;
 
-    if ([4, 7, 10].includes(moon.house)) { comfort += 20; }
-    if (moon.sign === 4) { comfort += 15; } // Cancer Moon
+    if ([4, 7, 10].includes(moon.house)) {
+      comfort += 20;
+    }
+    if (moon.sign === 4) {
+      comfort += 15;
+    } // Cancer Moon
 
     return Math.max(0, Math.min(100, comfort));
   }
@@ -943,11 +1185,21 @@ class MarriageTimingCalculator {
   _getHouseLord(house, planets) {
     const ascendantSign = planets.ascendant?.sign || 1;
     const signs = [
-      'mars', 'venus', 'mercury', 'moon', 'sun', 'mercury', 'venus', 'mars',
-      'jupiter', 'saturn', 'saturn', 'jupiter'
+      'mars',
+      'venus',
+      'mercury',
+      'moon',
+      'sun',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn',
+      'saturn',
+      'jupiter'
     ];
 
-    const targetSign = (((ascendantSign - 1 + house - 1) % 12) + 1);
+    const targetSign = ((ascendantSign - 1 + house - 1) % 12) + 1;
     return signs[targetSign - 1] || 'unknown';
   }
 
@@ -995,15 +1247,23 @@ class MarriageTimingCalculator {
     let strength = 50;
 
     // House strength
-    if ([1, 4, 5, 7, 9, 10].includes(planet.house)) { strength += 20; }
-    if ([3, 6, 8, 12].includes(planet.house)) { strength -= 15; }
+    if ([1, 4, 5, 7, 9, 10].includes(planet.house)) {
+      strength += 20;
+    }
+    if ([3, 6, 8, 12].includes(planet.house)) {
+      strength -= 15;
+    }
 
     // Sign strength (own/exalted vs debilitated)
     const favorableSigns = [2, 7, 4, 9, 1, 8, 5, 9]; // Venus, Venus, Moon, Jupiter, Sun, Mars, Mercury, Jupiter
     const unfavorableSigns = [8, 1, 12, 12, 11, 4, 8, 6]; // Venus deb, Mars deb, Moon deb, etc.
 
-    if (favorableSigns.includes(planet.sign)) { strength += 15; }
-    if (unfavorableSigns.includes(planet.sign)) { strength -= 10; }
+    if (favorableSigns.includes(planet.sign)) {
+      strength += 15;
+    }
+    if (unfavorableSigns.includes(planet.sign)) {
+      strength -= 10;
+    }
 
     return Math.max(0, Math.min(100, strength));
   }
@@ -1014,7 +1274,9 @@ class MarriageTimingCalculator {
     const laterWeight = 36 * (windows.laterMarriage.likelihood / 100);
     const delayedWeight = 48 * (windows.delayedMarriage.likelihood / 100);
 
-    return Math.round(earlyWeight + averageWeight + laterWeight + delayedWeight);
+    return Math.round(
+      earlyWeight + averageWeight + laterWeight + delayedWeight
+    );
   }
 
   /**

@@ -7,7 +7,9 @@ const sweph = require('sweph');
  */
 class MedicalAstrologyCalculator {
   constructor() {
-    logger.info('Module: MedicalAstrologyCalculator loaded - Health and wellness astrology');
+    logger.info(
+      'Module: MedicalAstrologyCalculator loaded - Health and wellness astrology'
+    );
   }
 
   setServices(calendricalService, geocodingService) {
@@ -24,12 +26,22 @@ class MedicalAstrologyCalculator {
       const houses = await this._calculateHouses(birthData);
 
       // Analyze health indicators based on chart
-      const healthIndicators = this._analyzeChartHealthIndicators(planetaryPositions, houses);
-      const houseAnalysis = this._analyzeHealthHouses(planetaryPositions, houses);
-      const focusAreas = this._identifyHealthFocusAreas(planetaryPositions, houses);
+      const healthIndicators = this._analyzeChartHealthIndicators(
+        planetaryPositions,
+        houses
+      );
+      const houseAnalysis = this._analyzeHealthHouses(
+        planetaryPositions,
+        houses
+      );
+      const focusAreas = this._identifyHealthFocusAreas(
+        planetaryPositions,
+        houses
+      );
       const recommendations = this._generateHealthRecommendations(focusAreas);
 
-      const introduction = 'Your birth chart reveals innate health patterns and potential challenges. Medical astrology helps understand how planetary influences affect your physical well-being and vitality.';
+      const introduction =
+        'Your birth chart reveals innate health patterns and potential challenges. Medical astrology helps understand how planetary influences affect your physical well-being and vitality.';
 
       return {
         introduction,
@@ -53,13 +65,30 @@ class MedicalAstrologyCalculator {
     const [day, month, year] = birthDate.split('/').map(Number);
     const [hour, minute] = birthTime.split(':').map(Number);
 
-    const utcTime = new Date(Date.UTC(year, month - 1, day, hour - timezone, minute));
+    const utcTime = new Date(
+      Date.UTC(year, month - 1, day, hour - timezone, minute)
+    );
     const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
 
     const planets = {};
-    const planetEphemIds = [sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MARS, sweph.SE_MERCURY,
-      sweph.SE_JUPITER, sweph.SE_VENUS, sweph.SE_SATURN];
-    const planetNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planetEphemIds = [
+      sweph.SE_SUN,
+      sweph.SE_MOON,
+      sweph.SE_MARS,
+      sweph.SE_MERCURY,
+      sweph.SE_JUPITER,
+      sweph.SE_VENUS,
+      sweph.SE_SATURN
+    ];
+    const planetNames = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     planetEphemIds.forEach((ephemId, index) => {
       const result = sweph.swe_calc_ut(julianDay, ephemId, sweph.SEFLG_SPEED);
@@ -80,11 +109,19 @@ class MedicalAstrologyCalculator {
    * @private
    */
   async _calculateHouses(birthData) {
-    const { birthDate, birthTime, latitude = 28.6139, longitude = 77.2090, timezone = 5.5 } = birthData;
+    const {
+      birthDate,
+      birthTime,
+      latitude = 28.6139,
+      longitude = 77.209,
+      timezone = 5.5
+    } = birthData;
     const [day, month, year] = birthDate.split('/').map(Number);
     const [hour, minute] = birthTime.split(':').map(Number);
 
-    const utcTime = new Date(Date.UTC(year, month - 1, day, hour - timezone, minute));
+    const utcTime = new Date(
+      Date.UTC(year, month - 1, day, hour - timezone, minute)
+    );
     const julianDay = utcTime.getTime() / 86400000 + 2440587.5;
 
     const cusps = new Array(13);
@@ -97,8 +134,20 @@ class MedicalAstrologyCalculator {
    * @private
    */
   _getSignFromLongitude(longitude) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     const signIndex = Math.floor(longitude / 30);
     return signs[signIndex];
   }
@@ -108,7 +157,7 @@ class MedicalAstrologyCalculator {
    * @private
    */
   _getHouseNumber(longitude, ascendant) {
-    const angle = ((longitude - ascendant + 360) % 360);
+    const angle = (longitude - ascendant + 360) % 360;
     return Math.floor(angle / 30) + 1;
   }
 
@@ -125,7 +174,11 @@ class MedicalAstrologyCalculator {
       if (planets[planet]?.longitude) {
         const house = this._getHouseNumber(planets[planet].longitude, cusps[0]);
         const sign = this._getSignFromLongitude(planets[planet].longitude);
-        const interpretation = this._getPlanetHealthInterpretation(planet, house, planets[planet].longitude);
+        const interpretation = this._getPlanetHealthInterpretation(
+          planet,
+          house,
+          planets[planet].longitude
+        );
 
         indicators.push({
           planet,
@@ -169,7 +222,10 @@ class MedicalAstrologyCalculator {
     const focusAreas = [];
 
     if (planets.Saturn?.longitude) {
-      const saturnHouse = this._getHouseNumber(planets.Saturn.longitude, cusps[0]);
+      const saturnHouse = this._getHouseNumber(
+        planets.Saturn.longitude,
+        cusps[0]
+      );
       if (saturnHouse === 6 || saturnHouse === 12) {
         focusAreas.push({
           area: 'Chronic Conditions',
@@ -196,9 +252,13 @@ class MedicalAstrologyCalculator {
     const recommendations = [];
 
     if (focusAreas[0].area === 'Chronic Conditions') {
-      recommendations.push('Establish consistent health routines and consider specialized medical guidance');
+      recommendations.push(
+        'Establish consistent health routines and consider specialized medical guidance'
+      );
     } else {
-      recommendations.push('Maintain a balanced diet, regular sleep schedule, and stress management');
+      recommendations.push(
+        'Maintain a balanced diet, regular sleep schedule, and stress management'
+      );
     }
 
     return recommendations;
@@ -226,7 +286,11 @@ class MedicalAstrologyCalculator {
       }
     };
 
-    return interpretations[planet]?.[house] || interpretations[planet]?.default || `${planet} represents health influences in ${sign}`;
+    return (
+      interpretations[planet]?.[house] ||
+      interpretations[planet]?.default ||
+      `${planet} represents health influences in ${sign}`
+    );
   }
 
   /**
@@ -238,7 +302,12 @@ class MedicalAstrologyCalculator {
       healthy: true,
       version: '1.0.0',
       name: 'MedicalAstrologyCalculator',
-      calculations: ['Health Indicators', 'House Analysis', 'Focus Areas', 'Recommendations'],
+      calculations: [
+        'Health Indicators',
+        'House Analysis',
+        'Focus Areas',
+        'Recommendations'
+      ],
       status: 'Operational'
     };
   }

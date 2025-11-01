@@ -11,12 +11,17 @@ class IChingInterpreter {
    * @param {IChingConfig} config - IChing configuration instance
    * @param {IChingCalculator} calculator - IChing calculator instance
    */
-  constructor(config = new IChingConfig(), calculator = new IChingCalculator()) {
+  constructor(
+    config = new IChingConfig(),
+    calculator = new IChingCalculator()
+  ) {
     this.logger = logger;
     this.config = config;
     this.calculator = calculator;
 
-    this.logger.info('Module: IChingInterpreter loaded with comprehensive reading capabilities');
+    this.logger.info(
+      'Module: IChingInterpreter loaded with comprehensive reading capabilities'
+    );
   }
 
   /**
@@ -30,11 +35,15 @@ class IChingInterpreter {
       const primaryHexagram = this.calculator.generateHexagram();
 
       // Generate changing lines
-      const changingLines = this.calculator.generateChangingLines(primaryHexagram.lines);
+      const changingLines = this.calculator.generateChangingLines(
+        primaryHexagram.lines
+      );
 
       // Calculate related hexagrams
-      const nuclearHexagram = this.calculator.calculateNuclearHexagram(primaryHexagram);
-      const relatingHexagram = this.calculator.calculateRelatingHexagram(primaryHexagram);
+      const nuclearHexagram =
+        this.calculator.calculateNuclearHexagram(primaryHexagram);
+      const relatingHexagram =
+        this.calculator.calculateRelatingHexagram(primaryHexagram);
 
       // Generate transformed hexagram if there are changing lines
       const transformedHexagram =
@@ -242,19 +251,40 @@ class IChingInterpreter {
    */
   analyzeForQuestionType(reading, questionType) {
     const { primaryHexagram, transformedHexagram, changingLines } = reading;
-    const firmness = (primaryHexagram.lines.filter(line => line === 7 || line === 9).length / 6) * 100;
+    const firmness =
+      (primaryHexagram.lines.filter(line => line === 7 || line === 9).length /
+        6) *
+      100;
     const changeIntensity = changingLines.length;
 
     const interpretations = {
-      career: this.analyzeCareerHexagram(primaryHexagram, firmness, changeIntensity),
-      love: this.analyzeLoveHexagram(primaryHexagram, firmness, changeIntensity),
-      health: this.analyzeHealthHexagram(primaryHexagram, firmness, changeIntensity),
-      finances: this.analyzeFinancialHexagram(primaryHexagram, firmness, changeIntensity)
+      career: this.analyzeCareerHexagram(
+        primaryHexagram,
+        firmness,
+        changeIntensity
+      ),
+      love: this.analyzeLoveHexagram(
+        primaryHexagram,
+        firmness,
+        changeIntensity
+      ),
+      health: this.analyzeHealthHexagram(
+        primaryHexagram,
+        firmness,
+        changeIntensity
+      ),
+      finances: this.analyzeFinancialHexagram(
+        primaryHexagram,
+        firmness,
+        changeIntensity
+      )
     };
 
     return {
       questionType,
-      analysis: interpretations[questionType] || this.getGeneralAnalysis(primaryHexagram),
+      analysis:
+        interpretations[questionType] ||
+        this.getGeneralAnalysis(primaryHexagram),
       firmnessPercentile: Math.round(firmness),
       changeIntensity: changeIntensity > 0 ? 'High' : 'Low',
       recommendation: this.getQuestionTypeRecommendation(questionType, reading)
@@ -354,13 +384,17 @@ class IChingInterpreter {
    */
   getQuestionTypeRecommendation(questionType, reading) {
     const recommendations = {
-      career: 'Take decisive action toward professional goals while remaining flexible',
+      career:
+        'Take decisive action toward professional goals while remaining flexible',
       love: 'Communicate your true feelings and listen with genuine understanding',
       health: 'Consult healthcare professionals and honor your body\'s wisdom',
-      finances: 'Seek wise counsel and trust your inner guidance on financial matters'
+      finances:
+        'Seek wise counsel and trust your inner guidance on financial matters'
     };
 
-    return recommendations[questionType] || 'Proceed with mindfulness and integrity';
+    return (
+      recommendations[questionType] || 'Proceed with mindfulness and integrity'
+    );
   }
 
   /**
@@ -374,20 +408,32 @@ class IChingInterpreter {
 
       // Test interpretation generation
       const testReading = this.generateIChingReading('test question');
-      const validReading = testReading && testReading.primaryHexagram && testReading.interpretation;
+      const validReading =
+        testReading &&
+        testReading.primaryHexagram &&
+        testReading.interpretation;
 
       // Test daily guidance
       const testGuidance = this.generateDailyGuidance();
       const validGuidance = testGuidance && testGuidance.affirmation;
 
       return {
-        healthy: configHealth.healthy && calculatorHealth.healthy && validReading && validGuidance,
+        healthy:
+          configHealth.healthy &&
+          calculatorHealth.healthy &&
+          validReading &&
+          validGuidance,
         configStatus: configHealth,
         calculatorStatus: calculatorHealth,
         readingTest: validReading,
         guidanceTest: validGuidance,
         version: '1.0.0',
-        capabilities: ['Reading Generation', 'Daily Guidance', 'Specialized Analysis', 'Affirmation Creation'],
+        capabilities: [
+          'Reading Generation',
+          'Daily Guidance',
+          'Specialized Analysis',
+          'Affirmation Creation'
+        ],
         status: 'Operational'
       };
     } catch (error) {

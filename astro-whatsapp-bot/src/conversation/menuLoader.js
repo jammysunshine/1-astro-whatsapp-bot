@@ -92,10 +92,15 @@ const translateMenuFields = async(menu, languageCode) => {
         // Extract translation key (e.g., "translation:messages.welcome.greeting")
         const translationKey = value.substring(12); // Remove "translation:" prefix
         try {
-          const translatedValue = await TranslationService.translate(translationKey, languageCode);
+          const translatedValue = await TranslationService.translate(
+            translationKey,
+            languageCode
+          );
           menu[key] = translatedValue;
         } catch (error) {
-          logger.warn(`Translation failed for key ${translationKey}: ${error.message}`);
+          logger.warn(
+            `Translation failed for key ${translationKey}: ${error.message}`
+          );
           // Keep original value as fallback
         }
       } else if (value && typeof value === 'object') {

@@ -11,7 +11,8 @@ const logger = require('../../utils/logger');
 class SecondaryProgressionsService extends ServiceTemplate {
   constructor() {
     super('SecondaryProgressionsCalculator');
-    this.calculatorPath = '../calculators/SecondaryProgressionsCalculator';    this.serviceName = 'SecondaryProgressionsService';
+    this.calculatorPath = '../calculators/SecondaryProgressionsCalculator';
+    this.serviceName = 'SecondaryProgressionsService';
     logger.info('SecondaryProgressionsService initialized');
   }
 
@@ -19,11 +20,14 @@ class SecondaryProgressionsService extends ServiceTemplate {
     try {
       const { birthData } = data;
       // Calculate secondary progressions using calculator
-      const result = await this.calculator.calculateEnhancedSecondaryProgressions(birthData);
+      const result =
+        await this.calculator.calculateEnhancedSecondaryProgressions(birthData);
       return result;
     } catch (error) {
       logger.error('SecondaryProgressionsService calculation error:', error);
-      throw new Error(`Secondary progressions analysis failed: ${error.message}`);
+      throw new Error(
+        `Secondary progressions analysis failed: ${error.message}`
+      );
     }
   }
 
@@ -33,7 +37,8 @@ class SecondaryProgressionsService extends ServiceTemplate {
       service: 'Secondary Progressions Analysis',
       timestamp: new Date().toISOString(),
       data: result,
-      disclaimer: 'Secondary progressions show day-for-year life progression. Each day after birth represents one year of life, revealing developmental themes and timing. Results should be considered alongside other astrological techniques.'
+      disclaimer:
+        'Secondary progressions show day-for-year life progression. Each day after birth represents one year of life, revealing developmental themes and timing. Results should be considered alongside other astrological techniques.'
     };
   }
 
@@ -83,7 +88,10 @@ class SecondaryProgressionsService extends ServiceTemplate {
 
       return await this.execute(birthData, progressionDate);
     } catch (error) {
-      logger.error('SecondaryProgressionsService getCurrentAgeProgressions error:', error);
+      logger.error(
+        'SecondaryProgressionsService getCurrentAgeProgressions error:',
+        error
+      );
       return {
         error: true,
         message: 'Error calculating current age progressions'
@@ -106,13 +114,18 @@ class SecondaryProgressionsService extends ServiceTemplate {
       }
 
       // Calculate birth date plus target age
-      const [birthDay, birthMonth, birthYear] = birthData.birthDate.split('/').map(Number);
+      const [birthDay, birthMonth, birthYear] = birthData.birthDate
+        .split('/')
+        .map(Number);
       const progressionYear = birthYear + targetAge;
       const progressionDate = `${birthDay}/${birthMonth}/${progressionYear}`;
 
       return await this.execute(birthData, progressionDate);
     } catch (error) {
-      logger.error('SecondaryProgressionsService getProgressionsForAge error:', error);
+      logger.error(
+        'SecondaryProgressionsService getProgressionsForAge error:',
+        error
+      );
       return {
         error: true,
         message: `Error calculating progressions for age ${targetAge}`
@@ -189,7 +202,10 @@ class SecondaryProgressionsService extends ServiceTemplate {
         error: false
       };
     } catch (error) {
-      logger.error('SecondaryProgressionsService compareProgressions error:', error);
+      logger.error(
+        'SecondaryProgressionsService compareProgressions error:',
+        error
+      );
       return {
         error: true,
         message: 'Error comparing progressions'
@@ -239,7 +255,12 @@ class SecondaryProgressionsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'getCurrentAgeProgressions', 'getProgressionTimeline', 'compareProgressionAges'],
+      methods: [
+        'execute',
+        'getCurrentAgeProgressions',
+        'getProgressionTimeline',
+        'compareProgressionAges'
+      ],
       dependencies: ['SecondaryProgressionsCalculator']
     };
   }
@@ -255,23 +276,28 @@ class SecondaryProgressionsService extends ServiceTemplate {
 
     // Analyze progressed planetary positions
     if (progressions.progressedPlanets) {
-      Object.entries(progressions.progressedPlanets).forEach(([planet, position]) => {
-        if (position && position.sign) {
-          themes.push({
-            planet,
-            sign: position.sign,
-            house: position.house,
-            theme: this._getProgressedPlanetTheme(planet, position.sign)
-          });
+      Object.entries(progressions.progressedPlanets).forEach(
+        ([planet, position]) => {
+          if (position && position.sign) {
+            themes.push({
+              planet,
+              sign: position.sign,
+              house: position.house,
+              theme: this._getProgressedPlanetTheme(planet, position.sign)
+            });
+          }
         }
-      });
+      );
     }
 
     // Analyze major aspects
     if (progressions.aspects) {
-      const majorAspects = progressions.aspects.filter(aspect =>
-        aspect.aspect === 'Conjunction' || aspect.aspect === 'Opposition' ||
-        aspect.aspect === 'Trine' || aspect.aspect === 'Square'
+      const majorAspects = progressions.aspects.filter(
+        aspect =>
+          aspect.aspect === 'Conjunction' ||
+          aspect.aspect === 'Opposition' ||
+          aspect.aspect === 'Trine' ||
+          aspect.aspect === 'Square'
       );
 
       majorAspects.forEach(aspect => {
@@ -308,14 +334,18 @@ class SecondaryProgressionsService extends ServiceTemplate {
       // Identify planets changing signs (major life shifts)
       planetMovements.forEach(([planet, position]) => {
         if (position && position.signChange) {
-          patterns.challenges.push(`${planet} entering ${position.sign} - Major life transition`);
+          patterns.challenges.push(
+            `${planet} entering ${position.sign} - Major life transition`
+          );
         }
       });
 
       // Identify planets in angular houses (active periods)
       planetMovements.forEach(([planet, position]) => {
         if (position && [1, 4, 7, 10].includes(position.house)) {
-          patterns.opportunities.push(`${planet} in ${position.house}th house - Active life period`);
+          patterns.opportunities.push(
+            `${planet} in ${position.house}th house - Active life period`
+          );
         }
       });
     }
@@ -323,7 +353,15 @@ class SecondaryProgressionsService extends ServiceTemplate {
     // Identify developmental cycles
     if (progressions.currentAge) {
       const age = progressions.currentAge;
-      if (age >= 0 && age < 12) { patterns.cycles.push('Foundation building (ages 0-12)'); } else if (age >= 12 && age < 30) { patterns.cycles.push('Identity formation (ages 12-30)'); } else if (age >= 30 && age < 50) { patterns.cycles.push('Career and family building (ages 30-50)'); } else if (age >= 50) { patterns.cycles.push('Wisdom and legacy (ages 50+)'); }
+      if (age >= 0 && age < 12) {
+        patterns.cycles.push('Foundation building (ages 0-12)');
+      } else if (age >= 12 && age < 30) {
+        patterns.cycles.push('Identity formation (ages 12-30)');
+      } else if (age >= 30 && age < 50) {
+        patterns.cycles.push('Career and family building (ages 30-50)');
+      } else if (age >= 50) {
+        patterns.cycles.push('Wisdom and legacy (ages 50+)');
+      }
     }
 
     return patterns;
@@ -362,8 +400,8 @@ class SecondaryProgressionsService extends ServiceTemplate {
 
     // Identify critical aspects
     if (progressions.aspects) {
-      const criticalAspects = progressions.aspects.filter(aspect =>
-        aspect.aspect === 'Square' || aspect.aspect === 'Opposition'
+      const criticalAspects = progressions.aspects.filter(
+        aspect => aspect.aspect === 'Square' || aspect.aspect === 'Opposition'
       );
 
       criticalAspects.forEach(aspect => {
@@ -467,11 +505,21 @@ class SecondaryProgressionsService extends ServiceTemplate {
   }
 
   _getAgePhase(age) {
-    if (age >= 0 && age < 12) { return 'Foundation and learning'; }
-    if (age >= 12 && age < 21) { return 'Identity and exploration'; }
-    if (age >= 21 && age < 35) { return 'Establishment and building'; }
-    if (age >= 35 && age < 50) { return 'Mastery and contribution'; }
-    if (age >= 50 && age < 65) { return 'Wisdom and reflection'; }
+    if (age >= 0 && age < 12) {
+      return 'Foundation and learning';
+    }
+    if (age >= 12 && age < 21) {
+      return 'Identity and exploration';
+    }
+    if (age >= 21 && age < 35) {
+      return 'Establishment and building';
+    }
+    if (age >= 35 && age < 50) {
+      return 'Mastery and contribution';
+    }
+    if (age >= 50 && age < 65) {
+      return 'Wisdom and reflection';
+    }
     return 'Legacy and completion';
   }
 

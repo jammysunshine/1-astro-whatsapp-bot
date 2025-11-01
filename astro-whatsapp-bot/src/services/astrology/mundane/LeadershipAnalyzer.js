@@ -1,5 +1,3 @@
-
-
 class LeadershipAnalyzer {
   /**
    * Analyze leadership energies and potentials
@@ -30,7 +28,9 @@ class LeadershipAnalyzer {
     const { moon } = chart.planetaryPositions;
 
     const assessment = {
-      sunPosition: sun ? `Sun in ${sun.sign} (house ${sun.house})` : 'Sun position unknown',
+      sunPosition: sun ?
+        `Sun in ${sun.sign} (house ${sun.house})` :
+        'Sun position unknown',
       leaderStrength: this.calculateLeaderStrength(chart, rulership),
       authorityRating: 'Unknown',
       challenges: [],
@@ -40,10 +40,14 @@ class LeadershipAnalyzer {
     // Authority rating based on sun/sun's house position
     if (sun && [1, 4, 7, 10].includes(sun.house)) {
       assessment.authorityRating = 'Strong - power consolidated';
-      assessment.opportunities.push('Leadership has solid foundation and authority');
+      assessment.opportunities.push(
+        'Leadership has solid foundation and authority'
+      );
     } else if (sun && [6, 8, 12].includes(sun.house)) {
       assessment.authorityRating = 'Challenged - leadership tested';
-      assessment.challenges.push('Leadership faces significant difficulties or health issues');
+      assessment.challenges.push(
+        'Leadership faces significant difficulties or health issues'
+      );
     }
 
     return assessment;
@@ -57,13 +61,17 @@ class LeadershipAnalyzer {
    */
   calculateLeaderStrength(chart, rulership) {
     const { sun } = chart.planetaryPositions;
-    if (!sun) { return 'Unknown'; }
+    if (!sun) {
+      return 'Unknown';
+    }
 
     const sunHouse = sun.house;
     const isExalted = this.isPlanetExalted('sun', sun.sign);
 
     if (sunHouse === 1) {
-      return isExalted ? 'Maximum - fully empowered leader' : 'Strong - natural leadership position';
+      return isExalted ?
+        'Maximum - fully empowered leader' :
+        'Strong - natural leadership position';
     } else if ([4, 7, 10].includes(sunHouse)) {
       return 'Powerful - secure in authority';
     } else if ([2, 5, 9].includes(sunHouse)) {
@@ -109,9 +117,13 @@ class LeadershipAnalyzer {
       const separation = Math.abs(uranus.longitude - saturn.longitude);
       // Check for major aspects (0°, 60°, 90°, 120°, 180°)
       if (separation <= 8) {
-        transitions.push('Saturn-Uranus conjunction suggests major governmental restructuring or leadership change');
+        transitions.push(
+          'Saturn-Uranus conjunction suggests major governmental restructuring or leadership change'
+        );
       } else if (Math.abs(separation - 180) <= 8) {
-        transitions.push('Saturn-Uranus opposition indicates tension between traditional and progressive leadership forces');
+        transitions.push(
+          'Saturn-Uranus opposition indicates tension between traditional and progressive leadership forces'
+        );
       }
     }
 
@@ -120,7 +132,9 @@ class LeadershipAnalyzer {
     if (mars && saturn) {
       const separation = Math.abs(mars.longitude - saturn.longitude);
       if (Math.abs(separation - 120) <= 8) {
-        transitions.push('Mars-Saturn trine suggests successful but challenging leadership through conflict resolution');
+        transitions.push(
+          'Mars-Saturn trine suggests successful but challenging leadership through conflict resolution'
+        );
       }
     }
 
@@ -177,7 +191,9 @@ class LeadershipAnalyzer {
     // Moon challenges (emotional stability)
     const { moon } = chart.planetaryPositions;
     if (moon && [6, 8, 12].includes(moon.house)) {
-      challenges.push('Emotional leadership challenges and public unpopularity');
+      challenges.push(
+        'Emotional leadership challenges and public unpopularity'
+      );
     }
 
     // Mercury challenges (communication issues)
@@ -212,7 +228,9 @@ class LeadershipAnalyzer {
     // Venus opposition (balanced, diplomatic successor)
     const { venus } = chart.planetaryPositions;
     if (venus && venus.house === 7) {
-      analysis.potentialSuccessors.push('Diplomatic and balanced successor likely');
+      analysis.potentialSuccessors.push(
+        'Diplomatic and balanced successor likely'
+      );
       analysis.opportunities.push('Smooth political transition possible');
     }
 
@@ -226,7 +244,9 @@ class LeadershipAnalyzer {
     // Uranus opposition (unexpected/developments successor)
     const { uranus } = chart.planetaryPositions;
     if (uranus && uranus.house === 7) {
-      analysis.potentialSuccessors.push('Unexpected or unconventional successor');
+      analysis.potentialSuccessors.push(
+        'Unexpected or unconventional successor'
+      );
       analysis.opportunities.push('Progressive leadership changes');
     }
 

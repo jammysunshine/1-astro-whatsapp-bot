@@ -29,38 +29,77 @@ class PrashnaCalculator {
       const { question, questionTime, birthData, location } = questionData;
 
       if (!question || !questionTime || !location) {
-        return { error: 'Question, question time, and location are required for horary analysis' };
+        return {
+          error:
+            'Question, question time, and location are required for horary analysis'
+        };
       }
 
       // Parse question time
-      const [day, month, year, hour, minute] = questionTime.split(/[-\/:]/).map(Number);
+      const [day, month, year, hour, minute] = questionTime
+        .split(/[-\/:]/)
+        .map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(location);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(location);
       const questionDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = questionDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Cast horary chart at the moment of question
-      const horaryChart = await this._castHoraryChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const horaryChart = await this._castHoraryChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Identify question significators
-      const significators = this._identifyQuestionSignificators(question, horaryChart);
+      const significators = this._identifyQuestionSignificators(
+        question,
+        horaryChart
+      );
 
       // Analyze question ruler's strength and placement
-      const questionRulerAnalysis = this._analyzeQuestionRuler(significators.questionRuler, horaryChart);
+      const questionRulerAnalysis = this._analyzeQuestionRuler(
+        significators.questionRuler,
+        horaryChart
+      );
 
       // Assess answer timing and probability
-      const timingAnalysis = this._assessAnswerTiming(significators, horaryChart);
+      const timingAnalysis = this._assessAnswerTiming(
+        significators,
+        horaryChart
+      );
 
       // Generate specific question interpretation
-      const interpretation = this._generateQuestionInterpretation(question, horaryChart, significators);
+      const interpretation = this._generateQuestionInterpretation(
+        question,
+        horaryChart,
+        significators
+      );
 
       // Calculate answer probability and clarity
-      const probabilityAssessment = this._calculateAnswerProbability(horaryChart, significators, questionRulerAnalysis);
+      const probabilityAssessment = this._calculateAnswerProbability(
+        horaryChart,
+        significators,
+        questionRulerAnalysis
+      );
 
       // Provide additional guidance if answer is uncertain
-      const additionalGuidance = this._provideAdditionalGuidance(probabilityAssessment, horaryChart);
+      const additionalGuidance = this._provideAdditionalGuidance(
+        probabilityAssessment,
+        horaryChart
+      );
 
       return {
         question,
@@ -73,7 +112,11 @@ class PrashnaCalculator {
         interpretation,
         probabilityAssessment,
         additionalGuidance,
-        summary: this._generateHorarySummary(interpretation, probabilityAssessment, timingAnalysis)
+        summary: this._generateHorarySummary(
+          interpretation,
+          probabilityAssessment,
+          timingAnalysis
+        )
       };
     } catch (error) {
       logger.error('❌ Error in horary analysis:', error);
@@ -87,30 +130,53 @@ class PrashnaCalculator {
   async findQuestionTiming(birthData, questionType, dateRange = 7) {
     try {
       const { birthDate, birthTime, birthPlace } = birthData;
-      const [birthDay, birthMonth, birthYear] = birthDate.split('/').map(Number);
+      const [birthDay, birthMonth, birthYear] = birthDate
+        .split('/')
+        .map(Number);
       const [birthHour, birthMin] = birthTime.split(':').map(Number);
-      const birthDateTime = new Date(birthYear, birthMonth - 1, birthDay, birthHour, birthMin);
+      const birthDateTime = new Date(
+        birthYear,
+        birthMonth - 1,
+        birthDay,
+        birthHour,
+        birthMin
+      );
 
       const startDate = new Date();
       const recommendations = [];
 
       // Get location data
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, startDate.getTime());
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        startDate.getTime()
+      );
 
       // Scan next 7 days for auspicious timings
       for (let day = 0; day < dateRange; day++) {
-        const checkDateTime = new Date(startDate.getTime() + day * 24 * 60 * 60 * 1000);
+        const checkDateTime = new Date(
+          startDate.getTime() + day * 24 * 60 * 60 * 1000
+        );
 
         // Check key times during the day (6 AM, 12 PM, 6 PM)
-        const checkTimes = [[6, 0], [12, 0], [18, 0]];
+        const checkTimes = [
+          [6, 0],
+          [12, 0],
+          [18, 0]
+        ];
 
         for (const [hour, minute] of checkTimes) {
           const fullCheckTime = new Date(checkDateTime);
           fullCheckTime.setHours(hour, minute, 0, 0);
 
           const timingSuitability = await this._assessQuestionTiming(
-            fullCheckTime, questionType, latitude, longitude, timezone
+            fullCheckTime,
+            questionType,
+            latitude,
+            longitude,
+            timezone
           );
 
           if (timingSuitability.rating !== 'Poor') {
@@ -143,7 +209,16 @@ class PrashnaCalculator {
    * Cast horary chart at the moment when question was asked
    * @private
    */
-  async _castHoraryChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _castHoraryChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     const horaryChart = {
       planets: {},
       houses: [],
@@ -153,15 +228,27 @@ class PrashnaCalculator {
     };
 
     // Calculate Julian Day for question time
-    const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+    const jd = this._dateToJulianDay(
+      year,
+      month,
+      day,
+      hour + minute / 60 - timezone
+    );
 
     // Calculate planetary positions at question time
     const planetIds = {
-      sun: sweph.SE_SUN, moon: sweph.SE_MOON, mars: sweph.SE_MARS,
-      mercury: sweph.SE_MERCURY, jupiter: sweph.SE_JUPITER,
-      venus: sweph.SE_VENUS, saturn: sweph.SE_SATURN,
-      uranus: sweph.SE_URANUS, neptune: sweph.SE_NEPTUNE, pluto: sweph.SE_PLUTO,
-      rahu: sweph.SE_TRUE_NODE, ketu: sweph.SE_MEAN_APOG
+      sun: sweph.SE_SUN,
+      moon: sweph.SE_MOON,
+      mars: sweph.SE_MARS,
+      mercury: sweph.SE_MERCURY,
+      jupiter: sweph.SE_JUPITER,
+      venus: sweph.SE_VENUS,
+      saturn: sweph.SE_SATURN,
+      uranus: sweph.SE_URANUS,
+      neptune: sweph.SE_NEPTUNE,
+      pluto: sweph.SE_PLUTO,
+      rahu: sweph.SE_TRUE_NODE,
+      ketu: sweph.SE_MEAN_APOG
     };
 
     for (const [planetName, planetId] of Object.entries(planetIds)) {
@@ -171,7 +258,10 @@ class PrashnaCalculator {
           longitude: position.longitude[0],
           sign: Math.floor(position.longitude[0] / 30) + 1,
           house: 0, // Will be calculated after houses
-          dignity: this._assessPlanetaryDignity(planetName, position.longitude[0])
+          dignity: this._assessPlanetaryDignity(
+            planetName,
+            position.longitude[0]
+          )
         };
       }
     }
@@ -194,7 +284,10 @@ class PrashnaCalculator {
 
     // Assign houses to planets
     Object.keys(horaryChart.planets).forEach(planet => {
-      if (horaryChart.planets[planet] && horaryChart.planets[planet].longitude !== undefined) {
+      if (
+        horaryChart.planets[planet] &&
+        horaryChart.planets[planet].longitude !== undefined
+      ) {
         horaryChart.planets[planet].house = this._getHouseForLongitude(
           horaryChart.planets[planet].longitude,
           houses.ascendant,
@@ -213,9 +306,9 @@ class PrashnaCalculator {
   _identifyQuestionSignificators(question, horaryChart) {
     const significators = {
       questionRuler: '',
-      querent: '',        // Question asker (usually ascendant ruler)
-      quesited: '',       // Answer/outcome (varies by question type)
-      timingRuler: '',    // Timing (usually moon)
+      querent: '', // Question asker (usually ascendant ruler)
+      quesited: '', // Answer/outcome (varies by question type)
+      timingRuler: '', // Timing (usually moon)
       significatorPlanets: []
     };
 
@@ -228,7 +321,10 @@ class PrashnaCalculator {
     significators.querent = this._getSignLord(ascendantSign);
 
     // Question ruler based on category and house
-    significators.questionRuler = this._getQuestionRuler(questionCategory, horaryChart);
+    significators.questionRuler = this._getQuestionRuler(
+      questionCategory,
+      horaryChart
+    );
 
     // Quesited (answer) based on question type
     significators.quesited = this._getQuesited(questionCategory, horaryChart);
@@ -267,11 +363,19 @@ class PrashnaCalculator {
     };
 
     // Analyze placement strength
-    if (rulerData.house === 1 || rulerData.house === 10 || rulerData.house === 11) {
+    if (
+      rulerData.house === 1 ||
+      rulerData.house === 10 ||
+      rulerData.house === 11
+    ) {
       strength += 25;
       analysis.houseStrength = 'Excellent - Ruler in kendra (angular) house';
       analysis.positiveFactors.push('Strong position in angular house');
-    } else if (rulerData.house === 2 || rulerData.house === 5 || rulerData.house === 9) {
+    } else if (
+      rulerData.house === 2 ||
+      rulerData.house === 5 ||
+      rulerData.house === 9
+    ) {
       strength += 20;
       analysis.houseStrength = 'Good - Ruler in trikona (trine) house';
       analysis.positiveFactors.push('Beneficial trine house placement');
@@ -280,7 +384,8 @@ class PrashnaCalculator {
       analysis.houseStrength = 'Neutral - Ruler in upachaya (growth) house';
     } else {
       strength -= 5;
-      analysis.houseStrength = 'Challenging - Ruler in dussthana (difficult) house';
+      analysis.houseStrength =
+        'Challenging - Ruler in dussthana (difficult) house';
       analysis.challengingFactors.push('Questionable house position');
     }
 
@@ -288,19 +393,29 @@ class PrashnaCalculator {
     if (rulerData.dignity.ownSign) {
       strength += 20;
       analysis.dignityStatus = 'Strong - In own sign';
-      analysis.positiveFactors.push('Planetary dignity supports positive outcome');
+      analysis.positiveFactors.push(
+        'Planetary dignity supports positive outcome'
+      );
     } else if (rulerData.dignity.exalted) {
       strength += 15;
       analysis.dignityStatus = 'Excellent - Exalted';
-      analysis.positiveFactors.push('Exalted position indicates strong possibility');
+      analysis.positiveFactors.push(
+        'Exalted position indicates strong possibility'
+      );
     } else if (rulerData.dignity.debilitated) {
       strength -= 10;
       analysis.dignityStatus = 'Weak - Debilitated';
-      analysis.challengingFactors.push('Debilitated position suggests difficulties');
+      analysis.challengingFactors.push(
+        'Debilitated position suggests difficulties'
+      );
     }
 
     // Analyze aspects
-    const aspectStrength = this._analyzeRulerAspects(rulerData, horaryChart, questionRuler);
+    const aspectStrength = this._analyzeRulerAspects(
+      rulerData,
+      horaryChart,
+      questionRuler
+    );
     strength += aspectStrength.score;
     analysis.aspectStrength = aspectStrength.description;
 
@@ -338,32 +453,54 @@ class PrashnaCalculator {
     // Moon's position and aspects indicate timing
     const moonData = horaryChart.planets.moon;
 
-    if (moonData.house === 1 || moonData.house === 4 || moonData.house === 7 || moonData.house === 10) {
+    if (
+      moonData.house === 1 ||
+      moonData.house === 4 ||
+      moonData.house === 7 ||
+      moonData.house === 10
+    ) {
       timing.immediateIndication = 'Quick resolution possible';
-      timing.timingIndicators.push('Moon in angular house suggests relatively fast answer');
+      timing.timingIndicators.push(
+        'Moon in angular house suggests relatively fast answer'
+      );
       timing.estimatedTimeline = 'Days to weeks';
-    } else if (moonData.house === 2 || moonData.house === 5 || moonData.house === 8 || moonData.house === 11) {
+    } else if (
+      moonData.house === 2 ||
+      moonData.house === 5 ||
+      moonData.house === 8 ||
+      moonData.house === 11
+    ) {
       timing.immediateIndication = 'Moderate timing expected';
-      timing.timingIndicators.push('Moon position indicates reasonable timeframe');
+      timing.timingIndicators.push(
+        'Moon position indicates reasonable timeframe'
+      );
       timing.estimatedTimeline = 'Weeks to months';
     } else {
       timing.immediateIndication = 'Delayed response indicated';
-      timing.timingIndicators.push('Moon in cadent house suggests longer timeframe');
+      timing.timingIndicators.push(
+        'Moon in cadent house suggests longer timeframe'
+      );
       timing.estimatedTimeline = 'Months or longer';
     }
 
     // Question ruler speed affects timing
     if (horaryChart.planets[significators.questionRuler]) {
-      const rulerSpeed = horaryChart.planets[significators.questionRuler].longitude.speed || 0;
+      const rulerSpeed =
+        horaryChart.planets[significators.questionRuler].longitude.speed || 0;
       if (rulerSpeed > 0.8) {
-        timing.timingIndicators.push('Fast-moving question ruler suggests quicker resolution');
+        timing.timingIndicators.push(
+          'Fast-moving question ruler suggests quicker resolution'
+        );
       } else if (rulerSpeed < -0.5) {
         timing.timingIndicators.push('Retrograde motion may delay the answer');
       }
     }
 
     // Determine answer clarity
-    if (timing.immediateIndication.includes('Quick') || timing.timingIndicators.some(t => t.includes('fast'))) {
+    if (
+      timing.immediateIndication.includes('Quick') ||
+      timing.timingIndicators.some(t => t.includes('fast'))
+    ) {
       timing.answerClarity = 'Relatively clear timeframe indicated';
     } else {
       timing.answerClarity = 'Timing may be uncertain - watch for developments';
@@ -386,14 +523,22 @@ class PrashnaCalculator {
     };
 
     // Assess overall positive/negative indications
-    const positiveScores = this._calculatePositiveIndicators(horaryChart, significators);
-    const negativeScores = this._calculateNegativeIndicators(horaryChart, significators);
+    const positiveScores = this._calculatePositiveIndicators(
+      horaryChart,
+      significators
+    );
+    const negativeScores = this._calculateNegativeIndicators(
+      horaryChart,
+      significators
+    );
 
     if (positiveScores.total > negativeScores.total) {
       interpretation.overallIndication = `Generally positive indications for: ${question}`;
 
       if (positiveScores.questionRuler + positiveScores.querent > 2) {
-        interpretation.detailedAnalysis.push('Question ruler and querent show favorable positions');
+        interpretation.detailedAnalysis.push(
+          'Question ruler and querent show favorable positions'
+        );
       }
 
       interpretation.answerTrends = [
@@ -404,8 +549,12 @@ class PrashnaCalculator {
     } else if (negativeScores.total > positiveScores.total) {
       interpretation.overallIndication = `Challenging indications for: ${question}`;
 
-      interpretation.detailedAnalysis.push('Several challenging factors present in the chart');
-      interpretation.caveats.push('Consult additional timing and remedial measures');
+      interpretation.detailedAnalysis.push(
+        'Several challenging factors present in the chart'
+      );
+      interpretation.caveats.push(
+        'Consult additional timing and remedial measures'
+      );
       interpretation.answerTrends = [
         'Significant obstacles indicated - patience required',
         'Outcome may be delayed or modified',
@@ -414,8 +563,12 @@ class PrashnaCalculator {
     } else {
       interpretation.overallIndication = `Mixed/neutral indications for: ${question}`;
 
-      interpretation.detailedAnalysis.push('Balanced chart suggests conditional outcome');
-      interpretation.caveats.push('Outcome depends on external factors and timing');
+      interpretation.detailedAnalysis.push(
+        'Balanced chart suggests conditional outcome'
+      );
+      interpretation.caveats.push(
+        'Outcome depends on external factors and timing'
+      );
       interpretation.answerTrends = [
         'Partial success possible with proper effort',
         'Waiting and reassessment may be beneficial',
@@ -436,7 +589,11 @@ class PrashnaCalculator {
    * Calculate answer probability and confidence
    * @private
    */
-  _calculateAnswerProbability(horaryChart, significators, questionRulerAnalysis) {
+  _calculateAnswerProbability(
+    horaryChart,
+    significators,
+    questionRulerAnalysis
+  ) {
     const probability = {
       overall: 0,
       breakdown: {},
@@ -453,12 +610,19 @@ class PrashnaCalculator {
     baseProbability *= chartReliability / 100;
 
     // Adjust based on question appropriateness
-    const questionAppropriateness = this._assessQuestionAppropriateness(significators.questionCategory);
+    const questionAppropriateness = this._assessQuestionAppropriateness(
+      significators.questionCategory
+    );
     baseProbability *= questionAppropriateness / 100;
 
     // Adjust based on significator harmony
-    const significatorHarmony = this._calculateSignificatorHarmony(significators, horaryChart);
-    baseProbability = Math.round((baseProbability + significatorHarmony.score) / 2);
+    const significatorHarmony = this._calculateSignificatorHarmony(
+      significators,
+      horaryChart
+    );
+    baseProbability = Math.round(
+      (baseProbability + significatorHarmony.score) / 2
+    );
 
     probability.overall = Math.max(0, Math.min(100, baseProbability));
 
@@ -478,10 +642,12 @@ class PrashnaCalculator {
       probability.reliability = 'Reasonable assessment with some uncertainty';
     } else if (probability.overall >= 40) {
       probability.confidence = 'Low-Moderate';
-      probability.reliability = 'Mixed signals - further assessment recommended';
+      probability.reliability =
+        'Mixed signals - further assessment recommended';
     } else {
       probability.confidence = 'Low';
-      probability.reliability = 'Uncertain indications - consider alternative methods';
+      probability.reliability =
+        'Uncertain indications - consider alternative methods';
     }
 
     return probability;
@@ -543,7 +709,11 @@ class PrashnaCalculator {
    * Generate comprehensive horary summary
    * @private
    */
-  _generateHorarySummary(interpretation, probabilityAssessment, timingAnalysis) {
+  _generateHorarySummary(
+    interpretation,
+    probabilityAssessment,
+    timingAnalysis
+  ) {
     let summary = '❓ *Horary Question Analysis*\n\n';
 
     summary += `*Overall Indication:* ${interpretation.overallIndication}\n\n`;
@@ -569,7 +739,8 @@ class PrashnaCalculator {
       });
     }
 
-    summary += '\n*Horary astrology analyzes questions at the moment asked to provide guidance on outcomes and timing.*';
+    summary +=
+      '\n*Horary astrology analyzes questions at the moment asked to provide guidance on outcomes and timing.*';
 
     return summary;
   }
@@ -578,17 +749,41 @@ class PrashnaCalculator {
   _categorizeQuestion(question) {
     const lowerQuestion = question.toLowerCase();
 
-    if (lowerQuestion.includes('marry') || lowerQuestion.includes('marriage') || lowerQuestion.includes('relationship')) {
+    if (
+      lowerQuestion.includes('marry') ||
+      lowerQuestion.includes('marriage') ||
+      lowerQuestion.includes('relationship')
+    ) {
       return 'relationship';
-    } else if (lowerQuestion.includes('job') || lowerQuestion.includes('career') || lowerQuestion.includes('business')) {
+    } else if (
+      lowerQuestion.includes('job') ||
+      lowerQuestion.includes('career') ||
+      lowerQuestion.includes('business')
+    ) {
       return 'career';
-    } else if (lowerQuestion.includes('money') || lowerQuestion.includes('financial') || lowerQuestion.includes('investment')) {
+    } else if (
+      lowerQuestion.includes('money') ||
+      lowerQuestion.includes('financial') ||
+      lowerQuestion.includes('investment')
+    ) {
       return 'financial';
-    } else if (lowerQuestion.includes('health') || lowerQuestion.includes('medical') || lowerQuestion.includes('illness')) {
+    } else if (
+      lowerQuestion.includes('health') ||
+      lowerQuestion.includes('medical') ||
+      lowerQuestion.includes('illness')
+    ) {
       return 'health';
-    } else if (lowerQuestion.includes('legal') || lowerQuestion.includes('court') || lowerQuestion.includes('lawsuit')) {
+    } else if (
+      lowerQuestion.includes('legal') ||
+      lowerQuestion.includes('court') ||
+      lowerQuestion.includes('lawsuit')
+    ) {
       return 'legal';
-    } else if (lowerQuestion.includes('lost') || lowerQuestion.includes('missing') || lowerQuestion.includes('find')) {
+    } else if (
+      lowerQuestion.includes('lost') ||
+      lowerQuestion.includes('missing') ||
+      lowerQuestion.includes('find')
+    ) {
       return 'lost_items';
     } else {
       return 'general';
@@ -597,13 +792,13 @@ class PrashnaCalculator {
 
   _getQuestionRuler(category, horaryChart) {
     const categoryHouses = {
-      relationship: [5, 7, 11],  // 5th (love), 7th (marriage), 11th (friends)
-      career: [6, 10],           // 6th (service), 10th (career)
-      financial: [2, 11],        // 2nd (wealth), 11th (gains)
-      health: [1, 6, 8, 12],     // 1st (body), 6th/8th/12th (health)
-      legal: [6, 9, 12],         // 6th (enemies), 9th (law), 12th (imprisonment)
-      lost_items: [2, 12],       // 2nd (missing), 12th (loss/hidden)
-      general: [1, 7, 9]         // 1st (general), 7th (others), 9th (guidance)
+      relationship: [5, 7, 11], // 5th (love), 7th (marriage), 11th (friends)
+      career: [6, 10], // 6th (service), 10th (career)
+      financial: [2, 11], // 2nd (wealth), 11th (gains)
+      health: [1, 6, 8, 12], // 1st (body), 6th/8th/12th (health)
+      legal: [6, 9, 12], // 6th (enemies), 9th (law), 12th (imprisonment)
+      lost_items: [2, 12], // 2nd (missing), 12th (loss/hidden)
+      general: [1, 7, 9] // 1st (general), 7th (others), 9th (guidance)
     };
 
     const houses = categoryHouses[category] || categoryHouses.general;
@@ -621,13 +816,13 @@ class PrashnaCalculator {
 
   _getQuesited(category, horaryChart) {
     const quesitedHouses = {
-      relationship: [7],       // 7th house ruler for partner
-      career: [10],            // 10th house ruler for career achievement
-      financial: [11],         // 11th house ruler for gains
-      health: [8],             // 8th house ruler for health issues
-      legal: [6],              // 6th house ruler for opponents/enemies
-      lost_items: [4],         // 4th house ruler for hidden matters
-      general: [9]             // 9th house ruler for guidance
+      relationship: [7], // 7th house ruler for partner
+      career: [10], // 10th house ruler for career achievement
+      financial: [11], // 11th house ruler for gains
+      health: [8], // 8th house ruler for health issues
+      legal: [6], // 6th house ruler for opponents/enemies
+      lost_items: [4], // 4th house ruler for hidden matters
+      general: [9] // 9th house ruler for guidance
     };
 
     const house = quesitedHouses[category]?.[0] || 9;
@@ -642,13 +837,21 @@ class PrashnaCalculator {
     // Check major aspects from other planets
     Object.entries(horaryChart.planets).forEach(([planet, data]) => {
       // Skip the ruler planet itself when analyzing aspects
-      if (planet === questionRuler) { return; }
-      if (planet === Object.keys(rulerData).find(key => rulerData[key] === rulerData)) { return; }
+      if (planet === questionRuler) {
+        return;
+      }
+      if (
+        planet ===
+        Object.keys(rulerData).find(key => rulerData[key] === rulerData)
+      ) {
+        return;
+      }
 
       const angle = Math.abs(rulerData.longitude - data.longitude);
       const minAngle = Math.min(angle, 360 - angle);
 
-      if (minAngle <= 10) { // Conjunction
+      if (minAngle <= 10) {
+        // Conjunction
         if (['jupiter', 'venus', 'mercury'].includes(planet)) {
           supportingAspects++;
         } else if (['saturn', 'mars', 'rahu'].includes(planet)) {
@@ -660,31 +863,56 @@ class PrashnaCalculator {
     return {
       supporting: supportingAspects,
       challenging: challengingAspects,
-      description: supportingAspects > challengingAspects ? 'Mostly supportive aspects' :
-        challengingAspects > supportingAspects ? 'Some challenging aspects' : 'Mixed aspects',
+      description:
+        supportingAspects > challengingAspects ?
+          'Mostly supportive aspects' :
+          challengingAspects > supportingAspects ?
+            'Some challenging aspects' :
+            'Mixed aspects',
       score: (supportingAspects - challengingAspects) * 5
     };
   }
 
-  async _assessQuestionTiming(questionDateTime, questionType, latitude, longitude, timezone) {
+  async _assessQuestionTiming(
+    questionDateTime,
+    questionType,
+    latitude,
+    longitude,
+    timezone
+  ) {
     const year = questionDateTime.getFullYear();
     const month = questionDateTime.getMonth() + 1;
     const day = questionDateTime.getDate();
     const hour = questionDateTime.getHours();
     const minute = questionDateTime.getMinutes();
 
-    const chart = await this._castHoraryChart(year, month, day, hour, minute, latitude, longitude, timezone);
+    const chart = await this._castHoraryChart(
+      year,
+      month,
+      day,
+      hour,
+      minute,
+      latitude,
+      longitude,
+      timezone
+    );
     const significators = {
       questionCategory: this._categorizeQuestion(questionType),
       querent: this._getSignLord(chart.ascendant.sign)
     };
 
-    const rulerAnalysis = this._analyzeQuestionRuler(significators.querent, chart);
+    const rulerAnalysis = this._analyzeQuestionRuler(
+      significators.querent,
+      chart
+    );
 
     let score = rulerAnalysis.strength;
     const reasons = [];
 
-    if (chart.ascendant.sign !== this._getSignOfPlanet(chart.planets.moon.longitude)) {
+    if (
+      chart.ascendant.sign !==
+      this._getSignOfPlanet(chart.planets.moon.longitude)
+    ) {
       reasons.push('Moon not in ascendant - generally favorable');
     }
 
@@ -698,14 +926,22 @@ class PrashnaCalculator {
       reasons.push('Question lord well placed');
     }
 
-    const rating = score >= 70 ? 'Excellent' : score >= 55 ? 'Good' : score >= 35 ? 'Fair' : 'Poor';
+    const rating =
+      score >= 70 ?
+        'Excellent' :
+        score >= 55 ?
+          'Good' :
+          score >= 35 ?
+            'Fair' :
+            'Poor';
 
     return { rating, score, reasons };
   }
 
   _generateQuestionTimingGuidance(questionType) {
     const guidance = {
-      relationship: 'Best to ask during Venus or Moon periods. Avoid conflict times.',
+      relationship:
+        'Best to ask during Venus or Moon periods. Avoid conflict times.',
       career: 'Mercury or Sun periods are most favorable for career questions.',
       financial: 'Jupiter periods work well for financial inquiries.',
       health: 'Moon or Sun periods are appropriate for health questions.',
@@ -718,12 +954,39 @@ class PrashnaCalculator {
 
   // Additional helper methods
   _getSignName(signNumber) {
-    const signs = ['', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const signs = [
+      '',
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
+    ];
     return signs[signNumber] || 'Unknown';
   }
 
   _getSignLord(sign) {
-    const lords = ['mars', 'venus', 'mercury', 'moon', 'sun', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'saturn', 'jupiter'];
+    const lords = [
+      'mars',
+      'venus',
+      'mercury',
+      'moon',
+      'sun',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn',
+      'saturn',
+      'jupiter'
+    ];
     return lords[sign - 1];
   }
 
@@ -750,10 +1013,10 @@ class PrashnaCalculator {
   _assessPlanetaryDignity(planet, longitude) {
     // Simplified dignity assessment
     return {
-      ownSign: false,     // Would check if planet is in its own sign
-      exalted: false,     // Would check exaltation degrees
+      ownSign: false, // Would check if planet is in its own sign
+      exalted: false, // Would check exaltation degrees
       debilitated: false, // Would check debilitation degrees
-      friendlySign: true  // Assume neutral for simplicity
+      friendlySign: true // Assume neutral for simplicity
     };
   }
 
@@ -807,7 +1070,8 @@ class PrashnaCalculator {
 
     // Moon void of course check (simplified)
     const moonHouse = horaryChart.planets.moon.house;
-    if ([4, 8, 12].includes(moonHouse)) { // Cadent houses sometimes suggest void periods
+    if ([4, 8, 12].includes(moonHouse)) {
+      // Cadent houses sometimes suggest void periods
       reliability -= 20;
     }
 
@@ -822,13 +1086,13 @@ class PrashnaCalculator {
   _assessQuestionAppropriateness(questionCategory) {
     // Some questions are more suitable for horary than others
     const appropriatenessByCategory = {
-      relationship: 85,  // Good for horary
-      health: 80,        // Good for horary
-      lost_items: 90,    // Excellent for horary
-      career: 75,        // Reasonable for horary
-      financial: 70,     // More conditional
-      legal: 65,         // More conditional
-      general: 60        // Less specific
+      relationship: 85, // Good for horary
+      health: 80, // Good for horary
+      lost_items: 90, // Excellent for horary
+      career: 75, // Reasonable for horary
+      financial: 70, // More conditional
+      legal: 65, // More conditional
+      general: 60 // Less specific
     };
 
     return appropriatenessByCategory[questionCategory] || 60;
@@ -838,7 +1102,9 @@ class PrashnaCalculator {
     // Check if significators work together harmoniously
     const planets = significators.significatorPlanets;
 
-    if (planets.length < 2) { return { score: 50, description: 'Single significator' }; }
+    if (planets.length < 2) {
+      return { score: 50, description: 'Single significator' };
+    }
 
     let harmoniousAspects = 0;
     let conflictingAspects = 0;
@@ -853,8 +1119,13 @@ class PrashnaCalculator {
           const angle = Math.abs(planet1.longitude - planet2.longitude);
           const minAngle = Math.min(angle, 360 - angle);
 
-          if (minAngle <= 15) { // Close conjunction or aspect
-            if (planets[i] === planets[j] || Math.abs(minAngle - 60) <= 10 || Math.abs(minAngle - 120) <= 10) {
+          if (minAngle <= 15) {
+            // Close conjunction or aspect
+            if (
+              planets[i] === planets[j] ||
+              Math.abs(minAngle - 60) <= 10 ||
+              Math.abs(minAngle - 120) <= 10
+            ) {
               harmoniousAspects++;
             } else {
               conflictingAspects++;
@@ -864,11 +1135,20 @@ class PrashnaCalculator {
       }
     }
 
-    const score = harmoniousAspects > conflictingAspects ? 70 : conflictingAspects > harmoniousAspects ? 30 : 50;
+    const score =
+      harmoniousAspects > conflictingAspects ?
+        70 :
+        conflictingAspects > harmoniousAspects ?
+          30 :
+          50;
     return {
       score,
-      description: harmoniousAspects > conflictingAspects ? 'Harmonious significators' :
-        conflictingAspects > harmoniousAspects ? 'Conflicting significators' : 'Mixed significator relationships'
+      description:
+        harmoniousAspects > conflictingAspects ?
+          'Harmonious significators' :
+          conflictingAspects > harmoniousAspects ?
+            'Conflicting significators' :
+            'Mixed significator relationships'
     };
   }
 
@@ -876,7 +1156,14 @@ class PrashnaCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + (hour - 12) / 24;
   }
 
@@ -886,7 +1173,7 @@ class PrashnaCalculator {
       return [coords.latitude, coords.longitude];
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Delhi
+      return [28.6139, 77.209]; // Delhi
     }
   }
 

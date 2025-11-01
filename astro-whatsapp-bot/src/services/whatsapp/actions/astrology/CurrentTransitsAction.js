@@ -1,5 +1,7 @@
 const AstrologyAction = require('../base/AstrologyAction');
-const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const {
+  AstrologyFormatterFactory
+} = require('../factories/AstrologyFormatterFactory');
 
 /**
  * CurrentTransitsAction - Shows current planetary transits and their influences.
@@ -20,10 +22,16 @@ class CurrentTransitsAction extends AstrologyAction {
    */
   async execute() {
     try {
-      this.logAstrologyExecution('start', 'Analyzing current planetary transits');
+      this.logAstrologyExecution(
+        'start',
+        'Analyzing current planetary transits'
+      );
 
       // Unified validation using base class
-      const validation = await this.validateProfileAndLimits('Current Transits', 'transits_current');
+      const validation = await this.validateProfileAndLimits(
+        'Current Transits',
+        'transits_current'
+      );
       if (!validation.success) {
         return validation;
       }
@@ -42,9 +50,15 @@ class CurrentTransitsAction extends AstrologyAction {
         personalImpact: this.getPersonalImpact(transitData),
         generalInfluence: this.getGeneralInfluence(transitData)
       });
-      await this.buildAstrologyResponse(formattedContent, this.getTransitButtons());
+      await this.buildAstrologyResponse(
+        formattedContent,
+        this.getTransitButtons()
+      );
 
-      this.logAstrologyExecution('complete', 'Current transits analysis delivered successfully');
+      this.logAstrologyExecution(
+        'complete',
+        'Current transits analysis delivered successfully'
+      );
       return {
         success: true,
         type: 'current_transits',
@@ -53,7 +67,11 @@ class CurrentTransitsAction extends AstrologyAction {
     } catch (error) {
       this.logger.error('Error in CurrentTransitsAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -67,11 +85,20 @@ class CurrentTransitsAction extends AstrologyAction {
       const transits = [];
 
       // Major planets for transit analysis
-      const planets = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
+      const planets = [
+        'Sun',
+        'Moon',
+        'Mercury',
+        'Venus',
+        'Mars',
+        'Jupiter',
+        'Saturn'
+      ];
 
       planets.forEach(planet => {
         const influence = this.getPlanetTransitInfluence(planet, currentDate);
-        if (influence && influence.significance > 6) { // Only include significant transits
+        if (influence && influence.significance > 6) {
+          // Only include significant transits
           transits.push(influence);
         }
       });
@@ -104,11 +131,18 @@ class CurrentTransitsAction extends AstrologyAction {
     };
 
     const transit = transitPhases[planet];
-    if (!transit) { return null; }
+    if (!transit) {
+      return null;
+    }
 
     const durations = {
-      Sun: '2-3 days', Moon: '2-3 days', Mercury: '3-4 weeks',
-      Venus: '3-4 weeks', Mars: '6-8 weeks', Jupiter: '12-13 months', Saturn: '2.5-3 years'
+      Sun: '2-3 days',
+      Moon: '2-3 days',
+      Mercury: '3-4 weeks',
+      Venus: '3-4 weeks',
+      Mars: '6-8 weeks',
+      Jupiter: '12-13 months',
+      Saturn: '2.5-3 years'
     };
 
     return {
@@ -132,16 +166,22 @@ class CurrentTransitsAction extends AstrologyAction {
     const meanings = {
       Sun: `Solar influence in ${transit.sign} brings focus on identity, leadership, and life purpose. In house ${transit.house}, this enhances self-expression.`,
       Moon: `Lunar transits affect emotions and intuition. In ${transit.sign}, emotional patterns may emerge, influencing home and family matters.`,
-      Mercury: 'Mercury transits affect communication and thinking. Current position suggests changes in how you process information and express ideas.',
-      Venus: 'Venus transits influence relationships and values. This period brings opportunities for harmony and creative expression.',
+      Mercury:
+        'Mercury transits affect communication and thinking. Current position suggests changes in how you process information and express ideas.',
+      Venus:
+        'Venus transits influence relationships and values. This period brings opportunities for harmony and creative expression.',
       Mars: 'Mars transits bring energy and drive. You may feel more motivated to take action in career and personal goals.',
-      Jupiter: 'Jupiter transits expand horizons. This is a time of growth, learning, and new opportunities.',
-      Saturn: 'Saturn transits bring structure and responsibility. A period for building foundations and long-term planning.'
+      Jupiter:
+        'Jupiter transits expand horizons. This is a time of growth, learning, and new opportunities.',
+      Saturn:
+        'Saturn transits bring structure and responsibility. A period for building foundations and long-term planning.'
     };
 
-    return meanings[planet] || 'Planetary influence bringing important changes and opportunities for growth.';
+    return (
+      meanings[planet] ||
+      'Planetary influence bringing important changes and opportunities for growth.'
+    );
   }
-
 
   /**
    * Get personal impact interpretation based on transit data
@@ -171,7 +211,12 @@ class CurrentTransitsAction extends AstrologyAction {
       return '🌍 Period of cosmic stability and equilibrium. Use this time for reflection and planning.';
     }
 
-    const climateDescription = transits.length > 3 ? 'High activity' : transits.length > 1 ? 'Moderate activity' : 'Low activity';
+    const climateDescription =
+      transits.length > 3 ?
+        'High activity' :
+        transits.length > 1 ?
+          'Moderate activity' :
+          'Low activity';
     return `🌍 ${climateDescription} cosmic climate. The planets are aligning to bring important messages and opportunities for growth.`;
   }
 
@@ -206,7 +251,8 @@ class CurrentTransitsAction extends AstrologyAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Analyze current planetary transits and their personal influences',
+      description:
+        'Analyze current planetary transits and their personal influences',
       keywords: ['transits', 'current', 'planets', 'influences', 'cosmic'],
       category: 'astrology',
       subscriptionRequired: false,

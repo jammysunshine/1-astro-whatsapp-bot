@@ -19,11 +19,11 @@ class AshtakavargaService extends ServiceTemplate {
       requiredInputs: ['birthData'],
       outputFormats: ['detailed', 'summary', 'strength-analysis'],
       strengthCategories: {
-        veryStrong: 28,    // 4+ points average per house
-        strong: 24,        // 3.5+ points average
-        average: 20,       // 3 points average
-        weak: 16,          // 2.5+ points average
-        veryWeak: 12        // Below 2.5 points average
+        veryStrong: 28, // 4+ points average per house
+        strong: 24, // 3.5+ points average
+        average: 20, // 3 points average
+        weak: 16, // 2.5+ points average
+        veryWeak: 12 // Below 2.5 points average
       }
     };
   }
@@ -41,7 +41,8 @@ class AshtakavargaService extends ServiceTemplate {
       this._validateInputs(birthData);
 
       // Calculate Ashtakavarga using calculator
-      const ashtakavargaResult = await this.calculator.calculateAshtakavarga(birthData);
+      const ashtakavargaResult =
+        await this.calculator.calculateAshtakavarga(birthData);
 
       // Add service metadata
       ashtakavargaResult.serviceMetadata = {
@@ -54,7 +55,8 @@ class AshtakavargaService extends ServiceTemplate {
       };
 
       // Add enhanced analysis
-      ashtakavargaResult.enhancedAnalysis = this._performEnhancedAshtakavargaAnalysis(ashtakavargaResult);
+      ashtakavargaResult.enhancedAnalysis =
+        this._performEnhancedAshtakavargaAnalysis(ashtakavargaResult);
 
       return ashtakavargaResult;
     } catch (error) {
@@ -130,14 +132,17 @@ class AshtakavargaService extends ServiceTemplate {
     // Add house-wise analysis if available
     if (result.enhancedAnalysis?.houseAnalysis) {
       formatted += '*🏠 House-wise Strength:*\n';
-      Object.entries(result.enhancedAnalysis.houseAnalysis).slice(0, 6).forEach(([house, analysis]) => {
-        formatted += `• **House ${house}:** ${analysis}\n`;
-      });
+      Object.entries(result.enhancedAnalysis.houseAnalysis)
+        .slice(0, 6)
+        .forEach(([house, analysis]) => {
+          formatted += `• **House ${house}:** ${analysis}\n`;
+        });
       formatted += '\n';
     }
 
     // Add service footer
-    formatted += '---\n*Ashtakavarga - Vedic 64-point Beneficial Influence System*';
+    formatted +=
+      '---\n*Ashtakavarga - Vedic 64-point Beneficial Influence System*';
 
     return formatted;
   }
@@ -153,7 +158,9 @@ class AshtakavargaService extends ServiceTemplate {
     }
 
     if (!birthData.birthDate || !birthData.birthTime) {
-      throw new Error('Birth date and time are required for Ashtakavarga analysis');
+      throw new Error(
+        'Birth date and time are required for Ashtakavarga analysis'
+      );
     }
   }
 
@@ -198,16 +205,20 @@ class AshtakavargaService extends ServiceTemplate {
       // Determine overall strength
       if (totalPoints >= 45) {
         analysis.overallStrength = 'Very Strong - Excellent planetary support';
-        analysis.recommendations = 'Favorable period for major life decisions and new ventures';
+        analysis.recommendations =
+          'Favorable period for major life decisions and new ventures';
       } else if (totalPoints >= 35) {
         analysis.overallStrength = 'Strong - Good planetary support';
-        analysis.recommendations = 'Good time for important activities with reasonable success';
+        analysis.recommendations =
+          'Good time for important activities with reasonable success';
       } else if (totalPoints >= 25) {
         analysis.overallStrength = 'Average - Moderate planetary support';
-        analysis.recommendations = 'Proceed with normal activities, avoid major risks';
+        analysis.recommendations =
+          'Proceed with normal activities, avoid major risks';
       } else {
         analysis.overallStrength = 'Weak - Limited planetary support';
-        analysis.recommendations = 'Focus on planning and preparation, avoid major commitments';
+        analysis.recommendations =
+          'Focus on planning and preparation, avoid major commitments';
       }
 
       // Analyze house strengths
@@ -219,12 +230,15 @@ class AshtakavargaService extends ServiceTemplate {
 
         if (points >= 8) {
           strongHouses.push(houseMeaning);
-          analysis.houseAnalysis[house] = `Strong (${points} points) - ${houseMeaning} well-supported`;
+          analysis.houseAnalysis[house] =
+            `Strong (${points} points) - ${houseMeaning} well-supported`;
         } else if (points <= 4) {
           weakHouses.push(houseMeaning);
-          analysis.houseAnalysis[house] = `Weak (${points} points) - ${houseMeaning} needs attention`;
+          analysis.houseAnalysis[house] =
+            `Weak (${points} points) - ${houseMeaning} needs attention`;
         } else {
-          analysis.houseAnalysis[house] = `Moderate (${points} points) - ${houseMeaning} balanced`;
+          analysis.houseAnalysis[house] =
+            `Moderate (${points} points) - ${houseMeaning} balanced`;
         }
       });
 
@@ -283,7 +297,10 @@ class AshtakavargaService extends ServiceTemplate {
       confidence += 5;
     }
 
-    if (result.enhancedAnalysis && result.enhancedAnalysis.sarvashtakavarga > 0) {
+    if (
+      result.enhancedAnalysis &&
+      result.enhancedAnalysis.sarvashtakavarga > 0
+    ) {
       confidence += 5;
     }
 

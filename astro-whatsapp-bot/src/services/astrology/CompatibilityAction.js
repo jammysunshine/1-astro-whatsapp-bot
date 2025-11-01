@@ -1,11 +1,19 @@
 const BaseAction = require('../whatsapp/actions/BaseAction');
 const { incrementCompatibilityChecks } = require('../../models/userModel');
-const { SwissEphemerisCalculator } = require('./compatibility/SwissEphemerisCalculator');
+const {
+  SwissEphemerisCalculator
+} = require('./compatibility/SwissEphemerisCalculator');
 const { SynastryEngine } = require('./compatibility/SynastryEngine');
 const { CompatibilityScorer } = require('./compatibility/CompatibilityScorer');
-const { RelationshipInsightsGenerator } = require('./compatibility/RelationshipInsightsGenerator');
-const { CompatibilityFormatter } = require('./compatibility/CompatibilityFormatter');
-const { CompatibilityWorkflowManager } = require('./compatibility/CompatibilityWorkflowManager');
+const {
+  RelationshipInsightsGenerator
+} = require('./compatibility/RelationshipInsightsGenerator');
+const {
+  CompatibilityFormatter
+} = require('./compatibility/CompatibilityFormatter');
+const {
+  CompatibilityWorkflowManager
+} = require('./compatibility/CompatibilityWorkflowManager');
 const { SubscriptionManager } = require('../../models/SubscriptionManager');
 
 /**
@@ -24,7 +32,10 @@ class CompatibilityAction extends BaseAction {
     this.insightsGen = new RelationshipInsightsGenerator();
     this.formatter = new CompatibilityFormatter();
     this.workflowManager = new CompatibilityWorkflowManager(
-      user, phoneNumber, null, new SubscriptionManager()
+      user,
+      phoneNumber,
+      null,
+      new SubscriptionManager()
     );
   }
 
@@ -48,21 +59,32 @@ class CompatibilityAction extends BaseAction {
   async performCompatibilityAnalysis(partnerData) {
     try {
       // Calculate comprehensive synastry using specialized engine
-      const synastryAnalysis = await this.synastryEngine.performSynastryAnalysis(
-        await this.calculator.calculateChartPositions(this.user),
-        await this.calculator.calculateChartPositions(partnerData)
-      );
+      const synastryAnalysis =
+        await this.synastryEngine.performSynastryAnalysis(
+          await this.calculator.calculateChartPositions(this.user),
+          await this.calculator.calculateChartPositions(partnerData)
+        );
 
       // Generate compatibility scores using scorer
-      synastryAnalysis.compatibilityScores = this.scorer.calculateCompatibilityScores(
-        synastryAnalysis.interchartAspects, synastryAnalysis.houseOverlays
-      );
+      synastryAnalysis.compatibilityScores =
+        this.scorer.calculateCompatibilityScores(
+          synastryAnalysis.interchartAspects,
+          synastryAnalysis.houseOverlays
+        );
 
       // Generate relationship insights using insights generator
-      const insights = await this.insightsGen.generateRelationshipInsights(synastryAnalysis, partnerData);
+      const insights = await this.insightsGen.generateRelationshipInsights(
+        synastryAnalysis,
+        partnerData
+      );
 
       // Send formatted results using formatter
-      await this.workflowManager.sendSynastryResults(synastryAnalysis, insights, partnerData, this.formatter);
+      await this.workflowManager.sendSynastryResults(
+        synastryAnalysis,
+        insights,
+        partnerData,
+        this.formatter
+      );
 
       // Update usage counters
       await incrementCompatibilityChecks(this.phoneNumber);
@@ -82,7 +104,13 @@ class CompatibilityAction extends BaseAction {
     return {
       id: this.actionId,
       description: 'Analyze relationship compatibility through synastry charts',
-      keywords: ['compatibility', 'synastry', 'relationship', 'match', 'partner'],
+      keywords: [
+        'compatibility',
+        'synastry',
+        'relationship',
+        'match',
+        'partner'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 300000, // 5 minutes between compatibility analyses

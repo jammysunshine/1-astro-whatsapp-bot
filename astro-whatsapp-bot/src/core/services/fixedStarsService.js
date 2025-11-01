@@ -6,7 +6,8 @@ const logger = require('../../utils/logger');
 class FixedStarsService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'FixedStarsService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'FixedStarsService';
     logger.info('FixedStarsService initialized');
   }
 
@@ -16,10 +17,12 @@ class FixedStarsService extends ServiceTemplate {
       this.validate(birthData);
 
       // Perform fixed stars analysis
-      const fixedStarsAnalysis = await this.calculator.calculateFixedStarsAnalysis(birthData);
+      const fixedStarsAnalysis =
+        await this.calculator.calculateFixedStarsAnalysis(birthData);
 
       // Generate detailed interpretations
-      const detailedInterpretations = this.generateDetailedInterpretations(fixedStarsAnalysis);
+      const detailedInterpretations =
+        this.generateDetailedInterpretations(fixedStarsAnalysis);
 
       // Assess star influences
       const starInfluences = this.assessStarInfluences(fixedStarsAnalysis);
@@ -54,7 +57,8 @@ class FixedStarsService extends ServiceTemplate {
       const { starName, birthData, options = {} } = params;
 
       // Get full fixed stars analysis
-      const fullAnalysis = await this.calculator.calculateFixedStarsAnalysis(birthData);
+      const fullAnalysis =
+        await this.calculator.calculateFixedStarsAnalysis(birthData);
 
       // Find specific star conjunctions
       const starConjunctions = fullAnalysis.conjunctions.filter(
@@ -130,10 +134,14 @@ class FixedStarsService extends ServiceTemplate {
       const { birthData, location, options = {} } = params;
 
       // Get basic fixed stars analysis
-      const fixedStarsAnalysis = await this.calculator.calculateFixedStarsAnalysis(birthData);
+      const fixedStarsAnalysis =
+        await this.calculator.calculateFixedStarsAnalysis(birthData);
 
       // Calculate paranatellonta (simplified implementation)
-      const paranatellonta = this.calculateParanatellonta(fixedStarsAnalysis, location);
+      const paranatellonta = this.calculateParanatellonta(
+        fixedStarsAnalysis,
+        location
+      );
 
       // Generate interpretations
       const interpretations = paranatellonta.map(para => ({
@@ -146,7 +154,8 @@ class FixedStarsService extends ServiceTemplate {
         data: {
           paranatellonta: interpretations,
           significance: this.assessParanatellontaSignificance(paranatellonta),
-          recommendations: this.generateParanatellontaRecommendations(paranatellonta)
+          recommendations:
+            this.generateParanatellontaRecommendations(paranatellonta)
         },
         metadata: {
           calculationType: 'paranatellonta_analysis',
@@ -174,7 +183,10 @@ class FixedStarsService extends ServiceTemplate {
   generateDetailedInterpretations(fixedStarsAnalysis) {
     const interpretations = [];
 
-    if (fixedStarsAnalysis.conjunctions && fixedStarsAnalysis.conjunctions.length > 0) {
+    if (
+      fixedStarsAnalysis.conjunctions &&
+      fixedStarsAnalysis.conjunctions.length > 0
+    ) {
       fixedStarsAnalysis.conjunctions.forEach(conjunction => {
         interpretations.push({
           type: 'conjunction',
@@ -206,7 +218,10 @@ class FixedStarsService extends ServiceTemplate {
 
     if (fixedStarsAnalysis.conjunctions) {
       fixedStarsAnalysis.conjunctions.forEach(conjunction => {
-        const influence = this.categorizeStarInfluence(conjunction.star, conjunction.planet);
+        const influence = this.categorizeStarInfluence(
+          conjunction.star,
+          conjunction.planet
+        );
 
         if (influence.type === 'dominant') {
           influences.dominant.push(conjunction);
@@ -219,11 +234,20 @@ class FixedStarsService extends ServiceTemplate {
     }
 
     // Determine overall influence
-    if (influences.dominant.length > influences.supportive.length + influences.challenging.length) {
+    if (
+      influences.dominant.length >
+      influences.supportive.length + influences.challenging.length
+    ) {
       influences.overall = 'dominant';
-    } else if (influences.challenging.length > influences.dominant.length + influences.supportive.length) {
+    } else if (
+      influences.challenging.length >
+      influences.dominant.length + influences.supportive.length
+    ) {
       influences.overall = 'challenging';
-    } else if (influences.supportive.length > influences.dominant.length + influences.challenging.length) {
+    } else if (
+      influences.supportive.length >
+      influences.dominant.length + influences.challenging.length
+    ) {
       influences.overall = 'supportive';
     }
 
@@ -274,11 +298,16 @@ class FixedStarsService extends ServiceTemplate {
   generateFixedStarsSummary(fixedStarsAnalysis) {
     let summary = `${fixedStarsAnalysis.introduction}\n\n`;
 
-    if (fixedStarsAnalysis.conjunctions && fixedStarsAnalysis.conjunctions.length > 0) {
+    if (
+      fixedStarsAnalysis.conjunctions &&
+      fixedStarsAnalysis.conjunctions.length > 0
+    ) {
       summary += 'Key connections:\n';
-      fixedStarsAnalysis.conjunctions.slice(0, 3).forEach((conjunction, index) => {
-        summary += `${index + 1}. ${conjunction.star} with ${conjunction.planet}\n`;
-      });
+      fixedStarsAnalysis.conjunctions
+        .slice(0, 3)
+        .forEach((conjunction, index) => {
+          summary += `${index + 1}. ${conjunction.star} with ${conjunction.planet}\n`;
+        });
     } else {
       summary += 'No major fixed star conjunctions present in this chart.\n';
     }
@@ -308,7 +337,10 @@ class FixedStarsService extends ServiceTemplate {
     if (conjunctions.length > 0) {
       const planets = conjunctions.map(c => c.planet).join(', ');
       interpretation.influence = `${starName} influences your ${planets} energies, bringing ${starName.toLowerCase()}'s qualities into these life areas.`;
-      interpretation.manifestation = this.generateManifestationDescription(starName, conjunctions);
+      interpretation.manifestation = this.generateManifestationDescription(
+        starName,
+        conjunctions
+      );
       interpretation.advice = this.generateStarAdvice(starName, conjunctions);
     } else {
       interpretation.influence = `${starName} does not form major conjunctions in your chart, but its archetypal energy remains available for conscious connection.`;
@@ -331,7 +363,8 @@ class FixedStarsService extends ServiceTemplate {
     // For now, return mock data based on conjunctions
     if (fixedStarsAnalysis.conjunctions) {
       fixedStarsAnalysis.conjunctions.forEach(conjunction => {
-        if (Math.random() > 0.5) { // Random selection for demo
+        if (Math.random() > 0.5) {
+          // Random selection for demo
           paranatellonta.push({
             star: conjunction.star,
             planet: conjunction.planet,
@@ -362,16 +395,28 @@ class FixedStarsService extends ServiceTemplate {
    */
   assessParanatellontaSignificance(paranatellonta) {
     if (paranatellonta.length === 0) {
-      return { level: 'minimal', description: 'No significant paranatellonta found' };
+      return {
+        level: 'minimal',
+        description: 'No significant paranatellonta found'
+      };
     }
 
-    const totalStrength = paranatellonta.reduce((sum, para) => sum + para.strength, 0);
+    const totalStrength = paranatellonta.reduce(
+      (sum, para) => sum + para.strength,
+      0
+    );
     const averageStrength = totalStrength / paranatellonta.length;
 
     if (averageStrength >= 3) {
-      return { level: 'high', description: 'Strong paranatellonta influences present' };
+      return {
+        level: 'high',
+        description: 'Strong paranatellonta influences present'
+      };
     } else if (averageStrength >= 2) {
-      return { level: 'moderate', description: 'Moderate paranatellonta influences' };
+      return {
+        level: 'moderate',
+        description: 'Moderate paranatellonta influences'
+      };
     } else {
       return { level: 'mild', description: 'Mild paranatellonta influences' };
     }
@@ -388,13 +433,15 @@ class FixedStarsService extends ServiceTemplate {
     if (paranatellonta.length > 0) {
       recommendations.push({
         category: 'awareness',
-        advice: 'Pay attention to timing and location when making important decisions',
+        advice:
+          'Pay attention to timing and location when making important decisions',
         priority: 'medium'
       });
 
       recommendations.push({
         category: 'development',
-        advice: 'Work consciously with the amplified energies of your paranatellonta',
+        advice:
+          'Work consciously with the amplified energies of your paranatellonta',
         priority: 'low'
       });
     }
@@ -405,9 +452,15 @@ class FixedStarsService extends ServiceTemplate {
   // Helper methods
   assessConjunctionStrength(orb) {
     const orbNum = parseFloat(orb);
-    if (orbNum <= 0.5) { return 'very strong'; }
-    if (orbNum <= 1.0) { return 'strong'; }
-    if (orbNum <= 1.5) { return 'moderate'; }
+    if (orbNum <= 0.5) {
+      return 'very strong';
+    }
+    if (orbNum <= 1.0) {
+      return 'strong';
+    }
+    if (orbNum <= 1.5) {
+      return 'moderate';
+    }
     return 'weak';
   }
 
@@ -434,7 +487,10 @@ class FixedStarsService extends ServiceTemplate {
     } else if (supportiveStars.includes(starName)) {
       return { type: 'supportive', description: 'Beneficial influence' };
     } else if (challengingStars.includes(starName)) {
-      return { type: 'challenging', description: 'Intense influence requiring awareness' };
+      return {
+        type: 'challenging',
+        description: 'Intense influence requiring awareness'
+      };
     }
 
     return { type: 'neutral', description: 'Moderate influence' };
@@ -464,7 +520,9 @@ class FixedStarsService extends ServiceTemplate {
       Vega: 'artistic success and creative expression'
     };
 
-    return manifestations[starName] || 'unique manifestations of stellar energy';
+    return (
+      manifestations[starName] || 'unique manifestations of stellar energy'
+    );
   }
 
   generateStarAdvice(starName, conjunctions) {
@@ -482,9 +540,15 @@ class FixedStarsService extends ServiceTemplate {
   }
 
   assessStarInfluenceLevel(conjunctions) {
-    if (conjunctions.length === 0) { return 'none'; }
-    if (conjunctions.length === 1) { return 'moderate'; }
-    if (conjunctions.length === 2) { return 'strong'; }
+    if (conjunctions.length === 0) {
+      return 'none';
+    }
+    if (conjunctions.length === 1) {
+      return 'moderate';
+    }
+    if (conjunctions.length === 2) {
+      return 'strong';
+    }
     return 'very strong';
   }
 
@@ -531,7 +595,11 @@ class FixedStarsService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['analyzeFixedStars', 'getStarInterpretation', 'analyzeParanatellonta'],
+      methods: [
+        'analyzeFixedStars',
+        'getStarInterpretation',
+        'analyzeParanatellonta'
+      ],
       dependencies: ['FixedStarsCalculator']
     };
   }

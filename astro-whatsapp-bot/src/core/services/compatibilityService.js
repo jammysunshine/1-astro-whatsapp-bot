@@ -38,7 +38,8 @@ class CompatibilityService extends ServiceTemplate {
       service: 'Vedic Compatibility Analysis',
       timestamp: new Date().toISOString(),
       data: result,
-      disclaimer: '⚠️ *Compatibility Disclaimer:* This analysis provides astrological insights into relationship dynamics. Real relationships involve many factors beyond astrology. Professional counseling is recommended for serious relationship decisions.'
+      disclaimer:
+        '⚠️ *Compatibility Disclaimer:* This analysis provides astrological insights into relationship dynamics. Real relationships involve many factors beyond astrology. Professional counseling is recommended for serious relationship decisions.'
     };
   }
 
@@ -70,10 +71,18 @@ class CompatibilityService extends ServiceTemplate {
       const { person1, person2, analysisType } = compatibilityData;
 
       // Perform synastry analysis (interchart aspects)
-      const synastryAnalysis = await this.calculator.synastryEngine.performSynastryAnalysis(person1, person2);
+      const synastryAnalysis =
+        await this.calculator.synastryEngine.performSynastryAnalysis(
+          person1,
+          person2
+        );
 
       // Calculate compatibility score
-      const compatibilityScore = await this.calculator.compatibilityCalculator.checkCompatibility(person1, person2);
+      const compatibilityScore =
+        await this.calculator.compatibilityCalculator.checkCompatibility(
+          person1,
+          person2
+        );
 
       // Generate composite chart if requested
       let compositeChart = null;
@@ -82,21 +91,38 @@ class CompatibilityService extends ServiceTemplate {
       }
 
       // Get detailed compatibility breakdown
-      const detailedBreakdown = await this._getDetailedCompatibilityBreakdown(person1, person2, synastryAnalysis);
+      const detailedBreakdown = await this._getDetailedCompatibilityBreakdown(
+        person1,
+        person2,
+        synastryAnalysis
+      );
 
       // Generate overall interpretation
-      const interpretation = this._generateCompatibilityInterpretation(synastryAnalysis, compatibilityScore, detailedBreakdown);
+      const interpretation = this._generateCompatibilityInterpretation(
+        synastryAnalysis,
+        compatibilityScore,
+        detailedBreakdown
+      );
 
       return {
-        person1: { name: person1.name, birthData: this._sanitizeBirthData(person1) },
-        person2: { name: person2.name, birthData: this._sanitizeBirthData(person2) },
+        person1: {
+          name: person1.name,
+          birthData: this._sanitizeBirthData(person1)
+        },
+        person2: {
+          name: person2.name,
+          birthData: this._sanitizeBirthData(person2)
+        },
         analysisType,
         synastryAnalysis,
         compatibilityScore,
         compositeChart,
         detailedBreakdown,
         interpretation,
-        recommendations: this._generateCompatibilityRecommendations(compatibilityScore, detailedBreakdown)
+        recommendations: this._generateCompatibilityRecommendations(
+          compatibilityScore,
+          detailedBreakdown
+        )
       };
     } catch (error) {
       logger.error('Error getting compatibility analysis:', error);
@@ -117,7 +143,18 @@ class CompatibilityService extends ServiceTemplate {
       const compositePositions = {};
 
       // Calculate composite planetary positions (midpoints)
-      const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
+      const planets = [
+        'sun',
+        'moon',
+        'mercury',
+        'venus',
+        'mars',
+        'jupiter',
+        'saturn',
+        'uranus',
+        'neptune',
+        'pluto'
+      ];
 
       planets.forEach(planet => {
         if (person1[planet] && person2[planet]) {
@@ -129,7 +166,9 @@ class CompatibilityService extends ServiceTemplate {
           if (Math.abs(pos1 - pos2) > 180) {
             // Handle 0/360 degree crossover
             midpoint = (pos1 + pos2 + 360) / 2;
-            if (midpoint >= 360) { midpoint -= 360; }
+            if (midpoint >= 360) {
+              midpoint -= 360;
+            }
           }
 
           compositePositions[planet] = {
@@ -143,7 +182,8 @@ class CompatibilityService extends ServiceTemplate {
       return {
         compositePositions,
         ascendant: this._calculateCompositeAscendant(person1, person2),
-        interpretation: 'Composite chart represents the relationship as a third entity with its own planetary influences'
+        interpretation:
+          'Composite chart represents the relationship as a third entity with its own planetary influences'
       };
     } catch (error) {
       logger.warn('Could not calculate composite chart:', error.message);
@@ -166,7 +206,9 @@ class CompatibilityService extends ServiceTemplate {
     let compositeAsc = (asc1 + asc2) / 2;
     if (Math.abs(asc1 - asc2) > 180) {
       compositeAsc = (asc1 + asc2 + 360) / 2;
-      if (compositeAsc >= 360) { compositeAsc -= 360; }
+      if (compositeAsc >= 360) {
+        compositeAsc -= 360;
+      }
     }
 
     return {
@@ -187,16 +229,35 @@ class CompatibilityService extends ServiceTemplate {
     try {
       // Analyze different compatibility factors
       const breakdown = {
-        emotional: this._analyzeEmotionalCompatibility(person1, person2, synastryAnalysis),
-        intellectual: this._analyzeIntellectualCompatibility(person1, person2, synastryAnalysis),
-        physical: this._analyzePhysicalCompatibility(person1, person2, synastryAnalysis),
-        spiritual: this._analyzeSpiritualCompatibility(person1, person2, synastryAnalysis),
+        emotional: this._analyzeEmotionalCompatibility(
+          person1,
+          person2,
+          synastryAnalysis
+        ),
+        intellectual: this._analyzeIntellectualCompatibility(
+          person1,
+          person2,
+          synastryAnalysis
+        ),
+        physical: this._analyzePhysicalCompatibility(
+          person1,
+          person2,
+          synastryAnalysis
+        ),
+        spiritual: this._analyzeSpiritualCompatibility(
+          person1,
+          person2,
+          synastryAnalysis
+        ),
         overallHarmony: this._calculateOverallHarmony(synastryAnalysis)
       };
 
       return breakdown;
     } catch (error) {
-      logger.warn('Could not get detailed compatibility breakdown:', error.message);
+      logger.warn(
+        'Could not get detailed compatibility breakdown:',
+        error.message
+      );
       return {};
     }
   }
@@ -211,18 +272,25 @@ class CompatibilityService extends ServiceTemplate {
    */
   _analyzeEmotionalCompatibility(person1, person2, synastry) {
     // Analyze Moon aspects and Venus connections
-    const moonAspects = synastry.aspects?.filter(aspect =>
-      aspect.planets.includes('moon') ||
-      (aspect.planets.includes('venus') && aspect.aspect === 'trine')
-    ) || [];
+    const moonAspects =
+      synastry.aspects?.filter(
+        aspect =>
+          aspect.planets.includes('moon') ||
+          (aspect.planets.includes('venus') && aspect.aspect === 'trine')
+      ) || [];
 
-    const score = moonAspects.length > 0 ? Math.min(moonAspects.length * 20, 100) : 40;
+    const score =
+      moonAspects.length > 0 ? Math.min(moonAspects.length * 20, 100) : 40;
 
     return {
       score,
       factors: moonAspects,
-      interpretation: score > 70 ? 'Strong emotional connection' :
-        score > 50 ? 'Moderate emotional harmony' : 'Emotional challenges to work through'
+      interpretation:
+        score > 70 ?
+          'Strong emotional connection' :
+          score > 50 ?
+            'Moderate emotional harmony' :
+            'Emotional challenges to work through'
     };
   }
 
@@ -236,18 +304,27 @@ class CompatibilityService extends ServiceTemplate {
    */
   _analyzeIntellectualCompatibility(person1, person2, synastry) {
     // Analyze Mercury aspects and 3rd/9th house connections
-    const mercuryAspects = synastry.aspects?.filter(aspect =>
-      aspect.planets.includes('mercury') ||
-      aspect.planets.includes('jupiter')
-    ) || [];
+    const mercuryAspects =
+      synastry.aspects?.filter(
+        aspect =>
+          aspect.planets.includes('mercury') ||
+          aspect.planets.includes('jupiter')
+      ) || [];
 
-    const score = mercuryAspects.length > 0 ? Math.min(mercuryAspects.length * 15, 100) : 50;
+    const score =
+      mercuryAspects.length > 0 ?
+        Math.min(mercuryAspects.length * 15, 100) :
+        50;
 
     return {
       score,
       factors: mercuryAspects,
-      interpretation: score > 70 ? 'Excellent intellectual synergy' :
-        score > 50 ? 'Good communication and shared interests' : 'Different thinking styles to bridge'
+      interpretation:
+        score > 70 ?
+          'Excellent intellectual synergy' :
+          score > 50 ?
+            'Good communication and shared interests' :
+            'Different thinking styles to bridge'
     };
   }
 
@@ -261,19 +338,29 @@ class CompatibilityService extends ServiceTemplate {
    */
   _analyzePhysicalCompatibility(person1, person2, synastry) {
     // Analyze Mars-Venus aspects and 5th/7th house connections
-    const physicalAspects = synastry.aspects?.filter(aspect =>
-      (aspect.planets.includes('mars') && aspect.planets.includes('venus')) ||
-      aspect.planets.includes('mars') ||
-      aspect.planets.includes('venus')
-    ) || [];
+    const physicalAspects =
+      synastry.aspects?.filter(
+        aspect =>
+          (aspect.planets.includes('mars') &&
+            aspect.planets.includes('venus')) ||
+          aspect.planets.includes('mars') ||
+          aspect.planets.includes('venus')
+      ) || [];
 
-    const score = physicalAspects.length > 0 ? Math.min(physicalAspects.length * 25, 100) : 45;
+    const score =
+      physicalAspects.length > 0 ?
+        Math.min(physicalAspects.length * 25, 100) :
+        45;
 
     return {
       score,
       factors: physicalAspects,
-      interpretation: score > 70 ? 'Strong physical attraction and harmony' :
-        score > 50 ? 'Good physical chemistry' : 'Physical connection may need nurturing'
+      interpretation:
+        score > 70 ?
+          'Strong physical attraction and harmony' :
+          score > 50 ?
+            'Good physical chemistry' :
+            'Physical connection may need nurturing'
     };
   }
 
@@ -287,19 +374,28 @@ class CompatibilityService extends ServiceTemplate {
    */
   _analyzeSpiritualCompatibility(person1, person2, synastry) {
     // Analyze Jupiter, Saturn, and Neptune aspects
-    const spiritualAspects = synastry.aspects?.filter(aspect =>
-      aspect.planets.includes('jupiter') ||
-      aspect.planets.includes('saturn') ||
-      aspect.planets.includes('neptune')
-    ) || [];
+    const spiritualAspects =
+      synastry.aspects?.filter(
+        aspect =>
+          aspect.planets.includes('jupiter') ||
+          aspect.planets.includes('saturn') ||
+          aspect.planets.includes('neptune')
+      ) || [];
 
-    const score = spiritualAspects.length > 0 ? Math.min(spiritualAspects.length * 20, 100) : 55;
+    const score =
+      spiritualAspects.length > 0 ?
+        Math.min(spiritualAspects.length * 20, 100) :
+        55;
 
     return {
       score,
       factors: spiritualAspects,
-      interpretation: score > 70 ? 'Deep spiritual connection and shared values' :
-        score > 50 ? 'Compatible life philosophies' : 'Different spiritual paths to respect'
+      interpretation:
+        score > 70 ?
+          'Deep spiritual connection and shared values' :
+          score > 50 ?
+            'Compatible life philosophies' :
+            'Different spiritual paths to respect'
     };
   }
 
@@ -318,7 +414,8 @@ class CompatibilityService extends ServiceTemplate {
       ['square', 'opposition'].includes(aspect.aspect)
     );
 
-    const harmonyScore = harmoniousAspects.length * 10 - challengingAspects.length * 5;
+    const harmonyScore =
+      harmoniousAspects.length * 10 - challengingAspects.length * 5;
     return Math.max(0, Math.min(100, 50 + harmonyScore));
   }
 
@@ -336,15 +433,20 @@ class CompatibilityService extends ServiceTemplate {
     const overallScore = score.overall || 50;
 
     if (overallScore >= 80) {
-      interpretation = 'Excellent compatibility with strong potential for a harmonious and fulfilling relationship. ';
+      interpretation =
+        'Excellent compatibility with strong potential for a harmonious and fulfilling relationship. ';
     } else if (overallScore >= 70) {
-      interpretation = 'Good compatibility with positive indicators for a successful partnership. ';
+      interpretation =
+        'Good compatibility with positive indicators for a successful partnership. ';
     } else if (overallScore >= 60) {
-      interpretation = 'Moderate compatibility requiring conscious effort and understanding. ';
+      interpretation =
+        'Moderate compatibility requiring conscious effort and understanding. ';
     } else if (overallScore >= 50) {
-      interpretation = 'Challenging compatibility that may require significant work and compromise. ';
+      interpretation =
+        'Challenging compatibility that may require significant work and compromise. ';
     } else {
-      interpretation = 'Difficult compatibility suggesting fundamental differences that may be hard to overcome. ';
+      interpretation =
+        'Difficult compatibility suggesting fundamental differences that may be hard to overcome. ';
     }
 
     // Add specific insights
@@ -385,14 +487,23 @@ class CompatibilityService extends ServiceTemplate {
     const overallScore = score.overall || 50;
 
     if (overallScore >= 70) {
-      recommendations.overall = 'This relationship shows strong compatibility potential.';
-      recommendations.advice.push('Focus on maintaining open communication and nurturing the natural harmony.');
+      recommendations.overall =
+        'This relationship shows strong compatibility potential.';
+      recommendations.advice.push(
+        'Focus on maintaining open communication and nurturing the natural harmony.'
+      );
     } else if (overallScore >= 50) {
-      recommendations.overall = 'This relationship has moderate compatibility with room for growth.';
-      recommendations.advice.push('Work on understanding and accepting differences while building on common ground.');
+      recommendations.overall =
+        'This relationship has moderate compatibility with room for growth.';
+      recommendations.advice.push(
+        'Work on understanding and accepting differences while building on common ground.'
+      );
     } else {
-      recommendations.overall = 'This relationship may face significant challenges.';
-      recommendations.advice.push('Consider whether the challenges are worth the effort, or if this relationship serves a different purpose in your life.');
+      recommendations.overall =
+        'This relationship may face significant challenges.';
+      recommendations.advice.push(
+        'Consider whether the challenges are worth the effort, or if this relationship serves a different purpose in your life.'
+      );
     }
 
     // Add specific recommendations based on breakdown
@@ -401,7 +512,9 @@ class CompatibilityService extends ServiceTemplate {
         recommendations.strengths.push(`${area}: ${analysis.interpretation}`);
       } else if (analysis.score < 50) {
         recommendations.challenges.push(`${area}: ${analysis.interpretation}`);
-        recommendations.advice.push(`For ${area} compatibility: Focus on understanding each other's needs and finding common ground.`);
+        recommendations.advice.push(
+          `For ${area} compatibility: Focus on understanding each other's needs and finding common ground.`
+        );
       }
     });
 
@@ -431,9 +544,18 @@ class CompatibilityService extends ServiceTemplate {
    */
   _getZodiacSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer',
-      'Leo', 'Virgo', 'Libra', 'Scorpio',
-      'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     const signIndex = Math.floor(longitude / 30) % 12;
     return signs[signIndex];
@@ -448,7 +570,9 @@ class CompatibilityService extends ServiceTemplate {
    */
   _getHouseFromLongitude(longitude, ascendant) {
     let relativePosition = longitude - ascendant;
-    if (relativePosition < 0) { relativePosition += 360; }
+    if (relativePosition < 0) {
+      relativePosition += 360;
+    }
     return Math.floor(relativePosition / 30) + 1;
   }
 
@@ -498,8 +622,12 @@ class CompatibilityService extends ServiceTemplate {
     return {
       couple: `${result.person1.name} & ${result.person2.name}`,
       overallScore: result.compatibilityScore.overall || 0,
-      compatibility: result.compatibilityScore.overall >= 70 ? 'High' :
-        result.compatibilityScore.overall >= 50 ? 'Moderate' : 'Challenging',
+      compatibility:
+        result.compatibilityScore.overall >= 70 ?
+          'High' :
+          result.compatibilityScore.overall >= 50 ?
+            'Moderate' :
+            'Challenging',
       keyStrengths: result.recommendations.strengths.slice(0, 2),
       keyChallenges: result.recommendations.challenges.slice(0, 2),
       overallAdvice: result.recommendations.overall
@@ -512,7 +640,11 @@ class CompatibilityService extends ServiceTemplate {
       version: '1.0.0',
       category: 'vedic',
       methods: ['execute', 'getCompatibilityAnalysis'],
-      dependencies: ['CompatibilityAction', 'SynastryEngine', 'CompatibilityScorer']
+      dependencies: [
+        'CompatibilityAction',
+        'SynastryEngine',
+        'CompatibilityScorer'
+      ]
     };
   }
   async getHealthStatus() {

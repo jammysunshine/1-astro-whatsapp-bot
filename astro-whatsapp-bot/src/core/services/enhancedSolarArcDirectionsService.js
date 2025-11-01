@@ -4,13 +4,17 @@
  */
 
 const ServiceTemplate = require('../ServiceTemplate');
-const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
+const {
+  validateCoordinates,
+  validateDateTime
+} = require('../../../utils/validation');
 const { formatDegree, formatTime } = require('../../../utils/formatters');
 
 class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   constructor() {
     super('EnhancedSolarArcDirections', {
-      description: 'Advanced solar arc directions with comprehensive lifetime analysis',
+      description:
+        'Advanced solar arc directions with comprehensive lifetime analysis',
       version: '1.0.0',
       author: 'Vedic Astrology System',
       category: 'vedic',
@@ -33,14 +37,28 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   /**
    * Calculate solar arc directions for given date
    */
-  async calculateSolarArcDirections(birthDatetime, birthLatitude, birthLongitude, targetDate) {
-    const birthChart = await VedicCalculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
-    const targetChart = await VedicCalculator.calculateChart(targetDate, birthLatitude, birthLongitude);
+  async calculateSolarArcDirections(
+    birthDatetime,
+    birthLatitude,
+    birthLongitude,
+    targetDate
+  ) {
+    const birthChart = await VedicCalculator.calculateChart(
+      birthDatetime,
+      birthLatitude,
+      birthLongitude
+    );
+    const targetChart = await VedicCalculator.calculateChart(
+      targetDate,
+      birthLatitude,
+      birthLongitude
+    );
 
     // Calculate age in years (solar arc = age in degrees)
     const birthDate = new Date(birthDatetime);
     const targetDateTime = new Date(targetDate);
-    const ageInYears = (targetDateTime - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
+    const ageInYears =
+      (targetDateTime - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
     const solarArc = ageInYears;
 
     // Apply solar arc to all planets
@@ -62,7 +80,15 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   applySolarArc(birthChart, solarArc) {
     const directedChart = { ...birthChart };
 
-    const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+    const planets = [
+      'sun',
+      'moon',
+      'mars',
+      'mercury',
+      'jupiter',
+      'venus',
+      'saturn'
+    ];
 
     for (const planet of planets) {
       directedChart[planet] = (birthChart[planet] + solarArc) % 360;
@@ -80,7 +106,15 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   calculateDirectionalAspects(directedChart, birthChart) {
     const aspects = [];
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     for (const directedPlanet of planets) {
       const directedLong = directedChart[directedPlanet.toLowerCase()];
@@ -96,7 +130,11 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
             aspect: aspect.aspect,
             orb: aspect.orb,
             strength: aspect.strength,
-            type: this.getDirectionalAspectType(directedPlanet, natalPlanet, aspect.aspect)
+            type: this.getDirectionalAspectType(
+              directedPlanet,
+              natalPlanet,
+              aspect.aspect
+            )
           });
         }
       }
@@ -160,7 +198,15 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   calculateDirectionalHouses(directedChart, birthChart) {
     const houseAnalysis = [];
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
     const birthAscendant = birthChart.ascendant;
 
     for (const planet of planets) {
@@ -171,7 +217,10 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
         planet,
         house: housePosition,
         sign: this.getLongitudeSign(planetLong),
-        interpretation: this.getDirectionalHouseInterpretation(planet, housePosition)
+        interpretation: this.getDirectionalHouseInterpretation(
+          planet,
+          housePosition
+        )
       });
     }
 
@@ -182,7 +231,10 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    * Get house from longitude based on natal ascendant
    */
   getLongitudeHouse(longitude, ascendant) {
-    const normalizedLong = longitude >= ascendant ? longitude - ascendant : longitude + 360 - ascendant;
+    const normalizedLong =
+      longitude >= ascendant ?
+        longitude - ascendant :
+        longitude + 360 - ascendant;
     return Math.floor(normalizedLong / 30) + 1;
   }
 
@@ -191,8 +243,18 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   getLongitudeSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     return signs[Math.floor(longitude / 30) % 12];
   }
@@ -312,7 +374,9 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
       }
     };
 
-    return interpretations[house]?.[planet] || 'Directional influence in this house';
+    return (
+      interpretations[house]?.[planet] || 'Directional influence in this house'
+    );
   }
 
   /**
@@ -398,12 +462,13 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
     const aspects = this.calculateDirectionalAspects(directedChart, birthChart);
 
     // Group aspects by type and timing
-    const activatingAspects = aspects.filter(a =>
-      (a.aspect === 'square' || a.aspect === 'opposition') && a.strength > 60
+    const activatingAspects = aspects.filter(
+      a =>
+        (a.aspect === 'square' || a.aspect === 'opposition') && a.strength > 60
     );
 
-    const harmoniousAspects = aspects.filter(a =>
-      (a.aspect === 'trine' || a.aspect === 'sextile') && a.strength > 60
+    const harmoniousAspects = aspects.filter(
+      a => (a.aspect === 'trine' || a.aspect === 'sextile') && a.strength > 60
     );
 
     // Create predictive windows
@@ -439,16 +504,31 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
       0: { name: 'Birth', theme: 'Pure potential', duration: 7 },
       7: { name: 'Childhood', theme: 'Learning and development', duration: 7 },
       14: { name: 'Adolescence', theme: 'Identity formation', duration: 7 },
-      21: { name: 'Young Adulthood', theme: 'Independence and career', duration: 7 },
-      28: { name: 'Established Adulthood', theme: 'Family and achievement', duration: 7 },
+      21: {
+        name: 'Young Adulthood',
+        theme: 'Independence and career',
+        duration: 7
+      },
+      28: {
+        name: 'Established Adulthood',
+        theme: 'Family and achievement',
+        duration: 7
+      },
       35: { name: 'Mid-life', theme: 'Reevaluation and change', duration: 7 },
-      42: { name: 'Mature Adulthood', theme: 'Wisdom and mentoring', duration: 7 },
+      42: {
+        name: 'Mature Adulthood',
+        theme: 'Wisdom and mentoring',
+        duration: 7
+      },
       49: { name: 'Senior Years', theme: 'Legacy and reflection', duration: 7 },
       56: { name: 'Elder Years', theme: 'Spiritual completion', duration: 14 }
     };
 
     for (const [startAge, phase] of Object.entries(lifePhases)) {
-      if (age >= parseInt(startAge) && age < parseInt(startAge) + phase.duration) {
+      if (
+        age >= parseInt(startAge) &&
+        age < parseInt(startAge) + phase.duration
+      ) {
         return {
           phase: phase.name,
           theme: phase.theme,
@@ -532,7 +612,9 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
 
       return this.formatOutput(analysis, options.language || 'en');
     } catch (error) {
-      throw new Error(`Enhanced solar arc directions calculation failed: ${error.message}`);
+      throw new Error(
+        `Enhanced solar arc directions calculation failed: ${error.message}`
+      );
     }
   }
 
@@ -540,7 +622,13 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    * Generate interpretations
    */
   generateInterpretations(data) {
-    const { directionalAspects, directionalHouses, lifeEvents, predictiveWindows, arcProgression } = data;
+    const {
+      directionalAspects,
+      directionalHouses,
+      lifeEvents,
+      predictiveWindows,
+      arcProgression
+    } = data;
 
     const interpretations = {
       lifeDirection: this.interpretLifeDirection(data),
@@ -561,14 +649,17 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
     const { directionalAspects, arcProgression } = data;
 
     const strongAspects = directionalAspects.filter(a => a.strength > 70);
-    const activatingAspects = directionalAspects.filter(a =>
-      a.aspect === 'square' || a.aspect === 'opposition'
+    const activatingAspects = directionalAspects.filter(
+      a => a.aspect === 'square' || a.aspect === 'opposition'
     );
 
     return {
       phase: arcProgression.phase,
       theme: arcProgression.theme,
-      direction: activatingAspects.length > strongAspects.length ? 'challenging' : 'growth',
+      direction:
+        activatingAspects.length > strongAspects.length ?
+          'challenging' :
+          'growth',
       progress: `${arcProgression.progress.toFixed(0)}% complete`
     };
   }
@@ -582,7 +673,10 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
     return {
       upcoming: significantEvents.slice(0, 3),
       total: lifeEvents.length,
-      significance: significantEvents.length > 0 ? 'major life changes' : 'normal development'
+      significance:
+        significantEvents.length > 0 ?
+          'major life changes' :
+          'normal development'
     };
   }
 
@@ -601,8 +695,13 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
 
     return {
       primary: focusedHouses[0] ? `House ${focusedHouses[0][0]}` : 'None',
-      areas: focusedHouses.map(([house, count]) => `House ${house} (${count} planets)`),
-      emphasis: focusedHouses.length > 0 ? 'concentrated development' : 'distributed focus'
+      areas: focusedHouses.map(
+        ([house, count]) => `House ${house} (${count} planets)`
+      ),
+      emphasis:
+        focusedHouses.length > 0 ?
+          'concentrated development' :
+          'distributed focus'
     };
   }
 
@@ -610,15 +709,20 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    * Interpret timing
    */
   interpretTiming(predictiveWindows) {
-    const activatingWindows = predictiveWindows.filter(w => w.type === 'Activation Window');
-    const opportunityWindows = predictiveWindows.filter(w => w.type === 'Opportunity Window');
+    const activatingWindows = predictiveWindows.filter(
+      w => w.type === 'Activation Window'
+    );
+    const opportunityWindows = predictiveWindows.filter(
+      w => w.type === 'Opportunity Window'
+    );
 
     return {
       current: activatingWindows.length > 0 ? 'activation' : 'opportunity',
       windows: predictiveWindows,
-      recommendation: activatingWindows.length > 0 ?
-        'Focus on addressing challenges and taking decisive action' :
-        'Pursue new opportunities and growth initiatives'
+      recommendation:
+        activatingWindows.length > 0 ?
+          'Focus on addressing challenges and taking decisive action' :
+          'Pursue new opportunities and growth initiatives'
     };
   }
 
@@ -665,11 +769,21 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   calculateDirectionalIntensity(data) {
     const { directionalAspects } = data;
-    const totalStrength = directionalAspects.reduce((sum, aspect) => sum + aspect.strength, 0);
-    const averageStrength = directionalAspects.length > 0 ? totalStrength / directionalAspects.length : 0;
+    const totalStrength = directionalAspects.reduce(
+      (sum, aspect) => sum + aspect.strength,
+      0
+    );
+    const averageStrength =
+      directionalAspects.length > 0 ?
+        totalStrength / directionalAspects.length :
+        0;
 
-    if (averageStrength > 70) { return 'High'; }
-    if (averageStrength > 40) { return 'Medium'; }
+    if (averageStrength > 70) {
+      return 'High';
+    }
+    if (averageStrength > 40) {
+      return 'Medium';
+    }
     return 'Low';
   }
 
@@ -679,11 +793,13 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   assessPotential(data) {
     const { directionalAspects, predictiveWindows } = data;
 
-    const harmoniousAspects = directionalAspects.filter(a =>
-      a.aspect === 'trine' || a.aspect === 'sextile'
+    const harmoniousAspects = directionalAspects.filter(
+      a => a.aspect === 'trine' || a.aspect === 'sextile'
     );
 
-    const opportunityWindows = predictiveWindows.filter(w => w.type === 'Opportunity Window');
+    const opportunityWindows = predictiveWindows.filter(
+      w => w.type === 'Opportunity Window'
+    );
 
     if (harmoniousAspects.length > opportunityWindows.length) {
       return 'High growth potential';
@@ -709,12 +825,15 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
     }
 
     // Based on aspects
-    const challengingAspects = directionalAspects.filter(a =>
-      (a.aspect === 'square' || a.aspect === 'opposition') && a.strength > 60
+    const challengingAspects = directionalAspects.filter(
+      a =>
+        (a.aspect === 'square' || a.aspect === 'opposition') && a.strength > 60
     );
 
     if (challengingAspects.length > 0) {
-      recommendations.push('Navigate current challenges with awareness and growth mindset');
+      recommendations.push(
+        'Navigate current challenges with awareness and growth mindset'
+      );
     }
 
     // Based on house focus

@@ -183,22 +183,35 @@ class AgeHarmonicAstrologyReader {
       const age = currentAge || this.calculateCurrentAge(birthDate);
 
       // Get planetary positions
-      const planetaryPositions = await this.getPlanetaryPositions(birthDate, birthTime, birthPlace);
+      const planetaryPositions = await this.getPlanetaryPositions(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
 
       // Calculate harmonic periods for current age
       const currentHarmonics = this.calculateHarmonicPeriods(age);
 
       // Analyze planetary harmonics
-      const planetaryHarmonics = this.analyzePlanetaryHarmonics(planetaryPositions, age);
+      const planetaryHarmonics = this.analyzePlanetaryHarmonics(
+        planetaryPositions,
+        age
+      );
 
       // Determine life stage
       const lifeStage = this.determineLifeStage(age);
 
       // Generate harmonic aspects
-      const harmonicAspects = this.generateHarmonicAspects(planetaryPositions, currentHarmonics);
+      const harmonicAspects = this.generateHarmonicAspects(
+        planetaryPositions,
+        currentHarmonics
+      );
 
       // Create harmonic chart
-      const harmonicChart = this.createHarmonicChart(planetaryPositions, currentHarmonics);
+      const harmonicChart = this.createHarmonicChart(
+        planetaryPositions,
+        currentHarmonics
+      );
 
       // Generate interpretation
       const interpretation = this.generateHarmonicInterpretation(
@@ -219,7 +232,8 @@ class AgeHarmonicAstrologyReader {
         interpretation,
         nextHarmonic: this.getNextHarmonicPeriod(age),
         techniques: this.getHarmonicTechniques(),
-        disclaimer: '⚠️ *Age Harmonic Astrology Disclaimer:* Harmonic analysis divides life into rhythmic cycles. This is an interpretive technique that should complement, not replace, traditional astrological analysis.'
+        disclaimer:
+          '⚠️ *Age Harmonic Astrology Disclaimer:* Harmonic analysis divides life into rhythmic cycles. This is an interpretive technique that should complement, not replace, traditional astrological analysis.'
       };
     } catch (error) {
       logger.error('Error generating age harmonic analysis:', error);
@@ -243,7 +257,10 @@ class AgeHarmonicAstrologyReader {
     let age = today.getFullYear() - birth.getFullYear();
     const monthDiff = today.getMonth() - birth.getMonth();
 
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birth.getDate())
+    ) {
       age--;
     }
 
@@ -260,7 +277,11 @@ class AgeHarmonicAstrologyReader {
   async getPlanetaryPositions(birthDate, birthTime, birthPlace) {
     try {
       const vedicCalc = require('./vedic/VedicCalculator');
-      return await vedicCalc.calculatePlanetaryPositions(birthDate, birthTime, birthPlace);
+      return await vedicCalc.calculatePlanetaryPositions(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
     } catch (error) {
       logger.error('Error getting planetary positions:', error);
       return {};
@@ -296,7 +317,7 @@ class AgeHarmonicAstrologyReader {
     // Also check for longer-term harmonics that are still active
     [12, 18, 24, 30, 36, 45, 60, 72].forEach(harmonic => {
       if (age < harmonic) {
-        const periodStart = harmonic - (harmonic / 12); // Approximate start
+        const periodStart = harmonic - harmonic / 12; // Approximate start
         if (age >= periodStart) {
           const data = this.harmonicPeriods[harmonic];
           if (data) {
@@ -341,7 +362,11 @@ class AgeHarmonicAstrologyReader {
             themes: data.themes,
             sign: planetData.sign,
             house: planetData.house,
-            influence: this.getPlanetaryHarmonicInfluence(planet, activeHarmonics, age)
+            influence: this.getPlanetaryHarmonicInfluence(
+              planet,
+              activeHarmonics,
+              age
+            )
           };
         }
       }
@@ -383,11 +408,25 @@ class AgeHarmonicAstrologyReader {
    * @returns {Object} Life stage information
    */
   determineLifeStage(age) {
-    if (age < 12) { return { stage: 'childhood', ...this.lifeStageHarmonics.childhood }; }
-    if (age < 18) { return { stage: 'adolescence', ...this.lifeStageHarmonics.adolescence }; }
-    if (age < 30) { return { stage: 'young_adulthood', ...this.lifeStageHarmonics.young_adulthood }; }
-    if (age < 45) { return { stage: 'midlife', ...this.lifeStageHarmonics.midlife }; }
-    return { stage: 'mature_adulthood', ...this.lifeStageHarmonics.mature_adulthood };
+    if (age < 12) {
+      return { stage: 'childhood', ...this.lifeStageHarmonics.childhood };
+    }
+    if (age < 18) {
+      return { stage: 'adolescence', ...this.lifeStageHarmonics.adolescence };
+    }
+    if (age < 30) {
+      return {
+        stage: 'young_adulthood',
+        ...this.lifeStageHarmonics.young_adulthood
+      };
+    }
+    if (age < 45) {
+      return { stage: 'midlife', ...this.lifeStageHarmonics.midlife };
+    }
+    return {
+      stage: 'mature_adulthood',
+      ...this.lifeStageHarmonics.mature_adulthood
+    };
   }
 
   /**
@@ -502,9 +541,18 @@ class AgeHarmonicAstrologyReader {
    */
   getZodiacSign(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer',
-      'Leo', 'Virgo', 'Libra', 'Scorpio',
-      'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     const signIndex = Math.floor(longitude / 30) % 12;
     return signs[signIndex];
@@ -518,7 +566,12 @@ class AgeHarmonicAstrologyReader {
    * @param {number} age - Current age
    * @returns {string} Interpretation
    */
-  generateHarmonicInterpretation(currentHarmonics, planetaryHarmonics, lifeStage, age) {
+  generateHarmonicInterpretation(
+    currentHarmonics,
+    planetaryHarmonics,
+    lifeStage,
+    age
+  ) {
     let interpretation = '';
 
     // Current harmonic periods
@@ -537,7 +590,8 @@ class AgeHarmonicAstrologyReader {
 
     // Age-specific insights
     if (age < 12) {
-      interpretation += 'Focus on foundational development and learning life rhythms. ';
+      interpretation +=
+        'Focus on foundational development and learning life rhythms. ';
     } else if (age < 18) {
       interpretation += 'Emphasize identity formation and future direction. ';
     } else if (age < 30) {

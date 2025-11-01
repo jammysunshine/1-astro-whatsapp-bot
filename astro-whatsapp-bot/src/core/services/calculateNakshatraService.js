@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 /**
  * CalculateNakshatraService - Service for nakshatra calculation and interpretation
@@ -58,7 +59,9 @@ class CalculateNakshatraService extends ServiceTemplate {
 
       // Generate additional analysis
       const nakshatraTraits = this._getNakshatraTraits(nakshatraData.nakshatra);
-      const rulingPlanet = this._getNakshatraRulingPlanet(nakshatraData.nakshatra);
+      const rulingPlanet = this._getNakshatraRulingPlanet(
+        nakshatraData.nakshatra
+      );
       const padaAnalysis = this._analyzePada(nakshatraData.pada);
       const symbolism = this._getNakshatraSymbolism(nakshatraData.nakshatra);
       const lifePurpose = this._identifyLifePurpose(nakshatraData.nakshatra);
@@ -71,7 +74,11 @@ class CalculateNakshatraService extends ServiceTemplate {
         symbolism,
         lifePurpose,
         chartType,
-        interpretation: this._createNakshatraInterpretation(nakshatraData, nakshatraTraits, rulingPlanet)
+        interpretation: this._createNakshatraInterpretation(
+          nakshatraData,
+          nakshatraTraits,
+          rulingPlanet
+        )
       };
     } catch (error) {
       logger.error('Nakshatra calculation error:', error);
@@ -98,7 +105,7 @@ class CalculateNakshatraService extends ServiceTemplate {
 
       // Calculate approximate Moon position (simplified)
       const dayOfYear = this._getDayOfYear(day, month, year);
-      const timeInHours = hour + (minute / 60);
+      const timeInHours = hour + minute / 60;
       const moonPosition = (dayOfYear * 12.2 + timeInHours * 0.5) % 360;
 
       const nakshatraIndex = Math.floor(moonPosition / (360 / 27));
@@ -106,11 +113,33 @@ class CalculateNakshatraService extends ServiceTemplate {
       const pada = Math.floor((nakshatraPosition / (360 / 27)) * 4) + 1;
 
       const nakshatras = [
-        'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
-        'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
-        'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
-        'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhisha',
-        'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+        'Ashwini',
+        'Bharani',
+        'Krittika',
+        'Rohini',
+        'Mrigashira',
+        'Ardra',
+        'Punarvasu',
+        'Pushya',
+        'Ashlesha',
+        'Magha',
+        'Purva Phalguni',
+        'Uttara Phalguni',
+        'Hasta',
+        'Chitra',
+        'Swati',
+        'Vishakha',
+        'Anuradha',
+        'Jyeshtha',
+        'Mula',
+        'Purva Ashadha',
+        'Uttara Ashadha',
+        'Shravana',
+        'Dhanishta',
+        'Shatabhisha',
+        'Purva Bhadrapada',
+        'Uttara Bhadrapada',
+        'Revati'
       ];
 
       const nakshatra = nakshatras[nakshatraIndex];
@@ -118,9 +147,11 @@ class CalculateNakshatraService extends ServiceTemplate {
       return {
         nakshatra,
         pada,
-        degree: Math.round((nakshatraPosition / (360 / 27) * 13.333) * 100) / 100,
+        degree:
+          Math.round((nakshatraPosition / (360 / 27)) * 13.333 * 100) / 100,
         calculationMethod: 'Approximate based on birth date and time',
-        notes: 'Nakshatra calculation requires precise astronomical Moon positioning'
+        notes:
+          'Nakshatra calculation requires precise astronomical Moon positioning'
       };
     } catch (error) {
       logger.error('Nakshatra calculation error:', error);
@@ -409,15 +440,17 @@ class CalculateNakshatraService extends ServiceTemplate {
       }
     };
 
-    return traits[nakshatra] || {
-      nature: 'Unknown',
-      gender: 'Unknown',
-      caste: 'Unknown',
-      direction: 'Unknown',
-      qualities: ['Unique qualities'],
-      challenges: ['Individual challenges'],
-      strengths: ['Personal strengths']
-    };
+    return (
+      traits[nakshatra] || {
+        nature: 'Unknown',
+        gender: 'Unknown',
+        caste: 'Unknown',
+        direction: 'Unknown',
+        qualities: ['Unique qualities'],
+        challenges: ['Individual challenges'],
+        strengths: ['Personal strengths']
+      }
+    );
   }
 
   /**
@@ -506,11 +539,13 @@ class CalculateNakshatraService extends ServiceTemplate {
       }
     };
 
-    return planetInfo[planet] || {
-      energy: 'Unique cosmic influence',
-      influence: 'Special planetary guidance',
-      qualities: 'Individual planetary characteristics'
-    };
+    return (
+      planetInfo[planet] || {
+        energy: 'Unique cosmic influence',
+        influence: 'Special planetary guidance',
+        qualities: 'Individual planetary characteristics'
+      }
+    );
   }
 
   /**
@@ -522,7 +557,12 @@ class CalculateNakshatraService extends ServiceTemplate {
     const padaInfo = {
       1: {
         focus: 'Foundation and initiation',
-        qualities: ['Beginning', 'Leadership', 'Independence', 'Action-oriented'],
+        qualities: [
+          'Beginning',
+          'Leadership',
+          'Independence',
+          'Action-oriented'
+        ],
         challenges: ['Impatience', 'Over-initiation', 'Restlessness'],
         strengths: ['Initiative', 'Courage', 'Leadership potential']
       },
@@ -534,7 +574,12 @@ class CalculateNakshatraService extends ServiceTemplate {
       },
       3: {
         focus: 'Expression and creativity',
-        qualities: ['Communication', 'Creativity', 'Social skills', 'Adaptability'],
+        qualities: [
+          'Communication',
+          'Creativity',
+          'Social skills',
+          'Adaptability'
+        ],
         challenges: ['Scattering energy', 'Superficiality', 'Indecision'],
         strengths: ['Communication', 'Creativity', 'Social grace']
       },
@@ -546,12 +591,14 @@ class CalculateNakshatraService extends ServiceTemplate {
       }
     };
 
-    return padaInfo[pada] || {
-      focus: 'Unique pada focus',
-      qualities: ['Individual qualities'],
-      challenges: ['Personal challenges'],
-      strengths: ['Personal strengths']
-    };
+    return (
+      padaInfo[pada] || {
+        focus: 'Unique pada focus',
+        qualities: ['Individual qualities'],
+        challenges: ['Personal challenges'],
+        strengths: ['Personal strengths']
+      }
+    );
   }
 
   /**
@@ -564,173 +611,205 @@ class CalculateNakshatraService extends ServiceTemplate {
       Ashwini: {
         symbol: 'Horse\'s head',
         deity: 'Ashwin Kumaras (divine physicians)',
-        mythology: 'Twin gods of healing and medicine, representing swift recovery and divine intervention',
+        mythology:
+          'Twin gods of healing and medicine, representing swift recovery and divine intervention',
         meaning: 'Swift healing, new beginnings, and divine assistance'
       },
       Bharani: {
         symbol: 'Yoni (female reproductive organ)',
         deity: 'Yama (god of death)',
-        mythology: 'Represents the womb of creation and the transformative power of death and rebirth',
+        mythology:
+          'Represents the womb of creation and the transformative power of death and rebirth',
         meaning: 'Creative transformation and the cycle of life and death'
       },
       Krittika: {
         symbol: 'Knife or razor',
         deity: 'Agni (god of fire)',
-        mythology: 'Six sisters who raised the war god Kartikeya, representing purification and cutting away',
-        meaning: 'Purification, sharpness, and the power to cut through illusions'
+        mythology:
+          'Six sisters who raised the war god Kartikeya, representing purification and cutting away',
+        meaning:
+          'Purification, sharpness, and the power to cut through illusions'
       },
       Rohini: {
         symbol: 'Cart or chariot',
         deity: 'Brahma (creator god)',
-        mythology: 'Favorite wife of the Moon god, representing beauty, fertility, and creative abundance',
+        mythology:
+          'Favorite wife of the Moon god, representing beauty, fertility, and creative abundance',
         meaning: 'Beauty, growth, nourishment, and material prosperity'
       },
       Mrigashira: {
         symbol: 'Deer\'s head',
         deity: 'Soma (moon god)',
-        mythology: 'Represents the search for enlightenment and the gentle, elusive nature of spiritual seeking',
+        mythology:
+          'Represents the search for enlightenment and the gentle, elusive nature of spiritual seeking',
         meaning: 'Search, discovery, and the gentle pursuit of knowledge'
       },
       Ardra: {
         symbol: 'Teardrop',
         deity: 'Rudra (storm god)',
-        mythology: 'Represents the destructive and creative power of storms, associated with Shiva\'s fierce form',
+        mythology:
+          'Represents the destructive and creative power of storms, associated with Shiva\'s fierce form',
         meaning: 'Storm, destruction, and creative transformation'
       },
       Punarvasu: {
         symbol: 'Bow and quiver',
         deity: 'Aditi (mother of gods)',
-        mythology: 'Represents renewal and return, the infinite nature of the divine mother',
+        mythology:
+          'Represents renewal and return, the infinite nature of the divine mother',
         meaning: 'Renewal, expansion, and infinite divine potential'
       },
       Pushya: {
         symbol: 'Flower or udder',
         deity: 'Brihaspati (guru of gods)',
-        mythology: 'Sacred flower, representing nourishment, protection, and spiritual wisdom',
+        mythology:
+          'Sacred flower, representing nourishment, protection, and spiritual wisdom',
         meaning: 'Nourishment, protection, and spiritual prosperity'
       },
       Ashlesha: {
         symbol: 'Serpent',
         deity: 'Nagas (serpent deities)',
-        mythology: 'Represents the kundalini energy and the wisdom of the serpent, both healing and dangerous',
+        mythology:
+          'Represents the kundalini energy and the wisdom of the serpent, both healing and dangerous',
         meaning: 'Wisdom, healing, transformation, and mystical knowledge'
       },
       Magha: {
         symbol: 'Royal throne',
         deity: 'Pitris (ancestors)',
-        mythology: 'Royal throne representing ancestral wisdom, dignity, and the power of heritage',
+        mythology:
+          'Royal throne representing ancestral wisdom, dignity, and the power of heritage',
         meaning: 'Royal dignity, ancestral wisdom, and noble bearing'
       },
       'Purva Phalguni': {
         symbol: 'Hammock or bed',
         deity: 'Bhaga (god of prosperity)',
-        mythology: 'Represents pleasure, relaxation, and the enjoyment of life\'s blessings',
+        mythology:
+          'Represents pleasure, relaxation, and the enjoyment of life\'s blessings',
         meaning: 'Pleasure, romance, creativity, and sensual enjoyment'
       },
       'Uttara Phalguni': {
         symbol: 'Bed or marriage bed',
         deity: 'Aryaman (god of honor)',
-        mythology: 'Represents friendship, favor, and the blessings of honorable relationships',
+        mythology:
+          'Represents friendship, favor, and the blessings of honorable relationships',
         meaning: 'Friendship, favor, marriage, and beneficial alliances'
       },
       Hasta: {
         symbol: 'Hand',
         deity: 'Savitar (creative solar deity)',
-        mythology: 'The hand of creation, representing skill, craftsmanship, and healing touch',
+        mythology:
+          'The hand of creation, representing skill, craftsmanship, and healing touch',
         meaning: 'Skill, craftsmanship, healing, and manual dexterity'
       },
       Chitra: {
         symbol: 'Pearl or bright jewel',
         deity: 'Vishwakarma (divine architect)',
-        mythology: 'Beautiful pearl representing artistic creation and the architect of the universe',
-        meaning: 'Beauty, creativity, artistic skill, and architectural ability'
+        mythology:
+          'Beautiful pearl representing artistic creation and the architect of the universe',
+        meaning:
+          'Beauty, creativity, artistic skill, and architectural ability'
       },
       Swati: {
         symbol: 'Coral or independent sword',
         deity: 'Vayu (wind god)',
-        mythology: 'Represents independence, balance, and the self-reliant nature of the wind',
+        mythology:
+          'Represents independence, balance, and the self-reliant nature of the wind',
         meaning: 'Independence, balance, self-reliance, and gentle movement'
       },
       Vishakha: {
         symbol: 'Triumphal arch or potter\'s wheel',
         deity: 'Indra (king of gods) and Agni (fire god)',
-        mythology: 'Arch of victory representing achievement, focused effort, and triumphant success',
+        mythology:
+          'Arch of victory representing achievement, focused effort, and triumphant success',
         meaning: 'Achievement, focused effort, victory, and purposeful action'
       },
       Anuradha: {
         symbol: 'Lotus flower',
         deity: 'Mitra (god of friendship)',
-        mythology: 'Sacred lotus representing devotion, friendship, and spiritual blossoming',
+        mythology:
+          'Sacred lotus representing devotion, friendship, and spiritual blossoming',
         meaning: 'Devotion, friendship, success, and spiritual friendship'
       },
       Jyeshtha: {
         symbol: 'Umbrella or earring',
         deity: 'Indra (king of gods)',
-        mythology: 'Royal umbrella representing authority, protection, and eldest sibling energy',
+        mythology:
+          'Royal umbrella representing authority, protection, and eldest sibling energy',
         meaning: 'Authority, protection, wisdom, and elder status'
       },
       Mula: {
         symbol: 'Bunch of roots',
         deity: 'Nirriti (goddess of destruction)',
-        mythology: 'Roots representing foundation, destruction of old patterns, and deep spiritual insight',
+        mythology:
+          'Roots representing foundation, destruction of old patterns, and deep spiritual insight',
         meaning: 'Foundation, destruction, research, and spiritual depth'
       },
       'Purva Ashadha': {
         symbol: 'Elephant tusk or fan',
         deity: 'Apas (water goddess)',
-        mythology: 'Invincible elephant tusk representing unconquerable strength and spiritual victory',
+        mythology:
+          'Invincible elephant tusk representing unconquerable strength and spiritual victory',
         meaning: 'Invincibility, spiritual victory, and unstoppable progress'
       },
       'Uttara Ashadha': {
         symbol: 'Elephant tusk or small bed',
         deity: 'Vishvedevas (universal gods)',
-        mythology: 'Universal elephant tusk representing universal welfare and ethical leadership',
+        mythology:
+          'Universal elephant tusk representing universal welfare and ethical leadership',
         meaning: 'Universal welfare, ethical leadership, and universal benefit'
       },
       Shravana: {
         symbol: 'Ear or arrow',
         deity: 'Vishnu (preserver god)',
-        mythology: 'Represents hearing divine wisdom and the arrow of focused intention',
+        mythology:
+          'Represents hearing divine wisdom and the arrow of focused intention',
         meaning: 'Hearing, learning, fame, and divine connection'
       },
       Dhanishta: {
         symbol: 'Drum or flute',
         deity: 'Vasus (earth deities)',
-        mythology: 'Sacred drum representing rhythm, wealth, music, and material prosperity',
+        mythology:
+          'Sacred drum representing rhythm, wealth, music, and material prosperity',
         meaning: 'Wealth, rhythm, music, and material abundance'
       },
       Shatabhisha: {
         symbol: 'Empty circle or hundred healers',
         deity: 'Varuna (god of cosmic order)',
-        mythology: 'Empty circle representing healing, protection, and the void of pure potential',
+        mythology:
+          'Empty circle representing healing, protection, and the void of pure potential',
         meaning: 'Healing, protection, independence, and mystical insight'
       },
       'Purva Bhadrapada': {
         symbol: 'Sword or two front legs of funeral cot',
         deity: 'Aja Ekapada (one-footed goat)',
-        mythology: 'Funeral cot representing transformation through death and spiritual purification',
-        meaning: 'Purification, transformation, spiritual fire, and burning away impurities'
+        mythology:
+          'Funeral cot representing transformation through death and spiritual purification',
+        meaning:
+          'Purification, transformation, spiritual fire, and burning away impurities'
       },
       'Uttara Bhadrapada': {
         symbol: 'Twins or back legs of funeral cot',
         deity: 'Ahir Budhnya (serpent of the deep)',
-        mythology: 'Funeral cot representing liberation, spiritual support, and foundation in enlightenment',
+        mythology:
+          'Funeral cot representing liberation, spiritual support, and foundation in enlightenment',
         meaning: 'Foundation, support, liberation, and spiritual stability'
       },
       Revati: {
         symbol: 'Fish or pair of fish',
         deity: 'Pushan (nourisher and guide)',
-        mythology: 'Fish representing prosperity, guidance, and safe passage through life\'s waters',
+        mythology:
+          'Fish representing prosperity, guidance, and safe passage through life\'s waters',
         meaning: 'Prosperity, guidance, compassion, and safe journey'
       }
     };
 
-    return symbolism[nakshatra] || {
-      symbol: 'Unique symbol',
-      deity: 'Special deity',
-      mythology: 'Individual mythological significance',
-      meaning: 'Personal symbolic meaning'
-    };
+    return (
+      symbolism[nakshatra] || {
+        symbol: 'Unique symbol',
+        deity: 'Special deity',
+        mythology: 'Individual mythological significance',
+        meaning: 'Personal symbolic meaning'
+      }
+    );
   }
 
   /**
@@ -740,36 +819,65 @@ class CalculateNakshatraService extends ServiceTemplate {
    */
   _identifyLifePurpose(nakshatra) {
     const purposes = {
-      Ashwini: 'To bring healing and swift positive change to others through medical or innovative pursuits',
-      Bharani: 'To transform and nurture creative projects, bringing beauty and responsibility to endeavors',
-      Krittika: 'To purify and refine, cutting away what is unnecessary to reveal essential truth',
-      Rohini: 'To nurture growth and beauty, creating stable foundations for prosperity and abundance',
-      Mrigashira: 'To seek and discover knowledge, guiding others through gentle exploration and learning',
-      Ardra: 'To cleanse and transform through intense experiences, bringing creative renewal',
-      Punarvasu: 'To renew and expand consciousness, offering wisdom and care to those in need',
-      Pushya: 'To nourish and protect, fostering spiritual and material prosperity in communities',
-      Ashlesha: 'To heal through wisdom and transformation, guiding others through mystical insights',
-      Magha: 'To honor ancestral wisdom and lead with royal dignity and authoritative presence',
-      'Purva Phalguni': 'To create pleasure and beauty, bringing romance and creative joy to life',
-      'Uttara Phalguni': 'To foster beneficial friendships and alliances, creating harmonious connections',
-      Hasta: 'To heal and craft with skill, offering precise service and therapeutic assistance',
-      Chitra: 'To create beauty and artistic works, bringing creative vision and craftsmanship to the world',
-      Swati: 'To maintain balance and independence, offering peaceful solutions and self-reliant guidance',
-      Vishakha: 'To achieve goals through focused effort, leading others to victory and accomplishment',
-      Anuradha: 'To cultivate devotion and friendship, creating successful and harmonious relationships',
-      Jyeshtha: 'To protect and guide as the elder, offering wisdom and authoritative leadership',
+      Ashwini:
+        'To bring healing and swift positive change to others through medical or innovative pursuits',
+      Bharani:
+        'To transform and nurture creative projects, bringing beauty and responsibility to endeavors',
+      Krittika:
+        'To purify and refine, cutting away what is unnecessary to reveal essential truth',
+      Rohini:
+        'To nurture growth and beauty, creating stable foundations for prosperity and abundance',
+      Mrigashira:
+        'To seek and discover knowledge, guiding others through gentle exploration and learning',
+      Ardra:
+        'To cleanse and transform through intense experiences, bringing creative renewal',
+      Punarvasu:
+        'To renew and expand consciousness, offering wisdom and care to those in need',
+      Pushya:
+        'To nourish and protect, fostering spiritual and material prosperity in communities',
+      Ashlesha:
+        'To heal through wisdom and transformation, guiding others through mystical insights',
+      Magha:
+        'To honor ancestral wisdom and lead with royal dignity and authoritative presence',
+      'Purva Phalguni':
+        'To create pleasure and beauty, bringing romance and creative joy to life',
+      'Uttara Phalguni':
+        'To foster beneficial friendships and alliances, creating harmonious connections',
+      Hasta:
+        'To heal and craft with skill, offering precise service and therapeutic assistance',
+      Chitra:
+        'To create beauty and artistic works, bringing creative vision and craftsmanship to the world',
+      Swati:
+        'To maintain balance and independence, offering peaceful solutions and self-reliant guidance',
+      Vishakha:
+        'To achieve goals through focused effort, leading others to victory and accomplishment',
+      Anuradha:
+        'To cultivate devotion and friendship, creating successful and harmonious relationships',
+      Jyeshtha:
+        'To protect and guide as the elder, offering wisdom and authoritative leadership',
       Mula: 'To establish foundations and destroy illusions, researching and revealing ultimate truths',
-      'Purva Ashadha': 'To achieve invincible success through spiritual strength and determined progress',
-      'Uttara Ashadha': 'To promote universal welfare through ethical leadership and beneficial actions',
-      Shravana: 'To hear and learn divine wisdom, sharing knowledge and achieving fame through learning',
-      Dhanishta: 'To create wealth and rhythm, bringing prosperity and musical harmony to life',
-      Shatabhisha: 'To heal and protect through independence, offering mystical insight and sanctuary',
-      'Purva Bhadrapada': 'To purify through spiritual fire, transforming suffering into enlightenment',
-      'Uttara Bhadrapada': 'To provide spiritual foundation and support, guiding others to liberation',
-      Revati: 'To guide with compassion and prosperity, offering safe passage and abundant care'
+      'Purva Ashadha':
+        'To achieve invincible success through spiritual strength and determined progress',
+      'Uttara Ashadha':
+        'To promote universal welfare through ethical leadership and beneficial actions',
+      Shravana:
+        'To hear and learn divine wisdom, sharing knowledge and achieving fame through learning',
+      Dhanishta:
+        'To create wealth and rhythm, bringing prosperity and musical harmony to life',
+      Shatabhisha:
+        'To heal and protect through independence, offering mystical insight and sanctuary',
+      'Purva Bhadrapada':
+        'To purify through spiritual fire, transforming suffering into enlightenment',
+      'Uttara Bhadrapada':
+        'To provide spiritual foundation and support, guiding others to liberation',
+      Revati:
+        'To guide with compassion and prosperity, offering safe passage and abundant care'
     };
 
-    return purposes[nakshatra] || 'To fulfill unique soul purpose through authentic self-expression and service';
+    return (
+      purposes[nakshatra] ||
+      'To fulfill unique soul purpose through authentic self-expression and service'
+    );
   }
 
   /**
@@ -846,7 +954,8 @@ class CalculateNakshatraService extends ServiceTemplate {
         chartType: result.chartType
       },
       interpretation: result.interpretation,
-      disclaimer: 'Nakshatra analysis reveals lunar mansion influences on personality and life path. Nakshatras are lunar constellations that shape emotional nature and soul purpose. Complete astrological analysis considers the entire birth chart for comprehensive understanding.'
+      disclaimer:
+        'Nakshatra analysis reveals lunar mansion influences on personality and life path. Nakshatras are lunar constellations that shape emotional nature and soul purpose. Complete astrological analysis considers the entire birth chart for comprehensive understanding.'
     };
   }
   async getHealthStatus() {

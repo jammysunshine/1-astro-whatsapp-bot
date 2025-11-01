@@ -11,7 +11,8 @@ const logger = require('../../utils/logger');
 class IChingReadingService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'IChingReadingService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'IChingReadingService';
     // Don't set calculatorPath since we're directly importing and initializing
     logger.info('IChingReadingService initialized');
   }
@@ -21,7 +22,10 @@ class IChingReadingService extends ServiceTemplate {
       await super.initialize();
       // Initialize with the calculator and interpreter
       this.calculator = new IChingCalculator();
-      this.interpreter = new IChingInterpreter(new IChingConfig(), this.calculator);
+      this.interpreter = new IChingInterpreter(
+        new IChingConfig(),
+        this.calculator
+      );
       logger.info('✅ IChingReadingService initialized successfully');
     } catch (error) {
       logger.error('❌ Failed to initialize IChingReadingService:', error);
@@ -51,7 +55,10 @@ class IChingReadingService extends ServiceTemplate {
       // Enhance with specialized analysis if focus is provided
       let enhancedAnalysis = {};
       if (focus !== 'general') {
-        enhancedAnalysis = this.interpreter.analyzeForQuestionType(reading, focus);
+        enhancedAnalysis = this.interpreter.analyzeForQuestionType(
+          reading,
+          focus
+        );
       }
 
       // Add service-specific metadata
@@ -153,12 +160,16 @@ class IChingReadingService extends ServiceTemplate {
           qualities: hexagramData.qualities || [],
           elements: hexagramData.elements || [],
           trigrams: {
-            upper: hexagramData.upperTrigram || this.interpreter.calculator.calculateUpperTrigram(
-              this.createLinesFromHexagramNumber(hexagramNumber)
-            ),
-            lower: hexagramData.lowerTrigram || this.interpreter.calculator.calculateLowerTrigram(
-              this.createLinesFromHexagramNumber(hexagramNumber)
-            )
+            upper:
+              hexagramData.upperTrigram ||
+              this.interpreter.calculator.calculateUpperTrigram(
+                this.createLinesFromHexagramNumber(hexagramNumber)
+              ),
+            lower:
+              hexagramData.lowerTrigram ||
+              this.interpreter.calculator.calculateLowerTrigram(
+                this.createLinesFromHexagramNumber(hexagramNumber)
+              )
           }
         },
         metadata: {
@@ -187,7 +198,10 @@ class IChingReadingService extends ServiceTemplate {
   createLinesFromHexagramNumber(hexagramNumber) {
     // Convert hexagram number to binary representation
     const binary = (hexagramNumber - 1).toString(2).padStart(6, '0');
-    return binary.split('').reverse().map(digit => (parseInt(digit) === 1 ? 7 : 8));
+    return binary
+      .split('')
+      .reverse()
+      .map(digit => (parseInt(digit) === 1 ? 7 : 8));
   }
 
   /**

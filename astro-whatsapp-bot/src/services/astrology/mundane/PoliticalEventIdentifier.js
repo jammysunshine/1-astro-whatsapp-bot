@@ -137,7 +137,9 @@ class PoliticalEventIdentifier {
     const aspects = [];
     const { saturn } = chart.planetaryPositions;
 
-    if (!saturn) { return aspects; }
+    if (!saturn) {
+      return aspects;
+    }
 
     // Saturn in challenging aspects to other planets
     Object.entries(chart.planetaryPositions).forEach(([planet, data]) => {
@@ -149,7 +151,8 @@ class PoliticalEventIdentifier {
             description: `Saturn challenging ${planet} at ${Math.round(separation)}° separation`,
             impact: 'High',
             timeframe: '6-18 months',
-            significance: 'Structural governmental changes and institutional reform'
+            significance:
+              'Structural governmental changes and institutional reform'
           });
         }
       }
@@ -167,11 +170,15 @@ class PoliticalEventIdentifier {
     const aspects = [];
     const { uranus } = chart.planetaryPositions;
 
-    if (!uranus) { return aspects; }
+    if (!uranus) {
+      return aspects;
+    }
 
     // Uranus conjunct or opposing Mars/other disruptive planets
     Object.entries(chart.planetaryPositions).forEach(([planet, data]) => {
-      if (planet === 'mars' || planet === 'uranus') { return; }
+      if (planet === 'mars' || planet === 'uranus') {
+        return;
+      }
 
       const separation = Math.abs(uranus.longitude - data.longitude);
       if (separation <= 8) {
@@ -179,7 +186,8 @@ class PoliticalEventIdentifier {
           description: `Uranus conjunct ${planet} suggests radical political changes`,
           impact: 'High',
           timeframe: '0-12 months',
-          significance: 'Revolutionary developments and unexpected political shifts'
+          significance:
+            'Revolutionary developments and unexpected political shifts'
         });
       }
     });

@@ -18,6 +18,7 @@ This template is designed to help create detailed, comprehensive project prompts
 **Define high-level epics covering all major aspects of the project. Each epic should include description, features, business value, acceptance criteria, dependencies, and priority.**
 
 ### Epic 1: Core Integration [e.g., WhatsApp Integration]
+
 - **Goal**: [Implement core integration for the primary channel.]
 - **Key Features**: [List key features, e.g., API setup, message handling, user authentication, media support, compliance.]
 - **Business Value**: [e.g., Foundation for all user interactions.]
@@ -26,6 +27,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Critical
 
 ### Epic 2: Core Services [e.g., Multiple Astrology Services]
+
 - **Goal**: [Offer core services or products.]
 - **Key Features**: [e.g., Various systems like Vedic, Western, Tarot, Numerology, etc.]
 - **Business Value**: [e.g., Core value proposition and revenue driver.]
@@ -34,6 +36,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Critical
 
 ### Epic 3: Monetization and Subscriptions
+
 - **Goal**: [Implement monetization strategy.]
 - **Key Features**: [e.g., Subscription tiers (Free, Essential, Premium, VIP), one-time services, regional payments, loyalty programs.]
 - **Business Value**: [e.g., Primary revenue generation.]
@@ -42,6 +45,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Critical
 
 ### Epic 4: Personalization and AI Features
+
 - **Goal**: [Deliver personalized experiences.]
 - **Key Features**: [e.g., AI Twin system, behavioral adaptation, personalized readings, learning from preferences.]
 - **Business Value**: [e.g., User stickiness and premium justification.]
@@ -50,6 +54,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: High
 
 ### Epic 5: Advanced Features [e.g., Predictive Decision Timing]
+
 - **Goal**: [Provide advanced tools.]
 - **Key Features**: [e.g., Decision timing calculator, transit engine, personalized alerts.]
 - **Business Value**: [e.g., High-value premium feature.]
@@ -58,6 +63,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: High
 
 ### Epic 6: User Experience and Engagement
+
 - **Goal**: [Create engaging UX and viral growth.]
 - **Key Features**: [e.g., Cross-platform sync, multi-format content, community features, gamification, social sharing.]
 - **Business Value**: [e.g., Viral growth and retention.]
@@ -66,6 +72,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: High
 
 ### Epic 7: Security and Authentication
+
 - **Goal**: [Implement security and auth.]
 - **Key Features**: [e.g., Authentication methods, profile management, privacy controls, security measures.]
 - **Business Value**: [e.g., User trust and compliance.]
@@ -74,6 +81,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Critical
 
 ### Epic 8: Educational and Community Services
+
 - **Goal**: [Provide educational and community features.]
 - **Key Features**: [e.g., Courses, certification, marketplace, social network, compatibility analysis.]
 - **Business Value**: [e.g., Additional revenue and engagement.]
@@ -82,6 +90,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Medium
 
 ### Epic 9: Gamification and Engagement
+
 - **Goal**: [Drive engagement through gamification.]
 - **Key Features**: [e.g., Points system, streaks, badges, leaderboards, progress tracking.]
 - **Business Value**: [e.g., Retention and viral growth.]
@@ -90,6 +99,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Medium
 
 ### Epic 10: Technology and Scaling
+
 - **Goal**: [Build scalable infrastructure.]
 - **Key Features**: [e.g., Backend services, database, integrations, multi-channel delivery.]
 - **Business Value**: [e.g., Support for growth.]
@@ -98,6 +108,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: High
 
 ### Epic 11: Market Validation and Risk Mitigation
+
 - **Goal**: [Validate market and mitigate risks.]
 - **Key Features**: [e.g., MVP testing, A/B testing, churn analysis, compliance.]
 - **Business Value**: [e.g., Ensure success.]
@@ -106,6 +117,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Medium
 
 ### Epic 12: AI-Agent Driven Development
+
 - **Goal**: [Leverage AI for development.]
 - **Key Features**: [e.g., AI agents for code generation, testing, optimization.]
 - **Business Value**: [e.g., Rapid development.]
@@ -114,6 +126,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: High
 
 ### Epic 13: Human Services [e.g., Human Astrologer Services]
+
 - **Goal**: [Provide human-assisted services.]
 - **Key Features**: [e.g., Chat with astrologers, scheduled consultations.]
 - **Business Value**: [e.g., Premium value.]
@@ -122,6 +135,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Medium
 
 ### Epic 14: Advanced Infrastructure
+
 - **Goal**: [Implement advanced tech.]
 - **Key Features**: [e.g., Databases, analytics, monitoring.]
 - **Business Value**: [e.g., Performance and insights.]
@@ -130,6 +144,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Medium
 
 ### Epic 15: Success Metrics and KPIs
+
 - **Goal**: [Define and track metrics.]
 - **Key Features**: [e.g., Revenue metrics, engagement, conversion.]
 - **Business Value**: [e.g., Measure success.]
@@ -138,6 +153,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Medium
 
 ### Epic 16: Payment Integration Enhancement
+
 - **Goal**: [Enhance payments.]
 - **Key Features**: [e.g., Advanced processing, regional methods.]
 - **Business Value**: [e.g., Revenue optimization.]
@@ -146,6 +162,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: High
 
 ### Epic 17: Data Analytics and Business Intelligence
+
 - **Goal**: [Implement analytics.]
 - **Key Features**: [e.g., User behavior, revenue analytics, predictive models.]
 - **Business Value**: [e.g., Data-driven decisions.]
@@ -154,6 +171,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Medium
 
 ### Epic 18: Security and Privacy Compliance
+
 - **Goal**: [Ensure compliance.]
 - **Key Features**: [e.g., GDPR, encryption, audits.]
 - **Business Value**: [e.g., Legal compliance.]
@@ -162,6 +180,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Critical
 
 ### Epic 19: Performance Monitoring and Optimization
+
 - **Goal**: [Monitor and optimize performance.]
 - **Key Features**: [e.g., APM, monitoring, optimization.]
 - **Business Value**: [e.g., High availability.]
@@ -170,6 +189,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: High
 
 ### Epic 20: API Integrations and Third-Party Services
+
 - **Goal**: [Integrate external services.]
 - **Key Features**: [e.g., Payment APIs, astrology APIs, notifications.]
 - **Business Value**: [e.g., Enhanced functionality.]
@@ -178,6 +198,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Medium
 
 ### Epic 21: Backup, Disaster Recovery, and Business Continuity
+
 - **Goal**: [Ensure continuity.]
 - **Key Features**: [e.g., Backups, recovery plans.]
 - **Business Value**: [e.g., Data integrity.]
@@ -186,6 +207,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: High
 
 ### Epic 22: Internationalization and Localization
+
 - **Goal**: [Support multiple languages/cultures.]
 - **Key Features**: [e.g., Multi-language, cultural adaptation.]
 - **Business Value**: [e.g., Global expansion.]
@@ -194,6 +216,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: Medium
 
 ### Epic 23: User Profile and Subscription Management
+
 - **Goal**: [Manage profiles and subscriptions.]
 - **Key Features**: [e.g., Profile creation, subscription lifecycle.]
 - **Business Value**: [e.g., User management.]
@@ -202,6 +225,7 @@ This template is designed to help create detailed, comprehensive project prompts
 - **Priority**: High
 
 ### Epic 24: Customer Support and Feedback System
+
 - **Goal**: [Provide support and collect feedback.]
 - **Key Features**: [e.g., Support chat, tickets, analytics.]
 - **Business Value**: [e.g., User satisfaction.]

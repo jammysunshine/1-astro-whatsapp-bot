@@ -29,7 +29,8 @@ class SadeSatiService extends ServiceTemplate {
       this._validateInput(birthData);
 
       // Generate Sade Sati analysis
-      const sadeSatiAnalysis = await this.calculator.generateSadeSatiAnalysis(birthData);
+      const sadeSatiAnalysis =
+        await this.calculator.generateSadeSatiAnalysis(birthData);
 
       // Add service metadata
       sadeSatiAnalysis.serviceMetadata = {
@@ -67,8 +68,16 @@ class SadeSatiService extends ServiceTemplate {
       summary: result.summary || 'Sade Sati analysis completed',
       metadata: {
         system: 'Sade Sati Analysis',
-        calculationMethod: 'Saturn\'s 7.5-year transit cycle with Moon-based house positioning',
-        elements: ['Current Status', 'Upcoming Periods', 'Past Analysis', 'Relief Periods', 'Predictions', 'Remedies'],
+        calculationMethod:
+          'Saturn\'s 7.5-year transit cycle with Moon-based house positioning',
+        elements: [
+          'Current Status',
+          'Upcoming Periods',
+          'Past Analysis',
+          'Relief Periods',
+          'Predictions',
+          'Remedies'
+        ],
         tradition: 'Vedic Hindu astrology with Sade Sati principles'
       }
     };

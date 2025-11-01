@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const ServiceTemplate = require('./ServiceTemplate');
 
 /**
  * SunSignService - Service for Sun sign calculation and interpretation
@@ -7,7 +8,8 @@ const logger = require('../../../utils/logger');
 class SunSignService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';    this.serviceName = 'SunSignService';
+    this.calculatorPath = '../calculators/ChartGenerator';
+    this.serviceName = 'SunSignService';
     this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
     logger.info('SunSignService initialized');
   }
@@ -71,7 +73,11 @@ class SunSignService extends ServiceTemplate {
         compatibility,
         lifePurpose,
         chartType,
-        interpretation: this._createSunSignInterpretation(sunSignData, sunSignTraits, nakshatraInfo)
+        interpretation: this._createSunSignInterpretation(
+          sunSignData,
+          sunSignTraits,
+          nakshatraInfo
+        )
       };
     } catch (error) {
       logger.error('Sun sign calculation error:', error);
@@ -93,9 +99,24 @@ class SunSignService extends ServiceTemplate {
         rulingPlanet: 'Mars',
         symbol: 'Ram',
         strengths: ['Courageous', 'Enthusiastic', 'Confident', 'Energetic'],
-        weaknesses: ['Impatient', 'Self-centered', 'Quick-tempered', 'Competitive'],
-        likes: ['Challenges', 'New experiences', 'Physical activities', 'Leadership roles'],
-        dislikes: ['Waiting', 'Inactivity', 'Being told what to do', 'Small details']
+        weaknesses: [
+          'Impatient',
+          'Self-centered',
+          'Quick-tempered',
+          'Competitive'
+        ],
+        likes: [
+          'Challenges',
+          'New experiences',
+          'Physical activities',
+          'Leadership roles'
+        ],
+        dislikes: [
+          'Waiting',
+          'Inactivity',
+          'Being told what to do',
+          'Small details'
+        ]
       },
       Taurus: {
         element: 'Earth',
@@ -104,9 +125,19 @@ class SunSignService extends ServiceTemplate {
         rulingPlanet: 'Venus',
         symbol: 'Bull',
         strengths: ['Reliable', 'Patient', 'Practical', 'Devoted'],
-        weaknesses: ['Stubborn', 'Possessive', 'Uncompromising', 'Materialistic'],
+        weaknesses: [
+          'Stubborn',
+          'Possessive',
+          'Uncompromising',
+          'Materialistic'
+        ],
         likes: ['Gardening', 'Cooking', 'Music', 'Romance'],
-        dislikes: ['Sudden changes', 'Being rushed', 'Synthetic fabrics', 'Disorder']
+        dislikes: [
+          'Sudden changes',
+          'Being rushed',
+          'Synthetic fabrics',
+          'Disorder'
+        ]
       },
       Gemini: {
         element: 'Air',
@@ -117,7 +148,12 @@ class SunSignService extends ServiceTemplate {
         strengths: ['Gentle', 'Affectionate', 'Curious', 'Adaptable'],
         weaknesses: ['Nervous', 'Inconsistent', 'Indecisive', 'Superficial'],
         likes: ['Music', 'Books', 'Magazines', 'Chats with friends'],
-        dislikes: ['Being alone', 'Routine work', 'Being confined', 'Repetition']
+        dislikes: [
+          'Being alone',
+          'Routine work',
+          'Being confined',
+          'Repetition'
+        ]
       },
       Cancer: {
         element: 'Water',
@@ -127,8 +163,18 @@ class SunSignService extends ServiceTemplate {
         symbol: 'Crab',
         strengths: ['Tenacious', 'Highly imaginative', 'Loyal', 'Emotional'],
         weaknesses: ['Moody', 'Clingy', 'Self-pitying', 'Oversensitive'],
-        likes: ['Art', 'Home-based hobbies', 'Deep conversations', 'Being with family'],
-        dislikes: ['Strangers', 'Any criticism of Mom', 'Revealing of personal life', 'Offensive odors']
+        likes: [
+          'Art',
+          'Home-based hobbies',
+          'Deep conversations',
+          'Being with family'
+        ],
+        dislikes: [
+          'Strangers',
+          'Any criticism of Mom',
+          'Revealing of personal life',
+          'Offensive odors'
+        ]
       },
       Leo: {
         element: 'Fire',
@@ -137,9 +183,24 @@ class SunSignService extends ServiceTemplate {
         rulingPlanet: 'Sun',
         symbol: 'Lion',
         strengths: ['Creative', 'Passionate', 'Generous', 'Warm-hearted'],
-        weaknesses: ['Prideful', 'Lazy', 'Difficult to discipline', 'Inflexible'],
-        likes: ['Theater', 'Taking holidays', 'Being admired', 'Expensive things'],
-        dislikes: ['Being ignored', 'Being criticized', 'Small-minded people', 'Mean spirits']
+        weaknesses: [
+          'Prideful',
+          'Lazy',
+          'Difficult to discipline',
+          'Inflexible'
+        ],
+        likes: [
+          'Theater',
+          'Taking holidays',
+          'Being admired',
+          'Expensive things'
+        ],
+        dislikes: [
+          'Being ignored',
+          'Being criticized',
+          'Small-minded people',
+          'Mean spirits'
+        ]
       },
       Virgo: {
         element: 'Earth',
@@ -148,9 +209,19 @@ class SunSignService extends ServiceTemplate {
         rulingPlanet: 'Mercury',
         symbol: 'Virgin',
         strengths: ['Loyal', 'Analytical', 'Kind', 'Hardworking'],
-        weaknesses: ['Shyness', 'Worry', 'Overly critical of self and others', 'All work and no play'],
+        weaknesses: [
+          'Shyness',
+          'Worry',
+          'Overly critical of self and others',
+          'All work and no play'
+        ],
         likes: ['Animals', 'Healthy food', 'Books', 'Nature'],
-        dislikes: ['Rudeness', 'Asking for help', 'Taking center stage', 'Unhealthy lifestyles']
+        dislikes: [
+          'Rudeness',
+          'Asking for help',
+          'Taking center stage',
+          'Unhealthy lifestyles'
+        ]
       },
       Libra: {
         element: 'Air',
@@ -159,9 +230,19 @@ class SunSignService extends ServiceTemplate {
         rulingPlanet: 'Venus',
         symbol: 'Scales',
         strengths: ['Cooperative', 'Diplomatic', 'Gracious', 'Fair-minded'],
-        weaknesses: ['Indecisive', 'Avoids confrontations', 'Carries a grudge', 'Self-pity'],
+        weaknesses: [
+          'Indecisive',
+          'Avoids confrontations',
+          'Carries a grudge',
+          'Self-pity'
+        ],
         likes: ['Harmony', 'Gentleness', 'Sharing with others', 'The outdoors'],
-        dislikes: ['Violence', 'Injustice', 'Brutishness', 'Being a slave to fashion']
+        dislikes: [
+          'Violence',
+          'Injustice',
+          'Brutishness',
+          'Being a slave to fashion'
+        ]
       },
       Scorpio: {
         element: 'Water',
@@ -171,8 +252,18 @@ class SunSignService extends ServiceTemplate {
         symbol: 'Scorpion',
         strengths: ['Resourceful', 'Brave', 'Passionate', 'Stubborn'],
         weaknesses: ['Distrustful', 'Jealous', 'Secretive', 'Violent'],
-        likes: ['Truth', 'Facts', 'Being right', 'Teasing people they care about'],
-        dislikes: ['Dishonesty', 'Revealing secrets', 'Passive people', 'Superficiality']
+        likes: [
+          'Truth',
+          'Facts',
+          'Being right',
+          'Teasing people they care about'
+        ],
+        dislikes: [
+          'Dishonesty',
+          'Revealing secrets',
+          'Passive people',
+          'Superficiality'
+        ]
       },
       Sagittarius: {
         element: 'Fire',
@@ -181,9 +272,19 @@ class SunSignService extends ServiceTemplate {
         rulingPlanet: 'Jupiter',
         symbol: 'Archer',
         strengths: ['Generous', 'Idealistic', 'Great sense of humor', 'Honest'],
-        weaknesses: ['Promises more than can deliver', 'Very impatient', 'Will say anything no matter how undiplomatic', 'Tactless'],
+        weaknesses: [
+          'Promises more than can deliver',
+          'Very impatient',
+          'Will say anything no matter how undiplomatic',
+          'Tactless'
+        ],
         likes: ['Freedom', 'Travel', 'Philosophy', 'Being outdoors'],
-        dislikes: ['Clingy people', 'Being constrained', 'Off-the-wall theories', 'Details']
+        dislikes: [
+          'Clingy people',
+          'Being constrained',
+          'Off-the-wall theories',
+          'Details'
+        ]
       },
       Capricorn: {
         element: 'Earth',
@@ -191,10 +292,25 @@ class SunSignService extends ServiceTemplate {
         polarity: 'Feminine',
         rulingPlanet: 'Saturn',
         symbol: 'Goat',
-        strengths: ['Responsible', 'Disciplined', 'Self-controlled', 'Ambitious'],
-        weaknesses: ['Know-it-all', 'Unforgiving', 'Condescending', 'Expecting the worst'],
+        strengths: [
+          'Responsible',
+          'Disciplined',
+          'Self-controlled',
+          'Ambitious'
+        ],
+        weaknesses: [
+          'Know-it-all',
+          'Unforgiving',
+          'Condescending',
+          'Expecting the worst'
+        ],
         likes: ['Family', 'Tradition', 'Music', 'Quality craftsmanship'],
-        dislikes: ['Almost everything at some point', 'Idleness', 'Time wasting', 'Disorder']
+        dislikes: [
+          'Almost everything at some point',
+          'Idleness',
+          'Time wasting',
+          'Disorder'
+        ]
       },
       Aquarius: {
         element: 'Air',
@@ -203,9 +319,24 @@ class SunSignService extends ServiceTemplate {
         rulingPlanet: 'Uranus',
         symbol: 'Water Bearer',
         strengths: ['Progressive', 'Original', 'Independent', 'Humanitarian'],
-        weaknesses: ['Runs from emotional expression', 'Moodiness', 'Sometimes feels victimized', 'Very detached'],
-        likes: ['Fun with friends', 'Helping others', 'Fighting for causes', 'Intellectual conversation'],
-        dislikes: ['Limitations', 'Broken promises', 'Being lonely', 'Dull or boring situations']
+        weaknesses: [
+          'Runs from emotional expression',
+          'Moodiness',
+          'Sometimes feels victimized',
+          'Very detached'
+        ],
+        likes: [
+          'Fun with friends',
+          'Helping others',
+          'Fighting for causes',
+          'Intellectual conversation'
+        ],
+        dislikes: [
+          'Limitations',
+          'Broken promises',
+          'Being lonely',
+          'Dull or boring situations'
+        ]
       },
       Pisces: {
         element: 'Water',
@@ -214,23 +345,35 @@ class SunSignService extends ServiceTemplate {
         rulingPlanet: 'Neptune',
         symbol: 'Fish',
         strengths: ['Compassionate', 'Artistic', 'Intuitive', 'Gentle'],
-        weaknesses: ['Fearful', 'Overly trusting', 'Sadness', 'Desire to escape reality'],
+        weaknesses: [
+          'Fearful',
+          'Overly trusting',
+          'Sadness',
+          'Desire to escape reality'
+        ],
         likes: ['Being alone', 'Sleep', 'Music', 'Romance'],
-        dislikes: ['Know-it-alls', 'Cruelty', 'The past coming back to haunt', 'Criticism']
+        dislikes: [
+          'Know-it-alls',
+          'Cruelty',
+          'The past coming back to haunt',
+          'Criticism'
+        ]
       }
     };
 
-    return traits[sunSign] || {
-      element: 'Unknown',
-      quality: 'Unknown',
-      polarity: 'Unknown',
-      rulingPlanet: 'Unknown',
-      symbol: 'Unknown',
-      strengths: ['Unique qualities'],
-      weaknesses: ['Individual challenges'],
-      likes: ['Personal interests'],
-      dislikes: ['Personal dislikes']
-    };
+    return (
+      traits[sunSign] || {
+        element: 'Unknown',
+        quality: 'Unknown',
+        polarity: 'Unknown',
+        rulingPlanet: 'Unknown',
+        symbol: 'Unknown',
+        strengths: ['Unique qualities'],
+        weaknesses: ['Individual challenges'],
+        likes: ['Personal interests'],
+        dislikes: ['Personal dislikes']
+      }
+    );
   }
 
   /**
@@ -431,13 +574,15 @@ class SunSignService extends ServiceTemplate {
       }
     };
 
-    return nakshatras[nakshatra] || {
-      rulingPlanet: 'Unknown',
-      deity: 'Unknown',
-      symbol: 'Unknown',
-      nature: 'Unknown',
-      meaning: 'Unique cosmic influence'
-    };
+    return (
+      nakshatras[nakshatra] || {
+        rulingPlanet: 'Unknown',
+        deity: 'Unknown',
+        symbol: 'Unknown',
+        nature: 'Unknown',
+        meaning: 'Unique cosmic influence'
+      }
+    );
   }
 
   /**
@@ -502,11 +647,13 @@ class SunSignService extends ServiceTemplate {
       }
     };
 
-    return planetInfo[rulingPlanet] || {
-      energy: 'Unique cosmic influence',
-      influence: 'Specialized planetary guidance',
-      qualities: 'Individual planetary characteristics'
-    };
+    return (
+      planetInfo[rulingPlanet] || {
+        energy: 'Unique cosmic influence',
+        influence: 'Specialized planetary guidance',
+        qualities: 'Individual planetary characteristics'
+      }
+    );
   }
 
   /**
@@ -578,11 +725,13 @@ class SunSignService extends ServiceTemplate {
       }
     };
 
-    return compatibility[sunSign] || {
-      bestMatches: ['Various signs'],
-      challengingMatches: ['Individual dynamics'],
-      compatibleElements: 'Unique compatibility patterns'
-    };
+    return (
+      compatibility[sunSign] || {
+        bestMatches: ['Various signs'],
+        challengingMatches: ['Individual dynamics'],
+        compatibleElements: 'Unique compatibility patterns'
+      }
+    );
   }
 
   /**
@@ -592,21 +741,34 @@ class SunSignService extends ServiceTemplate {
    */
   _getLifePurpose(sunSign) {
     const purposes = {
-      Aries: 'To courageously pioneer new paths and inspire others through bold action',
-      Taurus: 'To build lasting value and create beauty through practical, reliable efforts',
-      Gemini: 'To communicate knowledge and connect people through versatile expression',
-      Cancer: 'To nurture and protect, creating safe emotional foundations for growth',
+      Aries:
+        'To courageously pioneer new paths and inspire others through bold action',
+      Taurus:
+        'To build lasting value and create beauty through practical, reliable efforts',
+      Gemini:
+        'To communicate knowledge and connect people through versatile expression',
+      Cancer:
+        'To nurture and protect, creating safe emotional foundations for growth',
       Leo: 'To shine authentically and inspire others through creative self-expression',
-      Virgo: 'To serve with precision and improve systems through practical analysis',
+      Virgo:
+        'To serve with precision and improve systems through practical analysis',
       Libra: 'To create harmony and balance, fostering cooperation and justice',
-      Scorpio: 'To transform through deep insight and help others through profound change',
-      Sagittarius: 'To explore truth and expand horizons through philosophical understanding',
-      Capricorn: 'To build enduring structures and lead through disciplined achievement',
-      Aquarius: 'To innovate for humanity and break limitations through progressive thinking',
-      Pisces: 'To offer compassion and heal through creative, spiritual connection'
+      Scorpio:
+        'To transform through deep insight and help others through profound change',
+      Sagittarius:
+        'To explore truth and expand horizons through philosophical understanding',
+      Capricorn:
+        'To build enduring structures and lead through disciplined achievement',
+      Aquarius:
+        'To innovate for humanity and break limitations through progressive thinking',
+      Pisces:
+        'To offer compassion and heal through creative, spiritual connection'
     };
 
-    return purposes[sunSign] || 'To fulfill unique potential through authentic self-expression';
+    return (
+      purposes[sunSign] ||
+      'To fulfill unique potential through authentic self-expression'
+    );
   }
 
   /**
@@ -660,7 +822,9 @@ class SunSignService extends ServiceTemplate {
     }
 
     if (year < 1900 || year > new Date().getFullYear() + 1) {
-      throw new Error(`Year must be between 1900 and ${new Date().getFullYear() + 1}`);
+      throw new Error(
+        `Year must be between 1900 and ${new Date().getFullYear() + 1}`
+      );
     }
   }
 
@@ -683,7 +847,8 @@ class SunSignService extends ServiceTemplate {
         chartType: result.chartType
       },
       interpretation: result.interpretation,
-      disclaimer: 'Sun sign analysis provides general personality insights based on birth date. Individual charts are unique and comprehensive astrological analysis considers all planetary positions. Astrology offers guidance for self-understanding.'
+      disclaimer:
+        'Sun sign analysis provides general personality insights based on birth date. Individual charts are unique and comprehensive astrological analysis considers all planetary positions. Astrology offers guidance for self-understanding.'
     };
   }
   async getHealthStatus() {

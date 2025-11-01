@@ -71,7 +71,8 @@ class EnhancedPanchangService extends ServiceTemplate {
       };
 
       // Add enhanced analysis
-      panchangResult.enhancedAnalysis = this._performEnhancedPanchangAnalysis(panchangResult);
+      panchangResult.enhancedAnalysis =
+        this._performEnhancedPanchangAnalysis(panchangResult);
 
       return panchangResult;
     } catch (error) {
@@ -247,13 +248,16 @@ class EnhancedPanchangService extends ServiceTemplate {
 
       if (isAuspiciousTithi && isFavorableYoga) {
         analysis.overallQuality = 'Highly auspicious day for all activities';
-        analysis.recommendedActivities = 'Spiritual practices, new ventures, important decisions';
+        analysis.recommendedActivities =
+          'Spiritual practices, new ventures, important decisions';
       } else if (isAuspiciousTithi || isFavorableYoga) {
         analysis.overallQuality = 'Generally favorable day';
-        analysis.recommendedActivities = 'Most activities, especially spiritual and charitable';
+        analysis.recommendedActivities =
+          'Most activities, especially spiritual and charitable';
       } else {
         analysis.overallQuality = 'Ordinary day - proceed with caution';
-        analysis.recommendedActivities = 'Routine activities, planning, preparation';
+        analysis.recommendedActivities =
+          'Routine activities, planning, preparation';
         analysis.avoidActivities = 'Major decisions, new ventures, investments';
       }
     }
@@ -261,45 +265,63 @@ class EnhancedPanchangService extends ServiceTemplate {
     // Analyze Nakshatra significance
     if (result.nakshatra) {
       const spiritualNakshatras = ['Pushya', 'Ashwini', 'Revati', 'Anuradha'];
-      const businessNakshatras = ['Rohini', 'Uttara Phalguni', 'Uttara Ashadha', 'Uttara Bhadrapada'];
+      const businessNakshatras = [
+        'Rohini',
+        'Uttara Phalguni',
+        'Uttara Ashadha',
+        'Uttara Bhadrapada'
+      ];
 
       if (spiritualNakshatras.includes(result.nakshatra.name)) {
-        analysis.spiritualSignificance = 'Excellent for spiritual practices and meditation';
+        analysis.spiritualSignificance =
+          'Excellent for spiritual practices and meditation';
       }
 
       if (businessNakshatras.includes(result.nakshatra.name)) {
-        analysis.businessFavorability = 'Favorable for business and financial activities';
+        analysis.businessFavorability =
+          'Favorable for business and financial activities';
       }
     }
 
     // Add recommendations based on day of week
-    const dayOfWeek = new Date(result.date.split('/').reverse().join('-')).getDay();
+    const dayOfWeek = new Date(
+      result.date.split('/').reverse().join('-')
+    ).getDay();
     const dayRecommendations = {
-      0: { // Sunday
+      0: {
+        // Sunday
         recommended: 'Spiritual activities, leadership tasks, government work',
         avoid: 'Arguments, conflicts, aggressive activities'
       },
-      1: { // Monday
-        recommended: 'Agriculture, gardening, emotional work, family activities',
+      1: {
+        // Monday
+        recommended:
+          'Agriculture, gardening, emotional work, family activities',
         avoid: 'Business deals, travel, new ventures'
       },
-      2: { // Tuesday
+      2: {
+        // Tuesday
         recommended: 'Competitive activities, sports, property matters',
         avoid: 'Marriage negotiations, peaceful activities'
       },
-      3: { // Wednesday
+      3: {
+        // Wednesday
         recommended: 'Communication, education, business, short travel',
         avoid: 'Long journeys, major investments'
       },
-      4: { // Thursday
-        recommended: 'Spiritual learning, teaching, charity, financial activities',
+      4: {
+        // Thursday
+        recommended:
+          'Spiritual learning, teaching, charity, financial activities',
         avoid: 'Arguments with elders, unethical activities'
       },
-      5: { // Friday
+      5: {
+        // Friday
         recommended: 'Arts, relationships, luxury purchases, social events',
         avoid: 'Fast, arguments, harsh activities'
       },
-      6: { // Saturday
+      6: {
+        // Saturday
         recommended: 'Hard work, discipline, service, oil-related activities',
         avoid: 'New ventures, celebrations, luxury items'
       }

@@ -56,7 +56,8 @@ class ElectionalAstrologyService extends ServiceTemplate {
       this._validateInputs(electionalData);
 
       // Generate electional analysis using calculator
-      const electionalResult = await this.calculator.generateMuhurta(electionalData);
+      const electionalResult =
+        await this.calculator.generateMuhurta(electionalData);
 
       // Add service metadata
       electionalResult.serviceMetadata = {
@@ -65,16 +66,23 @@ class ElectionalAstrologyService extends ServiceTemplate {
         timestamp: new Date().toISOString(),
         method: 'Vedic electional astrology with comprehensive timing analysis',
         activityType: electionalData.activity,
-        calculationApproach: 'Traditional Muhurta principles with modern enhancements'
+        calculationApproach:
+          'Traditional Muhurta principles with modern enhancements'
       };
 
       // Add enhanced analysis
-      electionalResult.enhancedAnalysis = this._performEnhancedElectionalAnalysis(electionalResult, electionalData);
+      electionalResult.enhancedAnalysis =
+        this._performEnhancedElectionalAnalysis(
+          electionalResult,
+          electionalData
+        );
 
       return electionalResult;
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
-      throw new Error(`Electional Astrology calculation failed: ${error.message}`);
+      throw new Error(
+        `Electional Astrology calculation failed: ${error.message}`
+      );
     }
   }
 
@@ -144,13 +152,22 @@ class ElectionalAstrologyService extends ServiceTemplate {
     // Add planetary support
     if (result.planetaryStrengths) {
       formatted += '*🌟 Planetary Support:*\n';
-      if (result.planetaryStrengths.favorable && result.planetaryStrengths.favorable.length > 0) {
+      if (
+        result.planetaryStrengths.favorable &&
+        result.planetaryStrengths.favorable.length > 0
+      ) {
         formatted += `• **Favorable:** ${result.planetaryStrengths.favorable.join(', ')}\n`;
       }
-      if (result.planetaryStrengths.neutral && result.planetaryStrengths.neutral.length > 0) {
+      if (
+        result.planetaryStrengths.neutral &&
+        result.planetaryStrengths.neutral.length > 0
+      ) {
         formatted += `• **Neutral:** ${result.planetaryStrengths.neutral.join(', ')}\n`;
       }
-      if (result.planetaryStrengths.challenging && result.planetaryStrengths.challenging.length > 0) {
+      if (
+        result.planetaryStrengths.challenging &&
+        result.planetaryStrengths.challenging.length > 0
+      ) {
         formatted += `• **Challenging:** ${result.planetaryStrengths.challenging.join(', ')}\n`;
       }
       formatted += '\n';
@@ -194,7 +211,8 @@ class ElectionalAstrologyService extends ServiceTemplate {
     }
 
     // Add service footer
-    formatted += '---\n*Electional Astrology - Finding Auspicious Timing for Important Activities*';
+    formatted +=
+      '---\n*Electional Astrology - Finding Auspicious Timing for Important Activities*';
 
     return formatted;
   }
@@ -206,19 +224,30 @@ class ElectionalAstrologyService extends ServiceTemplate {
    */
   _validateInputs(electionalData) {
     if (!electionalData) {
-      throw new Error('Electional data is required for auspicious timing analysis');
+      throw new Error(
+        'Electional data is required for auspicious timing analysis'
+      );
     }
 
-    if (!electionalData.activity || electionalData.activity.trim().length === 0) {
-      throw new Error('Activity type is required for electional astrology analysis');
+    if (
+      !electionalData.activity ||
+      electionalData.activity.trim().length === 0
+    ) {
+      throw new Error(
+        'Activity type is required for electional astrology analysis'
+      );
     }
 
     if (!electionalData.preferredDate) {
-      throw new Error('Preferred date is required for electional astrology analysis');
+      throw new Error(
+        'Preferred date is required for electional astrology analysis'
+      );
     }
 
     if (!electionalData.location) {
-      throw new Error('Location is required for accurate electional astrology calculation');
+      throw new Error(
+        'Location is required for accurate electional astrology calculation'
+      );
     }
   }
 
@@ -243,37 +272,61 @@ class ElectionalAstrologyService extends ServiceTemplate {
     if (result.dailyAnalysis?.overallRating) {
       const rating = result.dailyAnalysis.overallRating;
       if (rating === 'Excellent') {
-        analysis.overallAssessment = 'Highly auspicious timing with excellent planetary support';
-        analysis.timingQuality = 'Premium electional timing - proceed with confidence';
-        analysis.actionableAdvice = 'This is an ideal time for your activity - take full advantage of auspicious conditions';
-        analysis.electionalStrength = 'Very Strong - Multiple favorable factors aligned';
+        analysis.overallAssessment =
+          'Highly auspicious timing with excellent planetary support';
+        analysis.timingQuality =
+          'Premium electional timing - proceed with confidence';
+        analysis.actionableAdvice =
+          'This is an ideal time for your activity - take full advantage of auspicious conditions';
+        analysis.electionalStrength =
+          'Very Strong - Multiple favorable factors aligned';
       } else if (rating === 'Good') {
-        analysis.overallAssessment = 'Favorable timing with good planetary alignments';
-        analysis.timingQuality = 'Good electional timing - favorable conditions present';
-        analysis.actionableAdvice = 'Proceed with your activity during recommended time slots for best results';
-        analysis.electionalStrength = 'Strong - Several favorable factors present';
+        analysis.overallAssessment =
+          'Favorable timing with good planetary alignments';
+        analysis.timingQuality =
+          'Good electional timing - favorable conditions present';
+        analysis.actionableAdvice =
+          'Proceed with your activity during recommended time slots for best results';
+        analysis.electionalStrength =
+          'Strong - Several favorable factors present';
       } else if (rating === 'Fair') {
-        analysis.overallAssessment = 'Moderate timing with mixed planetary influences';
-        analysis.timingQuality = 'Acceptable electional timing - some precautions needed';
-        analysis.actionableAdvice = 'Proceed during best time slots with appropriate preparations and remedies';
-        analysis.electionalStrength = 'Moderate - Balanced favorable and challenging factors';
+        analysis.overallAssessment =
+          'Moderate timing with mixed planetary influences';
+        analysis.timingQuality =
+          'Acceptable electional timing - some precautions needed';
+        analysis.actionableAdvice =
+          'Proceed during best time slots with appropriate preparations and remedies';
+        analysis.electionalStrength =
+          'Moderate - Balanced favorable and challenging factors';
       } else {
-        analysis.overallAssessment = 'Challenging timing with difficult planetary conditions';
-        analysis.timingQuality = 'Difficult electional timing - consider alternatives';
-        analysis.actionableAdvice = 'Postpone activity or choose alternative date if possible';
+        analysis.overallAssessment =
+          'Challenging timing with difficult planetary conditions';
+        analysis.timingQuality =
+          'Difficult electional timing - consider alternatives';
+        analysis.actionableAdvice =
+          'Postpone activity or choose alternative date if possible';
         analysis.electionalStrength = 'Weak - Challenging factors predominant';
       }
     }
 
     // Assess confidence level
     if (result.dailyAnalysis?.overallRating && result.timeSlotsAnalysis) {
-      const goodSlots = Object.values(result.timeSlotsAnalysis)
-        .filter(slot => slot.suitability.rating === 'Excellent' || slot.suitability.rating === 'Good')
-        .length;
+      const goodSlots = Object.values(result.timeSlotsAnalysis).filter(
+        slot =>
+          slot.suitability.rating === 'Excellent' ||
+          slot.suitability.rating === 'Good'
+      ).length;
 
-      if (result.dailyAnalysis.overallRating === 'Excellent' && goodSlots >= 3) {
-        analysis.confidenceLevel = 'High - Multiple excellent time slots available';
-      } else if (result.dailyAnalysis.overallRating === 'Good' && goodSlots >= 2) {
+      if (
+        result.dailyAnalysis.overallRating === 'Excellent' &&
+        goodSlots >= 3
+      ) {
+        analysis.confidenceLevel =
+          'High - Multiple excellent time slots available';
+      } else if (
+        result.dailyAnalysis.overallRating === 'Good' &&
+        goodSlots >= 2
+      ) {
         analysis.confidenceLevel = 'Moderate-High - Good options available';
       } else if (goodSlots >= 1) {
         analysis.confidenceLevel = 'Moderate - Limited but suitable options';
@@ -283,12 +336,19 @@ class ElectionalAstrologyService extends ServiceTemplate {
     }
 
     // Identify risk factors
-    if (result.planetaryStrengths?.challenging && result.planetaryStrengths.challenging.length > 0) {
-      analysis.riskFactors.push(`Challenging planetary influences: ${result.planetaryStrengths.challenging.join(', ')}`);
+    if (
+      result.planetaryStrengths?.challenging &&
+      result.planetaryStrengths.challenging.length > 0
+    ) {
+      analysis.riskFactors.push(
+        `Challenging planetary influences: ${result.planetaryStrengths.challenging.join(', ')}`
+      );
     }
 
     if (result.dailyAnalysis?.overallRating === 'Poor') {
-      analysis.riskFactors.push('Overall day rated as poor for electional activities');
+      analysis.riskFactors.push(
+        'Overall day rated as poor for electional activities'
+      );
     }
 
     if (result.weekdaySuitability?.suitability === 'Poor') {
@@ -299,11 +359,17 @@ class ElectionalAstrologyService extends ServiceTemplate {
     if (electionalData.activity) {
       const activity = electionalData.activity.toLowerCase();
       if (activity.includes('marriage') || activity.includes('wedding')) {
-        analysis.actionableAdvice += '\n• Consider Venus and Jupiter periods for enhanced marital harmony';
-      } else if (activity.includes('business') || activity.includes('contract')) {
-        analysis.actionableAdvice += '\n• Mercury and Jupiter periods support business success';
+        analysis.actionableAdvice +=
+          '\n• Consider Venus and Jupiter periods for enhanced marital harmony';
+      } else if (
+        activity.includes('business') ||
+        activity.includes('contract')
+      ) {
+        analysis.actionableAdvice +=
+          '\n• Mercury and Jupiter periods support business success';
       } else if (activity.includes('health') || activity.includes('medical')) {
-        analysis.actionableAdvice += '\n• Avoid malefic planetary hours for health procedures';
+        analysis.actionableAdvice +=
+          '\n• Avoid malefic planetary hours for health procedures';
       }
     }
 
@@ -334,9 +400,11 @@ class ElectionalAstrologyService extends ServiceTemplate {
 
     // Increase confidence for good time slots
     if (result.timeSlotsAnalysis) {
-      const goodSlots = Object.values(result.timeSlotsAnalysis)
-        .filter(slot => slot.suitability.rating === 'Excellent' || slot.suitability.rating === 'Good')
-        .length;
+      const goodSlots = Object.values(result.timeSlotsAnalysis).filter(
+        slot =>
+          slot.suitability.rating === 'Excellent' ||
+          slot.suitability.rating === 'Good'
+      ).length;
       confidence += goodSlots * 3;
     }
 
@@ -348,7 +416,11 @@ class ElectionalAstrologyService extends ServiceTemplate {
     }
 
     // Increase confidence for complete analysis
-    if (result.planetaryStrengths && result.recommendations && result.dailyAnalysis) {
+    if (
+      result.planetaryStrengths &&
+      result.recommendations &&
+      result.dailyAnalysis
+    ) {
       confidence += 5;
     }
 

@@ -45,7 +45,8 @@ class AyurvedicAstrology {
         physical: 'Slim build, dry skin, cold hands/feet, variable appetite',
         mental: 'Quick learner, imaginative, prone to anxiety and worry',
         imbalances: 'Insomnia, constipation, joint pain, anxiety, dry skin',
-        foods: 'Warm, moist, nourishing foods (soups, stews, cooked vegetables)',
+        foods:
+          'Warm, moist, nourishing foods (soups, stews, cooked vegetables)',
         herbs: 'Ginger, cinnamon, ashwagandha, triphala',
         practices: 'Regular routine, warm oil massage, meditation, yoga'
       },
@@ -54,10 +55,12 @@ class AyurvedicAstrology {
         traits: 'Intelligent, focused, ambitious, strong digestion',
         physical: 'Medium build, warm body, strong appetite, fair skin',
         mental: 'Sharp mind, good concentration, prone to anger and criticism',
-        imbalances: 'Acid reflux, ulcers, skin rashes, irritability, inflammation',
+        imbalances:
+          'Acid reflux, ulcers, skin rashes, irritability, inflammation',
         foods: 'Cooling foods (salads, fruits, dairy, sweet grains)',
         herbs: 'Aloe vera, coriander, neem, amalaki',
-        practices: 'Cooling activities, swimming, moon gazing, forgiveness practices'
+        practices:
+          'Cooling activities, swimming, moon gazing, forgiveness practices'
       },
       kapha: {
         name: 'Kapha (Water/Earth)',
@@ -67,21 +70,58 @@ class AyurvedicAstrology {
         imbalances: 'Weight gain, congestion, depression, sluggishness, edema',
         foods: 'Light, warm, spicy foods (vegetables, legumes, spices)',
         herbs: 'Turmeric, ginger, guggulu, trikatu',
-        practices: 'Regular exercise, dry brushing, fasting, stimulating activities'
+        practices:
+          'Regular exercise, dry brushing, fasting, stimulating activities'
       }
     };
 
     // Planetary health indicators
     this.planetaryHealth = {
-      sun: { bodyParts: 'Heart, spine, eyes, general vitality', dosha: 'pitta', gemstone: 'Ruby' },
-      moon: { bodyParts: 'Stomach, breasts, lymphatic system, emotions', dosha: 'kapha', gemstone: 'Pearl' },
-      mars: { bodyParts: 'Muscles, blood, head, immune system', dosha: 'pitta', gemstone: 'Red Coral' },
-      mercury: { bodyParts: 'Nervous system, skin, speech, intellect', dosha: 'vata/kapha', gemstone: 'Emerald' },
-      jupiter: { bodyParts: 'Liver, thighs, wisdom, expansion', dosha: 'kapha', gemstone: 'Yellow Sapphire' },
-      venus: { bodyParts: 'Kidneys, reproductive system, throat, beauty', dosha: 'kapha', gemstone: 'Diamond' },
-      saturn: { bodyParts: 'Bones, teeth, joints, longevity', dosha: 'vata', gemstone: 'Blue Sapphire' },
-      rahu: { bodyParts: 'Lungs, foreign elements, sudden illnesses', dosha: 'vata', gemstone: 'Hessonite' },
-      ketu: { bodyParts: 'Mysterious ailments, spiritual health', dosha: 'vata', gemstone: 'Cat\'s Eye' }
+      sun: {
+        bodyParts: 'Heart, spine, eyes, general vitality',
+        dosha: 'pitta',
+        gemstone: 'Ruby'
+      },
+      moon: {
+        bodyParts: 'Stomach, breasts, lymphatic system, emotions',
+        dosha: 'kapha',
+        gemstone: 'Pearl'
+      },
+      mars: {
+        bodyParts: 'Muscles, blood, head, immune system',
+        dosha: 'pitta',
+        gemstone: 'Red Coral'
+      },
+      mercury: {
+        bodyParts: 'Nervous system, skin, speech, intellect',
+        dosha: 'vata/kapha',
+        gemstone: 'Emerald'
+      },
+      jupiter: {
+        bodyParts: 'Liver, thighs, wisdom, expansion',
+        dosha: 'kapha',
+        gemstone: 'Yellow Sapphire'
+      },
+      venus: {
+        bodyParts: 'Kidneys, reproductive system, throat, beauty',
+        dosha: 'kapha',
+        gemstone: 'Diamond'
+      },
+      saturn: {
+        bodyParts: 'Bones, teeth, joints, longevity',
+        dosha: 'vata',
+        gemstone: 'Blue Sapphire'
+      },
+      rahu: {
+        bodyParts: 'Lungs, foreign elements, sudden illnesses',
+        dosha: 'vata',
+        gemstone: 'Hessonite'
+      },
+      ketu: {
+        bodyParts: 'Mysterious ailments, spiritual health',
+        dosha: 'vata',
+        gemstone: 'Cat\'s Eye'
+      }
     };
   }
 
@@ -93,7 +133,11 @@ class AyurvedicAstrology {
       const { birthDate, birthTime, birthPlace } = birthData;
 
       // Calculate planetary positions (simplified - would use actual ephemeris)
-      const planetaryPositions = this.getPlanetaryPositions(birthDate, birthTime, birthPlace);
+      const planetaryPositions = this.getPlanetaryPositions(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
 
       // Determine dominant doshas based on planetary placements
       const doshaScores = this.calculateDoshaScores(planetaryPositions);
@@ -102,7 +146,10 @@ class AyurvedicAstrology {
       const constitutions = this.determineConstitutions(doshaScores);
 
       // Get health recommendations
-      const healthRecommendations = this.getHealthRecommendations(constitutions, planetaryPositions);
+      const healthRecommendations = this.getHealthRecommendations(
+        constitutions,
+        planetaryPositions
+      );
 
       return {
         constitutions,
@@ -116,7 +163,8 @@ class AyurvedicAstrology {
     } catch (error) {
       logger.error('Error analyzing Ayurvedic constitution:', error);
       return {
-        error: 'Unable to analyze Ayurvedic constitution. Please check birth details.'
+        error:
+          'Unable to analyze Ayurvedic constitution. Please check birth details.'
       };
     }
   }
@@ -218,15 +266,40 @@ class AyurvedicAstrology {
    */
   getHealthConcerns(planet, strength) {
     const concerns = {
-      sun: strength < 0.7 ? ['Low vitality', 'Heart issues', 'Eye problems'] : [],
-      moon: strength < 0.7 ? ['Digestive issues', 'Emotional imbalance', 'Sleep problems'] : [],
-      mars: strength < 0.7 ? ['Low immunity', 'Blood disorders', 'Inflammation'] : ['Excess heat', 'Aggression', 'Acid issues'],
-      mercury: strength < 0.7 ? ['Nervous disorders', 'Skin issues', 'Communication problems'] : [],
-      jupiter: strength < 0.7 ? ['Liver problems', 'Weight issues', 'Lack of wisdom'] : [],
-      venus: strength < 0.7 ? ['Kidney issues', 'Reproductive problems', 'Throat issues'] : [],
-      saturn: strength < 0.7 ? ['Joint pain', 'Depression', 'Chronic conditions'] : [],
-      rahu: strength < 0.7 ? ['Respiratory issues', 'Foreign elements', 'Sudden illnesses'] : ['Anxiety', 'Confusion', 'Addictions'],
-      ketu: strength < 0.7 ? ['Mysterious ailments', 'Spiritual disconnection'] : ['Detachment', 'Isolation']
+      sun:
+        strength < 0.7 ? ['Low vitality', 'Heart issues', 'Eye problems'] : [],
+      moon:
+        strength < 0.7 ?
+          ['Digestive issues', 'Emotional imbalance', 'Sleep problems'] :
+          [],
+      mars:
+        strength < 0.7 ?
+          ['Low immunity', 'Blood disorders', 'Inflammation'] :
+          ['Excess heat', 'Aggression', 'Acid issues'],
+      mercury:
+        strength < 0.7 ?
+          ['Nervous disorders', 'Skin issues', 'Communication problems'] :
+          [],
+      jupiter:
+        strength < 0.7 ?
+          ['Liver problems', 'Weight issues', 'Lack of wisdom'] :
+          [],
+      venus:
+        strength < 0.7 ?
+          ['Kidney issues', 'Reproductive problems', 'Throat issues'] :
+          [],
+      saturn:
+        strength < 0.7 ?
+          ['Joint pain', 'Depression', 'Chronic conditions'] :
+          [],
+      rahu:
+        strength < 0.7 ?
+          ['Respiratory issues', 'Foreign elements', 'Sudden illnesses'] :
+          ['Anxiety', 'Confusion', 'Addictions'],
+      ketu:
+        strength < 0.7 ?
+          ['Mysterious ailments', 'Spiritual disconnection'] :
+          ['Detachment', 'Isolation']
     };
 
     return concerns[planet] || [];
@@ -395,7 +468,8 @@ class AyurvedicAstrology {
     summary += '• Eat according to your constitution, not cravings\n';
     summary += '• Maintain regular daily and seasonal routines\n\n';
 
-    summary += '*Remember:* Ayurveda teaches that health is a balance of body, mind, and spirit. Your astrological chart provides the blueprint for your unique Ayurvedic constitution! 🌿';
+    summary +=
+      '*Remember:* Ayurveda teaches that health is a balance of body, mind, and spirit. Your astrological chart provides the blueprint for your unique Ayurvedic constitution! 🌿';
 
     return summary;
   }
@@ -406,8 +480,18 @@ class AyurvedicAstrology {
   getSunSign(birthDate) {
     const [day, month] = birthDate.split('/').map(Number);
     const signs = [
-      'capricorn', 'aquarius', 'pisces', 'aries', 'taurus', 'gemini',
-      'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius'
+      'capricorn',
+      'aquarius',
+      'pisces',
+      'aries',
+      'taurus',
+      'gemini',
+      'cancer',
+      'leo',
+      'virgo',
+      'libra',
+      'scorpio',
+      'sagittarius'
     ];
     const cutoffs = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22];
     return signs[month - 1] || 'aries';
@@ -420,8 +504,18 @@ class AyurvedicAstrology {
     const [day, month] = birthDate.split('/').map(Number);
     // Simplified moon sign calculation
     const moonSigns = [
-      'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius',
-      'capricorn', 'aquarius', 'pisces', 'aries', 'taurus', 'gemini'
+      'cancer',
+      'leo',
+      'virgo',
+      'libra',
+      'scorpio',
+      'sagittarius',
+      'capricorn',
+      'aquarius',
+      'pisces',
+      'aries',
+      'taurus',
+      'gemini'
     ];
     return moonSigns[(month + day) % 12] || 'cancer';
   }
@@ -431,7 +525,8 @@ class AyurvedicAstrology {
    */
   getAyurvedicAstrologyCatalog() {
     return {
-      description: '🕉️ Ayurvedic Astrology - Ancient wisdom linking Vedic astrology with Ayurvedic health principles',
+      description:
+        '🕉️ Ayurvedic Astrology - Ancient wisdom linking Vedic astrology with Ayurvedic health principles',
       features: [
         'Constitutional analysis (Vata/Pitta/Kapha doshas)',
         'Planetary health indicators and body part rulerships',

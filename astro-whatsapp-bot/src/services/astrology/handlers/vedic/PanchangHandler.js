@@ -6,7 +6,11 @@ const logger = require('../../../../utils/logger');
 const { Panchang } = require('../../panchang');
 
 const handlePanchang = async(message, user) => {
-  if (!message.includes('panchang') && !message.includes('daily calendar') && !message.includes('hindu calendar')) {
+  if (
+    !message.includes('panchang') &&
+    !message.includes('daily calendar') &&
+    !message.includes('hindu calendar')
+  ) {
     return null;
   }
 
@@ -17,7 +21,7 @@ const handlePanchang = async(message, user) => {
       date: `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`,
       time: `${today.getHours()}:${today.getMinutes()}`,
       latitude: user.latitude || 28.6139, // Default Delhi
-      longitude: user.longitude || 77.2090,
+      longitude: user.longitude || 77.209,
       timezone: user.timezone || 5.5 // IST
     };
 

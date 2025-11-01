@@ -92,11 +92,13 @@ class VedicYogasService extends ServiceTemplate {
     // Panch Mahapurusha Yogas
     if (yogas.panchMahapurushaYogas) {
       formatted += '*🏆 Panch Mahapurusha Yogas:*\n';
-      Object.entries(yogas.panchMahapurushaYogas).forEach(([yogaName, yoga]) => {
-        if (yoga.present) {
-          formatted += `• ${this._formatYogaName(yogaName)}: ${yoga.description}\n`;
+      Object.entries(yogas.panchMahapurushaYogas).forEach(
+        ([yogaName, yoga]) => {
+          if (yoga.present) {
+            formatted += `• ${this._formatYogaName(yogaName)}: ${yoga.description}\n`;
+          }
         }
-      });
+      );
       if (!Object.values(yogas.panchMahapurushaYogas).some(y => y.present)) {
         formatted += '• No major Panch Mahapurusha Yogas present\n';
       }
@@ -157,7 +159,8 @@ class VedicYogasService extends ServiceTemplate {
       formatted += '\n\n';
     }
 
-    formatted += '*Vedic Yogas reveal special planetary combinations that create unique life patterns and potentials.*';
+    formatted +=
+      '*Vedic Yogas reveal special planetary combinations that create unique life patterns and potentials.*';
 
     return formatted;
   }
@@ -173,7 +176,9 @@ class VedicYogasService extends ServiceTemplate {
     }
 
     if (!birthData.birthDate || !birthData.birthTime || !birthData.birthPlace) {
-      throw new Error('Complete birth details (date, time, place) are required');
+      throw new Error(
+        'Complete birth details (date, time, place) are required'
+      );
     }
   }
 
@@ -198,7 +203,9 @@ class VedicYogasService extends ServiceTemplate {
 
     // Count present yogas
     if (yogas.panchMahapurushaYogas) {
-      const mahapurushaCount = Object.values(yogas.panchMahapurushaYogas).filter(y => y.present).length;
+      const mahapurushaCount = Object.values(
+        yogas.panchMahapurushaYogas
+      ).filter(y => y.present).length;
       summary.categories.mahapurusha = mahapurushaCount;
       summary.totalPresent += mahapurushaCount;
     }
@@ -229,26 +236,38 @@ class VedicYogasService extends ServiceTemplate {
     if (yogas.panchMahapurushaYogas) {
       Object.entries(yogas.panchMahapurushaYogas).forEach(([name, yoga]) => {
         if (yoga.present) {
-          allYogas.push({ name: this._formatYogaName(name), strength: yoga.strength || 5 });
+          allYogas.push({
+            name: this._formatYogaName(name),
+            strength: yoga.strength || 5
+          });
         }
       });
     }
 
     if (yogas.rajYoga?.present) {
-      allYogas.push({ name: 'Raj Yoga', strength: yogas.rajYoga.strength || 0 });
+      allYogas.push({
+        name: 'Raj Yoga',
+        strength: yogas.rajYoga.strength || 0
+      });
     }
 
     if (yogas.dhanYoga?.present) {
-      allYogas.push({ name: 'Dhan Yoga', strength: yogas.dhanYoga.strength || 0 });
+      allYogas.push({
+        name: 'Dhan Yoga',
+        strength: yogas.dhanYoga.strength || 0
+      });
     }
 
     if (yogas.gajaKeshariYoga?.present) {
-      allYogas.push({ name: 'Gaja Kesari Yoga', strength: yogas.gajaKeshariYoga.strength || 0 });
+      allYogas.push({
+        name: 'Gaja Kesari Yoga',
+        strength: yogas.gajaKeshariYoga.strength || 0
+      });
     }
 
     if (allYogas.length > 0) {
       const strongest = allYogas.reduce((prev, current) =>
-        ((prev.strength > current.strength) ? prev : current)
+        (prev.strength > current.strength ? prev : current)
       );
       summary.strongest = strongest.name;
     }
@@ -299,7 +318,10 @@ class VedicYogasService extends ServiceTemplate {
     let confidence = 75; // Base confidence for yoga analysis
 
     // Increase confidence based on data completeness
-    if (result.planetaryPositions && Object.keys(result.planetaryPositions).length >= 7) {
+    if (
+      result.planetaryPositions &&
+      Object.keys(result.planetaryPositions).length >= 7
+    ) {
       confidence += 15;
     }
 

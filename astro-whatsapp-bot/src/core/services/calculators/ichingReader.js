@@ -16,14 +16,14 @@ class IChingReader {
     // Simplified hexagram data
     // In practice, this would contain the full I Ching oracle
     return {
-      '226622': 'Heaven/Kīn (力) - Creative Force',
-      '226626': 'Cloud/Kou (姤) - Coming to Meet',
-      '226662': 'Marsh/Tui (兌) - Joy',
-      '666222': 'Mountain/Kēn (艮) - Keeping Still',
-      '666226': 'Water/Kān (坎) - The Abysmal',
-      '666262': 'Wind/Xùn (巽) - Gentle Penetration',
-      '666622': 'Thunder/Zhèn (震) - The Arousing Shock',
-      '666666': 'Earth/Kūn (坤) - Receptive Earth',
+      226622: 'Heaven/Kīn (力) - Creative Force',
+      226626: 'Cloud/Kou (姤) - Coming to Meet',
+      226662: 'Marsh/Tui (兌) - Joy',
+      666222: 'Mountain/Kēn (艮) - Keeping Still',
+      666226: 'Water/Kān (坎) - The Abysmal',
+      666262: 'Wind/Xùn (巽) - Gentle Penetration',
+      666622: 'Thunder/Zhèn (震) - The Arousing Shock',
+      666666: 'Earth/Kūn (坤) - Receptive Earth'
       // This would be expanded with all 64 hexagrams
     };
   }
@@ -79,10 +79,18 @@ class IChingReader {
     const total = coins.reduce((sum, coin) => sum + coin, 0);
 
     // Traditional coin values
-    if (total === 6) return 6; // Yin - three tails
-    if (total === 7) return 7; // Young Yin
-    if (total === 8) return 8; // Young Yang
-    if (total === 9) return 9; // Yang - three heads
+    if (total === 6) {
+      return 6;
+    } // Yin - three tails
+    if (total === 7) {
+      return 7;
+    } // Young Yin
+    if (total === 8) {
+      return 8;
+    } // Young Yang
+    if (total === 9) {
+      return 9;
+    } // Yang - three heads
 
     return 7; // Fallback
   }
@@ -106,14 +114,16 @@ class IChingReader {
 
     // Basic interpretation based on hexagram
     if (this.hexagrams[hexagramKey]) {
-      interpretation.primaryMeaning = this.hexagrams[hexagramKey].split('/')[1] || 'Unknown';
+      interpretation.primaryMeaning =
+        this.hexagrams[hexagramKey].split('/')[1] || 'Unknown';
     } else {
       interpretation.primaryMeaning = 'Complex transformation';
     }
 
     // Generate contextual interpretation
     interpretation.advice = 'Maintain balance between stillness and action';
-    interpretation.relationalDynamics = 'Focus on authenticity in relationships';
+    interpretation.relationalDynamics =
+      'Focus on authenticity in relationships';
     interpretation.timing = 'Right action at the right time';
     interpretation.judgment = 'Success comes through perseverance';
     interpretation.image = 'Clouds gathering before the rain';
@@ -141,15 +151,15 @@ class IChingReader {
 
     // Add method-specific nuances
     switch (method) {
-      case 'coin':
-        casting.divinatoryMethod = 'Traditional coin method using three coins';
-        break;
-      case 'yarrow':
-        casting.divinatoryMethod = 'Ancient yarrow stalk method';
-        break;
-      case 'manual':
-        casting.divinatoryMethod = 'Manual line selection';
-        break;
+    case 'coin':
+      casting.divinatoryMethod = 'Traditional coin method using three coins';
+      break;
+    case 'yarrow':
+      casting.divinatoryMethod = 'Ancient yarrow stalk method';
+      break;
+    case 'manual':
+      casting.divinatoryMethod = 'Manual line selection';
+      break;
     }
 
     return casting;

@@ -48,7 +48,8 @@ class JaiminiAstrologyAction extends BaseAction {
         strengths: '• Strengths: ',
         challenges: '• Challenges: ',
         recommendations: '• Recommendations: ',
-        footer: '\n\n_This analysis provides insights into your soul\'s journey and karmic patterns according to Jaimini system._'
+        footer:
+          '\n\n_This analysis provides insights into your soul\'s journey and karmic patterns according to Jaimini system._'
       },
       hi: {
         header: '🔮 *जैमिनी ज्योतिष विश्लेषण*\n\n',
@@ -63,7 +64,8 @@ class JaiminiAstrologyAction extends BaseAction {
         strengths: '• शक्तियां: ',
         challenges: '• चुनौतियां: ',
         recommendations: '• सिफारिशें: ',
-        footer: '\n\n_यह विश्लेषण जैमिनी प्रणाली के अनुसार आपकी आत्मा की यात्रा और कर्मिक पैटर्न में अंतर्दृष्टि प्रदान करता है।_'
+        footer:
+          '\n\n_यह विश्लेषण जैमिनी प्रणाली के अनुसार आपकी आत्मा की यात्रा और कर्मिक पैटर्न में अंतर्दृष्टि प्रदान करता है।_'
       }
     };
 
@@ -73,7 +75,8 @@ class JaiminiAstrologyAction extends BaseAction {
     // Chara Karakas
     if (analysis.sections['Chara Karakas (Variable Significators)']) {
       response += t.charaKarakas;
-      const charaKarakas = analysis.sections['Chara Karakas (Variable Significators)'];
+      const charaKarakas =
+        analysis.sections['Chara Karakas (Variable Significators)'];
       Object.entries(charaKarakas).forEach(([karaka, planet]) => {
         response += `• ${karaka}: ${planet}\n`;
       });
@@ -83,7 +86,8 @@ class JaiminiAstrologyAction extends BaseAction {
     // Sthira Karakas
     if (analysis.sections['Sthira Karakas (Fixed Significators)']) {
       response += t.sthiraKarakas;
-      const sthiraKarakas = analysis.sections['Sthira Karakas (Fixed Significators)'];
+      const sthiraKarakas =
+        analysis.sections['Sthira Karakas (Fixed Significators)'];
       Object.entries(sthiraKarakas).forEach(([karaka, planet]) => {
         response += `• ${karaka}: ${planet}\n`;
       });
@@ -103,7 +107,8 @@ class JaiminiAstrologyAction extends BaseAction {
     // Ishta-Kashta
     if (analysis.sections['Ishta-Kashta (Spiritual-Material Balance)']) {
       response += t.ishtaKashta;
-      const ishtaKashta = analysis.sections['Ishta-Kashta (Spiritual-Material Balance)'];
+      const ishtaKashta =
+        analysis.sections['Ishta-Kashta (Spiritual-Material Balance)'];
       response += `• Ishta: ${ishtaKashta.ishta}\n`;
       response += `• Kashta: ${ishtaKashta.kashta}\n`;
       response += `• Balance: ${ishtaKashta.balance}\n\n`;

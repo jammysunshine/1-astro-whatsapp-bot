@@ -23,24 +23,84 @@ class MuhurtaCalculator {
 
     // Weekday lords and their significances
     this.weekdayLords = {
-      Sunday: 'Sun', Monday: 'Moon', Tuesday: 'Mars', Wednesday: 'Mercury',
-      Thursday: 'Jupiter', Friday: 'Venus', Saturday: 'Saturn'
+      Sunday: 'Sun',
+      Monday: 'Moon',
+      Tuesday: 'Mars',
+      Wednesday: 'Mercury',
+      Thursday: 'Jupiter',
+      Friday: 'Venus',
+      Saturday: 'Saturn'
     };
 
     // Zodiac signs and their natures
     this.signQualities = {
-      1: { name: 'Aries', quality: 'exalted', nature: 'fiery', element: 'fire' },
-      2: { name: 'Taurus', quality: 'feminine', nature: 'earthy', element: 'earth' },
+      1: {
+        name: 'Aries',
+        quality: 'exalted',
+        nature: 'fiery',
+        element: 'fire'
+      },
+      2: {
+        name: 'Taurus',
+        quality: 'feminine',
+        nature: 'earthy',
+        element: 'earth'
+      },
       3: { name: 'Gemini', quality: 'mutable', nature: 'airy', element: 'air' },
-      4: { name: 'Cancer', quality: 'feminine', nature: 'watery', element: 'water' },
-      5: { name: 'Leo', quality: 'masculine', nature: 'fiery', element: 'fire' },
-      6: { name: 'Virgo', quality: 'feminine', nature: 'earthy', element: 'earth' },
-      7: { name: 'Libra', quality: 'masculine', nature: 'airy', element: 'air' },
-      8: { name: 'Scorpio', quality: 'feminine', nature: 'watery', element: 'water' },
-      9: { name: 'Sagittarius', quality: 'mutable', nature: 'fiery', element: 'fire' },
-      10: { name: 'Capricorn', quality: 'feminine', nature: 'earthy', element: 'earth' },
-      11: { name: 'Aquarius', quality: 'masculine', nature: 'airy', element: 'air' },
-      12: { name: 'Pisces', quality: 'mutable', nature: 'watery', element: 'water' }
+      4: {
+        name: 'Cancer',
+        quality: 'feminine',
+        nature: 'watery',
+        element: 'water'
+      },
+      5: {
+        name: 'Leo',
+        quality: 'masculine',
+        nature: 'fiery',
+        element: 'fire'
+      },
+      6: {
+        name: 'Virgo',
+        quality: 'feminine',
+        nature: 'earthy',
+        element: 'earth'
+      },
+      7: {
+        name: 'Libra',
+        quality: 'masculine',
+        nature: 'airy',
+        element: 'air'
+      },
+      8: {
+        name: 'Scorpio',
+        quality: 'feminine',
+        nature: 'watery',
+        element: 'water'
+      },
+      9: {
+        name: 'Sagittarius',
+        quality: 'mutable',
+        nature: 'fiery',
+        element: 'fire'
+      },
+      10: {
+        name: 'Capricorn',
+        quality: 'feminine',
+        nature: 'earthy',
+        element: 'earth'
+      },
+      11: {
+        name: 'Aquarius',
+        quality: 'masculine',
+        nature: 'airy',
+        element: 'air'
+      },
+      12: {
+        name: 'Pisces',
+        quality: 'mutable',
+        nature: 'watery',
+        element: 'water'
+      }
     };
   }
 
@@ -58,47 +118,85 @@ class MuhurtaCalculator {
    */
   async generateMuhurta(requestData) {
     try {
-      const { activity, preferredDate, birthData, location, timeWindow } = requestData;
+      const { activity, preferredDate, birthData, location, timeWindow } =
+        requestData;
 
       if (!activity || !preferredDate || !location) {
-        return { error: 'Activity, preferred date, and location are required for Muhurta calculation' };
+        return {
+          error:
+            'Activity, preferred date, and location are required for Muhurta calculation'
+        };
       }
 
       // Parse preferred date and time window
       const [day, month, year] = preferredDate.split('/').map(Number);
       const startHour = timeWindow?.startHour || 6; // Default 6 AM
-      const endHour = timeWindow?.endHour || 18;   // Default 6 PM
+      const endHour = timeWindow?.endHour || 18; // Default 6 PM
 
       // Get location coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(location);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(location);
       const timestamp = new Date(year, month - 1, day).getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate daily astronomical factors
       const dailyAnalysis = await this._calculateDailyAuspiciousness(
-        year, month, day, latitude, longitude, timezone, activity
+        year,
+        month,
+        day,
+        latitude,
+        longitude,
+        timezone,
+        activity
       );
 
       // Analyze optimal time slots within the day
       const timeSlotsAnalysis = this._analyzeTimeSlots(
-        year, month, day, startHour, endHour, timezone, latitude, longitude, activity
+        year,
+        month,
+        day,
+        startHour,
+        endHour,
+        timezone,
+        latitude,
+        longitude,
+        activity
       );
 
       // Check weekday suitability
-      const weekdaySuitability = this._analyzeWeekdaySuitability(preferredDate, activity);
+      const weekdaySuitability = this._analyzeWeekdaySuitability(
+        preferredDate,
+        activity
+      );
 
       // Calculate planetary strengths for the day
-      const planetaryStrengths = this._calculatePlanetaryStrengthsForActivity(activity, dailyAnalysis);
+      const planetaryStrengths = this._calculatePlanetaryStrengthsForActivity(
+        activity,
+        dailyAnalysis
+      );
 
       // Generate final recommendations
       const recommendations = this._generateMuhurtaRecommendations(
-        activity, timeSlotsAnalysis, weekdaySuitability, dailyAnalysis, planetaryStrengths
+        activity,
+        timeSlotsAnalysis,
+        weekdaySuitability,
+        dailyAnalysis,
+        planetaryStrengths
       );
 
       // Find alternative dates if current date is unfavorable
       let alternatives = [];
       if (dailyAnalysis.overallRating === 'Poor') {
-        alternatives = await this._suggestAlternativeDates(preferredDate, activity, location, 7); // Next 7 days
+        alternatives = await this._suggestAlternativeDates(
+          preferredDate,
+          activity,
+          location,
+          7
+        ); // Next 7 days
       }
 
       return {
@@ -125,16 +223,23 @@ class MuhurtaCalculator {
   async recommendBestMuhurta(timeWindow, activity, location) {
     try {
       const { startDate, endDate, startHour, endHour } = timeWindow;
-      const [startDay, startMonth, startYear] = startDate.split('/').map(Number);
+      const [startDay, startMonth, startYear] = startDate
+        .split('/')
+        .map(Number);
       const [endDay, endMonth, endYear] = endDate.split('/').map(Number);
 
       const startDateTime = new Date(startYear, startMonth - 1, startDay);
       const endDateTime = new Date(endYear, endMonth - 1, endDay);
 
       // Get location data
-      const [latitude, longitude] = await this._getCoordinatesForPlace(location);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(location);
       const timestamp = startDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       let bestMuhurta = null;
       let bestScore = -1;
@@ -148,7 +253,13 @@ class MuhurtaCalculator {
 
         // Calculate daily factors
         const dailyAnalysis = await this._calculateDailyAuspiciousness(
-          year, month, day, latitude, longitude, timezone, activity
+          year,
+          month,
+          day,
+          latitude,
+          longitude,
+          timezone,
+          activity
         );
 
         // Skip if day is generally poor
@@ -159,12 +270,23 @@ class MuhurtaCalculator {
 
         // Analyze time slots in this day
         const timeSlots = this._analyzeTimeSlots(
-          year, month, day, startHour, endHour, timezone, latitude, longitude, activity
+          year,
+          month,
+          day,
+          startHour,
+          endHour,
+          timezone,
+          latitude,
+          longitude,
+          activity
         );
 
         // Find best time slot in this day
         Object.entries(timeSlots).forEach(([timeKey, timeData]) => {
-          if (timeData.suitability.score > bestScore && timeData.suitability.rating !== 'Poor') {
+          if (
+            timeData.suitability.score > bestScore &&
+            timeData.suitability.rating !== 'Poor'
+          ) {
             bestMuhurta = {
               date: `${day}/${month}/${year}`,
               time: timeKey,
@@ -182,7 +304,12 @@ class MuhurtaCalculator {
       if (!bestMuhurta) {
         return {
           error: 'No suitable Muhurta found in the specified time window',
-          alternatives: await this._suggestAlternativeDates(startDate, activity, location, 14) // 2 weeks
+          alternatives: await this._suggestAlternativeDates(
+            startDate,
+            activity,
+            location,
+            14
+          ) // 2 weeks
         };
       }
 
@@ -203,7 +330,15 @@ class MuhurtaCalculator {
   /**
    * Calculate daily auspiciousness factors
    */
-  async _calculateDailyAuspiciousness(year, month, day, latitude, longitude, timezone, activity) {
+  async _calculateDailyAuspiciousness(
+    year,
+    month,
+    day,
+    latitude,
+    longitude,
+    timezone,
+    activity
+  ) {
     const analysis = {
       sunRise: '',
       sunSet: '',
@@ -239,7 +374,12 @@ class MuhurtaCalculator {
       analysis.weekday = date.toLocaleDateString('en-US', { weekday: 'long' });
 
       // Calculate sunrise/sunset (approximate)
-      analysis.sunRise = this._calculateSunTimes(jd, latitude, longitude, 'rise');
+      analysis.sunRise = this._calculateSunTimes(
+        jd,
+        latitude,
+        longitude,
+        'rise'
+      );
       analysis.sunSet = this._calculateSunTimes(jd, latitude, longitude, 'set');
 
       // Determine moon phase
@@ -247,7 +387,11 @@ class MuhurtaCalculator {
 
       // Calculate auspicious/inauspicious scores
       const scores = this._calculateDailyScores(
-        analysis, activity, year, month, day
+        analysis,
+        activity,
+        year,
+        month,
+        day
       );
 
       analysis.auspiciousScore = scores.auspicious;
@@ -265,7 +409,17 @@ class MuhurtaCalculator {
   /**
    * Analyze time slots within the day
    */
-  _analyzeTimeSlots(year, month, day, startHour, endHour, timezone, latitude, longitude, activity) {
+  _analyzeTimeSlots(
+    year,
+    month,
+    day,
+    startHour,
+    endHour,
+    timezone,
+    latitude,
+    longitude,
+    activity
+  ) {
     const timeSlots = {};
     const slotDuration = 2; // 2-hour slots
 
@@ -281,7 +435,12 @@ class MuhurtaCalculator {
       const jd = this._dateToJulianDay(year, month, day, midHour - timezone);
 
       timeSlots[timeKey] = this._analyzeTimeSlotSuitability(
-        jd, latitude, longitude, activity, startTime, endTime
+        jd,
+        latitude,
+        longitude,
+        activity,
+        startTime,
+        endTime
       );
     }
 
@@ -291,7 +450,14 @@ class MuhurtaCalculator {
   /**
    * Analyze suitability of a specific time slot
    */
-  _analyzeTimeSlotSuitability(jd, latitude, longitude, activity, startTime, endTime) {
+  _analyzeTimeSlotSuitability(
+    jd,
+    latitude,
+    longitude,
+    activity,
+    startTime,
+    endTime
+  ) {
     const analysis = {
       planetaryPositions: {},
       rulingPlanet: '',
@@ -311,15 +477,25 @@ class MuhurtaCalculator {
 
       // Determine ruling planet (weekday lord)
       const currentDate = new Date(jd * 24 * 60 * 60 * 1000);
-      analysis.rulingPlanet = this.weekdayLords[currentDate.toLocaleDateString('en-US', { weekday: 'long' })];
+      analysis.rulingPlanet =
+        this.weekdayLords[
+          currentDate.toLocaleDateString('en-US', { weekday: 'long' })
+        ];
 
       // Calculate suitability for activity
       analysis.suitability = this._calculateTimeSuitability(
-        analysis, activity, startTime, endTime
+        analysis,
+        activity,
+        startTime,
+        endTime
       );
     } catch (error) {
       logger.warn('Error analyzing time slot:', error.message);
-      analysis.suitability = { score: 0, rating: 'Unknown', reasons: ['Calculation error'] };
+      analysis.suitability = {
+        score: 0,
+        rating: 'Unknown',
+        reasons: ['Calculation error']
+      };
     }
 
     return analysis;
@@ -340,7 +516,9 @@ class MuhurtaCalculator {
     const { rulingPlanet } = timeAnalysis;
     if (activityRules.favorablePlanets.includes(rulingPlanet)) {
       score += 20;
-      reasons.push(`${rulingPlanet} rules this period - favorable for ${activity}`);
+      reasons.push(
+        `${rulingPlanet} rules this period - favorable for ${activity}`
+      );
     } else if (activityRules.challengingPlanets.includes(rulingPlanet)) {
       score -= 15;
       reasons.push(`${rulingPlanet} rules this period - may be challenging`);
@@ -380,9 +558,14 @@ class MuhurtaCalculator {
       }
     });
 
-    const rating = score >= 70 ? 'Excellent' :
-      score >= 55 ? 'Good' :
-        score >= 35 ? 'Fair' : 'Poor';
+    const rating =
+      score >= 70 ?
+        'Excellent' :
+        score >= 55 ?
+          'Good' :
+          score >= 35 ?
+            'Fair' :
+            'Poor';
 
     return { score, rating, reasons };
   }
@@ -406,13 +589,34 @@ class MuhurtaCalculator {
 
     // Define activity preferences by weekday
     const weekdayPreferences = {
-      Sunday: { favorable: ['spiritual', 'creative', 'authority'], challenging: ['business', 'legal'] },
-      Monday: { favorable: ['education', 'healing', 'household'], challenging: ['conflict', 'banquets'] },
-      Tuesday: { favorable: ['war', 'courage', 'land', 'competition'], challenging: ['marriage', 'surgery'] },
-      Wednesday: { favorable: ['communication', 'business', 'magic'], challenging: ['travel', 'marriage'] },
-      Thursday: { favorable: ['marriage', 'travel', 'wealth', 'spiritual'], challenging: ['war', 'arguments'] },
-      Friday: { favorable: ['love', 'art', 'beauty', 'pleasure'], challenging: ['war', 'funerals'] },
-      Saturday: { favorable: ['service', 'construction', 'long-term'], challenging: ['marriage', 'travel'] }
+      Sunday: {
+        favorable: ['spiritual', 'creative', 'authority'],
+        challenging: ['business', 'legal']
+      },
+      Monday: {
+        favorable: ['education', 'healing', 'household'],
+        challenging: ['conflict', 'banquets']
+      },
+      Tuesday: {
+        favorable: ['war', 'courage', 'land', 'competition'],
+        challenging: ['marriage', 'surgery']
+      },
+      Wednesday: {
+        favorable: ['communication', 'business', 'magic'],
+        challenging: ['travel', 'marriage']
+      },
+      Thursday: {
+        favorable: ['marriage', 'travel', 'wealth', 'spiritual'],
+        challenging: ['war', 'arguments']
+      },
+      Friday: {
+        favorable: ['love', 'art', 'beauty', 'pleasure'],
+        challenging: ['war', 'funerals']
+      },
+      Saturday: {
+        favorable: ['service', 'construction', 'long-term'],
+        challenging: ['marriage', 'travel']
+      }
     };
 
     const preferences = weekdayPreferences[weekday];
@@ -438,12 +642,42 @@ class MuhurtaCalculator {
 
     // Define planetary significance for different activities
     const activityPlanets = {
-      marriage: { jupiter: 'Blessings', venus: 'Love', moon: 'Emotional harmony', sun: 'Stability' },
-      business: { mercury: 'Communication', sun: 'Authority', jupiter: 'Expansion', mars: 'Action' },
-      spiritual: { jupiter: 'Wisdom', saturn: 'Discipline', moon: 'Devotion', sun: 'Divine connection' },
-      education: { mercury: 'Knowledge', jupiter: 'Understanding', moon: 'Memory', sun: 'Focus' },
-      health: { sun: 'Vitality', moon: 'Emotional health', mars: 'Action', jupiter: 'Recovery' },
-      travel: { moon: 'Comfort', jupiter: 'Success', saturn: 'Patience', mars: 'Journey' }
+      marriage: {
+        jupiter: 'Blessings',
+        venus: 'Love',
+        moon: 'Emotional harmony',
+        sun: 'Stability'
+      },
+      business: {
+        mercury: 'Communication',
+        sun: 'Authority',
+        jupiter: 'Expansion',
+        mars: 'Action'
+      },
+      spiritual: {
+        jupiter: 'Wisdom',
+        saturn: 'Discipline',
+        moon: 'Devotion',
+        sun: 'Divine connection'
+      },
+      education: {
+        mercury: 'Knowledge',
+        jupiter: 'Understanding',
+        moon: 'Memory',
+        sun: 'Focus'
+      },
+      health: {
+        sun: 'Vitality',
+        moon: 'Emotional health',
+        mars: 'Action',
+        jupiter: 'Recovery'
+      },
+      travel: {
+        moon: 'Comfort',
+        jupiter: 'Success',
+        saturn: 'Patience',
+        mars: 'Journey'
+      }
     };
 
     const relevantPlanets = activityPlanets[activityType] || {};
@@ -467,7 +701,13 @@ class MuhurtaCalculator {
   /**
    * Generate final muhurta recommendations
    */
-  _generateMuhurtaRecommendations(activity, timeSlotsAnalysis, weekdaySuitability, dailyAnalysis, planetaryStrengths) {
+  _generateMuhurtaRecommendations(
+    activity,
+    timeSlotsAnalysis,
+    weekdaySuitability,
+    dailyAnalysis,
+    planetaryStrengths
+  ) {
     const recommendations = {
       overallSuitability: '',
       recommendedTimeSlots: [],
@@ -481,13 +721,17 @@ class MuhurtaCalculator {
     const weekdayRating = weekdaySuitability.rating;
 
     if (dailyRating === 'Excellent' && weekdayRating === 'Favorable') {
-      recommendations.overallSuitability = 'Excellent timing - proceed with confidence';
+      recommendations.overallSuitability =
+        'Excellent timing - proceed with confidence';
     } else if (dailyRating === 'Good' && weekdayRating !== 'Challenging') {
-      recommendations.overallSuitability = 'Good timing - suitable with some awareness';
+      recommendations.overallSuitability =
+        'Good timing - suitable with some awareness';
     } else if (dailyRating === 'Fair' || weekdayRating === 'Neutral') {
-      recommendations.overallSuitability = 'Fair timing - acceptable but not ideal';
+      recommendations.overallSuitability =
+        'Fair timing - acceptable but not ideal';
     } else {
-      recommendations.overallSuitability = 'Poor timing - better to choose alternative date/time';
+      recommendations.overallSuitability =
+        'Poor timing - better to choose alternative date/time';
     }
 
     // Find best time slots
@@ -495,15 +739,21 @@ class MuhurtaCalculator {
       .sort(([, a], [, b]) => b.suitability.score - a.suitability.score)
       .slice(0, 3);
 
-    recommendations.recommendedTimeSlots = sortedSlots.map(([timeSlot, analysis]) => ({
-      time: timeSlot,
-      rating: analysis.suitability.rating,
-      score: analysis.suitability.score,
-      reasons: analysis.suitability.reasons
-    }));
+    recommendations.recommendedTimeSlots = sortedSlots.map(
+      ([timeSlot, analysis]) => ({
+        time: timeSlot,
+        rating: analysis.suitability.rating,
+        score: analysis.suitability.score,
+        reasons: analysis.suitability.reasons
+      })
+    );
 
     // Generate precautions and enhancements
-    this._generatePrecautionsAndEnhancements(recommendations, activity, dailyAnalysis);
+    this._generatePrecautionsAndEnhancements(
+      recommendations,
+      activity,
+      dailyAnalysis
+    );
 
     return recommendations;
   }
@@ -541,7 +791,8 @@ class MuhurtaCalculator {
     }
 
     if (alternatives.length > 0) {
-      summary += '*Alternative dates available if current timing is unsuitable.*';
+      summary +=
+        '*Alternative dates available if current timing is unsuitable.*';
     } else {
       summary += '*Current date and time analysis completed.*';
     }
@@ -553,13 +804,33 @@ class MuhurtaCalculator {
   _categorizeActivity(activity) {
     const activityLower = activity.toLowerCase();
 
-    if (this.activityCategories.marriage.some(a => activityLower.includes(a))) { return 'marriage'; }
-    if (this.activityCategories.business.some(a => activityLower.includes(a))) { return 'business'; }
-    if (this.activityCategories.spiritual.some(a => activityLower.includes(a))) { return 'spiritual'; }
-    if (this.activityCategories.education.some(a => activityLower.includes(a))) { return 'education'; }
-    if (this.activityCategories.health.some(a => activityLower.includes(a))) { return 'health'; }
-    if (this.activityCategories.travel.some(a => activityLower.includes(a))) { return 'travel'; }
-    if (this.activityCategories.housewarming.some(a => activityLower.includes(a))) { return 'housewarming'; }
+    if (this.activityCategories.marriage.some(a => activityLower.includes(a))) {
+      return 'marriage';
+    }
+    if (this.activityCategories.business.some(a => activityLower.includes(a))) {
+      return 'business';
+    }
+    if (
+      this.activityCategories.spiritual.some(a => activityLower.includes(a))
+    ) {
+      return 'spiritual';
+    }
+    if (
+      this.activityCategories.education.some(a => activityLower.includes(a))
+    ) {
+      return 'education';
+    }
+    if (this.activityCategories.health.some(a => activityLower.includes(a))) {
+      return 'health';
+    }
+    if (this.activityCategories.travel.some(a => activityLower.includes(a))) {
+      return 'travel';
+    }
+    if (
+      this.activityCategories.housewarming.some(a => activityLower.includes(a))
+    ) {
+      return 'housewarming';
+    }
 
     return 'general';
   }
@@ -614,11 +885,23 @@ class MuhurtaCalculator {
   async _calculatePlanetPositions(jd) {
     const positions = {};
 
-    const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+    const planets = [
+      'sun',
+      'moon',
+      'mars',
+      'mercury',
+      'jupiter',
+      'venus',
+      'saturn'
+    ];
     const planetIds = {
-      sun: sweph.SE_SUN, moon: sweph.SE_MOON, mars: sweph.SE_MARS,
-      mercury: sweph.SE_MERCURY, jupiter: sweph.SE_JUPITER,
-      venus: sweph.SE_VENUS, saturn: sweph.SE_SATURN
+      sun: sweph.SE_SUN,
+      moon: sweph.SE_MOON,
+      mars: sweph.SE_MARS,
+      mercury: sweph.SE_MERCURY,
+      jupiter: sweph.SE_JUPITER,
+      venus: sweph.SE_VENUS,
+      saturn: sweph.SE_SATURN
     };
 
     for (const planet of planets) {
@@ -639,8 +922,12 @@ class MuhurtaCalculator {
     const sunPos = sweph.calc(jd, sweph.SE_SUN, sweph.SEFLG_SIDEREAL);
     const moonPos = sweph.calc(jd, sweph.SE_MOON, sweph.SEFLG_SIDEREAL);
 
-    const sunLong = Array.isArray(sunPos.longitude) ? sunPos.longitude[0] : sunPos.longitude;
-    const moonLong = Array.isArray(moonPos.longitude) ? moonPos.longitude[0] : moonPos.longitude;
+    const sunLong = Array.isArray(sunPos.longitude) ?
+      sunPos.longitude[0] :
+      sunPos.longitude;
+    const moonLong = Array.isArray(moonPos.longitude) ?
+      moonPos.longitude[0] :
+      moonPos.longitude;
 
     const difference = moonLong - sunLong;
     const normalizedDifference = ((difference % 360) + 360) % 360;
@@ -655,7 +942,9 @@ class MuhurtaCalculator {
 
   _calculateNakshatra(jd) {
     const moonPos = sweph.calc(jd, sweph.SE_MOON, sweph.SEFLG_SIDEREAL);
-    const moonLong = Array.isArray(moonPos.longitude) ? moonPos.longitude[0] : moonPos.longitude;
+    const moonLong = Array.isArray(moonPos.longitude) ?
+      moonPos.longitude[0] :
+      moonPos.longitude;
 
     const nakshatraNumber = Math.floor(moonLong / (360 / 27)) + 1;
     return {
@@ -693,11 +982,33 @@ class MuhurtaCalculator {
 
   _getYogaName(yogaNumber) {
     const yogaNames = [
-      'Vishkambha', 'Priti', 'Ayushman', 'Saubhagya', 'Shobhana',
-      'Atiganda', 'Sukarma', 'Dhriti', 'Shula', 'Ganda', 'Vriddhi',
-      'Dhruva', 'Vyaghata', 'Harshana', 'Vajra', 'Siddhi', 'Vyatipata',
-      'Variyan', 'Parigha', 'Shiva', 'Siddha', 'Sadhya', 'Shubha', 'Shukla',
-      'Brahma', 'Indra', 'Vaidhriti'
+      'Vishkambha',
+      'Priti',
+      'Ayushman',
+      'Saubhagya',
+      'Shobhana',
+      'Atiganda',
+      'Sukarma',
+      'Dhriti',
+      'Shula',
+      'Ganda',
+      'Vriddhi',
+      'Dhruva',
+      'Vyaghata',
+      'Harshana',
+      'Vajra',
+      'Siddhi',
+      'Vyatipata',
+      'Variyan',
+      'Parigha',
+      'Shiva',
+      'Siddha',
+      'Sadhya',
+      'Shubha',
+      'Shukla',
+      'Brahma',
+      'Indra',
+      'Vaidhriti'
     ];
 
     return yogaNames[yogaNumber - 1] || 'Unknown';

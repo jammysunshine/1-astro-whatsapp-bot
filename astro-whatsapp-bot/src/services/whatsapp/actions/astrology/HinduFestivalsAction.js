@@ -1,5 +1,7 @@
 const AstrologyAction = require('../base/AstrologyAction');
-const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const {
+  AstrologyFormatterFactory
+} = require('../factories/AstrologyFormatterFactory');
 
 const MockHinduFestivals = class {
   constructor() {}
@@ -9,9 +11,18 @@ const MockHinduFestivals = class {
       error: null,
       summary: 'Mock festivals data',
       auspicious_timings: {
-        abhijit_muhurta: { time: '12:00-12:48', significance: 'Most auspicious' },
-        brahma_muhurta: { time: '04:24-06:00', significance: 'Spiritual activities' },
-        rahu_kalam: { time: '10:46-13:15', significance: 'Avoid important work' }
+        abhijit_muhurta: {
+          time: '12:00-12:48',
+          significance: 'Most auspicious'
+        },
+        brahma_muhurta: {
+          time: '04:24-06:00',
+          significance: 'Spiritual activities'
+        },
+        rahu_kalam: {
+          time: '10:46-13:15',
+          significance: 'Avoid important work'
+        }
       }
     };
   }
@@ -32,10 +43,16 @@ class HinduFestivalsAction extends AstrologyAction {
 
   async execute() {
     try {
-      this.logAstrologyExecution('start', 'Retrieving Hindu festivals information');
+      this.logAstrologyExecution(
+        'start',
+        'Retrieving Hindu festivals information'
+      );
 
       // Unified profile and limits validation from base class
-      const validation = await this.validateProfileAndLimits('Hindu Festivals', 'festivals_hindu');
+      const validation = await this.validateProfileAndLimits(
+        'Hindu Festivals',
+        'festivals_hindu'
+      );
       if (!validation.success) {
         return validation;
       }
@@ -51,9 +68,15 @@ class HinduFestivalsAction extends AstrologyAction {
       const formattedContent = this.formatComprehensiveFestivals(festivalData);
 
       // Build single astrology response using base class methods
-      await this.buildAstrologyResponse(formattedContent, this.getFestivalButtons());
+      await this.buildAstrologyResponse(
+        formattedContent,
+        this.getFestivalButtons()
+      );
 
-      this.logAstrologyExecution('complete', `Delivered ${festivalData.festivals.length} festival details`);
+      this.logAstrologyExecution(
+        'complete',
+        `Delivered ${festivalData.festivals.length} festival details`
+      );
       return {
         success: true,
         festivalsCount: festivalData.festivals.length,
@@ -62,7 +85,11 @@ class HinduFestivalsAction extends AstrologyAction {
     } catch (error) {
       this.logger.error('Error in HinduFestivalsAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -99,7 +126,6 @@ class HinduFestivalsAction extends AstrologyAction {
     ];
   }
 
-
   /**
    * Get action metadata for registration
    * @returns {Object} Action metadata
@@ -107,7 +133,8 @@ class HinduFestivalsAction extends AstrologyAction {
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Get comprehensive Hindu festivals information and auspicious timings guide',
+      description:
+        'Get comprehensive Hindu festivals information and auspicious timings guide',
       keywords: [
         'hindu festivals',
         'festivals',

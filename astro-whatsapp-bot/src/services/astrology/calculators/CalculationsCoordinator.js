@@ -2,7 +2,9 @@ const logger = require('../../../utils/logger');
 const { JaiminiKarakaCalculator } = require('./JaiminiKarakaCalculator');
 const { AshtakavargaCalculator } = require('./AshtakavargaCalculator');
 const { FixedStarsCalculator } = require('./FixedStarsCalculator');
-const { FinancialAstrologyCalculator } = require('./FinancialAstrologyCalculator');
+const {
+  FinancialAstrologyCalculator
+} = require('./FinancialAstrologyCalculator');
 const { MedicalAstrologyCalculator } = require('./MedicalAstrologyCalculator');
 const { CareerAstrologyCalculator } = require('./CareerAstrologyCalculator');
 
@@ -13,7 +15,9 @@ const { CareerAstrologyCalculator } = require('./CareerAstrologyCalculator');
  */
 class CalculationsCoordinator {
   constructor() {
-    logger.info('Module: CalculationsCoordinator loaded - Modular calculation orchestration');
+    logger.info(
+      'Module: CalculationsCoordinator loaded - Modular calculation orchestration'
+    );
 
     // Initialize specialized calculator modules
     this.jaiminiKarakaCalculator = new JaiminiKarakaCalculator();
@@ -26,12 +30,27 @@ class CalculationsCoordinator {
 
   setServices(calendricalService, geocodingService) {
     // Pass services down to specialized calculators
-    this.jaiminiKarakaCalculator.setServices(calendricalService, geocodingService);
-    this.ashtakavargaCalculator.setServices(calendricalService, geocodingService);
+    this.jaiminiKarakaCalculator.setServices(
+      calendricalService,
+      geocodingService
+    );
+    this.ashtakavargaCalculator.setServices(
+      calendricalService,
+      geocodingService
+    );
     this.fixedStarsCalculator.setServices(calendricalService, geocodingService);
-    this.financialAstrologyCalculator.setServices(calendricalService, geocodingService);
-    this.medicalAstrologyCalculator.setServices(calendricalService, geocodingService);
-    this.careerAstrologyCalculator.setServices(calendricalService, geocodingService);
+    this.financialAstrologyCalculator.setServices(
+      calendricalService,
+      geocodingService
+    );
+    this.medicalAstrologyCalculator.setServices(
+      calendricalService,
+      geocodingService
+    );
+    this.careerAstrologyCalculator.setServices(
+      calendricalService,
+      geocodingService
+    );
   }
 
   /**
@@ -40,7 +59,9 @@ class CalculationsCoordinator {
    * @returns {Object} Jaimini Karaka analysis
    */
   async calculateJaiminiKarakaAnalysis(user) {
-    logger.info('Delegating Jaimini Karaka calculation to JaiminiKarakaCalculator');
+    logger.info(
+      'Delegating Jaimini Karaka calculation to JaiminiKarakaCalculator'
+    );
 
     // Convert user data to birthData format
     const birthData = {
@@ -51,7 +72,9 @@ class CalculationsCoordinator {
       name: user.name
     };
 
-    return await this.jaiminiKarakaCalculator.calculateJaiminiKarakaAnalysis(birthData);
+    return await this.jaiminiKarakaCalculator.calculateJaiminiKarakaAnalysis(
+      birthData
+    );
   }
 
   /**
@@ -60,7 +83,9 @@ class CalculationsCoordinator {
    * @returns {Object} Ashtakavarga analysis
    */
   async calculateAshtakavarga(user) {
-    logger.info('Delegating Ashtakavarga calculation to AshtakavargaCalculator');
+    logger.info(
+      'Delegating Ashtakavarga calculation to AshtakavargaCalculator'
+    );
 
     const birthData = {
       birthDate: user.birthDate,
@@ -89,7 +114,9 @@ class CalculationsCoordinator {
       name: user.name
     };
 
-    return await this.fixedStarsCalculator.calculateFixedStarsAnalysis(birthData);
+    return await this.fixedStarsCalculator.calculateFixedStarsAnalysis(
+      birthData
+    );
   }
 
   /**
@@ -98,7 +125,9 @@ class CalculationsCoordinator {
    * @returns {Object} Financial astrology analysis
    */
   async calculateFinancialAstrologyAnalysis(user) {
-    logger.info('Delegating Financial Astrology calculation to FinancialAstrologyCalculator');
+    logger.info(
+      'Delegating Financial Astrology calculation to FinancialAstrologyCalculator'
+    );
 
     const birthData = {
       birthDate: user.birthDate,
@@ -110,7 +139,9 @@ class CalculationsCoordinator {
       longitude: user.longitude
     };
 
-    return await this.financialAstrologyCalculator.calculateFinancialAstrologyAnalysis(birthData);
+    return await this.financialAstrologyCalculator.calculateFinancialAstrologyAnalysis(
+      birthData
+    );
   }
 
   /**
@@ -119,7 +150,9 @@ class CalculationsCoordinator {
    * @returns {Object} Medical astrology analysis
    */
   async calculateMedicalAstrologyAnalysis(user) {
-    logger.info('Delegating Medical Astrology calculation to MedicalAstrologyCalculator');
+    logger.info(
+      'Delegating Medical Astrology calculation to MedicalAstrologyCalculator'
+    );
 
     const birthData = {
       birthDate: user.birthDate,
@@ -131,7 +164,9 @@ class CalculationsCoordinator {
       longitude: user.longitude
     };
 
-    return await this.medicalAstrologyCalculator.calculateMedicalAstrologyAnalysis(birthData);
+    return await this.medicalAstrologyCalculator.calculateMedicalAstrologyAnalysis(
+      birthData
+    );
   }
 
   /**
@@ -140,7 +175,9 @@ class CalculationsCoordinator {
    * @returns {Object} Career astrology analysis
    */
   async calculateCareerAstrologyAnalysis(user) {
-    logger.info('Delegating Career Astrology calculation to CareerAstrologyCalculator');
+    logger.info(
+      'Delegating Career Astrology calculation to CareerAstrologyCalculator'
+    );
 
     const birthData = {
       birthDate: user.birthDate,
@@ -152,7 +189,9 @@ class CalculationsCoordinator {
       longitude: user.longitude
     };
 
-    return await this.careerAstrologyCalculator.calculateCareerAstrologyAnalysis(birthData);
+    return await this.careerAstrologyCalculator.calculateCareerAstrologyAnalysis(
+      birthData
+    );
   }
 
   /**
@@ -161,9 +200,8 @@ class CalculationsCoordinator {
    */
   getAgeHarmonicAstrologyReader() {
     // Return a new instance for backward compatibility
-    return new class AgeHarmonicAstrologyReader {
-      constructor() {
-      }
+    return new (class AgeHarmonicAstrologyReader {
+      constructor() {}
 
       async generateAgeHarmonicAnalysis(birthData) {
         // Mock implementation for backward compatibility
@@ -173,8 +211,17 @@ class CalculationsCoordinator {
         return {
           interpretation: `Age ${age}: ${currentHarmonics[0]?.themes.join(', ') || 'development and growth'}.`,
           currentHarmonics,
-          techniques: ['Meditation', 'Journaling', 'Creative expression', 'Nature immersion'],
-          nextHarmonic: { name: `Harmonic ${currentHarmonics[0]?.harmonic + 1 || 8}`, ageRange: `${age + 2}-${age + 4}`, themes: ['Integration', 'Mastery'] },
+          techniques: [
+            'Meditation',
+            'Journaling',
+            'Creative expression',
+            'Nature immersion'
+          ],
+          nextHarmonic: {
+            name: `Harmonic ${currentHarmonics[0]?.harmonic + 1 || 8}`,
+            ageRange: `${age + 2}-${age + 4}`,
+            themes: ['Integration', 'Mastery']
+          },
           error: false
         };
       }
@@ -184,13 +231,15 @@ class CalculationsCoordinator {
       }
 
       getHarmonicsForAge(age) {
-        return [{
-          name: `Harmonic ${Math.floor(age / 4) + 1}`,
-          harmonic: Math.floor(age / 4) + 1,
-          themes: ['Growth', 'Learning', 'Transformation']
-        }];
+        return [
+          {
+            name: `Harmonic ${Math.floor(age / 4) + 1}`,
+            harmonic: Math.floor(age / 4) + 1,
+            themes: ['Growth', 'Learning', 'Transformation']
+          }
+        ];
       }
-    }();
+    })();
   }
 
   /**
@@ -200,9 +249,18 @@ class CalculationsCoordinator {
    */
   getSignFromLongitude(longitude) {
     const signs = [
-      'Aries', 'Taurus', 'Gemini', 'Cancer',
-      'Leo', 'Virgo', 'Libra', 'Scorpio',
-      'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     const normalized = ((longitude % 360) + 360) % 360;
     const signIndex = Math.floor(normalized / 30);
@@ -216,7 +274,7 @@ class CalculationsCoordinator {
    * @returns {number} House number (1-12)
    */
   getHouseNumberFromLongitude(longitude, ascendant) {
-    const angle = ((longitude - ascendant + 360) % 360);
+    const angle = (longitude - ascendant + 360) % 360;
     return Math.floor(angle / 30) + 1;
   }
 
@@ -248,8 +306,13 @@ class CalculationsCoordinator {
           careerAstrologyCalculator: careerHealth
         },
         overall: {
-          healthy: jaiminiHealth.healthy && ashtakavargaHealth.healthy && fixedStarsHealth.healthy &&
-                  financialHealth.healthy && medicalHealth.healthy && careerHealth.healthy,
+          healthy:
+            jaiminiHealth.healthy &&
+            ashtakavargaHealth.healthy &&
+            fixedStarsHealth.healthy &&
+            financialHealth.healthy &&
+            medicalHealth.healthy &&
+            careerHealth.healthy,
           timestamp: new Date().toISOString()
         }
       };
@@ -292,11 +355,17 @@ class CalculationsCoordinator {
 // Export both class and factory function pattern
 let calculationsCoordinatorInstance = null;
 
-async function createCalculationsCoordinator(calendricalService = null, geocodingService = null) {
+async function createCalculationsCoordinator(
+  calendricalService = null,
+  geocodingService = null
+) {
   if (!calculationsCoordinatorInstance) {
     calculationsCoordinatorInstance = new CalculationsCoordinator();
     if (calendricalService && geocodingService) {
-      calculationsCoordinatorInstance.setServices(calendricalService, geocodingService);
+      calculationsCoordinatorInstance.setServices(
+        calendricalService,
+        geocodingService
+      );
     }
   }
   return calculationsCoordinatorInstance;

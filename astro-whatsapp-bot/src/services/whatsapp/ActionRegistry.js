@@ -6,10 +6,10 @@ const logger = require('../../utils/logger');
  */
 class ActionRegistry {
   constructor() {
-    this.actions = new Map();          // actionName -> action instance
-    this.keywordMappings = new Map();  // keyword -> actionName
-    this.buttonMappings = new Map();   // buttonId -> actionName
-    this.menuMappings = new Map();     // menuType -> actions array
+    this.actions = new Map(); // actionName -> action instance
+    this.keywordMappings = new Map(); // keyword -> actionName
+    this.buttonMappings = new Map(); // buttonId -> actionName
+    this.menuMappings = new Map(); // menuType -> actions array
     this.initialized = false;
   }
 
@@ -34,7 +34,9 @@ class ActionRegistry {
    */
   registerKeyword(keyword, actionName) {
     if (!this.actions.has(actionName)) {
-      logger.error(`❌ Cannot register keyword '${keyword}' for non-existent action '${actionName}'`);
+      logger.error(
+        `❌ Cannot register keyword '${keyword}' for non-existent action '${actionName}'`
+      );
       return;
     }
 
@@ -50,7 +52,9 @@ class ActionRegistry {
    */
   registerButton(buttonId, actionName) {
     if (!this.actions.has(actionName)) {
-      logger.error(`❌ Cannot register button '${buttonId}' for non-existent action '${actionName}'`);
+      logger.error(
+        `❌ Cannot register button '${buttonId}' for non-existent action '${actionName}'`
+      );
       return;
     }
 
@@ -141,8 +145,14 @@ class ActionRegistry {
 
     // Basic menu navigation actions
     this.menuMappings.set('main_menu', ['show_main_menu']);
-    this.menuMappings.set('western_astrology', ['show_western_basic_menu', 'show_western_advanced_menu']);
-    this.menuMappings.set('vedic_astrology', ['show_vedic_basic_menu', 'show_vedic_advanced_menu']);
+    this.menuMappings.set('western_astrology', [
+      'show_western_basic_menu',
+      'show_western_advanced_menu'
+    ]);
+    this.menuMappings.set('vedic_astrology', [
+      'show_vedic_basic_menu',
+      'show_vedic_advanced_menu'
+    ]);
     this.menuMappings.set('divination', ['show_divination_wisdom_menu']);
 
     logger.info('🎯 Core ActionRegistry mappings initialized');
@@ -212,7 +222,9 @@ class ActionRegistry {
     // Check for orphaned keyword mappings
     for (const [keyword, actionName] of this.keywordMappings) {
       if (!this.actions.has(actionName)) {
-        result.errors.push(`Keyword '${keyword}' maps to non-existent action '${actionName}'`);
+        result.errors.push(
+          `Keyword '${keyword}' maps to non-existent action '${actionName}'`
+        );
         result.isValid = false;
       }
     }
@@ -220,7 +232,9 @@ class ActionRegistry {
     // Check for orphaned button mappings
     for (const [buttonId, actionName] of this.buttonMappings) {
       if (!this.actions.has(actionName)) {
-        result.errors.push(`Button '${buttonId}' maps to non-existent action '${actionName}'`);
+        result.errors.push(
+          `Button '${buttonId}' maps to non-existent action '${actionName}'`
+        );
         result.isValid = false;
       }
     }

@@ -31,7 +31,9 @@ class SolarArcDirectionsCalculator {
       const { birthDate, birthTime, birthPlace, name } = birthData;
 
       if (!birthDate || !birthTime || !birthPlace) {
-        return { error: 'Complete birth details required for Solar Arc calculations' };
+        return {
+          error: 'Complete birth details required for Solar Arc calculations'
+        };
       }
 
       // Parse birth date and time
@@ -39,31 +41,60 @@ class SolarArcDirectionsCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // If no target date provided, use current date
       const calculationDate = targetDate || new Date();
 
       // Calculate solar arc for the period from birth to target date
-      const solarArc = this._calculateSolarArcPeriod(birthDateTime, calculationDate);
+      const solarArc = this._calculateSolarArcPeriod(
+        birthDateTime,
+        calculationDate
+      );
 
       // Calculate natal chart
-      const natalChart = await this._calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone);
+      const natalChart = await this._calculateNatalChart(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        latitude,
+        longitude,
+        timezone
+      );
 
       // Apply solar arc directions to natal planets
-      const directedChart = await this._applySolarArcDirections(natalChart, solarArc);
+      const directedChart = await this._applySolarArcDirections(
+        natalChart,
+        solarArc
+      );
 
       // Analyze the directed positions
-      const analysis = this._analyzeSolarArcPositions(directedChart, natalChart, solarArc);
+      const analysis = this._analyzeSolarArcPositions(
+        directedChart,
+        natalChart,
+        solarArc
+      );
 
       // Calculate directed aspects
       const aspects = this._calculateDirectedAspects(directedChart);
 
       // Generate predictions based on solar arc
-      const predictions = this._generateSolarArcPredictions(directedChart, natalChart, analysis, solarArc);
+      const predictions = this._generateSolarArcPredictions(
+        directedChart,
+        natalChart,
+        analysis,
+        solarArc
+      );
 
       return {
         name,
@@ -121,11 +152,25 @@ class SolarArcDirectionsCalculator {
    * Calculate natal chart positions using Swiss Ephemeris
    * @private
    */
-  async _calculateNatalChart(year, month, day, hour, minute, latitude, longitude, timezone) {
+  async _calculateNatalChart(
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    timezone
+  ) {
     const natalPlanets = {};
 
     // Calculate Julian Day
-    const jd = this._dateToJulianDay(year, month, day, hour + minute / 60 - timezone);
+    const jd = this._dateToJulianDay(
+      year,
+      month,
+      day,
+      hour + minute / 60 - timezone
+    );
 
     // Planet IDs for Swiss Ephemeris
     const planetIds = {
@@ -151,18 +196,36 @@ class SolarArcDirectionsCalculator {
           // Calculate Ketu as opposite of Rahu
           const rahuPos = sweph.calc(jd, sweph.SE_TRUE_NODE);
           position = {
-            longitude: (Array.isArray(rahuPos.longitude) ? rahuPos.longitude[0] : rahuPos.longitude) + 180 % 360,
+            longitude:
+              (Array.isArray(rahuPos.longitude) ?
+                rahuPos.longitude[0] :
+                rahuPos.longitude) +
+              (180 % 360),
             latitude: 0,
             speed: { longitude: 0 }
           };
         } else {
-          position = sweph.calc(jd, planetId, sweph.SEFLG_SIDEREAL | sweph.SEFLG_SPEED);
+          position = sweph.calc(
+            jd,
+            planetId,
+            sweph.SEFLG_SIDEREAL | sweph.SEFLG_SPEED
+          );
         }
 
-        if (position && position.longitude !== undefined && position.latitude !== undefined) {
-          const longitude = Array.isArray(position.longitude) ? position.longitude[0] : position.longitude;
-          const latitude = Array.isArray(position.latitude) ? position.latitude[0] : position.latitude;
-          const speed = Array.isArray(position.longitude) ? position.longitude[3] || 0 : 0;
+        if (
+          position &&
+          position.longitude !== undefined &&
+          position.latitude !== undefined
+        ) {
+          const longitude = Array.isArray(position.longitude) ?
+            position.longitude[0] :
+            position.longitude;
+          const latitude = Array.isArray(position.latitude) ?
+            position.latitude[0] :
+            position.latitude;
+          const speed = Array.isArray(position.longitude) ?
+            position.longitude[3] || 0 :
+            0;
 
           natalPlanets[planetName] = {
             name: planetName.charAt(0).toUpperCase() + planetName.slice(1),
@@ -176,7 +239,10 @@ class SolarArcDirectionsCalculator {
           };
         }
       } catch (error) {
-        logger.warn(`Error calculating natal ${planetName} position:`, error.message);
+        logger.warn(
+          `Error calculating natal ${planetName} position:`,
+          error.message
+        );
       }
     }
 
@@ -208,7 +274,8 @@ class SolarArcDirectionsCalculator {
         directedChart[planet] = {
           ...data,
           directedLongitude: (data.longitude + solarArc.arc) % 360,
-          directedSign: Math.floor(((data.longitude + solarArc.arc) % 360) / 30) + 1,
+          directedSign:
+            Math.floor(((data.longitude + solarArc.arc) % 360) / 30) + 1,
           directedDegree: (data.longitude + solarArc.arc) % 30,
           arcMovement: solarArc.arc
         };
@@ -225,7 +292,10 @@ class SolarArcDirectionsCalculator {
           directedDegree: directedLongitude % 30,
           arcMovement: solarArc.arc,
           signChange: Math.floor(directedLongitude / 30) !== data.sign,
-          aspectChanges: this._calculateAspectChanges(data.longitude, directedLongitude)
+          aspectChanges: this._calculateAspectChanges(
+            data.longitude,
+            directedLongitude
+          )
         };
       }
     }
@@ -253,7 +323,11 @@ class SolarArcDirectionsCalculator {
           planet: data.name,
           fromSign: this._getZodiacSignName(natalChart[planet].sign),
           toSign: this._getZodiacSignName(data.directedSign),
-          significance: this._analyzeSignChange(planet, natalChart[planet].sign, data.directedSign)
+          significance: this._analyzeSignChange(
+            planet,
+            natalChart[planet].sign,
+            data.directedSign
+          )
         });
       }
     });
@@ -272,7 +346,12 @@ class SolarArcDirectionsCalculator {
             currentDegree: currentDegree.toFixed(1),
             criticalDegree: critical,
             distance: distance.toFixed(1),
-            significance: distance <= 0.5 ? 'Very Critical' : distance <= 1 ? 'Critical' : 'Approaching'
+            significance:
+              distance <= 0.5 ?
+                'Very Critical' :
+                distance <= 1 ?
+                  'Critical' :
+                  'Approaching'
           });
         }
       });
@@ -303,7 +382,8 @@ class SolarArcDirectionsCalculator {
         const longitude2 = directedChart[planet2].directedLongitude;
 
         const angularDistance = Math.abs(longitude1 - longitude2) % 360;
-        const actualDistance = angularDistance > 180 ? 360 - angularDistance : angularDistance;
+        const actualDistance =
+          angularDistance > 180 ? 360 - angularDistance : angularDistance;
 
         // Check for major aspects
         const aspectTypes = {
@@ -352,32 +432,45 @@ class SolarArcDirectionsCalculator {
     // Analyze directed Sun position
     const directedSun = directedChart.sun;
     if (directedSun) {
-      const sunSignificance = this._analyzeDirectedSun(directedSun, natalChart.sun);
+      const sunSignificance = this._analyzeDirectedSun(
+        directedSun,
+        natalChart.sun
+      );
       predictions.personal.push(...sunSignificance);
 
       // Sun sign changes indicate major life phases
       if (directedSun.signChange) {
-        predictions.personal.push(`Major life transition occurring around age ${Math.round(age)}`);
+        predictions.personal.push(
+          `Major life transition occurring around age ${Math.round(age)}`
+        );
       }
     }
 
     // Analyze directed Moon
     const directedMoon = directedChart.moon;
     if (directedMoon) {
-      const moonPredictions = this._analyzeDirectedMoon(directedMoon, analysis.criticalDegrees, age);
+      const moonPredictions = this._analyzeDirectedMoon(
+        directedMoon,
+        analysis.criticalDegrees,
+        age
+      );
       predictions.emotional = moonPredictions;
     }
 
     // Career indications from directed MC (10th house cusp)
     const directedAscendant = directedChart.ascendant;
     if (directedAscendant) {
-      predictions.career.push(...this._analyzeDirectedMC(directedAscendant, age));
+      predictions.career.push(
+        ...this._analyzeDirectedMC(directedAscendant, age)
+      );
     }
 
     // Relationship indications from directed Venus and 7th house axis
     const directedVenus = directedChart.venus;
     if (directedVenus) {
-      predictions.relationships.push(...this._analyzeDirectedVenus(directedVenus, age));
+      predictions.relationships.push(
+        ...this._analyzeDirectedVenus(directedVenus, age)
+      );
     }
 
     // Health indications from directed 6th house and Mars
@@ -388,7 +481,10 @@ class SolarArcDirectionsCalculator {
 
     // Add critical degree predictions
     analysis.criticalDegrees.forEach(critical => {
-      const prediction = this._getCriticalDegreePrediction(critical.planet, critical.criticalDegree);
+      const prediction = this._getCriticalDegreePrediction(
+        critical.planet,
+        critical.criticalDegree
+      );
       predictions.personal.push(prediction);
     });
 
@@ -418,7 +514,8 @@ class SolarArcDirectionsCalculator {
       summary += `• ${predictions.relationships[0]}\n`;
     }
 
-    summary += '\n*Timing:* These directions are strongest around the target date and indicate major life themes for that period.';
+    summary +=
+      '\n*Timing:* These directions are strongest around the target date and indicate major life themes for that period.';
 
     return summary;
   }
@@ -429,7 +526,14 @@ class SolarArcDirectionsCalculator {
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
 
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + (hour - 12) / 24;
   }
 
@@ -458,8 +562,19 @@ class SolarArcDirectionsCalculator {
 
   _getZodiacSignName(signNumber) {
     const signs = [
-      '', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+      '',
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces'
     ];
     return signs[signNumber] || 'Unknown';
   }
@@ -478,7 +593,10 @@ class SolarArcDirectionsCalculator {
       Saturn: `Life lessons evolve from ${fromSignName} to ${toSignName} discipline`
     };
 
-    return significances[planet] || `${planet} changes from ${fromSignName} to ${toSignName}`;
+    return (
+      significances[planet] ||
+      `${planet} changes from ${fromSignName} to ${toSignName}`
+    );
   }
 
   _analyzeAgeSignificances(age) {
@@ -512,7 +630,9 @@ class SolarArcDirectionsCalculator {
     // Sun enters different houses of life
     const sunHouse = this._getDirectedSolarHouse(directedSun.directedSign);
 
-    predictions.push(`Self-expression and vitality focus on ${sunHouse.area} matters`);
+    predictions.push(
+      `Self-expression and vitality focus on ${sunHouse.area} matters`
+    );
     predictions.push(`${sunHouse.qualities} energies become prominent`);
 
     return predictions;
@@ -522,12 +642,16 @@ class SolarArcDirectionsCalculator {
     const predictions = [];
     const moonSign = this._getZodiacSignName(directedMoon.directedSign);
 
-    predictions.push(`Emotional security and instincts align with ${moonSign} characteristics`);
+    predictions.push(
+      `Emotional security and instincts align with ${moonSign} characteristics`
+    );
 
     // Check for emotional crisis points
     criticalDegrees.forEach(critical => {
       if (critical.planet === 'Moon') {
-        predictions.push(`Emotional turning point around age ${Math.round(age)}`);
+        predictions.push(
+          `Emotional turning point around age ${Math.round(age)}`
+        );
       }
     });
 
@@ -549,11 +673,15 @@ class SolarArcDirectionsCalculator {
 
     // Venus represents love and relationships
     const venusSign = this._getZodiacSignName(directedVenus.directedSign);
-    predictions.push(`Romantic and social connections develop ${venusSign} qualities`);
+    predictions.push(
+      `Romantic and social connections develop ${venusSign} qualities`
+    );
 
     // Check for relationship milestones
     if (directedVenus.signChange) {
-      predictions.push(`Significant relationship changes around age ${Math.round(age)}`);
+      predictions.push(
+        `Significant relationship changes around age ${Math.round(age)}`
+      );
     }
 
     return predictions;
@@ -567,7 +695,9 @@ class SolarArcDirectionsCalculator {
 
     // Health crises or energy changes
     if (directedMars.signChange) {
-      predictions.push(`Health and energy significant shift around age ${Math.round(age)}`);
+      predictions.push(
+        `Health and energy significant shift around age ${Math.round(age)}`
+      );
     }
 
     return predictions;
@@ -584,24 +714,53 @@ class SolarArcDirectionsCalculator {
       Saturn: 'Discipline, limitation, or authority faces critical challenge'
     };
 
-    return predictions[planet] || `${planet} experiences critical turning point`;
+    return (
+      predictions[planet] || `${planet} experiences critical turning point`
+    );
   }
 
   _getDirectedSolarHouse(sign) {
     // Simplified house ruling for illustrative purposes
     const houseAreas = {
-      1: { area: 'self and personality', qualities: 'Independent and self-motivated' },
-      2: { area: 'wealth and possessions', qualities: 'Practical and value-oriented' },
-      3: { area: 'communication and siblings', qualities: 'Communicative and adaptive' },
+      1: {
+        area: 'self and personality',
+        qualities: 'Independent and self-motivated'
+      },
+      2: {
+        area: 'wealth and possessions',
+        qualities: 'Practical and value-oriented'
+      },
+      3: {
+        area: 'communication and siblings',
+        qualities: 'Communicative and adaptive'
+      },
       4: { area: 'home and family', qualities: 'Emotional and nurturing' },
       5: { area: 'creativity and children', qualities: 'Creative and playful' },
       6: { area: 'service and health', qualities: 'Dedicated and analytical' },
-      7: { area: 'partnerships and marriage', qualities: 'Relationship-focused' },
-      8: { area: 'transformation and secrets', qualities: 'Intense and insightul' },
-      9: { area: 'philosophy and travel', qualities: 'Expansive and adventurous' },
-      10: { area: 'career and reputation', qualities: 'Ambitious and responsible' },
-      11: { area: 'friends and goals', qualities: 'Progressive and community-minded' },
-      12: { area: 'spirituality and endings', qualities: 'Introspective and compassionate' }
+      7: {
+        area: 'partnerships and marriage',
+        qualities: 'Relationship-focused'
+      },
+      8: {
+        area: 'transformation and secrets',
+        qualities: 'Intense and insightul'
+      },
+      9: {
+        area: 'philosophy and travel',
+        qualities: 'Expansive and adventurous'
+      },
+      10: {
+        area: 'career and reputation',
+        qualities: 'Ambitious and responsible'
+      },
+      11: {
+        area: 'friends and goals',
+        qualities: 'Progressive and community-minded'
+      },
+      12: {
+        area: 'spirituality and endings',
+        qualities: 'Introspective and compassionate'
+      }
     };
 
     return houseAreas[sign] || houseAreas[1];
@@ -613,7 +772,7 @@ class SolarArcDirectionsCalculator {
       return [coords.latitude, coords.longitude];
     } catch (error) {
       logger.warn('Error getting coordinates, using default:', error.message);
-      return [28.6139, 77.2090]; // Delhi coordinates as fallback
+      return [28.6139, 77.209]; // Delhi coordinates as fallback
     }
   }
 

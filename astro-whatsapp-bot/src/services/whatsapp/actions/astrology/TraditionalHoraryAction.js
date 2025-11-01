@@ -1,6 +1,8 @@
 const AstrologyAction = require('../base/AstrologyAction');
 const { TraditionalHorary } = require('../../../astrology/traditionalHorary');
-const { AstrologyFormatterFactory } = require('../factories/AstrologyFormatterFactory');
+const {
+  AstrologyFormatterFactory
+} = require('../factories/AstrologyFormatterFactory');
 
 class TraditionalHoraryAction extends AstrologyAction {
   /**
@@ -15,7 +17,10 @@ class TraditionalHoraryAction extends AstrologyAction {
       this.logAstrologyExecution('start', 'Processing horary question');
 
       // Unified validation using base class
-      const validation = await this.validateProfileAndLimits('Traditional Horary', 'traditional_horary');
+      const validation = await this.validateProfileAndLimits(
+        'Traditional Horary',
+        'traditional_horary'
+      );
       if (!validation.success) {
         return validation;
       }
@@ -30,25 +35,38 @@ class TraditionalHoraryAction extends AstrologyAction {
       // Cast horary chart at moment of question
       const horaryData = await this.castHoraryChart(question);
       if (horaryData.error) {
-        await this.sendDirectMessage(`⏰ *Traditional Horary Astrology*\n\n${horaryData.fallback || 'Unable to cast horary chart at this time.'}\n\nHorary astrology requires a genuine question you care about with precise timing.`);
+        await this.sendDirectMessage(
+          `⏰ *Traditional Horary Astrology*\n\n${horaryData.fallback || 'Unable to cast horary chart at this time.'}\n\nHorary astrology requires a genuine question you care about with precise timing.`
+        );
         return { success: false, reason: 'chart_casting_error' };
       }
 
       // Format and send analysis using base class methods
       const formattedContent = this.formatHoraryAnalysis(horaryData);
-      await this.buildAstrologyResponse(formattedContent, this.getHoraryActionButtons());
+      await this.buildAstrologyResponse(
+        formattedContent,
+        this.getHoraryActionButtons()
+      );
 
-      this.logAstrologyExecution('complete', 'Horary chart cast and analysis delivered');
+      this.logAstrologyExecution(
+        'complete',
+        'Horary chart cast and analysis delivered'
+      );
       return {
         success: true,
         type: 'traditional_horary',
-        question: question.length > 100 ? `${question.substring(0, 100)}...` : question,
+        question:
+          question.length > 100 ? `${question.substring(0, 100)}...` : question,
         chartCast: true
       };
     } catch (error) {
       this.logger.error('Error in TraditionalHoraryAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -79,19 +97,21 @@ class TraditionalHoraryAction extends AstrologyAction {
         questionTime: new Date().toISOString(),
         questionLocation: {
           latitude: this.user.latitude || 28.6139, // Default Delhi
-          longitude: this.user.longitude || 77.2090,
+          longitude: this.user.longitude || 77.209,
           timezone: this.user.timezone || 5.5
         },
         user: this.user
       };
 
-      const horaryAnalysis = await this.horaryService.castHoraryChart(questionData);
+      const horaryAnalysis =
+        await this.horaryService.castHoraryChart(questionData);
       return horaryAnalysis;
     } catch (error) {
       this.logger.error('Horary chart casting error:', error);
       return {
         error: error.message,
-        fallback: 'Horary analysis requires precise timing and question formulation'
+        fallback:
+          'Horary analysis requires precise timing and question formulation'
       };
     }
   }
@@ -158,12 +178,17 @@ class TraditionalHoraryAction extends AstrologyAction {
     return `${response}\n*Cast at moment of question using traditional horary astrology.*`;
   }
 
-
   static getMetadata() {
     return {
       id: this.actionId,
-      description: 'Cast horary charts for specific questions at moment of asking',
-      keywords: ['horary astrology', 'question charts', 'astrological questions', 'horary predictions'],
+      description:
+        'Cast horary charts for specific questions at moment of asking',
+      keywords: [
+        'horary astrology',
+        'question charts',
+        'astrological questions',
+        'horary predictions'
+      ],
       category: 'astrology',
       subscriptionRequired: true,
       cooldown: 1800000

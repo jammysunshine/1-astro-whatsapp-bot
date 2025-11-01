@@ -1,6 +1,10 @@
 const BaseAction = require('../BaseAction');
 const { sendMessage } = require('../../messageSender');
-const { getUserByPhone, hasActiveSubscription, getSubscriptionBenefits } = require('../../../models/userModel');
+const {
+  getUserByPhone,
+  hasActiveSubscription,
+  getSubscriptionBenefits
+} = require('../../../models/userModel');
 const translationService = require('../../../services/i18n/TranslationService');
 
 /**
@@ -48,7 +52,11 @@ class ViewProfileAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in ViewProfileAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -68,7 +76,9 @@ class ViewProfileAction extends BaseAction {
     summary.push(`• Name: ${userData.name || 'Not set'}`);
     summary.push(`• Phone: ${this.maskPhoneNumber(this.phoneNumber)}`);
     summary.push(`• Member since: ${this.formatDate(userData.createdAt)}`);
-    summary.push(`• Preferred Language: ${this.getLanguageDisplay(userData.preferredLanguage)}`);
+    summary.push(
+      `• Preferred Language: ${this.getLanguageDisplay(userData.preferredLanguage)}`
+    );
     summary.push('');
 
     // Birth Details
@@ -79,46 +89,74 @@ class ViewProfileAction extends BaseAction {
       if (userData.birthTime) {
         summary.push(`• Time: ${this.formatBirthTime(userData.birthTime)}`);
       } else {
-        summary.push(`• Time: ${this.getTranslation('profile.time_not_set', userData.preferredLanguage || 'en')}`);
+        summary.push(
+          `• Time: ${this.getTranslation('profile.time_not_set', userData.preferredLanguage || 'en')}`
+        );
       }
 
       if (userData.birthPlace) {
         summary.push(`• Place: ${userData.birthPlace}`);
       } else {
-        summary.push(`• Place: ${this.getTranslation('profile.place_not_set', userData.preferredLanguage || 'en')}`);
+        summary.push(
+          `• Place: ${this.getTranslation('profile.place_not_set', userData.preferredLanguage || 'en')}`
+        );
       }
     } else {
-      summary.push(`• ${this.getTranslation('profile.birth_details_not_complete', userData.preferredLanguage || 'en')}`);
+      summary.push(
+        `• ${this.getTranslation('profile.birth_details_not_complete', userData.preferredLanguage || 'en')}`
+      );
     }
     summary.push('');
 
     // Profile Status
     const isComplete = userData.profileComplete;
     statusEmoji = isComplete ? '✅' : '⚠️';
-    summary.push(`${statusEmoji} *Profile Status:* ${isComplete ?
-      this.getTranslation('profile.complete', userData.preferredLanguage || 'en') :
-      this.getTranslation('profile.incomplete_birth_needed', userData.preferredLanguage || 'en')}`);
+    summary.push(
+      `${statusEmoji} *Profile Status:* ${
+        isComplete ?
+          this.getTranslation(
+            'profile.complete',
+            userData.preferredLanguage || 'en'
+          ) :
+          this.getTranslation(
+            'profile.incomplete_birth_needed',
+            userData.preferredLanguage || 'en'
+          )
+      }`
+    );
     summary.push('');
 
     // Subscription Status
     const hasActiveSub = hasActiveSubscription(userData);
     const benefits = getSubscriptionBenefits(userData);
     const subEmoji = hasActiveSub ? '💎' : '🆓';
-    summary.push(`${subEmoji} *${this.getTranslation('profile.subscription', userData.preferredLanguage || 'en')}:*`);
-    summary.push(`• Tier: ${userData.subscriptionTier || 'free'} ${hasActiveSub ? '🎉' : ''}`);
+    summary.push(
+      `${subEmoji} *${this.getTranslation('profile.subscription', userData.preferredLanguage || 'en')}:*`
+    );
+    summary.push(
+      `• Tier: ${userData.subscriptionTier || 'free'} ${hasActiveSub ? '🎉' : ''}`
+    );
 
     if (userData.subscriptionExpiry && hasActiveSub) {
-      summary.push(`• Expires: ${this.formatDate(userData.subscriptionExpiry)}`);
+      summary.push(
+        `• Expires: ${this.formatDate(userData.subscriptionExpiry)}`
+      );
     } else if (hasActiveSub) {
-      summary.push(`• ${this.getTranslation('profile.lifetime_subscription', userData.preferredLanguage || 'en')}`);
+      summary.push(
+        `• ${this.getTranslation('profile.lifetime_subscription', userData.preferredLanguage || 'en')}`
+      );
     }
 
-    summary.push(`• Compatibility checks used: ${userData.compatibilityChecks || 0}/${benefits.maxCompatibilityChecks === Infinity ? '∞' : benefits.maxCompatibilityChecks}`);
+    summary.push(
+      `• Compatibility checks used: ${userData.compatibilityChecks || 0}/${benefits.maxCompatibilityChecks === Infinity ? '∞' : benefits.maxCompatibilityChecks}`
+    );
     summary.push('');
 
     // Activity Summary
     summary.push('📊 *Activity Summary:*');
-    summary.push(`• Last interaction: ${this.formatDate(userData.lastInteraction)}`);
+    summary.push(
+      `• Last interaction: ${this.formatDate(userData.lastInteraction)}`
+    );
     if (userData.loyaltyPoints) {
       summary.push(`• Loyalty points: ${userData.loyaltyPoints} ⭐`);
     }
@@ -135,7 +173,8 @@ class ViewProfileAction extends BaseAction {
   async sendEditOption() {
     setTimeout(async() => {
       try {
-        const editMessage = '💡 *Need to update your information?* Use Settings → Update Profile to edit your birth details, name, or preferences.\n\nOr type "settings" to see all options.';
+        const editMessage =
+          '💡 *Need to update your information?* Use Settings → Update Profile to edit your birth details, name, or preferences.\n\nOr type "settings" to see all options.';
         await sendMessage(this.phoneNumber, editMessage, 'text');
       } catch (error) {
         this.logger.error('Error sending edit option:', error);
@@ -226,7 +265,10 @@ class ViewProfileAction extends BaseAction {
     try {
       // Use translation service if available
       if (global.translationService && global.translationService.translate) {
-        return global.translationService.translate(key, language) || this.getDefaultTranslation(key);
+        return (
+          global.translationService.translate(key, language) ||
+          this.getDefaultTranslation(key)
+        );
       }
     } catch (error) {
       // Ignore translation errors
@@ -243,9 +285,11 @@ class ViewProfileAction extends BaseAction {
     const defaults = {
       'profile.time_not_set': 'Not specified',
       'profile.place_not_set': 'Not specified',
-      'profile.birth_details_not_complete': 'Birth details not complete. Use Update Profile to add them.',
+      'profile.birth_details_not_complete':
+        'Birth details not complete. Use Update Profile to add them.',
       'profile.complete': 'Complete - Ready for all astrology services!',
-      'profile.incomplete_birth_needed': 'Incomplete - Birth details needed for full astrology analysis',
+      'profile.incomplete_birth_needed':
+        'Incomplete - Birth details needed for full astrology analysis',
       'profile.subscription': 'Current Plan',
       'profile.lifetime_subscription': 'Lifetime access'
     };
@@ -259,7 +303,9 @@ class ViewProfileAction extends BaseAction {
    */
   formatDate(date) {
     try {
-      if (!date) { return 'Never'; }
+      if (!date) {
+        return 'Never';
+      }
       const d = new Date(date);
       return d.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -277,7 +323,9 @@ class ViewProfileAction extends BaseAction {
    * @returns {string} Masked phone number
    */
   maskPhoneNumber(phone) {
-    if (!phone || phone.length < 4) { return phone; }
+    if (!phone || phone.length < 4) {
+      return phone;
+    }
     const { length } = phone;
     const last4 = phone.substring(length - 4);
     return `...${last4}`;
@@ -287,7 +335,8 @@ class ViewProfileAction extends BaseAction {
    * Send error for user not found
    */
   async sendUserNotFoundError() {
-    const errorMessage = '❌ Unable to retrieve your profile at this time. Please try again later or contact support.';
+    const errorMessage =
+      '❌ Unable to retrieve your profile at this time. Please try again later or contact support.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 
@@ -296,7 +345,8 @@ class ViewProfileAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = '❌ Sorry, there was an error viewing your profile. Please try again.';
+    const errorMessage =
+      '❌ Sorry, there was an error viewing your profile. Please try again.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 }

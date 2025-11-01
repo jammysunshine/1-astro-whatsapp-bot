@@ -368,7 +368,8 @@ const languages = {
  * Get list of all supported languages
  * @returns {Array} Array of language codes
  */
-const getSupportedLanguages = () => Object.keys(languages).filter(code => languages[code].enabled);
+const getSupportedLanguages = () =>
+  Object.keys(languages).filter(code => languages[code].enabled);
 
 /**
  * Get language information by code
@@ -412,33 +413,37 @@ const getNativeLanguageName = code => {
  * @param {string} region - Region code (e.g., 'IN', 'AE')
  * @returns {Array} Array of language objects for the region
  */
-const getLanguagesByRegion = region => Object.entries(languages)
-  .filter(([_, config]) => config.regions && config.regions.includes(region))
-  .map(([code, config]) => ({ code, ...config }));
+const getLanguagesByRegion = region =>
+  Object.entries(languages)
+    .filter(([_, config]) => config.regions && config.regions.includes(region))
+    .map(([code, config]) => ({ code, ...config }));
 
 /**
  * Get all RTL languages
  * @returns {Array} Array of RTL language objects
  */
-const getRTLLanguages = () => Object.entries(languages)
-  .filter(([_, config]) => config.rtl)
-  .map(([code, config]) => ({ code, ...config }));
+const getRTLLanguages = () =>
+  Object.entries(languages)
+    .filter(([_, config]) => config.rtl)
+    .map(([code, config]) => ({ code, ...config }));
 
 /**
  * Get complete languages (fully implemented)
  * @returns {Array} Array of complete language objects
  */
-const getCompleteLanguages = () => Object.entries(languages)
-  .filter(([_, config]) => config.complete)
-  .map(([code, config]) => ({ code, ...config }));
+const getCompleteLanguages = () =>
+  Object.entries(languages)
+    .filter(([_, config]) => config.complete)
+    .map(([code, config]) => ({ code, ...config }));
 
 /**
  * Get placeholder languages (not fully implemented)
  * @returns {Array} Array of placeholder language objects
  */
-const getPlaceholderLanguages = () => Object.entries(languages)
-  .filter(([_, config]) => !config.complete)
-  .map(([code, config]) => ({ code, ...config }));
+const getPlaceholderLanguages = () =>
+  Object.entries(languages)
+    .filter(([_, config]) => !config.complete)
+    .map(([code, config]) => ({ code, ...config }));
 
 module.exports = {
   languages,

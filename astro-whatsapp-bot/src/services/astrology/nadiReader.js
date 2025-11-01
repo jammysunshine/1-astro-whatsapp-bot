@@ -20,8 +20,14 @@ class NadiReader {
    */
   calculateNadiReading(birthDate, birthTime, birthPlace) {
     try {
-      const birthNakshatra = this.calculator.calculateBirthNakshatra(birthDate, birthTime);
-      const nadiSystem = this.calculator.determineNadiSystem(birthNakshatra, birthDate);
+      const birthNakshatra = this.calculator.calculateBirthNakshatra(
+        birthDate,
+        birthTime
+      );
+      const nadiSystem = this.calculator.determineNadiSystem(
+        birthNakshatra,
+        birthDate
+      );
       const dashaPeriod = this.calculator.calculateCurrentDasha(birthDate);
       const predictions = this.analyzer.generateNadiPredictions(
         birthNakshatra,
@@ -34,9 +40,13 @@ class NadiReader {
         nadiSystem,
         currentDasha: dashaPeriod,
         predictions,
-        remedies: this.analyzer.generateNadiRemedies(birthNakshatra, nadiSystem),
+        remedies: this.analyzer.generateNadiRemedies(
+          birthNakshatra,
+          nadiSystem
+        ),
         lifePurpose: nadiSystem.lifePurpose,
-        compatibility: this.analyzer.generateCompatibilityInsights(birthNakshatra)
+        compatibility:
+          this.analyzer.generateCompatibilityInsights(birthNakshatra)
       };
     } catch (error) {
       console.error('Error calculating Nadi reading:', error);

@@ -101,8 +101,10 @@ class BaseAction {
    * @param {Object} result - Execution result
    */
   logExecution(result) {
-    logger.info(`🔧 Executed ${this.getActionName()} for ${this.phoneNumber}:`,
-      result ? 'success' : 'no response');
+    logger.info(
+      `🔧 Executed ${this.getActionName()} for ${this.phoneNumber}:`,
+      result ? 'success' : 'no response'
+    );
   }
 }
 

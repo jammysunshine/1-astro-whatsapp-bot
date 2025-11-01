@@ -2,10 +2,14 @@ const { MundaneConfig } = require('./MundaneConfig');
 const { PoliticalStabilityAssessor } = require('./PoliticalStabilityAssessor');
 const { LeadershipAnalyzer } = require('./LeadershipAnalyzer');
 const { GovernmentChangePredictor } = require('./GovernmentChangePredictor');
-const { InternationalRelationsAnalyzer } = require('./InternationalRelationsAnalyzer');
+const {
+  InternationalRelationsAnalyzer
+} = require('./InternationalRelationsAnalyzer');
 const { PoliticalEventIdentifier } = require('./PoliticalEventIdentifier');
 const { PoliticalTimingAnalyzer } = require('./PoliticalTimingAnalyzer');
-const { PoliticalRecommendationGenerator } = require('./PoliticalRecommendationGenerator');
+const {
+  PoliticalRecommendationGenerator
+} = require('./PoliticalRecommendationGenerator');
 
 /**
  * PoliticalAstrology - World leadership and government analysis
@@ -40,13 +44,36 @@ class PoliticalAstrology {
       const analysis = {
         country,
         rulingPlanets: rulership?.planets || [],
-        politicalStability: this.stabilityAssessor.assessPoliticalStability(chart, rulership, country),
-        leadershipAnalysis: this.leadershipAnalyzer.analyzeLeadershipEnergies(chart, rulership),
-        governmentChanges: this.governmentChangePredictor.predictGovernmentChanges(chart, rulership),
-        internationalInfluence: this.internationalRelationsAnalyzer.assessInternationalRelations(chart, rulership, country),
-        politicalEvents: this.politicalEventIdentifier.identifyPoliticalEvents(chart),
-        timingAnalysis: this.timingAnalyzer.analyzePoliticalTiming(chart, rulership),
-        recommendations: this.recommendationGenerator.generatePoliticalRecommendations(analysis)
+        politicalStability: this.stabilityAssessor.assessPoliticalStability(
+          chart,
+          rulership,
+          country
+        ),
+        leadershipAnalysis: this.leadershipAnalyzer.analyzeLeadershipEnergies(
+          chart,
+          rulership
+        ),
+        governmentChanges:
+          this.governmentChangePredictor.predictGovernmentChanges(
+            chart,
+            rulership
+          ),
+        internationalInfluence:
+          this.internationalRelationsAnalyzer.assessInternationalRelations(
+            chart,
+            rulership,
+            country
+          ),
+        politicalEvents:
+          this.politicalEventIdentifier.identifyPoliticalEvents(chart),
+        timingAnalysis: this.timingAnalyzer.analyzePoliticalTiming(
+          chart,
+          rulership
+        ),
+        recommendations:
+          this.recommendationGenerator.generatePoliticalRecommendations(
+            analysis
+          )
       };
 
       return analysis;
@@ -56,7 +83,9 @@ class PoliticalAstrology {
         country,
         error: error.message,
         politicalStability: { rating: 'Unknown', factors: [] },
-        recommendations: ['Consult professional political astrologer for accurate analysis']
+        recommendations: [
+          'Consult professional political astrologer for accurate analysis'
+        ]
       };
     }
   }
@@ -78,7 +107,8 @@ class PoliticalAstrology {
         }
       });
 
-      const validAnalysis = testAnalysis && testAnalysis.country && testAnalysis.politicalStability;
+      const validAnalysis =
+        testAnalysis && testAnalysis.country && testAnalysis.politicalStability;
 
       return {
         healthy: configHealth.healthy && validAnalysis,
@@ -94,7 +124,10 @@ class PoliticalAstrology {
           'Successor Potential Analysis',
           'Political Recommendations'
         ],
-        status: configHealth.healthy && validAnalysis ? 'Operational' : 'Issues Detected'
+        status:
+          configHealth.healthy && validAnalysis ?
+            'Operational' :
+            'Issues Detected'
       };
     } catch (error) {
       return {

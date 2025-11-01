@@ -33,10 +33,15 @@ class MediaSender {
 
     try {
       const response = await this.whatsappAPI.makeRequest('/messages', payload);
-      this.logger.info(`📤 Text message sent successfully to ${phoneNumber}: ${response.messages[0].id}`);
+      this.logger.info(
+        `📤 Text message sent successfully to ${phoneNumber}: ${response.messages[0].id}`
+      );
       return response;
     } catch (error) {
-      this.logger.error(`❌ Error sending text message to ${phoneNumber}:`, error.message);
+      this.logger.error(
+        `❌ Error sending text message to ${phoneNumber}:`,
+        error.message
+      );
       throw error;
     }
   }
@@ -50,7 +55,13 @@ class MediaSender {
    * @param {Object} options - Additional options
    * @returns {Promise<Object>} API response
    */
-  async sendMediaMessage(phoneNumber, mediaType, mediaId, caption = '', options = {}) {
+  async sendMediaMessage(
+    phoneNumber,
+    mediaType,
+    mediaId,
+    caption = '',
+    options = {}
+  ) {
     if (!['image', 'video', 'audio', 'document'].includes(mediaType)) {
       throw new Error(`Invalid media type: ${mediaType}`);
     }
@@ -72,10 +83,15 @@ class MediaSender {
 
     try {
       const response = await this.whatsappAPI.makeRequest('/messages', payload);
-      this.logger.info(`📷 ${mediaType} message sent successfully to ${phoneNumber}: ${response.messages[0].id}`);
+      this.logger.info(
+        `📷 ${mediaType} message sent successfully to ${phoneNumber}: ${response.messages[0].id}`
+      );
       return response;
     } catch (error) {
-      this.logger.error(`❌ Error sending ${mediaType} message to ${phoneNumber}:`, error.message);
+      this.logger.error(
+        `❌ Error sending ${mediaType} message to ${phoneNumber}:`,
+        error.message
+      );
       throw error;
     }
   }
@@ -132,7 +148,13 @@ class MediaSender {
    */
   async sendDocument(phoneNumber, documentId, caption = '', filename = null) {
     const options = filename ? { filename } : {};
-    return this.sendMediaMessage(phoneNumber, 'document', documentId, caption, options);
+    return this.sendMediaMessage(
+      phoneNumber,
+      'document',
+      documentId,
+      caption,
+      options
+    );
   }
 
   /**
@@ -146,7 +168,9 @@ class MediaSender {
   async sendMessage(phoneNumber, message, messageType = 'text', options = {}) {
     // Input validation
     if (message === null || message === undefined) {
-      this.logger.error(`❌ Message content is null/undefined for ${phoneNumber}`);
+      this.logger.error(
+        `❌ Message content is null/undefined for ${phoneNumber}`
+      );
       throw new Error('Message content cannot be null or undefined');
     }
 
@@ -170,7 +194,11 @@ class MediaSender {
     default:
       // Translate message if it's a resource key
       let messageText = message;
-      if (typeof message === 'string' && message.includes('.') && !message.includes(' ')) {
+      if (
+        typeof message === 'string' &&
+          message.includes('.') &&
+          !message.includes(' ')
+      ) {
         // Would need access to translation service
         messageText = message; // Placeholder for now
       }

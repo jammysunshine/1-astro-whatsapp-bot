@@ -52,7 +52,11 @@ class JaiminiCalculator {
         aspects,
         arudhaPadas,
         sphutas,
-        interpretation: this._interpretJaiminiSystem(karakas, aspects, arudhaPadas)
+        interpretation: this._interpretJaiminiSystem(
+          karakas,
+          aspects,
+          arudhaPadas
+        )
       };
     } catch (error) {
       logger.error('❌ Error in Jaimini astrology calculation:', error);
@@ -66,7 +70,15 @@ class JaiminiCalculator {
    */
   async _calculatePlanetaryPositions(jd) {
     const positions = {};
-    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const planets = [
+      'Sun',
+      'Moon',
+      'Mars',
+      'Mercury',
+      'Jupiter',
+      'Venus',
+      'Saturn'
+    ];
 
     for (const planet of planets) {
       try {
@@ -241,11 +253,33 @@ class JaiminiCalculator {
   _getNakshatra(longitude) {
     // Nakshatra calculation (13°20' per nakshatra)
     const nakshatras = [
-      'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
-      'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
-      'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
-      'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhishak',
-      'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+      'Ashwini',
+      'Bharani',
+      'Krittika',
+      'Rohini',
+      'Mrigashira',
+      'Ardra',
+      'Punarvasu',
+      'Pushya',
+      'Ashlesha',
+      'Magha',
+      'Purva Phalguni',
+      'Uttara Phalguni',
+      'Hasta',
+      'Chitra',
+      'Swati',
+      'Vishakha',
+      'Anuradha',
+      'Jyeshtha',
+      'Mula',
+      'Purva Ashadha',
+      'Uttara Ashadha',
+      'Shravana',
+      'Dhanishta',
+      'Shatabhishak',
+      'Purva Bhadrapada',
+      'Uttara Bhadrapada',
+      'Revati'
     ];
 
     const nakshatraIndex = Math.floor(longitude / 13.333333);
@@ -282,11 +316,11 @@ class JaiminiCalculator {
   _calculateAspectStrength(houseOffset) {
     // Jaimini aspects have different strengths
     const strengths = {
-      12: 3,  // 12th strongest
-      9: 2,   // 9th strong
-      7: 1,   // 7th moderate
-      5: 2,   // 5th strong
-      3: 1.5  // 3rd moderate
+      12: 3, // 12th strongest
+      9: 2, // 9th strong
+      7: 1, // 7th moderate
+      5: 2, // 5th strong
+      3: 1.5 // 3rd moderate
     };
 
     return strengths[houseOffset] || 1;
@@ -300,14 +334,20 @@ class JaiminiCalculator {
     const interpretation = [];
 
     if (karakas.atmakaraka) {
-      interpretation.push(`Atmakaraka (${karakas.atmakaraka.planet}) indicates your soul's journey through ${karakas.atmakaraka.planet} themes.`);
+      interpretation.push(
+        `Atmakaraka (${karakas.atmakaraka.planet}) indicates your soul's journey through ${karakas.atmakaraka.planet} themes.`
+      );
     }
 
     if (aspects.length > 0) {
-      interpretation.push(`${aspects.length} Jaimini aspects identified, showing the karmic influences at play.`);
+      interpretation.push(
+        `${aspects.length} Jaimini aspects identified, showing the karmic influences at play.`
+      );
     }
 
-    interpretation.push('Jaimini system emphasizes karakas (significators) and their roles in life areas.');
+    interpretation.push(
+      'Jaimini system emphasizes karakas (significators) and their roles in life areas.'
+    );
 
     return {
       summary: interpretation.join(' '),
@@ -336,7 +376,14 @@ class JaiminiCalculator {
     const a = Math.floor((14 - month) / 12);
     const y = year + 4800 - a;
     const m = month + 12 * a - 3;
-    const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    const jd =
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045;
     return jd + hour / 24;
   }
 

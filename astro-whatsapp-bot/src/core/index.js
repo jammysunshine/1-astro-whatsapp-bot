@@ -1,5 +1,25 @@
 const CoreApp = require('./app');
-const { BirthChartService, VimshottariDashaService, PrashnaAstrologyService, EventAstrologyService, MuhurtaService, SolarArcDirectionsService, SecondaryProgressionsService, SolarReturnService, BusinessPartnershipService, SpecializedAnalysisService, DashaPredictiveService, CalendarTimingService, CurrentDashaService, CurrentTransitsService, DailyHoroscopeService, CompatibilityService, DetailedChartAnalysisService, CompatibilityScoreService, PanchangService } = require('./services');
+const {
+  BirthChartService,
+  VimshottariDashaService,
+  PrashnaAstrologyService,
+  EventAstrologyService,
+  MuhurtaService,
+  SolarArcDirectionsService,
+  SecondaryProgressionsService,
+  SolarReturnService,
+  BusinessPartnershipService,
+  SpecializedAnalysisService,
+  DashaPredictiveService,
+  CalendarTimingService,
+  CurrentDashaService,
+  CurrentTransitsService,
+  DailyHoroscopeService,
+  CompatibilityService,
+  DetailedChartAnalysisService,
+  CompatibilityScoreService,
+  PanchangService
+} = require('./services');
 const { logger } = require('./utils');
 const { validateBirthData, errorHandler } = require('./middleware');
 

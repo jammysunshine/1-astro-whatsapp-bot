@@ -10,7 +10,8 @@ class EphemerisService extends ServiceTemplate {
   constructor() {
     super('EphemerisCalculator');
     this.serviceName = 'EphemerisService';
-    this.calculatorPath = '../services/astrology/vedic/calculators/EphemerisCalculator';
+    this.calculatorPath =
+      '../services/astrology/vedic/calculators/EphemerisCalculator';
     logger.info('EphemerisService initialized');
   }
 
@@ -36,7 +37,11 @@ class EphemerisService extends ServiceTemplate {
       const { startDate, endDate, options = {} } = params;
 
       // Get ephemeris data from calculator
-      const ephemerisData = await this.calculator.generateEphemeris(startDate, endDate, options);
+      const ephemerisData = await this.calculator.generateEphemeris(
+        startDate,
+        endDate,
+        options
+      );
 
       // Add metadata
       ephemerisData.type = 'ephemeris';

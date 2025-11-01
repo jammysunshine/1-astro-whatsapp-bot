@@ -32,10 +32,14 @@ class NakshatraPoruthamService extends ServiceTemplate {
       this._validateInput(person1BirthData, person2BirthData);
 
       // Perform Nakshatra Porutham calculation using the dynamically loaded calculator
-      const poruthamResult = await this.calculator.calculatePorutham(person1BirthData, person2BirthData);
+      const poruthamResult = await this.calculator.calculatePorutham(
+        person1BirthData,
+        person2BirthData
+      );
 
       // Generate additional insights
-      const compatibilityScore = this._calculateOverallCompatibilityScore(poruthamResult);
+      const compatibilityScore =
+        this._calculateOverallCompatibilityScore(poruthamResult);
       const strengths = this._identifyStrengths(poruthamResult);
       const challenges = this._identifyChallenges(poruthamResult);
       const recommendations = this._generateRecommendations(poruthamResult);
@@ -46,11 +50,16 @@ class NakshatraPoruthamService extends ServiceTemplate {
         strengths,
         challenges,
         recommendations,
-        summary: this._createComprehensiveSummary(poruthamResult, compatibilityScore)
+        summary: this._createComprehensiveSummary(
+          poruthamResult,
+          compatibilityScore
+        )
       };
     } catch (error) {
       logger.error('NakshatraPoruthamService processCalculation error:', error);
-      throw new Error(`Nakshatra Porutham calculation failed: ${error.message}`);
+      throw new Error(
+        `Nakshatra Porutham calculation failed: ${error.message}`
+      );
     }
   }
 
@@ -62,7 +71,9 @@ class NakshatraPoruthamService extends ServiceTemplate {
    */
   _validateInput(person1BirthData, person2BirthData) {
     if (!person1BirthData || !person2BirthData) {
-      throw new Error('Both person1BirthData and person2BirthData are required for Nakshatra Porutham analysis.');
+      throw new Error(
+        'Both person1BirthData and person2BirthData are required for Nakshatra Porutham analysis.'
+      );
     }
     const validatedData1 = new BirthData(person1BirthData);
     validatedData1.validate();
@@ -95,7 +106,8 @@ class NakshatraPoruthamService extends ServiceTemplate {
         calculationType: 'Nakshatra Porutham Analysis',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'Nakshatra Porutham provides insights into marital compatibility based on Vedic astrology. It is one of many factors to consider in a relationship and should be used as a guide for understanding, not as a definitive predictor of success or failure.'
+      disclaimer:
+        'Nakshatra Porutham provides insights into marital compatibility based on Vedic astrology. It is one of many factors to consider in a relationship and should be used as a guide for understanding, not as a definitive predictor of success or failure.'
     };
   }
 
@@ -106,8 +118,13 @@ class NakshatraPoruthamService extends ServiceTemplate {
    * @private
    */
   _calculateOverallCompatibilityScore(poruthamResult) {
-    if (!poruthamResult || !poruthamResult.kutas) return 0;
-    return poruthamResult.kutas.reduce((sum, kuta) => sum + (kuta.score || 0), 0);
+    if (!poruthamResult || !poruthamResult.kutas) {
+      return 0;
+    }
+    return poruthamResult.kutas.reduce(
+      (sum, kuta) => sum + (kuta.score || 0),
+      0
+    );
   }
 
   /**
@@ -121,11 +138,15 @@ class NakshatraPoruthamService extends ServiceTemplate {
     if (poruthamResult.kutas) {
       poruthamResult.kutas.forEach(kuta => {
         if (kuta.score > 2) {
-          strengths.push(`${kuta.name} (Score: ${kuta.score}) - ${kuta.interpretation}`);
+          strengths.push(
+            `${kuta.name} (Score: ${kuta.score}) - ${kuta.interpretation}`
+          );
         }
       });
     }
-    if (strengths.length === 0) strengths.push('General harmony and understanding');
+    if (strengths.length === 0) {
+      strengths.push('General harmony and understanding');
+    }
     return strengths;
   }
 
@@ -140,11 +161,15 @@ class NakshatraPoruthamService extends ServiceTemplate {
     if (poruthamResult.kutas) {
       poruthamResult.kutas.forEach(kuta => {
         if (kuta.score <= 1) {
-          challenges.push(`${kuta.name} (Score: ${kuta.score}) - ${kuta.interpretation}`);
+          challenges.push(
+            `${kuta.name} (Score: ${kuta.score}) - ${kuta.interpretation}`
+          );
         }
       });
     }
-    if (challenges.length === 0) challenges.push('Minor adjustments may be needed');
+    if (challenges.length === 0) {
+      challenges.push('Minor adjustments may be needed');
+    }
     return challenges;
   }
 
@@ -179,18 +204,23 @@ class NakshatraPoruthamService extends ServiceTemplate {
    * @private
    */
   _createComprehensiveSummary(poruthamResult, compatibilityScore) {
-    let summary = `This Nakshatra Porutham analysis provides insights into the compatibility between two individuals based on Vedic astrology. `;
+    let summary =
+      'This Nakshatra Porutham analysis provides insights into the compatibility between two individuals based on Vedic astrology. ';
     summary += `The overall compatibility score is ${compatibilityScore} out of 36. `;
 
     if (compatibilityScore >= 25) {
-      summary += 'This indicates excellent compatibility, suggesting a harmonious and fulfilling relationship. ';
+      summary +=
+        'This indicates excellent compatibility, suggesting a harmonious and fulfilling relationship. ';
     } else if (compatibilityScore >= 18) {
-      summary += 'This indicates good compatibility, with a strong foundation for a successful relationship. ';
+      summary +=
+        'This indicates good compatibility, with a strong foundation for a successful relationship. ';
     } else {
-      summary += 'This indicates moderate compatibility, suggesting areas that may require more effort and understanding. ';
+      summary +=
+        'This indicates moderate compatibility, suggesting areas that may require more effort and understanding. ';
     }
 
-    summary += 'The analysis of individual Kutas (compatibility factors) highlights specific strengths and potential challenges, offering guidance for a stronger bond.';
+    summary +=
+      'The analysis of individual Kutas (compatibility factors) highlights specific strengths and potential challenges, offering guidance for a stronger bond.';
     return summary;
   }
 
@@ -203,7 +233,12 @@ class NakshatraPoruthamService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', 'calculatePorutham', 'getCompatibilityScore', 'getStrengthsAndChallenges'],
+      methods: [
+        'processCalculation',
+        'calculatePorutham',
+        'getCompatibilityScore',
+        'getStrengthsAndChallenges'
+      ],
       dependencies: [], // Managed by ServiceTemplate
       description: 'Service for Nakshatra compatibility analysis.'
     };

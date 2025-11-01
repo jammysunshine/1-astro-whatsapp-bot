@@ -39,7 +39,8 @@ class IChingReader {
         question,
         hexagram: 'Creative',
         symbol: '☰',
-        interpretation: 'The I Ching presents The Creative as guidance for your question.',
+        interpretation:
+          'The I Ching presents The Creative as guidance for your question.',
         error: 'Using fallback implementation due to service error'
       };
     }
@@ -48,7 +49,8 @@ class IChingReader {
 
 const ichingReader = new IChingReader();
 
-const generateIChingReading = (question, coins) => ichingReader.generateIChingReading(question, coins);
+const generateIChingReading = (question, coins) =>
+  ichingReader.generateIChingReading(question, coins);
 
 module.exports = {
   IChingReader,

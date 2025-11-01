@@ -9,7 +9,9 @@ class SignCalculations {
     this.vedicCore = vedicCore;
     this.geocodingService = geocodingService;
     this.signCalculations = signCalculations; // The original sign calculations service
-    logger.info('Module: SignCalculations loaded for Vedic sign calculations with fallbacks');
+    logger.info(
+      'Module: SignCalculations loaded for Vedic sign calculations with fallbacks'
+    );
   }
 
   /**
@@ -22,9 +24,16 @@ class SignCalculations {
   async calculateSunSign(birthDate, birthTime, birthPlace) {
     try {
       // Try Vedic astrology calculation first
-      return await this.signCalculations.calculateSunSign(birthDate, birthTime, birthPlace);
+      return await this.signCalculations.calculateSunSign(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
     } catch (error) {
-      logger.warn('Vedic sun sign calculation failed, using fallback:', error.message);
+      logger.warn(
+        'Vedic sun sign calculation failed, using fallback:',
+        error.message
+      );
       // Fallback to simplified date-based calculation
       return this.calculateSunSignFallback(birthDate);
     }
@@ -40,7 +49,11 @@ class SignCalculations {
   async calculateMoonSign(birthDate, birthTime, birthPlace) {
     try {
       // Try Vedic astrology calculation first
-      return await this.signCalculations.calculateMoonSign(birthDate, birthTime, birthPlace);
+      return await this.signCalculations.calculateMoonSign(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
     } catch (error) {
       logger.warn('Vedic moon sign calculation failed, using fallback');
       return 'Unknown';
@@ -57,7 +70,11 @@ class SignCalculations {
   async calculateRisingSign(birthDate, birthTime, birthPlace) {
     try {
       // Try Vedic astrology calculation first
-      return await this.signCalculations.calculateRisingSign(birthDate, birthTime, birthPlace);
+      return await this.signCalculations.calculateRisingSign(
+        birthDate,
+        birthTime,
+        birthPlace
+      );
     } catch (error) {
       logger.warn('Vedic rising sign calculation failed, using fallback');
       return 'Unknown';
@@ -78,19 +95,63 @@ class SignCalculations {
     const padaSize = nakshatraSize / 4; // 3°20' per Pada
 
     const nakshatras = [
-      'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
-      'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
-      'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
-      'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhisha',
-      'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+      'Ashwini',
+      'Bharani',
+      'Krittika',
+      'Rohini',
+      'Mrigashira',
+      'Ardra',
+      'Punarvasu',
+      'Pushya',
+      'Ashlesha',
+      'Magha',
+      'Purva Phalguni',
+      'Uttara Phalguni',
+      'Hasta',
+      'Chitra',
+      'Swati',
+      'Vishakha',
+      'Anuradha',
+      'Jyeshtha',
+      'Mula',
+      'Purva Ashadha',
+      'Uttara Ashadha',
+      'Shravana',
+      'Dhanishta',
+      'Shatabhisha',
+      'Purva Bhadrapada',
+      'Uttara Bhadrapada',
+      'Revati'
     ];
 
     const lords = [
-      'Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu',
-      'Jupiter', 'Saturn', 'Mercury', 'Ketu', 'Venus', 'Sun',
-      'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury',
-      'Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu',
-      'Jupiter', 'Saturn', 'Mercury'
+      'Ketu',
+      'Venus',
+      'Sun',
+      'Moon',
+      'Mars',
+      'Rahu',
+      'Jupiter',
+      'Saturn',
+      'Mercury',
+      'Ketu',
+      'Venus',
+      'Sun',
+      'Moon',
+      'Mars',
+      'Rahu',
+      'Jupiter',
+      'Saturn',
+      'Mercury',
+      'Ketu',
+      'Venus',
+      'Sun',
+      'Moon',
+      'Mars',
+      'Rahu',
+      'Jupiter',
+      'Saturn',
+      'Mercury'
     ];
 
     const index = Math.floor(moonLongitude / nakshatraSize);
@@ -98,7 +159,7 @@ class SignCalculations {
     const lord = lords[index];
 
     // Calculate Pada (1-4)
-    const positionInNakshatra = moonLongitude - (index * nakshatraSize);
+    const positionInNakshatra = moonLongitude - index * nakshatraSize;
     const pada = Math.floor(positionInNakshatra / padaSize) + 1;
 
     return {

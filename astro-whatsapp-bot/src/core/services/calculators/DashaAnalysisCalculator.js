@@ -49,10 +49,15 @@ class DashaAnalysisCalculator {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const [latitude, longitude] = await this._getCoordinatesForPlace(birthPlace);
+      const [latitude, longitude] =
+        await this._getCoordinatesForPlace(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
-      const timezone = await this._getTimezoneForPlace(latitude, longitude, timestamp);
+      const timezone = await this._getTimezoneForPlace(
+        latitude,
+        longitude,
+        timestamp
+      );
 
       // Calculate natal dasha position
       const dashaPosition = this._calculateDashaPosition(birthDateTime);
@@ -61,19 +66,34 @@ class DashaAnalysisCalculator {
       const currentDasha = this._calculateCurrentMahaDasha(birthDateTime);
 
       // Calculate current antara dasha (sub-period)
-      const currentAntara = this._calculateCurrentAntaraDasha(birthDateTime, currentDasha);
+      const currentAntara = this._calculateCurrentAntaraDasha(
+        birthDateTime,
+        currentDasha
+      );
 
       // Calculate upcoming maha dashas
-      const upcomingDashas = this._calculateUpcomingMahaDashas(birthDateTime, currentDasha);
+      const upcomingDashas = this._calculateUpcomingMahaDashas(
+        birthDateTime,
+        currentDasha
+      );
 
       // Analyze dasha effects and significances
-      const dashaEffects = this._analyzeDashaEffects(currentDasha, currentAntara);
+      const dashaEffects = this._analyzeDashaEffects(
+        currentDasha,
+        currentAntara
+      );
 
       // Calculate dasha periods suitable for activities
-      const activitySuigibilies = this._calculateActivitySuitabilities(currentDasha, currentAntara);
+      const activitySuigibilies = this._calculateActivitySuitabilities(
+        currentDasha,
+        currentAntara
+      );
 
       // Generate remedial measures for challenging dashas
-      const remedialMeasures = this._calculateRemedialMeasures(currentDasha, currentAntara);
+      const remedialMeasures = this._calculateRemedialMeasures(
+        currentDasha,
+        currentAntara
+      );
 
       return {
         name,
@@ -91,7 +111,11 @@ class DashaAnalysisCalculator {
         dashaEffects,
         activitySuitabilities,
         remedialMeasures,
-        summary: this._generateDashaSummary(currentDasha, currentAntara, dashaEffects)
+        summary: this._generateDashaSummary(
+          currentDasha,
+          currentAntara,
+          dashaEffects
+        )
       };
     } catch (error) {
       logger.error('❌ Error in Dasha calculation:', error);
@@ -110,14 +134,23 @@ class DashaAnalysisCalculator {
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
 
       const currentDasha = this._calculateCurrentMahaDasha(birthDateTime);
-      const currentAntara = this._calculateCurrentAntaraDasha(birthDateTime, currentDasha);
+      const currentAntara = this._calculateCurrentAntaraDasha(
+        birthDateTime,
+        currentDasha
+      );
 
       return {
         mahaDasha: currentDasha.name,
         antaraDasha: currentAntara.name,
-        combinedInfluence: this._analyzeCombinedInfluence(currentDasha, currentAntara),
+        combinedInfluence: this._analyzeCombinedInfluence(
+          currentDasha,
+          currentAntara
+        ),
         dominantThemes: this._getDashaThemes(currentDasha, currentAntara),
-        practicalityRating: this._calculatePracticalityRating(currentDasha, currentAntara)
+        practicalityRating: this._calculatePracticalityRating(
+          currentDasha,
+          currentAntara
+        )
       };
     } catch (error) {
       logger.error('Error getting current dasha influences:', error.message);
@@ -136,9 +169,18 @@ class DashaAnalysisCalculator {
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
 
       const currentDasha = this._calculateCurrentMahaDasha(birthDateTime);
-      const nextFavorable = this._findNextFavorableDasha(birthDateTime, currentDasha, activity);
+      const nextFavorable = this._findNextFavorableDasha(
+        birthDateTime,
+        currentDasha,
+        activity
+      );
 
-      return nextFavorable || { message: 'Favorable dashas are generally available throughout the cycle' };
+      return (
+        nextFavorable || {
+          message:
+            'Favorable dashas are generally available throughout the cycle'
+        }
+      );
     } catch (error) {
       logger.error('Error calculating next favorable dasha:', error.message);
       return { error: 'Unable to calculate next favorable dasha' };
@@ -167,7 +209,9 @@ class DashaAnalysisCalculator {
    * @private
    */
   _calculateCurrentMahaDasha(birthDateTime) {
-    const yearsSinceBirth = Math.floor((Date.now() - birthDateTime.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+    const yearsSinceBirth = Math.floor(
+      (Date.now() - birthDateTime.getTime()) / (365.25 * 24 * 60 * 60 * 1000)
+    );
     const dashaPosition = this._calculateDashaPosition(birthDateTime);
 
     // Find which dasha period we're currently in
@@ -186,7 +230,8 @@ class DashaAnalysisCalculator {
 
     const currentLord = this.vinshottariPeriods[dashaIndex].lord;
     const yearsIntoCurrent = yearsSinceBirth - cumulativeYears;
-    const remainingYears = this.vinshottariPeriods[dashaIndex].years - yearsIntoCurrent;
+    const remainingYears =
+      this.vinshottariPeriods[dashaIndex].years - yearsIntoCurrent;
 
     return {
       lord: currentLord,
@@ -194,7 +239,8 @@ class DashaAnalysisCalculator {
       totalYears: this.vinshottariPeriods[dashaIndex].years,
       yearsRemaining: remainingYears,
       yearsCompleted: yearsIntoCurrent,
-      completionPercentage: (yearsIntoCurrent / this.vinshottariPeriods[dashaIndex].years) * 100,
+      completionPercentage:
+        (yearsIntoCurrent / this.vinshottariPeriods[dashaIndex].years) * 100,
       periodSignificance: this._getDashaSignificance(currentLord)
     };
   }
@@ -206,7 +252,8 @@ class DashaAnalysisCalculator {
   _calculateCurrentAntaraDasha(birthDateTime, currentMahaDasha) {
     // This is a complex calculation involving the Maha Dasha lord
     // Simplified implementation
-    const yearsInDasha = currentMahaDasha.totalYears - currentMahaDasha.yearsRemaining;
+    const yearsInDasha =
+      currentMahaDasha.totalYears - currentMahaDasha.yearsRemaining;
     const proportionalPosition = yearsInDasha / currentMahaDasha.totalYears;
 
     // Each Maha Dasha has sub-periods based on the same system but proportional
@@ -220,7 +267,10 @@ class DashaAnalysisCalculator {
       lord: subPeriodLord,
       name: subPeriodLord.charAt(0).toUpperCase() + subPeriodLord.slice(1),
       totalYears: scaledSubYears,
-      significance: this._getAntaraSignificance(subPeriodLord, currentMahaDasha.lord)
+      significance: this._getAntaraSignificance(
+        subPeriodLord,
+        currentMahaDasha.lord
+      )
     };
   }
 
@@ -265,7 +315,10 @@ class DashaAnalysisCalculator {
       overallInfluence: this._combineInfluences(mahaDasha, antaraDasha),
       dominantAreas: this._getDominantAreas(mahaDasha.lord),
       challenges: this._getDashaChallenges(mahaDasha.lord, antaraDasha.lord),
-      opportunities: this._getDashaOpportunities(mahaDasha.lord, antaraDasha.lord),
+      opportunities: this._getDashaOpportunities(
+        mahaDasha.lord,
+        antaraDasha.lord
+      ),
       healthFocus: this._getHealthFocus(mahaDasha.lord),
       careerPath: this._getCareerPath(mahaDasha.lord, antaraDasha.lord),
       relationshipTheme: this._getRelationshipTheme(mahaDasha.lord),
@@ -293,15 +346,96 @@ class DashaAnalysisCalculator {
 
     // Define favorable activities for each planet
     const activityPreferences = {
-      sun: { marriage: 'Poor', business: 'Good', education: 'Fair', travel: 'Good', health: 'Fair', spiritual: 'Fair', family: 'Fair', investment: 'Good' },
-      moon: { marriage: 'Excellent', business: 'Fair', education: 'Good', travel: 'Fair', health: 'Good', spiritual: 'Good', family: 'Excellent', investment: 'Fair' },
-      mars: { marriage: 'Fair', business: 'Excellent', education: 'Fair', travel: 'Good', health: 'Fair', spiritual: 'Fair', family: 'Fair', investment: 'Good' },
-      mercury: { marriage: 'Fair', business: 'Excellent', education: 'Excellent', travel: 'Fair', health: 'Good', spiritual: 'Fair', family: 'Fair', investment: 'Excellent' },
-      jupiter: { marriage: 'Good', business: 'Good', education: 'Good', travel: 'Excellent', health: 'Excellent', spiritual: 'Excellent', family: 'Good', investment: 'Good' },
-      venus: { marriage: 'Excellent', business: 'Good', education: 'Fair', travel: 'Fair', health: 'Good', spiritual: 'Fair', family: 'Good', investment: 'Fair' },
-      saturn: { marriage: 'Poor', business: 'Good', education: 'Good', travel: 'Poor', health: 'Poor', spiritual: 'Excellent', family: 'Poor', investment: 'Excellent' },
-      rahu: { marriage: 'Fair', business: 'Excellent', education: 'Fair', travel: 'Excellent', health: 'Poor', spiritual: 'Good', family: 'Fair', investment: 'Good' },
-      ketu: { marriage: 'Poor', business: 'Fair', education: 'Fair', travel: 'Poor', health: 'Fair', spiritual: 'Excellent', family: 'Poor', investment: 'Fair' }
+      sun: {
+        marriage: 'Poor',
+        business: 'Good',
+        education: 'Fair',
+        travel: 'Good',
+        health: 'Fair',
+        spiritual: 'Fair',
+        family: 'Fair',
+        investment: 'Good'
+      },
+      moon: {
+        marriage: 'Excellent',
+        business: 'Fair',
+        education: 'Good',
+        travel: 'Fair',
+        health: 'Good',
+        spiritual: 'Good',
+        family: 'Excellent',
+        investment: 'Fair'
+      },
+      mars: {
+        marriage: 'Fair',
+        business: 'Excellent',
+        education: 'Fair',
+        travel: 'Good',
+        health: 'Fair',
+        spiritual: 'Fair',
+        family: 'Fair',
+        investment: 'Good'
+      },
+      mercury: {
+        marriage: 'Fair',
+        business: 'Excellent',
+        education: 'Excellent',
+        travel: 'Fair',
+        health: 'Good',
+        spiritual: 'Fair',
+        family: 'Fair',
+        investment: 'Excellent'
+      },
+      jupiter: {
+        marriage: 'Good',
+        business: 'Good',
+        education: 'Good',
+        travel: 'Excellent',
+        health: 'Excellent',
+        spiritual: 'Excellent',
+        family: 'Good',
+        investment: 'Good'
+      },
+      venus: {
+        marriage: 'Excellent',
+        business: 'Good',
+        education: 'Fair',
+        travel: 'Fair',
+        health: 'Good',
+        spiritual: 'Fair',
+        family: 'Good',
+        investment: 'Fair'
+      },
+      saturn: {
+        marriage: 'Poor',
+        business: 'Good',
+        education: 'Good',
+        travel: 'Poor',
+        health: 'Poor',
+        spiritual: 'Excellent',
+        family: 'Poor',
+        investment: 'Excellent'
+      },
+      rahu: {
+        marriage: 'Fair',
+        business: 'Excellent',
+        education: 'Fair',
+        travel: 'Excellent',
+        health: 'Poor',
+        spiritual: 'Good',
+        family: 'Fair',
+        investment: 'Good'
+      },
+      ketu: {
+        marriage: 'Poor',
+        business: 'Fair',
+        education: 'Fair',
+        travel: 'Poor',
+        health: 'Fair',
+        spiritual: 'Excellent',
+        family: 'Poor',
+        investment: 'Fair'
+      }
     };
 
     // Use Maha Dasha as primary influence, Antara as modifier
@@ -357,7 +491,11 @@ class DashaAnalysisCalculator {
         mantras: ['Om Mangalaya Namaha', 'Om Angarakaya Namaha'],
         gemstones: ['Red Coral', 'Bloodstone'],
         charities: ['Red items donation', 'Land donation'],
-        lifestyle: ['Physical exercise', 'Avoid anger', 'Red foods in moderation']
+        lifestyle: [
+          'Physical exercise',
+          'Avoid anger',
+          'Red foods in moderation'
+        ]
       },
       mercury: {
         mantras: ['Om Buddhaya Namaha', 'Om Dhanvantre Namaha'],
@@ -400,7 +538,9 @@ class DashaAnalysisCalculator {
     // Add remedies for both Maha and Antara Lords
     [mahaDasha.lord, antaraDasha.lord].forEach(planet => {
       if (planetRemedies[planet]) {
-        remedial.specific.push(`For ${planet.charAt(0).toUpperCase() + planet.slice(1)} Dasha:`);
+        remedial.specific.push(
+          `For ${planet.charAt(0).toUpperCase() + planet.slice(1)} Dasha:`
+        );
         remedial.mantras.push(...planetRemedies[planet].mantras);
         remedial.gemstones.push(...planetRemedies[planet].gemstones);
         remedial.charities.push(...planetRemedies[planet].charities);
@@ -442,7 +582,8 @@ class DashaAnalysisCalculator {
       });
     }
 
-    summary += '\n*Vimshottari Dasha reveals the planetary periods influencing life experiences and timing.*';
+    summary +=
+      '\n*Vimshottari Dasha reveals the planetary periods influencing life experiences and timing.*';
 
     return summary;
   }
@@ -453,8 +594,18 @@ class DashaAnalysisCalculator {
   }
 
   _getDashaIndexFromWeekday(dayOfWeek) {
-    const lordMapping = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
-    return lordMapping[dayOfWeek] ? this._getDashaIndex(lordMapping[dayOfWeek]) : 0;
+    const lordMapping = [
+      'sun',
+      'moon',
+      'mars',
+      'mercury',
+      'jupiter',
+      'venus',
+      'saturn'
+    ];
+    return lordMapping[dayOfWeek] ?
+      this._getDashaIndex(lordMapping[dayOfWeek]) :
+      0;
   }
 
   _calculateYearsIntoCycle(birthDateTime, dashaIndex) {
@@ -488,7 +639,11 @@ class DashaAnalysisCalculator {
       healthy: true,
       version: '1.0.0',
       name: 'DashaAnalysisCalculator',
-      calculations: ['Vimshottari Dasha', 'Current Influences', 'Favorable Periods'],
+      calculations: [
+        'Vimshottari Dasha',
+        'Current Influences',
+        'Favorable Periods'
+      ],
       status: 'Operational'
     };
   }

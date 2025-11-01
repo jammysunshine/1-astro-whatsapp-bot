@@ -7,10 +7,15 @@ describe('WebhookValidator', () => {
   describe('validateWebhookSignature', () => {
     it('should validate correct signature', () => {
       const payload = 'test payload';
-      const signature = 'sha256=2f94a757d2246073e26781d117ce0183ebd87b4d66c460494376d5c37d71985b';
+      const signature =
+        'sha256=2f94a757d2246073e26781d117ce0183ebd87b4d66c460494376d5c37d71985b';
       const secret = 'test-secret';
 
-      const result = webhookValidator.validateWebhookSignature(payload, signature, secret);
+      const result = webhookValidator.validateWebhookSignature(
+        payload,
+        signature,
+        secret
+      );
 
       expect(result).toBe(true);
     });
@@ -20,7 +25,11 @@ describe('WebhookValidator', () => {
       const signature = 'sha256=invalid-signature';
       const secret = 'test-secret';
 
-      const result = webhookValidator.validateWebhookSignature(payload, signature, secret);
+      const result = webhookValidator.validateWebhookSignature(
+        payload,
+        signature,
+        secret
+      );
 
       expect(result).toBe(false);
     });

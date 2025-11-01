@@ -401,7 +401,12 @@ describe('WhatsApp Message Sender', () => {
 
       axios.post.mockResolvedValue(response);
 
-      const result = await sendListMessage(phoneNumber, body, buttonText, sections);
+      const result = await sendListMessage(
+        phoneNumber,
+        body,
+        buttonText,
+        sections
+      );
 
       expect(result).toEqual(response.data);
       expect(axios.post).toHaveBeenCalledWith(
@@ -662,18 +667,17 @@ describe('WhatsApp Message Sender', () => {
       expect(result).toEqual(response.data);
     });
 
-
     it('should send list message via main wrapper', async() => {
       const messageData = {
         type: 'list',
         body: 'Choose from list:',
         button: 'Select',
-        sections: [{
-          title: 'Options',
-          rows: [
-            { id: 'item1', title: 'Item 1', description: 'First item' }
-          ]
-        }]
+        sections: [
+          {
+            title: 'Options',
+            rows: [{ id: 'item1', title: 'Item 1', description: 'First item' }]
+          }
+        ]
       };
       const response = {
         data: {
@@ -737,7 +741,6 @@ describe('WhatsApp Message Sender', () => {
       expect(result).toEqual(response.data);
     });
 
-
     it('should handle input validation errors', async() => {
       // Test null message
       await expect(sendMessage(phoneNumber, null, 'text')).rejects.toThrow(
@@ -775,12 +778,18 @@ describe('WhatsApp Message Sender', () => {
         }
       };
 
-      mockTranslationService.translate.mockResolvedValue('Translated welcome message');
+      mockTranslationService.translate.mockResolvedValue(
+        'Translated welcome message'
+      );
       axios.post.mockResolvedValue(response);
 
       await sendMessage(phoneNumber, resourceKey, 'text', {}, 'en');
 
-      expect(mockTranslationService.translate).toHaveBeenCalledWith(resourceKey, 'en', {});
+      expect(mockTranslationService.translate).toHaveBeenCalledWith(
+        resourceKey,
+        'en',
+        {}
+      );
     });
   });
 
@@ -803,8 +812,16 @@ describe('WhatsApp Message Sender', () => {
           {
             title: 'Services',
             rows: [
-              { id: 'reading', title: 'Daily Reading', description: 'Get your daily horoscope' },
-              { id: 'chart', title: 'Birth Chart', description: 'View your birth chart' }
+              {
+                id: 'reading',
+                title: 'Daily Reading',
+                description: 'Get your daily horoscope'
+              },
+              {
+                id: 'chart',
+                title: 'Birth Chart',
+                description: 'View your birth chart'
+              }
             ]
           }
         ]
@@ -820,7 +837,6 @@ describe('WhatsApp Message Sender', () => {
       expect(result).toContain('💡 *How to use:*');
       expect(result).toContain('Type a number (1, 2, 3, etc.)');
     });
-
 
     it('should return null for non-existent user mappings', () => {
       expect(getNumberedMenuAction('non-existent-user', '1')).toBeNull();

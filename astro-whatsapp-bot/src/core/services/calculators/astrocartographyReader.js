@@ -208,7 +208,8 @@ class AstrocartographyReader {
         currentLocation,
         powerSpots,
         relocationGuidance,
-        disclaimer: '⚠️ *Important Disclaimer:* This astrocartography analysis uses simplified calculations for educational purposes. Real astrocartography requires precise astronomical data and professional astrological interpretation. Results should not be used for major life decisions.',
+        disclaimer:
+          '⚠️ *Important Disclaimer:* This astrocartography analysis uses simplified calculations for educational purposes. Real astrocartography requires precise astronomical data and professional astrological interpretation. Results should not be used for major life decisions.',
         astrocartographyDescription: this.generateAstrocartographyDescription(
           planetaryLines,
           currentLocation,
@@ -236,7 +237,9 @@ class AstrocartographyReader {
   calculatePlanetaryPositions(birthDate, birthTime) {
     // HIGHLY SIMPLIFIED: Using seed-based pseudo-random positions
     // In production, integrate with Swiss Ephemeris or similar for accurate calculations
-    logger.warn('Using simplified planetary position calculations - not astronomically accurate');
+    logger.warn(
+      'Using simplified planetary position calculations - not astronomically accurate'
+    );
 
     const [day, month, year] = birthDate.split('/').map(Number);
     const [hour, minute] = birthTime.split(':').map(Number);
@@ -583,7 +586,8 @@ class AstrocartographyReader {
     powerSpots
   ) {
     let description = '🗺️ *Astrocartography Analysis*\n\n';
-    description += '⚠️ *Disclaimer:* This analysis uses simplified calculations for educational purposes only. Real astrocartography requires precise astronomical data and should be interpreted by a professional astrologer.\n\n';
+    description +=
+      '⚠️ *Disclaimer:* This analysis uses simplified calculations for educational purposes only. Real astrocartography requires precise astronomical data and should be interpreted by a professional astrologer.\n\n';
 
     description += `📍 *Current Location: ${currentLocation.location}*\n`;
     description += `• Region: ${currentLocation.region}\n`;
@@ -626,7 +630,8 @@ class AstrocartographyReader {
 
     description +=
       '🔮 *Travel Tip:*\nConsider visiting locations along your Venus or Jupiter lines for harmony and growth opportunities.\n\n';
-    description += '📚 *Educational Note:* Astrocartography maps how planetary energies influence different geographic locations. This simplified version demonstrates the concept but should not replace professional astrological guidance.';
+    description +=
+      '📚 *Educational Note:* Astrocartography maps how planetary energies influence different geographic locations. This simplified version demonstrates the concept but should not replace professional astrological guidance.';
 
     return description;
   }

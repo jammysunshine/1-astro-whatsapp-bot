@@ -1,11 +1,23 @@
 const MessageCoordinator = require('../../../../../src/services/whatsapp/MessageCoordinator');
-const { getUserByPhone, createUser, updateUserProfile } = require('../../../../../src/models/userModel');
-const { processFlowMessage } = require('../../../../../src/conversation/conversationEngine');
+const {
+  getUserByPhone,
+  createUser,
+  updateUserProfile
+} = require('../../../../../src/models/userModel');
+const {
+  processFlowMessage
+} = require('../../../../../src/conversation/conversationEngine');
 
 // Mock external services and databases
-jest.mock('../../../../../src/services/whatsapp/processors/TextMessageProcessor');
-jest.mock('../../../../../src/services/whatsapp/processors/InteractiveMessageProcessor');
-jest.mock('../../../../../src/services/whatsapp/processors/MediaMessageProcessor');
+jest.mock(
+  '../../../../../src/services/whatsapp/processors/TextMessageProcessor'
+);
+jest.mock(
+  '../../../../../src/services/whatsapp/processors/InteractiveMessageProcessor'
+);
+jest.mock(
+  '../../../../../src/services/whatsapp/processors/MediaMessageProcessor'
+);
 jest.mock('../../../../../src/models/userModel');
 jest.mock('../../../../../src/conversation/conversationEngine');
 jest.mock('../../../../../src/utils/logger');
@@ -20,7 +32,8 @@ describe('MessageCoordinator Integration Tests', () => {
     jest.clearAllMocks();
 
     // Mock external dependencies
-    mockSendMessage = require('../../../../../src/services/whatsapp/messageSender').sendMessage;
+    mockSendMessage =
+      require('../../../../../src/services/whatsapp/messageSender').sendMessage;
     mockSendMessage.mockResolvedValue(null);
 
     // Setup environment variables
@@ -73,10 +86,17 @@ describe('MessageCoordinator Integration Tests', () => {
 
       // Assert
       expect(getUserByPhone).toHaveBeenCalledWith('+1234567890');
-      expect(mockTextProcessor.process).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
-      expect(updateUserProfile).toHaveBeenCalledWith('+1234567890', expect.objectContaining({
-        lastInteraction: expect.any(Date)
-      }));
+      expect(mockTextProcessor.process).toHaveBeenCalledWith(
+        message,
+        expect.any(Object),
+        '+1234567890'
+      );
+      expect(updateUserProfile).toHaveBeenCalledWith(
+        '+1234567890',
+        expect.objectContaining({
+          lastInteraction: expect.any(Date)
+        })
+      );
     });
 
     test('should handle interactive button response', async() => {
@@ -104,7 +124,11 @@ describe('MessageCoordinator Integration Tests', () => {
       await coordinator.processIncomingMessage(message, value);
 
       // Assert
-      expect(mockInteractiveProcessor.process).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
+      expect(mockInteractiveProcessor.process).toHaveBeenCalledWith(
+        message,
+        expect.any(Object),
+        '+1234567890'
+      );
     });
 
     test('should handle media message upload', async() => {
@@ -130,7 +154,11 @@ describe('MessageCoordinator Integration Tests', () => {
       await coordinator.processIncomingMessage(message, value);
 
       // Assert
-      expect(mockMediaProcessor.process).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
+      expect(mockMediaProcessor.process).toHaveBeenCalledWith(
+        message,
+        expect.any(Object),
+        '+1234567890'
+      );
     });
 
     test('should handle new user onboarding flow', async() => {
@@ -158,10 +186,14 @@ describe('MessageCoordinator Integration Tests', () => {
 
       // Assert
       expect(createUser).toHaveBeenCalledWith('+1234567890');
-      expect(processFlowMessage).toHaveBeenCalledWith(message, expect.objectContaining({
-        profileComplete: false,
-        isNew: true
-      }), 'onboarding');
+      expect(processFlowMessage).toHaveBeenCalledWith(
+        message,
+        expect.objectContaining({
+          profileComplete: false,
+          isNew: true
+        }),
+        'onboarding'
+      );
 
       // Should not process further for incomplete users
       expect(coordinator.textProcessor.process).not.toHaveBeenCalled();
@@ -187,8 +219,14 @@ describe('MessageCoordinator Integration Tests', () => {
       await coordinator.processIncomingMessage(message, value);
 
       // Assert
-      expect(mockLogger.warn).toHaveBeenCalledWith('⚠️ Unsupported message type: unsupported_type');
-      expect(mockSendMessage).toHaveBeenCalledWith('+1234567890', expect.stringContaining('not support that message type'), 'text');
+      expect(mockLogger.warn).toHaveBeenCalledWith(
+        '⚠️ Unsupported message type: unsupported_type'
+      );
+      expect(mockSendMessage).toHaveBeenCalledWith(
+        '+1234567890',
+        expect.stringContaining('not support that message type'),
+        'text'
+      );
     });
   });
 
@@ -210,17 +248,23 @@ describe('MessageCoordinator Integration Tests', () => {
       };
 
       // Act & Assert
-      await expect(coordinator.processIncomingMessage(message, {}))
-        .resolves.not.toThrow();
+      await expect(
+        coordinator.processIncomingMessage(message, {})
+      ).resolves.not.toThrow();
 
-      expect(mockSendMessage).toHaveBeenCalledWith('+1234567890',
-        expect.stringContaining('unexpected error'), 'text');
+      expect(mockSendMessage).toHaveBeenCalledWith(
+        '+1234567890',
+        expect.stringContaining('unexpected error'),
+        'text'
+      );
     });
 
     test('should handle processor errors and continue processing', async() => {
       // Arrange
       const mockTextProcessor = coordinator.textProcessor;
-      mockTextProcessor.process.mockRejectedValue(new Error('Processor failed'));
+      mockTextProcessor.process.mockRejectedValue(
+        new Error('Processor failed')
+      );
 
       const message = {
         type: 'text',
@@ -257,7 +301,9 @@ describe('MessageCoordinator Integration Tests', () => {
       await coordinator.processIncomingMessage(message, {});
 
       // Assert
-      expect(mockLogger.error).toHaveBeenCalledWith('❌ Missing required WhatsApp environment variables');
+      expect(mockLogger.error).toHaveBeenCalledWith(
+        '❌ Missing required WhatsApp environment variables'
+      );
     });
   });
 
@@ -282,9 +328,12 @@ describe('MessageCoordinator Integration Tests', () => {
       await coordinator.processIncomingMessage(message, {});
 
       // Assert
-      expect(updateUserProfile).toHaveBeenCalledWith('+1234567890', expect.objectContaining({
-        lastInteraction: expect.any(Date)
-      }));
+      expect(updateUserProfile).toHaveBeenCalledWith(
+        '+1234567890',
+        expect.objectContaining({
+          lastInteraction: expect.any(Date)
+        })
+      );
     });
 
     test('should handle user lookup errors', async() => {
@@ -300,8 +349,9 @@ describe('MessageCoordinator Integration Tests', () => {
       };
 
       // Act & Assert
-      await expect(coordinator.processIncomingMessage(message, {}))
-        .resolves.not.toThrow();
+      await expect(
+        coordinator.processIncomingMessage(message, {})
+      ).resolves.not.toThrow();
 
       expect(mockSendMessage).toHaveBeenCalled(); // Should send error response
     });
@@ -326,7 +376,11 @@ describe('MessageCoordinator Integration Tests', () => {
       await coordinator.processIncomingMessage(message, {});
 
       // Assert
-      expect(coordinator.textProcessor.process).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
+      expect(coordinator.textProcessor.process).toHaveBeenCalledWith(
+        message,
+        expect.any(Object),
+        '+1234567890'
+      );
       expect(coordinator.interactiveProcessor.process).not.toHaveBeenCalled();
       expect(coordinator.mediaProcessor.process).not.toHaveBeenCalled();
     });
@@ -345,7 +399,11 @@ describe('MessageCoordinator Integration Tests', () => {
       await coordinator.processIncomingMessage(message, {});
 
       // Assert
-      expect(coordinator.interactiveProcessor.process).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
+      expect(coordinator.interactiveProcessor.process).toHaveBeenCalledWith(
+        message,
+        expect.any(Object),
+        '+1234567890'
+      );
       expect(coordinator.textProcessor.process).not.toHaveBeenCalled();
       expect(coordinator.mediaProcessor.process).not.toHaveBeenCalled();
     });
@@ -364,7 +422,11 @@ describe('MessageCoordinator Integration Tests', () => {
       await coordinator.processIncomingMessage(message, {});
 
       // Assert
-      expect(coordinator.mediaProcessor.process).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
+      expect(coordinator.mediaProcessor.process).toHaveBeenCalledWith(
+        message,
+        expect.any(Object),
+        '+1234567890'
+      );
       expect(coordinator.textProcessor.process).not.toHaveBeenCalled();
       expect(coordinator.interactiveProcessor.process).not.toHaveBeenCalled();
     });
@@ -383,7 +445,9 @@ describe('MessageCoordinator Integration Tests', () => {
       await coordinator.processIncomingMessage(message, {});
 
       // Assert - Button messages are handled by InteractiveMessageProcessor's processButtonMessage
-      expect(coordinator.interactiveProcessor.processButtonMessage).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
+      expect(
+        coordinator.interactiveProcessor.processButtonMessage
+      ).toHaveBeenCalledWith(message, expect.any(Object), '+1234567890');
       expect(coordinator.textProcessor.process).not.toHaveBeenCalled();
       expect(coordinator.mediaProcessor.process).not.toHaveBeenCalled();
     });
@@ -445,7 +509,9 @@ describe('MessageCoordinator Integration Tests', () => {
       // Act - Send multiple messages rapidly
       const promises = [];
       for (let i = 0; i < 10; i++) {
-        promises.push(coordinator.processIncomingMessage({ ...message, id: `msg_${i}` }, {}));
+        promises.push(
+          coordinator.processIncomingMessage({ ...message, id: `msg_${i}` }, {})
+        );
       }
 
       await Promise.all(promises);
@@ -480,9 +546,13 @@ describe('MessageCoordinator Integration Tests', () => {
       coordinator.textProcessor.process.mockResolvedValue(null);
 
       // Act
-      await Promise.all(messages.map((msg, index) =>
-        coordinator.processIncomingMessage(msg, { entry: [{ id: `entry_${index}` }] })
-      ));
+      await Promise.all(
+        messages.map((msg, index) =>
+          coordinator.processIncomingMessage(msg, {
+            entry: [{ id: `entry_${index}` }]
+          })
+        )
+      );
 
       // Assert
       expect(getUserByPhone).toHaveBeenCalledTimes(3);

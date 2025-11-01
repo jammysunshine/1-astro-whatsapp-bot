@@ -39,7 +39,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
       service: 'Specialized Vedic Analysis',
       timestamp: new Date().toISOString(),
       data: result,
-      disclaimer: '⚠️ *Specialized Analysis Disclaimer:* This advanced Vedic analysis requires deep astrological knowledge to interpret correctly. Results should be discussed with qualified Vedic astrologers for proper understanding and application.'
+      disclaimer:
+        '⚠️ *Specialized Analysis Disclaimer:* This advanced Vedic analysis requires deep astrological knowledge to interpret correctly. Results should be discussed with qualified Vedic astrologers for proper understanding and application.'
     };
   }
 
@@ -91,7 +92,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
       const { birthData, analysisType, focusAreas } = analysisData;
 
       // Perform Ashtakavarga analysis (64-point beneficial influence system)
-      const ashtakavargaAnalysis = await this._performAshtakavargaAnalysis(birthData);
+      const ashtakavargaAnalysis =
+        await this._performAshtakavargaAnalysis(birthData);
 
       // Analyze Varga (divisional) charts
       const vargaAnalysis = await this._performVargaAnalysis(birthData);
@@ -103,12 +105,15 @@ class SpecializedAnalysisService extends ServiceTemplate {
       const shadbalaAnalysis = await this._performShadbalaAnalysis(birthData);
 
       // Generate specialized insights
-      const specializedInsights = this._generateSpecializedInsights({
-        ashtakavargaAnalysis,
-        vargaAnalysis,
-        yogasAnalysis,
-        shadbalaAnalysis
-      }, focusAreas);
+      const specializedInsights = this._generateSpecializedInsights(
+        {
+          ashtakavargaAnalysis,
+          vargaAnalysis,
+          yogasAnalysis,
+          shadbalaAnalysis
+        },
+        focusAreas
+      );
 
       // Create comprehensive interpretation
       const interpretation = this._createComprehensiveInterpretation({
@@ -150,7 +155,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
    */
   async _performAshtakavargaAnalysis(birthData) {
     try {
-      const ashtakavarga = await this.calculator.ashtakavargaCalc.calculateAshtakavarga(birthData);
+      const ashtakavarga =
+        await this.calculator.ashtakavargaCalc.calculateAshtakavarga(birthData);
 
       return {
         overallScore: ashtakavarga.totalPoints || 0,
@@ -162,7 +168,11 @@ class SpecializedAnalysisService extends ServiceTemplate {
       };
     } catch (error) {
       logger.warn('Could not perform Ashtakavarga analysis:', error.message);
-      return { overallScore: 0, breakdown: {}, interpretation: 'Analysis unavailable' };
+      return {
+        overallScore: 0,
+        breakdown: {},
+        interpretation: 'Analysis unavailable'
+      };
     }
   }
 
@@ -174,7 +184,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
    */
   async _performVargaAnalysis(birthData) {
     try {
-      const vargaCharts = await this.calculator.vargaCalc.calculateVargaCharts(birthData);
+      const vargaCharts =
+        await this.calculator.vargaCalc.calculateVargaCharts(birthData);
 
       const analysis = {
         availableCharts: Object.keys(vargaCharts),
@@ -187,7 +198,10 @@ class SpecializedAnalysisService extends ServiceTemplate {
 
       keyCharts.forEach(chart => {
         if (vargaCharts[chart]) {
-          analysis.keyInsights[chart] = this._analyzeVargaChart(chart, vargaCharts[chart]);
+          analysis.keyInsights[chart] = this._analyzeVargaChart(
+            chart,
+            vargaCharts[chart]
+          );
         }
       });
 
@@ -222,7 +236,12 @@ class SpecializedAnalysisService extends ServiceTemplate {
       };
     } catch (error) {
       logger.warn('Could not perform Yogas analysis:', error.message);
-      return { totalYogas: 0, rajayogas: [], dhanayogas: [], interpretation: 'Analysis unavailable' };
+      return {
+        totalYogas: 0,
+        rajayogas: [],
+        dhanayogas: [],
+        interpretation: 'Analysis unavailable'
+      };
     }
   }
 
@@ -234,7 +253,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
    */
   async _performShadbalaAnalysis(birthData) {
     try {
-      const shadbala = await this.calculator.shadbalaCalc.calculateShadbala(birthData);
+      const shadbala =
+        await this.calculator.shadbalaCalc.calculateShadbala(birthData);
 
       return {
         overallStrength: shadbala.totalStrength || 0,
@@ -253,7 +273,11 @@ class SpecializedAnalysisService extends ServiceTemplate {
       };
     } catch (error) {
       logger.warn('Could not perform Shadbala analysis:', error.message);
-      return { overallStrength: 0, breakdown: {}, interpretation: 'Analysis unavailable' };
+      return {
+        overallStrength: 0,
+        breakdown: {},
+        interpretation: 'Analysis unavailable'
+      };
     }
   }
 
@@ -301,16 +325,21 @@ class SpecializedAnalysisService extends ServiceTemplate {
     const shadbalaStrength = analyses.shadbalaAnalysis.overallStrength || 0;
     const yogaCount = analyses.yogasAnalysis.totalYogas || 0;
 
-    const overallStrength = (ashtakavargaScore / 384 * 100 + shadbalaStrength + yogaCount * 5) / 3;
+    const overallStrength =
+      ((ashtakavargaScore / 384) * 100 + shadbalaStrength + yogaCount * 5) / 3;
 
     if (overallStrength > 75) {
-      interpretation += 'Exceptionally strong astrological foundation with multiple beneficial influences. ';
+      interpretation +=
+        'Exceptionally strong astrological foundation with multiple beneficial influences. ';
     } else if (overallStrength > 60) {
-      interpretation += 'Strong astrological potential with good planetary support. ';
+      interpretation +=
+        'Strong astrological potential with good planetary support. ';
     } else if (overallStrength > 40) {
-      interpretation += 'Moderate astrological influences requiring conscious effort. ';
+      interpretation +=
+        'Moderate astrological influences requiring conscious effort. ';
     } else {
-      interpretation += 'Challenging astrological configuration requiring remedial measures. ';
+      interpretation +=
+        'Challenging astrological configuration requiring remedial measures. ';
     }
 
     // Key findings
@@ -319,11 +348,13 @@ class SpecializedAnalysisService extends ServiceTemplate {
     }
 
     if (analyses.ashtakavargaAnalysis.overallScore > 250) {
-      interpretation += 'High Ashtakavarga score suggests excellent timing and opportunities. ';
+      interpretation +=
+        'High Ashtakavarga score suggests excellent timing and opportunities. ';
     }
 
     if (analyses.shadbalaAnalysis.overallStrength > 70) {
-      interpretation += 'Strong planetary strengths indicate good vitality and effectiveness. ';
+      interpretation +=
+        'Strong planetary strengths indicate good vitality and effectiveness. ';
     }
 
     return interpretation;
@@ -346,30 +377,44 @@ class SpecializedAnalysisService extends ServiceTemplate {
     // Immediate recommendations based on weak areas
     const weakHouses = analyses.ashtakavargaAnalysis.weakHouses || [];
     if (weakHouses.length > 0) {
-      recommendations.immediate.push('Focus on strengthening areas shown in weak Ashtakavarga houses');
+      recommendations.immediate.push(
+        'Focus on strengthening areas shown in weak Ashtakavarga houses'
+      );
     }
 
     const weakPlanets = analyses.shadbalaAnalysis.weakPlanets || [];
     if (weakPlanets.length > 0) {
-      recommendations.immediate.push('Strengthen weak planets through appropriate remedial measures');
+      recommendations.immediate.push(
+        'Strengthen weak planets through appropriate remedial measures'
+      );
     }
 
     // Short-term recommendations
     if (analyses.yogasAnalysis.totalYogas > 0) {
-      recommendations.shortTerm.push('Activate beneficial yogas through conscious living and spiritual practices');
+      recommendations.shortTerm.push(
+        'Activate beneficial yogas through conscious living and spiritual practices'
+      );
     }
 
     // Long-term recommendations
-    recommendations.longTerm.push('Study and apply advanced Vedic techniques for maximum benefit');
-    recommendations.longTerm.push('Regular consultation with experienced astrologers for guidance');
+    recommendations.longTerm.push(
+      'Study and apply advanced Vedic techniques for maximum benefit'
+    );
+    recommendations.longTerm.push(
+      'Regular consultation with experienced astrologers for guidance'
+    );
 
     // Remedial recommendations
     if (analyses.ashtakavargaAnalysis.overallScore < 200) {
-      recommendations.remedial.push('Consider comprehensive remedial measures to improve Ashtakavarga');
+      recommendations.remedial.push(
+        'Consider comprehensive remedial measures to improve Ashtakavarga'
+      );
     }
 
     if (analyses.shadbalaAnalysis.overallStrength < 50) {
-      recommendations.remedial.push('Strengthen planetary powers through specific spiritual practices');
+      recommendations.remedial.push(
+        'Strengthen planetary powers through specific spiritual practices'
+      );
     }
 
     return recommendations;
@@ -381,7 +426,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
     const houses = [];
     if (ashtakavarga.breakdown) {
       Object.entries(ashtakavarga.breakdown).forEach(([house, points]) => {
-        if (points >= 28) { // Above average
+        if (points >= 28) {
+          // Above average
           houses.push(parseInt(house));
         }
       });
@@ -393,7 +439,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
     const houses = [];
     if (ashtakavarga.breakdown) {
       Object.entries(ashtakavarga.breakdown).forEach(([house, points]) => {
-        if (points < 20) { // Below average
+        if (points < 20) {
+          // Below average
           houses.push(parseInt(house));
         }
       });
@@ -403,10 +450,18 @@ class SpecializedAnalysisService extends ServiceTemplate {
 
   _interpretAshtakavarga(ashtakavarga) {
     const score = ashtakavarga.totalPoints || 0;
-    if (score > 300) { return 'Exceptionally favorable planetary influences'; }
-    if (score > 250) { return 'Very good planetary support'; }
-    if (score > 200) { return 'Good planetary harmony'; }
-    if (score > 150) { return 'Moderate planetary influences'; }
+    if (score > 300) {
+      return 'Exceptionally favorable planetary influences';
+    }
+    if (score > 250) {
+      return 'Very good planetary support';
+    }
+    if (score > 200) {
+      return 'Good planetary harmony';
+    }
+    if (score > 150) {
+      return 'Moderate planetary influences';
+    }
     return 'Challenging planetary configuration requiring attention';
   }
 
@@ -416,11 +471,15 @@ class SpecializedAnalysisService extends ServiceTemplate {
     const weakHouses = this._identifyWeakHouses(ashtakavarga);
 
     if (strongHouses.length > 0) {
-      recommendations.push(`Leverage strength in houses: ${strongHouses.join(', ')}`);
+      recommendations.push(
+        `Leverage strength in houses: ${strongHouses.join(', ')}`
+      );
     }
 
     if (weakHouses.length > 0) {
-      recommendations.push(`Strengthen houses: ${weakHouses.join(', ')} through remedial measures`);
+      recommendations.push(
+        `Strengthen houses: ${weakHouses.join(', ')} through remedial measures`
+      );
     }
 
     return recommendations;
@@ -438,7 +497,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
 
     switch (chartName) {
     case 'D-9':
-      insights.interpretation = 'Navamsa shows marriage, spirituality, and life partner';
+      insights.interpretation =
+          'Navamsa shows marriage, spirituality, and life partner';
       break;
     case 'D-10':
       insights.interpretation = 'Dashamsa reveals career and public life';
@@ -471,14 +531,18 @@ class SpecializedAnalysisService extends ServiceTemplate {
     const categories = {};
     yogas.forEach(yoga => {
       const type = yoga.type || 'General';
-      if (!categories[type]) { categories[type] = []; }
+      if (!categories[type]) {
+        categories[type] = [];
+      }
       categories[type].push(yoga);
     });
     return categories;
   }
 
   _interpretYogas(yogas) {
-    if (yogas.length === 0) { return 'No significant yogas identified'; }
+    if (yogas.length === 0) {
+      return 'No significant yogas identified';
+    }
 
     const rajaYogas = yogas.filter(y => y.type === 'Raja Yoga').length;
     const dhanaYogas = yogas.filter(y => y.type === 'Dhana Yoga').length;
@@ -504,11 +568,15 @@ class SpecializedAnalysisService extends ServiceTemplate {
     }
 
     if (yogas.some(y => y.type === 'Dhana Yoga')) {
-      recommendations.push('Financial prosperity indicated through multiple sources');
+      recommendations.push(
+        'Financial prosperity indicated through multiple sources'
+      );
     }
 
     if (yogas.length > 5) {
-      recommendations.push('Multiple yogas suggest diverse talents and opportunities');
+      recommendations.push(
+        'Multiple yogas suggest diverse talents and opportunities'
+      );
     }
 
     return recommendations;
@@ -544,10 +612,18 @@ class SpecializedAnalysisService extends ServiceTemplate {
 
   _interpretShadbala(shadbala) {
     const strength = shadbala.totalStrength || 0;
-    if (strength > 80) { return 'Exceptionally strong planetary powers'; }
-    if (strength > 70) { return 'Very strong planetary influences'; }
-    if (strength > 60) { return 'Good planetary strength'; }
-    if (strength > 50) { return 'Moderate planetary power'; }
+    if (strength > 80) {
+      return 'Exceptionally strong planetary powers';
+    }
+    if (strength > 70) {
+      return 'Very strong planetary influences';
+    }
+    if (strength > 60) {
+      return 'Good planetary strength';
+    }
+    if (strength > 50) {
+      return 'Moderate planetary power';
+    }
     return 'Planetary strength needs enhancement';
   }
 
@@ -603,7 +679,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
 
   _generateCareerInsight(analyses) {
     // Look at 10th house Varga and career-related yogas
-    const dashamsaStrength = analyses.vargaAnalysis.keyInsights?.['D-10']?.strength || 'Neutral';
+    const dashamsaStrength =
+      analyses.vargaAnalysis.keyInsights?.['D-10']?.strength || 'Neutral';
     const rajaYogas = analyses.yogasAnalysis.rajayogas?.length || 0;
 
     if (rajaYogas > 0) {
@@ -616,8 +693,10 @@ class SpecializedAnalysisService extends ServiceTemplate {
   }
 
   _generateSpiritualInsight(analyses) {
-    const navamsaStrength = analyses.vargaAnalysis.keyInsights?.['D-9']?.strength || 'Neutral';
-    const spiritualYogas = analyses.yogasAnalysis.yogaBreakdown?.['Spiritual']?.length || 0;
+    const navamsaStrength =
+      analyses.vargaAnalysis.keyInsights?.['D-9']?.strength || 'Neutral';
+    const spiritualYogas =
+      analyses.yogasAnalysis.yogaBreakdown?.['Spiritual']?.length || 0;
 
     if (navamsaStrength === 'Strong' || spiritualYogas > 0) {
       return 'Strong spiritual inclinations with potential for deep wisdom and enlightenment';
@@ -627,7 +706,8 @@ class SpecializedAnalysisService extends ServiceTemplate {
   }
 
   _generateRelationshipInsight(analyses) {
-    const navamsaStrength = analyses.vargaAnalysis.keyInsights?.['D-9']?.strength || 'Neutral';
+    const navamsaStrength =
+      analyses.vargaAnalysis.keyInsights?.['D-9']?.strength || 'Neutral';
     const venusStrength = analyses.shadbalaAnalysis.breakdown?.venus || 0;
 
     if (navamsaStrength === 'Strong' && venusStrength > 60) {
@@ -652,7 +732,10 @@ class SpecializedAnalysisService extends ServiceTemplate {
 
   _generateWealthInsight(analyses) {
     const dhanaYogas = analyses.yogasAnalysis.dhanayogas?.length || 0;
-    const wealthHouses = analyses.ashtakavargaAnalysis.strongHouses?.filter(h => [2, 11].includes(h)).length || 0;
+    const wealthHouses =
+      analyses.ashtakavargaAnalysis.strongHouses?.filter(h =>
+        [2, 11].includes(h)
+      ).length || 0;
 
     if (dhanaYogas > 0 && wealthHouses > 0) {
       return 'Strong wealth potential through multiple sources and opportunities';
@@ -670,7 +753,6 @@ class SpecializedAnalysisService extends ServiceTemplate {
       place: birthData.birthPlace
     };
   }
-
 
   /**
    * Create specialized analysis summary for quick reference
@@ -700,17 +782,33 @@ class SpecializedAnalysisService extends ServiceTemplate {
    * @private
    */
   _calculateOverallStrength(result) {
-    const ashtakavargaPercent = (result.ashtakavargaAnalysis.overallScore || 0) / 384;
-    const shadbalaPercent = (result.shadbalaAnalysis.overallStrength || 0) / 100;
-    const yogaBonus = Math.min((result.yogasAnalysis.totalYogas || 0) * 0.05, 0.3);
+    const ashtakavargaPercent =
+      (result.ashtakavargaAnalysis.overallScore || 0) / 384;
+    const shadbalaPercent =
+      (result.shadbalaAnalysis.overallStrength || 0) / 100;
+    const yogaBonus = Math.min(
+      (result.yogasAnalysis.totalYogas || 0) * 0.05,
+      0.3
+    );
 
-    const overallScore = (ashtakavargaPercent + shadbalaPercent + yogaBonus) / 3;
+    const overallScore =
+      (ashtakavargaPercent + shadbalaPercent + yogaBonus) / 3;
 
-    if (overallScore > 0.8) { return 'Exceptional'; }
-    if (overallScore > 0.7) { return 'Very Strong'; }
-    if (overallScore > 0.6) { return 'Strong'; }
-    if (overallScore > 0.5) { return 'Moderate'; }
-    if (overallScore > 0.4) { return 'Fair'; }
+    if (overallScore > 0.8) {
+      return 'Exceptional';
+    }
+    if (overallScore > 0.7) {
+      return 'Very Strong';
+    }
+    if (overallScore > 0.6) {
+      return 'Strong';
+    }
+    if (overallScore > 0.5) {
+      return 'Moderate';
+    }
+    if (overallScore > 0.4) {
+      return 'Fair';
+    }
     return 'Needs Attention';
   }
 
@@ -752,7 +850,12 @@ class SpecializedAnalysisService extends ServiceTemplate {
       version: '1.0.0',
       category: 'vedic',
       methods: ['execute', 'getSpecializedAnalysis'],
-      dependencies: ['AshtakavargaCalculator', 'VargaChartCalculator', 'VedicYogasCalculator', 'ShadbalaCalculator']
+      dependencies: [
+        'AshtakavargaCalculator',
+        'VargaChartCalculator',
+        'VedicYogasCalculator',
+        'ShadbalaCalculator'
+      ]
     };
   }
   async getHealthStatus() {

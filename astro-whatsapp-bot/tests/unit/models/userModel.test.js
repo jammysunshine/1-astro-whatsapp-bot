@@ -15,7 +15,9 @@ const mongoose = require('mongoose');
 describe('UserModel Functions', () => {
   beforeAll(async() => {
     // Use the MongoDB URI from environment or default to test database
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/astro-whatsapp-bot-test';
+    const mongoUri =
+      process.env.MONGODB_URI ||
+      'mongodb://localhost:27017/astro-whatsapp-bot-test';
     await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true
@@ -30,12 +32,7 @@ describe('UserModel Functions', () => {
     // Clean up test data before each test
     await User.deleteMany({
       phoneNumber: {
-        $in: [
-          '+1234567890',
-          '+1234567891',
-          '+1234567892',
-          '+1234567893'
-        ]
+        $in: ['+1234567890', '+1234567891', '+1234567892', '+1234567893']
       }
     });
     jest.clearAllMocks();
@@ -45,12 +42,7 @@ describe('UserModel Functions', () => {
     // Clean up after each test
     await User.deleteMany({
       phoneNumber: {
-        $in: [
-          '+1234567890',
-          '+1234567891',
-          '+1234567892',
-          '+1234567893'
-        ]
+        $in: ['+1234567890', '+1234567891', '+1234567892', '+1234567893']
       }
     });
   });

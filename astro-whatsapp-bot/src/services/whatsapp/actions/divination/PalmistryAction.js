@@ -9,7 +9,9 @@ const translationService = require('../../../services/i18n/TranslationService');
  * Palmistry reveals character traits, emotional patterns, and life potential through hand reading.
  */
 class PalmistryAction extends BaseAction {
-  static get actionId() { return 'get_palmistry_analysis'; }
+  static get actionId() {
+    return 'get_palmistry_analysis';
+  }
 
   async execute() {
     try {
@@ -27,12 +29,17 @@ class PalmistryAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in PalmistryAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
   async sendPalmistryAnalysis() {
-    const analysis = '✋ *Palmistry - The Map of Your Life*\n\n' +
+    const analysis =
+      '✋ *Palmistry - The Map of Your Life*\n\n' +
       'Your hands reveal your inner blueprint - past, present, and potential future.\n\n' +
       '*📖 MAJOR PALM FEATURES:*\n' +
       '• *Life Line* - Vitality, general life flow, and major life changes\n' +
@@ -47,26 +54,33 @@ class PalmistryAction extends BaseAction {
       '*For personalized palmistry analysis, please share a clear photo of your dominant hand (palm facing up).*';
 
     const userLanguage = this.getUserLanguage();
-    const buttons = [{
-      id: 'show_main_menu',
-      titleKey: 'buttons.main_menu',
-      title: '🏠 Main Menu'
-    }];
+    const buttons = [
+      {
+        id: 'show_main_menu',
+        titleKey: 'buttons.main_menu',
+        title: '🏠 Main Menu'
+      }
+    ];
 
     const message = ResponseBuilder.buildInteractiveButtonMessage(
-      this.phoneNumber, analysis, buttons, userLanguage
+      this.phoneNumber,
+      analysis,
+      buttons,
+      userLanguage
     );
 
     await sendMessage(message.to, message.interactive, 'interactive');
   }
 
   async sendIncompleteProfileMessage() {
-    const message = '👤 Palmistry analysis requires a complete profile. Please update your birth details first.';
+    const message =
+      '👤 Palmistry analysis requires a complete profile. Please update your birth details first.';
     await sendMessage(this.phoneNumber, message, 'text');
   }
 
   async handleExecutionError(error) {
-    const errorMessage = '❌ Error analyzing palmistry. Please try again later.';
+    const errorMessage =
+      '❌ Error analyzing palmistry. Please try again later.';
     await sendMessage(this.phoneNumber, errorMessage, 'text');
   }
 

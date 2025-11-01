@@ -42,7 +42,11 @@ class WesternAstrologyMenuAction extends BaseAction {
     } catch (error) {
       this.logger.error('Error in WesternAstrologyMenuAction:', error);
       await this.handleExecutionError(error);
-      return { success: false, reason: 'execution_error', error: error.message };
+      return {
+        success: false,
+        reason: 'execution_error',
+        error: error.message
+      };
     }
   }
 
@@ -84,7 +88,8 @@ class WesternAstrologyMenuAction extends BaseAction {
       await this.sendMessage(message, 'interactive');
 
       // Also send numbered fallback instructions
-      const fallbackText = '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-13 for services, 14 to go back.';
+      const fallbackText =
+        '\n\n📱 If the menu above doesn\'t work, reply with a number:\n1-13 for services, 14 to go back.';
       await this.sendMessage(fallbackText, 'text');
     } catch (error) {
       this.logger.error('Error sending western astrology menu:', error);
@@ -113,7 +118,8 @@ class WesternAstrologyMenuAction extends BaseAction {
    * @returns {string} Numbered text menu
    */
   generateNumberedMenuText(menuData) {
-    let menuText = '🌍 *Western Astrology Services*\n\nChoose by replying with a number:\n\n';
+    let menuText =
+      '🌍 *Western Astrology Services*\n\nChoose by replying with a number:\n\n';
 
     let itemCount = 1;
     if (menuData.sections) {
@@ -137,16 +143,22 @@ class WesternAstrologyMenuAction extends BaseAction {
    * @returns {number} Total number of menu items
    */
   countMenuItems(menuData) {
-    if (!menuData.sections) { return 0; }
+    if (!menuData.sections) {
+      return 0;
+    }
 
-    return menuData.sections.reduce((total, section) => total + (section.rows ? section.rows.length : 0), 0);
+    return menuData.sections.reduce(
+      (total, section) => total + (section.rows ? section.rows.length : 0),
+      0
+    );
   }
 
   /**
    * Handle menu loading error
    */
   async handleMenuLoadError() {
-    const errorMessage = 'Sorry, I couldn\'t load the Western Astrology menu right now. Please try again in a moment.';
+    const errorMessage =
+      'Sorry, I couldn\'t load the Western Astrology menu right now. Please try again in a moment.';
     await this.sendMessage(errorMessage, 'text');
   }
 
@@ -155,7 +167,8 @@ class WesternAstrologyMenuAction extends BaseAction {
    * @param {Error} error - Execution error
    */
   async handleExecutionError(error) {
-    const errorMessage = 'I encountered an error displaying the Western Astrology menu. Please try again.';
+    const errorMessage =
+      'I encountered an error displaying the Western Astrology menu. Please try again.';
     await this.sendMessage(errorMessage, 'text');
   }
 
@@ -167,7 +180,12 @@ class WesternAstrologyMenuAction extends BaseAction {
     return {
       id: this.actionId,
       description: 'Display the Western Astrology services menu',
-      keywords: ['western', 'western astrology', 'modern astrology', 'natal chart'],
+      keywords: [
+        'western',
+        'western astrology',
+        'modern astrology',
+        'natal chart'
+      ],
       category: 'menu',
       subscriptionRequired: false,
       cooldown: 0 // No cooldown for menu navigation

@@ -12,7 +12,8 @@ class DetailedChartAnalysisService extends ServiceTemplate {
   constructor() {
     super('DetailedChartAnalysisCalculator'); // Primary calculator for this service
     this.serviceName = 'DetailedChartAnalysisService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/DetailedChartAnalysisCalculator';
+    this.calculatorPath =
+      '../../../services/astrology/vedic/calculators/DetailedChartAnalysisCalculator';
     logger.info('DetailedChartAnalysisService initialized');
   }
 
@@ -27,13 +28,16 @@ class DetailedChartAnalysisService extends ServiceTemplate {
       this._validateInput(birthData);
 
       // Get detailed analysis from calculator
-      const detailedAnalysis = await this.calculator.generateDetailedChartAnalysis(birthData, options);
+      const detailedAnalysis =
+        await this.calculator.generateDetailedChartAnalysis(birthData, options);
 
       // Generate additional comprehensive insights
       const lifeAreaAnalysis = this._analyzeLifeAreas(detailedAnalysis);
-      const planetaryStrengths = this._assessPlanetaryStrengths(detailedAnalysis);
+      const planetaryStrengths =
+        this._assessPlanetaryStrengths(detailedAnalysis);
       const karmicInsights = this._provideKarmicInsights(detailedAnalysis);
-      const predictiveIndicators = this._identifyPredictiveIndicators(detailedAnalysis);
+      const predictiveIndicators =
+        this._identifyPredictiveIndicators(detailedAnalysis);
 
       return {
         detailedAnalysis,
@@ -41,10 +45,16 @@ class DetailedChartAnalysisService extends ServiceTemplate {
         planetaryStrengths,
         karmicInsights,
         predictiveIndicators,
-        summary: this._createComprehensiveSummary(detailedAnalysis, lifeAreaAnalysis)
+        summary: this._createComprehensiveSummary(
+          detailedAnalysis,
+          lifeAreaAnalysis
+        )
       };
     } catch (error) {
-      logger.error('DetailedChartAnalysisService processCalculation error:', error);
+      logger.error(
+        'DetailedChartAnalysisService processCalculation error:',
+        error
+      );
       throw new Error(`Detailed chart analysis failed: ${error.message}`);
     }
   }
@@ -77,7 +87,8 @@ class DetailedChartAnalysisService extends ServiceTemplate {
         calculationType: 'Detailed Chart Analysis',
         timestamp: new Date().toISOString()
       },
-      disclaimer: 'This detailed chart analysis provides comprehensive astrological insights. Astrology offers guidance and self-understanding but should not replace professional advice in medical, legal, or psychological matters. Consult qualified professionals for important life decisions.'
+      disclaimer:
+        'This detailed chart analysis provides comprehensive astrological insights. Astrology offers guidance and self-understanding but should not replace professional advice in medical, legal, or psychological matters. Consult qualified professionals for important life decisions.'
     };
   }
 
@@ -107,12 +118,21 @@ class DetailedChartAnalysisService extends ServiceTemplate {
    * @private
    */
   _assessPlanetaryStrengths(detailedAnalysis) {
-    const strengths = { strongPlanets: [], weakPlanets: [], balancedPlanets: [], overallStrength: 'Balanced planetary configuration' };
+    const strengths = {
+      strongPlanets: [],
+      weakPlanets: [],
+      balancedPlanets: [],
+      overallStrength: 'Balanced planetary configuration'
+    };
     if (detailedAnalysis.rajDhanYogas) {
-      strengths.strongPlanets.push('Planets forming beneficial yogas show enhanced strength');
+      strengths.strongPlanets.push(
+        'Planets forming beneficial yogas show enhanced strength'
+      );
     }
     if (detailedAnalysis.challengingCombinations) {
-      strengths.weakPlanets.push('Planets in challenging combinations may need strengthening');
+      strengths.weakPlanets.push(
+        'Planets in challenging combinations may need strengthening'
+      );
     }
     strengths.balancedPlanets.push('Most planets show balanced influences');
     return strengths;
@@ -126,9 +146,27 @@ class DetailedChartAnalysisService extends ServiceTemplate {
    */
   _provideKarmicInsights(detailedAnalysis) {
     return [
-      { area: 'Life Purpose', insight: 'The chart indicates karmic lessons related to personal growth and self-realization', significance: 'Understanding these lessons leads to greater life fulfillment' },
-      { area: 'Past Life Influences', insight: 'Planetary positions suggest karmic patterns from previous incarnations', significance: 'Recognizing these patterns helps resolve recurring challenges' },
-      { area: 'Soul Evolution', insight: 'The chart shows opportunities for spiritual growth and soul development', significance: 'Embracing these opportunities accelerates personal evolution' }
+      {
+        area: 'Life Purpose',
+        insight:
+          'The chart indicates karmic lessons related to personal growth and self-realization',
+        significance:
+          'Understanding these lessons leads to greater life fulfillment'
+      },
+      {
+        area: 'Past Life Influences',
+        insight:
+          'Planetary positions suggest karmic patterns from previous incarnations',
+        significance:
+          'Recognizing these patterns helps resolve recurring challenges'
+      },
+      {
+        area: 'Soul Evolution',
+        insight:
+          'The chart shows opportunities for spiritual growth and soul development',
+        significance:
+          'Embracing these opportunities accelerates personal evolution'
+      }
     ];
   }
 
@@ -170,7 +208,11 @@ class DetailedChartAnalysisService extends ServiceTemplate {
    */
   _analyzeCareer(detailedAnalysis) {
     return {
-      suitableCareers: ['Leadership roles', 'Creative professions', 'Service-oriented work'],
+      suitableCareers: [
+        'Leadership roles',
+        'Creative professions',
+        'Service-oriented work'
+      ],
       careerStrengths: ['Natural authority', 'Problem-solving abilities'],
       careerChallenges: ['Work-life balance', 'Authority issues'],
       successIndicators: ['10th house strength', 'Career yogas presence']
@@ -204,7 +246,11 @@ class DetailedChartAnalysisService extends ServiceTemplate {
       generalConstitution: 'Strong vital force with good recovery ability',
       potentialConcerns: ['Stress-related issues', 'Digestive sensitivity'],
       healthStrengths: ['Strong immune system', 'Good endurance'],
-      preventiveMeasures: ['Stress management', 'Regular exercise', 'Balanced diet'],
+      preventiveMeasures: [
+        'Stress management',
+        'Regular exercise',
+        'Balanced diet'
+      ],
       healingApproaches: ['Holistic healing', 'Mind-body practices']
     };
   }
@@ -281,12 +327,16 @@ class DetailedChartAnalysisService extends ServiceTemplate {
    * @private
    */
   _createComprehensiveSummary(detailedAnalysis, lifeAreaAnalysis) {
-    let summary = 'This detailed Vedic chart analysis provides comprehensive insights into all aspects of life, from personality traits to spiritual development. ';
+    let summary =
+      'This detailed Vedic chart analysis provides comprehensive insights into all aspects of life, from personality traits to spiritual development. ';
     if (detailedAnalysis.rajDhanYogas) {
-      summary += 'The presence of beneficial yogas indicates strong potential for success and prosperity. ';
+      summary +=
+        'The presence of beneficial yogas indicates strong potential for success and prosperity. ';
     }
-    summary += 'The analysis covers eight major life areas, revealing both strengths and areas for growth. ';
-    summary += 'Understanding these planetary influences helps navigate life\'s opportunities and challenges with greater awareness and wisdom.';
+    summary +=
+      'The analysis covers eight major life areas, revealing both strengths and areas for growth. ';
+    summary +=
+      'Understanding these planetary influences helps navigate life\'s opportunities and challenges with greater awareness and wisdom.';
     return summary;
   }
 
@@ -299,7 +349,13 @@ class DetailedChartAnalysisService extends ServiceTemplate {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['processCalculation', '_analyzeLifeAreas', '_assessPlanetaryStrengths', '_provideKarmicInsights', '_identifyPredictiveIndicators'],
+      methods: [
+        'processCalculation',
+        '_analyzeLifeAreas',
+        '_assessPlanetaryStrengths',
+        '_provideKarmicInsights',
+        '_identifyPredictiveIndicators'
+      ],
       dependencies: [], // Managed by ServiceTemplate
       description: 'Comprehensive Vedic chart interpretation service.'
     };

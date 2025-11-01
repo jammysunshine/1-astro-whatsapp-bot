@@ -61,12 +61,14 @@ class NadiFormatter {
       return [];
     }
 
-    return [{
-      planet: currentDasha.planet,
-      startDate: 'Current',
-      endDate: `${currentDasha.remaining} years`,
-      effects: currentDasha.influence
-    }];
+    return [
+      {
+        planet: currentDasha.planet,
+        startDate: 'Current',
+        endDate: `${currentDasha.remaining} years`,
+        effects: currentDasha.influence
+      }
+    ];
   }
 
   /**
@@ -79,9 +81,11 @@ class NadiFormatter {
       return ['Consult a qualified Nadi astrologer for personalized remedies'];
     }
 
-    return remedies.slice(0, 8).map(remedy =>
-      (typeof remedy === 'string' ? remedy : remedy.remedy || remedy)
-    );
+    return remedies
+      .slice(0, 8)
+      .map(remedy =>
+        (typeof remedy === 'string' ? remedy : remedy.remedy || remedy)
+      );
   }
 
   /**
@@ -118,7 +122,8 @@ class NadiFormatter {
       dasaPeriods: [],
       remedies: [],
       predictions: {},
-      interpretation: 'Please provide your birth date for accurate Nadi analysis'
+      interpretation:
+        'Please provide your birth date for accurate Nadi analysis'
     };
   }
 }

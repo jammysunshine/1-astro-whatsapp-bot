@@ -19,10 +19,18 @@ class SignCalculations {
    * @param {string} chartType - 'tropical' or 'sidereal' (optional, defaults to 'sidereal' for Vedic)
    * @returns {string} Sun sign
    */
-  async calculateSunSign(birthDate, birthTime = '12:00', birthPlace = 'Delhi, India', chartType = 'sidereal') {
+  async calculateSunSign(
+    birthDate,
+    birthTime = '12:00',
+    birthPlace = 'Delhi, India',
+    chartType = 'sidereal'
+  ) {
     try {
       if (!birthDate || typeof birthDate !== 'string') {
-        logger.error('Invalid birthDate provided to calculateSunSign:', { birthDate, type: typeof birthDate });
+        logger.error('Invalid birthDate provided to calculateSunSign:', {
+          birthDate,
+          type: typeof birthDate
+        });
         return this._calculateSunSignFallback('01/01/1990'); // Default fallback
       }
 
@@ -30,7 +38,8 @@ class SignCalculations {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+      const locationInfo =
+        await this.geocodingService.getLocationInfo(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
 
@@ -113,13 +122,19 @@ class SignCalculations {
    * @param {string} chartType - Chart type
    * @returns {string} Moon sign
    */
-  async calculateMoonSign(birthDate, birthTime, birthPlace = 'Delhi, India', chartType = 'sidereal') {
+  async calculateMoonSign(
+    birthDate,
+    birthTime,
+    birthPlace = 'Delhi, India',
+    chartType = 'sidereal'
+  ) {
     try {
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+      const locationInfo =
+        await this.geocodingService.getLocationInfo(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
 
@@ -186,7 +201,8 @@ class SignCalculations {
       const [hour, minute] = birthTime.split(':').map(Number);
 
       // Get coordinates and timezone
-      const locationInfo = await this.geocodingService.getLocationInfo(birthPlace);
+      const locationInfo =
+        await this.geocodingService.getLocationInfo(birthPlace);
       const birthDateTime = new Date(year, month - 1, day, hour, minute);
       const timestamp = birthDateTime.getTime();
 
@@ -209,7 +225,11 @@ class SignCalculations {
 
       // Return rising sign from interpretations
       const { risingSign } = chart.interpretations;
-      if (!risingSign || risingSign === 'Unknown' || typeof risingSign !== 'string') {
+      if (
+        !risingSign ||
+        risingSign === 'Unknown' ||
+        typeof risingSign !== 'string'
+      ) {
         throw new Error('Invalid rising sign from astrologer');
       }
       return risingSign;

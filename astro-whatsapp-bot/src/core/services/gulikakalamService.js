@@ -14,8 +14,7 @@ class GulikakalamService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
     this.serviceName = 'GulikakalamService';
-    this.calculatorPath =
-      ../calculators/MuhurtaCalculator';
+    this.calculatorPath = './calculators/MuhurtaCalculator';
     logger.info('GulikakalamService initialized');
   }
 

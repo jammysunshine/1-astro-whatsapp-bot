@@ -12,6 +12,75 @@ The current approach to defining and managing the bot's interactive menu tree, p
 
 This document proposes a new architecture designed to address these issues, ensuring modularity, flexibility, easy configurability, and maintainability for menu tree changes, while future-proofing the system for multiple frontends and evolving backend services.
 
+### 1.1 Current State Analysis
+
+Before diving into the proposed architecture, it's crucial to understand the existing components and patterns that this proposal aims to evolve or replace:
+
+*   **`ActionConfig.js`:** This is the central, monolithic configuration file (currently 870+ lines) that defines menu items, their display names, associated actions, required profile fields, subscription features, cooldowns, and error messages for over 100 astrological services. Its size and tight coupling of display logic with service metadata are primary drivers for this architectural change.
+*   **Existing `menuLoader.js`:** A rudimentary `menuLoader.js` already exists, which includes some form of translation caching. The new `MenuLoader` will build upon or replace this, ensuring that existing caching mechanisms are either integrated or superseded by a more robust i18n-aware caching strategy.
+*   **`BaseAction.js` Inheritance Patterns:** The current system utilizes a `BaseAction.js` from which many action-specific classes inherit. This inheritance pattern is valuable for standardizing action execution. The proposed architecture will maintain this pattern, with action classes becoming lean wrappers around the new `WhatsAppMenuAdapter` (and other frontend adapters) or directly invoking the `ActionMapper`.
+*   **`ResponseBuilder.js` Patterns:** The `ResponseBuilder.js` is currently responsible for constructing platform-specific messages (e.g., WhatsApp interactive messages). The new `Frontend-Specific Adapters/Renderers` will take over this responsibility, effectively replacing or refactoring `ResponseBuilder.js` to work with the generic menu object and i18n-translated strings. This ensures that message construction is handled by the platform-specific layer, aligning with the principle of clear separation of concerns.
+
+Understanding these existing components is vital for planning a smooth transition to the new architecture.
+
+### 1.2 Migration Strategy
+
+Migrating from the current tightly coupled, hardcoded menu system to the proposed modular and data-driven architecture requires a carefully planned, gradual approach to minimize disruption and ensure backward compatibility.
+
+*   **Gradual Migration Path:**
+    1.  **Identify Pilot Menus:** Start by selecting a small, isolated, and less critical menu (e.g., a specific sub-menu with limited user interaction) for the initial migration. This allows for testing the new architecture in a controlled environment.
+    2.  **Implement New Architecture for Pilot:** Fully implement the new menu definition, loader, renderer, and adapter for the chosen pilot menu.
+    3.  **Feature Flagging/A/B Testing:** Deploy both the old and new menu systems in parallel, using feature flags to control which users experience the new architecture. This enables A/B testing, gradual rollout, and quick rollback if issues arise.
+    4.  **Iterative Rollout:** Once the pilot is stable, gradually migrate more menus, prioritizing based on complexity and user impact. This iterative approach allows for continuous learning and refinement.
+
+*   **Backward Compatibility Plan:**
+    1.  **Action ID Consistency:** Ensure that `actionId`s remain consistent between the old and new systems during the transition. This is crucial for the `ActionMapper` to correctly identify and route actions, regardless of whether they originated from an old or new menu.
+    2.  **Message Router Fallback:** The `MessageRouter` should be enhanced to intelligently detect whether an incoming message corresponds to an old hardcoded menu interaction or a new data-driven menu interaction. It should gracefully fall back to the old rendering logic for users still on the legacy system.
+    3.  **Dual Rendering (Temporary):** During the transition, it might be necessary for some parts of the system to temporarily support rendering both old and new menu formats, especially if users can navigate between migrated and un-migrated sections.
+
+*   **Data Migration Strategy for Existing User Sessions:**
+    1.  **Session Invalidation/Reset:** For users with active sessions during the migration, the simplest approach might be to invalidate or reset their session data, forcing them to start fresh. This should be communicated clearly to the user.
+    2.  **Graceful Fallback:** If session data contains menu state (e.g., `currentMenuId`), the system should be designed to handle cases where this `currentMenuId` might refer to an old, un-migrated menu. A graceful fallback to the main menu or a default menu should be implemented.
+    3.  **Data Transformation (Complex):** For more complex scenarios where preserving session state is critical, a data migration script could be developed to transform old session data into the new format. This would require careful planning and testing.
+
+This migration strategy aims to provide a clear roadmap for transitioning to the new architecture with minimal risk and disruption.
+
+### 1.3 Service Integration
+
+The current system comprises 100+ astrological services, predominantly located within `/src/core/services/` (or similar location within the monolithic structure). Integrating these existing services seamlessly into the new, action-driven menu architecture is paramount.
+
+*   **Acknowledging Existing Services:** The `ActionMapper` will be the primary gateway to these services. The existing services will not be rewritten but rather adapted to be callable through the new mapping mechanism.
+
+*   **Mapping Existing Services to New Action IDs:**
+    1.  **Direct Mapping:** For most services, a direct one-to-one mapping between the `actionId` defined in the menu (e.g., `get_daily_horoscope`) and the existing service identifier can be established.
+    2.  **Configuration-Driven Mapping:** The `serviceRegistry` (as mentioned in Step 8 of the implementation instructions) will be central to this. It will act as a lookup mechanism, mapping `actionId`s to the concrete service implementations.
+    3.  **Convention over Configuration:** Where possible, adopt naming conventions that make it intuitive to map `actionId`s directly to existing service classes or functions (e.g., `actionId: 'calculateSunSign'` directly maps to a `CalculateSunSignService`).
+
+*   **Analysis of Current Service Method Signatures:**
+    1.  **Standardized Invocation:** The `ActionMapper` will invoke services via a standardized method (e.g., `service.processCalculation(userData, params)`). Existing services should be refactored to expose this standardized interface.
+    2.  **Wrapper Classes/Adapters (for legacy services):** For services with highly custom or inconsistent method signatures, it may be necessary to create thin wrapper classes or adapters. These wrappers would conform to the standardized invocation interface, translating generic parameters from the `ActionMapper` into the specific arguments required by the legacy service. This avoids modifying the core business logic of existing services.
+    3.  **Parameter Transformation:** The `ActionMapper` (or a component it delegates to) will be responsible for extracting and transforming relevant parameters from the `User` object and the incoming request into a format expected by the invoked service.
+
+This approach ensures that the valuable business logic encapsulated in the existing 100+ services is preserved and easily integrated into the new modular framework.
+
+### 1.4 Configuration Complexity and Refactoring `ActionConfig.js`
+
+The existing `ActionConfig.js` stands as a substantial file (870+ lines), serving as a monolithic repository for both menu display details and critical service metadata (e.g., `requiredProfileFields`, `subscriptionFeature`, `cooldown`, `errorMessages`). Refactoring this file is a key objective of the new architecture.
+
+*   **Streamlining `ActionConfig.js`:** The core principle is to remove all menu-centric display information from `ActionConfig.js`. This includes `displayName` (which will be replaced by `i18nKey` in menu definitions) and any other fields solely used for presenting options to the user. The `ActionConfig.js` should be streamlined to contain *only* metadata directly relevant to the *execution and validation* of backend services.
+
+*   **Strategy for Existing Fields:**
+    1.  **Remove Display-Only Fields:** Fields like `displayName` that are purely for user-facing labels will be removed and their information will reside solely in the `menu_definitions` (via `i18nKey`).
+    2.  **Retain Service-Specific Metadata:** Fields crucial for service execution, validation, and control (e.g., `requiredProfileFields`, `subscriptionFeature`, `cooldown`, `errorMessages`) will remain in `ActionConfig.js`. These are essential for the `ActionMapper` to perform pre-execution checks.
+    3.  **Handle Dual-Purpose Fields:** For fields that currently serve both display and service metadata purposes (if any exist beyond `displayName`), a decision must be made: either split them into separate fields (one with an `i18nKey` for display, one for internal logic) or clarify their primary role.
+
+*   **Integrating Subscription/Permission Logic:**
+    1.  **Placement in `ActionMapper`:** The `ActionMapper` is the logical place to centralize subscription and permission checks. Before invoking any service, the `ActionMapper` will consult the `actionConfig` associated with the `actionId` to determine required `subscriptionFeature` or `requiredProfileFields`.
+    2.  **Dedicated Policy/Guard Services:** For more complex permission schemes, the `ActionMapper` could delegate checks to a dedicated `PermissionService` or `SubscriptionService`. These services would analyze the `actionConfig` fields (`subscriptionFeature`, `requiredProfileFields`) alongside the `User` object's properties to grant or deny access.
+    3.  **i18n for Error Messages:** `errorMessages` defined in `ActionConfig.js` will likely continue to store keys for i18n lookup, ensuring that permission denial messages are also localized and user-friendly.
+
+By following this strategy, `ActionConfig.js` will transform from a sprawling, dual-purpose file into a concise, backend-service metadata repository, significantly reducing configuration complexity and improving maintainability.
+
 ## 2. Core Principles
 
 The proposed architecture is built upon the following principles:
@@ -129,11 +198,89 @@ A generic interface or base class that defines how menus are rendered into a pla
 Platform-specific implementations that translate the generic menu representation (provided by the Generic Menu Renderer) into the native UI elements and message formats of each frontend.
 
 *   **Purpose:** Handle platform-specific UI rendering, message formatting, and interaction paradigms. Each adapter acts as a translator between the generic menu structure and its specific frontend's capabilities.
-*   **Implementation:**
+*   **Generic Menu Object API Contract:**
+    The `GenericMenuRenderer` will return a standardized menu object with the following guaranteed structure:
+    ```javascript
+    {
+      menuId: string, // Unique identifier of the menu
+      type: 'list' | 'buttons', // Type of menu to render
+      body: string, // Translated main text/header of the menu
+      sections?: Array<{ // Present if type is 'list'
+        title: string, // Translated title of the section
+        rows: Array<{ // Menu items within the section
+          id: string, // actionId
+          title: string, // Translated display text for the row
+          description?: string // Translated optional description
+        }>
+      }>,
+      buttons?: Array<{ // Present if type is 'buttons'
+        id: string, // actionId
+        title: string // Translated display text for the button
+      }>,
+      navigation?: Array<{ // Common navigation options
+        id: string, // actionId
+        title: string // Translated display text for the navigation option
+      }>,
+      platformContext: string // The platform for which the menu was rendered (e.g., 'whatsapp', 'web')
+    }
+    ```
+*   **Implementation Examples:**
     *   **WhatsApp Menu Adapter:** Translates the generic menu object into WhatsApp Interactive Buttons or Interactive Lists, adhering to character limits, button type restrictions, and formatting rules. This will replace the current hardcoded menu generation logic in `ShowMainMenuAction.js` and similar files.
+        ```javascript
+        // Example: WhatsApp adapter translating a generic 'list' menu
+        const genericMenu = { /* ... generic menu object ... */ };
+        const whatsappSections = genericMenu.sections.map(section => ({
+          title: section.title,
+          rows: section.rows.map(row => ({
+            id: row.id,
+            title: row.title.substring(0, 24), // WhatsApp row title limit
+            description: row.description ? row.description.substring(0, 72) : '' // WhatsApp description limit
+          }))
+        }));
+        // ... construct WhatsApp interactive message payload ...
+        ```
     *   **Web Menu Adapter (PWA):** Renders the generic menu object as HTML/CSS elements, potentially using a framework like React or Vue. It handles web-specific interactions (e.g., clicks, form submissions) and navigation.
+        ```javascript
+        // Example: Web adapter translating a generic 'buttons' menu
+        const genericMenu = { /* ... generic menu object ... */ };
+        return (
+          <div>
+            <h2>{genericMenu.body}</h2>
+            {genericMenu.buttons.map(button => (
+              <button key={button.id} onClick={() => handleAction(button.id)}>
+                {button.title}
+              </button>
+            ))}
+          </div>
+        );
+        ```
     *   **Telegram Menu Adapter:** Renders the generic menu object using Telegram's inline keyboards, reply keyboards, or custom commands, respecting Telegram's API limitations and interaction patterns.
+        ```javascript
+        // Example: Telegram adapter translating a generic 'list' menu into inline keyboard
+        const genericMenu = { /* ... generic menu object ... */ };
+        const inlineKeyboard = genericMenu.sections.flatMap(section => 
+          section.rows.map(row => [{
+            text: row.title,
+            callback_data: row.id
+          }])
+        );
+        // ... send Telegram message with inline keyboard ...
+        ```
     *   **Mobile App Adapters (Android/iOS):** Renders the generic menu object using native UI components (e.g., Jetpack Compose for Android, SwiftUI for iOS). These adapters would integrate with the app's navigation stack and UI toolkit.
+        ```kotlin
+        // Example: Android (Compose) adapter translating a generic 'list' menu
+        // fun MenuScreen(genericMenu: GenericMenu, onAction: (String) -> Unit) {
+        //   Column { 
+        //     Text(genericMenu.body)
+        //     genericMenu.sections?.forEach { section ->
+        //       Text(section.title, style = MaterialTheme.typography.h6)
+        //       section.rows.forEach { row ->
+        //         Button(onClick = { onAction(row.id) }) { Text(row.title) }
+        //       }
+        //     }
+        //   }
+        // }
+        ```
 
 Each adapter is responsible for:
     *   Receiving the platform-agnostic menu object from the Generic Menu Renderer.
@@ -155,7 +302,18 @@ This layer consists of your actual astrological services.
 *   **Initial Phase:** The existing monolithic microservice encapsulates all 100 astro services. The Action Mapper will invoke functions/methods within this monolith.
 *   **Future Phase:** As services are decoupled into individual microservices, the Action Mapper will be updated to route requests to the appropriate microservice endpoints.
 
-### 3.7. Recommended Directory Structure
+### 3.7. User Context Management
+
+Effective management of user context is critical for providing personalized and seamless experiences across multiple platforms. User context includes information such as the user's identity, preferred locale, current platform, session state, and any platform-specific identifiers.
+
+*   **Purpose:** To ensure that all layers of the application have access to necessary user-specific information to process requests, render appropriate menus, and interact correctly with backend services.
+*   **Implementation:**
+    *   **Centralized User Object:** A standardized `User` object should encapsulate all relevant user data, including a `locale` property, a `platform` identifier (e.g., 'whatsapp', 'telegram', 'web'), and potentially platform-specific IDs (e.g., `whatsappPhoneNumber`, `telegramChatId`).
+    *   **Context Propagation:** This `User` object (or relevant parts of it) should be consistently passed through the call chain, from the initial frontend interaction (e.g., `MessageRouter`, `InteractiveMessageProcessor`) down to the `ActionMapper`, `MenuLoader`, `GenericMenuRenderer`, and ultimately to backend service invocations.
+    *   **Session Management:** For platforms that are inherently stateless (like many messaging apps), a session management mechanism (e.g., using Redis or a database) will be necessary to persist user state (like the current menu context, previous menu for 'back' functionality, or ongoing multi-step interactions) between requests.
+    *   **Platform-Specific Identifiers:** Frontend adapters are responsible for extracting platform-specific user identifiers from incoming messages and mapping them to a canonical user ID within the system.
+
+### 3.8. Recommended Directory Structure
 
 To support modularity, extensibility, and clear separation of concerns across multiple frontends and backend services, the following directory structure is recommended:
 
@@ -280,8 +438,8 @@ Create a utility module (e.g., `src/core/menu/menuLoader.js`) to load these defi
 // src/core/menu/menuLoader.js
 const fs = require('fs');
 const path = require('path');
-const logger = require('../../utils/logger'); // Assuming logger is in src/utils
-const i18n = require('../../utils/i18n'); // Assuming i18n is in src/utils
+const logger = require('../utils/logger'); // logger is in src/core/utils
+const i18n = require('../utils/i18n'); // i18n is in src/core/utils
 
 const MENU_DEFINITIONS_DIR = path.join(__dirname, '../../../config/menu_definitions');
 const menuCache = {};
@@ -597,7 +755,7 @@ class ShowMainMenuAction extends BaseAction {
   }
 
   async execute(user, phoneNumber) {
-    // Assuming user object contains a locale property
+    // The user object is now expected to contain the locale and other context
     const userLocale = user.locale || 'en'; 
     return await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, 'main_menu', userLocale);
   }
@@ -623,6 +781,7 @@ class InteractiveMessageProcessor {
   // ...
   async processInteractiveReply(user, phoneNumber, message) {
     const actionId = message.interactive.list_reply?.id || message.interactive.button_reply?.id;
+    // The user object is now expected to contain the locale and other context
     const userLocale = user.locale || 'en';
 
     if (actionId) {
@@ -647,6 +806,7 @@ class MessageRouter {
   // ...
   async routeMessage(user, phoneNumber, message) {
     // ... (existing keyword mapping logic that identifies a mappedActionId)
+    // The user object is now expected to contain the locale and other context
     const userLocale = user.locale || 'en';
 
     if (mappedActionId) {
@@ -675,12 +835,15 @@ const i18n = require('../../core/utils/i18n'); // New i18n utility
 
 class ActionMapper {
   static async executeAction(actionId, user, phoneNumber, locale = 'en', params = {}) {
+    // The user object is now expected to contain the locale and other context
+    const userLocale = user.locale || locale; // Use user.locale if available, otherwise fallback to provided locale
+
     // Check if it's a menu navigation action (convention: show_ + menuId)
     if (actionId.startsWith('show_')) {
       const menuId = actionId.replace('show_', '');
       // This would dynamically call the correct adapter based on user's platform
       // For now, assuming WhatsApp for example
-      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, menuId, locale);
+      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, menuId, userLocale);
       return;
     }
 
@@ -692,7 +855,7 @@ class ActionMapper {
       // else if (actionId === 'btn_view_profile') { /* ... call ProfileViewService ... */ }
       console.log(`Executing profile action: ${actionId}`);
       // After processing, generally return to the settings menu
-      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, 'settings_profile_menu', locale);
+      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, 'settings_profile_menu', userLocale);
       return;
     }
 
@@ -701,7 +864,7 @@ class ActionMapper {
 
     if (!actionConfig) {
       logger.warn(`Unknown actionId received: ${actionId}`);
-      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.unknown_request', locale));
+      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.unknown_request', userLocale));
       return;
     }
 
@@ -718,13 +881,13 @@ class ActionMapper {
       if (service && typeof service.processCalculation === 'function') {
         const result = await service.processCalculation(user.birthData, params); // Assuming user.birthData and params
         // 5. Format and send result back to user
-        await WhatsAppMessageSender.sendTextMessage(phoneNumber, service.formatResult(result, locale)); // Assuming service provides formatResult and accepts locale
+        await WhatsAppMessageSender.sendTextMessage(phoneNumber, service.formatResult(result, userLocale)); // Assuming service provides formatResult and accepts locale
       } else {
-        throw new Error(i18n.t('error.service_not_found', locale, { actionId }));
+        throw new Error(i18n.t('error.service_not_found', userLocale, { actionId }));
       }
     } catch (error) {
       logger.error(`Error executing action '${actionId}':`, error);
-      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.processing_request', locale, { errorMessage: error.message }));
+      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.processing_request', userLocale, { errorMessage: error.message }));
     }
   }
 }
@@ -734,13 +897,13 @@ module.exports = ActionMapper;
 
 ### Step 9: Implement an i18n Utility
 
-Create a dedicated utility module (e.g., `src/utils/i18n.js`) for managing and retrieving translated strings. This module will load language-specific JSON files from the `config/i18n_keys/` directory.
+Create a dedicated utility module (e.g., `src/core/utils/i18n.js`) for managing and retrieving translated strings. This module will load language-specific JSON files from the `config/i18n_keys/` directory.
 
 ```javascript
-// src/utils/i18n.js
+// src/core/utils/i18n.js
 const path = require('path');
 const fs = require('fs');
-const logger = require('./logger'); // Assuming logger is in src/utils
+const logger = require('./logger'); // Assuming logger is in the same core/utils directory
 
 const I18N_DIR = path.join(__dirname, '../../../config/i18n_keys');
 const translations = {};
@@ -817,5 +980,6 @@ module.exports = I18n;
 *   **Dynamic Menu Generation:** For highly personalized menus (e.g., showing different options based on user's subscription or location), the `MenuLoader` could incorporate logic to dynamically filter or construct menu definitions.
 *   **Service Registry:** A robust `serviceRegistry` implementation is needed to abstract away how backend services are located and invoked (whether internal functions in a monolith or external microservice calls).
 *   **Platform-Specific Message Senders:** Ensure robust message sender utilities (e.g., `WhatsAppMessageSender`, `TelegramMessageSender`, `WebPushNotificationSender`) are implemented for each platform, handling all message types (text, interactive, media, etc.) and platform-specific error handling.
+*   **Cross-Layer Error Handling Strategy:** Define a consistent strategy for error handling, logging, and user notification across all layers. This includes how errors are caught, transformed (e.g., to be i18n-ready messages), and presented to the user via frontend adapters, and how critical errors are logged for system monitoring.
 
 This architecture provides a solid, future-proof foundation for a scalable, maintainable, and flexible bot experience across multiple platforms.

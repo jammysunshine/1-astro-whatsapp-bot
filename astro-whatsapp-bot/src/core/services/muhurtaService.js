@@ -11,8 +11,7 @@ class MuhurtaService extends ServiceTemplate {
   constructor() {
     super('MuhurtaCalculator'); // Primary calculator for this service
     this.serviceName = 'MuhurtaService';
-    this.calculatorPath =
-      ../calculators/MuhurtaCalculator';
+    this.calculatorPath = './calculators/MuhurtaCalculator';
     logger.info('MuhurtaService initialized');
   }
 

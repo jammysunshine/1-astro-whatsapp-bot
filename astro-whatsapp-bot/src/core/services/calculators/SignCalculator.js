@@ -62,14 +62,14 @@ class SignCalculator {
       const julianDay = sweph.swe_julday(year, month, day, ut, sweph.SE_GREG_CAL);
 
       // Calculate sun position using Swiss Ephemeris
-      const flags = chartType === 'sidereal' ? sweph.SEFLG_SIDEREAL : sweph.SEFLG_SWIEPH;
-      const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, flags);
+      const flags = chartType === 'sidereal' ? 0x10000 : 0x2; // Using numeric flags
+      const sunResult = sweph.calc_ut(julianDay, 0, flags); // 0 = Sun
 
-      if (!sunResult || sunResult.rc < 0) {
+      if (!sunResult || sunResult.flag < 0) {
         throw new Error('Failed to calculate sun position');
       }
 
-      const sunLongitude = sunResult.longitude[0];
+      const sunLongitude = sunResult.data[0];
       const signIndex = Math.floor(sunLongitude / 30);
       const signDegree = sunLongitude % 30;
 
@@ -125,19 +125,31 @@ class SignCalculator {
 
   /**
    * Calculate moon sign based on birth date and time using Swiss Ephemeris
-   * @param {string} birthDate - Birth date in DD/MM/YYYY format
+   * @param {Object|string} birthData - Birth data object or birth date string
    * @param {string} birthTime - Birth time in HH:MM format
    * @param {string} birthPlace - Birth place
    * @param {string} chartType - Chart type (sidereal/tropical)
    * @returns {Object} Moon sign details
    */
   async calculateMoonSign(
-    birthDate,
+    birthData,
     birthTime = '12:00',
     birthPlace = 'Delhi, India',
     chartType = 'sidereal'
   ) {
     try {
+      // Handle both object and string inputs
+      let birthDate;
+      if (typeof birthData === 'object' && birthData.birthDate) {
+        birthDate = birthData.birthDate;
+        birthTime = birthData.birthTime || birthTime;
+        birthPlace = birthData.birthPlace || birthPlace;
+      } else if (typeof birthData === 'string') {
+        birthDate = birthData;
+      } else {
+        throw new Error('Invalid birth data format');
+      }
+
       // Parse birth date and time
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
@@ -148,17 +160,17 @@ class SignCalculator {
 
       // Calculate Julian Day
       const ut = hour + minute / 60 - timezone; // Universal Time
-      const julianDay = sweph.swe_julday(year, month, day, ut, sweph.SE_GREG_CAL);
+      const julianDay = sweph.julday(year, month, day, ut, 1); // 1 for Gregorian calendar
 
       // Calculate moon position using Swiss Ephemeris
-      const flags = chartType === 'sidereal' ? sweph.SEFLG_SIDEREAL : sweph.SEFLG_SWIEPH;
-      const moonResult = sweph.swe_calc_ut(julianDay, sweph.SE_MOON, flags);
+      const flags = chartType === 'sidereal' ? 0x10000 : 0x2; // Using numeric flags
+      const moonResult = sweph.calc_ut(julianDay, 1, flags); // 1 = Moon
 
-      if (!moonResult || moonResult.rc < 0) {
+      if (!moonResult || moonResult.flag < 0) {
         throw new Error('Failed to calculate moon position');
       }
 
-      const moonLongitude = moonResult.longitude[0];
+      const moonLongitude = moonResult.data[0];
       const signIndex = Math.floor(moonLongitude / 30);
       const signDegree = moonLongitude % 30;
 

@@ -4,7 +4,9 @@
  */
 
 const ServiceTemplate = require('./ServiceTemplate');
-const VedicCalculator = require('./calculators/VedicCalculator'); const {
+const logger = require('../../utils/logger');
+const VedicCalculator = require('./calculators/VedicCalculator');
+const {
   validateCoordinates,
   validateDateTime
 } = require('../../utils/validation');
@@ -12,9 +14,9 @@ const { formatDegree, formatTime } = require('../../utils/formatters');
 
 class VarshaphalService extends ServiceTemplate {
   constructor() {
-    super('Varshaphal');
+    super('VarshaphalCalculator');
     this.serviceName = 'VarshaphalService';
-    this.calculatorPath = './calculators/Varshaphal';
+    this.calculatorPath = './calculators/VarshaphalCalculator';
     logger.info('VarshaphalService initialized');
   }
 

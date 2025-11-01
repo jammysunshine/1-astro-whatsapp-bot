@@ -12,8 +12,7 @@ class UpcomingDashasService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'UpcomingDashasService';
-    this.calculatorPath =
-      ../calculators/DashaAnalysisCalculator';
+    this.calculatorPath = './calculators/DashaAnalysisCalculator';
     logger.info('UpcomingDashasService initialized');
   }
 

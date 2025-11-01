@@ -12,8 +12,7 @@ class SolarReturnService extends ServiceTemplate {
   constructor() {
     super('SolarReturnCalculator'); // Primary calculator for this service
     this.serviceName = 'SolarReturnService';
-    this.calculatorPath =
-      ../calculators/SolarReturnCalculator';
+    this.calculatorPath = './calculators/SolarReturnCalculator';
     logger.info('SolarReturnService initialized');
   }
 

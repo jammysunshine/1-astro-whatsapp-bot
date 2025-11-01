@@ -539,4 +539,4 @@ class VedicNumerology {
   }
 }
 
-module.exports = VedicNumerology;
+module.exports = { VedicNumerology };

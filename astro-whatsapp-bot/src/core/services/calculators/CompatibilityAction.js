@@ -1,19 +1,19 @@
-const BaseAction = require('../whatsapp/actions/BaseAction');
+const BaseAction = require('../../../services/whatsapp/actions/BaseAction');
 const { incrementCompatibilityChecks } = require('../../models/userModel');
 const {
   SwissEphemerisCalculator
-} = require('./compatibility/SwissEphemerisCalculator');
-const { SynastryEngine } = require('./compatibility/SynastryEngine');
-const { CompatibilityScorer } = require('./compatibility/CompatibilityScorer');
+} = require('../../../services/astrology/compatibility/SwissEphemerisCalculator');
+const { SynastryEngine } = require('../../../services/astrology/compatibility/SynastryEngine');
+const { CompatibilityScorer } = require('../../../services/astrology/compatibility/CompatibilityScorer');
 const {
   RelationshipInsightsGenerator
-} = require('./compatibility/RelationshipInsightsGenerator');
+} = require('../../../services/astrology/compatibility/RelationshipInsightsGenerator');
 const {
   CompatibilityFormatter
-} = require('./compatibility/CompatibilityFormatter');
+} = require('../../../services/astrology/compatibility/CompatibilityFormatter');
 const {
   CompatibilityWorkflowManager
-} = require('./compatibility/CompatibilityWorkflowManager');
+} = require('../../../services/astrology/compatibility/CompatibilityWorkflowManager');
 const { SubscriptionManager } = require('../../models/SubscriptionManager');
 
 /**

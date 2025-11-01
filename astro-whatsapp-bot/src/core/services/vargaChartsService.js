@@ -1,4 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
+
+/**
  * Varga Charts Service
  *
  * Provides Vedic divisional charts analysis using traditional Indian astrology divisions

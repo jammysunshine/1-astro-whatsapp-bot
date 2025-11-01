@@ -2,7 +2,7 @@ const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculators from legacy structure (for now)
-const CompatibilityAction = require('./calculators/CompatibilityAction');
+// const CompatibilityAction = require('./calculators/CompatibilityAction'); // Deprecated - architectural mismatch
 const { SynastryEngine } = require('./calculators/SynastryEngine');
 const { CompatibilityCalculator } = require('./calculators/CompatibilityCalculator');
 
@@ -21,7 +21,7 @@ class CompatibilityService extends ServiceTemplate {
     logger.info('CompatibilityService initialized');
 
     // Load additional calculators for multi-calculator functionality
-    this.compatibilityAction = new CompatibilityAction();
+    // this.compatibilityAction = new CompatibilityAction(); // Deprecated - architectural mismatch
     this.synastryEngine = new SynastryEngine();
     this.compatibilityScorer = new CompatibilityCalculator();
   }
@@ -650,7 +650,7 @@ class CompatibilityService extends ServiceTemplate {
       category: 'vedic',
       methods: ['execute', 'getCompatibilityAnalysis'],
       dependencies: [
-        'CompatibilityAction',
+        // 'CompatibilityAction', // Deprecated - architectural mismatch
         'SynastryEngine',
         'CompatibilityScorer'
       ]

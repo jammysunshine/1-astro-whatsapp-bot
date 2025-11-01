@@ -12,8 +12,7 @@ class TransitPreviewService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'TransitPreviewService';
-    this.calculatorPath =
-      ../calculators/TransitCalculator';
+    this.calculatorPath = './calculators/TransitCalculator';
     logger.info('TransitPreviewService initialized');
   }
 

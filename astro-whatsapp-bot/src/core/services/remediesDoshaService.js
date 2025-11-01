@@ -1,12 +1,13 @@
 const ServiceTemplate = require('./ServiceTemplate');
+const logger = require('../../utils/logger');
+
+/**
  * Remedies Dosha Service
  *
  * Provides comprehensive Vedic remedial measures for planetary afflictions,
  * dosha corrections, and spiritual healing practices including gemstones,
  * mantras, charities, pujas, and yantras based on birth chart analysis.
  */
-
-const logger = require('../../utils/logger');
 
 class RemediesDoshaService extends ServiceTemplate {
   constructor() {
@@ -338,6 +339,7 @@ class RemediesDoshaService extends ServiceTemplate {
    * @param {Object} birthData - Birth chart data
    * @returns {Object} Manglik Dosha analysis
    * @private
+   */
   _analyzeManglikDosha(birthData) {
     // Simplified Manglik analysis
     const marsHouse = birthData.mars?.house || 0;

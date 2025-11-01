@@ -13,8 +13,7 @@ const { BirthData } = require('../../models/BirthData');
 class RahukalamService extends ServiceTemplate {
   constructor() {
     this.serviceName = 'RahukalamService';
-    this.calculatorPath =
-      ../calculators/MuhurtaCalculator';
+    this.calculatorPath = './calculators/MuhurtaCalculator';
     logger.info('RahukalamService initialized');
   }
 

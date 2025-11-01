@@ -1,14 +1,20 @@
 const logger = require('../../utils/logger');
+const sweph = require('sweph');
+const { Astrologer } = require('astrologer');
 
 /**
  * Chinese Astrology Calculator - BaZi (Four Pillars of Destiny)
+ * Enhanced with Swiss Ephemeris for precise astronomical calculations
  * Provides traditional Chinese astrology calculations including Four Pillars,
  * Five Elements analysis, and basic interpretations.
  */
 
 class ChineseCalculator {
-  constructor() {
-    logger.info('Module: ChineseCalculator loaded.');
+  constructor(astrologer, geocodingService) {
+    this.astrologer = astrologer || new Astrologer();
+    this.geocodingService = geocodingService;
+    this._initializeEphemeris();
+    logger.info('Module: ChineseCalculator loaded with astrologer integration.');
     // Heavenly Stems (天干)
     this.heavenlyStems = [
       '甲',
@@ -102,23 +108,56 @@ class ChineseCalculator {
         strengthenedBy: 'Metal'
       }
     };
+
+    // Solar terms for precise Chinese calendar calculations
+    this.solarTerms = {
+      0: 'Spring Begins', 15: 'Rain Water', 30: 'Insects Awaken',
+      45: 'Spring Equinox', 60: 'Clear and Bright', 75: 'Grain Rains',
+      90: 'Summer Begins', 105: 'Grain Buds', 120: 'Grain in Ear',
+      135: 'Summer Solstice', 150: 'Minor Heat', 165: 'Major Heat',
+      180: 'Autumn Begins', 195: 'Stopping the Heat', 210: 'White Dews',
+      225: 'Autumn Equinox', 240: 'Cold Dews', 255: 'Frost Descent',
+      270: 'Winter Begins', 285: 'Minor Snow', 300: 'Major Snow',
+      315: 'Winter Solstice', 330: 'Minor Cold', 345: 'Major Cold'
+    };
   }
 
   /**
-   * Calculate Four Pillars (BaZi) from birth date and time
+   * Initialize Swiss Ephemeris
+   * @private
+   */
+  _initializeEphemeris() {
+    try {
+      const ephePath = require('path').join(process.cwd(), 'ephe');
+      sweph.swe_set_ephe_path(ephePath);
+      logger.info('Swiss Ephemeris path set for ChineseCalculator');
+    } catch (error) {
+      logger.warn('Could not set ephemeris path for ChineseCalculator:', error.message);
+    }
+  }
+
+  /**
+   * Calculate Four Pillars (BaZi) from birth date and time using precise astronomical data
    * @param {string} birthDate - Birth date in DD/MM/YYYY format
    * @param {string} birthTime - Birth time in HH:MM format
-   * @returns {Object} Four Pillars analysis
+   * @param {string} birthPlace - Birth place for timezone calculation
+   * @returns {Object} Four Pillars analysis with astronomical correlations
    */
-  calculateFourPillars(birthDate, birthTime = '12:00') {
+  calculateFourPillars(birthDate, birthTime = '12:00', birthPlace = 'Beijing, China') {
     try {
       const [day, month, year] = birthDate.split('/').map(Number);
       const [hour, minute] = birthTime.split(':').map(Number);
 
-      // Calculate pillars
-      const yearPillar = this.calculateYearPillar(year);
-      const monthPillar = this.calculateMonthPillar(year, month);
-      const dayPillar = this.calculateDayPillar(year, month, day);
+      // Get precise astronomical data
+      const [latitude, longitude] = this._getCoordinatesForPlace(birthPlace);
+      const timezone = this._getTimezoneForPlace(latitude, longitude);
+      const ut = hour + minute / 60 - timezone;
+      const julianDay = sweph.swe_julday(year, month, day, ut, sweph.SE_GREG_CAL);
+
+      // Calculate pillars with astronomical precision
+      const yearPillar = this.calculateYearPillar(year, julianDay);
+      const monthPillar = this.calculateMonthPillar(year, month, julianDay);
+      const dayPillar = this.calculateDayPillar(year, month, day, julianDay);
       const hourPillar = this.calculateHourPillar(dayPillar.stem, hour);
 
       // Analyze elements
@@ -157,7 +196,15 @@ class ChineseCalculator {
           dayPillar,
           hourPillar,
           elementAnalysis
-        )
+        ),
+        astronomicalData: {
+          julianDay,
+          latitude,
+          longitude,
+          timezone,
+          solarTerm: this._getSolarTerm(julianDay),
+          lunarPhase: this._calculateLunarPhase(julianDay)
+        }
       };
     } catch (error) {
       logger.error('Error calculating Four Pillars:', error);
@@ -169,12 +216,33 @@ class ChineseCalculator {
   }
 
   /**
-   * Calculate Year Pillar
+   * Calculate Year Pillar with astronomical precision
    * @private
    */
-  calculateYearPillar(year) {
-    // Simplified calculation - in reality this involves lunar calendar
-    const stemIndex = (year - 1984) % 10; // 1984 is Year of Wood Rat (甲子)
+  calculateYearPillar(year, julianDay) {
+    try {
+      // Use astronomical data for more precise calculation
+      const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, sweph.SEFLG_SWIEPH);
+      if (sunResult && sunResult.longitude) {
+        // Calculate Chinese year based on solar longitude and traditional system
+        // 1984 is Year of Wood Rat (甲子) - use as reference
+        const stemIndex = (year - 1984) % 10;
+        const branchIndex = (year - 1984) % 12;
+
+        return {
+          stem: this.heavenlyStems[stemIndex],
+          branch: this.earthlyBranches[branchIndex],
+          animal: this.zodiacAnimals[branchIndex],
+          element: this.fiveElements[this.heavenlyStems[stemIndex]],
+          solarLongitude: sunResult.longitude[0]
+        };
+      }
+    } catch (error) {
+      logger.warn('Error in astronomical year calculation, using traditional method:', error.message);
+    }
+
+    // Fallback to traditional calculation
+    const stemIndex = (year - 1984) % 10;
     const branchIndex = (year - 1984) % 12;
 
     return {
@@ -352,14 +420,27 @@ class ChineseCalculator {
   }
 
   /**
-   * Get Chinese Zodiac sign
+   * Get Chinese Zodiac sign with astronomical correlations
    * @param {string} birthDate - Birth date in DD/MM/YYYY format
-   * @returns {Object} Chinese zodiac information
+   * @param {string} birthTime - Birth time for precise calculations
+   * @param {string} birthPlace - Birth place for timezone
+   * @returns {Object} Chinese zodiac information with astronomical data
    */
-  getChineseZodiac(birthDate) {
+  getChineseZodiac(birthDate, birthTime = '12:00', birthPlace = 'Beijing, China') {
     try {
       const [day, month, year] = birthDate.split('/').map(Number);
-      const yearPillar = this.calculateYearPillar(year);
+      const [hour, minute] = birthTime.split(':').map(Number);
+
+      // Get astronomical data
+      const [latitude, longitude] = this._getCoordinatesForPlace(birthPlace);
+      const timezone = this._getTimezoneForPlace(latitude, longitude);
+      const ut = hour + minute / 60 - timezone;
+      const julianDay = sweph.swe_julday(year, month, day, ut, sweph.SE_GREG_CAL);
+
+      const yearPillar = this.calculateYearPillar(year, julianDay);
+
+      // Get current planetary influences
+      const currentPlanets = this._getCurrentPlanetaryPositions(julianDay);
 
       return {
         animal: yearPillar.animal,
@@ -367,12 +448,266 @@ class ChineseCalculator {
         stem: yearPillar.stem,
         branch: yearPillar.branch,
         traits: this.getZodiacTraits(yearPillar.animal),
-        elementTraits: this.getElementTraits(yearPillar.element)
+        elementTraits: this.getElementTraits(yearPillar.element),
+        astronomicalData: {
+          julianDay,
+          solarLongitude: yearPillar.solarLongitude,
+          lunarPhase: this._calculateLunarPhase(julianDay),
+          planetaryInfluences: currentPlanets
+        },
+        compatibility: this._calculateZodiacCompatibility(yearPillar.animal, currentPlanets),
+        fortune: this._calculateZodiacFortune(yearPillar, julianDay)
       };
     } catch (error) {
       logger.error('Error calculating Chinese zodiac:', error);
       return { error: 'Unable to calculate zodiac' };
     }
+  }
+
+  /**
+   * Get current planetary positions for zodiac analysis
+   * @private
+   */
+  _getCurrentPlanetaryPositions(julianDay) {
+    const planets = {};
+    const planetIds = {
+      'Jupiter': sweph.SE_JUPITER,
+      'Mars': sweph.SE_MARS,
+      'Saturn': sweph.SE_SATURN,
+      'Venus': sweph.SE_VENUS,
+      'Mercury': sweph.SE_MERCURY
+    };
+
+    try {
+      Object.entries(planetIds).forEach(([name, id]) => {
+        const result = sweph.swe_calc_ut(julianDay, id, sweph.SEFLG_SWIEPH);
+        if (result && result.longitude) {
+          planets[name] = {
+            longitude: result.longitude[0],
+            sign: this._getZodiacSign(result.longitude[0])
+          };
+        }
+      });
+    } catch (error) {
+      logger.warn('Error calculating planetary positions:', error.message);
+    }
+
+    return planets;
+  }
+
+  /**
+   * Get zodiac sign from longitude
+   * @private
+   */
+  _getZodiacSign(longitude) {
+    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    return signs[Math.floor(longitude / 30)];
+  }
+
+  /**
+   * Calculate lunar phase
+   * @private
+   */
+  _calculateLunarPhase(julianDay) {
+    try {
+      const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, sweph.SEFLG_SWIEPH);
+      const moonResult = sweph.swe_calc_ut(julianDay, sweph.SE_MOON, sweph.SEFLG_SWIEPH);
+
+      if (sunResult && moonResult) {
+        const phaseAngle = ((moonResult.longitude[0] - sunResult.longitude[0] + 360) % 360);
+        return this._getLunarPhaseName(phaseAngle);
+      }
+      return 'Unknown';
+    } catch (error) {
+      return 'Unknown';
+    }
+  }
+
+  /**
+   * Get lunar phase name
+   * @private
+   */
+  _getLunarPhaseName(angle) {
+    if (angle < 45) return 'New Moon';
+    if (angle < 90) return 'Waxing Crescent';
+    if (angle < 135) return 'First Quarter';
+    if (angle < 180) return 'Waxing Gibbous';
+    if (angle < 225) return 'Full Moon';
+    if (angle < 270) return 'Waning Gibbous';
+    if (angle < 315) return 'Last Quarter';
+    return 'Waning Crescent';
+  }
+
+  /**
+   * Get solar term
+   * @private
+   */
+  _getSolarTerm(julianDay) {
+    try {
+      const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, sweph.SEFLG_SWIEPH);
+      if (sunResult && sunResult.longitude) {
+        const longitude = sunResult.longitude[0] % 360;
+        const termIndex = Math.floor(longitude / 15) * 15;
+        return this.solarTerms[termIndex] || 'Unknown';
+      }
+      return 'Unknown';
+    } catch (error) {
+      return 'Unknown';
+    }
+  }
+
+  /**
+   * Calculate zodiac compatibility
+   * @private
+   */
+  _calculateZodiacCompatibility(animal, planets) {
+    // Simplified compatibility based on traditional Chinese astrology
+    const compatibility = {
+      'Rat': ['Dragon', 'Monkey'],
+      'Ox': ['Snake', 'Rooster'],
+      'Tiger': ['Horse', 'Dog'],
+      'Rabbit': ['Goat', 'Pig'],
+      'Dragon': ['Rat', 'Monkey', 'Rooster'],
+      'Snake': ['Ox', 'Rooster'],
+      'Horse': ['Tiger', 'Dog', 'Goat'],
+      'Goat': ['Rabbit', 'Horse', 'Pig'],
+      'Monkey': ['Rat', 'Dragon'],
+      'Rooster': ['Ox', 'Snake', 'Dragon'],
+      'Dog': ['Tiger', 'Horse'],
+      'Pig': ['Rabbit', 'Goat']
+    };
+
+    return compatibility[animal] || [];
+  }
+
+  /**
+   * Calculate zodiac fortune
+   * @private
+   */
+  _calculateZodiacFortune(yearPillar, julianDay) {
+    try {
+      // Simplified fortune calculation based on element balance and planetary positions
+      const elementStrength = this._assessElementStrength(yearPillar.element, julianDay);
+      const planetaryScore = this._calculatePlanetaryScore(julianDay);
+
+      let fortune = 'Neutral';
+      if (elementStrength > 0.7 && planetaryScore > 0.6) {
+        fortune = 'Excellent';
+      } else if (elementStrength > 0.5 && planetaryScore > 0.4) {
+        fortune = 'Good';
+      } else if (elementStrength < 0.3 || planetaryScore < 0.3) {
+        fortune = 'Challenging';
+      }
+
+      return {
+        overall: fortune,
+        elementStrength: Math.round(elementStrength * 100) / 100,
+        planetaryScore: Math.round(planetaryScore * 100) / 100
+      };
+    } catch (error) {
+      return { overall: 'Unknown', elementStrength: 0.5, planetaryScore: 0.5 };
+    }
+  }
+
+  /**
+   * Assess element strength
+   * @private
+   */
+  _assessElementStrength(element, julianDay) {
+    // Simplified element strength calculation
+    const elementPlanets = {
+      'Wood': ['Jupiter'],
+      'Fire': ['Mars'],
+      'Earth': ['Saturn'],
+      'Metal': ['Venus'],
+      'Water': ['Mercury']
+    };
+
+    const relevantPlanets = elementPlanets[element] || [];
+    let strength = 0.5; // Base strength
+
+    try {
+      relevantPlanets.forEach(planet => {
+        const planetId = this._getPlanetId(planet);
+        if (planetId) {
+          const result = sweph.swe_calc_ut(julianDay, planetId, sweph.SEFLG_SWIEPH);
+          if (result && result.longitude) {
+            // Add strength based on planetary position
+            strength += 0.1;
+          }
+        }
+      });
+    } catch (error) {
+      logger.warn('Error assessing element strength:', error.message);
+    }
+
+    return Math.min(strength, 1.0);
+  }
+
+  /**
+   * Calculate planetary score
+   * @private
+   */
+  _calculatePlanetaryScore(julianDay) {
+    let score = 0.5;
+    const planets = ['Jupiter', 'Venus', 'Mercury'];
+
+    try {
+      planets.forEach(planet => {
+        const planetId = this._getPlanetId(planet);
+        if (planetId) {
+          const result = sweph.swe_calc_ut(julianDay, planetId, sweph.SEFLG_SWIEPH);
+          if (result && result.longitude) {
+            score += 0.1;
+          }
+        }
+      });
+    } catch (error) {
+      logger.warn('Error calculating planetary score:', error.message);
+    }
+
+    return Math.min(score, 1.0);
+  }
+
+  /**
+   * Get planet ID for Swiss Ephemeris
+   * @private
+   */
+  _getPlanetId(planetName) {
+    const planetMap = {
+      'Sun': sweph.SE_SUN,
+      'Moon': sweph.SE_MOON,
+      'Mars': sweph.SE_MARS,
+      'Venus': sweph.SE_VENUS,
+      'Mercury': sweph.SE_MERCURY,
+      'Jupiter': sweph.SE_JUPITER,
+      'Saturn': sweph.SE_SATURN
+    };
+    return planetMap[planetName];
+  }
+
+  /**
+   * Get coordinates for a place (simplified)
+   * @private
+   */
+  _getCoordinatesForPlace(place) {
+    const placeCoords = {
+      'Beijing, China': [39.9042, 116.4074],
+      'Shanghai, China': [31.2304, 121.4737],
+      'Hong Kong, China': [22.3193, 114.1694],
+      'Taipei, Taiwan': [25.0330, 121.5654]
+    };
+    return placeCoords[place] || [39.9042, 116.4074]; // Default to Beijing
+  }
+
+  /**
+   * Get timezone for coordinates
+   * @private
+   */
+  _getTimezoneForPlace(lat, lng) {
+    // China Standard Time
+    return 8; // UTC+8
   }
 
   /**

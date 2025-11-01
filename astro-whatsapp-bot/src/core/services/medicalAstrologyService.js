@@ -11,10 +11,8 @@ const { BirthData } = require('../../models/BirthData');
 class MedicalAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = './calculators/ChartGenerator';
+    this.calculatorPath = './calculators/MedicalAstrologyCalculator';
     this.serviceName = 'MedicalAstrologyService';
-    this.calculatorPath =
-      ../calculators/MedicalAstrologyCalculator';
     logger.info('MedicalAstrologyService initialized');
   }
 

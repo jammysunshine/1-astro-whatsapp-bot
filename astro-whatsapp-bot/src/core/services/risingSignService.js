@@ -12,8 +12,7 @@ class RisingSignService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'RisingSignService';
-    this.calculatorPath =
-      ../calculators/SignCalculator';
+    this.calculatorPath = './calculators/SignCalculator';
     logger.info('RisingSignService initialized');
   }
 

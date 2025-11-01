@@ -8,7 +8,7 @@ class BirthChartService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
     this.serviceName = 'BirthChartService';
-    this.calculatorPath = '../../../services/astrology/vedic/calculators/ChartGenerator';
+    this.calculatorPath = '../../services/astrology/vedic/calculators/ChartGenerator';
     logger.info('BirthChartService initialized');
   }
 

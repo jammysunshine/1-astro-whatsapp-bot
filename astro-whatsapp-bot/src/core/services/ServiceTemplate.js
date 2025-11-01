@@ -14,8 +14,27 @@ class ServiceTemplate extends AstroServiceInterface {
       try {
         // Dynamically import the calculator module
         const CalculatorModule = require(this.calculatorPath);
-        // Assuming the calculator is the default export or a named export matching the name
-        this.calculator = CalculatorModule.default || CalculatorModule; // Adjust based on actual calculator module export
+        // Get the calculator - try default export, then named export matching the name, then module itself
+        let rawCalculator = CalculatorModule.default || CalculatorModule[this.calculatorName] || CalculatorModule;
+        
+        // Check if rawCalculator is a constructor function (class) and needs instantiation
+        if (typeof rawCalculator === 'function' && rawCalculator.prototype && rawCalculator.prototype.constructor) {
+          // This is a class constructor - we need to handle instantiation
+          // For now, we'll try to instantiate with no arguments, which might fail for complex calculators
+          // A more robust solution would require dependency injection, but for now we try basic instantiation
+          try {
+            this.calculator = new rawCalculator();
+          } catch (instantiationError) {
+            // If instantiation fails (likely due to required constructor parameters), 
+            // store the class constructor for the service to handle its own instantiation if needed
+            this.calculator = rawCalculator;
+            logger.warn(`Calculator ${this.calculatorName} is a class that requires constructor parameters. Stored as constructor:`, instantiationError.message);
+          }
+        } else {
+          // This is likely an already instantiated object or static methods container
+          this.calculator = rawCalculator;
+        }
+        
         logger.info(`Calculator ${this.calculatorName} loaded for ${this.constructor.name}`);
       } catch (error) {
         logger.error(`Failed to load calculator ${this.calculatorName} from ${this.calculatorPath}:`, error);

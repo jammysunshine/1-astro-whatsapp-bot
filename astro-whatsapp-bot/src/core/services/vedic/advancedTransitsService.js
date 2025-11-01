@@ -5,8 +5,9 @@ const logger = require('../../../utils/logger');
 
 class AdvancedTransitsService extends ServiceTemplate {
   constructor() {
-    super('advancedTransitsService');
+    super('SignificantTransitsCalculator');
     this.serviceName = 'AdvancedTransitsService';
+    this.calculatorPath = '../../services/astrology/vedic/calculators/SignificantTransitsCalculator';
     logger.info('AdvancedTransitsService initialized');
   }
 

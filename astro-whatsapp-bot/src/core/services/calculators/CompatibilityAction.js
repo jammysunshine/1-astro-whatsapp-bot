@@ -1,7 +1,7 @@
 const BaseAction = require('../../../services/whatsapp/actions/BaseAction');
 const { CompatibilityRepositoryImpl } = require('../../../core/repositories/CompatibilityRepositoryImpl');
 const { CompatibilityManagementService } = require('../../../core/services/compatibility/CompatibilityManagementService');
-const { incrementCompatibilityChecks: incrementCompatDirect } = require('../../models/userModel');
+const userModel = require('../../../models/userModel');
 const {
   SwissEphemerisCalculator
 } = require('../../../services/astrology/compatibility/SwissEphemerisCalculator');
@@ -16,11 +16,7 @@ const {
 const {
   CompatibilityWorkflowManager
 } = require('../../../services/astrology/compatibility/CompatibilityWorkflowManager');
-const { SubscriptionManager } = require('../../models/SubscriptionManager');
-
-// Initialize compatibility service for proper separation of concerns
-const compatibilityRepository = new CompatibilityRepositoryImpl({ incrementCompatibilityChecks: incrementCompatDirect });
-const compatibilityService = new CompatibilityManagementService(compatibilityRepository);
+const { SubscriptionManager } = require('../../../models/SubscriptionManager');
 
 /**
  * CompatibilityAction - Ultra-Lean Synastry Analysis Orchestrator
@@ -93,6 +89,8 @@ class CompatibilityAction extends BaseAction {
       );
 
       // Update usage counters through service layer (separation of concerns)
+      const compatibilityRepository = new CompatibilityRepositoryImpl(userModel);
+      const compatibilityService = new CompatibilityManagementService(compatibilityRepository);
       await compatibilityService.incrementCompatibilityCheck(this.phoneNumber);
 
       return synastryAnalysis;

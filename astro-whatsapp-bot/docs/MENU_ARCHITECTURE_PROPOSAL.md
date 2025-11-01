@@ -367,7 +367,7 @@ These mechanisms, combined with the recommended directory structure, are designe
 
 ### 3.9. Recommended Directory Structure
 
-To support modularity, extensibility, and clear separation of concerns across multiple frontends and backend services, the following directory structure is recommended:
+To enforce strict modularity, extensibility, and clear separation of concerns, particularly between backend core logic and frontend implementations, the following directory structure is recommended:
 
 ```
 /project-root
@@ -375,31 +375,34 @@ To support modularity, extensibility, and clear separation of concerns across mu
 │   ├── /menu_definitions       # JSON/YAML files defining menu structures
 │   └── /i18n_keys              # JSON files for internationalization strings (e.g., en.json, es.json)
 ├── /src
-│   ├── /core                   # Shared, platform-agnostic logic consumed by all parts of the application
-│   │   ├── /menu               # Platform-agnostic menu logic (MenuLoader, GenericMenuRenderer, ActionMapper)
-│   │   ├── /services           # Core service interfaces, registry, and common service utilities/abstractions
-│   │   └── /utils              # General utilities (logger, common helpers, i18n, etc.)
-│   ├── /frontend               # Platform-specific frontend implementations
+│   ├── /core                   # Core backend application logic (platform-agnostic, but not directly frontend-facing)
+│   │   ├── /services           # All 100+ backend services (e.g., birthChartService.js, calculators/, etc.)
+│   │   ├── /models             # Core data models/schemas (e.g., userModel.js, birthData.js)
+│   │   ├── /utils              # Core backend utilities (logger, dateUtils, formatters, validationUtils)
+│   │   ├── /interfaces         # Service interfaces for backend services
+│   │   └── /middleware         # Core backend middleware (validation, error handling)
+│   ├── /frontends              # All platform-specific frontend implementations
 │   │   ├── /whatsapp           # WhatsApp-specific adapters, message senders, processors, actions
 │   │   ├── /telegram           # Telegram-specific adapters, message senders, processors, actions
 │   │   ├── /web                # Web/PWA-specific adapters, UI components, routing
 │   │   ├── /android            # Android app specific adapters, UI components
 │   │   └── /ios                # iOS app specific adapters, UI components
-│   ├── /backend                # (Optional) Backend API implementations, if co-located in this repository
-│   │   └── /api                # Specific API endpoints and business logic
-│   └── /models                 # Shared data models/schemas (used by frontend, backend, and core)
+│   └── /shared                 # Truly shared, platform-agnostic code consumed by both core backend and frontends
+│       ├── /menu               # Platform-agnostic menu logic (MenuLoader, GenericMenuRenderer, ActionMapper)
+│       └── /utils              # Shared utilities (e.g., i18n utility, common data structures)
 ├── /tests                      # Unit, integration, and E2E tests
 ├── /docs                       # Project documentation (including this proposal)
 ├── package.json                # Project dependencies and scripts
 └── README.md
 ```
 
-This structure promotes:
-*   **Clear Ownership:** Each frontend platform has its dedicated space, and core logic is clearly separated.
-*   **Reusability:** Core logic and configurations are shared across all platforms.
-*   **Scalability:** Easy to add new frontend platforms or backend services without major refactoring.
-*   **Maintainability:** Developers can quickly locate relevant code based on its function and platform, reducing cognitive load.
-*   **Decoupling:** Enforces a strong separation between platform-specific UI/interaction logic and the core business logic.
+This revised structure rigorously promotes:
+*   **Strict Separation of Concerns:** Frontend and backend codebases are distinctly separated, preventing accidental coupling.
+*   **Clear Ownership:** Each frontend platform has its dedicated space, and core backend logic is isolated.
+*   **Maximized Reusability:** Truly shared logic and configurations are centralized in `/src/shared`, accessible to all necessary components.
+*   **Enhanced Scalability:** Easier to add new frontend platforms or backend services without cross-contaminating concerns.
+*   **Improved Maintainability:** Developers can quickly locate relevant code based on its function and platform, significantly reducing cognitive load and preventing monolithic files.
+*   **Enforced Decoupling:** Actively prevents tight coupling by design, making components easier to test and evolve independently.
 
 ## 4. Detailed Implementation Instructions
 
@@ -490,83 +493,48 @@ Create a new directory `config/menu_definitions/`. Each menu (including sub-menu
 Create a utility module (e.g., `src/core/menu/menuLoader.js`) to load these definitions and their associated i18n strings.
 
 ```javascript
-// src/core/menu/menuLoader.js
+// src/shared/menu/menuLoader.js
 const fs = require('fs');
 const path = require('path');
-const logger = require('../utils/logger'); // logger is in src/core/utils
-const i18n = require('../utils/i18n'); // i18n is in src/core/utils
-
-const MENU_DEFINITIONS_DIR = path.join(__dirname, '../../../config/menu_definitions');
-const menuCache = {};
+const logger = require('../utils/logger'); // Assuming shared logger
+const i18n = require('../utils/i18n');     // Assuming shared i18n utility
 
 class MenuLoader {
-  static async loadMenu(menuId, locale = 'en') {
-    const cacheKey = `${menuId}-${locale}`;
-    if (menuCache[cacheKey]) {
-      return menuCache[cacheKey];
+  constructor(configPath) {
+    this.configPath = configPath;
+    this.menuCache = {};
+  }
+
+  loadMenu(menuId, lang = 'en') {
+    const cacheKey = `${menuId}-${lang}`;
+    if (this.menuCache[cacheKey]) {
+      return this.menuCache[cacheKey];
     }
 
-    const menuFilePath = path.join(MENU_DEFINITIONS_DIR, `${menuId}.json`);
     try {
-      const menuData = await fs.promises.readFile(menuFilePath, 'utf8');
-      const menu = JSON.parse(menuData);
-      // Basic validation (can be expanded)
-      if (!menu.menuId || !menu.type || !menu.bodyI18nKey) {
-        throw new Error(`Invalid menu definition in ${menuFilePath}`);
-      }
-
-      // Translate menu components
-      menu.body = i18n.t(menu.bodyI18nKey, locale);
-      if (menu.sections) {
-        menu.sections.forEach(section => {
-          section.title = i18n.t(section.titleI18nKey, locale);
-          section.rows.forEach(row => {
-            row.label = i18n.t(row.i18nKey, locale);
-            if (row.descriptionI18nKey) {
-              row.description = i18n.t(row.descriptionI18nKey, locale);
-            }
-          });
-        });
-      }
-      if (menu.buttons) {
-        menu.buttons.forEach(button => {
-          button.label = i18n.t(button.i18nKey, locale);
-        });
-      }
-      if (menu.navigation) {
-        menu.navigation.forEach(nav => {
-          nav.label = i18n.t(nav.i18nKey, locale);
-        });
-      }
-
-      menuCache[cacheKey] = menu;
-      logger.info(`Menu '${menuId}' for locale '${locale}' loaded and cached.`);
-      return menu;
+      const menuFilePath = path.join(this.configPath, `${menuId}.json`);
+      const menuConfig = JSON.parse(fs.readFileSync(menuFilePath, 'utf8'));
+      const translatedMenu = this._translateMenu(menuConfig, lang);
+      this.menuCache[cacheKey] = translatedMenu;
+      return translatedMenu;
     } catch (error) {
-      logger.error(`Failed to load menu '${menuId}' for locale '${locale}':`, error);
-      throw new Error(`Menu '${menuId}' not found or invalid for locale '${locale}'.`);
+      logger.error(`Failed to load menu ${menuId}:`, error);
+      return null; // Or throw a custom error
     }
   }
 
-  static clearCache() {
-    Object.keys(menuCache).forEach(key => delete menuCache[key]);
-    logger.info('Menu cache cleared.');
-  }
-
-  // Optional: Load all menus at startup
-  static async loadAllMenus(locale = 'en') {
-    try {
-      const files = await fs.promises.readdir(MENU_DEFINITIONS_DIR);
-      const jsonFiles = files.filter(file => file.endsWith('.json'));
-      for (const file of jsonFiles) {
-        const menuId = file.replace('.json', '');
-        await MenuLoader.loadMenu(menuId, locale);
+  _translateMenu(menuConfig, lang) {
+    // Recursively translate menu items using i18n utility
+    const translate = (item) => {
+      if (item.i18nKey) {
+        item.text = i18n.t(item.i18nKey, lang);
       }
-      logger.info(`All menus loaded for locale '${locale}': ${Object.keys(menuCache).join(', ')}`);
-    } catch (error) {
-      logger.error('Failed to load all menus:', error);
-      throw error;
-    }
+      if (item.options) {
+        item.options = item.options.map(translate);
+      }
+      return item;
+    };
+    return translate(menuConfig);
   }
 }
 
@@ -672,18 +640,24 @@ module.exports = {
 Create a generic menu renderer (e.g., `src/core/menu/genericMenuRenderer.js`) as previously outlined. This renderer will now receive already translated strings from the `MenuLoader`.
 
 ```javascript
-// src/core/menu/genericMenuRenderer.js
+// src/shared/menu/genericMenuRenderer.js
 class GenericMenuRenderer {
-  static render(menuDefinition, platformContext) {
-    // menuDefinition now contains already translated 'body', 'title', 'label', 'description' fields
+  constructor(actionMapper) {
+    this.actionMapper = actionMapper;
+  }
+
+  renderMenu(menuData, platformContext) {
+    // This is a generic rendering logic. Specific platforms will adapt this.
+    // For example, a platform might convert menuData into a series of buttons or a list.
+    const renderedItems = menuData.options.map(option => ({
+      text: option.text,
+      action: this.actionMapper.mapAction(option.actionId, platformContext)
+    }));
+
     return {
-      menuId: menuDefinition.menuId,
-      type: menuDefinition.type,
-      body: menuDefinition.body,
-      sections: menuDefinition.sections,
-      buttons: menuDefinition.buttons,
-      navigation: menuDefinition.navigation, // Include navigation options
-      platformContext: platformContext
+      title: menuData.title,
+      description: menuData.description,
+      items: renderedItems
     };
   }
 }
@@ -696,99 +670,38 @@ module.exports = GenericMenuRenderer;
 The WhatsApp-specific adapter (e.g., `src/frontend/whatsapp/whatsappMenuAdapter.js`) will now fetch menu definitions and render them. This adapter adheres to the **Single Responsibility Principle (SRP)** by focusing solely on translating the generic menu object into WhatsApp's native interactive message formats. It demonstrates the **Dependency Inversion Principle (DIP)** by depending on the abstractions provided by `MenuLoader` and `GenericMenuRenderer`, rather than their concrete implementations.
 
 ```javascript
-// src/frontend/whatsapp/whatsappMenuAdapter.js
-const MenuLoader = require('../../core/menu/menuLoader');
-const GenericMenuRenderer = require('../../core/menu/genericMenuRenderer');
-const { WhatsAppMessageSender } = require('./whatsappMessageSender'); // Assuming this is in the same frontend directory
-const i18n = require('../../core/utils/i18n'); // i18n is now in core/utils
+// src/frontends/whatsapp/whatsappMenuAdapter.js
+const MenuLoader = require('../../shared/menu/menuLoader');
+const GenericMenuRenderer = require('../../shared/menu/genericMenuRenderer');
+const i18n = require('../../shared/utils/i18n');
 
 class WhatsAppMenuAdapter {
-  static async sendMenu(user, phoneNumber, menuId, locale = 'en') {
-    try {
-      const menuDefinition = await MenuLoader.loadMenu(menuId, locale);
-      const genericMenu = GenericMenuRenderer.render(menuDefinition, 'whatsapp');
+  constructor(menuConfigPath, actionMapper) {
+    this.menuLoader = new MenuLoader(menuConfigPath);
+    this.genericRenderer = new GenericMenuRenderer(actionMapper);
+  }
 
-      let whatsappMessage;
-
-      if (genericMenu.type === 'list') {
-        const sections = genericMenu.sections.map(section => ({
-          title: section.title,
-          rows: section.rows.map(row => ({
-            id: row.actionId,
-            title: row.label,
-            description: row.description || ''
-          }))
-        }));
-
-        // Add navigation section if present
-        if (genericMenu.navigation && genericMenu.navigation.length > 0) {
-          sections.push({
-            title: i18n.t('menu.navigation.title', locale), // Translate navigation title
-            rows: genericMenu.navigation.map(nav => ({
-              id: nav.actionId,
-              title: nav.label,
-              description: nav.description || ''
-            }))
-          });
-        }
-
-        whatsappMessage = {
-          type: 'interactive',
-          interactive: {
-            type: 'list',
-            header: { // Optional: A header for the list message
-              type: "text",
-              text: genericMenu.menuId // Or a more descriptive header if needed
-            },
-            body: { text: genericMenu.body },
-            action: {
-              button: i18n.t('menu.select_option_button', locale), // Translate button text
-              sections: sections
-            }
-          }
-        };
-      } else if (genericMenu.type === 'buttons') {
-        const buttons = genericMenu.buttons.map(button => ({
-          type: 'reply',
-          reply: {
-            id: button.actionId,
-            title: button.label
-          }
-        }));
-
-        // Add navigation buttons directly if present
-        if (genericMenu.navigation && genericMenu.navigation.length > 0) {
-          buttons.push(...genericMenu.navigation.map(nav => ({
-            type: 'reply',
-            reply: {
-              id: nav.actionId,
-              title: nav.label
-            }
-          })));
-        }
-
-        whatsappMessage = {
-          type: 'interactive',
-          interactive: {
-            type: 'button',
-            body: { text: genericMenu.body },
-            action: {
-              buttons: buttons
-            }
-          }
-        };
-      } else {
-        throw new Error(`Unsupported menu type: ${genericMenu.type}`);
-      }
-
-      await WhatsAppMessageSender.sendMessage(phoneNumber, whatsappMessage);
-      return true;
-    } catch (error) {
-      logger.error('Error sending WhatsApp menu:', error);
-      // Fallback to text-based menu if interactive fails
-      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.menu_load_failure', locale, { errorMessage: error.message }));
-      return false;
+  renderWhatsAppMenu(menuId, userLanguage, platformContext) {
+    const menuData = this.menuLoader.loadMenu(menuId, userLanguage);
+    if (!menuData) {
+      return { text: i18n.t('menu_not_found', userLanguage) };
     }
+
+    const renderedMenu = this.genericRenderer.renderMenu(menuData, platformContext);
+
+    // Adapt the generic rendered menu to WhatsApp-specific format
+    let whatsappMessage = `*${renderedMenu.title}*\n`;
+    if (renderedMenu.description) {
+      whatsappMessage += `${renderedMenu.description}\n`;
+    }
+
+    renderedMenu.items.forEach((item, index) => {
+      whatsappMessage += `\n${index + 1}. ${item.text}`;
+    });
+
+    whatsappMessage += `\n\n${i18n.t('menu_footer', userLanguage)}`;
+
+    return { text: whatsappMessage };
   }
 }
 
@@ -802,9 +715,9 @@ These files will now become lean wrappers around the `WhatsAppMenuAdapter`. This
 **Example: `src/frontend/whatsapp/actions/menu/ShowMainMenuAction.js`**
 
 ```javascript
-// src/frontend/whatsapp/actions/menu/ShowMainMenuAction.js
-const BaseAction = require('../../../../core/services/BaseAction'); // Assuming BaseAction is in core/services
-const WhatsAppMenuAdapter = require('../../whatsappMenuAdapter');
+// src/frontends/whatsapp/actions/menu/ShowMainMenuAction.js
+const BaseAction = require('./BaseAction'); // Assuming BaseAction will be co-located or in a backend shared module
+const WhatsAppMenuAdapter = require('../whatsappMenuAdapter');
 
 class ShowMainMenuAction extends BaseAction {
   constructor() {
@@ -829,10 +742,10 @@ These modules will now interact with the new `ActionMapper` (which will call the
 **Example: `src/frontend/whatsapp/processors/InteractiveMessageProcessor.js`**
 
 ```javascript
-// src/frontend/whatsapp/processors/InteractiveMessageProcessor.js
+// src/frontends/whatsapp/processors/InteractiveMessageProcessor.js
 // ... (other imports)
-const ActionMapper = require('../../../core/menu/ActionMapper');
-const i18n = require('../../../core/utils/i18n');
+const ActionMapper = require('../../../shared/menu/actionMapper');
+const i18n = require('../../../shared/utils/i18n');
 
 class InteractiveMessageProcessor {
   // ...
@@ -851,13 +764,13 @@ class InteractiveMessageProcessor {
 }
 ```
 
-**Example: `src/frontend/whatsapp/processors/MessageRouter.js`**
+**Example: `src/frontends/whatsapp/processors/MessageRouter.js`**
 
 ```javascript
-// src/frontend/whatsapp/processors/MessageRouter.js
+// src/frontends/whatsapp/processors/MessageRouter.js
 // ... (other imports)
-const ActionMapper = require('../../../core/menu/ActionMapper');
-const i18n = require('../../../core/utils/i18n');
+const ActionMapper = require('../../../shared/menu/actionMapper');
+const i18n = require('../../../shared/utils/i18n');
 
 class MessageRouter {
   // ...
@@ -883,70 +796,27 @@ class MessageRouter {
 This module will bridge the frontend action IDs to the backend service calls or menu navigation. It is designed to abstract the underlying service implementation, allowing for a seamless transition from monolithic services to microservices. The `ActionMapper` adheres to the **Single Responsibility Principle (SRP)** by focusing solely on mapping and executing actions. It demonstrates the **Dependency Inversion Principle (DIP)** by depending on abstractions like the `serviceRegistry` and the interfaces of the frontend adapters (e.g., `WhatsAppMenuAdapter.sendMenu`), rather than their concrete implementations.
 
 ```javascript
-// src/core/menu/ActionMapper.js
-const { getActionConfig } = require('../../core/services/actions/config/ActionConfig');
-const serviceRegistry = require('../../core/services/serviceRegistry'); // Assuming a registry for your 100 services
-const WhatsAppMenuAdapter = require('../../frontend/whatsapp/whatsappMenuAdapter'); // Example for WhatsApp
-const { WhatsAppMessageSender } = require('../../frontend/whatsapp/whatsappMessageSender'); // Example for WhatsApp
-const i18n = require('../../core/utils/i18n'); // New i18n utility
+// src/shared/menu/actionMapper.js
+const logger = require('../../shared/utils/logger');
 
 class ActionMapper {
-  static async executeAction(actionId, user, phoneNumber, locale = 'en', params = {}) {
-    // The user object is now expected to contain the locale and other context
-    const userLocale = user.locale || locale; // Use user.locale if available, otherwise fallback to provided locale
+  constructor(serviceRegistry) {
+    this.serviceRegistry = serviceRegistry; // Central registry of all available services
+  }
 
-    // Check if it's a menu navigation action (convention: show_ + menuId)
-    if (actionId.startsWith('show_')) {
-      const menuId = actionId.replace('show_', '');
-      // This would dynamically call the correct adapter based on user's platform
-      // For now, assuming WhatsApp for example
-      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, menuId, userLocale);
-      return;
-    }
+  mapAction(actionId, platformContext) {
+    // Logic to map a generic actionId to a platform-specific executable action
+    // This could involve looking up a service in the serviceRegistry
+    // and returning a function or an object that the frontend adapter can use.
+    logger.info(`Mapping action: ${actionId} for platform: ${platformContext.platform}`);
 
-    // Check if it's a profile/settings button action (convention: btn_)
-    if (actionId.startsWith('btn_')) {
-      // Implement specific logic for profile/settings buttons
-      // Example:
-      // if (actionId === 'btn_update_profile') { /* ... call ProfileUpdateService ... */ }
-      // else if (actionId === 'btn_view_profile') { /* ... call ProfileViewService ... */ }
-      console.log(`Executing profile action: ${actionId}`);
-      // After processing, generally return to the settings menu
-      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, 'settings_profile_menu', userLocale);
-      return;
-    }
+    const service = this.serviceRegistry.getService(actionId);
 
-    // Assume it's a direct backend service invocation (e.g., get_daily_horoscope, calculateSunSign)
-    const actionConfig = getActionConfig(actionId);
-
-    if (!actionConfig) {
-      logger.warn(`Unknown actionId received: ${actionId}`);
-      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.unknown_request', userLocale));
-      return;
-    }
-
-    try {
-      // This is where service invocation logic resides.
-      // 1. Validate user profile fields based on actionConfig.requiredProfileFields
-      // 2. Check subscriptionFeature for the user
-      // 3. Check cooldowns to prevent spamming
-      // (These checks are important. They will likely involve a UserService or similar.)
-      // ... (Placeholder for these checks) ...
-
-      // 4. Invoke the corresponding backend service
-      const service = serviceRegistry.getService(actionId);
-      if (service && typeof service.processCalculation === 'function') {
-        // In the monolithic phase, 'service' will be a direct reference to a function or class within the monolith.
-        // In the microservice phase, 'service' will be a client proxy that handles network communication.
-        const result = await service.processCalculation(user.birthData, params); // Assuming user.birthData and params
-        // 5. Format and send result back to user
-        await WhatsAppMessageSender.sendTextMessage(phoneNumber, service.formatResult(result, userLocale)); // Assuming service provides formatResult and accepts locale
-      } else {
-        throw new Error(i18n.t('error.service_not_found', userLocale, { actionId }));
-      }
-    } catch (error) {
-      logger.error(`Error executing action '${actionId}':`, error);
-      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.processing_request', userLocale, { errorMessage: error.message }));
+    if (service) {
+      return { type: 'service_invocation', serviceId: actionId, payload: platformContext.payload };
+    } else {
+      logger.warn(`No service found for actionId: ${actionId}`);
+      return { type: 'unsupported_action', actionId: actionId };
     }
   }
 }
@@ -959,10 +829,10 @@ module.exports = ActionMapper;
 Create a dedicated utility module (e.g., `src/core/utils/i18n.js`) for managing and retrieving translated strings. This module adheres to the **Single Responsibility Principle (SRP)** by focusing solely on internationalization concerns, such as loading language files and providing a translation function. It does not concern itself with how these translations are used in menus or other parts of the application.
 
 ```javascript
-// src/core/utils/i18n.js
+// src/shared/utils/i18n.js
 const path = require('path');
 const fs = require('fs');
-const logger = require('./logger'); // Assuming logger is in the same core/utils directory
+const logger = require('./logger'); // Assuming logger is in the same shared/utils directory
 
 const I18N_DIR = path.join(__dirname, '../../../config/i18n_keys');
 const translations = {};

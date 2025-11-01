@@ -115,7 +115,7 @@ class RahukalamService extends ServiceTemplate {
       version: '1.0.0',
       category: 'vedic',
       methods: ['execute', 'processCalculation', 'formatResult'],
-      dependencies: ['MuhurtaCalculator']
+      dependencies: []
     };
   }
 
@@ -458,137 +458,7 @@ Comprehensive Rahukalam report with timing details, significance analysis, recom
       summary += `• ${measure}\n`;
     });
     
-    return summary;
-  }
 
-  /**
-   * Format result for service consumption
-   * @param {Object} result - Raw calculator result
-   * @returns {Object} Formatted result
-   */
-  formatResult(result) {
-    if (result.error) {
-      return {
-        success: false,
-        error: result.error,
-        message: 'Rahukalam analysis failed'
-      };
-    }
-
-    return {
-      success: true,
-      data: result,
-      summary: result.summary || 'Rahukalam analysis completed',
-      metadata: {
-        system: 'Rahukalam Analysis',
-        calculationMethod: 'Vedic planetary period calculation with weekday-based timing',
-        elements: ['Timing', 'Significance', 'Recommendations', 'Activities'],
-        tradition: 'Vedic Hindu astrology with muhurta principles'
-      }
-    };
-  }
-
-  /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(birthData) {
-    if (!birthData) {
-      throw new Error('Birth data is required for Rahukalam analysis');
-    }
-
-    if (!birthData.birthDate) {
-      throw new Error('Birth date is required for Rahukalam analysis');
-    }
-
-    if (!birthData.birthTime) {
-      throw new Error('Birth time is required for Rahukalam analysis');
-    }
-
-    if (!birthData.birthPlace) {
-      throw new Error('Birth place is required for Rahukalam analysis');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthData.birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthData.birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-  }
-
-  /**
-   * Get service metadata
-   * @returns {Object} Service information
-   */
-  getMetadata() {
-    return {
-      name: this.serviceName,
-      version: '1.0.0',
-      category: 'vedic',
-      methods: ['execute', 'processCalculation', 'formatResult'],
-      dependencies: ['MuhurtaCalculator']
-    };
-  }
-
-  /**
-   * Get service-specific help
-   * @returns {string} Help information
-   */
-  getHelp() {
-    return `
-🌑 **Rahukalam Service**
-
-**Purpose:** Provides analysis of Rahukalam, an inauspicious 90-minute period each day in Vedic astrology during which malefic planetary influences are strongest
-
-**Required Inputs:**
-• Birth date (DD/MM/YYYY)
-• Birth time (HH:MM)
-• Birth place (city, state/country)
-
-**Analysis Includes:**
-
-**⏰ Timing Details:**
-• Exact start and end times of Rahukalam
-• Duration (typically 90 minutes)
-• Planetary lord ruling the period
-• Sunrise and sunset times for context
-
-**🌑 Significance Analysis:**
-• Mythological origins and meaning
-• Planetary influences and characteristics
-• Risks and potential challenges
-• Activities to avoid during this time
-
-**🎯 Recommendations:**
-• Protective measures for minimizing negative effects
-• Spiritual practices for spiritual protection
-• Mental approaches for navigating this period
-• Positive actions that can be performed
-• Mantras and remedies for enhanced protection
-
-**📋 Activity Guidance:**
-• Activities to strictly avoid
-• Activities that are neutral or acceptable
-• Favorable activities during this period
-• Remedies and protective measures
-• Spiritual practices recommended
-
-**Example Usage:**
-"Rahukalam timing for 15/06/2025, time 06:45 in New Delhi"
-"When is Rahukalam today in Mumbai?"
-"Avoid activities during Rahukalam in Bangalore tomorrow"
-
-**Output Format:**
-Comprehensive Rahukalam report with timing details, significance analysis, recommendations, and activity guidance
-    `.trim();
-  }
 
   // Helper methods for calculations
   async _getCoordinatesForPlace(place) {

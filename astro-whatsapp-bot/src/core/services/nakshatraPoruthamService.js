@@ -12,7 +12,7 @@ class NakshatraPoruthamService extends ServiceTemplate {
   constructor() {
     super('NadiCompatibility'); // Primary calculator for this service
     this.serviceName = 'NakshatraPoruthamService';
-    this.calculatorPath = '../calculators/NadiCompatibility';
+    this.calculatorPath = './calculators/NadiCompatibility';
     logger.info('NakshatraPoruthamService initialized');
   }
 

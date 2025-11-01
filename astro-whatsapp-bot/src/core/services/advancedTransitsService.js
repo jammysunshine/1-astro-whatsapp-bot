@@ -8,7 +8,7 @@ class AdvancedTransitsService extends ServiceTemplate {
     super('SignificantTransitsCalculator');
     this.serviceName = 'AdvancedTransitsService';
     this.calculatorPath =
-      '../../services/astrology/vedic/calculators/SignificantTransitsCalculator';
+      './calculators/SignificantTransitsCalculator';
     logger.info('AdvancedTransitsService initialized');
   }
 

@@ -14,7 +14,7 @@ class BusinessPartnershipService extends ServiceTemplate {
   constructor() {
     super('CompatibilityCalculator');
     this.serviceName = 'BusinessPartnershipService';
-    this.calculatorPath = '../calculators/CompatibilityCalculator';
+    this.calculatorPath = './calculators/CompatibilityCalculator';
     logger.info('BusinessPartnershipService initialized');
   }
 

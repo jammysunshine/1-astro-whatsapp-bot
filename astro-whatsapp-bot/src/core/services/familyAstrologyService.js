@@ -2,8 +2,8 @@ const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import required calculators
-const { GroupAstrologyCalculator } = require('../calculators/GroupAstrologyCalculator');
-const { CompatibilityCalculator } = require('../calculators/CompatibilityCalculator');
+const { GroupAstrologyCalculator } = require('./calculators/GroupAstrologyCalculator');
+const { CompatibilityCalculator } = require('./calculators/CompatibilityCalculator');
 
 /**
  * Family Astrology Service
@@ -15,7 +15,7 @@ const { CompatibilityCalculator } = require('../calculators/CompatibilityCalcula
 class FamilyAstrologyService extends ServiceTemplate {
   constructor() {
     super('GroupAstrologyCalculator');
-    this.calculatorPath = '../calculators/GroupAstrologyCalculator';
+    this.calculatorPath = './calculators/GroupAstrologyCalculator';
     this.groupCalculator = new GroupAstrologyCalculator();
     this.compatibilityCalculator = new CompatibilityCalculator();
     logger.info('FamilyAstrologyService initialized');

@@ -10,7 +10,7 @@ class HoraryAstrologyService extends ServiceTemplate {
   constructor() {
     super('PrashnaCalculator');
     this.serviceName = 'HoraryAstrologyService';
-    this.calculatorPath = '../calculators/PrashnaCalculator';
+    this.calculatorPath = './calculators/PrashnaCalculator';
     logger.info('HoraryAstrologyService initialized');
 
     // Service-specific configuration

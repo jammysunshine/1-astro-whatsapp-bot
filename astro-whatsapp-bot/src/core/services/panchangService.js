@@ -12,7 +12,7 @@ const logger = require('../../utils/logger');
 class PanchangService extends ServiceTemplate {
   constructor() {
     super('PanchangCalculator');
-    this.calculatorPath = '../calculators/PanchangCalculator';
+    this.calculatorPath = './calculators/PanchangCalculator';
     this.serviceName = 'PanchangService';
     logger.info('PanchangService initialized');
   }

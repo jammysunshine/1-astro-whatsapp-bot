@@ -8,9 +8,9 @@ const ServiceTemplate = require('./ServiceTemplate');
 class SunSignService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'SunSignService';
-    this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/SignCalculator'; // Assuming this path for the main calculator
     logger.info('SunSignService initialized');
   }
 

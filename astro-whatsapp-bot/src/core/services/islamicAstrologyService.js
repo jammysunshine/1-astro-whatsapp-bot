@@ -9,7 +9,7 @@ const logger = require('../../utils/logger');
 class IslamicAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'IslamicAstrologyService';
     this.calculatorPath = '../../../services/astrology/islamicAstrology';
     logger.info('IslamicAstrologyService initialized');

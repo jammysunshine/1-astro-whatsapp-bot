@@ -7,7 +7,7 @@ class SynastryAnalysisService extends ServiceTemplate {
   constructor() {
     super('SynastryEngine');
     this.serviceName = 'SynastryAnalysisService';
-    this.calculatorPath = '../calculators/SynastryEngine';
+    this.calculatorPath = './calculators/SynastryEngine';
     logger.info('SynastryAnalysisService initialized');
   }
 

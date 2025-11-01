@@ -13,7 +13,7 @@ const logger = require('../../utils/logger');
 class SadeSatiService extends ServiceTemplate {
   constructor(services) {
     super('SadeSatiCalculator');
-    this.calculatorPath = '../calculators/SadeSatiCalculator';
+    this.calculatorPath = './calculators/SadeSatiCalculator';
     // Initialize calculator with services if provided
     if (services) {
       this.calculator.setServices(services);

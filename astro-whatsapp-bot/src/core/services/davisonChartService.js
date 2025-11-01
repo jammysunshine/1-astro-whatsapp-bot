@@ -12,7 +12,7 @@ class DavisonChartService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
     this.serviceName = 'DavisonChartService';
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     logger.info('DavisonChartService initialized');
   }
 

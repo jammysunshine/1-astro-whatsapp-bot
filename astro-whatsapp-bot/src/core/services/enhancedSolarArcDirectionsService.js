@@ -4,7 +4,7 @@
  */
 
 const ServiceTemplate = require('./ServiceTemplate');
-const VedicCalculator = require('../calculators/VedicCalculator'); const {
+const VedicCalculator = require('./calculators/VedicCalculator'); const {
   validateCoordinates,
   validateDateTime
 } = require('../../utils/validation');
@@ -14,7 +14,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   constructor() {
     super('EnhancedSolarArcDirections');
     this.serviceName = 'EnhancedSolarArcDirectionsService';
-    this.calculatorPath = '../calculators/EnhancedSolarArcDirections';
+    this.calculatorPath = './calculators/EnhancedSolarArcDirections';
     logger.info('EnhancedSolarArcDirectionsService initialized');
   }
 

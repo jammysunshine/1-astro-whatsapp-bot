@@ -5,7 +5,7 @@ class CoupleCompatibilityService extends ServiceTemplate {
   constructor() {
     super('SynastryEngine');
     this.serviceName = 'CoupleCompatibilityService';
-    this.calculatorPath = '../calculators/SynastryEngine';
+    this.calculatorPath = './calculators/SynastryEngine';
     logger.info('CoupleCompatibilityService initialized');
   }
 

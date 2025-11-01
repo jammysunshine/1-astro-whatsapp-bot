@@ -2,7 +2,7 @@ const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
 
 // Import calculator from legacy structure (for now)
-const { PanchangCalculator } = require('../calculators/PanchangCalculator');
+const { PanchangCalculator } = require('./calculators/PanchangCalculator');
 
 /**
  * CalendarTimingService - Vedic calendar timing and auspicious period analysis service
@@ -14,7 +14,7 @@ const { PanchangCalculator } = require('../calculators/PanchangCalculator');
 class CalendarTimingService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'CalendarTimingService';
     logger.info('CalendarTimingService initialized');
   }

@@ -10,7 +10,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
   constructor() {
     super('MuhurtaCalculator');
     this.serviceName = 'ElectionalAstrologyService';
-    this.calculatorPath = '../calculators/MuhurtaCalculator';
+    this.calculatorPath = './calculators/MuhurtaCalculator';
     logger.info('ElectionalAstrologyService initialized');
 
     // Service-specific configuration

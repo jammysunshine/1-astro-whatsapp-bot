@@ -10,7 +10,7 @@ class PrashnaService extends ServiceTemplate {
   constructor() {
     super('PrashnaCalculator');
     this.serviceName = 'PrashnaService';
-    this.calculatorPath = '../calculators/PrashnaCalculator';
+    this.calculatorPath = './calculators/PrashnaCalculator';
     logger.info('PrashnaService initialized');
 
     // Service-specific configuration

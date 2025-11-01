@@ -9,7 +9,7 @@ const logger = require('../../utils/logger');
 class ShadbalaService extends ServiceTemplate {
   constructor(services) {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     // Initialize Shadbala Calculator with required dependencies
     this.calculator = new ShadbalaCalculator(
       services.astrologer,

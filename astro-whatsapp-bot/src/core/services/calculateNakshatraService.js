@@ -9,7 +9,7 @@ class CalculateNakshatraService extends ServiceTemplate {
   constructor() {
     super('SignCalculator');
     this.serviceName = 'CalculateNakshatraService';
-    this.calculatorPath = '../calculators/SignCalculator'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/SignCalculator'; // Assuming this path for the main calculator
     logger.info('CalculateNakshatraService initialized');
   }
 

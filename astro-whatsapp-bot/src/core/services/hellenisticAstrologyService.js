@@ -4,9 +4,9 @@ const ServiceTemplate = require('./ServiceTemplate');
 class HellenisticAstrologyService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'HellenisticAstrologyService';
-    this.calculatorPath = '../calculators/hellenisticAstrologyReader'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/hellenisticAstrologyReader'; // Assuming this path for the main calculator
     logger.info('HellenisticAstrologyService initialized');
   }
 

@@ -6,7 +6,7 @@ const logger = require('../../utils/logger');
 class HinduFestivalsService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'HinduFestivalsService';
     this.calculatorPath = '../../../services/astrology/hinduFestivals';
     logger.info('HinduFestivalsService initialized');

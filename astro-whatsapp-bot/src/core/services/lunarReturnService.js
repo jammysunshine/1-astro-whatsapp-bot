@@ -11,7 +11,7 @@ const { BirthData } = require('../../models/BirthData');
 class LunarReturnService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'LunarReturnService';
     this.calculatorPath =
       ../calculators/LunarReturnCalculator';

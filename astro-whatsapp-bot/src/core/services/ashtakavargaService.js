@@ -10,7 +10,7 @@ class AshtakavargaService extends ServiceTemplate {
   constructor() {
     super('AshtakavargaCalculator');
     this.serviceName = 'AshtakavargaService';
-    this.calculatorPath = '../calculators/AshtakavargaCalculator';
+    this.calculatorPath = './calculators/AshtakavargaCalculator';
     logger.info('AshtakavargaService initialized');
 
     // Service-specific configuration

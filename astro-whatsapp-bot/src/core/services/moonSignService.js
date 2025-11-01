@@ -9,7 +9,7 @@ class MoonSignService extends ServiceTemplate {
   constructor() {
     super('SignCalculator');
     this.serviceName = 'MoonSignService';
-    this.calculatorPath = '../calculators/SignCalculator';
+    this.calculatorPath = './calculators/SignCalculator';
     logger.info('MoonSignService initialized');
   }
 

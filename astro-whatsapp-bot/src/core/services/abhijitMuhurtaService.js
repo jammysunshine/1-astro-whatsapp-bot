@@ -15,7 +15,7 @@ class AbhijitMuhurtaService extends ServiceTemplate {
     super('MuhurtaCalculator');
     this.serviceName = 'AbhijitMuhurtaService';
     this.calculatorPath =
-      '../calculators/MuhurtaCalculator';
+      './calculators/MuhurtaCalculator';
     logger.info('AbhijitMuhurtaService initialized');
   }
 

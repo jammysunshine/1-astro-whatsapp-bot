@@ -13,7 +13,7 @@ const logger = require('../../utils/logger');
 class SpecializedAnalysisService extends ServiceTemplate {
   constructor() {
     super('AshtakavargaCalculator');
-    this.calculatorPath = '../calculators/AshtakavargaCalculator';
+    this.calculatorPath = './calculators/AshtakavargaCalculator';
     this.ashtakavargaCalc = new AshtakavargaCalculator();
     this.vargaCalc = new VargaChartCalculator();
     this.yogasCalc = new VedicYogasCalculator();

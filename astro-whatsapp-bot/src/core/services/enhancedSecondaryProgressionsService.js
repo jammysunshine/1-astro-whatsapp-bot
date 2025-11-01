@@ -4,7 +4,7 @@
  */
 
 const ServiceTemplate = require('./ServiceTemplate');
-const VedicCalculator = require('../calculators/VedicCalculator'); const {
+const VedicCalculator = require('./calculators/VedicCalculator'); const {
   validateCoordinates,
   validateDateTime
 } = require('../../utils/validation');
@@ -14,7 +14,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   constructor() {
     super('EnhancedSecondaryProgressions');
     this.serviceName = 'EnhancedSecondaryProgressionsService';
-    this.calculatorPath = '../calculators/EnhancedSecondaryProgressions';
+    this.calculatorPath = './calculators/EnhancedSecondaryProgressions';
     logger.info('EnhancedSecondaryProgressionsService initialized');
   }
 

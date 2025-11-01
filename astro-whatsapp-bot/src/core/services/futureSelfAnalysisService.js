@@ -10,7 +10,7 @@ class FutureSelfAnalysisService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
     this.serviceName = 'FutureSelfAnalysisService';
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     logger.info('FutureSelfAnalysisService initialized');
 
     // Service-specific configuration

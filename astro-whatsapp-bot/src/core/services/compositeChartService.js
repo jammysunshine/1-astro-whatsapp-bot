@@ -8,9 +8,9 @@ const ServiceTemplate = require('./ServiceTemplate');
 class CompositeChartService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'CompositeChartService';
-    this.calculatorPath = '../calculators/SynastryEngine'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/SynastryEngine'; // Assuming this path for the main calculator
     logger.info('CompositeChartService initialized');
   }
 

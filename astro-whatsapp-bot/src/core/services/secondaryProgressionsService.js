@@ -12,7 +12,7 @@ class SecondaryProgressionsService extends ServiceTemplate {
   constructor() {
     super('SecondaryProgressionsCalculator');
     this.serviceName = 'SecondaryProgressionsService';
-    this.calculatorPath = '../calculators/SecondaryProgressionsCalculator';
+    this.calculatorPath = './calculators/SecondaryProgressionsCalculator';
     logger.info('SecondaryProgressionsService initialized');
   }
 

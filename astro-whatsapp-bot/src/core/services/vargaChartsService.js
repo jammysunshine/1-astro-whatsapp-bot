@@ -12,7 +12,7 @@ class VargaChartsService extends ServiceTemplate {
   constructor() {
     super('VargaCharts');
     this.serviceName = 'VargaChartsService';
-    this.calculatorPath = '../calculators/VargaCharts'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/VargaCharts'; // Assuming this path for the main calculator
     logger.info('VargaChartsService initialized');
   }
 

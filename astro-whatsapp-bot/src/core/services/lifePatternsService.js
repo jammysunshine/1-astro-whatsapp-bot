@@ -13,7 +13,7 @@ class LifePatternsService extends ServiceTemplate {
   constructor() {
     super('LifePatternsCalculator');
     this.serviceName = 'LifePatternsService';
-    this.calculatorPath = '../calculators/LifePatternsCalculator';
+    this.calculatorPath = './calculators/LifePatternsCalculator';
     logger.info('LifePatternsService initialized');
   }
 

@@ -7,7 +7,7 @@ class AsteroidsService extends ServiceTemplate {
   constructor() {
     super('AsteroidCalculator');
     this.serviceName = 'AsteroidsService';
-    this.calculatorPath = '../calculators/AsteroidCalculator';
+    this.calculatorPath = './calculators/AsteroidCalculator';
     logger.info('AsteroidsService initialized');
   }
 

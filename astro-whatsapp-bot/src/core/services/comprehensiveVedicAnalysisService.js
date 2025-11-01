@@ -16,7 +16,7 @@ const logger = require('../../utils/logger');
 class ComprehensiveVedicAnalysisService extends ServiceTemplate {
   constructor(services) {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     // Initialize calculator with services if provided
     if (services) {
       this.calculator.setServices(services);

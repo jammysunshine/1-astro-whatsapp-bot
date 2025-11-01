@@ -9,7 +9,7 @@ class GenerateGroupAstrologyService extends ServiceTemplate {
   constructor() {
     super('GroupAstrologyCalculator');
     this.serviceName = 'GenerateGroupAstrologyService';
-    this.calculatorPath = '../calculators/GroupAstrologyCalculator'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/GroupAstrologyCalculator'; // Assuming this path for the main calculator
     logger.info('GenerateGroupAstrologyService initialized');
   }
 

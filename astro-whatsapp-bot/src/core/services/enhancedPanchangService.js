@@ -9,7 +9,7 @@ const logger = require('../../utils/logger');
 class EnhancedPanchangService extends ServiceTemplate {
   constructor(services) {
     super('PanchangCalculator');
-    this.calculatorPath = '../calculators/PanchangCalculator';
+    this.calculatorPath = './calculators/PanchangCalculator';
     // Initialize Panchang Calculator with required dependencies
     this.calculator = new PanchangCalculator(
       services.astrologer,

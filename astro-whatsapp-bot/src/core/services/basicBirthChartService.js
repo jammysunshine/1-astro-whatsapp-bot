@@ -9,7 +9,7 @@ class BasicBirthChartService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
     this.serviceName = 'BasicBirthChartService';
-    this.calculatorPath = '../calculators/ChartGenerator'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/ChartGenerator'; // Assuming this path for the main calculator
     logger.info('BasicBirthChartService initialized');
   }
 

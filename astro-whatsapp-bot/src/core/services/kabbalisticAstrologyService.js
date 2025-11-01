@@ -13,7 +13,7 @@ class KabbalisticAstrologyService extends ServiceTemplate {
   constructor() {
     super('KabbalisticAstrologyCalculator'); // Primary calculator for this service
     this.serviceName = 'KabbalisticAstrologyService';
-    this.calculatorPath = '../calculators/KabbalisticAstrologyCalculator';
+    this.calculatorPath = './calculators/KabbalisticAstrologyCalculator';
     logger.info('KabbalisticAstrologyService initialized');
   }
 

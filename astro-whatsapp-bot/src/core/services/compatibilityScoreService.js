@@ -12,7 +12,7 @@ const logger = require('../../utils/logger');
 class CompatibilityScoreService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'CompatibilityScoreService';
     logger.info('CompatibilityScoreService initialized');
   }

@@ -1,5 +1,5 @@
 const ServiceTemplate = require('./ServiceTemplate');
-const VedicCalculator = require('../calculators/VedicCalculator'); const logger = require('../../utils/logger');
+const VedicCalculator = require('./calculators/VedicCalculator'); const logger = require('../../utils/logger');
 const {
   validateCoordinates,
   validateDateTime
@@ -14,7 +14,7 @@ const {
 class GocharService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator'); // Primary calculator for this service
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'GocharService';
     this.calculatorPath =
       ../calculators/VedicCalculator';

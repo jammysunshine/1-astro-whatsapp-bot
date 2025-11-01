@@ -6,7 +6,7 @@ const logger = require('../../utils/logger');
 class FixedStarsService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'FixedStarsService';
     logger.info('FixedStarsService initialized');
   }

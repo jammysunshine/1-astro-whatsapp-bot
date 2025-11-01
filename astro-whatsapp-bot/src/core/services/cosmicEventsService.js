@@ -11,7 +11,7 @@ class CosmicEventsService extends ServiceTemplate {
     super('CosmicEventsCalculator');
     this.serviceName = 'CosmicEventsService';
     this.calculatorPath =
-      '../services/astrology/vedic/calculators/CosmicEventsCalculator';
+      './calculators/CosmicEventsCalculator';
     logger.info('CosmicEventsService initialized');
   }
 

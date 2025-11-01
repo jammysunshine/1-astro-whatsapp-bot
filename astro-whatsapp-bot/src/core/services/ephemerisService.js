@@ -11,7 +11,7 @@ class EphemerisService extends ServiceTemplate {
     super('EphemerisCalculator');
     this.serviceName = 'EphemerisService';
     this.calculatorPath =
-      '../services/astrology/vedic/calculators/EphemerisCalculator';
+      './calculators/EphemerisCalculator';
     logger.info('EphemerisService initialized');
   }
 

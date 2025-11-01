@@ -12,7 +12,7 @@ class CelticAstrologyService extends ServiceTemplate {
   constructor() {
     super('CelticCalculator'); // Primary calculator for this service
     this.serviceName = 'CelticAstrologyService';
-    this.calculatorPath = '../calculators/CelticCalculator';
+    this.calculatorPath = './calculators/CelticCalculator';
     logger.info('CelticAstrologyService initialized');
   }
 

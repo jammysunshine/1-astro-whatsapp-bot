@@ -13,7 +13,7 @@ class RemediesDoshaService extends ServiceTemplate {
   constructor() {
     super('vedicRemedies');
     this.serviceName = 'RemediesDoshaService';
-    this.calculatorPath = '../calculators/vedicRemedies'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/vedicRemedies'; // Assuming this path for the main calculator
     logger.info('RemediesDoshaService initialized');
   }
 

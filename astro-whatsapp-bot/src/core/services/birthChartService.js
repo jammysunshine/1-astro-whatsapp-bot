@@ -7,9 +7,9 @@ const { BirthData } = require('../../models/BirthData');
  * Implements the standard ServiceTemplate pattern with proper dependency injection
  */
 class BirthChartService extends ServiceTemplate {
-  constructor(chartCalculator = require('../calculators/ChartGenerator')) {
+  constructor(chartCalculator = require('./calculators/ChartGenerator')) {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.calculator = new chartCalculator();
     logger.info('BirthChartService initialized');
   }

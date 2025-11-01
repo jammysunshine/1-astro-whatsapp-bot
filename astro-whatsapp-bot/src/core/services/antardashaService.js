@@ -11,7 +11,7 @@ class AntardashaService extends ServiceTemplate {
     super('AntardashaCalculator');
     this.serviceName = 'AntardashaService';
     this.calculatorPath =
-      '../services/astrology/vedic/calculators/AntardashaCalculator';
+      './calculators/AntardashaCalculator';
     logger.info('AntardashaService initialized');
   }
 

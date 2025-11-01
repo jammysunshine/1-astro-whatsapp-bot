@@ -5,7 +5,7 @@ class AstrocartographyService extends ServiceTemplate {
   constructor() {
     super('astrocartographyReader');
     this.serviceName = 'AstrocartographyService';
-    this.calculatorPath = '../calculators/astrocartographyReader'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/astrocartographyReader'; // Assuming this path for the main calculator
     logger.info('AstrocartographyService initialized');
   }
 

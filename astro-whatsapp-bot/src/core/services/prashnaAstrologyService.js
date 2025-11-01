@@ -11,7 +11,7 @@ const logger = require('../../utils/logger');
 class PrashnaAstrologyService extends ServiceTemplate {
   constructor() {
     super('PrashnaCalculator');
-    this.calculatorPath = '../calculators/PrashnaCalculator';
+    this.calculatorPath = './calculators/PrashnaCalculator';
     this.serviceName = 'PrashnaAstrologyService';
     logger.info('PrashnaAstrologyService initialized');
   }

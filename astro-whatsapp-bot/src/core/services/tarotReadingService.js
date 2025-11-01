@@ -7,7 +7,7 @@ const ServiceTemplate = require('./ServiceTemplate');
 class TarotReadingService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.calculatorPath = '../../../services/astrology/tarotReader';
   }
 

@@ -4,7 +4,7 @@
  */
 
 const ServiceTemplate = require('./ServiceTemplate');
-const VedicCalculator = require('../calculators/VedicCalculator'); const {
+const VedicCalculator = require('./calculators/VedicCalculator'); const {
   validateCoordinates,
   validateDateTime
 } = require('../../utils/validation');
@@ -14,7 +14,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
   constructor() {
     super('JaiminiAstrology');
     this.serviceName = 'JaiminiAstrologyService';
-    this.calculatorPath = '../calculators/JaiminiAstrologyCalculator';
+    this.calculatorPath = './calculators/JaiminiAstrologyCalculator';
     logger.info('JaiminiAstrologyService initialized');
   }
 

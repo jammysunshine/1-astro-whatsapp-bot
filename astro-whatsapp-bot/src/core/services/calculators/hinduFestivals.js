@@ -1,14 +1,34 @@
 /**
  * Hindu Festivals Calendar - Comprehensive Festival Guide
  * Includes major Hindu festivals, dates, significance, rituals, and auspicious timings
+ * Enhanced with astrologer library for precise astronomical calculations
  */
 
 const logger = require('../../utils/logger');
+const sweph = require('sweph');
+const { Astrologer } = require('astrologer');
 
 class HinduFestivals {
-  constructor() {
-    logger.info('Module: HinduFestivals loaded.');
+  constructor(astrologer, geocodingService) {
+    this.astrologer = astrologer || new Astrologer();
+    this.geocodingService = geocodingService;
+    this._initializeEphemeris();
+    logger.info('Module: HinduFestivals loaded with astrologer integration.');
     this.initializeFestivalDatabase();
+  }
+
+  /**
+   * Initialize Swiss Ephemeris
+   * @private
+   */
+  _initializeEphemeris() {
+    try {
+      const ephePath = require('path').join(process.cwd(), 'ephe');
+      sweph.swe_set_ephe_path(ephePath);
+      logger.info('Swiss Ephemeris path set for HinduFestivals');
+    } catch (error) {
+      logger.warn('Could not set ephemeris path for HinduFestivals:', error.message);
+    }
   }
 
   /**
@@ -421,13 +441,126 @@ class HinduFestivals {
   }
 
   /**
-   * Check if a date falls within a festival period
+   * Check if a date falls within a festival period using precise astronomical calculations
    * @param {Object} festival - Festival data
    * @param {Date} targetDate - Target date
    * @returns {boolean} Whether date is during festival
    */
   isFestivalDate(festival, targetDate) {
-    // Simplified date checking - in production would use lunar calendar calculations
+    try {
+      const festivalKey = festival.name.toLowerCase().replace(/\s+/g, '_');
+
+      // Use precise astronomical calculations for lunar festivals
+      switch (festivalKey) {
+        case 'diwali':
+          return this._isDiwaliDate(targetDate);
+        case 'holi':
+          return this._isHoliDate(targetDate);
+        case 'durga_puja':
+          return this._isDurgaPujaDate(targetDate);
+        case 'maha_shivaratri':
+          return this._isMahaShivaratriDate(targetDate);
+        case 'raksha_bandhan':
+          return this._isRakshaBandhanDate(targetDate);
+        case 'ganesh_chaturthi':
+          return this._isGaneshChaturthiDate(targetDate);
+        case 'navaratri':
+          return this._isNavaratriDate(targetDate);
+        case 'krishna_janmashtami':
+          return this._isKrishnaJanmashtamiDate(targetDate);
+        case 'ram_navami':
+          return this._isRamNavamiDate(targetDate);
+        case 'hanuman_jayanti':
+          return this._isHanumanJayantiDate(targetDate);
+        default:
+          // Fallback to approximate dates for other festivals
+          return this._isApproximateFestivalDate(festival, targetDate);
+      }
+    } catch (error) {
+      logger.warn(`Error checking festival date for ${festival.name}:`, error.message);
+      // Fallback to approximate calculation
+      return this._isApproximateFestivalDate(festival, targetDate);
+    }
+  }
+
+  /**
+   * Check if date is Diwali using precise lunar calculations
+   * @private
+   */
+  _isDiwaliDate(targetDate) {
+    try {
+      // Diwali is celebrated on Amavasya (new moon) in Kartik month
+      const julianDay = sweph.swe_julday(
+        targetDate.getFullYear(),
+        targetDate.getMonth() + 1,
+        targetDate.getDate(),
+        12,
+        sweph.SE_GREG_CAL
+      );
+
+      // Check moon phase (new moon = 0°)
+      const moonResult = sweph.swe_calc_ut(julianDay, sweph.SE_MOON, sweph.SEFLG_SWIEPH);
+      if (moonResult && moonResult.longitude) {
+        const moonLongitude = moonResult.longitude[0];
+        // New moon when moon is within 12° of sun
+        const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, sweph.SEFLG_SWIEPH);
+        if (sunResult && sunResult.longitude) {
+          const sunLongitude = sunResult.longitude[0];
+          const phaseDifference = Math.abs(moonLongitude - sunLongitude);
+          const normalizedPhase = Math.min(phaseDifference, 360 - phaseDifference);
+
+          // Diwali is within 2 days of new moon in October-November
+          return normalizedPhase <= 12 && targetDate.getMonth() >= 9 && targetDate.getMonth() <= 10;
+        }
+      }
+      return false;
+    } catch (error) {
+      logger.warn('Error calculating Diwali date:', error.message);
+      return false;
+    }
+  }
+
+  /**
+   * Check if date is Holi using precise lunar calculations
+   * @private
+   */
+  _isHoliDate(targetDate) {
+    try {
+      // Holi is celebrated on Full Moon (Purnima) in Phalgun month
+      const julianDay = sweph.swe_julday(
+        targetDate.getFullYear(),
+        targetDate.getMonth() + 1,
+        targetDate.getDate(),
+        12,
+        sweph.SE_GREG_CAL
+      );
+
+      // Check moon phase (full moon = 180°)
+      const moonResult = sweph.swe_calc_ut(julianDay, sweph.SE_MOON, sweph.SEFLG_SWIEPH);
+      if (moonResult && moonResult.longitude) {
+        const moonLongitude = moonResult.longitude[0];
+        const sunResult = sweph.swe_calc_ut(julianDay, sweph.SE_SUN, sweph.SEFLG_SWIEPH);
+        if (sunResult && sunResult.longitude) {
+          const sunLongitude = sunResult.longitude[0];
+          const phaseDifference = Math.abs(moonLongitude - sunLongitude);
+          const normalizedPhase = Math.min(phaseDifference, 360 - phaseDifference);
+
+          // Full moon when moon is 180° from sun (±12°)
+          return Math.abs(normalizedPhase - 180) <= 12 && targetDate.getMonth() >= 1 && targetDate.getMonth() <= 2;
+        }
+      }
+      return false;
+    } catch (error) {
+      logger.warn('Error calculating Holi date:', error.message);
+      return false;
+    }
+  }
+
+  /**
+   * Fallback approximate date checking for festivals without specific calculations
+   * @private
+   */
+  _isApproximateFestivalDate(festival, targetDate) {
     const month = targetDate.getMonth() + 1;
     const day = targetDate.getDate();
 

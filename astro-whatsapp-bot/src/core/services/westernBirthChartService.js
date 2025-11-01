@@ -10,7 +10,7 @@ class WesternBirthChartService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
     this.serviceName = 'WesternBirthChartService';
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     logger.info('WesternBirthChartService initialized');
 
     // Service-specific configuration

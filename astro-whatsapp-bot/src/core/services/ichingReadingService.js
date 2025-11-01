@@ -14,7 +14,7 @@ const IChingConfig = require('../../services/astrology/iching/IChingConfig');
 class IChingReadingService extends ServiceTemplate {
   constructor() {
     super('ChartGenerator');
-    this.calculatorPath = '../calculators/ChartGenerator';
+    this.calculatorPath = './calculators/ChartGenerator';
     this.serviceName = 'IChingReadingService';
     // Don't set calculatorPath since we're directly importing and initializing
     logger.info('IChingReadingService initialized');

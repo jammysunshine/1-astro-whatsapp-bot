@@ -16,7 +16,7 @@ class NumerologyReportService extends ServiceTemplate {
     super('VedicNumerology'); // Primary calculator for this service
     this.serviceName = 'NumerologyReportService';
     this.calculatorPath = './calculators/VedicNumerology';
-    logger.log('NumerologyReportService initialized with VedicNumerology');
+    logger.info('NumerologyReportService initialized with VedicNumerology');
   }
 
   async initialize() {

@@ -8,17 +8,9 @@ const PanchangCalculator = require('./calculators/PanchangCalculator');
  * Extends ServiceTemplate for standardized service architecture
  */
 class EnhancedPanchangService extends ServiceTemplate {
-  constructor(services) {
-    super('PanchangCalculator');
+  constructor(calculatorName = 'PanchangCalculator') {
+    super(calculatorName);
     this.calculatorPath = './calculators/PanchangCalculator';
-    // Initialize Panchang Calculator with required dependencies
-    this.calculator = new PanchangCalculator(
-      services.astrologer,
-      services.geocodingService
-    );
-
-    // Set services in calculator
-    this.calculator.setServices(services);
 
     // Service-specific configuration
     this.serviceConfig = {

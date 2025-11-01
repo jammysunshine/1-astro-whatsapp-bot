@@ -3,7 +3,7 @@ const logger = require('../../utils/logger');
 
 // Import required calculators
 const { GroupAstrologyCalculator } = require('./calculators/GroupAstrologyCalculator');
-const { CompatibilityCalculator } = require('./calculators/CompatibilityCalculator');
+const CompatibilityCalculator = require('./calculators/CompatibilityCalculator');
 
 /**
  * Family Astrology Service
@@ -13,12 +13,19 @@ const { CompatibilityCalculator } = require('./calculators/CompatibilityCalculat
  * Vedic astrological principles and Swiss Ephemeris calculations.
  */
 class FamilyAstrologyService extends ServiceTemplate {
-  constructor() {
-    super('GroupAstrologyCalculator');
+  constructor(calculatorName = 'GroupAstrologyCalculator') {
+    super(calculatorName);
     this.calculatorPath = './calculators/GroupAstrologyCalculator';
-    this.groupCalculator = new GroupAstrologyCalculator();
-    this.compatibilityCalculator = new CompatibilityCalculator();
-    logger.info('FamilyAstrologyService initialized');
+    logger.info(`FamilyAstrologyService initialized with ${calculatorName}`);
+  }
+
+  async initialize() {
+    // Load the main calculator using ServiceTemplate pattern
+    await super.initialize();
+
+    // Set up sub-calculators from the main calculator (if they exist)
+    this.groupCalculator = this.calculator || new GroupAstrologyCalculator();
+    this.compatibilityCalculator = this.groupCalculator.compatibilityCalculator || new CompatibilityCalculator();
   }
 
   /**

@@ -8,10 +8,10 @@ const logger = require('../../utils/logger');
  */
 class EphemerisService extends ServiceTemplate {
   constructor() {
-    super('EphemerisCalculator');
+    super('SwissEphemerisCalculator');
     this.serviceName = 'EphemerisService';
     this.calculatorPath =
-      './calculators/EphemerisCalculator';
+      './calculators/SwissEphemerisCalculator';
     logger.info('EphemerisService initialized');
   }
 

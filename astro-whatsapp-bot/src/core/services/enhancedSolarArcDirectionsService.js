@@ -13,9 +13,9 @@ const { formatDegree, formatTime } = require('../../utils/formatters');
 
 class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   constructor() {
-    super('EnhancedSolarArcDirections');
+    super('SolarArcDirectionsCalculator');
     this.serviceName = 'EnhancedSolarArcDirectionsService';
-    this.calculatorPath = './calculators/EnhancedSolarArcDirections';
+    this.calculatorPath = './calculators/SolarArcDirectionsCalculator';
     logger.info('EnhancedSolarArcDirectionsService initialized');
   }
 

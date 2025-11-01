@@ -7,12 +7,11 @@ const logger = require('../../utils/logger');
  * Extends ServiceTemplate for standardized service architecture
  */
 class PalmistryService extends ServiceTemplate {
-  constructor(palmistryReader = require('./calculators/palmistryReader')) {
-    super('PalmistryReader');
+  constructor(calculatorName = 'PalmistryReader') {
+    super(calculatorName);
     this.serviceName = 'PalmistryService';
     this.calculatorPath = './calculators/palmistryReader';
-    this.calculator = new palmistryReader();
-    logger.info('PalmistryService initialized with PalmistryReader');
+    logger.info(`PalmistryService initialized with ${calculatorName}`);
   }
 
   async initialize() {

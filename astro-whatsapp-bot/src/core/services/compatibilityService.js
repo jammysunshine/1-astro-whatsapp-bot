@@ -14,16 +14,22 @@ const { CompatibilityCalculator } = require('./calculators/CompatibilityCalculat
  * using Swiss Ephemeris and astrologer library integration.
  */
 class CompatibilityService extends ServiceTemplate {
-  constructor() {
-    super('CompatibilityCalculator'); // Use the primary calculator
+  constructor(calculatorName = 'CompatibilityCalculator') {
+    super(calculatorName); // Use the primary calculator
     this.serviceName = 'CompatibilityService';
     this.calculatorPath = './calculators/CompatibilityCalculator';
-    logger.info('CompatibilityService initialized');
+    logger.info(`CompatibilityService initialized with ${calculatorName}`);
+  }
 
-    // Load additional calculators for multi-calculator functionality
-    // this.compatibilityAction = new CompatibilityAction(); // Deprecated - architectural mismatch
-    this.synastryEngine = new SynastryEngine();
-    this.compatibilityScorer = new CompatibilityCalculator();
+  async initialize() {
+    // Load the main calculator using ServiceTemplate pattern
+    await super.initialize();
+
+    // Set up sub-calculators from the main calculator (if they exist)
+    this.synastryEngine = this.calculator.synastryEngine || new SynastryEngine();
+    this.compatibilityScorer = this.calculator.compatibilityCalculator || this.calculator;
+
+    logger.info('CompatibilityService full initialization completed');
   }
 
   async lcompatibilityCalculation(compatibilityData) {

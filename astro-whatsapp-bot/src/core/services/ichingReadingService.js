@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const { createIChingService } = require('../../core/services/calculators/ichingReader');
+const IChingReader = require('../../core/services/calculators/ichingReader');
 
 /**
  * IChingReadingService - Specialized service for providing I Ching readings
@@ -19,7 +19,7 @@ class IChingReadingService extends ServiceTemplate {
   async initialize() {
     try {
       await super.initialize();
-      this.ichingService = await createIChingService();
+      this.ichingService = new IChingReader();
       logger.info('✅ IChingReadingService initialized successfully with core IChingService');
     } catch (error) {
       logger.error('❌ Failed to initialize IChingReadingService:', error);

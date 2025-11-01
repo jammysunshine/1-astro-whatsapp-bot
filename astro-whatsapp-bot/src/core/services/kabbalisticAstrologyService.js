@@ -11,9 +11,9 @@ const { BirthData } = require('../../models/BirthData');
  */
 class KabbalisticAstrologyService extends ServiceTemplate {
   constructor() {
-    super('KabbalisticAstrologyCalculator'); // Primary calculator for this service
+    super('KabbalisticReader'); // Primary calculator for this service
     this.serviceName = 'KabbalisticAstrologyService';
-    this.calculatorPath = './calculators/KabbalisticAstrologyCalculator';
+    this.calculatorPath = './calculators/kabbalisticReader';
     logger.info('KabbalisticAstrologyService initialized');
   }
 

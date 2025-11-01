@@ -8,11 +8,10 @@ const { BirthData } = require('../../models/BirthData');
  * Updated to use new VedicCalculator for enhanced Vedic astrology calculations
  */
 class BirthChartService extends ServiceTemplate {
-  constructor(vedicCalculator = require('./calculators/VedicCalculator')) {
-    super('VedicCalculator');
+  constructor(calculatorName = 'VedicCalculator') {
+    super(calculatorName);
     this.calculatorPath = './calculators/VedicCalculator';
-    this.calculator = new vedicCalculator();
-    logger.info('BirthChartService initialized with VedicCalculator');
+    logger.info(`BirthChartService initialized with ${calculatorName}`);
   }
 
   async calculateBirthChart(birthData) {

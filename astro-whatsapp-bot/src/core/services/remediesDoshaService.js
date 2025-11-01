@@ -11,9 +11,9 @@ const logger = require('../../utils/logger');
 
 class RemediesDoshaService extends ServiceTemplate {
   constructor() {
-    super('vedicRemedies');
+    super('RemedialMeasuresCalculator');
     this.serviceName = 'RemediesDoshaService';
-    this.calculatorPath = './calculators/vedicRemedies'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/RemedialMeasuresCalculator'; // Assuming this path for the main calculator
     logger.info('RemediesDoshaService initialized');
   }
 

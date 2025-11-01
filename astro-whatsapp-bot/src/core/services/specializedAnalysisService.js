@@ -10,7 +10,7 @@ class SpecializedAnalysisService extends ServiceTemplate {
     super('AshtakavargaCalculator'); // Primary calculator for this service
     this.calculatorPath = './calculators/AshtakavargaCalculator';
     this.serviceName = 'SpecializedAnalysisService';
-    logger.log('SpecializedAnalysisService initialized');
+    logger.info('SpecializedAnalysisService initialized');
   }
 
   async lspecializedAnalysisCalculation(analysisData) {

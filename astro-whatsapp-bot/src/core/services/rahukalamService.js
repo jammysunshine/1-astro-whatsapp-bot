@@ -15,7 +15,7 @@ class RahukalamService extends ServiceTemplate {
     super('MuhurtaCalculator'); // Pass calculator name to super
     this.serviceName = 'RahukalamService';
     this.calculatorPath = './calculators/MuhurtaCalculator';
-    logger.log('RahukalamService initialized');
+    logger.info('RahukalamService initialized');
   }
 
   async processCalculation(birthData) {

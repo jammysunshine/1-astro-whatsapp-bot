@@ -13,9 +13,9 @@ const { formatDegree, formatTime } = require('../../utils/formatters');
 
 class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   constructor() {
-    super('EnhancedSecondaryProgressions');
+    super('SecondaryProgressionsCalculator');
     this.serviceName = 'EnhancedSecondaryProgressionsService';
-    this.calculatorPath = './calculators/EnhancedSecondaryProgressions';
+    this.calculatorPath = './calculators/SecondaryProgressionsCalculator';
     logger.info('EnhancedSecondaryProgressionsService initialized');
   }
 

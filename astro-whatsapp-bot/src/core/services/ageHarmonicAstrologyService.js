@@ -25,11 +25,8 @@ class AgeHarmonicAstrologyService extends ServiceTemplate {
       // Validate input
       this.validate(birthData);
 
-      // Create an instance of the calculator
-      const calculator = new AgeHarmonicAstrologyCalculator();
-      
-      // Generate age harmonic analysis
-      const result = await calculator.generateAgeHarmonicAnalysis(birthData);
+      // Generate age harmonic analysis using ServiceTemplate calculator
+      const result = await this.calculator.generateAgeHarmonicAnalysis(birthData);
 
       return result;
     } catch (error) {
@@ -52,11 +49,8 @@ class AgeHarmonicAstrologyService extends ServiceTemplate {
       const { birthData, targetAge } = params;
       const age = targetAge || this.extractAgeFromBirthData(birthData);
 
-      // Create calculator
-      const calculator = new AgeHarmonicAstrologyCalculator();
-      
-      // Generate analysis for specific age
-      const analysis = await calculator.generateAgeHarmonicAnalysis(birthData, age);
+      // Generate analysis for specific age using ServiceTemplate calculator
+      const analysis = await this.calculator.generateAgeHarmonicAnalysis(birthData, age);
 
       return {
         success: true,

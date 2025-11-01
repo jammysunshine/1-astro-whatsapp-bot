@@ -10,9 +10,9 @@ const { BirthData } = require('../../models/BirthData');
  */
 class CelticAstrologyService extends ServiceTemplate {
   constructor() {
-    super('CelticCalculator'); // Primary calculator for this service
+    super('CelticReader'); // Primary calculator for this service
     this.serviceName = 'CelticAstrologyService';
-    this.calculatorPath = './calculators/CelticCalculator';
+    this.calculatorPath = './calculators/celticReader';
     logger.info('CelticAstrologyService initialized');
   }
 

@@ -12,8 +12,8 @@ const logger = require('../../utils/logger');
  */
 class NadiAstrologyService extends ServiceTemplate {
   constructor(services) {
-    super('NadiCalculator');
-    this.calculatorPath = './calculators/NadiCalculator';
+    super('EnhancedNadiReader');
+    this.calculatorPath = './calculators/EnhancedNadiReader';
     this.serviceName = 'NadiAstrologyService';
     logger.info('NadiAstrologyService initialized');
   }

@@ -143,8 +143,8 @@ class CalendarTimingService extends ServiceTemplate {
    */
   async _getPanchangTiming(date, location) {
     try {
-      // Import PanchangCalculator for additional timing context
-      const panchangCalc = new PanchangCalculator();
+      // Use main calculator for Panchang calculations if available, otherwise create
+      const panchangCalc = this.calculator || new PanchangCalculator();
 
       const panchangData = await panchangCalc.calculatePanchang(date, location);
 

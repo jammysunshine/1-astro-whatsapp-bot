@@ -10,9 +10,9 @@ const { BirthData } = require('../../models/BirthData');
  */
 class MayanAstrologyService extends ServiceTemplate {
   constructor() {
-    super('MayanCalculator'); // Primary calculator for this service
+    super('MayanReader'); // Primary calculator for this service
     this.serviceName = 'MayanAstrologyService';
-    this.calculatorPath = './calculators/MayanCalculator';
+    this.calculatorPath = './calculators/mayanReader';
     logger.info('MayanAstrologyService initialized');
   }
 

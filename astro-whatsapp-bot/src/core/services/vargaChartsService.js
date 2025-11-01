@@ -11,9 +11,9 @@ const logger = require('../../utils/logger');
 
 class VargaChartsService extends ServiceTemplate {
   constructor() {
-    super('VargaCharts');
+    super('VargaChartCalculator');
     this.serviceName = 'VargaChartsService';
-    this.calculatorPath = './calculators/VargaCharts'; // Assuming this path for the main calculator
+    this.calculatorPath = './calculators/VargaChartCalculator'; // Assuming this path for the main calculator
     logger.info('VargaChartsService initialized');
   }
 

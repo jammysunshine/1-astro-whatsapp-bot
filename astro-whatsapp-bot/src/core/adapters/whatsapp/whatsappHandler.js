@@ -27,7 +27,6 @@ class WhatsAppHandler {
         data: result,
         request: serviceRequest
       };
-
     } catch (error) {
       logger.error('WhatsApp handler error:', error);
       throw error;
@@ -52,7 +51,7 @@ class WhatsAppHandler {
       options: [
         'Birth chart: "chart DD/MM/YYYY HH:MM Place"',
         'Dasha analysis: "dasha DD/MM/YYYY HH:MM Place"',
-        'Compatibility: "compatibility DD/MM/YYYY HH:MM Place"',
+        'Compatibility: "compatibility DD/MM/YYYY HH:MM Place"'
         // Add other supported commands
       ]
     };
@@ -103,7 +102,7 @@ class MessageProcessor {
           birthTime: time,
           birthPlace: place
         })
-      },
+      }
       // Add more patterns for other services
     };
   }

@@ -27,15 +27,15 @@ class PrashnaAstrologyAction extends BaseAction {
 
       // Get user profile for location
       const userProfile = await this.getUserProfile();
-      
+
       // Send initial prompt for question
-      const promptMessage = `❓ *Prashna (Horary) Astrology*\n\nI can answer your specific questions using horary astrology by casting a chart at the moment you ask.\n\n*Please provide:*\n• Your specific question\n• The time you thought of this question (HH:MM)\n• Your current location\n\n*Example Questions:*\n• "Will I get the job I applied for?"\n• "Should I move to a new city?"\n• "Is this the right time to start business?"\n\nReply with your question and details to continue.`;
+      const promptMessage = '❓ *Prashna (Horary) Astrology*\n\nI can answer your specific questions using horary astrology by casting a chart at the moment you ask.\n\n*Please provide:*\n• Your specific question\n• The time you thought of this question (HH:MM)\n• Your current location\n\n*Example Questions:*\n• "Will I get the job I applied for?"\n• "Should I move to a new city?"\n• "Is this the right time to start business?"\n\nReply with your question and details to continue.';
 
       await this.sendDirectMessage(promptMessage);
 
       // For now, we'll collect question in follow-up messages
       // In a full implementation, this would start a conversation flow
-      
+
       this.logExecution('complete', 'Prashna astrology flow initiated');
       return {
         success: true,

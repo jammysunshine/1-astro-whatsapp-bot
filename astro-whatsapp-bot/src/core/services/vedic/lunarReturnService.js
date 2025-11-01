@@ -24,7 +24,7 @@ class LunarReturnService extends ServiceTemplate {
     if (!data) {
       throw new Error('Input data is required for lunar return calculation');
     }
-    
+
     if (!data.birthData) {
       throw new Error('Birth data is required');
     }
@@ -32,7 +32,7 @@ class LunarReturnService extends ServiceTemplate {
     // Validate birth data with model
     const validatedData = new BirthData(data.birthData);
     validatedData.validate();
-    
+
     return true;
   }
 
@@ -43,15 +43,15 @@ class LunarReturnService extends ServiceTemplate {
    */
   async llunarReturnCalculation(data) {
     const { birthData, targetDate = null } = data;
-    
+
     // Get lunar return data from calculator
     const result = await this.calculator.calculateLunarReturn(birthData, targetDate);
-    
+
     // Add metadata
     result.type = 'lunar_return';
     result.generatedAt = new Date().toISOString();
     result.service = this.serviceName;
-    
+
     return result;
   }
 
@@ -148,7 +148,7 @@ class LunarReturnService extends ServiceTemplate {
   async getLunarCycleThemes(birthData, targetDate = null) {
     try {
       const result = await this.execute({ birthData, targetDate });
-      
+
       if (!result.success) {
         return result;
       }

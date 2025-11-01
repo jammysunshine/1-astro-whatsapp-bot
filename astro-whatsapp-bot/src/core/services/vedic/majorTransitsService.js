@@ -37,12 +37,12 @@ class MajorTransitsService extends ServiceTemplate {
   async getCurrentMajorTransits(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Get current major transits
       const result = await this.calculator.getCurrentMajorTransits(birthData, options);
-      
+
       return {
         success: true,
         data: result,
@@ -73,12 +73,12 @@ class MajorTransitsService extends ServiceTemplate {
   async getUpcomingMajorTransits(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, months = 12, options = {} } = params;
-      
+
       // Get upcoming major transits
       const result = await this.calculator.getUpcomingMajorTransits(birthData, months, options);
-      
+
       return {
         success: true,
         data: result,
@@ -110,12 +110,12 @@ class MajorTransitsService extends ServiceTemplate {
   async analyzeSaturnReturns(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Analyze Saturn returns
       const result = await this.calculator.analyzeSaturnReturns(birthData, options);
-      
+
       return {
         success: true,
         data: result,
@@ -146,12 +146,12 @@ class MajorTransitsService extends ServiceTemplate {
   async analyzeJupiterReturns(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Analyze Jupiter returns
       const result = await this.calculator.analyzeJupiterReturns(birthData, options);
-      
+
       return {
         success: true,
         data: result,
@@ -182,12 +182,12 @@ class MajorTransitsService extends ServiceTemplate {
   async analyzeOuterPlanetTransits(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, startDate, endDate, planets = ['Uranus', 'Neptune', 'Pluto'], options = {} } = params;
-      
+
       // Analyze outer planet transits
       const result = await this.calculator.analyzeOuterPlanetTransits(birthData, startDate, endDate, planets, options);
-      
+
       return {
         success: true,
         data: result,

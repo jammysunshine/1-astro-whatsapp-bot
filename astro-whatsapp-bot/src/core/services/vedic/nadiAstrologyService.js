@@ -13,7 +13,7 @@ const logger = require('../../utils/logger');
 class NadiAstrologyService extends ServiceTemplate {
   constructor(services) {
     super('nadiAstrologyService');
-    
+
     this.serviceName = 'NadiAstrologyService';
     logger.info('NadiAstrologyService initialized');
   }
@@ -76,7 +76,7 @@ class NadiAstrologyService extends ServiceTemplate {
    * @returns {string} Summary text
    */
   _generateNadiSummary(result) {
-    let summary = `🍃 *Nadi Astrology Reading*\n\n`;
+    let summary = '🍃 *Nadi Astrology Reading*\n\n';
 
     if (result.birthNakshatra && result.birthNakshatra.name !== 'Unknown') {
       summary += `*Birth Nakshatra:* ${result.birthNakshatra.name}\n`;
@@ -95,7 +95,7 @@ class NadiAstrologyService extends ServiceTemplate {
       summary += `*Remaining:* ${result.currentDasha.remaining} years\n\n`;
     }
 
-    summary += `*Predictions:*\n`;
+    summary += '*Predictions:*\n';
     if (result.predictions) {
       if (result.predictions.personality) {
         summary += `• Personality: ${result.predictions.personality.substring(0, 50)}...\n`;

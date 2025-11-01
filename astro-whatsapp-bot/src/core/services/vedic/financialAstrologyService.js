@@ -6,18 +6,18 @@ const logger = require('../../utils/logger');
 /**
  * FinancialAstrologyService - Wealth, investments, and financial analysis service
  *
- * Provides financial astrology calculations including wealth planets, cycles, 
+ * Provides financial astrology calculations including wealth planets, cycles,
  * and strategies using specialized calculator for wealth, investments, and financial analysis.
  */
 class FinancialAstrologyService extends ServiceTemplate {
   constructor(services) {
     super('financialAstrologyService');
-    
+
     // Initialize calculator with services if provided
     if (services) {
       this.calculator.setServices(services.calendricalService, services.geocodingService);
     }
-    
+
     this.serviceName = 'FinancialAstrologyService';
     logger.info('FinancialAstrologyService initialized');
   }
@@ -84,17 +84,17 @@ class FinancialAstrologyService extends ServiceTemplate {
   _generateFinancialSummary(result) {
     let summary = '💰 *Financial Astrology Analysis*\n\n';
 
-    summary += `*Wealth Planets:*\n`;
+    summary += '*Wealth Planets:*\n';
     result.wealthPlanets.forEach(planet => {
       summary += `• ${planet.planet}: ${planet.interpretation}\n`;
     });
 
-    summary += `\n*Financial Cycles:*\n`;
+    summary += '\n*Financial Cycles:*\n';
     result.financialCycles.forEach(cycle => {
       summary += `• ${cycle.cycle}: ${cycle.description}\n`;
     });
 
-    summary += `\n*Wealth Houses:*\n`;
+    summary += '\n*Wealth Houses:*\n';
     result.wealthHouses.forEach(house => {
       summary += `• ${house.house}: ${house.interpretation}\n`;
     });

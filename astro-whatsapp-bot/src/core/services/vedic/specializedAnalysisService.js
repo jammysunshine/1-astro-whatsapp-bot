@@ -672,9 +672,6 @@ class SpecializedAnalysisService extends ServiceTemplate {
   }
 
 
-
-
-
   /**
    * Create specialized analysis summary for quick reference
    * @param {Object} result - Full specialized analysis

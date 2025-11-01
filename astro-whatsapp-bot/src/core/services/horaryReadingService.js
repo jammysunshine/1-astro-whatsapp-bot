@@ -55,22 +55,22 @@ class HoraryReadingService extends ServiceTemplate {
   async getQuickHoraryAnswer(params) {
     try {
       this.validateParams(params, ['question', 'questionTime']);
-      
+
       const { question, questionTime, location = {} } = params;
-      
+
       // Cast horary chart
       const horaryChart = await this.calculator.castHoraryChart(questionTime, location);
-      
+
       // Generate quick answer
       const quickAnswer = {
-        question: question,
+        question,
         answer: this.generateQuickAnswer(horaryChart, question),
         confidence: this.calculateAnswerConfidence(horaryChart, question),
         timeframe: this.getQuickTimeframe(horaryChart, question),
         keyFactors: this.getKeyFactors(horaryChart, question),
         simpleAdvice: this.getSimpleAdvice(horaryChart, question)
       };
-      
+
       return {
         success: true,
         data: quickAnswer,
@@ -105,9 +105,9 @@ class HoraryReadingService extends ServiceTemplate {
   async getRelationshipHoraryAnalysis(params) {
     try {
       this.validateParams(params, ['question', 'questionTime']);
-      
+
       const { question, questionTime, location = {} } = params;
-      
+
       // Verify it's a relationship question
       if (!this.isRelationshipQuestion(question)) {
         return {
@@ -119,13 +119,13 @@ class HoraryReadingService extends ServiceTemplate {
           }
         };
       }
-      
+
       // Cast horary chart
       const horaryChart = await this.calculator.castHoraryChart(questionTime, location);
-      
+
       // Analyze relationship aspects
       const relationshipAnalysis = {
-        question: question,
+        question,
         chart: horaryChart,
         significators: this.getRelationshipSignificators(horaryChart),
         compatibility: this.analyzeRelationshipCompatibility(horaryChart),
@@ -135,7 +135,7 @@ class HoraryReadingService extends ServiceTemplate {
         outcome: this.predictRelationshipOutcome(horaryChart),
         advice: this.getRelationshipAdvice(horaryChart)
       };
-      
+
       return {
         success: true,
         data: relationshipAnalysis,
@@ -170,9 +170,9 @@ class HoraryReadingService extends ServiceTemplate {
   async getCareerHoraryAnalysis(params) {
     try {
       this.validateParams(params, ['question', 'questionTime']);
-      
+
       const { question, questionTime, location = {} } = params;
-      
+
       // Verify it's a career question
       if (!this.isCareerQuestion(question)) {
         return {
@@ -184,13 +184,13 @@ class HoraryReadingService extends ServiceTemplate {
           }
         };
       }
-      
+
       // Cast horary chart
       const horaryChart = await this.calculator.castHoraryChart(questionTime, location);
-      
+
       // Analyze career aspects
       const careerAnalysis = {
-        question: question,
+        question,
         chart: horaryChart,
         significators: this.getCareerSignificators(horaryChart),
         prospects: this.analyzeCareerProspects(horaryChart),
@@ -200,7 +200,7 @@ class HoraryReadingService extends ServiceTemplate {
         recommendations: this.getCareerRecommendations(horaryChart),
         outcome: this.predictCareerOutcome(horaryChart)
       };
-      
+
       return {
         success: true,
         data: careerAnalysis,
@@ -235,9 +235,9 @@ class HoraryReadingService extends ServiceTemplate {
   async getFinancialHoraryAnalysis(params) {
     try {
       this.validateParams(params, ['question', 'questionTime']);
-      
+
       const { question, questionTime, location = {} } = params;
-      
+
       // Verify it's a financial question
       if (!this.isFinancialQuestion(question)) {
         return {
@@ -249,13 +249,13 @@ class HoraryReadingService extends ServiceTemplate {
           }
         };
       }
-      
+
       // Cast horary chart
       const horaryChart = await this.calculator.castHoraryChart(questionTime, location);
-      
+
       // Analyze financial aspects
       const financialAnalysis = {
-        question: question,
+        question,
         chart: horaryChart,
         significators: this.getFinancialSignificators(horaryChart),
         prospects: this.analyzeFinancialProspects(horaryChart),
@@ -265,7 +265,7 @@ class HoraryReadingService extends ServiceTemplate {
         advice: this.getFinancialAdvice(horaryChart),
         outcome: this.predictFinancialOutcome(horaryChart)
       };
-      
+
       return {
         success: true,
         data: financialAnalysis,
@@ -299,13 +299,13 @@ class HoraryReadingService extends ServiceTemplate {
   async validateHoraryChart(params) {
     try {
       this.validateParams(params, ['questionTime']);
-      
+
       const { questionTime, location = {} } = params;
-      
+
       // Cast and validate chart
       const horaryChart = await this.calculator.castHoraryChart(questionTime, location);
       const validation = this.calculator.validateChart(horaryChart);
-      
+
       return {
         success: true,
         data: {
@@ -338,7 +338,7 @@ class HoraryReadingService extends ServiceTemplate {
   // Helper methods for horary analysis
   categorizeQuestion(question) {
     const lowerQuestion = question.toLowerCase();
-    
+
     if (lowerQuestion.includes('love') || lowerQuestion.includes('relationship') || lowerQuestion.includes('marriage')) {
       return 'relationship';
     } else if (lowerQuestion.includes('job') || lowerQuestion.includes('career') || lowerQuestion.includes('work')) {
@@ -364,7 +364,7 @@ class HoraryReadingService extends ServiceTemplate {
       relocation: ['Moon', 'Jupiter', 'Uranus'],
       general: ['Moon', 'Mercury', 'Jupiter']
     };
-    
+
     return significators[category] || significators.general;
   }
 
@@ -378,7 +378,7 @@ class HoraryReadingService extends ServiceTemplate {
       relocation: [3, 9, 1],
       general: [1, 10, 7]
     };
-    
+
     return houses[category] || houses.general;
   }
 
@@ -455,20 +455,20 @@ class HoraryReadingService extends ServiceTemplate {
 
   calculateAnswerConfidence(horaryChart, question) {
     let confidence = 50; // Base confidence
-    
+
     // Add confidence based on chart factors
     if (this.hasStrongSignificators(horaryChart, question)) {
       confidence += 20;
     }
-    
+
     if (this.hasClearAspects(horaryChart)) {
       confidence += 15;
     }
-    
+
     if (this.hasFavorableMoonPosition(horaryChart)) {
       confidence += 10;
     }
-    
+
     return Math.min(100, Math.max(0, confidence));
   }
 
@@ -554,9 +554,9 @@ class HoraryReadingService extends ServiceTemplate {
 
   identifyRelationshipType(question) {
     const lowerQuestion = question.toLowerCase();
-    if (lowerQuestion.includes('marriage')) return 'marriage';
-    if (lowerQuestion.includes('dating')) return 'dating';
-    if (lowerQuestion.includes('ex')) return 'reconciliation';
+    if (lowerQuestion.includes('marriage')) { return 'marriage'; }
+    if (lowerQuestion.includes('dating')) { return 'dating'; }
+    if (lowerQuestion.includes('ex')) { return 'reconciliation'; }
     return 'general';
   }
 
@@ -603,9 +603,9 @@ class HoraryReadingService extends ServiceTemplate {
 
   identifyCareerCategory(question) {
     const lowerQuestion = question.toLowerCase();
-    if (lowerQuestion.includes('promotion')) return 'promotion';
-    if (lowerQuestion.includes('new job')) return 'job_change';
-    if (lowerQuestion.includes('business')) return 'business';
+    if (lowerQuestion.includes('promotion')) { return 'promotion'; }
+    if (lowerQuestion.includes('new job')) { return 'job_change'; }
+    if (lowerQuestion.includes('business')) { return 'business'; }
     return 'general';
   }
 
@@ -652,9 +652,9 @@ class HoraryReadingService extends ServiceTemplate {
 
   identifyFinancialType(question) {
     const lowerQuestion = question.toLowerCase();
-    if (lowerQuestion.includes('investment')) return 'investment';
-    if (lowerQuestion.includes('debt')) return 'debt';
-    if (lowerQuestion.includes('income')) return 'income';
+    if (lowerQuestion.includes('investment')) { return 'investment'; }
+    if (lowerQuestion.includes('debt')) { return 'debt'; }
+    if (lowerQuestion.includes('income')) { return 'income'; }
     return 'general';
   }
 

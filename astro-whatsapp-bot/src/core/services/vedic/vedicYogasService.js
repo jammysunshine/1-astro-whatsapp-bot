@@ -9,16 +9,16 @@ const logger = require('../../../utils/logger');
 class VedicYogasService extends ServiceTemplate {
   constructor(services) {
     super('VedicYogasService', services);
-    
+
     // Initialize Vedic Yogas Calculator with required dependencies
     this.calculator = new VedicYogasCalculator(
       services.astrologer,
       services.geocodingService
     );
-    
+
     // Set services in calculator
     this.calculator.setServices(services);
-    
+
     // Service-specific configuration
     this.serviceConfig = {
       supportedInputs: ['birthData'],
@@ -42,14 +42,14 @@ class VedicYogasService extends ServiceTemplate {
    */
   async lvedicYogasCalculation(params) {
     const { birthData, options = {} } = params;
-    
+
     try {
       // Validate inputs
       this._validateInputs(birthData);
-      
+
       // Calculate Vedic Yogas using calculator
       const yogasResult = await this.calculator.calculateVedicYogas(birthData);
-      
+
       // Add service metadata
       yogasResult.serviceMetadata = {
         serviceName: this.serviceName,
@@ -58,12 +58,11 @@ class VedicYogasService extends ServiceTemplate {
         method: 'Traditional Vedic Planetary Combinations',
         categoriesAnalyzed: this.serviceConfig.yogaCategories
       };
-      
+
       // Add yoga summary analysis
       yogasResult.yogaSummary = this._analyzeYogaSummary(yogasResult.yogas);
-      
+
       return yogasResult;
-      
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
       throw new Error(`Vedic Yogas calculation failed: ${error.message}`);
@@ -81,15 +80,15 @@ class VedicYogasService extends ServiceTemplate {
     }
 
     let formatted = '🌟 *Vedic Yogas Analysis*\n\n';
-    
+
     // Add overall influence
     if (result.overallInfluence) {
       formatted += `*Overall Yoga Influence:* ${result.overallInfluence}\n\n`;
     }
-    
+
     // Add present yogas by category
-    const yogas = result.yogas;
-    
+    const { yogas } = result;
+
     // Panch Mahapurusha Yogas
     if (yogas.panchMahapurushaYogas) {
       formatted += '*🏆 Panch Mahapurusha Yogas:*\n';
@@ -103,42 +102,42 @@ class VedicYogasService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Raj Yoga
     if (yogas.rajYoga?.present) {
       formatted += '*👑 Raj Yoga:*\n';
       formatted += `• ${yogas.rajYoga.description}\n`;
       formatted += `• Strength: ${yogas.rajYoga.strength}/10\n\n`;
     }
-    
+
     // Dhan Yoga
     if (yogas.dhanYoga?.present) {
       formatted += '*💰 Dhan Yoga:*\n';
       formatted += `• ${yogas.dhanYoga.description}\n`;
       formatted += `• Strength: ${yogas.dhanYoga.strength}/10\n\n`;
     }
-    
+
     // Gaja Kesari Yoga
     if (yogas.gajaKeshariYoga?.present) {
       formatted += '*🐘 Gaja Kesari Yoga:*\n';
       formatted += `• ${yogas.gajaKeshariYoga.description}\n`;
       formatted += `• ${yogas.gajaKeshariYoga.positions}\n\n`;
     }
-    
+
     // Nbhaya Yoga
     if (yogas.nbhayaYoga?.present) {
       formatted += '*☀️ Nbhaya Yoga:*\n';
       formatted += `• ${yogas.nbhayaYoga.description}\n`;
       formatted += `• ${yogas.nbhayaYoga.significance}\n\n`;
     }
-    
+
     // Kemadruma Yoga (inauspicious)
     if (yogas.kemadrumaYoga?.present) {
       formatted += '⚠️ *Kemadruma Yoga (Considerations):*\n';
       formatted += `• ${yogas.kemadrumaYoga.description}\n`;
       formatted += `• Remediation: ${yogas.kemadrumaYoga.remediation}\n\n`;
     }
-    
+
     // Add yoga summary
     if (result.yogaSummary) {
       formatted += '*📊 Yoga Summary:*\n';
@@ -146,7 +145,7 @@ class VedicYogasService extends ServiceTemplate {
       formatted += `• Strongest Yoga: ${result.yogaSummary.strongest}\n`;
       formatted += `• Overall Effect: ${result.yogaSummary.overallEffect}\n\n`;
     }
-    
+
     // Add interpretation if available
     if (result.interpretation) {
       formatted += '*💫 Interpretation:*\n';
@@ -157,9 +156,9 @@ class VedicYogasService extends ServiceTemplate {
       }
       formatted += '\n\n';
     }
-    
+
     formatted += '*Vedic Yogas reveal special planetary combinations that create unique life patterns and potentials.*';
-    
+
     return formatted;
   }
 
@@ -172,7 +171,7 @@ class VedicYogasService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for Vedic Yogas analysis');
     }
-    
+
     if (!birthData.birthDate || !birthData.birthTime || !birthData.birthPlace) {
       throw new Error('Complete birth details (date, time, place) are required');
     }
@@ -196,37 +195,37 @@ class VedicYogasService extends ServiceTemplate {
         special: 0
       }
     };
-    
+
     // Count present yogas
     if (yogas.panchMahapurushaYogas) {
       const mahapurushaCount = Object.values(yogas.panchMahapurushaYogas).filter(y => y.present).length;
       summary.categories.mahapurusha = mahapurushaCount;
       summary.totalPresent += mahapurushaCount;
     }
-    
+
     if (yogas.rajYoga?.present) {
       summary.categories.raj = 1;
       summary.totalPresent += 1;
     }
-    
+
     if (yogas.dhanYoga?.present) {
       summary.categories.dhan = 1;
       summary.totalPresent += 1;
     }
-    
+
     if (yogas.gajaKeshariYoga?.present) {
       summary.categories.special += 1;
       summary.totalPresent += 1;
     }
-    
+
     if (yogas.nbhayaYoga?.present) {
       summary.categories.special += 1;
       summary.totalPresent += 1;
     }
-    
+
     // Find strongest yoga
     const allYogas = [];
-    
+
     if (yogas.panchMahapurushaYogas) {
       Object.entries(yogas.panchMahapurushaYogas).forEach(([name, yoga]) => {
         if (yoga.present) {
@@ -234,26 +233,26 @@ class VedicYogasService extends ServiceTemplate {
         }
       });
     }
-    
+
     if (yogas.rajYoga?.present) {
       allYogas.push({ name: 'Raj Yoga', strength: yogas.rajYoga.strength || 0 });
     }
-    
+
     if (yogas.dhanYoga?.present) {
       allYogas.push({ name: 'Dhan Yoga', strength: yogas.dhanYoga.strength || 0 });
     }
-    
+
     if (yogas.gajaKeshariYoga?.present) {
       allYogas.push({ name: 'Gaja Kesari Yoga', strength: yogas.gajaKeshariYoga.strength || 0 });
     }
-    
+
     if (allYogas.length > 0) {
-      const strongest = allYogas.reduce((prev, current) => 
-        (prev.strength > current.strength) ? prev : current
+      const strongest = allYogas.reduce((prev, current) =>
+        ((prev.strength > current.strength) ? prev : current)
       );
       summary.strongest = strongest.name;
     }
-    
+
     // Determine overall effect
     if (summary.totalPresent >= 4) {
       summary.overallEffect = 'Highly Auspicious';
@@ -264,12 +263,12 @@ class VedicYogasService extends ServiceTemplate {
     } else {
       summary.overallEffect = 'Neutral';
     }
-    
+
     // Check for Kemadruma (inauspicious)
     if (yogas.kemadrumaYoga?.present) {
       summary.overallEffect += ' (with considerations)';
     }
-    
+
     return summary;
   }
 
@@ -287,7 +286,7 @@ class VedicYogasService extends ServiceTemplate {
       malavyaYoga: 'Malavya Yoga',
       shashaYoga: 'Shasha Yoga'
     };
-    
+
     return nameMap[yogaName] || yogaName.replace(/([A-Z])/g, ' $1').trim();
   }
 
@@ -298,16 +297,16 @@ class VedicYogasService extends ServiceTemplate {
    */
   calculateConfidence(result) {
     let confidence = 75; // Base confidence for yoga analysis
-    
+
     // Increase confidence based on data completeness
     if (result.planetaryPositions && Object.keys(result.planetaryPositions).length >= 7) {
       confidence += 15;
     }
-    
+
     if (result.yogas && Object.keys(result.yogas).length >= 5) {
       confidence += 10;
     }
-    
+
     return Math.min(confidence, 100);
   }
 

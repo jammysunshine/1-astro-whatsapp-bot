@@ -18,7 +18,7 @@ class MuhurtaCalculator {
       education: ['school admission', 'exam', 'course starting'],
       health: ['surgery', 'medical treatment', 'therapy'],
       travel: ['long journey', 'house shifting', 'migration'],
-      housewarming: ['home entry', 'property purchase', 'construction'],
+      housewarming: ['home entry', 'property purchase', 'construction']
     };
 
     // Weekday lords and their significances
@@ -255,7 +255,6 @@ class MuhurtaCalculator {
 
       // Determine overall rating
       analysis.overallRating = this._determineOverallRating(scores, activity);
-
     } catch (error) {
       logger.warn('Error calculating daily factors:', error.message);
     }
@@ -318,7 +317,6 @@ class MuhurtaCalculator {
       analysis.suitability = this._calculateTimeSuitability(
         analysis, activity, startTime, endTime
       );
-
     } catch (error) {
       logger.warn('Error analyzing time slot:', error.message);
       analysis.suitability = { score: 0, rating: 'Unknown', reasons: ['Calculation error'] };
@@ -339,7 +337,7 @@ class MuhurtaCalculator {
     const activityRules = this._getActivitySpecificRules(activityType);
 
     // Check planetary rulership
-    const rulingPlanet = timeAnalysis.rulingPlanet;
+    const { rulingPlanet } = timeAnalysis;
     if (activityRules.favorablePlanets.includes(rulingPlanet)) {
       score += 20;
       reasons.push(`${rulingPlanet} rules this period - favorable for ${activity}`);
@@ -372,7 +370,7 @@ class MuhurtaCalculator {
     // Planetary positions assessment
     const importantPositions = timeAnalysis.planetaryPositions;
     Object.entries(importantPositions).forEach(([planet, position]) => {
-      const sign = position.sign;
+      const { sign } = position;
       if (this._isExalted(planet, sign)) {
         score += 8;
         reasons.push(`${planet} exalted - very auspicious`);
@@ -383,8 +381,8 @@ class MuhurtaCalculator {
     });
 
     const rating = score >= 70 ? 'Excellent' :
-                  score >= 55 ? 'Good' :
-                  score >= 35 ? 'Fair' : 'Poor';
+      score >= 55 ? 'Good' :
+        score >= 35 ? 'Fair' : 'Poor';
 
     return { score, rating, reasons };
   }
@@ -449,7 +447,7 @@ class MuhurtaCalculator {
     };
 
     const relevantPlanets = activityPlanets[activityType] || {};
-    const planetaryPositions = dailyAnalysis.planetaryPositions;
+    const { planetaryPositions } = dailyAnalysis;
 
     Object.entries(relevantPlanets).forEach(([planet, significance]) => {
       if (planetaryPositions[planet]) {
@@ -494,7 +492,7 @@ class MuhurtaCalculator {
 
     // Find best time slots
     const sortedSlots = Object.entries(timeSlotsAnalysis)
-      .sort(([,a], [,b]) => b.suitability.score - a.suitability.score)
+      .sort(([, a], [, b]) => b.suitability.score - a.suitability.score)
       .slice(0, 3);
 
     recommendations.recommendedTimeSlots = sortedSlots.map(([timeSlot, analysis]) => ({
@@ -543,9 +541,9 @@ class MuhurtaCalculator {
     }
 
     if (alternatives.length > 0) {
-      summary += `*Alternative dates available if current timing is unsuitable.*`;
+      summary += '*Alternative dates available if current timing is unsuitable.*';
     } else {
-      summary += `*Current date and time analysis completed.*`;
+      summary += '*Current date and time analysis completed.*';
     }
 
     return summary;
@@ -555,13 +553,13 @@ class MuhurtaCalculator {
   _categorizeActivity(activity) {
     const activityLower = activity.toLowerCase();
 
-    if (this.activityCategories.marriage.some(a => activityLower.includes(a))) return 'marriage';
-    if (this.activityCategories.business.some(a => activityLower.includes(a))) return 'business';
-    if (this.activityCategories.spiritual.some(a => activityLower.includes(a))) return 'spiritual';
-    if (this.activityCategories.education.some(a => activityLower.includes(a))) return 'education';
-    if (this.activityCategories.health.some(a => activityLower.includes(a))) return 'health';
-    if (this.activityCategories.travel.some(a => activityLower.includes(a))) return 'travel';
-    if (this.activityCategories.housewarming.some(a => activityLower.includes(a))) return 'housewarming';
+    if (this.activityCategories.marriage.some(a => activityLower.includes(a))) { return 'marriage'; }
+    if (this.activityCategories.business.some(a => activityLower.includes(a))) { return 'business'; }
+    if (this.activityCategories.spiritual.some(a => activityLower.includes(a))) { return 'spiritual'; }
+    if (this.activityCategories.education.some(a => activityLower.includes(a))) { return 'education'; }
+    if (this.activityCategories.health.some(a => activityLower.includes(a))) { return 'health'; }
+    if (this.activityCategories.travel.some(a => activityLower.includes(a))) { return 'travel'; }
+    if (this.activityCategories.housewarming.some(a => activityLower.includes(a))) { return 'housewarming'; }
 
     return 'general';
   }
@@ -687,9 +685,9 @@ class MuhurtaCalculator {
     return {
       number: yogaNumber,
       name: yogaName,
-      sunLongitude: sunLongitude,
-      moonLongitude: moonLongitude,
-      totalDegrees: totalDegrees
+      sunLongitude,
+      moonLongitude,
+      totalDegrees
     };
   }
 

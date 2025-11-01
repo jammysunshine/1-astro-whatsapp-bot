@@ -50,9 +50,9 @@ class MundaneAstrologyService extends ServiceTemplate {
   async analyzeGlobalTrends(params) {
     try {
       this.validateParams(params, ['countries', 'globalChart']);
-      
+
       const { countries, globalChart, options = {} } = params;
-      
+
       // Analyze each country
       const countryAnalyses = [];
       for (const country of countries) {
@@ -62,13 +62,13 @@ class MundaneAstrologyService extends ServiceTemplate {
           analysis
         });
       }
-      
+
       // Identify global patterns
       const globalPatterns = this.identifyGlobalPatterns(countryAnalyses);
-      
+
       // Generate global forecast
       const globalForecast = this.generateGlobalForecast(globalPatterns, globalChart);
-      
+
       return {
         success: true,
         data: {
@@ -107,18 +107,18 @@ class MundaneAstrologyService extends ServiceTemplate {
   async predictPoliticalEvents(params) {
     try {
       this.validateParams(params, ['country', 'chart', 'timeframe']);
-      
+
       const { country, chart, timeframe, options = {} } = params;
-      
+
       // Get political analysis
       const politicalAnalysis = await this.calculator.analyzePoliticalClimate(country, chart);
-      
+
       // Predict events based on timing analysis
       const eventPredictions = this.predictEventsFromTiming(
-        politicalAnalysis.timingAnalysis, 
+        politicalAnalysis.timingAnalysis,
         timeframe
       );
-      
+
       // Assess probability and impact
       const assessedPredictions = eventPredictions.map(prediction => ({
         ...prediction,
@@ -126,7 +126,7 @@ class MundaneAstrologyService extends ServiceTemplate {
         impact: this.assessEventImpact(prediction, politicalAnalysis),
         timeframe: `${timeframe} months`
       }));
-      
+
       return {
         success: true,
         data: {
@@ -162,7 +162,7 @@ class MundaneAstrologyService extends ServiceTemplate {
    */
   generatePoliticalInsights(politicalAnalysis) {
     const insights = [];
-    
+
     // Stability insights
     if (politicalAnalysis.politicalStability) {
       const stability = politicalAnalysis.politicalStability;
@@ -180,7 +180,7 @@ class MundaneAstrologyService extends ServiceTemplate {
         });
       }
     }
-    
+
     // Leadership insights
     if (politicalAnalysis.leadershipAnalysis) {
       const leadership = politicalAnalysis.leadershipAnalysis;
@@ -192,7 +192,7 @@ class MundaneAstrologyService extends ServiceTemplate {
         });
       }
     }
-    
+
     // Government change insights
     if (politicalAnalysis.governmentChanges) {
       const changes = politicalAnalysis.governmentChanges;
@@ -204,7 +204,7 @@ class MundaneAstrologyService extends ServiceTemplate {
         });
       }
     }
-    
+
     return insights;
   }
 
@@ -215,7 +215,7 @@ class MundaneAstrologyService extends ServiceTemplate {
    */
   generatePoliticalRecommendations(politicalAnalysis) {
     const recommendations = [];
-    
+
     // Stability-based recommendations
     if (politicalAnalysis.politicalStability?.rating === 'Unstable') {
       recommendations.push({
@@ -224,7 +224,7 @@ class MundaneAstrologyService extends ServiceTemplate {
         priority: 'high'
       });
     }
-    
+
     // Leadership-based recommendations
     if (politicalAnalysis.leadershipAnalysis?.leadershipChallenges) {
       recommendations.push({
@@ -233,7 +233,7 @@ class MundaneAstrologyService extends ServiceTemplate {
         priority: 'medium'
       });
     }
-    
+
     // International relations recommendations
     if (politicalAnalysis.internationalInfluence?.challenges) {
       recommendations.push({
@@ -242,7 +242,7 @@ class MundaneAstrologyService extends ServiceTemplate {
         priority: 'medium'
       });
     }
-    
+
     return recommendations;
   }
 
@@ -253,19 +253,19 @@ class MundaneAstrologyService extends ServiceTemplate {
    */
   generatePoliticalSummary(politicalAnalysis) {
     let summary = `Political analysis for ${politicalAnalysis.country} indicates `;
-    
+
     if (politicalAnalysis.politicalStability) {
       summary += `${politicalAnalysis.politicalStability.rating.toLowerCase()} stability. `;
     }
-    
+
     if (politicalAnalysis.governmentChanges?.likelihood === 'High') {
       summary += 'Government changes are likely. ';
     }
-    
+
     if (politicalAnalysis.internationalInfluence?.strength === 'Strong') {
       summary += 'Strong international influence present. ';
     }
-    
+
     return summary;
   }
 
@@ -281,32 +281,32 @@ class MundaneAstrologyService extends ServiceTemplate {
       leadershipTrends: {},
       internationalDynamics: []
     };
-    
+
     // Analyze stability trends
     const stabilityRatings = countryAnalyses.map(ca => ca.analysis.politicalStability?.rating).filter(Boolean);
     const stableCount = stabilityRatings.filter(r => r === 'Stable').length;
     const unstableCount = stabilityRatings.filter(r => r === 'Unstable').length;
-    
+
     patterns.stabilityTrends = {
       stable: stableCount,
       unstable: unstableCount,
       overall: stableCount > unstableCount ? 'Stable' : 'Unstable'
     };
-    
+
     // Identify common challenges
-    const allChallenges = countryAnalyses.flatMap(ca => 
+    const allChallenges = countryAnalyses.flatMap(ca =>
       ca.analysis.politicalStability?.factors || []
     );
     const challengeCounts = {};
     allChallenges.forEach(challenge => {
       challengeCounts[challenge] = (challengeCounts[challenge] || 0) + 1;
     });
-    
+
     patterns.commonChallenges = Object.entries(challengeCounts)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 5)
       .map(([challenge, count]) => ({ challenge, count }));
-    
+
     return patterns;
   }
 
@@ -334,19 +334,19 @@ class MundaneAstrologyService extends ServiceTemplate {
    */
   extractKeyFindings(countryAnalyses, globalPatterns) {
     const findings = [];
-    
+
     findings.push({
       type: 'stability_overview',
       finding: `${globalPatterns.stabilityTrends.stable} countries show stable political conditions`
     });
-    
+
     if (globalPatterns.commonChallenges.length > 0) {
       findings.push({
         type: 'common_challenge',
         finding: `Most common challenge: ${globalPatterns.commonChallenges[0].challenge}`
       });
     }
-    
+
     return findings;
   }
 
@@ -358,32 +358,32 @@ class MundaneAstrologyService extends ServiceTemplate {
    */
   predictEventsFromTiming(timingAnalysis, timeframe) {
     const predictions = [];
-    
-    if (!timingAnalysis) return predictions;
-    
+
+    if (!timingAnalysis) { return predictions; }
+
     // Generate predictions based on timing factors
     if (timingAnalysis.favorablePeriods) {
       timingAnalysis.favorablePeriods.forEach(period => {
         predictions.push({
           type: 'favorable_period',
-          description: `Favorable period for political initiatives`,
+          description: 'Favorable period for political initiatives',
           timing: period,
           category: 'opportunity'
         });
       });
     }
-    
+
     if (timingAnalysis.challengingPeriods) {
       timingAnalysis.challengingPeriods.forEach(period => {
         predictions.push({
           type: 'challenging_period',
-          description: `Challenging period requiring caution`,
+          description: 'Challenging period requiring caution',
           timing: period,
           category: 'risk'
         });
       });
     }
-    
+
     return predictions;
   }
 
@@ -395,14 +395,14 @@ class MundaneAstrologyService extends ServiceTemplate {
    */
   assessEventProbability(prediction, politicalAnalysis) {
     let baseProbability = 50;
-    
+
     // Adjust based on political stability
     if (politicalAnalysis.politicalStability?.rating === 'Stable') {
       baseProbability += prediction.category === 'opportunity' ? 20 : -10;
     } else if (politicalAnalysis.politicalStability?.rating === 'Unstable') {
       baseProbability += prediction.category === 'risk' ? 20 : -10;
     }
-    
+
     return Math.max(0, Math.min(100, baseProbability));
   }
 
@@ -427,13 +427,13 @@ class MundaneAstrologyService extends ServiceTemplate {
    */
   calculateForecastConfidence(globalPatterns) {
     const totalCountries = globalPatterns.stabilityTrends.stable + globalPatterns.stabilityTrends.unstable;
-    if (totalCountries === 0) return 50;
-    
+    if (totalCountries === 0) { return 50; }
+
     const dominantRatio = Math.max(
       globalPatterns.stabilityTrends.stable,
       globalPatterns.stabilityTrends.unstable
     ) / totalCountries;
-    
+
     return Math.round(dominantRatio * 100);
   }
 
@@ -444,7 +444,7 @@ class MundaneAstrologyService extends ServiceTemplate {
    */
   generateGlobalRecommendations(globalPatterns) {
     const recommendations = [];
-    
+
     if (globalPatterns.stabilityTrends.unstable > globalPatterns.stabilityTrends.stable) {
       recommendations.push({
         category: 'global_stability',
@@ -452,7 +452,7 @@ class MundaneAstrologyService extends ServiceTemplate {
         priority: 'high'
       });
     }
-    
+
     if (globalPatterns.commonChallenges.length > 0) {
       recommendations.push({
         category: 'common_challenges',
@@ -460,7 +460,7 @@ class MundaneAstrologyService extends ServiceTemplate {
         priority: 'medium'
       });
     }
-    
+
     return recommendations;
   }
 

@@ -23,7 +23,7 @@ class DavisonChartService extends ServiceTemplate {
     if (!data) {
       throw new Error('Input data is required for Davison chart calculation');
     }
-    
+
     if (!data.person1 || !data.person2) {
       throw new Error('Both person1 and person2 birth data are required');
     }
@@ -31,10 +31,10 @@ class DavisonChartService extends ServiceTemplate {
     // Validate birth data with model
     const validatedData1 = new BirthData(data.person1);
     validatedData1.validate();
-    
+
     const validatedData2 = new BirthData(data.person2);
     validatedData2.validate();
-    
+
     return true;
   }
 
@@ -45,7 +45,7 @@ class DavisonChartService extends ServiceTemplate {
    */
   async ldavisonChartCalculation(data) {
     const { person1, person2 } = data;
-    
+
     // Get compatibility analysis from calculator (as Davison chart alternative)
     const compatibilityAnalysis = await this.calculator.calculateCompatibility(person1, person2);
 
@@ -156,7 +156,7 @@ class DavisonChartService extends ServiceTemplate {
   _createDavisonChartFromCompatibility(compatibilityAnalysis, person1, person2) {
     // Create a simulated Davison chart based on compatibility data
     // In a true implementation, this would calculate midpoint positions and times
-    
+
     return {
       type: 'davison_chart',
       method: 'compatibility_based',
@@ -165,7 +165,7 @@ class DavisonChartService extends ServiceTemplate {
         birthDate: person1.birthDate
       },
       person2: {
-        name: person2.name || 'Person 2', 
+        name: person2.name || 'Person 2',
         birthDate: person2.birthDate
       },
       compatibility: compatibilityAnalysis,
@@ -207,14 +207,14 @@ class DavisonChartService extends ServiceTemplate {
    * @private
    */
   _getMidpointSign(person1, person2, planet) {
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 
-                  'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-    
+    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+
     // Simulate midpoint calculation (would use actual birth data in real implementation)
     const index1 = Math.floor(Math.random() * 12);
     const index2 = Math.floor(Math.random() * 12);
     const midpointIndex = Math.floor((index1 + index2) / 2);
-    
+
     return signs[midpointIndex];
   }
 
@@ -233,14 +233,14 @@ class DavisonChartService extends ServiceTemplate {
       'Learning and intellectual expansion',
       'Balance and harmony building'
     ];
-    
+
     // Select purpose based on compatibility score
     const score = compatibilityAnalysis.overallCompatibility || 75;
-    if (score > 85) return purposes[0];
-    if (score > 75) return purposes[1];
-    if (score > 65) return purposes[2];
-    if (score > 55) return purposes[3];
-    if (score > 45) return purposes[4];
+    if (score > 85) { return purposes[0]; }
+    if (score > 75) { return purposes[1]; }
+    if (score > 65) { return purposes[2]; }
+    if (score > 55) { return purposes[3]; }
+    if (score > 45) { return purposes[4]; }
     return purposes[5];
   }
 

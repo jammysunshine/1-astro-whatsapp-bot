@@ -9,13 +9,13 @@ const logger = require('../../../utils/logger');
 class ElectionalAstrologyService extends ServiceTemplate {
   constructor(services) {
     super('ElectionalAstrologyService', services);
-    
+
     // Initialize Muhurta Calculator for electional calculations
     this.calculator = new MuhurtaCalculator();
-    
+
     // Set services in calculator
     this.calculator.setServices(services);
-    
+
     // Service-specific configuration
     this.serviceConfig = {
       supportedInputs: ['electionalData', 'birthData'],
@@ -50,14 +50,14 @@ class ElectionalAstrologyService extends ServiceTemplate {
    */
   async lelectionalAstrologyCalculation(params) {
     const { electionalData, options = {} } = params;
-    
+
     try {
       // Validate inputs
       this._validateInputs(electionalData);
-      
+
       // Generate electional analysis using calculator
       const electionalResult = await this.calculator.generateMuhurta(electionalData);
-      
+
       // Add service metadata
       electionalResult.serviceMetadata = {
         serviceName: this.serviceName,
@@ -67,12 +67,11 @@ class ElectionalAstrologyService extends ServiceTemplate {
         activityType: electionalData.activity,
         calculationApproach: 'Traditional Muhurta principles with modern enhancements'
       };
-      
+
       // Add enhanced analysis
       electionalResult.enhancedAnalysis = this._performEnhancedElectionalAnalysis(electionalResult, electionalData);
-      
+
       return electionalResult;
-      
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
       throw new Error(`Electional Astrology calculation failed: ${error.message}`);
@@ -89,13 +88,13 @@ class ElectionalAstrologyService extends ServiceTemplate {
       return '❌ *Electional Astrology Analysis Error*\n\nUnable to generate electional astrology analysis. Please check your activity details and try again.';
     }
 
-    let formatted = `⏰ *Electional Astrology Analysis*\n\n`;
-    
+    let formatted = '⏰ *Electional Astrology Analysis*\n\n';
+
     // Add activity details
     formatted += `*Activity:* ${result.activity}\n`;
     formatted += `*Preferred Date:* ${result.preferredDate}\n`;
     formatted += `*Location:* ${result.location}\n\n`;
-    
+
     // Add daily auspiciousness
     if (result.dailyAnalysis) {
       formatted += '*📅 Daily Auspiciousness:*\n';
@@ -105,7 +104,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
       formatted += `• **Yoga:** ${result.dailyAnalysis.yoga || 'N/A'}\n`;
       formatted += `• **Weekday:** ${result.weekdaySuitability?.weekday || 'N/A'} (${result.weekdaySuitability?.lord || 'N/A'})\n\n`;
     }
-    
+
     // Add best timing recommendations
     if (result.recommendations) {
       formatted += '*🎯 Best Timing Recommendations:*\n';
@@ -120,7 +119,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Add time slots analysis
     if (result.timeSlotsAnalysis) {
       formatted += '*🕐 Auspicious Time Slots:*\n';
@@ -128,7 +127,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
         .filter(([time, data]) => data.suitability.rating !== 'Poor')
         .sort((a, b) => b[1].suitability.score - a[1].suitability.score)
         .slice(0, 5);
-      
+
       if (timeSlots.length > 0) {
         timeSlots.forEach(([time, data]) => {
           formatted += `• **${time}:** ${data.suitability.rating} (${data.suitability.score}/100)\n`;
@@ -141,7 +140,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Add planetary support
     if (result.planetaryStrengths) {
       formatted += '*🌟 Planetary Support:*\n';
@@ -156,30 +155,30 @@ class ElectionalAstrologyService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Add enhanced analysis if available
     if (result.enhancedAnalysis) {
       formatted += '*🎭 Enhanced Electional Analysis:*\n';
-      
+
       if (result.enhancedAnalysis.overallAssessment) {
         formatted += `• **Assessment:** ${result.enhancedAnalysis.overallAssessment}\n`;
       }
-      
+
       if (result.enhancedAnalysis.timingQuality) {
         formatted += `• **Timing Quality:** ${result.enhancedAnalysis.timingQuality}\n`;
       }
-      
+
       if (result.enhancedAnalysis.actionableAdvice) {
         formatted += `• **Actionable Advice:** ${result.enhancedAnalysis.actionableAdvice}\n`;
       }
-      
+
       if (result.enhancedAnalysis.electionalStrength) {
         formatted += `• **Electional Strength:** ${result.enhancedAnalysis.electionalStrength}\n`;
       }
-      
+
       formatted += '\n';
     }
-    
+
     // Add alternative dates if available
     if (result.alternatives && result.alternatives.length > 0) {
       formatted += '*📅 Alternative Dates:*\n';
@@ -188,15 +187,15 @@ class ElectionalAstrologyService extends ServiceTemplate {
       });
       formatted += '\n';
     }
-    
+
     // Add summary if available
     if (result.summary) {
       formatted += `*📋 Summary:*\n${result.summary}\n\n`;
     }
-    
+
     // Add service footer
     formatted += '---\n*Electional Astrology - Finding Auspicious Timing for Important Activities*';
-    
+
     return formatted;
   }
 
@@ -209,15 +208,15 @@ class ElectionalAstrologyService extends ServiceTemplate {
     if (!electionalData) {
       throw new Error('Electional data is required for auspicious timing analysis');
     }
-    
+
     if (!electionalData.activity || electionalData.activity.trim().length === 0) {
       throw new Error('Activity type is required for electional astrology analysis');
     }
-    
+
     if (!electionalData.preferredDate) {
       throw new Error('Preferred date is required for electional astrology analysis');
     }
-    
+
     if (!electionalData.location) {
       throw new Error('Location is required for accurate electional astrology calculation');
     }
@@ -239,7 +238,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
       riskFactors: [],
       confidenceLevel: ''
     };
-    
+
     // Determine overall assessment
     if (result.dailyAnalysis?.overallRating) {
       const rating = result.dailyAnalysis.overallRating;
@@ -265,13 +264,13 @@ class ElectionalAstrologyService extends ServiceTemplate {
         analysis.electionalStrength = 'Weak - Challenging factors predominant';
       }
     }
-    
+
     // Assess confidence level
     if (result.dailyAnalysis?.overallRating && result.timeSlotsAnalysis) {
       const goodSlots = Object.values(result.timeSlotsAnalysis)
         .filter(slot => slot.suitability.rating === 'Excellent' || slot.suitability.rating === 'Good')
         .length;
-      
+
       if (result.dailyAnalysis.overallRating === 'Excellent' && goodSlots >= 3) {
         analysis.confidenceLevel = 'High - Multiple excellent time slots available';
       } else if (result.dailyAnalysis.overallRating === 'Good' && goodSlots >= 2) {
@@ -282,20 +281,20 @@ class ElectionalAstrologyService extends ServiceTemplate {
         analysis.confidenceLevel = 'Low - Consider alternative dates';
       }
     }
-    
+
     // Identify risk factors
     if (result.planetaryStrengths?.challenging && result.planetaryStrengths.challenging.length > 0) {
       analysis.riskFactors.push(`Challenging planetary influences: ${result.planetaryStrengths.challenging.join(', ')}`);
     }
-    
+
     if (result.dailyAnalysis?.overallRating === 'Poor') {
       analysis.riskFactors.push('Overall day rated as poor for electional activities');
     }
-    
+
     if (result.weekdaySuitability?.suitability === 'Poor') {
       analysis.riskFactors.push('Weekday not suitable for this activity type');
     }
-    
+
     // Add activity-specific considerations
     if (electionalData.activity) {
       const activity = electionalData.activity.toLowerCase();
@@ -307,7 +306,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
         analysis.actionableAdvice += '\n• Avoid malefic planetary hours for health procedures';
       }
     }
-    
+
     return analysis;
   }
 
@@ -318,7 +317,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
    */
   calculateConfidence(result) {
     let confidence = 75; // Base confidence for Electional Astrology
-    
+
     // Adjust based on daily analysis rating
     if (result.dailyAnalysis?.overallRating) {
       const rating = result.dailyAnalysis.overallRating;
@@ -332,7 +331,7 @@ class ElectionalAstrologyService extends ServiceTemplate {
         confidence -= 10;
       }
     }
-    
+
     // Increase confidence for good time slots
     if (result.timeSlotsAnalysis) {
       const goodSlots = Object.values(result.timeSlotsAnalysis)
@@ -340,19 +339,19 @@ class ElectionalAstrologyService extends ServiceTemplate {
         .length;
       confidence += goodSlots * 3;
     }
-    
+
     // Increase confidence for favorable weekday
     if (result.weekdaySuitability?.suitability === 'Excellent') {
       confidence += 10;
     } else if (result.weekdaySuitability?.suitability === 'Good') {
       confidence += 5;
     }
-    
+
     // Increase confidence for complete analysis
     if (result.planetaryStrengths && result.recommendations && result.dailyAnalysis) {
       confidence += 5;
     }
-    
+
     return Math.max(0, Math.min(100, Math.round(confidence)));
   }
 

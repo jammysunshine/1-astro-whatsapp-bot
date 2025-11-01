@@ -170,7 +170,6 @@ class DailyHoroscopeService extends ServiceTemplate {
   }
 
 
-
   /**
    * Generate weekly summary from daily horoscopes
    * @param {Array} weeklyHoroscopes - Array of daily horoscopes
@@ -217,7 +216,7 @@ class DailyHoroscopeService extends ServiceTemplate {
    * @private
    */
   _findCommonTheme(predictions) {
-    if (!predictions || predictions.length === 0) return 'General developments';
+    if (!predictions || predictions.length === 0) { return 'General developments'; }
 
     // Simple frequency analysis
     const words = predictions.join(' ').toLowerCase().split(/\s+/);

@@ -37,12 +37,12 @@ class TransitPreviewService extends ServiceTemplate {
   async getMonthlyTransitForecast(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, year, month, options = {} } = params;
-      
+
       // Get monthly transit forecast
       const result = await this.calculator.getMonthlyTransitForecast(birthData, year, month, options);
-      
+
       return {
         success: true,
         data: result,
@@ -75,12 +75,12 @@ class TransitPreviewService extends ServiceTemplate {
   async getYearlyTransitForecast(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, year, options = {} } = params;
-      
+
       // Get yearly transit forecast
       const result = await this.calculator.getYearlyTransitForecast(birthData, year, options);
-      
+
       return {
         success: true,
         data: result,
@@ -112,12 +112,12 @@ class TransitPreviewService extends ServiceTemplate {
   async getWeeklyTransitPreview(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, startDate, options = {} } = params;
-      
+
       // Get weekly transit preview
       const result = await this.calculator.getWeeklyTransitPreview(birthData, startDate, options);
-      
+
       return {
         success: true,
         data: result,
@@ -149,12 +149,12 @@ class TransitPreviewService extends ServiceTemplate {
   async getDailyTransitHighlights(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, date, options = {} } = params;
-      
+
       // Get daily transit highlights
       const result = await this.calculator.getDailyTransitHighlights(birthData, date, options);
-      
+
       return {
         success: true,
         data: result,
@@ -186,12 +186,12 @@ class TransitPreviewService extends ServiceTemplate {
   async getCriticalTransitDates(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, startDate, endDate, options = {} } = params;
-      
+
       // Get critical transit dates
       const result = await this.calculator.getCriticalTransitDates(birthData, startDate, endDate, options);
-      
+
       return {
         success: true,
         data: result,

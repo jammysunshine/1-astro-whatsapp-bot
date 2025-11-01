@@ -3,7 +3,7 @@ const logger = require('../../utils/logger');
 
 /**
  * WesternAstrologyService - Core service for Western astrology calculations
- * Provides comprehensive Western astrology analysis including birth charts, 
+ * Provides comprehensive Western astrology analysis including birth charts,
  * planetary positions, aspects, and transit interpretations
  */
 class WesternAstrologyService extends ServiceTemplate {
@@ -66,29 +66,29 @@ class WesternAstrologyService extends ServiceTemplate {
       let result;
 
       switch (calculationType.toLowerCase()) {
-        case 'chart':
-        case 'birthchart':
-        case 'natal':
-          result = await this._calculateWesternBirthChart(birthData);
-          break;
-        case 'transits':
-        case 'current':
-          result = await this._calculateCurrentTransits(birthData);
-          break;
-        case 'aspects':
-          result = await this._calculateAspects(birthData);
-          break;
-        case 'houses':
-          result = await this._calculateHouses(birthData);
-          break;
-        case 'progressions':
-          result = await this._calculateProgressions(birthData, options);
-          break;
-        case 'synastry':
-          result = await this._calculateSynastry(birthData, options.partnerData);
-          break;
-        default:
-          throw new Error(`Unsupported calculation type: ${calculationType}`);
+      case 'chart':
+      case 'birthchart':
+      case 'natal':
+        result = await this._calculateWesternBirthChart(birthData);
+        break;
+      case 'transits':
+      case 'current':
+        result = await this._calculateCurrentTransits(birthData);
+        break;
+      case 'aspects':
+        result = await this._calculateAspects(birthData);
+        break;
+      case 'houses':
+        result = await this._calculateHouses(birthData);
+        break;
+      case 'progressions':
+        result = await this._calculateProgressions(birthData, options);
+        break;
+      case 'synastry':
+        result = await this._calculateSynastry(birthData, options.partnerData);
+        break;
+      default:
+        throw new Error(`Unsupported calculation type: ${calculationType}`);
       }
 
       return {
@@ -123,7 +123,7 @@ class WesternAstrologyService extends ServiceTemplate {
     try {
       // Use the Western chart generator calculator
       const chartData = await this.calculator.generateWesternChart(birthData);
-      
+
       // Add Western-specific analysis
       const westernAnalysis = {
         ...chartData,
@@ -153,7 +153,7 @@ class WesternAstrologyService extends ServiceTemplate {
     try {
       // Calculate transits using calculator
       const transitsData = await this.calculator.calculateCurrentTransits(birthData);
-      
+
       return {
         ...transitsData,
         transitInterpretation: this._interpretTransits(transitsData),
@@ -173,7 +173,7 @@ class WesternAstrologyService extends ServiceTemplate {
   async _calculateAspects(birthData) {
     try {
       const chartData = await this.calculator.generateWesternChart(birthData);
-      
+
       return {
         aspects: chartData.aspects || [],
         majorAspects: this._filterMajorAspects(chartData.aspects),
@@ -195,7 +195,7 @@ class WesternAstrologyService extends ServiceTemplate {
   async _calculateHouses(birthData) {
     try {
       const chartData = await this.calculator.generateWesternChart(birthData);
-      
+
       return {
         houses: chartData.houses || {},
         houseCusps: this._getHouseCusps(chartData.houses),
@@ -219,13 +219,13 @@ class WesternAstrologyService extends ServiceTemplate {
     try {
       const progressionType = options.type || 'secondary';
       const years = options.years || 1;
-      
+
       const progressionsData = await this.calculator.calculateProgressions(
-        birthData, 
-        progressionType, 
+        birthData,
+        progressionType,
         years
       );
-      
+
       return {
         ...progressionsData,
         progressionType,
@@ -252,10 +252,10 @@ class WesternAstrologyService extends ServiceTemplate {
       }
 
       const synastryData = await this.calculator.calculateSynastry(
-        person1Data, 
+        person1Data,
         person2Data
       );
-      
+
       return {
         ...synastryData,
         compatibilityAnalysis: this._analyzeCompatibility(synastryData),
@@ -274,7 +274,7 @@ class WesternAstrologyService extends ServiceTemplate {
    * @returns {string} Sun sign
    */
   _getSunSign(sunData) {
-    if (!sunData || !sunData.sign) return 'Unknown';
+    if (!sunData || !sunData.sign) { return 'Unknown'; }
     return sunData.sign;
   }
 
@@ -284,7 +284,7 @@ class WesternAstrologyService extends ServiceTemplate {
    * @returns {string} Moon sign
    */
   _getMoonSign(moonData) {
-    if (!moonData || !moonData.sign) return 'Unknown';
+    if (!moonData || !moonData.sign) { return 'Unknown'; }
     return moonData.sign;
   }
 
@@ -294,7 +294,7 @@ class WesternAstrologyService extends ServiceTemplate {
    * @returns {string} Rising sign
    */
   _getRisingSign(housesData) {
-    if (!housesData || !housesData[1]?.sign) return 'Unknown';
+    if (!housesData || !housesData[1]?.sign) { return 'Unknown'; }
     return housesData[1].sign;
   }
 

@@ -172,7 +172,6 @@ class CurrentTransitsService extends ServiceTemplate {
   }
 
 
-
   /**
    * Analyze career-related transits
    * @param {Object} transitAnalysis - Transit analysis result
@@ -338,8 +337,8 @@ class CurrentTransitsService extends ServiceTemplate {
     const aspectCount = transitAnalysis.aspects?.length || 0;
     const strongAspects = transitAnalysis.aspects?.filter(a => a.orb < 2).length || 0;
 
-    if (strongAspects > 3) return 'high';
-    if (aspectCount > 5) return 'moderate';
+    if (strongAspects > 3) { return 'high'; }
+    if (aspectCount > 5) { return 'moderate'; }
     return 'low';
   }
 

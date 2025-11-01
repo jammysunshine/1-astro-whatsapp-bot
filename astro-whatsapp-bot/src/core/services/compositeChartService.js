@@ -35,17 +35,17 @@ class CompositeChartService extends ServiceTemplate {
    */
   async calculateCompositeChart(person1Data, person2Data) {
     const chart1 = await VedicCalculator.calculateChart(
-      person1Data.datetime, 
-      person1Data.latitude, 
+      person1Data.datetime,
+      person1Data.latitude,
       person1Data.longitude
     );
-    
+
     const chart2 = await VedicCalculator.calculateChart(
-      person2Data.datetime, 
-      person2Data.latitude, 
+      person2Data.datetime,
+      person2Data.latitude,
       person2Data.longitude
     );
-    
+
     // Calculate composite positions (midpoints)
     const compositeChart = {
       sun: this.calculateMidpoint(chart1.sun, chart2.sun),
@@ -60,7 +60,7 @@ class CompositeChartService extends ServiceTemplate {
       ascendant: this.calculateMidpoint(chart1.ascendant, chart2.ascendant),
       mc: this.calculateMidpoint(chart1.mc, chart2.mc)
     };
-    
+
     return compositeChart;
   }
 
@@ -70,12 +70,12 @@ class CompositeChartService extends ServiceTemplate {
   calculateMidpoint(long1, long2) {
     const diff = Math.abs(long1 - long2);
     const avg = (long1 + long2) / 2;
-    
+
     // Handle wrap-around at 360 degrees
     if (diff > 180) {
       return (avg + 180) % 360;
     }
-    
+
     return avg;
   }
 
@@ -85,14 +85,14 @@ class CompositeChartService extends ServiceTemplate {
   calculateCompositeAspects(compositeChart) {
     const aspects = [];
     const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
-    
+
     for (let i = 0; i < planets.length; i++) {
       for (let j = i + 1; j < planets.length; j++) {
         const planet1 = planets[i];
         const planet2 = planets[j];
         const long1 = compositeChart[planet1];
         const long2 = compositeChart[planet2];
-        
+
         const aspect = this.calculateAspect(long1, long2);
         if (aspect.aspect !== 'none') {
           aspects.push({
@@ -106,7 +106,7 @@ class CompositeChartService extends ServiceTemplate {
         }
       }
     }
-    
+
     return aspects;
   }
 
@@ -116,7 +116,7 @@ class CompositeChartService extends ServiceTemplate {
   calculateAspect(long1, long2) {
     const diff = Math.abs(long1 - long2);
     const normalizedDiff = diff > 180 ? 360 - diff : diff;
-    
+
     const aspects = [
       { type: 'conjunction', angle: 0, orb: 8 },
       { type: 'opposition', angle: 180, orb: 8 },
@@ -124,7 +124,7 @@ class CompositeChartService extends ServiceTemplate {
       { type: 'square', angle: 90, orb: 8 },
       { type: 'sextile', angle: 60, orb: 6 }
     ];
-    
+
     for (const aspect of aspects) {
       const angleDiff = Math.abs(normalizedDiff - aspect.angle);
       if (angleDiff <= aspect.orb) {
@@ -135,7 +135,7 @@ class CompositeChartService extends ServiceTemplate {
         };
       }
     }
-    
+
     return { aspect: 'none', orb: 0, strength: 0 };
   }
 
@@ -190,12 +190,12 @@ class CompositeChartService extends ServiceTemplate {
         'saturn-venus': 'Supportive responsibility and enjoyment balance'
       }
     };
-    
+
     const key = `${planet1}-${planet2}`;
     const reverseKey = `${planet2}-${planet1}`;
-    
-    return interpretations[aspect]?.[key] || 
-           interpretations[aspect]?.[reverseKey] || 
+
+    return interpretations[aspect]?.[key] ||
+           interpretations[aspect]?.[reverseKey] ||
            `Composite ${aspect} aspect between ${planet1} and ${planet2}`;
   }
 
@@ -204,12 +204,12 @@ class CompositeChartService extends ServiceTemplate {
    */
   calculateCompositeHouses(compositeChart) {
     const houses = [];
-    const ascendant = compositeChart.ascendant;
-    
+    const { ascendant } = compositeChart;
+
     for (let house = 1; house <= 12; house++) {
       const houseCusp = (ascendant + (house - 1) * 30) % 360;
       const housePlanets = this.getPlanetsInHouse(compositeChart, houseCusp);
-      
+
       houses.push({
         house,
         cusp: houseCusp,
@@ -218,7 +218,7 @@ class CompositeChartService extends ServiceTemplate {
         interpretation: this.getCompositeHouseInterpretation(house, housePlanets)
       });
     }
-    
+
     return houses;
   }
 
@@ -228,16 +228,16 @@ class CompositeChartService extends ServiceTemplate {
   getPlanetsInHouse(compositeChart, houseCusp) {
     const planets = [];
     const planetNames = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
-    
+
     planetNames.forEach(planet => {
       const longitude = compositeChart[planet];
       const housePosition = this.getHousePosition(longitude, houseCusp);
-      
+
       if (housePosition === 1) {
         planets.push(this.capitalizeFirst(planet));
       }
     });
-    
+
     return planets;
   }
 
@@ -267,13 +267,13 @@ class CompositeChartService extends ServiceTemplate {
       11: 'Friendships, social networks, and shared goals',
       12: 'Spiritual connection, hidden matters, and endings'
     };
-    
+
     const baseInterpretation = interpretations[house] || 'Relationship focus area';
-    
+
     if (planets.length > 0) {
       return `${baseInterpretation} with emphasis on ${planets.join(', ')}`;
     }
-    
+
     return baseInterpretation;
   }
 
@@ -289,7 +289,7 @@ class CompositeChartService extends ServiceTemplate {
       passion: this.analyzePassion(compositeChart, aspects),
       stability: this.analyzeStability(compositeChart, aspects)
     };
-    
+
     return dynamics;
   }
 
@@ -298,27 +298,27 @@ class CompositeChartService extends ServiceTemplate {
    */
   identifyStrengths(aspects, houses) {
     const strengths = [];
-    
+
     // Harmonious aspects
-    const harmoniousAspects = aspects.filter(a => 
+    const harmoniousAspects = aspects.filter(a =>
       ['trine', 'sextile'].includes(a.aspect) && a.strength > 60
     );
-    
+
     harmoniousAspects.forEach(aspect => {
       strengths.push(`Strong ${aspect.aspect} between ${aspect.planet1} and ${aspect.planet2}`);
     });
-    
+
     // House strengths
     const firstHouse = houses.find(h => h.house === 1);
     if (firstHouse && firstHouse.planets.includes('Sun')) {
       strengths.push('Strong shared identity and purpose');
     }
-    
+
     const seventhHouse = houses.find(h => h.house === 7);
     if (seventhHouse && seventhHouse.planets.includes('Venus')) {
       strengths.push('Natural harmony and partnership balance');
     }
-    
+
     return strengths;
   }
 
@@ -327,22 +327,22 @@ class CompositeChartService extends ServiceTemplate {
    */
   identifyChallenges(aspects, houses) {
     const challenges = [];
-    
+
     // Challenging aspects
-    const challengingAspects = aspects.filter(a => 
+    const challengingAspects = aspects.filter(a =>
       ['square', 'opposition'].includes(a.aspect) && a.strength > 60
     );
-    
+
     challengingAspects.forEach(aspect => {
       challenges.push(`Tension between ${aspect.planet1} and ${aspect.planet2} (${aspect.aspect})`);
     });
-    
+
     // House challenges
     const twelfthHouse = houses.find(h => h.house === 12);
     if (twelfthHouse && twelfthHouse.planets.length > 0) {
       challenges.push('Hidden or unconscious relationship dynamics');
     }
-    
+
     return challenges;
   }
 
@@ -350,18 +350,18 @@ class CompositeChartService extends ServiceTemplate {
    * Analyze communication patterns
    */
   analyzeCommunication(compositeChart, aspects) {
-    const mercuryAspects = aspects.filter(a => 
+    const mercuryAspects = aspects.filter(a =>
       a.planet1 === 'Mercury' || a.planet2 === 'Mercury'
     );
-    
-    const harmonious = mercuryAspects.filter(a => 
+
+    const harmonious = mercuryAspects.filter(a =>
       ['trine', 'sextile'].includes(a.aspect)
     ).length;
-    
-    const challenging = mercuryAspects.filter(a => 
+
+    const challenging = mercuryAspects.filter(a =>
       ['square', 'opposition'].includes(a.aspect)
     ).length;
-    
+
     if (harmonious > challenging) {
       return 'Harmonious communication with natural understanding';
     } else if (challenging > harmonious) {
@@ -375,18 +375,18 @@ class CompositeChartService extends ServiceTemplate {
    * Analyze emotional connection
    */
   analyzeEmotional(compositeChart, aspects) {
-    const moonAspects = aspects.filter(a => 
+    const moonAspects = aspects.filter(a =>
       a.planet1 === 'Moon' || a.planet2 === 'Moon'
     );
-    
-    const harmonious = moonAspects.filter(a => 
+
+    const harmonious = moonAspects.filter(a =>
       ['trine', 'sextile'].includes(a.aspect)
     ).length;
-    
-    const challenging = moonAspects.filter(a => 
+
+    const challenging = moonAspects.filter(a =>
       ['square', 'opposition'].includes(a.aspect)
     ).length;
-    
+
     if (harmonious > challenging) {
       return 'Natural emotional harmony and understanding';
     } else if (challenging > harmonious) {
@@ -400,19 +400,19 @@ class CompositeChartService extends ServiceTemplate {
    * Analyze passion and attraction
    */
   analyzePassion(compositeChart, aspects) {
-    const venusAspects = aspects.filter(a => 
+    const venusAspects = aspects.filter(a =>
       a.planet1 === 'Venus' || a.planet2 === 'Venus'
     );
-    
-    const marsAspects = aspects.filter(a => 
+
+    const marsAspects = aspects.filter(a =>
       a.planet1 === 'Mars' || a.planet2 === 'Mars'
     );
-    
-    const venusMarsAspect = aspects.find(a => 
+
+    const venusMarsAspect = aspects.find(a =>
       (a.planet1 === 'Venus' && a.planet2 === 'Mars') ||
       (a.planet1 === 'Mars' && a.planet2 === 'Venus')
     );
-    
+
     if (venusMarsAspect) {
       if (['conjunction', 'trine', 'sextile'].includes(venusMarsAspect.aspect)) {
         return 'Strong passion and romantic chemistry';
@@ -420,7 +420,7 @@ class CompositeChartService extends ServiceTemplate {
         return 'Intense passion with some tension';
       }
     }
-    
+
     return 'Moderate passion with room for growth';
   }
 
@@ -428,18 +428,18 @@ class CompositeChartService extends ServiceTemplate {
    * Analyze stability and commitment
    */
   analyzeStability(compositeChart, aspects) {
-    const saturnAspects = aspects.filter(a => 
+    const saturnAspects = aspects.filter(a =>
       a.planet1 === 'Saturn' || a.planet2 === 'Saturn'
     );
-    
-    const harmonious = saturnAspects.filter(a => 
+
+    const harmonious = saturnAspects.filter(a =>
       ['trine', 'sextile'].includes(a.aspect)
     ).length;
-    
-    const challenging = saturnAspects.filter(a => 
+
+    const challenging = saturnAspects.filter(a =>
       ['square', 'opposition'].includes(a.aspect)
     ).length;
-    
+
     if (harmonious > challenging) {
       return 'Natural stability and long-term commitment potential';
     } else if (challenging > harmonious) {
@@ -473,18 +473,18 @@ class CompositeChartService extends ServiceTemplate {
   async calculate(userData, options = {}) {
     try {
       this.validateInput(userData);
-      
+
       const { person1, person2 } = userData;
-      
+
       if (!person1 || !person2) {
         throw new Error('Two people\'s data required for composite chart calculation');
       }
-      
+
       const compositeChart = await this.calculateCompositeChart(person1, person2);
       const aspects = this.calculateCompositeAspects(compositeChart);
       const houses = this.calculateCompositeHouses(compositeChart);
       const dynamics = this.analyzeRelationshipDynamics(compositeChart, aspects, houses);
-      
+
       const analysis = {
         compositeChart,
         aspects,
@@ -497,9 +497,8 @@ class CompositeChartService extends ServiceTemplate {
           dynamics
         })
       };
-      
+
       return this.formatOutput(analysis, options.language || 'en');
-      
     } catch (error) {
       throw new Error(`Composite chart calculation failed: ${error.message}`);
     }
@@ -510,14 +509,14 @@ class CompositeChartService extends ServiceTemplate {
    */
   generateInterpretations(data) {
     const { compositeChart, aspects, houses, dynamics } = data;
-    
+
     const interpretations = {
       overall: this.generateOverallAnalysis(data),
       relationship: this.generateRelationshipAnalysis(data),
       recommendations: this.generateRecommendations(data),
       compatibility: this.generateCompatibilityAnalysis(data)
     };
-    
+
     return interpretations;
   }
 
@@ -526,7 +525,7 @@ class CompositeChartService extends ServiceTemplate {
    */
   generateOverallAnalysis(data) {
     const { dynamics } = data;
-    
+
     return {
       summary: 'Composite chart reveals the relationship as a unique entity with its own dynamics',
       strengths: dynamics.strengths,
@@ -540,7 +539,7 @@ class CompositeChartService extends ServiceTemplate {
    */
   generateRelationshipAnalysis(data) {
     const { dynamics } = data;
-    
+
     return {
       communication: dynamics.communication,
       emotional: dynamics.emotional,
@@ -556,23 +555,23 @@ class CompositeChartService extends ServiceTemplate {
   generateRecommendations(data) {
     const recommendations = [];
     const { dynamics } = data;
-    
+
     if (dynamics.communication.includes('challenges')) {
       recommendations.push('Focus on conscious communication and active listening');
     }
-    
+
     if (dynamics.emotional.includes('tensions')) {
       recommendations.push('Work on emotional awareness and mutual understanding');
     }
-    
+
     if (dynamics.stability.includes('challenges')) {
       recommendations.push('Build trust through consistency and reliability');
     }
-    
+
     if (dynamics.passion.includes('room for growth')) {
       recommendations.push('Explore shared interests and creative activities together');
     }
-    
+
     return recommendations;
   }
 
@@ -581,22 +580,22 @@ class CompositeChartService extends ServiceTemplate {
    */
   generateCompatibilityAnalysis(data) {
     const { aspects, dynamics } = data;
-    
-    const harmoniousAspects = aspects.filter(a => 
+
+    const harmoniousAspects = aspects.filter(a =>
       ['trine', 'sextile'].includes(a.aspect)
     ).length;
-    
-    const challengingAspects = aspects.filter(a => 
+
+    const challengingAspects = aspects.filter(a =>
       ['square', 'opposition'].includes(a.aspect)
     ).length;
-    
+
     let compatibilityLevel = 'Moderate';
     if (harmoniousAspects > challengingAspects * 1.5) {
       compatibilityLevel = 'High';
     } else if (challengingAspects > harmoniousAspects * 1.5) {
       compatibilityLevel = 'Challenging';
     }
-    
+
     return {
       level: compatibilityLevel,
       harmony: harmoniousAspects,
@@ -611,19 +610,19 @@ class CompositeChartService extends ServiceTemplate {
   identifyGrowthAreas(data) {
     const growthAreas = [];
     const { dynamics } = data;
-    
+
     if (dynamics.communication.includes('challenges')) {
       growthAreas.push('Communication and understanding');
     }
-    
+
     if (dynamics.emotional.includes('tensions')) {
       growthAreas.push('Emotional connection and awareness');
     }
-    
+
     if (dynamics.stability.includes('challenges')) {
       growthAreas.push('Trust and commitment building');
     }
-    
+
     return growthAreas;
   }
 
@@ -657,9 +656,9 @@ class CompositeChartService extends ServiceTemplate {
         compatibilityAnalysis: 'अनुकूलता विश्लेषण'
       }
     };
-    
+
     const t = translations[language] || translations.en;
-    
+
     return {
       metadata: this.getMetadata(),
       analysis: {

@@ -15,7 +15,7 @@ class ServiceManager {
   _initializeServices() {
     return {
       birthChartService: new BirthChartService(),
-      vimshottariDashaService: new VimshottariDashaService(),
+      vimshottariDashaService: new VimshottariDashaService()
       // Add all other services here (will be added as implemented)
     };
   }
@@ -60,7 +60,7 @@ class CoreApp {
     });
 
     // Service execution endpoint
-    this.app.post('/execute/:service', async (req, res) => {
+    this.app.post('/execute/:service', async(req, res) => {
       try {
         const { service } = req.params;
         const { data } = req.body;
@@ -75,7 +75,6 @@ class CoreApp {
 
         const result = await serviceInstance.execute(data);
         res.json(result);
-
       } catch (error) {
         logger.error('Service execution error:', error);
         res.status(500).json({
@@ -98,7 +97,6 @@ class CoreApp {
 
         const metadata = serviceInstance.getMetadata();
         res.json(metadata);
-
       } catch (error) {
         res.status(500).json({
           error: error.message

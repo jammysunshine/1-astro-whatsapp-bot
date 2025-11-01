@@ -16,12 +16,12 @@ const logger = require('../../utils/logger');
 class ComprehensiveVedicAnalysisService extends ServiceTemplate {
   constructor(services) {
     super('comprehensiveVedicAnalysisService');
-    
+
     // Initialize calculator with services if provided
     if (services) {
       this.calculator.setServices(services);
     }
-    
+
     this.serviceName = 'ComprehensiveVedicAnalysisService';
     logger.info('ComprehensiveVedicAnalysisService initialized');
   }

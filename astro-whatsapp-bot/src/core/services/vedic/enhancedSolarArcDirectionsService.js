@@ -36,16 +36,16 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   async calculateSolarArcDirections(birthDatetime, birthLatitude, birthLongitude, targetDate) {
     const birthChart = await VedicCalculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
     const targetChart = await VedicCalculator.calculateChart(targetDate, birthLatitude, birthLongitude);
-    
+
     // Calculate age in years (solar arc = age in degrees)
     const birthDate = new Date(birthDatetime);
     const targetDateTime = new Date(targetDate);
     const ageInYears = (targetDateTime - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
     const solarArc = ageInYears;
-    
+
     // Apply solar arc to all planets
     const directedChart = this.applySolarArc(birthChart, solarArc);
-    
+
     return {
       birthChart,
       directedChart,
@@ -61,17 +61,17 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   applySolarArc(birthChart, solarArc) {
     const directedChart = { ...birthChart };
-    
+
     const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
-    
+
     for (const planet of planets) {
       directedChart[planet] = (birthChart[planet] + solarArc) % 360;
     }
-    
+
     // Keep Rahu/Ketu positions (they don't move in solar arc)
     directedChart.rahu = birthChart.rahu;
     directedChart.ketu = birthChart.ketu;
-    
+
     return directedChart;
   }
 
@@ -81,14 +81,14 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   calculateDirectionalAspects(directedChart, birthChart) {
     const aspects = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
-    
+
     for (const directedPlanet of planets) {
       const directedLong = directedChart[directedPlanet.toLowerCase()];
-      
+
       for (const natalPlanet of planets) {
         const natalLong = birthChart[natalPlanet.toLowerCase()];
         const aspect = this.calculateAspect(directedLong, natalLong);
-        
+
         if (aspect.aspect !== 'none') {
           aspects.push({
             directedPlanet,
@@ -101,7 +101,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
         }
       }
     }
-    
+
     return aspects;
   }
 
@@ -111,7 +111,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   calculateAspect(long1, long2) {
     const diff = Math.abs(long1 - long2);
     const normalizedDiff = diff > 180 ? 360 - diff : diff;
-    
+
     const aspects = [
       { type: 'conjunction', angle: 0, orb: 3 },
       { type: 'opposition', angle: 180, orb: 3 },
@@ -119,7 +119,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
       { type: 'square', angle: 90, orb: 3 },
       { type: 'sextile', angle: 60, orb: 2 }
     ];
-    
+
     for (const aspect of aspects) {
       const angleDiff = Math.abs(normalizedDiff - aspect.angle);
       if (angleDiff <= aspect.orb) {
@@ -130,7 +130,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
         };
       }
     }
-    
+
     return { aspect: 'none', orb: 0, strength: 0 };
   }
 
@@ -140,10 +140,10 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   getDirectionalAspectType(directedPlanet, natalPlanet, aspect) {
     const benefic = ['Jupiter', 'Venus', 'Mercury'];
     const malefic = ['Mars', 'Saturn'];
-    
+
     const isDirectedBenefic = benefic.includes(directedPlanet);
     const isNatalBenefic = benefic.includes(natalPlanet);
-    
+
     const aspectTypes = {
       conjunction: isDirectedBenefic ? 'opportunity' : 'challenge',
       trine: 'support',
@@ -151,7 +151,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
       square: 'activation',
       opposition: 'awareness'
     };
-    
+
     return aspectTypes[aspect] || 'neutral';
   }
 
@@ -162,11 +162,11 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
     const houseAnalysis = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
     const birthAscendant = birthChart.ascendant;
-    
+
     for (const planet of planets) {
       const planetLong = directedChart[planet.toLowerCase()];
       const housePosition = this.getLongitudeHouse(planetLong, birthAscendant);
-      
+
       houseAnalysis.push({
         planet,
         house: housePosition,
@@ -174,7 +174,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
         interpretation: this.getDirectionalHouseInterpretation(planet, housePosition)
       });
     }
-    
+
     return houseAnalysis;
   }
 
@@ -311,7 +311,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
         Saturn: 'Spiritual discipline and isolation'
       }
     };
-    
+
     return interpretations[house]?.[planet] || 'Directional influence in this house';
   }
 
@@ -321,10 +321,10 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   calculateLifeEventTiming(directedChart, birthChart, solarArc) {
     const events = [];
     const aspects = this.calculateDirectionalAspects(directedChart, birthChart);
-    
+
     // Major life events based on strong aspects
     const majorAspects = aspects.filter(a => a.strength > 70);
-    
+
     majorAspects.forEach(aspect => {
       const event = this.interpretLifeEvent(aspect, solarArc);
       if (event) {
@@ -332,12 +332,12 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
           type: event.type,
           description: event.description,
           timing: event.timing,
-          aspect: aspect,
+          aspect,
           significance: event.significance
         });
       }
     });
-    
+
     return events;
   }
 
@@ -346,7 +346,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   interpretLifeEvent(aspect, solarArc) {
     const age = Math.floor(solarArc);
-    
+
     const eventTypes = {
       'Sun-conjunction-Sun': {
         type: 'Personal Identity',
@@ -385,7 +385,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
         significance: 'high'
       }
     };
-    
+
     const aspectKey = `${aspect.directedPlanet}-${aspect.aspect}-${aspect.natalPlanet}`;
     return eventTypes[aspectKey] || null;
   }
@@ -396,16 +396,16 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   calculatePredictiveWindows(directedChart, birthChart, solarArc) {
     const windows = [];
     const aspects = this.calculateDirectionalAspects(directedChart, birthChart);
-    
+
     // Group aspects by type and timing
-    const activatingAspects = aspects.filter(a => 
+    const activatingAspects = aspects.filter(a =>
       (a.aspect === 'square' || a.aspect === 'opposition') && a.strength > 60
     );
-    
-    const harmoniousAspects = aspects.filter(a => 
+
+    const harmoniousAspects = aspects.filter(a =>
       (a.aspect === 'trine' || a.aspect === 'sextile') && a.strength > 60
     );
-    
+
     // Create predictive windows
     if (activatingAspects.length > 0) {
       windows.push({
@@ -415,7 +415,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
         aspects: activatingAspects.slice(0, 3)
       });
     }
-    
+
     if (harmoniousAspects.length > 0) {
       windows.push({
         type: 'Opportunity Window',
@@ -424,7 +424,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
         aspects: harmoniousAspects.slice(0, 3)
       });
     }
-    
+
     return windows;
   }
 
@@ -434,7 +434,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   analyzeArcProgression(solarArc) {
     const arcDegrees = solarArc;
     const age = Math.floor(solarArc);
-    
+
     const lifePhases = {
       0: { name: 'Birth', theme: 'Pure potential', duration: 7 },
       7: { name: 'Childhood', theme: 'Learning and development', duration: 7 },
@@ -446,25 +446,25 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
       49: { name: 'Senior Years', theme: 'Legacy and reflection', duration: 7 },
       56: { name: 'Elder Years', theme: 'Spiritual completion', duration: 14 }
     };
-    
+
     for (const [startAge, phase] of Object.entries(lifePhases)) {
       if (age >= parseInt(startAge) && age < parseInt(startAge) + phase.duration) {
         return {
           phase: phase.name,
           theme: phase.theme,
-          age: age,
+          age,
           progress: ((age - parseInt(startAge)) / phase.duration) * 100,
-          arcDegrees: arcDegrees
+          arcDegrees
         };
       }
     }
-    
+
     return {
       phase: 'Wisdom Years',
       theme: 'Complete spiritual integration',
-      age: age,
+      age,
       progress: 100,
-      arcDegrees: arcDegrees
+      arcDegrees
     };
   }
 
@@ -474,44 +474,44 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   async calculate(userData, options = {}) {
     try {
       this.validateInput(userData);
-      
+
       const { datetime, latitude, longitude, targetDate } = userData;
-      
+
       if (!targetDate) {
         targetDate = new Date().toISOString();
       }
-      
+
       const directions = await this.calculateSolarArcDirections(
-        datetime, 
-        latitude, 
-        longitude, 
+        datetime,
+        latitude,
+        longitude,
         targetDate
       );
-      
+
       const directionalAspects = this.calculateDirectionalAspects(
-        directions.directedChart, 
+        directions.directedChart,
         directions.birthChart
       );
-      
+
       const directionalHouses = this.calculateDirectionalHouses(
-        directions.directedChart, 
+        directions.directedChart,
         directions.birthChart
       );
-      
+
       const lifeEvents = this.calculateLifeEventTiming(
-        directions.directedChart, 
-        directions.birthChart, 
+        directions.directedChart,
+        directions.birthChart,
         directions.solarArc
       );
-      
+
       const predictiveWindows = this.calculatePredictiveWindows(
-        directions.directedChart, 
-        directions.birthChart, 
+        directions.directedChart,
+        directions.birthChart,
         directions.solarArc
       );
-      
+
       const arcProgression = this.analyzeArcProgression(directions.solarArc);
-      
+
       const analysis = {
         targetDate: directions.targetDate,
         solarArc: directions.solarArc,
@@ -529,9 +529,8 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
           arcProgression
         })
       };
-      
+
       return this.formatOutput(analysis, options.language || 'en');
-      
     } catch (error) {
       throw new Error(`Enhanced solar arc directions calculation failed: ${error.message}`);
     }
@@ -542,7 +541,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   generateInterpretations(data) {
     const { directionalAspects, directionalHouses, lifeEvents, predictiveWindows, arcProgression } = data;
-    
+
     const interpretations = {
       lifeDirection: this.interpretLifeDirection(data),
       majorEvents: this.interpretMajorEvents(lifeEvents),
@@ -551,7 +550,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
       development: this.interpretDevelopment(arcProgression),
       overall: this.generateOverallAnalysis(data)
     };
-    
+
     return interpretations;
   }
 
@@ -560,12 +559,12 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   interpretLifeDirection(data) {
     const { directionalAspects, arcProgression } = data;
-    
+
     const strongAspects = directionalAspects.filter(a => a.strength > 70);
-    const activatingAspects = directionalAspects.filter(a => 
+    const activatingAspects = directionalAspects.filter(a =>
       a.aspect === 'square' || a.aspect === 'opposition'
     );
-    
+
     return {
       phase: arcProgression.phase,
       theme: arcProgression.theme,
@@ -579,7 +578,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   interpretMajorEvents(lifeEvents) {
     const significantEvents = lifeEvents.filter(e => e.significance === 'high');
-    
+
     return {
       upcoming: significantEvents.slice(0, 3),
       total: lifeEvents.length,
@@ -595,11 +594,11 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
     directionalHouses.forEach(house => {
       houseCounts[house.house] = (houseCounts[house.house] || 0) + 1;
     });
-    
+
     const focusedHouses = Object.entries(houseCounts)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 3);
-    
+
     return {
       primary: focusedHouses[0] ? `House ${focusedHouses[0][0]}` : 'None',
       areas: focusedHouses.map(([house, count]) => `House ${house} (${count} planets)`),
@@ -613,11 +612,11 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   interpretTiming(predictiveWindows) {
     const activatingWindows = predictiveWindows.filter(w => w.type === 'Activation Window');
     const opportunityWindows = predictiveWindows.filter(w => w.type === 'Opportunity Window');
-    
+
     return {
       current: activatingWindows.length > 0 ? 'activation' : 'opportunity',
       windows: predictiveWindows,
-      recommendation: activatingWindows.length > 0 ? 
+      recommendation: activatingWindows.length > 0 ?
         'Focus on addressing challenges and taking decisive action' :
         'Pursue new opportunities and growth initiatives'
     };
@@ -643,7 +642,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   calculateNextTransition(currentAge) {
     const transitions = [7, 14, 21, 28, 35, 42, 49, 56, 70];
     const nextTransition = transitions.find(t => t > currentAge);
-    
+
     return nextTransition ? `Age ${nextTransition}` : 'Final phase';
   }
 
@@ -652,7 +651,7 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   generateOverallAnalysis(data) {
     const { directionalAspects, arcProgression, lifeEvents } = data;
-    
+
     return {
       summary: `Solar arc directions at ${arcProgression.phase} stage: ${arcProgression.theme}`,
       intensity: this.calculateDirectionalIntensity(data),
@@ -668,9 +667,9 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
     const { directionalAspects } = data;
     const totalStrength = directionalAspects.reduce((sum, aspect) => sum + aspect.strength, 0);
     const averageStrength = directionalAspects.length > 0 ? totalStrength / directionalAspects.length : 0;
-    
-    if (averageStrength > 70) return 'High';
-    if (averageStrength > 40) return 'Medium';
+
+    if (averageStrength > 70) { return 'High'; }
+    if (averageStrength > 40) { return 'Medium'; }
     return 'Low';
   }
 
@@ -679,13 +678,13 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
    */
   assessPotential(data) {
     const { directionalAspects, predictiveWindows } = data;
-    
-    const harmoniousAspects = directionalAspects.filter(a => 
+
+    const harmoniousAspects = directionalAspects.filter(a =>
       a.aspect === 'trine' || a.aspect === 'sextile'
     );
-    
+
     const opportunityWindows = predictiveWindows.filter(w => w.type === 'Opportunity Window');
-    
+
     if (harmoniousAspects.length > opportunityWindows.length) {
       return 'High growth potential';
     } else if (opportunityWindows.length > 0) {
@@ -701,29 +700,29 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
   generateDirectionalRecommendations(data) {
     const recommendations = [];
     const { directionalAspects, arcProgression, directionalHouses } = data;
-    
+
     // Based on arc progression
     if (arcProgression.phase.includes('Adulthood')) {
       recommendations.push('Focus on career and relationship development');
     } else if (arcProgression.phase.includes('Mid-life')) {
       recommendations.push('Consider life reevaluation and new directions');
     }
-    
+
     // Based on aspects
-    const challengingAspects = directionalAspects.filter(a => 
+    const challengingAspects = directionalAspects.filter(a =>
       (a.aspect === 'square' || a.aspect === 'opposition') && a.strength > 60
     );
-    
+
     if (challengingAspects.length > 0) {
       recommendations.push('Navigate current challenges with awareness and growth mindset');
     }
-    
+
     // Based on house focus
     const firstHousePlanets = directionalHouses.filter(h => h.house === 1);
     if (firstHousePlanets.length > 0) {
       recommendations.push('Focus on personal development and self-expression');
     }
-    
+
     return recommendations;
   }
 
@@ -769,9 +768,9 @@ class EnhancedSolarArcDirectionsService extends ServiceTemplate {
         overallAnalysis: 'समग्र विश्लेषण'
       }
     };
-    
+
     const t = translations[language] || translations.en;
-    
+
     return {
       metadata: this.getMetadata(),
       analysis: {

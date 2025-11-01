@@ -9,16 +9,16 @@ const logger = require('../../../utils/logger');
 class AshtakavargaService extends ServiceTemplate {
   constructor(services) {
     super('AshtakavargaService', services);
-    
+
     // Initialize Ashtakavarga Calculator with required dependencies
     this.calculator = new AshtakavargaCalculator();
-    
+
     // Set services in calculator
     this.calculator.setServices(
       services.calendricalService,
       services.geocodingService
     );
-    
+
     // Service-specific configuration
     this.serviceConfig = {
       supportedInputs: ['birthData'],
@@ -41,14 +41,14 @@ class AshtakavargaService extends ServiceTemplate {
    */
   async lashtakavargaCalculation(params) {
     const { birthData, options = {} } = params;
-    
+
     try {
       // Validate inputs
       this._validateInputs(birthData);
-      
+
       // Calculate Ashtakavarga using calculator
       const ashtakavargaResult = await this.calculator.calculateAshtakavarga(birthData);
-      
+
       // Add service metadata
       ashtakavargaResult.serviceMetadata = {
         serviceName: this.serviceName,
@@ -58,12 +58,11 @@ class AshtakavargaService extends ServiceTemplate {
         totalPoints: 64,
         planetsAnalyzed: 7
       };
-      
+
       // Add enhanced analysis
       ashtakavargaResult.enhancedAnalysis = this._performEnhancedAshtakavargaAnalysis(ashtakavargaResult);
-      
+
       return ashtakavargaResult;
-      
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
       throw new Error(`Ashtakavarga calculation failed: ${error.message}`);
@@ -80,13 +79,13 @@ class AshtakavargaService extends ServiceTemplate {
       return '❌ *Ashtakavarga Analysis Error*\n\nUnable to generate Ashtakavarga analysis. Please check your birth details and try again.';
     }
 
-    let formatted = `📊 *Ashtakavarga Analysis*\n\n`;
-    
+    let formatted = '📊 *Ashtakavarga Analysis*\n\n';
+
     // Add overview
     if (result.overview) {
       formatted += `${result.overview}\n\n`;
     }
-    
+
     // Add planetary strengths
     if (result.planetaryStrengths && result.planetaryStrengths.length > 0) {
       formatted += '*🌟 Planetary Strengths (Bindus):*\n';
@@ -95,7 +94,7 @@ class AshtakavargaService extends ServiceTemplate {
       });
       formatted += '\n';
     }
-    
+
     // Add peak houses
     if (result.peakHouses && result.peakHouses.length > 0) {
       formatted += '*🏆 Strongest Life Areas:*\n';
@@ -104,36 +103,36 @@ class AshtakavargaService extends ServiceTemplate {
       });
       formatted += '\n';
     }
-    
+
     // Add interpretation
     if (result.interpretation) {
       formatted += '*💫 Interpretation:*\n';
       formatted += `${result.interpretation}\n\n`;
     }
-    
+
     // Add enhanced analysis if available
     if (result.enhancedAnalysis) {
       formatted += '*🎯 Enhanced Analysis:*\n';
-      
+
       if (result.enhancedAnalysis.overallStrength) {
         formatted += `• **Overall Strength:** ${result.enhancedAnalysis.overallStrength}\n`;
       }
-      
+
       if (result.enhancedAnalysis.lifeAreaFocus) {
         formatted += `• **Life Focus:** ${result.enhancedAnalysis.lifeAreaFocus}\n`;
       }
-      
+
       if (result.enhancedAnalysis.recommendations) {
         formatted += `• **Recommendations:** ${result.enhancedAnalysis.recommendations}\n`;
       }
-      
+
       if (result.enhancedAnalysis.challenges) {
         formatted += `• **Growth Areas:** ${result.enhancedAnalysis.challenges}\n`;
       }
-      
+
       formatted += '\n';
     }
-    
+
     // Add house-wise analysis if available
     if (result.enhancedAnalysis?.houseAnalysis) {
       formatted += '*🏠 House-wise Strength:*\n';
@@ -142,10 +141,10 @@ class AshtakavargaService extends ServiceTemplate {
       });
       formatted += '\n';
     }
-    
+
     // Add service footer
     formatted += '---\n*Ashtakavarga - Vedic 64-point Beneficial Influence System*';
-    
+
     return formatted;
   }
 
@@ -158,7 +157,7 @@ class AshtakavargaService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for Ashtakavarga analysis');
     }
-    
+
     if (!birthData.birthDate || !birthData.birthTime) {
       throw new Error('Birth date and time are required for Ashtakavarga analysis');
     }
@@ -179,19 +178,19 @@ class AshtakavargaService extends ServiceTemplate {
       houseAnalysis: {},
       sarvashtakavarga: 0
     };
-    
+
     // Calculate total points (Sarvashtakavarga)
     if (result.planetaryStrengths) {
       let totalPoints = 0;
       const housePoints = {};
-      
+
       result.planetaryStrengths.forEach(planet => {
         // Extract points from strength string (e.g., "Sun: 8 points")
         const pointsMatch = planet.strength.match(/(\d+)\s*points?/);
         if (pointsMatch) {
           const points = parseInt(pointsMatch[1]);
           totalPoints += points;
-          
+
           // Track points by house
           if (!housePoints[planet.house]) {
             housePoints[planet.house] = 0;
@@ -199,9 +198,9 @@ class AshtakavargaService extends ServiceTemplate {
           housePoints[planet.house] += points;
         }
       });
-      
+
       analysis.sarvashtakavarga = totalPoints;
-      
+
       // Determine overall strength
       if (totalPoints >= 45) {
         analysis.overallStrength = 'Very Strong - Excellent planetary support';
@@ -216,14 +215,14 @@ class AshtakavargaService extends ServiceTemplate {
         analysis.overallStrength = 'Weak - Limited planetary support';
         analysis.recommendations = 'Focus on planning and preparation, avoid major commitments';
       }
-      
+
       // Analyze house strengths
       const strongHouses = [];
       const weakHouses = [];
-      
+
       Object.entries(housePoints).forEach(([house, points]) => {
         const houseMeaning = this._getHouseMeaning(parseInt(house));
-        
+
         if (points >= 8) {
           strongHouses.push(houseMeaning);
           analysis.houseAnalysis[house] = `Strong (${points} points) - ${houseMeaning} well-supported`;
@@ -234,17 +233,17 @@ class AshtakavargaService extends ServiceTemplate {
           analysis.houseAnalysis[house] = `Moderate (${points} points) - ${houseMeaning} balanced`;
         }
       });
-      
+
       // Determine life area focus
       if (strongHouses.length > 0) {
         analysis.lifeAreaFocus = `Strong focus in: ${strongHouses.join(', ')}`;
       }
-      
+
       if (weakHouses.length > 0) {
         analysis.challenges = `Areas needing attention: ${weakHouses.join(', ')}`;
       }
     }
-    
+
     return analysis;
   }
 
@@ -269,7 +268,7 @@ class AshtakavargaService extends ServiceTemplate {
       11: 'Gains and social network',
       12: 'Losses and spirituality'
     };
-    
+
     return houseMeanings[house] || `House ${house}`;
   }
 
@@ -280,20 +279,20 @@ class AshtakavargaService extends ServiceTemplate {
    */
   calculateConfidence(result) {
     let confidence = 80; // Base confidence for Ashtakavarga
-    
+
     // Increase confidence based on data completeness
     if (result.planetaryStrengths && result.planetaryStrengths.length >= 7) {
       confidence += 10;
     }
-    
+
     if (result.peakHouses && result.peakHouses.length > 0) {
       confidence += 5;
     }
-    
+
     if (result.enhancedAnalysis && result.enhancedAnalysis.sarvashtakavarga > 0) {
       confidence += 5;
     }
-    
+
     return Math.min(confidence, 100);
   }
 

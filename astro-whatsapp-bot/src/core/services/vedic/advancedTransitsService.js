@@ -38,12 +38,12 @@ class AdvancedTransitsService extends ServiceTemplate {
   async calculateTransitAspects(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, date, options = {} } = params;
-      
+
       // Calculate transit aspects
       const result = await this.calculator.calculateTransitAspects(birthData, date, options);
-      
+
       return {
         success: true,
         data: result,
@@ -75,12 +75,12 @@ class AdvancedTransitsService extends ServiceTemplate {
   async calculateTransitReturns(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, planet, year, options = {} } = params;
-      
+
       // Calculate transit returns
       const result = await this.calculator.calculateTransitReturns(birthData, planet, year, options);
-      
+
       return {
         success: true,
         data: result,
@@ -113,12 +113,12 @@ class AdvancedTransitsService extends ServiceTemplate {
   async calculatePlanetaryStations(params) {
     try {
       this.validateParams(params, ['startDate', 'endDate']);
-      
+
       const { startDate, endDate, planets = [], options = {} } = params;
-      
+
       // Calculate planetary stations
       const result = await this.calculator.calculatePlanetaryStations(startDate, endDate, planets, options);
-      
+
       return {
         success: true,
         data: result,
@@ -151,12 +151,12 @@ class AdvancedTransitsService extends ServiceTemplate {
   async calculateEclipseTransits(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, startDate, endDate, options = {} } = params;
-      
+
       // Calculate eclipse transits
       const result = await this.calculator.calculateEclipseTransits(birthData, startDate, endDate, options);
-      
+
       return {
         success: true,
         data: result,
@@ -188,12 +188,12 @@ class AdvancedTransitsService extends ServiceTemplate {
   async calculateCompositeTransits(params) {
     try {
       this.validateParams(params, ['birthData1', 'birthData2']);
-      
+
       const { birthData1, birthData2, date, options = {} } = params;
-      
+
       // Calculate composite transits
       const result = await this.calculator.calculateCompositeTransits(birthData1, birthData2, date, options);
-      
+
       return {
         success: true,
         data: result,

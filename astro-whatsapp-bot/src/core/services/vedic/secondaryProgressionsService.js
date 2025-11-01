@@ -323,10 +323,7 @@ class SecondaryProgressionsService extends ServiceTemplate {
     // Identify developmental cycles
     if (progressions.currentAge) {
       const age = progressions.currentAge;
-      if (age >= 0 && age < 12) patterns.cycles.push('Foundation building (ages 0-12)');
-      else if (age >= 12 && age < 30) patterns.cycles.push('Identity formation (ages 12-30)');
-      else if (age >= 30 && age < 50) patterns.cycles.push('Career and family building (ages 30-50)');
-      else if (age >= 50) patterns.cycles.push('Wisdom and legacy (ages 50+)');
+      if (age >= 0 && age < 12) { patterns.cycles.push('Foundation building (ages 0-12)'); } else if (age >= 12 && age < 30) { patterns.cycles.push('Identity formation (ages 12-30)'); } else if (age >= 30 && age < 50) { patterns.cycles.push('Career and family building (ages 30-50)'); } else if (age >= 50) { patterns.cycles.push('Wisdom and legacy (ages 50+)'); }
     }
 
     return patterns;
@@ -470,11 +467,11 @@ class SecondaryProgressionsService extends ServiceTemplate {
   }
 
   _getAgePhase(age) {
-    if (age >= 0 && age < 12) return 'Foundation and learning';
-    if (age >= 12 && age < 21) return 'Identity and exploration';
-    if (age >= 21 && age < 35) return 'Establishment and building';
-    if (age >= 35 && age < 50) return 'Mastery and contribution';
-    if (age >= 50 && age < 65) return 'Wisdom and reflection';
+    if (age >= 0 && age < 12) { return 'Foundation and learning'; }
+    if (age >= 12 && age < 21) { return 'Identity and exploration'; }
+    if (age >= 21 && age < 35) { return 'Establishment and building'; }
+    if (age >= 35 && age < 50) { return 'Mastery and contribution'; }
+    if (age >= 50 && age < 65) { return 'Wisdom and reflection'; }
     return 'Legacy and completion';
   }
 

@@ -15,8 +15,8 @@ class ServiceTemplate extends AstroServiceInterface {
         // Dynamically import the calculator module
         const CalculatorModule = require(this.calculatorPath);
         // Get the calculator - try default export, then named export matching the name, then module itself
-        let rawCalculator = CalculatorModule.default || CalculatorModule[this.calculatorName] || CalculatorModule;
-        
+        const rawCalculator = CalculatorModule.default || CalculatorModule[this.calculatorName] || CalculatorModule;
+
         // Check if rawCalculator is a constructor function (class) and needs instantiation
         if (typeof rawCalculator === 'function' && rawCalculator.prototype && rawCalculator.prototype.constructor) {
           // This is a class constructor - we need to handle instantiation
@@ -25,7 +25,7 @@ class ServiceTemplate extends AstroServiceInterface {
           try {
             this.calculator = new rawCalculator();
           } catch (instantiationError) {
-            // If instantiation fails (likely due to required constructor parameters), 
+            // If instantiation fails (likely due to required constructor parameters),
             // store the class constructor for the service to handle its own instantiation if needed
             this.calculator = rawCalculator;
             logger.warn(`Calculator ${this.calculatorName} is a class that requires constructor parameters. Stored as constructor:`, instantiationError.message);
@@ -34,7 +34,7 @@ class ServiceTemplate extends AstroServiceInterface {
           // This is likely an already instantiated object or static methods container
           this.calculator = rawCalculator;
         }
-        
+
         logger.info(`Calculator ${this.calculatorName} loaded for ${this.constructor.name}`);
       } catch (error) {
         logger.error(`Failed to load calculator ${this.calculatorName} from ${this.calculatorPath}:`, error);
@@ -67,7 +67,6 @@ class ServiceTemplate extends AstroServiceInterface {
 
       logger.info(`${this.constructor.name} execution completed`);
       return formattedResult;
-
     } catch (error) {
       logger.error(`${this.constructor.name} execution failed:`, error);
       throw error;

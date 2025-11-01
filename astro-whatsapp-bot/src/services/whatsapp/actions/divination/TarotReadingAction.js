@@ -70,11 +70,11 @@ class TarotReadingAction extends BaseAction {
     try {
       const tarotService = new TarotReadingService();
       const spreadType = 'single';
-      const result = await tarotService.execute({ 
-        user: this.user, 
-        spreadType 
+      const result = await tarotService.execute({
+        user: this.user,
+        spreadType
       });
-      
+
       if (result.success) {
         return result;
       } else {

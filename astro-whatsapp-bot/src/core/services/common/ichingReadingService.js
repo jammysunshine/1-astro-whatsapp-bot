@@ -9,7 +9,7 @@ const { IChingConfig } = require('../../../services/astrology/iching/IChingConfi
 /**
  * IChingReadingService - Specialized service for providing I Ching readings
  *
- * Provides I Ching (Book of Changes) readings with hexagram generation, 
+ * Provides I Ching (Book of Changes) readings with hexagram generation,
  * interpretation, and guidance based on the ancient Chinese divination system.
  */
 class IChingReadingService extends ServiceTemplate {
@@ -66,7 +66,7 @@ class IChingReadingService extends ServiceTemplate {
           service: this.serviceName,
           calculationType: 'iching_reading',
           timestamp: new Date().toISOString(),
-          focus: focus,
+          focus,
           traditions: ['Chinese', 'Divination', 'Yin-Yang Philosophy']
         }
       };
@@ -191,7 +191,7 @@ class IChingReadingService extends ServiceTemplate {
   createLinesFromHexagramNumber(hexagramNumber) {
     // Convert hexagram number to binary representation
     const binary = (hexagramNumber - 1).toString(2).padStart(6, '0');
-    return binary.split('').reverse().map(digit => parseInt(digit) === 1 ? 7 : 8);
+    return binary.split('').reverse().map(digit => (parseInt(digit) === 1 ? 7 : 8));
   }
 
   /**
@@ -249,13 +249,13 @@ class IChingReadingService extends ServiceTemplate {
    */
   generateQuickSummary(reading) {
     const { primaryHexagram, changingLines, transformedHexagram } = reading;
-    
+
     let summary = `Hexagram ${primaryHexagram.number} - ${primaryHexagram.name}. `;
-    
+
     if (changingLines.length > 0) {
       summary += `Changing to ${transformedHexagram.number} - ${transformedHexagram.name}. `;
     }
-    
+
     summary += `${primaryHexagram.judgment}. `;
 
     return summary;
@@ -306,7 +306,7 @@ class IChingReadingService extends ServiceTemplate {
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();
-      
+
       // Test the I Ching functionality
       try {
         const testReading = this.interpreter.generateIChingReading('test');

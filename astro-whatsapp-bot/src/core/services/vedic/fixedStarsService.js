@@ -50,22 +50,22 @@ class FixedStarsService extends ServiceTemplate {
   async getStarInterpretation(params) {
     try {
       this.validateParams(params, ['starName', 'birthData']);
-      
+
       const { starName, birthData, options = {} } = params;
-      
+
       // Get full fixed stars analysis
       const fullAnalysis = await this.calculator.calculateFixedStarsAnalysis(birthData);
-      
+
       // Find specific star conjunctions
       const starConjunctions = fullAnalysis.conjunctions.filter(
         conjunction => conjunction.star.toLowerCase() === starName.toLowerCase()
       );
-      
+
       // Get star information
       const starInfo = fullAnalysis.majorStars.find(
         star => star.name.toLowerCase() === starName.toLowerCase()
       );
-      
+
       if (!starInfo && starConjunctions.length === 0) {
         return {
           success: true,
@@ -80,14 +80,14 @@ class FixedStarsService extends ServiceTemplate {
           }
         };
       }
-      
+
       // Generate detailed interpretation
       const detailedInterpretation = this.generateSpecificStarInterpretation(
-        starName, 
-        starConjunctions, 
+        starName,
+        starConjunctions,
         starInfo
       );
-      
+
       return {
         success: true,
         data: {
@@ -126,21 +126,21 @@ class FixedStarsService extends ServiceTemplate {
   async analyzeParanatellonta(params) {
     try {
       this.validateParams(params, ['birthData', 'location']);
-      
+
       const { birthData, location, options = {} } = params;
-      
+
       // Get basic fixed stars analysis
       const fixedStarsAnalysis = await this.calculator.calculateFixedStarsAnalysis(birthData);
-      
+
       // Calculate paranatellonta (simplified implementation)
       const paranatellonta = this.calculateParanatellonta(fixedStarsAnalysis, location);
-      
+
       // Generate interpretations
       const interpretations = paranatellonta.map(para => ({
         ...para,
         interpretation: this.generateParanatellontaInterpretation(para)
       }));
-      
+
       return {
         success: true,
         data: {
@@ -173,7 +173,7 @@ class FixedStarsService extends ServiceTemplate {
    */
   generateDetailedInterpretations(fixedStarsAnalysis) {
     const interpretations = [];
-    
+
     if (fixedStarsAnalysis.conjunctions && fixedStarsAnalysis.conjunctions.length > 0) {
       fixedStarsAnalysis.conjunctions.forEach(conjunction => {
         interpretations.push({
@@ -187,7 +187,7 @@ class FixedStarsService extends ServiceTemplate {
         });
       });
     }
-    
+
     return interpretations;
   }
 
@@ -203,11 +203,11 @@ class FixedStarsService extends ServiceTemplate {
       challenging: [],
       overall: 'balanced'
     };
-    
+
     if (fixedStarsAnalysis.conjunctions) {
       fixedStarsAnalysis.conjunctions.forEach(conjunction => {
         const influence = this.categorizeStarInfluence(conjunction.star, conjunction.planet);
-        
+
         if (influence.type === 'dominant') {
           influences.dominant.push(conjunction);
         } else if (influence.type === 'supportive') {
@@ -217,7 +217,7 @@ class FixedStarsService extends ServiceTemplate {
         }
       });
     }
-    
+
     // Determine overall influence
     if (influences.dominant.length > influences.supportive.length + influences.challenging.length) {
       influences.overall = 'dominant';
@@ -226,7 +226,7 @@ class FixedStarsService extends ServiceTemplate {
     } else if (influences.supportive.length > influences.dominant.length + influences.challenging.length) {
       influences.overall = 'supportive';
     }
-    
+
     return influences;
   }
 
@@ -237,20 +237,20 @@ class FixedStarsService extends ServiceTemplate {
    */
   identifyLifeThemes(fixedStarsAnalysis) {
     const themes = [];
-    
+
     if (fixedStarsAnalysis.conjunctions) {
       const themeMap = {};
-      
+
       fixedStarsAnalysis.conjunctions.forEach(conjunction => {
         const theme = this.getThemeForStar(conjunction.star);
         if (theme) {
           themeMap[theme] = (themeMap[theme] || 0) + 1;
         }
       });
-      
+
       // Sort themes by frequency
       const sortedThemes = Object.entries(themeMap)
-        .sort(([,a], [,b]) => b - a)
+        .sort(([, a], [, b]) => b - a)
         .slice(0, 5)
         .map(([theme, count]) => ({
           theme,
@@ -259,10 +259,10 @@ class FixedStarsService extends ServiceTemplate {
             .filter(c => this.getThemeForStar(c.star) === theme)
             .map(c => c.star)
         }));
-      
+
       themes.push(...sortedThemes);
     }
-    
+
     return themes;
   }
 
@@ -272,17 +272,17 @@ class FixedStarsService extends ServiceTemplate {
    * @returns {string} Summary
    */
   generateFixedStarsSummary(fixedStarsAnalysis) {
-    let summary = fixedStarsAnalysis.introduction + '\n\n';
-    
+    let summary = `${fixedStarsAnalysis.introduction}\n\n`;
+
     if (fixedStarsAnalysis.conjunctions && fixedStarsAnalysis.conjunctions.length > 0) {
-      summary += `Key connections:\n`;
+      summary += 'Key connections:\n';
       fixedStarsAnalysis.conjunctions.slice(0, 3).forEach((conjunction, index) => {
         summary += `${index + 1}. ${conjunction.star} with ${conjunction.planet}\n`;
       });
     } else {
       summary += 'No major fixed star conjunctions present in this chart.\n';
     }
-    
+
     return summary;
   }
 
@@ -300,11 +300,11 @@ class FixedStarsService extends ServiceTemplate {
       manifestation: '',
       advice: ''
     };
-    
+
     if (starInfo) {
       interpretation.overview = `${starName} in ${starInfo.constellation}: ${starInfo.influence}`;
     }
-    
+
     if (conjunctions.length > 0) {
       const planets = conjunctions.map(c => c.planet).join(', ');
       interpretation.influence = `${starName} influences your ${planets} energies, bringing ${starName.toLowerCase()}'s qualities into these life areas.`;
@@ -313,7 +313,7 @@ class FixedStarsService extends ServiceTemplate {
     } else {
       interpretation.influence = `${starName} does not form major conjunctions in your chart, but its archetypal energy remains available for conscious connection.`;
     }
-    
+
     return interpretation;
   }
 
@@ -326,7 +326,7 @@ class FixedStarsService extends ServiceTemplate {
   calculateParanatellonta(fixedStarsAnalysis, location) {
     // Simplified paranatellonta calculation
     const paranatellonta = [];
-    
+
     // This would normally calculate actual rising/setting relationships
     // For now, return mock data based on conjunctions
     if (fixedStarsAnalysis.conjunctions) {
@@ -342,7 +342,7 @@ class FixedStarsService extends ServiceTemplate {
         }
       });
     }
-    
+
     return paranatellonta;
   }
 
@@ -364,10 +364,10 @@ class FixedStarsService extends ServiceTemplate {
     if (paranatellonta.length === 0) {
       return { level: 'minimal', description: 'No significant paranatellonta found' };
     }
-    
+
     const totalStrength = paranatellonta.reduce((sum, para) => sum + para.strength, 0);
     const averageStrength = totalStrength / paranatellonta.length;
-    
+
     if (averageStrength >= 3) {
       return { level: 'high', description: 'Strong paranatellonta influences present' };
     } else if (averageStrength >= 2) {
@@ -384,42 +384,42 @@ class FixedStarsService extends ServiceTemplate {
    */
   generateParanatellontaRecommendations(paranatellonta) {
     const recommendations = [];
-    
+
     if (paranatellonta.length > 0) {
       recommendations.push({
         category: 'awareness',
         advice: 'Pay attention to timing and location when making important decisions',
         priority: 'medium'
       });
-      
+
       recommendations.push({
         category: 'development',
         advice: 'Work consciously with the amplified energies of your paranatellonta',
         priority: 'low'
       });
     }
-    
+
     return recommendations;
   }
 
   // Helper methods
   assessConjunctionStrength(orb) {
     const orbNum = parseFloat(orb);
-    if (orbNum <= 0.5) return 'very strong';
-    if (orbNum <= 1.0) return 'strong';
-    if (orbNum <= 1.5) return 'moderate';
+    if (orbNum <= 0.5) { return 'very strong'; }
+    if (orbNum <= 1.0) { return 'strong'; }
+    if (orbNum <= 1.5) { return 'moderate'; }
     return 'weak';
   }
 
   getLifeAreaForPlanet(planet) {
     const lifeAreas = {
-      'Sun': 'identity and vitality',
-      'Moon': 'emotions and intuition',
-      'Mercury': 'communication and intellect',
-      'Venus': 'love and values',
-      'Mars': 'action and desire',
-      'Jupiter': 'growth and wisdom',
-      'Saturn': 'structure and discipline'
+      Sun: 'identity and vitality',
+      Moon: 'emotions and intuition',
+      Mercury: 'communication and intellect',
+      Venus: 'love and values',
+      Mars: 'action and desire',
+      Jupiter: 'growth and wisdom',
+      Saturn: 'structure and discipline'
     };
     return lifeAreas[planet] || 'general life areas';
   }
@@ -428,7 +428,7 @@ class FixedStarsService extends ServiceTemplate {
     const dominantStars = ['Regulus', 'Sirius'];
     const supportiveStars = ['Spica', 'Vega', 'Fomalhaut'];
     const challengingStars = ['Antares', 'Aldebaran'];
-    
+
     if (dominantStars.includes(starName)) {
       return { type: 'dominant', description: 'Powerful influence' };
     } else if (supportiveStars.includes(starName)) {
@@ -436,69 +436,69 @@ class FixedStarsService extends ServiceTemplate {
     } else if (challengingStars.includes(starName)) {
       return { type: 'challenging', description: 'Intense influence requiring awareness' };
     }
-    
+
     return { type: 'neutral', description: 'Moderate influence' };
   }
 
   getThemeForStar(starName) {
     const themes = {
-      'Regulus': 'leadership',
-      'Aldebaran': 'success',
-      'Antares': 'transformation',
-      'Fomalhaut': 'spirituality',
-      'Spica': 'service',
-      'Sirius': 'honor',
-      'Vega': 'creativity'
+      Regulus: 'leadership',
+      Aldebaran: 'success',
+      Antares: 'transformation',
+      Fomalhaut: 'spirituality',
+      Spica: 'service',
+      Sirius: 'honor',
+      Vega: 'creativity'
     };
     return themes[starName];
   }
 
   generateManifestationDescription(starName, conjunctions) {
     const manifestations = {
-      'Regulus': 'leadership opportunities and positions of authority',
-      'Aldebaran': 'material success and public recognition',
-      'Antares': 'intense transformations and power struggles',
-      'Fomalhaut': 'spiritual insights and service-oriented success',
-      'Spica': 'helpful relationships and harvest of efforts',
-      'Sirius': 'honor, wealth and divine favor',
-      'Vega': 'artistic success and creative expression'
+      Regulus: 'leadership opportunities and positions of authority',
+      Aldebaran: 'material success and public recognition',
+      Antares: 'intense transformations and power struggles',
+      Fomalhaut: 'spiritual insights and service-oriented success',
+      Spica: 'helpful relationships and harvest of efforts',
+      Sirius: 'honor, wealth and divine favor',
+      Vega: 'artistic success and creative expression'
     };
-    
+
     return manifestations[starName] || 'unique manifestations of stellar energy';
   }
 
   generateStarAdvice(starName, conjunctions) {
     const advice = {
-      'Regulus': 'Use leadership power wisely and with integrity',
-      'Aldebaran': 'Channel success energy constructively and avoid conflicts',
-      'Antares': 'Embrace transformation while maintaining balance',
-      'Fomalhaut': 'Combine spiritual wisdom with practical action',
-      'Spica': 'Serve others while maintaining healthy boundaries',
-      'Sirius': 'Accept honor with humility and use it for good',
-      'Vega': 'Express creativity authentically and share with others'
+      Regulus: 'Use leadership power wisely and with integrity',
+      Aldebaran: 'Channel success energy constructively and avoid conflicts',
+      Antares: 'Embrace transformation while maintaining balance',
+      Fomalhaut: 'Combine spiritual wisdom with practical action',
+      Spica: 'Serve others while maintaining healthy boundaries',
+      Sirius: 'Accept honor with humility and use it for good',
+      Vega: 'Express creativity authentically and share with others'
     };
-    
+
     return advice[starName] || 'Work consciously with stellar energies';
   }
 
   assessStarInfluenceLevel(conjunctions) {
-    if (conjunctions.length === 0) return 'none';
-    if (conjunctions.length === 1) return 'moderate';
-    if (conjunctions.length === 2) return 'strong';
+    if (conjunctions.length === 0) { return 'none'; }
+    if (conjunctions.length === 1) { return 'moderate'; }
+    if (conjunctions.length === 2) { return 'strong'; }
     return 'very strong';
   }
 
   getParanatellontaSignificance(starName) {
     const significance = {
-      'Regulus': 'leadership and authority',
-      'Aldebaran': 'success and achievement',
-      'Antares': 'transformation and power',
-      'Fomalhaut': 'spiritual wisdom',
-      'Spica': 'service and harvest',
-      'Sirius': 'honor and recognition',
-      'Vega': 'creative expression'
+      Regulus: 'leadership and authority',
+      Aldebaran: 'success and achievement',
+      Antares: 'transformation and power',
+      Fomalhaut: 'spiritual wisdom',
+      Spica: 'service and harvest',
+      Sirius: 'honor and recognition',
+      Vega: 'creative expression'
     };
-    
+
     return significance[starName] || 'stellar influence';
   }
 

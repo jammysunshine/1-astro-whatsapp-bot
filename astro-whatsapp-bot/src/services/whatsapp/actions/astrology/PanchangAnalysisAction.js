@@ -27,7 +27,7 @@ class PanchangAnalysisAction extends BaseAction {
 
       // Get user profile for location
       const userProfile = await this.getUserProfile();
-      
+
       // Prepare panchang data
       const panchangData = {
         date: new Date().toISOString().split('T')[0], // Today's date

@@ -132,6 +132,6 @@ module.exports = {
   KaalSarpDoshaService,
   SadeSatiService,
   MedicalAstrologyService,
-  NadiAstrologyService,
+  NadiAstrologyService
   // Add all other Vedic services here
 };

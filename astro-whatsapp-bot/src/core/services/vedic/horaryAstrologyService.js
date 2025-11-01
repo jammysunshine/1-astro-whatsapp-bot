@@ -9,13 +9,13 @@ const logger = require('../../../utils/logger');
 class HoraryAstrologyService extends ServiceTemplate {
   constructor(services) {
     super('HoraryAstrologyService', services);
-    
+
     // Initialize Horary Calculator
     this.calculator = new HoraryCalculator();
-    
+
     // Set services in calculator
     this.calculator.setServices(services);
-    
+
     // Service-specific configuration
     this.serviceConfig = {
       supportedInputs: ['horaryData', 'birthData'],
@@ -47,20 +47,20 @@ class HoraryAstrologyService extends ServiceTemplate {
    */
   async lhoraryAstrologyCalculation(params) {
     const { horaryData, options = {} } = params;
-    
+
     try {
       // Validate inputs
       this._validateInputs(horaryData);
-      
+
       // Cast horary chart using calculator
       const horaryChart = this.calculator.castHoraryChart(
         horaryData.questionTime,
         horaryData.location
       );
-      
+
       // Analyze horary question
       const horaryAnalysis = await this._analyzeHoraryQuestion(horaryData, horaryChart);
-      
+
       // Add service metadata
       horaryAnalysis.serviceMetadata = {
         serviceName: this.serviceName,
@@ -71,12 +71,11 @@ class HoraryAstrologyService extends ServiceTemplate {
         chartType: 'Horary (Question Time)',
         calculationApproach: 'Chart casting at moment of question'
       };
-      
+
       // Add enhanced analysis
       horaryAnalysis.enhancedAnalysis = this._performEnhancedHoraryAnalysis(horaryAnalysis, horaryData);
-      
+
       return horaryAnalysis;
-      
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
       throw new Error(`Horary Astrology calculation failed: ${error.message}`);
@@ -93,13 +92,13 @@ class HoraryAstrologyService extends ServiceTemplate {
       return '❌ *Horary Astrology Analysis Error*\n\nUnable to generate horary astrology analysis. Please check your question details and try again.';
     }
 
-    let formatted = `❓ *Horary Astrology Analysis*\n\n`;
-    
+    let formatted = '❓ *Horary Astrology Analysis*\n\n';
+
     // Add question details
     formatted += `*Question:* ${result.question}\n`;
     formatted += `*Time Asked:* ${result.questionTime}\n`;
     formatted += `*Location:* ${result.location?.city || 'Unknown'}\n\n`;
-    
+
     // Add chart overview
     if (result.horaryChart) {
       formatted += '*🌟 Horary Chart Overview:*\n';
@@ -111,7 +110,7 @@ class HoraryAstrologyService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Add significators
     if (result.significators) {
       formatted += '*🎯 Question Significators:*\n';
@@ -126,7 +125,7 @@ class HoraryAstrologyService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Add planetary positions
     if (result.horaryChart?.planetaryPositions) {
       formatted += '*🪐 Planetary Positions:*\n';
@@ -137,7 +136,7 @@ class HoraryAstrologyService extends ServiceTemplate {
       });
       formatted += '\n';
     }
-    
+
     // Add answer analysis
     if (result.answerAnalysis) {
       formatted += '*💫 Answer Analysis:*\n';
@@ -155,7 +154,7 @@ class HoraryAstrologyService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Add aspects analysis
     if (result.aspectsAnalysis) {
       formatted += '*⚡ Planetary Aspects:*\n';
@@ -166,30 +165,30 @@ class HoraryAstrologyService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Add enhanced analysis if available
     if (result.enhancedAnalysis) {
       formatted += '*🎭 Enhanced Horary Analysis:*\n';
-      
+
       if (result.enhancedAnalysis.chartQuality) {
         formatted += `• **Chart Quality:** ${result.enhancedAnalysis.chartQuality}\n`;
       }
-      
+
       if (result.enhancedAnalysis.answerClarity) {
         formatted += `• **Answer Clarity:** ${result.enhancedAnalysis.answerClarity}\n`;
       }
-      
+
       if (result.enhancedAnalysis.recommendations) {
         formatted += `• **Recommendations:** ${result.enhancedAnalysis.recommendations}\n`;
       }
-      
+
       if (result.enhancedAnalysis.caveats) {
         formatted += `• **Important Notes:** ${result.enhancedAnalysis.caveats}\n`;
       }
-      
+
       formatted += '\n';
     }
-    
+
     // Add timing information
     if (result.timingAnalysis) {
       formatted += '*⏰ Timing Analysis:*\n';
@@ -204,15 +203,15 @@ class HoraryAstrologyService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Add summary
     if (result.summary) {
       formatted += `*📋 Summary:*\n${result.summary}\n\n`;
     }
-    
+
     // Add service footer
     formatted += '---\n*Horary Astrology - Answering Questions Through Chart Casting*';
-    
+
     return formatted;
   }
 
@@ -225,15 +224,15 @@ class HoraryAstrologyService extends ServiceTemplate {
     if (!horaryData) {
       throw new Error('Horary data is required for question analysis');
     }
-    
+
     if (!horaryData.question || horaryData.question.trim().length === 0) {
       throw new Error('A valid question is required for horary astrology analysis');
     }
-    
+
     if (!horaryData.questionTime) {
       throw new Error('Question time is required for horary chart casting');
     }
-    
+
     if (!horaryData.location) {
       throw new Error('Location is required for accurate horary astrology calculation');
     }
@@ -250,19 +249,19 @@ class HoraryAstrologyService extends ServiceTemplate {
     try {
       // Categorize question
       const category = this._categorizeQuestion(horaryData.question);
-      
+
       // Identify significators
       const significators = this._identifySignificators(category, horaryChart);
-      
+
       // Analyze aspects
       const aspectsAnalysis = this._analyzeAspects(horaryChart);
-      
+
       // Determine answer
       const answerAnalysis = this._determineAnswer(significators, aspectsAnalysis, category);
-      
+
       // Analyze timing
       const timingAnalysis = this._analyzeTiming(horaryChart, significators);
-      
+
       return {
         question: horaryData.question,
         questionTime: horaryData.questionTime,
@@ -296,12 +295,12 @@ class HoraryAstrologyService extends ServiceTemplate {
       caveats: '',
       confidenceLevel: ''
     };
-    
+
     // Assess chart quality
     if (result.horaryChart?.ascendant && result.significators) {
       const strongSignificators = Object.values(result.significators).filter(sig => sig && sig.strength > 70).length;
       const totalSignificators = Object.values(result.significators).filter(sig => sig).length;
-      
+
       if (strongSignificators >= totalSignificators * 0.7) {
         analysis.chartQuality = 'Excellent chart with strong significators';
         analysis.answerClarity = 'High clarity - clear indications present';
@@ -316,7 +315,7 @@ class HoraryAstrologyService extends ServiceTemplate {
         analysis.confidenceLevel = 'Low';
       }
     }
-    
+
     // Generate recommendations
     if (result.answerAnalysis?.probability) {
       if (result.answerAnalysis.probability.includes('High')) {
@@ -327,7 +326,7 @@ class HoraryAstrologyService extends ServiceTemplate {
         analysis.recommendations = 'Consider alternatives - chart suggests challenges';
       }
     }
-    
+
     // Add caveats
     analysis.caveats = [
       'Horary charts represent momentary states - circumstances can change',
@@ -335,7 +334,7 @@ class HoraryAstrologyService extends ServiceTemplate {
       'Chart provides guidance, not absolute predictions',
       'Consider practical factors alongside astrological indications'
     ].join('. ');
-    
+
     return analysis;
   }
 
@@ -347,7 +346,7 @@ class HoraryAstrologyService extends ServiceTemplate {
    */
   _categorizeQuestion(question) {
     const lowerQuestion = question.toLowerCase();
-    
+
     if (lowerQuestion.includes('marry') || lowerQuestion.includes('marriage') || lowerQuestion.includes('relationship')) {
       return 'relationship';
     } else if (lowerQuestion.includes('job') || lowerQuestion.includes('career') || lowerQuestion.includes('business')) {
@@ -374,12 +373,12 @@ class HoraryAstrologyService extends ServiceTemplate {
    */
   _identifySignificators(category, chart) {
     const significators = {};
-    
+
     // Querent (person asking) - always ascendant ruler
     if (chart.ascendant) {
       significators.querent = this._getSignLord(chart.ascendant.sign);
     }
-    
+
     // Quesited (matter asked about) - varies by category
     const categoryHouses = {
       relationship: [7, 5, 11],  // 7th (partnership), 5th (love), 11th (friendships)
@@ -390,13 +389,13 @@ class HoraryAstrologyService extends ServiceTemplate {
       lost_items: [2, 12],          // 2nd (possessions), 12th (loss/hidden)
       general: [1, 3, 9]           // 1st (general), 3rd (communication), 9th (guidance)
     };
-    
+
     const houses = categoryHouses[category] || categoryHouses.general;
     significators.quesited = this._getHouseLord(houses[0], chart);
-    
+
     // Moon for timing
     significators.moon = 'moon';
-    
+
     return significators;
   }
 
@@ -408,20 +407,20 @@ class HoraryAstrologyService extends ServiceTemplate {
    */
   _analyzeAspects(chart) {
     const aspects = { majorAspects: [] };
-    
-    if (!chart.planetaryPositions) return aspects;
-    
+
+    if (!chart.planetaryPositions) { return aspects; }
+
     const planets = Object.entries(chart.planetaryPositions);
-    
+
     for (let i = 0; i < planets.length; i++) {
       for (let j = i + 1; j < planets.length; j++) {
         const [planet1, pos1] = planets[i];
         const [planet2, pos2] = planets[j];
-        
+
         if (pos1.longitude && pos2.longitude) {
           const angle = Math.abs(pos1.longitude - pos2.longitude);
           const minAngle = Math.min(angle, 360 - angle);
-          
+
           // Check for major aspects (conjunction, opposition, trine, square)
           if (minAngle <= 8) { // Conjunction
             aspects.majorAspects.push({
@@ -459,7 +458,7 @@ class HoraryAstrologyService extends ServiceTemplate {
         }
       }
     }
-    
+
     return aspects;
   }
 
@@ -478,15 +477,15 @@ class HoraryAstrologyService extends ServiceTemplate {
       timing: '',
       factors: []
     };
-    
+
     // Count positive and negative aspects
-    const positiveAspects = aspects.majorAspects.filter(a => 
+    const positiveAspects = aspects.majorAspects.filter(a =>
       a.type === 'trine' || a.type === 'conjunction'
     ).length;
-    const negativeAspects = aspects.majorAspects.filter(a => 
+    const negativeAspects = aspects.majorAspects.filter(a =>
       a.type === 'square' || a.type === 'opposition'
     ).length;
-    
+
     // Determine overall indication
     if (positiveAspects > negativeAspects) {
       analysis.overallIndication = 'Positive indications for your question';
@@ -501,7 +500,7 @@ class HoraryAstrologyService extends ServiceTemplate {
       analysis.probability = 'Moderate probability of outcome';
       analysis.timing = 'Uncertain timing - watch developments';
     }
-    
+
     // Add key factors
     if (positiveAspects > 0) {
       analysis.factors.push('Supportive planetary aspects present');
@@ -512,7 +511,7 @@ class HoraryAstrologyService extends ServiceTemplate {
     if (significators.querent && significators.quesited) {
       analysis.factors.push('Clear significators identified');
     }
-    
+
     return analysis;
   }
 
@@ -529,11 +528,11 @@ class HoraryAstrologyService extends ServiceTemplate {
       shortTerm: '',
       longTerm: ''
     };
-    
+
     // Moon position indicates timing
     if (chart.planetaryPositions?.moon) {
       const moonHouse = chart.planetaryPositions.moon.house;
-      
+
       if (moonHouse === 1 || moonHouse === 4 || moonHouse === 7 || moonHouse === 10) {
         timing.immediate = 'Quick resolution possible (Moon in angular house)';
         timing.shortTerm = 'Developments within days to weeks';
@@ -545,12 +544,12 @@ class HoraryAstrologyService extends ServiceTemplate {
         timing.shortTerm = 'Developments may take months';
       }
     }
-    
+
     // Planetary hour influences
     if (chart.planetaryHour) {
       timing.longTerm = `Planetary hour ruler: ${chart.planetaryHour} - influences overall outcome`;
     }
-    
+
     return timing;
   }
 
@@ -562,12 +561,12 @@ class HoraryAstrologyService extends ServiceTemplate {
    * @private
    */
   _generateHorarySummary(answerAnalysis, timingAnalysis) {
-    let summary = `Based on the horary chart cast at the time of your question:\n\n`;
+    let summary = 'Based on the horary chart cast at the time of your question:\n\n';
     summary += `**Overall Indication:** ${answerAnalysis.overallIndication}\n`;
     summary += `**Probability:** ${answerAnalysis.probability}\n`;
     summary += `**Timing:** ${timingAnalysis.immediate}\n\n`;
-    summary += `Horary astrology provides guidance based on planetary positions at the moment of questioning. Consider this analysis alongside practical factors and personal judgment.`;
-    
+    summary += 'Horary astrology provides guidance based on planetary positions at the moment of questioning. Consider this analysis alongside practical factors and personal judgment.';
+
     return summary;
   }
 
@@ -578,7 +577,7 @@ class HoraryAstrologyService extends ServiceTemplate {
   }
 
   _getHouseLord(house, chart) {
-    if (!chart.houses || !chart.houses[house - 1]) return 'unknown';
+    if (!chart.houses || !chart.houses[house - 1]) { return 'unknown'; }
     return this._getSignLord(chart.houses[house - 1].sign);
   }
 
@@ -599,24 +598,24 @@ class HoraryAstrologyService extends ServiceTemplate {
    */
   calculateConfidence(result) {
     let confidence = 70; // Base confidence for Horary Astrology
-    
+
     // Increase confidence based on chart quality
     if (result.enhancedAnalysis?.confidenceLevel === 'High') {
       confidence += 20;
     } else if (result.enhancedAnalysis?.confidenceLevel === 'Moderate') {
       confidence += 10;
     }
-    
+
     // Increase confidence for complete analysis
     if (result.significators && result.aspectsAnalysis && result.answerAnalysis) {
       confidence += 10;
     }
-    
+
     // Increase confidence for clear significators
     if (result.significators?.querent && result.significators?.quesited) {
       confidence += 5;
     }
-    
+
     return Math.max(0, Math.min(100, Math.round(confidence)));
   }
 

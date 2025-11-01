@@ -29,7 +29,6 @@ class GocharAction extends BaseAction {
       });
 
       return this.formatResponse(result, userData.language);
-
     } catch (error) {
       return this.handleError(error, context);
     }
@@ -37,39 +36,39 @@ class GocharAction extends BaseAction {
 
   formatResponse(result, language) {
     const { analysis } = result;
-    
+
     const responses = {
       en: {
-        header: `🌍 *Planetary Transit Analysis (Gochar)*\n\n`,
-        transitAspects: `*Active Transit Aspects:*\n`,
-        houseTransits: `*House Transits:*\n`,
-        retrogradeEffects: `*Retrograde Effects:*\n`,
-        majorPeriods: `*Major Transit Periods:*\n`,
-        interpretations: `*Interpretations:*\n`,
-        majorInfluences: `• Major Influences: `,
-        timing: `• Timing Analysis: `,
-        recommendations: `• Recommendations: `,
-        overallAnalysis: `*Overall Analysis:*\n`,
-        summary: `• Summary: `,
-        intensity: `• Intensity: `,
-        keyThemes: `• Key Themes: `,
-        footer: `\n\n_This transit analysis provides insights into current planetary influences and timing._`
+        header: '🌍 *Planetary Transit Analysis (Gochar)*\n\n',
+        transitAspects: '*Active Transit Aspects:*\n',
+        houseTransits: '*House Transits:*\n',
+        retrogradeEffects: '*Retrograde Effects:*\n',
+        majorPeriods: '*Major Transit Periods:*\n',
+        interpretations: '*Interpretations:*\n',
+        majorInfluences: '• Major Influences: ',
+        timing: '• Timing Analysis: ',
+        recommendations: '• Recommendations: ',
+        overallAnalysis: '*Overall Analysis:*\n',
+        summary: '• Summary: ',
+        intensity: '• Intensity: ',
+        keyThemes: '• Key Themes: ',
+        footer: '\n\n_This transit analysis provides insights into current planetary influences and timing._'
       },
       hi: {
-        header: `🌍 *ग्रह गोचर विश्लेषण*\n\n`,
-        transitAspects: `*सक्रिय गोचर पहलू:*\n`,
-        houseTransits: `*भाव गोचर:*\n`,
-        retrogradeEffects: `*वक्री प्रभाव:*\n`,
-        majorPeriods: `*प्रमुख गोचर अवधि:*\n`,
-        interpretations: `*व्याख्या:*\n`,
-        majorInfluences: `• प्रमुख प्रभाव: `,
-        timing: `• समय विश्लेषण: `,
-        recommendations: `• सिफारिशें: `,
-        overallAnalysis: `*समग्र विश्लेषण:*\n`,
-        summary: `• सारांश: `,
-        intensity: `• तीव्रता: `,
-        keyThemes: `• मुख्य विषय: `,
-        footer: `\n\n_यह गोचर विश्लेषण वर्तमान ग्रहीय प्रभावों और समय पर अंतर्दृष्टि प्रदान करता है।_`
+        header: '🌍 *ग्रह गोचर विश्लेषण*\n\n',
+        transitAspects: '*सक्रिय गोचर पहलू:*\n',
+        houseTransits: '*भाव गोचर:*\n',
+        retrogradeEffects: '*वक्री प्रभाव:*\n',
+        majorPeriods: '*प्रमुख गोचर अवधि:*\n',
+        interpretations: '*व्याख्या:*\n',
+        majorInfluences: '• प्रमुख प्रभाव: ',
+        timing: '• समय विश्लेषण: ',
+        recommendations: '• सिफारिशें: ',
+        overallAnalysis: '*समग्र विश्लेषण:*\n',
+        summary: '• सारांश: ',
+        intensity: '• तीव्रता: ',
+        keyThemes: '• मुख्य विषय: ',
+        footer: '\n\n_यह गोचर विश्लेषण वर्तमान ग्रहीय प्रभावों और समय पर अंतर्दृष्टि प्रदान करता है।_'
       }
     };
 
@@ -119,40 +118,38 @@ class GocharAction extends BaseAction {
     // Interpretations
     if (analysis.sections['Interpretations']) {
       const interpretations = analysis.sections['Interpretations'];
-      
+
       response += t.interpretations;
-      
+
       if (interpretations.majorInfluences && interpretations.majorInfluences.length > 0) {
-        response += t.majorInfluences + interpretations.majorInfluences.slice(0, 3).join(', ') + '\n';
+        response += `${t.majorInfluences + interpretations.majorInfluences.slice(0, 3).join(', ')}\n`;
       }
-      
+
       if (interpretations.timing) {
-        const timing = interpretations.timing;
+        const { timing } = interpretations;
         let timingText = '';
-        if (timing.favorable) timingText = 'Favorable period for new initiatives';
-        else if (timing.challenges) timingText = 'Challenging period requiring patience';
-        else timingText = 'Balanced period with mixed influences';
-        response += t.timing + timingText + '\n';
+        if (timing.favorable) { timingText = 'Favorable period for new initiatives'; } else if (timing.challenges) { timingText = 'Challenging period requiring patience'; } else { timingText = 'Balanced period with mixed influences'; }
+        response += `${t.timing + timingText}\n`;
       }
-      
+
       if (interpretations.recommendations && interpretations.recommendations.length > 0) {
-        response += t.recommendations + interpretations.recommendations.slice(0, 2).join(', ') + '\n';
+        response += `${t.recommendations + interpretations.recommendations.slice(0, 2).join(', ')}\n`;
       }
-      
+
       if (interpretations.overall) {
-        response += '\n' + t.overallAnalysis;
-        const overall = interpretations.overall;
-        
+        response += `\n${t.overallAnalysis}`;
+        const { overall } = interpretations;
+
         if (overall.summary) {
-          response += t.summary + overall.summary + '\n';
+          response += `${t.summary + overall.summary}\n`;
         }
-        
+
         if (overall.intensity) {
-          response += t.intensity + overall.intensity + '\n';
+          response += `${t.intensity + overall.intensity}\n`;
         }
-        
+
         if (overall.keyThemes && overall.keyThemes.length > 0) {
-          response += t.keyThemes + overall.keyThemes.join(', ') + '\n';
+          response += `${t.keyThemes + overall.keyThemes.join(', ')}\n`;
         }
       }
     }
@@ -168,7 +165,7 @@ class GocharAction extends BaseAction {
   validateParams(params) {
     const required = ['datetime', 'latitude', 'longitude', 'birthDatetime', 'birthLatitude', 'birthLongitude'];
     const missing = required.filter(param => !params[param]);
-    
+
     if (missing.length > 0) {
       throw new Error(`Missing required parameters: ${missing.join(', ')}`);
     }

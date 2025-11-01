@@ -33,12 +33,12 @@ class JaiminiDashasService extends ServiceTemplate {
   async getCurrentJaiminiDasha(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData } = params;
-      
+
       // Calculate current dasha period
       const result = await this.calculator.getCurrentJaiminiDasha(birthData);
-      
+
       return {
         success: true,
         data: result,
@@ -68,12 +68,12 @@ class JaiminiDashasService extends ServiceTemplate {
   async getUpcomingJaiminiDashas(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, count = 5 } = params;
-      
+
       // Calculate upcoming dasha periods
       const result = await this.calculator.getUpcomingJaiminiDashas(birthData, count);
-      
+
       return {
         success: true,
         data: result,
@@ -104,12 +104,12 @@ class JaiminiDashasService extends ServiceTemplate {
   async calculateCharaDasha(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Calculate Chara Dasha
       const result = await this.calculator.calculateCharaDasha(birthData, options);
-      
+
       return {
         success: true,
         data: result,
@@ -140,12 +140,12 @@ class JaiminiDashasService extends ServiceTemplate {
   async calculateSthiraDasha(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Calculate Sthira Dasha
       const result = await this.calculator.calculateSthiraDasha(birthData, options);
-      
+
       return {
         success: true,
         data: result,

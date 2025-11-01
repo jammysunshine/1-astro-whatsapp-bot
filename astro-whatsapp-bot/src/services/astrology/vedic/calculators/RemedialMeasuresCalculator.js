@@ -104,7 +104,7 @@ class RemedialMeasuresCalculator {
 
       return {
         name,
-        chartAnalysis: chartAnalysis,
+        chartAnalysis,
         afflictions,
         remedialPriority,
         specificRemedies,
@@ -141,7 +141,7 @@ class RemedialMeasuresCalculator {
       const remedies = {};
 
       planetaryIssues.forEach(issue => {
-        const planet = issue.planet;
+        const { planet } = issue;
         const type = issue.type || 'general';
 
         remedies[planet] = {
@@ -216,10 +216,7 @@ class RemedialMeasuresCalculator {
 
     // Determine overall remedial intensity
     const totalSeverity = Object.values(afflictions.planetary).reduce((sum, p) => sum + p.severity, 0);
-    if (totalSeverity >= 25) afflictions.overall = 'high';
-    else if (totalSeverity >= 15) afflictions.overall = 'moderate';
-    else if (totalSeverity >= 5) afflictions.overall = 'low';
-    else afflictions.overall = 'minimal';
+    if (totalSeverity >= 25) { afflictions.overall = 'high'; } else if (totalSeverity >= 15) { afflictions.overall = 'moderate'; } else if (totalSeverity >= 5) { afflictions.overall = 'low'; } else { afflictions.overall = 'minimal'; }
 
     return afflictions;
   }
@@ -240,7 +237,7 @@ class RemedialMeasuresCalculator {
     // Calculate priority
     const planetaryCount = Object.keys(afflictions.planetary).length;
     const houseCount = Object.keys(afflictions.house).length;
-    const overallSeverity = {'minimal': 1, 'low': 2, 'moderate': 3, 'high': 4}[afflictions.overall] || 1;
+    const overallSeverity = { minimal: 1, low: 2, moderate: 3, high: 4 }[afflictions.overall] || 1;
 
     const totalPriority = planetaryCount + houseCount + overallSeverity;
 
@@ -536,10 +533,10 @@ class RemedialMeasuresCalculator {
   }
 
   _assessAfflictionSeverity(issues) {
-    if (issues.includes('severe_combustion') || issues.includes('exact_square')) return 5;
-    if (issues.includes('combustion') || issues.includes('square') || issues.includes('debilitated')) return 4;
-    if (issues.includes('opposition') || issues.includes('enemy_sign')) return 3;
-    if (issues.includes('minor_aspect') || issues.includes('neutral_sign')) return 2;
+    if (issues.includes('severe_combustion') || issues.includes('exact_square')) { return 5; }
+    if (issues.includes('combustion') || issues.includes('square') || issues.includes('debilitated')) { return 4; }
+    if (issues.includes('opposition') || issues.includes('enemy_sign')) { return 3; }
+    if (issues.includes('minor_aspect') || issues.includes('neutral_sign')) { return 2; }
     return 1;
   }
 
@@ -565,7 +562,7 @@ class RemedialMeasuresCalculator {
     const houseAfflictions = {};
 
     houseProblems.forEach(problem => {
-      const house = problem.house;
+      const { house } = problem;
       houseAfflictions[house] = {
         type: problem.type,
         severity: problem.severity,
@@ -627,16 +624,16 @@ class RemedialMeasuresCalculator {
   }
 
   _getRecitationGuidelines(planet, severity) {
-    if (severity >= 4) return '108 times daily for minimum 3 months';
-    if (severity >= 3) return '21 times daily for 42 days';
-    if (severity >= 2) return '11 times daily ongoing';
+    if (severity >= 4) { return '108 times daily for minimum 3 months'; }
+    if (severity >= 3) { return '21 times daily for 42 days'; }
+    if (severity >= 2) { return '11 times daily ongoing'; }
     return 'Daily morning recitation';
   }
 
   _getCharityFrequency(severity) {
-    if (severity >= 4) return 'Weekly or more frequent';
-    if (severity >= 3) return 'Weekly';
-    if (severity >= 2) return 'Monthly';
+    if (severity >= 4) { return 'Weekly or more frequent'; }
+    if (severity >= 3) { return 'Weekly'; }
+    if (severity >= 2) { return 'Monthly'; }
     return 'During auspicious periods';
   }
 

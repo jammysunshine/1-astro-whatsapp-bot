@@ -24,7 +24,7 @@ class WesternTransitsService extends ServiceTemplate {
     if (!data) {
       throw new Error('Input data is required for Western transit calculation');
     }
-    
+
     if (!data.birthData) {
       throw new Error('Birth data is required');
     }
@@ -32,7 +32,7 @@ class WesternTransitsService extends ServiceTemplate {
     // Validate birth data with model
     const validatedData = new BirthData(data.birthData);
     validatedData.validate();
-    
+
     return true;
   }
 
@@ -43,16 +43,16 @@ class WesternTransitsService extends ServiceTemplate {
    */
   async processCalculation(data) {
     const { birthData, targetDate = null } = data;
-    
+
     // Get Western transit data from calculator
     const transitData = await this.calculator.calculateWesternTransits(birthData, targetDate);
-    
+
     // Add metadata
     transitData.type = 'western_transits';
     transitData.zodiacType = 'tropical';
     transitData.generatedAt = new Date().toISOString();
     transitData.service = this.serviceName;
-    
+
     return transitData;
   }
 

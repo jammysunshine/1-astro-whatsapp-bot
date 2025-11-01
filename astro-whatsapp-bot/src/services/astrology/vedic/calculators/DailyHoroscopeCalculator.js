@@ -82,7 +82,6 @@ class DailyHoroscopeCalculator {
         generalReading: 'Today brings opportunities for growth and new experiences.',
         recommendations: ['Trust your instincts', 'Stay open to possibilities']
       };
-
     } catch (error) {
       logger.error('❌ Error in daily horoscope generation:', error);
       throw new Error(`Daily horoscope generation failed: ${error.message}`);
@@ -153,7 +152,7 @@ class DailyHoroscopeCalculator {
         date: currentDate,
         sunSign,
         moonSign,
-        moonSign: moonSign,
+        moonSign,
         moonNakshatra: natalChart.interpretations?.nakshatra || 'Unknown',
         sunrise,
         sunset,
@@ -168,7 +167,6 @@ class DailyHoroscopeCalculator {
         luckyGemstone: this._getLuckyGemstone(sunSign, currentAspects),
         dominantEnergy: this._getDominantEnergy(currentAspects)
       };
-
     } catch (error) {
       logger.error('Error generating transit-based horoscope:', error);
 
@@ -359,7 +357,7 @@ class DailyHoroscopeCalculator {
     const day = currentDate.getDate();
 
     // Approximate times based on season
-    let sunrise, sunset;
+    let sunrise; let sunset;
     if (month >= 3 && month <= 5) { // Spring
       sunrise = '6:30 AM';
       sunset = '6:30 PM';

@@ -278,8 +278,7 @@ class SolarArcDirectionsService extends ServiceTemplate {
     // Analyze aspect intensity
     if (solarArcs.aspects) {
       const aspectCount = solarArcs.aspects.length;
-      if (aspectCount > 5) progression.intensity = 'High';
-      else if (aspectCount < 2) progression.intensity = 'Low';
+      if (aspectCount > 5) { progression.intensity = 'High'; } else if (aspectCount < 2) { progression.intensity = 'Low'; }
     }
 
     return progression;
@@ -439,10 +438,10 @@ class SolarArcDirectionsService extends ServiceTemplate {
   }
 
   _getLifePhase(age) {
-    if (age >= 0 && age < 21) return 'Foundation and learning';
-    if (age >= 21 && age < 35) return 'Establishment and growth';
-    if (age >= 35 && age < 50) return 'Mastery and contribution';
-    if (age >= 50 && age < 70) return 'Wisdom and reflection';
+    if (age >= 0 && age < 21) { return 'Foundation and learning'; }
+    if (age >= 21 && age < 35) { return 'Establishment and growth'; }
+    if (age >= 35 && age < 50) { return 'Mastery and contribution'; }
+    if (age >= 50 && age < 70) { return 'Wisdom and reflection'; }
     return 'Legacy and completion';
   }
 

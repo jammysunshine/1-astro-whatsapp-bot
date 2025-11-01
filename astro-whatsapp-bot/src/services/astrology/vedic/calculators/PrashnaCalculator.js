@@ -401,7 +401,6 @@ class PrashnaCalculator {
         'Supportive planetary configurations suggest favorable outcome',
         'Question has basis for positive resolution'
       ];
-
     } else if (negativeScores.total > positiveScores.total) {
       interpretation.overallIndication = `Challenging indications for: ${question}`;
 
@@ -412,7 +411,6 @@ class PrashnaCalculator {
         'Outcome may be delayed or modified',
         'Consider alternative approaches or timing'
       ];
-
     } else {
       interpretation.overallIndication = `Mixed/neutral indications for: ${question}`;
 
@@ -466,8 +464,8 @@ class PrashnaCalculator {
 
     probability.breakdown = {
       questionRuler: questionRulerAnalysis.strength,
-      chartReliability: chartReliability,
-      questionAppropriateness: questionAppropriateness,
+      chartReliability,
+      questionAppropriateness,
       significatorHarmony: significatorHarmony.score
     };
 
@@ -644,8 +642,8 @@ class PrashnaCalculator {
     // Check major aspects from other planets
     Object.entries(horaryChart.planets).forEach(([planet, data]) => {
       // Skip the ruler planet itself when analyzing aspects
-      if (planet === questionRuler) return;
-      if (planet === Object.keys(rulerData).find(key => rulerData[key] === rulerData)) return;
+      if (planet === questionRuler) { return; }
+      if (planet === Object.keys(rulerData).find(key => rulerData[key] === rulerData)) { return; }
 
       const angle = Math.abs(rulerData.longitude - data.longitude);
       const minAngle = Math.min(angle, 360 - angle);
@@ -663,7 +661,7 @@ class PrashnaCalculator {
       supporting: supportingAspects,
       challenging: challengingAspects,
       description: supportingAspects > challengingAspects ? 'Mostly supportive aspects' :
-                   challengingAspects > supportingAspects ? 'Some challenging aspects' : 'Mixed aspects',
+        challengingAspects > supportingAspects ? 'Some challenging aspects' : 'Mixed aspects',
       score: (supportingAspects - challengingAspects) * 5
     };
   }
@@ -684,7 +682,7 @@ class PrashnaCalculator {
     const rulerAnalysis = this._analyzeQuestionRuler(significators.querent, chart);
 
     let score = rulerAnalysis.strength;
-    let reasons = [];
+    const reasons = [];
 
     if (chart.ascendant.sign !== this._getSignOfPlanet(chart.planets.moon.longitude)) {
       reasons.push('Moon not in ascendant - generally favorable');
@@ -840,7 +838,7 @@ class PrashnaCalculator {
     // Check if significators work together harmoniously
     const planets = significators.significatorPlanets;
 
-    if (planets.length < 2) return { score: 50, description: 'Single significator' };
+    if (planets.length < 2) { return { score: 50, description: 'Single significator' }; }
 
     let harmoniousAspects = 0;
     let conflictingAspects = 0;
@@ -870,7 +868,7 @@ class PrashnaCalculator {
     return {
       score,
       description: harmoniousAspects > conflictingAspects ? 'Harmonious significators' :
-                   conflictingAspects > harmoniousAspects ? 'Conflicting significators' : 'Mixed significator relationships'
+        conflictingAspects > harmoniousAspects ? 'Conflicting significators' : 'Mixed significator relationships'
     };
   }
 

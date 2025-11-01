@@ -14,7 +14,7 @@ class VarshaphalAction extends BaseAction {
     try {
       const { user } = context;
       const currentYear = new Date().getFullYear();
-      
+
       const userData = {
         datetime: params.datetime || user.birthDatetime,
         latitude: params.latitude || user.birthLatitude,
@@ -29,7 +29,6 @@ class VarshaphalAction extends BaseAction {
       });
 
       return this.formatResponse(result, userData.language);
-
     } catch (error) {
       return this.handleError(error, context);
     }
@@ -37,42 +36,42 @@ class VarshaphalAction extends BaseAction {
 
   formatResponse(result, language) {
     const { analysis } = result;
-    
+
     const responses = {
       en: {
         header: `📅 *Annual Horoscope (Varshaphal) - ${analysis.year}*\n\n`,
-        muntha: `*Muntha (Year Focus):*\n`,
-        tajikaYogas: `*Tajika Yogas:*\n`,
-        sahams: `*Significant Points (Sahams):*\n`,
-        patyayiniDasa: `*Annual Dasa Periods:*\n`,
-        interpretations: `*Interpretations:*\n`,
-        yearFocus: `• Year Focus: `,
-        majorYogas: `• Major Yogas: `,
-        significantPoints: `• Significant Points: `,
-        dasaInfluence: `• Current Dasa Influence: `,
-        overallAnalysis: `*Overall Analysis:*\n`,
-        summary: `• Summary: `,
-        strengths: `• Strengths: `,
-        challenges: `• Challenges: `,
-        recommendations: `• Recommendations: `,
+        muntha: '*Muntha (Year Focus):*\n',
+        tajikaYogas: '*Tajika Yogas:*\n',
+        sahams: '*Significant Points (Sahams):*\n',
+        patyayiniDasa: '*Annual Dasa Periods:*\n',
+        interpretations: '*Interpretations:*\n',
+        yearFocus: '• Year Focus: ',
+        majorYogas: '• Major Yogas: ',
+        significantPoints: '• Significant Points: ',
+        dasaInfluence: '• Current Dasa Influence: ',
+        overallAnalysis: '*Overall Analysis:*\n',
+        summary: '• Summary: ',
+        strengths: '• Strengths: ',
+        challenges: '• Challenges: ',
+        recommendations: '• Recommendations: ',
         footer: `\n\n_This annual horoscope provides insights and predictions for the year ${analysis.year} according to Varshaphal system._`
       },
       hi: {
         header: `📅 *वार्षिक कुंडली (वर्षफल) - ${analysis.year}*\n\n`,
-        muntha: `*मुंथा (वर्ष केंद्र):*\n`,
-        tajikaYogas: `*ताजिका योग:*\n`,
-        sahams: `*महत्वपूर्ण बिंदु (साहम):*\n`,
-        patyayiniDasa: `*वार्षिक दशा अवधि:*\n`,
-        interpretations: `*व्याख्या:*\n`,
-        yearFocus: `• वर्ष केंद्र: `,
-        majorYogas: `• प्रमुख योग: `,
-        significantPoints: `• महत्वपूर्ण बिंदु: `,
-        dasaInfluence: `• वर्तमान दशा प्रभाव: `,
-        overallAnalysis: `*समग्र विश्लेषण:*\n`,
-        summary: `• सारांश: `,
-        strengths: `• शक्तियां: `,
-        challenges: `• चुनौतियां: `,
-        recommendations: `• सिफारिशें: `,
+        muntha: '*मुंथा (वर्ष केंद्र):*\n',
+        tajikaYogas: '*ताजिका योग:*\n',
+        sahams: '*महत्वपूर्ण बिंदु (साहम):*\n',
+        patyayiniDasa: '*वार्षिक दशा अवधि:*\n',
+        interpretations: '*व्याख्या:*\n',
+        yearFocus: '• वर्ष केंद्र: ',
+        majorYogas: '• प्रमुख योग: ',
+        significantPoints: '• महत्वपूर्ण बिंदु: ',
+        dasaInfluence: '• वर्तमान दशा प्रभाव: ',
+        overallAnalysis: '*समग्र विश्लेषण:*\n',
+        summary: '• सारांश: ',
+        strengths: '• शक्तियां: ',
+        challenges: '• चुनौतियां: ',
+        recommendations: '• सिफारिशें: ',
         footer: `\n\n_यह वार्षिक कुंडली वर्षफल प्रणाली के अनुसार वर्ष ${analysis.year} के लिए अंतर्दृष्टि और भविष्यवाणियां प्रदान करती है।_`
       }
     };
@@ -120,43 +119,43 @@ class VarshaphalAction extends BaseAction {
     // Interpretations
     if (analysis.sections['Interpretations']) {
       const interpretations = analysis.sections['Interpretations'];
-      
+
       response += t.interpretations;
-      
+
       if (interpretations.yearFocus) {
-        response += t.yearFocus + interpretations.yearFocus + '\n';
+        response += `${t.yearFocus + interpretations.yearFocus}\n`;
       }
-      
+
       if (interpretations.majorYogas) {
-        response += t.majorYogas + interpretations.majorYogas + '\n';
+        response += `${t.majorYogas + interpretations.majorYogas}\n`;
       }
-      
+
       if (interpretations.significantPoints) {
-        response += t.significantPoints + interpretations.significantPoints + '\n';
+        response += `${t.significantPoints + interpretations.significantPoints}\n`;
       }
-      
+
       if (interpretations.dasaInfluence) {
-        response += t.dasaInfluence + interpretations.dasaInfluence + '\n';
+        response += `${t.dasaInfluence + interpretations.dasaInfluence}\n`;
       }
-      
+
       if (interpretations.overall) {
-        response += '\n' + t.overallAnalysis;
-        const overall = interpretations.overall;
-        
+        response += `\n${t.overallAnalysis}`;
+        const { overall } = interpretations;
+
         if (overall.summary) {
-          response += t.summary + overall.summary + '\n';
+          response += `${t.summary + overall.summary}\n`;
         }
-        
+
         if (overall.strengths && overall.strengths.length > 0) {
-          response += t.strengths + overall.strengths.join(', ') + '\n';
+          response += `${t.strengths + overall.strengths.join(', ')}\n`;
         }
-        
+
         if (overall.challenges && overall.challenges.length > 0) {
-          response += t.challenges + overall.challenges.join(', ') + '\n';
+          response += `${t.challenges + overall.challenges.join(', ')}\n`;
         }
-        
+
         if (overall.recommendations && overall.recommendations.length > 0) {
-          response += t.recommendations + overall.recommendations.slice(0, 3).join(', ') + '\n';
+          response += `${t.recommendations + overall.recommendations.slice(0, 3).join(', ')}\n`;
         }
       }
     }
@@ -172,7 +171,7 @@ class VarshaphalAction extends BaseAction {
   validateParams(params) {
     const required = ['datetime', 'latitude', 'longitude'];
     const missing = required.filter(param => !params[param]);
-    
+
     if (missing.length > 0) {
       throw new Error(`Missing required parameters: ${missing.join(', ')}`);
     }

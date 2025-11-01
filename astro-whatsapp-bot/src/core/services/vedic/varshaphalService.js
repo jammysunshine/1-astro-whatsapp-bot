@@ -37,19 +37,19 @@ class VarshaphalService extends ServiceTemplate {
     // Find the time when Sun returns to the same position as birth
     const birthChart = await VedicCalculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
     const birthSun = birthChart.sun;
-    
+
     // Calculate approximate date of solar return
     const birthDate = new Date(birthDatetime);
     const solarReturnDate = new Date(year, birthDate.getMonth(), birthDate.getDate());
-    
+
     // Refine to exact solar return time
     const varshaphalDatetime = await this.findSolarReturnTime(
-      solarReturnDate, 
-      birthLatitude, 
-      birthLongitude, 
+      solarReturnDate,
+      birthLatitude,
+      birthLongitude,
       birthSun
     );
-    
+
     return await VedicCalculator.calculateChart(varshaphalDatetime, birthLatitude, birthLongitude);
   }
 
@@ -68,11 +68,11 @@ class VarshaphalService extends ServiceTemplate {
   calculateMuntha(birthChart, varshaphalChart, year) {
     const birthYear = new Date(birthChart.datetime).getFullYear();
     const yearsPassed = year - birthYear;
-    
+
     // Muntha moves one house per year from ascendant
     const birthAscendant = Math.floor(birthChart.ascendant / 30);
     const munthaHouse = ((birthAscendant + yearsPassed - 1) % 12) + 1;
-    
+
     return {
       house: munthaHouse,
       sign: this.getHouseSign(munthaHouse, birthChart.ascendant),
@@ -110,7 +110,7 @@ class VarshaphalService extends ServiceTemplate {
       11: 'Gains, friends, social networks, aspirations',
       12: 'Losses, expenses, foreign lands, spirituality'
     };
-    
+
     return effects[house] || 'General life focus';
   }
 
@@ -119,22 +119,22 @@ class VarshaphalService extends ServiceTemplate {
    */
   calculateTajikaYogas(varshaphalChart) {
     const yogas = [];
-    
+
     // Ithasala Yoga (conjunction within 1 degree)
     yogas.push(...this.findIthasalaYogas(varshaphalChart));
-    
+
     // Ithasala with benefics
     yogas.push(...this.findIthasalaBenefics(varshaphalChart));
-    
+
     // Nakta Yoga
     yogas.push(...this.findNaktaYogas(varshaphalChart));
-    
+
     // Yamaya Yoga
     yogas.push(...this.findYamayaYogas(varshaphalChart));
-    
+
     // Durdhara Yoga
     yogas.push(...this.findDurdharaYogas(varshaphalChart));
-    
+
     return yogas;
   }
 
@@ -144,7 +144,7 @@ class VarshaphalService extends ServiceTemplate {
   findIthasalaYogas(chart) {
     const yogas = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
-    
+
     for (let i = 0; i < planets.length; i++) {
       for (let j = i + 1; j < planets.length; j++) {
         const planet1 = planets[i];
@@ -152,7 +152,7 @@ class VarshaphalService extends ServiceTemplate {
         const long1 = chart[planet1.toLowerCase()];
         const long2 = chart[planet2.toLowerCase()];
         const diff = Math.abs(long1 - long2);
-        
+
         if (diff <= 1 || diff >= 359) {
           yogas.push({
             type: 'Ithasala',
@@ -163,7 +163,7 @@ class VarshaphalService extends ServiceTemplate {
         }
       }
     }
-    
+
     return yogas;
   }
 
@@ -174,13 +174,13 @@ class VarshaphalService extends ServiceTemplate {
     const yogas = [];
     const benefics = ['Jupiter', 'Venus', 'Mercury'];
     const planets = ['Sun', 'Moon', 'Mars', 'Saturn'];
-    
+
     for (const benefic of benefics) {
       for (const planet of planets) {
         const beneficLong = chart[benefic.toLowerCase()];
         const planetLong = chart[planet.toLowerCase()];
         const diff = Math.abs(beneficLong - planetLong);
-        
+
         if (diff <= 1 || diff >= 359) {
           yogas.push({
             type: 'Ithasala Benefic',
@@ -191,7 +191,7 @@ class VarshaphalService extends ServiceTemplate {
         }
       }
     }
-    
+
     return yogas;
   }
 
@@ -204,12 +204,12 @@ class VarshaphalService extends ServiceTemplate {
     const moonLong = chart.moon;
     const sunLong = chart.sun;
     const planets = ['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
-    
+
     for (const planet of planets) {
       const planetLong = chart[planet.toLowerCase()];
       const moonDiff = Math.abs(moonLong - planetLong);
       const sunDiff = Math.abs(sunLong - planetLong);
-      
+
       if ((moonDiff <= 1 || moonDiff >= 359) && (sunDiff <= 1 || sunDiff >= 359)) {
         yogas.push({
           type: 'Nakta',
@@ -218,7 +218,7 @@ class VarshaphalService extends ServiceTemplate {
         });
       }
     }
-    
+
     return yogas;
   }
 
@@ -231,13 +231,13 @@ class VarshaphalService extends ServiceTemplate {
     const moonLong = chart.moon;
     const sunLong = chart.sun;
     const planets = ['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
-    
+
     for (const planet of planets) {
       const planetLong = chart[planet.toLowerCase()];
       const moonDiff = Math.abs(moonLong - planetLong);
       const sunDiff = Math.abs(sunLong - planetLong);
       const opposition = Math.abs(sunDiff - 180);
-      
+
       if ((moonDiff <= 1 || moonDiff >= 359) && opposition <= 1) {
         yogas.push({
           type: 'Yamaya',
@@ -246,7 +246,7 @@ class VarshaphalService extends ServiceTemplate {
         });
       }
     }
-    
+
     return yogas;
   }
 
@@ -258,7 +258,7 @@ class VarshaphalService extends ServiceTemplate {
     // Durdhara Yoga occurs when a planet is in Ithasala with Moon and another planet is in Ithasala with Moon
     const moonLong = chart.moon;
     const planets = ['Sun', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
-    
+
     for (let i = 0; i < planets.length; i++) {
       for (let j = i + 1; j < planets.length; j++) {
         const planet1 = planets[i];
@@ -267,7 +267,7 @@ class VarshaphalService extends ServiceTemplate {
         const long2 = chart[planet2.toLowerCase()];
         const diff1 = Math.abs(moonLong - long1);
         const diff2 = Math.abs(moonLong - long2);
-        
+
         if ((diff1 <= 1 || diff1 >= 359) && (diff2 <= 1 || diff2 >= 359)) {
           yogas.push({
             type: 'Durdhara',
@@ -277,7 +277,7 @@ class VarshaphalService extends ServiceTemplate {
         }
       }
     }
-    
+
     return yogas;
   }
 
@@ -302,10 +302,10 @@ class VarshaphalService extends ServiceTemplate {
       'Jupiter-Saturn': 'Balanced expansion and structure',
       'Venus-Saturn': 'Stable relationships and commitment'
     };
-    
+
     const key = `${planet1}-${planet2}`;
     const reverseKey = `${planet2}-${planet1}`;
-    
+
     return effects[key] || effects[reverseKey] || 'Positive combination';
   }
 
@@ -314,22 +314,22 @@ class VarshaphalService extends ServiceTemplate {
    */
   calculateSahams(varshaphalChart) {
     const sahams = {};
-    
+
     // Punya Saham (longevity and fortune)
     sahams.punya = this.calculatePunyaSaham(varshaphalChart);
-    
+
     // Vidya Saham (education and knowledge)
     sahams.vidya = this.calculateVidyaSaham(varshaphalChart);
-    
+
     // Rajya Saham (power and authority)
     sahams.rajya = this.calculateRajyaSaham(varshaphalChart);
-    
+
     // Vyapara Saham (business and career)
     sahams.vyapara = this.calculateVyaparaSaham(varshaphalChart);
-    
+
     // Sanjivani Saham (health and vitality)
     sahams.sanjivani = this.calculateSanjivaniSaham(varshaphalChart);
-    
+
     return sahams;
   }
 
@@ -338,11 +338,11 @@ class VarshaphalService extends ServiceTemplate {
    */
   calculatePunyaSaham(chart) {
     // Punya Saham = Moon + Saturn - Sun
-    const moon = chart.moon;
-    const saturn = chart.saturn;
-    const sun = chart.sun;
+    const { moon } = chart;
+    const { saturn } = chart;
+    const { sun } = chart;
     const punya = (moon + saturn - sun + 360) % 360;
-    
+
     return {
       longitude: punya,
       sign: this.getLongitudeSign(punya),
@@ -355,11 +355,11 @@ class VarshaphalService extends ServiceTemplate {
    */
   calculateVidyaSaham(chart) {
     // Vidya Saham = Jupiter + Mercury - Saturn
-    const jupiter = chart.jupiter;
-    const mercury = chart.mercury;
-    const saturn = chart.saturn;
+    const { jupiter } = chart;
+    const { mercury } = chart;
+    const { saturn } = chart;
     const vidya = (jupiter + mercury - saturn + 360) % 360;
-    
+
     return {
       longitude: vidya,
       sign: this.getLongitudeSign(vidya),
@@ -372,11 +372,11 @@ class VarshaphalService extends ServiceTemplate {
    */
   calculateRajyaSaham(chart) {
     // Rajya Saham = Sun + Jupiter - Saturn
-    const sun = chart.sun;
-    const jupiter = chart.jupiter;
-    const saturn = chart.saturn;
+    const { sun } = chart;
+    const { jupiter } = chart;
+    const { saturn } = chart;
     const rajya = (sun + jupiter - saturn + 360) % 360;
-    
+
     return {
       longitude: rajya,
       sign: this.getLongitudeSign(rajya),
@@ -389,11 +389,11 @@ class VarshaphalService extends ServiceTemplate {
    */
   calculateVyaparaSaham(chart) {
     // Vyapara Saham = Mercury + Moon - Saturn
-    const mercury = chart.mercury;
-    const moon = chart.moon;
-    const saturn = chart.saturn;
+    const { mercury } = chart;
+    const { moon } = chart;
+    const { saturn } = chart;
     const vyapara = (mercury + moon - saturn + 360) % 360;
-    
+
     return {
       longitude: vyapara,
       sign: this.getLongitudeSign(vyapara),
@@ -406,11 +406,11 @@ class VarshaphalService extends ServiceTemplate {
    */
   calculateSanjivaniSaham(chart) {
     // Sanjivani Saham = Ascendant + Moon - Saturn
-    const ascendant = chart.ascendant;
-    const moon = chart.moon;
-    const saturn = chart.saturn;
+    const { ascendant } = chart;
+    const { moon } = chart;
+    const { saturn } = chart;
     const sanjivani = (ascendant + moon - saturn + 360) % 360;
-    
+
     return {
       longitude: sanjivani,
       sign: this.getLongitudeSign(sanjivani),
@@ -435,21 +435,21 @@ class VarshaphalService extends ServiceTemplate {
   calculatePatyayiniDasa(varshaphalChart) {
     const dasaPeriods = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
-    
+
     // Sort planets by strength (simplified - using longitude)
     const sortedPlanets = planets.sort((a, b) => {
       const longA = varshaphalChart[a.toLowerCase()];
       const longB = varshaphalChart[b.toLowerCase()];
       return longB - longA;
     });
-    
+
     // Assign periods (simplified equal distribution)
     const daysPerPlanet = Math.floor(365 / sortedPlanets.length);
-    
+
     sortedPlanets.forEach((planet, index) => {
       const startDay = index * daysPerPlanet;
       const endDay = (index + 1) * daysPerPlanet - 1;
-      
+
       dasaPeriods.push({
         planet,
         startDay,
@@ -457,7 +457,7 @@ class VarshaphalService extends ServiceTemplate {
         effects: this.getDasaEffects(planet)
       });
     });
-    
+
     return dasaPeriods;
   }
 
@@ -474,7 +474,7 @@ class VarshaphalService extends ServiceTemplate {
       Venus: 'Relationships, pleasure, creativity, finance',
       Saturn: 'Discipline, responsibility, challenges, achievement'
     };
-    
+
     return effects[planet] || 'General influence';
   }
 
@@ -484,21 +484,21 @@ class VarshaphalService extends ServiceTemplate {
   async calculate(userData, options = {}) {
     try {
       this.validateInput(userData);
-      
+
       const { datetime, latitude, longitude, year } = userData;
-      
+
       if (!year) {
         throw new Error('Year is required for Varshaphal calculation');
       }
-      
+
       const varshaphalChart = await this.calculateVarshaphalChart(datetime, latitude, longitude, year);
       const birthChart = await VedicCalculator.calculateChart(datetime, latitude, longitude);
-      
+
       const muntha = this.calculateMuntha(birthChart, varshaphalChart, year);
       const tajikaYogas = this.calculateTajikaYogas(varshaphalChart);
       const sahams = this.calculateSahams(varshaphalChart);
       const patyayiniDasa = this.calculatePatyayiniDasa(varshaphalChart);
-      
+
       const analysis = {
         year,
         muntha,
@@ -513,9 +513,8 @@ class VarshaphalService extends ServiceTemplate {
           varshaphalChart
         })
       };
-      
+
       return this.formatOutput(analysis, options.language || 'en');
-      
     } catch (error) {
       throw new Error(`Varshaphal calculation failed: ${error.message}`);
     }
@@ -526,7 +525,7 @@ class VarshaphalService extends ServiceTemplate {
    */
   generateInterpretations(data) {
     const { muntha, tajikaYogas, sahams, patyayiniDasa } = data;
-    
+
     const interpretations = {
       yearFocus: muntha.effects,
       majorYogas: this.interpretTajikaYogas(tajikaYogas),
@@ -534,7 +533,7 @@ class VarshaphalService extends ServiceTemplate {
       dasaInfluence: this.interpretPatyayiniDasa(patyayiniDasa),
       overall: this.generateOverallAnalysis(data)
     };
-    
+
     return interpretations;
   }
 
@@ -545,11 +544,11 @@ class VarshaphalService extends ServiceTemplate {
     if (yogas.length === 0) {
       return 'No major Tajika yogas present this year';
     }
-    
-    const interpretations = yogas.map(yoga => 
+
+    const interpretations = yogas.map(yoga =>
       `${yoga.type}: ${yoga.effects}`
     );
-    
+
     return interpretations.join('; ');
   }
 
@@ -558,11 +557,11 @@ class VarshaphalService extends ServiceTemplate {
    */
   interpretSahams(sahams) {
     const interpretations = [];
-    
+
     Object.entries(sahams).forEach(([name, saham]) => {
       interpretations.push(`${name}: ${saham.effects} in ${saham.sign}`);
     });
-    
+
     return interpretations.join('; ');
   }
 
@@ -572,15 +571,15 @@ class VarshaphalService extends ServiceTemplate {
   interpretPatyayiniDasa(dasaPeriods) {
     const currentMonth = new Date().getMonth();
     const currentDay = Math.floor((currentMonth / 12) * 365);
-    
-    const currentDasa = dasaPeriods.find(dasa => 
+
+    const currentDasa = dasaPeriods.find(dasa =>
       currentDay >= dasa.startDay && currentDay <= dasa.endDay
     );
-    
+
     if (currentDasa) {
       return `Current period: ${currentDasa.planet} - ${currentDasa.effects}`;
     }
-    
+
     return 'Annual dasa periods calculated for the year';
   }
 
@@ -589,7 +588,7 @@ class VarshaphalService extends ServiceTemplate {
    */
   generateOverallAnalysis(data) {
     const { muntha, tajikaYogas } = data;
-    
+
     return {
       summary: `Annual chart shows focus on ${muntha.effects.toLowerCase()}`,
       strengths: this.identifyStrengths(data),
@@ -604,15 +603,15 @@ class VarshaphalService extends ServiceTemplate {
   identifyStrengths(data) {
     const strengths = [];
     const { tajikaYogas, sahams } = data;
-    
+
     if (tajikaYogas.length > 0) {
       strengths.push('Favorable planetary combinations present');
     }
-    
+
     if (sahams.rajya && sahams.rajya.sign === 'Aries' || sahams.rajya.sign === 'Leo') {
       strengths.push('Strong potential for authority and recognition');
     }
-    
+
     return strengths;
   }
 
@@ -622,11 +621,11 @@ class VarshaphalService extends ServiceTemplate {
   identifyChallenges(data) {
     const challenges = [];
     const { muntha } = data;
-    
+
     if (muntha.house === 6 || muntha.house === 8 || muntha.house === 12) {
       challenges.push('Year may present obstacles requiring patience');
     }
-    
+
     return challenges;
   }
 
@@ -636,7 +635,7 @@ class VarshaphalService extends ServiceTemplate {
   generateRecommendations(data) {
     const recommendations = [];
     const { muntha, patyayiniDasa } = data;
-    
+
     // Based on Muntha
     if (muntha.house === 1) {
       recommendations.push('Focus on personal development and new initiatives');
@@ -645,18 +644,18 @@ class VarshaphalService extends ServiceTemplate {
     } else if (muntha.house === 7) {
       recommendations.push('Focus on partnerships and relationships');
     }
-    
+
     // Based on current dasa
     const currentMonth = new Date().getMonth();
     const currentDay = Math.floor((currentMonth / 12) * 365);
-    const currentDasa = patyayiniDasa.find(dasa => 
+    const currentDasa = patyayiniDasa.find(dasa =>
       currentDay >= dasa.startDay && currentDay <= dasa.endDay
     );
-    
+
     if (currentDasa) {
       recommendations.push(`Current ${currentDasa.planet} period favors ${currentDasa.effects.toLowerCase()}`);
     }
-    
+
     return recommendations;
   }
 
@@ -694,9 +693,9 @@ class VarshaphalService extends ServiceTemplate {
         overallAnalysis: 'समग्र विश्लेषण'
       }
     };
-    
+
     const t = translations[language] || translations.en;
-    
+
     return {
       metadata: this.getMetadata(),
       analysis: {

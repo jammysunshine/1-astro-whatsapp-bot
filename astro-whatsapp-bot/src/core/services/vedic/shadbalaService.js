@@ -9,16 +9,16 @@ const logger = require('../../../utils/logger');
 class ShadbalaService extends ServiceTemplate {
   constructor(services) {
     super('ShadbalaService', services);
-    
+
     // Initialize Shadbala Calculator with required dependencies
     this.calculator = new ShadbalaCalculator(
       services.astrologer,
       services.geocodingService
     );
-    
+
     // Set services in calculator
     this.calculator.setServices(services);
-    
+
     // Service-specific configuration
     this.serviceConfig = {
       supportedInputs: ['birthData'],
@@ -41,14 +41,14 @@ class ShadbalaService extends ServiceTemplate {
    */
   async lshadbalaCalculation(params) {
     const { birthData, options = {} } = params;
-    
+
     try {
       // Validate inputs
       this._validateInputs(birthData);
-      
+
       // Calculate Shadbala using the calculator
       const shadbalaResult = await this.calculator.generateShadbala(birthData);
-      
+
       // Add service metadata
       shadbalaResult.serviceMetadata = {
         serviceName: this.serviceName,
@@ -57,12 +57,11 @@ class ShadbalaService extends ServiceTemplate {
         method: 'Six-fold Planetary Strength Assessment',
         components: ['Sthana Bala', 'Dig Bala', 'Kala Bala', 'Chesta Bala', 'Naisargika Bala', 'Drig Bala']
       };
-      
+
       // Add strength analysis
       shadbalaResult.strengthAnalysis = this._analyzeOverallStrength(shadbalaResult.shadbalaResults);
-      
+
       return shadbalaResult;
-      
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
       throw new Error(`Shadbala calculation failed: ${error.message}`);
@@ -80,7 +79,7 @@ class ShadbalaService extends ServiceTemplate {
     }
 
     let formatted = '';
-    
+
     // Use the calculator's formatted summary if available
     if (result.summary) {
       formatted = result.summary;
@@ -88,11 +87,11 @@ class ShadbalaService extends ServiceTemplate {
       // Fallback formatting
       formatted = this._formatFallbackResult(result);
     }
-    
+
     // Add planetary strength overview
     if (result.shadbalaResults) {
       formatted += '\n\n*💪 Planetary Strength Overview:*\n';
-      
+
       const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
       planets.forEach(planet => {
         const planetData = result.shadbalaResults[planet];
@@ -104,7 +103,7 @@ class ShadbalaService extends ServiceTemplate {
         }
       });
     }
-    
+
     // Add strongest and weakest planets
     if (result.strengthAnalysis) {
       formatted += '\n*🏆 Strength Analysis:*\n';
@@ -118,7 +117,7 @@ class ShadbalaService extends ServiceTemplate {
         formatted += `• Overall Chart: ${result.strengthAnalysis.chartStrength}\n`;
       }
     }
-    
+
     // Add recommendations if available
     if (result.recommendations && result.recommendations.length > 0) {
       formatted += '\n*💡 Recommendations:*\n';
@@ -126,10 +125,10 @@ class ShadbalaService extends ServiceTemplate {
         formatted += `• ${rec}\n`;
       });
     }
-    
+
     // Add service footer
     formatted += '\n\n---\n*Shadbala - Six-fold Planetary Strength Assessment*';
-    
+
     return formatted;
   }
 
@@ -142,7 +141,7 @@ class ShadbalaService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for Shadbala analysis');
     }
-    
+
     if (!birthData.birthDate || !birthData.birthTime || !birthData.birthPlace) {
       throw new Error('Complete birth details (date, time, place) are required');
     }
@@ -163,17 +162,17 @@ class ShadbalaService extends ServiceTemplate {
       weakPlanets: [],
       balancedPlanets: []
     };
-    
+
     let maxStrength = 0;
     let minStrength = Infinity;
     let totalStrength = 0;
     let planetCount = 0;
-    
+
     Object.entries(shadbalaResults).forEach(([planet, data]) => {
       const strength = data.totalBala || 0;
       totalStrength += strength;
       planetCount++;
-      
+
       // Find strongest and weakest
       if (strength > maxStrength) {
         maxStrength = strength;
@@ -184,7 +183,7 @@ class ShadbalaService extends ServiceTemplate {
           totalRP: data.totalRP || 0
         };
       }
-      
+
       if (strength < minStrength) {
         minStrength = strength;
         analysis.weakest = {
@@ -194,7 +193,7 @@ class ShadbalaService extends ServiceTemplate {
           totalRP: data.totalRP || 0
         };
       }
-      
+
       // Categorize planets
       if (strength >= this.serviceConfig.strengthThresholds.strong) {
         analysis.strongPlanets.push(planet.charAt(0).toUpperCase() + planet.slice(1));
@@ -204,7 +203,7 @@ class ShadbalaService extends ServiceTemplate {
         analysis.balancedPlanets.push(planet.charAt(0).toUpperCase() + planet.slice(1));
       }
     });
-    
+
     // Determine overall chart strength
     const averageStrength = planetCount > 0 ? totalStrength / planetCount : 0;
     if (averageStrength >= this.serviceConfig.strengthThresholds.strong) {
@@ -214,7 +213,7 @@ class ShadbalaService extends ServiceTemplate {
     } else {
       analysis.chartStrength = 'Balanced';
     }
-    
+
     return analysis;
   }
 
@@ -225,16 +224,16 @@ class ShadbalaService extends ServiceTemplate {
    * @private
    */
   _formatFallbackResult(result) {
-    let formatted = `💪 *Shadbala Analysis*\n\n`;
-    
+    let formatted = '💪 *Shadbala Analysis*\n\n';
+
     if (result.name) {
       formatted += `*Analysis for:* ${result.name}\n\n`;
     }
-    
+
     if (result.chartStrength) {
       formatted += `*Overall Chart Strength:* ${result.chartStrength}\n\n`;
     }
-    
+
     formatted += '*Six-fold Strength Assessment:*\n';
     formatted += '• Sthana Bala (Positional)\n';
     formatted += '• Dig Bala (Directional)\n';
@@ -242,7 +241,7 @@ class ShadbalaService extends ServiceTemplate {
     formatted += '• Chesta Bala (Motional)\n';
     formatted += '• Naisargika Bala (Natural)\n';
     formatted += '• Drig Bala (Aspectual)\n\n';
-    
+
     if (result.shadbalaResults) {
       formatted += '*Planetary Strengths:*\n';
       Object.entries(result.shadbalaResults).slice(0, 4).forEach(([planet, data]) => {
@@ -252,9 +251,9 @@ class ShadbalaService extends ServiceTemplate {
         formatted += `• ${planetName}: ${strength} (${rp} RP)\n`;
       });
     }
-    
+
     formatted += '\n*Shadbala reveals the true strength and influence of each planet in your chart.*';
-    
+
     return formatted;
   }
 
@@ -265,20 +264,20 @@ class ShadbalaService extends ServiceTemplate {
    */
   calculateConfidence(result) {
     let confidence = 80; // Base confidence for Shadbala
-    
+
     // Increase confidence based on data completeness
     if (result.shadbalaResults && Object.keys(result.shadbalaResults).length >= 7) {
       confidence += 10;
     }
-    
+
     if (result.analysis && result.analysis.strongest && result.analysis.weakest) {
       confidence += 5;
     }
-    
+
     if (result.recommendations && result.recommendations.length > 0) {
       confidence += 5;
     }
-    
+
     return Math.min(confidence, 100);
   }
 

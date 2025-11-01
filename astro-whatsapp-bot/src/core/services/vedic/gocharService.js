@@ -50,14 +50,14 @@ class GocharService extends ServiceTemplate {
   calculateTransitAspects(transitChart, natalChart) {
     const aspects = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
-    
+
     for (const transitPlanet of planets) {
       const transitLong = transitChart[transitPlanet.toLowerCase()];
-      
+
       for (const natalPlanet of planets) {
         const natalLong = natalChart[natalPlanet.toLowerCase()];
         const aspect = this.calculateAspect(transitLong, natalLong);
-        
+
         if (aspect.aspect !== 'none') {
           aspects.push({
             transitPlanet,
@@ -70,7 +70,7 @@ class GocharService extends ServiceTemplate {
         }
       }
     }
-    
+
     return aspects;
   }
 
@@ -80,7 +80,7 @@ class GocharService extends ServiceTemplate {
   calculateAspect(long1, long2) {
     const diff = Math.abs(long1 - long2);
     const normalizedDiff = diff > 180 ? 360 - diff : diff;
-    
+
     const aspects = [
       { type: 'conjunction', angle: 0, orb: 8 },
       { type: 'opposition', angle: 180, orb: 8 },
@@ -88,7 +88,7 @@ class GocharService extends ServiceTemplate {
       { type: 'square', angle: 90, orb: 8 },
       { type: 'sextile', angle: 60, orb: 6 }
     ];
-    
+
     for (const aspect of aspects) {
       const angleDiff = Math.abs(normalizedDiff - aspect.angle);
       if (angleDiff <= aspect.orb) {
@@ -99,7 +99,7 @@ class GocharService extends ServiceTemplate {
         };
       }
     }
-    
+
     return { aspect: 'none', orb: 0, strength: 0 };
   }
 
@@ -109,10 +109,10 @@ class GocharService extends ServiceTemplate {
   getAspectType(transitPlanet, natalPlanet, aspect) {
     const benefic = ['Jupiter', 'Venus', 'Mercury'];
     const malefic = ['Mars', 'Saturn', 'Rahu', 'Ketu'];
-    
+
     const isTransitBenefic = benefic.includes(transitPlanet);
     const isNatalBenefic = benefic.includes(natalPlanet);
-    
+
     const aspectTypes = {
       conjunction: isTransitBenefic ? 'benefic' : 'malefic',
       trine: 'benefic',
@@ -120,7 +120,7 @@ class GocharService extends ServiceTemplate {
       square: 'malefic',
       opposition: 'challenging'
     };
-    
+
     return aspectTypes[aspect] || 'neutral';
   }
 
@@ -131,11 +131,11 @@ class GocharService extends ServiceTemplate {
     const houseTransits = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
     const natalAscendant = natalChart.ascendant;
-    
+
     for (const planet of planets) {
       const transitLong = transitChart[planet.toLowerCase()];
       const transitHouse = this.getLongitudeHouse(transitLong, natalAscendant);
-      
+
       houseTransits.push({
         planet,
         house: transitHouse,
@@ -143,7 +143,7 @@ class GocharService extends ServiceTemplate {
         effects: this.getHouseTransitEffects(planet, transitHouse)
       });
     }
-    
+
     return houseTransits;
   }
 
@@ -304,7 +304,7 @@ class GocharService extends ServiceTemplate {
         Ketu: 'Spiritual liberation, detachment, enlightenment'
       }
     };
-    
+
     return effects[house]?.[planet] || 'Transit influence in this house';
   }
 
@@ -314,12 +314,12 @@ class GocharService extends ServiceTemplate {
   calculateRetrogradeEffects(transitChart) {
     const retrogradePlanets = [];
     const planets = ['Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
-    
+
     for (const planet of planets) {
       // This would need actual retrograde calculation from ephemeris
       // For now, using placeholder logic
       const isRetrograde = this.isPlanetRetrograde(planet, transitChart);
-      
+
       if (isRetrograde) {
         retrogradePlanets.push({
           planet,
@@ -327,7 +327,7 @@ class GocharService extends ServiceTemplate {
         });
       }
     }
-    
+
     return retrogradePlanets;
   }
 
@@ -351,7 +351,7 @@ class GocharService extends ServiceTemplate {
       Jupiter: 'Growth reconsideration, belief system review, opportunity reassessment',
       Saturn: 'Responsibility review, discipline reevaluation, structure reconsideration'
     };
-    
+
     return effects[planet] || 'Retrograde influence requiring reflection';
   }
 
@@ -360,19 +360,19 @@ class GocharService extends ServiceTemplate {
    */
   calculateMajorTransitPeriods(transitChart, natalChart) {
     const periods = [];
-    
+
     // Saturn return
     const saturnReturn = this.calculateSaturnReturn(transitChart, natalChart);
     if (saturnReturn.approaching) {
       periods.push(saturnReturn);
     }
-    
+
     // Jupiter return
     const jupiterReturn = this.calculateJupiterReturn(transitChart, natalChart);
     if (jupiterReturn.approaching) {
       periods.push(jupiterReturn);
     }
-    
+
     return periods;
   }
 
@@ -383,9 +383,9 @@ class GocharService extends ServiceTemplate {
     const natalSaturn = natalChart.saturn;
     const transitSaturn = transitChart.saturn;
     const diff = Math.abs(transitSaturn - natalSaturn);
-    
+
     const approaching = diff < 15 || diff > 345;
-    
+
     return {
       type: 'Saturn Return',
       approaching,
@@ -401,9 +401,9 @@ class GocharService extends ServiceTemplate {
     const natalJupiter = natalChart.jupiter;
     const transitJupiter = transitChart.jupiter;
     const diff = Math.abs(transitJupiter - natalJupiter);
-    
+
     const approaching = diff < 15 || diff > 345;
-    
+
     return {
       type: 'Jupiter Return',
       approaching,
@@ -418,21 +418,21 @@ class GocharService extends ServiceTemplate {
   async calculate(userData, options = {}) {
     try {
       this.validateInput(userData);
-      
+
       const { datetime, latitude, longitude, birthDatetime, birthLatitude, birthLongitude } = userData;
-      
+
       if (!birthDatetime || !birthLatitude || !birthLongitude) {
         throw new Error('Birth data required for transit analysis');
       }
-      
+
       const transitChart = await this.getCurrentTransits(datetime, latitude, longitude);
       const natalChart = await this.getNatalChart(birthDatetime, birthLatitude, birthLongitude);
-      
+
       const transitAspects = this.calculateTransitAspects(transitChart, natalChart);
       const houseTransits = this.calculateHouseTransits(transitChart, natalChart);
       const retrogradeEffects = this.calculateRetrogradeEffects(transitChart);
       const majorPeriods = this.calculateMajorTransitPeriods(transitChart, natalChart);
-      
+
       const analysis = {
         transitAspects,
         houseTransits,
@@ -445,9 +445,8 @@ class GocharService extends ServiceTemplate {
           majorPeriods
         })
       };
-      
+
       return this.formatOutput(analysis, options.language || 'en');
-      
     } catch (error) {
       throw new Error(`Gochar calculation failed: ${error.message}`);
     }
@@ -458,14 +457,14 @@ class GocharService extends ServiceTemplate {
    */
   generateInterpretations(data) {
     const { transitAspects, houseTransits, retrogradeEffects, majorPeriods } = data;
-    
+
     const interpretations = {
       majorInfluences: this.identifyMajorInfluences(data),
       timing: this.analyzeTiming(data),
       recommendations: this.generateRecommendations(data),
       overall: this.generateOverallAnalysis(data)
     };
-    
+
     return interpretations;
   }
 
@@ -475,18 +474,18 @@ class GocharService extends ServiceTemplate {
   identifyMajorInfluences(data) {
     const influences = [];
     const { transitAspects, majorPeriods } = data;
-    
+
     // Strong aspects
     const strongAspects = transitAspects.filter(a => a.strength > 70);
     strongAspects.forEach(aspect => {
       influences.push(`${aspect.transitPlanet} ${aspect.aspect} ${aspect.natalPlanet} (${aspect.strength.toFixed(0)}% strength)`);
     });
-    
+
     // Major periods
     majorPeriods.forEach(period => {
       influences.push(`${period.type} approaching (${period.significance})`);
     });
-    
+
     return influences;
   }
 
@@ -495,10 +494,10 @@ class GocharService extends ServiceTemplate {
    */
   analyzeTiming(data) {
     const { transitAspects, houseTransits } = data;
-    
+
     const beneficAspects = transitAspects.filter(a => a.type === 'benefic');
     const maleficAspects = transitAspects.filter(a => a.type === 'malefic');
-    
+
     return {
       favorable: beneficAspects.length > maleficAspects.length,
       challenges: maleficAspects.length > beneficAspects.length,
@@ -513,22 +512,22 @@ class GocharService extends ServiceTemplate {
   identifyFocusAreas(data) {
     const { houseTransits } = data;
     const focusAreas = [];
-    
+
     // Count planets in each house
     const houseCounts = {};
     houseTransits.forEach(transit => {
       houseCounts[transit.house] = (houseCounts[transit.house] || 0) + 1;
     });
-    
+
     // Identify houses with most planets
     const sortedHouses = Object.entries(houseCounts)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 3);
-    
+
     sortedHouses.forEach(([house, count]) => {
       focusAreas.push(`House ${house} (${count} planets)`);
     });
-    
+
     return focusAreas;
   }
 
@@ -538,24 +537,24 @@ class GocharService extends ServiceTemplate {
   generateRecommendations(data) {
     const recommendations = [];
     const { transitAspects, retrogradeEffects, houseTransits } = data;
-    
+
     // Based on aspects
     const challengingAspects = transitAspects.filter(a => a.type === 'malefic' && a.strength > 60);
     if (challengingAspects.length > 0) {
       recommendations.push('Exercise patience with current challenges - this period requires careful navigation');
     }
-    
+
     // Based on retrogrades
     if (retrogradeEffects.length > 0) {
       recommendations.push('Review and reconsider decisions before taking action');
     }
-    
+
     // Based on house transits
     const firstHouseTransits = houseTransits.filter(t => t.house === 1);
     if (firstHouseTransits.length > 0) {
       recommendations.push('Focus on personal development and new beginnings');
     }
-    
+
     return recommendations;
   }
 
@@ -564,7 +563,7 @@ class GocharService extends ServiceTemplate {
    */
   generateOverallAnalysis(data) {
     const { transitAspects, houseTransits } = data;
-    
+
     return {
       summary: `Current transit period shows ${transitAspects.length} active aspects with focus on key life areas.`,
       intensity: this.calculateIntensity(data),
@@ -580,9 +579,9 @@ class GocharService extends ServiceTemplate {
     const { transitAspects } = data;
     const totalStrength = transitAspects.reduce((sum, aspect) => sum + aspect.strength, 0);
     const averageStrength = transitAspects.length > 0 ? totalStrength / transitAspects.length : 0;
-    
-    if (averageStrength > 70) return 'High';
-    if (averageStrength > 40) return 'Medium';
+
+    if (averageStrength > 70) { return 'High'; }
+    if (averageStrength > 40) { return 'Medium'; }
     return 'Low';
   }
 
@@ -592,23 +591,23 @@ class GocharService extends ServiceTemplate {
   identifyKeyThemes(data) {
     const themes = [];
     const { houseTransits } = data;
-    
+
     // Analyze house emphasis
     const houseEmphasis = houseTransits.map(t => t.house);
     const uniqueHouses = [...new Set(houseEmphasis)];
-    
+
     if (uniqueHouses.includes(1) || uniqueHouses.includes(10)) {
       themes.push('Career and personal identity');
     }
-    
+
     if (uniqueHouses.includes(2) || uniqueHouses.includes(8)) {
       themes.push('Financial transformation');
     }
-    
+
     if (uniqueHouses.includes(5) || uniqueHouses.includes(7)) {
       themes.push('Relationships and creativity');
     }
-    
+
     return themes;
   }
 
@@ -642,9 +641,9 @@ class GocharService extends ServiceTemplate {
         overallAnalysis: 'समग्र विश्लेषण'
       }
     };
-    
+
     const t = translations[language] || translations.en;
-    
+
     return {
       metadata: this.getMetadata(),
       analysis: {

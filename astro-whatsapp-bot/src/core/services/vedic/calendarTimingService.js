@@ -246,9 +246,6 @@ class CalendarTimingService extends ServiceTemplate {
   }
 
 
-
-
-
   /**
    * Create timing summary for quick reference
    * @param {Object} result - Full timing analysis

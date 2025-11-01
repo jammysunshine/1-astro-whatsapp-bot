@@ -14,12 +14,12 @@ const logger = require('../../utils/logger');
 class MedicalAstrologyService extends ServiceTemplate {
   constructor(services) {
     super('medicalAstrologyService');
-    
+
     // Initialize calculator with services if provided
     if (services) {
       this.calculator.setServices(services.calendricalService, services.geocodingService);
     }
-    
+
     this.serviceName = 'MedicalAstrologyService';
     logger.info('MedicalAstrologyService initialized');
   }

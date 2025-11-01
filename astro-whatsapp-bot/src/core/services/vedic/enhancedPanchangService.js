@@ -9,16 +9,16 @@ const logger = require('../../../utils/logger');
 class EnhancedPanchangService extends ServiceTemplate {
   constructor(services) {
     super('EnhancedPanchangService', services);
-    
+
     // Initialize Panchang Calculator with required dependencies
     this.calculator = new PanchangCalculator(
       services.astrologer,
       services.geocodingService
     );
-    
+
     // Set services in calculator
     this.calculator.setServices(services);
-    
+
     // Service-specific configuration
     this.serviceConfig = {
       supportedInputs: ['date', 'time', 'place'],
@@ -46,21 +46,21 @@ class EnhancedPanchangService extends ServiceTemplate {
    */
   async lenhancedPanchangCalculation(params) {
     const { date, time, place, options = {} } = params;
-    
+
     try {
       // Validate inputs
       this._validateInputs(date, time, place);
-      
+
       // Prepare date data
       const dateData = {
         date,
         time: time || this.serviceConfig.defaultTime,
         place: place || this.serviceConfig.defaultPlace
       };
-      
+
       // Calculate Panchang using calculator
       const panchangResult = await this.calculator.generatePanchang(dateData);
-      
+
       // Add service metadata
       panchangResult.serviceMetadata = {
         serviceName: this.serviceName,
@@ -69,12 +69,11 @@ class EnhancedPanchangService extends ServiceTemplate {
         method: 'Traditional Vedic Almanac Calculations',
         elementsCalculated: this.serviceConfig.panchangElements
       };
-      
+
       // Add enhanced analysis
       panchangResult.enhancedAnalysis = this._performEnhancedPanchangAnalysis(panchangResult);
-      
+
       return panchangResult;
-      
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
       throw new Error(`Enhanced Panchang calculation failed: ${error.message}`);
@@ -91,25 +90,25 @@ class EnhancedPanchangService extends ServiceTemplate {
       return '❌ *Enhanced Panchang Analysis Error*\n\nUnable to generate Panchang. Please check the date and try again.';
     }
 
-    let formatted = `📅 *Enhanced Panchang*\n\n`;
-    
+    let formatted = '📅 *Enhanced Panchang*\n\n';
+
     // Add date and location
     formatted += `*Date:* ${result.date}\n`;
     if (result.place) {
       formatted += `*Location:* ${result.place}\n`;
     }
     formatted += '\n';
-    
+
     // Add core Panchang elements
     formatted += '*🌙 Panchang Elements:*\n';
-    
+
     if (result.tithi) {
       formatted += `• **Tithi:** ${result.tithi.name} (${result.tithi.number})\n`;
       if (result.tithi.ends) {
         formatted += `  *Ends:* ${result.tithi.ends}\n`;
       }
     }
-    
+
     if (result.nakshatra) {
       formatted += `• **Nakshatra:** ${result.nakshatra.name}\n`;
       if (result.nakshatra.lord) {
@@ -122,7 +121,7 @@ class EnhancedPanchangService extends ServiceTemplate {
         formatted += `  *Meaning:* ${result.nakshatra.translation}\n`;
       }
     }
-    
+
     if (result.yoga) {
       formatted += `• **Yoga:** ${result.yoga.name}\n`;
       if (result.yoga.lord) {
@@ -132,45 +131,45 @@ class EnhancedPanchangService extends ServiceTemplate {
         formatted += `  *Significance:* ${result.yoga.significance}\n`;
       }
     }
-    
+
     if (result.karana) {
       formatted += `• **Karana:** ${result.karana.name} (${result.karana.type})\n`;
       if (result.karana.significance) {
         formatted += `  *Good for:* ${result.karana.significance}\n`;
       }
     }
-    
+
     // Add planetary positions
     formatted += '\n*🌞 Planetary Positions:*\n';
-    
+
     if (result.sunSign) {
       formatted += `• **Sun Sign:** ${result.sunSign}\n`;
     }
-    
+
     if (result.moonSign) {
       formatted += `• **Moon Sign:** ${result.moonSign}\n`;
     }
-    
+
     // Add sunrise/sunset
     if (result.sunrise && result.sunset) {
       formatted += '\n*🌅 Sunrise & Sunset:*\n';
       formatted += `• **Sunrise:** ${result.sunrise}\n`;
       formatted += `• **Sunset:** ${result.sunset}\n`;
     }
-    
+
     // Add auspicious periods
     if (result.auspiciousPeriod) {
       formatted += '\n*⏰ Auspicious Periods:*\n';
-      
+
       if (result.auspiciousPeriod.abhijitMuhurta) {
         formatted += `• **Abhijit Muhurta:** ${result.auspiciousPeriod.abhijitMuhurta}\n`;
       }
-      
+
       if (result.auspiciousPeriod.auspiciousHours) {
         formatted += `• **Auspicious Hours:** ${result.auspiciousPeriod.auspiciousHours}\n`;
       }
     }
-    
+
     // Add festivals if any
     if (result.festivals && result.festivals.length > 0) {
       formatted += '\n*🎉 Festivals & Events:*\n';
@@ -178,7 +177,7 @@ class EnhancedPanchangService extends ServiceTemplate {
         formatted += `• ${festival}\n`;
       });
     }
-    
+
     // Add enhanced analysis if available
     if (result.enhancedAnalysis) {
       formatted += '\n*💫 Daily Insights:*\n';
@@ -192,10 +191,10 @@ class EnhancedPanchangService extends ServiceTemplate {
         formatted += `• **Avoid:** ${result.enhancedAnalysis.avoidActivities}\n`;
       }
     }
-    
+
     // Add service footer
     formatted += '\n\n---\n*Enhanced Panchang - Traditional Vedic Almanac*';
-    
+
     return formatted;
   }
 
@@ -210,13 +209,13 @@ class EnhancedPanchangService extends ServiceTemplate {
     if (!date) {
       throw new Error('Date is required for Panchang calculation');
     }
-    
+
     // Validate date format (DD/MM/YYYY)
     const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
     if (!datePattern.test(date)) {
       throw new Error('Date must be in DD/MM/YYYY format');
     }
-    
+
     // Validate time format if provided (HH:MM)
     if (time && !/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time)) {
       throw new Error('Time must be in HH:MM format');
@@ -237,15 +236,15 @@ class EnhancedPanchangService extends ServiceTemplate {
       spiritualSignificance: '',
       businessFavorability: ''
     };
-    
+
     // Determine overall day quality based on Tithi and Yoga
     if (result.tithi && result.yoga) {
       const auspiciousTithis = [1, 5, 10, 11, 15]; // Panchami, Ekadashi, Purnima
       const favorableYogas = ['Siddhi', 'Shubha', 'Saumya', 'Amrita'];
-      
+
       const isAuspiciousTithi = auspiciousTithis.includes(result.tithi.number);
       const isFavorableYoga = favorableYogas.includes(result.yoga.name);
-      
+
       if (isAuspiciousTithi && isFavorableYoga) {
         analysis.overallQuality = 'Highly auspicious day for all activities';
         analysis.recommendedActivities = 'Spiritual practices, new ventures, important decisions';
@@ -258,21 +257,21 @@ class EnhancedPanchangService extends ServiceTemplate {
         analysis.avoidActivities = 'Major decisions, new ventures, investments';
       }
     }
-    
+
     // Analyze Nakshatra significance
     if (result.nakshatra) {
       const spiritualNakshatras = ['Pushya', 'Ashwini', 'Revati', 'Anuradha'];
       const businessNakshatras = ['Rohini', 'Uttara Phalguni', 'Uttara Ashadha', 'Uttara Bhadrapada'];
-      
+
       if (spiritualNakshatras.includes(result.nakshatra.name)) {
         analysis.spiritualSignificance = 'Excellent for spiritual practices and meditation';
       }
-      
+
       if (businessNakshatras.includes(result.nakshatra.name)) {
         analysis.businessFavorability = 'Favorable for business and financial activities';
       }
     }
-    
+
     // Add recommendations based on day of week
     const dayOfWeek = new Date(result.date.split('/').reverse().join('-')).getDay();
     const dayRecommendations = {
@@ -305,7 +304,7 @@ class EnhancedPanchangService extends ServiceTemplate {
         avoid: 'New ventures, celebrations, luxury items'
       }
     };
-    
+
     const dayRec = dayRecommendations[dayOfWeek];
     if (dayRec) {
       if (!analysis.recommendedActivities) {
@@ -315,7 +314,7 @@ class EnhancedPanchangService extends ServiceTemplate {
         analysis.avoidActivities = dayRec.avoid;
       }
     }
-    
+
     return analysis;
   }
 
@@ -326,16 +325,16 @@ class EnhancedPanchangService extends ServiceTemplate {
    */
   calculateConfidence(result) {
     let confidence = 85; // Base confidence for Panchang
-    
+
     // Increase confidence based on data completeness
     if (result.tithi && result.nakshatra && result.yoga && result.karana) {
       confidence += 10;
     }
-    
+
     if (result.sunrise && result.sunset) {
       confidence += 5;
     }
-    
+
     return Math.min(confidence, 100);
   }
 

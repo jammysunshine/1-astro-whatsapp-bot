@@ -99,7 +99,7 @@ class CareerAstrologyService extends ServiceTemplate {
    */
   generateCareerInsights(careerAnalysis) {
     const insights = [];
-    
+
     // Midheaven insights
     if (careerAnalysis.midheavenAnalysis) {
       insights.push({
@@ -109,7 +109,7 @@ class CareerAstrologyService extends ServiceTemplate {
         strength: 'high'
       });
     }
-    
+
     // Tenth house insights
     if (careerAnalysis.tenthHousePlanets && careerAnalysis.tenthHousePlanets.length > 0) {
       careerAnalysis.tenthHousePlanets.forEach(planet => {
@@ -121,7 +121,7 @@ class CareerAstrologyService extends ServiceTemplate {
         });
       });
     }
-    
+
     // Career planets insights
     if (careerAnalysis.careerPlanets && careerAnalysis.careerPlanets.length > 0) {
       careerAnalysis.careerPlanets.forEach(planet => {
@@ -133,7 +133,7 @@ class CareerAstrologyService extends ServiceTemplate {
         });
       });
     }
-    
+
     // Success potential insights
     if (careerAnalysis.successPotential) {
       insights.push({
@@ -143,7 +143,7 @@ class CareerAstrologyService extends ServiceTemplate {
         strength: 'high'
       });
     }
-    
+
     return insights;
   }
 
@@ -154,12 +154,12 @@ class CareerAstrologyService extends ServiceTemplate {
    */
   identifySuitableProfessions(careerAnalysis) {
     const professions = [];
-    
+
     // Analyze Midheaven sign for career direction
     const mcSign = this.extractMCSign(careerAnalysis.midheavenAnalysis);
     const mcProfessions = this.getProfessionsForSign(mcSign);
     professions.push(...mcProfessions);
-    
+
     // Analyze tenth house planets
     if (careerAnalysis.tenthHousePlanets) {
       careerAnalysis.tenthHousePlanets.forEach(planet => {
@@ -167,7 +167,7 @@ class CareerAstrologyService extends ServiceTemplate {
         professions.push(...planetProfessions);
       });
     }
-    
+
     // Remove duplicates and prioritize
     const uniqueProfessions = [...new Set(professions)];
     return uniqueProfessions.slice(0, 10).map(profession => ({
@@ -190,34 +190,34 @@ class CareerAstrologyService extends ServiceTemplate {
       skills: [],
       challenges: []
     };
-    
+
     // Short-term goals (0-2 years)
     plan.shortTerm.push({
       goal: 'Establish professional foundation',
       actions: ['Build core skills', 'Network in chosen field', 'Gain practical experience'],
       timeframe: '0-2 years'
     });
-    
+
     // Medium-term goals (2-5 years)
     plan.mediumTerm.push({
       goal: 'Develop expertise and recognition',
       actions: ['Specialize in niche area', 'Take leadership roles', 'Build professional reputation'],
       timeframe: '2-5 years'
     });
-    
+
     // Long-term goals (5+ years)
     plan.longTerm.push({
       goal: 'Achieve career mastery and influence',
       actions: ['Mentor others', 'Industry leadership', 'Create lasting impact'],
       timeframe: '5+ years'
     });
-    
+
     // Skills development
     plan.skills = this.identifyKeySkills(careerAnalysis);
-    
+
     // Potential challenges
     plan.challenges = this.identifyCareerChallenges(careerAnalysis);
-    
+
     return plan;
   }
 
@@ -227,19 +227,19 @@ class CareerAstrologyService extends ServiceTemplate {
    * @returns {string} Career summary
    */
   generateCareerSummary(careerAnalysis) {
-    let summary = careerAnalysis.introduction + '\n\n';
-    
+    let summary = `${careerAnalysis.introduction}\n\n`;
+
     if (careerAnalysis.careerDirection) {
       summary += `Career Direction: ${careerAnalysis.careerDirection}\n\n`;
     }
-    
+
     if (careerAnalysis.careerTiming && careerAnalysis.careerTiming.length > 0) {
       summary += 'Current Career Phase:\n';
       careerAnalysis.careerTiming.slice(0, 2).forEach((timing, index) => {
         summary += `${index + 1}. ${timing.event}: ${timing.description}\n`;
       });
     }
-    
+
     return summary;
   }
 
@@ -251,7 +251,7 @@ class CareerAstrologyService extends ServiceTemplate {
    */
   analyzeTimingOpportunities(careerTiming, timeframe) {
     const opportunities = [];
-    
+
     if (careerTiming && careerTiming.length > 0) {
       careerTiming.forEach(timing => {
         opportunities.push({
@@ -262,7 +262,7 @@ class CareerAstrologyService extends ServiceTemplate {
         });
       });
     }
-    
+
     return opportunities;
   }
 
@@ -274,7 +274,7 @@ class CareerAstrologyService extends ServiceTemplate {
    */
   identifyFavorablePeriods(careerAnalysis, timeframe) {
     const periods = [];
-    
+
     // Current period
     periods.push({
       period: 'Current',
@@ -282,7 +282,7 @@ class CareerAstrologyService extends ServiceTemplate {
       favorability: this.assessCurrentFavorability(careerAnalysis),
       recommendations: ['Focus on skill building', 'Establish professional connections']
     });
-    
+
     // Next favorable period (simplified)
     periods.push({
       period: 'Next 6 months',
@@ -290,7 +290,7 @@ class CareerAstrologyService extends ServiceTemplate {
       favorability: 'favorable',
       recommendations: ['Prepare for new opportunities', 'Update professional materials']
     });
-    
+
     return periods;
   }
 
@@ -302,12 +302,12 @@ class CareerAstrologyService extends ServiceTemplate {
    */
   generateTimingRecommendations(timingOpportunities, favorablePeriods) {
     const recommendations = [];
-    
+
     // High-priority opportunities
     const highPriorityOpportunities = timingOpportunities.filter(
       opp => opp.priority === 'high'
     );
-    
+
     if (highPriorityOpportunities.length > 0) {
       recommendations.push({
         category: 'immediate_action',
@@ -315,7 +315,7 @@ class CareerAstrologyService extends ServiceTemplate {
         priority: 'high'
       });
     }
-    
+
     // Favorable period actions
     const favorablePeriod = favorablePeriods.find(p => p.favorability === 'favorable');
     if (favorablePeriod) {
@@ -325,7 +325,7 @@ class CareerAstrologyService extends ServiceTemplate {
         priority: 'medium'
       });
     }
-    
+
     return recommendations;
   }
 
@@ -336,10 +336,10 @@ class CareerAstrologyService extends ServiceTemplate {
    */
   assessCurrentCareerPhase(careerAnalysis) {
     const currentAge = this.calculateCurrentAge(careerAnalysis);
-    
+
     let phase = 'foundation';
     let description = 'Building career foundations';
-    
+
     if (currentAge >= 28 && currentAge <= 30) {
       phase = 'saturn_return';
       description = 'Saturn return - career maturity and establishment';
@@ -350,7 +350,7 @@ class CareerAstrologyService extends ServiceTemplate {
       phase = 'mastery';
       description = 'Career mastery and mentorship phase';
     }
-    
+
     return {
       phase,
       description,
@@ -372,21 +372,21 @@ class CareerAstrologyService extends ServiceTemplate {
       challenges: [],
       recommendations: []
     };
-    
+
     // Simplified alignment calculation
     const careerDirection = careerAnalysis.careerDirection || '';
     const currentField = currentCareer.field || '';
-    
+
     // Check for alignment keywords
     const alignmentKeywords = this.getAlignmentKeywords(careerDirection);
     const currentKeywords = this.getAlignmentKeywords(currentField);
-    
-    const matchingKeywords = alignmentKeywords.filter(keyword => 
+
+    const matchingKeywords = alignmentKeywords.filter(keyword =>
       currentKeywords.some(ck => ck.toLowerCase().includes(keyword.toLowerCase()))
     );
-    
+
     alignment.score = Math.round((matchingKeywords.length / Math.max(alignmentKeywords.length, 1)) * 100);
-    
+
     if (alignment.score >= 70) {
       alignment.strengths.push('Strong alignment between natural talents and current career');
     } else if (alignment.score >= 40) {
@@ -394,7 +394,7 @@ class CareerAstrologyService extends ServiceTemplate {
     } else {
       alignment.challenges.push('Limited alignment - consider career realignment');
     }
-    
+
     return alignment;
   }
 
@@ -406,7 +406,7 @@ class CareerAstrologyService extends ServiceTemplate {
    */
   identifyChangeOpportunities(careerAnalysis, alignmentAssessment) {
     const opportunities = [];
-    
+
     if (alignmentAssessment.score < 50) {
       opportunities.push({
         type: 'realignment',
@@ -414,14 +414,14 @@ class CareerAstrologyService extends ServiceTemplate {
         urgency: 'medium'
       });
     }
-    
+
     // Based on career timing
     if (careerAnalysis.careerTiming) {
-      const changeTiming = careerAnalysis.careerTiming.find(t => 
-        t.event.toLowerCase().includes('change') || 
+      const changeTiming = careerAnalysis.careerTiming.find(t =>
+        t.event.toLowerCase().includes('change') ||
         t.event.toLowerCase().includes('transition')
       );
-      
+
       if (changeTiming) {
         opportunities.push({
           type: 'timing',
@@ -430,7 +430,7 @@ class CareerAstrologyService extends ServiceTemplate {
         });
       }
     }
-    
+
     return opportunities;
   }
 
@@ -446,34 +446,34 @@ class CareerAstrologyService extends ServiceTemplate {
       transition: [],
       establishment: []
     };
-    
+
     // Preparation phase
     plan.preparation.push({
       action: 'Research new career directions',
       timeline: '1-3 months',
       resources: ['Career counseling', 'Industry research', 'Skill assessment']
     });
-    
+
     plan.preparation.push({
       action: 'Develop necessary skills',
       timeline: '3-6 months',
       resources: ['Training programs', 'Certifications', 'Mentorship']
     });
-    
+
     // Transition phase
     plan.transition.push({
       action: 'Make career transition',
       timeline: '6-12 months',
       resources: ['Financial planning', 'Network building', 'Job search']
     });
-    
+
     // Establishment phase
     plan.establishment.push({
       action: 'Establish in new career',
       timeline: '12-24 months',
       resources: ['Professional development', 'Performance excellence', 'Career advancement']
     });
-    
+
     return plan;
   }
 
@@ -484,7 +484,7 @@ class CareerAstrologyService extends ServiceTemplate {
    */
   generateChangeRecommendations(alignmentAssessment) {
     const recommendations = [];
-    
+
     if (alignmentAssessment.score < 40) {
       recommendations.push({
         category: 'immediate',
@@ -498,13 +498,13 @@ class CareerAstrologyService extends ServiceTemplate {
         priority: 'medium'
       });
     }
-    
+
     recommendations.push({
       category: 'development',
       advice: 'Continuous skill development regardless of career path',
       priority: 'low'
     });
-    
+
     return recommendations;
   }
 
@@ -512,7 +512,7 @@ class CareerAstrologyService extends ServiceTemplate {
   extractMCSign(midheavenAnalysis) {
     const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
       'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-    
+
     for (const sign of signs) {
       if (midheavenAnalysis.includes(sign)) {
         return sign;
@@ -523,75 +523,75 @@ class CareerAstrologyService extends ServiceTemplate {
 
   getProfessionsForSign(sign) {
     const professions = {
-      'Aries': ['Entrepreneur', 'Military', 'Sports', 'Sales', 'Leadership roles'],
-      'Taurus': ['Banking', 'Real estate', 'Agriculture', 'Art', 'Music'],
-      'Gemini': ['Writing', 'Journalism', 'Teaching', 'Communications', 'IT'],
-      'Cancer': ['Healthcare', 'Hospitality', 'Social work', 'Counseling', 'Food industry'],
-      'Leo': ['Management', 'Entertainment', 'Politics', 'Creative fields', 'Public relations'],
-      'Virgo': ['Healthcare', 'Accounting', 'Research', 'Editing', 'Quality control'],
-      'Libra': ['Law', 'Diplomacy', 'Design', 'Human resources', 'Customer service'],
-      'Scorpio': ['Research', 'Psychology', 'Investigation', 'Finance', 'Medicine'],
-      'Sagittarius': ['Teaching', 'Travel', 'Publishing', 'Philosophy', 'Sports'],
-      'Capricorn': ['Management', 'Finance', 'Engineering', 'Politics', 'Real estate'],
-      'Aquarius': ['Technology', 'Science', 'Social work', 'Innovation', 'Humanitarian work'],
-      'Pisces': ['Arts', 'Music', 'Spirituality', 'Healing', 'Creative writing']
+      Aries: ['Entrepreneur', 'Military', 'Sports', 'Sales', 'Leadership roles'],
+      Taurus: ['Banking', 'Real estate', 'Agriculture', 'Art', 'Music'],
+      Gemini: ['Writing', 'Journalism', 'Teaching', 'Communications', 'IT'],
+      Cancer: ['Healthcare', 'Hospitality', 'Social work', 'Counseling', 'Food industry'],
+      Leo: ['Management', 'Entertainment', 'Politics', 'Creative fields', 'Public relations'],
+      Virgo: ['Healthcare', 'Accounting', 'Research', 'Editing', 'Quality control'],
+      Libra: ['Law', 'Diplomacy', 'Design', 'Human resources', 'Customer service'],
+      Scorpio: ['Research', 'Psychology', 'Investigation', 'Finance', 'Medicine'],
+      Sagittarius: ['Teaching', 'Travel', 'Publishing', 'Philosophy', 'Sports'],
+      Capricorn: ['Management', 'Finance', 'Engineering', 'Politics', 'Real estate'],
+      Aquarius: ['Technology', 'Science', 'Social work', 'Innovation', 'Humanitarian work'],
+      Pisces: ['Arts', 'Music', 'Spirituality', 'Healing', 'Creative writing']
     };
-    
+
     return professions[sign] || ['General business', 'Service industry'];
   }
 
   getProfessionsForPlanet(planet) {
     const professions = {
-      'Sun': ['Leadership', 'Management', 'Politics', 'CEO', 'Director'],
-      'Moon': ['Healthcare', 'Hospitality', 'Counseling', 'Social work', 'Food service'],
-      'Mars': ['Military', 'Sports', 'Engineering', 'Construction', 'Entrepreneurship'],
-      'Mercury': ['Writing', 'Teaching', 'Communications', 'IT', 'Sales'],
-      'Jupiter': ['Teaching', 'Law', 'Publishing', 'Consulting', 'Finance'],
-      'Venus': ['Arts', 'Design', 'Fashion', 'Hospitality', 'Public relations'],
-      'Saturn': ['Management', 'Finance', 'Engineering', 'Real estate', 'Politics']
+      Sun: ['Leadership', 'Management', 'Politics', 'CEO', 'Director'],
+      Moon: ['Healthcare', 'Hospitality', 'Counseling', 'Social work', 'Food service'],
+      Mars: ['Military', 'Sports', 'Engineering', 'Construction', 'Entrepreneurship'],
+      Mercury: ['Writing', 'Teaching', 'Communications', 'IT', 'Sales'],
+      Jupiter: ['Teaching', 'Law', 'Publishing', 'Consulting', 'Finance'],
+      Venus: ['Arts', 'Design', 'Fashion', 'Hospitality', 'Public relations'],
+      Saturn: ['Management', 'Finance', 'Engineering', 'Real estate', 'Politics']
     };
-    
+
     return professions[planet] || ['Business', 'Service industry'];
   }
 
   calculateProfessionMatch(profession, careerAnalysis) {
     // Simplified matching algorithm
     let score = 50; // Base score
-    
+
     // Add points for alignment with career direction
     if (careerAnalysis.careerDirection) {
       score += 20;
     }
-    
+
     // Add points for success potential
     if (careerAnalysis.successPotential && careerAnalysis.successPotential.includes('High')) {
       score += 15;
     }
-    
+
     return Math.min(100, score);
   }
 
   categorizeProfession(profession) {
     const categories = {
-      'Leadership': ['CEO', 'Manager', 'Director', 'Leadership', 'Management'],
-      'Creative': ['Art', 'Design', 'Music', 'Writing', 'Fashion'],
-      'Service': ['Healthcare', 'Social work', 'Counseling', 'Hospitality'],
-      'Technical': ['Engineering', 'IT', 'Technology', 'Science'],
-      'Business': ['Finance', 'Sales', 'Banking', 'Real estate', 'Consulting']
+      Leadership: ['CEO', 'Manager', 'Director', 'Leadership', 'Management'],
+      Creative: ['Art', 'Design', 'Music', 'Writing', 'Fashion'],
+      Service: ['Healthcare', 'Social work', 'Counseling', 'Hospitality'],
+      Technical: ['Engineering', 'IT', 'Technology', 'Science'],
+      Business: ['Finance', 'Sales', 'Banking', 'Real estate', 'Consulting']
     };
-    
+
     for (const [category, keywords] of Object.entries(categories)) {
       if (keywords.some(keyword => profession.toLowerCase().includes(keyword.toLowerCase()))) {
         return category;
       }
     }
-    
+
     return 'General';
   }
 
   identifyKeySkills(careerAnalysis) {
     const skills = [];
-    
+
     // Based on career planets
     if (careerAnalysis.careerPlanets) {
       careerAnalysis.careerPlanets.forEach(planet => {
@@ -599,13 +599,13 @@ class CareerAstrologyService extends ServiceTemplate {
         skills.push(...planetSkills);
       });
     }
-    
+
     return [...new Set(skills)].slice(0, 8);
   }
 
   identifyCareerChallenges(careerAnalysis) {
     const challenges = [];
-    
+
     // Based on success potential analysis
     if (careerAnalysis.successPotential) {
       if (careerAnalysis.successPotential.includes('challenges')) {
@@ -614,7 +614,7 @@ class CareerAstrologyService extends ServiceTemplate {
           strategy: 'Persistence and strategic planning'
         });
       }
-      
+
       if (careerAnalysis.successPotential.includes('effort')) {
         challenges.push({
           challenge: 'Consistent effort required',
@@ -622,7 +622,7 @@ class CareerAstrologyService extends ServiceTemplate {
         });
       }
     }
-    
+
     return challenges;
   }
 
@@ -638,9 +638,9 @@ class CareerAstrologyService extends ServiceTemplate {
 
   assessCurrentFavorability(careerAnalysis) {
     // Simplified favorability assessment
-    return careerAnalysis.successPotential && careerAnalysis.successPotential.includes('High') 
-      ? 'favorable' 
-      : 'neutral';
+    return careerAnalysis.successPotential && careerAnalysis.successPotential.includes('High') ?
+      'favorable' :
+      'neutral';
   }
 
   calculateCurrentAge(careerAnalysis) {
@@ -650,12 +650,12 @@ class CareerAstrologyService extends ServiceTemplate {
 
   getPhaseFocus(phase) {
     const focus = {
-      'foundation': 'Skill building and experience gathering',
-      'saturn_return': 'Career establishment and responsibility',
-      'mid_career': 'Evaluation and potential redirection',
-      'mastery': 'Mentorship and legacy building'
+      foundation: 'Skill building and experience gathering',
+      saturn_return: 'Career establishment and responsibility',
+      mid_career: 'Evaluation and potential redirection',
+      mastery: 'Mentorship and legacy building'
     };
-    
+
     return focus[phase] || 'Continuous development';
   }
 
@@ -667,15 +667,15 @@ class CareerAstrologyService extends ServiceTemplate {
 
   getSkillsForPlanet(planet) {
     const skills = {
-      'Sun': ['Leadership', 'Public speaking', 'Strategic planning'],
-      'Moon': ['Emotional intelligence', 'Intuition', 'Nurturing'],
-      'Mars': ['Action orientation', 'Courage', 'Physical stamina'],
-      'Mercury': ['Communication', 'Analytical thinking', 'Writing'],
-      'Jupiter': ['Teaching', 'Mentoring', 'Strategic thinking'],
-      'Venus': ['Creativity', 'Diplomacy', 'Aesthetic sense'],
-      'Saturn': ['Discipline', 'Planning', 'Organization']
+      Sun: ['Leadership', 'Public speaking', 'Strategic planning'],
+      Moon: ['Emotional intelligence', 'Intuition', 'Nurturing'],
+      Mars: ['Action orientation', 'Courage', 'Physical stamina'],
+      Mercury: ['Communication', 'Analytical thinking', 'Writing'],
+      Jupiter: ['Teaching', 'Mentoring', 'Strategic thinking'],
+      Venus: ['Creativity', 'Diplomacy', 'Aesthetic sense'],
+      Saturn: ['Discipline', 'Planning', 'Organization']
     };
-    
+
     return skills[planet] || ['Professional skills'];
   }
 

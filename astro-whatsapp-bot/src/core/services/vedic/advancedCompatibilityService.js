@@ -9,16 +9,16 @@ const logger = require('../../../utils/logger');
 class AdvancedCompatibilityService extends ServiceTemplate {
   constructor(services) {
     super('AdvancedCompatibilityService', services);
-    
+
     // Initialize Compatibility Calculator with required dependencies
     this.calculator = new CompatibilityCalculator(
       services.astrologer,
       services.geocodingService
     );
-    
+
     // Set services in calculator
     this.calculator.setServices(services);
-    
+
     // Service-specific configuration
     this.serviceConfig = {
       supportedInputs: ['person1', 'person2'],
@@ -26,7 +26,7 @@ class AdvancedCompatibilityService extends ServiceTemplate {
       outputFormats: ['detailed', 'summary', 'scores'],
       compatibilityFactors: [
         'Sun Compatibility',
-        'Moon Compatibility', 
+        'Moon Compatibility',
         'Venus Compatibility',
         'Mars Compatibility',
         'Lagna Compatibility',
@@ -47,14 +47,14 @@ class AdvancedCompatibilityService extends ServiceTemplate {
    */
   async ladvancedCompatibilityCalculation(params) {
     const { person1, person2, options = {} } = params;
-    
+
     try {
       // Validate inputs
       this._validateInputs(person1, person2);
-      
+
       // Calculate compatibility using calculator
       const compatibilityResult = await this.calculator.checkCompatibility(person1, person2);
-      
+
       // Add service metadata
       compatibilityResult.serviceMetadata = {
         serviceName: this.serviceName,
@@ -63,12 +63,11 @@ class AdvancedCompatibilityService extends ServiceTemplate {
         method: 'Comprehensive Vedic Compatibility Analysis',
         factorsAnalyzed: this.serviceConfig.compatibilityFactors
       };
-      
+
       // Add enhanced analysis
       compatibilityResult.enhancedAnalysis = this._performEnhancedAnalysis(compatibilityResult);
-      
+
       return compatibilityResult;
-      
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
       throw new Error(`Advanced Compatibility calculation failed: ${error.message}`);
@@ -85,42 +84,42 @@ class AdvancedCompatibilityService extends ServiceTemplate {
       return '❌ *Advanced Compatibility Analysis Error*\n\nUnable to generate compatibility analysis. Please check birth details and try again.';
     }
 
-    let formatted = `💕 *Advanced Compatibility Analysis*\n\n`;
-    
+    let formatted = '💕 *Advanced Compatibility Analysis*\n\n';
+
     // Add names and overall score
     formatted += `*${result.person1_name} & ${result.person2_name}*\n\n`;
-    
+
     formatted += `*Overall Compatibility:* ${result.overall_score}/10\n`;
     formatted += `*Rating:* ${result.overall_rating || 'Unknown'}\n`;
     formatted += `*Percentage:* ${result.compatibility_percentage || 0}%\n\n`;
-    
+
     // Add key compatibility factors
     formatted += '*🌟 Key Compatibility Factors:*\n';
-    
+
     if (result.sun_compatibility) {
       formatted += `• **Core Personality:** ${result.sun_compatibility}\n`;
     }
-    
+
     if (result.moon_compatibility) {
       formatted += `• **Emotional Connection:** ${result.moon_compatibility}\n`;
     }
-    
+
     if (result.venus_compatibility) {
       formatted += `• **Romantic Harmony:** ${result.venus_compatibility}\n`;
     }
-    
+
     if (result.mars_compatibility) {
       formatted += `• **Physical Chemistry:** ${result.mars_compatibility}\n`;
     }
-    
+
     if (result.lagna_compatibility) {
       formatted += `• **Life Direction:** ${result.lagna_compatibility}\n`;
     }
-    
+
     // Add Vedic factors if available
     if (result.vedic_factors) {
       formatted += '\n*🔮 Vedic Compatibility Factors:*\n';
-      
+
       const vedic = result.vedic_factors;
       if (vedic.nadi_compatibility) {
         formatted += `• **Nadi:** ${vedic.nadi_compatibility.description || 'Assessed'}\n`;
@@ -132,7 +131,7 @@ class AdvancedCompatibilityService extends ServiceTemplate {
         formatted += `• **Yoni:** ${vedic.yoni_compatibility.description || 'Assessed'}\n`;
       }
     }
-    
+
     // Add detailed scores if available
     if (result.detailed_scores) {
       formatted += '\n*📊 Detailed Scores:*\n';
@@ -141,7 +140,7 @@ class AdvancedCompatibilityService extends ServiceTemplate {
         formatted += `• ${factorName}: ${score}/10\n`;
       });
     }
-    
+
     // Add recommendations if available
     if (result.recommendations && result.recommendations.length > 0) {
       formatted += '\n*💡 Recommendations:*\n';
@@ -149,7 +148,7 @@ class AdvancedCompatibilityService extends ServiceTemplate {
         formatted += `• ${rec}\n`;
       });
     }
-    
+
     // Add enhanced analysis if available
     if (result.enhancedAnalysis) {
       formatted += '\n*🎯 Enhanced Insights:*\n';
@@ -163,10 +162,10 @@ class AdvancedCompatibilityService extends ServiceTemplate {
         formatted += `• **Long-term Potential:** ${result.enhancedAnalysis.longTermPotential}\n`;
       }
     }
-    
+
     // Add service footer
     formatted += '\n\n---\n*Advanced Compatibility - Comprehensive Vedic Analysis*';
-    
+
     return formatted;
   }
 
@@ -180,12 +179,12 @@ class AdvancedCompatibilityService extends ServiceTemplate {
     if (!person1 || !person2) {
       throw new Error('Both persons\' birth data are required for compatibility analysis');
     }
-    
+
     // Validate person1
     if (!person1.birthDate || !person1.birthTime || !person1.birthPlace) {
       throw new Error('Complete birth details (date, time, place) are required for person 1');
     }
-    
+
     // Validate person2
     if (!person2.birthDate || !person2.birthTime || !person2.birthPlace) {
       throw new Error('Complete birth details (date, time, place) are required for person 2');
@@ -206,9 +205,9 @@ class AdvancedCompatibilityService extends ServiceTemplate {
       relationshipType: '',
       growthAreas: []
     };
-    
+
     const score = result.overall_score || 0;
-    
+
     // Determine relationship strengths
     if (score >= 8) {
       analysis.strengths = 'Excellent overall compatibility with strong harmony across multiple life areas';
@@ -223,19 +222,19 @@ class AdvancedCompatibilityService extends ServiceTemplate {
       analysis.strengths = 'Challenging compatibility requiring significant effort and awareness';
       analysis.longTermPotential = 'Relationship success depends on commitment to personal growth';
     }
-    
+
     // Identify challenges based on low-scoring factors
     if (result.detailed_scores) {
       const lowScoringFactors = Object.entries(result.detailed_scores)
         .filter(([factor, score]) => score < 5)
         .map(([factor]) => factor);
-      
+
       if (lowScoringFactors.length > 0) {
         analysis.challenges = `Areas needing attention: ${lowScoringFactors.join(', ')}`;
         analysis.growthAreas = lowScoringFactors;
       }
     }
-    
+
     // Determine relationship type
     if (result.sun_compatibility && result.moon_compatibility) {
       if (result.sun_compatibility.includes('Excellent') && result.moon_compatibility.includes('Harmonious')) {
@@ -246,7 +245,7 @@ class AdvancedCompatibilityService extends ServiceTemplate {
         analysis.relationshipType = 'Learning relationship with growth opportunities';
       }
     }
-    
+
     return analysis;
   }
 
@@ -257,16 +256,16 @@ class AdvancedCompatibilityService extends ServiceTemplate {
    */
   calculateConfidence(result) {
     let confidence = 80; // Base confidence for compatibility analysis
-    
+
     // Increase confidence based on data completeness
     if (result.detailed_scores && Object.keys(result.detailed_scores).length >= 5) {
       confidence += 10;
     }
-    
+
     if (result.vedic_factors && Object.keys(result.vedic_factors).length >= 3) {
       confidence += 10;
     }
-    
+
     return Math.min(confidence, 100);
   }
 

@@ -34,12 +34,12 @@ class AsteroidsService extends ServiceTemplate {
   async analyzeAsteroidAspects(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, asteroids = ['Ceres', 'Pallas', 'Juno', 'Vesta'], options = {} } = params;
-      
+
       // Analyze asteroid aspects
       const result = await this.calculator.analyzeAsteroidAspects(birthData, asteroids, options);
-      
+
       return {
         success: true,
         data: result,
@@ -71,12 +71,12 @@ class AsteroidsService extends ServiceTemplate {
   async calculateAsteroidTransits(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, startDate, endDate, asteroids = ['Ceres', 'Pallas', 'Juno', 'Vesta'], options = {} } = params;
-      
+
       // Calculate asteroid transits
       const result = await this.calculator.calculateAsteroidTransits(birthData, startDate, endDate, asteroids, options);
-      
+
       return {
         success: true,
         data: result,
@@ -109,12 +109,12 @@ class AsteroidsService extends ServiceTemplate {
   async getCeresAnalysis(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Get Ceres analysis
       const result = await this.calculator.getCeresAnalysis(birthData, options);
-      
+
       return {
         success: true,
         data: result,
@@ -145,12 +145,12 @@ class AsteroidsService extends ServiceTemplate {
   async getPallasAnalysis(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Get Pallas analysis
       const result = await this.calculator.getPallasAnalysis(birthData, options);
-      
+
       return {
         success: true,
         data: result,
@@ -181,12 +181,12 @@ class AsteroidsService extends ServiceTemplate {
   async getJunoAnalysis(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Get Juno analysis
       const result = await this.calculator.getJunoAnalysis(birthData, options);
-      
+
       return {
         success: true,
         data: result,
@@ -217,12 +217,12 @@ class AsteroidsService extends ServiceTemplate {
   async getVestaAnalysis(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Get Vesta analysis
       const result = await this.calculator.getVestaAnalysis(birthData, options);
-      
+
       return {
         success: true,
         data: result,
@@ -253,12 +253,12 @@ class AsteroidsService extends ServiceTemplate {
   async getChironAnalysis(params) {
     try {
       this.validateParams(params, ['birthData']);
-      
+
       const { birthData, options = {} } = params;
-      
+
       // Get Chiron analysis
       const result = await this.calculator.getChironAnalysis(birthData, options);
-      
+
       return {
         success: true,
         data: result,

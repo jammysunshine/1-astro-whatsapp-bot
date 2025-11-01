@@ -5,7 +5,7 @@ const logger = require('../../utils/logger');
 
 /**
  * DivinationService - Service for various divination methods
- * Provides access to multiple divination systems including Tarot, I Ching, 
+ * Provides access to multiple divination systems including Tarot, I Ching,
  * and other mystical arts for guidance and insight.
  */
 class DivinationService extends ServiceTemplate {
@@ -25,7 +25,7 @@ class DivinationService extends ServiceTemplate {
     if (!data) {
       throw new Error('Input data is required for divination reading');
     }
-    
+
     if (!data.method) {
       throw new Error('Divination method is required');
     }
@@ -34,11 +34,11 @@ class DivinationService extends ServiceTemplate {
     if (!validMethods.includes(data.method.toLowerCase())) {
       throw new Error(`Invalid divination method. Valid methods: ${validMethods.join(', ')}`);
     }
-    
+
     if (!data.question && !data.focus) {
       throw new Error('Either question or focus is required for divination reading');
     }
-    
+
     return true;
   }
 
@@ -49,26 +49,26 @@ class DivinationService extends ServiceTemplate {
    */
   async processCalculation(data) {
     const { method, question, focus, spread = 'general' } = data;
-    
+
     let result;
-    
+
     switch (method.toLowerCase()) {
-      case 'tarot':
-        result = await this.tarotReader.readTarot(question || focus, spread);
-        break;
-      case 'iching':
-        result = await this.ichingReader.castIChing(question || focus);
-        break;
-      case 'runes':
-        result = await this._castRunes(question || focus);
-        break;
-      case 'scrying':
-        result = await this._performScrying(question || focus);
-        break;
-      default:
-        throw new Error(`Unsupported divination method: ${method}`);
+    case 'tarot':
+      result = await this.tarotReader.readTarot(question || focus, spread);
+      break;
+    case 'iching':
+      result = await this.ichingReader.castIChing(question || focus);
+      break;
+    case 'runes':
+      result = await this._castRunes(question || focus);
+      break;
+    case 'scrying':
+      result = await this._performScrying(question || focus);
+      break;
+    default:
+      throw new Error(`Unsupported divination method: ${method}`);
     }
-    
+
     // Add metadata
     result.type = 'divination';
     result.method = method;
@@ -77,7 +77,7 @@ class DivinationService extends ServiceTemplate {
     result.spread = spread;
     result.generatedAt = new Date().toISOString();
     result.service = this.serviceName;
-    
+
     return result;
   }
 
@@ -130,10 +130,10 @@ class DivinationService extends ServiceTemplate {
    */
   async getTarotReading(question, spread = 'general') {
     try {
-      const result = await this.execute({ 
-        method: 'tarot', 
-        question, 
-        spread 
+      const result = await this.execute({
+        method: 'tarot',
+        question,
+        spread
       });
       return result.data;
     } catch (error) {
@@ -152,9 +152,9 @@ class DivinationService extends ServiceTemplate {
    */
   async getIChingReading(question) {
     try {
-      const result = await this.execute({ 
-        method: 'iching', 
-        question 
+      const result = await this.execute({
+        method: 'iching',
+        question
       });
       return result.data;
     } catch (error) {
@@ -176,12 +176,12 @@ class DivinationService extends ServiceTemplate {
     // Simulate rune casting (would integrate with actual rune calculator)
     const runes = ['Fehu', 'Uruz', 'Thurisaz', 'Ansuz', 'Raidho', 'Kenaz', 'Gebo', 'Wunjo'];
     const selectedRunes = [];
-    
+
     for (let i = 0; i < 3; i++) {
       const randomIndex = Math.floor(Math.random() * runes.length);
       selectedRunes.push(runes[randomIndex]);
     }
-    
+
     return {
       runes: selectedRunes,
       interpretation: `The runes ${selectedRunes.join(', ')} suggest a path of transformation and opportunity.`,
@@ -205,11 +205,11 @@ class DivinationService extends ServiceTemplate {
       'mountains of challenges ahead',
       'light breaking through clouds'
     ];
-    
+
     const vision = visions[Math.floor(Math.random() * visions.length)];
-    
+
     return {
-      vision: vision,
+      vision,
       interpretation: `The scrying mirror reveals ${vision}, indicating significant changes approaching.`,
       guidance: 'Trust your intuition as you navigate the coming transformations.',
       method: 'scrying'
@@ -253,8 +253,8 @@ class DivinationService extends ServiceTemplate {
   async getDailyGuidance(method = 'tarot') {
     try {
       const focus = 'Daily guidance and insight';
-      const result = await this.execute({ 
-        method, 
+      const result = await this.execute({
+        method,
         focus,
         spread: 'single-card'
       });

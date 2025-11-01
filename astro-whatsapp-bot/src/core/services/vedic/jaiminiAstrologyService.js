@@ -19,7 +19,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
       supportedLanguages: ['en', 'hi', 'sa'],
       features: [
         'chara_karakas',
-        'sthira_karakas', 
+        'sthira_karakas',
         'rasi_aspects',
         'pada_analysis',
         'argala',
@@ -47,7 +47,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
 
     // Sort by longitude (descending for Chara Karakas)
     const sortedPlanets = planets.sort((a, b) => b.longitude - a.longitude);
-    
+
     const charaKarakas = {
       AtmaKaraka: sortedPlanets[0]?.name || 'Sun',
       AmatyaKaraka: sortedPlanets[1]?.name || 'Moon',
@@ -105,16 +105,16 @@ class JaiminiAstrologyService extends ServiceTemplate {
   calculatePada(chart) {
     const pada = {};
     const houseLords = this.calculateHouseLords(chart);
-    
+
     for (let house = 1; house <= 12; house++) {
       const lord = houseLords[house];
       const lordPosition = this.getPlanetPosition(chart, lord);
       const housesFromLord = ((house - 1 + lordPosition) % 12) + 1;
-      
+
       // Pada is counted from lord's position as many houses as the lord is away from the house
       pada[house] = ((lordPosition + housesFromLord - 1) % 12) + 1;
     }
-    
+
     return pada;
   }
 
@@ -137,10 +137,10 @@ class JaiminiAstrologyService extends ServiceTemplate {
     const atmaKaraka = this.calculateCharaKarakas(chart).AtmaKaraka;
     const akPosition = this.getPlanetPosition(chart, atmaKaraka);
     const moonPosition = this.getPlanetPosition(chart, 'Moon');
-    
+
     const ishta = ((akPosition - moonPosition + 12) % 12) * 3 + 30;
     const kashta = ((moonPosition - akPosition + 12) % 12) * 3 + 30;
-    
+
     return { ishta, kashta };
   }
 
@@ -151,7 +151,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
     const pada = this.calculatePada(chart);
     const twelfthLord = this.getLordOfHouse(chart, 12);
     const twelfthLordPosition = this.getPlanetPosition(chart, twelfthLord);
-    
+
     // Upapada is Pada of 12th house
     const upapada = pada[12];
     return upapada;
@@ -161,19 +161,19 @@ class JaiminiAstrologyService extends ServiceTemplate {
    * Calculate Arudha Lagna
    */
   calculateArudhaLagna(chart) {
-    const ascendant = chart.ascendant;
+    const { ascendant } = chart;
     const ascendantLord = this.getLordOfHouse(chart, 1);
     const lordPosition = this.getPlanetPosition(chart, ascendantLord);
-    
+
     // Count from ascendant as many houses as the lord is away
     const arudhaLagna = ((ascendant - 1 + lordPosition - 1) % 12) + 1;
-    
+
     // Exception: if Arudha Lagna is in 1st or 7th from ascendant, add 10 houses
     const distanceFromAsc = ((arudhaLagna - ascendant + 12) % 12);
     if (distanceFromAsc === 0 || distanceFromAsc === 6) {
       return ((arudhaLagna + 9) % 12) + 1;
     }
-    
+
     return arudhaLagna;
   }
 
@@ -192,7 +192,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
       Rahu: chart.rahu,
       Ketu: chart.ketu
     };
-    
+
     const longitude = planetLongitudes[planet] || 0;
     return Math.floor(longitude / 30) + 1;
   }
@@ -203,7 +203,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
   calculateHouseLords(chart) {
     const ascendant = Math.floor(chart.ascendant / 30) * 30;
     const houseLords = {};
-    
+
     const lordMap = {
       Aries: 'Mars',
       Taurus: 'Venus',
@@ -218,13 +218,13 @@ class JaiminiAstrologyService extends ServiceTemplate {
       Aquarius: 'Saturn',
       Pisces: 'Jupiter'
     };
-    
+
     for (let house = 1; house <= 12; house++) {
       const houseLongitude = (ascendant + (house - 1) * 30) % 360;
       const sign = this.getLongitudeSign(houseLongitude);
       houseLords[house] = lordMap[sign];
     }
-    
+
     return houseLords;
   }
 
@@ -253,17 +253,17 @@ class JaiminiAstrologyService extends ServiceTemplate {
   async calculate(userData, options = {}) {
     try {
       this.validateInput(userData);
-      
+
       const { datetime, latitude, longitude } = userData;
       const chart = await VedicCalculator.calculateChart(datetime, latitude, longitude);
-      
+
       const charaKarakas = this.calculateCharaKarakas(chart);
       const sthiraKarakas = this.calculateSthiraKarakas(chart);
       const arudhaLagna = this.calculateArudhaLagna(chart);
       const pada = this.calculatePada(chart);
       const upapada = this.calculateUpapada(chart);
       const ishtaKashta = this.calculateIshtaKashta(chart);
-      
+
       const analysis = {
         charaKarakas,
         sthiraKarakas,
@@ -279,9 +279,8 @@ class JaiminiAstrologyService extends ServiceTemplate {
           chart
         })
       };
-      
+
       return this.formatOutput(analysis, options.language || 'en');
-      
     } catch (error) {
       throw new Error(`Jaimini calculation failed: ${error.message}`);
     }
@@ -292,7 +291,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
    */
   generateInterpretations(data) {
     const { charaKarakas, arudhaLagna, upapada, ishtaKashta, chart } = data;
-    
+
     const interpretations = {
       atmaKaraka: this.interpretAtmaKaraka(charaKarakas.AtmaKaraka),
       arudhaLagna: this.interpretArudhaLagna(arudhaLagna),
@@ -300,7 +299,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
       ishtaKashta: this.interpretIshtaKashta(ishtaKashta),
       overall: this.generateOverallAnalysis(data)
     };
-    
+
     return interpretations;
   }
 
@@ -319,7 +318,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
       Rahu: 'Unconventional path, soul purpose through breaking boundaries',
       Ketu: 'Spiritual liberation, soul purpose through detachment and enlightenment'
     };
-    
+
     return interpretations[planet] || 'Unique soul journey';
   }
 
@@ -331,7 +330,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
       'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
       'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
     ];
-    
+
     const sign = signs[arudhaLagna - 1];
     const interpretations = {
       Aries: 'Public image of leadership and initiative',
@@ -347,7 +346,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
       Aquarius: 'Public image of innovation and humanitarianism',
       Pisces: 'Public image of compassion and spirituality'
     };
-    
+
     return interpretations[sign] || 'Unique public perception';
   }
 
@@ -359,7 +358,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
       'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
       'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
     ];
-    
+
     const sign = signs[upapada - 1];
     const interpretations = {
       Aries: 'Active and passionate marriage partner',
@@ -375,7 +374,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
       Aquarius: 'Unconventional and intellectual marriage',
       Pisces: 'Spiritual and compassionate marriage'
     };
-    
+
     return interpretations[sign] || 'Unique marriage dynamics';
   }
 
@@ -384,18 +383,14 @@ class JaiminiAstrologyService extends ServiceTemplate {
    */
   interpretIshtaKashta(ishtaKashta) {
     const { ishta, kashta } = ishtaKashta;
-    
+
     let ishtaLevel = 'Low';
     let kashtaLevel = 'Low';
-    
-    if (ishta >= 165) ishtaLevel = 'Very High';
-    else if (ishta >= 135) ishtaLevel = 'High';
-    else if (ishta >= 105) ishtaLevel = 'Medium';
-    
-    if (kashta >= 165) kashtaLevel = 'Very High';
-    else if (kashta >= 135) kashtaLevel = 'High';
-    else if (kashta >= 105) kashtaLevel = 'Medium';
-    
+
+    if (ishta >= 165) { ishtaLevel = 'Very High'; } else if (ishta >= 135) { ishtaLevel = 'High'; } else if (ishta >= 105) { ishtaLevel = 'Medium'; }
+
+    if (kashta >= 165) { kashtaLevel = 'Very High'; } else if (kashta >= 135) { kashtaLevel = 'High'; } else if (kashta >= 105) { kashtaLevel = 'Medium'; }
+
     return {
       ishta: `${ishtaLevel} spiritual strength (${ishta}°)`,
       kashta: `${kashtaLevel} material challenges (${kashta}°)`,
@@ -408,7 +403,7 @@ class JaiminiAstrologyService extends ServiceTemplate {
    */
   generateOverallAnalysis(data) {
     const { charaKarakas, arudhaLagna, ishtaKashta } = data;
-    
+
     return {
       summary: `Jaimini analysis reveals ${charaKarakas.AtmaKaraka} as Atma Karaka, indicating your soul's primary focus.`,
       strengths: this.identifyStrengths(data),
@@ -423,15 +418,15 @@ class JaiminiAstrologyService extends ServiceTemplate {
   identifyStrengths(data) {
     const strengths = [];
     const { charaKarakas, ishtaKashta } = data;
-    
+
     if (ishtaKashta.ishta > 120) {
       strengths.push('Strong spiritual foundation and inner guidance');
     }
-    
+
     if (charaKarakas.AtmaKaraka === 'Jupiter' || charaKarakas.AtmaKaraka === 'Sun') {
       strengths.push('Natural leadership and wisdom qualities');
     }
-    
+
     return strengths;
   }
 
@@ -441,11 +436,11 @@ class JaiminiAstrologyService extends ServiceTemplate {
   identifyChallenges(data) {
     const challenges = [];
     const { ishtaKashta } = data;
-    
+
     if (ishtaKashta.kashta > 120) {
       challenges.push('Material obstacles requiring patience and perseverance');
     }
-    
+
     return challenges;
   }
 
@@ -455,13 +450,13 @@ class JaiminiAstrologyService extends ServiceTemplate {
   generateRecommendations(data) {
     const recommendations = [];
     const { charaKarakas, ishtaKashta } = data;
-    
+
     if (ishtaKashta.ishta > ishtaKashta.kashta) {
       recommendations.push('Focus on spiritual practices and inner development');
     } else {
       recommendations.push('Balance material pursuits with spiritual awareness');
     }
-    
+
     const akRemedies = {
       Sun: 'Practice self-discipline and leadership',
       Moon: 'Develop emotional intelligence and nurturing',
@@ -473,9 +468,9 @@ class JaiminiAstrologyService extends ServiceTemplate {
       Rahu: 'Explore unconventional paths wisely',
       Ketu: 'Practice detachment and meditation'
     };
-    
+
     recommendations.push(akRemedies[charaKarakas.AtmaKaraka] || 'Follow your inner guidance');
-    
+
     return recommendations;
   }
 
@@ -515,9 +510,9 @@ class JaiminiAstrologyService extends ServiceTemplate {
         recommendations: 'सिफारिशें'
       }
     };
-    
+
     const t = translations[language] || translations.en;
-    
+
     return {
       metadata: this.getMetadata(),
       analysis: {

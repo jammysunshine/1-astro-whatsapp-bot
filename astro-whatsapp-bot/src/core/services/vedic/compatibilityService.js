@@ -453,7 +453,6 @@ class CompatibilityService extends ServiceTemplate {
   }
 
 
-
   /**
    * Validate individual person data
    * @param {Object} person - Person data
@@ -489,7 +488,6 @@ class CompatibilityService extends ServiceTemplate {
       throw new Error(`${label} birth time must be in HH:MM format`);
     }
   }
-
 
 
   /**

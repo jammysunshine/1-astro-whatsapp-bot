@@ -44,7 +44,7 @@ class SynastryAnalysisService extends ServiceTemplate {
   analyzeCompatibilityFactors(synastryResult) {
     try {
       const { interchartAspects, houseOverlays, compositeChart } = synastryResult;
-      
+
       const factors = {
         emotional: this.analyzeEmotionalCompatibility(interchartAspects),
         intellectual: this.analyzeIntellectualCompatibility(interchartAspects),
@@ -52,11 +52,11 @@ class SynastryAnalysisService extends ServiceTemplate {
         spiritual: this.analyzeSpiritualCompatibility(interchartAspects, compositeChart),
         communication: this.analyzeCommunicationCompatibility(interchartAspects)
       };
-      
+
       // Calculate overall compatibility score
       const scores = Object.values(factors).map(f => f.score);
       const overallScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-      
+
       return {
         ...factors,
         overall: {
@@ -77,14 +77,14 @@ class SynastryAnalysisService extends ServiceTemplate {
    * @returns {Object} Emotional compatibility analysis
    */
   analyzeEmotionalCompatibility(aspects) {
-    const emotionalAspects = aspects.filter(aspect => 
-      ['Moon', 'Venus', 'Neptune'].some(planet => 
+    const emotionalAspects = aspects.filter(aspect =>
+      ['Moon', 'Venus', 'Neptune'].some(planet =>
         aspect.planets.includes(planet)
       )
     );
-    
+
     let score = 50; // Base score
-    
+
     emotionalAspects.forEach(aspect => {
       if (['trine', 'sextile'].includes(aspect.type)) {
         score += 15;
@@ -94,7 +94,7 @@ class SynastryAnalysisService extends ServiceTemplate {
         score -= 10;
       }
     });
-    
+
     return {
       score: Math.max(0, Math.min(100, score)),
       aspects: emotionalAspects,
@@ -108,14 +108,14 @@ class SynastryAnalysisService extends ServiceTemplate {
    * @returns {Object} Intellectual compatibility analysis
    */
   analyzeIntellectualCompatibility(aspects) {
-    const intellectualAspects = aspects.filter(aspect => 
-      ['Mercury', 'Uranus'].some(planet => 
+    const intellectualAspects = aspects.filter(aspect =>
+      ['Mercury', 'Uranus'].some(planet =>
         aspect.planets.includes(planet)
       )
     );
-    
+
     let score = 50;
-    
+
     intellectualAspects.forEach(aspect => {
       if (['trine', 'sextile'].includes(aspect.type)) {
         score += 12;
@@ -125,7 +125,7 @@ class SynastryAnalysisService extends ServiceTemplate {
         score -= 8;
       }
     });
-    
+
     return {
       score: Math.max(0, Math.min(100, score)),
       aspects: intellectualAspects,
@@ -140,17 +140,17 @@ class SynastryAnalysisService extends ServiceTemplate {
    * @returns {Object} Physical compatibility analysis
    */
   analyzePhysicalCompatibility(aspects, houseOverlays) {
-    const physicalAspects = aspects.filter(aspect => 
-      ['Mars', 'Venus'].some(planet => 
+    const physicalAspects = aspects.filter(aspect =>
+      ['Mars', 'Venus'].some(planet =>
         aspect.planets.includes(planet)
       )
     );
-    
+
     const fifthHouseOverlays = houseOverlays.filter(overlay => overlay.house === 5);
     const eighthHouseOverlays = houseOverlays.filter(overlay => overlay.house === 8);
-    
+
     let score = 50;
-    
+
     physicalAspects.forEach(aspect => {
       if (['trine', 'sextile'].includes(aspect.type)) {
         score += 15;
@@ -158,10 +158,10 @@ class SynastryAnalysisService extends ServiceTemplate {
         score += 12;
       }
     });
-    
+
     // Bonus for planets in 5th or 8th house
     score += (fifthHouseOverlays.length * 5) + (eighthHouseOverlays.length * 3);
-    
+
     return {
       score: Math.max(0, Math.min(100, score)),
       aspects: physicalAspects,
@@ -177,14 +177,14 @@ class SynastryAnalysisService extends ServiceTemplate {
    * @returns {Object} Spiritual compatibility analysis
    */
   analyzeSpiritualCompatibility(aspects, compositeChart) {
-    const spiritualAspects = aspects.filter(aspect => 
-      ['Neptune', 'Jupiter', 'Pluto'].some(planet => 
+    const spiritualAspects = aspects.filter(aspect =>
+      ['Neptune', 'Jupiter', 'Pluto'].some(planet =>
         aspect.planets.includes(planet)
       )
     );
-    
+
     let score = 50;
-    
+
     spiritualAspects.forEach(aspect => {
       if (['trine', 'sextile'].includes(aspect.type)) {
         score += 18;
@@ -192,15 +192,15 @@ class SynastryAnalysisService extends ServiceTemplate {
         score += 15;
       }
     });
-    
+
     // Check composite chart for spiritual indicators
     if (compositeChart && compositeChart.planets) {
-      if (compositeChart.planets.Neptune && 
+      if (compositeChart.planets.Neptune &&
           ['Pisces', 'Cancer', 'Scorpio'].includes(compositeChart.planets.Neptune.sign)) {
         score += 10;
       }
     }
-    
+
     return {
       score: Math.max(0, Math.min(100, score)),
       aspects: spiritualAspects,
@@ -214,14 +214,14 @@ class SynastryAnalysisService extends ServiceTemplate {
    * @returns {Object} Communication compatibility analysis
    */
   analyzeCommunicationCompatibility(aspects) {
-    const communicationAspects = aspects.filter(aspect => 
-      ['Mercury'].some(planet => 
+    const communicationAspects = aspects.filter(aspect =>
+      ['Mercury'].some(planet =>
         aspect.planets.includes(planet)
       )
     );
-    
+
     let score = 50;
-    
+
     communicationAspects.forEach(aspect => {
       if (['trine', 'sextile'].includes(aspect.type)) {
         score += 20;
@@ -231,7 +231,7 @@ class SynastryAnalysisService extends ServiceTemplate {
         score -= 15;
       }
     });
-    
+
     return {
       score: Math.max(0, Math.min(100, score)),
       aspects: communicationAspects,
@@ -247,7 +247,7 @@ class SynastryAnalysisService extends ServiceTemplate {
   identifyRelationshipThemes(synastryResult) {
     const themes = [];
     const { interchartAspects, houseOverlays, compositeChart } = synastryResult;
-    
+
     // Analyze major themes
     if (this.hasStrongVenusMarsAspects(interchartAspects)) {
       themes.push({
@@ -256,7 +256,7 @@ class SynastryAnalysisService extends ServiceTemplate {
         strength: 'high'
       });
     }
-    
+
     if (this.hasStrongSaturnAspects(interchartAspects)) {
       themes.push({
         theme: 'Commitment & Stability',
@@ -264,7 +264,7 @@ class SynastryAnalysisService extends ServiceTemplate {
         strength: 'high'
       });
     }
-    
+
     if (this.hasJupiterExpansion(interchartAspects)) {
       themes.push({
         theme: 'Growth & Expansion',
@@ -272,7 +272,7 @@ class SynastryAnalysisService extends ServiceTemplate {
         strength: 'medium'
       });
     }
-    
+
     if (this.hasUranusInnovation(interchartAspects)) {
       themes.push({
         theme: 'Innovation & Freedom',
@@ -280,7 +280,7 @@ class SynastryAnalysisService extends ServiceTemplate {
         strength: 'medium'
       });
     }
-    
+
     if (this.hasNeptuneRomance(interchartAspects)) {
       themes.push({
         theme: 'Spiritual Connection',
@@ -288,7 +288,7 @@ class SynastryAnalysisService extends ServiceTemplate {
         strength: 'high'
       });
     }
-    
+
     return themes;
   }
 
@@ -314,7 +314,7 @@ class SynastryAnalysisService extends ServiceTemplate {
   generateRelationshipRecommendations(synastryResult) {
     const recommendations = [];
     const { interchartAspects, houseOverlays } = synastryResult;
-    
+
     // Communication recommendations
     if (this.hasChallengingMercuryAspects(interchartAspects)) {
       recommendations.push({
@@ -323,7 +323,7 @@ class SynastryAnalysisService extends ServiceTemplate {
         priority: 'high'
       });
     }
-    
+
     // Emotional recommendations
     if (this.hasChallengingMoonAspects(interchartAspects)) {
       recommendations.push({
@@ -332,14 +332,14 @@ class SynastryAnalysisService extends ServiceTemplate {
         priority: 'high'
       });
     }
-    
+
     // Growth recommendations
     recommendations.push({
       category: 'growth',
       advice: 'Use relationship challenges as opportunities for personal and mutual growth',
       priority: 'medium'
     });
-    
+
     // Shared activities
     if (this.hasCreativeAspects(interchartAspects)) {
       recommendations.push({
@@ -348,13 +348,13 @@ class SynastryAnalysisService extends ServiceTemplate {
         priority: 'low'
       });
     }
-    
+
     return recommendations;
   }
 
   // Helper methods for aspect analysis
   hasStrongVenusMarsAspects(aspects) {
-    return aspects.some(aspect => 
+    return aspects.some(aspect =>
       (aspect.planets.includes('Venus') && aspect.planets.includes('Mars')) &&
       ['trine', 'sextile', 'conjunction'].includes(aspect.type) &&
       aspect.orb < 8
@@ -362,49 +362,49 @@ class SynastryAnalysisService extends ServiceTemplate {
   }
 
   hasStrongSaturnAspects(aspects) {
-    return aspects.some(aspect => 
+    return aspects.some(aspect =>
       aspect.planets.includes('Saturn') &&
       ['trine', 'sextile', 'conjunction'].includes(aspect.type)
     );
   }
 
   hasJupiterExpansion(aspects) {
-    return aspects.some(aspect => 
+    return aspects.some(aspect =>
       aspect.planets.includes('Jupiter') &&
       ['trine', 'sextile'].includes(aspect.type)
     );
   }
 
   hasUranusInnovation(aspects) {
-    return aspects.some(aspect => 
+    return aspects.some(aspect =>
       aspect.planets.includes('Uranus') &&
       ['trine', 'sextile', 'conjunction'].includes(aspect.type)
     );
   }
 
   hasNeptuneRomance(aspects) {
-    return aspects.some(aspect => 
+    return aspects.some(aspect =>
       aspect.planets.includes('Neptune') &&
       ['trine', 'sextile', 'conjunction'].includes(aspect.type)
     );
   }
 
   hasChallengingMercuryAspects(aspects) {
-    return aspects.some(aspect => 
+    return aspects.some(aspect =>
       aspect.planets.includes('Mercury') &&
       ['square', 'opposition'].includes(aspect.type)
     );
   }
 
   hasChallengingMoonAspects(aspects) {
-    return aspects.some(aspect => 
+    return aspects.some(aspect =>
       aspect.planets.includes('Moon') &&
       ['square', 'opposition'].includes(aspect.type)
     );
   }
 
   hasCreativeAspects(aspects) {
-    return aspects.some(aspect => 
+    return aspects.some(aspect =>
       ['Venus', 'Neptune'].some(planet => aspect.planets.includes(planet)) &&
       ['trine', 'sextile'].includes(aspect.type)
     );
@@ -412,59 +412,59 @@ class SynastryAnalysisService extends ServiceTemplate {
 
   // Helper methods for descriptions and categories
   getCompatibilityCategory(score) {
-    if (score >= 85) return 'Excellent';
-    if (score >= 75) return 'Very Good';
-    if (score >= 65) return 'Good';
-    if (score >= 55) return 'Moderate';
-    if (score >= 45) return 'Challenging';
+    if (score >= 85) { return 'Excellent'; }
+    if (score >= 75) { return 'Very Good'; }
+    if (score >= 65) { return 'Good'; }
+    if (score >= 55) { return 'Moderate'; }
+    if (score >= 45) { return 'Challenging'; }
     return 'Difficult';
   }
 
   getCompatibilityDescription(score) {
     const category = this.getCompatibilityCategory(score);
     const descriptions = {
-      'Excellent': 'Outstanding compatibility with strong harmonious connections',
+      Excellent: 'Outstanding compatibility with strong harmonious connections',
       'Very Good': 'Strong compatibility with minor areas for growth',
-      'Good': 'Solid compatibility with some differences that complement each other',
-      'Moderate': 'Average compatibility requiring conscious effort and understanding',
-      'Challenging': 'Significant differences that require work and compromise',
-      'Difficult': 'Major challenges requiring substantial effort and commitment'
+      Good: 'Solid compatibility with some differences that complement each other',
+      Moderate: 'Average compatibility requiring conscious effort and understanding',
+      Challenging: 'Significant differences that require work and compromise',
+      Difficult: 'Major challenges requiring substantial effort and commitment'
     };
     return descriptions[category] || 'Compatibility requires further analysis';
   }
 
   getEmotionalCompatibilityDescription(score) {
-    if (score >= 75) return 'Deep emotional understanding and connection';
-    if (score >= 60) return 'Good emotional compatibility with room for growth';
-    if (score >= 45) return 'Moderate emotional connection requiring effort';
+    if (score >= 75) { return 'Deep emotional understanding and connection'; }
+    if (score >= 60) { return 'Good emotional compatibility with room for growth'; }
+    if (score >= 45) { return 'Moderate emotional connection requiring effort'; }
     return 'Emotional differences may require conscious work';
   }
 
   getIntellectualCompatibilityDescription(score) {
-    if (score >= 75) return 'Excellent mental rapport and shared interests';
-    if (score >= 60) return 'Good intellectual compatibility with some differences';
-    if (score >= 45) return 'Moderate mental connection requiring communication';
+    if (score >= 75) { return 'Excellent mental rapport and shared interests'; }
+    if (score >= 60) { return 'Good intellectual compatibility with some differences'; }
+    if (score >= 45) { return 'Moderate mental connection requiring communication'; }
     return 'Intellectual differences may challenge understanding';
   }
 
   getPhysicalCompatibilityDescription(score) {
-    if (score >= 75) return 'Strong physical attraction and chemistry';
-    if (score >= 60) return 'Good physical compatibility with natural attraction';
-    if (score >= 45) return 'Moderate physical connection requiring effort';
+    if (score >= 75) { return 'Strong physical attraction and chemistry'; }
+    if (score >= 60) { return 'Good physical compatibility with natural attraction'; }
+    if (score >= 45) { return 'Moderate physical connection requiring effort'; }
     return 'Physical differences may require understanding and patience';
   }
 
   getSpiritualCompatibilityDescription(score) {
-    if (score >= 75) return 'Deep spiritual connection and shared values';
-    if (score >= 60) return 'Good spiritual compatibility with room for growth';
-    if (score >= 45) return 'Moderate spiritual connection requiring exploration';
+    if (score >= 75) { return 'Deep spiritual connection and shared values'; }
+    if (score >= 60) { return 'Good spiritual compatibility with room for growth'; }
+    if (score >= 45) { return 'Moderate spiritual connection requiring exploration'; }
     return 'Spiritual differences may require mutual respect';
   }
 
   getCommunicationCompatibilityDescription(score) {
-    if (score >= 75) return 'Excellent communication and understanding';
-    if (score >= 60) return 'Good communication with occasional misunderstandings';
-    if (score >= 45) return 'Moderate communication requiring conscious effort';
+    if (score >= 75) { return 'Excellent communication and understanding'; }
+    if (score >= 60) { return 'Good communication with occasional misunderstandings'; }
+    if (score >= 45) { return 'Moderate communication requiring conscious effort'; }
     return 'Communication challenges may require professional help';
   }
 
@@ -502,7 +502,7 @@ class SynastryAnalysisService extends ServiceTemplate {
   assessLongTermProspects(synastryResult) {
     const compatibilityFactors = this.analyzeCompatibilityFactors(synastryResult);
     const overallScore = compatibilityFactors.overall.score;
-    
+
     return {
       viability: overallScore >= 60 ? 'high' : overallScore >= 45 ? 'moderate' : 'challenging',
       keyStrengths: this.identifyKeyStrengths(synastryResult),
@@ -514,26 +514,26 @@ class SynastryAnalysisService extends ServiceTemplate {
   identifyKeyStrengths(synastryResult) {
     const strengths = [];
     const compatibilityFactors = this.analyzeCompatibilityFactors(synastryResult);
-    
+
     Object.entries(compatibilityFactors).forEach(([area, analysis]) => {
       if (analysis.score >= 70) {
         strengths.push(area);
       }
     });
-    
+
     return strengths;
   }
 
   identifyPotentialChallenges(synastryResult) {
     const challenges = [];
     const compatibilityFactors = this.analyzeCompatibilityFactors(synastryResult);
-    
+
     Object.entries(compatibilityFactors).forEach(([area, analysis]) => {
       if (analysis.score < 50) {
         challenges.push(area);
       }
     });
-    
+
     return challenges;
   }
 
@@ -557,9 +557,9 @@ class SynastryAnalysisService extends ServiceTemplate {
   async getQuickSynastryOverview(params) {
     try {
       this.validateParams(params, ['chart1', 'chart2']);
-      
+
       const fullAnalysis = await this.performSynastryAnalysis(params);
-      
+
       return {
         success: true,
         data: {
@@ -593,13 +593,13 @@ class SynastryAnalysisService extends ServiceTemplate {
    */
   generateSynastrySummary(analysisData) {
     const { compatibilityFactors, relationshipThemes } = analysisData;
-    
+
     let summary = `Your overall compatibility is ${compatibilityFactors.overall.score}/100 (${compatibilityFactors.overall.category}). `;
-    
+
     if (relationshipThemes.length > 0) {
       summary += `Key relationship themes include ${relationshipThemes.map(t => t.theme).join(', ')}. `;
     }
-    
+
     if (compatibilityFactors.overall.score >= 70) {
       summary += 'This relationship has strong potential for lasting harmony and mutual growth.';
     } else if (compatibilityFactors.overall.score >= 55) {
@@ -607,7 +607,7 @@ class SynastryAnalysisService extends ServiceTemplate {
     } else {
       summary += 'This relationship may face challenges, but with awareness and commitment, growth is possible.';
     }
-    
+
     return summary;
   }
 

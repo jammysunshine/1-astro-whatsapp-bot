@@ -516,10 +516,10 @@ class PrashnaAstrologyService extends ServiceTemplate {
     const confidence = horaryAnalysis.confidence || 'medium';
 
     switch (confidence.toLowerCase()) {
-      case 'high': return 'Strong testimony from multiple sources';
-      case 'medium': return 'Moderate testimony with some clarity';
-      case 'low': return 'Weak testimony, consider asking again';
-      default: return 'Analysis completed with standard reliability';
+    case 'high': return 'Strong testimony from multiple sources';
+    case 'medium': return 'Moderate testimony with some clarity';
+    case 'low': return 'Weak testimony, consider asking again';
+    default: return 'Analysis completed with standard reliability';
     }
   }
 
@@ -535,7 +535,7 @@ class PrashnaAstrologyService extends ServiceTemplate {
 
     return {
       consistency: positiveAnswers === analyses.length ? 'All positive' :
-                   negativeAnswers === analyses.length ? 'All negative' : 'Mixed results',
+        negativeAnswers === analyses.length ? 'All negative' : 'Mixed results',
       pattern: this._identifyAnswerPattern(analyses),
       evolution: this._analyzeAnswerEvolution(analyses)
     };
@@ -573,7 +573,7 @@ class PrashnaAstrologyService extends ServiceTemplate {
   _generateComparativeRecommendations(analyses) {
     const recommendations = [];
 
-    const consistency = this._analyzeQuestionComparisons(analyses).consistency;
+    const { consistency } = this._analyzeQuestionComparisons(analyses);
 
     if (consistency === 'All positive') {
       recommendations.push('Strong positive indications across all questions');
@@ -703,8 +703,8 @@ class PrashnaAstrologyService extends ServiceTemplate {
     const positiveCount = answers.filter(a => a.includes('yes') || a.includes('favorable')).length;
     const negativeCount = answers.filter(a => a.includes('no') || a.includes('unfavorable')).length;
 
-    if (positiveCount > negativeCount) return 'Generally positive pattern';
-    if (negativeCount > positiveCount) return 'Generally negative pattern';
+    if (positiveCount > negativeCount) { return 'Generally positive pattern'; }
+    if (negativeCount > positiveCount) { return 'Generally negative pattern'; }
     return 'Balanced or unclear pattern';
   }
 
@@ -715,7 +715,7 @@ class PrashnaAstrologyService extends ServiceTemplate {
    * @private
    */
   _analyzeAnswerEvolution(analyses) {
-    if (analyses.length < 2) return 'Single question analysis';
+    if (analyses.length < 2) { return 'Single question analysis'; }
 
     const firstAnswer = analyses[0].answer?.toLowerCase() || '';
     const lastAnswer = analyses[analyses.length - 1].answer?.toLowerCase() || '';

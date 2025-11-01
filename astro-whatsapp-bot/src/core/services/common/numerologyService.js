@@ -6,8 +6,8 @@ const { BirthData } = require('../../models');
 
 /**
  * NumerologyService - Service for numerology calculations and analysis
- * Provides comprehensive numerology readings including life path numbers, 
- * expression numbers, soul urge numbers, and destiny analysis using 
+ * Provides comprehensive numerology readings including life path numbers,
+ * expression numbers, soul urge numbers, and destiny analysis using
  * Pythagorean and Chaldean numerology systems.
  */
 class NumerologyService extends ServiceTemplate {
@@ -26,7 +26,7 @@ class NumerologyService extends ServiceTemplate {
     if (!data) {
       throw new Error('Input data is required for numerology calculation');
     }
-    
+
     if (!data.name && !data.birthData) {
       throw new Error('Either name or birth data is required');
     }
@@ -36,12 +36,12 @@ class NumerologyService extends ServiceTemplate {
       const validatedData = new BirthData(data.birthData);
       validatedData.validate();
     }
-    
+
     // Validate name if provided
     if (data.name && typeof data.name !== 'string') {
       throw new Error('Name must be a string');
     }
-    
+
     return true;
   }
 
@@ -52,10 +52,10 @@ class NumerologyService extends ServiceTemplate {
    */
   async lnumerologyCalculation(data) {
     const { name, birthData, calculationType = 'comprehensive' } = data;
-    
+
     // Get numerology analysis from module functions
     let analysis = {};
-    
+
     try {
       if (name && birthData?.birthDate) {
         // Get comprehensive numerology report
@@ -66,8 +66,8 @@ class NumerologyService extends ServiceTemplate {
         };
       } else if (birthData?.birthDate) {
         // Life path only
-        const lifePath = this.numerologyModule.calculateLifePath ? 
-          this.numerologyModule.calculateLifePath(birthData.birthDate) : 
+        const lifePath = this.numerologyModule.calculateLifePath ?
+          this.numerologyModule.calculateLifePath(birthData.birthDate) :
           this.numerologyModule.getNumerologyReport(birthData.birthDate, 'User');
         analysis = {
           lifePathNumber: lifePath,
@@ -75,8 +75,8 @@ class NumerologyService extends ServiceTemplate {
         };
       } else if (name) {
         // Name analysis only
-        const nameAnalysis = this.numerologyModule.getNumerologyReport ? 
-          this.numerologyModule.getNumerologyReport('01/01/2000', name) : 
+        const nameAnalysis = this.numerologyModule.getNumerologyReport ?
+          this.numerologyModule.getNumerologyReport('01/01/2000', name) :
           { expressionNumber: name.length % 9 || 9 };
         analysis = {
           ...nameAnalysis,
@@ -90,14 +90,14 @@ class NumerologyService extends ServiceTemplate {
         calculationType
       };
     }
-    
+
     // Add metadata
     analysis.type = 'numerology';
     analysis.generatedAt = new Date().toISOString();
     analysis.service = this.serviceName;
     analysis.name = name;
     analysis.birthDate = birthData?.birthDate;
-    
+
     return analysis;
   }
 
@@ -147,9 +147,9 @@ class NumerologyService extends ServiceTemplate {
    */
   async getLifePathNumber(birthData) {
     try {
-      const result = await this.execute({ 
-        birthData, 
-        calculationType: 'life-path' 
+      const result = await this.execute({
+        birthData,
+        calculationType: 'life-path'
       });
       return result.data;
     } catch (error) {
@@ -168,9 +168,9 @@ class NumerologyService extends ServiceTemplate {
    */
   async getExpressionNumber(name) {
     try {
-      const result = await this.execute({ 
-        name, 
-        calculationType: 'expression' 
+      const result = await this.execute({
+        name,
+        calculationType: 'expression'
       });
       return result.data;
     } catch (error) {
@@ -189,9 +189,9 @@ class NumerologyService extends ServiceTemplate {
    */
   async getSoulUrgeNumber(name) {
     try {
-      const result = await this.execute({ 
-        name, 
-        calculationType: 'soul-urge' 
+      const result = await this.execute({
+        name,
+        calculationType: 'soul-urge'
       });
       return result.data;
     } catch (error) {
@@ -210,9 +210,9 @@ class NumerologyService extends ServiceTemplate {
    */
   async getComprehensiveReading(data) {
     try {
-      const result = await this.execute({ 
-        ...data, 
-        calculationType: 'comprehensive' 
+      const result = await this.execute({
+        ...data,
+        calculationType: 'comprehensive'
       });
       return result.data;
     } catch (error) {
@@ -232,10 +232,10 @@ class NumerologyService extends ServiceTemplate {
    */
   async getPersonalYearNumber(birthData, year = new Date().getFullYear()) {
     try {
-      const result = await this.execute({ 
-        birthData, 
+      const result = await this.execute({
+        birthData,
         calculationType: 'personal-year',
-        year 
+        year
       });
       return result.data;
     } catch (error) {
@@ -255,8 +255,8 @@ class NumerologyService extends ServiceTemplate {
    */
   async getNameCompatibility(name1, name2) {
     try {
-      const result = await this.execute({ 
-        name: `${name1} & ${name2}`, 
+      const result = await this.execute({
+        name: `${name1} & ${name2}`,
         calculationType: 'name-compatibility',
         name1,
         name2

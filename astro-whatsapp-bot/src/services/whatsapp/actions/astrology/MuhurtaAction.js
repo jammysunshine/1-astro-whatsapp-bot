@@ -27,15 +27,15 @@ class MuhurtaAction extends BaseAction {
 
       // Get user profile for location
       const userProfile = await this.getUserProfile();
-      
+
       // Send initial prompt for muhurta details
-      const promptMessage = `⏰ *Muhurta (Auspicious Timing) Analysis*\n\nI can find the most auspicious timing for your important activities using Vedic electional astrology.\n\n*Please provide:*\n• Activity type (marriage, business, travel, etc.)\n• Preferred date (DD/MM/YYYY)\n• Your location\n• Optional: Time window (preferred hours)\n\n*Supported Activities:*\n• 💒 Marriage & Relationships\n• 💼 Business & Career\n• 🙏 Spiritual & Religious\n• 🏥 Health & Medical\n• ✈️ Travel & Relocation\n• 🏠 Home & Property\n\nReply with your activity and details to continue.`;
+      const promptMessage = '⏰ *Muhurta (Auspicious Timing) Analysis*\n\nI can find the most auspicious timing for your important activities using Vedic electional astrology.\n\n*Please provide:*\n• Activity type (marriage, business, travel, etc.)\n• Preferred date (DD/MM/YYYY)\n• Your location\n• Optional: Time window (preferred hours)\n\n*Supported Activities:*\n• 💒 Marriage & Relationships\n• 💼 Business & Career\n• 🙏 Spiritual & Religious\n• 🏥 Health & Medical\n• ✈️ Travel & Relocation\n• 🏠 Home & Property\n\nReply with your activity and details to continue.';
 
       await this.sendDirectMessage(promptMessage);
 
       // For now, we'll collect details in follow-up messages
       // In a full implementation, this would start a conversation flow
-      
+
       this.logExecution('complete', 'Muhurta analysis flow initiated');
       return {
         success: true,

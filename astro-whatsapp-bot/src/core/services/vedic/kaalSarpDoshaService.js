@@ -13,12 +13,12 @@ const logger = require('../../utils/logger');
 class KaalSarpDoshaService extends ServiceTemplate {
   constructor(services) {
     super('kaalSarpDoshaService');
-    
+
     // Initialize calculator with services if provided
     if (services) {
       this.calculator.setServices(services);
     }
-    
+
     this.serviceName = 'KaalSarpDoshaService';
     logger.info('KaalSarpDoshaService initialized');
   }

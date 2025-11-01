@@ -18,12 +18,12 @@ class TarotReadingService extends ServiceTemplate {
     if (!data) {
       throw new Error('Input data is required for tarot reading');
     }
-    
+
     // Spread type is optional, defaults to 'single'
     if (data.spreadType && typeof data.spreadType !== 'string') {
       throw new Error('Spread type must be a string');
     }
-    
+
     return true;
   }
 
@@ -34,10 +34,10 @@ class TarotReadingService extends ServiceTemplate {
    */
   async processCalculation(data) {
     const { user, spreadType = 'single' } = data;
-    
+
     // Use the tarotReader calculator to generate reading
     const result = await this.calculator.generateTarotReading(user, spreadType);
-    
+
     return result;
   }
 

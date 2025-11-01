@@ -9,13 +9,13 @@ const logger = require('../../../utils/logger');
 class FutureSelfAnalysisService extends ServiceTemplate {
   constructor(services) {
     super('FutureSelfAnalysisService', services);
-    
+
     // Initialize Future Self Simulator Calculator
     this.calculator = new FutureSelfSimulatorCalculator();
-    
+
     // Set services in calculator
     this.calculator.setServices(services);
-    
+
     // Service-specific configuration
     this.serviceConfig = {
       supportedInputs: ['futureData', 'birthData'],
@@ -48,17 +48,17 @@ class FutureSelfAnalysisService extends ServiceTemplate {
    */
   async lfutureSelfAnalysisCalculation(params) {
     const { futureData, options = {} } = params;
-    
+
     try {
       // Validate inputs
       this._validateInputs(futureData);
-      
+
       // Simulate future self using calculator
       const futureResult = await this.calculator.simulateFutureSelf(
         futureData.birthData,
         futureData.yearsAhead || 5
       );
-      
+
       // Add service metadata
       futureResult.serviceMetadata = {
         serviceName: this.serviceName,
@@ -68,12 +68,11 @@ class FutureSelfAnalysisService extends ServiceTemplate {
         projectionPeriod: `${futureData.yearsAhead || 5} years ahead`,
         calculationApproach: 'Advanced simulation using multiple predictive techniques'
       };
-      
+
       // Add enhanced analysis
       futureResult.enhancedAnalysis = this._performEnhancedFutureAnalysis(futureResult, futureData);
-      
+
       return futureResult;
-      
     } catch (error) {
       logger.error(`❌ Error in ${this.serviceName} calculation:`, error);
       throw new Error(`Future Self Analysis failed: ${error.message}`);
@@ -90,13 +89,13 @@ class FutureSelfAnalysisService extends ServiceTemplate {
       return '❌ *Future Self Analysis Error*\n\nUnable to generate future self analysis. Please check your birth details and try again.';
     }
 
-    let formatted = `🔮 *Future Self Analysis*\n\n`;
-    
+    let formatted = '🔮 *Future Self Analysis*\n\n';
+
     // Add simulation details
     formatted += `*Simulation Period:* ${result.simulationPeriod}\n`;
     formatted += `*Current Age Projection:* ${result.currentAge} years ahead\n`;
     formatted += `*Future Date:* ${result.futureDate?.toLocaleDateString() || 'N/A'}\n\n`;
-    
+
     // Add life themes
     if (result.lifeThemes && result.lifeThemes.length > 0) {
       formatted += '*🌟 Major Life Themes:*\n';
@@ -106,7 +105,7 @@ class FutureSelfAnalysisService extends ServiceTemplate {
         formatted += `   *Intensity:* ${theme.intensity}\n\n`;
       });
     }
-    
+
     // Add potential outcomes
     if (result.potentialOutcomes && result.potentialOutcomes.length > 0) {
       formatted += '*🎯 Potential Outcomes:*\n';
@@ -116,7 +115,7 @@ class FutureSelfAnalysisService extends ServiceTemplate {
         formatted += `   *Timeline:* ${outcome.timeline}\n\n`;
       });
     }
-    
+
     // Add turning points
     if (result.turningPoints && result.turningPoints.length > 0) {
       formatted += '*🔄 Key Turning Points:*\n';
@@ -126,7 +125,7 @@ class FutureSelfAnalysisService extends ServiceTemplate {
         formatted += `   *Influence:* ${point.influence}\n\n`;
       });
     }
-    
+
     // Add preparation advice
     if (result.preparationAdvice && result.preparationAdvice.length > 0) {
       formatted += '*💡 Preparation Advice:*\n';
@@ -135,34 +134,34 @@ class FutureSelfAnalysisService extends ServiceTemplate {
       });
       formatted += '\n';
     }
-    
+
     // Add enhanced analysis if available
     if (result.enhancedAnalysis) {
       formatted += '*🎭 Enhanced Future Analysis:*\n';
-      
+
       if (result.enhancedAnalysis.overallProjection) {
         formatted += `• **Overall Projection:** ${result.enhancedAnalysis.overallProjection}\n`;
       }
-      
+
       if (result.enhancedAnalysis.growthAreas) {
         formatted += `• **Growth Areas:** ${result.enhancedAnalysis.growthAreas}\n`;
       }
-      
+
       if (result.enhancedAnalysis.challengePeriods) {
         formatted += `• **Challenge Periods:** ${result.enhancedAnalysis.challengePeriods}\n`;
       }
-      
+
       if (result.enhancedAnalysis.opportunityWindows) {
         formatted += `• **Opportunity Windows:** ${result.enhancedAnalysis.opportunityWindows}\n`;
       }
-      
+
       if (result.enhancedAnalysis.actionableInsights) {
         formatted += `• **Actionable Insights:** ${result.enhancedAnalysis.actionableInsights}\n`;
       }
-      
+
       formatted += '\n';
     }
-    
+
     // Add confidence rating
     if (result.confidenceRating) {
       formatted += '*📊 Confidence Rating:*\n';
@@ -172,15 +171,15 @@ class FutureSelfAnalysisService extends ServiceTemplate {
       }
       formatted += '\n';
     }
-    
+
     // Add summary
     if (result.summary) {
       formatted += `*📋 Projection Summary:*\n${result.summary}\n\n`;
     }
-    
+
     // Add service footer
     formatted += '---\n*Future Self Analysis - Multi-Technique Life Projection*';
-    
+
     return formatted;
   }
 
@@ -193,15 +192,15 @@ class FutureSelfAnalysisService extends ServiceTemplate {
     if (!futureData) {
       throw new Error('Future data is required for future self analysis');
     }
-    
+
     if (!futureData.birthData) {
       throw new Error('Birth data is required for future self analysis');
     }
-    
+
     if (!futureData.birthData.birthDate || !futureData.birthData.birthTime || !futureData.birthData.birthPlace) {
       throw new Error('Complete birth details (date, time, place) are required for future self analysis');
     }
-    
+
     if (futureData.yearsAhead && (futureData.yearsAhead < 1 || futureData.yearsAhead > 20)) {
       throw new Error('Years ahead must be between 1 and 20 for accurate future self analysis');
     }
@@ -223,12 +222,12 @@ class FutureSelfAnalysisService extends ServiceTemplate {
       actionableInsights: '',
       projectionQuality: ''
     };
-    
+
     // Determine overall projection
     if (result.lifeThemes && result.potentialOutcomes) {
       const positiveThemes = result.lifeThemes.filter(theme => theme.intensity === 'High' || theme.intensity === 'Medium').length;
       const positiveOutcomes = result.potentialOutcomes.filter(outcome => outcome.probability === 'High' || outcome.probability === 'Medium').length;
-      
+
       if (positiveThemes >= 3 && positiveOutcomes >= 2) {
         analysis.overallProjection = 'Highly positive future trajectory with strong growth potential';
         analysis.projectionQuality = 'Excellent - Multiple favorable indicators';
@@ -243,44 +242,44 @@ class FutureSelfAnalysisService extends ServiceTemplate {
         analysis.actionableInsights = 'Focus on skill development and strategic planning';
       }
     }
-    
+
     // Identify growth areas
     if (result.lifeThemes) {
       const growthThemes = result.lifeThemes
-        .filter(theme => theme.theme.toLowerCase().includes('career') || 
+        .filter(theme => theme.theme.toLowerCase().includes('career') ||
                            theme.theme.toLowerCase().includes('growth') ||
                            theme.theme.toLowerCase().includes('opportunity'))
         .map(theme => theme.theme);
-      
+
       if (growthThemes.length > 0) {
         analysis.growthAreas = growthThemes.join(', ');
       }
     }
-    
+
     // Identify challenge periods
     if (result.turningPoints) {
       const challenges = result.turningPoints
         .filter(point => point.type === 'Challenge' || point.type === 'Obstacle')
         .map(point => `${point.year}: ${point.description}`)
         .slice(0, 3);
-      
+
       if (challenges.length > 0) {
         analysis.challengePeriods = challenges.join('; ');
       }
     }
-    
+
     // Identify opportunity windows
     if (result.potentialOutcomes) {
       const opportunities = result.potentialOutcomes
         .filter(outcome => outcome.probability === 'High' && outcome.timeline.toLowerCase().includes('soon'))
         .map(outcome => `${outcome.area}: ${outcome.description}`)
         .slice(0, 3);
-      
+
       if (opportunities.length > 0) {
         analysis.opportunityWindows = opportunities.join('; ');
       }
     }
-    
+
     return analysis;
   }
 
@@ -291,7 +290,7 @@ class FutureSelfAnalysisService extends ServiceTemplate {
    */
   calculateConfidence(result) {
     let confidence = 75; // Base confidence for Future Self Analysis
-    
+
     // Adjust based on projection period
     if (result.simulationPeriod) {
       const years = parseInt(result.simulationPeriod) || 5;
@@ -303,28 +302,28 @@ class FutureSelfAnalysisService extends ServiceTemplate {
         confidence -= 10; // Long projections have more uncertainty
       }
     }
-    
+
     // Increase confidence for complete analysis
     if (result.lifeThemes && result.potentialOutcomes && result.turningPoints) {
       confidence += 10;
     }
-    
+
     // Increase confidence for strong themes
     if (result.lifeThemes) {
       const strongThemes = result.lifeThemes.filter(theme => theme.intensity === 'High').length;
       confidence += strongThemes * 3;
     }
-    
+
     // Increase confidence for clear turning points
     if (result.turningPoints && result.turningPoints.length >= 2) {
       confidence += 5;
     }
-    
+
     // Adjust based on data quality
     if (result.natalBaseline && result.futureProjection) {
       confidence += 5;
     }
-    
+
     return Math.max(0, Math.min(100, Math.round(confidence)));
   }
 

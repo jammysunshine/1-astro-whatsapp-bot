@@ -36,22 +36,22 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   async calculateSecondaryProgressions(birthDatetime, birthLatitude, birthLongitude, targetDate) {
     const birthChart = await VedicCalculator.calculateChart(birthDatetime, birthLatitude, birthLongitude);
     const targetChart = await VedicCalculator.calculateChart(targetDate, birthLatitude, birthLongitude);
-    
+
     // Calculate age in days
     const birthDate = new Date(birthDatetime);
     const targetDateTime = new Date(targetDate);
     const ageInDays = Math.floor((targetDateTime - birthDate) / (1000 * 60 * 60 * 24));
-    
+
     // Secondary progressions: 1 day = 1 year
     const progressionDate = new Date(birthDate);
     progressionDate.setDate(progressionDate.getDate() + ageInDays);
-    
+
     const progressedChart = await VedicCalculator.calculateChart(
-      progressionDate.toISOString(), 
-      birthLatitude, 
+      progressionDate.toISOString(),
+      birthLatitude,
       birthLongitude
     );
-    
+
     return {
       birthChart,
       progressedChart,
@@ -67,14 +67,14 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   calculateProgressedAspects(progressedChart, birthChart) {
     const aspects = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
-    
+
     for (const progressedPlanet of planets) {
       const progressedLong = progressedChart[progressedPlanet.toLowerCase()];
-      
+
       for (const natalPlanet of planets) {
         const natalLong = birthChart[natalPlanet.toLowerCase()];
         const aspect = this.calculateAspect(progressedLong, natalLong);
-        
+
         if (aspect.aspect !== 'none') {
           aspects.push({
             progressedPlanet,
@@ -87,7 +87,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
         }
       }
     }
-    
+
     return aspects;
   }
 
@@ -97,7 +97,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   calculateAspect(long1, long2) {
     const diff = Math.abs(long1 - long2);
     const normalizedDiff = diff > 180 ? 360 - diff : diff;
-    
+
     const aspects = [
       { type: 'conjunction', angle: 0, orb: 8 },
       { type: 'opposition', angle: 180, orb: 8 },
@@ -105,7 +105,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
       { type: 'square', angle: 90, orb: 8 },
       { type: 'sextile', angle: 60, orb: 6 }
     ];
-    
+
     for (const aspect of aspects) {
       const angleDiff = Math.abs(normalizedDiff - aspect.angle);
       if (angleDiff <= aspect.orb) {
@@ -116,7 +116,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
         };
       }
     }
-    
+
     return { aspect: 'none', orb: 0, strength: 0 };
   }
 
@@ -126,10 +126,10 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   getProgressedAspectType(progressedPlanet, natalPlanet, aspect) {
     const benefic = ['Jupiter', 'Venus', 'Mercury'];
     const malefic = ['Mars', 'Saturn', 'Rahu', 'Ketu'];
-    
+
     const isProgressedBenefic = benefic.includes(progressedPlanet);
     const isNatalBenefic = benefic.includes(natalPlanet);
-    
+
     const aspectTypes = {
       conjunction: isProgressedBenefic ? 'developmental' : 'challenging',
       trine: 'harmonious',
@@ -137,7 +137,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
       square: 'activating',
       opposition: 'awareness'
     };
-    
+
     return aspectTypes[aspect] || 'neutral';
   }
 
@@ -148,11 +148,11 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
     const houseAnalysis = [];
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
     const birthAscendant = birthChart.ascendant;
-    
+
     for (const planet of planets) {
       const planetLong = progressedChart[planet.toLowerCase()];
       const housePosition = this.getLongitudeHouse(planetLong, birthAscendant);
-      
+
       houseAnalysis.push({
         planet,
         house: housePosition,
@@ -160,7 +160,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
         interpretation: this.getProgressedHouseInterpretation(planet, housePosition)
       });
     }
-    
+
     return houseAnalysis;
   }
 
@@ -297,7 +297,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
         Saturn: 'Spiritual discipline and isolation'
       }
     };
-    
+
     return interpretations[house]?.[planet] || 'Progressed influence in this house';
   }
 
@@ -307,14 +307,14 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   calculateSolarArcProgressions(birthChart, ageInDays) {
     const solarArc = ageInDays; // 1 degree per year in solar arc
     const solarArcChart = {};
-    
+
     const planets = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
-    
+
     for (const planet of planets) {
       const birthPosition = birthChart[planet];
       solarArcChart[planet] = (birthPosition + solarArc) % 360;
     }
-    
+
     return {
       solarArcChart,
       solarArcDegrees: solarArc,
@@ -327,7 +327,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
    */
   getSolarArcInterpretation(solarArc) {
     const arcYears = Math.floor(solarArc);
-    
+
     if (arcYears < 7) {
       return 'Early life development and foundational experiences';
     } else if (arcYears < 14) {
@@ -355,10 +355,10 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   calculateProgressedLunarCycle(progressedChart, birthChart) {
     const progressedMoon = progressedChart.moon;
     const birthMoon = birthChart.moon;
-    
+
     const moonPhase = this.calculateMoonPhase(progressedMoon);
     const moonCycle = this.calculateLunarCyclePosition(progressedMoon, birthMoon);
-    
+
     return {
       moonPhase,
       moonCycle,
@@ -372,14 +372,14 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   calculateMoonPhase(moonLongitude) {
     const sunLongitude = 0; // Simplified - would need actual sun position
     const phase = (moonLongitude - sunLongitude + 360) % 360;
-    
-    if (phase < 45) return 'New Moon';
-    if (phase < 90) return 'Waxing Crescent';
-    if (phase < 135) return 'First Quarter';
-    if (phase < 180) return 'Waxing Gibbous';
-    if (phase < 225) return 'Full Moon';
-    if (phase < 270) return 'Waning Gibbous';
-    if (phase < 315) return 'Last Quarter';
+
+    if (phase < 45) { return 'New Moon'; }
+    if (phase < 90) { return 'Waxing Crescent'; }
+    if (phase < 135) { return 'First Quarter'; }
+    if (phase < 180) { return 'Waxing Gibbous'; }
+    if (phase < 225) { return 'Full Moon'; }
+    if (phase < 270) { return 'Waning Gibbous'; }
+    if (phase < 315) { return 'Last Quarter'; }
     return 'Waning Crescent';
   }
 
@@ -405,7 +405,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
       'Last Quarter': 'Emotional integration and wisdom',
       'Waning Crescent': 'Emotional completion and rest'
     };
-    
+
     return interpretations[moonPhase] || 'Lunar cycle influence';
   }
 
@@ -414,7 +414,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
    */
   analyzeLifeStage(ageInDays) {
     const age = Math.floor(ageInDays / 365.25);
-    
+
     const lifeStages = {
       0: { name: 'Birth', theme: 'Potential and possibility', duration: 1 },
       1: { name: 'Infancy', theme: 'Trust and attachment', duration: 2 },
@@ -427,22 +427,22 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
       47: { name: 'Mature Adulthood', theme: 'Wisdom and mentoring', duration: 15 },
       62: { name: 'Senior Years', theme: 'Legacy and reflection', duration: 20 }
     };
-    
+
     for (const [startAge, stage] of Object.entries(lifeStages)) {
       if (age >= parseInt(startAge) && age < parseInt(startAge) + stage.duration) {
         return {
           stage: stage.name,
           theme: stage.theme,
-          age: age,
+          age,
           progress: ((age - parseInt(startAge)) / stage.duration) * 100
         };
       }
     }
-    
+
     return {
       stage: 'Elder Years',
       theme: 'Spiritual completion and peace',
-      age: age,
+      age,
       progress: 100
     };
   }
@@ -453,42 +453,42 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   async calculate(userData, options = {}) {
     try {
       this.validateInput(userData);
-      
+
       const { datetime, latitude, longitude, targetDate } = userData;
-      
+
       if (!targetDate) {
         targetDate = new Date().toISOString();
       }
-      
+
       const progressions = await this.calculateSecondaryProgressions(
-        datetime, 
-        latitude, 
-        longitude, 
+        datetime,
+        latitude,
+        longitude,
         targetDate
       );
-      
+
       const progressedAspects = this.calculateProgressedAspects(
-        progressions.progressedChart, 
+        progressions.progressedChart,
         progressions.birthChart
       );
-      
+
       const progressedHouses = this.calculateProgressedHouses(
-        progressions.progressedChart, 
+        progressions.progressedChart,
         progressions.birthChart
       );
-      
+
       const solarArcProgressions = this.calculateSolarArcProgressions(
-        progressions.birthChart, 
+        progressions.birthChart,
         progressions.ageInDays
       );
-      
+
       const progressedLunarCycle = this.calculateProgressedLunarCycle(
-        progressions.progressedChart, 
+        progressions.progressedChart,
         progressions.birthChart
       );
-      
+
       const lifeStage = this.analyzeLifeStage(progressions.ageInDays);
-      
+
       const analysis = {
         targetDate,
         ageInDays: progressions.ageInDays,
@@ -506,9 +506,8 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
           lifeStage
         })
       };
-      
+
       return this.formatOutput(analysis, options.language || 'en');
-      
     } catch (error) {
       throw new Error(`Enhanced secondary progressions calculation failed: ${error.message}`);
     }
@@ -519,7 +518,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
    */
   generateInterpretations(data) {
     const { progressedAspects, progressedHouses, solarArcProgressions, progressedLunarCycle, lifeStage } = data;
-    
+
     const interpretations = {
       lifeThemes: this.identifyLifeThemes(data),
       majorAspects: this.interpretMajorAspects(progressedAspects),
@@ -528,7 +527,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
       developmentalStage: this.interpretDevelopmentalStage(lifeStage),
       overall: this.generateOverallAnalysis(data)
     };
-    
+
     return interpretations;
   }
 
@@ -538,7 +537,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   identifyLifeThemes(data) {
     const themes = [];
     const { progressedAspects, progressedHouses } = data;
-    
+
     // Strong aspects
     const strongAspects = progressedAspects.filter(a => a.strength > 70);
     strongAspects.forEach(aspect => {
@@ -550,19 +549,19 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
         themes.push(`${aspect.progressedPlanet}-${aspect.natalPlanet} activation`);
       }
     });
-    
+
     // House emphasis
     const houseCounts = {};
     progressedHouses.forEach(house => {
       houseCounts[house.house] = (houseCounts[house.house] || 0) + 1;
     });
-    
+
     const emphasizedHouses = Object.entries(houseCounts)
       .filter(([, count]) => count >= 2)
       .map(([house]) => `House ${house} focus`);
-    
+
     themes.push(...emphasizedHouses);
-    
+
     return themes;
   }
 
@@ -574,8 +573,8 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
       .filter(a => a.strength > 60)
       .sort((a, b) => b.strength - a.strength)
       .slice(0, 5);
-    
-    return majorAspects.map(aspect => 
+
+    return majorAspects.map(aspect =>
       `${aspect.progressedPlanet} ${aspect.aspect} ${aspect.natalPlanet} (${aspect.strength.toFixed(0)}%)`
     );
   }
@@ -588,11 +587,11 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
     progressedHouses.forEach(house => {
       houseCounts[house.house] = (houseCounts[house.house] || 0) + 1;
     });
-    
+
     const sortedHouses = Object.entries(houseCounts)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 3);
-    
+
     return sortedHouses.map(([house, count]) => `House ${house} (${count} planets)`);
   }
 
@@ -601,7 +600,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
    */
   interpretLunarInfluence(progressedLunarCycle) {
     const { moonPhase, moonCycle } = progressedLunarCycle;
-    
+
     return {
       phase: moonPhase,
       cycle: `Cycle position: ${moonCycle.toFixed(0)}°`,
@@ -626,7 +625,7 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
    */
   generateOverallAnalysis(data) {
     const { progressedAspects, lifeStage, solarArcProgressions } = data;
-    
+
     return {
       summary: `Secondary progressions for ${lifeStage.stage} stage: ${lifeStage.theme}`,
       intensity: this.calculateProgressionIntensity(data),
@@ -642,9 +641,9 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
     const { progressedAspects } = data;
     const totalStrength = progressedAspects.reduce((sum, aspect) => sum + aspect.strength, 0);
     const averageStrength = progressedAspects.length > 0 ? totalStrength / progressedAspects.length : 0;
-    
-    if (averageStrength > 70) return 'High';
-    if (averageStrength > 40) return 'Medium';
+
+    if (averageStrength > 70) { return 'High'; }
+    if (averageStrength > 40) { return 'Medium'; }
     return 'Low';
   }
 
@@ -653,15 +652,15 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
    */
   analyzeProgressionTiming(data) {
     const { progressedAspects, lifeStage } = data;
-    
-    const activatingAspects = progressedAspects.filter(a => 
+
+    const activatingAspects = progressedAspects.filter(a =>
       a.aspect === 'square' || a.aspect === 'opposition'
     );
-    
-    const harmoniousAspects = progressedAspects.filter(a => 
+
+    const harmoniousAspects = progressedAspects.filter(a =>
       a.aspect === 'trine' || a.aspect === 'sextile'
     );
-    
+
     return {
       stage: lifeStage.stage,
       activating: activatingAspects.length > harmoniousAspects.length,
@@ -676,29 +675,29 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
   generateProgressionRecommendations(data) {
     const recommendations = [];
     const { progressedAspects, lifeStage, progressedHouses } = data;
-    
+
     // Based on life stage
     if (lifeStage.stage.includes('Adulthood')) {
       recommendations.push('Focus on career and relationship development');
     } else if (lifeStage.stage.includes('Mid-life')) {
       recommendations.push('Consider reevaluation and new directions');
     }
-    
+
     // Based on aspects
-    const challengingAspects = progressedAspects.filter(a => 
+    const challengingAspects = progressedAspects.filter(a =>
       (a.aspect === 'square' || a.aspect === 'opposition') && a.strength > 60
     );
-    
+
     if (challengingAspects.length > 0) {
       recommendations.push('Navigate challenges with awareness and growth mindset');
     }
-    
+
     // Based on house focus
     const firstHousePlanets = progressedHouses.filter(h => h.house === 1);
     if (firstHousePlanets.length > 0) {
       recommendations.push('Focus on personal development and self-expression');
     }
-    
+
     return recommendations;
   }
 
@@ -744,9 +743,9 @@ class EnhancedSecondaryProgressionsService extends ServiceTemplate {
         overallAnalysis: 'समग्र विश्लेषण'
       }
     };
-    
+
     const t = translations[language] || translations.en;
-    
+
     return {
       metadata: this.getMetadata(),
       analysis: {

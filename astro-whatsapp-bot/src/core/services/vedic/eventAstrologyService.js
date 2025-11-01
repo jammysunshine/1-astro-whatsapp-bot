@@ -333,10 +333,10 @@ class EventAstrologyService extends ServiceTemplate {
     let daysToCheck = 30; // Default to next month
 
     switch (timeFrame) {
-      case 'next_week': daysToCheck = 7; break;
-      case 'next_month': daysToCheck = 30; break;
-      case 'next_3_months': daysToCheck = 90; break;
-      case 'next_6_months': daysToCheck = 180; break;
+    case 'next_week': daysToCheck = 7; break;
+    case 'next_month': daysToCheck = 30; break;
+    case 'next_3_months': daysToCheck = 90; break;
+    case 'next_6_months': daysToCheck = 180; break;
     }
 
     for (let i = 0; i < daysToCheck; i++) {
@@ -532,12 +532,12 @@ class EventAstrologyService extends ServiceTemplate {
   _calculateOverallRating(muhurta, seasonal, personal) {
     const ratings = [muhurta?.overallRating];
 
-    if (seasonal?.isCurrentSeason) ratings.push('good');
-    if (personal?.personalRating) ratings.push(personal.personalRating);
+    if (seasonal?.isCurrentSeason) { ratings.push('good'); }
+    if (personal?.personalRating) { ratings.push(personal.personalRating); }
 
-    if (ratings.includes('excellent')) return 'excellent';
-    if (ratings.includes('good')) return 'good';
-    if (ratings.includes('fair')) return 'fair';
+    if (ratings.includes('excellent')) { return 'excellent'; }
+    if (ratings.includes('good')) { return 'good'; }
+    if (ratings.includes('fair')) { return 'fair'; }
     return 'neutral';
   }
 
@@ -552,9 +552,9 @@ class EventAstrologyService extends ServiceTemplate {
   _compileFavorableFactors(muhurta, seasonal, personal) {
     const factors = [];
 
-    if (muhurta?.auspiciousFactors) factors.push(...muhurta.auspiciousFactors);
-    if (seasonal?.seasonalFactors) factors.push(...seasonal.seasonalFactors);
-    if (personal?.favorableTransits) factors.push(...personal.favorableTransits);
+    if (muhurta?.auspiciousFactors) { factors.push(...muhurta.auspiciousFactors); }
+    if (seasonal?.seasonalFactors) { factors.push(...seasonal.seasonalFactors); }
+    if (personal?.favorableTransits) { factors.push(...personal.favorableTransits); }
 
     return [...new Set(factors)]; // Remove duplicates
   }
@@ -570,8 +570,8 @@ class EventAstrologyService extends ServiceTemplate {
   _compileChallengingFactors(muhurta, seasonal, personal) {
     const factors = [];
 
-    if (muhurta?.inauspiciousFactors) factors.push(...muhurta.inauspiciousFactors);
-    if (personal?.challengingTransits) factors.push(...personal.challengingTransits);
+    if (muhurta?.inauspiciousFactors) { factors.push(...muhurta.inauspiciousFactors); }
+    if (personal?.challengingTransits) { factors.push(...personal.challengingTransits); }
 
     return [...new Set(factors)]; // Remove duplicates
   }
@@ -587,11 +587,11 @@ class EventAstrologyService extends ServiceTemplate {
   _generateEventRecommendations(muhurta, seasonal, personal) {
     const recommendations = [];
 
-    if (muhurta?.recommendations) recommendations.push(...muhurta.recommendations);
+    if (muhurta?.recommendations) { recommendations.push(...muhurta.recommendations); }
     if (seasonal?.bestSeason) {
       recommendations.push(`Consider ${seasonal.bestSeason} season for optimal energy alignment`);
     }
-    if (personal?.recommendations) recommendations.push(...personal.recommendations);
+    if (personal?.recommendations) { recommendations.push(...personal.recommendations); }
 
     return [...new Set(recommendations)]; // Remove duplicates
   }
@@ -686,7 +686,7 @@ class EventAstrologyService extends ServiceTemplate {
     const ratingOrder = { excellent: 4, good: 3, fair: 2, neutral: 1 };
 
     for (const [event, analysis] of Object.entries(compatibilityAnalysis)) {
-      const rating = analysis.rating;
+      const { rating } = analysis;
       if (ratingOrder[rating] > ratingOrder[bestRating]) {
         bestRating = rating;
         bestEvent = event;

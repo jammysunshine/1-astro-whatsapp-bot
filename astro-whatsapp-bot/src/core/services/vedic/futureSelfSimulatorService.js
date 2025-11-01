@@ -14,12 +14,12 @@ const logger = require('../../utils/logger');
 class FutureSelfSimulatorService extends ServiceTemplate {
   constructor(services) {
     super('futureSelfSimulatorService');
-    
+
     // Initialize calculator with services if provided
     if (services) {
       this.calculator.setServices(services);
     }
-    
+
     this.serviceName = 'FutureSelfSimulatorService';
     logger.info('FutureSelfSimulatorService initialized');
   }
@@ -28,7 +28,7 @@ class FutureSelfSimulatorService extends ServiceTemplate {
     try {
       // Get simulation parameters - default to 5 years if not specified
       const yearsAhead = birthData.yearsAhead || 5;
-      
+
       // Get future self simulation using calculator
       const result = await this.calculator.simulateFutureSelf(birthData, yearsAhead);
 
@@ -132,7 +132,7 @@ class FutureSelfSimulatorService extends ServiceTemplate {
 
       // Default to 3 years for aspect simulation if not specified
       const simulationYears = yearsAhead || (birthData.yearsAhead ? birthData.yearsAhead : 3);
-      
+
       // Get specific aspect simulation using calculator
       const result = await this.calculator.simulateLifeAspect(birthData, aspect, simulationYears);
 
@@ -150,7 +150,7 @@ class FutureSelfSimulatorService extends ServiceTemplate {
         calculationType: `Future ${aspect} Simulation`,
         yearsProjected: simulationYears,
         timestamp: new Date().toISOString(),
-        aspect: aspect,
+        aspect,
         confidenceRating: result.confidenceRating?.percentage || 'N/A'
       };
 

@@ -330,7 +330,7 @@ class SolarReturnService extends ServiceTemplate {
       finance: this._predictFinance(solarReturn),
       health: this._predictHealth(solarReturn),
       personal: this._predictPersonal(solarReturn),
-      year: year,
+      year,
       summary: `Solar return for ${year} indicates ${this._getOverallTone(solarReturn)} period with focus on ${this._getMainFocus(solarReturn)}.`
     };
   }
@@ -389,7 +389,7 @@ class SolarReturnService extends ServiceTemplate {
   _getOverallTone(solarReturn) {
     // Simple heuristic based on planetary placements
     const planetCount = Object.keys(solarReturn.planetaryPositions || {}).length;
-    if (planetCount > 5) return 'active and dynamic';
+    if (planetCount > 5) { return 'active and dynamic'; }
     return 'stable and developmental';
   }
 

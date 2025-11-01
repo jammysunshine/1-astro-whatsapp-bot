@@ -67,17 +67,17 @@ class CoupleCompatibilityService extends ServiceTemplate {
   calculateCompatibilityScore(synastryResult) {
     try {
       const { interchartAspects, houseOverlays, compositeChart } = synastryResult;
-      
+
       // Score different aspects of compatibility
       const aspectScore = this.scoreAspects(interchartAspects);
       const houseScore = this.scoreHouseOverlays(houseOverlays);
       const compositeScore = this.scoreCompositeChart(compositeChart);
-      
+
       // Calculate weighted overall score
       const overallScore = Math.round(
         (aspectScore * 0.4 + houseScore * 0.3 + compositeScore * 0.3) * 100
       ) / 100;
-      
+
       return {
         overall: overallScore,
         aspects: aspectScore,
@@ -97,14 +97,14 @@ class CoupleCompatibilityService extends ServiceTemplate {
    * @returns {number} Aspect compatibility score (0-100)
    */
   scoreAspects(aspects) {
-    if (!aspects || aspects.length === 0) return 50;
-    
+    if (!aspects || aspects.length === 0) { return 50; }
+
     let totalScore = 0;
     let aspectCount = 0;
-    
+
     aspects.forEach(aspect => {
       let score = 50; // Base score
-      
+
       // Positive aspects get higher scores
       if (['trine', 'sextile'].includes(aspect.type)) {
         score = 85 + (aspect.orb < 3 ? 10 : 0);
@@ -113,11 +113,11 @@ class CoupleCompatibilityService extends ServiceTemplate {
       } else if (['square', 'opposition'].includes(aspect.type)) {
         score = aspect.planets.includes('Saturn') || aspect.planets.includes('Mars') ? 30 : 45;
       }
-      
+
       totalScore += score;
       aspectCount++;
     });
-    
+
     return Math.round((totalScore / aspectCount) * 100) / 100;
   }
 
@@ -127,30 +127,30 @@ class CoupleCompatibilityService extends ServiceTemplate {
    * @returns {number} House overlay score (0-100)
    */
   scoreHouseOverlays(overlays) {
-    if (!overlays || overlays.length === 0) return 50;
-    
+    if (!overlays || overlays.length === 0) { return 50; }
+
     let totalScore = 0;
     let overlayCount = 0;
-    
+
     overlays.forEach(overlay => {
       let score = 50;
-      
+
       // Favorable house overlays
       if ([1, 4, 5, 7, 9, 11].includes(overlay.house)) {
         score = 75;
       } else if ([2, 3, 6, 8, 10, 12].includes(overlay.house)) {
         score = 40;
       }
-      
+
       // Bonus for relationship planets in relationship houses
       if (['Venus', 'Jupiter', 'Moon'].includes(overlay.planet) && [5, 7, 11].includes(overlay.house)) {
         score += 15;
       }
-      
+
       totalScore += Math.min(score, 100);
       overlayCount++;
     });
-    
+
     return Math.round((totalScore / overlayCount) * 100) / 100;
   }
 
@@ -160,28 +160,28 @@ class CoupleCompatibilityService extends ServiceTemplate {
    * @returns {number} Composite chart score (0-100)
    */
   scoreCompositeChart(compositeChart) {
-    if (!compositeChart || !compositeChart.planets) return 50;
-    
+    if (!compositeChart || !compositeChart.planets) { return 50; }
+
     let score = 60; // Base score
-    
+
     // Check for favorable composite placements
-    const planets = compositeChart.planets;
-    
+    const { planets } = compositeChart;
+
     // Venus in good signs
     if (planets.Venus && ['Taurus', 'Libra', 'Pisces', 'Cancer'].includes(planets.Venus.sign)) {
       score += 10;
     }
-    
+
     // Jupiter in good signs
     if (planets.Jupiter && ['Cancer', 'Sagittarius', 'Pisces'].includes(planets.Jupiter.sign)) {
       score += 10;
     }
-    
+
     // Avoid challenging Saturn placements
     if (planets.Saturn && ['Aries', 'Cancer', 'Libra', 'Capricorn'].includes(planets.Saturn.sign)) {
       score -= 10;
     }
-    
+
     return Math.max(0, Math.min(100, score));
   }
 
@@ -191,11 +191,11 @@ class CoupleCompatibilityService extends ServiceTemplate {
    * @returns {string} Compatibility category
    */
   getCompatibilityCategory(score) {
-    if (score >= 85) return 'Excellent';
-    if (score >= 75) return 'Very Good';
-    if (score >= 65) return 'Good';
-    if (score >= 55) return 'Moderate';
-    if (score >= 45) return 'Challenging';
+    if (score >= 85) { return 'Excellent'; }
+    if (score >= 75) { return 'Very Good'; }
+    if (score >= 65) { return 'Good'; }
+    if (score >= 55) { return 'Moderate'; }
+    if (score >= 45) { return 'Challenging'; }
     return 'Difficult';
   }
 
@@ -207,10 +207,10 @@ class CoupleCompatibilityService extends ServiceTemplate {
    */
   generateRelationshipInsights(synastryResult, compatibilityScore) {
     const insights = [];
-    
+
     // Aspect-based insights
     if (synastryResult.interchartAspects) {
-      const venusAspects = synastryResult.interchartAspects.filter(a => 
+      const venusAspects = synastryResult.interchartAspects.filter(a =>
         a.planets.includes('Venus') && ['trine', 'sextile'].includes(a.type)
       );
       if (venusAspects.length > 0) {
@@ -221,7 +221,7 @@ class CoupleCompatibilityService extends ServiceTemplate {
         });
       }
     }
-    
+
     // House overlay insights
     if (synastryResult.houseOverlays) {
       const seventhHouseOverlays = synastryResult.houseOverlays.filter(o => o.house === 7);
@@ -233,14 +233,14 @@ class CoupleCompatibilityService extends ServiceTemplate {
         });
       }
     }
-    
+
     // Overall compatibility insight
     insights.push({
       type: 'overall',
       message: `Overall compatibility is ${compatibilityScore.category.toLowerCase()} with a score of ${compatibilityScore.overall}/100`,
       strength: compatibilityScore.overall >= 65 ? 'positive' : 'cautionary'
     });
-    
+
     return insights;
   }
 
@@ -252,7 +252,7 @@ class CoupleCompatibilityService extends ServiceTemplate {
    */
   generateRecommendations(synastryResult, compatibilityScore) {
     const recommendations = [];
-    
+
     if (compatibilityScore.overall < 60) {
       recommendations.push({
         category: 'communication',
@@ -260,7 +260,7 @@ class CoupleCompatibilityService extends ServiceTemplate {
         priority: 'high'
       });
     }
-    
+
     if (compatibilityScore.aspects < 50) {
       recommendations.push({
         category: 'harmony',
@@ -268,7 +268,7 @@ class CoupleCompatibilityService extends ServiceTemplate {
         priority: 'medium'
       });
     }
-    
+
     if (compatibilityScore.houses < 50) {
       recommendations.push({
         category: 'shared_goals',
@@ -276,14 +276,14 @@ class CoupleCompatibilityService extends ServiceTemplate {
         priority: 'medium'
       });
     }
-    
+
     // Always add positive recommendation
     recommendations.push({
       category: 'growth',
       advice: 'Use relationship challenges as opportunities for personal growth',
       priority: 'low'
     });
-    
+
     return recommendations;
   }
 
@@ -295,9 +295,9 @@ class CoupleCompatibilityService extends ServiceTemplate {
   async getQuickCompatibility(params) {
     try {
       this.validateParams(params, ['userChart', 'partnerChart']);
-      
+
       const fullAnalysis = await this.analyzeCoupleCompatibility(params);
-      
+
       return {
         success: true,
         data: {
@@ -331,9 +331,9 @@ class CoupleCompatibilityService extends ServiceTemplate {
    */
   generateCompatibilitySummary(analysisData) {
     const { compatibilityScore, insights } = analysisData;
-    
+
     let summary = `Your compatibility score is ${compatibilityScore.overall}/100 (${compatibilityScore.category}). `;
-    
+
     if (compatibilityScore.overall >= 75) {
       summary += 'You share strong harmonious connections and have excellent potential for a lasting relationship.';
     } else if (compatibilityScore.overall >= 60) {
@@ -341,7 +341,7 @@ class CoupleCompatibilityService extends ServiceTemplate {
     } else {
       summary += 'Your relationship may face challenges, but with awareness and effort, growth is possible.';
     }
-    
+
     return summary;
   }
 

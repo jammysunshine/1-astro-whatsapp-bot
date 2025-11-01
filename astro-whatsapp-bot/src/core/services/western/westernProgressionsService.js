@@ -24,7 +24,7 @@ class WesternProgressionsService extends ServiceTemplate {
     if (!data) {
       throw new Error('Input data is required for Western progression calculation');
     }
-    
+
     if (!data.birthData) {
       throw new Error('Birth data is required');
     }
@@ -32,7 +32,7 @@ class WesternProgressionsService extends ServiceTemplate {
     // Validate birth data with model
     const validatedData = new BirthData(data.birthData);
     validatedData.validate();
-    
+
     return true;
   }
 
@@ -43,17 +43,17 @@ class WesternProgressionsService extends ServiceTemplate {
    */
   async processCalculation(data) {
     const { birthData, targetDate = null, progressionType = 'secondary' } = data;
-    
+
     // Get Western progression data from calculator
     const progressionData = await this.calculator.calculateWesternProgressions(birthData, targetDate, progressionType);
-    
+
     // Add metadata
     progressionData.type = 'western_progressions';
     progressionData.progressionType = progressionType;
     progressionData.zodiacType = 'tropical';
     progressionData.generatedAt = new Date().toISOString();
     progressionData.service = this.serviceName;
-    
+
     return progressionData;
   }
 

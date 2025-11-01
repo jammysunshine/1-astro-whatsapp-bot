@@ -1,6 +1,6 @@
 class DateUtils {
   static parseDate(dateString) {
-    if (!dateString) return null;
+    if (!dateString) { return null; }
 
     const [day, month, year] = dateString.split('/').map(Number);
     if (!day || !month || !year) {
@@ -12,7 +12,7 @@ class DateUtils {
   }
 
   static parseTime(timeString) {
-    if (!timeString) return null;
+    if (!timeString) { return null; }
 
     const [hour, minute] = timeString.split(':').map(Number);
     if (hour === undefined || minute === undefined) {

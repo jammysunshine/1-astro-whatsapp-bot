@@ -775,9 +775,6 @@ class DashaPredictiveService extends ServiceTemplate {
   }
 
 
-
-
-
   /**
    * Create dasha summary for quick reference
    * @param {Object} result - Full dasha analysis

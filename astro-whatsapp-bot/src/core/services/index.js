@@ -61,5 +61,5 @@ module.exports = {
   DivinationService,
   NumerologyService,
   TarotReadingService,
-  IChingReadingService,
+  IChingReadingService
 };

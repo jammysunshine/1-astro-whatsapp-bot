@@ -24,11 +24,11 @@ module.exports = {
     CompatibilityService,
     DetailedChartAnalysisService,
     CompatibilityScoreService,
-    PanchangService,
+    PanchangService
     // All other services
   },
   utils: {
-    logger,
+    logger
     // Other utilities
   },
   middleware: {

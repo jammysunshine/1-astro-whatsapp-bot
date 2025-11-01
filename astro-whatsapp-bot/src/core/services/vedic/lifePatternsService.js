@@ -93,7 +93,7 @@ class LifePatternsCalculator {
   async generateLifePatternsFromBirthData(birthData) {
     try {
       const { sunSign } = birthData;
-      
+
       if (!sunSign) {
         throw new Error('Sun sign is required for life patterns analysis');
       }
@@ -318,9 +318,9 @@ class LifePatternsService extends ServiceTemplate {
     }
 
     // Validate sun sign
-    const validSunSigns = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 
-                          'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-    
+    const validSunSigns = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+
     if (!validSunSigns.includes(birthData.sunSign)) {
       throw new Error(`Invalid sun sign: ${birthData.sunSign}. Valid signs are: ${validSunSigns.join(', ')}`);
     }

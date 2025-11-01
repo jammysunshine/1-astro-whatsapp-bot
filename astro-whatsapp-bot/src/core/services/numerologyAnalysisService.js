@@ -51,12 +51,12 @@ class NumerologyAnalysisService extends ServiceTemplate {
   async getLifePathAnalysis(params) {
     try {
       this.validateParams(params, ['birthDate']);
-      
+
       const { birthDate } = params;
-      
+
       // Calculate life path number using calculator
       const lifePathData = await this.calculator.calculateLifePath(birthDate);
-      
+
       // Enhance with detailed analysis
       const enhancedLifePath = {
         ...lifePathData,
@@ -68,7 +68,7 @@ class NumerologyAnalysisService extends ServiceTemplate {
         relationships: this.getRelationshipStyle(lifePathData.lifePathNumber),
         spiritualPath: this.getSpiritualPath(lifePathData.lifePathNumber)
       };
-      
+
       return {
         success: true,
         data: enhancedLifePath,
@@ -100,12 +100,12 @@ class NumerologyAnalysisService extends ServiceTemplate {
   async getNameAnalysis(params) {
     try {
       this.validateParams(params, ['fullName']);
-      
+
       const { fullName } = params;
-      
+
       // Calculate name numbers using calculator
       const nameData = await this.calculator.calculateNameNumbers(fullName);
-      
+
       // Enhance with detailed analysis
       const enhancedNameAnalysis = {
         ...nameData,
@@ -118,7 +118,7 @@ class NumerologyAnalysisService extends ServiceTemplate {
         nameChanges: this.analyzeNameChanges(fullName, nameData),
         compatibility: this.analyzeNameCompatibility(nameData)
       };
-      
+
       return {
         success: true,
         data: enhancedNameAnalysis,
@@ -152,35 +152,35 @@ class NumerologyAnalysisService extends ServiceTemplate {
   async getNumerologyCompatibility(params) {
     try {
       this.validateParams(params, ['person1', 'person2']);
-      
+
       const { person1, person2 } = params;
-      
+
       // Calculate numerology for both people
       const person1Data = await this.calculator.calculateNumerology(
-        person1.fullName, 
+        person1.fullName,
         person1.birthDate
       );
       const person2Data = await this.calculator.calculateNumerology(
-        person2.fullName, 
+        person2.fullName,
         person2.birthDate
       );
-      
+
       // Analyze compatibility
       const compatibilityAnalysis = {
         lifePathCompatibility: this.compareLifePaths(
-          person1Data.lifePathNumber, 
+          person1Data.lifePathNumber,
           person2Data.lifePathNumber
         ),
         destinyCompatibility: this.compareDestinies(
-          person1Data.destinyNumber, 
+          person1Data.destinyNumber,
           person2Data.destinyNumber
         ),
         soulUrgeCompatibility: this.compareSoulUrges(
-          person1Data.soulUrgeNumber, 
+          person1Data.soulUrgeNumber,
           person2Data.soulUrgeNumber
         ),
         personalityCompatibility: this.comparePersonalities(
-          person1Data.personalityNumber, 
+          person1Data.personalityNumber,
           person2Data.personalityNumber
         ),
         overallCompatibility: this.calculateOverallCompatibility(person1Data, person2Data),
@@ -189,7 +189,7 @@ class NumerologyAnalysisService extends ServiceTemplate {
         strengths: this.identifyCompatibilityStrengths(person1Data, person2Data),
         recommendations: this.generateCompatibilityRecommendations(person1Data, person2Data)
       };
-      
+
       return {
         success: true,
         data: {
@@ -237,12 +237,12 @@ class NumerologyAnalysisService extends ServiceTemplate {
   async getYearlyPredictions(params) {
     try {
       this.validateParams(params, ['birthDate', 'year']);
-      
+
       const { birthDate, year } = params;
-      
+
       // Calculate personal year using calculator
       const personalYearData = await this.calculator.calculatePersonalYear(birthDate, year);
-      
+
       // Enhance with detailed predictions
       const enhancedPredictions = {
         ...personalYearData,
@@ -256,7 +256,7 @@ class NumerologyAnalysisService extends ServiceTemplate {
         careerGuidance: this.getCareerGuidance(personalYearData.personalYearNumber),
         relationshipInsights: this.getRelationshipInsights(personalYearData.personalYearNumber)
       };
-      
+
       return {
         success: true,
         data: enhancedPredictions,
@@ -290,10 +290,10 @@ class NumerologyAnalysisService extends ServiceTemplate {
   async getMasterNumberAnalysis(params) {
     try {
       const { fullName, birthDate } = params;
-      
+
       // Calculate master numbers using calculator
       const masterNumberData = await this.calculator.calculateMasterNumbers(fullName, birthDate);
-      
+
       // Enhance with detailed analysis
       const enhancedMasterAnalysis = {
         ...masterNumberData,
@@ -306,7 +306,7 @@ class NumerologyAnalysisService extends ServiceTemplate {
         manifestationPower: this.analyzeManifestationPower(masterNumberData),
         karmicResponsibilities: this.analyzeKarmicResponsibilities(masterNumberData)
       };
-      
+
       return {
         success: true,
         data: enhancedMasterAnalysis,
@@ -346,7 +346,7 @@ class NumerologyAnalysisService extends ServiceTemplate {
       22: 'Master builder, practical idealism, and large-scale achievement',
       33: 'Master teacher, healing, and spiritual guidance'
     };
-    
+
     return {
       number: lifePathNumber,
       description: lifePathDescriptions[lifePathNumber] || 'Unique life path',
@@ -493,9 +493,9 @@ class NumerologyAnalysisService extends ServiceTemplate {
       this.calculateNumberCompatibility(person1Data.soulUrgeNumber, person2Data.soulUrgeNumber).score,
       this.calculateNumberCompatibility(person1Data.personalityNumber, person2Data.personalityNumber).score
     ];
-    
+
     const overallScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-    
+
     return {
       overallScore: Math.round(overallScore * 100) / 100,
       category: this.getCompatibilityCategory(overallScore),
@@ -518,16 +518,16 @@ class NumerologyAnalysisService extends ServiceTemplate {
   calculateNumberCompatibility(num1, num2) {
     const difference = Math.abs(num1 - num2);
     let score = 100 - (difference * 10);
-    
+
     // Special compatibility rules
     if ((num1 === 11 || num1 === 22 || num1 === 33) && (num2 === 11 || num2 === 22 || num2 === 33)) {
       score = Math.max(score, 85); // Master numbers have high compatibility
     }
-    
+
     if (num1 === num2) {
       score = Math.max(score, 80); // Same numbers are compatible
     }
-    
+
     return {
       score: Math.max(0, Math.min(100, score)),
       type: this.getCompatibilityType(score),
@@ -537,18 +537,18 @@ class NumerologyAnalysisService extends ServiceTemplate {
   }
 
   getCompatibilityCategory(score) {
-    if (score >= 85) return 'Excellent';
-    if (score >= 75) return 'Very Good';
-    if (score >= 65) return 'Good';
-    if (score >= 55) return 'Moderate';
-    if (score >= 45) return 'Challenging';
+    if (score >= 85) { return 'Excellent'; }
+    if (score >= 75) { return 'Very Good'; }
+    if (score >= 65) { return 'Good'; }
+    if (score >= 55) { return 'Moderate'; }
+    if (score >= 45) { return 'Challenging'; }
     return 'Difficult';
   }
 
   getCompatibilityType(score) {
-    if (score >= 75) return 'Harmonious';
-    if (score >= 60) return 'Compatible';
-    if (score >= 45) return 'Moderate';
+    if (score >= 75) { return 'Harmonious'; }
+    if (score >= 60) { return 'Compatible'; }
+    if (score >= 45) { return 'Moderate'; }
     return 'Challenging';
   }
 

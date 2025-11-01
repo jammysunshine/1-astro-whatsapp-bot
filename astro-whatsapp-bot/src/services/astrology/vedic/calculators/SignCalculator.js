@@ -116,7 +116,6 @@ class SignCalculator {
       }
 
       throw new Error('Unable to determine sun sign for given date');
-
     } catch (error) {
       logger.error('❌ Error in sun sign calculation:', error);
       throw new Error(`Sun sign calculation failed: ${error.message}`);
@@ -170,7 +169,6 @@ class SignCalculator {
         symbol: details.symbol,
         detailedTraits: this._getMoonSignTraits(sign)
       };
-
     } catch (error) {
       logger.error('❌ Error in moon sign calculation:', error);
       throw new Error(`Moon sign calculation failed: ${error.message}`);

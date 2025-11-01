@@ -108,7 +108,7 @@ class DetailedChartAnalysisCalculator {
     try {
       const fullAnalysis = await this.generateDetailedChartAnalysis(birthData);
 
-      if (!fullAnalysis || fullAnalysis.error) return fullAnalysis;
+      if (!fullAnalysis || fullAnalysis.error) { return fullAnalysis; }
 
       const areaMap = {
         career: fullAnalysis.careerFinanceAnalysis,
@@ -315,11 +315,11 @@ class DetailedChartAnalysisCalculator {
     for (let houseNum = 1; houseNum <= 12; houseNum++) {
       const houseLord = natalChart.houses[houseNum - 1]?.lord;
 
-      if (!houseLord) continue;
+      if (!houseLord) { continue; }
 
       const lordData = natalChart.planets[houseLord];
 
-      if (!lordData) continue;
+      if (!lordData) { continue; }
 
       // Arudha calculation: Lord position + (Lord position - House position)
       const houseStart = natalChart.houses[houseNum - 1]?.longitude || 0;
@@ -433,7 +433,7 @@ class DetailedChartAnalysisCalculator {
           const distance = Math.abs(data1.longitude - data2.longitude);
 
           if (distance <= 15) { // Within conjunction orb
-            if (!conjunctPlanets[data1.sign]) conjunctPlanets[data1.sign] = [];
+            if (!conjunctPlanets[data1.sign]) { conjunctPlanets[data1.sign] = []; }
             conjunctPlanets[data1.sign].push([planet1, planet2, distance]);
           }
         }
@@ -687,7 +687,6 @@ class DetailedChartAnalysisCalculator {
   }
 
   // ... rest of the method implementation
-
 }
 
 module.exports = { DetailedChartAnalysisCalculator };

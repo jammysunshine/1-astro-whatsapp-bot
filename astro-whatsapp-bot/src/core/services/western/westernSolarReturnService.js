@@ -24,7 +24,7 @@ class WesternSolarReturnService extends ServiceTemplate {
     if (!data) {
       throw new Error('Input data is required for Western solar return calculation');
     }
-    
+
     if (!data.birthData) {
       throw new Error('Birth data is required');
     }
@@ -32,7 +32,7 @@ class WesternSolarReturnService extends ServiceTemplate {
     // Validate birth data with model
     const validatedData = new BirthData(data.birthData);
     validatedData.validate();
-    
+
     return true;
   }
 
@@ -43,16 +43,16 @@ class WesternSolarReturnService extends ServiceTemplate {
    */
   async processCalculation(data) {
     const { birthData, targetDate = null } = data;
-    
+
     // Get Western solar return data from calculator
     const solarReturnData = await this.calculator.calculateWesternSolarReturn(birthData, targetDate);
-    
+
     // Add metadata
     solarReturnData.type = 'western_solar_return';
     solarReturnData.zodiacType = 'tropical';
     solarReturnData.generatedAt = new Date().toISOString();
     solarReturnData.service = this.serviceName;
-    
+
     return solarReturnData;
   }
 

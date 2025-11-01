@@ -22,9 +22,9 @@ class PlanetaryPositions {
 
   toJSON() {
     return {
-        positions: this.positions,
-        timestamp: this.timestamp,
-        totalPlanets: this.positions.length
+      positions: this.positions,
+      timestamp: this.timestamp,
+      totalPlanets: this.positions.length
     };
   }
 }

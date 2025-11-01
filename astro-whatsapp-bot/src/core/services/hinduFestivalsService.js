@@ -47,12 +47,12 @@ class HinduFestivalsService extends ServiceTemplate {
   async getSpecificFestivalDetails(params) {
     try {
       this.validateParams(params, ['festivalName']);
-      
+
       const { festivalName, region } = params;
-      
+
       // Get specific festival from calculator
       const festivalInfo = this.calculator.getSpecificFestival(festivalName, region);
-      
+
       if (!festivalInfo) {
         return {
           success: false,
@@ -63,7 +63,7 @@ class HinduFestivalsService extends ServiceTemplate {
           }
         };
       }
-      
+
       // Enhance with additional information
       const enhancedDetails = {
         ...festivalInfo,
@@ -74,7 +74,7 @@ class HinduFestivalsService extends ServiceTemplate {
         relatedFestivals: this.getRelatedFestivals(festivalInfo),
         mantrasAndPrayers: this.getMantrasAndPrayers(festivalInfo)
       };
-      
+
       return {
         success: true,
         data: enhancedDetails,
@@ -108,10 +108,10 @@ class HinduFestivalsService extends ServiceTemplate {
   async getUpcomingFestivals(params) {
     try {
       const { days = 30, region } = params;
-      
+
       // Get upcoming festivals from calculator
       const upcomingData = this.calculator.getUpcomingFestivals(days, region);
-      
+
       // Enhance with additional timing analysis
       const enhancedUpcoming = {
         festivals: upcomingData.map(festival => ({
@@ -126,7 +126,7 @@ class HinduFestivalsService extends ServiceTemplate {
         priorityFestivals: this.identifyPriorityFestivals(upcomingData),
         preparationGuide: this.generatePreparationGuide(upcomingData)
       };
-      
+
       return {
         success: true,
         data: enhancedUpcoming,
@@ -162,12 +162,12 @@ class HinduFestivalsService extends ServiceTemplate {
   async getFestivalCalendar(params) {
     try {
       this.validateParams(params, ['month', 'year']);
-      
+
       const { month, year, region } = params;
-      
+
       // Get monthly calendar from calculator
       const calendarData = this.calculator.getMonthlyCalendar(month, year, region);
-      
+
       // Enhance with additional calendar features
       const enhancedCalendar = {
         month: calendarData.month,
@@ -180,7 +180,7 @@ class HinduFestivalsService extends ServiceTemplate {
         monthlyThemes: this.getMonthlyThemes(calendarData),
         recommendations: this.getMonthlyRecommendations(calendarData)
       };
-      
+
       return {
         success: true,
         data: enhancedCalendar,
@@ -215,13 +215,13 @@ class HinduFestivalsService extends ServiceTemplate {
   async getRegionalVariations(params) {
     try {
       const { festivalName, region } = params;
-      
+
       // Get regional data from calculator
       const regionalData = this.calculator.getRegionalVariations(festivalName, region);
-      
+
       // Enhance with detailed analysis
       const enhancedRegional = {
-        region: region,
+        region,
         baseFestival: festivalName,
         variations: regionalData.map(variation => ({
           ...variation,
@@ -234,7 +234,7 @@ class HinduFestivalsService extends ServiceTemplate {
         comparison: this.generateRegionalComparison(regionalData),
         recommendations: this.getRegionalRecommendations(regionalData)
       };
-      
+
       return {
         success: true,
         data: enhancedRegional,
@@ -272,7 +272,7 @@ class HinduFestivalsService extends ServiceTemplate {
 
   getAuspiciousTimings(festivalData) {
     const timings = [];
-    
+
     // Extract auspicious timings from festival data
     if (festivalData.festivals) {
       festivalData.festivals.forEach(festival => {
@@ -285,7 +285,7 @@ class HinduFestivalsService extends ServiceTemplate {
         }
       });
     }
-    
+
     return timings;
   }
 
@@ -300,7 +300,7 @@ class HinduFestivalsService extends ServiceTemplate {
 
   analyzeAstrologicalSignificance(festivalData) {
     const significance = {};
-    
+
     if (festivalData.festivals) {
       festivalData.festivals.forEach(festival => {
         significance[festival.name] = {
@@ -312,32 +312,32 @@ class HinduFestivalsService extends ServiceTemplate {
         };
       });
     }
-    
+
     return significance;
   }
 
   generateFestivalRecommendations(festivalData) {
     const recommendations = [];
-    
+
     // General recommendations for festival participation
     recommendations.push({
       category: 'spiritual_preparation',
       advice: 'Begin spiritual preparation 3-4 days before major festivals through prayer and meditation',
       priority: 'high'
     });
-    
+
     recommendations.push({
       category: 'family_participation',
       advice: 'Involve family members in festival preparations to strengthen bonds and traditions',
       priority: 'medium'
     });
-    
+
     recommendations.push({
       category: 'cultural_preservation',
       advice: 'Document and preserve family traditions associated with festivals for future generations',
       priority: 'medium'
     });
-    
+
     return recommendations;
   }
 
@@ -538,7 +538,7 @@ class HinduFestivalsService extends ServiceTemplate {
 
   // Additional helper methods would be implemented here
   // For brevity, I'm including placeholder implementations
-  
+
   getFestivalAstrology(festival) { return festival.astrology || {}; }
   getSpiritualLevel(festival) { return festival.spiritualLevel || 'moderate'; }
   getCelebrationIntensity(festival) { return festival.intensity || 'moderate'; }

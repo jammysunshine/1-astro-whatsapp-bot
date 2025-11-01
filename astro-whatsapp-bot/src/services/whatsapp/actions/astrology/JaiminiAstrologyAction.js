@@ -26,7 +26,6 @@ class JaiminiAstrologyAction extends BaseAction {
       });
 
       return this.formatResponse(result, userData.language);
-
     } catch (error) {
       return this.handleError(error, context);
     }
@@ -34,37 +33,37 @@ class JaiminiAstrologyAction extends BaseAction {
 
   formatResponse(result, language) {
     const { analysis } = result;
-    
+
     const responses = {
       en: {
-        header: `🔮 *Jaimini Astrology Analysis*\n\n`,
-        charaKarakas: `*Chara Karakas (Variable Significators):*\n`,
-        sthiraKarakas: `*Sthira Karakas (Fixed Significators):*\n`,
-        arudhaLagna: `*Arudha Lagna (Public Image):* House `,
-        upapada: `*Upapada (Marriage Indicator):* House `,
-        ishtaKashta: `*Ishta-Kashta (Spiritual-Material Balance):*\n`,
-        interpretations: `*Interpretations:*\n`,
-        atmaKaraka: `• Atma Karaka: `,
-        overallAnalysis: `*Overall Analysis:*\n`,
-        strengths: `• Strengths: `,
-        challenges: `• Challenges: `,
-        recommendations: `• Recommendations: `,
-        footer: `\n\n_This analysis provides insights into your soul's journey and karmic patterns according to Jaimini system._`
+        header: '🔮 *Jaimini Astrology Analysis*\n\n',
+        charaKarakas: '*Chara Karakas (Variable Significators):*\n',
+        sthiraKarakas: '*Sthira Karakas (Fixed Significators):*\n',
+        arudhaLagna: '*Arudha Lagna (Public Image):* House ',
+        upapada: '*Upapada (Marriage Indicator):* House ',
+        ishtaKashta: '*Ishta-Kashta (Spiritual-Material Balance):*\n',
+        interpretations: '*Interpretations:*\n',
+        atmaKaraka: '• Atma Karaka: ',
+        overallAnalysis: '*Overall Analysis:*\n',
+        strengths: '• Strengths: ',
+        challenges: '• Challenges: ',
+        recommendations: '• Recommendations: ',
+        footer: '\n\n_This analysis provides insights into your soul\'s journey and karmic patterns according to Jaimini system._'
       },
       hi: {
-        header: `🔮 *जैमिनी ज्योतिष विश्लेषण*\n\n`,
-        charaKarakas: `*चर कारक (परिवर्तनशील कारक):*\n`,
-        sthiraKarakas: `*स्थिर कारक (स्थिर कारक):*\n`,
-        arudhaLagna: `*आरूढ लग्न (सार्वजनिक छवि):* भाव `,
-        upapada: `*उपपद (विवाह सूचक):* भाव `,
-        ishtaKashta: `*इष्ट-कष्ट (आध्यात्मिक-भौतिक संतुलन):*\n`,
-        interpretations: `*व्याख्या:*\n`,
-        atmaKaraka: `• आत्मा कारक: `,
-        overallAnalysis: `*समग्र विश्लेषण:*\n`,
-        strengths: `• शक्तियां: `,
-        challenges: `• चुनौतियां: `,
-        recommendations: `• सिफारिशें: `,
-        footer: `\n\n_यह विश्लेषण जैमिनी प्रणाली के अनुसार आपकी आत्मा की यात्रा और कर्मिक पैटर्न में अंतर्दृष्टि प्रदान करता है।_`
+        header: '🔮 *जैमिनी ज्योतिष विश्लेषण*\n\n',
+        charaKarakas: '*चर कारक (परिवर्तनशील कारक):*\n',
+        sthiraKarakas: '*स्थिर कारक (स्थिर कारक):*\n',
+        arudhaLagna: '*आरूढ लग्न (सार्वजनिक छवि):* भाव ',
+        upapada: '*उपपद (विवाह सूचक):* भाव ',
+        ishtaKashta: '*इष्ट-कष्ट (आध्यात्मिक-भौतिक संतुलन):*\n',
+        interpretations: '*व्याख्या:*\n',
+        atmaKaraka: '• आत्मा कारक: ',
+        overallAnalysis: '*समग्र विश्लेषण:*\n',
+        strengths: '• शक्तियां: ',
+        challenges: '• चुनौतियां: ',
+        recommendations: '• सिफारिशें: ',
+        footer: '\n\n_यह विश्लेषण जैमिनी प्रणाली के अनुसार आपकी आत्मा की यात्रा और कर्मिक पैटर्न में अंतर्दृष्टि प्रदान करता है।_'
       }
     };
 
@@ -93,12 +92,12 @@ class JaiminiAstrologyAction extends BaseAction {
 
     // Arudha Lagna
     if (analysis.sections['Arudha Lagna (Public Image)']) {
-      response += t.arudhaLagna + analysis.sections['Arudha Lagna (Public Image)'] + '\n\n';
+      response += `${t.arudhaLagna + analysis.sections['Arudha Lagna (Public Image)']}\n\n`;
     }
 
     // Upapada
     if (analysis.sections['Upapada (Marriage Indicator)']) {
-      response += t.upapada + analysis.sections['Upapada (Marriage Indicator)'] + '\n\n';
+      response += `${t.upapada + analysis.sections['Upapada (Marriage Indicator)']}\n\n`;
     }
 
     // Ishta-Kashta
@@ -113,29 +112,29 @@ class JaiminiAstrologyAction extends BaseAction {
     // Interpretations
     if (analysis.sections['Interpretations']) {
       const interpretations = analysis.sections['Interpretations'];
-      
+
       if (interpretations.atmaKaraka) {
-        response += t.atmaKaraka + interpretations.atmaKaraka + '\n\n';
+        response += `${t.atmaKaraka + interpretations.atmaKaraka}\n\n`;
       }
 
       if (interpretations.overall) {
         response += t.overallAnalysis;
-        const overall = interpretations.overall;
-        
+        const { overall } = interpretations;
+
         if (overall.summary) {
           response += `• ${overall.summary}\n`;
         }
-        
+
         if (overall.strengths && overall.strengths.length > 0) {
-          response += t.strengths + overall.strengths.join(', ') + '\n';
+          response += `${t.strengths + overall.strengths.join(', ')}\n`;
         }
-        
+
         if (overall.challenges && overall.challenges.length > 0) {
-          response += t.challenges + overall.challenges.join(', ') + '\n';
+          response += `${t.challenges + overall.challenges.join(', ')}\n`;
         }
-        
+
         if (overall.recommendations && overall.recommendations.length > 0) {
-          response += t.recommendations + overall.recommendations.join(', ') + '\n';
+          response += `${t.recommendations + overall.recommendations.join(', ')}\n`;
         }
       }
     }
@@ -151,7 +150,7 @@ class JaiminiAstrologyAction extends BaseAction {
   validateParams(params) {
     const required = ['datetime', 'latitude', 'longitude'];
     const missing = required.filter(param => !params[param]);
-    
+
     if (missing.length > 0) {
       throw new Error(`Missing required parameters: ${missing.join(', ')}`);
     }

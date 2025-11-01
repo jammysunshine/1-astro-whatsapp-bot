@@ -442,7 +442,7 @@ describe('MULTI-USER CONFLICTS: Concurrent Access & Conflict Resolution (17 Scen
         { description: 'Account type query', query: { accountType: 'premium' } },
         { description: 'Recent activity query', query: { lastActivity: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } } },
         { description: 'Compound query', query: { 'astrologyData.sunSign': 'Leo', accountType: 'premium' } },
-        { description: 'Geospatial query', query: { 'profile.location': { $geoWithin: { $centerSphere: [[0, 0], 0.5] } } }
+        { description: 'Geospatial query', query: { 'astrologyData.sunSign': 'Leo', 'profile.location': { $geoWithin: { $centerSphere: [[0, 0], 0.5] } } } }
       ];
 
       const queryPerformance = [];

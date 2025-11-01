@@ -2,7 +2,7 @@ const BaseAction = require('../BaseAction');
 const {
   AstrologyFormatterFactory
 } = require('../factories/AstrologyFormatterFactory');
-const vedicCalculator = require('../../../services/astrology/vedic/VedicCalculator');
+const vedicCalculator = require('../../../../core/services/astrology/vedic/VedicCalculator');
 
 /**
  * KaalSarpAnalysisAction - Provides Kaal Sarp Dosh analysis in Vedic astrology.

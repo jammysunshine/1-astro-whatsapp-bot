@@ -66,6 +66,10 @@ class CompatibilityService extends ServiceTemplate {
     return true;
   }
 
+  async processCalculation(data) {
+    return await this.lcompatibilityCalculation(data);
+  }
+
   /**
    * Get comprehensive compatibility analysis
    * @param {Object} compatibilityData - Compatibility data for two individuals

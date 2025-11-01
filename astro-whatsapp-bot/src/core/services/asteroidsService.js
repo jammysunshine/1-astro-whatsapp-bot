@@ -349,6 +349,11 @@ class AsteroidsService extends ServiceTemplate {
       dependencies: ['AsteroidCalculator']
     };
   }
+
+  async processCalculation(data) {
+    return await this.lasteroidsCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

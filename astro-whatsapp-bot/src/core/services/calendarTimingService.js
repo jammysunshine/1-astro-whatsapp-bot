@@ -70,6 +70,10 @@ class CalendarTimingService extends ServiceTemplate {
     return true;
   }
 
+  async processCalculation(data) {
+    return await this.lcalendarTimingCalculation(data);
+  }
+
   /**
    * Get comprehensive calendar timing analysis
    * @param {Object} timingData - Timing data including date, location, activity type

@@ -161,7 +161,8 @@ class SubscriptionManager {
         updateData = { $inc: { [feature]: 1 } };
       }
 
-      const user = await userDataManager.updateUserProfile(
+      // Use trusted method for MongoDB operators
+      const user = await userDataManager.updateUserProfileWithOperators(
         phoneNumber,
         updateData
       );
@@ -241,7 +242,8 @@ class SubscriptionManager {
    */
   async addLoyaltyPoints(userDataManager, phoneNumber, points) {
     try {
-      const user = await userDataManager.updateUserProfile(phoneNumber, {
+      // Use trusted method for MongoDB operators
+      const user = await userDataManager.updateUserProfileWithOperators(phoneNumber, {
         $inc: { loyaltyPoints: points }
       });
 

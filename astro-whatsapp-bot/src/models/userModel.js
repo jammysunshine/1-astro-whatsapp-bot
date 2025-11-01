@@ -56,8 +56,8 @@ module.exports = {
   // Referral Management
   addReferredUser: async(referrerPhone, referredPhone) => {
     try {
-      // Add referred user to referrer's profile
-      const referrer = await userDataManager.updateUserProfile(referrerPhone, {
+      // Add referred user to referrer's profile (trusted operation requiring MongoDB operators)
+      const referrer = await userDataManager.updateUserProfileWithOperators(referrerPhone, {
         $addToSet: { referredUsers: referredPhone }
       });
 

@@ -1,5 +1,6 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../utils/logger');
+const { BirthData } = require('../../models');
 
 // Import calculator from legacy structure
 /**
@@ -78,7 +79,6 @@ class RahukalamService extends ServiceTemplate {
     if (!birthData) {
       throw new Error('Birth data is required for Rahukalam analysis');
     }
-    const { BirthData } = require('../../models');
     const validatedData = new BirthData(birthData);
     validatedData.validate();
   }

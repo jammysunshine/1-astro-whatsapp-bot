@@ -1,9 +1,6 @@
 const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
-const {
-  validateCoordinates,
-  validateDateTime
-} = require('../../../utils/validation');
+
 
 /**
  * RisingSignService - Service for Rising sign (Ascendant) calculation and interpretation
@@ -619,7 +616,6 @@ class RisingSignService extends ServiceTemplate {
     if (!input) {
       throw new Error('Birth data is required for Rising Sign analysis.');
     }
-    const { BirthData } = require('../../models');
     const validatedData = new BirthData(input);
     validatedData.validate();
   }

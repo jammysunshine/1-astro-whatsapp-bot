@@ -7,14 +7,11 @@ const logger = require('../../../utils/logger');
  * Extends ServiceTemplate for standardized service architecture
  */
 class FutureSelfAnalysisService extends ServiceTemplate {
-  constructor(services) {
+  constructor() {
     super('ChartGenerator');
+    this.serviceName = 'FutureSelfAnalysisService';
     this.calculatorPath = '../calculators/ChartGenerator';
-    // Initialize Future Self Simulator Calculator
-    this.calculator = new FutureSelfSimulatorCalculator();
-
-    // Set services in calculator
-    this.calculator.setServices(services);
+    logger.info('FutureSelfAnalysisService initialized');
 
     // Service-specific configuration
     this.serviceConfig = {

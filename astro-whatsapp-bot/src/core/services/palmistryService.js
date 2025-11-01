@@ -10,7 +10,7 @@ class PalmistryService extends ServiceTemplate {
   constructor() {
     super('PalmistryReader');
     this.serviceName = 'PalmistryService';
-    this.calculatorPath = '../services/astrology/palmistryReader';
+    this.calculatorPath = './calculators/palmistryReader';
     logger.info('PalmistryService initialized');
   }
 

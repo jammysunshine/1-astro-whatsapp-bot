@@ -13,7 +13,7 @@ class CurrentTransitsService extends ServiceTemplate {
   constructor() {
     super('TransitCalculator');
     this.serviceName = 'CurrentTransitsService';
-    this.calculatorPath = ../calculators/TransitCalculator';
+    this.calculatorPath = './calculators/TransitCalculator';
     logger.info('CurrentTransitsService initialized');
   }
 

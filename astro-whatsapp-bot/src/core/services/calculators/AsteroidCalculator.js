@@ -1,4 +1,4 @@
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 // Assuming Swiss Ephemeris is available
 const sweph = require('sweph');
 

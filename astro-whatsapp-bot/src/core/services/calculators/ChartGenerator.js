@@ -1,4 +1,4 @@
-const logger = require('../../../../utils/logger');
+const logger = require('../../../utils/logger');
 const sweph = require('sweph');
 const fs = require('fs');
 const path = require('path');

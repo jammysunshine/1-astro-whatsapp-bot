@@ -22,8 +22,12 @@ The proposed architecture is built upon the following principles:
 *   **Clear Separation of Concerns:** Distinct layers for menu definition, frontend rendering, action mapping, and backend service invocation.
 *   **Flexibility & Configurability:** Menu changes should ideally require only data file modifications, not code changes.
 *   **Maintainability:** Simplify updates, reduce cognitive load, and minimize the risk of errors.
-*   **Future-Proofing:** Design for seamless integration with future frontends (Web, Android, iOS, Telegram) and the transition from a monolithic backend to individual microservices.
+*   **Future-Proofing:** Design for seamless integration with future frontends (Web, Android, iOS, Telegram, PWA, etc.) and the transition from a monolithic backend to individual microservices.
 *   **Redundancy Support:** Acknowledge and explicitly support redundancy in menu options (e.g., a popular service appearing in multiple menus) as a UX feature, not a design flaw.
+*   **Internationalization (i18n) as a First-Class Citizen:** Emphasize that all user-facing strings (labels, titles, body text) will be externalized and managed via i18n keys, ensuring zero hardcoding of language-specific content.
+*   **Platform-Agnostic Core Logic:** The central menu processing logic (loading, rendering to a generic format, action mapping) must be entirely independent of any specific frontend platform.
+*   **Clear API Contracts:** Define explicit and stable interfaces between architectural layers (e.g., between the Generic Menu Renderer and Frontend Adapters) to facilitate independent development and evolution.
+*   **Scalable Directory Structure:** Implement a logical and intuitive directory structure that clearly separates core logic, platform-specific implementations, and configuration files, promoting modularity and ease of navigation.
 
 ## 3. Proposed Architecture Overview
 
@@ -64,42 +68,42 @@ graph TD
 This layer defines the entire menu tree structure, including menu types, labels, actions, and hierarchy, using external data files.
 
 *   **Purpose:** Decouple menu structure from code, enable easy updates, and support multiple frontends.
-*   **Implementation:** A dedicated directory (e.g., `astro-whatsapp-bot/menu_definitions/`) containing JSON or YAML files. Each file defines a specific menu or a logical group of menu items.
+*   **Implementation:** A dedicated directory (e.g., `astro-whatsapp-bot/menu_definitions/`) containing JSON or YAML files. Each file defines a specific menu or a logical group of menu items. Additionally, a new `i18n_keys/` directory will store language-specific string files (e.g., `en.json`, `es.json`).
 *   **Key Concepts:**
     *   **Menu ID:** A unique identifier for each menu (e.g., `main_menu`, `vedic_astrology_menu`).
     *   **Action ID:** A unique identifier for each selectable option within a menu (e.g., `get_daily_horoscope`, `show_vedic_predictive_specialized_menu`). These map directly to backend service calls or other menu actions.
     *   **Menu Item Structure:** Each item will include:
-        *   `label`: Display text for the menu option (e.g., "Daily Horoscope").
+        *   `i18nKey`: A key to retrieve the display text for the menu option from the i18n files (e.g., `"menu.main.western_astrology"`).
         *   `actionId`: The unique ID that triggers a specific backend service or navigates to another menu.
         *   `type`: (Optional) `service` or `menu` to indicate if it's a direct service call or a navigation to a sub-menu.
-        *   `description`: (Optional) A short description for list items.
+        *   `descriptionI18nKey`: (Optional) A key for a short description for list items.
     *   **Menu Structure:**
         *   `menuId`: Unique ID.
         *   `type`: `buttons` or `list`.
-        *   `body`: Main text/header for the menu.
-        *   `sections`: (For lists) Array of sections, each with a `title` and `rows` (array of menu items).
+        *   `bodyI18nKey`: A key for the main text/header for the menu.
+        *   `sections`: (For lists) Array of sections, each with a `titleI18nKey` and `rows` (array of menu items).
         *   `buttons`: (For buttons) Array of menu items.
-        *   `navigation`: (Optional) Common navigation options like "Back to Main Menu".
+        *   `navigation`: (Optional) Common navigation options like "Back to Main Menu" using `i18nKey`.
 
 ### 3.2. Menu Loader/Parser
 
-A utility responsible for loading, parsing, and caching the menu definition files.
+A utility responsible for loading, parsing, and caching the menu definition files and associated internationalization (i18n) string files.
 
-*   **Purpose:** Provide a centralized, efficient way to access menu structures.
-*   **Implementation:** A module that reads the JSON/YAML files, validates their structure, and stores them in memory for quick retrieval.
+*   **Purpose:** Provide a centralized, efficient way to access menu structures and their corresponding translated strings based on the user's locale.
+*   **Implementation:** A module that reads the JSON/YAML menu definition files and the i18n string files, validates their structure, and stores them in memory for quick retrieval. The loader will need to be aware of the user's preferred locale to fetch the correct language strings.
 
 ### 3.3. Frontend Abstraction Layer (Generic Menu Renderer)
 
 A generic interface or base class that defines how menus are rendered, independent of the specific frontend platform.
 
-*   **Purpose:** Provide a consistent API for frontend adapters to interact with menu data.
-*   **Implementation:** A function or class that takes a `menuId` and a `platformContext` (e.g., `whatsapp`, `web`) and returns a generic representation of the menu (e.g., an array of buttons, a list object with sections and rows).
+*   **Purpose:** Provide a consistent API for frontend adapters to interact with menu data, incorporating internationalization.
+*   **Implementation:** A function or class that takes a `menuId`, a `platformContext` (e.g., `whatsapp`, `web`), and the `userLocale` as parameters. It will use the `i18nKey` from the menu definition and the `userLocale` to retrieve the correct translated strings for `body`, `section` titles, and `menu item labels` before returning a generic representation of the menu (e.g., an array of buttons, a list object with sections and rows).
 
 ### 3.4. Frontend-Specific Adapters/Renderers
 
-Platform-specific implementations that translate the generic menu representation into the native UI elements of each frontend.
+Platform-specific implementations that translate the generic menu representation (which now includes translated strings) into the native UI elements of each frontend.
 
-*   **Purpose:** Handle platform-specific UI rendering and message formatting.
+*   **Purpose:** Handle platform-specific UI rendering and message formatting using the already translated strings provided by the Generic Menu Renderer.
 *   **Implementation:**
     *   **WhatsApp Menu Adapter:** Translates generic menu data into WhatsApp Interactive Buttons or Interactive Lists, adhering to character limits and formatting rules. This will replace the current hardcoded menu generation logic in `ShowMainMenuAction.js` and similar files.
     *   **Web Menu Adapter (Future):** Renders menu data as HTML/CSS elements.
@@ -132,36 +136,34 @@ Create a new directory `astro-whatsapp-bot/menu_definitions/`. Each menu (includ
 {
   "menuId": "main_menu",
   "type": "list",
-  "body": "🌟 *Astro Wisdom Portal*
-
-Discover cosmic insights through astrology, numerology, and divination traditions.",
+  "bodyI18nKey": "menu.main.body",
   "sections": [
     {
-      "title": "Main Astrology Sections",
+      "titleI18nKey": "menu.main.sections.main_astrology.title",
       "rows": [
-        { "label": "🌍 Western Astrology", "actionId": "show_western_astrology_menu" },
-        { "label": "🕉️ Vedic Astrology", "actionId": "show_vedic_astrology_menu" },
-        { "label": "🔮 Divination & Mystic Arts", "actionId": "show_divination_mystic_menu" }
+        { "i18nKey": "menu.main.sections.main_astrology.western_astrology", "actionId": "show_western_astrology_menu" },
+        { "i18nKey": "menu.main.sections.main_astrology.vedic_astrology", "actionId": "show_vedic_astrology_menu" },
+        { "i18nKey": "menu.main.sections.main_astrology.divination_mystic_arts", "actionId": "show_divination_mystic_menu" }
       ]
     },
     {
-      "title": "Key Life Areas",
+      "titleI18nKey": "menu.main.sections.key_life_areas.title",
       "rows": [
-        { "label": "👥 Relationships & Group Astrology", "actionId": "show_relationships_groups_menu" },
-        { "label": "🔢 Numerology & Life Patterns", "actionId": "show_numerology_lifepatterns_menu" },
-        { "label": "🗓️ Calendar & Astrological Timings", "actionId": "show_calendar_timings_menu" },
-        { "label": "⚕️ Health, Remedies & Doshas", "actionId": "show_health_remedies_menu" }
+        { "i18nKey": "menu.main.sections.key_life_areas.relationships_group_astrology", "actionId": "show_relationships_groups_menu" },
+        { "i18nKey": "menu.main.sections.key_life_areas.numerology_life_patterns", "actionId": "show_numerology_lifepatterns_menu" },
+        { "i18nKey": "menu.main.sections.key_life_areas.calendar_astrological_timings", "actionId": "show_calendar_timings_menu" },
+        { "i18nKey": "menu.main.sections.key_life_areas.health_remedies_doshas", "actionId": "show_health_remedies_menu" }
       ]
     },
     {
-      "title": "User Management",
+      "titleI18nKey": "menu.main.sections.user_management.title",
       "rows": [
-        { "label": "⚙️ Settings & Profile", "actionId": "show_settings_profile_menu" }
+        { "i18nKey": "menu.main.sections.user_management.settings_profile", "actionId": "show_settings_profile_menu" }
       ]
     }
   ],
   "navigation": [
-    { "label": "🏠 Back to Main Menu", "actionId": "show_main_menu" }
+    { "i18nKey": "menu.navigation.back_to_main", "actionId": "show_main_menu" }
   ]
 }
 ```
@@ -173,33 +175,31 @@ Discover cosmic insights through astrology, numerology, and divination tradition
 {
   "menuId": "vedic_astrology_menu",
   "type": "list",
-  "body": "🕉️ _Vedic Astrology Services_
-
-Choose your preferred Vedic astrological reading:",
+  "bodyI18nKey": "menu.vedic_astrology.body",
   "sections": [
     {
-      "title": "Core Readings & Charts Section",
+      "titleI18nKey": "menu.vedic_astrology.sections.core_readings.title",
       "rows": [
-        { "label": "📊 Vedic Birth Chart (Kundli)", "actionId": "get_hindu_astrology_analysis" },
-        { "label": "📜 Nadi Astrology Reading", "actionId": "show_nadi_flow" },
-        { "label": "📈 Detailed Chart Analysis", "actionId": "generateDetailedChartAnalysis" },
-        { "label": "🌍 Basic Birth Chart (Quick View)", "actionId": "generateBasicBirthChart" },
-        { "label": "☀️ Sun Sign Analysis (Vedic)", "actionId": "calculateSunSign" },
-        { "label": "🌙 Moon Sign Analysis (Vedic)", "actionId": "calculateMoonSign" },
-        { "label": "⬆️ Rising Sign (Lagna) Analysis", "actionId": "calculateRisingSign" },
-        { "label": "🌌 Nakshatra Analysis (Lunar Mansions)", "actionId": "calculateNakshatra" }
+        { "i18nKey": "menu.vedic_astrology.sections.core_readings.vedic_birth_chart", "actionId": "get_hindu_astrology_analysis" },
+        { "i18nKey": "menu.vedic_astrology.sections.core_readings.nadi_astrology_reading", "actionId": "show_nadi_flow" },
+        { "i18nKey": "menu.vedic_astrology.sections.core_readings.detailed_chart_analysis", "actionId": "generateDetailedChartAnalysis" },
+        { "i18nKey": "menu.vedic_astrology.sections.core_readings.basic_birth_chart", "actionId": "generateBasicBirthChart" },
+        { "i18nKey": "menu.vedic_astrology.sections.core_readings.sun_sign_analysis", "actionId": "calculateSunSign" },
+        { "i18nKey": "menu.vedic_astrology.sections.core_readings.moon_sign_analysis", "actionId": "calculateMoonSign" },
+        { "i18nKey": "menu.vedic_astrology.sections.core_readings.rising_sign_analysis", "actionId": "calculateRisingSign" },
+        { "i18nKey": "menu.vedic_astrology.sections.core_readings.nakshatra_analysis", "actionId": "calculateNakshatra" }
       ]
     },
     {
-      "title": "Navigation to Advanced Vedic",
+      "titleI18nKey": "menu.vedic_astrology.sections.navigation_advanced_vedic.title",
       "rows": [
-        { "label": "⏳ Vedic Predictive & Specialized", "actionId": "show_vedic_predictive_specialized_menu" },
-        { "label": "⬅️ Back to Main Menu", "actionId": "show_main_menu" }
+        { "i18nKey": "menu.vedic_astrology.sections.navigation_advanced_vedic.predictive_specialized", "actionId": "show_vedic_predictive_specialized_menu" },
+        { "i18nKey": "menu.navigation.back_to_main", "actionId": "show_main_menu" }
       ]
     }
   ],
   "navigation": [
-    { "label": "⬅️ Back to Main Menu", "actionId": "show_main_menu" }
+    { "i18nKey": "menu.navigation.back_to_main", "actionId": "show_main_menu" }
   ]
 }
 ```
@@ -208,21 +208,23 @@ Choose your preferred Vedic astrological reading:",
 
 ### Step 2: Create a Menu Loader/Parser
 
-Create a utility module (e.g., `astro-whatsapp-bot/src/utils/menuLoader.js`) to load these definions.
+Create a utility module (e.g., `astro-whatsapp-bot/src/utils/menuLoader.js`) to load these definitions and their associated i18n strings.
 
 ```javascript
 // astro-whatsapp-bot/src/utils/menuLoader.js
 const fs = require('fs');
 const path = require('path');
 const logger = require('./logger'); // Assuming you have a logger utility
+const i18n = require('./i18n'); // New i18n utility
 
 const MENU_DEFINITIONS_DIR = path.join(__dirname, '../../../menu_definitions');
 const menuCache = {};
 
 class MenuLoader {
-  static async loadMenu(menuId) {
-    if (menuCache[menuId]) {
-      return menuCache[menuId];
+  static async loadMenu(menuId, locale = 'en') {
+    const cacheKey = `${menuId}-${locale}`;
+    if (menuCache[cacheKey]) {
+      return menuCache[cacheKey];
     }
 
     const menuFilePath = path.join(MENU_DEFINITIONS_DIR, `${menuId}.json`);
@@ -230,15 +232,40 @@ class MenuLoader {
       const menuData = await fs.promises.readFile(menuFilePath, 'utf8');
       const menu = JSON.parse(menuData);
       // Basic validation (can be expanded)
-      if (!menu.menuId || !menu.type || !menu.body) {
+      if (!menu.menuId || !menu.type || !menu.bodyI18nKey) {
         throw new Error(`Invalid menu definition in ${menuFilePath}`);
       }
-      menuCache[menuId] = menu;
-      logger.info(`Menu '${menuId}' loaded and cached.`);
+
+      // Translate menu components
+      menu.body = i18n.t(menu.bodyI18nKey, locale);
+      if (menu.sections) {
+        menu.sections.forEach(section => {
+          section.title = i18n.t(section.titleI18nKey, locale);
+          section.rows.forEach(row => {
+            row.label = i18n.t(row.i18nKey, locale);
+            if (row.descriptionI18nKey) {
+              row.description = i18n.t(row.descriptionI18nKey, locale);
+            }
+          });
+        });
+      }
+      if (menu.buttons) {
+        menu.buttons.forEach(button => {
+          button.label = i18n.t(button.i18nKey, locale);
+        });
+      }
+      if (menu.navigation) {
+        menu.navigation.forEach(nav => {
+          nav.label = i18n.t(nav.i18nKey, locale);
+        });
+      }
+
+      menuCache[cacheKey] = menu;
+      logger.info(`Menu '${menuId}' for locale '${locale}' loaded and cached.`);
       return menu;
     } catch (error) {
-      logger.error(`Failed to load menu '${menuId}':`, error);
-      throw new Error(`Menu '${menuId}' not found or invalid.`);
+      logger.error(`Failed to load menu '${menuId}' for locale '${locale}':`, error);
+      throw new Error(`Menu '${menuId}' not found or invalid for locale '${locale}'.`);
     }
   }
 
@@ -248,15 +275,15 @@ class MenuLoader {
   }
 
   // Optional: Load all menus at startup
-  static async loadAllMenus() {
+  static async loadAllMenus(locale = 'en') {
     try {
       const files = await fs.promises.readdir(MENU_DEFINITIONS_DIR);
       const jsonFiles = files.filter(file => file.endsWith('.json'));
       for (const file of jsonFiles) {
         const menuId = file.replace('.json', '');
-        await MenuLoader.loadMenu(menuId);
+        await MenuLoader.loadMenu(menuId, locale);
       }
-      logger.info(`All menus loaded: ${Object.keys(menuCache).join(', ')}`);
+      logger.info(`All menus loaded for locale '${locale}': ${Object.keys(menuCache).join(', ')}`);
     } catch (error) {
       logger.error('Failed to load all menus:', error);
       throw error;
@@ -269,9 +296,9 @@ module.exports = MenuLoader;
 
 ### Step 3: Refactor `ActionConfig.js`
 
-`ActionConfig.js` should now exclusively contain metadata for the *backend services* (the 100 astro services), not menu display logic. Menu display names will be read from the menu definition files.
+`ActionConfig.js` should now exclusively contain metadata for the *backend services* (the 100 astro services), not menu display logic. Menu display names will be read from the menu definition files via `i18nKey`.
 
-*(This will involve a manual process of going through `ActionConfig.js` and removing `displayName` from `ASTROLOGY_CONFIG`, `NUMEROLOGY_CONFIG`, `DIVINATION_CONFIG`, `PROFILE_CONFIG` if these display names refer to menu items. Only retain `displayName` if it's used for internal logging or non-menu display purposes for the backend service itself. The `MENU_CONFIG` object can be significantly streamlined or removed entirely if menu actions are handled by the `MenuLoader`.)*
+*(This will involve a manual process of going through `ActionConfig.js` and removing `displayName` from `ASTROLOGY_CONFIG`, `NUMEROLOGY_CONFIG`, `DIVINATION_CONFIG`, `PROFILE_CONFIG` if these display names refer to menu items. Only retain `displayName` if it's used for internal logging or non-menu display purposes for the backend service itself. If a service requires a user-facing name for internal messages (e.g., in an error log that is shown to the user), consider replacing `displayName` with an `i18nKey` that can be translated. The `MENU_CONFIG` object can be significantly streamlined or removed entirely if menu actions are handled by the `MenuLoader`.)*
 
 ```javascript
 // astro-whatsapp-bot/src/services/whatsapp/actions/config/ActionConfig.js
@@ -361,12 +388,13 @@ module.exports = {
 
 ### Step 4: Implement a Generic Menu Renderer
 
-Create a generic menu renderer (e.g., `astro-whatsapp-bot/src/utils/genericMenuRenderer.js`) as previously outlined.
+Create a generic menu renderer (e.g., `astro-whatsapp-bot/src/utils/genericMenuRenderer.js`) as previously outlined. This renderer will now receive already translated strings from the `MenuLoader`.
 
 ```javascript
 // astro-whatsapp-bot/src/utils/genericMenuRenderer.js
 class GenericMenuRenderer {
   static render(menuDefinition, platformContext) {
+    // menuDefinition now contains already translated 'body', 'title', 'label', 'description' fields
     return {
       menuId: menuDefinition.menuId,
       type: menuDefinition.type,
@@ -393,9 +421,9 @@ const GenericMenuRenderer = require('../../utils/genericMenuRenderer');
 const { WhatsAppMessageSender } = require('./whatsappMessageSender'); // Assuming you have this
 
 class WhatsAppMenuAdapter {
-  static async sendMenu(user, phoneNumber, menuId) {
+  static async sendMenu(user, phoneNumber, menuId, locale = 'en') {
     try {
-      const menuDefinition = await MenuLoader.loadMenu(menuId);
+      const menuDefinition = await MenuLoader.loadMenu(menuId, locale);
       const genericMenu = GenericMenuRenderer.render(menuDefinition, 'whatsapp');
 
       let whatsappMessage;
@@ -413,7 +441,7 @@ class WhatsAppMenuAdapter {
         // Add navigation section if present
         if (genericMenu.navigation && genericMenu.navigation.length > 0) {
           sections.push({
-            title: "Navigation",
+            title: i18n.t('menu.navigation.title', locale), // Translate navigation title
             rows: genericMenu.navigation.map(nav => ({
               id: nav.actionId,
               title: nav.label,
@@ -432,7 +460,7 @@ class WhatsAppMenuAdapter {
             },
             body: { text: genericMenu.body },
             action: {
-              button: 'Select an option', // Generic button text for the list trigger
+              button: i18n.t('menu.select_option_button', locale), // Translate button text
               sections: sections
             }
           }
@@ -476,8 +504,7 @@ class WhatsAppMenuAdapter {
     } catch (error) {
       logger.error('Error sending WhatsApp menu:', error);
       // Fallback to text-based menu if interactive fails
-      await WhatsAppMessageSender.sendTextMessage(phoneNumber, `I apologize, there was an error loading the menu. Please try again or type 'menu'.
-Error: ${error.message}`);
+      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.menu_load_failure', locale, { errorMessage: error.message }));
       return false;
     }
   }
@@ -503,7 +530,9 @@ class ShowMainMenuAction extends BaseAction {
   }
 
   async execute(user, phoneNumber) {
-    return await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, 'main_menu');
+    // Assuming user object contains a locale property
+    const userLocale = user.locale || 'en'; 
+    return await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, 'main_menu', userLocale);
   }
 }
 
@@ -526,11 +555,12 @@ class InteractiveMessageProcessor {
   // ...
   async processInteractiveReply(user, phoneNumber, message) {
     const actionId = message.interactive.list_reply?.id || message.interactive.button_reply?.id;
+    const userLocale = user.locale || 'en';
 
     if (actionId) {
-      await ActionMapper.executeAction(actionId, user, phoneNumber);
+      await ActionMapper.executeAction(actionId, user, phoneNumber, userLocale);
     } else {
-      await WhatsAppMessageSender.sendTextMessage(phoneNumber, "I didn't understand that. Please select an option from the menu.");
+      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.unrecognized_interactive_reply', userLocale));
     }
   }
   // ...
@@ -548,12 +578,13 @@ class MessageRouter {
   // ...
   async routeMessage(user, phoneNumber, message) {
     // ... (existing keyword mapping logic that identifies a mappedActionId)
+    const userLocale = user.locale || 'en';
 
     if (mappedActionId) {
-      await ActionMapper.executeAction(mappedActionId, user, phoneNumber);
+      await ActionMapper.executeAction(mappedActionId, user, phoneNumber, userLocale);
     } else {
       // If no specific action is mapped, show the main menu
-      await ActionMapper.executeAction('show_main_menu', user, phoneNumber);
+      await ActionMapper.executeAction('show_main_menu', user, phoneNumber, userLocale);
     }
     // Remove old hardcoded menu options lists (e.g., for numbered text menus)
   }
@@ -571,13 +602,14 @@ const { getActionConfig } = require('./actions/config/ActionConfig');
 const serviceRegistry = require('../../core/serviceRegistry'); // Assuming a registry for your 100 services
 const WhatsAppMenuAdapter = require('./whatsappMenuAdapter');
 const { WhatsAppMessageSender } = require('./whatsappMessageSender'); // For error messages
+const i18n = require('../../utils/i18n'); // New i18n utility
 
 class ActionMapper {
-  static async executeAction(actionId, user, phoneNumber, params = {}) {
+  static async executeAction(actionId, user, phoneNumber, locale = 'en', params = {}) {
     // Check if it's a menu navigation action (convention: show_ + menuId)
     if (actionId.startsWith('show_')) {
       const menuId = actionId.replace('show_', '');
-      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, menuId);
+      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, menuId, locale);
       return;
     }
 
@@ -589,7 +621,7 @@ class ActionMapper {
       // else if (actionId === 'btn_view_profile') { /* ... call ProfileViewService ... */ }
       console.log(`Executing profile action: ${actionId}`);
       // After processing, generally return to the settings menu
-      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, 'settings_profile_menu');
+      await WhatsAppMenuAdapter.sendMenu(user, phoneNumber, 'settings_profile_menu', locale);
       return;
     }
 
@@ -598,7 +630,7 @@ class ActionMapper {
 
     if (!actionConfig) {
       logger.warn(`Unknown actionId received: ${actionId}`);
-      await WhatsAppMessageSender.sendTextMessage(phoneNumber, "I apologize, I don't know how to handle that request. Please select an option from the menu.");
+      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.unknown_request', locale));
       return;
     }
 
@@ -615,13 +647,13 @@ class ActionMapper {
       if (service && typeof service.processCalculation === 'function') {
         const result = await service.processCalculation(user.birthData, params); // Assuming user.birthData and params
         // 5. Format and send result back to user
-        await WhatsAppMessageSender.sendTextMessage(phoneNumber, service.formatResult(result)); // Assuming service provides formatResult
+        await WhatsAppMessageSender.sendTextMessage(phoneNumber, service.formatResult(result, locale)); // Assuming service provides formatResult and accepts locale
       } else {
-        throw new Error(`Service for action '${actionId}' not found or does not have a processCalculation method.`);
+        throw new Error(i18n.t('error.service_not_found', locale, { actionId }));
       }
     } catch (error) {
       logger.error(`Error executing action '${actionId}':`, error);
-      await WhatsAppMessageSender.sendTextMessage(phoneNumber, `Error processing your request: ${error.message}`);
+      await WhatsAppMessageSender.sendTextMessage(phoneNumber, i18n.t('error.processing_request', locale, { errorMessage: error.message }));
     }
   }
 }
@@ -629,7 +661,67 @@ class ActionMapper {
 module.exports = ActionMapper;
 ```
 
-*(You will need a `serviceRegistry` to map `actionId`s to actual service instances. This can be a simple object mapping or a more sophisticated dependency injection container.)*
+### Step 9: Implement an i18n Utility
+
+Create a dedicated utility module (e.g., `astro-whatsapp-bot/src/utils/i18n.js`) for managing and retrieving translated strings. This module will load language-specific JSON files from the `i18n_keys/` directory.
+
+```javascript
+// astro-whatsapp-bot/src/utils/i18n.js
+const path = require('path');
+const fs = require('fs');
+const logger = require('./logger');
+
+const I18N_DIR = path.join(__dirname, '../../i18n_keys');
+const translations = {};
+
+class I18n {
+  static async loadTranslations(locale) {
+    if (translations[locale]) {
+      return translations[locale];
+    }
+    const langFilePath = path.join(I18N_DIR, `${locale}.json`);
+    try {
+      const langData = await fs.promises.readFile(langFilePath, 'utf8');
+      translations[locale] = JSON.parse(langData);
+      logger.info(`Translations for locale '${locale}' loaded.`);
+      return translations[locale];
+    } catch (error) {
+      logger.error(`Failed to load translations for locale '${locale}':`, error);
+      // Fallback to default locale if specific locale fails
+      if (locale !== 'en') {
+        logger.warn(`Falling back to 'en' locale for translations.`);
+        return I18n.loadTranslations('en');
+      }
+      throw new Error(`Translations for locale '${locale}' not found or invalid.`);
+    }
+  }
+
+  static t(key, locale = 'en', replacements = {}) {
+    const lang = translations[locale] || translations['en']; // Fallback to English
+    if (!lang) {
+      logger.error(`No translations loaded for locale '${locale}' or default 'en'.`);
+      return key; // Return key if no translations are available
+    }
+
+    let translatedString = key.split('.').reduce((obj, i) => obj && obj[i], lang);
+
+    if (typeof translatedString === 'string') {
+      // Apply replacements
+      for (const placeholder in replacements) {
+        translatedString = translatedString.replace(new RegExp(`{{${placeholder}}}`, 'g'), replacements[placeholder]);
+      }
+      return translatedString;
+    }
+
+    logger.warn(`Translation key '${key}' not found for locale '${locale}'.`);
+    return key; // Return the key if translation not found
+  }
+}
+
+module.exports = I18n;
+```
+
+*(You will need to create the `astro-whatsapp-bot/i18n_keys/` directory and add language files like `en.json` and `es.json` with your translated strings.)*
 
 ## 5. Benefits of this Architecture
 
@@ -649,7 +741,7 @@ module.exports = ActionMapper;
 
 ## 6. Considerations / Future Work
 
-*   **Internationalization (i18n):** Menu labels in JSON/YAML files (`label`, `title`, `body`) should be replaced with `i18n_key` references, and the `MenuLoader` or `WhatsAppMenuAdapter` would then retrieve the translated strings.
+*   **i18n_keys Directory:** Populate the `astro-whatsapp-bot/i18n_keys/` directory with language-specific JSON files (e.g., `en.json`, `es.json`) containing all user-facing strings referenced by `i18nKey` in the menu definitions.
 *   **Dynamic Menu Generation:** For highly personalized menus (e.g., showing different options based on user's subscription or location), the `MenuLoader` could incorporate logic to dynamically filter or construct menu definitions.
 *   **Tooling for Menu Definition Management:** For very large menu trees, consider building a simple UI or scripting to manage, validate, and visualize the JSON/YAML menu definition files.
 *   **Service Registry:** A robust `serviceRegistry` implementation is needed to abstract away how backend services are located and invoked (whether internal functions in a monolith or external microservice calls).

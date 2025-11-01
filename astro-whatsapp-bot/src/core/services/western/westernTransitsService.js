@@ -10,8 +10,9 @@ const { BirthData } = require('../../models');
  */
 class WesternTransitsService extends ServiceTemplate {
   constructor() {
-    super('westernTransitsService');
+    super('WesternTransitsCalculator');
     this.serviceName = 'WesternTransitsService';
+    this.calculatorPath = '../../../services/astrology/western/calculators/WesternTransitsCalculator';
     logger.info('WesternTransitsService initialized');
   }
 
@@ -40,7 +41,7 @@ class WesternTransitsService extends ServiceTemplate {
    * @param {Object} data - Input data with birthData and optional targetDate
    * @returns {Promise<Object>} Raw Western transit result
    */
-  async lwesternTransitsCalculation(data) {
+  async processCalculation(data) {
     const { birthData, targetDate = null } = data;
     
     // Get Western transit data from calculator
@@ -90,7 +91,8 @@ class WesternTransitsService extends ServiceTemplate {
       description: 'Service for Western tropical zodiac transit calculations',
       version: '1.0.0',
       zodiacType: 'tropical',
-      status: 'active'
+      status: 'active',
+      dependencies: []
     };
   }
   async getHealthStatus() {

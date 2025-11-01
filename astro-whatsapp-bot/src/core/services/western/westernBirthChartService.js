@@ -3,13 +3,13 @@ const logger = require('../../utils/logger');
 
 class WesternBirthChartService extends ServiceTemplate {
   constructor() {
-    super('WesternBirthChartService');
+    super('WesternChartGenerator');
     this.calculatorPath = '../../../services/astrology/western/calculators/WesternChartGenerator';
   }
 
   async initialize() {
     try {
-      await super.initialize();
+      await super.initialize(); // Call the ServiceTemplate's initialize method
       logger.info('✅ WesternBirthChartService initialized successfully');
     } catch (error) {
       logger.error('❌ Failed to initialize WesternBirthChartService:', error);
@@ -34,7 +34,7 @@ class WesternBirthChartService extends ServiceTemplate {
     return true;
   }
 
-  async generateWesternBirthChart(params) {
+  async processCalculation(params) {
     try {
       this.validateParams(params, ['birthData']);
 
@@ -98,6 +98,16 @@ class WesternBirthChartService extends ServiceTemplate {
         timestamp: new Date().toISOString()
       };
     }
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'western',
+      methods: ['generateWesternBirthChart'],
+      dependencies: []
+    };
   }
 }
 

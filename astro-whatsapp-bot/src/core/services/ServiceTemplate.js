@@ -2,15 +2,40 @@ const AstroServiceInterface = require('../interfaces/astroServiceInterface');
 const logger = require('../utils/logger');
 
 class ServiceTemplate extends AstroServiceInterface {
-  constructor(calculatorService) {
+  constructor(calculatorName) {
     super();
-    this.calculator = calculatorService;
-    logger.info(`Service ${this.constructor.name} initialized`);
+    this.calculatorName = calculatorName; // Store the calculator name
+    this.calculator = null; // Will be loaded dynamically
+    logger.info(`Service ${this.constructor.name} initialized with calculator: ${calculatorName}`);
+  }
+
+  async initialize() {
+    if (this.calculatorName && this.calculatorPath) {
+      try {
+        // Dynamically import the calculator module
+        const CalculatorModule = require(this.calculatorPath);
+        // Assuming the calculator is the default export or a named export matching the name
+        this.calculator = CalculatorModule.default || CalculatorModule; // Adjust based on actual calculator module export
+        logger.info(`Calculator ${this.calculatorName} loaded for ${this.constructor.name}`);
+      } catch (error) {
+        logger.error(`Failed to load calculator ${this.calculatorName} from ${this.calculatorPath}:`, error);
+        throw new Error(`Failed to load calculator: ${this.calculatorName}`);
+      }
+    } else if (this.calculatorName) {
+      logger.warn(`Calculator path not defined for ${this.constructor.name}. Calculator ${this.calculatorName} will not be loaded.`);
+    } else {
+      logger.info(`No specific calculator defined for ${this.constructor.name}.`);
+    }
   }
 
   async execute(data) {
     try {
       logger.info(`${this.constructor.name} execution started`, data);
+
+      // Ensure calculator is loaded before use
+      if (this.calculatorName && !this.calculator) {
+        await this.initialize();
+      }
 
       // Validate input data
       this.validate(data);
@@ -51,8 +76,37 @@ class ServiceTemplate extends AstroServiceInterface {
       name: this.constructor.name,
       version: '1.0.0',
       category: 'astrology',
-      status: 'active'
+      status: 'active',
+      calculator: this.calculatorName || 'None'
     };
+  }
+
+  async getHealthStatus() {
+    try {
+      // Basic health check for the service itself
+      const health = {
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        serviceName: this.constructor.name,
+        calculatorStatus: 'N/A'
+      };
+
+      // Check calculator health if loaded
+      if (this.calculator && typeof this.calculator.getHealthStatus === 'function') {
+        const calculatorHealth = await this.calculator.getHealthStatus();
+        health.calculatorStatus = calculatorHealth;
+      } else if (this.calculatorName) {
+        health.calculatorStatus = `Calculator ${this.calculatorName} not loaded or no health check method.`;
+      }
+
+      return health;
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 }
 

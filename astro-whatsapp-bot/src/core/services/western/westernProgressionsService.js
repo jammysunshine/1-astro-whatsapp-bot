@@ -10,8 +10,9 @@ const { BirthData } = require('../../models');
  */
 class WesternProgressionsService extends ServiceTemplate {
   constructor() {
-    super('westernProgressionsService');
+    super('WesternProgressionsCalculator');
     this.serviceName = 'WesternProgressionsService';
+    this.calculatorPath = '../../../services/astrology/western/calculators/WesternProgressionsCalculator';
     logger.info('WesternProgressionsService initialized');
   }
 
@@ -40,7 +41,7 @@ class WesternProgressionsService extends ServiceTemplate {
    * @param {Object} data - Input data with birthData and optional targetDate
    * @returns {Promise<Object>} Raw Western progression result
    */
-  async lwesternProgressionsCalculation(data) {
+  async processCalculation(data) {
     const { birthData, targetDate = null, progressionType = 'secondary' } = data;
     
     // Get Western progression data from calculator
@@ -92,7 +93,8 @@ class WesternProgressionsService extends ServiceTemplate {
       version: '1.0.0',
       zodiacType: 'tropical',
       supportedProgressions: ['secondary', 'solar_arc'],
-      status: 'active'
+      status: 'active',
+      dependencies: []
     };
   }
   async getHealthStatus() {

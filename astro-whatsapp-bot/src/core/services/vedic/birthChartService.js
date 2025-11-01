@@ -6,8 +6,9 @@ const { BirthData } = require('../../models');
 
 class BirthChartService extends ServiceTemplate {
   constructor() {
-    super('BirthChartService');
+    super('ChartGenerator');
     this.serviceName = 'BirthChartService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/ChartGenerator';
     logger.info('BirthChartService initialized');
   }
 

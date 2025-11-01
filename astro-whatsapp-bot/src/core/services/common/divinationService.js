@@ -47,7 +47,7 @@ class DivinationService extends ServiceTemplate {
    * @param {Object} data - Input data with method and question/focus
    * @returns {Promise<Object>} Raw divination result
    */
-  async ldivinationCalculation(data) {
+  async processCalculation(data) {
     const { method, question, focus, spread = 'general' } = data;
     
     let result;
@@ -117,9 +117,10 @@ class DivinationService extends ServiceTemplate {
       version: '1.0.0',
       status: 'active',
       methods: ['tarot', 'iching', 'runes', 'scrying'],
-      tarotSpreads: ['general', 'celtic-cross', 'three-card', 'relationship', 'career']
+      tarotSpreads: ['general', 'celtic-cross', 'three-card', 'relationship', 'career'],
+      dependencies: []
     };
-  }
+  }  }
 
   /**
    * Get Tarot reading

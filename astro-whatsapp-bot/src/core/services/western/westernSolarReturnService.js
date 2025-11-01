@@ -10,8 +10,9 @@ const { BirthData } = require('../../models');
  */
 class WesternSolarReturnService extends ServiceTemplate {
   constructor() {
-    super('westernSolarReturnService');
+    super('WesternSolarReturnCalculator');
     this.serviceName = 'WesternSolarReturnService';
+    this.calculatorPath = '../../../services/astrology/western/calculators/WesternSolarReturnCalculator';
     logger.info('WesternSolarReturnService initialized');
   }
 
@@ -40,7 +41,7 @@ class WesternSolarReturnService extends ServiceTemplate {
    * @param {Object} data - Input data with birthData and optional targetDate
    * @returns {Promise<Object>} Raw Western solar return result
    */
-  async lwesternSolarReturnCalculation(data) {
+  async processCalculation(data) {
     const { birthData, targetDate = null } = data;
     
     // Get Western solar return data from calculator
@@ -90,7 +91,8 @@ class WesternSolarReturnService extends ServiceTemplate {
       description: 'Service for Western tropical zodiac solar return calculations',
       version: '1.0.0',
       zodiacType: 'tropical',
-      status: 'active'
+      status: 'active',
+      dependencies: []
     };
   }
   async getHealthStatus() {

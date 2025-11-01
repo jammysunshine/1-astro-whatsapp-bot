@@ -3,7 +3,7 @@ const logger = require('../../utils/logger');
 
 class CoupleCompatibilityService extends ServiceTemplate {
   constructor() {
-    super('CoupleCompatibilityService');
+    super('SynastryEngine');
     this.calculatorPath = '../../../services/astrology/compatibility/SynastryEngine';
   }
 
@@ -17,7 +17,7 @@ class CoupleCompatibilityService extends ServiceTemplate {
     }
   }
 
-  async analyzeCoupleCompatibility(params) {
+  async processCalculation(params) {
     try {
       this.validateParams(params, ['userChart', 'partnerChart']);
 
@@ -372,6 +372,16 @@ class CoupleCompatibilityService extends ServiceTemplate {
         timestamp: new Date().toISOString()
       };
     }
+  }
+
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'compatibility',
+      methods: ['analyzeCoupleCompatibility', 'getQuickCompatibility'],
+      dependencies: []
+    };
   }
 }
 

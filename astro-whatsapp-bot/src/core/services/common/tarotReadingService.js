@@ -6,7 +6,8 @@ const ServiceTemplate = require('../ServiceTemplate');
  */
 class TarotReadingService extends ServiceTemplate {
   constructor() {
-    super(tarotReader);
+    super('TarotReader');
+    this.calculatorPath = '../../../services/astrology/tarotReader';
   }
 
   /**
@@ -31,7 +32,7 @@ class TarotReadingService extends ServiceTemplate {
    * @param {Object} data - Input data with user and spread type
    * @returns {Promise<Object>} Raw tarot reading result
    */
-  async ltarotReadingCalculation(data) {
+  async processCalculation(data) {
     const { user, spreadType = 'single' } = data;
     
     // Use the tarotReader calculator to generate reading
@@ -81,7 +82,8 @@ class TarotReadingService extends ServiceTemplate {
       description: 'Core service for tarot card readings with multiple spread types',
       version: '1.0.0',
       supportedSpreads: ['single', 'three', 'three-card'],
-      status: 'active'
+      status: 'active',
+      dependencies: []
     };
   }
   async getHealthStatus() {

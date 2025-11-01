@@ -1,6 +1,6 @@
 const { BirthChartService, VimshottariDashaService, PrashnaAstrologyService, EventAstrologyService, MuhurtaService, SolarArcDirectionsService, SecondaryProgressionsService, SolarReturnService, BusinessPartnershipService, SpecializedAnalysisService, DashaPredictiveService, CalendarTimingService, CurrentDashaService, CurrentTransitsService, DailyHoroscopeService, CompatibilityService, DetailedChartAnalysisService, CompatibilityScoreService, PanchangService, AshtakavargaService, DavisonChartService, LunarReturnService, AdvancedCompatibilityService, EnhancedPanchangService, PrashnaService, JaiminiAstrologyService, GocharService, VarshaphalService, JaiminiDashasService, AdvancedTransitsService, MajorTransitsService, TransitPreviewService, AsteroidsService, CoupleCompatibilityService, SynastryAnalysisService, HinduFestivalsService, NumerologyAnalysisService, HoraryReadingService, ComprehensiveVedicAnalysisService, FutureSelfSimulatorService, LifePatternsService, FinancialAstrologyService, NumerologyReportService, FixedStarsService, CareerAstrologyService, AbhijitMuhurtaService, RahukalamService, GulikakalamService, KaalSarpDoshaService, SadeSatiService, MedicalAstrologyService, NadiAstrologyService } = require('./vedic');
 const { WesternAstrologyService } = require('./western');
-const { DivinationService, NumerologyService, TarotReadingService } = require('./common');
+const { DivinationService, NumerologyService, TarotReadingService, IChingReadingService } = require('./common');
 
 module.exports = {
   BirthChartService,
@@ -61,4 +61,5 @@ module.exports = {
   DivinationService,
   NumerologyService,
   TarotReadingService,
+  IChingReadingService,
 };

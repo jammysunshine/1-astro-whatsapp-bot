@@ -5,12 +5,13 @@ const logger = require('../../utils/logger');
 
 class MundaneAstrologyService extends ServiceTemplate {
   constructor() {
-    super('mundaneAstrologyService');
+    super('PoliticalAstrology');
     this.serviceName = 'MundaneAstrologyService';
+    this.calculatorPath = '../../../services/astrology/mundane/PoliticalAstrology';
     logger.info('MundaneAstrologyService initialized');
   }
 
-  async lmundaneAstrologyCalculation(chartData) {
+  async processCalculation(chartData) {
     try {
       // Validate input
       this.validate(chartData);

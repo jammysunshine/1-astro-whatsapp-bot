@@ -4,7 +4,7 @@ const logger = require('../../../utils/logger');
 const {
   // Chart & Analysis Calculators
   ChartGenerator,
-  DetailedChartCalculator,
+  DetailedChartAnalysisCalculator,
   ComprehensiveAnalysisCalculator,
   CompatibilityCalculator,
 
@@ -36,7 +36,6 @@ const {
   SignCalculator,
 
   // Specialized Analysis
-  KarmicLessonsCalculator,
   JaiminiAstrologyCalculator,
   JaiminiCalculator,
   MarriageTimingCalculator,
@@ -81,7 +80,7 @@ class VedicCalculator {
   _initializeCalculators() {
     // Chart & Analysis Calculators
     this.chartGenerator = new ChartGenerator(this.vedicCore, this.geocodingService);
-    this.detailedChartCalculator = new DetailedChartCalculator();
+    this.detailedChartCalculator = new DetailedChartAnalysisCalculator();
     this.comprehensiveAnalysisCalculator = new ComprehensiveAnalysisCalculator();
     this.compatibilityCalculator = new CompatibilityCalculator(this.astrologer, this.geocodingService);
 
@@ -112,7 +111,6 @@ class VedicCalculator {
     this.signCalculator = new SignCalculator();
 
     // Specialized Analysis
-    this.karmicLessonsCalculator = new KarmicLessonsCalculator();
     this.jaiminiCalculator = new JaiminiCalculator();
     this.sadeSatiCalculator = new SadeSatiCalculator();
     this.marriageTimingCalculator = new MarriageTimingCalculator();
@@ -157,7 +155,6 @@ class VedicCalculator {
       this.lunarReturnCalculator,
       this.groupAstrologyCalculator,
       this.signCalculator,
-      this.karmicLessonsCalculator,
       this.jaiminiCalculator,
       this.sadeSatiCalculator,
       this.marriageTimingCalculator,
@@ -464,9 +461,11 @@ class VedicCalculator {
    * Analyze karmic lessons
    * @param {Object} birthData - Birth data object
    * @returns {Object} Karmic lessons analysis
+   * NOTE: KarmicLessonsCalculator is missing - flagged for implementation
    */
   async analyzeKarmicLessons(birthData) {
-    return this._delegateToCalculator('karmicLessonsCalculator', 'analyzeKarmicLessons', birthData);
+    throw new Error('KarmicLessonsCalculator not implemented - missing calculator file');
+    // return this._delegateToCalculator('karmicLessonsCalculator', 'analyzeKarmicLessons', birthData);
   }
 
   /**

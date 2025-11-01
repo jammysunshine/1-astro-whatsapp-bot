@@ -5,12 +5,13 @@ const logger = require('../../utils/logger');
 
 class HinduFestivalsService extends ServiceTemplate {
   constructor() {
-    super('hinduFestivalsService');
+    super('HinduFestivals');
     this.serviceName = 'HinduFestivalsService';
+    this.calculatorPath = '../../../services/astrology/hinduFestivals';
     logger.info('HinduFestivalsService initialized');
   }
 
-  async lhinduFestivalsCalculation(festivalParams) {
+  async processCalculation(festivalParams) {
     try {
       // Validate input
       this.validate(festivalParams);

@@ -9,7 +9,8 @@ const { IChingReader } = require('../calculators/IChingReader');
  */
 class DivinationService extends ServiceTemplate {
   constructor() {
-    super(); // No single calculator for divination service
+    super('TarotReader');
+    this.calculatorPath = '../calculators/TarotReader';
     this.serviceName = 'DivinationService';
     this.tarotReader = new TarotReader();
     this.ichingReader = new IChingReader(); // Instantiate the class

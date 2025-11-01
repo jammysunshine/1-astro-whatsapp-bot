@@ -888,6 +888,11 @@ class EventAstrologyService extends ServiceTemplate {
       dependencies: ['MuhurtaCalculator']
     };
   }
+
+  async processCalculation(data) {
+    return await this.leventAstrologyCalculation(data);
+  }
+
   async getHealthStatus() {
     try {
       const baseHealth = await super.getHealthStatus();

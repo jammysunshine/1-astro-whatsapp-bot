@@ -14,7 +14,8 @@ const { CompatibilityCalculator } = require('../calculators/CompatibilityCalcula
  */
 class FamilyAstrologyService extends ServiceTemplate {
   constructor() {
-    // No super() call with calculatorName as it manages multiple calculators directly
+    super('GroupAstrologyCalculator');
+    this.calculatorPath = '../calculators/GroupAstrologyCalculator';
     this.groupCalculator = new GroupAstrologyCalculator();
     this.compatibilityCalculator = new CompatibilityCalculator();
     logger.info('FamilyAstrologyService initialized');

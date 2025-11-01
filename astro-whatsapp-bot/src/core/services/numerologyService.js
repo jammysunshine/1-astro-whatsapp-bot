@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const { VedicNumerology } = require('./calculators/VedicNumerology');
+const VedicNumerology = require('./calculators/VedicNumerology');
 
 /**
  * NumerologyService - Service for numerology calculations and analysis

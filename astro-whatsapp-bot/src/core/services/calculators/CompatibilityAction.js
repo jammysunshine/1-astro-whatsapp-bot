@@ -4,18 +4,18 @@ const { CompatibilityManagementService } = require('../../../core/services/compa
 const userModel = require('../../../models/userModel');
 const {
   SwissEphemerisCalculator
-} = require('../../../services/astrology/compatibility/SwissEphemerisCalculator');
-const { SynastryEngine } = require('../../../services/astrology/compatibility/SynastryEngine');
-const { CompatibilityScorer } = require('../../../services/astrology/compatibility/CompatibilityScorer');
+} = require('./SwissEphemerisCalculator');
+const { SynastryEngine } = require('./SynastryEngine');
+const { CompatibilityScorer } = require('./CompatibilityScorer');
 const {
   RelationshipInsightsGenerator
-} = require('../../../services/astrology/compatibility/RelationshipInsightsGenerator');
+} = require('./RelationshipInsightsGenerator');
 const {
   CompatibilityFormatter
-} = require('../../../services/astrology/compatibility/CompatibilityFormatter');
+} = require('./CompatibilityFormatter');
 const {
   CompatibilityWorkflowManager
-} = require('../../../services/astrology/compatibility/CompatibilityWorkflowManager');
+} = require('./CompatibilityWorkflowManager');
 const { SubscriptionManager } = require('../../../models/SubscriptionManager');
 
 /**

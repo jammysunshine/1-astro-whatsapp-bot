@@ -1,5 +1,5 @@
 const logger = require('../../../utils/logger');
-const { SwissEphemerisCalculator } = require('../../../services/astrology/compatibility/SwissEphemerisCalculator');
+const { SwissEphemerisCalculator } = require('./SwissEphemerisCalculator');
 
 /**
  * SynastryEngine - Core engine for synastry (relationship astrology) analysis

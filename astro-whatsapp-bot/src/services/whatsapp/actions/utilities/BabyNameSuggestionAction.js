@@ -2,7 +2,7 @@ const BaseAction = require('../BaseAction');
 const vedicCalculator = require('../../../../core/services/calculators/VedicCalculator');
 const { ResponseBuilder } = require('../../utils/ResponseBuilder');
 const { sendMessage } = require('../../messageSender');
-const translationService = require('../../../services/i18n/TranslationService');
+const translationService = require('../../../../services/i18n/TranslationService');
 
 /**
  * BabyNameSuggestionAction - Suggests baby names based on Vedic astrology and numerology.

@@ -1,6 +1,6 @@
 const ServiceTemplate = require('./ServiceTemplate');
 const logger = require('../../utils/logger');
-const { IChingReader } = require('../../services/astrology/ichingReader');
+const { IChingReader } = require('./calculators/ichingReader');
 
 /**
  * IChingReadingService - Specialized service for providing I Ching readings

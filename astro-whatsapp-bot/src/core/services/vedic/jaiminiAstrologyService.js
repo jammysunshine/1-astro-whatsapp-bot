@@ -3,7 +3,7 @@
  * Implements Jaimini system of Vedic astrology with Chara Karakas, Rasi aspects, and special combinations
  */
 
-const ServiceTemplate = require('../serviceTemplate');
+const ServiceTemplate = require('../ServiceTemplate');
 const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
 const { formatDegree, formatTime } = require('../../../utils/formatters');
 

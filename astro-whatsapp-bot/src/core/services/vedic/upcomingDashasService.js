@@ -1,49 +1,36 @@
+const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
+const { BirthData } = require('../../models');
 
 /**
  * UpcomingDashasService - Service for forecasting future planetary periods
- * Forecasts future planetary periods, providing timing for upcoming life phases and opportunities based on the Vimshottari Dasha sequence
+ *
+ * Forecasts future planetary periods, providing timing for upcoming life phases and opportunities
+ * based on the Vimshottari Dasha sequence.
  */
-class UpcomingDashasService {
+class UpcomingDashasService extends ServiceTemplate {
   constructor() {
-    this.calculator = new DashaAnalysisCalculator();
+    super('DashaAnalysisCalculator'); // Primary calculator for this service
+    this.serviceName = 'UpcomingDashasService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/DashaAnalysisCalculator';
     logger.info('UpcomingDashasService initialized');
   }
 
   /**
-   * Execute upcoming Dashas calculation
-   * @param {Object} birthData - Birth data for Dasha calculation
-   * @param {string} birthData.birthDate - Birth date (DD/MM/YYYY)
-   * @param {string} birthData.birthTime - Birth time (HH:MM)
-   * @param {string} birthData.birthPlace - Birth place
-   * @param {string} birthData.name - Person's name (optional)
-   * @param {Object} options - Calculation options
-   * @returns {Object} Upcoming Dashas analysis result
+   * Main calculation method for Upcoming Dashas.
+   * @param {Object} birthData - Birth data for Dasha calculation.
+   * @param {Object} [options] - Calculation options.
+   * @returns {Promise<Object>} Upcoming Dashas analysis result.
    */
-  async execute(birthData, options = {}) {
+  async processCalculation(birthData, options = {}) {
     try {
-      // Input validation
+      // Ensure calculator is loaded
+      if (!this.calculator) {
+        await this.initialize();
+      }
+
       this._validateInput(birthData);
 
-      // Calculate upcoming Dashas
-      const result = await this.calculateUpcomingDashas(birthData, options);
-
-      // Format and return result
-      return this._formatResult(result);
-    } catch (error) {
-      logger.error('UpcomingDashasService error:', error);
-      throw new Error(`Upcoming Dashas calculation failed: ${error.message}`);
-    }
-  }
-
-  /**
-   * Calculate upcoming Dasha periods
-   * @param {Object} birthData - Birth data
-   * @param {Object} options - Calculation options
-   * @returns {Object} Upcoming Dashas analysis
-   */
-  async calculateUpcomingDashas(birthData, options = {}) {
-    try {
       const periodsToShow = options.periods || 5;
 
       // Get Dasha analysis from calculator
@@ -67,16 +54,49 @@ class UpcomingDashasService {
         interpretation: this._createUpcomingDashasInterpretation(upcomingDashas, lifePhases)
       };
     } catch (error) {
-      logger.error('Upcoming Dashas calculation error:', error);
-      throw error;
+      logger.error('UpcomingDashasService processCalculation error:', error);
+      throw new Error(`Upcoming Dashas calculation failed: ${error.message}`);
     }
   }
 
   /**
-   * Extract upcoming Dasha periods
-   * @param {Object} dashaAnalysis - Complete Dasha analysis
-   * @param {number} periodsToShow - Number of periods to show
-   * @returns {Array} Upcoming Dasha periods
+   * Validates input data for upcoming Dashas calculation.
+   * @param {Object} input - Input data to validate.
+   * @private
+   */
+  _validateInput(input) {
+    if (!input) {
+      throw new Error('Birth data is required for Upcoming Dashas analysis.');
+    }
+    const validatedData = new BirthData(input);
+    validatedData.validate();
+  }
+
+  /**
+   * Formats the upcoming Dashas result for consistent output.
+   * @param {Object} result - Raw upcoming Dashas result.
+   * @returns {Object} Formatted result.
+   */
+  formatResult(result) {
+    return {
+      success: true,
+      data: result,
+      summary: result.interpretation,
+      metadata: {
+        serviceName: this.serviceName,
+        calculationType: 'Upcoming Dashas Analysis',
+        timestamp: new Date().toISOString()
+      },
+      disclaimer: 'Upcoming Dashas analysis forecasts future planetary period influences. Dasha periods indicate timing of life experiences and karmic influences. Actual experiences depend on individual karma, free will, and complete birth chart analysis.'
+    };
+  }
+
+  /**
+   * Extracts upcoming Dasha periods.
+   * @param {Object} dashaAnalysis - Complete Dasha analysis.
+   * @param {number} periodsToShow - Number of periods to show.
+   * @returns {Array} Upcoming Dasha periods.
+   * @private
    */
   _extractUpcomingDashas(dashaAnalysis, periodsToShow) {
     const upcoming = (dashaAnalysis.upcomingDashas || []).slice(0, periodsToShow);
@@ -87,6 +107,9 @@ class UpcomingDashasService {
         startDate: dasha.startDate || 'Unknown',
         endDate: dasha.endDate || 'Unknown',
         duration: dasha.duration || 0,
+        remainingYears: dasha.remainingYears || 0,
+        elapsedYears: dasha.elapsedYears || 0,
+        totalYears: dasha.totalYears || 0,
         influence: this._getPlanetaryInfluence(dasha.mahadashaLord)
       },
       keyThemes: this._getDashaKeyThemes(dasha.mahadashaLord),
@@ -98,16 +121,13 @@ class UpcomingDashasService {
   }
 
   /**
-   * Create Dasha timeline
-   * @param {Array} upcomingDashas - Upcoming Dasha periods
-   * @returns {Object} Dasha timeline
+   * Creates Dasha timeline.
+   * @param {Array} upcomingDashas - Upcoming Dasha periods.
+   * @returns {Object} Dasha timeline.
+   * @private
    */
   _createDashaTimeline(upcomingDashas) {
-    const timeline = {
-      phases: [],
-      transitions: [],
-      majorShifts: []
-    };
+    const timeline = { phases: [], transitions: [], majorShifts: [] };
 
     upcomingDashas.forEach((dasha, index) => {
       timeline.phases.push({
@@ -118,7 +138,6 @@ class UpcomingDashasService {
         theme: dasha.keyThemes[0] || 'Personal development'
       });
 
-      // Identify transitions
       if (index < upcomingDashas.length - 1) {
         timeline.transitions.push({
           from: dasha.mahadasha.lord,
@@ -128,7 +147,6 @@ class UpcomingDashasService {
         });
       }
 
-      // Identify major shifts (Saturn, Rahu, Ketu periods)
       const majorShifters = ['Saturn', 'Rahu', 'Ketu'];
       if (majorShifters.includes(dasha.mahadasha.lord)) {
         timeline.majorShifts.push({
@@ -138,22 +156,17 @@ class UpcomingDashasService {
         });
       }
     });
-
     return timeline;
   }
 
   /**
-   * Identify life phases from upcoming Dashas
-   * @param {Array} upcomingDashas - Upcoming Dasha periods
-   * @returns {Object} Life phases analysis
+   * Identifies life phases from upcoming Dashas.
+   * @param {Array} upcomingDashas - Upcoming Dasha periods.
+   * @returns {Object} Life phases analysis.
+   * @private
    */
   _identifyLifePhases(upcomingDashas) {
-    const phases = {
-      growth: [],
-      challenge: [],
-      stability: [],
-      transformation: []
-    };
+    const phases = { growth: [], challenge: [], stability: [], transformation: [] };
 
     upcomingDashas.forEach(dasha => {
       const lord = dasha.mahadasha.lord.toLowerCase();
@@ -164,7 +177,6 @@ class UpcomingDashasService {
         focus: dasha.keyThemes[0] || 'Personal development'
       };
 
-      // Categorize by planetary nature
       if (['jupiter', 'venus', 'mercury'].includes(lord)) {
         phases.growth.push(phaseInfo);
       } else if (['saturn', 'mars', 'rahu'].includes(lord)) {
@@ -175,36 +187,28 @@ class UpcomingDashasService {
         phases.transformation.push(phaseInfo);
       }
     });
-
     return phases;
   }
 
   /**
-   * Create preparation guide for upcoming Dashas
-   * @param {Array} upcomingDashas - Upcoming Dasha periods
-   * @returns {Object} Preparation guide
+   * Creates preparation guide for upcoming Dashas.
+   * @param {Array} upcomingDashas - Upcoming Dasha periods.
+   * @returns {Object} Preparation guide.
+   * @private
    */
   _createPreparationGuide(upcomingDashas) {
-    const guide = {
-      immediate: [],
-      shortTerm: [],
-      longTerm: [],
-      generalAdvice: []
-    };
+    const guide = { immediate: [], shortTerm: [], longTerm: [], generalAdvice: [] };
 
-    // Immediate preparation (next 1-2 periods)
     if (upcomingDashas.length > 0) {
       const nextDasha = upcomingDashas[0];
       guide.immediate = this._getPreparationAdvice(nextDasha.mahadasha.lord);
     }
 
-    // Short-term preparation (next 3-5 periods)
     const shortTermPeriods = upcomingDashas.slice(0, 3);
     guide.shortTerm = shortTermPeriods.flatMap(dasha =>
       this._getPreparationAdvice(dasha.mahadasha.lord).slice(0, 2)
     );
 
-    // Long-term preparation (all periods)
     guide.longTerm = [
       'Develop spiritual practices for inner strength',
       'Build financial stability and emergency reserves',
@@ -220,14 +224,14 @@ class UpcomingDashasService {
       'Stay flexible and adaptable to change',
       'Focus on karma yoga (selfless service)'
     ];
-
     return guide;
   }
 
   /**
-   * Identify opportunity windows
-   * @param {Array} upcomingDashas - Upcoming Dasha periods
-   * @returns {Array} Opportunity windows
+   * Identifies opportunity windows.
+   * @param {Array} upcomingDashas - Upcoming Dasha periods.
+   * @returns {Array} Opportunity windows.
+   * @private
    */
   _identifyOpportunityWindows(upcomingDashas) {
     const opportunities = [];
@@ -253,14 +257,14 @@ class UpcomingDashasService {
         });
       }
     });
-
     return opportunities.slice(0, 4);
   }
 
   /**
-   * Get planetary influence description
-   * @param {string} planet - Planet name
-   * @returns {string} Planetary influence
+   * Gets planetary influence description.
+   * @param {string} planet - Planet name.
+   * @returns {string} Planetary influence.
+   * @private
    */
   _getPlanetaryInfluence(planet) {
     const influences = {
@@ -274,14 +278,14 @@ class UpcomingDashasService {
       rahu: 'ambition, innovation, foreign elements, and spiritual growth',
       ketu: 'spirituality, detachment, liberation, and past life karma'
     };
-
     return influences[planet?.toLowerCase()] || 'general planetary influence';
   }
 
   /**
-   * Get Dasha key themes
-   * @param {string} planet - Planet name
-   * @returns {Array} Key themes
+   * Gets Dasha key themes.
+   * @param {string} planet - Planet name.
+   * @returns {Array} Key themes.
+   * @private
    */
   _getDashaKeyThemes(planet) {
     const themes = {
@@ -295,35 +299,35 @@ class UpcomingDashasService {
       rahu: ['Ambition', 'Innovation', 'Foreign matters', 'Spirituality'],
       ketu: ['Liberation', 'Detachment', 'Spirituality', 'Inner peace']
     };
-
     return themes[planet?.toLowerCase()] || ['Personal growth', 'Life experience'];
   }
 
   /**
-   * Get Dasha life areas
-   * @param {string} planet - Planet name
-   * @returns {Array} Life areas
+   * Gets Dasha life areas.
+   * @param {string} planet - Planet name.
+   * @returns {Array} Life areas.
+   * @private
    */
   _getDashaLifeAreas(planet) {
     const areas = {
       sun: ['Career', 'Leadership', 'Self-expression', 'Authority'],
       moon: ['Home', 'Family', 'Emotions', 'Mother', 'Public'],
       mars: ['Energy', 'Action', 'Brothers', 'Property', 'Surgery'],
-      mercury: ['Communication', 'Business', 'Education', 'Siblings', 'Travel'],
-      jupiter: ['Wisdom', 'Spirituality', 'Children', 'Teaching', 'Abroad'],
+      mercury: ['Communication', 'Education', 'Business', 'Siblings', 'Travel'],
+      jupiter: ['Wisdom', 'Wealth', 'Children', 'Teaching', 'Abroad'],
       venus: ['Love', 'Marriage', 'Beauty', 'Luxury', 'Arts'],
       saturn: ['Career', 'Discipline', 'Elders', 'Real estate', 'Agriculture'],
-      rahu: ['Ambition', 'Foreign', 'Innovation', 'Spirituality', 'Technology'],
+      rahu: ['Ambition', 'Foreign', 'Innovation', 'Technology', 'Unconventional'],
       ketu: ['Spirituality', 'Detachment', 'Liberation', 'Past life', 'Mysticism']
     };
-
     return areas[planet?.toLowerCase()] || ['General life areas'];
   }
 
   /**
-   * Get Dasha challenges
-   * @param {string} planet - Planet name
-   * @returns {Array} Challenges
+   * Gets Dasha challenges.
+   * @param {string} planet - Planet name.
+   * @returns {Array} Challenges.
+   * @private
    */
   _getDashaChallenges(planet) {
     const challenges = {
@@ -337,14 +341,14 @@ class UpcomingDashasService {
       rahu: ['Confusion', 'Addictions', 'Foreign difficulties', 'Spiritual crisis'],
       ketu: ['Detachment issues', 'Identity crisis', 'Past life karma', 'Isolation']
     };
-
     return challenges[planet?.toLowerCase()] || ['General life challenges'];
   }
 
   /**
-   * Get Dasha opportunities
-   * @param {string} planet - Planet name
-   * @returns {Array} Opportunities
+   * Gets Dasha opportunities.
+   * @param {string} planet - Planet name.
+   * @returns {Array} Opportunities.
+   * @private
    */
   _getDashaOpportunities(planet) {
     const opportunities = {
@@ -358,100 +362,55 @@ class UpcomingDashasService {
       rahu: ['Ambition fulfillment', 'Innovation', 'Foreign connections', 'Spiritual awakening'],
       ketu: ['Spiritual liberation', 'Inner peace', 'Detachment from material', 'Enlightenment']
     };
-
     return opportunities[planet?.toLowerCase()] || ['Personal growth opportunities'];
   }
 
   /**
-   * Get preparation advice for Dasha
-   * @param {string} planet - Planet name
-   * @returns {Array} Preparation advice
+   * Gets preparation advice for Dasha.
+   * @param {string} planet - Planet name.
+   * @returns {Array} Preparation advice.
+   * @private
    */
   _getPreparationAdvice(planet) {
     const advice = {
-      sun: [
-        'Build self-confidence and leadership skills',
-        'Focus on physical health and vitality',
-        'Prepare for increased responsibility'
-      ],
-      moon: [
-        'Strengthen emotional resilience',
-        'Nurture family relationships',
-        'Develop public speaking skills'
-      ],
-      mars: [
-        'Channel energy constructively',
-        'Practice patience and anger management',
-        'Focus on physical fitness'
-      ],
-      mercury: [
-        'Enhance communication skills',
-        'Pursue learning opportunities',
-        'Develop business acumen'
-      ],
-      jupiter: [
-        'Deepen spiritual practices',
-        'Share wisdom with others',
-        'Plan for expansion and growth'
-      ],
-      venus: [
-        'Cultivate harmonious relationships',
-        'Develop artistic talents',
-        'Build material stability'
-      ],
-      saturn: [
-        'Practice discipline and patience',
-        'Build strong foundations',
-        'Prepare for long-term commitments'
-      ],
-      rahu: [
-        'Embrace change and innovation',
-        'Develop spiritual awareness',
-        'Be mindful of material ambitions'
-      ],
-      ketu: [
-        'Focus on spiritual liberation',
-        'Practice detachment',
-        'Seek inner peace'
-      ]
+      sun: ['Build self-confidence and leadership skills', 'Focus on physical health and vitality', 'Prepare for increased responsibility'],
+      moon: ['Strengthen emotional resilience', 'Nurture family relationships', 'Develop public speaking skills'],
+      mars: ['Channel energy into productive activities', 'Practice patience and anger management', 'Focus on physical fitness'],
+      mercury: ['Enhance communication skills', 'Pursue learning opportunities', 'Develop business acumen'],
+      jupiter: ['Deepen spiritual practices', 'Share wisdom with others', 'Plan for expansion and growth'],
+      venus: ['Cultivate harmonious relationships', 'Develop artistic talents', 'Build material stability'],
+      saturn: ['Practice discipline and patience', 'Build strong foundations', 'Prepare for long-term commitments'],
+      rahu: ['Embrace innovation and change', 'Explore spiritual dimensions', 'Be mindful of material ambitions'],
+      ketu: ['Focus on spiritual liberation', 'Practice detachment from material desires', 'Embrace inner peace and contemplation']
     };
-
-    return advice[planet?.toLowerCase()] || [
-      'Focus on personal growth',
-      'Maintain balance in life',
-      'Practice mindfulness'
-    ];
+    return advice[planet?.toLowerCase()] || ['Focus on personal growth', 'Maintain balance in life', 'Practice mindfulness'];
   }
 
   /**
-   * Assess transition significance
-   * @param {string} from - Current Dasha lord
-   * @param {string} to - Next Dasha lord
-   * @returns {string} Transition significance
+   * Assesses transition significance.
+   * @param {string} from - Current Dasha lord.
+   * @param {string} to - Next Dasha lord.
+   * @returns {string} Transition significance.
+   * @private
    */
   _assessTransitionSignificance(from, to) {
     const fromLord = from?.toLowerCase();
     const toLord = to?.toLowerCase();
 
-    // Major transitions
-    if ((fromLord === 'saturn' && toLord === 'mercury') ||
-        (fromLord === 'rahu' && ['jupiter', 'saturn'].includes(toLord))) {
+    if ((fromLord === 'saturn' && toLord === 'mercury') || (fromLord === 'rahu' && ['jupiter', 'saturn'].includes(toLord))) {
       return 'Major life transition requiring adaptation';
     }
-
-    // Growth transitions
-    if ((fromLord === 'venus' && toLord === 'sun') ||
-        (fromLord === 'mercury' && toLord === 'ketu')) {
+    if ((fromLord === 'venus' && toLord === 'sun') || (fromLord === 'mercury' && toLord === 'ketu')) {
       return 'Transition to new growth phase';
     }
-
     return 'Natural progression in life phases';
   }
 
   /**
-   * Get major shift significance
-   * @param {string} planet - Planet name
-   * @returns {string} Shift significance
+   * Gets major shift significance.
+   * @param {string} planet - Planet name.
+   * @returns {string} Shift significance.
+   * @private
    */
   _getMajorShiftSignificance(planet) {
     const significances = {
@@ -459,15 +418,15 @@ class UpcomingDashasService {
       rahu: 'Time of transformation, ambition, and spiritual growth',
       ketu: 'Phase of liberation, detachment, and spiritual awakening'
     };
-
     return significances[planet] || 'Period of significant life change';
   }
 
   /**
-   * Create comprehensive upcoming Dashas interpretation
-   * @param {Array} upcomingDashas - Upcoming Dasha periods
-   * @param {Object} lifePhases - Life phases analysis
-   * @returns {string} Complete interpretation
+   * Creates comprehensive upcoming Dashas interpretation.
+   * @param {Array} upcomingDashas - Upcoming Dasha periods.
+   * @param {Object} lifePhases - Life phases analysis.
+   * @returns {string} Complete interpretation.
+   * @private
    */
   _createUpcomingDashasInterpretation(upcomingDashas, lifePhases) {
     if (upcomingDashas.length === 0) {
@@ -491,85 +450,52 @@ class UpcomingDashasService {
     }
 
     interpretation += 'Each Dasha period brings specific planetary energies that influence different life areas and opportunities.';
-
     return interpretation;
   }
 
   /**
-   * Validate input data
-   * @param {Object} input - Input data to validate
+   * Returns metadata for the service.
+   * @returns {Object} Service metadata.
    */
-  _validateInput(input) {
-    if (!input) {
-      throw new Error('Birth data is required');
-    }
-
-    const { birthDate, birthTime, birthPlace } = input;
-
-    if (!birthDate || typeof birthDate !== 'string') {
-      throw new Error('Valid birth date (DD/MM/YYYY format) is required');
-    }
-
-    if (!birthTime || typeof birthTime !== 'string') {
-      throw new Error('Valid birth time (HH:MM format) is required');
-    }
-
-    if (!birthPlace || typeof birthPlace !== 'string') {
-      throw new Error('Valid birth place is required');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
+  getMetadata() {
+    return {
+      name: this.serviceName,
+      version: '1.0.0',
+      category: 'vedic',
+      methods: ['processCalculation', 'getUpcomingDashas', 'getDashaTimeline', 'getLifePhases', 'getPreparationGuide', 'getOpportunityWindows'],
+      dependencies: [], // Managed by ServiceTemplate
+      description: 'Service for forecasting future planetary periods based on Vimshottari Dasha.'
+    };
   }
 
   /**
-   * Format result for presentation
-   * @param {Object} result - Raw upcoming Dashas result
-   * @returns {Object} Formatted result
+   * Returns help information for the service.
+   * @returns {string} Help text.
    */
-  _formatResult(result) {
-    return {
-      service: 'Upcoming Dashas Analysis',
-      timestamp: new Date().toISOString(),
-      upcomingDashas: {
-        dashas: result.upcomingDashas,
-        timeline: result.dashaTimeline,
-        lifePhases: result.lifePhases,
-        preparationGuide: result.preparationGuide,
-        opportunityWindows: result.opportunityWindows
-      },
-      interpretation: result.interpretation,
-      disclaimer: 'Upcoming Dashas analysis forecasts future planetary period influences. Dasha periods indicate timing of life experiences and karmic influences. Actual experiences depend on individual karma, free will, and complete birth chart analysis.'
-    };
-  }
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          // Add service-specific features here
-        },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
+  getHelp() {
+    return `
+⏳ **Upcoming Dashas Service - Future Planetary Periods Forecast**
+
+**Purpose:** Forecasts future planetary periods (Dashas), providing timing for upcoming life phases and opportunities based on the Vimshottari Dasha sequence.
+
+**Required Inputs:**
+• Birth data (Object with birthDate, birthTime, birthPlace)
+
+**Analysis Includes:**
+• **Upcoming Mahadashas:** Details of future major planetary periods.
+• **Dasha Timeline:** A chronological overview of your life's planetary influences.
+• **Life Phases:** Identification of growth, challenge, stability, and transformation periods.
+• **Preparation Guide:** Recommendations for navigating each Dasha period.
+• **Opportunity Windows:** Highlighting favorable times for new initiatives.
+• **Comprehensive Interpretation:** Insights into the themes and influences of each upcoming Dasha.
+
+**Example Usage:**
+"Show my upcoming Dasha periods for the next 10 years."
+"What are the life phases indicated by my future Dashas?"
+
+**Output Format:**
+Detailed report with Dasha forecasts, timelines, life phase analysis, and preparation guidance.
+    `.trim();
   }
 }
 

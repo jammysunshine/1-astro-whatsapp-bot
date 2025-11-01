@@ -1,32 +1,33 @@
 const ServiceTemplate = require('../ServiceTemplate');
-const logger = require('../../utils/logger');
-
-// Import calculator from legacy structure
+const logger = require('../../../utils/logger');
+const { BirthData } = require('../../models');
 
 /**
  * MedicalAstrologyService - Specialized service for health patterns and wellness astrology
  *
  * Provides analysis of health patterns, potential challenges, and wellness recommendations
- * based on planetary positions and house placements in Vedic astrology. The service examines
- * the 6th house (daily health), 8th house (chronic conditions), and planetary influences
- * on physical well-being and vitality.
+ * based on planetary positions and house placements in Vedic astrology.
  */
 class MedicalAstrologyService extends ServiceTemplate {
-  constructor(services) {
-    super('medicalAstrologyService');
-
-    // Initialize calculator with services if provided
-    if (services) {
-      this.calculator.setServices(services.calendricalService, services.geocodingService);
-    }
-
+  constructor() {
+    super('MedicalAstrologyCalculator'); // Primary calculator for this service
     this.serviceName = 'MedicalAstrologyService';
+    this.calculatorPath = '../../../services/astrology/vedic/calculators/MedicalAstrologyCalculator';
     logger.info('MedicalAstrologyService initialized');
   }
 
-  async lmedicalAstrologyCalculation(birthData) {
+  /**
+   * Main calculation method for Medical Astrology Analysis.
+   * @param {Object} birthData - User's birth data.
+   * @returns {Promise<Object>} Comprehensive medical astrology analysis.
+   */
+  async processCalculation(birthData) {
     try {
-      // Validate input
+      // Ensure calculator is loaded
+      if (!this.calculator) {
+        await this.initialize();
+      }
+
       this._validateInput(birthData);
 
       // Calculate medical astrology analysis
@@ -43,22 +44,36 @@ class MedicalAstrologyService extends ServiceTemplate {
 
       return medicalAnalysis;
     } catch (error) {
-      logger.error('MedicalAstrologyService calculation error:', error);
+      logger.error('MedicalAstrologyService processCalculation error:', error);
       throw new Error(`Medical astrology analysis failed: ${error.message}`);
     }
   }
 
   /**
-   * Format result for service consumption
-   * @param {Object} result - Raw calculator result
-   * @returns {Object} Formatted result
+   * Validates input data for medical astrology analysis.
+   * @param {Object} birthData - Birth data to validate.
+   * @private
+   */
+  _validateInput(birthData) {
+    if (!birthData) {
+      throw new Error('Birth data is required for medical astrology analysis');
+    }
+    const validatedData = new BirthData(birthData);
+    validatedData.validate();
+  }
+
+  /**
+   * Formats the medical astrology analysis result for consistent output.
+   * @param {Object} result - Raw calculator result.
+   * @returns {Object} Formatted result.
    */
   formatResult(result) {
     if (result.error) {
       return {
         success: false,
         error: result.error,
-        message: 'Medical astrology analysis failed'
+        message: 'Medical astrology analysis failed',
+        service: this.serviceName
       };
     }
 
@@ -67,137 +82,57 @@ class MedicalAstrologyService extends ServiceTemplate {
       data: result,
       summary: result.introduction || 'Medical astrology analysis completed',
       metadata: {
+        serviceName: this.serviceName,
         system: 'Medical Astrology Analysis',
         calculationMethod: 'Vedic planetary positions and house analysis for health patterns',
         elements: ['Health Indicators', 'House Analysis', 'Focus Areas', 'Recommendations'],
-        tradition: 'Vedic Hindu astrology with medical astrology principles'
+        tradition: 'Vedic Hindu astrology with medical astrology principles',
+        timestamp: new Date().toISOString()
       }
     };
   }
 
   /**
-   * Validate input parameters
-   * @param {Object} input - Input data to validate
-   * @private
-   */
-  _validateInput(birthData) {
-    if (!birthData) {
-      throw new Error('Birth data is required for medical astrology analysis');
-    }
-
-    if (!birthData.birthDate) {
-      throw new Error('Birth date is required for medical astrology analysis');
-    }
-
-    if (!birthData.birthTime) {
-      throw new Error('Birth time is required for medical astrology analysis');
-    }
-
-    if (!birthData.birthPlace) {
-      throw new Error('Birth place is required for medical astrology analysis');
-    }
-
-    // Validate date format
-    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    if (!dateRegex.test(birthData.birthDate)) {
-      throw new Error('Birth date must be in DD/MM/YYYY format');
-    }
-
-    // Validate time format
-    const timeRegex = /^\d{1,2}:\d{1,2}$/;
-    if (!timeRegex.test(birthData.birthTime)) {
-      throw new Error('Birth time must be in HH:MM format');
-    }
-  }
-
-  /**
-   * Get service metadata
-   * @returns {Object} Service information
+   * Returns metadata for the service.
+   * @returns {Object} Service metadata.
    */
   getMetadata() {
     return {
       name: this.serviceName,
       version: '1.0.0',
       category: 'vedic',
-      methods: ['execute', 'lmedicalAstrologyCalculation', 'formatResult'],
-      dependencies: ['MedicalAstrologyCalculator']
+      methods: ['processCalculation'],
+      dependencies: [], // Managed by ServiceTemplate
+      description: 'Specialized service for health patterns and wellness astrology.'
     };
   }
 
   /**
-   * Get service-specific help
-   * @returns {string} Help information
+   * Returns help information for the service.
+   * @returns {string} Help text.
    */
   getHelp() {
     return `
-⚕️ **Medical Astrology Service**
+⚕️ **Medical Astrology Service - Health Patterns & Wellness**
 
-**Purpose:** Provides analysis of health patterns, potential challenges, and wellness recommendations based on planetary positions and house placements in Vedic astrology
+**Purpose:** Provides analysis of health patterns, potential challenges, and wellness recommendations based on planetary positions and house placements in Vedic astrology.
 
 **Required Inputs:**
-• Birth date (DD/MM/YYYY)
-• Birth time (HH:MM)
-• Birth place (city, state/country)
+• Birth data (Object with birthDate, birthTime, birthPlace)
 
 **Analysis Includes:**
-
-**⚕️ Health Indicators:**
-• Planetary influences on physical well-being
-• Vitality and life force energy patterns
-• Immunity and resistance factors
-• Potential health vulnerabilities
-• Strengths and resilience indicators
-
-**🏛️ House Analysis:**
-• 6th House - Daily health and service patterns
-• 8th House - Chronic conditions and recovery
-• 12th House - Hidden health factors and spiritual well-being
-• Planetary placements in health-related houses
-• House lord significations for health
-
-**🎯 Focus Areas:**
-• Primary health concentration areas
-• Potential chronic condition indicators
-• Preventive care recommendations
-• Lifestyle pattern influences
-• Seasonal health considerations
-
-**🛡️ Recommendations:**
-• Diet and nutrition guidance
-• Exercise and physical activity suggestions
-• Stress management techniques
-• Preventive care measures
-• Remedial approaches for health challenges
-• Spiritual practices for holistic wellness
+• **Health Indicators:** Planetary influences on physical well-being, vitality, and immunity.
+• **House Analysis:** Examination of 6th, 8th, and 12th houses for health insights.
+• **Focus Areas:** Identification of primary health concentrations and potential chronic conditions.
+• **Recommendations:** Guidance on diet, exercise, stress management, and remedial approaches.
 
 **Example Usage:**
-"Medical astrology analysis for birth date 15/06/1990, time 06:45, place New Delhi"
-"Health patterns and wellness recommendations with complete birth details"
-"Analyze potential health challenges for 22/03/1985 at 14:30 in Mumbai"
+"Analyze my medical astrology for birth date 1990-06-15T06:45:00.000Z in New Delhi."
+"What are my potential health challenges based on my birth chart?"
 
 **Output Format:**
-Comprehensive medical astrology report with health indicators, house analysis, focus areas, and recommendations
+Comprehensive report with health indicators, house analysis, focus areas, and recommendations.
     `.trim();
-  }
-  async getHealthStatus() {
-    try {
-      const baseHealth = await super.getHealthStatus();
-      return {
-        ...baseHealth,
-        features: {
-          // Add service-specific features here
-        },
-        supportedAnalyses: [
-          // Add supported analyses here
-        ]
-      };
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
   }
 }
 

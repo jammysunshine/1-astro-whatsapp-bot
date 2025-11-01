@@ -1,4 +1,4 @@
-const ServiceTemplate = require('../serviceTemplate');
+const ServiceTemplate = require('../ServiceTemplate');
 const logger = require('../../../utils/logger');
 
 /**

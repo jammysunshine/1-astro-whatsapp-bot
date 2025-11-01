@@ -3,7 +3,7 @@
  * Implements annual horoscope (Tajika Varshaphal) calculations and predictions
  */
 
-const ServiceTemplate = require('../serviceTemplate');
+const ServiceTemplate = require('../ServiceTemplate');
 const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
 const { formatDegree, formatTime } = require('../../../utils/formatters');
 

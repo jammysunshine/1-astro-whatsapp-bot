@@ -3,7 +3,7 @@
  * Implements advanced solar arc direction calculations with comprehensive lifetime analysis
  */
 
-const ServiceTemplate = require('../serviceTemplate');
+const ServiceTemplate = require('../ServiceTemplate');
 const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
 const { formatDegree, formatTime } = require('../../../utils/formatters');
 

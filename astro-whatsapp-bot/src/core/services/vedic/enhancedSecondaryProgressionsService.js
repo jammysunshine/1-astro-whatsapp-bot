@@ -3,7 +3,7 @@
  * Implements advanced secondary progression calculations with detailed life theme analysis
  */
 
-const ServiceTemplate = require('../serviceTemplate');
+const ServiceTemplate = require('../ServiceTemplate');
 const { validateCoordinates, validateDateTime } = require('../../../utils/validation');
 const { formatDegree, formatTime } = require('../../../utils/formatters');
 

@@ -1,13 +1,30 @@
 // tests/unit/services/astrology/astrologyEngine.test.js
 // Unit tests for Astrology Engine
 
-const AstrologyEngine = require('../../../../src/core/services/astrologyEngine');
+const AstrologyEngine = require('../../../../src/services/astrology/astrologyEngine');
+
+// Mock dependencies
+jest.mock('../../../../src/services/astrology/vedic/VedicCalculator', () => {
+  const mockVedicCalculator = {
+    initialize: jest.fn().mockResolvedValue(true),
+    calculateBirthChart: jest.fn().mockResolvedValue({ sunSign: 'Pisces' }),
+    calculateCurrentDasha: jest.fn().mockResolvedValue({ dasha: 'Venus' }),
+    calculateCurrentTransits: jest.fn().mockResolvedValue({ planet: 'Jupiter' }),
+    calculateCosmicEvents: jest.fn().mockResolvedValue({ event: 'Full Moon' }),
+  };
+  return jest.fn(() => mockVedicCalculator);
+});
 
 describe('AstrologyEngine', () => {
   let engine;
+  let mockVedicCalculatorInstance;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    jest.clearAllMocks();
+    const VedicCalculator = require('../../../../src/services/astrology/vedic/VedicCalculator');
+    mockVedicCalculatorInstance = new VedicCalculator();
     engine = new AstrologyEngine();
+    await engine.initialize();
   });
 
   describe('generateAstrologyResponse', () => {

@@ -2,7 +2,7 @@
 // Unit tests for Numerology Service - TESTING THE ACTUAL SERVICE CLASS
 
 // Mock calculator dependencies first (before service imports)
-jest.mock('../../../../../src/core/services/calculators/VedicNumerology', () => ({
+jest.mock('src/core/services/calculators/VedicNumerology', () => ({
   VedicNumerology: jest.fn().mockImplementation(() => ({
     getVedicNumerologyAnalysis: jest.fn(),
     calculateBirthNumber: jest.fn(),
@@ -16,16 +16,16 @@ jest.mock('../../../../../src/core/services/calculators/VedicNumerology', () => 
 }));
 
 // Mock logger
-jest.mock('../../../../../src/utils/logger', () => ({
+jest.mock('src/utils/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
   warn: jest.fn(),
   debug: jest.fn()
 }));
 
-const NumerologyService = require('../../../../../../../src/core/services/numerologyService');
-const { VedicNumerology } = require('../../../../../../../src/core/services/calculators/VedicNumerology');
-const logger = require('../../../../../../../src/utils/logger');
+const NumerologyService = require('src/core/services/numerologyService');
+const { VedicNumerology } = require('src/core/services/calculators/VedicNumerology');
+const logger = require('src/utils/logger');
 
 describe('NumerologyService Class', () => {
   let numerologyService;
